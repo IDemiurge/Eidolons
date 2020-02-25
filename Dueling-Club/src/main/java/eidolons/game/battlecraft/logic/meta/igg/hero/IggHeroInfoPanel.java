@@ -1,10 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.igg.hero;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
-import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.hero.HeroInfoPanel;
 import main.system.sound.SoundMaster;
 

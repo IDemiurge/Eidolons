@@ -29,7 +29,6 @@ import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
@@ -679,9 +678,9 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         list.add(getWeapon(false));
         list.add(getNaturalWeapon(true));
         list.add(getNaturalWeapon(false));
-        getInventory().forEach(item -> list.add(item));
-        getQuickItems().forEach(item -> list.add(item));
-        getJewelry().forEach(item -> list.add(item));
+        list.addAll(getInventory());
+        list.addAll(getQuickItems());
+        list.addAll(getJewelry());
         return new SearchMaster<Entity>().find(name, list);
     }
 

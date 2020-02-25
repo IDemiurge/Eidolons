@@ -59,7 +59,6 @@ public class RngWallLightFiller extends RngFiller{
         switch (room.getType()) {
             case THRONE_ROOM:
             case COMMON_ROOM:
-                return 50;
             case TREASURE_ROOM:
             case GUARD_ROOM:
                 return 50;

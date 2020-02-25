@@ -41,13 +41,11 @@ public class RngSpecialContainerFiller extends RngFiller {
             case THRONE_ROOM:
                 return 5;
             case DEATH_ROOM:
-                return 2;
-            case GUARD_ROOM:
-                break;
-            case ENTRANCE_ROOM:
-                break;
             case EXIT_ROOM:
                 return 2;
+            case GUARD_ROOM:
+            case ENTRANCE_ROOM:
+                break;
         }
         return 0 ;
     }

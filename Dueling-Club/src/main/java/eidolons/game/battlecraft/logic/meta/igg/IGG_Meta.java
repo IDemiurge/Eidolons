@@ -1,7 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.igg;
 
-import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGame;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.content.DC_TYPE;

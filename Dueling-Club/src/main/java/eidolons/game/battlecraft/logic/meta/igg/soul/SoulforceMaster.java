@@ -2,14 +2,12 @@ package eidolons.game.battlecraft.logic.meta.igg.soul;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_PartyManager;
 import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.game.battlecraft.rules.DC_RuleImpl;
 import eidolons.game.core.Eidolons;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;

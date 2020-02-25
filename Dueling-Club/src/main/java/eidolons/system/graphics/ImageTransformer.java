@@ -112,14 +112,6 @@ public class ImageTransformer {
                 image = flipHorizontally(image);
                 image = flipVertically(image);
                 break;
-            case CCW180:
-                break;
-            case CCW90:
-                break;
-            case CW180:
-                break;
-            case CW90:
-                break;
             case HORIZONTAL:
                 image = flipHorizontally(image);
                 break;

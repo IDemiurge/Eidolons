@@ -126,6 +126,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
                 message(obj, unit);
                 break;
             case KEY:
+            case CONSUMABLE:
                 pickup(obj, unit);
                 break;
             case MAGE_CIRCLE:
@@ -141,13 +142,8 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
                 obj.kill(unit, false, false);
                 break;
             case MECHANISM:
-                break;
-            case BUTTON:
-                break;
             case LEVER:
-                break;
-            case CONSUMABLE:
-                pickup(obj, unit);
+            case BUTTON:
                 break;
 
         }

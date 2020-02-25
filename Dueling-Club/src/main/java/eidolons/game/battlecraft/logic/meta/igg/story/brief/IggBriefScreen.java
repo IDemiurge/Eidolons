@@ -1,7 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.igg.story.brief;
 
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.stage.UiStage;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

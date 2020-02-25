@@ -393,7 +393,7 @@ public class SightMaster {
                 master.getVisionController().getUnitVisionMapper().set(observer, unit, null);
                 continue;
             }
-            UNIT_VISION status = getUnitVisionStatusPrivate(unit, (Unit) observer);
+            UNIT_VISION status = getUnitVisionStatusPrivate(unit, observer);
             master.getVisionController().getUnitVisionMapper().set(observer, unit, status);
         }
     }

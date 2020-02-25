@@ -6,7 +6,6 @@ import eidolons.libgdx.texture.Sprites;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
 import eidolons.system.text.DescriptionTooltips;
-import eidolons.system.text.Texts;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

@@ -1,7 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
-import eidolons.game.EidolonsGame;
-
 public class Cinematics {
     public static boolean ON;
     public static float VOLUME_MUSIC;

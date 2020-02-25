@@ -17,6 +17,7 @@ import main.content.ContentValsManager;
 import main.system.launch.CoreEngine;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Created by JustMe on 9/21/2017.
@@ -41,7 +42,7 @@ public class OrbsPanel extends TablePanel {
         ValueContainer container = new VerticalValueContainer(el.getIconRegion(), name + ": " + val, description);
         container.setSize(600, 400);
         container.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
-        tooltip.setUserObject(Arrays.asList(container));
+        tooltip.setUserObject(Collections.singletonList(container));
         el.clearListeners();
         el.addListener(tooltip.getController());
         el.addListener(new SmartClickListener(el) {

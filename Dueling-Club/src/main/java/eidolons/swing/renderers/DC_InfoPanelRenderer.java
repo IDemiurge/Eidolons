@@ -60,14 +60,14 @@ public class DC_InfoPanelRenderer implements TableCellRenderer {
             return getDefaultComp(table, value, isSelected, hasFocus, row, column);
         }
 
-        if (StringMaster.isEmpty(VALUE.toString())) {
+        if (StringMaster.isEmpty(VALUE)) {
             return getDefaultComp(table, value, isSelected, hasFocus, row, column);
         }
 
-        PARAMETER p = ContentValsManager.getPARAM(VALUE.toString());
+        PARAMETER p = ContentValsManager.getPARAM(VALUE);
         if (p == null) {
 
-            PROPERTY prop = ContentValsManager.getPROP(VALUE.toString());
+            PROPERTY prop = ContentValsManager.getPROP(VALUE);
             if (prop != null) {
                 return getPropertyValueComp(prop, value.toString(), VALUE);
             }
@@ -90,7 +90,7 @@ public class DC_InfoPanelRenderer implements TableCellRenderer {
     }
 
     private Component getValueComp(VALUE_CASES CASE, String value) {
-        JLabel lbl = new JLabel(value.toString());
+        JLabel lbl = new JLabel(value);
         Color color = ColorManager.DEEP_GRAY;
         if (CASE != null) {
             color = CASE.getColor();

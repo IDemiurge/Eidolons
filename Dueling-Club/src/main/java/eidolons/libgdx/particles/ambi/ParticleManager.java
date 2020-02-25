@@ -140,6 +140,8 @@ public class ParticleManager extends GroupX {
             switch (dungeon_.getDungeonSubtype()) {
                 case CAVE:
                 case HIVE:
+
+                case HELL:
                     return AMBIENCE_TEMPLATE.CAVE;
                 case DUNGEON:
                 case SEWER:
@@ -148,9 +150,6 @@ public class ParticleManager extends GroupX {
                 case DEN:
                 case HOUSE:
                     return AMBIENCE_TEMPLATE.DUNGEON;
-
-                case HELL:
-                    return AMBIENCE_TEMPLATE.CAVE;
                 case CRYPT:
                 case BARROW:
                     return AMBIENCE_TEMPLATE.CRYPT;

@@ -82,10 +82,8 @@ public class VfxShaper {
                     break;
                 }
             case WHIP:
-                break;
-            case CIRCLE:
-                break;
             case HALF_CIRCLE:
+            case CIRCLE:
                 break;
         }
 

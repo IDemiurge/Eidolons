@@ -4,11 +4,8 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.enums.meta.QuestEnums;
-import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
 import java.util.Set;

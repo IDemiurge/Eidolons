@@ -4,8 +4,6 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
@@ -183,7 +181,7 @@ public class SpellMultiplicator implements Runnable {
                 }
         );
 
-        list.forEach(a -> emitterList.add(a));
+        emitterList.addAll(list);
 
     }
 
@@ -201,9 +199,12 @@ public class SpellMultiplicator implements Runnable {
                 case RAY_AUTO:
                     anim.setForcedDestinationForAll(farthest);
 
-                    return Arrays.asList(farthest);
+                    return Collections.singletonList(farthest);
 
                 case BLAST:
+                case NOVA:
+
+                case RING:
                     break;
                 case WAVE:
                 case SPRAY: {
@@ -231,11 +232,6 @@ public class SpellMultiplicator implements Runnable {
                     else
                         return coordinates;
                 }
-
-                case RING:
-                    break;
-                case NOVA:
-                    break;
             }
         }
         return coordinates;
@@ -276,7 +272,7 @@ public class SpellMultiplicator implements Runnable {
             }
             angle += 360 / max;
         }
-        list.forEach(a -> emitterList.add(a));
+        emitterList.addAll(list);
     }
 
     private void createAndAddEmitterActions(SpellVfx actor, ZONE_ANIM_MODS mod) {

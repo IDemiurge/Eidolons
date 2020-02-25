@@ -1,7 +1,6 @@
 package eidolons.libgdx.bf.boss.anim;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;

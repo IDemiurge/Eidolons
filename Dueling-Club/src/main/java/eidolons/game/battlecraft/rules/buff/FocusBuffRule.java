@@ -14,10 +14,7 @@ import main.content.enums.system.AiEnums;
 import main.content.enums.system.MetaEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
-import main.entity.Ref;
-import main.entity.Ref.KEYS;
 import main.game.core.game.GenericGame;
-import main.system.auxiliary.StringMaster;
 
 public class FocusBuffRule extends DC_BuffRule {
     public static final String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Discombobulated.getName(),

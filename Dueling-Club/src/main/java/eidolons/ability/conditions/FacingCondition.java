@@ -70,7 +70,7 @@ public class FacingCondition extends ConditionImpl {
         if (getTemplate() != null) {
             Coordinates c = obj2.getCoordinates();
             if (obj2.isOverlaying()) if (obj2 instanceof BattleFieldObject) {
-                DIRECTION d = ((BattleFieldObject) obj2).getDirection();
+                DIRECTION d = obj2.getDirection();
                 if (d != null) {
                     c = c.getAdjacentCoordinate(d.rotate180(), 2);
                 }

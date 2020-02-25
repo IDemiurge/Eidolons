@@ -149,16 +149,12 @@ public class PostProcessController {
     private void initFxForScreen(SCREEN_TYPE screen_type) {
         switch (screen_type) {
             case HEADQUARTERS:
-                break;
+            case MAP:
+            case WEAVE:
+            case MAIN_MENU:
             case BATTLE:
                 break;
             case PRE_BATTLE: //hero creation? shops?
-                break;
-            case MAIN_MENU:
-                break;
-            case WEAVE:
-                break;
-            case MAP:
                 break;
         }
     }

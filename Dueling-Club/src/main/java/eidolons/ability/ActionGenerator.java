@@ -1,7 +1,6 @@
 package eidolons.ability;
 
 import eidolons.content.ValuePages;
-import eidolons.game.EidolonsGame;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -11,7 +10,6 @@ import main.data.DataManager;
 import main.entity.type.ActionType;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
 
 import java.util.HashSet;
 import java.util.Set;

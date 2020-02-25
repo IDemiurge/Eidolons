@@ -1,10 +1,8 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.battlefield.vision.mapper.GenericMapper;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.fill.RngFillMaster;
@@ -17,12 +15,10 @@ import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.DC_TYPE;
-import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
-import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
@@ -116,13 +112,14 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 //        for (LevelBlock block : getBlocks()) { already done?
 //            units.addAll(block.getUnits());
 //        }
-        String xml = "";
+        StringBuilder xmlBuilder = new StringBuilder();
         for (ObjAtCoordinate obj : units) {
-            xml += obj.getCoordinates() + "=" + obj.getType().getName() + ";";
+            xmlBuilder.append(obj.getCoordinates()).append("=").append(obj.getType().getName()).append(";");
         }
         for (ObjAtCoordinate obj : objects) {
-            xml += obj.getCoordinates() + "=" + obj.getType().getName() + ";";
+            xmlBuilder.append(obj.getCoordinates()).append("=").append(obj.getType().getName()).append(";");
         }
+        String xml = xmlBuilder.toString();
 //objects.stream().map(d-> d.getCoordinates() + "=" +d.getType().getName()).
         return XML_Converter.wrap(RngXmlMaster.OBJECTS_NODE, xml);
     }
@@ -499,6 +496,8 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
                     return CELL_IMAGE.diamond;
                 return CELL_IMAGE.octagonal;
             case SPIDER:
+            case Stony:
+            case Pagan:
                 return CELL_IMAGE.natural;
             case ROGUE:
                 if (RandomWizard.chance(66))
@@ -511,9 +510,6 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
                     return CELL_IMAGE.cross;
                 }
                 return CELL_IMAGE.diamond;
-            case Stony:
-            case Pagan:
-                return CELL_IMAGE.natural;
             case DarkElegance:
             case PureEvil:
                 if (RandomWizard.chance(66))

@@ -226,7 +226,6 @@ public class LevelModelBuilder {
                 build(reverse, nextNode, room.getEntrance());
             }
         }
-        return;
     }
 
     public Room getOrCreateRoomForNode(boolean cache, LevelGraphNode node,

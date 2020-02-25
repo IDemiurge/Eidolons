@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.igg;
 
-import eidolons.libgdx.bf.datasource.SpriteData;
 import main.system.data.DataUnit;
 
 import java.util.regex.Pattern;

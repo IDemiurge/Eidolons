@@ -1,7 +1,5 @@
 package eidolons.libgdx.audio;
 
-import com.badlogic.gdx.Files;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.libgdx.screens.DungeonScreen;
@@ -9,13 +7,9 @@ import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
 import main.content.CONTENT_CONSTS;
-import main.content.values.properties.G_PROPS;
 import main.entity.obj.Obj;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.sound.Player;
 import main.system.sound.SoundFx;
-import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 
 import java.util.Stack;
@@ -130,7 +124,6 @@ public class SoundPlayer extends Player {
 
     public void doPlayback(float delta) {
         if (playQueue.isEmpty()) {
-            return;
         } else {
             if (isWaitBetweenSounds())
             if (waitTime >= 0) {

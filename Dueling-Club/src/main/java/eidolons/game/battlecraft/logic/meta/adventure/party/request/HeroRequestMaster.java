@@ -12,14 +12,10 @@ public class HeroRequestMaster {
         if (response)
             switch (request.getType()) {
                 case REMOVE_OTHER:
-                    break;
-                case ADD_OTHER:
-                    break;
-                case INCREASE_SHARE:
-                    break;
-                case FORMATION:
-                    break;
                 case ITEM:
+                case FORMATION:
+                case INCREASE_SHARE:
+                case ADD_OTHER:
                     break;
             }
     }

@@ -72,7 +72,7 @@ public class TipMessageMaster {
             list.add(tip);
         }
         if (!list.isEmpty()) {
-            tip(list.toArray(new TIP[list.size()]));
+            tip(list.toArray(new TIP[0]));
         }
     }
 

@@ -435,12 +435,9 @@ public class GridOverlaysManager extends SuperActor {
 
 
             case GRAVE:
-                break;
-            case CORPSE:
-                break;
-            case ITEM:
-                break;
             case TRAP:
+            case ITEM:
+            case CORPSE:
                 break;
             case IN_PLAIN_SIGHT:
             case IN_SIGHT:

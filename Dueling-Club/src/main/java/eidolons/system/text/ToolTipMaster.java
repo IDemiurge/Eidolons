@@ -71,6 +71,7 @@ public class ToolTipMaster {
         }
         switch (_case) {
             case BUFF:
+            case SPECIAL:
                 break;
             case DAMAGE:
                 boolean attack = !(active instanceof Spell);
@@ -87,8 +88,6 @@ public class ToolTipMaster {
                         }
                     }
                 }
-                break;
-            case SPECIAL:
                 break;
         }
 

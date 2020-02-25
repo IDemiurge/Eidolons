@@ -1,6 +1,5 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.tooltips;
 
-import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_WeaponObj;
 
 public class WeaponTooltip extends SlotItemTooltip {

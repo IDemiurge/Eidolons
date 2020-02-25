@@ -178,7 +178,7 @@ public class UnitGroupMaster {
         //
         if (hero == null) {
             String faction = ListChooser.chooseEnum(FACTION.class);
-            factionType = DataManager.getType(faction.toString().replace(";", ""),
+            factionType = DataManager.getType(faction.replace(";", ""),
              MACRO_OBJ_TYPES.FACTIONS);
         } else {
             List<String> list = new ArrayList<>();
@@ -277,10 +277,11 @@ public class UnitGroupMaster {
     }
 
     private static String saveGroup(List<ObjAtCoordinate> units, String faction, String name) {
-        String content = "";
+        StringBuilder contentBuilder = new StringBuilder();
         for (ObjAtCoordinate obj : units) {
-            content += DC_ObjInitializer.getObjString(obj) + DC_ObjInitializer.OBJ_SEPARATOR;
+            contentBuilder.append(DC_ObjInitializer.getObjString(obj)).append(DC_ObjInitializer.OBJ_SEPARATOR);
         }
+        String content = contentBuilder.toString();
         XML_Writer.write(content, getGroupFilePath(faction), name + ".xml");
 
         return content;
@@ -291,7 +292,7 @@ public class UnitGroupMaster {
     }
 
     private static String getGroupFilePath(String faction) {
-        return PathFinder.getUnitGroupPath() + "/faction/" + "" + "" + faction.toString();
+        return PathFinder.getUnitGroupPath() + "/faction/" + "" + "" + faction;
     }
 
     private static ObjType chooseUnit(ObjType factionType, int power, int max_power) {
@@ -357,7 +358,7 @@ public class UnitGroupMaster {
         Map<ObjType, Integer> map = new XLinkedMap<>();
         addUnits(factionType, map, factionType);
         for (String f : ContainerUtils.open(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
-            ObjType allyFactionType = DataManager.getType(f.toString(), MACRO_OBJ_TYPES.FACTIONS);
+            ObjType allyFactionType = DataManager.getType(f, MACRO_OBJ_TYPES.FACTIONS);
             addUnits(factionType, map, allyFactionType);
         }
         return map;
@@ -378,7 +379,7 @@ public class UnitGroupMaster {
             for (String f : ContainerUtils
              .openContainer(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
                 costMod += 5;
-                ObjType allyFactionType = DataManager.getType(f.toString(), MACRO_OBJ_TYPES.FACTIONS);
+                ObjType allyFactionType = DataManager.getType(f, MACRO_OBJ_TYPES.FACTIONS);
                 if (allyFactionType.getProperty(PROPS.UNIT_POOL).contains(unit.getName())) {
                     break;
                 }

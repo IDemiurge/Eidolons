@@ -1,7 +1,6 @@
 package eidolons.libgdx.shaders.post.fx;
 
 import com.bitfire.postprocessing.effects.Bloom;
-import com.bitfire.postprocessing.filters.Threshold;
 
 /**
  * Created by JustMe on 12/6/2018.

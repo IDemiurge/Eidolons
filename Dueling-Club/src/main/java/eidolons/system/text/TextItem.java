@@ -46,30 +46,8 @@ public class TextItem {
 
     public static Font getFontForType(TEXT_TYPE type) {
         switch (type) {
-            case ABILITY_TOOLTIP:
-                break;
-            case ACTION_TOOLTIP:
-                break;
-            case ANIMATION:
-                break;
-            case BUFF_TOOLTIP:
-                break;
-            case DIALOGUE:
-                break;
-            case INFO:
-                break;
-            case ITEM_TOOLTIP:
-                break;
             case PARAM_REQUIREMENT:
                 FontMaster.getFont(FONT.AVQ, 22, Font.PLAIN);
-            case REQUIREMENT:
-                break;
-            case TARGETING:
-                break;
-            case TUTORIAL:
-                break;
-            case UNIT_TOOLTIP:
-                break;
             default:
                 break;
 

@@ -15,7 +15,6 @@ import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.DC_RuleMaster;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.game.DC_Game;
-import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
@@ -26,9 +25,7 @@ import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.auxiliary.RandomWizard;
 import main.system.math.MathMaster;
-import main.system.sound.SoundMaster.SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 public class UnconsciousRule extends RoundRule implements ActionRule {

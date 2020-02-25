@@ -285,7 +285,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
         return texture;
     }
 
-    public class LightContainer extends ImageContainer {
+    public static class LightContainer extends ImageContainer {
         LIGHT_LAYER lightLayer;
 
         public LightContainer(LIGHT_LAYER lightLayer) {

@@ -363,12 +363,9 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         if (sub.type.type == MAP_MOVING_LAYER_TYPE.CLOUD) {
             switch (getWeather()) {
                 case CLEAR:
-                    break;
-                case OVERCAST:
-                    break;
-                case STORM:
-                    break;
                 case MISTY:
+                case STORM:
+                case OVERCAST:
                     break;
             }
         }

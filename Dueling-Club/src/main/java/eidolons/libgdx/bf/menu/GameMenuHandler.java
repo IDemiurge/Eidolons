@@ -98,18 +98,15 @@ public class GameMenuHandler {
                 GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
                 break;
             case RESUME:
+            case LAUNCH_GAME:
+            case ABOUT:
+            case WEBSITE:
                 break;
             case OPTIONS:
                 //                OptionsMaster.openMenu();
                 menu.openOptionsMenu();
                 //                GuiEventManager.trigger(GuiEventType.OPEN_OPTIONS, MainMenuStage.class);
                 return null;
-            case WEBSITE:
-                break;
-            case ABOUT:
-                break;
-            case LAUNCH_GAME:
-                break;
         }
         return null;
     }

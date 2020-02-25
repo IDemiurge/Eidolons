@@ -8,7 +8,6 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
-import eidolons.game.core.atb.AtbController;
 import eidolons.game.core.atb.AtbMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -195,7 +194,6 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
             case SPECIAL_ATTACK:
                 return ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
             case ADDITIONAL_MOVE:
-                return ActionEnums.ACTION_TYPE_GROUPS.MOVE;
             case SPECIAL_MOVE:
                 return ActionEnums.ACTION_TYPE_GROUPS.MOVE;
             case STANDARD:

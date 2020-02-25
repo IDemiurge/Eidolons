@@ -31,7 +31,7 @@ public class ChainPanel extends SoulTab {
 
     }
 
-    public class ChainButtonHandler implements ButtonHandler {
+    public static class ChainButtonHandler implements ButtonHandler {
 
         @Override
         public void handle(String btn) {

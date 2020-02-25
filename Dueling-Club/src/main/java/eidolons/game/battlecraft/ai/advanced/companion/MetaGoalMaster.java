@@ -133,7 +133,6 @@ public class MetaGoalMaster extends AiHandler {
                 }
                 break;
             case AVENGE:
-                break;
             case AVOID:
                 break;
             case AID:

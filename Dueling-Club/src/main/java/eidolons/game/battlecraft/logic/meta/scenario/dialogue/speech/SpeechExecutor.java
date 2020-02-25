@@ -26,7 +26,6 @@ import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
-import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.SimpleAnim;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnimDataSource;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
@@ -34,7 +33,6 @@ import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.audio.SoundPlayer;
-import eidolons.libgdx.bf.GridMaster;
 import main.content.ContentValsManager;
 import main.content.enums.GenericEnums.BLENDING;
 import eidolons.libgdx.bf.datasource.GraphicData;
@@ -235,6 +233,7 @@ public class SpeechExecutor {
 
 
             case REVEAL:
+            case SWITCH:
                 bool = true;
             case CONCEAL:
                 getUnit(value).setRevealed(bool);
@@ -261,9 +260,7 @@ public class SpeechExecutor {
             case ORDER:
                 unit = getUnit(value);
                 master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.ORDER,
-                        unit.getRef(), new Object[]{
-                                unit.getName(), vars.get(0)
-                        });
+                        unit.getRef(), unit.getName(), vars.get(0));
                 break;
             case MOVE:
                 unit = getUnit(value);
@@ -297,9 +294,7 @@ public class SpeechExecutor {
                     }
                 }
                 master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.ACTION,
-                        unit.getRef(), new Object[]{
-                                unit, value, arg
-                        });
+                        unit.getRef(), unit, value, arg);
                 break;
             case LAST_TUTORIAL:
                 if (!value.isEmpty()) {
@@ -405,14 +400,10 @@ public class SpeechExecutor {
             case TURN:
                 unit = getUnit(vars.get(0));
                 master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.TURN_TO,
-                        unit.getRef(), new Object[]{
-                                unit.getName(), value
-                        });
+                        unit.getRef(), unit.getName(), value);
                 //TODO doing it twice because bug..
                 master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.TURN_TO,
-                        unit.getRef(), new Object[]{
-                                unit.getName(), value
-                        });
+                        unit.getRef(), unit.getName(), value);
                 break;
 
             case TRIGGER_REMOVE:
@@ -685,7 +676,7 @@ public class SpeechExecutor {
                     main.system.auxiliary.log.LogMaster.dev("NO SUCH SCRIPT or function: " + value);
                 }
                 master.getBattleMaster().getScriptManager().execute(func, Eidolons.getMainHero().getRef(),
-                        vars.toArray(new String[vars.size()]));
+                        vars.toArray(new String[0]));
                 break;
 
 
@@ -1063,8 +1054,6 @@ public class SpeechExecutor {
                     return false;
                 }
                 return true;
-            case SWITCH:
-                bool = true;
             case CONFIRM:
                 if (!EUtils.waitConfirm(value)) {
                     return bool;
@@ -1164,7 +1153,6 @@ public class SpeechExecutor {
                 ActionMaster.addAlphaAction(container, dur, alpha);
             } else
                 ActionMaster.addAlphaAction(ui_bg_both ? container.getCurrent() : container.getBgSprite(), dur, alpha);
-            return;
         }
     }
 

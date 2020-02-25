@@ -53,41 +53,13 @@ public class ShapeFillMaster {
                     return 0;
                 };
             case TRIPLE:
-                return c -> {
-
-                    return 0;
-                };
-            case PAIR_VERTICAL:
-                return c -> {
-
-                    return 0;
-                };
-            case PAIR:
-                return c -> {
-
-                    return 0;
-                };
-            case DIAGONAL_PAIR:
-                return c -> {
-
-                    return 0;
-                };
-            case CROSS:
-                return c -> {
-
-                    return 0;
-                };
-            case X_CROSS:
-                return c -> {
-
-                    return 0;
-                };
-            case CROSS_HOLLOW:
-                return c -> {
-
-                    return 0;
-                };
             case X_CROSS_HOLLOW:
+            case CROSS_HOLLOW:
+            case X_CROSS:
+            case CROSS:
+            case DIAGONAL_PAIR:
+            case PAIR:
+            case PAIR_VERTICAL:
                 return c -> {
 
                     return 0;
@@ -136,16 +108,6 @@ public class ShapeFillMaster {
 
                 return true;
             case TRIPLE_VERTICA:
-                if (coords.get(1).x != 1)
-                    return false;
-                if (coords.get(1).y != 0)
-                    return false;
-                if (coords.get(2).x != 2)
-                    return false;
-                if (coords.get(2).y != 0)
-                    return false;
-
-                return true;
             case TRIPLE:
                 if (coords.get(1).x != 1)
                     return false;
@@ -157,6 +119,7 @@ public class ShapeFillMaster {
                     return false;
 
                 return true;
+
             case CORNER:
                 //check for 'normal case', then apply rotations and see if any matches
 

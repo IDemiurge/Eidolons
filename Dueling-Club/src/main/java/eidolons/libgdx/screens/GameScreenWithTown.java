@@ -6,7 +6,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
-import eidolons.libgdx.stage.BattleGuiStage;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.macro.entity.town.Town;
 import main.system.EventCallbackParam;

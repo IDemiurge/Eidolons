@@ -7,7 +7,6 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import main.content.C_OBJ_TYPE;
-import main.content.enums.meta.QuestEnums;
 import main.content.enums.meta.QuestEnums.QUEST_LEVEL;
 import main.content.enums.meta.QuestEnums.QUEST_REWARD_TYPE;
 import main.content.values.properties.MACRO_PROPS;
@@ -65,7 +64,7 @@ public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
         } else {
             switch (type) {
                 case ITEM:
-                    break;
+                case RANDOM:
                 case RANK:
                     break;
                 case XP:
@@ -77,8 +76,6 @@ public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
                 case MIXED:
                     xp += 50;
                     gold += 50;
-                    break;
-                case RANDOM:
                     break;
                 case ANTI_GLORY:
                     gloryFormula = "-450";

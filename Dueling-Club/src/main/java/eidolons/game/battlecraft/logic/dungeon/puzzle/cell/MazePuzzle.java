@@ -3,8 +3,6 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.cell;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTemplate;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.model.RoomModel;
@@ -12,7 +10,6 @@ import eidolons.game.module.dungeoncrawl.generator.model.RoomTemplateMaster;
 import eidolons.libgdx.shaders.post.PostFxUpdater;
 import eidolons.libgdx.texture.Images;
 import eidolons.system.audio.MusicMaster;
-import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
@@ -78,7 +75,7 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
     }
 
 
-    public class MazeData {
+    public static class MazeData {
         public Coordinates c;
         public MazeType mazeType;
         public List<Coordinates> mazeWalls;

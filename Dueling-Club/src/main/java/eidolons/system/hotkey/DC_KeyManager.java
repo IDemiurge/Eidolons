@@ -454,12 +454,17 @@ public class DC_KeyManager
     private Character getKeyTyped(int keyCode) {
         switch (keyCode) {
             case Input.Keys.NUMPAD_8:
+
+            case Input.Keys.UP:
                 return 'w';
             case Input.Keys.NUMPAD_4:
+            case Input.Keys.LEFT:
                 return 'a';
             case Input.Keys.NUMPAD_6:
+            case Input.Keys.RIGHT:
                 return 'd';
             case Input.Keys.NUMPAD_2:
+            case Input.Keys.DOWN:
                 return 's';
 
             case Input.Keys.NUMPAD_7:
@@ -468,15 +473,6 @@ public class DC_KeyManager
                 return 'e';
             case Input.Keys.NUMPAD_0:
                 return ' ';
-
-            case Input.Keys.UP:
-                return 'w';
-            case Input.Keys.LEFT:
-                return 'a';
-            case Input.Keys.RIGHT:
-                return 'd';
-            case Input.Keys.DOWN:
-                return 's';
 
         }
         return null;

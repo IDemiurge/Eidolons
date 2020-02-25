@@ -79,7 +79,6 @@ public class LootMaster {
              "Better not", "Absolutely not");
             if (choice == null) {
                 // reduce loyalty
-                return;
             }
         } else {
             choice = DialogMaster.askAndWait(h.getName() + ": What about " + ""
@@ -194,43 +193,9 @@ public class LootMaster {
         switch (group) {
             case AMMO:
                 return new WEAPON_TYPE[]{WEAPON_TYPE.AMMO};
-            case ARMOR:
 
-                break;
-            case CONCONCTIONS:
-                break;
             case HEAVY_ARMOR:
                 return new ARMOR_TYPE[]{ARMOR_TYPE.HEAVY};
-            case HEAVY_WEAPONS:
-                break;
-            case JEWELRY:
-                break;
-            case JEWELRY_SPECIAL:
-                break;
-            case LIGHT_ARMOR:
-                break;
-            case LIGHT_WEAPONS:
-                break;
-            case MAGIC_ARMOR:
-                break;
-            case MAGIC_ITEMS:
-                break;
-            case MAGIC_MATERIAL_WEAPONS:
-                break;
-            case MAGIC_WEAPONS:
-                break;
-            case POISONS:
-                break;
-            case POTIONS:
-                break;
-            case WEAPONS:
-                break;
-            case WEIRD_ARMOR:
-                break;
-            case WEIRD_ITEMS:
-                break;
-            case WEIRD_WEAPONS:
-                break;
             default:
                 break;
 
@@ -241,43 +206,28 @@ public class LootMaster {
     private static OBJ_TYPE getTYPE(LOOT_GROUP group) {
         switch (group) {
             case AMMO:
-                return DC_TYPE.WEAPONS;
-            case ARMOR:
-                return DC_TYPE.ARMOR;
-            case CONCONCTIONS:
-                return DC_TYPE.ITEMS;
-            case HEAVY_ARMOR:
-                return DC_TYPE.ARMOR;
+            case WEIRD_WEAPONS:
+            case WEAPONS:
+            case MAGIC_WEAPONS:
+            case MAGIC_MATERIAL_WEAPONS:
+            case LIGHT_WEAPONS:
             case HEAVY_WEAPONS:
                 return DC_TYPE.WEAPONS;
-            case JEWELRY:
-                return DC_TYPE.JEWELRY;
-            case JEWELRY_SPECIAL:
-                return DC_TYPE.JEWELRY;
-            case LIGHT_ARMOR:
-                return DC_TYPE.ARMOR;
-            case LIGHT_WEAPONS:
-                return DC_TYPE.WEAPONS;
+            case ARMOR:
+            case WEIRD_ARMOR:
             case MAGIC_ARMOR:
+            case LIGHT_ARMOR:
+            case HEAVY_ARMOR:
                 return DC_TYPE.ARMOR;
+            case CONCONCTIONS:
+            case WEIRD_ITEMS:
+            case POTIONS:
+            case POISONS:
             case MAGIC_ITEMS:
                 return DC_TYPE.ITEMS;
-            case MAGIC_MATERIAL_WEAPONS:
-                return DC_TYPE.WEAPONS;
-            case MAGIC_WEAPONS:
-                return DC_TYPE.WEAPONS;
-            case POISONS:
-                return DC_TYPE.ITEMS;
-            case POTIONS:
-                return DC_TYPE.ITEMS;
-            case WEAPONS:
-                return DC_TYPE.WEAPONS;
-            case WEIRD_ARMOR:
-                return DC_TYPE.ARMOR;
-            case WEIRD_ITEMS:
-                return DC_TYPE.ITEMS;
-            case WEIRD_WEAPONS:
-                return DC_TYPE.WEAPONS;
+            case JEWELRY:
+            case JEWELRY_SPECIAL:
+                return DC_TYPE.JEWELRY;
 
         }
         return null;

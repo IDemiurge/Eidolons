@@ -26,6 +26,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static main.system.GuiEventType.DESTROY_UNIT_MODEL;
@@ -81,7 +82,7 @@ public class DeathAnim extends ActionAnim {
 
     @Override
     public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnFinish() {
-        return Arrays.asList(new ImmutablePair<>(DESTROY_UNIT_MODEL, new EventCallbackParam(unit)));
+        return Collections.singletonList(new ImmutablePair<>(DESTROY_UNIT_MODEL, new EventCallbackParam(unit)));
     }
 
     @Override

@@ -10,7 +10,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -34,7 +33,6 @@ import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.threading.WaitMaster;
 
@@ -82,8 +80,8 @@ public class ToolTipManager extends TablePanel {
             }
             BaseView object = (BaseView) event.get();
             hovered(object);
-            if (object instanceof LastSeenView)
-                return;
+            if (object instanceof LastSeenView) {
+            }
         });
 
         GuiEventManager.bind(SCALE_UP_VIEW, (event) -> {

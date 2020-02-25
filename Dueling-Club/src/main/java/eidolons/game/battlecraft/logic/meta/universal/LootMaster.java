@@ -132,14 +132,11 @@ public class LootMaster<E extends MetaGame> extends MetaGameHandler<E> {
         for (LOOT_PREFERENCE preference : LOOT_PREFERENCE.values()) {
             switch (preference) {
                 case MUST_HAVE:
-
-
-                    break;
-                case WANT_HAVE:
-                    break;
-                case INDIFFERENT:
-                    break;
                 case WONT_HAVE:
+                case INDIFFERENT:
+                case WANT_HAVE:
+
+
                     break;
             }
         }
@@ -172,7 +169,7 @@ public class LootMaster<E extends MetaGame> extends MetaGameHandler<E> {
         final StringBuilder builder = new StringBuilder();
         getMaster().getBattleMaster().getStatManager().
          getStats().getSlainEnemyUnits().forEach(enemy -> {
-            builder.append(getLootFromEnemy(enemy) + StringMaster.SEPARATOR);
+            builder.append(getLootFromEnemy(enemy)).append(StringMaster.SEPARATOR);
             lootValue += evaluateLootValue(enemy);
         });
         return null;

@@ -82,7 +82,6 @@ public class Location {
             }
             DungeonPlan plan = new LocationBuilder().loadDungeonMap(data);
             bossLevel = plan.getDungeon();
-            return;
         } else {
             ObjType type = RandomWizard.getObjTypeByWeight(getPlaceOrScenario().getProperty(
              MACRO_PROPS.BOSS_LEVEL_POOL), DC_TYPE.DUNGEONS);
@@ -99,7 +98,6 @@ public class Location {
              + getPlaceOrScenario().getProperty(MACRO_PROPS.ROOT_LEVEL));
             DungeonPlan plan = new LocationBuilder().loadDungeonMap(data);
             root = plan.getDungeon();
-            return;
         } else {
             ObjType type = RandomWizard.getObjTypeByWeight(getPlaceOrScenario().getProperty(
              MACRO_PROPS.ROOT_POOL), DC_TYPE.DUNGEONS);

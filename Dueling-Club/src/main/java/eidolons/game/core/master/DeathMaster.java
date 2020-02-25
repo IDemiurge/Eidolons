@@ -12,7 +12,6 @@ import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.DungeonCrawler;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
-import eidolons.system.audio.DC_SoundMaster;
 import main.ability.AbilityObj;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
@@ -30,7 +29,6 @@ import main.system.GuiEventType;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.datatypes.DequeImpl;
-import main.system.sound.SoundMaster.SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 

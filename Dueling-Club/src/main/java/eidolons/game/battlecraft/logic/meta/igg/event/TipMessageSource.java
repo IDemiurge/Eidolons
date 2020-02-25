@@ -1,9 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.igg.event;
 
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
 import main.system.threading.WaitMaster;
 
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.*;

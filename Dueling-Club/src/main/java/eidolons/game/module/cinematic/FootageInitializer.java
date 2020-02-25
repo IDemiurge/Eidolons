@@ -3,8 +3,6 @@ package eidolons.game.module.cinematic;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.SpellEnums;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 /**
  * alternative branch of handlers?

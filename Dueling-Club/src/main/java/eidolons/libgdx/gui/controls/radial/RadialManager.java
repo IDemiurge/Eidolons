@@ -23,7 +23,6 @@ import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
-import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.elements.targeting.SelectiveTargeting;
@@ -253,9 +252,7 @@ public class RadialManager {
                 list.add(configureAttackParentNode(attacks,
                         RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, target, sourceUnit.getAttackAction(false)));
             else {
-                for (RadialValueContainer sub : attacks) {
-                    list.add(sub);
-                }
+                list.addAll(attacks);
             }
         }
         list.add(getParentNode(RADIAL_PARENT_NODE.TURN_ACTIONS, turns));
@@ -266,9 +263,7 @@ public class RadialManager {
                 list.add(configureAttackParentNode(offhandAttacks,
                         RADIAL_PARENT_NODE.OFFHAND_ATTACKS, target, sourceUnit.getAttackAction(true)));
             else {
-                for (RadialValueContainer sub : offhandAttacks) {
-                    list.add(sub);
-                }
+                list.addAll(offhandAttacks);
             }
         }
 
@@ -426,7 +421,7 @@ public class RadialManager {
 
     public static void addSimpleTooltip(RadialValueContainer el, String name) {
         ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer(name, "")));
+        tooltip.setUserObject(Collections.singletonList(new ValueContainer(name, "")));
         for (com.badlogic.gdx.scenes.scene2d.EventListener sub : el.getListeners()) {
             if (!(sub instanceof ClickListener))
                 el.removeListener(sub);

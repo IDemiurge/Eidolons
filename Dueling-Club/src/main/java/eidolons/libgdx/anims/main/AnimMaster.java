@@ -215,7 +215,6 @@ public class AnimMaster extends Group {
 //                    } else
                         SpeechExecutor.run("wait input= ;");
 
-                    return;
                 }
 //                return;
             }
@@ -480,7 +479,7 @@ public class AnimMaster extends Group {
             CompositeAnim a = new CompositeAnim();
             a.add(
                     part
-                    , (Anim) e);
+                    , e);
             if (e.getDelay() == 0) {
                 root.getAttached().get(part).set(i, a);
             } else {

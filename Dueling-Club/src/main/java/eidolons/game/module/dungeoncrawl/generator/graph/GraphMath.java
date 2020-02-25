@@ -13,35 +13,22 @@ public class GraphMath {
             case TREASURE_ROOM:
                 switch (type2) {
                     case TREASURE_ROOM:
-                        break;
-                    case THRONE_ROOM:
-                        break;
-                    case DEATH_ROOM:
-                        break;
-                    case GUARD_ROOM:
-                        break;
-                    case COMMON_ROOM:
-                        break;
-                    case ENTRANCE_ROOM:
-                        break;
-                    case EXIT_ROOM:
-                        break;
                     case SECRET_ROOM:
+                    case EXIT_ROOM:
+                    case ENTRANCE_ROOM:
+                    case COMMON_ROOM:
+                    case GUARD_ROOM:
+                    case DEATH_ROOM:
+                    case THRONE_ROOM:
                         break;
                 }
             case THRONE_ROOM:
-                break;
-            case DEATH_ROOM:
-                break;
-            case GUARD_ROOM:
-                break;
-            case COMMON_ROOM:
-                break;
-            case ENTRANCE_ROOM:
-                break;
-            case EXIT_ROOM:
-                break;
             case SECRET_ROOM:
+            case EXIT_ROOM:
+            case ENTRANCE_ROOM:
+            case COMMON_ROOM:
+            case GUARD_ROOM:
+            case DEATH_ROOM:
                 break;
         }
         return 0;

@@ -11,7 +11,6 @@ import com.badlogic.gdx.video.VideoPlayer;
 import com.badlogic.gdx.video.VideoPlayerCreator;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.video.VideoMaster;
 import main.data.filesys.PathFinder;
 
 import java.io.FileNotFoundException;

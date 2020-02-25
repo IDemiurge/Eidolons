@@ -9,7 +9,6 @@ import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
-import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
@@ -21,8 +20,6 @@ import main.system.math.PositionMaster;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL.VOID;
 
 /**
  * Created by JustMe on 2/22/2017.

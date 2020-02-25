@@ -215,12 +215,9 @@ public class TileConverter {
         switch (style) {
 
             case Brimstone:
-                break;
-            case Stony:
-                break;
-            case DarkElegance:
-                break;
             case Grimy:
+            case DarkElegance:
+            case Stony:
                 break;
             case Knightly:
                 //               map.put(BF_OBJ_TYPES_LIGHT_EMITTERS.BRAZIER.getName(), 5);

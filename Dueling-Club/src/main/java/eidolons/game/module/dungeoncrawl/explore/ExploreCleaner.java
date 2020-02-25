@@ -2,7 +2,6 @@ package eidolons.game.module.dungeoncrawl.explore;
 
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;

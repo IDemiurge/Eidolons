@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.igg.event;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.rules.counter.UndyingCounterRule;

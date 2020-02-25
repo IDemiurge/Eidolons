@@ -396,12 +396,6 @@ public class AI_SpellMaster {
                     }
 
                     break;
-                case BLAST:
-                    break;
-                case CELL:
-                    break;
-                case RAY:
-                    break;
                 default:
                     break;
 

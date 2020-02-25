@@ -1,9 +1,7 @@
 package eidolons.game.module.dungeoncrawl.quest.advanced;
 
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.module.dungeoncrawl.quest.QuestReward;
 import eidolons.macro.entity.town.Town;
-import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 
 public interface Quest {

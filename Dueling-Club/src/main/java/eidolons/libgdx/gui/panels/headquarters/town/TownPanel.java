@@ -216,7 +216,7 @@ public class TownPanel extends TabbedPanel {
 
     @Override
     public void updateAct(float delta) {
-        Town town = (Town) getUserObject();
+        Town town = getUserObject();
         townName.setText(town.getName());
     }
 

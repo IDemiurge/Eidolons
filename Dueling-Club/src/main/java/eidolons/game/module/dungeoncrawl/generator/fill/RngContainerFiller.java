@@ -44,7 +44,6 @@ public class RngContainerFiller extends RngFiller {
             case THRONE_ROOM:
                 return 3;
             case DEATH_ROOM:
-                return 1;
             case EXIT_ROOM:
                 return 1;
         }

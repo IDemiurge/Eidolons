@@ -2,9 +2,6 @@ package eidolons.game.battlecraft.logic.meta.igg;
 
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
-import eidolons.game.EidolonsGame;
-import eidolons.system.options.OptionsMaster;
-import eidolons.system.options.SystemOptions;
 import main.content.values.parameters.PARAMETER;
 import main.data.xml.XML_Formatter;
 import main.system.auxiliary.EnumMaster;

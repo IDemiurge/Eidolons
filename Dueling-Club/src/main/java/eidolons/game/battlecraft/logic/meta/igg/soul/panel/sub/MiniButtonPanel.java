@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.igg.soul.panel.sub;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;

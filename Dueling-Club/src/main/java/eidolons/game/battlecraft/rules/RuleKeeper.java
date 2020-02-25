@@ -182,6 +182,7 @@ public class RuleKeeper implements Controller {
         switch (getScope()) {
 
             case TEST:
+            case ADVANCED:
                 break;
             case BASIC:
                 switch (feature) {
@@ -203,8 +204,6 @@ public class RuleKeeper implements Controller {
 //                    case DUAL_ATTACKS:
                         return false;
                 }
-                break;
-            case ADVANCED:
                 break;
         }
 
@@ -256,8 +255,6 @@ public class RuleKeeper implements Controller {
 
     public static String getRuleLogText(COMBAT_RULES rule, int level) {
         switch (rule) {
-            case BLEEDING:
-                break;
             case FOCUS:
                 if (level == 2) {
                     return "'s focus is razorsharp!";
@@ -278,8 +275,6 @@ public class RuleKeeper implements Controller {
                 if (level == 0) {
                     return " panics!";
                 }
-            case MORALE_KILL:
-                break;
             case STAMINA:
                 if (level == 2) {
                     return " is full of energy!";

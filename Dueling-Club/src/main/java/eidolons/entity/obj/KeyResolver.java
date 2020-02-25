@@ -18,7 +18,6 @@ public class KeyResolver {
             case OFFHAND:
                 return unit.getActiveWeapon(true);
             case SUMMONER:
-                break;
             case PARTY:
                 break;
             case RANGED:

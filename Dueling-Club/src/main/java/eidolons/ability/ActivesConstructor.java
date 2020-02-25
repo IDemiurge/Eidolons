@@ -245,15 +245,9 @@ public class ActivesConstructor {
                 targeting = new TemplateAutoTargeting(AUTO_TARGETING_TEMPLATES.ALL);
                 break;
             case NOVA:
-                targeting = new FixedTargeting(KEYS.SOURCE);
-                break;
+            case SPRAY:
             case WAVE:
                 targeting = new FixedTargeting(KEYS.SOURCE);
-                break;
-            case SPRAY:
-                targeting = new FixedTargeting(KEYS.SOURCE);
-                break;
-            case TRAP:
                 break;
             case ANY_ARMOR:
                 targeting = new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.ANY_ARMOR);
@@ -378,10 +372,6 @@ public class ActivesConstructor {
         }
         boolean notSelf = entity.checkBool(GenericEnums.STD_BOOLS.NO_SELF_FIRE);
         switch (wrap) {
-            case CHAIN:
-                break;
-            case CUSTOM_ZONE_CROSS:
-                break;
             case CUSTOM_ZONE_STAR:
                 // new ShapeEffect() {
                 // protected SHAPES getShape() {
@@ -461,14 +451,6 @@ public class ActivesConstructor {
                 // ++ special conditions for allyOrEnemyOnly
                 break;
 
-            case DOUBLE:
-                break;
-            case MULTI:
-                break;
-
-            case TRIPPLE:
-                break;
-
             case BLAST:
                 if (entity.getIntParam(G_PARAMS.RADIUS) > 0) // ideally, I
                 // shouldn't mix
@@ -484,11 +466,7 @@ public class ActivesConstructor {
                 // TODO
                 effects = new Effects(new ZoneEffect(effects, radius, allyOrEnemyOnly, true));
                 break;
-            case SINGLE:
-                break;
 
-            case TRAP:
-                break;
             default:
                 break;
 

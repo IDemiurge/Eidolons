@@ -5,7 +5,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.core.game.ScenarioGame;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.entity.Ref;
 import main.entity.type.ObjType;

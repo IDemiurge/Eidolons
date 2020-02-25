@@ -49,7 +49,8 @@ public class DC_Masteries {
             return;
         }
         switch (mastery) {
-            case TACTICS_MASTERY: {
+            case TACTICS_MASTERY:
+            case LEADERSHIP_MASTERY: {
                 // boostParameter((amount), PARAMS.ORGANIZATION,
                 // MODVAL_TYPE.MODIFY_BY_CONST);
                 break;
@@ -58,12 +59,7 @@ public class DC_Masteries {
             case MARKSMANSHIP_MASTERY:
 
                 boostParameter(amount, PARAMS.THROW_ATTACK_MOD, MOD.MODIFY_BY_CONST);
-                break;
-            case LEADERSHIP_MASTERY: {
-                // boostParameter((amount), PARAMS.BATTLE_SPIRIT,
-                // MODVAL_TYPE.MODIFY_BY_CONST);
-                break;
-            }
+                break;// boostParameter((amount), PARAMS.BATTLE_SPIRIT,
             case ARMORER_MASTERY: {
 
                 boostParameter(-(amount), PARAMS.DURABILITY_SELF_DAMAGE_MOD,

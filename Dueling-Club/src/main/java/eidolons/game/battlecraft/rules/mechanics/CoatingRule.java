@@ -47,23 +47,16 @@ public class CoatingRule {
                                                       COUNTER counter) {
         switch (counter) {
             case Blaze:
-                return 5;
-            case Bleeding:
-                return 5;
-            case Blight:
-                return 5;
-            case Corrosion:
-                return 5;
-
-            case Disease:
-                return 5;
-
-            case Freeze:
-                return 5;
+            case Poison:
 
             case Moist:
-                return 5;
-            case Poison:
+
+            case Freeze:
+
+            case Disease:
+            case Corrosion:
+            case Blight:
+            case Bleeding:
                 return 5;
 
         }

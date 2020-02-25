@@ -28,9 +28,6 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
-import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.GridManager;
 import eidolons.system.text.Texts;
 import main.content.DC_TYPE;
@@ -310,7 +307,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         }
         if (tip) {
             try {
-                doCustomTip(ref, new String[]{args[0]});
+                doCustomTip(ref, args[0]);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

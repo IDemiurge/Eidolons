@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
@@ -213,7 +212,7 @@ public class CompositeAnim implements Animation {
                 return false;
             }
             for (Animation sub : new ArrayList<>(attached.get(ANIM_PART.AFTEREFFECT))) {
-                map.put(ANIM_PART.AFTEREFFECT, (Anim) sub);
+                map.put(ANIM_PART.AFTEREFFECT, sub);
 
             }
             if (map.containsKey(ANIM_PART.AFTEREFFECT)) {
@@ -417,7 +416,7 @@ public class CompositeAnim implements Animation {
             part = (ANIM_PART) MapMaster.get(attached, index);
             if (attached.get(part).isEmpty())
                 return;
-            currentAnim = (Anim) attached.get(part).remove(0);
+            currentAnim = attached.get(part).remove(0);
         } else {
             part = (ANIM_PART) MapMaster.get(map, index);
             currentAnim = map.get(part);
@@ -456,10 +455,10 @@ public class CompositeAnim implements Animation {
             attach(anim, partToAddAt);
         }
         if (anim instanceof Anim) {
-            addEvents(partToAddAt, (Anim) anim);
+            addEvents(partToAddAt, anim);
         }
         if (anim instanceof Anim) {
-            ((Anim) anim).setParentAnim(this);
+            anim.setParentAnim(this);
         }
 
     }

@@ -58,14 +58,10 @@ public class BehaviorMaster extends AiHandler {
                 behavior = new WanderAiMaster(getMaster(), ai);
                 break;
             case AMBUSH:
-                break;
-            case AGGRO:
-                break;
-            case STALK:
-                break;
-            case PATROL:
-                break;
             case GUARD:
+            case PATROL:
+            case STALK:
+            case AGGRO:
                 break;
         }
         behaviorMap.put(type, behavior);
@@ -88,7 +84,6 @@ public class BehaviorMaster extends AiHandler {
         // checkBehaviorChange(group); where does that happen?
         switch (type) {
             case AMBUSH:
-                break;
             case STALK:
                 break;
             case STAND_GUARD:

@@ -1,17 +1,14 @@
 package eidolons.game.battlecraft.logic.meta.igg.hero;
 
 import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
-import eidolons.game.module.herocreator.logic.HeroCreator;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
 
 import java.util.*;
 import java.util.stream.Collectors;

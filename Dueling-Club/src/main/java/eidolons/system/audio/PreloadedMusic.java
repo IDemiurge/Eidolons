@@ -151,7 +151,6 @@ public class PreloadedMusic implements Music {
 
     @Override
     public void setPosition(float position) {
-        return;
     }
 
     public void pause() {

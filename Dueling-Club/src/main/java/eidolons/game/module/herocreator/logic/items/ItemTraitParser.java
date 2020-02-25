@@ -90,7 +90,7 @@ public class ItemTraitParser {
 
         //support scale level-appending
         String last = mnemonic.substring(
-         mnemonic.length() - 1, mnemonic.length());
+         mnemonic.length() - 1);
         if (NumberUtils.isInteger(last)) {
             n = TRAIT_EFFECT_SCALE.values()[NumberUtils.getInteger(last)].coef;
             mnemonic = mnemonic.substring(0,
@@ -118,10 +118,8 @@ public class ItemTraitParser {
             case DMG_TYPE:
                 return parseDamageTemplate(forObjType, template, arg, n);
             case CUSTOM:
-                break;
-            case PROP:
-                break;
             case WRAPPER:
+            case PROP:
                 break;
         }
 
@@ -220,6 +218,8 @@ public class ItemTraitParser {
 
             case sp:
             case aspect:
+            case abil:
+            case stdPassive:
                 return MNEMONIC_TYPE.PROP;
             case dmg:
             case dmgWeapon:
@@ -235,6 +235,7 @@ public class ItemTraitParser {
                 return MNEMONIC_TYPE.DOUBLE;
             case sharp:
             case stack:
+            case activated:
                 break;
             case random:
             case chaotic:
@@ -244,11 +245,6 @@ public class ItemTraitParser {
             case discount:
             case state:
                 return MNEMONIC_TYPE.CUSTOM;
-            case activated:
-                break;
-            case abil:
-            case stdPassive:
-                return MNEMONIC_TYPE.PROP;
         }
         return MNEMONIC_TYPE.SINGLE;
     }

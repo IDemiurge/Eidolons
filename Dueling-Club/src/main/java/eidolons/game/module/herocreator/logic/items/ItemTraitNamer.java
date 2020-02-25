@@ -5,7 +5,6 @@ import eidolons.content.DC_CONSTS.ITEM_LEVEL;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.EidolonImbuer;
-import eidolons.libgdx.gui.panels.dc.logpanel.LogMessageBuilder;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.TextBuilder;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
@@ -152,22 +151,23 @@ public class ItemTraitNamer {
     }
 
     public static String getDescriptor(Entity item, Collection<ItemTrait> traits) {
-        String suffix = ITEM_NAME_TRAITS_SEPARATOR;
+        StringBuilder suffixBuilder = new StringBuilder(ITEM_NAME_TRAITS_SEPARATOR);
         for (ItemTrait trait : traits) {
-            suffix += trait.toString() + ", ";
+            suffixBuilder.append(trait.toString()).append(", ");
         }
+        String suffix = suffixBuilder.toString();
         return item.getDisplayedName() + suffix.substring(0, suffix.length() - 2);
     }
 
     public static String getDescription(ObjType newType, Set<ItemTrait> traits) {
         String descr = newType.getDescription();
         descr += "\n" + "Imbued with traits: ";
+        StringBuilder descrBuilder = new StringBuilder(descr);
         for (ItemTrait trait : traits) {
-            descr += "\n" +
-                    StringMaster.indent(10) +
-                    getDescription(trait);
+            descrBuilder.append("\n").append(StringMaster.indent(10)).append(getDescription(trait));
 
         }
+        descr = descrBuilder.toString();
 
         return descr + "\n";
     }

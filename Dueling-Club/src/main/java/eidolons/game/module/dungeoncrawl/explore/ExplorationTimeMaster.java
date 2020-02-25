@@ -21,7 +21,6 @@ import main.content.ContentValsManager;
 import main.content.mode.MODE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
-import main.entity.obj.Obj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
@@ -396,11 +395,10 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
                 case STAMINA:
+                case ESSENCE:
                     return 1f;
                 case FOCUS:
                     return 1.5f;
-                case ESSENCE:
-                    return 1f;
             }
         }
         return 1f;
@@ -410,7 +408,6 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
                 case STAMINA:
-                    return 1f;
                 case ESSENCE:
                     return 1f;
             }

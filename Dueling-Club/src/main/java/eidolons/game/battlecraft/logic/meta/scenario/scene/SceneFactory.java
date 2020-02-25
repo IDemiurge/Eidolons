@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.scenario.scene;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefScene;
 import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefingData;
 import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefingView;
@@ -13,7 +12,6 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.SpeechDataSource;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.texture.TextureCache;
 import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.dialogue.SpeechData;
 import main.system.auxiliary.StringMaster;

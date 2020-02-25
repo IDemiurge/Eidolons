@@ -40,6 +40,5 @@ if (Pregenerator.TEST_MODE)
   System.out.println(c + " assinged to " + block);
 
         }
-        return;
     }
 }

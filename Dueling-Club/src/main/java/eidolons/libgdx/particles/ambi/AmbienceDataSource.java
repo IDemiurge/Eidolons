@@ -152,15 +152,13 @@ public class AmbienceDataSource {
             case MIDNIGHT:
                 return 0;
             case DAWN:
+            case NIGHTFALL:
                 return 0.3f;
             case MORNING:
+            case DUSK:
                 return 0.6f;
             case MIDDAY:
                 return 1;
-            case DUSK:
-                return 0.6f;
-            case NIGHTFALL:
-                return 0.3f;
         }
         return 0;
     }

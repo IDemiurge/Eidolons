@@ -21,7 +21,6 @@ import main.content.enums.entity.SpellEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.OmittedConstructor;
-import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.ActiveObj;
@@ -37,7 +36,6 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
-import main.system.math.Property;
 import main.system.sound.SoundMaster.SOUNDS;
 
 public class SummonEffect extends MicroEffect implements OneshotEffect {

@@ -131,7 +131,6 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
                 continue;
             }
             if (KeyMaster.addCustomKey(coordinate, data)) {
-                continue;
             }
         }
     }

@@ -1,6 +1,5 @@
 package eidolons.libgdx.screens.menu;
 
-import eidolons.content.PARAMS;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
 import eidolons.game.core.Eidolons;
@@ -12,7 +11,6 @@ import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
-import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -21,7 +19,6 @@ import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.List;

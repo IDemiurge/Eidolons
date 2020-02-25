@@ -201,21 +201,23 @@ public class UnitLevelManager {
     }
 
     private String generateProgression(Entity newType, boolean attrs) {
-        String progression = "";
+        String progression;
         if (attrs) {
+            StringBuilder progressionBuilder = new StringBuilder();
             for (ATTRIBUTE attr : ATTRIBUTE.values()) {
-                progression += attr.getParameter().getName()
-                 + StringMaster.wrapInParenthesis(newType.getParam(attr
-                 .getParameter())) + ";";
+                progressionBuilder.append(attr.getParameter().getName()).append(StringMaster.wrapInParenthesis(newType.getParam(attr
+                        .getParameter()))).append(";");
             }
+            progression = progressionBuilder.toString();
         } else {
+            StringBuilder progressionBuilder = new StringBuilder();
             for (PARAMETER mstr : ValuePages.MASTERIES) {
                 Integer value = newType.getIntParam(mstr);
                 if (value > 0) {
-                    progression += mstr.getName()
-                     + StringMaster.wrapInParenthesis(value + "") + ";";
+                    progressionBuilder.append(mstr.getName()).append(StringMaster.wrapInParenthesis(value + "")).append(";");
                 }
             }
+            progression = progressionBuilder.toString();
         }
         return progression;
     }

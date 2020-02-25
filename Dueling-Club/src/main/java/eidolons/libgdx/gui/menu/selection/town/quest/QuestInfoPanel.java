@@ -9,7 +9,6 @@ import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.images.ImageManager;

@@ -463,12 +463,11 @@ public class VisionRule {
                 if (!hero.isSneaking())//TODO IGG HACK
                     return true;
             case IN_SIGHT:
+            case CONCEALED:
                 break;
             case BEYOND_SIGHT:
             case BLOCKED:
                 return false;
-            case CONCEALED:
-                break;
         }
 //        VISIBILITY_LEVEL visibility =    controller.getVisibilityLevelMapper().getVar(unit, hero);
 //        switch (visibility) {

@@ -100,8 +100,7 @@ public class DC_MovementManager implements MovementManager {
         List<DC_ActiveObj> moveActions = new ArrayList<>();
         DequeImpl<DC_UnitAction> actions = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
         if (actions != null) {
-            moveActions = new ArrayList<>(Arrays.asList(actions.toArray(new DC_ActiveObj[actions
-             .size()])));
+            moveActions = new ArrayList<>(Arrays.asList(actions.toArray(new DC_ActiveObj[0])));
         }
         if (moveActions.isEmpty()) {
             moveActions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));

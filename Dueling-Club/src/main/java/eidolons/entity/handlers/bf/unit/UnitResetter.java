@@ -21,7 +21,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.DC_Constants;
 import eidolons.system.DC_Formulas;
-import eidolons.system.test.TestMasterContent;
 import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
@@ -137,14 +136,14 @@ public class UnitResetter extends EntityResetter<Unit> {
             if (game.isSimulation()) {
                 resetObjects();
                 resetQuickSlotsNumber();
-                String value = "";
+                StringBuilder valueBuilder = new StringBuilder();
                 for (Spell s : getEntity().getSpells()) {
                     if (!s.getProperty(PROPS.SPELL_UPGRADES).isEmpty()) {
-                        value += s.getName()
-                                + StringMaster.wrapInParenthesis(s
-                                .getProperty(PROPS.SPELL_UPGRADES).replace(";", ",")) + ";";
+                        valueBuilder.append(s.getName()).append(StringMaster.wrapInParenthesis(s
+                                .getProperty(PROPS.SPELL_UPGRADES).replace(";", ","))).append(";");
                     }
                 }
+                String value = valueBuilder.toString();
                 if (!value.isEmpty()) {
                     setProperty(PROPS.SPELL_UPGRADES, value, true);
                 }

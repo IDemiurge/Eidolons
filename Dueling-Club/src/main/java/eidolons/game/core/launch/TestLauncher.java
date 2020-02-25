@@ -564,7 +564,7 @@ public class TestLauncher //extends MetaGameMaster
     }
 
 
-    public class CODE {
+    public static class CODE {
         public final static int PRESET = 0;
         public final static int RANDOM = 1;
         public final static int CHOOSE = 2;

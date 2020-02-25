@@ -1,28 +1,19 @@
 
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.Align;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
-import eidolons.game.module.herocreator.logic.skills.SkillMaster;
-import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.DynamicLayeredActor;
-import eidolons.libgdx.bf.SpriteActor;
-import eidolons.libgdx.bf.SpriteActor.SPRITE_ACTOR_ANIMATION;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.VerticalValueContainer;
-import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
-import eidolons.system.text.DescriptionTooltips;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
@@ -31,13 +22,10 @@ import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.system.EventType;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
-import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.text.TextParser;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 

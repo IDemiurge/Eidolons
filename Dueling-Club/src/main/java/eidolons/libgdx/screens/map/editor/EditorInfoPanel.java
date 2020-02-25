@@ -58,17 +58,13 @@ public class EditorInfoPanel extends TabbedPanel<EditorInfoTab> {
         if (tabs != null)
             switch (tabs) {
                 case EMITTERS:
-                    break;
-                case PLACES:
-                    break;
-                case PARTIES:
-                    break;
+                case SCRIPTS:
                 case AREAS:
+                case PARTIES:
+                case PLACES:
                     break;
                 case POINTS:
                     EditorManager.setMode(MAP_EDITOR_MOUSE_MODE.POINT);
-                    break;
-                case SCRIPTS:
                     break;
             }
     }
@@ -141,10 +137,9 @@ public class EditorInfoPanel extends TabbedPanel<EditorInfoTab> {
                      , s);
                     break;
                 case PLACES:
-                    break;
-                case PARTIES:
-                    break;
+                case SCRIPTS:
                 case AREAS:
+                case PARTIES:
                     break;
                 case POINTS:
                     Pair<String, Coordinates> pair = (Pair<String, Coordinates>) o;
@@ -152,8 +147,6 @@ public class EditorInfoPanel extends TabbedPanel<EditorInfoTab> {
                      StringMaster.cropByLength(20,
                       pair.getKey())
                      , pair.getValue().toString());
-                    break;
-                case SCRIPTS:
                     break;
             }
             elementMap.put(o, element);

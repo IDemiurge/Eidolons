@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.meta.igg.death;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.logic.party.Party;
-import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.launch.CoreEngine;
 

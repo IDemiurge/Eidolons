@@ -114,7 +114,7 @@ public class MapResourcesPanel extends TablePanel {
         PROVISIONS, WATER, SANITY, GOLD, SOULGEMS,;
     }
 
-    public class MapResourcePanel extends TablePanel {
+    public static class MapResourcePanel extends TablePanel {
         MAP_RESOURCE resource;
         MacroParty party;
 

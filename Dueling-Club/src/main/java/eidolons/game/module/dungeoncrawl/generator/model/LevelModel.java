@@ -221,7 +221,7 @@ public class LevelModel {
 
     public LevelZone getZone(LevelGraphNode node) {
         return
-         zones.toArray(new LevelZone[zones.size()])[node.getZoneIndex()];
+         zones.toArray(new LevelZone[0])[node.getZoneIndex()];
     }
 
     public Room getRoom(LevelBlock block) {

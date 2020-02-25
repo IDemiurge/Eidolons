@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.bitfire.utils.ItemsManager;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.DummyUnit;
@@ -577,7 +576,7 @@ public class GridManager {
                         unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
 //                    SoundController.getCustomEventSound(SOUND_EVENT.UNIT_TURNS, );
                         if (hero instanceof Unit)
-                            DC_SoundMaster.playTurnSound((Unit) hero);
+                            DC_SoundMaster.playTurnSound(hero);
                     }
                 }
                 caught = true;
@@ -660,7 +659,7 @@ public class GridManager {
                 if (active.getName().contains("1Projection")) {
                     sourceObj.setCoordinates(c);
                 }
-                panel.unitMoved((BattleFieldObject) sourceObj);
+                panel.unitMoved(sourceObj);
                 BaseView view = panel.getViewMap().get(sourceObj);
                 view.fadeIn();
             });

@@ -133,10 +133,11 @@ public class EncounterMaster {
         // String string="It appears you have been ambushed!";
         // String string="It appears you have been ambushed!";
         String string = "It appears you have run into hostiles...";
-        String enemies = " Among the spotted enemies: \n";
+        StringBuilder enemiesBuilder = new StringBuilder(" Among the spotted enemies: \n");
         for (String wave : ContainerUtils.open(e.getTypeNames())) {
-            enemies += wave + ", ";
+            enemiesBuilder.append(wave).append(", ");
         }
+        String enemies = enemiesBuilder.toString();
         enemies = StringMaster.cropLast(enemies, 2);
         return string + enemies;
     }

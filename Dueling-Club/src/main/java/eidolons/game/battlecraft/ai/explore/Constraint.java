@@ -22,10 +22,6 @@ public class Constraint {
         switch (type) {
             case DISTANCE:
                 return new DistanceCondition("");
-            case STATUS:
-                break;
-            case VISIBILITY:
-                break;
             default:
                 break;
 

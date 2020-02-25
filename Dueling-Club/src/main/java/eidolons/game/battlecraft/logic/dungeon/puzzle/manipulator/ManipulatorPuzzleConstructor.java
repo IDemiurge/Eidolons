@@ -8,7 +8,6 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
 public abstract class ManipulatorPuzzleConstructor<T extends ManipulatorPuzzle> extends PuzzleConstructor<T> {

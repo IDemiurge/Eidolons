@@ -9,8 +9,6 @@ import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
-import eidolons.libgdx.texture.Images;
-import eidolons.libgdx.texture.TextureCache;
 import main.content.values.parameters.PARAMETER;
 
 /**

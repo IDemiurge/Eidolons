@@ -106,13 +106,12 @@ public class InvItemActor extends ItemActor {
         if (model != null) {
             switch (model.getOBJ_TYPE_ENUM()) {
                 case JEWELRY:
+                case ITEMS:
                     return new FadeImageContainer(Images.ITEM_BACKGROUND_GOLD);
                 case WEAPONS:
                     return new FadeImageContainer(Images.ITEM_BACKGROUND_STEEL);
                 case ARMOR:
                     return new FadeImageContainer(Images.ITEM_BACKGROUND_STONE);
-                case ITEMS:
-                    return new FadeImageContainer(Images.ITEM_BACKGROUND_GOLD);
             }
         }
         return new FadeImageContainer(Images.ITEM_BACKGROUND);
@@ -261,7 +260,6 @@ public class InvItemActor extends ItemActor {
             goldGroup.setVisible(cellType == CELL_TYPE.CONTAINER || cellType == CELL_TYPE.INVENTORY
              || cellType == CELL_TYPE.STASH);
         } else {
-            return;
         }
     }
 

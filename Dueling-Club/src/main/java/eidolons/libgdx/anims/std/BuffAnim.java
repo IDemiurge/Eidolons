@@ -79,28 +79,17 @@ public class BuffAnim extends ActionAnim {
         switch (name) {
 
             case Channeling:
-                break;
-            case Ablaze:
-                break;
-            case Poison:
-                break;
-            case Bleeding:
-                break;
-            case Frost:
-                break;
-            case Contaminated:
-                break;
-            case Asleep:
-                break;
-            case Wounded:
-                break;
-            case Hallucinogetic_Poison:
-                break;
-            case Weakening_Poison:
-                break;
-            case Paralyzing_Poison:
-                break;
             case Entangled:
+            case Paralyzing_Poison:
+            case Weakening_Poison:
+            case Hallucinogetic_Poison:
+            case Wounded:
+            case Asleep:
+            case Contaminated:
+            case Frost:
+            case Bleeding:
+            case Poison:
+            case Ablaze:
                 break;
         }
         return "buffs/" + name.getName();

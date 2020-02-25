@@ -1,7 +1,6 @@
 package eidolons.libgdx.bf.light;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,7 +10,6 @@ import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
@@ -20,7 +18,6 @@ import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.OverlayView;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
-import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
@@ -99,8 +96,8 @@ public class LightEmitter extends SuperActor {
             overlay.setScale(OverlayView.SCALE, OverlayView.SCALE);
             addActor(overlay);
             Dimension dim = OverlayingMaster.getOffsetsForOverlaying(direction,
-                    (int) 64,
-                    (int) 64);
+                    64,
+                    64);
             //getVar grid?
             overlay.setPosition((float) dim.getWidth(),
                     (float) dim.getHeight());
@@ -403,7 +400,7 @@ public class LightEmitter extends SuperActor {
         super.setTransform(transform);
     }
 
-    class LightRay extends FadeImageContainer {
+    static class LightRay extends FadeImageContainer {
         public LightRay(Image image) {
             super(image);
         }

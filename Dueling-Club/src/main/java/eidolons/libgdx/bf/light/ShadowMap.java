@@ -90,7 +90,6 @@ public class ShadowMap extends GroupX {
             case LIGHT_EMITTER:
                 return GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_LIGHT_EMITTER;
             case CONCEALMENT:
-                break;
             case BLACKOUT:
                 break;
             case HIGLIGHT:

@@ -3,7 +3,6 @@ package eidolons.game.module.dungeoncrawl.objects;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import main.ability.effects.Effect;
 import main.entity.Ref;
@@ -114,14 +113,10 @@ public class RuneMaster {
         switch (effect) {
 
             case TOWN_PORTAL:
-                break;
-            case SHRINE_BUFF:
-                break;
-            case VALUE_RESTORE:
-                break;
-            case SUMMON_ENEMY:
-                break;
             case DAMAGE_AREA:
+            case SUMMON_ENEMY:
+            case VALUE_RESTORE:
+            case SHRINE_BUFF:
 
                 break;
         }

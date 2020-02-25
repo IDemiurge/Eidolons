@@ -1,7 +1,6 @@
 package eidolons.libgdx.bf.boss.entity;
 
 import eidolons.entity.handlers.bf.unit.*;
-import eidolons.entity.obj.BattleFieldObject;
 
 public class BossMaster extends UnitMaster {
     public BossMaster(BossUnit bossUnit) {

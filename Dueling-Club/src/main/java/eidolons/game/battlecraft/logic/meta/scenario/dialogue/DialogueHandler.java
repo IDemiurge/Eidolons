@@ -3,9 +3,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 import com.badlogic.gdx.math.Interpolation;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.*;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import main.data.XLinkedMap;
 import main.entity.Ref;
@@ -16,7 +14,6 @@ import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
-import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
 import java.util.List;

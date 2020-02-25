@@ -13,13 +13,11 @@ import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
-import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.graphics.FontMaster;
 
 public class SoulCounter extends GroupX {
     SmartButton btn;

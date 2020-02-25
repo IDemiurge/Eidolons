@@ -13,7 +13,6 @@ import eidolons.libgdx.gui.menu.selection.scenario.ScenarioListPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.menu.MainMenu;
-import eidolons.libgdx.texture.Images;
 import main.entity.Entity;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;

@@ -4,16 +4,9 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
-import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.data.ListMaster;
-import main.system.auxiliary.data.MapMaster;
 import main.system.datatypes.WeightMap;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 import static eidolons.game.module.herocreator.logic.items.ItemTraits.*;
 import static eidolons.game.module.herocreator.logic.items.ItemTraits.EIDOLON_ASPECT.*;

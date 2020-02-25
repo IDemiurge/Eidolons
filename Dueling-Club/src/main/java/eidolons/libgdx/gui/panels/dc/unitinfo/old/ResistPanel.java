@@ -162,7 +162,7 @@ public class ResistPanel extends TablePanel {
                 final ValueContainer container = map.get(damageType);
                 ValueTooltip valueTooltip = new ValueTooltip();
                 valueTooltip.setUserObject((Supplier) () ->
-                 Arrays.asList(new ValueContainer(param.getName(), "")));
+                        Collections.singletonList(new ValueContainer(param.getName(), "")));
                 container.addListener(valueTooltip.getController());
                 container.updateValue(pair.getRight() + "%");
             }

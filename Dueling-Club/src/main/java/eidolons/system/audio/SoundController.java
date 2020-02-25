@@ -78,7 +78,6 @@ public class SoundController {
             case SHOW_TARGET_BORDERS:
                 return STD_SOUNDS.CLICK_ACTIVATE.getPath();
             case TARGET_SELECTION:
-                return STD_SOUNDS.CLICK_TARGET_SELECTED.getPath();
             case GRID_OBJ_HOVER_OFF:
                 return STD_SOUNDS.CLICK_TARGET_SELECTED.getPath();
             case GRID_OBJ_HOVER_ON:

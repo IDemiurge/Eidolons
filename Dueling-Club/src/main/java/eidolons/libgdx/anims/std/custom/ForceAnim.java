@@ -32,32 +32,27 @@ public class ForceAnim extends Weapon3dAnim {
     private VfxContainer<PhaseVfx> shaped;
     private GenericEnums.DAMAGE_TYPE type;
 
-    public static final List vfxList_death = Arrays.asList(new GenericEnums.VFX[]{
-            GenericEnums.VFX.dark_blood,
+    public static final List vfxList_death = Arrays.asList(GenericEnums.VFX.dark_blood,
             GenericEnums.VFX.missile_death,
-            GenericEnums.VFX.weave_death,
+            GenericEnums.VFX.weave_death
 //            GenericEnums.VFX.invert_breath,
-    });
-    public static final List vfxList_electric = Arrays.asList(new GenericEnums.VFX[]{
-            GenericEnums.VFX.missile_arcane_intense,
+    );
+    public static final List vfxList_electric = Arrays.asList(GenericEnums.VFX.missile_arcane_intense,
             GenericEnums.VFX.missile_electric_intense,
-            GenericEnums.VFX.missile_electric,
-    });
-    public static final List vfxList_shadow = Arrays.asList(new GenericEnums.VFX[]{
-            GenericEnums.VFX.dark_impact,
+            GenericEnums.VFX.missile_electric);
+    public static final List vfxList_shadow = Arrays.asList(GenericEnums.VFX.dark_impact,
             GenericEnums.VFX.invert_missile,
-            GenericEnums.VFX.weave_pale,
+            GenericEnums.VFX.weave_pale
 //            GenericEnums.VFX.invert_breath,
-    });
-    public static final List vfxList_chaos = Arrays.asList(new GenericEnums.VFX[]{
-//            GenericEnums.VFX.missile_chaos,
+    );
+    public static final List vfxList_chaos = Arrays.asList(//            GenericEnums.VFX.missile_chaos,
 //            GenericEnums.VFX.weave_chaos,
-            GenericEnums.VFX.weave_nether,
+            GenericEnums.VFX.weave_nether 
 //            GenericEnums.VFX.weave_chaos,
 //            GenericEnums.VFX.missile_arcane_pink,
 //            GenericEnums.VFX.spell_chaos_flames,
 //            GenericEnums.VFX.spell_demonfire,
-    });
+    );
 
 
     public ForceAnim(DC_ActiveObj active, ANIM_PART part) {

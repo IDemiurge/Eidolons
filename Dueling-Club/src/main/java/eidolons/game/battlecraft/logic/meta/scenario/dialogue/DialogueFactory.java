@@ -135,7 +135,7 @@ public class DialogueFactory {
         return dialogue;
     }
 
-    public class DialogueData extends DataUnit<DIALOGUE_META_DATA> {
+    public static class DialogueData extends DataUnit<DIALOGUE_META_DATA> {
 
         public DialogueData(String metaData) {
             super(metaData);

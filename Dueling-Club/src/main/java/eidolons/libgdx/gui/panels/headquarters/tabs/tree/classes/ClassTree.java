@@ -59,11 +59,9 @@ public class ClassTree extends HeroTree<ClassSlot, PerkSlot> {
     protected int getLinkSlotsPerTier(int tier) {
         switch (tier) {
             case 0:
-                return 4;
-            case 1:
-                return 3;
             case 2:
                 return 4;
+            case 1:
             case 3:
                 return 3;
             case 4:

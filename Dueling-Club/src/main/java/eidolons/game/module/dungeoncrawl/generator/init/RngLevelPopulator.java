@@ -134,28 +134,17 @@ public class RngLevelPopulator  {
                 return elite ? new UNIT_GROUPS[]{DUNGEON, CRITTERS, }
                 : new UNIT_GROUPS[]{MUTANTS, DUNGEON, };
             case HIVE:
-                break;
-            case DUNGEON:
-                break;
-            case CASTLE:
-                break;
-            case SEWER:
-                break;
-            case HELL:
-                break;
-            case ASTRAL:
-                break;
-            case TOWER:
-                break;
-            case CRYPT:
-                break;
-            case DEN:
-                break;
-            case BARROW:
-                break;
-            case RUIN:
-                break;
             case HOUSE:
+            case RUIN:
+            case BARROW:
+            case DEN:
+            case CRYPT:
+            case TOWER:
+            case ASTRAL:
+            case HELL:
+            case SEWER:
+            case CASTLE:
+            case DUNGEON:
                 break;
         }
         return null;

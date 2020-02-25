@@ -165,6 +165,7 @@ public class SpellAnim extends ActionAnim {
                 switch (part) {
                     case PRECAST:
                     case CAST:
+                    case IMPACT:
                         if (RandomWizard.chance(66))
                             return "cast/new storm";
                         return "shape/blast electric";
@@ -172,10 +173,6 @@ public class SpellAnim extends ActionAnim {
                         if (RandomWizard.chance(66))
                             return "missile/electro missile";
                         return "shape/torrent";
-                    case IMPACT:
-                        if (RandomWizard.chance(66))
-                            return "cast/new storm";
-                        return "shape/blast electric";
                     case AFTEREFFECT:
                         if (RandomWizard.chance(66))
                             return "shape/electric teleport";
@@ -340,12 +337,9 @@ public class SpellAnim extends ActionAnim {
                     return "sand flow2";
                 return "subtle light3";
             case DEMONOLOGY:
-                break;
-            case DESTRUCTION:
-                break;
-            case SYLVAN:
-                break;
             case ELEMENTAL:
+            case SYLVAN:
+            case DESTRUCTION:
                 break;
         }
 

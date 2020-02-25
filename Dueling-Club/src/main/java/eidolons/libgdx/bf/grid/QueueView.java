@@ -21,11 +21,9 @@ import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.log.LogMaster;
 
 import java.util.function.Supplier;
 
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
 
 /**

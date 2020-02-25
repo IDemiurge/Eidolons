@@ -1,7 +1,6 @@
 package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.content.PARAMS;
-import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;

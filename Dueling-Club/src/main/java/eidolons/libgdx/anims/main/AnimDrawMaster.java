@@ -3,9 +3,7 @@ package eidolons.libgdx.anims.main;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.Animation;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.controls.AnimController;
@@ -18,8 +16,6 @@ import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.datatypes.DequeImpl;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-
-import java.util.ArrayList;
 
 import static eidolons.libgdx.anims.main.AnimMaster.isOn;
 

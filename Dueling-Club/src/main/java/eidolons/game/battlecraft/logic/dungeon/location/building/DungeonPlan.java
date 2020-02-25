@@ -15,7 +15,6 @@ import main.content.CONTENT_CONSTS.FLIP;
 import main.data.xml.XML_Converter;
 import main.entity.obj.MicroObj;
 import main.entity.type.ObjAtCoordinate;
-import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.StringMaster;
@@ -311,9 +310,11 @@ public class DungeonPlan {
         // if (exitLayout != null)
 
         xml += XML_Converter.openXmlFormatted("Zones");
+        StringBuilder xmlBuilder = new StringBuilder(xml);
         for (MapZone z : getZones()) {
-            xml += z.getXml();
+            xmlBuilder.append(z.getXml());
         }
+        xml = xmlBuilder.toString();
         xml += XML_Converter.closeXmlFormatted("Zones");
 
         if (location.getMainEntrance() != null) {

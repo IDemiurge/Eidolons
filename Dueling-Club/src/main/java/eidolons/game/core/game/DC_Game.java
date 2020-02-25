@@ -55,7 +55,6 @@ import eidolons.system.test.TestMasterContent;
 import eidolons.system.text.DC_LogManager;
 import eidolons.test.PresetMaster;
 import eidolons.test.debug.DebugMaster;
-import eidolons.test.frontend.FAST_DC;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;

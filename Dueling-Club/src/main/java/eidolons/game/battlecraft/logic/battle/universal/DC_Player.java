@@ -12,7 +12,6 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
 import main.system.data.PlayerData.ALLEGIENCE;
-import main.system.graphics.ColorManager;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
 import java.awt.*;

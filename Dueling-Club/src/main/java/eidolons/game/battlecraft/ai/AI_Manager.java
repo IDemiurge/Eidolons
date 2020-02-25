@@ -23,7 +23,6 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import eidolons.libgdx.bf.boss.logic.BossAi;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
 import main.entity.type.ObjAtCoordinate;
@@ -167,7 +166,7 @@ public class AI_Manager extends AiMaster {
         } else {
             try {
                 getUnitAI().getUsedActions().add(action.getActive());
-                getMessageBuilder().append("Task: " + action.getTaskDescription());
+                getMessageBuilder().append("Task: ").append(action.getTaskDescription());
                 if (!CoreEngine.isGraphicsOff()) {
                     if (game.isDebugMode())
                         FloatingTextMaster.getInstance().
@@ -309,7 +308,6 @@ public class AI_Manager extends AiMaster {
 
             }
         }
-        return;
     }
 
     private Object getArg(UNIT_GROUP_TYPE type, LevelBlock block, Unit leader) {
@@ -398,9 +396,11 @@ public class AI_Manager extends AiMaster {
                 " AI groups created: \n";
         report+= "" + groups.stream().filter(g->g.getMembers().size()>1).count() +
                 " (non-singletons)\n";
+        StringBuilder reportBuilder = new StringBuilder(report);
         for (GroupAI group : groups) {
-            report += group+  "\n";
+            reportBuilder.append(group).append("\n");
         }
+        report = reportBuilder.toString();
         int checkNumber =   groups.stream().mapToInt(group -> group.getMembers().size()).sum();
         if (checkNumber!= game.getPlayer(false).collectControlledUnits_().size()){
             main.system.auxiliary.log.LogMaster.log(1,">>>> AI GROUP UNIT COUNT MISMATCH!!! " );
@@ -410,10 +410,10 @@ public class AI_Manager extends AiMaster {
         }
 
         main.system.auxiliary.log.LogMaster.log(1," "  + report);
-        if (!groups.isEmpty())
-            return;
-        else
-            return;
+        if (!groups.isEmpty()) {
+        }
+        else {
+        }
     }
 
     private boolean isAutoGroups() {

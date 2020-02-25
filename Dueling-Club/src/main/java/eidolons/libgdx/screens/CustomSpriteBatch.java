@@ -69,7 +69,7 @@ public class CustomSpriteBatch extends ShaderBatch {
         super.setColor(color);
     }
 
-    public class BlackSprite extends Sprite {
+    public static class BlackSprite extends Sprite {
         public BlackSprite() {
             setRegion(TextureCache.getOrCreateR("ui/white.png"));
         }
@@ -80,7 +80,7 @@ public class CustomSpriteBatch extends ShaderBatch {
     }
 
 
-        public class GradientSprite extends Sprite {
+        public static class GradientSprite extends Sprite {
 
         public GradientSprite(TextureRegion white) {
             setRegion(white);

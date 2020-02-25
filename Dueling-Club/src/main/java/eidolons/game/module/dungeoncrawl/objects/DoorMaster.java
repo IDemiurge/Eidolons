@@ -35,15 +35,13 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
     private static DOOR_STATE getState(DOOR_ACTION sub) {
         switch (sub) {
             case OPEN:
+            case UNSEAL:
                 return DOOR_STATE.OPEN;
             case CLOSE:
+            case UNLOCK:
                 return DOOR_STATE.CLOSED;
             case LOCK:
                 return DOOR_STATE.LOCKED;
-            case UNLOCK:
-                return DOOR_STATE.CLOSED;
-            case UNSEAL:
-                return DOOR_STATE.OPEN;
         }
         return null;
     }

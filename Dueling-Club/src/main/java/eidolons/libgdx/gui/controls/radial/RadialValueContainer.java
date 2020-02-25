@@ -181,7 +181,6 @@ public class RadialValueContainer extends ActionValueContainer {
 
     @Override
     protected void drawLightUnderlay(Batch batch) {
-        return;
     }
 
     @Override

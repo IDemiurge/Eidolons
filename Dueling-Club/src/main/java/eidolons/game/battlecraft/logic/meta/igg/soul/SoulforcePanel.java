@@ -3,13 +3,10 @@ package eidolons.game.battlecraft.logic.meta.igg.soul;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechExecutor;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.gui.RollDecorator;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
-import eidolons.libgdx.texture.Images;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

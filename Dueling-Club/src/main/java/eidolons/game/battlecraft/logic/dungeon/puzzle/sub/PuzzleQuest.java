@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.sub;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
-import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.quest.QuestReward;
 import eidolons.game.module.dungeoncrawl.quest.advanced.ChainQuest;
 import main.system.GuiEventManager;

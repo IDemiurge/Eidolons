@@ -94,8 +94,6 @@ public class HeroGenerator {
                 // .getIntParam(attribute2), true);
                 // hero.setParam(attribute2, buffer, true);//return true;
                 break;
-            case CLASSES:
-                break;
             case DEITY:
                 // Deity deity = new
                 // RandomWizard<Deity>().getRandomListItem(hero
@@ -126,10 +124,6 @@ public class HeroGenerator {
                 }
                 break;
 
-            case SKILLS:
-                break;
-            case SPELLS:
-                break;
             default:
                 break;
 

@@ -2,7 +2,6 @@ package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
-import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefMusic;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
@@ -20,10 +19,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -204,7 +201,6 @@ public class QuestMaster extends MetaGameHandler {
         switch (type) {
 
             case BOSS:
-                break;
             case HUNT:
                 break;
             case OBJECTS:

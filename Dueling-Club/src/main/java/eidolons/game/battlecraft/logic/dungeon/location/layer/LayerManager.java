@@ -2,15 +2,11 @@ package eidolons.game.battlecraft.logic.dungeon.location.layer;
 
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
-import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
-import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.data.xml.XML_Converter;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.data.ListMaster;
 import org.w3c.dom.Node;
 
 import java.util.List;

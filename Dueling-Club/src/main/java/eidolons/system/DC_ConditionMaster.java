@@ -1,6 +1,5 @@
 package eidolons.system;
 
-import com.badlogic.gdx.Input;
 import eidolons.ability.conditions.*;
 import eidolons.ability.conditions.req.CellCondition;
 import eidolons.ability.conditions.req.CostCondition;
@@ -26,7 +25,6 @@ import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager;
@@ -43,7 +41,6 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DC_ConditionMaster extends ConditionMaster {
@@ -197,12 +194,6 @@ public class DC_ConditionMaster extends ConditionMaster {
                                 .toString()));
                 break;
             }
-            case FREE_CELL_RANGE:
-                break;
-            case HAS_ITEM:
-                break;
-            case NOT_FREE_CELL:
-                break;
             default:
                 break;
         }
@@ -244,7 +235,8 @@ public class DC_ConditionMaster extends ConditionMaster {
                 c.add(new ObjTypeComparison(DC_TYPE.ARMOR));
                 break;
             }
-            case ANY_WEAPON: {
+            case ANY_WEAPON:
+            case MY_WEAPON: {
                 c.add(new NotCondition(new PropCondition(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.NATURAL
                         .toString())));
                 c.add(new OrConditions(new ObjTypeComparison(DC_TYPE.WEAPONS), new Conditions(
@@ -252,7 +244,8 @@ public class DC_ConditionMaster extends ConditionMaster {
                         new ObjTypeComparison(DC_TYPE.ITEMS))));
                 break;
             }
-            case ANY_ITEM: {
+            case ANY_ITEM:
+            case MY_ITEM: {
                 c.add(new ObjTypeComparison(DC_TYPE.ITEMS));
                 break;
             }
@@ -274,10 +267,6 @@ public class DC_ConditionMaster extends ConditionMaster {
                 c.add(ConditionMaster.getEnemyCondition());
                 break;
             }
-            case MY_ITEM: {
-                c.add(new ObjTypeComparison(DC_TYPE.ITEMS));
-                break;
-            }
 
             case MY_SPELLBOOK:
                 c.add(ConditionMaster.getTYPECondition(DC_TYPE.SPELLS));
@@ -289,17 +278,8 @@ public class DC_ConditionMaster extends ConditionMaster {
                 // c.add(new ObjTypeComparison(OBJ_TYPES.ARMOR));
                 c.add(new RefCondition(KEYS.ARMOR, KEYS.MATCH));
                 break;
-            }
-            case MY_WEAPON: {
-                c.add(new NotCondition(new PropCondition(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.NATURAL
-                        .toString())));
-                c.add(new OrConditions(new ObjTypeComparison(DC_TYPE.WEAPONS), new Conditions(
-                        new PropCondition(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.WRAPPED_ITEM),
-                        new ObjTypeComparison(DC_TYPE.ITEMS))));
-                // c.add(new RefCondition(KEYS.MATCH_SOURCE, KEYS.SOURCE));
-                // c.add(new RefCondition(KEYS.WEAPON, KEYS.MATCH));
-                break;
-            }
+            }// c.add(new RefCondition(KEYS.MATCH_SOURCE, KEYS.SOURCE));
+// c.add(new RefCondition(KEYS.WEAPON, KEYS.MATCH));
             case CELL: {
                 c.add(ConditionMaster.getTYPECondition(DC_TYPE.TERRAIN));
                 c.add(getRangeCondition());
@@ -399,8 +379,6 @@ public class DC_ConditionMaster extends ConditionMaster {
 
                 break;
             }
-            case ENEMY_SPELLBOOK:
-                break;
             default:
                 break;
 
@@ -447,10 +425,6 @@ public class DC_ConditionMaster extends ConditionMaster {
                     }
                 };
                 break;
-            case CASTER_FOCUS_REQ:
-                break;
-            case TARGET_MATCHES_TARGETING_FILTER:
-                break;
             default:
                 break;
 
@@ -478,15 +452,9 @@ public class DC_ConditionMaster extends ConditionMaster {
                 return new Conditions(ConditionMaster.getTYPECondition(DC_TYPE.SPELLS),
                         new RefCondition(KEYS.SOURCE, KEYS.MATCH_SOURCE));
 
-            case WAVE:
-
-                break;
-
             case ACTIVE_WEAPONS:
                 return ConditionMaster.getActiveWeaponsCondition();
 
-            case ADJACENT:
-                break;
             case ALL:
                 return (ConditionMaster.getUnit_CharTypeCondition());
             case ALL_ALLIES:
@@ -494,8 +462,6 @@ public class DC_ConditionMaster extends ConditionMaster {
                         (ConditionMaster.getUnit_CharTypeCondition()));
             case ALL_ENEMIES:
                 return (ConditionMaster.getEnemyCondition());
-            case ENEMY_HERO:
-                break;
             case SELF:
                 return (ConditionMaster.getSelfFilterCondition());
             default:

@@ -34,10 +34,6 @@ public class Enchanter {
             case ARMOR:
                 // add on hit
                 break;
-            case ITEMS:
-                break;
-            case JEWELRY:
-                break;
             case WEAPONS:
                 // add on attack
                 break;

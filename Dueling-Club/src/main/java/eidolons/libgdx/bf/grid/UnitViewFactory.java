@@ -214,7 +214,7 @@ public class UnitViewFactory {
                                     if (UnitInfoPanelNew.isNewUnitInfoPanelWIP())
                                         if (bfObj instanceof Unit) {
                                             GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
-                                                    ((Unit) bfObj));
+                                                    bfObj);
                                             return;
                                         }
                                     DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
@@ -229,8 +229,8 @@ public class UnitViewFactory {
                             DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
                             event.cancel();
                         } else {
-                            if (DefaultActionHandler.leftClickActor(bfObj))
-                                return;
+                            if (DefaultActionHandler.leftClickActor(bfObj)) {
+                            }
                         }
                     }
                 } catch (Exception e) {

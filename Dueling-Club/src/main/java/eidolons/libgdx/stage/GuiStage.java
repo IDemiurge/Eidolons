@@ -1,7 +1,6 @@
 package eidolons.libgdx.stage;
 
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -21,15 +20,12 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.gui.HideButton;
-import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -50,7 +46,6 @@ import eidolons.libgdx.screens.Blackout;
 import eidolons.libgdx.screens.map.town.navigation.PlaceNavigationPanel;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
-import eidolons.libgdx.utils.TextInputPanel;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
 import main.content.enums.GenericEnums;
@@ -430,8 +425,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     public List<Actor> getActorsForTown() {
         if (townActors == null) {
             townActors =
-                    new ArrayList<>(Arrays.asList(new Actor[]{
-                            dragManager,
+                    new ArrayList<>(Arrays.asList(dragManager,
                             confirmationPanel,
                             hqPanel,
                             textPanel,
@@ -440,8 +434,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
                             getTooltips(),
                             actionTooltipContainer,
                             infoTooltipContainer,
-                            OptionsWindow.getInstance()
-                    }));
+                            OptionsWindow.getInstance()));
         }
         return townActors;
     }

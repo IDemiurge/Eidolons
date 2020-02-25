@@ -29,7 +29,7 @@ public class ProfileWriter {
 //            param.g
 //        }
         for (CRITERIA_TYPE_NUMERIC numeric : CRITERIA_TYPE_NUMERIC.values()) {
-            builder.append(numeric.getDefaultValue() + separator);
+            builder.append(numeric.getDefaultValue()).append(separator);
         }
 //        builder.append(numeric.getDefaultValue() + AiTrainingRunner.getDataInstanceSeparator());
 //        for (CRITERIA_TYPE_BOOLEAN typeBoolean: CRITERIA_TYPE_BOOLEAN.values()){
@@ -49,7 +49,7 @@ public class ProfileWriter {
 
         StringBuilder builder = new StringBuilder();
         profile.getConstants().stream().forEach(f -> {
-            builder.append(f + separator);
+            builder.append(f).append(separator);
         });
         String path = PathUtils.buildPath(root, type, preset, name);
         XML_Writer.write(builder.toString(), path);

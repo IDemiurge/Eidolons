@@ -144,20 +144,10 @@ public class GoalManager extends AiHandler {
         switch (a.getActionGroup()) {
             case ATTACK:
                 return AiEnums.GOAL_TYPE.ATTACK;
-            case HIDDEN:
-                break;
-            case ITEM:
-                break;
             case MODE:
                 return AiEnums.GOAL_TYPE.PREPARE;
             case MOVE:
                 return AiEnums.GOAL_TYPE.RETREAT;
-            case SPECIAL:
-                break;
-            case SPELL:
-                break;
-            case TURN:
-                break;
             default:
                 break;
 

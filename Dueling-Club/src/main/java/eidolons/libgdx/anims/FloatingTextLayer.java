@@ -1,10 +1,7 @@
 package eidolons.libgdx.anims;
 
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.text.FloatingText;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -13,7 +10,6 @@ import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static eidolons.libgdx.anims.text.FloatingTextMaster.DEFAULT_DISPLACEMENT_X;
 import static eidolons.libgdx.anims.text.FloatingTextMaster.displacementInvertFlag;

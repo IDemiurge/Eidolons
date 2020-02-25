@@ -159,10 +159,8 @@ public class ParamAnalyzer extends AiHandler {
             PARAMS p = (PARAMS) param;
             switch (p) {
                 case C_FOCUS:
-                    return 0;
-                case C_STAMINA:
-                    return 0;
                 case C_ESSENCE:
+                case C_STAMINA:
                     return 0;
 
             }

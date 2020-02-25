@@ -74,6 +74,7 @@ public class UnitLibrary {
                 plan += ";"; // ++ syntax for cancelling [group] spells...
             }
         }
+        StringBuilder planBuilder = new StringBuilder(plan);
         for (PARAMETER mastery : ValuePages.MASTERIES_MAGIC_SCHOOLS) {
             Integer score = unit.getIntParam(mastery);
             if (score <= 0) {
@@ -81,14 +82,14 @@ public class UnitLibrary {
             }
             List<ObjType> types = DataManager.getTypesGroup(DC_TYPE.SPELLS, mastery.getName());
             for (ObjType t : types) {
-                if (plan.contains(t.getName())) {
+                if (planBuilder.toString().contains(t.getName())) {
                     continue;
                 }
                 int weight = Math.max(1, score - t.getIntParam(PARAMS.SPELL_DIFFICULTY));
-                plan += t.getName() + StringMaster.wrapInParenthesis("" + weight)
-                 + StringMaster.CONTAINER_SEPARATOR;
+                planBuilder.append(t.getName()).append(StringMaster.wrapInParenthesis("" + weight)).append(StringMaster.CONTAINER_SEPARATOR);
             }
         }
+        plan = planBuilder.toString();
         unit.setProperty(PROPS.SPELL_PLAN, plan, true);
     }
 
@@ -241,7 +242,6 @@ public class UnitLibrary {
             case MEMORIZE:
                 return PROPS.MEMORIZED_SPELLS;
             case NEW:
-                return PROPS.LEARNED_SPELLS;
             case UPGRADE:
                 return PROPS.LEARNED_SPELLS;
         }
@@ -251,7 +251,6 @@ public class UnitLibrary {
     private static PROPERTY getSourceProp(LEARN_CASE lc) {
         switch (lc) {
             case EN_VERBATIM:
-                return PROPS.SPELLBOOK;
             case MEMORIZE:
                 return PROPS.SPELLBOOK;
             case NEW:

@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.logic.meta.igg.soul.panel;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.bf.SpriteActor;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.texture.Sprites;
 

@@ -3,7 +3,6 @@ package eidolons.ability.effects.oneshot.move;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import main.entity.EntityCheckMaster;
-import main.game.bf.Coordinates;
 import main.game.bf.MovementManager;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.bf.directions.UNIT_DIRECTION;

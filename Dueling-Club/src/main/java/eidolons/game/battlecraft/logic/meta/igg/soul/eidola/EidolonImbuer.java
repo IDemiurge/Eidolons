@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.igg.soul.eidola;
 
 import eidolons.content.DC_CONSTS.ITEM_LEVEL;
-import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_HeroSlotItem;
@@ -16,15 +15,12 @@ import eidolons.game.module.herocreator.logic.items.ItemTraitParser;
 import eidolons.game.module.herocreator.logic.items.ItemTraits.EIDOLON_ASPECT;
 import eidolons.game.module.herocreator.logic.items.ItemTraits.ITEM_TRAIT;
 import main.content.DC_TYPE;
-import main.content.enums.GenericEnums.ASPECT;
-import main.content.enums.entity.UnitEnums.UNIT_GROUP;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.datatypes.WeightMap;
 import org.apache.commons.lang3.tuple.Pair;
@@ -78,13 +74,12 @@ public class EidolonImbuer {
 
             Set<ItemTrait> traits = getTraits(item, soul);
 
-            ItemTraitParser.applyTraits(item, traits.toArray(new ItemTrait[traits.size()]));
+            ItemTraitParser.applyTraits(item, traits.toArray(new ItemTrait[0]));
 
             String name = item.getName() + " imbued: " + ItemTraitNamer.getDescriptor(item, traits);
 
             item.setName(name);
 
-            continue;
         }
 
 
@@ -125,7 +120,7 @@ public class EidolonImbuer {
         String descr=ItemTraitNamer.getDescription(newType, traits);
         newType.setDescription(descr);
 
-        ItemTraitParser.applyTraits(newType, traits.toArray(new ItemTrait[traits.size()]));
+        ItemTraitParser.applyTraits(newType, traits.toArray(new ItemTrait[0]));
         newType.setName(name);
         Unit owner = item.getOwnerObj();
         item.remove();
@@ -205,14 +200,10 @@ public class EidolonImbuer {
         for (ITEM_LEVEL value : ITEM_LEVEL.values()) {
             switch (value) {
                 case MINOR:
-                    break;
-                case LESSER:
-                    break;
-                case COMMON:
-                    break;
-                case GREATER:
-                    break;
                 case LEGENDARY:
+                case GREATER:
+                case COMMON:
+                case LESSER:
                     break;
             }
 

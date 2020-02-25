@@ -4,7 +4,6 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.core.launch.PresetLauncher;
 import eidolons.game.core.launch.PresetLauncher.LAUNCH;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;

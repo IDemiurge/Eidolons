@@ -4,7 +4,6 @@ import eidolons.ability.conditions.DC_Condition;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import main.entity.Ref;
-import main.game.bf.Coordinates;
 
 public class ArtPuzzleCondition extends DC_Condition {
     Puzzle puzzle;

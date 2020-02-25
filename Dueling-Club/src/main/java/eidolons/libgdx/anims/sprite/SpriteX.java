@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.shaders.ShaderMaster;

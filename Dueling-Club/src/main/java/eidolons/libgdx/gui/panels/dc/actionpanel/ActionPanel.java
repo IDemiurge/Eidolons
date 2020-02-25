@@ -2,7 +2,6 @@ package eidolons.libgdx.gui.panels.dc.actionpanel;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.obj.unit.Unit;
@@ -22,12 +21,10 @@ import eidolons.libgdx.gui.panels.dc.actionpanel.facing.FacingPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.WeaponDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
-import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 

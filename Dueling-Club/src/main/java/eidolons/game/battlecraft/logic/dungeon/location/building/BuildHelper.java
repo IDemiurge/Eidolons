@@ -204,9 +204,7 @@ public class BuildHelper {
         List<Coordinates> coordinates = new ArrayList<>(c.getAdjacentCoordinates(diagonal));
         for (Coordinates c1 : coordinates) {
             if (exceptions.contains(c1)) {
-                continue;
             } else if (!usedCoordinates.contains(c1)) {
-                continue;
             } else
             // TODO COULD BE MULTIPLE!!!
             {
@@ -451,7 +449,7 @@ public class BuildHelper {
         FILLER_TYPE
     }
 
-    public class BuildParameters extends DataUnit<BUILD_PARAMS> {
+    public static class BuildParameters extends DataUnit<BUILD_PARAMS> {
         public int CORRIDOR_OFFSET_CHANCE = 35;
         public int CUL_DE_SACS = 1;
         public int WALL_WIDTH = 1;

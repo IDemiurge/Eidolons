@@ -46,13 +46,11 @@ public class PuzzleTrigger extends Trigger {
     public boolean isRemoveAfterTriggers(boolean result) {
         switch (type) {
             case ENTER:
-                break;
+            case SOLVE:
             case ACTION:
                 break;
             case PUNISH:
                 return false;
-            case SOLVE:
-                break;
         }
         return super.isRemoveAfterTriggers(result);
     }

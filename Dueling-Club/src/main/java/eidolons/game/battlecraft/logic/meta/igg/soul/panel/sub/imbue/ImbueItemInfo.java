@@ -6,7 +6,6 @@ import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.libgdx.ActorMaster;
-import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.NoHitImage;

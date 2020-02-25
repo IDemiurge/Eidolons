@@ -3,7 +3,6 @@ package eidolons.libgdx.screens;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
 import main.system.EventCallbackParam;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;

@@ -1,7 +1,6 @@
 package eidolons.macro.map;
 
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
-import main.game.bf.Coordinates;
 
 public class MacroCoordinates extends AbstractCoordinates {
 

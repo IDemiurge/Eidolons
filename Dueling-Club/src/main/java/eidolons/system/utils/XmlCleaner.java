@@ -1,6 +1,5 @@
 package eidolons.system.utils;
 
-import com.bitfire.utils.ItemsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.SkillEnums;
@@ -13,6 +12,7 @@ import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class XmlCleaner {
@@ -57,10 +57,8 @@ public class XmlCleaner {
             case DIALOGUE:
                 return true;
             case ACTORS:
-                break;
-            case META:
-                break;
             case ALL:
+            case META:
                 break;
         }
         /**
@@ -146,9 +144,7 @@ public class XmlCleaner {
     }
 
     public static void setCleanReadTypes(DC_TYPE... types) {
-        for (DC_TYPE T : types) {
-            cleaned.add(T);
-        }
+        cleaned.addAll(Arrays.asList(types));
 //        clean = true;
         XML_Reader.setTypeChecker(t-> !isRemoveType(t, t.getOBJ_TYPE_ENUM()));
     }

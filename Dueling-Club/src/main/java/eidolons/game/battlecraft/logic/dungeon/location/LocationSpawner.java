@@ -13,7 +13,6 @@ import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.test.PresetMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.data.DataUnitFactory;

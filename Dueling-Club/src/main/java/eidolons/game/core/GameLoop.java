@@ -107,7 +107,6 @@ public class GameLoop {
 
         }
         loopExited();
-        return;
     }
 
     protected void loopExited() {

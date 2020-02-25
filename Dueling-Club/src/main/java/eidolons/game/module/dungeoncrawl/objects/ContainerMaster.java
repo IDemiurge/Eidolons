@@ -40,7 +40,6 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -621,6 +620,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             totalCost += rarity.getGoldCost();
         }
         float randomization = (isRandomizationOn()) ? new Random().nextFloat() + 0.5f : 1;
+        StringBuilder contentsBuilder = new StringBuilder(contents);
         for (CONTAINER_CONTENT_VALUE rarity : itemValueList) {
             maxCost = Math.round(randomization * Math.min(totalCost, rarity.getGoldCost()));
             CONTAINER_CONTENTS c = wizard.getObjectByWeight(map);
@@ -642,11 +642,12 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                         + "; total : " + cost);
                 if (item == null)
                     continue;
-                contents += item.getName() + StringMaster.SEPARATOR;
+                contentsBuilder.append(item.getName()).append(StringMaster.SEPARATOR);
                 cost += item.getIntParam(PARAMS.GOLD_COST);
                 items++;
             }
         }
+        contents = contentsBuilder.toString();
         if (contents.isEmpty()) {
             main.system.auxiliary.log.LogMaster.verbose( ">> " + obj + " has NO contents!");
         } else

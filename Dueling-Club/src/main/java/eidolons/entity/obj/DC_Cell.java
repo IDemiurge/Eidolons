@@ -40,7 +40,6 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     @Override
     public void setCoordinates(Coordinates coordinates) {
-        return;
     }
 
     @Override

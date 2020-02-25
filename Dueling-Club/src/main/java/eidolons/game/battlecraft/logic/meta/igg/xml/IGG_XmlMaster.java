@@ -303,12 +303,13 @@ public class IGG_XmlMaster {
         if (objects == null) {
             return;
         }
-        String nonVoid = "";
+        StringBuilder nonVoidBuilder = new StringBuilder();
         for (ObjAtCoordinate object : objects) {
             if (level.getBlockForCoordinate(object.getCoordinates()) == null) {
-                nonVoid += object.getCoordinates() + ";";
+                nonVoidBuilder.append(object.getCoordinates()).append(";");
             }
         }
+        String nonVoid = nonVoidBuilder.toString();
         String aiNode = XML_Converter.findNode(metaData, RngXmlMaster.AI_GROUPS_NODE).getTextContent();
 
         Map<List<ObjAtCoordinate>, RngMainSpawner.UNIT_GROUP_TYPE> groups = RngLocationBuilder.initAiData(aiNode, null);
@@ -461,13 +462,12 @@ public class IGG_XmlMaster {
                 return mainStyle;
             case GUARD_ROOM:
             case TREASURE_ROOM:
+            case SECRET_ROOM:
                 return altStyle;
             case ENTRANCE_ROOM:
                 return enterStyle;
             case EXIT_ROOM:
                 return exitStyle;
-            case SECRET_ROOM:
-                return altStyle;
             case DEATH_ROOM:
                 return RandomWizard.random() ? mainStyle : altStyle;
         }

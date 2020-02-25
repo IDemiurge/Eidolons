@@ -48,9 +48,7 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.Manager;
-import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -147,7 +145,6 @@ public class DC_GameManager extends GameManager {
     public void objClicked(Obj obj) {
         if (isSelecting()) {
             checkSelectedObj(obj);
-            return;
         }
     }
 

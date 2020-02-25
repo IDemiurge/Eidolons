@@ -5,7 +5,6 @@ import eidolons.libgdx.texture.Sprites;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.DungeonEnums;
-import main.content.enums.entity.BfObjEnums;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;

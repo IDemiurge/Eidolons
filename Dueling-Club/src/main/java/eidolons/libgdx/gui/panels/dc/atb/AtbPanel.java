@@ -266,7 +266,7 @@ public class AtbPanel extends GroupX {
                 if (list.size() <= i) {
                     break;
                 }
-            QueueView actor = (QueueView) sub.getActor();
+            QueueView actor = sub.getActor();
             String text = (list == null ? sub.initiative : list.get(i++)) + "";
             if (actor == null) {
                 continue;
@@ -667,7 +667,7 @@ public class AtbPanel extends GroupX {
         }
     }
 
-    private class QueueViewContainer extends Container<QueueView> {
+    private static class QueueViewContainer extends Container<QueueView> {
         public int initiative;
         public int precalcInitiative;
         public float queuePriority;

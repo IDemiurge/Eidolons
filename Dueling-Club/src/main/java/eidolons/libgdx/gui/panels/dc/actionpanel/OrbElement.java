@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import eidolons.content.PARAMS;
-import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.SuperActor;

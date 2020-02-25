@@ -24,18 +24,6 @@ public class InfoIconsManager {
 
     private static boolean checkIconConditions(INFO_ICONS icon, Obj obj) {
         switch (icon) {
-            case CUSTOM:
-                break;
-            case DEAD:
-                break;
-            case DONE:
-                break;
-            case HIDDEN:
-                break;
-            case IMMOBILE:
-                break;
-            case TRAP:
-                break;
             default:
                 break;
 

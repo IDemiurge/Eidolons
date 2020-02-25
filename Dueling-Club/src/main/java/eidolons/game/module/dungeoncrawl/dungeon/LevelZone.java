@@ -61,12 +61,14 @@ public class LevelZone extends LevelLayer<LevelBlock> {
 
     @Override
     public String toXml() {
-        String xml = "";
+        String xml;
         //props
         int n = 0;
+        StringBuilder xmlBuilder = new StringBuilder();
         for (LevelBlock block : getSubParts()) {
-            xml += XML_Converter.wrap("Block" + n++, block.toXml());
+            xmlBuilder.append(XML_Converter.wrap("Block" + n++, block.toXml()));
         }
+        xml = xmlBuilder.toString();
         xml = XML_Converter.wrap("Blocks", xml);
         String values = "";
         values += XML_Converter.wrap(RngXmlMaster.ZONE_STYLE_NODE, style.name());

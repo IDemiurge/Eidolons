@@ -85,9 +85,9 @@ public class Saver {
         String heroData = XML_Writer.getTypeXML_Builder(hero,
          null, hero.getType(), hero.getOriginalType(), true, getExceptionValues()).toString();
 
-        String fullItemsData = "";
+        StringBuilder fullItemsDataBuilder = new StringBuilder();
         for (PROPERTY sub : InventoryTransactionManager.INV_PROPS) {
-            String itemsData = "";
+            StringBuilder itemsDataBuilder = new StringBuilder();
             for (String substring : ContainerUtils.openContainer(hero.getProperty(sub))) {
                 if (!NumberUtils.isInteger(substring))
                     continue;
@@ -98,11 +98,13 @@ public class Saver {
                  null, item.getType(), item.getOriginalType(), false).toString();
 
                 itemData = XML_Converter.wrap(item.getName() + "_" + id, itemData);
-                itemsData += itemData + "\n";
+                itemsDataBuilder.append(itemData).append("\n");
             }
+            String itemsData = itemsDataBuilder.toString();
             itemsData = XML_Converter.wrap(sub.name(), itemsData);
-            fullItemsData += itemsData + "\n";
+            fullItemsDataBuilder.append(itemsData).append("\n");
         }
+        String fullItemsData = fullItemsDataBuilder.toString();
         fullItemsData = XML_Converter.wrap(ITEMS_NODE, fullItemsData);
 
         content = heroData + "\n" + fullItemsData;

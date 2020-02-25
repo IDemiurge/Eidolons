@@ -457,13 +457,13 @@ public class DC_GameObjMaster extends GameObjMaster {
 
     public Unit[] getUnitsArray() {
         if (unitsArray == null)
-            unitsArray = getUnits().toArray(new Unit[getUnits().size()]);
+            unitsArray = getUnits().toArray(new Unit[0]);
         return unitsArray;
     }
 
     public Structure[] getStructuresArray() {
         if (structuresArray == null)
-            structuresArray = getStructures().toArray(new Structure[getStructures().size()]);
+            structuresArray = getStructures().toArray(new Structure[0]);
         return structuresArray;
     }
 

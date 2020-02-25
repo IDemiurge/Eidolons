@@ -78,13 +78,13 @@ public class PixmapPathBuilder {
             }
         }
 
-        String output = "";
-
+        StringBuilder outputBuilder = new StringBuilder();
         for (List<Vector2> pixelPoints : regions) {
             for (Vector2 sub : pixelPoints) {
-                output += (int) sub.x + "-" + (int) sub.y + ";";
+                outputBuilder.append((int) sub.x).append("-").append((int) sub.y).append(";");
             }
         }
+        String output = outputBuilder.toString();
         main.system.auxiliary.log.LogMaster.log(1, " " + output);
         FileManager.write(output, outputPath);
     }

@@ -2,8 +2,6 @@ package eidolons.libgdx.screens;
 
 
 import eidolons.game.battlecraft.logic.meta.igg.story.IggActChoicePanel;
-import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefingData;
-import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
@@ -11,16 +9,13 @@ import eidolons.libgdx.gui.menu.selection.rng.RngSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.saves.SaveSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import eidolons.libgdx.screens.menu.MainMenu;
-import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.video.VideoMaster;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.graphics.RESOLUTION;
 import main.content.DC_TYPE;
 import main.entity.Entity;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
 
 import java.util.List;
 

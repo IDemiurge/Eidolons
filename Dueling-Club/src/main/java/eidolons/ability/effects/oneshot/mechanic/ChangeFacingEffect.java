@@ -1,7 +1,6 @@
 package eidolons.ability.effects.oneshot.mechanic;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;

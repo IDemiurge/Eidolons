@@ -161,7 +161,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     public void initPerks() {
         getEntity().setPerks(new DequeImpl<>());
         initFeatContainer(PROPS.PERKS, PERKS,
-                (DequeImpl<? extends DC_FeatObj>) getEntity().getPerks());
+                getEntity().getPerks());
     }
 
     public void initClasses() {

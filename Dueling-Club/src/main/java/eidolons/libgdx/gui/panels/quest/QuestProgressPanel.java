@@ -2,7 +2,6 @@ package eidolons.libgdx.gui.panels.quest;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.game.EidolonsGame;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;

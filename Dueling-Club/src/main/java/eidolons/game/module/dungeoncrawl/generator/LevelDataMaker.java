@@ -75,13 +75,9 @@ public class LevelDataMaker {
 
     public static LEVEL_DATA_MODIFICATION[] getRandomizedMods(LOCATION_TYPE_GROUP locationType, Boolean random) {
         List<LEVEL_DATA_MODIFICATION> mods = new ArrayList<>();
-        for (LEVEL_DATA_MODIFICATION mod : getModsForGroup(locationType, random)) {
-            mods.add(mod);
-        }
-        for (LEVEL_DATA_MODIFICATION mod : getCommonMods()) {
-            mods.add(mod);
-        }
-        return mods.toArray(new LEVEL_DATA_MODIFICATION[mods.size()]);
+        mods.addAll(Arrays.asList(getModsForGroup(locationType, random)));
+        mods.addAll(Arrays.asList(getCommonMods()));
+        return mods.toArray(new LEVEL_DATA_MODIFICATION[0]);
     }
 
     public static LEVEL_DATA_MODIFICATION[] getModsForGroup(
@@ -173,32 +169,24 @@ public class LevelDataMaker {
             switch (mods[i]) {
 
                 case LENGTHEN_MAIN_PATHS:
-                    break;
-                case LENGTHEN_BONUS_PATHS:
-                    break;
-                case SHORTEN_MAIN_PATHS:
-                    break;
-                case SHORTEN_BONUS_PATHS:
-                    break;
-
-                case DOUBLE_MAIN_PATHS:
-                    break;
-                case HALF_BONUS_PATHS:
-                    break;
-                case DOUBLE_BONUS_PATHS:
-                    break;
+                case DECREASE_ROOM_COUNT:
+                case DECREASE_SIZE:
+                case INCREASE_ROOM_COUNT:
 
                 case INCREASE_SIZE:
-                    break;
-                case INCREASE_ROOM_COUNT:
-                    break;
-                case DECREASE_SIZE:
-                    break;
-                case DECREASE_ROOM_COUNT:
+                case DOUBLE_BONUS_PATHS:
+                case HALF_BONUS_PATHS:
+
+                case DOUBLE_MAIN_PATHS:
+                case SHORTEN_BONUS_PATHS:
+                case SHORTEN_MAIN_PATHS:
+                case LENGTHEN_BONUS_PATHS:
                     break;
 
 
                 case NO_FILL:
+
+                case NO_ROOM_CHANCE:
                     n = 0;
                 case DOUBLE_FILL:
                     if (n != 0)
@@ -206,9 +194,6 @@ public class LevelDataMaker {
                 case HALF_FILL:
                     args[i] = getFillerMod(group, n);
                     break;
-
-                case NO_ROOM_CHANCE:
-                    n = 0;
                 case DOUBLE_ROOM_CHANCE:
                     if (n != 0)
                         n = 2;
@@ -269,14 +254,10 @@ public class LevelDataMaker {
     private static Object getRoomMod(LOCATION_TYPE_GROUP locationType, Integer n) {
         switch (locationType) {
             case SURFACE:
-                break;
-            case WIDE:
-                break;
-            case AVERAGE:
-                break;
-            case NARROW:
-                break;
             case NATURAL:
+            case NARROW:
+            case AVERAGE:
+            case WIDE:
                 break;
             case NATURAL_SURFACE:
                 switch (n) {
@@ -297,6 +278,8 @@ public class LevelDataMaker {
         float n = 0.5f;
         switch (mod) {
             case NO_ROOM_CHANCE:
+
+            case NO_FILL:
                 n = 0;
             case DOUBLE_ROOM_CHANCE:
                 if (n != 0)
@@ -308,9 +291,6 @@ public class LevelDataMaker {
                 data.setValue(val, Math.round(data.getIntValue(val)
                  * getMod(n, randomizationMod)) + "");
                 break;
-
-            case NO_FILL:
-                n = 0;
             case DOUBLE_FILL:
                 if (n != 0)
                     n = 2;
@@ -340,11 +320,16 @@ public class LevelDataMaker {
 
 
             case WRAP_ROOMS:
-                break;
             case WRAP_TYPE:
                 break;
 
             case LENGTHEN_MAIN_PATHS:
+            case INCREASE_ROOM_COUNT:
+            case INCREASE_SIZE:
+
+            case DOUBLE_BONUS_PATHS:
+
+            case LENGTHEN_BONUS_PATHS:
                 n = 2;
             case SHORTEN_MAIN_PATHS:
                 if (arg instanceof Float)
@@ -353,9 +338,6 @@ public class LevelDataMaker {
                  Math.round(data.getIntValue(LEVEL_VALUES.MAIN_PATH_LENGTH) * n) + "");
 
                 break;
-
-            case LENGTHEN_BONUS_PATHS:
-                n = 2;
             case SHORTEN_BONUS_PATHS:
                 if (arg instanceof Float)
                     n = (float) arg;
@@ -364,9 +346,6 @@ public class LevelDataMaker {
                   * getMod(n, randomizationMod)) + "");
 
                 break;
-
-            case DOUBLE_BONUS_PATHS:
-                n = 2;
             case HALF_BONUS_PATHS:
                 if (arg instanceof Float)
                     n = (float) arg;
@@ -392,8 +371,6 @@ public class LevelDataMaker {
                 data.setValue(LEVEL_VALUES.ZONES, 1 + "");
 
                 break;
-            case INCREASE_SIZE:
-                n = 2;
             case DECREASE_SIZE:
                 if (arg instanceof Float)
                     n = (float) arg;
@@ -401,8 +378,6 @@ public class LevelDataMaker {
                  Math.round(data.getIntValue(LEVEL_VALUES.SIZE_MOD) * getMod(n, randomizationMod)) + "");
 
                 break;
-            case INCREASE_ROOM_COUNT:
-                n = 2;
             case DECREASE_ROOM_COUNT:
                 if (arg instanceof Float)
                     n = (float) arg;
@@ -444,33 +419,21 @@ public class LevelDataMaker {
 
         switch (locationType) {
             case CAVE:
-                break;
-            case CRYPT:
-                break;
-            case BARROW:
-                break;
-            case DEN:
-                break;
-            case HIVE:
-                break;
-            case SEWER:
-                break;
-
-            case DUNGEON:
-                break;
-            case HELL:
-                break;
-            case ASTRAL:
-                break;
-            case TOWER:
-                break;
-            case HOUSE:
-                break;
+            case CASTLE:
 
 
             case TEMPLE:
-                break;
-            case CASTLE:
+            case HOUSE:
+            case TOWER:
+            case ASTRAL:
+            case HELL:
+
+            case DUNGEON:
+            case SEWER:
+            case HIVE:
+            case DEN:
+            case BARROW:
+            case CRYPT:
                 break;
 
             case CEMETERY:
@@ -539,6 +502,13 @@ public class LevelDataMaker {
                  ROOM_TEMPLATE_GROUP.MAZE,
                 };
             case HIVE:
+            case GROVE:
+            case HOUSE:
+            case RUIN:
+            case DEN:
+            case ASTRAL:
+            case HELL:
+            case SEWER:
                 break;
             case DUNGEON:
                 return new ROOM_TEMPLATE_GROUP[]{
@@ -547,12 +517,6 @@ public class LevelDataMaker {
                  ROOM_TEMPLATE_GROUP.TEMPLE_DUNGEON,
                  ROOM_TEMPLATE_GROUP.CRYPT,
                 };
-            case SEWER:
-                break;
-            case HELL:
-                break;
-            case ASTRAL:
-                break;
             case TOWER:
                 return new ROOM_TEMPLATE_GROUP[]{
                  ROOM_TEMPLATE_GROUP.TOWER,
@@ -560,10 +524,6 @@ public class LevelDataMaker {
                  ROOM_TEMPLATE_GROUP.CRYPT_TOWER,
                  ROOM_TEMPLATE_GROUP.CASTLE_TEMPLE,
                 };
-            case DEN:
-                break;
-            case RUIN:
-                break;
             case TEMPLE:
                 return new ROOM_TEMPLATE_GROUP[]{
                  ROOM_TEMPLATE_GROUP.TEMPLE,
@@ -578,10 +538,6 @@ public class LevelDataMaker {
                  ROOM_TEMPLATE_GROUP.CASTLE_TEMPLE,
                  ROOM_TEMPLATE_GROUP.TEMPLE,
                 };
-            case HOUSE:
-                break;
-            case GROVE:
-                break;
         }
         return new ROOM_TEMPLATE_GROUP[]{ROOM_TEMPLATE_GROUP.CRYPT};
     }

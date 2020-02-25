@@ -103,14 +103,15 @@ public class JUnitResValidator extends LibgdxTest {
                 }
         }
         if (missing.size() != 0) {
-            String message = "Missing regions:";
+            StringBuilder messageBuilder = new StringBuilder("Missing regions:");
             for (String sub : missing) {
-                message += "\n" + sub;
+                messageBuilder.append("\n").append(sub);
             }
-            message += "\nMissing atlases:";
+            messageBuilder.append("\nMissing atlases:");
             for (String sub : missingAtlas) {
-                message += "\n" + sub;
+                messageBuilder.append("\n").append(sub);
             }
+            String message = messageBuilder.toString();
             fail(message);
         }
     }

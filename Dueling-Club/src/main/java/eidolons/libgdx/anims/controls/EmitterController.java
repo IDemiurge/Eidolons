@@ -259,31 +259,19 @@ public class EmitterController implements Controller {
             case LAGGING_PARTICLES:
                 return EMITTER_VALUE_GROUP.Percentage_Of_Lagging_Particles;
             case COLOR_SET_PURPLE:
-
-                break;
-            case COLOR_SET_CYAN:
-                break;
-            case COLOR_SET_BROWN:
-                break;
-            case COLOR_SET_CRIMSON:
-                break;
-            case COLOR_SET_GOLDEN:
-                break;
-            case COLOR_OFFSET_RANDOM:
-                break;
-            case COLOR_INVERT_RED:
-                break;
-            case COLOR_INVERT_GREEN:
-                break;
-            case COLOR_INVERT_BLUE:
-                break;
-            case MERGE_RANDOM:
-                break;
-            case MERGE:
-                break;
-            case DOUBLE:
-                break;
             case HALF:
+            case DOUBLE:
+            case MERGE:
+            case MERGE_RANDOM:
+            case COLOR_INVERT_BLUE:
+            case COLOR_INVERT_GREEN:
+            case COLOR_INVERT_RED:
+            case COLOR_OFFSET_RANDOM:
+            case COLOR_SET_GOLDEN:
+            case COLOR_SET_CRIMSON:
+            case COLOR_SET_BROWN:
+            case COLOR_SET_CYAN:
+
                 break;
             case INVERSE:
                 return EMITTER_VALUE_GROUP.Angle;
@@ -338,13 +326,11 @@ public class EmitterController implements Controller {
                 create();
                 return true;
             case 'M':
+            case 'l':
                 lastModification();
                 return true;
             case 'm':
                 modify();
-                return true;
-            case 'l':
-                lastModification();
                 return true;
             case 's':
                 save();
@@ -398,6 +384,7 @@ public class EmitterController implements Controller {
                 saveAs();
                 break;
             case SAVE_ALL:
+            case PICK_VFX:
                 break;
             case SET_DEFAULT_ADD_PATH:
                 String result = new FileChooser(true, PathFinder.getVfxPath()).launch("", "");
@@ -406,8 +393,6 @@ public class EmitterController implements Controller {
                         randomSfxPath = result;
                     }
                 }
-                break;
-            case PICK_VFX:
                 break;
         }
     }

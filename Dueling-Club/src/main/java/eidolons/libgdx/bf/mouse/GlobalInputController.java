@@ -1,10 +1,8 @@
 package eidolons.libgdx.bf.mouse;
 
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
-import eidolons.libgdx.gui.panels.headquarters.weave.WeaveMaster;
 import eidolons.libgdx.video.VideoMaster;
 
 /**

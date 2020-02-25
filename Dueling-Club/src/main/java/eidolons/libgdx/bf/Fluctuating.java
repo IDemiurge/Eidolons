@@ -5,8 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.utils.GdxTimeMaster;
-import eidolons.system.options.GraphicsOptions;
-import eidolons.system.options.OptionsMaster;
 import main.content.enums.GenericEnums;
 import main.system.auxiliary.RandomWizard;
 import main.system.launch.CoreEngine;

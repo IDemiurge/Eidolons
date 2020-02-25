@@ -232,12 +232,9 @@ public class LevelGraphMaster {
         int radius = 4; //dijkstra?
         switch (zone.getType()) {
             case BOSS_AREA:
-                break;
-            case OUTSKIRTS:
-                break;
-            case MAIN_AREA:
-                break;
             case ENTRANCE:
+            case MAIN_AREA:
+            case OUTSKIRTS:
                 break;
         }
         List<LevelGraphNode> list = new ArrayList<>();

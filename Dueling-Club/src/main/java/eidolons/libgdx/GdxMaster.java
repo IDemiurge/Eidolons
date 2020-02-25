@@ -23,7 +23,6 @@ import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.data.filesys.PathFinder;
 import main.system.launch.CoreEngine;
-import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
 import java.util.List;

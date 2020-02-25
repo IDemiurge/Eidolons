@@ -1,17 +1,13 @@
 package eidolons.game.battlecraft.rules.counter;
 
-import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
 import eidolons.game.battlecraft.rules.TriggerRule;
 import eidolons.game.core.EUtils;
-import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.entity.UnitEnums;
-import main.content.values.properties.G_PROPS;
 import main.game.logic.event.Event;
 import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.entity.CounterMaster;
 
 public class UndyingCounterRule extends TriggerRule {

@@ -8,12 +8,10 @@ import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
-import eidolons.libgdx.texture.Images;
 import main.ability.AbilityObj;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.obj.BuffObj;
-import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

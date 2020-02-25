@@ -4,8 +4,6 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.libgdx.launch.ScenarioLauncher;
-import main.content.DC_TYPE;
-import main.data.DataManager;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 

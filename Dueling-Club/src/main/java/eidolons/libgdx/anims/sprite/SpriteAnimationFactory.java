@@ -11,8 +11,6 @@ import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
-import eidolons.system.options.GraphicsOptions;
-import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;

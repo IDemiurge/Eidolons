@@ -7,20 +7,12 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.FEATURE;
-import eidolons.game.battlecraft.rules.UnitAnalyzer;
-import eidolons.game.battlecraft.rules.combat.attack.dual.DualAttackMaster;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.ExtraAttacksRule;
-import eidolons.game.battlecraft.rules.mechanics.FleeRule;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
-import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.Trap;
 import eidolons.game.module.dungeoncrawl.objects.TrapMaster;
-import eidolons.libgdx.bf.boss.entity.BossActionMaster;
 import main.content.CONTENT_CONSTS2.STD_ACTION_MODES;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -29,13 +21,10 @@ import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.ItemEnums;
-import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.StringMap;
-import main.data.XLinkedMap;
-import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -50,7 +39,6 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.threading.Weaver;
@@ -159,7 +147,6 @@ public class DC_ActionManager implements ActionManager {
                     case Move:
                         return ActionEnums.ACTION_TYPE_GROUPS.MOVE;
                     case Turn_Anticlockwise:
-                        return ActionEnums.ACTION_TYPE_GROUPS.TURN;
                     case Turn_Clockwise:
                         return ActionEnums.ACTION_TYPE_GROUPS.TURN;
 
@@ -177,7 +164,6 @@ public class DC_ActionManager implements ActionManager {
                     case Move:
                         return ActionEnums.ACTION_TYPE_GROUPS.MOVE;
                     case Turn_Anticlockwise:
-                        return ActionEnums.ACTION_TYPE_GROUPS.TURN;
                     case Turn_Clockwise:
                         return ActionEnums.ACTION_TYPE_GROUPS.TURN;
                     default:
@@ -535,10 +521,10 @@ public class DC_ActionManager implements ActionManager {
             list.add(action);
         }
         if (checkAddThrowAction(weapon.getOwnerObj(), weapon)) {
-            DC_ActiveObj throwAction = getOrCreateAction(weapon.isMainHand() ? THROW_MAIN : THROW_OFFHAND,
+            DC_UnitAction throwAction = getOrCreateAction(weapon.isMainHand() ? THROW_MAIN : THROW_OFFHAND,
                     obj);
             throwAction.setName(getThrowName(weapon.getName()));
-            list.add((DC_UnitAction) throwAction);
+            list.add(throwAction);
         }
         weapon.setAttackActions(new ArrayList<>(list));
         return list;

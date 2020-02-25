@@ -76,7 +76,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
             if (set.isEmpty())
                 array = new BattleFieldObject[0];
             else
-                array = set.toArray(new BattleFieldObject[set.size()]);
+                array = set.toArray(new BattleFieldObject[0]);
             getObjCells()[x_][y_] = array;
         }
         return array;

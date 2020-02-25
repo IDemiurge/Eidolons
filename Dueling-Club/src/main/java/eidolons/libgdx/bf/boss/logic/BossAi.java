@@ -6,7 +6,6 @@ import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.boss.entity.BossActionMaster;
 import main.entity.Ref;
-import main.system.auxiliary.RandomWizard;
 
 public class BossAi {
     private static final boolean TEST_MODE = true;

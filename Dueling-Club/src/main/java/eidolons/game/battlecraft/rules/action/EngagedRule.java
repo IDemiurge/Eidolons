@@ -96,7 +96,7 @@ public class EngagedRule implements ActionRule {
             return AI_Manager.chooseEnemyToEngage(obj, units);
         }
         return (Unit) DialogMaster.objChoice("Choose an enemy to engage...", units
-         .toArray(new Obj[units.size()]));
+         .toArray(new Obj[0]));
 
     }
 

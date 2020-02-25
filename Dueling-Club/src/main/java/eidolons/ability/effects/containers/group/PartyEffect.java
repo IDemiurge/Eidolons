@@ -43,9 +43,7 @@ public class PartyEffect extends GroupObjModifyEffect {
         FilterMaster.filter(list, conditions);
 
         List<Obj> objList = new ArrayList<>();
-        for (Unit j : list) {
-            objList.add(j);
-        }
+        objList.addAll(list);
         return objList;
     }
 

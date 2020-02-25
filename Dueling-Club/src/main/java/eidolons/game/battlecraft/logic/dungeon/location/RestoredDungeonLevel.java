@@ -3,10 +3,6 @@ package eidolons.game.battlecraft.logic.dungeon.location;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
-import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
-import main.content.enums.DungeonEnums.LOCATION_TYPE;
-import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 
 import java.util.ArrayList;
 import java.util.List;

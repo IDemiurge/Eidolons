@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;

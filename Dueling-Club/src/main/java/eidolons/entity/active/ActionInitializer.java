@@ -179,11 +179,13 @@ public class ActionInitializer extends DC_ActionManager {
 
         actives.removeIf(activeObj -> !isActionAvailable((DC_ActiveObj) activeObj, ExplorationMaster.isExplorationOn()));
 
+        StringBuilder activesPropBuilder = new StringBuilder(activesProp);
         for (ActiveObj a : actives) {
-            if (activesProp.contains(a.getName())) {
-                activesProp += a.getName() + ";";
+            if (activesPropBuilder.toString().contains(a.getName())) {
+                activesPropBuilder.append(a.getName()).append(";");
             }
         }
+        activesProp = activesPropBuilder.toString();
         unit.setProperty(ACTIVES, activesProp);
     }
 

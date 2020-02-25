@@ -7,7 +7,6 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.SuperActor;
-import eidolons.libgdx.screens.CustomSpriteBatch;
 import main.system.threading.WaitMaster;
 
 public class FullscreenAnimation extends SuperActor {

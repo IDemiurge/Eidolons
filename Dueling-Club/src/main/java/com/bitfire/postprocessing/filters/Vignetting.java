@@ -169,7 +169,7 @@ public final class Vignetting extends Filter<Vignetting> {
 	}
 
 	public int getLutIndexVal (int index) {
-		return (int)lutindex[index];
+		return lutindex[index];
 	}
 
 	public float getLutIntensity () {

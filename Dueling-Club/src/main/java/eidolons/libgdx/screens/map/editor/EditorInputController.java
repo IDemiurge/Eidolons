@@ -48,7 +48,6 @@ public class EditorInputController extends MapInputController {
                             );
                             break;
                         case TRACE:
-                            break;
                         case ADD:
                             break;
                     }

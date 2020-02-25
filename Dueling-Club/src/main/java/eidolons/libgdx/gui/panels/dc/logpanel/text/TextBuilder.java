@@ -6,10 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.LabelX;
 import main.data.ability.construct.VariableManager;
 import main.system.auxiliary.StringMaster;
-import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster.FONT;
 
 /**
@@ -121,18 +119,19 @@ public class TextBuilder {
     public static final String COLOR = "#";
 
     public static String parseColors(String text) {
-        String result = "";
+        StringBuilder resultBuilder = new StringBuilder();
         for (String s : text.split(COLOR)) {
             String key = VariableManager.getVar(s);
             if (!key.isEmpty()) {
             Color color = GdxColorMaster.getColorByName(key);
             if (color != null) {
-                result += wrapInColor(color, s);
+                resultBuilder.append(wrapInColor(color, s));
                 continue;
             }
             }
-            result += (s);
+            resultBuilder.append(s);
         }
+        String result = resultBuilder.toString();
         if (result.isEmpty()) {
             return text;
         }

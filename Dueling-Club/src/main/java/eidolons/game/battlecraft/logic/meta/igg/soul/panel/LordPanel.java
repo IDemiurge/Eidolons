@@ -193,7 +193,7 @@ public class LordPanel extends GroupX implements Blocking {
         return (StageWithClosable) getStage();
     }
 
-    public class LordDataSource {
+    public static class LordDataSource {
         private final EidolonLord lord;
         List<Soul> souls;
         HeroChain chain;

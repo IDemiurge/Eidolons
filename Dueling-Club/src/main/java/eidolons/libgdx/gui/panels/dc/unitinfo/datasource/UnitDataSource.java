@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_ArmorObj;
-import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.StyleHolder;
@@ -26,6 +25,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,9 +50,7 @@ public class UnitDataSource implements
 
         List<VALUE> values = new ArrayList<>();
         for (int i = 0; i < paramsGeneral.length; i++) {
-            for (VALUE sub : paramsGeneral[i]) {
-                values.add(sub);
-            }
+            values.addAll(Arrays.asList(paramsGeneral[i]));
             values.add(null);
         }
         return values;
@@ -248,8 +246,8 @@ public class UnitDataSource implements
          getOrCreateR(ImageManager.getValueIconPath(PARAMS.N_OF_COUNTERS)), value);
 
         ValueTooltip toolTip = new ValueTooltip();
-        toolTip.setUserObject(Arrays.asList(
-         new ValueContainer(PARAMS.N_OF_COUNTERS.getName(), value)));
+        toolTip.setUserObject(Collections.singletonList(
+                new ValueContainer(PARAMS.N_OF_COUNTERS.getName(), value)));
         container.addListener(toolTip.getController());
 
         return container;
@@ -263,8 +261,8 @@ public class UnitDataSource implements
         VerticalValueContainer container = getValueContainer(PARAMS.N_OF_ACTIONS, value);
 
         ValueTooltip toolTip = new ValueTooltip();
-        toolTip.setUserObject(Arrays.asList(
-         new ValueContainer(PARAMS.N_OF_ACTIONS.getName(), value)));
+        toolTip.setUserObject(Collections.singletonList(
+                new ValueContainer(PARAMS.N_OF_ACTIONS.getName(), value)));
         container.addListener(toolTip.getController());
         return container;
     }
@@ -301,7 +299,7 @@ public class UnitDataSource implements
           param);
         container.overrideImageSize(UiMaster.getSmallIconSize(), UiMaster.getSmallIconSize());
         ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer(paramName, param)));
+        tooltip.setUserObject(Collections.singletonList(new ValueContainer(paramName, param)));
         container.addListener(tooltip.getController());
         return container;
     }
@@ -560,7 +558,7 @@ public class UnitDataSource implements
                String name = p.getName();
                ValueContainer valueContainer = new ValueContainer(name, value);
                ValueTooltip valueTooltip = new ValueTooltip();
-               valueTooltip.setUserObject(Arrays.asList(new ValueContainer(name, value)));
+               valueTooltip.setUserObject(Collections.singletonList(new ValueContainer(name, value)));
                valueContainer.addListener(valueTooltip.getController());
                return valueContainer;
            }).collect(Collectors.toList())

@@ -165,7 +165,7 @@ public class CombatInventory extends TablePanel implements Blocking {
             return;
         super.updateAct(delta);
 
-        final InventoryDataSource source = (InventoryDataSource) getUserObject();
+        final InventoryDataSource source = getUserObject();
         String header = "Free Mode";
 
         if (cancelButton != null) {

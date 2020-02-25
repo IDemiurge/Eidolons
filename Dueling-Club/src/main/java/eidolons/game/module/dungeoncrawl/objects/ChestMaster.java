@@ -28,7 +28,7 @@ public class ChestMaster {
         return null;
     }
 
-    public class Treasure {
+    public static class Treasure {
 
     }
 }

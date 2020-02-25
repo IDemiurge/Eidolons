@@ -330,15 +330,17 @@ public class PresetMaster {
             PLAYER_UNITS += DC_ObjInitializer.getObjStringAlt(obj) + ";";
             // custom hacks - spells, skills, items..
         }
+        StringBuilder ENEMY_PARTYBuilder = new StringBuilder(ENEMY_PARTY);
         for (Obj obj : DC_Game.game.getPlayer(false).collectControlledUnits()) {
             if (encounterType == null) {
-                ENEMY_PARTY += obj.getName() + ";";
+                ENEMY_PARTYBuilder.append(obj.getName()).append(";");
             }
 
             // if (!enemyUnits.contains(obj.getName()))
             ENEMIES += DC_ObjInitializer.getObjStringAlt(obj) + ";";
             // custom hacks - spells, skills, items..
         }
+        ENEMY_PARTY = ENEMY_PARTYBuilder.toString();
 //     TODO    for (Dungeon d : DungeonMaster.getDungeons()) {
 //            dungeons += d.getLevelFilePath() + ";";
 //            if (levelFilePath.isEmpty()) {

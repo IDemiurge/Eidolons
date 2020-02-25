@@ -25,14 +25,10 @@ public class TownPlaceTooltip extends Tooltip {
         switch (place.getTownPlaceType()) {
 
             case GUILD:
-                break;
-            case SLAVE_MARKET:
-                break;
-            case FACTION_QUARTER:
-                break;
-            case TEMPLE:
-                break;
             case BROTHEL:
+            case TEMPLE:
+            case FACTION_QUARTER:
+            case SLAVE_MARKET:
                 break;
         }
     }

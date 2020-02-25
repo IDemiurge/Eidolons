@@ -1,7 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.hero;
 
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.DC_ContentValsManager;

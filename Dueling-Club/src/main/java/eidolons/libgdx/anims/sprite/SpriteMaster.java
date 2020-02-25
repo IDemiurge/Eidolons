@@ -222,18 +222,16 @@ public class SpriteMaster {
     private static GenericEnums.BLENDING getBlending(BfObjEnums.SPRITES sprite, boolean over, BattleFieldObject obj) {
         switch (obj.getName()) {
             case "Adeptus Carnifex":
-//            case "Netherbound Horror":
-                return GenericEnums.BLENDING.INVERT_SCREEN;
-            case "Hollow Adept":
-                return GenericEnums.BLENDING.SCREEN;
             case "Black Wing":
 //            case "Mistborn Horror":
             case "Dream Siphon":
+                //            case "Netherbound Horror":
                 return GenericEnums.BLENDING.INVERT_SCREEN;
+            case "Hollow Adept":
+                return GenericEnums.BLENDING.SCREEN;
         }
         switch (sprite) {
             case FIRE_LIGHT:
-            return GenericEnums.BLENDING.SCREEN;
             case VEIL:
             case FLOAT_WISP:
             case WHITE_TENTACLE:

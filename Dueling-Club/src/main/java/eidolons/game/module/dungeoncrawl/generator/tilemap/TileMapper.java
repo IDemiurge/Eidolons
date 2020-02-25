@@ -131,33 +131,40 @@ public class TileMapper {
         if (!overrideBlock)
             if (loggingOff)
                 return "";
-        String string = "\n";
-        String columns = "\nX     ";
-        String separator = "\n      ";
+        String string;
+        String columns;
 
-        for (int x = 0; x < cells.length; x++) {
-            columns += x + RngXmlMaster.TILEMAP_ROW_SEPARATOR;
-            if (x < 10) columns += " ";
-            separator += "___";
-        }
-        for (int y = 0; y < cells[0].length; y++) {
-            if (y < 10)
-                string += y + "  | ";
-            else
-                string += y + " | ";
+            StringBuilder separatorBuilder = new StringBuilder("\n      ");
+            StringBuilder columnsBuilder = new StringBuilder("\nX     ");
             for (int x = 0; x < cells.length; x++) {
+            columnsBuilder.append(x).append(RngXmlMaster.TILEMAP_ROW_SEPARATOR);
+            if (x < 10) columnsBuilder.append(" ");
+            separatorBuilder.append("___");
+        }
+            columns = columnsBuilder.toString();
+            String separator = separatorBuilder.toString();
+            StringBuilder stringBuilder1 = new StringBuilder("\n");
+            for (int y = 0; y < cells[0].length; y++) {
+            if (y < 10)
+                stringBuilder1.append(y).append("  | ");
+            else
+                stringBuilder1.append(y).append(" | ");
+                StringBuilder stringBuilder = new StringBuilder(stringBuilder1.toString());
+                for (int x = 0; x < cells.length; x++) {
                 if (cells[x][y] == null) {
                     if (nullToX)
-                        string += "  X";
+                        stringBuilder.append("  X");
                     else
-                        string += "  -";
+                        stringBuilder.append("  -");
                 } else
-                    string += "  " + cells[x][y].getSymbol();
+                    stringBuilder.append("  ").append(cells[x][y].getSymbol());
             }
-            string += "\n";
+                stringBuilder1 = new StringBuilder(stringBuilder.toString());
+                stringBuilder1.append("\n");
 
         }
-        separator += "\n";
+            string = stringBuilder1.toString();
+            separator += "\n";
         if (OtoDot) {
             return (columns + separator + string + separator + columns).replace(
              "O", "."

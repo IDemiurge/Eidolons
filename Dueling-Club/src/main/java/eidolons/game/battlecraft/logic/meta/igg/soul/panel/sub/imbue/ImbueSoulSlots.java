@@ -1,18 +1,14 @@
 package eidolons.game.battlecraft.logic.meta.igg.soul.panel.sub.imbue;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.SoulMaster;
-import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.NoHitImage;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.texture.Images;
-
-import java.util.Arrays;
 
 public class ImbueSoulSlots extends TablePanelX {
     ImbuePanel imbuePanel;
@@ -69,7 +65,7 @@ public class ImbueSoulSlots extends TablePanelX {
         souls[0]= soul;
     }
 
-    private class SoulSlot extends GroupX {
+    private static class SoulSlot extends GroupX {
         FadeImageContainer container;
 
         public SoulSlot(int i) {

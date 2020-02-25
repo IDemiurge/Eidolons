@@ -304,14 +304,12 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             StringBuilder info = new StringBuilder(200);
             DungeonLevel level = getDungeonMaster().getDungeonLevel();
             info.append("Randomly generated ");
-            info.append(getWellFormattedString(level.getLocationType().toString()) +
-                    " " + wrapInParenthesis(getWellFormattedString(level.getSublevelType().toString())) + "\n");
+            info.append(getWellFormattedString(level.getLocationType().toString())).append(" ").append(wrapInParenthesis(getWellFormattedString(level.getSublevelType().toString()))).append("\n");
 
             LevelBlock block = level.getBlockForCoordinate(Eidolons.getMainHero().getCoordinates());
             LevelZone zone = block.getZone();
 
-            info.append(getWellFormattedString(block.getRoomType().toString())
-                    + " " + wrapInParenthesis(getWellFormattedString(zone.getStyle().toString())) + "\n");
+            info.append(getWellFormattedString(block.getRoomType().toString())).append(" ").append(wrapInParenthesis(getWellFormattedString(zone.getStyle().toString()))).append("\n");
 
             // objective?
             // units left?

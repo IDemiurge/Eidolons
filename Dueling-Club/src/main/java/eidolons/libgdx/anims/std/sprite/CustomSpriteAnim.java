@@ -1,12 +1,10 @@
 package eidolons.libgdx.anims.std.sprite;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
-import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.ActionAnim;
-import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.system.data.DataUnitFactory;
 

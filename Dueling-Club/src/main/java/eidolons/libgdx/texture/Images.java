@@ -1,12 +1,10 @@
 package eidolons.libgdx.texture;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.Deity;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 4/17/2018.

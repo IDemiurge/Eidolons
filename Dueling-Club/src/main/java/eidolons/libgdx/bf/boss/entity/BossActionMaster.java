@@ -4,7 +4,6 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import main.content.DC_TYPE;
 import main.data.DataManager;
-import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
@@ -12,7 +11,6 @@ import main.system.auxiliary.StringMaster;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * no control pause?!

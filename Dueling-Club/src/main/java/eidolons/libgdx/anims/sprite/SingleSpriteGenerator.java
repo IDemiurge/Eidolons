@@ -3,7 +3,6 @@ package eidolons.libgdx.anims.sprite;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import eidolons.libgdx.GdxImageMaster;
-import eidolons.libgdx.texture.TexturePackerLaunch;
 import main.system.PathUtils;
 import main.system.auxiliary.StringMaster;
 

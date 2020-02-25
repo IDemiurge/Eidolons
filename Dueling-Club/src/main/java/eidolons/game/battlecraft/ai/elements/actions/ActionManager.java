@@ -19,7 +19,6 @@ import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
-import eidolons.game.core.Eidolons;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.AiEnums;
@@ -288,7 +287,7 @@ public class ActionManager extends AiHandler {
         LogMaster.log(1, getUnit() + " has been Forced to choose " + "" + sequence
                 + " with priority of " + sequence.getPriority());
 
-        getMaster().getMessageBuilder().append("Forced Task: " + sequence.getTask().toShortString());
+        getMaster().getMessageBuilder().append("Forced Task: ").append(sequence.getTask().toShortString());
 
         action = sequence.popNextAction();
         if (action == null) {

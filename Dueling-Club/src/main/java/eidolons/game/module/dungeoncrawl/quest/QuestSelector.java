@@ -48,7 +48,7 @@ public class QuestSelector extends QuestHandler {
             if (result == null) {
                 return list;
             }
-            ObjType type = DataManager.getType(result.toString(), MACRO_OBJ_TYPES.QUEST);
+            ObjType type = DataManager.getType(result, MACRO_OBJ_TYPES.QUEST);
             Quest quest = master.getCreator().create(type);
             list.add(quest);
         }

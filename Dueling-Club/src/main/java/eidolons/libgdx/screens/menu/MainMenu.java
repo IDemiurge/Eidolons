@@ -3,7 +3,6 @@ package eidolons.libgdx.screens.menu;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import main.system.graphics.FontMaster.FONT;
-import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.Arrays;

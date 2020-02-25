@@ -98,7 +98,7 @@ public class Library extends TownPlace {
         STUDY, PLACE_OF_POWER,
     }
 
-    public class Spellbook {
+    public static class Spellbook {
         // cost, spell assortment, difficulty, quality, danger, weight,
 
     }

@@ -2,7 +2,6 @@ package eidolons.libgdx.launch;
 
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import main.system.auxiliary.log.LOG_CHANNEL;
-import main.system.text.LogManager;
 
 public class TesterKit {
 

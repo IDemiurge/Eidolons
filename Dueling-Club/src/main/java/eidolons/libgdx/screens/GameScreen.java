@@ -6,24 +6,16 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Vector2;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
-import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.GenericGuiStage;
-import eidolons.libgdx.stage.GuiStage;
 import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.system.audio.DC_SoundMaster;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static main.system.GuiEventType.DIALOG_SHOW;
 
 /**
  * Created by JustMe on 2/3/2018.

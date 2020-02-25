@@ -1,7 +1,6 @@
 package eidolons.libgdx.utils;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
@@ -12,7 +11,6 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
-import org.junit.Test;
 
 import java.io.File;
 

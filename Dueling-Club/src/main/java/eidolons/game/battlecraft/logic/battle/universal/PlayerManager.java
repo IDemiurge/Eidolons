@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.battle.universal;
 
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.ContainerUtils;

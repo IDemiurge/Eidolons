@@ -56,14 +56,11 @@ public class EditorControlPanel extends HorizontalFlowGroup {
     public void handleFunction(MAP_EDITOR_FUNCTION function) {
         switch (function) {
             case ADD_ROUTE:
-                break;
-            case ADD_INNER:
-                break;
-            case OPTIONS:
-                break;
-            case VIEW:
-                break;
+            case REFRESH:
             case SCRIPTS:
+            case VIEW:
+            case OPTIONS:
+            case ADD_INNER:
                 break;
             case EDIT:
                 //type? create local type
@@ -96,8 +93,6 @@ public class EditorControlPanel extends HorizontalFlowGroup {
 //                operationArgMap
 //                Stack<EDITOR_OPERATION> operationStack;
                 break;
-            case REFRESH:
-                break;
         }
     }
 
@@ -111,7 +106,6 @@ public class EditorControlPanel extends HorizontalFlowGroup {
                 EditorManager.added((MacroObj) arg, null, null);
                 break;
             case REMOVE_OBJ:
-                break;
             case CHANGE_OBJ:
                 break;
         }

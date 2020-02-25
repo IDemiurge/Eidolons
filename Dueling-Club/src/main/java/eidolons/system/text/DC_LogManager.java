@@ -1,7 +1,6 @@
 package eidolons.system.text;
 
 import com.badlogic.gdx.utils.StringBuilder;
-import com.bitfire.utils.ItemsManager;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
@@ -150,7 +149,7 @@ public class DC_LogManager extends LogManager {
             if (i > 1) {
                 unit = unit + StringMaster.wrapInParenthesis(i + "");
             }
-            text.append(unit + ", ");
+            text.append(unit).append(", ");
         });
         text.delete(text.length() - 2, text.length());
         String message = text.toString();
@@ -163,7 +162,7 @@ public class DC_LogManager extends LogManager {
         StringBuilder text = new StringBuilder();
         text.append("Battle joined by: ");
         newUnits.forEach(unit -> {
-            text.append(unit.getNameIfKnown() + ", ");
+            text.append(unit.getNameIfKnown()).append(", ");
         });
         text.delete(text.length() - 2, text.length());
         String message = text.toString();

@@ -293,7 +293,6 @@ public class Assets {
                     } catch (Exception e) {
                         main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ERROR_CRITICAL, "FAILED TO CONSTRUCT ANIMS FOR " + sub);
                         main.system.ExceptionMaster.printStackTrace(e);
-                        continue;
                     }
             }
             result = true;
@@ -349,10 +348,8 @@ public class Assets {
                 MusicMaster.getInstance().getMusic(MusicMaster.AMBIENCE.EVIL.getPath(), true);
                 break;
             case PUZZLES:
-                break;
-            case COMMON:
-                break;
             case DIALOGUE:
+            case COMMON:
                 break;
         }
 

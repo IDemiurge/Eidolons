@@ -1080,10 +1080,6 @@ public class DebugMaster {
 //                        game.getPlayerParty(), game);
                 game.getManager().unitActionCompleted(null, false);
                 break;
-            case BF_RESURRECT_ALL:
-                break;
-            case DISPLAY_EVENT_LOG:
-                break;
             case DISPLAY_REF:
                 display(game.getManager().getActiveObj().getName() + "'s REF:", game.getManager()
                  .getActiveObj().getRef()
@@ -1116,7 +1112,7 @@ public class DebugMaster {
             case HERO_ADD_ALL_SPELLS:
 
                 for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
-                    Unit hero = (Unit) game.getManager().getMainHero();
+                    Unit hero = game.getManager().getMainHero();
                     if (SpellMaster.checkHeroHasSpell(hero, type)) {
                         continue;
                     }
@@ -1155,44 +1151,51 @@ public class DebugMaster {
     }
 
     private String getUnitInfo(DC_Obj infoObj) {
-        String str = "Unit info: \n";
+        StringBuilder strBuilder = new StringBuilder("Unit info: \n");
         for (PARAMETER param : PARAMS.values()) {
             if (!param.isDynamic()) {
                 continue;
             }
-            str += param.toString();
-            str += " = ";
-            str += infoObj.getValue(param);
-            str += "\n";
+            strBuilder.append(param.toString());
+            strBuilder.append(" = ");
+            strBuilder.append(infoObj.getValue(param));
+            strBuilder.append("\n");
         }
+        String str = strBuilder.toString();
+          strBuilder = new StringBuilder(str);
         for (PARAMETER param : PARAMS.values()) {
             if (!param.isAttribute()) {
                 continue;
             }
-            str += param.toString();
-            str += " = ";
-            str += infoObj.getValue(param);
-            str += "\n";
+            strBuilder.append(param.toString());
+            strBuilder.append(" = ");
+            strBuilder.append(infoObj.getValue(param));
+            strBuilder.append("\n");
         }
+        str = strBuilder.toString();
+          strBuilder = new StringBuilder(str);
         for (PARAMETER param : PARAMS.values()) {
             if (param.isDynamic() || param.isAttribute()) {
                 continue;
             }
-            str += param.toString();
-            str += " = ";
-            str += infoObj.getValue(param);
-            str += "\n";
+            strBuilder.append(param.toString());
+            strBuilder.append(" = ");
+            strBuilder.append(infoObj.getValue(param));
+            strBuilder.append("\n");
         }
+        str = strBuilder.toString();
+         strBuilder = new StringBuilder(str);
         for (PROPERTY p : ContentValsManager.getPropList()) {
             if (!(ContentValsManager.isValueForOBJ_TYPE(DC_TYPE.CHARS, p) || ContentValsManager
              .isValueForOBJ_TYPE(DC_TYPE.UNITS, p))) {
                 continue;
             }
-            str += p.toString();
-            str += " = ";
-            str += infoObj.getValue(p);
-            str += "\n";
+            strBuilder.append(p.toString());
+            strBuilder.append(" = ");
+            strBuilder.append(infoObj.getValue(p));
+            strBuilder.append("\n");
         }
+        str = strBuilder.toString();
         return str;
     }
 

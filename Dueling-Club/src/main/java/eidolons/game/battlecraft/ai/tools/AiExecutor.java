@@ -4,7 +4,6 @@ import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.game.DC_Game;
 import main.elements.targeting.SelectiveTargeting;
-import main.entity.Ref;
 import main.game.logic.action.context.Context;
 
 public class AiExecutor {

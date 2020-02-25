@@ -159,8 +159,6 @@ public class DC_Attributes {
                 // hero.modifyParameter(PARAMS.XP_LEVEL_MOD, amount,
                 // StringMaster.getWellFormattedString(attr.toString()));
                 break;
-            case SPELLPOWER:
-                break;
             case WISDOM:
                 hero.modifyParameter(PARAMS.ESSENCE,amount*5);
                         hero.modifyParameter(PARAMS.ESSENCE, DC_Formulas.getEssenceFromWisdom(amount),

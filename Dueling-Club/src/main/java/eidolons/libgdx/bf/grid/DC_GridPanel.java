@@ -4,11 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
@@ -16,8 +13,6 @@ import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObject;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.core.EUtils;
@@ -44,7 +39,6 @@ import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.text.HelpMaster;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -57,7 +51,6 @@ import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
-import java.util.List;
 
 import static main.system.GuiEventType.*;
 

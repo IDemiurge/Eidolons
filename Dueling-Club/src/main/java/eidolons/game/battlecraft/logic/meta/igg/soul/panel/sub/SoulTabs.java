@@ -6,8 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import eidolons.libgdx.texture.Images;
-import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 
 public class SoulTabs extends TabbedPanel {
@@ -48,7 +46,6 @@ public class SoulTabs extends TabbedPanel {
             case SOULS:
                 return new SoulsPanel();
             case MEMORIES:
-                return new LordMemoryPanel();
             case LORD:
                 return new LordMemoryPanel();
             case FLAME:

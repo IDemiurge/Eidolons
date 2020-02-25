@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.EidolonsGame;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
@@ -21,7 +20,6 @@ import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.stage.Closable;
 import eidolons.libgdx.stage.StageWithClosable;
-import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.audio.SoundController;
 import eidolons.system.audio.SoundController.SOUND_EVENT;
@@ -35,6 +33,7 @@ import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static main.system.GuiEventType.*;
@@ -51,7 +50,7 @@ public class RadialMenu extends Group implements Closable {
         final TextureRegion t = TextureCache.getOrCreateR(getCloseNodePath());
         closeButton = new RadialValueContainer(new TextureRegion(t), this::close);
         ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer("Close", "")));
+        tooltip.setUserObject(Collections.singletonList(new ValueContainer("Close", "")));
         closeButton.addListener(tooltip.getController());
         initBackground();
         bindEvents();

@@ -1,7 +1,5 @@
 package eidolons.game.module.dungeoncrawl.quest.demo;
 
-import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
-
 /**
  *
  * Predefined quest for each mission

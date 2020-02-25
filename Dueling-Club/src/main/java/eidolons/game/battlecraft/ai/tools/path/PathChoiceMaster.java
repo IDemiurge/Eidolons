@@ -107,8 +107,8 @@ public class PathChoiceMaster {
                         try {
                             Coordinates coordinates = ((SelfMoveEffect) e).getCoordinates();
                             if (coordinates != null) {
-                                objects = new ArrayList<>(Arrays.asList(unit
-                                 .getGame().getCellByCoordinate(coordinates)));
+                                objects = new ArrayList<>(Collections.singletonList(unit
+                                        .getGame().getCellByCoordinate(coordinates)));
                             }
                         } catch (Exception ex) {
                             main.system.ExceptionMaster.printStackTrace(ex);
@@ -186,7 +186,7 @@ public class PathChoiceMaster {
         actions.add(moveAction);
         // resetUnit();// TODO is that right?
         Choice choice = new Choice(targetCoordinate, c_coordinate, actions
-         .toArray(new Action[actions.size()]));
+         .toArray(new Action[0]));
 
         return choice;
     }

@@ -134,7 +134,6 @@ public class AiBehaviorManager extends AiHandler {
                     return true;
                 } else {
                     behavior.queueNextAction();
-                    continue;
                 }
             }
         }

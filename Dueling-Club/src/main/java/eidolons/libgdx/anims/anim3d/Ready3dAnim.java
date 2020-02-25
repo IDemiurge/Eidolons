@@ -72,7 +72,6 @@ public class Ready3dAnim extends Weapon3dAnim {
     public float getOffsetX() {
         switch (getProjection()) {
             case FROM:
-                return 32;
             case TO:
                 return 32;
             case HOR:

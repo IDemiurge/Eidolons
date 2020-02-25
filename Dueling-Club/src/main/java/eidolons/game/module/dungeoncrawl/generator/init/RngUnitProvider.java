@@ -58,18 +58,12 @@ public class RngUnitProvider {
         WeightMap<String> map = new WeightMap<>();
         switch (group) {
             case ELEMENTALS:
-                break;
-            case CELESTIALS:
-                break;
-            case HUMANS_BARBARIANS:
-                break;
-            case ORCS:
-                break;
-            case PALE_ORCS:
-                break;
-            case ANIMALS:
-                break;
             case FOREST:
+            case ANIMALS:
+            case PALE_ORCS:
+            case ORCS:
+            case HUMANS_BARBARIANS:
+            case CELESTIALS:
                 break;
             case Ravenguard:
                 if (elite_boss_regular == null)

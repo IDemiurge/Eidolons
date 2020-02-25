@@ -135,10 +135,11 @@ public class DC_GraveyardManager implements GraveyardManager {
 
     @Override
     public String getRipString(Obj obj) {
-        String result = RIP;
+        StringBuilder resultBuilder = new StringBuilder(RIP);
         for (Obj corpse : getDeadUnits(getZCoordinate(obj.getCoordinates()))) {
-            result += corpse.getName() + ", ";
+            resultBuilder.append(corpse.getName()).append(", ");
         }
+        String result = resultBuilder.toString();
         result = result.substring(0, result.length() - 2);
         return result;
     }

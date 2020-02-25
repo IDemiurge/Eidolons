@@ -28,9 +28,11 @@ public class MissionStatManager extends BattleStatManager<MissionBattle> {
         text += "\n Damage dealt:" + stats.getDAMAGE_DEALT();
         text += "\n Damage taken:" + stats.getDAMAGE_TAKEN();
         Map<String, Integer> map = stats.getHeroStats().getGeneralStats();
+        StringBuilder textBuilder = new StringBuilder(text);
         for (String s : map.keySet()) {
-            text += "\n" + s + ": " + map.get(s);
+            textBuilder.append("\n").append(s).append(": ").append(map.get(s));
         }
+        text = textBuilder.toString();
         //        for (String s : stats.getHeroStats().getStatMap()) {
         //            stats+="\n" + s + ": " + stats.getMainStats().getVar(s);
         //        }

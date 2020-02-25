@@ -7,7 +7,6 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.libgdx.GdxImageMaster;
@@ -29,7 +28,6 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.ArrayList;

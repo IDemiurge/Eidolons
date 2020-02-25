@@ -20,7 +20,6 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.datasource.GridCellDataSource;
 import eidolons.libgdx.gui.generic.ValueContainer;
-import eidolons.libgdx.screens.DungeonScreen;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
 

@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.igg.xml;
 
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battle.test.TestMetaMaster;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;

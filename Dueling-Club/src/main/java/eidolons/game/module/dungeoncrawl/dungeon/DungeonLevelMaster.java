@@ -177,7 +177,6 @@ public class DungeonLevelMaster {
             case SIDE:
                 return Coordinates.get(x / 2, y / 2);
             case ZONE_RANDOM:
-                return Coordinates.get(x / 2, y / 2);
             case ZONE_SIDE:
                 return Coordinates.get(x / 2, y / 2);
         }

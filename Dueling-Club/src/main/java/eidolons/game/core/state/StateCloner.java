@@ -260,12 +260,9 @@ public class StateCloner {
                 return new Party(e.getType(), ((Party) e).getLeader());
 
             case DEITIES:
-                break;
-            case ENCOUNTERS:
-                break;
-            case DUNGEONS:
-                break;
             case ARCADES:
+            case DUNGEONS:
+            case ENCOUNTERS:
                 break;
         }
         return null;

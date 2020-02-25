@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.battle.test;
 
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
-import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.core.game.DC_Game;
 
 /**

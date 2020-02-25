@@ -51,7 +51,7 @@ public class RangedAttackAnim extends AttackAnim {
 //            case RIFLES:
 //            case PISTOLS:
         }
-        return list.toArray(new ATK_ANIMS[list.size()]);
+        return list.toArray(new ATK_ANIMS[0]);
 
 
     }

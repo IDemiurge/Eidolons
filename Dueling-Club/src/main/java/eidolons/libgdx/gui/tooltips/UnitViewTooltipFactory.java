@@ -32,12 +32,12 @@ import main.entity.Ref.KEYS;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.entity.CounterMaster;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -60,7 +60,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             main.system.ExceptionMaster.printStackTrace(e);
         }
         return () ->
-                new ArrayList<>(Arrays.asList(new ValueContainer("Error", "")));
+                new ArrayList<>(Collections.singletonList(new ValueContainer("Error", "")));
     }
 
     @Override

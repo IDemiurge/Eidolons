@@ -7,7 +7,6 @@ import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.UnitViewOptions;
 import eidolons.libgdx.bf.grid.UnitViewSprite;
-import eidolons.libgdx.texture.Sprites;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

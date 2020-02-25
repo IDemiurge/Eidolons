@@ -12,23 +12,18 @@ import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.task.Task;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
-import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor;
 import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
-import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.data.DataManager;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
-import main.game.logic.action.context.Context;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.ArrayMaster;
 
 import java.util.List;
 
@@ -106,7 +101,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             case MOVE_TO:
                 //via a path!
                 ActionPath path = getPathSequenceConstructor().getOptimalPathSequence(unit.getAI(),
-                        Coordinates.get(arg.toString()));
+                        Coordinates.get(arg));
                 sequence = new ActionSequence(path.getActions(), task, unit.getAI());
                 break;
             case TURN_TO:
@@ -129,7 +124,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                         arg = args[1].toString();
                     }
                 }
-                Action action = AiActionFactory.newAction(arg.toString(), ai);
+                Action action = AiActionFactory.newAction(arg, ai);
                 sequence = //new ActionSequence();
                         getActionSequenceConstructor().constructSingleActionSequence(action,
                                 new Task(ai, goal, null), true); //TODO target?
@@ -145,16 +140,14 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                     break;
                 }
                 Order a = //OrderFactory.getOrder();
-                        new Order(arg.toString());
+                        new Order(arg);
                 unit.getAI().setCurrentOrder(a);
                 unit.getAI().setStandingOrders(sequence);
                 return;
             case ATTACK:
-
-                break;
-            case FREEZE:
-                break;
             case UNFREEZE:
+            case FREEZE:
+
                 break;
         }
         if (immediate) {

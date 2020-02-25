@@ -97,7 +97,7 @@ public class RngLocationBuilder extends LocationBuilder {
             level.setMainStyle(mainStyle);
         }
         new RngLevelInitializer().init(level);
-        Location location = new Location((LocationMaster) getMaster(), new Dungeon(level.getDungeonType()));
+        Location location = new Location(getMaster(), new Dungeon(level.getDungeonType()));
         initWidthAndHeight(location);
 
         if (CoreEngine.isIggDemo()){
@@ -389,7 +389,6 @@ public class RngLocationBuilder extends LocationBuilder {
                 if (cell != null) {
                     map.put(new AbstractCoordinates(i - 1, lineN - RngXmlMaster.SKIPPED_LINES - 1), cell);
                 } else {
-                    continue;
                 }
             }
             if (i > w)

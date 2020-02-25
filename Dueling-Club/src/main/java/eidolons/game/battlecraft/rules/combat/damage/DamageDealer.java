@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.rules.combat.damage;
 
-import eidolons.ability.effects.containers.customtarget.ZoneEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_HeroSlotItem;
@@ -13,7 +12,6 @@ import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.game.core.game.DC_GameManager;
-import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.overlays.HpBar;

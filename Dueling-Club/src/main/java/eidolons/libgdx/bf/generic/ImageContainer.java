@@ -93,7 +93,6 @@ public class ImageContainer extends SuperContainer {
         super.act(delta);
         if (sprite != null)
         if (sprite.getY()!=0){
-            return;
         }
     }
 

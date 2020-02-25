@@ -95,12 +95,11 @@ public class ObjectiveMaster {
                 // "As long as
                 break;
             case SURVIVE_TIME:
+            case ITEM:
 
                 break;
             case ESCAPE:
 //                eventType = STANDARD_EVENT_TYPE.UNIT_GONE_THRU_ENTRANCE;
-                break;
-            case ITEM:
                 break;
         }
         // some objectives will be initialized on a condition, e.g. capture-hold

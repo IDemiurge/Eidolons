@@ -57,10 +57,10 @@ public class ShopDataSource extends ContainerDataSource
         if (shop == null) {
             return null;
         }
-        ContainerClickHandler handler = handlerCache.get(shop);
+        ShopClickHandler handler = handlerCache.get(shop);
         if (handler == null) {
             handler = new ShopClickHandler(shop, unit);
-            handlerCache.put(shop, (ShopClickHandler) handler);
+            handlerCache.put(shop, handler);
         }
         return handler;
     }

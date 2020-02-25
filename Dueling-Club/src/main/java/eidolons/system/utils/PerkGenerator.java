@@ -8,7 +8,6 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
-import eidolons.system.file.ResourceMaster;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums;
@@ -21,7 +20,6 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
-import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
@@ -29,7 +27,6 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
 
 import java.io.File;
 import java.util.List;
@@ -144,7 +141,6 @@ public class PerkGenerator {
             if (group != null)
                 sub.setProperty(PROPS.CLASS_PERK_GROUP, group.name());
             else {
-                continue;
             }
         }
         XML_Writer.writeXML_ForTypeGroup(DC_TYPE.CLASSES);

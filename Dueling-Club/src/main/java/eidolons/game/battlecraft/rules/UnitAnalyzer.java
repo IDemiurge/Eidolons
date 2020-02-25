@@ -4,7 +4,6 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
 import eidolons.entity.obj.unit.Unit;
-import main.content.enums.entity.BfObjEnums;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.values.parameters.PARAMETER;

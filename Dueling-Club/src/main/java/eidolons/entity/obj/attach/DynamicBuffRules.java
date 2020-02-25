@@ -4,7 +4,6 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.anims.std.DeathAnim;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
@@ -36,7 +35,7 @@ public class DynamicBuffRules {
         }
         if (unit.isScion()) {
             if (game.getMetaMaster() instanceof IGG_MetaMaster) {
-                int sfx = ((IGG_MetaMaster) game.getMetaMaster()).getShadowMaster().getTimeLeft();
+                int sfx = game.getMetaMaster().getShadowMaster().getTimeLeft();
                 addDynamicBuff("Shadow of Death", unit, ": " + sfx);
             }
         }

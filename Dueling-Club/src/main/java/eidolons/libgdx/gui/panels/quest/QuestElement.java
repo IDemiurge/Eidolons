@@ -1,6 +1,5 @@
 package eidolons.libgdx.gui.panels.quest;
 
-import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;

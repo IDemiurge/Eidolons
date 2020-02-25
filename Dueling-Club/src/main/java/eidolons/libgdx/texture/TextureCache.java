@@ -10,7 +10,6 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Assets;
-import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.system.graphics.GreyscaleUtils;
 import main.data.filesys.PathFinder;
@@ -22,7 +21,6 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

@@ -1,20 +1,14 @@
 package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.core.atb.AtbController;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.bf.boss.anim.BossAnimator;
-import eidolons.libgdx.bf.boss.entity.BossMaster;
-import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;

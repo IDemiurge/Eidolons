@@ -178,8 +178,8 @@ public class VisionMaster implements GenericVisionManager {
                     "" + string);
 
         }
-        visible = visibleList.toArray(new BattleFieldObject[visibleList.size()]);
-        invisible = invisibleList.toArray(new BattleFieldObject[invisibleList.size()]);
+        visible = visibleList.toArray(new BattleFieldObject[0]);
+        invisible = invisibleList.toArray(new BattleFieldObject[0]);
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_OFF, invisibleList);
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, visibleList);
     }

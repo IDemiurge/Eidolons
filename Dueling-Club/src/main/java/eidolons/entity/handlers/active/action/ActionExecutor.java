@@ -9,7 +9,6 @@ import eidolons.entity.handlers.active.Executor;
 import eidolons.entity.handlers.active.Targeter;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.rules.combat.attack.dual.DualWieldingRule;
-import eidolons.system.DC_ConditionMaster;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.Conditions;

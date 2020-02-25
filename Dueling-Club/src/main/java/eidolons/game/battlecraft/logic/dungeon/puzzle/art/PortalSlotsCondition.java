@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.art;
 
 import eidolons.ability.conditions.DC_Condition;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.portal.PortalPuzzle;
 import eidolons.game.core.Eidolons;
 import main.entity.Ref;

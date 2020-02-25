@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.meta.igg.death;
 
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Meta;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_PartyManager;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
 import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforceMaster;

@@ -445,20 +445,13 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
 
         switch (z) {
             case CENTER:
-                break;
-            case LEFT_FREE_ZONE:
-                break;
-            case RIGHT_FREE_ZONE:
-                break;
-            case SEMI_CORNERS:
-                break;
-            case SIDE_EAST:
-                break;
-            case SIDE_NORTH:
-                break;
-            case SIDE_SOUTH:
-                break;
             case SIDE_WEST:
+            case SIDE_SOUTH:
+            case SIDE_NORTH:
+            case SIDE_EAST:
+            case SEMI_CORNERS:
+            case RIGHT_FREE_ZONE:
+            case LEFT_FREE_ZONE:
                 break;
         }
         return z.getCoordinates();

@@ -39,7 +39,7 @@ public class EffectAnimCreator {
         if (anim instanceof CompositeAnim) {
             subAnim = ((CompositeAnim) anim).getMap().get(part);
         } else {
-            subAnim = (Anim) anim;
+            subAnim = anim;
         }
 
         Coordinates destination = null;

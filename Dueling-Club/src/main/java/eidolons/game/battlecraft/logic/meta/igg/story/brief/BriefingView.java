@@ -4,10 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 public class BriefingView extends TablePanelX implements Scene {
 

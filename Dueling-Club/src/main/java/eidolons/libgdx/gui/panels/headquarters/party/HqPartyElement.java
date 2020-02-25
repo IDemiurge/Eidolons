@@ -1,6 +1,5 @@
 package eidolons.libgdx.gui.panels.headquarters.party;
 
-import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 

@@ -6,14 +6,12 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.Soul;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.SoulMaster;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechExecutor;
 import eidolons.game.core.Eidolons;
 import main.content.enums.entity.UnitEnums;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.threading.WaitMaster;
 
 public class EidolonLord extends LightweightEntity {
 

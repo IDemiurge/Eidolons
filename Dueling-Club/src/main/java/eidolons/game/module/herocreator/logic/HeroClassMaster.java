@@ -6,18 +6,15 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.CLASS_GROUP;
-import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
-import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -138,10 +135,11 @@ public class HeroClassMaster {
     }
     public static String getPerkInfo(Entity classType) {
         List<ObjType> perks = PerkMaster.getAvailablePerks(Eidolons.getMainHero(), classType.getIntParam("circle"), classType, classType);
-        String s = "Available class perks: \n";
+        StringBuilder sBuilder = new StringBuilder("Available class perks: \n");
         for (ObjType type : perks) {
-                s += type.getName() + ", ";
+                sBuilder.append(type.getName()).append(", ");
         }
+        String s = sBuilder.toString();
         return s.substring(0, s.length()-2);
     }
     public static String getNextClassInfo(Entity classType) {

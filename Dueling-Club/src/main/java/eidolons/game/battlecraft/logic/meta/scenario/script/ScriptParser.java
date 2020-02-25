@@ -55,7 +55,11 @@ public class ScriptParser {
         switch (event_type) {
             case UNIT_HAS_BEEN_DEALT_PURE_DAMAGE:
             case UNIT_HAS_BEEN_HIT:
-//                return CONDITION_TEMPLATES.HIT;
+
+            case DOOR_OPENS:
+            case INTERACTIVE_OBJ_USED:
+            case UNIT_HAS_BEEN_KILLED:
+                //                return CONDITION_TEMPLATES.HIT;
             return CONDITION_TEMPLATES.NAME_TARGET;
 
             case UNIT_HAS_CHANGED_FACING:
@@ -79,13 +83,7 @@ public class ScriptParser {
                 return CONDITION_TEMPLATES.NAME_SOURCE;
             case UNIT_BEING_SUMMONED:
             case UNIT_SUMMONED:
-                return CONDITION_TEMPLATES.NAME_SUMMONED;
-            case UNIT_HAS_BEEN_KILLED:
-                return CONDITION_TEMPLATES.NAME_TARGET;
-
-            case DOOR_OPENS:
-            case INTERACTIVE_OBJ_USED:
-                return CONDITION_TEMPLATES.NAME_TARGET; //TODO could do cord and name with 2 args..
+                return CONDITION_TEMPLATES.NAME_SUMMONED;//TODO could do cord and name with 2 args..
 //                return CONDITION_TEMPLATES.COORDINATES; //TODO could do cord and name with 2 args..
             case UNIT_FINISHED_MOVING: //for POS(10-10), will check that source is in 2 or less dist
                 return CONDITION_TEMPLATES.DISTANCE;
@@ -204,7 +202,7 @@ public class ScriptParser {
             List<String> strings =
                     ContainerUtils.openContainer(VariableManager.getVars(script),
                             separator);
-            String[] args = strings.toArray(new String[strings.size()]);
+            String[] args = strings.toArray(new String[0]);
             abilities = new AbilityImpl() {
                 @Override
                 public boolean activatedOn(Ref ref) {

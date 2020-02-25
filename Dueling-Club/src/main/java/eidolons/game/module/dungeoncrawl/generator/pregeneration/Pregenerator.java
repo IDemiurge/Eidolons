@@ -119,13 +119,14 @@ public class Pregenerator implements Runnable {
 
     private static void printAnalysis() {
 
-        String text = "Generation analysis: \n";
+        StringBuilder textBuilder = new StringBuilder("Generation analysis: \n");
         for (PregeneratorData data : analysisStats.keySet())
             for (GenerationStats stat : analysisStats.get(data)) {
-                text += "Generation with data: \n";
-                text += data.toString() + "\n";
-                text += stat.toString() + "\n\n\n";
+                textBuilder.append("Generation with data: \n");
+                textBuilder.append(data.toString()).append("\n");
+                textBuilder.append(stat.toString()).append("\n\n\n");
             }
+        String text = textBuilder.toString();
 
         String path = StrPathBuilder.build(PathFinder.getRandomLevelPath(),
          "pregenerated", "reports");
@@ -201,8 +202,8 @@ public class Pregenerator implements Runnable {
             LOCATION_TYPE locationType = locationTypes.get(i);
             if (checkDone(type, locationType)) {
                 for (SUBLEVEL_TYPE t : sublevelTypes) {
-                    if (!checkDone(t, locationType))
-                        continue;
+                    if (!checkDone(t, locationType)) {
+                    }
                 }
                 locationTypes.remove(locationType);
             }
@@ -374,7 +375,7 @@ public class Pregenerator implements Runnable {
 
     }
 
-    public class AttemptsExceeded extends RuntimeException {
+    public static class AttemptsExceeded extends RuntimeException {
 
     }
 }

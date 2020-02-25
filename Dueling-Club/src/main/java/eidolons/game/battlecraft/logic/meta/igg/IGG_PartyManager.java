@@ -9,7 +9,6 @@ import eidolons.game.battlecraft.logic.meta.igg.death.ChainHero;
 import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 import eidolons.game.battlecraft.logic.meta.igg.hero.ChainParty;
 import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
-import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforceMaster;
 import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
@@ -24,7 +23,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
-import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import java.util.Collections;

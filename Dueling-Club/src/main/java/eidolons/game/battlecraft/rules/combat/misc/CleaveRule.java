@@ -17,8 +17,6 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 public class CleaveRule {
     private static final int DEFAULT_CRITICAL_JUMPS = 2;

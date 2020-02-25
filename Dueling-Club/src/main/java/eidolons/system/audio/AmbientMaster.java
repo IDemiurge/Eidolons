@@ -89,27 +89,20 @@ public class AmbientMaster {
                     return alt ? CAVE : MINE;
 
                 case TEMPLE:
+                case RUIN:
                     return alt ? MIST : EVIL;
                 case TOWER:
                     return alt ? EVIL : MIST;
-                case RUIN:
-                    return alt ? MIST : EVIL;
                 case CASTLE:
                     return alt ? MIST : MINE;
 
                 case SEWER:
-                    break;
-                case HELL:
-                    break;
-                case ASTRAL:
-                    break;
-                case DEN:
-                    break;
-                case CAMP:
-                    break;
-                case HOUSE:
-                    break;
                 case GROVE:
+                case HOUSE:
+                case CAMP:
+                case DEN:
+                case ASTRAL:
+                case HELL:
                     break;
             }
         } else

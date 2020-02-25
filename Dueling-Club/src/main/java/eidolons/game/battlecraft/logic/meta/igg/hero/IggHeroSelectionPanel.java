@@ -12,9 +12,7 @@ import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitDescriptionPanel;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.system.text.DescriptionTooltips;
-import eidolons.system.text.HelpMaster;
 import main.entity.Entity;
-import main.system.auxiliary.secondary.InfoMaster;
 
 import java.util.Collections;
 import java.util.List;

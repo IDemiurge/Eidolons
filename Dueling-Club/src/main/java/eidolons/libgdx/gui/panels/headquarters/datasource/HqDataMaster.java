@@ -46,7 +46,6 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
-import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -119,7 +118,7 @@ public class HqDataMaster {
     public static void updateType(HeroDataModel model) {
         for (PROPERTY sub : InventoryTransactionManager.INV_PROPS) {
             String val = model.getProperty(sub);
-            String newVal = "";
+            StringBuilder newValBuilder = new StringBuilder();
             for (String substring : ContainerUtils.openContainer(val)) {
                 if (!NumberUtils.isInteger(substring))
                     continue;
@@ -128,9 +127,10 @@ public class HqDataMaster {
                     Obj obj = model.getGame().getObjectById(id);
                     if (obj == null)
                         continue;
-                    newVal += obj.getName() + ";";
+                    newValBuilder.append(obj.getName()).append(";");
                 }
             }
+            String newVal = newValBuilder.toString();
             if (newVal.isEmpty())
                 continue;
             main.system.auxiliary.log.LogMaster.log(1, model + " updates type with " +
@@ -420,7 +420,7 @@ public class HqDataMaster {
                 hero.unequip(item, false);
                 break;
             case UNEQUIP_QUICK_SLOT:
-                hero.removeQuickItem((DC_QuickItemObj) item);
+                hero.removeQuickItem(item);
                 hero.addItemToInventory(item, true);
                 break;
             case EQUIP:
@@ -507,7 +507,6 @@ public class HqDataMaster {
                         , (Integer) args[1], (Integer) args[2]);
                 break;
             case SKILL_RANK:
-                break;
             case CLASS_RANK:
                 break;
             case SPELL_LEARNED:

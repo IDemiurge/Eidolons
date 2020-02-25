@@ -160,6 +160,10 @@ public class DC_SoundMaster extends SoundMaster {
         for (SOUNDSET value : SOUNDSET.values()) {
             switch (value) {
                 case dark_elf:
+                case zombie:
+                case skeleton_archer:
+                case skeleton:
+                case knight:
                     break;
                 case bone_knight:
                     if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.UNDEAD))
@@ -170,15 +174,9 @@ public class DC_SoundMaster extends SoundMaster {
                     if (unit.getUnitGroup() == UnitEnums.UNIT_GROUPS.DWARVES)
                         return value;
                     break;
-                case knight:
-                    break;
                 case lad:
                     if (unit.getRace() == HeroEnums.RACE.HUMAN)
                         break;
-                case skeleton:
-                    break;
-                case skeleton_archer:
-                    break;
                 case thug:
                     if (unit.getUnitGroup() == UnitEnums.UNIT_GROUPS.BANDITS)
                         return value;
@@ -186,8 +184,6 @@ public class DC_SoundMaster extends SoundMaster {
                 case wraith:
                     if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH))
                         return value;
-                    break;
-                case zombie:
                     break;
             }
 
@@ -314,6 +310,7 @@ public class DC_SoundMaster extends SoundMaster {
         switch (weapon.getWeaponType()) {
 
             case BLADE:
+            case RANGED:
                 getPlayer().playRandomSoundVariant("soundsets/" + "weapon/" + "sword/", true);
                 break;
             case AXE:
@@ -329,13 +326,8 @@ public class DC_SoundMaster extends SoundMaster {
                 getPlayer().playRandomSoundVariant("soundsets/" + "combat/" + "block/", true);
                 break;
             case SHIELD:
-                break;
-            case RANGED:
-                getPlayer().playRandomSoundVariant("soundsets/" + "weapon/" + "sword/", true);
-                break;
-            case AMMO:
-                break;
             case NATURAL:
+            case AMMO:
                 break;
         }
     }
@@ -480,6 +472,7 @@ public class DC_SoundMaster extends SoundMaster {
             case AIR:
                 return GenericEnums.DAMAGE_TYPE.LIGHTNING;
             case WATER:
+            case AFFLICTION:
                 return GenericEnums.DAMAGE_TYPE.ACID;
             case EARTH:
                 return GenericEnums.DAMAGE_TYPE.BLUDGEONING;
@@ -492,12 +485,10 @@ public class DC_SoundMaster extends SoundMaster {
                 return GenericEnums.DAMAGE_TYPE.SHADOW;
             case PSYCHIC:
                 return GenericEnums.DAMAGE_TYPE.PSIONIC;
-            case AFFLICTION:
-                return GenericEnums.DAMAGE_TYPE.ACID;
             case NECROMANCY:
                 return GenericEnums.DAMAGE_TYPE.DEATH;
             case BLOOD_MAGIC:
-                return GenericEnums.DAMAGE_TYPE.CHAOS;
+            case SAVAGE:
             case WARP:
             case DEMONOLOGY:
             case DESTRUCTION:
@@ -510,11 +501,8 @@ public class DC_SoundMaster extends SoundMaster {
             case FIRE:
                 return GenericEnums.DAMAGE_TYPE.FIRE;
             case SYLVAN:
-                break;
             case ELEMENTAL:
                 break;
-            case SAVAGE:
-                return GenericEnums.DAMAGE_TYPE.CHAOS;
         }
         return dmg_type;
     }
@@ -544,16 +532,17 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     private static String parseSound(String property) {
-        String parsed = "";
+        StringBuilder parsedBuilder = new StringBuilder();
         for(String substring: ContainerUtils.openContainer( property)){
         GenericEnums.SOUND_CUE cue = new EnumMaster<GenericEnums.SOUND_CUE>().
                 retrieveEnumConst(GenericEnums.SOUND_CUE.class, substring);
         if (cue!=null) {
-            parsed+=cue.getPath() + ";";
+            parsedBuilder.append(cue.getPath()).append(";");
         } else {
-            parsed += PathFinder.getSoundCuesPath() + substring;
+            parsedBuilder.append(PathFinder.getSoundCuesPath()).append(substring);
         }
         }
+        String parsed = parsedBuilder.toString();
         if (parsed.isEmpty()) {
             return property;
         }

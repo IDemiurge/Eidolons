@@ -4,8 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.DC_ContentValsManager;
-import eidolons.content.DescriptionMaster;
-import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
@@ -127,8 +125,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
                             fadeOut();
                         }
                                         });
-                    return;
-                }
+            }
 
         };
     }
@@ -147,7 +144,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
             List<PARAMETER> pool = IGG_Demo.getMasteriesForHero(getUserObject().getEntity().getName());
             pool.removeIf(p ->
                     unlocked.contains(p));
-            return pool.toArray(new PARAMETER[pool.size()]) ;
+            return pool.toArray(new PARAMETER[0]) ;
         }
         List<PARAMETER> availableMasteries = new ArrayList<>(
                 DC_ContentValsManager.getMasteries());
@@ -157,7 +154,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
 
         availableMasteries.removeIf(p ->
                 !SkillMaster.isMasteryAvailable(p, getUserObject().getEntity()));
-        return availableMasteries.toArray(new PARAMETER[availableMasteries.size()]);
+        return availableMasteries.toArray(new PARAMETER[0]);
     }
 
 }

@@ -14,7 +14,6 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.igg.xml.IGG_XmlMaster;
-import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.FauxDungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;

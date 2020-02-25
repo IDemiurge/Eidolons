@@ -58,7 +58,7 @@ public class PuzzleActions extends PuzzleElement {
 
         switch (punishment) {
             case battle:
-                break;
+            case death:
             case spell:
                 break;
             case teleport:
@@ -66,8 +66,6 @@ public class PuzzleActions extends PuzzleElement {
                 break;
             case tip:
                 TipMessageMaster.tip(data);
-                break;
-            case death:
                 break;
             case animate_enemies:
                 for (BattleFieldObject object : getObjects(puzzle)) {

@@ -8,7 +8,6 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;

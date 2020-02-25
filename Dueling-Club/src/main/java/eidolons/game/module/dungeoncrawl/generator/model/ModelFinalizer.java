@@ -526,7 +526,6 @@ public class ModelFinalizer {
                 builder.makeExits(roomExit, null, room, null, newRoom, false);
                 if (Pregenerator.TEST_MODE) log(1, "UNBUILT ADDITIONAL ROOM: " + newRoom +
                  "\n; attached to " + room);
-                continue;
             }
 
         }

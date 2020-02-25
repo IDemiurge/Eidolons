@@ -10,6 +10,7 @@ public class Module {
     private int height;
 
     private String name;
+    private final String path;
 
     public Module(Coordinates origin, int width, int height, String name, String path) {
         this.origin = origin;
@@ -21,11 +22,11 @@ public class Module {
 
 
     public int getX() {
-        return x;
+        return origin.x;
     }
 
     public int getY() {
-        return y;
+        return origin.y;
     }
 
     public AmbienceDataSource.AMBIENCE_TEMPLATE getVfx() {

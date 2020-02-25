@@ -67,10 +67,7 @@ public class PerceptionRule extends TurnRule implements ActionRule {
                   target.getCoordinates()
                    .getAdjacentCoordinates()
                    .toArray(
-                    new Coordinates[target
-                     .getCoordinates()
-                     .getAdjacentCoordinates()
-                     .size()]));
+                           new Coordinates[0]));
                 break;
         }
     }

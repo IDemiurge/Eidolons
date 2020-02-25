@@ -5,7 +5,6 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
@@ -151,7 +150,6 @@ public class WaterRule extends RoundRule implements ActionRule {
 
     public void checkDrowning(Unit unit) {
         if (!isOnSwimmingDepth(unit)) {
-            return;
         }
         // reduce endurance by percentage
     }

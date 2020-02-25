@@ -59,10 +59,11 @@ public class ActionPath {
 
     @Override
     public String toString() {
-        String string = "Path: ";
+        StringBuilder stringBuilder = new StringBuilder("Path: ");
         for (Choice choice : getChoices()) {
-            string += choice.toString() + "; ";
+            stringBuilder.append(choice.toString()).append("; ");
         }
+        String string = stringBuilder.toString();
         string = string.substring(0, string.length() - 2);
         return string;
     }

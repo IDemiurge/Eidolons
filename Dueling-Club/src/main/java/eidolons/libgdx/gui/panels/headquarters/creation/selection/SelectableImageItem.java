@@ -72,7 +72,6 @@ public class SelectableImageItem extends FadeImageContainer{
         if (!selected)
             ActionMaster.addFadeOutAction(highlight,1, false);
             else {
-                return;
         }
     }
 

@@ -2,22 +2,14 @@ package eidolons.game.module.adventure.map.travel.old;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.adventure.map.travel.encounter.Encounter;
-import eidolons.game.module.adventure.map.travel.encounter.EncounterMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Location;
-import eidolons.macro.MacroGame;
 import eidolons.macro.entity.party.MacroParty;
-import eidolons.macro.global.Journal;
-import eidolons.macro.global.time.TimeMaster;
 import eidolons.macro.map.Place;
 import eidolons.macro.map.Route;
-import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
-import main.content.CONTENT_CONSTS2.MACRO_STATUS;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
-import main.system.auxiliary.RandomWizard;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 

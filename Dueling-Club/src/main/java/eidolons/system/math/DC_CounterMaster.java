@@ -32,10 +32,6 @@ public class DC_CounterMaster {
                         return 0;
                     }
                     break;
-                case Corrosion:
-                    break;
-                case Despair:
-                    break;
                 case Disease:
                     if (!target.getGame().getRules().getDiseaseRule()
                      .checkApplies(heroObj)) {
@@ -54,25 +50,11 @@ public class DC_CounterMaster {
                         return 0;
                     }
                     break;
-                case Hatred:
-                    break;
-                case Lust:
-                    break;
-                case Madness:
-                    break;
-                case Moist:
-                    break;
                 case Poison:
                     if (!target.getGame().getRules().getPoisonRule()
                      .checkApplies(heroObj)) {
                         return 0;
                     }
-                    break;
-                case Rage:
-                    break;
-                case Soul:
-                    break;
-                case Undying:
                     break;
                 default:
                     break;

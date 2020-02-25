@@ -8,7 +8,6 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
-import eidolons.game.module.dungeoncrawl.generator.level.BlockCreator;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.Room;
@@ -222,7 +221,6 @@ public class RngFillMaster {
                 map.put(ROOM_CELL.SPECIAL_CONTAINER, 5);
                 break;
             case GUARDS:
-                break;
             case TRAPS:
                 break;
             case DESTRUCTIBLE:

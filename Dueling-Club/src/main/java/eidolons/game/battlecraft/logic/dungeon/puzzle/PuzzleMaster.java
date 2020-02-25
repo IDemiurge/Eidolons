@@ -1,17 +1,12 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
-import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzleConstructor;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.libgdx.shaders.post.PostFxUpdater;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
@@ -19,12 +14,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ArrayMaster;
 import main.system.datatypes.DequeImpl;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class PuzzleMaster {

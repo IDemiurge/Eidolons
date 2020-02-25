@@ -308,7 +308,6 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
         GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, anim);
         shadowAlive = true;
         summonActive = false;
-        return;
     }
 
     private int calcTimeLeft(Event event) {

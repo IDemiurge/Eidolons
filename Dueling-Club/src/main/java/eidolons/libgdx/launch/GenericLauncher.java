@@ -3,7 +3,6 @@ package eidolons.libgdx.launch;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -27,7 +26,6 @@ import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.BlackoutOld;
 import eidolons.libgdx.texture.Images;
-import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.utils.GdxTimeMaster;
 import eidolons.libgdx.video.VideoMaster;
 import eidolons.macro.AdventureInitializer;
@@ -444,8 +442,6 @@ public abstract class GenericLauncher extends Game {
                     Eidolons.setScope(SCOPE.BATTLE);
                     break;
                 case BRIEFING:
-                    switchScreen(() -> new IggBriefScreenOld(), newMeta);
-                    break;
                 case CINEMATIC:
                     switchScreen(() -> new IggBriefScreenOld(), newMeta);
                     break;
@@ -473,8 +469,8 @@ public abstract class GenericLauncher extends Game {
     }
 
     private void onScreenLoadDone(EventCallbackParam param) {
-        if (getScreen() == null)
-            return;
+        if (getScreen() == null) {
+        }
         else {
             ((ScreenWithLoader) getScreen()).loadDone(param);
         }

@@ -2,11 +2,8 @@ package eidolons.libgdx.gui.panels.headquarters.datasource.tree;
 
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import main.content.enums.entity.SkillEnums.MASTERY;
-import main.entity.Ref;
-import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;

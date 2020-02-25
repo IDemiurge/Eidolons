@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.igg.event;
 
-import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import main.game.logic.event.Event;

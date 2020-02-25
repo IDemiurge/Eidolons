@@ -82,7 +82,7 @@ public class OptionsMaster {
         for (Object sub : animOptions.getValues().keySet()) {
             new EnumMaster<ANIMATION_OPTION>().
                     retrieveEnumConst(ANIMATION_OPTION.class,
-                            animOptions.getValues().get(sub).toString());
+                            animOptions.getValues().get(sub));
             ANIMATION_OPTION key = animOptions.getKey((sub.toString()));
             if (key == null) {
                 continue;
@@ -108,16 +108,13 @@ public class OptionsMaster {
                     HitAnim.setBloodOff(booleanValue);
                     break;
                 case MAX_ANIM_WAIT_TIME:
-                    break;
-                case PARALLEL_ANIMATIONS:
-                    AnimMaster.getInstance().setParallelDrawing(Boolean.valueOf(value));
-                    break;
+                case AFTER_EFFECTS_ANIMATIONS:
+                case CAST_ANIMATIONS:
 
                 case PRECAST_ANIMATIONS:
                     break;
-                case CAST_ANIMATIONS:
-                    break;
-                case AFTER_EFFECTS_ANIMATIONS:
+                case PARALLEL_ANIMATIONS:
+                    AnimMaster.getInstance().setParallelDrawing(Boolean.valueOf(value));
                     break;
                 case HIT_ANIM_DISPLACEMENT:
                     HitAnim.setDisplacementOn(booleanValue);
@@ -137,7 +134,7 @@ public class OptionsMaster {
         for (Object sub : options.getValues().keySet()) {
             new EnumMaster<CONTROL_OPTION>().
                     retrieveEnumConst(CONTROL_OPTION.class,
-                            options.getValues().get(sub).toString());
+                            options.getValues().get(sub));
             CONTROL_OPTION key = options.getKey((sub.toString()));
             if (key == null)
                 continue;
@@ -215,7 +212,7 @@ public class OptionsMaster {
                     RuleKeeper.setScope(
                             new EnumMaster<RULE_SCOPE>().
                                     retrieveEnumConst(RULE_SCOPE.class,
-                                            gameplayOptions.getValues().get(sub).toString()
+                                            gameplayOptions.getValues().get(sub)
                                     ));
                     break;
                 case GAME_DIFFICULTY:
@@ -245,7 +242,7 @@ public class OptionsMaster {
         for (Object sub : soundOptions.getValues().keySet()) {
             new EnumMaster<SOUND_OPTION>().
                     retrieveEnumConst(SOUND_OPTION.class,
-                            soundOptions.getValues().get(sub).toString());
+                            soundOptions.getValues().get(sub));
             SOUND_OPTION key = soundOptions.getKey((sub.toString()));
             if (key == null) {
                 continue;
@@ -348,29 +345,21 @@ public class OptionsMaster {
                 CoreEngine.setDevEnabled(bool);
                 break;
             case LOGGING:
+            case LAZY:
+            case PRECONSTRUCT:
+            case CACHE:
+            case INTRO_OFF:
+            case MESSAGES_OFF:
+            case LOG_DEV_INFO:
+            case LOG_MORE_INFO:
+            case RESET_COSTS:
                 break;
             case LOG_TO_FILE:
                 FileLogManager.on = bool;
                 break;
-            case RESET_COSTS:
-                break;
-            case LOG_MORE_INFO:
-                break;
-            case LOG_DEV_INFO:
-                break;
-            case MESSAGES_OFF:
-                break;
-            case INTRO_OFF:
-                break;
-            case CACHE:
-                break;
-            case PRECONSTRUCT:
-                break;
             case TESTER_VERSION:
                 CoreEngine.setTesterVersion(bool);
                 EidolonsGame.LEVI_TEST = bool;
-                break;
-            case LAZY:
                 break;
             case ActiveTestMode:
                 CoreEngine.setActiveTestMode(bool);
@@ -427,6 +416,13 @@ public class OptionsMaster {
                 break;
 
             case VIDEO:
+            case BACKGROUND_SPRITES_OFF:
+            case SHARD_VFX:
+            case FULL_ATLAS:
+            case UI_ATLAS:
+            case LIGHT_OVERLAYS_OFF:
+            case SPRITE_CACHE_ON:
+            case VSYNC:
 
                 break;
             case AMBIENCE_MOVE_SUPPORTED:
@@ -435,8 +431,6 @@ public class OptionsMaster {
                 break;
             case RESOLUTION:
                 Eidolons.setResolution(value);
-                break;
-            case VSYNC:
                 break;
             case SHADOW_MAP_OFF:
                 ShadowMap.setOn(!bool);
@@ -450,20 +444,8 @@ public class OptionsMaster {
             case UI_SCALE:
                 GdxMaster.setUserUiScale(Float.valueOf(value) / 100);
                 break;
-            case SPRITE_CACHE_ON:
-                break;
-            case LIGHT_OVERLAYS_OFF:
-                break;
-            case UI_ATLAS:
-                break;
-            case FULL_ATLAS:
-                break;
-            case SHARD_VFX:
-                break;
             case COLOR_TEXT_LOG:
                 LogPanel.setColorText(bool);
-                break;
-            case BACKGROUND_SPRITES_OFF:
                 break;
         }
     }
@@ -555,13 +537,13 @@ public class OptionsMaster {
         StringBuilder content = new StringBuilder();
         content.append(XML_Converter.openXml("Options" + StringMaster.NEW_LINE));
         for (OPTIONS_GROUP sub : optionsMap.keySet()) {
-            content.append(XML_Converter.openXml(sub.toString()) + StringMaster.NEW_LINE);
+            content.append(XML_Converter.openXml(sub.toString())).append(StringMaster.NEW_LINE);
             //OR PUT UNID-DATA-STRING there
             for (Object option : optionsMap.get(sub).getValues().keySet()) {
                 content.append(XML_Converter.wrap(option.toString(),
-                        optionsMap.get(sub).getValues().get(option).toString()) + StringMaster.NEW_LINE);
+                        optionsMap.get(sub).getValues().get(option).toString())).append(StringMaster.NEW_LINE);
             }
-            content.append(XML_Converter.closeXml(sub.toString()) + StringMaster.NEW_LINE);
+            content.append(XML_Converter.closeXml(sub.toString())).append(StringMaster.NEW_LINE);
         }
         content.append(XML_Converter.closeXml("Options"));
         if (isLocalOptionsPreferred()) {

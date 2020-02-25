@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.logic.meta.igg.story.brief;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import eidolons.libgdx.video.VideoMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

@@ -12,7 +12,8 @@ public class ProgressionMaster {
         //pre-made branches?
 
         if (checkAdvice(hero)) {
-            if (takeAdviceForProgression(hero)) return;
+            if (takeAdviceForProgression(hero)) {
+            }
         }
 
     }

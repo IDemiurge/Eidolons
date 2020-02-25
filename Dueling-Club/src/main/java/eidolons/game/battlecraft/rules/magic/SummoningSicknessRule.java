@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.rules.magic;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.atb.AtbController;
 import main.entity.obj.ActiveObj;
 
 public class SummoningSicknessRule {

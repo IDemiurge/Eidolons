@@ -39,7 +39,6 @@ public class XmlHelper {
             }
             if (check(substring)) {
                 list.add(substring);
-                continue;
             }
 
         }

@@ -164,9 +164,7 @@ public class CoordinatesMaster {
         int y1 = getMinY(coordinates);
         int y2 = getMaxY(coordinates);
         List<Coordinates> exceptions = new ArrayList<>();
-        for (Coordinates c : getCoordinatesWithin(x1, x2, y1, y2)) {
-            exceptions.add(c);
-        }
+        exceptions.addAll(getCoordinatesWithin(x1, x2, y1, y2));
         return getBoundsString(x1, x2, y1, y2) + " " + exceptions.toString();
     }
 

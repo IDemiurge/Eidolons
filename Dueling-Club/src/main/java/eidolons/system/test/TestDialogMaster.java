@@ -9,8 +9,6 @@ import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +20,12 @@ public class TestDialogMaster {
             case 'S':
                 return prompt(DC_TYPE.SKILLS);
             case 'P':
-                return prompt(DC_TYPE.SPELLS);
-            case 'K':
-                return prompt(DC_TYPE.PERKS);
-            case 'L':
-                return prompt(DC_TYPE.CLASSES);
             case 'p':
                 return prompt(DC_TYPE.SPELLS);
+            case 'K':
             case 'k':
                 return prompt(DC_TYPE.PERKS);
+            case 'L':
             case 'l':
                 return prompt(DC_TYPE.CLASSES);
         }

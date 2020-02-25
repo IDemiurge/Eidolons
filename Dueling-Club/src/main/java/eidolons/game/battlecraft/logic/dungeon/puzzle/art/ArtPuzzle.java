@@ -1,11 +1,9 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.art;
 
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.ManipulatorPuzzle;
 import eidolons.libgdx.shaders.post.PostFxUpdater;
-import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

@@ -39,7 +39,6 @@ public class CampEffect extends DC_Effect {
                 continue;
             }
             allies.remove(sub);
-            continue;
             //remove
         }
         if (allies.isEmpty()) {

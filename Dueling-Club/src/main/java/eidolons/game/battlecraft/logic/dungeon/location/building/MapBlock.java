@@ -133,7 +133,7 @@ public class MapBlock {
 
     public DequeImpl<Obj> getObjectsByCoordinates() {
         DequeImpl<Obj> objects = new DequeImpl<>(DC_Game.game.getUnitsForCoordinates(coordinates
-         .toArray(new Coordinates[coordinates.size()])));
+         .toArray(new Coordinates[0])));
 
         return objects;
     }

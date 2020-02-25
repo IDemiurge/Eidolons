@@ -372,18 +372,15 @@ public class HitAnim extends ActionAnim {
                 break;
 
             case SPARKS:
+            case STONE:
+            case AETHER:
+            case BONE:
                 break;
             case DUST:
                 if (targetObj.getChecker().checkClassification(CLASSIFICATIONS.WRAITH)) {
                     return GdxColorMaster.DARK_STEEL;
                 }
 
-                break;
-            case BONE:
-                break;
-            case AETHER:
-                break;
-            case STONE:
                 break;
         }
         return new Color(1, 1, 1, 1);

@@ -72,6 +72,7 @@ public class UnitTrainer {
                 plan += ";"; // ++ syntax for cancelling [mastery] skills...
             }
         }
+        StringBuilder planBuilder = new StringBuilder(plan);
         for (PARAMETER mastery : ValuePages.MASTERIES) {
             Integer score = trainee.getIntParam(mastery);
             if (score <= 0) {
@@ -80,17 +81,17 @@ public class UnitTrainer {
             List<ObjType> types = DataManager.toTypeList(DataManager.getTypesSubGroupNames(
              DC_TYPE.SKILLS, mastery.getName()), DC_TYPE.SKILLS);
             for (ObjType t : types) {
-                if (plan.contains(t.getName())) {
+                if (planBuilder.toString().contains(t.getName())) {
                     continue;
                 }
                 if (!WorkspaceMaster.checkTypeIsReadyForUse(t)) {
                     continue;
                 }
                 int weight = Math.max(1, score - t.getIntParam(PARAMS.SKILL_DIFFICULTY));
-                plan += t.getName() + StringMaster.wrapInParenthesis("" + weight)
-                 + StringMaster.CONTAINER_SEPARATOR;
+                planBuilder.append(t.getName()).append(StringMaster.wrapInParenthesis("" + weight)).append(StringMaster.CONTAINER_SEPARATOR);
             }
         }
+        plan = planBuilder.toString();
 
         trainee.setProperty(PROPS.XP_PLAN, plan, true);
     }

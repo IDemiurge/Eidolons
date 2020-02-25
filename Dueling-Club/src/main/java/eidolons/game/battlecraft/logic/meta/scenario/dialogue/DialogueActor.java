@@ -49,7 +49,7 @@ public class DialogueActor extends LightweightEntity {
         );
         List<String> names = new ArrayList<>(ContainerUtils.openContainer(getProperty(PROPS.ACTOR_UNIT_NAMES)));
         names.add(0, getName());
-        for (Unit unit : ((DC_Game) getGame()).getUnitsForCoordinates(area.toArray(new Coordinates[area.size()]))) {
+        for (Unit unit : ((DC_Game) getGame()).getUnitsForCoordinates(area.toArray(new Coordinates[0]))) {
             for (String substring : names) {
                 if (unit.getName().equalsIgnoreCase(substring)) {
 //                    if (!unit.isActorLinked()) {

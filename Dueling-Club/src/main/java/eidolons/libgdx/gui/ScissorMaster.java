@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
-import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.shaders.ShaderDrawer;
 
 public class ScissorMaster {

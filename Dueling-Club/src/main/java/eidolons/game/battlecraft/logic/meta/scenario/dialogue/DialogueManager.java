@@ -23,7 +23,6 @@ import main.system.threading.WaitMaster;
 
 import java.util.List;
 
-import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.TEST_MODE;
 import static main.system.GuiEventType.DIALOG_SHOW;
 import static main.system.GuiEventType.INIT_DIALOG;
 

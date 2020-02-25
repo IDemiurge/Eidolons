@@ -61,7 +61,6 @@ public class QuestCreator extends QuestHandler {
             case HUNT:
                 return Math.max(1, Math.round(quest.getPowerCoef() * 5));
             case SPECIAL_ITEM:
-                break;
             case ESCAPE:
                 break;
         }

@@ -5,7 +5,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.dungeon.location.RngLocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;

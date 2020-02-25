@@ -16,8 +16,6 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ListMaster;
-import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,14 +55,15 @@ public class SpellMaster {
             String prop = hero.getProperty(PROPS.KNOWN_SPELLS);
             list = DataManager.toTypeList(prop, DC_TYPE.SPELLS);
         }
-        String spellbook = "";
+        StringBuilder spellbookBuilder = new StringBuilder();
         for (ObjType type : list) {
             if (!hero.checkProperty(PROPS.MEMORIZED_SPELLS, type.getName())) {
                 if (!hero.checkProperty(PROPS.VERBATIM_SPELLS, type.getName())) {
-                    spellbook += type.getName() + ContainerUtils.getContainerSeparator();
+                    spellbookBuilder.append(type.getName()).append(ContainerUtils.getContainerSeparator());
                 }
             }
         }
+        String spellbook = spellbookBuilder.toString();
         hero.setProperty(PROPS.SPELLBOOK, spellbook, true);
         return spellbook;
     }

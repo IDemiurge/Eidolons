@@ -4,10 +4,8 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.*;
-import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.libgdx.bf.boss.entity.BossUnit;
 import main.content.DC_TYPE;
@@ -165,7 +163,6 @@ public class ObjCreator extends Master {
                     return new LockObj(type, x, y, owner, getGame(), ref);
                 case TREASURE:
                 case CONTAINER:
-                    return new ContainerObj(type, x, y);
                 case GRAVES:
                 case REMAINS:
                 case INTERIOR:

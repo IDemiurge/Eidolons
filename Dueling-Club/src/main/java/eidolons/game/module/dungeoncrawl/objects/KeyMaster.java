@@ -10,9 +10,7 @@ import eidolons.game.core.EUtils;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.launch.CoreEngine;
 

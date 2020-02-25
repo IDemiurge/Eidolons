@@ -701,10 +701,8 @@ public class HeroManager {
         if (TYPE instanceof DC_TYPE) {
             switch ((DC_TYPE) TYPE) {
                 case SKILLS:
-                    return true;
-                case SPELLS:
-                    return true;
                 case CLASSES:
+                case SPELLS:
                     return true;
                 default:
                     break;

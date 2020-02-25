@@ -34,8 +34,6 @@ public class ManipulateSpellEffect extends MicroEffect {
             case BLOCK:
                 spell.addStatus(UnitEnums.STATUS.BLOCKED.name());
                 break;
-            case OBLIVIATE:
-                break;
 
             case STEAL:
                 // change owner and that's it!

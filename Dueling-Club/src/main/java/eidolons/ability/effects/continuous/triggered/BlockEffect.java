@@ -42,17 +42,11 @@ public class BlockEffect extends MicroEffect implements AttachmentEffect, Trigge
                 event_type = Event.STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_TOUGHNESS_DAMAGE;
 
                 break;
-            case DAMAGE_FROM_SOURCE:
-                break;
-            case DAMAGE_TYPE:
-                break;
             case HOSTILE_SPELLS:
                 event_type = Event.STANDARD_EVENT_TYPE.SPELL_BEING_RESOLVED;
                 conditions.add(new RefCondition(KEYS.EVENT_TARGET, KEYS.TARGET,
                  false));
                 OBJ_REF = Ref.KEYS.SPELL.name();
-                break;
-            case SPELLS_FROM_SOURCE:
                 break;
             default:
                 break;

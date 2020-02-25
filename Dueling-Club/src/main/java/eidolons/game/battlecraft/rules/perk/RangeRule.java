@@ -67,7 +67,6 @@ public class RangeRule {
         if (distance == 1) {
             switch (weapon.getWeaponSize()) {
                 case SMALL:
-                    return false;
                 case TINY:
                     return false;
             }

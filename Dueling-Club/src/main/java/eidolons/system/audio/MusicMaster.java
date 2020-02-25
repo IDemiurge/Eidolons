@@ -25,7 +25,6 @@ import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
-import main.system.sound.SoundMaster.SOUNDS;
 import main.system.threading.WaitMaster;
 
 import java.awt.*;
@@ -36,7 +35,6 @@ import java.util.*;
 import java.util.List;
 
 import static eidolons.system.audio.MusicMaster.MUSIC_TRACK.*;
-import static main.content.CONTENT_CONSTS.SOUNDSET.*;
 import static main.system.auxiliary.log.LogMaster.important;
 import static main.system.auxiliary.log.LogMaster.log;
 //a folder tree per music theme!

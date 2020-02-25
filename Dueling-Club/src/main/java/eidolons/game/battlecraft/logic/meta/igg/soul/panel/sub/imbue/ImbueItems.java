@@ -7,15 +7,11 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.game.battlecraft.logic.meta.igg.death.ChainHero;
 import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.EidolonImbuer;
 import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
-import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
-import eidolons.libgdx.gui.panels.ScrollPaneX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.inv.ItemActor;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 import java.util.ArrayList;
 
@@ -58,7 +54,7 @@ public class ImbueItems extends TablePanelX {
 
             @Override
             protected DC_HeroItemObj[] initDataArray() {
-                return items.toArray(new DC_HeroItemObj[items.size()]);
+                return items.toArray(new DC_HeroItemObj[0]);
             }
 
             @Override
@@ -124,7 +120,7 @@ public class ImbueItems extends TablePanelX {
     }
 
 
-    private class ImbueItemActor extends ItemActor {
+    private static class ImbueItemActor extends ItemActor {
 
         public ImbueItemActor(DC_HeroItemObj model) {
             super(model);

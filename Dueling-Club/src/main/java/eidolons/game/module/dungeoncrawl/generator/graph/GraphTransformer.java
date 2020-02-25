@@ -14,14 +14,13 @@ public class GraphTransformer {
                 GraphPath path = (GraphPath) args[0];
                 break;
             case LOCK:
+            case TWIN_PATH:
                 break;
             case SHORTCUT:
                 //link to exit from the middle of a main path
                 break;
             case DUPLICATE:
                 //another set of graph edges
-                break;
-            case TWIN_PATH:
                 break;
             case BLOCK:
                   path = (GraphPath) args[0];

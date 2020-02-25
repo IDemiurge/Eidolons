@@ -10,7 +10,6 @@ import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.CONTENT_CONSTS2.ORDER_TYPE;
-import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;

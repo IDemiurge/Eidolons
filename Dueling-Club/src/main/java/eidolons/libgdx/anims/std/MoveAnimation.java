@@ -22,8 +22,6 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
-import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;

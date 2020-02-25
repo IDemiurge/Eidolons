@@ -8,7 +8,6 @@ import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.boss.entity.BossActionMaster;
 import eidolons.libgdx.bf.boss.entity.BossUnit;
 import eidolons.libgdx.bf.boss.sprite.BossView;
@@ -19,7 +18,6 @@ import main.system.GuiEventType;
 import main.system.PathUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.Chronos;
-import main.system.auxiliary.log.LogMaster;
 
 import java.io.File;
 

@@ -169,7 +169,7 @@ public class BattleGuiStage extends GuiStage {
 
         if (combatInventory.isVisible()) {
             //            combatInventory.close(ExplorationMaster.isExplorationOn());
-            InventoryDataSource dataSource = (InventoryDataSource) combatInventory.getUserObject();
+            InventoryDataSource dataSource = combatInventory.getUserObject();
             if (ExplorationMaster.isExplorationOn()) {
                 dataSource.getDoneHandler().run();
             } else

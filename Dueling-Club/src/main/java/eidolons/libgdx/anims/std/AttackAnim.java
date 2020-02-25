@@ -306,7 +306,6 @@ size - elongate
         switch (relativeFacing) {
 
             case IN_FRONT:
-                break;
             case BEHIND:
                 break;
             case TO_THE_SIDE:
