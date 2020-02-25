@@ -24,18 +24,24 @@ public class LE_MenuHandler extends LE_Handler {
 
 
     public enum FUNCTION_BUTTONS{
-        file(open, clone, save_all),
-        edit(),
-        layer(),
-        add,
+        add_dungeon,
+        add_floor,
+        add_module,
         open,
         save_all,
         clone,
+        toggle_all, all_off, all_on, show_map,
+
+        file(open, clone, save_all),
+        view(toggle_all, all_off, all_on, show_map),
+        edit(),
+        layer(),
+        module(),
         floor(resize, offset, ),
         dungeon(true, properties,),
         campaign(),
-        view(toggle_all, all_off, all_on, ),
-        show_map,
+
+
         ;
 
         public final FUNCTION_BUTTONS[] subFuncs;

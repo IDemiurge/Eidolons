@@ -235,7 +235,7 @@ public class AbilityConstructor {
         List<ActiveObj> abilities;
         boolean action = !(entity instanceof BfObj);
         if (action) {
-            abilities = getAbilitiesList(G_PROPS.ACTIVES, entity, false);
+            abilities = getAbilitiesList(G_PROPS.ACTIVES, entity);
             if (abilities != null) {
                 entity.setActives(abilities);
             }
@@ -295,7 +295,7 @@ public class AbilityConstructor {
         return (AbilityObj) newAbility(passive, entity, true);
     }
 
-    private static List<ActiveObj> getAbilitiesList(G_PROPS prop, Entity entity, boolean passive) {
+    private static List<ActiveObj> getAbilitiesList(G_PROPS prop, Entity entity) {
         if (entity.getProperty(prop) == "") {
             return null;
         }
@@ -304,7 +304,7 @@ public class AbilityConstructor {
         for (String abilTypeName : ContainerUtils.open(entity.getProperty(prop))) {
             if (abilTypeName.isEmpty()) continue;
             ActiveObj ability;
-            ability = newAbility(abilTypeName, entity, passive);
+            ability = newAbility(abilTypeName, entity, false);
             if (ability != null) {
                 list.add(ability);
             }

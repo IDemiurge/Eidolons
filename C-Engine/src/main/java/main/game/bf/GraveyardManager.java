@@ -13,7 +13,7 @@ import java.util.Set;
  * <portrait>
  * Destroy corpse if toughness or endurance reach -100%
  *
- * @param unit
+ *
  */
 public interface GraveyardManager {
     int GRAVE_ROWS = 4;
