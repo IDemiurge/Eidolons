@@ -3,22 +3,19 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
+import eidolons.game.battlecraft.logic.dungeon.location.layer.LayerManager;
 import eidolons.game.battlecraft.logic.dungeon.module.BridgeMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
-import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.particles.ambi.ParticleManager;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
-import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
-import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 
 import java.util.Map;
@@ -46,6 +43,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private TrapMaster trapMaster;
     private PuzzleMaster puzzleMaster;
     private PortalMaster portalMaster;
+    private LayerManager layerManager;
 
     public DungeonMaster(DC_Game game) {
         this.game = game;
@@ -64,6 +62,11 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         containerMaster = new ContainerMaster(this);
         interactiveMaster = new InteractiveObjMaster(this);
         puzzleMaster = new PuzzleMaster(this);
+        layerManager=createLayerManager();
+    }
+
+    protected LayerManager createLayerManager() {
+        return null;
     }
 
     protected DungeonBuilder<E> createBuilder() {
@@ -271,4 +274,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return getDungeonLevel().getExitType();
     }
 
+    public LayerManager getLayerManager() {
+        return layerManager;
+    }
 }

@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
+import eidolons.game.battlecraft.logic.dungeon.location.layer.LayerManager;
 import eidolons.game.battlecraft.logic.dungeon.universal.*;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.boss.cinematic.BossLocationInitializer;
@@ -22,6 +23,11 @@ public class LocationMaster extends DungeonMaster<Location> {
         if (getDungeonWrapper().getMainExit() != null) {
             getGame().getMaster().tryAddUnit(getDungeonWrapper().getMainExit());
         }
+    }
+
+    @Override
+    protected LayerManager createLayerManager() {
+        return  new LayerManager(this);
     }
 
     protected LocationBuilder createBuilder() {

@@ -31,6 +31,10 @@ public class ModuleMaster extends MetaGameHandler {
 
     }
 
+    public List<Module> getModules() {
+        return modules;
+    }
+
     private Module getInitialModule() {
         for (Module module : modules) {
             if (module.getName().equalsIgnoreCase(scheme.initialModule)){
@@ -84,6 +88,17 @@ public class ModuleMaster extends MetaGameHandler {
     public boolean isZoneInitRequired(Node zoneNode) {
         return zoneNode.getNodeName().equalsIgnoreCase(current.getName());
     }
+
+    public Module getModule(Coordinates c) {
+        for (Module module : modules) {
+            if (CoordinatesMaster.isWithinBounds(c, module.getX(), module.getX2(),
+                    module.getY(), module.getY2())) {
+                return module;
+            }
+        }
+        return null;
+    }
+
 
     public enum MODULE_LEVEL {
         ASHEN_PATH("sublevels/ashen path modular", false, "sublevels/main(0-0)", "sublevels/maze module(0-0);"),

@@ -46,7 +46,7 @@ public class TypeBuilder {
     }
 
     private static boolean isBuildTypeOnInit() {
-        return !CoreEngine.isCombatGame();
+        return  CoreEngine.isArcaneVault();
 //        return true;
     }
 

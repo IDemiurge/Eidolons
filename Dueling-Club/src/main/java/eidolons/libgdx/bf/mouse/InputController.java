@@ -312,7 +312,7 @@ public abstract class InputController implements InputProcessor {
     protected abstract GameScreen getScreen();
 
     protected void tryPullCameraY(int screenY) {
-        float diffY = (yTouchPos - screenY) * camera.zoom;
+        float diffY = (yTouchPos - screenY) * camera.zoom * getDragCoef();
         camera.position.y = MathMaster.getMinMax(
                 camera.position.y - diffY,
                 halfHeight - getMargin(),
@@ -323,13 +323,17 @@ public abstract class InputController implements InputProcessor {
 
     protected void tryPullCameraX(int screenX) {
         //TODO custom bounds
-        float diffX = (xTouchPos - screenX) * camera.zoom;
+        float diffX = (xTouchPos - screenX) * camera.zoom * getDragCoef();
         camera.position.x = MathMaster.getMinMax(
                 camera.position.x + diffX,//-getMargin(),
                 halfWidth - getMargin(),
                 getWidth() - halfWidth + getMargin());
         xTouchPos = screenX;
         cameraPosChanged();
+    }
+
+    protected float getDragCoef() {
+        return 1f;
     }
 
 

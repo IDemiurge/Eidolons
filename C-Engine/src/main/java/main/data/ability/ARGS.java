@@ -146,9 +146,8 @@ public enum ARGS implements Argument {
 
     DATA_TYPE(SPEECH_VALUE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     DATA_STRING(DataString.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
-    SPEECH(SpeechInterface.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
-    SPEECHDATA(SpeechData.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
-    DIALOGUE_DATA(Dialogue_Data.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
+//    SPEECH(SpeechInterface.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
+//    SPEECHDATA(SpeechData.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
 
     UNKNOWN(Object.class),;
 

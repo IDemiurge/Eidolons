@@ -4,15 +4,12 @@ import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import main.game.bf.Coordinates;
 
 public class Module {
-    private int x;
-    private int y;
     private AmbienceDataSource.AMBIENCE_TEMPLATE vfx;
     private Coordinates origin;
     private int width;
     private int height;
 
     private String name;
-    private String path;
 
     public Module(Coordinates origin, int width, int height, String name, String path) {
         this.origin = origin;
@@ -50,6 +47,15 @@ public class Module {
     public String getName() {
         return name;
     }
+
+    public int getX2() {
+        return getX()+getWidth();
+    }
+
+    public int getY2() {
+        return getY()+getHeight();
+    }
+
 
     public enum MODULE_VALUE{
         //like zone?

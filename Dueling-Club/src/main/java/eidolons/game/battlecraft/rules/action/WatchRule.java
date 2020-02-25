@@ -2,8 +2,8 @@ package eidolons.game.battlecraft.rules.action;
 
 import eidolons.ability.effects.common.SpectrumEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
-import eidolons.ability.effects.oneshot.rule.WatchActionEffect;
 import eidolons.ability.effects.oneshot.rule.WatchBuffEffect;
+import eidolons.ability.ignored.oneshot.rule.WatchActionEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;

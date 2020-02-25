@@ -53,6 +53,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
 
     public static final String ID_MAP = "Id_Map";
+    public static final String LAYERS = "Layers";
     public static final String AI_GROUPS_NODE = StringMaster
             .getWellFormattedString("ai groups node");
     private static Map<Integer, ObjType> idMap;
@@ -193,7 +194,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         for (String substring : ContainerUtils.openContainer(
                 subNode.getTextContent())) {
             String objectsString = "";
-            Coordinates c = Coordinates.get(substring.split("=")[0]);
+            Coordinates c = Coordinates.get(true, substring.split("=")[0]);
             List<String> ids = ContainerUtils.openContainer(substring.split("=")[1], ",");
 
             for (String id : ids) {
@@ -284,8 +285,14 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             for (Node node : XML_Converter.getNodeList(n)) {
                 processIdsMap(DC_TYPE.getType(node.getNodeName()), n.getTextContent());
             }
+        } else if (StringMaster.compareByChar(n.getNodeName(), (LAYERS))) {
+            processLayers(n );
         } else
             super.processNode(n, dungeon, plan);
+    }
+
+    protected void processLayers(Node node) {
+        game.getMetaMaster().getDungeonMaster().getLayerManager().initLayers(node);
     }
 
     private Map<Coordinates, FACING_DIRECTION> createUnitFacingMap(String textContent) {

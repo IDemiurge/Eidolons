@@ -84,7 +84,7 @@ public class AtbCalculator {
         this.controller = controller;
     }
 
-    public class AtbPrecalcUnit extends AtbUnitImpl {
+    public static class AtbPrecalcUnit extends AtbUnitImpl {
 
         private Float atbReadiness;
 

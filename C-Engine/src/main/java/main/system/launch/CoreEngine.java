@@ -151,7 +151,7 @@ public class CoreEngine {
 //         (TOTAL_MEMORY =
 //          Runtime.getRuntime().totalMemory()));
 
-        if (System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\JustM")) {
+        if (System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\Alexa")) {
             me = true;
         }
 

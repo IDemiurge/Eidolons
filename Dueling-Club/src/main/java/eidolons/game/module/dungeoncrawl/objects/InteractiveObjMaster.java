@@ -1,6 +1,6 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
-import eidolons.ability.effects.oneshot.dialog.TownPortalEffect;
+import eidolons.ability.ignored.dialog.TownPortalEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;

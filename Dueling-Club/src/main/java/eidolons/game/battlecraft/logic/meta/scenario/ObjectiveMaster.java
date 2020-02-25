@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.scenario;
 
-import eidolons.ability.effects.special.meta.EndGameEffect;
+import eidolons.ability.ignored.special.meta.EndGameEffect;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.DC_Game;

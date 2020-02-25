@@ -68,9 +68,6 @@ public class ObjCreator extends Master {
             } else
                 obj = new Unit(type, x, y, owner, getGame(), ref);
         }
-        if (CoreEngine.isLevelEditor()) {
-            return obj;
-        }
         //if (WaitMaster.getCompleteOperations().contains(WAIT_OPERATIONS.DUNGEON_SCREEN_READY))
         GuiEventManager.trigger(GuiEventType.UNIT_CREATED, obj);
         game.getState().addObject(obj);
@@ -112,7 +109,10 @@ public class ObjCreator extends Master {
         obj.resetPercentages();
     }
 
-    private boolean isUnitFullResetRequired(BattleFieldObject obj) {
+    protected boolean isUnitFullResetRequired(BattleFieldObject obj) {
+        if (CoreEngine.isLevelEditor()){
+            return false;
+        }
         if (obj.isPlayerCharacter()) {
             return true;
         }

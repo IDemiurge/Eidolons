@@ -68,6 +68,11 @@ public class UnitViewFactory {
 
         addForDC(bfObj, view, options);
 
+        ClickListener listener = createListener(bfObj);
+        view.addListener(listener);
+        if (view.getInitiativeQueueUnitView() != null) {
+            view.getInitiativeQueueUnitView().addListener(listener);
+        }
         if (isGridObjRequired(bfObj)) {
             CUSTOM_OBJECT x = new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, bfObj.getProperty(PROPS.CUSTOM_OBJECT));
             LinkedGridObject obj = new LinkedGridObject(view,
@@ -149,11 +154,6 @@ public class UnitViewFactory {
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
         tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
         view.setToolTip(tooltip);
-        ClickListener listener = createListener(bfObj);
-        view.addListener(listener);
-        if (view.getInitiativeQueueUnitView() != null) {
-            view.getInitiativeQueueUnitView().addListener(listener);
-        }
         if (bfObj.checkBool(GenericEnums.STD_BOOLS.INVISIBLE)) {
             view.setInvisible(true);
         }

@@ -8,7 +8,10 @@ import main.entity.Ref;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -63,7 +66,7 @@ public class NumberUtils {
 
             i++;
         }
-        return i>0;
+        return i > 0;
     }
 
     public static Boolean isIntegerOrNumber(String value) {
@@ -207,7 +210,7 @@ public class NumberUtils {
     public static String getXmlNode(String xml, String nodeName) {
         String closeXmlFormatted = XML_Converter.closeXmlFormatted(nodeName);
         xml = xml.substring(xml.indexOf(XML_Converter.openXmlFormatted(nodeName)),
-         closeXmlFormatted.length() + xml.lastIndexOf(closeXmlFormatted));
+                closeXmlFormatted.length() + xml.lastIndexOf(closeXmlFormatted));
         return xml;
     }
 
@@ -238,7 +241,7 @@ public class NumberUtils {
     }
 
     public static String getCodeFromChar(String key) {
-        return  UNICODE + key.codePointAt(0) +  CODEEND;
+        return UNICODE + key.codePointAt(0) + CODEEND;
         // Character.toChars(int).
     }
 
@@ -246,7 +249,7 @@ public class NumberUtils {
         List<String> list = ContainerUtils.openContainer(key);
         String result = "";
         for (String o : list) {
-            o = StringMaster.getSubStringBetween(o,  UNICODE,  CODEEND);
+            o = StringMaster.getSubStringBetween(o, UNICODE, CODEEND);
             try {
                 // Character.toChars((int) StringMaster.getInteger(o)).
                 result += Character.toString((char) (int) getInteger(o));
@@ -260,7 +263,8 @@ public class NumberUtils {
     public static String prependZeroes(int number, int digits) {
         return getFormattedTimeString(number, digits);
     }
-        public static String getFormattedTimeString(int number, int digits) {
+
+    public static String getFormattedTimeString(int number, int digits) {
         String result = "" + number;
         if (digits < result.length()) {
             while (digits < result.length()) {
@@ -290,18 +294,26 @@ public class NumberUtils {
 
     public static String getCurrentOutOfBaseVal(Entity entity, PARAMETER parameter) {
         return entity.getIntParam(ContentValsManager.getCurrentParam(parameter)) + "/"
-         + entity.getIntParam(parameter);
+                + entity.getIntParam(parameter);
     }
 
     public static String formatFloat(int digitsAfterPeriod, float v) {
-    return
-     String.format(java.util.Locale.US, "%." +
-     digitsAfterPeriod +
-      "f", v);
-}
+        return
+                String.format(java.util.Locale.US, "%." +
+                        digitsAfterPeriod +
+                        "f", v);
+    }
 
     public static float getFloatWithDigitsAfterPeriod(float time, int i) {
         return
-        MathMaster.getFloatWithDigitsAfterPeriod(i, time);
+                MathMaster.getFloatWithDigitsAfterPeriod(i, time);
+    }
+
+    public static Set<Integer> toIntegers(Collection<String> ids) {
+        Set<Integer> set = new LinkedHashSet<>();
+        for (String id : ids) {
+            set.add(Integer.valueOf(id));
+        }
+        return set;
     }
 }

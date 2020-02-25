@@ -55,9 +55,7 @@ public class Action {
         if (obj instanceof Action) {
             Action action = (Action) obj;
             if (action.getActive().equals(getActive())) {
-                if (ObjUtilities.compare(action.getTarget(), getTarget())) {
-                    return true;
-                }
+                return ObjUtilities.compare(action.getTarget(), getTarget());
             }
         }
         return false;

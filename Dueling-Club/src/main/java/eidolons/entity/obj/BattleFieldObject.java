@@ -96,7 +96,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public void setPassives(List<AbilityObj> passives) {
         super.setPassives(passives);
         passivesReady=true;
-        activatePassives();
+//        activatePassives();
     }
 
     public boolean isWall() {
