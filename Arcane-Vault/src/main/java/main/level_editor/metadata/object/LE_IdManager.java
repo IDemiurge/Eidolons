@@ -4,26 +4,27 @@ import eidolons.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class LE_IdManager {
 
     private static int ID = 0;
-    Map<Integer, Obj> objects = new HashMap<>();
+    Map<Integer, Obj> objMap = new LinkedHashMap<>();
 
     public void objectRemoved(Integer id) {
-        objects.remove(id);
+        objMap.remove(id);
     }
 
     public void setObjIds(Map<Integer, Obj> objIdMap) {
         ID = objIdMap.size();
-        objects = objIdMap;
+        objMap = objIdMap;
     }
 
     public Integer objectRemoved(Obj obj) {
-        for (Integer integer : objects.keySet()) {
-            if (objects.get(integer) == obj) {
-                objects.remove(integer);
+        for (Integer integer : objMap.keySet()) {
+            if (objMap.get(integer) == obj) {
+                objMap.remove(integer);
                 return integer;
             }
 
@@ -33,17 +34,17 @@ public class LE_IdManager {
 
     public Integer objectCreated(Obj obj) {
         Integer id = ID++;
-        objects.put(id, obj);
+        objMap.put(id, obj);
         return id;
     }
 
     public Obj getObjectById(Integer id) {
-        return objects.get(id);
+        return objMap.get(id);
     }
 
     public Integer getId(BattleFieldObject obj) {
-        for (Integer integer : objects.keySet()) {
-            if (objects.get(integer) == obj) {
+        for (Integer integer : objMap.keySet()) {
+            if (objMap.get(integer) == obj) {
                 return integer;
             }
 
@@ -51,4 +52,7 @@ public class LE_IdManager {
         return null;
     }
 
+    public Map<Integer, Obj> getObjMap() {
+        return objMap;
+    }
 }

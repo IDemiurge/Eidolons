@@ -13,17 +13,11 @@ public class LE_Palette extends TabbedPanel {
 
     public void init(){
 
-    }
-        public void addGroup(DC_TYPE TYPE, String group){
 
-    List<ObjType> types = DataManager.getTypesSubGroup(TYPE, group);
-    int wrap=getWrap();
-    PaletteTypesTable palette = new PaletteTypesTable(wrap, types, 0);
-    addTab(palette, group);
 //    ScrollPanel scrollPanel = new ScrollPanel(); //for tabs?
 }
 
-    private int getWrap() {
+    protected int getWrap() {
         return 30;
     }
 

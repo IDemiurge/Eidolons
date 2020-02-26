@@ -92,11 +92,6 @@ public class LE_GameSim extends ScenarioGame {
         dungeonMaster.gameStarted();
 
         try {
-            visionMaster.refresh();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        try {
             getManager().reset();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);

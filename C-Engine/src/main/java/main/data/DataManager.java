@@ -222,7 +222,7 @@ public class DataManager {
         return backend.getGroupingClass(TYPE);
     }
 
-    public static List<String> getTabsGroup(OBJ_TYPE TYPE) {
+    public static List<String> getTabGroups(OBJ_TYPE TYPE) {
         return backend.getTabsGroup(TYPE);
     }
 

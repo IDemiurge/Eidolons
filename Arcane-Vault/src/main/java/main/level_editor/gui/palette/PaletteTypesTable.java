@@ -1,5 +1,6 @@
 package main.level_editor.gui.palette;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
@@ -21,13 +22,12 @@ public class PaletteTypesTable extends SelectionImageTable  {
     private final List<ObjType> types;
 
     @Override
-    public SelectableItemData[] getData() {
-
+    protected SelectableItemData[] initDataArray() {
         data= new SelectableItemData[size];
         for (int i = 0; i < size; i++) {
             data[i] = new SelectableItemData(types.get(i));
         }
-        return super.getData();
+        return data;
     }
 
     public PaletteTypesTable(int wrap, List<ObjType> types, int space) {
@@ -41,4 +41,8 @@ public class PaletteTypesTable extends SelectionImageTable  {
                 getModelManager().paletteSelection(item.getEntity());
     }
 
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+    }
 }

@@ -1,5 +1,6 @@
 package main.level_editor.functions.model;
 
+import main.data.DataManager;
 import main.level_editor.functions.brush.LE_Brush;
 import main.level_editor.functions.brush.LE_BrushType;
 import main.level_editor.functions.display.LE_DisplayMode;
@@ -14,6 +15,9 @@ public class LE_DataModel {
     LE_Selection selection;
     LE_Brush brush;
     PaletteSelection paletteSelection;
+
+    public LE_DataModel() {
+    }
 
     public MouseMode getMouseMode() {
         return mouseMode;

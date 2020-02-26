@@ -2,6 +2,7 @@ package main.level_editor.functions.io;
 
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
+import main.data.filesys.PathFinder;
 import main.level_editor.LevelEditor;
 import main.level_editor.functions.LE_Handler;
 import main.level_editor.functions.LE_Manager;
@@ -10,6 +11,7 @@ import main.level_editor.struct.level.Floor;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.data.FileManager;
 
 public class LE_DataHandler extends LE_Handler {
     private Campaign campaign;
@@ -20,6 +22,21 @@ public class LE_DataHandler extends LE_Handler {
 
     public void openCampaign(String path) {
 
+    }
+    public void saveFloor() {
+        String path = getDefaultSavePath(getFloor());
+        String contents = LE_XmlMaster.toXml(getFloor());
+        FileManager.write(contents, path);
+    }
+
+    private String getDefaultSavePath(Floor floor) {
+        String prefix = "";
+        if (campaign == null) {
+            prefix ="scenarios/"+ floor.getGame().getDungeon().getGroup()+"/";
+        } else {
+//            TODO campaign
+        }
+        return PathFinder.getDungeonLevelFolder() +prefix+ floor.getName()+ ".xml";
     }
 
     public void open(String floorName) {

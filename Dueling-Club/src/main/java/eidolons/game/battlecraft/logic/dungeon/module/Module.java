@@ -57,6 +57,9 @@ public class Module {
         return getY()+getHeight();
     }
 
+    public void toggleCoordinate(Coordinates c) {
+    }
+
 
     public enum MODULE_VALUE{
         //like zone?

@@ -6,6 +6,7 @@ import eidolons.swing.DC_GuiManager;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.DescriptionTooltips;
+import main.data.xml.XML_Reader;
 import main.system.auxiliary.log.Chronos;
 import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
@@ -67,6 +68,7 @@ public class DC_Engine extends CoreEngine {
 
 //        CoreEngine.dataInit(!CoreEngine.isFastMode());
         CoreEngine.dataInit(true);
+        XML_Reader.setMacro(false); //fix this shit!
         //read save game?
         DC_ContentValsManager.initTypeDynamicValues();
         Chronos.logTimeElapsedForMark("DATA INIT");

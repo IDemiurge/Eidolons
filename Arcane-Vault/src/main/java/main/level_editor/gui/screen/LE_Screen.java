@@ -1,7 +1,9 @@
 package main.level_editor.gui.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.GL30;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.bf.grid.GridPanel;
@@ -61,7 +63,7 @@ public class LE_Screen extends GenericDungeonScreen {
 
     @Override
     protected GenericGuiStage createGuiStage() {
-        return new LE_GuiStage(null, null);
+        return new LE_GuiStage(null, getBatch());
     }
 
     @Override
@@ -99,15 +101,16 @@ public class LE_Screen extends GenericDungeonScreen {
 
     @Override
     public void render(float delta) {
-        super.render(delta);
+//        super.render(delta);
+
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         cameraMan.act(delta);
         gridStage.act(delta);
         guiStage.act(delta);
-        batch.begin();
         drawBg(delta);
-        batch.end();
         gridStage.draw();
-//        guiStage.draw();
+        guiStage.draw();
     }
 
     @Override

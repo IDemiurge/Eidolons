@@ -29,6 +29,7 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
 import main.level_editor.functions.model.LE_DataModel;
+import main.level_editor.gui.palette.PaletteHolder;
 import main.level_editor.gui.screen.LE_Screen;
 import main.level_editor.sim.LE_GameSim;
 import main.level_editor.sim.LE_MetaMaster;
@@ -43,6 +44,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
+import main.system.launch.TypeBuilder;
 import main.system.sound.SoundMaster;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.text.StrBuilder;
@@ -55,9 +57,10 @@ public class LevelEditor {
     private static boolean campaignMode;
     private static Campaign campaign;
     private static BossDungeon dungeon;
-
+    private static boolean saveTest = true;
     public static void main(String[] args) {
         CoreEngine.setLevelEditor(true);
+        TypeBuilder.typeBuildOverride.addAll(PaletteHolder.tabTypes);
         Assets.setON(false);
         DC_Engine.systemInit(false);
         new EditorApp(args).start();
@@ -70,9 +73,13 @@ public class LevelEditor {
         String name = meta.getMetaDataManager().getMissionPath();
         name = StringMaster.cropFormat(
                 PathUtils.getLastPathSegment(name));
-        Floor floor = new Floor(name, game, game.getDungeon());
+        Floor floor = new Floor(name, game);
         floorSelected(floor);
         game.initAndStart();
+
+        if (saveTest){
+            floor.getManager().getDataHandler().saveFloor();
+        }
     }
 
     public static void newFloorSelected(String name) {

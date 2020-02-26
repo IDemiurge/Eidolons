@@ -2,6 +2,7 @@ package main.level_editor.gui.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -27,6 +28,7 @@ public class LE_WaitingScreen extends ScreenWithLoader {
     @Override
     protected void preLoad() {
         //random bg
+//        initLabels();
     }
 
     @Override
@@ -41,7 +43,8 @@ public class LE_WaitingScreen extends ScreenWithLoader {
 
     @Override
     public void render(float delta) {
-        super.render(delta);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();
     }
@@ -60,7 +63,6 @@ public class LE_WaitingScreen extends ScreenWithLoader {
     }
 
     private void chooseFile() {
-        GDX.loadVisUI();
         if (fileChooser == null) {
             initFileChooser();
         }

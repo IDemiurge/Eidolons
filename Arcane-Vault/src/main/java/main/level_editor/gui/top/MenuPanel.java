@@ -13,7 +13,9 @@ public class MenuPanel extends MenuBar {
 
     public MenuPanel() {
         for (LE_MenuHandler.FUNCTION_BUTTONS value : LE_MenuHandler.FUNCTION_BUTTONS.values()) {
-
+            if (value.subFuncs.length==0) {
+                continue;
+            }
             Menu menu= new Menu(value.name());
             addMenu(menu);
             for (LE_MenuHandler.FUNCTION_BUTTONS subFunc : value.subFuncs) {

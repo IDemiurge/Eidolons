@@ -65,7 +65,6 @@ public class LE_GridCell extends GridCellContainer {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        debugAll();
         super.draw(batch, parentAlpha);
     }
 

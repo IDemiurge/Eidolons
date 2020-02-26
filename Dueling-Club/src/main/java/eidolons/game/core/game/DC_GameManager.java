@@ -486,7 +486,7 @@ public class DC_GameManager extends GameManager {
 
     public Unit getActiveObj() {
         Unit active = null;
-        ;
+
         if (game.isStarted()) {
             active = getGame().getLoop().getActiveUnit();
         }

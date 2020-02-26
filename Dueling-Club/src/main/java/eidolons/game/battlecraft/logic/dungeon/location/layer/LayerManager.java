@@ -9,6 +9,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import org.w3c.dom.Node;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +17,7 @@ public class LayerManager extends DungeonHandler {
 
     Set<Layer> layers;
     private Layer current;
+    private Layer baseLayer;
 
     public LayerManager(DungeonMaster master) {
         super(master);
@@ -76,8 +78,34 @@ public class LayerManager extends DungeonHandler {
     }
 
     public void addToCurrent(Integer id, MicroObj obj) {
+        if (current == null) {
+            return;
+        }
         current.getIds().add(id);
 //        current.getObjMap().put(id, obj);
+    }
+    public Layer getCurrent() {
+        if (current == null) {
+            return getBaseLayer();
+        }
+        return current;
+    }
+
+    public Set<Layer> getLayers() {
+        return layers;
+    }
+
+    public Layer getBaseLayer() {
+        if (baseLayer == null) {
+            baseLayer= initBaseLayer();
+        }
+        return baseLayer;
+    }
+
+    private Layer initBaseLayer() {
+        Set<Integer> ids = new LinkedHashSet<>(getMaster().getObjIdMap().keySet());
+        baseLayer = new Layer("Base", ids);
+        return baseLayer;
     }
 
     public void removeFromCurrent(Integer id, Obj obj) {

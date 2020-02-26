@@ -887,7 +887,7 @@ public class DC_Game extends GenericGame {
                 }
             }
         this.setState(new DC_GameState(this));
-        this.setManager(new DC_GameManager(this.getState(), this));
+        this.setManager(createGameManager());
         this.getManager().init();
         clearCaches();
         for (Obj sub : cachedObjects) {

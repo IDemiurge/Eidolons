@@ -73,7 +73,7 @@ public class XML_Reader {
         log(DATA_DEBUG, "type map: " + key);
 
         Map<String, ObjType> typeMap =
-         typeMaps.computeIfAbsent(key, k -> new XLinkedMap<>());
+                typeMaps.computeIfAbsent(key, k -> new XLinkedMap<>());
 
         NodeList nl = doc.getFirstChild().getChildNodes();
         Set<String> groupSet = new LinkedHashSet<>();
@@ -92,9 +92,9 @@ public class XML_Reader {
                 }
                 ObjType type = TypeBuilder.buildType(typeNode, key);
                 if (typeChecker != null)
-                if (!typeChecker.test(type)){
-                    continue;
-                }
+                    if (!typeChecker.test(type)) {
+                        continue;
+                    }
                 if (type != null) {
                     name = type.getName();
                     // TAB GROUPS
@@ -110,7 +110,7 @@ public class XML_Reader {
                     type.setInitialized(true);
                     typeMap.put(name, type);
                     log(DATA_DEBUG, typeNode.getNodeName()
-                     + " has been put into map as " + type);
+                            + " has been put into map as " + type);
                 }
             }
         }
@@ -183,7 +183,7 @@ public class XML_Reader {
         getFiles().add(xmlFile);
         Document doc = XML_Converter.getDoc(xmlFile.contents);
         loadMap(xmlFile.type == null ? xmlFile.name :
-         xmlFile.type.getName(), doc);
+                xmlFile.type.getName(), doc);
     }
 
     private static boolean checkFile(File file) {
@@ -258,7 +258,7 @@ public class XML_Reader {
 
             ObjType type = TypeBuilder.buildType(node, TYPE.toString());
             if (typeChecker != null)
-                if (!typeChecker.test(type)){
+                if (!typeChecker.test(type)) {
                     continue;
                 }
             if (game != null)
@@ -266,7 +266,7 @@ public class XML_Reader {
 
             if (incompleteTypes) {
                 ObjType parent = DataManager.getType(type.getProperty(G_PROPS.PARENT_TYPE), type
-                 .getOBJ_TYPE_ENUM());
+                        .getOBJ_TYPE_ENUM());
                 if (parent != null) {
                     type.setType(parent);
                     for (PROPERTY prop : parent.getPropMap().keySet()) {
@@ -304,7 +304,7 @@ public class XML_Reader {
 
     public static void readTypeFile(boolean macro, OBJ_TYPE type) {
         String path = StrPathBuilder.build((macro ? PathFinder.getMACRO_TYPES_PATH()
-         : PathFinder.getTYPES_PATH()), type.getName() + ".xml");
+                : PathFinder.getTYPES_PATH()), type.getName() + ".xml");
         XML_File xml = readFile(FileManager.getFile(path));
         loadFile(xml);
     }
@@ -366,7 +366,7 @@ public class XML_Reader {
 
         constructTypeMap(doc, name, tabGroupMap, treeSubGroupMap);
 
-      LogMaster.verbose("TYPE MAPPING "+ name +" "+ Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
+        LogMaster.verbose("TYPE MAPPING " + name + " " + Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
     }
 
     public static void loadMap(String name, String text) {
@@ -407,21 +407,15 @@ public class XML_Reader {
     }
 
     /**
-     * @return the tabGroupMap
-     */
-    public static Map<String, Set<String>> getTabGroupMap(boolean macro) {
-        if (macro) {
-            return macroTabGroupMap;
-        }
-        return tabGroupMap;
-    }
-
-    /**
      * //     * @param tabGroupMap
      * the tabGroupMap to set
      */
 
     public static Map<String, Set<String>> getTabGroupMap() {
+        return getTabGroupMap(macro);
+    }
+
+    public static Map<String, Set<String>> getTabGroupMap(boolean macro) {
         if (macro) {
             return macroTabGroupMap;
         }
@@ -458,13 +452,13 @@ public class XML_Reader {
         String key = DC_TYPE.CHARS.getName();
         if (originalCharTypeMap == null) {
             originalCharTypeMap = new MapMaster<String, ObjType>().constructMap(new ArrayList<>(
-             getTypeMaps().get(key).keySet()), new ArrayList<>(getTypeMaps()
-             .get(key).values()));
+                    getTypeMaps().get(key).keySet()), new ArrayList<>(getTypeMaps()
+                    .get(key).values()));
         }
 
         bufferCharTypeMap = new MapMaster<String, ObjType>().constructMap(new ArrayList<>(
-         getTypeMaps().get(key).keySet()), new ArrayList<>(getTypeMaps().get(key)
-         .values()));
+                getTypeMaps().get(key).keySet()), new ArrayList<>(getTypeMaps().get(key)
+                .values()));
 
         try {
             reloadHeroFiles();

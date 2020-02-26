@@ -13,11 +13,14 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import eidolons.libgdx.particles.ambi.ParticleManager;
+import main.entity.obj.Obj;
+import main.entity.type.ObjType;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
@@ -44,6 +47,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private PuzzleMaster puzzleMaster;
     private PortalMaster portalMaster;
     private LayerManager layerManager;
+
+    private  Map<Integer, Obj> objIdMap= new LinkedHashMap<>();
+    private Map<Integer, ObjType> idTypeMap;
 
     public DungeonMaster(DC_Game game) {
         this.game = game;
@@ -82,7 +88,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
             try {
                 puzzleMaster.initPuzzles(getDungeon(), getDungeonLevel());
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
         ParticleManager.init(dungeonWrapper.getDungeon());
         GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, dungeonWrapper.getMapBackground());
@@ -275,5 +281,21 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
     public LayerManager getLayerManager() {
         return layerManager;
+    }
+
+    public Map<Integer, ObjType> getIdTypeMap() {
+        return idTypeMap;
+    }
+
+    public void setIdTypeMap(Map<Integer, ObjType> idTypeMap) {
+        this.idTypeMap = idTypeMap;
+    }
+
+    public   Map<Integer, Obj> getObjIdMap() {
+        return objIdMap;
+    }
+
+    public void setObjIdMap(Map<Integer, Obj> objIdMap) {
+        this.objIdMap = objIdMap;
     }
 }

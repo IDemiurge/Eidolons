@@ -25,7 +25,7 @@ public class LE_DungeonBuilder extends LocationBuilder {
         Location location=super.buildDungeon(path, data, nodeList);
         if (getGame() instanceof LE_GameSim) {
             ((LE_GameSim) getGame()).setObjIdMap(
-                    getObjIdMap());
+                   master.getObjIdMap());
         }
         return location;
     }

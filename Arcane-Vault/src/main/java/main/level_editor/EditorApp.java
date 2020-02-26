@@ -55,15 +55,22 @@ public class EditorApp extends GenericLauncher {
     @Override
     public void start() {
         super.start();
-        screenInit();
+//        screenInit();
     }
+
+    @Override
+    public void create() {
+        GDX.loadVisUI();
+        super.create();
+    }
+
     protected void screenInit() {
 //        if (args.length> 0 ){
 //            // ???
 //        } else
-          {
+        {
             LE_WaitingScreen newScreen = new LE_WaitingScreen();
-            ScreenData meta=new ScreenData(SCREEN_TYPE.EDITOR_WELCOME, "Welcome!");
+            ScreenData meta = new ScreenData(SCREEN_TYPE.EDITOR_WELCOME, "Welcome!");
             newScreen.initLoadingStage(meta);
             setScreen(newScreen);
         }
@@ -73,10 +80,10 @@ public class EditorApp extends GenericLauncher {
     }
 
     private void load() {
-        Eidolons.onNonGdxThread(()->{
+        Eidolons.onNonGdxThread(() -> {
             DC_Engine.dataInit();
 //            DC_Engine.dataInit(true);
-            LevelEditor.welcome(args.length==0 ? null : args[0]);
+            LevelEditor.welcome(args.length == 0 ? null : args[0]);
         });
     }
 
@@ -88,15 +95,15 @@ public class EditorApp extends GenericLauncher {
     @Override
     public LwjglApplicationConfiguration getConf() {
         LwjglApplicationConfiguration c = super.getConf();
-        if (TEST_MODE){
-            c.width=1;
-            c.height=1;
+        if (TEST_MODE) {
+            c.width = 1;
+            c.height = 1;
         }
         return c;
     }
 
     @Override
     public String getOptionsPath() {
-        return PathFinder.getXML_PATH()+ "options/editor.xml";
+        return PathFinder.getXML_PATH() + "options/editor.xml";
     }
 }

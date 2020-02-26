@@ -5,6 +5,9 @@ import main.entity.type.ObjType;
 
 public class PaletteSelection {
 
+    public PaletteSelection(ObjType type) {
+        this(type, false);
+    }
     public PaletteSelection(ObjType objType, boolean overlaying) {
         this.overlaying = overlaying;
         if (overlaying) {
@@ -17,6 +20,7 @@ public class PaletteSelection {
     ObjType objTypeOverlaying;
     GenericEnums.VFX vfx;
     boolean overlaying;
+
     //custom type?
 
     //templates of rooms, scripts,

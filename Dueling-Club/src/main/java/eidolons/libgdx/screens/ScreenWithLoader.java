@@ -56,20 +56,13 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     private boolean whiteout;
 
     public ScreenWithLoader() {
-        waitingLabel = new Label("Press any key to Continue...",
-                StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 22));
-        waitingLabel.pack();
-        waitingLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
-                getWaitY());
-        tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
-
 
         initBlackout();
         initPostProcessing();
 
     }
 
-    public enum SCREEN_STATUS{
+    public enum SCREEN_STATUS {
         TO_PRELOAD,
         PRELOADED,
         AFTERLOADED,
@@ -79,6 +72,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         LOADING,
         ;
     }
+
     protected void initPostProcessing() {
         if (CoreEngine.isIggDemo()) {
             return;
@@ -105,6 +99,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected void preLoad() {
+
+        initLabels();
+
         if (data.getDialogViews().size() > 0) {
             introStage = new ChainedStage(viewPort, getBatch(), data.getDialogViews());
             introStage.setOnDoneCallback(() -> {
@@ -113,6 +110,15 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
                 }
             });
         }
+    }
+
+    protected void initLabels() {
+        waitingLabel = new Label("Press any key to Continue...",
+                StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 22));
+        waitingLabel.pack();
+        waitingLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
+                getWaitY());
+        tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
 
     }
 

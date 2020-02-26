@@ -16,12 +16,14 @@ import org.junit.Test;
 import org.w3c.dom.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ModuleMaster extends MetaGameHandler {
 
     Module current;
-    List<Module> modules;
+    Set<Module> modules;
     MODULE_LEVEL scheme = MODULE_LEVEL.ASHEN_PATH;
 
     public ModuleMaster(MetaGameMaster master) {
@@ -31,7 +33,7 @@ public class ModuleMaster extends MetaGameHandler {
 
     }
 
-    public List<Module> getModules() {
+    public Set<Module> getModules() {
         return modules;
     }
 
@@ -41,7 +43,7 @@ public class ModuleMaster extends MetaGameHandler {
                 return module;
             }
         }
-        return modules.get(0);
+        return modules.iterator().next();
     }
     private Module getModuleByPosition() {
         Coordinates c = Eidolons.getMainHero().getCoordinates();
@@ -58,7 +60,7 @@ public class ModuleMaster extends MetaGameHandler {
     }
 
     private void initModules() {
-        modules = new ArrayList<>();
+        modules = new LinkedHashSet<>();
         for (String s : scheme.modules) {
             String path = VariableManager.removeVarPart(s);
             String name = PathUtils.getLastPathSegment(path);

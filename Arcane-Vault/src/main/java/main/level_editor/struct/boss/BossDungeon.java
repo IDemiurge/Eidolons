@@ -21,4 +21,7 @@ public class BossDungeon extends LightweightEntity {
 
      */
 
+    public Set<Floor> getFloors() {
+        return floors;
+    }
 }

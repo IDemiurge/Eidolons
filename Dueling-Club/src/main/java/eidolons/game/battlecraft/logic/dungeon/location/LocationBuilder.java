@@ -44,19 +44,19 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     public static final String ROOM_TYPE_NODE = "Room Type";
     public static final String COORDINATES_NODE = StringMaster.getWellFormattedString(RngXmlMaster.COORDINATES_NODE);
     public static final String OBJ_NODE = StringMaster.getWellFormattedString(RngXmlMaster.OBJECTS_NODE);
-    public static final String OBJ_NODE_NEW = "Obj_Ids";
     public static final String ENTRANCE_NODE = StringMaster.getWellFormattedString(RngXmlMaster.ENTRANCE_NODE);
     public static final String EXIT_NODE = "Exits";
     public static final String ZONES_NODE = StringMaster.getWellFormattedString(RngXmlMaster.ZONES_NODE);
     public static final String META_DATA_NODE = "Named_Coordinate_Points";
 
 
+    public static final String MODULES_NODE = "Modules";
     public static final String ID_MAP = "Id_Map";
     public static final String LAYERS = "Layers";
+    public static final String OBJ_NODE_NEW = "Obj_Ids";
     public static final String AI_GROUPS_NODE = StringMaster
             .getWellFormattedString("ai groups node");
-    private static Map<Integer, ObjType> idMap;
-    private static Map<Integer, Obj> objIdMap;
+
 
     @Refactor
     private List<Node> nodeList;
@@ -134,10 +134,10 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
     @Refactor
     //TODO the way it's done, we can't have Structures in non-Location dungeons!!!
-    public static MapBlock constructBlock(Node node, int id, MapZone zone, DungeonPlan map,
+    public   MapBlock constructBlock(Node node, int id, MapZone zone, DungeonPlan map,
                                           Dungeon dungeon) {
         List<Coordinates> coordinates = new ArrayList<>();
-        Map<Coordinates, ? extends Obj> objectMap = new HashMap<>();
+        Map<Coordinates, ? extends Obj> objectMap = new LinkedHashMap<>();
         MapBlock b = new MapBlock(id, null, zone, map, coordinates);
         // TODO b-data, coordinates, objects
         for (Node subNode : XML_Converter.getNodeList(node)) {
@@ -145,7 +145,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
                 coordinates = CoordinatesMaster.getCoordinatesFromString(subNode.getTextContent());
 
             } else if (StringMaster.compareByChar(subNode.getNodeName(), OBJ_NODE_NEW)) {
-                objectMap = processObjects(dungeon, b, subNode);
+                objectMap = processObjects(master.getIdTypeMap(), dungeon, b, subNode);
             } else if (StringMaster.compareByChar(subNode.getNodeName(), OBJ_NODE)) {
 
                 if (!CoreEngine.isCombatGame()) {
@@ -182,11 +182,11 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         return b;
     }
 
-    private static Map<Coordinates, ? extends Obj> processObjects(Dungeon dungeon, MapBlock b, Node subNode) {
+    private   Map<Coordinates, ? extends Obj> processObjects(Map<Integer, ObjType> idMap, Dungeon dungeon, MapBlock b, Node subNode) {
         if (idMap == null) {
             throw new RuntimeException("No ID MAP FOR OBJECTS!");
         }
-        objIdMap = new LinkedHashMap<>();
+        Map<Integer,  Obj> objIdMap = master.getObjIdMap();;
         // x-y=id,id,id;...
         //TODO   create player=> ids map and make multiple maps here!
         Map<Coordinates, Obj> fullMap = new HashMap<>();
@@ -213,22 +213,24 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             }
             fullMap.putAll(subMap);
         }
+
         return fullMap;
     }
 
-    private static void processIdsMap(DC_TYPE TYPE, String textContent) {
+    private static Map<Integer, ObjType> processIdTypesMap(DC_TYPE TYPE, String textContent) {
         /*
         id=objType(x, y);
         OR just map ids to types, then proceed with the obj map as usual
 
          */
-        idMap = new LinkedHashMap<>();
+        Map<Integer, ObjType> idMap = new LinkedHashMap<>();
         textContent = textContent.trim();
         for (String content : ContainerUtils.openContainer(textContent)) {
             Integer id = Integer.valueOf(content.split("=")[0]);
             ObjType type = DataManager.getType(content.split("=")[1], TYPE);
             idMap.put(id, type);
         }
+        return idMap;
     }
 
 
@@ -282,7 +284,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
         } else if (StringMaster.compareByChar(n.getNodeName(), ID_MAP)) {
             for (Node node : XML_Converter.getNodeList(n)) {
-                processIdsMap(DC_TYPE.getType(node.getNodeName()), n.getTextContent());
+                getMaster().setIdTypeMap(processIdTypesMap(DC_TYPE.getType(node.getNodeName()), n.getTextContent()));
             }
         } else if (StringMaster.compareByChar(n.getNodeName(), (LAYERS))) {
             processLayers(n );
@@ -471,14 +473,6 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         public int getMaxY() {
             return maxY;
         }
-    }
-
-    public static Map<Integer, ObjType> getIdMap() {
-        return idMap;
-    }
-
-    public static Map<Integer, Obj> getObjIdMap() {
-        return objIdMap;
     }
 
     protected boolean checkZoneModule(Node zoneNode) {

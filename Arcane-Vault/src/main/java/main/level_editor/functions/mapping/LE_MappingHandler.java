@@ -9,6 +9,7 @@ import java.awt.*;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class LE_MappingHandler extends LE_Handler {
 //let's assume maximum of 4 modules, so we have a simple 2x2 grid, ok? damn, I did want to have 5 in some..
@@ -45,7 +46,7 @@ public class LE_MappingHandler extends LE_Handler {
         }
     }
 
-    private List<Module> getModules() {
+    private Set<Module> getModules() {
         return getGame().getMetaMaster().getModuleMaster().getModules();
     }
 
