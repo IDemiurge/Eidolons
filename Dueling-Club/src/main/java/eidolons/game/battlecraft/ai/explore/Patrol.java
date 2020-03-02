@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.ai.explore;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
-import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.RandomWizard;
@@ -10,7 +10,7 @@ import main.system.auxiliary.RandomWizard;
 public class Patrol {
     Coordinates destination;
     Coordinates returnCoordinates;
-    MapBlock block;
+    LevelBlock block;
     boolean backAndForth;
     int waitPeriod;
     int maxWaitPeriod;
@@ -54,11 +54,11 @@ public class Patrol {
         this.distance = distance;
     }
 
-    public MapBlock getBlock() {
+    public LevelBlock getBlock() {
         return block;
     }
 
-    public void setBlock(MapBlock block) {
+    public void setBlock(LevelBlock block) {
         this.block = block;
     }
 

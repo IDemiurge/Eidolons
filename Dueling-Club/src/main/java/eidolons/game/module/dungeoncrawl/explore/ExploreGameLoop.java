@@ -36,11 +36,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         super(game);
         master = game.getDungeonMaster().getExplorationMaster();
         macroTimeMaster = MacroTimeMaster.getInstance();
-        GuiEventManager.bind(GuiEventType.GAME_RESET,
-                d -> {
-                    resetRequired = true;
-                    signal();
-                });
     }
 
 
@@ -226,8 +221,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             return false;
         if (playerAction.getAction().getTargeting() instanceof SelectiveTargeting)
             if (playerAction.getContext().getTarget() != null)
-                if (!playerAction.getAction().canBeTargeted(playerAction.getContext().getTarget()))
-                    return false;
+                return playerAction.getAction().canBeTargeted(playerAction.getContext().getTarget());
         return true;
     }
 

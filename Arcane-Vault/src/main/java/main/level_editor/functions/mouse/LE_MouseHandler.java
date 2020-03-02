@@ -2,20 +2,14 @@ package main.level_editor.functions.mouse;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import main.content.DC_TYPE;
-import main.data.DataManager;
-import main.entity.obj.MicroObj;
-import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.functions.LE_Handler;
 import main.level_editor.functions.LE_Manager;
 import main.level_editor.functions.selection.LE_Selection;
-import main.level_editor.sim.LE_GameSim;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
@@ -48,8 +42,7 @@ public class LE_MouseHandler extends LE_Handler {
 
         switch (mode) {
             case RIGHT:
-                ObjType dummyObjType= DataManager.getType("Stone Wall", DC_TYPE.BF_OBJ);
-                MicroObj d = getGame().createUnit(dummyObjType, gridX, gridY, DC_Player.NEUTRAL);
+                getGame().createUnit(getModel().getPaletteSelection().getObjType(), gridX, gridY, DC_Player.NEUTRAL);
                 return;
             //copy metadata
             //delete top
@@ -261,7 +254,6 @@ public class LE_MouseHandler extends LE_Handler {
         CTRL,
         SHIFT, RIGHT, DOUBLE
 
-        ;
     }
 
 

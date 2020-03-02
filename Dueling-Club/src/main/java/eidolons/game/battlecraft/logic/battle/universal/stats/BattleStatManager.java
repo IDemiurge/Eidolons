@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.battle.universal.stats;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import eidolons.game.battlecraft.logic.battle.universal.Battle;
 import eidolons.game.battlecraft.logic.battle.universal.BattleHandler;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
@@ -12,7 +11,6 @@ import main.entity.obj.Obj;
 import main.game.core.game.StatMaster;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.game.logic.event.EventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 
@@ -117,14 +115,7 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
                 }
 
             }
-        } else if (AiTrainingRunner.running)
-            if (event.getRef().getAmount() != null) {
-                if (event.getType() instanceof EventType) {
-                    modifyUnitModStat(target.isEnemyTo(source.getOwner()), (event.getType()).getArg()
-                            , source, event.getRef().getAmount());
-
-                }
-            }
+        }
 
     }
 

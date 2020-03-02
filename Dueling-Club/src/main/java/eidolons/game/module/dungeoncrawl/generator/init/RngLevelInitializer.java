@@ -14,7 +14,6 @@ import main.entity.EntityCheckMaster;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.RandomWizard;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -100,17 +99,17 @@ public class RngLevelInitializer {
         for (Coordinates coordinates : block.getTileMap().getMap().keySet()) {
             createEntity(coordinates, block.getTileMap().getMap().get(coordinates), block);
         }
-        if (dungeonLevel.isBoundObjectsSupported()) {
-            for (Coordinates c : block.getBoundCells().keySet()) {
-                Coordinates bound = block.getBoundCells().get(c);
-                Coordinates random = RandomWizard.random() ? c : bound;
-                ObjAtCoordinate type = block.getObjects().stream().filter(at -> at.getCoordinates().equals(random)).findFirst().orElse(null);
-                if (type == null)
-                    continue;
-                clear(block, block.getBoundCells().get(c));
-                addObj(block, type.getType(), block.getBoundCells().get(c));
-            }
-        }
+//        if (dungeonLevel.isBoundObjectsSupported()) {
+//            for (Coordinates c : block.getBoundCells().keySet()) {
+//                Coordinates bound = block.getBoundCells().get(c);
+//                Coordinates random = RandomWizard.random() ? c : bound;
+//                ObjAtCoordinate type = block.getObjects().stream().filter(at -> at.getCoordinates().equals(random)).findFirst().orElse(null);
+//                if (type == null)
+//                    continue;
+//                clear(block, block.getBoundCells().get(c));
+//                addObj(block, type.getType(), block.getBoundCells().get(c));
+//            }
+//        }
     //        addLocks();
     //        setupAiGroups();
     //        saveLevel();

@@ -1,7 +1,6 @@
 package eidolons.libgdx.gui.controls.radial;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -32,11 +31,11 @@ import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static main.system.GuiEventType.*;
+import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
+import static main.system.GuiEventType.UPDATE_GUI;
 
 public class RadialMenu extends Group implements Closable {
     protected RadialValueContainer currentNode;
@@ -92,7 +91,7 @@ public class RadialMenu extends Group implements Closable {
 
     protected String getBackgroundSpritePath() {
 //        if (CoreEngine.isLiteLaunch()) {
-            return "";
+        return "";
 //        }
 //        return Sprites.RADIAL;
     }
@@ -127,12 +126,7 @@ public class RadialMenu extends Group implements Closable {
         if ((obj.get() instanceof DC_WeaponObj))
             return;
         DC_Obj dc_obj = (DC_Obj) obj.get();
-        if ((CoreEngine.isIDE() || CoreEngine.isDevEnabled())
-            && Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-            init(DebugRadialManager.getDebugNodes(dc_obj));
-        } else {
-            init(RadialManager.getOrCreateRadialMenu(dc_obj));
-        }
+        init(RadialManager.getOrCreateRadialMenu(dc_obj));
     }
 
     public void close() {

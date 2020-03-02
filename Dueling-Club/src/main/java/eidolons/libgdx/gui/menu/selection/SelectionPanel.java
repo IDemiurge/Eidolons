@@ -257,7 +257,7 @@ public abstract class SelectionPanel extends TablePanelX {
 
     public void tryDone() {
         if (MainLauncher.presetNumbers.isEmpty())
-        if (EidolonsGame.EXTENDED_DEMO || EidolonsGame.SELECT_SCENARIO) {
+        if (  EidolonsGame.SELECT_SCENARIO) {
             return;
         }
         if (isAutoDoneEnabled())

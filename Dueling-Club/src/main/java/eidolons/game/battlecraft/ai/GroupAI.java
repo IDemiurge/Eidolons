@@ -4,7 +4,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.battlecraft.ai.explore.Patrol;
-import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.game.module.herocreator.logic.party.Party;
@@ -29,7 +28,7 @@ public class GroupAI {
     private DIRECTION wanderDirection;
     private boolean followLeader;
     private boolean forceBehavior;
-    private List<MapBlock> permittedBlocks;
+    private List<LevelBlock> permittedBlocks;
     private int wanderDistance;
     private List<Coordinates> knownEnemyCoordinates;
     private Map<Unit, Coordinates> knownEnemyCoordinatesMap;
@@ -163,13 +162,6 @@ public class GroupAI {
         this.forceBehavior = forceBehavior;
     }
 
-    public List<MapBlock> getPermittedBlocks() {
-        return permittedBlocks;
-    }
-
-    public void setPermittedBlocks(List<MapBlock> permittedBlocks) {
-        this.permittedBlocks = permittedBlocks;
-    }
 
     public int getWanderDistance() {
         return wanderDistance;

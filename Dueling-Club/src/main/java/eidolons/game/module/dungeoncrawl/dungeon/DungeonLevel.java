@@ -1,7 +1,6 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.content.PARAMS;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
@@ -232,19 +231,19 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         if (locationType != null)
             surface = locationType.isSurface();
     }
-
     public List<ObjAtCoordinate> getObjects() {
-        if (!ListMaster.isNotEmpty(objects)) {
-            objects = new ArrayList<>();
-            for (LevelBlock block : getBlocks()) {
-                objects.addAll(block.getObjects());
-            }
-        }
-        return objects;
+//        if (!ListMaster.isNotEmpty(objects)) {
+//            objects = new ArrayList<>();
+//            for (LevelBlock block : getBlocks()) {
+//                objects.addAll(block.getObjects());
+//            }
+//        }
+        return    objects ;
     }
 
     public Set<ObjAtCoordinate> collectUnits() {
         units = new LinkedHashSet<>();
+        LogMaster.log(1, "FIX UNITS FOR BLOCKS!");
         for (LevelBlock block : getBlocks()) {
             units.addAll(block.getUnits());
         }
@@ -328,10 +327,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     public boolean isVoid(int i, int j) {
         if (CoreEngine.isIggDemo()) {
-            if (isVoidExplicit(i, j)) {
-                return true;
-            }
-            return false;
+            return isVoidExplicit(i, j);
         }
         Coordinates c = Coordinates.get(i, j);
         if (tileMap.getMap().get(c) != ROOM_CELL.VOID)
@@ -348,8 +344,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     public boolean isVoidExplicit(int i, int j) {
         if (voidCoordinates != null) {
-            if (voidCoordinates.contains(Coordinates.get(i, j)))
-                return true;
+            return voidCoordinates.contains(Coordinates.get(i, j));
         }
         return false;
     }
@@ -455,10 +450,6 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         if (img != null) {
             return img;
         }
-        if (EidolonsGame.BRIDGE || EidolonsGame.BOSS_FIGHT) {
-            return CELL_IMAGE.octagonal;
-        }
-
 
         LevelBlock block = getBlockForCoordinate(c);
         img = cellTypeMap.get(block);
@@ -595,7 +586,11 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     private void addUnit(ObjAtCoordinate obj) {
         LevelBlock b = getBlockForCoordinate(obj.getCoordinates());
         if (b != null)
+        {
+            LogMaster.log(1, "FIX UNITS FOR BLOCKS!");
+
             b.getUnits().add(obj);
+        }
         else {
             getUnassignedUnits().add(obj);
             LogMaster.log(1, "Added into Void  " + obj);

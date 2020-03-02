@@ -72,7 +72,7 @@ public class ImageContainer extends SuperContainer {
         setImage(image);
     }
     public void setImage(String path) {
-        if (ImageManager.isImage(path)) {
+        if (ImageManager.isImageFile(path)) {
             this.path = path;
             Texture r = TextureCache.getOrCreate(path);
             if (sprite != null)

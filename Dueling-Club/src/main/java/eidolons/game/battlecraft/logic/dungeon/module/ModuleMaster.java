@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.meta.igg.xml.XmlLevelTools;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
@@ -15,9 +14,7 @@ import main.system.PathUtils;
 import org.junit.Test;
 import org.w3c.dom.Node;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 public class ModuleMaster extends MetaGameHandler {
@@ -84,7 +81,7 @@ public class ModuleMaster extends MetaGameHandler {
     }
 
     public boolean isModuleInitOn() {
-        return EidolonsGame.BRIDGE;
+        return true;
     }
 
     public boolean isZoneInitRequired(Node zoneNode) {

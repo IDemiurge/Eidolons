@@ -1,16 +1,11 @@
 package main.level_editor.functions.io;
 
-import eidolons.libgdx.screens.SCREEN_TYPE;
-import eidolons.libgdx.screens.ScreenData;
 import main.data.filesys.PathFinder;
 import main.level_editor.LevelEditor;
 import main.level_editor.functions.LE_Handler;
 import main.level_editor.functions.LE_Manager;
 import main.level_editor.struct.campaign.Campaign;
 import main.level_editor.struct.level.Floor;
-import main.system.EventCallbackParam;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.data.FileManager;
 
 public class LE_DataHandler extends LE_Handler {
@@ -32,7 +27,12 @@ public class LE_DataHandler extends LE_Handler {
     private String getDefaultSavePath(Floor floor) {
         String prefix = "";
         if (campaign == null) {
-            prefix ="scenarios/"+ floor.getGame().getDungeon().getGroup()+"/";
+            if (LevelEditor.TEST_MODE) {
+                prefix = "test/";
+            } else {
+                prefix = "scenario/";
+                prefix +=  floor.getGame().getDungeon().getGroup()+"/";
+            }
         } else {
 //            TODO campaign
         }

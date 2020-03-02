@@ -1601,6 +1601,9 @@ public abstract class DataModel {
     }
 
     public String getOriginalName() {
+        if (originalName == null) {
+            originalName = getName();
+        }
         return originalName;
     }
 

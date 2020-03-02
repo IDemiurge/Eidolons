@@ -7,8 +7,6 @@ import eidolons.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
 import eidolons.game.battlecraft.ai.advanced.companion.MetaGoalMaster;
 import eidolons.game.battlecraft.ai.advanced.machine.AiConst;
 import eidolons.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster;
-import eidolons.game.battlecraft.ai.advanced.machine.PriorityProfile;
-import eidolons.game.battlecraft.ai.advanced.machine.PriorityProfileManager;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequenceConstructor;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.PathSequenceConstructor;
@@ -26,7 +24,7 @@ import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
 import eidolons.game.battlecraft.ai.tools.prune.PruneMaster;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.bf.boss.logic.BossAi;
+import eidolons.game.module.netherflame.boss.logic.BossAi;
 import main.content.values.parameters.PARAMETER;
 
 import java.util.ArrayList;
@@ -61,7 +59,6 @@ public class AiMaster {
     private AiScriptExecutor scriptExecutor;
     private MetaGoalMaster metaGoalMaster;
     private AiPriorityConstantMaster priorityConstantMaster;
-    private PriorityProfileManager priorityProfileManager;
     private PriorityModifier priorityModifier;
     private PathBuilderAtomic pathBuilderAtomic;
     private BossAi bossAi;
@@ -86,7 +83,6 @@ public class AiMaster {
         this.scriptExecutor = new AiScriptExecutor(this);
         this.metaGoalMaster = new MetaGoalMaster(this);
         this.priorityConstantMaster = new AiPriorityConstantMaster(this);
-        this.priorityProfileManager = new PriorityProfileManager(this);
         this.priorityModifier = new PriorityModifier(this);
         this.pathBuilderAtomic = new PathBuilderAtomic(this);
 
@@ -114,7 +110,6 @@ public class AiMaster {
         this.situationAnalyzer.initialize();
         this.metaGoalMaster.initialize();
         this.priorityConstantMaster.initialize();
-        this.priorityProfileManager.initialize();
         this.priorityModifier.initialize();
         this.pathBuilderAtomic.initialize();
 
@@ -129,16 +124,8 @@ public class AiMaster {
         return pathBuilderAtomic;
     }
 
-    public PriorityProfile getProfile() {
-        return getPriorityProfileManager().getProfile();
-    }
-
     public AiPriorityConstantMaster getPriorityConstantMaster() {
         return priorityConstantMaster;
-    }
-
-    public PriorityProfileManager getPriorityProfileManager() {
-        return priorityProfileManager;
     }
 
     public PriorityModifier getPriorityModifier() {

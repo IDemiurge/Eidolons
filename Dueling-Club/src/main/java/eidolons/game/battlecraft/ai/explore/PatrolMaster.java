@@ -5,8 +5,8 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
-import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.ai.explore.behavior.WanderAiMaster;
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.content.enums.system.AiEnums;
 import main.entity.Ref;
 import main.entity.obj.Obj;
@@ -196,8 +196,8 @@ public class PatrolMaster {
         Integer distance = patrol.getDistance();
         Coordinates c;
         if (patrol.getBlock() != null) {
-            c = CoordinatesMaster.getFarmostCoordinateInDirection(d, patrol.getBlock()
-             .getCoordinates(), prefLessMoreMiddle);
+            c = CoordinatesMaster.getFarmostCoordinateInDirection(d,     new ArrayList<>(  patrol.getBlock()
+             .getCoordinatesList()), prefLessMoreMiddle);
         } else {
             if (distance == null) {
                 distance = WanderAiMaster.getMaxWanderTotalDistance(patrol.getGroup(),
@@ -205,8 +205,8 @@ public class PatrolMaster {
                 patrol.setDistance(distance);
             }
             if (distance == null) {
-                c = CoordinatesMaster.getFarmostCoordinateInDirection(d, patrol.getBlock()
-                 .getCoordinates(), prefLessMoreMiddle);
+                c = CoordinatesMaster.getFarmostCoordinateInDirection(d,     new ArrayList<>( patrol.getBlock()
+                 .getCoordinatesList()), prefLessMoreMiddle);
             }
             c = patrol.getLeadingUnit().getCoordinates();
             Integer offsetX = distance;
@@ -243,9 +243,7 @@ public class PatrolMaster {
             return false;
         }
         if (patrol.getTurnsWaited() >= patrol.getMaxWaitPeriod()) {
-            if (checkCatchersUp(patrol, patrol.getTurnsWaited() - patrol.getMaxWaitPeriod())) {
-                return true;
-            }
+            return checkCatchersUp(patrol, patrol.getTurnsWaited() - patrol.getMaxWaitPeriod());
         }
 
         return false;

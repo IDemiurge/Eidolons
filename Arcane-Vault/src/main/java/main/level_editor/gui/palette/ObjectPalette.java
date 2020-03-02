@@ -23,8 +23,7 @@ public class ObjectPalette extends LE_Palette {
         Set<String> tabNames = XML_Reader.getTreeSubGroupMap().get(group);
         for (String tabName : tabNames) {
             List<ObjType> types = DataManager.getTypesSubGroup(TYPE, tabName);
-            int wrap = getWrap();
-            PaletteTypesTable palette = new PaletteTypesTable(wrap, types, 0);
+            PaletteTypesTable palette = new PaletteTypesTable(  types, 0);
             addTab(palette, tabName);
         }
     }

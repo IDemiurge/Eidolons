@@ -40,7 +40,8 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import static com.badlogic.gdx.graphics.GL20.GL_NICEST;
 import static eidolons.system.audio.MusicMaster.MUSIC_SCOPE.ATMO;
-import static main.system.GuiEventType.*;
+import static main.system.GuiEventType.BATTLE_FINISHED;
+import static main.system.GuiEventType.UPDATE_SHADOW_MAP;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -145,7 +146,7 @@ public class DungeonScreen extends GameScreenWithTown {
         WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
 
 
-        if (CoreEngine.isIggDemo() && !EidolonsGame.FOOTAGE && !EidolonsGame.EXTENDED_DEMO)
+        if (CoreEngine.isIggDemo() && !EidolonsGame.FOOTAGE  )
             initBackground();
 
         if (!CoreEngine.isLiteLaunch())
@@ -314,9 +315,7 @@ public class DungeonScreen extends GameScreenWithTown {
 
     private boolean isShowingGrid() {
         if (HqPanel.getActiveInstance() != null) {
-            if (HqPanel.getActiveInstance().getColor().a == 1) {
-                return false;
-            }
+            return HqPanel.getActiveInstance().getColor().a != 1;
         }
         return true;
     }

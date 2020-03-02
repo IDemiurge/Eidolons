@@ -108,7 +108,7 @@ public class MainMenuHandler {
     public Boolean handle(MAIN_MENU_ITEM item) {
         switch (item) {
             case DEMO:
-                EidolonsGame.IGG_DEMO=true;
+                EidolonsGame.DEMO=true;
                 IGG_Launcher.start(()-> startDemo());
                 return null ;
             case NEXT_SCENARIO:
@@ -122,7 +122,7 @@ public class MainMenuHandler {
                 return startMicro(getScenarioTypes(getScenarioGroup(true)),
                  true);
             case SELECT_SCENARIO:
-                EidolonsGame.EXTENDED_DEMO=true;
+//                EidolonsGame.EXTENDED_DEMO=true;
             case CUSTOM_LAUNCH:
                 return startMicro(getScenarioTypes(),
                  null);

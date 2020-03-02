@@ -1,55 +1,37 @@
 package main.level_editor;
 
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.kotcrab.vis.ui.VisUI;
-import com.kotcrab.vis.ui.widget.file.FileChooser;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.gui.NinePatchFactory;
-import eidolons.libgdx.launch.GenericLauncher;
-import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenWithLoader;
-import eidolons.system.audio.MusicMaster;
-import main.content.DC_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
 import main.level_editor.functions.model.LE_DataModel;
 import main.level_editor.gui.palette.PaletteHolder;
-import main.level_editor.gui.screen.LE_Screen;
 import main.level_editor.sim.LE_GameSim;
 import main.level_editor.sim.LE_MetaMaster;
 import main.level_editor.struct.boss.BossDungeon;
 import main.level_editor.struct.campaign.Campaign;
 import main.level_editor.struct.level.Floor;
-import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 import main.system.launch.TypeBuilder;
 import main.system.sound.SoundMaster;
 import main.system.threading.WaitMaster;
-import org.apache.commons.lang3.text.StrBuilder;
-
-import java.util.function.Supplier;
 
 public class LevelEditor {
     public static Window.WindowStyle windowStyle;
@@ -58,6 +40,8 @@ public class LevelEditor {
     private static Campaign campaign;
     private static BossDungeon dungeon;
     private static boolean saveTest = true;
+  public  static final boolean TEST_MODE = true;
+
     public static void main(String[] args) {
         CoreEngine.setLevelEditor(true);
         TypeBuilder.typeBuildOverride.addAll(PaletteHolder.tabTypes);

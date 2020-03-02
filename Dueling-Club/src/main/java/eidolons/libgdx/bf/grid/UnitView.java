@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -215,11 +214,6 @@ public class UnitView extends BaseView implements HpBarView {
     }
 
     protected TextureRegion getDefaultTexture() {
-        if (getUserObject() instanceof Unit) {
-            if (EidolonsGame.BRIDGE) {
-                return originalTexture;
-            }
-        }
         return TextureCache.getOrCreateR(OUTLINE_TYPE.UNKNOWN.getImagePath());
     }
 

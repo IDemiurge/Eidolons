@@ -7,7 +7,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.particles.spell.SpellVfxMaster;
-import eidolons.test.frontend.FAST_DC;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -160,11 +159,6 @@ public class TestMasterContent {
     }
 
     public static boolean checkHeroForTestSpell(ObjType type, String typeName, boolean last) {
-        if (FAST_DC.FAST_MODE) {
-            if (first) {
-                return true;
-            }
-        }
         try {
             return tryCheckHeroForTestSpell(type, typeName, last);
 
@@ -569,12 +563,9 @@ public class TestMasterContent {
         if (getFIX_LIST().contains(name)) {
             return true;
         }
-        if (getTEST_LIST().contains(name)) {
-            return true;
-        }
+        return getTEST_LIST().contains(name);
         // new ListMaster<>().contains(list, item, strict)
         // testConfig.getTestList().contains(name);
-        return false;
     }
 
     private void initAutoTestList() {

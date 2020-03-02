@@ -4,7 +4,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
-import eidolons.test.frontend.FAST_DC;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -35,15 +34,9 @@ public class DungeonLevelMaster {
         if (sublevelTestOn != null) {
             return sublevelTestOn;
         }
-        if (FAST_DC.isRunning()) {
-            return true;
-        }
         return CoreEngine.isLevelEditor();
     }
 
-    public static void generateEntranceData(Dungeon dungeon) {
-
-    }
 
     private static boolean isCenter(DungeonPlan plan, Coordinates coordinates, boolean xOrY) {
         return Math.min(coordinates.getXorY(xOrY), plan.getDimension(xOrY)

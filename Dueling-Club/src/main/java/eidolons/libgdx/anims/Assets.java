@@ -31,8 +31,8 @@ import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.launch.GpuTester;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.particles.EmitterPools;
-import eidolons.libgdx.particles.util.EmitterMaster;
 import eidolons.libgdx.particles.ParticleEffectX;
+import eidolons.libgdx.particles.util.EmitterMaster;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
@@ -501,9 +501,6 @@ public class Assets {
         ShadeLightCell.getShadowMapAtlas();
 //        if (CoreEngine.isSuperLite())
         {
-            if (!EidolonsGame.IGG_DEMO) {
-                return;
-            }
             if (isScopeLoadingMode()) {
 //                if (!EidolonsGame.PUZZLES)
 //                    preloadScope(GAME_SCOPE.COMMON, full);
@@ -565,8 +562,6 @@ public class Assets {
             if (EidolonsGame.DUEL_TEST) {
                 loadSprite(FULLSCREEN_ANIM.WAVE.getSpritePath(), full, ktx);
                 loadSprite(FULLSCREEN_ANIM.BLOOD.getSpritePath(), full, ktx);
-            } else if (EidolonsGame.TRANSIT_TEST) {
-                loadSprite(FULLSCREEN_ANIM.HELLFIRE.getSpritePath(), full, ktx);
             } else {
                 loadSprite(Sprites.PORTAL_OPEN, full, ktx);
                 loadSprite(Sprites.PORTAL, full, ktx);
@@ -624,10 +619,7 @@ public class Assets {
         if (CoreEngine.isIDE()) {
             return false;
         }
-        if (CoreEngine.isYouTube()) {
-            return true;
-        }
-        return false;
+        return CoreEngine.isYouTube();
     }
 
     public static boolean checkSprite(String path) {
@@ -649,10 +641,7 @@ public class Assets {
                 if (path.contains("blood")) {
                     return true;
                 }
-                if (OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.LARGE_SPRITES_OFF)) {
-                    return false;
-                }
-                return true;
+                return !OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.LARGE_SPRITES_OFF);
             case "bf":
             case "cells":
                 return !OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.GRID_SPRITES_OFF);
@@ -688,10 +677,7 @@ public class Assets {
         if (sub == Eidolons.getMainHero()) {
             return true;
         }
-        if (Eidolons.getMainHero().getCoordinates().dst(sub.getCoordinates()) > (full ? 30 : 10)) {
-            return false;
-        }
-        return true;
+        return Eidolons.getMainHero().getCoordinates().dst(sub.getCoordinates()) <= (full ? 30 : 10);
     }
 
 

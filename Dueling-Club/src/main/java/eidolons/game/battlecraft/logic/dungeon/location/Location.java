@@ -1,8 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.content.PROPS;
-import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
 import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -45,7 +43,6 @@ public class Location extends DungeonWrapper {
     private DungeonPlan plan;
     private Entrance mainEntrance;
     private Entrance mainExit;
-    private BuildParameters buildParams;
     private Map<Coordinates, FACING_DIRECTION> unitFacingMap;
 
     public Location(DungeonMaster master, Dungeon dungeon) {
@@ -119,7 +116,7 @@ public class Location extends DungeonWrapper {
         if (StringMaster.isEmpty(entranceData)) {
             entranceData = getProperty(PROPS.DUNGEON_MAIN_ENTRANCES, true);
         }
-        if (StringMaster.isEmpty(entranceData) &&(!EidolonsGame.EXTENDED_DEMO && !getProperty(PROPS.ENTRANCE_COORDINATES, true).isEmpty())) {
+        if (StringMaster.isEmpty(entranceData) &&( !getProperty(PROPS.ENTRANCE_COORDINATES, true).isEmpty())) {
             entranceData = getProperty(PROPS.ENTRANCE_COORDINATES, true);
         }
         if (StringMaster.isEmpty(entranceData)) {
@@ -282,14 +279,6 @@ public class Location extends DungeonWrapper {
 
     public void setParent(Dungeon parent) {
         this.parent = parent;
-    }
-
-    public BuildParameters getBuildParams() {
-        return buildParams;
-    }
-
-    public void setBuildParams(BuildParameters buildParams) {
-        this.buildParams = buildParams;
     }
 
     public void setUnitFacingMap(Map<Coordinates, FACING_DIRECTION> unitFacingMap) {

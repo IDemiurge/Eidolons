@@ -7,8 +7,6 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import eidolons.game.core.game.DC_Game;
-import eidolons.test.Preset;
-import eidolons.test.Preset.PRESET_DATA;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
@@ -53,19 +51,11 @@ public class LaunchDataKeeper {
         //suppose it's just a list of units? coordinates will be figured out later then
         unitData[0] = generateData(hardcodedPlayerData,
 //         game.getPlayer(true)
-         null, null, null);
+                null, null, null);
         unitData[1] = generateData(hardcodedEnemyData,
 //         game.getPlayer(false)
-         null, null, null);
+                null, null, null);
         dungeonData = DungeonInitializer.generateDungeonData(hardcodedDungeonData);
-    }
-
-    public LaunchDataKeeper(DC_Game game, Preset preset) {
-        this(game, preset.getValue(PRESET_DATA.PLAYER_UNITS),
-         preset.getValue(PRESET_DATA.ENEMIES),
-         preset.getValue(PRESET_DATA.FIRST_DUNGEON));
-
-        PresetLauncher.initPresetData(dungeonData, preset);
     }
 
     public LaunchDataKeeper(PlayerData[] playerData, UnitData[] unitData, DungeonData dungeonData) {
@@ -85,26 +75,23 @@ public class LaunchDataKeeper {
         String units = "";
         String coordinates = "";
         String data = "";
-        if (dataString != null) {
-            StringBuilder unitsBuilder = new StringBuilder();
+        if (dataString != null)
             for (String substring : ContainerUtils.open(dataString)) {
                 if (dataString.contains("=")) {
                     coordinates += substring.split("=")[0] + StringMaster.SEPARATOR;
-                    unitsBuilder.append(substring.split("=")[1]).append(StringMaster.SEPARATOR);
+                    units += substring.split("=")[1] + StringMaster.SEPARATOR;
                 } else if (dataString.contains("(") && dataString.contains(")")) {
-                    unitsBuilder.append(VariableManager.removeVarPart(substring)).append(StringMaster.SEPARATOR);
+                    units += VariableManager.removeVarPart(substring) + StringMaster.SEPARATOR;
                     coordinates += VariableManager.getVar(substring) + StringMaster.SEPARATOR;
                 } else
-                    unitsBuilder.append(substring).append(StringMaster.SEPARATOR);
+                    units += substring + StringMaster.SEPARATOR;
             }
-            units = unitsBuilder.toString();
-        }
 
         if (positioner != null)
             if (coordinates.isEmpty()) {
                 ContainerUtils.joinStringList(
-                 ContainerUtils.convertToStringList(
-                  positioner.getPlayerPartyCoordinates(ContainerUtils.openContainer(units))), ",");
+                        ContainerUtils.convertToStringList(
+                                positioner.getPlayerPartyCoordinates(ContainerUtils.openContainer(units))), ",");
 //                List<Coordinates> coordinatesList =
 //                 positioner.getCoordinates(player, spawnAt, units);
 //                coordinates = StringMaster.joinStringList(

@@ -6,7 +6,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
@@ -241,13 +240,6 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         }
 //        game.getPlayer(true).setEmblem(party.getLeader().getEmblem().getImage());
-    }
-
-    //TODO
-    public void spawnWave(String typeName, DC_Player player, Coordinates coordinate) {
-    }
-
-    public void addDungeonEncounter(Dungeon c_dungeon, MapBlock block, Coordinates c, ObjType type) {
     }
 
     protected List<Unit> spawnUnitGroup(boolean me, String filePath) {

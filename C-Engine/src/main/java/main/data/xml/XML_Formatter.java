@@ -5,11 +5,11 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.DataModel;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 
-import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class XML_Formatter {
     private static final String FIRST_CHAR = "FIRST_CHAR";
     protected static String replacedTextContent = "&";
     static String replaced = "~?[]><!@#$%^&*()-=//;+',\"`";
-    static CharsetEncoder asciiEncoder = Charset.forName("US-ASCII").newEncoder();
+    static CharsetEncoder asciiEncoder = StandardCharsets.US_ASCII.newEncoder();
     private static Map<String, String> xmlFormatReplacements = new HashMap<>();
     private static Map<String, String> cache = new HashMap<>();
 
@@ -61,7 +61,7 @@ public class XML_Formatter {
             o = StringMaster.getSubStringBetween(o, ASCII_OPEN, ASCII_CLOSE);
             try {
                 // Character.toChars((int) StringMaster.getInteger(o)).
-                result.append(Character.toString((char) (int) NumberUtils.getInteger(o)));
+                result.append((char) (int) NumberUtils.getInteger(o));
             } catch (Exception e) {
                 return result.toString();
             }
@@ -181,9 +181,14 @@ public class XML_Formatter {
             s = FIRST_CHAR + s;
         }
         s = s.replace("\uFFFD", "-");
+
         for (String x : xmlFormatReplacements.keySet()) {
-            s = s.replace(x, xmlFormatReplacements.get(x));
-            s = s.replace(Pattern.quote(x), xmlFormatReplacements.get(x));
+            if (s.contains(x)   ) {
+                s = s.replace(x, xmlFormatReplacements.get(x));
+            } else
+            if (s.contains(Pattern.quote(x))   ) {
+                s = s.replace(Pattern.quote(x), xmlFormatReplacements.get(x));
+            }
         }
         name = encodeNonASCII(s.replace(" ", "_"));
         cache.put(s, name);

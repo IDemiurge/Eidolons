@@ -3,14 +3,13 @@ package eidolons.game.battlecraft.logic.dungeon.location;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.herocreator.logic.party.Party;
-import eidolons.test.PresetMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.data.FileManager;
@@ -23,7 +22,7 @@ import java.util.*;
  * Created by JustMe on 5/8/2017.
  */
 public class LocationSpawner extends Spawner<Location> {
-    Map<Dungeon, Map<MapBlock, Map<Coordinates, ObjType>>> specialEncounters = new HashMap<>();
+    Map<Dungeon, Map<LevelBlock, Map<Coordinates, ObjType>>> specialEncounters = new HashMap<>();
     private boolean autoSpawnOn;
 
     public LocationSpawner(DungeonMaster master) {
@@ -43,7 +42,7 @@ public class LocationSpawner extends Spawner<Location> {
             if (FileManager.isFile(units))
                 return spawnUnitGroup(player.isMe(), units);
         }
-        if (player.isMe() && PresetMaster.getPreset() == null && getGame().getMetaMaster() != null) {
+        if (player.isMe() &&   getGame().getMetaMaster() != null) {
             Party party = getGame().getMetaMaster().getPartyManager()
                     .getParty();
             if (party == null) {
@@ -97,20 +96,20 @@ public class LocationSpawner extends Spawner<Location> {
     }
 
 
-    public void addDungeonEncounter(Dungeon c_dungeon, MapBlock block, Coordinates c, ObjType type) {
-        Map<MapBlock, Map<Coordinates, ObjType>> map = specialEncounters.get(c_dungeon);
-        if (map == null) {
-            map = new HashMap<>();
-            specialEncounters.put(c_dungeon, map);
-        }
-        Map<Coordinates, ObjType> encounterMap = map.get(block);
-        if (encounterMap == null) {
-            encounterMap = new HashMap<>();
-            map.put(block, encounterMap);
-        }
-        encounterMap.put(c, type);
-
-    }
+//    public void addDungeonEncounter(Dungeon c_dungeon, MapBlock block, Coordinates c, ObjType type) {
+//        Map<MapBlock, Map<Coordinates, ObjType>> map = specialEncounters.get(c_dungeon);
+//        if (map == null) {
+//            map = new HashMap<>();
+//            specialEncounters.put(c_dungeon, map);
+//        }
+//        Map<Coordinates, ObjType> encounterMap = map.get(block);
+//        if (encounterMap == null) {
+//            encounterMap = new HashMap<>();
+//            map.put(block, encounterMap);
+//        }
+//        encounterMap.put(c, type);
+//
+//    }
 
 
 }

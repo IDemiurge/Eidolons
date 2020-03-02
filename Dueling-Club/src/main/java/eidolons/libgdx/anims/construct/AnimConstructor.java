@@ -13,6 +13,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.netherflame.boss.anim.BossAnimator;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimData;
@@ -26,7 +27,6 @@ import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.*;
 import eidolons.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
 import eidolons.libgdx.anims.std.custom.ForceAnim;
-import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.particles.spell.SpellMultiplicator;
 import eidolons.libgdx.particles.spell.SpellVfx;
@@ -205,10 +205,8 @@ public class AnimConstructor {
     private static boolean checkAnimationSupported(DC_ActiveObj active) {
         if (active.getActionGroup() == ACTION_TYPE_GROUPS.HIDDEN)
             return false;
-        if (active.getActionGroup() == ACTION_TYPE_GROUPS.TURN)
-            return false;
+        return active.getActionGroup() != ACTION_TYPE_GROUPS.TURN;
         //hidden?
-        return true;
     }
 
     public static void preconstructSpells(Unit unit) {

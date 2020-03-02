@@ -3,10 +3,10 @@ package eidolons.libgdx.bf.grid;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import eidolons.game.module.netherflame.boss.entity.BossUnit;
+import eidolons.game.module.netherflame.boss.sprite.SpriteModel;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.boss.entity.BossUnit;
-import eidolons.libgdx.bf.boss.sprite.SpriteModel;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.particles.EmitterActor;
@@ -16,7 +16,8 @@ import eidolons.libgdx.shaders.ShaderDrawer;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by JustMe on 11/28/2018.

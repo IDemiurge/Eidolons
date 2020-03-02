@@ -8,7 +8,6 @@ import main.data.xml.XmlStringBuilder;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.level_editor.sim.LE_GameSim;
 import main.level_editor.struct.boss.BossDungeon;
 import main.level_editor.struct.level.Floor;
 import main.system.auxiliary.data.MapMaster;
@@ -30,10 +29,20 @@ public class LE_XmlMaster {
         return xmlBuilder.toString();
     }
 
-    public static  String toXml(Floor floor) {
+    public static String toXml(Floor floor) {
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
 
         //from old - dungeon params props etc
+
+        xmlBuilder.open("Plan");
+
+        xmlBuilder.append(buildIdMap(floor));
+        xmlBuilder.append(buildCoordinateMap(floor));
+        String planXml = (floor.getGame().getDungeonMaster().getDungeonWrapper()).getPlan().getXml();
+
+        xmlBuilder.append(planXml );
+
+        xmlBuilder.close("Plan");
 
         xmlBuilder.open(LocationBuilder.MODULES_NODE);
         for (Module module : floor.getModules()) {
@@ -41,16 +50,10 @@ public class LE_XmlMaster {
             xmlBuilder.appendNode(contents, module.getName());
         }
         xmlBuilder.close(LocationBuilder.MODULES_NODE);
-
-
-        xmlBuilder.append(buildIdMap(floor));
-        xmlBuilder.append(buildCoordinateMap(floor));
-
-        buildCoordinateMap(floor);
-        return  XML_Converter.wrap(xmlBuilder.toString(), "Floor"); //name?
+        return XML_Converter.wrap("Floor", xmlBuilder.toString() ); //name?
     }
 
-    private static  String buildCoordinateMap(Floor floor) {
+    private static String buildCoordinateMap(Floor floor) {
         StringBuilder builder = new StringBuilder();
         Map<Integer, Obj> map = floor.getGame().getSimIdManager().getObjMap();
         for (Coordinates c : floor.getGame().getCoordinates()) {
@@ -76,7 +79,7 @@ public class LE_XmlMaster {
         for (Integer integer : map.keySet()) {
             Integer id = map.get(integer).getId();
             ObjType type = map.get(integer).getType();
-            builder.append(id).append("=").append(type).append(";");
+            builder.append(id).append("=").append(type.getName()).append(";");
 
         }
         return XML_Converter.wrap(LocationBuilder.ID_MAP, builder.toString());

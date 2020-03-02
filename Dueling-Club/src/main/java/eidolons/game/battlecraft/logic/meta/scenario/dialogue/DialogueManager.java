@@ -94,7 +94,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     }
 
     public void introDialogue() {
-        if ( EidolonsGame.PUZZLES|| SKIP_INTRO || !EidolonsGame.BRIDGE){
+        if ( EidolonsGame.PUZZLES|| SKIP_INTRO  ){
             return ;
         }
 

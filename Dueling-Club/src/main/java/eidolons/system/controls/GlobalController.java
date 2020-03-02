@@ -118,10 +118,8 @@ public class GlobalController implements Controller {
                 EUtils.showInfoText("... Tutorial " + (bool ? "on" : "off"));
                 break;
             case Keys.F2:
-                if (EidolonsGame.BRIDGE) {
-                    if (CoreEngine.isIDE()) {
-                        EidolonLord.lord.soulforceLost(50);
-                    }
+                if (CoreEngine.isIDE()) {
+                    EidolonLord.lord.soulforceLost(50);
                     return false;
                 }
                 if (CoreEngine.isIDE())
@@ -165,10 +163,7 @@ public class GlobalController implements Controller {
     }
 
     private boolean isDisabled() {
-        if (DialogueManager.isRunning()) {
-            return true;
-        }
-        return false;
+        return DialogueManager.isRunning();
     }
 
     private boolean doTest(int keyCode) {
@@ -177,7 +172,7 @@ public class GlobalController implements Controller {
                 GuiEventManager.trigger(GuiEventType.DISPOSE_SCOPE, "DIALOGUE");
                 break;
             case Keys.END:
-                GuiEventManager.trigger(GuiEventType.LOG_DIAGNOSTICS);
+//                GuiEventManager.trigger(GuiEventType.LOG_DIAGNOSTICS);
                 break;
             case Keys.F9:
                 Eidolons.onNonGdxThread(() -> {
@@ -199,7 +194,6 @@ public class GlobalController implements Controller {
                     EidolonLord.lord.soulforceGained(110);
                 }
                 PaleAspect.togglePale();
-                EidolonsGame.BRIDGE = !EidolonsGame.BRIDGE;
                 return true;
             case Keys.F6:
                 if (EidolonsGame.DUEL) {
@@ -428,22 +422,8 @@ public class GlobalController implements Controller {
                             new InventoryDataSource(DC_Game.game.getLoop().getActiveUnit()));
                 }
                 break;
-//            case ' ':  now in space()
-//                if (DungeonScreen.getInstance().isBlocked())
-//                    return false;
-//                if (DungeonScreen.getInstance() == null)
-//                    return false;
-//                if (DungeonScreen.getInstance().isWaitingForInput())
-//                    return true;
-//                if (Eidolons.getScreen().getGuiStage().getDisplayedClosable()
-//                        instanceof Blocking)
-//                    return false;
-//                Eidolons.game.getLoop().togglePaused();
-            //                Eidolons.game.getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.PAUSE);
+//            case 'D':
 //                return true;
-            case 'D':
-                Eidolons.game.getDebugMaster().showDebugWindow();
-                return true;
             case 'W': //TODO custom hotkeys
                 Eidolons.game.getDungeonMaster().getExplorationMaster().getTimeMaster()
                         .playerWaits();

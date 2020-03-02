@@ -18,21 +18,21 @@ import java.util.Map;
  * Created by JustMe on 5/13/2017.
  */
 public class EidolonsGame {
-    public static  boolean TESTER_VERSION = false;
-    public static  boolean SELECT_HERO ;
-    public static  boolean SELECT_SCENARIO ;
-    public static   boolean FOOTAGE ;
-    public static   boolean DUEL_TEST  ;
-    public static   boolean TRANSIT_TEST  ;
-    public static boolean LEVI_TEST = false;
+    public static  boolean BRIDGE = false; //TODO refactor it out!
+    public static boolean DEMO = false; //use for tut?
+
+
+    public static boolean TESTER_VERSION = false;
+    public static boolean SELECT_HERO;
+    public static boolean SELECT_SCENARIO;
+    public static boolean FOOTAGE;
+    public static boolean DUEL_TEST;
     public static boolean IDE = CoreEngine.isIDE();
 
 
-    public static boolean BRIDGE = false;
     public static boolean BOSS_FIGHT;
     public static boolean TUTORIAL_MISSION;
     public static boolean TUTORIAL_PATH;
-    public static boolean BRIDGE_CROSSED;
     public static boolean FIRST_BATTLE_STARTED;
     public static boolean DUEL = false;
 
@@ -43,21 +43,18 @@ public class EidolonsGame {
     public static boolean MOVES_FORWARD_ONLY;
     public static boolean TUTORIAL;
     public static boolean PUZZLES;
-    public static boolean EXTENDED_DEMO;
     public static boolean TOWN;
-    public static boolean IGG_DEMO;
     private static Map<String, Boolean> varMap = new StringMap<>();
     private static Map<String, Boolean> actionMap = new StringMap<>();
 
-    public static final void reset( ) {
-        EXTENDED_DEMO=false;
-        IGG_DEMO=false;
+    public static final void reset() {
     }
-        public static final void set(String field, boolean val) {
+
+    public static final void set(String field, boolean val) {
         setVar(field, val);
         try {
             EidolonsGame.class.getField(field.toUpperCase()).set(null, val);
-            main.system.auxiliary.log.LogMaster.important(field + ": global var set to " +val);
+            main.system.auxiliary.log.LogMaster.important(field + ": global var set to " + val);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
@@ -72,9 +69,10 @@ public class EidolonsGame {
         }
 
     }
-    public static final boolean get(String field ) {
+
+    public static final boolean get(String field) {
         try {
-            return (boolean) EidolonsGame.class.getField(field.toUpperCase()).get(null );
+            return (boolean) EidolonsGame.class.getField(field.toUpperCase()).get(null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,7 +85,8 @@ public class EidolonsGame {
         }
         return varMap.get(field);
     }
-        public static boolean getVar(String field) {
+
+    public static boolean getVar(String field) {
         if (varMap.get(field) == null) {
             return false;
         }
@@ -95,7 +94,7 @@ public class EidolonsGame {
     }
 
     public static void setVar(String value, Boolean valueOf) {
-        main.system.auxiliary.log.LogMaster.important(value + ": setting var to " +valueOf);
+        main.system.auxiliary.log.LogMaster.important(value + ": setting var to " + valueOf);
         varMap.put(value, valueOf);
     }
 
@@ -116,15 +115,10 @@ public class EidolonsGame {
     static Map<TUTORIAL_STAGE, Boolean> completionMap;
 
     public static boolean isHqEnabled() {
-        if (EidolonsGame.BRIDGE)
-            if (!EidolonsGame.BRIDGE_CROSSED)
-                return false;
         return true;
     }
 
     public static boolean isAltControlPanel() {
-        if (EidolonsGame.BRIDGE_CROSSED)
-            return false;
         return BRIDGE;
     }
 

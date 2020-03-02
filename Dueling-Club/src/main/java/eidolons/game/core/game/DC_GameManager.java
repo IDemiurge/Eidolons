@@ -112,6 +112,10 @@ public class DC_GameManager extends GameManager {
 
     }
 
+    public void setObjCreator(ObjCreator objCreator) {
+        this.objCreator = objCreator;
+    }
+
     @Override
     public BuffObj createBuff(BuffType type, Obj active, Player player, Ref ref, Effect effect, int duration, Condition retainCondition) {
         return buffMaster.createBuff(type, active, player, ref, effect, duration, retainCondition);
@@ -542,9 +546,6 @@ public class DC_GameManager extends GameManager {
         if (!getGame().getMetaMaster().getEventHandler().handle(event)) {
             return false;
         }
-        if (getGame().getDebugMaster() != null) {
-            event.getRef().setDebug(getGame().getDebugMaster().isDebugFunctionRunning());
-        }
         if (event.getRef().getSourceObj() != null) {
             if (!AnimMaster.isAnimationOffFor(event.getRef().getSourceObj(), null))
                 if (AnimMaster.isPreconstructEventAnims()) if (AnimMaster.isOn()) {
@@ -652,10 +653,7 @@ public class DC_GameManager extends GameManager {
 
 
     public boolean checkAutoCameraCenter() {
-        if (AI_Manager.isRunning()) {
-            return false;
-        }
-        return true;
+        return !AI_Manager.isRunning();
     }
 
     public void setHighlightedObj(BattleFieldObject highlightedObj) {

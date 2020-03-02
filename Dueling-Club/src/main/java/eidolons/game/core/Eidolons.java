@@ -330,7 +330,6 @@ public class Eidolons {
     }
 
     public static void exitToMenu() {
-        EidolonsGame.reset();
         CoreEngine.setIggDemoRunning(false);
         DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__ENTER);
         try {
@@ -426,11 +425,7 @@ public class Eidolons {
     }
 
     public static void setResolution(RESOLUTION resolution) {
-        if (resolution!= RESOLUTION._1920x1080) {
-            GdxMaster.CUSTOM_RESOLUTION = true;
-        } else {
-            GdxMaster.CUSTOM_RESOLUTION = false;
-        }
+        GdxMaster.CUSTOM_RESOLUTION = resolution != RESOLUTION._1920x1080;
         if (resolution != null) {
             if (resolution != Eidolons.getResolution()) {
                 if (Eidolons.getScope() != null)

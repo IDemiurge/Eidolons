@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
@@ -359,7 +358,6 @@ public class OptionsMaster {
                 break;
             case TESTER_VERSION:
                 CoreEngine.setTesterVersion(bool);
-                EidolonsGame.LEVI_TEST = bool;
                 break;
             case ActiveTestMode:
                 CoreEngine.setActiveTestMode(bool);

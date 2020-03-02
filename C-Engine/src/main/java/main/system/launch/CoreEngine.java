@@ -605,10 +605,6 @@ public class CoreEngine {
         CoreEngine.toolIsRunning = toolIsRunning;
     }
 
-    public static boolean getToolIsRunning() {
-        return toolIsRunning;
-    }
-
     public static boolean isActiveTestMode() {
         return activeTestMode;
     }

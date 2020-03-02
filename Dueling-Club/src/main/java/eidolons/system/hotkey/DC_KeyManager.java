@@ -11,14 +11,11 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.libgdx.anims.controls.AnimController;
-import eidolons.libgdx.anims.controls.EmitterController;
 import eidolons.system.controls.Controller;
 import eidolons.system.controls.Controller.CONTROLLER;
 import eidolons.system.controls.GlobalController;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
-import eidolons.test.debug.DebugController;
-import eidolons.test.debug.DebugMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -64,9 +61,6 @@ public class DC_KeyManager
         stdModeKeyMap = new ConcurrentHashMap<>();
         addMoveActionKeyMap = new ConcurrentHashMap<>();
         controller = getControllerInstance(DEFAULT_CONTROLLER);
-        if (EmitterController.overrideKeys) {
-            controller = EmitterController.getInstance();
-        }
     }
 
     public void initHotkeysForUnit() {
@@ -150,22 +144,10 @@ public class DC_KeyManager
     }
 
     private boolean checkFunctionHelper(KeyEvent e) {
-
-        if (e.getKeyChar() != DebugMaster.FUNCTION_HOTKEY_CHAR) {
-            return false;
-        }
-
-        mngr.getGame().getDebugMaster().promptFunctionToExecute();
         return true;
     }
 
     private boolean checkDebugMaster(KeyEvent e) {
-        // if (GlobalKeys.isGlobalKeysOn())
-        // return false;
-        if (e.getKeyChar() != DebugMaster.HOTKEY_CHAR) {
-            return false;
-        }
-        mngr.getGame().getDebugMaster().showDebugWindow();
         return true;
     }
 
@@ -217,14 +199,8 @@ public class DC_KeyManager
             case ANIM:
                 return AnimController.getInstance();
 
-            case DEBUG:
-                return DebugController.getInstance();
-
             case RULES:
                 return RuleKeeper.getInstance();
-
-            case EMITTER:
-                return EmitterController.getInstance();
 
         }
         return null;

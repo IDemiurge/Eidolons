@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechBuilder;
@@ -62,7 +61,7 @@ public class DialogueFactory {
 
     public void init(MetaGameMaster master) {
         this.master = master;
-        if (CoreEngine.isCombatGame() && EidolonsGame.IGG_DEMO) {
+        if (CoreEngine.isCombatGame() ) {
             String pathRoot = getFileRootPath();
 //             PathFinder.getRootPath() +   PathFinder.getScenariosPath() +p +StringMaster.getPathSeparator()+
 //                 TextMaster.getLocale();

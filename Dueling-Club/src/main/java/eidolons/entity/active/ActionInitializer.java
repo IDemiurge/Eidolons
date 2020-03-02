@@ -13,7 +13,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.bf.boss.entity.BossActionMaster;
+import eidolons.game.module.netherflame.boss.entity.BossActionMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;

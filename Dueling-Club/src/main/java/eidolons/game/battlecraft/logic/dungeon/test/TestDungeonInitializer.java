@@ -5,7 +5,6 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.test.frontend.FAST_DC;
 import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.content.enums.DungeonEnums.DUNGEON_SUBFOLDER;
@@ -59,9 +58,6 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
         setDungeonPath(getGame().getDataKeeper().getDungeonData().getValue(DUNGEON_VALUE.PATH));
         setPresetDungeonType(getGame().getDataKeeper().getDungeonData().getValue(DUNGEON_VALUE.TYPE_NAME));
 
-        if (FAST_DC.getLauncher().getSUPER_FAST_MODE()) {
-//        setDungeonPath(FAST_DC.DEFAULT_TEST_DUNGEON);
-        }
         if (getDungeonPath() != null) {
             return (TestDungeon) getBuilder().buildDungeon(getDungeonPath());
         }
@@ -70,10 +66,6 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
             return createDummyDungeon();
         }
         ObjType type = null;
-        if (!FAST_DC.isRunning()) {
-            type = DataManager.getType(getPresetDungeonType(), DC_TYPE.DUNGEONS);
-            return createDungeon(type);
-        } else {
             if (RANDOM) {
                 type =
                  pickRandomDungeon();
@@ -84,7 +76,6 @@ public class TestDungeonInitializer extends DungeonInitializer<TestDungeon> {
 //                if (type == null) {
                 return initDungeonLevelChoice();
             }
-        }
 
         return createDummyDungeon();
     }

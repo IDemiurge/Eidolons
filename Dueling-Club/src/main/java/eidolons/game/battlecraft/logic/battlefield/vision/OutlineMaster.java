@@ -4,7 +4,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
-import eidolons.test.debug.DebugMaster;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_IMAGE;
@@ -33,10 +32,6 @@ public class OutlineMaster {
     }
 
     public OUTLINE_TYPE getOutlineType(DC_Obj unit, Unit activeUnit) {
-        if (DebugMaster.isOmnivisionOn()) {
-            if (activeUnit.isMine())
-                return null;
-        }
         if (CoreEngine.isFootageMode()){
             return null;
         }

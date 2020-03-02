@@ -4,8 +4,8 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYP
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
-import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjAtCoordinate;
@@ -24,8 +24,6 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     private ROOM_TYPE roomType;
     private int width;
     private int height;
-    private List<ObjAtCoordinate> units = new ArrayList<>();
-    private List<ObjAtCoordinate> objects = new ArrayList<>();
     private Set<Coordinates> coordinatesList;
     private TileMap tileMap;
     private TileMap originalTileMap;
@@ -41,8 +39,8 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         this.height = height;
         this.tileMap = tileMap;
         this.originalTileMap = new TileMap(
-         new MapMaster<Coordinates, ROOM_CELL>().cloneHashMap(
-         tileMap.getMap()));
+                new MapMaster<Coordinates, ROOM_CELL>().cloneHashMap(
+                        tileMap.getMap()));
         this.coordinates = coordinates;
         this.zone = zone;
         if (RandomWizard.chance(75)) {
@@ -69,7 +67,7 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     @Override
     public String toString() {
         return getRoomType() + " block of " + zone
-         + "\n" + tileMap.toString();
+                + "\n" + tileMap.toString();
     }
 
     @Override
@@ -78,13 +76,8 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         xml += XML_Converter.wrap(RngXmlMaster.BLOCK_ROOM_TYPE_NODE, roomType.name());
 
 //     TODO    if (isCustomCoordinateList())
-            xml += XML_Converter.wrap(RngXmlMaster.COORDINATES_NODE, ContainerUtils.
-             toStringContainer(getCoordinatesList(), RngXmlMaster.SEPARATOR));
-
-        xml += XML_Converter.wrap(RngXmlMaster.UNITS_NODE, ContainerUtils.
-         toStringContainer(units, RngXmlMaster.SEPARATOR));
-        xml += XML_Converter.wrap(RngXmlMaster.OBJECTS_NODE, ContainerUtils.
-         toStringContainer(objects, RngXmlMaster.SEPARATOR));
+        xml += XML_Converter.wrap(RngXmlMaster.COORDINATES_NODE, ContainerUtils.
+                toStringContainer(getCoordinatesList(), RngXmlMaster.SEPARATOR));
 
 
         xml += XML_Converter.wrap(RngXmlMaster.COLOR_THEME, colorTheme.toString());
@@ -100,18 +93,20 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         return height;
     }
 
+    @Deprecated
     public List<ObjAtCoordinate> getUnits() {
-        return units;
+        return new ArrayList<>();
     }
 
+    @Deprecated
     public List<ObjAtCoordinate> getObjects() {
-        return objects;
+        return new ArrayList<>();
     }
 
     public Set<Coordinates> getCoordinatesList() {
         if (coordinatesList == null)
             coordinatesList = new LinkedHashSet<>(
-             tileMap.getMap().keySet()
+                    tileMap.getMap().keySet()
 //              .stream().map(c ->
 //              c.getOffset(getCoordinates())).collect(Collectors.toSet())
             );
@@ -173,7 +168,7 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     }
 
     public int getSquare() {
-        return getWidth() *  getHeight();
+        return getWidth() * getHeight();
     }
 
     public TileMap getOriginalTileMap() {
@@ -198,8 +193,8 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
 
     public Coordinates getCenterCoordinate() {
         if (centerCoordinate == null) {
-        centerCoordinate = coordinates.getOffsetByX(getWidth() / 2).getOffsetByY(getHeight() / 2);
-    }
+            centerCoordinate = coordinates.getOffsetByX(getWidth() / 2).getOffsetByY(getHeight() / 2);
+        }
         return centerCoordinate;
     }
 

@@ -3,7 +3,7 @@ package main.level_editor.gui.grid;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.libgdx.bf.boss.sprite.BossView;
+import eidolons.game.module.netherflame.boss.sprite.BossView;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.bf.grid.OverlayView;
 import eidolons.libgdx.bf.grid.UnitViewFactory;

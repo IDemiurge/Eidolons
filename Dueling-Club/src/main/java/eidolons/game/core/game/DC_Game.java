@@ -27,6 +27,7 @@ import eidolons.game.battlecraft.logic.dungeon.test.TestDungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGame;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.rules.DC_Rules;
@@ -36,7 +37,6 @@ import eidolons.game.core.*;
 import eidolons.game.core.atb.AtbController;
 import eidolons.game.core.atb.AtbTurnManager;
 import eidolons.game.core.launch.LaunchDataKeeper;
-import eidolons.game.core.launch.PresetLauncher;
 import eidolons.game.core.master.combat.CombatMaster;
 import eidolons.game.core.state.DC_GameState;
 import eidolons.game.core.state.DC_StateManager;
@@ -53,8 +53,6 @@ import eidolons.system.hotkey.DC_KeyManager;
 import eidolons.system.math.DC_MathManager;
 import eidolons.system.test.TestMasterContent;
 import eidolons.system.text.DC_LogManager;
-import eidolons.test.PresetMaster;
-import eidolons.test.debug.DebugMaster;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
@@ -109,7 +107,6 @@ public class DC_Game extends GenericGame {
     protected DC_GameManager manager;
 
     protected VisionMaster visionMaster;
-    protected DebugMaster debugMaster;
     protected TestMasterContent testMaster;
     protected AI_Manager aiManager;
     protected DC_KeyManager keyManager; //where to move?
@@ -240,10 +237,6 @@ public class DC_Game extends GenericGame {
 
         initObjTypes();
 
-        if (PresetMaster.getPreset() != null) {
-            PresetLauncher.launchPreset();
-        }
-
         setInitialized(true);
         keyManager = new DC_KeyManager(getManager());
         Chronos.logTimeElapsedForMark("GAME_INIT");
@@ -300,9 +293,6 @@ public class DC_Game extends GenericGame {
         this.manager.setSbInitialized(true); //TODO legacy?
         getTurnManager().init();
 
-        if (isDebugMode()) {
-            debugMaster = new DebugMaster(getState());
-        }
         keyManager.init();
         getGraveyardManager().init();//TODO in init?
         battleMaster.startGame();
@@ -317,7 +307,7 @@ public class DC_Game extends GenericGame {
         }
         visionMaster.refresh();
         getMetaMaster().getDialogueManager().introDialogue();
-        getMetaMaster().getDialogueManager().afterDialogue(() -> {
+        DialogueManager.afterDialogue(() -> {
             fireEvent(new Event(Event.STANDARD_EVENT_TYPE.INTRO_FINISHED, new Ref()));
         });
         startGameLoop(first);
@@ -554,29 +544,8 @@ public class DC_Game extends GenericGame {
         return (DC_GameState) state;
     }
 
-    public synchronized DebugMaster getDebugMaster() {
-        if (debugMaster == null) {
-            if (started)
-                debugMaster = new DebugMaster(getState());
-        }
-        return debugMaster;
-    }
-
-
     @Override
     public void setDebugMode(boolean debugMode) {
-        if (getDebugMaster() != null)
-            if (debugMode != this.debugMode) {
-                if (!debugMode) {
-                    getVisionMaster().getVisionRule().togglePlayerUnseenMode();
-                }
-                try {
-                    getDebugMaster().debugModeToggled(debugMode);
-                } catch (Exception e) {
-                    ExceptionMaster.printStackTrace(e);
-                }
-            }
-
         super.setDebugMode(debugMode);
     }
 

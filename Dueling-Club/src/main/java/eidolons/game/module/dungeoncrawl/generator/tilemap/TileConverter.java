@@ -1,27 +1,18 @@
 package eidolons.game.module.dungeoncrawl.generator.tilemap;
 
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
-import eidolons.game.module.dungeoncrawl.generator.init.RngBfObjProvider;
-import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.RoomModel;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
-import main.entity.type.ObjAtCoordinate;
-import main.game.bf.Coordinates;
-import main.system.StreamUtil;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static main.content.enums.DungeonEnums.DUNGEON_STYLE.*;
 
@@ -120,73 +111,6 @@ public class TileConverter {
         return new Pair[]{
          new ImmutablePair(string, DC_TYPE.BF_OBJ)
         };
-    }
-
-    private String getArtObj(LevelBlock block, int x, int y) {
-        DUNGEON_STYLE style = getStyle(metaData.getLocationType());
-
-        String pool = RngBfObjProvider.getWeightString(ROOM_CELL.ART_OBJ, style);
-        String pick = null;
-        Coordinates c = new AbstractCoordinates(x, y);
-        while (!checkObj(c, block, pool,
-         pick = new RandomWizard<String>().getObjectByWeight(pool, String.class))) {
-
-        }
-        //check proximity
-        //randomize
-
-        switch (metaData.getLocationType()) {
-
-        }
-
-        return null;
-    }
-
-    private boolean checkObj(Coordinates c, LevelBlock block, String pool, String pick) {
-        List<ObjAtCoordinate> objects = new ArrayList<>(block.getObjects());
-        List<ObjAtCoordinate> adjacent =
-         new StreamUtil<ObjAtCoordinate>().filter(objects,
-          (object) -> object.getCoordinates().isAdjacent(c));
-
-
-        return false;
-    }
-
-    public Tile convert(ROOM_CELL cell, RoomModel room, int x, int y) {
-        if (cell == ROOM_CELL.FLOOR)
-            return new Tile();
-        LevelBlock block = model.getBlocks().get(room);
-        switch (cell) {
-            case DESTRUCTIBLE:
-                break;
-
-            case WALL:
-                return new Tile(getBfObjPair(getWall(room, x, y)));
-            case ENTRANCE:
-            case ROOM_EXIT:
-                return new Tile(getBfObjPair(getExitObj(block, x, y)));
-            case CONTAINER:
-            case SPECIAL_CONTAINER:
-                return new Tile(getBfObjPair(getContainerObj(block, x, y)));
-            case DOOR:
-            case SECRET_DOOR:
-                return new Tile(getBfObjPair(getDoor(block, x, y)));
-            case ART_OBJ:
-            case SPECIAL_ART_OBJ:
-                return new Tile(getBfObjPair(getArtObj(block, x, y)));
-            case GUARDS:
-                //                return new Tile(getGuard(block, x, y));
-            case LIGHT_EMITTER:
-                return new Tile(getBfObjPair(getLightEmitter(block, x, y)));
-            case WALL_WITH_LIGHT_OVERLAY:
-                return new Tile(getBfObjPair(
-                 getWall(room, x, y), getLightEmitterOverlaying(block, x, y)));
-            case WALL_WITH_DECOR_OVERLAY:
-                return new Tile(getBfObjPair(
-                 getWall(room, x, y), getDecorOverlaying(block, x, y)));
-
-        }
-        return new Tile();
     }
 
     private String getDecorOverlaying(LevelBlock block, int x, int y) {

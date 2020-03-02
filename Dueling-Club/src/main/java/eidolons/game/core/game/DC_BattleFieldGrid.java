@@ -1,9 +1,7 @@
 package eidolons.game.core.game;
 
-import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
-import eidolons.game.battlecraft.logic.dungeon.location.building.DC_Map;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.entity.Entity;
 import main.entity.obj.Obj;
@@ -22,7 +20,6 @@ import java.util.Set;
 public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     private DC_Game game;
-    private DC_Map map;
     private int h;
     private int w;
     private Dungeon dungeon;
@@ -122,18 +119,6 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     public boolean isCoordinateObstructed(Coordinates c) {
         return isOccupied(c);
-    }
-
-    public DC_Map getMap() {
-        if (map == null) {
-            map = new DC_Map();
-            map.setBackground(dungeon.getProperty(PROPS.MAP_BACKGROUND));
-        }
-        return map;
-    }
-
-    public void setMap(DC_Map map1) {
-        map = map1;
     }
 
     @Override

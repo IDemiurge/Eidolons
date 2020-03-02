@@ -21,6 +21,22 @@ public class PaletteSelection {
     GenericEnums.VFX vfx;
     boolean overlaying;
 
+    public ObjType getObjType() {
+        return objType;
+    }
+
+    public ObjType getObjTypeOverlaying() {
+        return objTypeOverlaying;
+    }
+
+    public GenericEnums.VFX getVfx() {
+        return vfx;
+    }
+
+    public boolean isOverlaying() {
+        return overlaying;
+    }
+
     //custom type?
 
     //templates of rooms, scripts,

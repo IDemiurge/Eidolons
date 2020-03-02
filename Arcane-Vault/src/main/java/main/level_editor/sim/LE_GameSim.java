@@ -2,13 +2,12 @@ package main.level_editor.sim;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.game.DC_BattleFieldGrid;
-import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.game.ScenarioGame;
+import eidolons.game.core.master.ObjCreator;
 import main.entity.Ref;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
@@ -36,6 +35,20 @@ public class LE_GameSim extends ScenarioGame {
             public Unit getActiveObj() {
                 return dummyPC;
             }
+
+            @Override
+            public void init() {
+                super.init();
+                setObjCreator(new ObjCreator(getGame()){
+                    @Override
+                    public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
+                        MicroObj obj = super.createUnit(type, x, y, owner, ref);
+                        Integer id = simIdManager.objectCreated(obj);
+                        getMetaMaster().getDungeonMaster().getLayerManager().addToCurrent(id , obj);
+                        return obj;
+                    }
+                });
+            }
         };
     }
 
@@ -59,14 +72,6 @@ public class LE_GameSim extends ScenarioGame {
         removed(obj);
     }
 
-    @Override
-    public MicroObj createUnit(ObjType type, int x, int y, Player owner) {
-        MicroObj obj = super.createUnit(type, x, y, owner);
-//        floor.getManager().get
-        Integer id = simIdManager.objectCreated(obj);
-        getMetaMaster().getDungeonMaster().getLayerManager().addToCurrent(id , obj);
-        return obj;
-    }
 
     @Override
     public boolean isPaused() {

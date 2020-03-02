@@ -36,7 +36,6 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     protected Positioner<E> positioner;
     protected Spawner<E> spawner;
     protected FacingAdjuster<E> facingAdjuster;
-    protected DungeonMapGenerator<E> mapGenerator;
     private ExplorationMaster explorationMaster;
     private DoorMaster doorMaster;
     private LockMaster lockMaster;
@@ -60,7 +59,6 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         positioner = createPositioner();
         facingAdjuster = createFacingAdjuster();
         builder = createBuilder();
-        mapGenerator = new DungeonMapGenerator<E>(this);
         explorationMaster = new ExplorationMaster(game);
 
         doorMaster = new DoorMaster(this);
@@ -160,10 +158,6 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
     public DC_Game getGame() {
         return game;
-    }
-
-    public DungeonMapGenerator<E> getMapGenerator() {
-        return mapGenerator;
     }
 
     public DungeonInitializer<E> getInitializer() {

@@ -1,8 +1,8 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
 import eidolons.ability.InventoryTransactionManager;
-import eidolons.content.DC_CONSTS.JEWELRY_ITEM_TRAIT;
 import eidolons.content.DC_CONSTS.ITEM_LEVEL;
+import eidolons.content.DC_CONSTS.JEWELRY_ITEM_TRAIT;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
@@ -10,7 +10,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster.CONTAINER_ACTION;
@@ -93,8 +92,6 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public static boolean isGenerateItemsForUnits() {
-        if (EidolonsGame.BRIDGE)
-            return false;
         return !CoreEngine.isFullFastMode();
     }
 
@@ -502,7 +499,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     private String checkCustomGroupForContents(CONTAINER_CONTENTS c, boolean sub, DC_TYPE type, BattleFieldObject container) {
-        ; //use as filter?
+        //use as filter?
 
         return null;
     }
@@ -712,9 +709,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             if (obj.getCoordinates().dst(Eidolons.getMainHero().getCoordinates()) > 20) {
                 return false;
             }
-            if (obj.getProperty(G_PROPS.BF_OBJECT_GROUP).equalsIgnoreCase(BF_OBJECT_GROUP.TREASURE.toString())) {
-                return true;
-            }
+            return obj.getProperty(G_PROPS.BF_OBJECT_GROUP).equalsIgnoreCase(BF_OBJECT_GROUP.TREASURE.toString());
         }
 
         return false;

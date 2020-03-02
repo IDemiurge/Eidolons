@@ -7,7 +7,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.AI_Manager;
-import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
@@ -111,10 +110,6 @@ public class GameLoop {
 
     protected void loopExited() {
         LogMaster.log(1, "Game Loop exit " + this);
-        if (AiTrainingRunner.running) {
-            WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, false);
-        }
-
         WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
         LogMaster.log(1, this + " exited!");
         setExited(false);
@@ -463,9 +458,7 @@ public class GameLoop {
             if (!Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT))
                 if (game.isDebugMode() || (CoreEngine.isLevelTestMode() && !Eidolons.getMainHero().getLastCoordinates().equals(c)))
                     if (location.getMainEntrance() != null)
-                        if (location.getMainEntrance().getCoordinates().equals(c)) {
-                            return true;
-                        }
+                        return location.getMainEntrance().getCoordinates().equals(c);
         return false;
     }
 

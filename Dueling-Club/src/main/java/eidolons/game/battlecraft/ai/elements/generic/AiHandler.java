@@ -6,8 +6,6 @@ import eidolons.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
 import eidolons.game.battlecraft.ai.advanced.companion.MetaGoalMaster;
 import eidolons.game.battlecraft.ai.advanced.machine.AiConst;
 import eidolons.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster;
-import eidolons.game.battlecraft.ai.advanced.machine.PriorityProfile;
-import eidolons.game.battlecraft.ai.advanced.machine.PriorityProfileManager;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequenceConstructor;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.PathSequenceConstructor;
@@ -139,16 +137,8 @@ public abstract class AiHandler {
         return master.getTurnSequenceConstructor();
     }
 
-    public PriorityProfile getProfile() {
-        return getMaster().getProfile();
-    }
-
     public AiPriorityConstantMaster getPriorityConstantMaster() {
         return getMaster().getPriorityConstantMaster();
-    }
-
-    public PriorityProfileManager getPriorityProfileManager() {
-        return getMaster().getPriorityProfileManager();
     }
 
     public List<AiHandler> getHandlers() {

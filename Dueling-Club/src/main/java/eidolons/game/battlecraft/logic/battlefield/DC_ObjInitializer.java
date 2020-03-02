@@ -5,17 +5,15 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
-import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.objects.HungItemMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.system.test.TestMasterContent;
-import eidolons.test.frontend.FAST_DC;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
@@ -26,13 +24,12 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.DIRECTION;
 import main.game.bf.ZCoordinates;
+import main.game.bf.directions.DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
@@ -55,7 +52,7 @@ public class DC_ObjInitializer {
     private static final String MULTI_DIRECTION_SUFFIX = "MULTI_DIRECTION-";
     private static UnitData data;
     private static boolean mapBlockMode;
-    private static MapBlock block;
+    private static LevelBlock block;
     private static Dungeon c_dungeon;
     private static Coordinates offset;
 
@@ -66,7 +63,7 @@ public class DC_ObjInitializer {
 //        processUnitDataStringToMap(game.getPlayer(false), data.getPlayer2UnitData(), game, true);
     }
 
-    public static Map<Coordinates, ? extends Obj> initMapBlockObjects(Dungeon dungeon, MapBlock b,
+    public static Map<Coordinates, ? extends Obj> initMapBlockObjects(Dungeon dungeon, LevelBlock b,
                                                                       String textContent) {
         mapBlockMode = true;
         block = b;
@@ -175,34 +172,18 @@ public class DC_ObjInitializer {
         Map<Coordinates, MicroObj> map = new HashMap<>();
         int i = 0;
         boolean first = true;
-        boolean creeps = false;
         List<Coordinates> excludedCoordinates = new ArrayList<>();
         Boolean last = null;
 
         for (int indx = 0; indx < items.length; indx++) {
             String item = items[indx];
             boolean excludeCoordinate = false;
-            if (mapBlockMode) {
-                if (item.contains("%")) {
-                    Integer chance = NumberUtils.getInteger(VariableManager.getVarPart(item)
-                            .replace("%", " "));
-                    if (chance < 0) {
-                        chance = -chance;
-                        excludeCoordinate = true;
-                    }
-                    if (RandomWizard.chance(chance)) {
-                        continue;
-                    }
-                }
-
-
-            }
             Coordinates c = null;
-            if (item.contains("(") || item.contains("-")) {
-                if (!item.contains("null=")) {
-                    c = getCoordinatesFromObjString(item, alt);
-                }
-            }
+//            if (item.contains("(") || item.contains("-")) {
+//                if (!item.contains("null=")) {
+//                    c = getCoordinatesFromObjString(item, alt);
+//                }
+//            }
             String typeName = getNameFromObjString(item, alt);
             i++;
             if (i == items.length) {
@@ -293,14 +274,6 @@ public class DC_ObjInitializer {
                 if (excludedCoordinates.contains(c)) {
                     continue;
                 }
-                if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
-                    if (!game.isSimulation()) {
-                        game.getBattleMaster().getSpawner().
-                                addDungeonEncounter(c_dungeon,
-                                        block, c, type);
-                    }
-                    continue;
-                }
 
                 if (!CoreEngine.isLevelEditor()
                         && C_OBJ_TYPE.UNITS_CHARS.equals(type.getOBJ_TYPE_ENUM())) {
@@ -334,24 +307,6 @@ public class DC_ObjInitializer {
             BattleFieldObject unit = (BattleFieldObject) game.createUnit(type, c, owner);
             if (unit == null) {
                 continue;
-            }
-
-            if (FAST_DC.isRunning()) {
-                if (!owner.isMe()) {
-                    creeps = true;
-                } else {
-                    try {
-                        Unit hero = (Unit) unit;
-                        if (first) {
-                            PartyHelper.newParty(hero);
-                        } else {
-                            PartyHelper.addMember(hero);
-                        }
-                    } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
-                    }
-                }
-
             }
 
             first = false;
@@ -405,7 +360,7 @@ public class DC_ObjInitializer {
 
     public static void initializePartyPositions(String playerPartyData,
                                                 Collection<? extends Obj> units) {
-        List<String> items = Arrays.asList(playerPartyData.split(OBJ_SEPARATOR));
+        String[] items = playerPartyData.split(OBJ_SEPARATOR);
 
         for (String item : items) {
             Coordinates c = getCoordinatesFromObjString(item);

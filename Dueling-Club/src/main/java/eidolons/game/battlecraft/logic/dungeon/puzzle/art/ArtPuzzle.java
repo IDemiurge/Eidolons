@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.art;
 
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.ManipulatorPuzzle;
 import eidolons.libgdx.shaders.post.PostFxUpdater;
@@ -24,7 +23,6 @@ public class ArtPuzzle extends ManipulatorPuzzle {
     @Override
     public void complete() {
         super.complete();
-        EidolonsGame.BRIDGE_CROSSED = true;
     }
 
     @Override

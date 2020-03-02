@@ -17,10 +17,6 @@ public class DungeonHandler<E extends DungeonWrapper> {
         this.game = master.getGame();
     }
 
-    public DungeonMapGenerator<E> getMapGenerator() {
-        return master.getMapGenerator();
-    }
-
     public DC_Game getGame() {
         return master.getGame();
     }

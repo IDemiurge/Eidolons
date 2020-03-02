@@ -13,15 +13,15 @@ import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.module.netherflame.boss.anim.BossAnimator;
+import eidolons.game.module.netherflame.boss.entity.BossUnit;
+import eidolons.game.module.netherflame.boss.sprite.BossView;
 import eidolons.libgdx.anims.*;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.std.sprite.CustomSpriteAnim;
-import eidolons.libgdx.bf.boss.anim.BossAnimator;
-import eidolons.libgdx.bf.boss.entity.BossUnit;
-import eidolons.libgdx.bf.boss.sprite.BossView;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
@@ -108,8 +108,7 @@ public class AnimMaster extends Group {
                 return true;
         if (sourceObj instanceof DC_Obj)
             if (!sourceObj.isMine())
-                if (!VisionManager.checkVisible((DC_Obj) sourceObj, false))
-                    return true;
+                return !VisionManager.checkVisible((DC_Obj) sourceObj, false);
 
         return false;
     }
@@ -228,10 +227,7 @@ public class AnimMaster extends Group {
         if (action.getAction().getName().contains("Reload")) {
             return false;
         }
-        if (action.getAction().getName().equalsIgnoreCase("Wait")) {
-            return false;
-        }
-        return true;
+        return !action.getAction().getName().equalsIgnoreCase("Wait");
     }
 
 

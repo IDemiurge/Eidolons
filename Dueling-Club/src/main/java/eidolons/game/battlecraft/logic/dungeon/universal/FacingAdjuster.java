@@ -3,12 +3,10 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMapGenerator.MAP_ZONES;
 import eidolons.game.core.game.DC_Game.GAME_MODES;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.system.auxiliary.ContainerUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -91,27 +89,10 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
         if (facingMap.containsKey(c)) {
             return facingMap.get(c);
         }
-        MAP_ZONES zone = null;
-        for (MAP_ZONES z : MAP_ZONES.values()) {
-            for (String s : ContainerUtils.open(z.getCoordinates(), ",")) {
-                if (c.toString().equals(s)) {
-                    zone = z;
-                    break;
-                }
-            }
-        }
-        if (zone != null) {
-            switch (zone) {
-                case SIDE_EAST:
-                    return main.game.bf.directions.FACING_DIRECTION.WEST;
-                case SIDE_NORTH:
-                    return main.game.bf.directions.FACING_DIRECTION.SOUTH;
-                case SIDE_SOUTH:
-                    return main.game.bf.directions.FACING_DIRECTION.NORTH;
-                case SIDE_WEST:
-                    return main.game.bf.directions.FACING_DIRECTION.EAST;
-            }
-        }
+
+        // TODO
+
+
         return main.game.bf.directions.FACING_DIRECTION.NORTH;
     }
 

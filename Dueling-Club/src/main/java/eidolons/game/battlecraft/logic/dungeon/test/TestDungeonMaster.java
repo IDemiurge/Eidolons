@@ -4,7 +4,6 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.*;
 import eidolons.game.core.game.DC_Game;
-import eidolons.test.frontend.FAST_DC;
 
 /**
  * Created by JustMe on 5/8/2017.
@@ -33,7 +32,7 @@ public class TestDungeonMaster extends DungeonMaster<TestDungeon> {
         return new TestDungeonInitializer(this);
     }
     private boolean isLocation() {
-        return  !FAST_DC.TEST_MODE;
+        return  true;
     }
 
     @Override
