@@ -61,6 +61,10 @@ public class DC_KeyManager
         stdModeKeyMap = new ConcurrentHashMap<>();
         addMoveActionKeyMap = new ConcurrentHashMap<>();
         controller = getControllerInstance(DEFAULT_CONTROLLER);
+        if (controller == null) {
+            controller = new GlobalController();
+        }
+
     }
 
     public void initHotkeysForUnit() {

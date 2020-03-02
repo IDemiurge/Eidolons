@@ -7,7 +7,6 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.system.text.TextMaster;
 import main.data.filesys.PathFinder;
-import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StrPathBuilder;
@@ -82,11 +81,12 @@ public class DialogueFactory {
         if (master.isRngDungeon()) {
             return getCommonDialoguePath();
         }
-        return
-                PathUtils.buildPath(
-                        master.getMetaDataManager().getDataPath()
-                        , TextMaster.getLocale(),
-                        PathUtils.getPathSeparator());
+//   TODO      return
+//                PathUtils.buildPath(
+//                        master.getMetaDataManager().getDataPath()
+//                        , TextMaster.getLocale(),
+//                        PathUtils.getPathSeparator());
+        return null;
     }
 
     protected String getCommonDialoguePath() {

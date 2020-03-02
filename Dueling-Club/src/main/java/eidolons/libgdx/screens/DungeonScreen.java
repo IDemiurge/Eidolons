@@ -21,7 +21,6 @@ import eidolons.libgdx.bf.mouse.DungeonInputController;
 import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
-import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.shaders.DarkShader;
@@ -145,18 +144,17 @@ public class DungeonScreen extends GameScreenWithTown {
         WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
 
-
-        if (CoreEngine.isIggDemo() && !EidolonsGame.FOOTAGE  )
-            initBackground();
-
-        if (!CoreEngine.isLiteLaunch())
-            if (EidolonsGame.FOOTAGE) {
-                if (MainLauncher.BG != null) {
-                    setBackground(MainLauncher.BG);
-                }
+//        if (CoreEngine.isIggDemo() && !EidolonsGame.FOOTAGE  )
+//            initBackground();
+//
+//        if (!CoreEngine.isLiteLaunch())
+//            if (EidolonsGame.FOOTAGE) {
+//                if (MainLauncher.BG != null) {
+//                    setBackground(MainLauncher.BG);
+//                }
 //            setBackground(Sprites.BG_VALLEY);
 //            setBackground("main/background/ruins dark.png");
-            }
+//            }
     }
 
     @Override

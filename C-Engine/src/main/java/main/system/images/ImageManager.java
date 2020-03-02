@@ -796,6 +796,9 @@ public class ImageManager {
     }
 
     public static boolean isImageFile(String name) {
+        if (StringMaster.isEmpty(name)) {
+            return false;
+        }
         String format = StringMaster.getFormat(name);
         for (String f : STD_FORMATS) {
             if (format.substring(1).equalsIgnoreCase(f)) {

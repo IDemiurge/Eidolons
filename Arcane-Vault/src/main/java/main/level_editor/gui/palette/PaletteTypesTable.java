@@ -7,7 +7,7 @@ import eidolons.libgdx.gui.panels.headquarters.creation.selection.SelectableImag
 import eidolons.libgdx.gui.panels.headquarters.creation.selection.SelectionImageTable;
 import main.entity.type.ObjType;
 import main.level_editor.LevelEditor;
-import main.level_editor.metadata.settings.LE_OptionsManager;
+import main.level_editor.metadata.settings.LE_OptionsMaster;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class PaletteTypesTable extends SelectionImageTable {
     @Override
     protected SelectableImageItem createElement(SelectableItemData datum) {
         SelectableImageItem s = super.createElement(datum);
-        s.setScale(LE_OptionsManager.getOptions().getFloatValue(PALETTE_SCALE));
+        s.setScale(LE_OptionsMaster.getOptions().getFloatValue(PALETTE_SCALE));
         return s;
     }
 
@@ -55,8 +55,8 @@ public class PaletteTypesTable extends SelectionImageTable {
 
     @Override
     protected Vector2 getElementSize() {
-        return new Vector2(128 * LE_OptionsManager.getOptions().getFloatValue(PALETTE_SCALE),
-                128 * LE_OptionsManager.getOptions().getFloatValue(PALETTE_SCALE));
+        return new Vector2(128 * LE_OptionsMaster.getOptions().getFloatValue(PALETTE_SCALE),
+                128 * LE_OptionsMaster.getOptions().getFloatValue(PALETTE_SCALE));
     }
 
     @Override

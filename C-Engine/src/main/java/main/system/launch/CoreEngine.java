@@ -33,6 +33,7 @@ public class CoreEngine {
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Backer;
     public static final String VERSION_NAME = "Backer Demo (Basic Version)"; //StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean DEV_MODE = true;
+    public static final boolean TEST_LAUNCH = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean swingOn = true;
     public static boolean animationTestMode;

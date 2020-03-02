@@ -452,6 +452,9 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     }
 
     protected boolean isZoneModulesLazy() {
+        if (CoreEngine.TEST_LAUNCH){
+            return false;
+        }
         return getMaster().getGame().getMetaMaster().getModuleMaster().isModuleInitOn();
     }
 }

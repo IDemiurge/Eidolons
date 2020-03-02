@@ -84,18 +84,19 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public void initHandlers() {
         moduleMaster = new ModuleMaster(this);
-        eventHandler = new IGG_EventHandler(this);
-        defeatHandler = createDefeatHandler();
         partyManager = createPartyManager();
-        lootMaster = createLootMaster();
         initializer = createMetaInitializer();
         metaDataManager = createMetaDataManager();
 
-
-        townMaster = createTownMaster();
-        dialogueManager = new DialogueManager(this);
-        if (dialogueManager.isPreloadDialogues()) {
-            getDialogueFactory().init(this);
+        if (CoreEngine.isCombatGame()) {
+            lootMaster = createLootMaster();
+            eventHandler = new IGG_EventHandler(this);
+            defeatHandler = createDefeatHandler();
+            townMaster = createTownMaster();
+            dialogueManager = new DialogueManager(this);
+            if (dialogueManager.isPreloadDialogues()) {
+                getDialogueFactory().init(this);
+            }
         }
     }
 
@@ -157,9 +158,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         if (CoreEngine.isMacro()) {
             return false;
         }
-        if (!game.getMetaMaster().isRngDungeon() && CoreEngine.isSafeMode())
-            return false;
-        return true;
+        return game.getMetaMaster().isRngDungeon() || !CoreEngine.isSafeMode();
     }
 
     public boolean isRngQuestsEnabled() {
@@ -170,10 +169,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             return false;
         if (!isRngDungeon())
             return false;
-        if (CoreEngine.isMacro()) {
-            return false;
-        }
-        return true;
+        return !CoreEngine.isMacro();
     }
 
     public void preStart() {
@@ -275,10 +271,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
                 if (type.checkProperty(PROPS.SCENARIO_TYPE, "Custom")) {
                     return false;
                 }
-                if (type.checkProperty(PROPS.SCENARIO_TYPE, "Boss")) {
-                    return false;
-                }
-                return true;
+                return !type.checkProperty(PROPS.SCENARIO_TYPE, "Boss");
             }
 
             return
@@ -290,10 +283,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             if (type.getName().toLowerCase().contains("boss")) {
                 return false;
             }
-            if (type.getGroup().equalsIgnoreCase("Tutorial")) {
-                return false;
-            }
-            return true;
+            return !type.getGroup().equalsIgnoreCase("Tutorial");
         }
         //        getMetaGame().isRestarted()
         return false;

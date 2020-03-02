@@ -33,7 +33,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     public static   boolean TEST = false;
     private static final String DUEL = "Duel";
     private static final String INTRO = "Intro";
-    private static   boolean SKIP_INTRO = false;
+    private static   boolean SKIP_INTRO = CoreEngine.TEST_LAUNCH;
     private static   boolean PARSE_ON_INIT = CoreEngine.isIDE();
     private static boolean running;
     private static Runnable afterDialogue;

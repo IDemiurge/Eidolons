@@ -179,11 +179,11 @@ public class DC_ObjInitializer {
             String item = items[indx];
             boolean excludeCoordinate = false;
             Coordinates c = null;
-//            if (item.contains("(") || item.contains("-")) {
-//                if (!item.contains("null=")) {
-//                    c = getCoordinatesFromObjString(item, alt);
-//                }
-//            }
+            if (item.contains("(") || item.contains("-")) {
+                if (!item.contains("null=")) {
+                    c = getCoordinatesFromObjString(item, alt);
+                }
+            }
             String typeName = getNameFromObjString(item, alt);
             i++;
             if (i == items.length) {
