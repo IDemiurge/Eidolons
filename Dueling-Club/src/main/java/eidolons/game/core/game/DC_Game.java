@@ -203,7 +203,7 @@ public class DC_Game extends GenericGame {
         if (isCombatGame())
             rules = new DC_Rules(this);
 
-        if (!isCombatGame() && !CoreEngine.isDungeonTool() &&!CoreEngine.isLevelEditor())
+        if (!isCombatGame() && !CoreEngine.isDungeonTool() && !CoreEngine.isLevelEditor())
             return;
         if (isSimulation()) {
             return;
@@ -262,7 +262,7 @@ public class DC_Game extends GenericGame {
 
     public void battleInit() {
         setSimulation(false);
-        if (!isCombatGame() ) {
+        if (!isCombatGame()) {
             dungeonMaster.init();
             return;
         }
@@ -863,8 +863,10 @@ public class DC_Game extends GenericGame {
             getState().addObject(sub);
         }
         getState().addObject(Eidolons.getMainHero());
-        dungeonMaster.getExplorationMaster().
-                getResetter().setResetNotRequired(false);
+        if (dungeonMaster.getExplorationMaster() != null) {
+            dungeonMaster.getExplorationMaster().
+                    getResetter().setResetNotRequired(false);
+        }
         visionMaster.reinit();
 
     }

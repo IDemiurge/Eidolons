@@ -3,9 +3,7 @@ package main.level_editor.metadata.settings;
 
 import eidolons.system.options.Options;
 
-import static main.level_editor.metadata.settings.LE_Options.EDITOR_OPTIONS;
-
-public class LE_Options extends Options<EDITOR_OPTIONS, EDITOR_OPTIONS> {
+public class LE_Options extends Options<LE_Options.EDITOR_OPTIONS, LE_Options.EDITOR_OPTIONS> {
 
 
 
@@ -14,7 +12,7 @@ public class LE_Options extends Options<EDITOR_OPTIONS, EDITOR_OPTIONS> {
         return EDITOR_OPTIONS.class;
     }
 
-    public enum EDITOR_OPTIONS implements OPTION {
+    public enum EDITOR_OPTIONS implements eidolons.system.options.Options.OPTION {
         PALETTE_SCALE,
         ;
 

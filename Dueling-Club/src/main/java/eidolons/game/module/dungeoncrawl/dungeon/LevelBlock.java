@@ -80,8 +80,8 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
                 toStringContainer(getCoordinatesList(), RngXmlMaster.SEPARATOR));
 
 
-        xml += XML_Converter.wrap(RngXmlMaster.COLOR_THEME, colorTheme.toString());
-        xml += XML_Converter.wrap(RngXmlMaster.COLOR_THEME_ALT, altColorTheme.toString());
+//        xml += XML_Converter.wrap(RngXmlMaster.COLOR_THEME, colorTheme.toString());
+//        xml += XML_Converter.wrap(RngXmlMaster.COLOR_THEME_ALT, altColorTheme.toString());
         return xml;
     }
 

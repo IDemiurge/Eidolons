@@ -56,17 +56,19 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         portalMaster = new PortalMaster(this);
         initializer = createInitializer();
         spawner = createSpawner();
+        layerManager=createLayerManager();
         positioner = createPositioner();
         facingAdjuster = createFacingAdjuster();
         builder = createBuilder();
-        explorationMaster = new ExplorationMaster(game);
 
-        doorMaster = new DoorMaster(this);
-        lockMaster = new LockMaster(this);
-        containerMaster = new ContainerMaster(this);
-        interactiveMaster = new InteractiveObjMaster(this);
-        puzzleMaster = new PuzzleMaster(this);
-        layerManager=createLayerManager();
+        if (CoreEngine.isCombatGame()) {
+            explorationMaster = new ExplorationMaster(game);
+            doorMaster = new DoorMaster(this);
+            lockMaster = new LockMaster(this);
+            containerMaster = new ContainerMaster(this);
+            interactiveMaster = new InteractiveObjMaster(this);
+            puzzleMaster = new PuzzleMaster(this);
+        }
     }
 
     protected LayerManager createLayerManager() {

@@ -179,7 +179,7 @@ public class OptionsWindow extends VisWindow {
 
 
     private void toDefaults() {
-        OptionsMaster.resetToDefaults();
+        OptionsMaster.getInstance().resetToDefaults();
         for (OptionsTab tab : tabs) {
             tab.refresh();
         }
@@ -211,7 +211,7 @@ public class OptionsWindow extends VisWindow {
     private void apply() {
         DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CLICK);
         Gdx.app.log("Options", "apply");
-        OptionsMaster.cacheOptions();
+        OptionsMaster.getInstance().cacheOptions();
         for (OptionsTab tab : tabs) {
             tab.apply();
         }
@@ -225,7 +225,7 @@ public class OptionsWindow extends VisWindow {
     private void cancel() {
         DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CLICK_DISABLED);
         Gdx.app.log("Options", "cancel");
-        OptionsMaster.resetToCached();
+        OptionsMaster.getInstance().resetToCached();
         close();
     }
 

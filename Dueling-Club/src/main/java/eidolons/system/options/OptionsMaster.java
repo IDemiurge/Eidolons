@@ -48,6 +48,7 @@ import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.swing.generic.components.editors.lists.ListChooser;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
@@ -68,15 +69,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OptionsMaster {
-    private static Map<OPTIONS_GROUP, Options> optionsMap = new HashMap<>();
-    private static Map<OPTIONS_GROUP, Options> cachedMap;
+    private static OptionsMaster instance;
     private static OptionsPanelSwing optionsPanel;
-    private static boolean initialized;
     private static JDialog modalOptionsPanelFrame;
-    private static String optionsPath;
-    private static String OPTIONS_MODE;
 
-    private static void applyAnimOptions(AnimationOptions animOptions) {
+    protected Map<OPTIONS_GROUP, Options> optionsMap = new HashMap<>();
+    protected Map<OPTIONS_GROUP, Options> cachedMap;
+    protected boolean initialized;
+    protected String optionsPath;
+    protected String OPTIONS_MODE;
+
+    protected static void applyAnimOptions(AnimationOptions animOptions) {
 
         for (Object sub : animOptions.getValues().keySet()) {
             new EnumMaster<ANIMATION_OPTION>().
@@ -129,7 +132,7 @@ public class OptionsMaster {
         applyControlOptions(getControlOptions());
     }
 
-    private static void applyControlOptions(ControlOptions options) {
+    protected static void applyControlOptions(ControlOptions options) {
         for (Object sub : options.getValues().keySet()) {
             new EnumMaster<CONTROL_OPTION>().
                     retrieveEnumConst(CONTROL_OPTION.class,
@@ -181,7 +184,7 @@ public class OptionsMaster {
         applyGameplayOptions(getGameplayOptions());
     }
 
-    private static void applyGameplayOptions(GameplayOptions gameplayOptions) {
+    protected static void applyGameplayOptions(GameplayOptions gameplayOptions) {
         for (Object sub : gameplayOptions.getValues().keySet()) {
 //            new EnumMaster<GAMEPLAY_OPTION>().
 //                    retrieveEnumConst(GAMEPLAY_OPTION.class,
@@ -200,7 +203,7 @@ public class OptionsMaster {
                         ExplorationTimeMaster.setSpeed(speed);
                         MacroTimeMaster.getInstance().setSpeed(speed);
                     } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
+                        ExceptionMaster.printStackTrace(e);
                     }
                     break;
                 case GHOST_MODE:
@@ -233,7 +236,7 @@ public class OptionsMaster {
             applySoundOptions_(soundOptions);
     }
 
-    private static void applySoundOptions_(SoundOptions soundOptions) {
+    protected static void applySoundOptions_(SoundOptions soundOptions) {
         MusicMaster master = MusicMaster.getInstance();
         if (master == null) {
             return;
@@ -294,7 +297,7 @@ public class OptionsMaster {
     }
 
     //OR LET THOSE CLASSES GET() OPTIONS?
-    private static void applyGraphicsOptions_(GraphicsOptions graphicsOptions) {
+    protected static void applyGraphicsOptions_(GraphicsOptions graphicsOptions) {
 
         for (Object sub : graphicsOptions.getValues().keySet()) {
             GRAPHIC_OPTION key = graphicsOptions.getKey((sub.toString()));
@@ -307,13 +310,13 @@ public class OptionsMaster {
             try {
                 applyOption(key, value, bool);
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
 
         }
     }
 
-    private static void applySystemOptions(SystemOptions systemOptions) {
+    protected static void applySystemOptions(SystemOptions systemOptions) {
 
         for (Object sub : systemOptions.getValues().keySet()) {
             SYSTEM_OPTION key = systemOptions.getKey((sub.toString()));
@@ -326,13 +329,13 @@ public class OptionsMaster {
             try {
                 applySystemOption(key, value, bool);
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
 
         }
     }
 
-    private static void applySystemOption(SYSTEM_OPTION key, String value, boolean bool) {
+    protected static void applySystemOption(SYSTEM_OPTION key, String value, boolean bool) {
         switch (key) {
             case LITE_MODE:
                 CoreEngine.setLiteLaunch(bool);
@@ -381,7 +384,7 @@ public class OptionsMaster {
 
     }
 
-    private static void applyOption(GRAPHIC_OPTION key, String value, boolean bool) {
+    protected static void applyOption(GRAPHIC_OPTION key, String value, boolean bool) {
         switch (key) {
 //            case ALT_ASSET_LOAD:
 //                Assets.setON(!bool);
@@ -448,37 +451,6 @@ public class OptionsMaster {
         }
     }
 
-    // Useful Options Gui
-    //
-    // Sound
-    // Master Volume
-    // Voice Volume
-    // Combat Volume
-    // Misc Volume
-    //
-    // Graphics
-    // PhaseAnimation speed
-    // PhaseAnimation details
-    //
-    // Stacked Units as Thumbnails
-    // Values displayed as: Orbs, Bars
-    //
-    //
-    // Camera centering
-    //
-    // Usability
-    // Right Click
-    //
-    // Std Hotkeys
-    //
-    //
-    // Gameplay
-    // Log details
-    // Quick-Movement
-    // Auto-Attack
-    // Tooltips
-    //
-
     public static String promptSetOption() {
         String name = ListChooser.chooseEnum(OPTIONS_GROUP.class);
         if (name == null) {
@@ -515,7 +487,7 @@ public class OptionsMaster {
             try {
                 PostProcessController.getInstance().update(getPostProcessingOptions());
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
         }
         if (!GdxMaster.isGuiReady())
@@ -532,6 +504,17 @@ public class OptionsMaster {
     }
 
     public static void saveOptions() {
+        getInstance().save();
+    }
+
+    public static OptionsMaster getInstance() {
+        if (instance == null) {
+            instance = new OptionsMaster();
+        }
+        return instance;
+    }
+
+    public void save() {
         StringBuilder content = new StringBuilder();
         content.append(XML_Converter.openXml("Options" + StringMaster.NEW_LINE));
         for (OPTIONS_GROUP sub : optionsMap.keySet()) {
@@ -552,13 +535,13 @@ public class OptionsMaster {
         }
     }
 
-    private static String getGlobalOptionsPath() {
+    protected String getGlobalOptionsPath() {
         if (optionsPath != null)
             return optionsPath;
         return PathFinder.OPTIONS_PATH + "options.xml";
     }
 
-    private static String getLocalOptionsPath() {
+    protected String getLocalOptionsPath() {
         return PathFinder.getXML_PATH() + "options.xml";
     }
 
@@ -571,20 +554,8 @@ public class OptionsMaster {
     }
 
     public static void openVisUiMenu(Stage stage) {
-        OptionsWindow.getInstance().open(optionsMap, stage);
+        OptionsWindow.getInstance().open(getInstance().getOptionsMap(), stage);
 
-    }
-
-    public static void tryOpenMenu() {
-        try {
-            if (Eidolons.isFullscreen()) {
-                Eidolons.setFullscreen(false);
-            }
-            openMenu();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-
-        }
     }
 
     public static void openMenu() {
@@ -598,7 +569,7 @@ public class OptionsMaster {
             //            optionsPanelFrame.dispatchEvent(new WindowEvent(optionsPanelFrame, WindowEvent.WINDOW_CLOSING));
             modalOptionsPanelFrame.setVisible(false);
         }
-        optionsPanel = new OptionsPanelSwing(optionsMap);
+        optionsPanel = new OptionsPanelSwing(getInstance().getOptionsMap());
         //        optionsPanelFrame = GuiManager.inNewWindow(optionsPanel,
         //         "Options", new Dimension(800, 600));
         modalOptionsPanelFrame = GuiManager.inModalWindow(optionsPanel,
@@ -606,7 +577,7 @@ public class OptionsMaster {
         modalOptionsPanelFrame.setAlwaysOnTop(true);
     }
 
-    private static boolean isVisUiMode() {
+    protected static boolean isVisUiMode() {
         return true;
     }
 
@@ -617,7 +588,7 @@ public class OptionsMaster {
         return false;
     }
 
-    public static Map<OPTIONS_GROUP, Options> readOptions(String data) {
+    public Map<OPTIONS_GROUP, Options> readOptions(String data) {
         Document doc = XML_Converter.getDoc(data);
         Map<OPTIONS_GROUP, Options> optionsMap = new XLinkedMap<>();
         for (Node sub : XML_Converter.getNodeListFromFirstChild(doc, true)) {
@@ -630,7 +601,7 @@ public class OptionsMaster {
         return optionsMap;
     }
 
-    private static Options createOptions(OPTIONS_GROUP group, Node doc) {
+    protected Options createOptions(OPTIONS_GROUP group, Node doc) {
         Options options = createOptions(group);
         for (Node optionNode : XML_Converter.getNodeList(doc)) {
             options.setValue(optionNode.getNodeName(), optionNode.getTextContent());
@@ -638,13 +609,17 @@ public class OptionsMaster {
         return options;
     }
 
-    private static boolean isLocalOptionsPreferred() {
+    protected boolean isLocalOptionsPreferred() {
 //        return CoreEngine.isMe() &&
 ////                !CoreEngine.isJar();
         return false;
     }
 
     public static void init() {
+        getInstance().initialize();
+    }
+
+    public void initialize() {
         if (initialized)
             return;
         String data = readOptionsFile();
@@ -655,8 +630,8 @@ public class OptionsMaster {
             addMissingDefaults(optionsMap);
 
             if (!CoreEngine.isIDE())
-            if (MetaDataUnit.getInstance().getIntValue(META_DATA.TIMES_LAUNCHED) < 2)
-                autoAdjustOptions(OPTIONS_GROUP.GRAPHICS, optionsMap.get(OPTIONS_GROUP.GRAPHICS));
+                if (MetaDataUnit.getInstance().getIntValue(META_DATA.TIMES_LAUNCHED) < 2)
+                    autoAdjustOptions(OPTIONS_GROUP.GRAPHICS, optionsMap.get(OPTIONS_GROUP.GRAPHICS));
         }
 
         autoAdjustOptions(OPTIONS_GROUP.SYSTEM, optionsMap.get(OPTIONS_GROUP.SYSTEM));
@@ -666,24 +641,24 @@ public class OptionsMaster {
             SystemAnalyzer.analyze();
             SystemAnalyzer.adjustForRAM(optionsMap);
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
 //        if (CoreEngine.isMapPreview()) {
 //            getGraphicsOptions().setValue("RESOLUTION", RESOLUTION._3840x2160.toString());
 //        }
-        OptionsMaster.cacheOptions();
+        cacheOptions();
 
         initFlags();
         try {
             applyOptions();
             initialized = true;
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
 
     }
 
-    private static String readOptionsFile() {
+    protected String readOptionsFile() {
         String path = getOptionsPath();
         String data = FileManager.readFile(path);
         if (OPTIONS_MODE == null)
@@ -693,14 +668,14 @@ public class OptionsMaster {
         return data;
     }
 
-    private static void initFlags() {
+    protected void initFlags() {
         if (CoreEngine.isLiteLaunch()) {
             getSystemOptions().setValue(SYSTEM_OPTION.LITE_MODE, true);
         }
     }
 
 
-    private static void addMissingDefaults(Map<OPTIONS_GROUP, Options> optionsMap) {
+    protected void addMissingDefaults(Map<OPTIONS_GROUP, Options> optionsMap) {
 
         for (OPTIONS_GROUP group : OPTIONS_GROUP.values()) {
             Options map = optionsMap.get(group);
@@ -720,7 +695,7 @@ public class OptionsMaster {
 
     }
 
-    private static void autoAdjustOptions(OPTIONS_GROUP group, Options options) {
+    protected void autoAdjustOptions(OPTIONS_GROUP group, Options options) {
         switch (group) {
             case GRAPHICS:
                 options.setValue(GRAPHIC_OPTION.RESOLUTION, GDX.getDisplayResolutionString());
@@ -733,12 +708,12 @@ public class OptionsMaster {
 
     }
 
-    private static Map<OPTIONS_GROUP, Options> initDefaults() {
+    protected Map<OPTIONS_GROUP, Options> initDefaults() {
         Map<OPTIONS_GROUP, Options> defaults = initDefaults(false);
         return defaults;
     }
 
-    private static Map<OPTIONS_GROUP, Options> initDefaults(boolean adjust) {
+    protected Map<OPTIONS_GROUP, Options> initDefaults(boolean adjust) {
         XLinkedMap optionsMap = new XLinkedMap<>();
         for (OPTIONS_GROUP group : OPTIONS_GROUP.values()) {
 
@@ -751,7 +726,7 @@ public class OptionsMaster {
         return optionsMap;
     }
 
-    private static Class<?> getOptionGroupEnumClass(OPTIONS_GROUP group) {
+    protected Class<?> getOptionGroupEnumClass(OPTIONS_GROUP group) {
         switch (group) {
 
             case CONTROLS:
@@ -777,14 +752,14 @@ public class OptionsMaster {
     }
 
     public static GraphicsOptions getGraphicsOptions() {
-        return (GraphicsOptions) optionsMap.get(OPTIONS_GROUP.GRAPHICS);
+        return (GraphicsOptions) (getInstance().getOptionsMap()).get(OPTIONS_GROUP.GRAPHICS);
     }
 
     public static GameplayOptions getGameplayOptions() {
-        return (GameplayOptions) optionsMap.get(OPTIONS_GROUP.GAMEPLAY);
+        return (GameplayOptions) (getInstance().getOptionsMap()).get(OPTIONS_GROUP.GAMEPLAY);
     }
 
-    public static Options getOptions(OPTION group) {
+    public Options getOptions(OPTION group) {
         if (group instanceof SOUND_OPTION) {
             return optionsMap.get(OPTIONS_GROUP.SOUND);
         }
@@ -801,17 +776,17 @@ public class OptionsMaster {
     }
 
     public static Options getOptions(OPTIONS_GROUP group) {
-        return optionsMap.get(group);
+        return (getInstance().getOptionsMap()).get(group);
     }
 
-    private static Options generateDefaultOptions(OPTIONS_GROUP group) {
+    protected Options generateDefaultOptions(OPTIONS_GROUP group) {
         Options options = createOptions(group);
         if (options == null) {
             return null;
         }
         Class<?> clazz = getOptionGroupEnumClass(group);
         for (Object c : clazz.getEnumConstants()) {
-            Options.OPTION option = (Options.OPTION) c;
+            OPTION option = (OPTION) c;
             if (option.getDefaultValue() == null) {
                 continue;
             }
@@ -821,7 +796,7 @@ public class OptionsMaster {
         return options;
     }
 
-    private static Options createOptions(OPTIONS_GROUP group) {
+    protected Options createOptions(OPTIONS_GROUP group) {
         switch (group) {
             case ANIMATION:
                 return new AnimationOptions();
@@ -848,16 +823,16 @@ public class OptionsMaster {
         //        return optionsMap.getVar(OPTIONS_GROUP.ANIMATION).getIntValue(ANIMATION_OPTION.PHASE_TIME);
     }
 
-    public static void cacheOptions() {
+    public void cacheOptions() {
         cachedMap = new MapMaster<OPTIONS_GROUP, Options>().cloneHashMap(optionsMap);
     }
 
-    public static void resetToCached() {
+    public void resetToCached() {
         optionsMap = new MapMaster<OPTIONS_GROUP, Options>().cloneHashMap(cachedMap);
         applyOptions();
     }
 
-    public static void resetToDefaults() {
+    public void resetToDefaults() {
         optionsMap = initDefaults();
         applyOptions();
     }
@@ -875,18 +850,18 @@ public class OptionsMaster {
     }
 
     public static Map<OPTIONS_GROUP, Options> getOptionsMap() {
-        return optionsMap;
+        return getInstance().optionsMap;
     }
 
     public static void setOptionsPath(String optionsPath) {
-        OptionsMaster.optionsPath = optionsPath;
+        getInstance().optionsPath = optionsPath;
     }
 
     public static void setOptionsMode(String optionsMode) {
-        OPTIONS_MODE = optionsMode;
+        getInstance().OPTIONS_MODE = optionsMode;
     }
 
-    public static String getOptionsPath() {
+    public String getOptionsPath() {
         if (optionsPath != null) {
             return optionsPath;
         }
@@ -899,7 +874,7 @@ public class OptionsMaster {
     }
 
     public static PostProcessingOptions getPostProcessingOptions() {
-        return (PostProcessingOptions) optionsMap.get(OPTIONS_GROUP.POST_PROCESSING);
+        return (PostProcessingOptions) (getInstance().getOptionsMap()).get(OPTIONS_GROUP.POST_PROCESSING);
     }
 
 

@@ -55,7 +55,8 @@ public class PaletteTypesTable extends SelectionImageTable {
 
     @Override
     protected Vector2 getElementSize() {
-        return new Vector2(128 * LE_OptionsManager.getOptions().getFloatValue(PALETTE_SCALE), 128 * LE_OptionsManager.getOptions().getFloatValue(PALETTE_SCALE));
+        return new Vector2(128 * LE_OptionsManager.getOptions().getFloatValue(PALETTE_SCALE),
+                128 * LE_OptionsManager.getOptions().getFloatValue(PALETTE_SCALE));
     }
 
     @Override

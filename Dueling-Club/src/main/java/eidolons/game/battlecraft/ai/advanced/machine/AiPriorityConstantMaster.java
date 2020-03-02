@@ -52,6 +52,7 @@ public class AiPriorityConstantMaster extends AiHandler {
 
     public void initMap() {
         aiConstMap = new HashMap<>();
+        map = new HashMap<>();
         for (AiConst sub : AiConst.values()) {
             aiConstMap.put(sub.name(), sub);
             map.put(sub , sub.getDefValue());

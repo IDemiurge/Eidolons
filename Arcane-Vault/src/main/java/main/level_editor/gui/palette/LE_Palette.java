@@ -2,7 +2,6 @@ package main.level_editor.gui.palette;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.kotcrab.vis.ui.VisUI;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.panels.TabbedPanel;
@@ -26,7 +25,7 @@ public class LE_Palette extends TabbedPanel {
 
     @Override
     protected TextButton.TextButtonStyle getTabStyle() {
-        VisUI.getSkin().getTiledDrawable()
+//        VisUI.getSkin().getTiledDrawable()
         return StyleHolder.getTabStyle(StyleHolder.getButtonStyle(ButtonStyled.STD_BUTTON.HIGHLIGHT_ALT));
     }
 }

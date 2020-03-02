@@ -125,7 +125,7 @@ public class OptionsPanelSwing<T extends Enum<T>> extends G_Panel implements Act
 //    }
 
     public void update() {
-        OptionsMaster.cacheOptions();
+        OptionsMaster.getInstance().cacheOptions();
         map.keySet().forEach(o -> {
             Component comp = map.get(o);
             Object value = null;
@@ -142,7 +142,7 @@ public class OptionsPanelSwing<T extends Enum<T>> extends G_Panel implements Act
             if (comp instanceof JTextField) {
                 value = ((JTextField) comp).getText();
             }
-            OptionsMaster.getOptions(o).setValue(o.toString(), value.toString());
+            OptionsMaster.getInstance().getOptions(o).setValue(o.toString(), value.toString());
 //            if (o instanceof GRAPHIC_OPTION) {
 //                OptionsMaster.getGraphicsOptions().setValue((GRAPHIC_OPTION) o, value.toString());
 //            }
@@ -165,12 +165,12 @@ public class OptionsPanelSwing<T extends Enum<T>> extends G_Panel implements Act
 
 
     public void cancel() {
-        OptionsMaster.resetToCached();
+        OptionsMaster.getInstance().resetToCached();
         close();
     }
 
     public void toDefaults() {
-        OptionsMaster.resetToDefaults();
+        OptionsMaster.getInstance().resetToDefaults();
     }
 
 

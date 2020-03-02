@@ -4,6 +4,7 @@ public class LE_OptionsManager {
     private static LE_Options options;
 
     public static final void init(){
+        options = new LE_Options();
 
     }
 
