@@ -55,10 +55,10 @@ public class TextureCache {
     private boolean silent;
 
     public static TextureRegion fromAtlas(String atlasPath, String light) {
-    if ( Assets.get().getManager().isLoaded(atlasPath) ){
-        SmartTextureAtlas atlas = Assets.get().getManager().get(atlasPath);
-        return atlas.findRegion(light);
-    }
+        if (Assets.get().getManager().isLoaded(atlasPath)) {
+            SmartTextureAtlas atlas = Assets.get().getManager().get(atlasPath);
+            return atlas.findRegion(light);
+        }
         return new TextureRegion(getEmptyTexture());
     }
 
@@ -175,6 +175,14 @@ public class TextureCache {
 
     public static TextureRegion getOrCreateR(String path, boolean overrideNoAtlas) {
 
+            if (path.contains(":")) {
+                try {
+                    return getOrCreateR(path.split("img")[1]);
+                } catch (Exception e) {
+                    main.system.auxiliary.log.LogMaster.log(1,"invalid  TEXTURE  path ! "  + path);
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            }
         if (path == null) {
             main.system.auxiliary.log.LogMaster.log(1, "EMPTY TEXTURE REGION REQUEST!");
             return new TextureRegion(emptyTexture);

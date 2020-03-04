@@ -40,7 +40,7 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
 
     public void adjustFacing(Unit unit) {
         unit.setFacing(unit.isMine() ? getPartyMemberFacing(unit)
-         : getFacingForEnemy(unit.getCoordinates()));
+         : getFacingForUnit(unit.getCoordinates(), unit.getName()));
     }
 
     public void adjustFacing(List<Unit> unitsList) {
@@ -65,12 +65,16 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
         return true;
     }
 
-    public FACING_DIRECTION getFacingForEnemy(Coordinates c) {
-       Map<Coordinates, FACING_DIRECTION> map=getBattleMaster().getDungeonMaster().getDungeonLevel().getUnitFacingMap();
+    public FACING_DIRECTION getFacingForUnit(Coordinates c, String typeName) {
+       Map<Coordinates, FACING_DIRECTION> map=getUnitFacingMap();
         if (map!=null) {
             return map.get(c);
         }
         return getFacingOptimal(c, false);
+    }
+
+    protected Map<Coordinates, FACING_DIRECTION> getUnitFacingMap() {
+        return getBattleMaster().getDungeonMaster().getDungeonLevel().getUnitFacingMap();
     }
 
     public FACING_DIRECTION getPartyMemberFacing(Unit unit) {

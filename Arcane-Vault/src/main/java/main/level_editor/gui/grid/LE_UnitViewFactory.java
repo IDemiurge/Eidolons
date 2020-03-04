@@ -3,7 +3,6 @@ package main.level_editor.gui.grid;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.module.netherflame.boss.sprite.BossView;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.bf.grid.OverlayView;
 import eidolons.libgdx.bf.grid.UnitViewFactory;
@@ -59,7 +58,6 @@ public class LE_UnitViewFactory extends UnitViewFactory {
 
     protected GridUnitView createView(BattleFieldObject bfObj, UnitViewOptions options) {
         return
-                bfObj.isBoss() ? new BossView(options) :
                         new LE_UnitView(bfObj, options);
     }
     @Override

@@ -463,14 +463,10 @@ public abstract class GenericLauncher extends Game {
         }
     }
 
-    private void initLoadingScreen() {
-
-        //   TODO  different kind of screen...
-    }
-
     private void onScreenLoadDone(EventCallbackParam param) {
         if (getScreen() == null) {
-        }
+            //TODO
+            }
         else {
             ((ScreenWithLoader) getScreen()).loadDone(param);
         }

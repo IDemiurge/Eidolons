@@ -90,7 +90,7 @@ public class XML_Converter {
 
             Node item = nl.item(i);
             if (ignoreTextNodes)
-                if (checkTextNode(item)) {
+                if (isTextNode(item)) {
                     continue;
                 }
             list.add(item);
@@ -100,12 +100,8 @@ public class XML_Converter {
 
     }
 
-    private static boolean checkTextNode(Node item) {
-        return item.getNodeName().equals(TEXT_NODE);
-    }
-
     public static List<Node> getNodeListFromFirstChild(Node node, boolean ignoreTextNodes) {
-        return getNodeList(node.getFirstChild(), ignoreTextNodes);
+        return getNodeList(getNodeList(node, true).get(0), ignoreTextNodes);
     }
 
     public static List getConvertedDoc(Node node) {
@@ -235,7 +231,7 @@ public class XML_Converter {
     }
 
     private static String getStringFromXMLNode(Node node) {
-        if (node.getNodeName().contains("#text")) {
+        if (isTextNode(node)) {
             return node.getTextContent();
         }
         StringBuilder string = new StringBuilder(openXmlFormatted(node.getNodeName()));
@@ -252,6 +248,10 @@ public class XML_Converter {
 
         string.append(closeXmlFormatted(node.getNodeName()));
         return string.toString();
+    }
+
+    public static boolean isTextNode(Node node) {
+        return node.getNodeName().contains(TEXT_NODE);
     }
 
     public static String getXMLfromTree(JTree tree) throws java.lang.ClassCastException {

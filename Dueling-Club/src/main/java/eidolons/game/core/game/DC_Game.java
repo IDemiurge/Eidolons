@@ -181,12 +181,12 @@ public class DC_Game extends GenericGame {
 
     public void initMasters(boolean nextLevel) {
 
+        setIdManager(new DC_IdManager(this));
         master = new DC_GameObjMaster(this);
         paleMaster = new DC_GameObjMaster(this, true);
         manager = createGameManager();
         manager.init();
 
-        this.setIdManager(new DC_IdManager(this));
         combatMaster = createCombatMaster();
 
         requirementsManager = new DC_RequirementsManager(this);
@@ -238,8 +238,12 @@ public class DC_Game extends GenericGame {
         initObjTypes();
 
         setInitialized(true);
-        keyManager = new DC_KeyManager(getManager());
+        keyManager =  createKeyManager();
         Chronos.logTimeElapsedForMark("GAME_INIT");
+    }
+
+    protected DC_KeyManager createKeyManager() {
+        return new DC_KeyManager(getManager());
     }
 
     protected BattleMaster createBattleMaster() {

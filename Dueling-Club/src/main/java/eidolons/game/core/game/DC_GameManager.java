@@ -178,7 +178,8 @@ public class DC_GameManager extends GameManager {
         }
         getGameObjMaster().clearCaches();
         FutureBuilder.clearCaches();
-        getStateManager().resetAllSynchronized();
+        if (!isResetDisabled())
+            getStateManager().resetAllSynchronized();
         checkForChanges(true);
 
         resetWallMap();
@@ -186,6 +187,10 @@ public class DC_GameManager extends GameManager {
         VisionManager.refresh();
 
         updateGraphics();
+    }
+
+    protected boolean isResetDisabled() {
+        return false;
     }
 
     private void updateGraphics() {

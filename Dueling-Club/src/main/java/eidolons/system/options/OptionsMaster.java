@@ -527,12 +527,17 @@ public class OptionsMaster {
             content.append(XML_Converter.closeXml(sub.toString())).append(StringMaster.NEW_LINE);
         }
         content.append(XML_Converter.closeXml("Options"));
-        if (isLocalOptionsPreferred()) {
-            FileManager.write(content.toString(), getLocalOptionsPath());
-        } else {
+        String path = getSaveOptionsPath();
+        FileManager.write(content.toString(), path);
 //    TODO igg demo fix    FileManager.write("Global options are now saved at " + getGlobalOptionsPath(), getLocalOptionsPath());
-            FileManager.write(content.toString(), getGlobalOptionsPath());
+    }
+
+    protected String getSaveOptionsPath() {
+
+        if (isLocalOptionsPreferred()) {
+            return getLocalOptionsPath();
         }
+        return getGlobalOptionsPath();
     }
 
     protected String getGlobalOptionsPath() {
@@ -785,6 +790,10 @@ public class OptionsMaster {
             return null;
         }
         Class<?> clazz = getOptionGroupEnumClass(group);
+        return setDefaults(options, clazz);
+    }
+
+    protected Options setDefaults(Options options, Class<?> clazz) {
         for (Object c : clazz.getEnumConstants()) {
             OPTION option = (OPTION) c;
             if (option.getDefaultValue() == null) {
@@ -879,7 +888,7 @@ public class OptionsMaster {
 
 
     public enum OPTIONS_GROUP {
-        GRAPHICS, GAMEPLAY, CONTROLS, SOUND, ANIMATION, SYSTEM, POST_PROCESSING,
+        GRAPHICS, GAMEPLAY, CONTROLS, SOUND, ANIMATION, SYSTEM, POST_PROCESSING, EDITOR
         //TUTORIAL, ENGINE,
     }
 

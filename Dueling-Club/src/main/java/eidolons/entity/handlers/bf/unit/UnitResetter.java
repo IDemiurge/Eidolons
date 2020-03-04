@@ -35,8 +35,8 @@ import main.entity.obj.ActiveObj;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
@@ -114,9 +114,9 @@ public class UnitResetter extends EntityResetter<Unit> {
         }
         super.toBase();
 
-//        if (game.isSimulation()) {
-//            return;
-//        }
+        if (CoreEngine.isLevelEditor()) {
+            return;
+        }
 
 
         if (getChecker().checkClassification(UnitEnums.CLASSIFICATIONS.TALL)) {

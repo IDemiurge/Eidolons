@@ -1,16 +1,23 @@
 package main.data;
 
-import main.content.*;
+import main.content.C_OBJ_TYPE;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
+import main.content.VALUE;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.values.properties.PROPERTY;
+import main.data.xml.XML_Reader;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Contains utility methods for finding and managing ObjType's
@@ -361,5 +368,9 @@ public class DataManager {
 
     public static Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> getItemMaps() {
         return itemMaps;
+    }
+
+    public static Set<String> getSubGroups(String group) {
+        return XML_Reader.getTreeSubGroupMap().get(group);
     }
 }

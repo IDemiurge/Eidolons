@@ -1,18 +1,12 @@
 package main.level_editor.sim;
 
-import eidolons.game.Simulation;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
-import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaDataManager;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioPartyManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
-import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaInitializer;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
-import eidolons.game.core.game.DC_Game;
 import main.level_editor.struct.campaign.Campaign;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
 public class LE_MetaMaster extends ScenarioMetaMaster {
 
@@ -30,6 +24,10 @@ public class LE_MetaMaster extends ScenarioMetaMaster {
     @Override
     protected LE_GameSim createGame() {
         return new LE_GameSim(this);
+    }
+
+    @Override
+    public void reinit() {
     }
 
     @Override

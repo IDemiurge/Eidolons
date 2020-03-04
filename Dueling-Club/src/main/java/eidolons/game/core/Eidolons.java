@@ -179,15 +179,15 @@ public class Eidolons {
             int width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
             int height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
             if (GdxMaster.FULLHD_ONLY)
-            if (width > 1920) {
-                cannotFullscreen();
-                return;
-            }
+                if (width > 1920) {
+                    cannotFullscreen();
+                    return;
+                }
             if (GdxMaster.FULLHD_ONLY)
-            if (height > 1080) {
-                cannotFullscreen();
-                return;
-            }
+                if (height > 1080) {
+                    cannotFullscreen();
+                    return;
+                }
 
             GdxMaster.setWidth(width);
             GdxMaster.setHeight(LwjglApplicationConfiguration.getDesktopDisplayMode().height);
@@ -444,8 +444,9 @@ public class Eidolons {
                         dimension.getHeight();
                 GdxMaster.setWidth(w);
                 GdxMaster.setHeight(h);
-                Gdx.graphics.setWindowedMode(w,
-                        h);
+                if (Gdx.graphics.getWidth() != w || Gdx.graphics.getHeight() != h)
+                    Gdx.graphics.setWindowedMode(w,
+                            h);
                 getApplication().getApplicationListener().resize(w, h);
                 getApplication().getGraphics().setResizable(false);
                 //            getMainViewport().setScreenSize(w, h);

@@ -1,12 +1,17 @@
 package main.level_editor.sim.impl;
 
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.dungeon.location.LocationInitializer;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationSpawner;
-import eidolons.game.battlecraft.logic.dungeon.universal.*;
+import eidolons.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
+import eidolons.game.battlecraft.logic.dungeon.universal.FacingAdjuster;
+import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.core.game.DC_Game;
-import org.mockito.Mockito;
+import main.game.bf.Coordinates;
+import main.game.bf.directions.FACING_DIRECTION;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LE_DungeonMaster extends LocationMaster {
     public LE_DungeonMaster(DC_Game game) {
@@ -43,6 +48,20 @@ public class LE_DungeonMaster extends LocationMaster {
             @Override
             protected void spawnDone() {
                 super.spawnDone();
+            }
+        };
+    }
+
+    @Override
+    protected FacingAdjuster<Location> createFacingAdjuster() {
+        return new FacingAdjuster<Location>(this) {
+            @Override
+            public FACING_DIRECTION getFacingForUnit(Coordinates c, String typeName) {
+                return FACING_DIRECTION.SOUTH; //TODO
+            }
+
+            protected Map<Coordinates, FACING_DIRECTION> getUnitFacingMap() {
+                return new HashMap<>(); //TODO
             }
         };
     }

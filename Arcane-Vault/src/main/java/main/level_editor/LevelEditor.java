@@ -18,6 +18,7 @@ import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
 import main.level_editor.functions.model.LE_DataModel;
 import main.level_editor.gui.palette.PaletteHolder;
+import main.level_editor.metadata.settings.LE_OptionsMaster;
 import main.level_editor.sim.LE_GameSim;
 import main.level_editor.sim.LE_MetaMaster;
 import main.level_editor.struct.boss.BossDungeon;
@@ -47,6 +48,7 @@ public class LevelEditor {
         TypeBuilder.typeBuildOverride.addAll(PaletteHolder.tabTypes);
         Assets.setON(false);
         DC_Engine.systemInit(false);
+        LE_OptionsMaster.init();
         new EditorApp(args).start();
 
     }
@@ -59,6 +61,7 @@ public class LevelEditor {
                 PathUtils.getLastPathSegment(name));
         Floor floor = new Floor(name, game);
         floorSelected(floor);
+        WaitMaster.WAIT(500);
         game.initAndStart();
 
         if (saveTest){

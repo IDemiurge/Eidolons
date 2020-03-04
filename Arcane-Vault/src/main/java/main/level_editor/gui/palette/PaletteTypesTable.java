@@ -15,7 +15,7 @@ import static main.level_editor.metadata.settings.LE_Options.EDITOR_OPTIONS.PALE
 
 public class PaletteTypesTable extends SelectionImageTable {
 
-    private final List<ObjType> types;
+    private  List<ObjType> types;
 
     @Override
     protected SelectableItemData[] initDataArray() {
@@ -26,9 +26,20 @@ public class PaletteTypesTable extends SelectionImageTable {
         return data;
     }
 
-    public PaletteTypesTable(List<ObjType> types, int space) {
-        super(getWrap(), types.size(), space);
-        this.types = types;
+    @Override
+    public void setUserObject(Object userObject) {
+        types = (List<ObjType>) userObject;
+        super.setUserObject(userObject);
+
+    }
+
+    @Override
+    public void updateAct(float delta) {
+        super.updateAct(delta);
+    }
+
+    public PaletteTypesTable(int space) {
+        super(getWrap(), 80, space);
     }
 
     private static int getWrap() {
@@ -43,7 +54,8 @@ public class PaletteTypesTable extends SelectionImageTable {
     @Override
     protected SelectableImageItem createElement(SelectableItemData datum) {
         SelectableImageItem s = super.createElement(datum);
-        s.setScale(LE_OptionsMaster.getOptions().getFloatValue(PALETTE_SCALE));
+//        s.setScale(LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE));
+        s.setSize(getElementSize().x, getElementSize().y);
         return s;
     }
 
@@ -55,12 +67,14 @@ public class PaletteTypesTable extends SelectionImageTable {
 
     @Override
     protected Vector2 getElementSize() {
-        return new Vector2(128 * LE_OptionsMaster.getOptions().getFloatValue(PALETTE_SCALE),
-                128 * LE_OptionsMaster.getOptions().getFloatValue(PALETTE_SCALE));
+        return new Vector2(128 * LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE),
+                128 * LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE));
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+        debugAll();
     }
+
 }

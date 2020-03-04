@@ -1,6 +1,7 @@
 package main.level_editor.gui.palette;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.libgdx.gui.panels.TabbedPanel;
 import main.content.DC_TYPE;
@@ -16,11 +17,21 @@ public class PaletteHolder extends TabbedPanel {
 
     public PaletteHolder(){
         super();
-        addTab(new UpperPalette(DC_TYPE.BF_OBJ) , "Objects");
         addTab(new UpperPalette(DC_TYPE.UNITS) , "Units");
+        addTab(new UpperPalette(DC_TYPE.BF_OBJ) , "Objects");
 //        addTab(new ObjectPalette(), "Vfx");
 //        addTab(new ObjectPalette(), "Templates");
 //        addTab(new ObjectPalette(), "Groups");
+    }
+
+    @Override
+    public float getWidth() {
+        return Gdx.graphics.getWidth()*2/3;
+    }
+
+    @Override
+    public float getHeight() {
+        return super.getHeight();
     }
 
     @Override

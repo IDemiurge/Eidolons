@@ -2,7 +2,6 @@ package main.level_editor.gui.palette;
 
 import main.content.DC_TYPE;
 import main.data.DataManager;
-import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 
 import java.util.List;
@@ -20,11 +19,11 @@ public class ObjectPalette extends LE_Palette {
     }
 
     public void init() {
-        Set<String> tabNames = XML_Reader.getTreeSubGroupMap().get(group);
+        Set<String> tabNames = DataManager.getSubGroups( group);
         for (String tabName : tabNames) {
             List<ObjType> types = DataManager.getTypesSubGroup(TYPE, tabName);
-            PaletteTypesTable palette = new PaletteTypesTable(  types, 0);
-            addTab(palette, tabName);
+//            PaletteTypesTable palette = new PaletteTypesTable(  types, 0);
+//            addTab(palette, tabName);
         }
     }
 }

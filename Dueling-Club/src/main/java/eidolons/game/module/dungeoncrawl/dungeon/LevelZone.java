@@ -5,9 +5,9 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.pregeneration.Pregenerator;
-import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.entity.UnitEnums.UNIT_GROUP;
 import main.data.xml.XML_Converter;
 import main.system.datatypes.WeightMap;
@@ -38,6 +38,7 @@ public class LevelZone extends LevelLayer<LevelBlock> {
     public void addBlock(LevelBlock block) {
         getSubParts().add(block);
     }
+
     public LevelZone(ZONE_TYPE type, ROOM_TEMPLATE_GROUP templateGroup, DUNGEON_STYLE style, int id) {
         this.type = type;
         this.templateGroup = templateGroup;
@@ -53,10 +54,10 @@ public class LevelZone extends LevelLayer<LevelBlock> {
     @Override
     public String toString() {
         return "Zone #" + id + ":" +
-         type +
-         " with style " + style + ", " +
-         getSubParts().size() +
-         "blocks";
+                type +
+                " with style " + style + ", " +
+                getSubParts().size() +
+                "blocks";
     }
 
     @Override
@@ -71,9 +72,12 @@ public class LevelZone extends LevelLayer<LevelBlock> {
         xml = xmlBuilder.toString();
         xml = XML_Converter.wrap("Blocks", xml);
         String values = "";
-        values += XML_Converter.wrap(RngXmlMaster.ZONE_STYLE_NODE, style.name());
-        values += XML_Converter.wrap(RngXmlMaster.ZONE_TYPE_NODE, type.name());
-        values += XML_Converter.wrap(RngXmlMaster.ZONE_TEMPLATE_GROUP_NODE, templateGroup.name());
+        if (style != null)
+            values += XML_Converter.wrap(RngXmlMaster.ZONE_STYLE_NODE, style.name());
+        if (type != null)
+            values += XML_Converter.wrap(RngXmlMaster.ZONE_TYPE_NODE, type.name());
+        if (templateGroup != null)
+            values += XML_Converter.wrap(RngXmlMaster.ZONE_TEMPLATE_GROUP_NODE, templateGroup.name());
         xml += XML_Converter.wrap(RngXmlMaster.VALUES_NODE, values);
         xml = XML_Converter.wrap("Zone_" + id, xml);
         return xml;

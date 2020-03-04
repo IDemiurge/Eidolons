@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL30;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.bf.mouse.DungeonInputController;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.ambi.ParticleManager;
@@ -30,6 +29,7 @@ public class LE_Screen extends GenericDungeonScreen {
     static LE_Screen instance;
     Floor floor;
     private LE_InputProcessor processor;
+    private InputMultiplexer multiplexer;
 
     public static Supplier<ScreenWithLoader> getScreen(Floor parameter) {
         Supplier<ScreenWithLoader> supplier = cached.get(parameter);
@@ -52,7 +52,17 @@ public class LE_Screen extends GenericDungeonScreen {
         WaitMaster.unmarkAsComplete(WaitMaster.WAIT_OPERATIONS.GUI_READY);
         floor = (Floor) data.getParameter();
 
-        gridStage = new StageX(viewPort, getBatch());
+        gridStage = new StageX(viewPort, getBatch()){
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                return super.touchDown(screenX, screenY, pointer, button);
+            }
+
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                return super.touchUp(screenX, screenY, pointer, button);
+            }
+        };
         guiStage = createGuiStage(); //separate batch for PP
 
         initGl();
@@ -73,8 +83,11 @@ public class LE_Screen extends GenericDungeonScreen {
 
     @Override
     public void updateInputController() {
-        GdxMaster.setInputProcessor(
-                new InputMultiplexer( createInputController(), gridStage, guiStage ));
+        if (guiStage == null) {
+            main.system.auxiliary.log.LogMaster.log(1, "NULL GUI! ");
+        } else
+            main.system.auxiliary.log.LogMaster.log(1, "updateInputController for GUI! ");
+        GdxMaster.setInputProcessor(getMultiplexer());
     }
 
     @Override
@@ -84,8 +97,8 @@ public class LE_Screen extends GenericDungeonScreen {
 
     @Override
     protected InputProcessor createInputController() {
-        if (processor==null) {
-            processor= new LE_InputProcessor(getCamera(), floor);
+        if (processor == null) {
+            processor = new LE_InputProcessor(getCamera(), floor);
         }
         return processor;
     }
@@ -102,7 +115,6 @@ public class LE_Screen extends GenericDungeonScreen {
     @Override
     public void render(float delta) {
 //        super.render(delta);
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         cameraMan.act(delta);
@@ -111,6 +123,13 @@ public class LE_Screen extends GenericDungeonScreen {
         drawBg(delta);
         gridStage.draw();
         guiStage.draw();
+        Gdx.input.setInputProcessor(getMultiplexer());
+    }
+
+    public InputMultiplexer getMultiplexer() {
+        if (multiplexer == null)
+            multiplexer = new InputMultiplexer(createInputController(), guiStage, gridStage);
+        return multiplexer;
     }
 
     @Override

@@ -145,7 +145,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         }
         Coordinates c = Coordinates.get(coordinates);
         FACING_DIRECTION facing_direction = facing == null
-         ? getFacingAdjuster().getFacingForEnemy(c)
+         ? getFacingAdjuster().getFacingForUnit(c, typeName)
          : FacingMaster.getFacing(facing);
         ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.UNITS_CHARS);
         //TODO chars or units?!

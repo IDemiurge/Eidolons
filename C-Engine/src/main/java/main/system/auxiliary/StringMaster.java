@@ -189,11 +189,11 @@ public class StringMaster {
             // string.replace("_", " ");
 
             if (anotherString.startsWith(" ")) {
-                anotherString = anotherString.substring(1, anotherString.length());
+                anotherString = anotherString.substring(1);
                 return compareByChar(string, anotherString, false);
             }
             if (string.startsWith(" ")) {
-                string = string.substring(1, string.length());
+                string = string.substring(1);
                 return compareByChar(string, anotherString, false);
             }
             if (anotherString.endsWith(" ")) {
@@ -207,8 +207,8 @@ public class StringMaster {
             }
             return false;
         }
-        char v1[] = string.toCharArray();
-        char v2[] = anotherString.toCharArray();
+        char[] v1 = string.toCharArray();
+        char[] v2 = anotherString.toCharArray();
         int n = v1.length;
 
         int i = -1;
@@ -400,7 +400,7 @@ public class StringMaster {
             StringBuilder builder = new StringBuilder(s.length() + 5);
             string = "";
             for (char c : s.toCharArray()) {
-                builder.append(String.valueOf(c));
+                builder.append(c);
             }
             string = builder.toString();
         } else {
@@ -813,7 +813,7 @@ public class StringMaster {
             return string;
         }
         String prefix = string.substring(0, index);
-        String suffix = string.substring(index + regex.length(), string.length());
+        String suffix = string.substring(index + regex.length());
         return prefix + replacement + suffix;
     }
 
@@ -877,7 +877,7 @@ public class StringMaster {
         if (str1.length() < i) {
             return str1;
         }
-        return str1.substring(i, str1.length());
+        return str1.substring(i);
     }
 
     public static String cropLast(String str1, int i) {
@@ -1028,7 +1028,7 @@ public class StringMaster {
     public static String getFirstConsonants(String name, int n) {
         StringBuilder string = new StringBuilder();
         for (String sub : ContainerUtils.open(name, " ")) {
-            string.append("").append(sub.charAt(0));
+            string.append(sub.charAt(0));
         }
         return string.toString().toUpperCase();
     }
@@ -1042,7 +1042,7 @@ public class StringMaster {
     public static String getAbbreviation(String name) {
         StringBuilder string = new StringBuilder();
         for (String sub : ContainerUtils.open(name, " ")) {
-            string.append("").append(sub.charAt(0));
+            string.append(sub.charAt(0));
         }
         return string.toString().toUpperCase();
     }
@@ -1082,8 +1082,8 @@ public class StringMaster {
     }
 
 
-    public static String wrap(String wrap, String string) {
-        return wrap + string + wrap;
+    public static String wrap(String wrap, String enclosed) {
+        return wrap + enclosed + wrap;
     }
 
     public static String tryGetSplit(String text, String separator, int i) {
