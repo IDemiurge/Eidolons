@@ -26,7 +26,8 @@ import eidolons.libgdx.gui.panels.dc.logpanel.LogPanel;
 import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.particles.ambi.EmitterMap;
 import eidolons.libgdx.particles.ambi.ParticleManager;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.libgdx.stage.GuiVisualEffects;
@@ -413,7 +414,7 @@ public class OptionsMaster {
 
             case FULLSCREEN:
                 if (Eidolons.getScope() == SCOPE.MENU)
-                    Eidolons.setFullscreen(bool);
+                    ScreenMaster.setFullscreen(bool);
                 break;
 
             case VIDEO:
@@ -431,7 +432,7 @@ public class OptionsMaster {
                         bool);
                 break;
             case RESOLUTION:
-                Eidolons.setResolution(value);
+                ScreenMaster.setResolution(value);
                 break;
             case SHADOW_MAP_OFF:
                 ShadowMap.setOn(!bool);
@@ -565,7 +566,7 @@ public class OptionsMaster {
 
     public static void openMenu() {
         if (isVisUiMode()) {
-            openVisUiMenu(Eidolons.getScreen().getGuiStage());
+            openVisUiMenu(ScreenMaster.getScreen().getGuiStage());
             return;
         }
 

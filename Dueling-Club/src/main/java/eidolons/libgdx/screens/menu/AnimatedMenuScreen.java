@@ -1,4 +1,4 @@
-package eidolons.libgdx.screens;
+package eidolons.libgdx.screens.menu;
 
 
 import eidolons.game.battlecraft.logic.meta.igg.story.IggActChoicePanel;
@@ -8,7 +8,7 @@ import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.rng.RngSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.saves.SaveSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
-import eidolons.libgdx.screens.menu.MainMenu;
+import eidolons.libgdx.screens.ScreenWithVideoLoader;
 import eidolons.libgdx.video.VideoMaster;
 import eidolons.system.audio.MusicMaster;
 import main.content.DC_TYPE;

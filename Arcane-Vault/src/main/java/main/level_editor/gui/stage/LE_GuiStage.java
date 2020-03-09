@@ -6,30 +6,22 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.GenericGuiStage;
-import main.level_editor.gui.palette.PaletteTabs;
-import main.level_editor.gui.palette.PaletteTypesTable;
+import main.level_editor.gui.palette.PaletteHolder;
 import main.level_editor.gui.top.TopPanel;
+import main.level_editor.gui.tree.LE_TreePanel;
 
 public class LE_GuiStage extends GenericGuiStage {
 
     private final TablePanelX palettePanel;
     private final TopPanel topPanel;
+    LE_TreePanel treePanel;
 
     public LE_GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
-        palettePanel = new TablePanelX();
-        PaletteTypesTable palette = new PaletteTypesTable(1);
-        palettePanel.add(new PaletteTabs(palette).getTable()).expandX().fillX().row();
-        palettePanel.add(palette).expandX().fillX().row();
-        addActor(palettePanel);
+        addActor(palettePanel= new PaletteHolder());
+        addActor(topPanel= new TopPanel());
+        addActor(treePanel=new LE_TreePanel());
 
-        topPanel = new TopPanel() ;
-        addActor(topPanel);
-
-
-        palettePanel.debugAll();
-        topPanel.debugAll();
-        setDebugAll(true);
     }
 
     @Override
@@ -39,9 +31,13 @@ public class LE_GuiStage extends GenericGuiStage {
 
     @Override
     public void act(float delta) {
-        topPanel.setY(Gdx.graphics.getHeight()-50);
+        topPanel.setY(Gdx.graphics.getHeight() - 50);
+        topPanel.setX(200);
         GdxMaster.center(palettePanel);
         palettePanel.setY(100);
+
+        treePanel.setX(Gdx.graphics.getWidth() - treePanel.getWidth() );
+        treePanel.setY(Gdx.graphics.getHeight() - treePanel.getHeight() );
         super.act(delta);
     }
 
@@ -52,7 +48,12 @@ public class LE_GuiStage extends GenericGuiStage {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return super.touchUp(screenX, screenY, pointer, button);
+        try {
+            return super.touchUp(screenX, screenY, pointer, button);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return true;
     }
 
 

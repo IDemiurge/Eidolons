@@ -2,7 +2,7 @@ package eidolons.libgdx.audio;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;

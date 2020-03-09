@@ -15,10 +15,10 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
-import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.mouse.GlobalInputController;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.data.filesys.PathFinder;
@@ -215,7 +215,7 @@ public class GdxMaster {
     }
 
     public static boolean isGuiReady() {
-        return Eidolons.getScreen() != null;
+        return ScreenMaster.getScreen() != null;
     }
 
     public static float getFontSizeMod() {
@@ -240,12 +240,12 @@ public class GdxMaster {
     }
 
     private static int getDefaultWidth() {
-        return Eidolons.isFullscreen() ? GdxMaster.DEFAULT_WIDTH
+        return ScreenMaster.isFullscreen() ? GdxMaster.DEFAULT_WIDTH
                 : GdxMaster.DEFAULT_WIDTH_FULLSCREEN;
     }
 
     private static int getDefaultHeight() {
-        return Eidolons.isFullscreen() ? GdxMaster.DEFAULT_HEIGHT
+        return ScreenMaster.isFullscreen() ? GdxMaster.DEFAULT_HEIGHT
                 : GdxMaster.DEFAULT_HEIGHT_FULLSCREEN;
     }
 
@@ -452,10 +452,7 @@ public class GdxMaster {
             return false;
         if (vector2.x > v.x + target.getWidth())
             return false;
-        if (vector2.y > v.y + target.getHeight())
-            return false;
-
-        return true;
+        return !(vector2.y > v.y + target.getHeight());
     }
 
     private static void setCursor(Cursor cursor) {
@@ -541,7 +538,7 @@ public class GdxMaster {
 
     public static void onInput(Runnable r, Boolean gdx_any_pass, boolean stack) {
         Runnable finalR = r;
-        if (!Eidolons.getScreen().getController().isStackInput()
+        if (!ScreenMaster.getScreen().getController().isStackInput()
                 || stack) {
             stackRunnable = r;
             return;
@@ -557,7 +554,7 @@ public class GdxMaster {
             };
             stackRunnable = null;
         }
-        Eidolons.getScreen().getController().onInputGdx(gdx_any_pass, r);
+        ScreenMaster.getScreen().getController().onInputGdx(gdx_any_pass, r);
     }
 
     public static void onPassInput(Runnable finalR) {
@@ -565,11 +562,11 @@ public class GdxMaster {
     }
 
     public static void inputPass() {
-        Eidolons.getScreen().getController().inputPass();
+        ScreenMaster.getScreen().getController().inputPass();
     }
 
     public static void input() {
-        Eidolons.getScreen().getController().input();
+        ScreenMaster.getScreen().getController().input();
     }
 
     public enum CURSOR {

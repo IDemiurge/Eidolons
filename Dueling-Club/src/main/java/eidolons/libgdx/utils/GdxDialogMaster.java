@@ -2,9 +2,9 @@ package eidolons.libgdx.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.TextInputListener;
-import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.screens.GameScreen;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.map.MapScreen;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -41,7 +41,7 @@ public class GdxDialogMaster {
 
     private static void textInput(TextInputListener textInputListener, String title,
                                   String text, String hint) {
-        GameScreen screen = Eidolons.getScreen();
+        GameScreen screen = ScreenMaster.getScreen();
         if (screen instanceof MapScreen) {
             MapScreen.getInstance().getGuiStage().textInput(textInputListener, title,
              text, hint);

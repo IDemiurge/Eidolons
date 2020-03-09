@@ -1,7 +1,10 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
+import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import main.game.bf.Coordinates;
+
+import java.util.List;
 
 public class Module {
     private AmbienceDataSource.AMBIENCE_TEMPLATE vfx;
@@ -11,6 +14,7 @@ public class Module {
 
     private String name;
     private final String path;
+    private List<LevelZone> zones;
 
     public Module(Coordinates origin, int width, int height, String name, String path) {
         this.origin = origin;
@@ -58,6 +62,14 @@ public class Module {
     }
 
     public void toggleCoordinate(Coordinates c) {
+    }
+
+    public List<LevelZone> getZones() {
+        return zones;
+    }
+
+    public void setZones(List<LevelZone> zones) {
+        this.zones = zones;
     }
 
 

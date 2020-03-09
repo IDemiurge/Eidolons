@@ -12,7 +12,7 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.particles.spell.SpellVfx;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
@@ -27,7 +27,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-import static main.system.auxiliary.log.LogMaster.*;
+import static main.system.auxiliary.log.LogMaster.ANIM_DEBUG;
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 1/14/2017.

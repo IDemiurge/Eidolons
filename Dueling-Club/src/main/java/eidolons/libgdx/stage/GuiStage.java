@@ -13,7 +13,9 @@ import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
 import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
 import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.*;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
 import eidolons.game.core.EUtils;
@@ -23,6 +25,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.gui.HideButton;
@@ -33,8 +36,8 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
-import eidolons.libgdx.gui.panels.dc.logpanel.FullLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.ExtendableLogPanel;
+import eidolons.libgdx.gui.panels.dc.logpanel.FullLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
@@ -43,6 +46,7 @@ import eidolons.libgdx.gui.panels.quest.QuestJournal;
 import eidolons.libgdx.gui.panels.quest.QuestProgressPanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.screens.Blackout;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.map.town.navigation.PlaceNavigationPanel;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
@@ -64,7 +68,7 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
 
-import static eidolons.game.core.Eidolons.getScreen;
+import static eidolons.libgdx.screens.ScreenMaster.getScreen;
 import static main.system.GuiEventType.SHOW_QUESTS_INFO;
 import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
 
@@ -193,7 +197,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
             }
         });
         actionTooltipContainer.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.ATB_POS);
-        actionTooltipContainer.setAlphaFluctuationOn(true);
+        Fluctuating.setAlphaFluctuationOn(true);
 
         addActor(hqPanel = new HqPanel());
         hqPanel.setPosition(GdxMaster.centerWidth(hqPanel),
@@ -242,7 +246,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
             }
         });
         infoTooltipContainer.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_MAP);
-        infoTooltipContainer.setAlphaFluctuationOn(true);
+        Fluctuating.setAlphaFluctuationOn(true);
 
         addActor(confirmationPanel = ConfirmationPanel.getInstance());
 
@@ -397,7 +401,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         resetZIndices();
 
         if (hqPanel.isVisible()) {
-            if (!Eidolons.isFullscreen()) {
+            if (!ScreenMaster.isFullscreen()) {
                 hqPanel.setX(-80);
             }
         }
@@ -487,8 +491,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         if (!ancestors.contains(textPanel))
             if (!ancestors.contains(confirmationPanel))
                 if (!ancestors.contains(tipMessageWindow))
-                    if (!ancestors.contains(gameMenu))
-                        return true;
+                    return !ancestors.contains(gameMenu);
 
         return false;
     }

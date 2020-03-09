@@ -22,6 +22,7 @@ import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.tooltips.LastSeenTooltipFactory;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
@@ -194,7 +195,7 @@ public class UnitViewFactory {
 
             @Override
             public boolean handle(Event e) {
-                if (Eidolons.getScreen().getGuiStage().isBlocked()) {
+                if (ScreenMaster.getScreen().getGuiStage().isBlocked()) {
                     return true;
                 }
 

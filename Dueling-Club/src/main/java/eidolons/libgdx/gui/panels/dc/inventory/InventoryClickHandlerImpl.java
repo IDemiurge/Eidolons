@@ -15,6 +15,7 @@ import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.ItemEnums.JEWELRY_TYPE;
@@ -116,9 +117,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     protected boolean isBlocked() {
         if (!ExplorationMaster.isExplorationOn())
             if (manager != null)
-                if (!manager.hasOperations()) {
-                    return true;
-                }
+                return !manager.hasOperations();
         return false;
     }
 
@@ -438,13 +437,13 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     @Override
     public Entity getDragged() {
-        return Eidolons.getScreen().getGuiStage().getDraggedEntity();
+        return ScreenMaster.getScreen().getGuiStage().getDraggedEntity();
     }
 
     @Override
     public void setDragged(Entity dragged) {
         try {
-            Eidolons.getScreen().getGuiStage().setDraggedEntity(dragged);
+            ScreenMaster.getScreen().getGuiStage().setDraggedEntity(dragged);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

@@ -39,7 +39,7 @@ import eidolons.libgdx.gui.panels.dc.SpeedControlPanel;
 import eidolons.libgdx.gui.panels.dc.clock.ClockActor;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.screens.CustomSpriteBatch;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;

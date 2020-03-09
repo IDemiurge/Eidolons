@@ -1,4 +1,4 @@
-package eidolons.libgdx.screens;
+package eidolons.libgdx.screens.dungeon;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.core.Eidolons;

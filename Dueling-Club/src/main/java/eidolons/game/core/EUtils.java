@@ -5,6 +5,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.GenericEnums;
@@ -123,7 +124,7 @@ public class EUtils {
     }
 
     public static void switchBackScreen() {
-        SCREEN_TYPE type = Eidolons.getPreviousScreenType();
+        SCREEN_TYPE type = ScreenMaster.getPreviousScreenType();
         switchScreen(new ScreenData(type));
     }
 

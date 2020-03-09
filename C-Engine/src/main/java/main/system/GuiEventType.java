@@ -128,6 +128,6 @@ public enum GuiEventType implements EventType {
     SOULS_CONSUMED, SOULS_CLAIMED,
     LE_CHOOSE_FILE,
 
-    BATTLE_FINISHED,
+    BATTLE_FINISHED, LE_TREE_RESET,
 
 }

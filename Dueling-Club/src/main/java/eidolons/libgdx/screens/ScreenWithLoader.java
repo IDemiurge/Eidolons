@@ -50,7 +50,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     protected SpriteAnimation backgroundSprite;
 
-    FloatAction blackoutAction = new FloatAction();
+    protected FloatAction blackoutAction = new FloatAction();
     private float blackout;
     private boolean blackoutBack;
     private boolean whiteout;
@@ -406,9 +406,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected boolean isTooltipsOn() {
-        if (loading)
-            return true;
-        return false;
+        return loading;
     }
 
 

@@ -14,12 +14,12 @@ import java.util.List;
 /**
  * Created by JustMe on 3/26/2018.
  */
-public class AtbCalculator {
-    private static AtbCalculator instance;
+public class AtbPrecalculator {
+    private static AtbPrecalculator instance;
     AtbController controller;
     private AtbController clone;
 
-    private AtbCalculator(AtbController controller) {
+    private AtbPrecalculator(AtbController controller) {
         this.controller = controller;
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED, p -> {
             if ( ExplorationMaster.isExplorationOn())
@@ -59,7 +59,7 @@ public class AtbCalculator {
         return new FauxAtbController(controller, this);
     }
 
-    public static AtbCalculator getInstance() {
+    public static AtbPrecalculator getInstance() {
         return instance;
     }
 
@@ -76,7 +76,7 @@ public class AtbCalculator {
 
     public static void init(AtbController atbController) {
         if (instance == null)
-            instance = new AtbCalculator(atbController);
+            instance = new AtbPrecalculator(atbController);
         else instance.setController(atbController);
     }
 

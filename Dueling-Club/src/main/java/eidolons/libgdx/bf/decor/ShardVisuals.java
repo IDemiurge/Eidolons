@@ -4,16 +4,16 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.GridMaster;
-import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -371,18 +371,14 @@ public class ShardVisuals extends GroupX {
         }
 
         // not adjacent to large? no more than 3 in line
-        if (RandomWizard.chance(LARGE_SHARD_CHANCE))
-            return true;
+        return RandomWizard.chance(LARGE_SHARD_CHANCE);
 
         //add to map so we know where large ones are
-        return false;
     }
 
     private boolean checkSize(Coordinates coordinates, SHARD_SIZE size) {
         if (map.get(coordinates) != null) {
-            if (map.get(coordinates).getSize() == size) {
-                return true;
-            }
+            return map.get(coordinates).getSize() == size;
         }
         return false;
     }
@@ -397,10 +393,7 @@ public class ShardVisuals extends GroupX {
             return null;
         if (adj.x >= grid.getCells().length || adj.y >= grid.getCells()[0].length)
             return null;
-        if (grid.getCells()[adj.x][adj.y] != null) {
-            return false;
-        }
-        return true;
+        return grid.getCells()[adj.x][adj.y] == null;
     }
 
     private Integer getDirectionForShards(int x, int y) {

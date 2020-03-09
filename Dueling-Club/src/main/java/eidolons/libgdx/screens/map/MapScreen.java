@@ -16,7 +16,7 @@ import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.bf.mouse.MapInputController;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
-import eidolons.libgdx.screens.GameScreenWithTown;
+import eidolons.libgdx.screens.dungeon.GameScreenWithTown;
 import eidolons.libgdx.screens.map.editor.EditorMapView;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.macro.AdventureInitializer;

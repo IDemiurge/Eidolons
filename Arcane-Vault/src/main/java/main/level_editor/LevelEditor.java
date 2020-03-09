@@ -3,7 +3,6 @@ package main.level_editor;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
@@ -47,9 +46,9 @@ public class LevelEditor {
         CoreEngine.setLevelEditor(true);
         TypeBuilder.typeBuildOverride.addAll(PaletteHolder.tabTypes);
         Assets.setON(false);
-        DC_Engine.systemInit(false);
-        LE_OptionsMaster.init();
+//        DC_Engine.systemInit(false);
         new EditorApp(args).start();
+        LE_OptionsMaster.init();
 
     }
 
@@ -64,6 +63,7 @@ public class LevelEditor {
         WaitMaster.WAIT(500);
         game.initAndStart();
 
+        meta.gameStarted();
         if (saveTest){
             floor.getManager().getDataHandler().saveFloor();
         }

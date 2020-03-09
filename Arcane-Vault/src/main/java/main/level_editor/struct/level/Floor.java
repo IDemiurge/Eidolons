@@ -2,12 +2,15 @@ package main.level_editor.struct.level;
 
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import main.level_editor.functions.LE_Manager;
+import main.level_editor.gui.tree.data.LayeredData;
 import main.level_editor.sim.LE_GameSim;
 import main.level_editor.struct.boss.BossDungeon;
+import main.level_editor.struct.module.LE_Module;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
-public class Floor {
+public class Floor implements LayeredData<LE_Module> {
 //this is just a wrapper for a real Dungeon?
     String name;
 //    FloorData data;
@@ -38,4 +41,8 @@ public class Floor {
     }
 
 
+    @Override
+    public Set<LE_Module> getChildren() {
+       return getModules().stream().map(module -> new LE_Module(module)).collect(Collectors.toSet());
+    }
 }

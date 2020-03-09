@@ -15,6 +15,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.CinematicGridO
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObject;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SPEECH_ACTION;
@@ -33,25 +34,25 @@ import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.audio.SoundPlayer;
-import main.content.ContentValsManager;
-import main.content.enums.GenericEnums.BLENDING;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.datasource.SpriteData;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.particles.ParticlesSprite.PARTICLES_SPRITE;
 import eidolons.libgdx.particles.spell.SpellVfxMaster;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.post.PostFxUpdater.POST_FX_TEMPLATE;
 import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.system.audio.DC_SoundMaster;
-import main.content.C_OBJ_TYPE;
-import main.content.DC_TYPE;
-import main.content.enums.GenericEnums;
-import main.content.enums.GenericEnums.SOUND_CUE;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.Soundscape.SOUNDSCAPE;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.Texts;
+import main.content.C_OBJ_TYPE;
+import main.content.ContentValsManager;
+import main.content.DC_TYPE;
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.BLENDING;
+import main.content.enums.GenericEnums.SOUND_CUE;
 import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
@@ -84,7 +85,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 
 import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SPEECH_ACTION.*;
-import static eidolons.libgdx.bf.GridMaster.*;
+import static eidolons.libgdx.bf.GridMaster.getCameraCenter;
+import static eidolons.libgdx.bf.GridMaster.getCenteredPos;
 import static main.system.auxiliary.log.LogMaster.important;
 
 public class SpeechExecutor {
@@ -661,7 +663,6 @@ public class SpeechExecutor {
                                 new SpeechScript(d, master).execute());
                     } else {
                         SpeechScript subscript = new SpeechScript(d, master);
-                        ;
                         subscript.execute();
                         if (subscript.interrupted) {
                             return false;
@@ -1050,10 +1051,7 @@ public class SpeechExecutor {
                 GuiEventManager.triggerWithParams(GuiEventType.PLAY_VIDEO, value, r);
                 break;
             case BREAK_IF:
-                if (EidolonsGame.getAny(value)) {
-                    return false;
-                }
-                return true;
+                return !EidolonsGame.getAny(value);
             case CONFIRM:
                 if (!EUtils.waitConfirm(value)) {
                     return bool;
@@ -1064,10 +1062,7 @@ public class SpeechExecutor {
                 }
                 return !bool;
             case CONTINUE_IF:
-                if (!EidolonsGame.getAny(value)) {
-                    return false;
-                }
-                return true;
+                return EidolonsGame.getAny(value);
             case GLOBAL_CONTINUE_IF:
                 if (!EidolonsGame.getAny(value)) {
                     lastScript.interrupted = true;
@@ -1293,7 +1288,7 @@ public class SpeechExecutor {
         BattleFieldObject unit = master.getGame().getAiManager().getScriptExecutor().findUnit(
                 Eidolons.getMainHero().getRef(), value);
         if (unit == null) {
-            DialogueActor actor = dialogueManager.getDialogueActorMaster().getActor(value);
+            DialogueActor actor = DialogueActorMaster.getActor(value);
             if (actor != null) {
                 if (actor.getLinkedUnit() == null) {
                     actor.setupLinkedUnit();

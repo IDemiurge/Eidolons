@@ -3,6 +3,8 @@ package main.level_editor.gui.palette;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.gui.panels.TabbedPanel;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -22,6 +24,22 @@ public class PaletteHolder extends TabbedPanel {
 //        addTab(new ObjectPalette(), "Vfx");
 //        addTab(new ObjectPalette(), "Templates");
 //        addTab(new ObjectPalette(), "Groups");
+    }
+
+    @Override
+    protected Cell addTabTable() {
+        return super.addTabTable();
+    }
+
+    @Override
+    public void layout() {
+        super.layout();
+        tabTable.setY(-50);
+    }
+
+    @Override
+    protected int getDefaultAlignment() {
+        return Align.bottom;
     }
 
     @Override

@@ -25,7 +25,7 @@ import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.system.controls.GlobalController;

@@ -10,7 +10,6 @@ import com.bitfire.postprocessing.effects.Bloom.Settings;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.Fluctuating;
-import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.shaders.ShaderMaster.SHADER;
 import eidolons.libgdx.shaders.post.fx.BloomFx;
@@ -22,6 +21,7 @@ import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.PostProcessingOptions;
 import eidolons.system.options.PostProcessingOptions.POST_PROCESSING_OPTIONS;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -148,7 +148,6 @@ public class PostProcessController {
 
     private void initFxForScreen(SCREEN_TYPE screen_type) {
         switch (screen_type) {
-            case HEADQUARTERS:
             case MAP:
             case WEAVE:
             case MAIN_MENU:

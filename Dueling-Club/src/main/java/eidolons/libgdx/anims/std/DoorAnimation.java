@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;

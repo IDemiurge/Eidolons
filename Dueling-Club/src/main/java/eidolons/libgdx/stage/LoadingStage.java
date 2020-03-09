@@ -14,15 +14,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
-import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.particles.ambi.Ambience;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import eidolons.libgdx.particles.ambi.ParticleManager;
-import eidolons.libgdx.launch.ScenarioLauncher;
-import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.text.TipMaster;
 import main.content.enums.GenericEnums;
 import main.system.auxiliary.EnumMaster;
@@ -169,7 +169,7 @@ public class LoadingStage extends Stage {
         if (IGG_Launcher.INTRO_RUNNING) {
             underText.setVisible(false);
         } else
-            underText.setVisible(!(Eidolons.getScreen() instanceof DungeonScreen));
+            underText.setVisible(!(ScreenMaster.getScreen() instanceof DungeonScreen));
 
     }
 

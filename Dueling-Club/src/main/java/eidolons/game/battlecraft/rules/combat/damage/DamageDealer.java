@@ -15,7 +15,7 @@ import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
@@ -176,9 +176,7 @@ public class DamageDealer {
 
     private static boolean isLogged(BattleFieldObject attacker, BattleFieldObject targetObj, ActiveObj active) {
         if (EffectFinder.getFirstEffectOfClass((DC_ActiveObj) active, SpecialTargetingEffect.class) != null) {
-            if (targetObj instanceof Structure) {
-                return false;
-            }
+            return !(targetObj instanceof Structure);
         }
         return true;
     }

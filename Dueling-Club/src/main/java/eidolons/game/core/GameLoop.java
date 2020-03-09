@@ -19,7 +19,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.gui.generic.GearActor;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.text.DC_LogManager;
 import main.game.bf.Coordinates;

@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.stage.GuiStage;
@@ -65,6 +67,7 @@ public class StyleHolder {
     private static TextButtonStyle dialogueReplyStyle;
     private static LabelStyle defaultHiero;
     private static LabelStyle defaultInfoStyle;
+    private static TabbedPane.TabbedPaneStyle horTabStyle;
 
     static {
         for (FONT font : FONT.values()) {
@@ -483,4 +486,15 @@ public class StyleHolder {
     public static LabelStyle newStyle(LabelStyle  style) {
         return new LabelStyle(style);
     }
+
+    public static TabbedPane.TabbedPaneStyle getHorTabStyle() {
+        if (horTabStyle == null) {
+            horTabStyle = VisUI.getSkin().get(TabbedPane.TabbedPaneStyle.class);
+            horTabStyle.vertical = false;
+
+            horTabStyle.background = NinePatchFactory.getLightPanelFilledDrawable();
+        }
+        return horTabStyle;
+    }
+
 }

@@ -38,9 +38,14 @@ public class LE_XmlMaster {
 
         xmlBuilder.append(buildIdMap(floor));
         xmlBuilder.append(buildCoordinateMap(floor));
-        String planXml = (floor.getGame().getDungeonMaster().getDungeonWrapper()).getPlan().getXml();
+        String planXml =  "";
+        try {
+            planXml = (floor.getGame().getDungeonMaster().getDungeonWrapper()).getPlan().getXml();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
 
-        xmlBuilder.append(planXml );
+        xmlBuilder.append(planXml);
 
         xmlBuilder.close("Plan");
 
@@ -50,7 +55,7 @@ public class LE_XmlMaster {
             xmlBuilder.appendNode(contents, module.getName());
         }
         xmlBuilder.close(LocationBuilder.MODULES_NODE);
-        return XML_Converter.wrap("Floor", xmlBuilder.toString() ); //name?
+        return XML_Converter.wrap("Floor", xmlBuilder.toString()); //name?
     }
 
     private static String buildCoordinateMap(Floor floor) {

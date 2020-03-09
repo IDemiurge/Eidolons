@@ -24,29 +24,29 @@ public class AtbController implements Comparator<Unit> {
     public static final float SECONDS_IN_ROUND = 12; //seconds; to sync with clock
     public static final float TIME_TO_READY = 10;
     public static final Float TIME_LOGIC_MODIFIER = 1000f;
-    private static final Float ATB_PER_INITIATIVE_MOD =0.2f ;
-    private AtbTurnManager manager;
-    private Array<AtbUnit> unitsInAtb;
-    private float time = 0f; //passed in this round
-    private float totalTime = 0f;
-    private int step;   //during this round
-    private boolean nextTurn;
-    private float unloggedTimePassed=0;
+    protected static final Float ATB_PER_INITIATIVE_MOD =0.2f ;
+    protected AtbTurnManager manager;
+    protected Array<AtbUnit> unitsInAtb;
+    protected float time = 0f; //passed in this round
+    protected float totalTime = 0f;
+    protected int step;   //during this round
+    protected boolean nextTurn;
+    protected float unloggedTimePassed=0;
 
     public AtbController(AtbTurnManager manager) {
         this.manager = manager;
         unitsInAtb = new Array<>();
-        AtbCalculator.init(this);
+        AtbPrecalculator.init(this);
 
     }
 
-    public AtbController(AtbController original, AtbCalculator calculator) {
+    public AtbController(AtbController original, AtbPrecalculator calculator) {
         this.manager = original.getManager();
         unitsInAtb = calculator.cloneUnits(original);
         time = original.getTime();
     }
 
-    private static int compareForSort(AtbUnit first, AtbUnit second) {
+    protected static int compareForSort(AtbUnit first, AtbUnit second) {
         if (first.getTimeTillTurn() == second.getTimeTillTurn())
             return first.getUnit()== Eidolons.getMainHero() ? -1 : second.getUnit()== Eidolons.getMainHero()? 1 : 0; //igg demo hack
         if (first.getTimeTillTurn() < second.getTimeTillTurn())
@@ -93,11 +93,11 @@ public class AtbController implements Comparator<Unit> {
         }
     }
 
-    private float getDefaultTimePeriod() {
+    protected float getDefaultTimePeriod() {
         return 1;
     }
 
-    private boolean checkAllInactive() {
+    protected boolean checkAllInactive() {
         for (AtbUnit sub : getUnits()) {
             if (sub.getInitiative() > 0)
                 return false;
@@ -128,7 +128,7 @@ public class AtbController implements Comparator<Unit> {
         }
     }
 
-    private void processTimeElapsed(Float time) {
+    protected void processTimeElapsed(Float time) {
         addTime(time);
 
         if (!isPrecalc()) {
@@ -157,11 +157,11 @@ public class AtbController implements Comparator<Unit> {
             manager.getGame().getManager().atbTimeElapsed(time);
     }
 
-    private float getAtbGainForUnit(Float time, AtbUnit unit) {
+    protected float getAtbGainForUnit(Float time, AtbUnit unit) {
         return time * unit.getInitiative() * ATB_PER_INITIATIVE_MOD;
     }
 
-    private void addTime(Float time) {
+    protected void addTime(Float time) {
         this.time += time;
         this.totalTime += time;
     }
@@ -170,16 +170,16 @@ public class AtbController implements Comparator<Unit> {
         return false;
     }
 
-    private String getTimeString(float v) {
+    protected String getTimeString(float v) {
         return
                 NumberUtils.formatFloat(1, v) + " seconds";
     }
 
-    private void updateTurnOrder() {
+    protected void updateTurnOrder() {
         this.unitsInAtb.sort((o1, o2) -> compareForSort(o1, o2));
     }
 
-    private void updateTimeTillTurn() {
+    protected void updateTimeTillTurn() {
         for (AtbUnit unit : this.unitsInAtb) {
 //            if (unit.getInitiative() <= 0) {
 //                unit.setTimeTillTurn(Float.MAX_VALUE);
@@ -191,7 +191,7 @@ public class AtbController implements Comparator<Unit> {
         }
     }
 
-    private float calculateTimeTillTurn(AtbUnit unit) {
+    protected float calculateTimeTillTurn(AtbUnit unit) {
         float time = getAtbGainForUnit((TIME_TO_READY - unit.getAtbReadiness()) , unit);
         if (unit.isImmobilized()) {
             float duration = AtbMaster.getImmobilizingBuffsMaxDuration(unit.getUnit());
@@ -208,7 +208,7 @@ public class AtbController implements Comparator<Unit> {
         return time;
     }
 
-    private void removeUnit(AtbUnit unit) {
+    protected void removeUnit(AtbUnit unit) {
         int index = this.unitsInAtb.indexOf(unit, true);
         if (index > -1) {
             this.unitsInAtb.removeValue(unit, true);
@@ -216,7 +216,7 @@ public class AtbController implements Comparator<Unit> {
         this.processAtbRelevantEvent();
     }
 
-    private void addUnit(AtbUnit unit) {
+    protected void addUnit(AtbUnit unit) {
         if (unit.getInitiative() > 0) {
             unit.setAtbReadiness(unit.getInitialInitiative());
             this.unitsInAtb.add(unit);

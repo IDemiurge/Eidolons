@@ -6,19 +6,40 @@ import eidolons.game.battlecraft.logic.meta.scenario.ScenarioPartyManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaInitializer;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
+import main.level_editor.LevelEditor;
+import main.level_editor.functions.model.LE_TreeModel;
 import main.level_editor.struct.campaign.Campaign;
 
 public class LE_MetaMaster extends ScenarioMetaMaster {
 
-    private  Campaign campaign;
+    private Campaign campaign;
 
     public LE_MetaMaster(Campaign campaign) {
         super(campaign.getName());
-        this.campaign=campaign;
+        this.campaign = campaign;
+    }
+
+    @Override
+    public void gameStarted() {
+        if (campaign != null) {
+            LevelEditor.getModel().setTreeModel(new LE_TreeModel(campaign));
+        } else {
+            try {
+                LevelEditor.getModel().setTreeModel(new LE_TreeModel(LevelEditor.getCurrent()));
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
+
     }
 
     public LE_MetaMaster(String data) {
         super(data);
+    }
+
+    @Override
+    public LE_GameSim getGame() {
+        return (LE_GameSim) super.getGame();
     }
 
     @Override
@@ -37,7 +58,7 @@ public class LE_MetaMaster extends ScenarioMetaMaster {
         game.setMetaMaster(this);
         metaGame = initializer.initMetaGame(data);
 
-        if (campaign!=null )
+        if (campaign != null)
             metaDataManager.setMissionPath(data);
         else {
 

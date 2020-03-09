@@ -3,7 +3,7 @@ package eidolons.libgdx.shaders;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.game.core.Eidolons;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
@@ -55,7 +55,7 @@ public class ShaderDrawer {
                 if (batch.isDrawing())
                     actor.draw(batch, ShaderDrawer.SUPER_DRAW);
                 else
-                    actor.draw(Eidolons.getScreen().getBatch(), ShaderDrawer.SUPER_DRAW);
+                    actor.draw(ScreenMaster.getScreen().getBatch(), ShaderDrawer.SUPER_DRAW);
             };
             map.put(actor, runnable);
         }

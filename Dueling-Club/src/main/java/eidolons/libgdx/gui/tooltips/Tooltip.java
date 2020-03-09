@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.StageX;
 import main.entity.Entity;
@@ -186,8 +186,7 @@ public abstract class Tooltip<T extends Actor> extends TablePanelX<T> {
             if (this.actor.getStage() != getManager().getStage()) {
                 Actor actor = ((StageX) getManager().getStage()).getMouseOverActor();
                 if (actor != null) {
-                    if (checkUiActorBlocks(actor))
-                        return true;
+                    return checkUiActorBlocks(actor);
                 }
             }
         return false;

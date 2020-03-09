@@ -2,13 +2,13 @@ package main.level_editor.struct.campaign;
 
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
+import main.level_editor.gui.tree.data.LayeredData;
 import main.level_editor.struct.adventure.AdventureLocation;
 import main.level_editor.struct.boss.BossDungeon;
-import main.level_editor.struct.level.Floor;
 
 import java.util.Set;
 
-public class Campaign extends LightweightEntity {
+public class Campaign extends LightweightEntity implements LayeredData<BossDungeon> {
     //game campaign obj?
     // edit either in CAMPAIGN mode or in scenario - where all is separate and independent
     Set<AdventureLocation> locations;
@@ -46,5 +46,10 @@ public class Campaign extends LightweightEntity {
 
     public void setCurrentDungeon(BossDungeon currentDungeon) {
         this.currentDungeon = currentDungeon;
+    }
+
+    @Override
+    public Set<BossDungeon> getChildren() {
+        return getDungeons();
     }
 }

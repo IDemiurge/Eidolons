@@ -81,20 +81,23 @@ public abstract class ValueTable<D, A extends Actor> extends TablePanelX {
             //needs fixed size
         }
         int j = 0, i = 0;
-        int wrap =this.wrap+getDynamicWrap(i);
+        int wrap = this.wrap + getDynamicWrap(i);
+        if (getElementSize() != null)
+            defaults().height(getElementSize().y).width(getElementSize().x);
+
         for (D sub : data) {
             if (i >= actors.length)
                 break;
             Cell cell = addElement(actors[i] = createElement(sub)).top().space(getSpace());
             if (getElementSize() != null) {
-                cell.size(getElementSize().x,getElementSize().y);
+                cell.size(getElementSize().x, getElementSize().y);
             }
             j++;
             i++;
             if (j >= wrap) {
                 row();
                 j = 0;
-                wrap =this.wrap+getDynamicWrap(i);
+                wrap = this.wrap + getDynamicWrap(i);
             }
         }
     }

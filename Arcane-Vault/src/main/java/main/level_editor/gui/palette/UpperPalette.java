@@ -1,17 +1,14 @@
 package main.level_editor.gui.palette;
 
-import eidolons.libgdx.gui.panels.TabbedPanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import main.content.DC_TYPE;
-import main.data.DataManager;
 
-import java.util.List;
-
-public class UpperPalette extends TabbedPanel {
+public class UpperPalette extends TablePanelX {
     public UpperPalette(DC_TYPE TYPE) {
-
-        List<String> tabs = DataManager.getTabGroups(TYPE);
-        for (String group : tabs) {
-            addTab(new ObjectPalette(TYPE, group), group);
-        }
+        super(1200, 400);
+//        defaults().
+        PaletteTypesTable palette = new PaletteTypesTable(1);
+        add(new PaletteTabs(palette, TYPE).getTable()). height(134).expandX().fillX().row();
+        add(palette).expandX().fillX(). height(256).row();
     }
 }

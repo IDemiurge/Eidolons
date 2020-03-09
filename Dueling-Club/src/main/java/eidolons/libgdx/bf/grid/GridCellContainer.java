@@ -20,10 +20,14 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.datasource.GridCellDataSource;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GridCellContainer extends GridCell {
     Map<GenericGridView, Integer  > indexMap = new LinkedHashMap<>();
@@ -96,9 +100,7 @@ public class GridCellContainer extends GridCell {
 
         if (checkIgnored())
             return false;
-        if (main)
-            return false;
-        return true;
+        return !main;
     }
 
     @Override
@@ -379,15 +381,11 @@ public class GridCellContainer extends GridCell {
     }
 
     private boolean isStaticZindex() {
-        if (Gdx.input.isKeyPressed(Keys.TAB)
-         || Gdx.input.isKeyPressed(Keys.ALT_LEFT)
-         || Gdx.input.isKeyPressed(Keys.ALT_RIGHT)) {
-            return false;
-        }
+        return !Gdx.input.isKeyPressed(Keys.TAB)
+                && !Gdx.input.isKeyPressed(Keys.ALT_LEFT)
+                && !Gdx.input.isKeyPressed(Keys.ALT_RIGHT);
         //        if (staticZindexAlways)
         //            return true;
-
-        return true;
     }
 
 
@@ -571,7 +569,7 @@ public class GridCellContainer extends GridCell {
                 expandWidth = visibleView.getExpandWidth();
             }
         }
-        return Eidolons.getScreen().getController().isWithinCamera(-expandWidth+getX() ,-expandHeight+ getY() ,
+        return ScreenMaster.getScreen().getController().isWithinCamera(-expandWidth+getX() ,-expandHeight+ getY() ,
                 2*expandWidth+getWidth(),
                 2* expandHeight+ getHeight());
     }

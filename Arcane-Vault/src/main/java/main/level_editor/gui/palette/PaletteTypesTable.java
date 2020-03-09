@@ -19,22 +19,32 @@ public class PaletteTypesTable extends SelectionImageTable {
 
     @Override
     protected SelectableItemData[] initDataArray() {
-        data = new SelectableItemData[size];
-        for (int i = 0; i < size; i++) {
-            data[i] = new SelectableItemData(types.get(i));
+        if (types==null) {
+            return data;
         }
+        data = new SelectableItemData[size];
+        int i = 0;
+        for (ObjType type : types) {
+            data[i] = new SelectableItemData(type);
+            i++;
+        }
+        size = types.size();
         return data;
     }
 
     @Override
     public void setUserObject(Object userObject) {
         types = (List<ObjType>) userObject;
+        size = types.size();
         super.setUserObject(userObject);
 
     }
 
     @Override
     public void updateAct(float delta) {
+        if (types == null) {
+            return;
+        }
         super.updateAct(delta);
     }
 
@@ -43,7 +53,8 @@ public class PaletteTypesTable extends SelectionImageTable {
     }
 
     private static int getWrap() {
-        return 40; //sca
+        return
+                Math.round(1000 / (LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE))+1); //sca
     }
 
     @Override
@@ -67,14 +78,13 @@ public class PaletteTypesTable extends SelectionImageTable {
 
     @Override
     protected Vector2 getElementSize() {
-        return new Vector2(128 * LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE),
-                128 * LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE));
+        return new Vector2(128 * LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE)/100f,
+                128 * LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE)/100f);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        debugAll();
     }
 
 }

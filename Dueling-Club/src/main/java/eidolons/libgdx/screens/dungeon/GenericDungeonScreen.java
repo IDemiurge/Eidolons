@@ -1,4 +1,4 @@
-package eidolons.libgdx.screens;
+package eidolons.libgdx.screens.dungeon;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
@@ -20,6 +19,8 @@ import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.libgdx.particles.ambi.ParticleManager;
+import eidolons.libgdx.screens.GameScreen;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.stage.GenericGuiStage;
 import eidolons.libgdx.stage.StageX;
 import eidolons.libgdx.texture.TextureCache;
@@ -34,10 +35,11 @@ import main.system.launch.CoreEngine;
 
 import static com.badlogic.gdx.graphics.GL20.GL_NICEST;
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
-import static main.system.GuiEventType.*;
+import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
+import static main.system.GuiEventType.UPDATE_GUI;
 import static org.lwjgl.opengl.GL11.*;
 
-public abstract class GenericDungeonScreen extends GameScreen{
+public abstract class GenericDungeonScreen extends GameScreen {
     protected StageX gridStage;
     protected GridPanel gridPanel;
     protected ParticleManager particleManager;
@@ -135,7 +137,7 @@ public abstract class GenericDungeonScreen extends GameScreen{
         if (EidolonsGame.FOOTAGE || EidolonsGame.BOSS_FIGHT) {
             return false;
         }
-        return !Eidolons.isFullscreen();
+        return !ScreenMaster.isFullscreen();
     }
 
     private void drawSpriteBg(Batch batch) {

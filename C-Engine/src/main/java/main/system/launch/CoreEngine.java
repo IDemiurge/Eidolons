@@ -383,6 +383,7 @@ public class CoreEngine {
         //         }
 
         Chronos.logTimeElapsedForMark("TYPES INIT");
+        if (isCompileReflectionMap())
         try {
             Chronos.mark("MAPPER INIT");
             Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
@@ -392,6 +393,10 @@ public class CoreEngine {
             ExceptionMaster.printStackTrace(e);
         }
 
+    }
+
+    private static boolean isCompileReflectionMap() {
+        return !isLevelEditor();
     }
 
     public static boolean isItemGenerationOff() {

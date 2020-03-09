@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.mouse.InputController;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.content.enums.GenericEnums;
 
 /**
@@ -133,7 +133,7 @@ public abstract class SuperActor extends Fluctuating implements
     }
 
     public InputController getController() {
-        return Eidolons.getScreen().controller;
+        return ScreenMaster.getScreen().controller;
     }
 
     @Override
@@ -187,10 +187,7 @@ public abstract class SuperActor extends Fluctuating implements
         if (getScaleX() != 1f) {
             return false;
         }
-        if (getScaleY() != 1f) {
-            return false;
-        }
-        return true;
+        return getScaleY() == 1f;
     }
 
     @Override

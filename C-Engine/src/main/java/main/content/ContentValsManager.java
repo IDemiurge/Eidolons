@@ -291,9 +291,9 @@ public class ContentValsManager {
         if (LOWER_CASE_CACHED)
             valueName = valueName.toLowerCase();
         PARAMETER param = paramCache.get(valueName);
-        if (param == G_PARAMS.EMPTY_PARAMETER) {
-            return null;
-        }
+//        if (param == G_PARAMS.EMPTY_PARAMETER) {
+//            return null;
+//        }
 
         if (param != null) {
             return param;
@@ -437,9 +437,7 @@ public class ContentValsManager {
         PROPERTY property = propCache.get(valueName);
 
         if (property != null) {
-            if (property != G_PROPS.EMPTY_VALUE) {
                 return property;
-            }
         }
         property = getPROP(valueName, true);
         if (property == null) {
@@ -453,13 +451,7 @@ public class ContentValsManager {
              + valueName + "!");
         }
 
-        if (property == null) {
-            property = G_PROPS.EMPTY_VALUE;
-        }
         propCache.put(valueName, property);
-        if (property == G_PROPS.EMPTY_VALUE) {
-            return null;
-        }
         return property;
     }
 

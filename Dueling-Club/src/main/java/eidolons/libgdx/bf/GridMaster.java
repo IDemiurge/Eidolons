@@ -11,7 +11,7 @@ import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.gui.CursorPosVector2;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StrPathBuilder;

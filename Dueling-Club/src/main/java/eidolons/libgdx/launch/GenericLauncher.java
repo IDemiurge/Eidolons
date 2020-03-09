@@ -23,8 +23,10 @@ import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveScreen;
 import eidolons.libgdx.launch.report.CrashManager;
 import eidolons.libgdx.screens.*;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.BlackoutOld;
+import eidolons.libgdx.screens.menu.AnimatedMenuScreen;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.utils.GdxTimeMaster;
 import eidolons.libgdx.video.VideoMaster;
@@ -83,7 +85,7 @@ public abstract class GenericLauncher extends Game {
         GuiEventManager.bind(SCREEN_LOADED, this::onScreenLoadDone);
         OrthographicCamera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
-        Eidolons.setMainViewport(viewport);
+        ScreenMaster.setMainViewport(viewport);
         //        if (!CoreEngine.isInitializing() && !CoreEngine.isInitialized()) {
         //            engineInit();
         //        }
@@ -115,11 +117,11 @@ public abstract class GenericLauncher extends Game {
         engineInit();
         if (CoreEngine.isGraphicsOff())
             return;
-        Eidolons.setApplication(new LwjglApplication(this,
+        ScreenMaster.setApplication(new LwjglApplication(this,
                 getConf()));
         OptionsMaster.applyGraphicsOptions();
         Eidolons.setLauncher(this);
-        Eidolons.setFullscreen(fullscreen);
+        ScreenMaster.setFullscreen(fullscreen);
     }
 
     protected void screenInit() {
@@ -220,7 +222,7 @@ public abstract class GenericLauncher extends Game {
                         new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class,
                                 OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
                 if (resolution != null) {
-                    Dimension dimension = Eidolons.getResolutionDimensions(resolution, fullscreen);
+                    Dimension dimension = ScreenMaster.getResolutionDimensions(resolution, fullscreen);
                     Integer w = (int)
                             dimension.getWidth();
                     Integer h = (int)
@@ -332,7 +334,7 @@ public abstract class GenericLauncher extends Game {
     protected void switchScreen(Supplier<ScreenWithLoader> factory, ScreenData meta) {
         GdxMaster.setLoadingCursor();
         main.system.auxiliary.log.LogMaster.log(1, "switchScreen " + meta.getType());
-        Eidolons.screenSet(meta.getType());
+        ScreenMaster.screenSet(meta.getType());
         final Screen oldScreen = getScreen();
 
 //        oldScreen.getPostProcessing().end();
@@ -430,9 +432,6 @@ public abstract class GenericLauncher extends Game {
         if (newMeta != null) {
             switch (newMeta.getType()) {
 
-                case HEADQUARTERS:
-                    switchScreen(HeadquarterScreen::new, newMeta);
-                    break;
                 case WEAVE:
                     switchScreen(WeaveScreen::getInstance, newMeta);
                     break;
