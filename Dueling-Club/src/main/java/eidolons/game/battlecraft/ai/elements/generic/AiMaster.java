@@ -24,7 +24,7 @@ import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
 import eidolons.game.battlecraft.ai.tools.prune.PruneMaster;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.netherflame.boss.logic.BossAi;
+import eidolons.game.netherflame.boss.logic.BossAi;
 import main.content.values.parameters.PARAMETER;
 
 import java.util.ArrayList;

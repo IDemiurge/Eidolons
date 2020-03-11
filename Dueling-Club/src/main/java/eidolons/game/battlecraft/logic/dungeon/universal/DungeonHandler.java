@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
+import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.game.DC_Game;
 
 /**
@@ -23,6 +24,10 @@ public class DungeonHandler<E extends DungeonWrapper> {
 
     public DungeonMaster<E> getMaster() {
         return master;
+    }
+
+    public MetaGameMaster getMetaMaster() {
+        return getGame().getMetaMaster();
     }
 
     public DungeonInitializer<E> getInitializer() {

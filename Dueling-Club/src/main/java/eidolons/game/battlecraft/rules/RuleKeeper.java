@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.module.netherflame.NF_Game;
+import eidolons.game.netherflame.NF_Game;
 import eidolons.system.controls.Controller;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -86,9 +86,7 @@ public class RuleKeeper implements Controller {
                 }
                 break;
             case EIDOLON:
-                if (Eidolons.getGame() instanceof NF_Game)
-                    return true;
-                return false;
+                return Eidolons.getGame() instanceof NF_Game;
         }
         return false;
     }

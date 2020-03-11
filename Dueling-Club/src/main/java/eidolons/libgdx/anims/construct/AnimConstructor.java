@@ -13,7 +13,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.netherflame.boss.anim.BossAnimator;
+import eidolons.game.netherflame.boss.anim.BossAnimator;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimData;

@@ -15,6 +15,9 @@ import java.util.Set;
 
 public class LayerManager extends DungeonHandler {
 
+    public static final String VFX_NODE = "VFX";
+    public static final String ID_NODE = "OBJS";
+    public static final String SCRIPT_NODE = "SCRIPTS";
     Set<Layer> layers;
     private Layer current;
     private Layer baseLayer;
@@ -24,13 +27,37 @@ public class LayerManager extends DungeonHandler {
     }
 
     public void initLayers(Node main) {
+        Set<Integer> ids = null ;
+        getMaster().getObjIdMap();
+        getMaster().getIdTypeMap();
         for (Node node : XML_Converter.getNodeList(main)) {
+            for (Node sub : XML_Converter.getNodeList(node)) {
+                switch (sub.getNodeName().toUpperCase()) {
+                    case VFX_NODE:
+                        break;
+                    case SCRIPT_NODE:
+                        break;
+                    case ID_NODE:
+                        ids = toIdSet(node.getTextContent());
+                        break;
+
+                }
+            }
             String name = node.getNodeName();
-            Set<Integer> ids = toIdSet(node.getTextContent());
+            ids = toIdSet(node.getTextContent());
+            boolean active = getMaster().isLayerActive(name);
+//            boolean trigger = getMaster().isLayerActive(name);
             Layer layer = null;
             layers.add(layer = new Layer(name, ids));
             if (current == null) {
                 current = layer;
+            }
+            if (layer.isActive()){
+                getMaster();
+                LayerInitializer.initLayer(layer);
+                if (layer.isTrigger()){
+                    LayerInitializer.cacheLayer(layer); //prepare trigger conditions? or should only happen via global script func
+                }
             }
             //script vfx
         }
@@ -45,16 +72,16 @@ public class LayerManager extends DungeonHandler {
 
     public boolean isLayerOn(String name) {
         Layer layer = getLayer(name);
-        return layer.isOn();
+        return layer.isActive();
     }
 
     public void toggleLayer(boolean on, String name) {
 
         Layer layer = getLayer(name);
-        if (layer.isOn() == on) {
+        if (layer.isActive() == on) {
             return;
         }
-        layer.setOn(on);
+        layer.setActive(on);
         for (Integer id : layer.getIds()) {
             //translate to real objects?
 

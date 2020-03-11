@@ -4,6 +4,7 @@ import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,10 +12,11 @@ public class Layer {
 
     String name;
     Set<Integer> ids;
-    boolean on;
+    boolean active;
 
     Map<Coordinates, String> scripts;
-    Map<Coordinates, GenericEnums.VFX> vfxMap;
+    Map<Coordinates, List<GenericEnums.VFX>> vfxMap;
+
 
     public Layer(String name, Set<Integer> ids) {
         this.name = name;
@@ -31,20 +33,19 @@ public class Layer {
         return ids;
     }
 
-    public boolean isOn() {
-        return on;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setOn(boolean on) {
-        this.on = on;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public Map<Coordinates, String> getScripts() {
         return scripts;
     }
 
-    public Map<Coordinates, GenericEnums.VFX> getVfxMap() {
+    public Map<Coordinates, List<GenericEnums.VFX>> getVfxMap() {
         return vfxMap;
     }
-
 }

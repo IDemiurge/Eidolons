@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
-import eidolons.game.module.netherflame.boss.anim.BossAnimator;
+import eidolons.game.netherflame.boss.anim.BossAnimator;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;

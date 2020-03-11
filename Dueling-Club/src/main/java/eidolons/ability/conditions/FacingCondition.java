@@ -6,7 +6,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.module.netherflame.boss.entity.BossUnit;
+import eidolons.game.netherflame.boss.entity.BossUnit;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;

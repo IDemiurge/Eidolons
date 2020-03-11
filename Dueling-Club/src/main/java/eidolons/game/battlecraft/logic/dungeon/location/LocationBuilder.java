@@ -91,15 +91,6 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
         List<LevelZone> zones = createFauxZones(location);
         level.setZones(zones);
-        DungeonEnums.DUNGEON_STYLE mainStyle = DungeonEnums.DUNGEON_STYLE.Somber;
-//        if (mainStyle != null) {
-//            for (LevelZone zone : level.getZones()) {
-//                if (zone.getStyle() == level.getMainStyle())
-//                    zone.setStyle(mainStyle);
-//            }
-//            level.setMainStyle(mainStyle);
-//        }
-        level.setEntranceData(location.getEntranceData());
         return level;
     }
 

@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.location;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.LayerManager;
 import eidolons.game.battlecraft.logic.dungeon.universal.*;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.netherflame.boss.cinematic.BossLocationInitializer;
+import eidolons.game.netherflame.boss.cinematic.BossLocationInitializer;
 import main.system.launch.CoreEngine;
 
 /**
