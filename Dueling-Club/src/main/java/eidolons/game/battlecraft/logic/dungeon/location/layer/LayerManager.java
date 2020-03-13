@@ -45,7 +45,7 @@ public class LayerManager extends DungeonHandler {
             }
             String name = node.getNodeName();
             ids = toIdSet(node.getTextContent());
-            boolean active = getMaster().isLayerActive(name);
+//            boolean active = getMaster().isLayerActive(name);
 //            boolean trigger = getMaster().isLayerActive(name);
             Layer layer = null;
             layers.add(layer = new Layer(name, ids));
@@ -53,11 +53,11 @@ public class LayerManager extends DungeonHandler {
                 current = layer;
             }
             if (layer.isActive()){
-                getMaster();
-                LayerInitializer.initLayer(layer);
-                if (layer.isTrigger()){
-                    LayerInitializer.cacheLayer(layer); //prepare trigger conditions? or should only happen via global script func
-                }
+//                getMaster();
+//                LayerInitializer.initLayer(layer);
+//                if (layer.isTrigger()){
+//                    LayerInitializer.cacheLayer(layer); //prepare trigger conditions? or should only happen via global script func
+//                }
             }
             //script vfx
         }

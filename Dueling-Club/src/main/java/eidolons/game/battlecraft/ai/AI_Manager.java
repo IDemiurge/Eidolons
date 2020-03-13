@@ -20,6 +20,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
+import eidolons.game.netherflame.boss.logic.BossAi;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.content.enums.system.AiEnums;
@@ -47,6 +48,7 @@ public class AI_Manager extends AiMaster {
     private GroupAI enemyGroup;
     private PLAYER_AI_TYPE type = AiEnums.PLAYER_AI_TYPE.BRUTE;
     private List<GroupAI> groups;
+    protected BossAi bossAi;
 
     public AI_Manager(DC_Game game) {
         super(game);
@@ -128,7 +130,6 @@ public class AI_Manager extends AiMaster {
         initialize();
         game.getPlayer(false).setPlayerAI(new PlayerAI(getType()));
     }
-
     public Action getAction(Unit unit) {
         if (unit.isBoss()) {
             return getBossAi(unit).getAction();
@@ -225,6 +226,12 @@ public class AI_Manager extends AiMaster {
         this.type = type;
     }
 
+    protected BossAi getBossAi(Unit unit) {
+        if (bossAi == null) {
+            bossAi = new BossAi(unit.getAI());
+        }
+        return bossAi;
+    }
 
     public List<GroupAI> getGroups() {
         resetGroups();

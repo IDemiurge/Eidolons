@@ -1,12 +1,13 @@
 package eidolons.game.netherflame.boss_;
 
-import eidolons.game.netherflame.boss_.ai.BossAI;
+import eidolons.game.netherflame.boss_.ai.BossAi;
 import eidolons.game.netherflame.boss_.anims.BossAnimHandler;
-import eidolons.game.netherflame.boss_.anims.BossAssembly;
+import eidolons.game.netherflame.boss_.anims.view.BossAssembly;
+import eidolons.game.netherflame.boss_.logic.rules.BossRules;
 
 public abstract class BossManager<T extends BossModel> {
     T model; //full status?
-    BossAI ai;
+    BossAi ai;
     BossAnimHandler animHandler;
     //2d impl is important especially for modders - if it works, they can make 100 bosses...
     BossAssembly assembly;
@@ -29,13 +30,13 @@ public abstract class BossManager<T extends BossModel> {
 
     protected abstract BossRules createRules();
 
-    protected abstract BossAI createAi();
+    protected abstract BossAi createAi();
 
     public T getModel() {
         return model;
     }
 
-    public BossAI getAi() {
+    public BossAi getAi() {
         return ai;
     }
 

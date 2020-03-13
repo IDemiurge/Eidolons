@@ -24,7 +24,6 @@ import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
 import eidolons.game.battlecraft.ai.tools.prune.PruneMaster;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.boss.logic.BossAi;
 import main.content.values.parameters.PARAMETER;
 
 import java.util.ArrayList;
@@ -51,17 +50,16 @@ public class AiMaster {
     protected CellPrioritizer cellPrioritizer;
     protected PathSequenceConstructor pathSequenceConstructor;
     protected TurnSequenceConstructor turnSequenceConstructor;
-    private SituationAnalyzer situationAnalyzer;
-    private ThreatAnalyzer threatAnalyzer;
-    private BehaviorMaster behaviorMaster;
-    private AtomicAi atomicAi;
-    private List<AiHandler> handlers = new ArrayList<>();
-    private AiScriptExecutor scriptExecutor;
-    private MetaGoalMaster metaGoalMaster;
-    private AiPriorityConstantMaster priorityConstantMaster;
-    private PriorityModifier priorityModifier;
-    private PathBuilderAtomic pathBuilderAtomic;
-    private BossAi bossAi;
+    protected SituationAnalyzer situationAnalyzer;
+    protected ThreatAnalyzer threatAnalyzer;
+    protected BehaviorMaster behaviorMaster;
+    protected AtomicAi atomicAi;
+    protected List<AiHandler> handlers = new ArrayList<>();
+    protected AiScriptExecutor scriptExecutor;
+    protected MetaGoalMaster metaGoalMaster;
+    protected AiPriorityConstantMaster priorityConstantMaster;
+    protected PriorityModifier priorityModifier;
+    protected PathBuilderAtomic pathBuilderAtomic;
     public AiMaster(DC_Game game) {
         this.game = game;
         this.actionSequenceConstructor = new ActionSequenceConstructor(this);
@@ -114,12 +112,7 @@ public class AiMaster {
         this.pathBuilderAtomic.initialize();
 
     }
-    protected BossAi getBossAi(Unit unit) {
-        if (bossAi == null) {
-            bossAi = new BossAi(unit.getAI());
-        }
-        return bossAi;
-    }
+
     public PathBuilderAtomic getPathBuilderAtomic() {
         return pathBuilderAtomic;
     }

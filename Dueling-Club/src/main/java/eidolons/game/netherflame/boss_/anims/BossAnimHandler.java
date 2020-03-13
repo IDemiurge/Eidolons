@@ -1,6 +1,7 @@
 package eidolons.game.netherflame.boss_.anims;
 
 import eidolons.game.netherflame.boss_.BOSS_PART;
+import eidolons.game.netherflame.boss_.anims.view.BossPart;
 import main.game.logic.event.Event;
 
 public interface BossAnimHandler {

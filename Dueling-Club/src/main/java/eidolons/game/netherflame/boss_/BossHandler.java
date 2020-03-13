@@ -1,8 +1,9 @@
 package eidolons.game.netherflame.boss_;
 
-import eidolons.game.netherflame.boss_.ai.BossAI;
+import eidolons.game.netherflame.boss_.ai.BossAi;
 import eidolons.game.netherflame.boss_.anims.BossAnimHandler;
-import eidolons.game.netherflame.boss_.anims.BossAssembly;
+import eidolons.game.netherflame.boss_.anims.view.BossAssembly;
+import eidolons.game.netherflame.boss_.logic.rules.BossRules;
 
 public class BossHandler<T extends BossModel> {
 
@@ -16,7 +17,7 @@ public class BossHandler<T extends BossModel> {
         return manager.getModel();
     }
 
-    public BossAI getAi() {
+    public BossAi getAi() {
         return manager.getAi();
     }
 

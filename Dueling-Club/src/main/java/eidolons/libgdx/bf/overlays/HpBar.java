@@ -10,7 +10,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
-import eidolons.game.netherflame.boss.entity.BossUnit;
+import eidolons.game.netherflame.boss_.logic.entity.BossUnit;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.gui.ScissorMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
