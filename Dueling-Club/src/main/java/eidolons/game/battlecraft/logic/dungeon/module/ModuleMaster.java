@@ -64,7 +64,7 @@ public class ModuleMaster extends MetaGameHandler {
             Coordinates c = Coordinates.get(VariableManager.getVars(s));
             int w = 15;
             int h = 15;
-            Module module = new Module(c, w, h, name, path);
+            Module module = new Module(c, w, h, name );
             modules.add(module);
         }
     }

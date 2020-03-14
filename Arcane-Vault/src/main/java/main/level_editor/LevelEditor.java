@@ -12,8 +12,8 @@ import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
+import main.level_editor.backend.functions.structure.FloorManager;
 import main.level_editor.backend.model.LE_DataModel;
-import main.level_editor.backend.structure.FloorManager;
 import main.level_editor.gui.palette.PaletteHolder;
 import main.level_editor.gui.screen.LE_WaitingScreen;
 import main.level_editor.metadata.settings.LE_OptionsMaster;
@@ -22,8 +22,10 @@ import main.level_editor.struct.campaign.Campaign;
 import main.level_editor.struct.level.Floor;
 import main.system.launch.CoreEngine;
 import main.system.launch.TypeBuilder;
+import main.system.threading.WaitMaster;
 
 public class LevelEditor {
+    public static final WaitMaster.WAIT_OPERATIONS SELECTION_EVENT = WaitMaster.WAIT_OPERATIONS.SELECTION;
     public static Window.WindowStyle windowStyle;
     private static boolean campaignMode;
     public  static final boolean TEST_MODE = true;

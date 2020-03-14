@@ -16,12 +16,13 @@ import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.entity.type.ObjType;
 import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.TypeBuilder;
@@ -77,7 +78,7 @@ public class Loader {
         Document xmlDoc = XML_Converter.getDoc(xml);
 
         Unit hero = null;// Eidolons.getMainHero();
-        Node node = XML_Converter.findNode(xmlDoc, Saver.HERO_NODE);
+        Node node = XmlNodeMaster.findNode(xmlDoc, Saver.HERO_NODE);
         ObjType loadedType = TypeBuilder.buildType(node.getFirstChild(),
          DataManager.getType(
           StringMaster.getWellFormattedString(
@@ -86,11 +87,11 @@ public class Loader {
         //overload type?
         hero = new Unit(loadedType);
 
-        node = XML_Converter.findNode(xmlDoc, Saver.ITEMS_NODE);
+        node = XmlNodeMaster.findNode(xmlDoc, Saver.ITEMS_NODE);
         itemMap = new HashMap<>();
-        for (Node propNode : XML_Converter.getNodeList(node)) {
+        for (Node propNode : XmlNodeMaster.getNodeList(node)) {
             PROPERTY prop = ContentValsManager.getPROP(propNode.getNodeName());
-            for (Node sub : XML_Converter.getNodeList(propNode)) {
+            for (Node sub : XmlNodeMaster.getNodeList(propNode)) {
                 Node typeNode = sub.getFirstChild();
                 int id = NumberUtils.getInteger(StringMaster.getLastPart(sub.getNodeName(), "_"));
                 String name = StringMaster.getWellFormattedString(sub.getNodeName().replace("" + id, ""));

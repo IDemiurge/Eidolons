@@ -10,7 +10,6 @@ import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.battlecraft.rules.combat.attack.dual.DualAttackMaster;
 import eidolons.game.battlecraft.rules.mechanics.FleeRule;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.DC_TYPE;
@@ -269,11 +268,7 @@ public class ActionInitializer extends DC_ActionManager {
             }
         }
 
-        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.ENTER)) {
-            for (Entrance e : DungeonLevelMaster.getAvailableDungeonEntrances(unit)) {
-                actives.add(getEnterAction(unit, e));
-            }
-        }
+
 
 //        actives.add(getOrCreateAction(SEARCH_MODE, unit));
 

@@ -8,6 +8,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.data.ability.Mapper;
 import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Entity;
@@ -60,13 +61,13 @@ public class AbilityConstructor {
     @SuppressWarnings("rawtypes")
     public static Abilities constructAbilities(Node node) {
         Abilities abilities = new Abilities();
-        List<Node> nodeList = XML_Converter.getNodeList(node);
+        List<Node> nodeList = XmlNodeMaster.getNodeList(node);
         if (nodeList.isEmpty())
             return abilities;
         Node unwrappedNode = nodeList.get(0);
         while (nodeList.size() < 2 //?!
          && unwrappedNode.getNodeName().equals(Mapper.ABILITIES)) {
-            nodeList = XML_Converter.getNodeList(unwrappedNode);
+            nodeList = XmlNodeMaster.getNodeList(unwrappedNode);
             if (nodeList.isEmpty())
                 return abilities;
             unwrappedNode = nodeList.get(0);
@@ -100,7 +101,7 @@ public class AbilityConstructor {
 
         Effect effects = null;
         Targeting targeting = null;
-        for (Node NODE : XML_Converter.getNodeList(node)) {
+        for (Node NODE : XmlNodeMaster.getNodeList(node)) {
             if (NODE.getNodeName().equals(EFFECTS) || NODE.getNodeName().contains(EFFECTS)) {
                 effects = constructEffects(NODE);
 

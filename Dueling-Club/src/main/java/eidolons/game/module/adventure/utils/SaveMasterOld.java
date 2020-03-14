@@ -14,6 +14,7 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Reader;
 import main.data.xml.XML_Writer;
+import main.data.xml.XmlNodeMaster;
 import main.entity.obj.Obj;
 import main.system.auxiliary.data.FileManager;
 import main.system.threading.Weaver;
@@ -36,7 +37,7 @@ public class SaveMasterOld {
 		 * dynamic values - can they be set for Type? 
 		 */
         String content = FileManager.readFile( (getSavePath() + fileName + ".xml"));
-        for (Node node : XML_Converter.getNodeList(XML_Converter.getDoc(content))) {
+        for (Node node : XmlNodeMaster.getNodeList(XML_Converter.getDoc(content))) {
             OBJ_TYPE TYPE = ContentValsManager.getOBJ_TYPE(node.getNodeName());
             XML_Reader.createCustomTypeList(XML_Converter.getStringFromXML(node), TYPE, MacroGame
              .getGame(), true, true);

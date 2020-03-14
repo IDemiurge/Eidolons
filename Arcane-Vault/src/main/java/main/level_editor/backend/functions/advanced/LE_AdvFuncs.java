@@ -1,4 +1,4 @@
-package main.level_editor.backend.advanced;
+package main.level_editor.backend.functions.advanced;
 
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;

@@ -2,9 +2,7 @@ package main.level_editor.sim.impl;
 
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
-import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import main.level_editor.sim.LE_GameSim;
 import org.w3c.dom.Node;
 
@@ -31,17 +29,12 @@ public class LE_DungeonBuilder extends LocationBuilder {
     }
 
     @Override
-    protected void processNode(Node n, Location dungeon, DungeonPlan plan) {
-        super.processNode(n, dungeon, plan);
-    }
-
-    @Override
     public void initModuleZoneLazily(Module module) {
         super.initModuleZoneLazily(module);
     }
 
     @Override
-    public DungeonPlan loadDungeonMap(String data) {
+    public Location loadDungeonMap(String data) {
         return super.loadDungeonMap(data);
     }
 

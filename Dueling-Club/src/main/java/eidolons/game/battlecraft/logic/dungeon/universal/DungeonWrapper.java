@@ -2,10 +2,15 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
+import main.content.CONTENT_CONSTS;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.entity.EntityWrapper;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
+
+import java.util.Map;
 
 /**
  * Created by JustMe on 5/10/2017.
@@ -13,6 +18,8 @@ import main.game.bf.Coordinates;
 public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dungeon> {
     protected DungeonMaster<E> master;
     protected Dungeon dungeon;
+    private Map<String, CONTENT_CONSTS.FLIP> flipMap;
+    private Map<String, DIRECTION> directionMap;
 
 
     public DungeonWrapper(Dungeon entity, DungeonMaster<E> master) {
@@ -24,7 +31,7 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
     public Coordinates getPlayerSpawnCoordinates() {
         String prop = getProperty(PROPS.ENTRANCE_COORDINATES);
         if (prop.isEmpty()) {
-            return Coordinates.getMiddleCoordinate(main.game.bf.directions.FACING_DIRECTION.NONE);
+            return Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
         }
         return Coordinates.get(prop);
     }
@@ -113,4 +120,19 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
         dungeon.setLevelFilePath(levelFilePath);
     }
 
+    public void setFlipMap(Map<String, CONTENT_CONSTS.FLIP> flipMap) {
+        this.flipMap = flipMap;
+    }
+
+    public Map<String, CONTENT_CONSTS.FLIP> getFlipMap() {
+        return flipMap;
+    }
+
+    public void setDirectionMap(Map<String, DIRECTION> directionMap) {
+        this.directionMap = directionMap;
+    }
+
+    public Map<String, DIRECTION> getDirectionMap() {
+        return directionMap;
+    }
 }

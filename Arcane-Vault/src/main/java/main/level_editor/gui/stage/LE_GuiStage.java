@@ -7,6 +7,8 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.GenericGuiStage;
 import main.level_editor.gui.palette.PaletteHolder;
+import main.level_editor.gui.panels.LE_ToolPanel;
+import main.level_editor.gui.panels.control.structure.CtrlModulePanel;
 import main.level_editor.gui.top.TopPanel;
 import main.level_editor.gui.tree.LE_TreePanel;
 
@@ -14,13 +16,15 @@ public class LE_GuiStage extends GenericGuiStage {
 
     private final TablePanelX palettePanel;
     private final TopPanel topPanel;
+    private final LE_ToolPanel toolPanel;
     LE_TreePanel treePanel;
 
     public LE_GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
         addActor(palettePanel= new PaletteHolder());
         addActor(topPanel= new TopPanel());
-        addActor(treePanel=new LE_TreePanel());
+//        addActor(treePanel=new LE_TreePanel());
+        addActor(toolPanel=new LE_ToolPanel(new CtrlModulePanel()));
 
     }
 
@@ -36,8 +40,10 @@ public class LE_GuiStage extends GenericGuiStage {
         GdxMaster.center(palettePanel);
         palettePanel.setY(100);
 
-        treePanel.setX(Gdx.graphics.getWidth() - treePanel.getWidth() );
-        treePanel.setY(Gdx.graphics.getHeight() - treePanel.getHeight() );
+        toolPanel.setX(Gdx.graphics.getWidth() - toolPanel.getWidth() );
+        toolPanel.setY(Gdx.graphics.getHeight() - toolPanel.getHeight() );
+//        treePanel.setX(Gdx.graphics.getWidth() - treePanel.getWidth() );
+//        treePanel.setY(Gdx.graphics.getHeight() - treePanel.getHeight() );
         super.act(delta);
     }
 

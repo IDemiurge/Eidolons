@@ -1,6 +1,7 @@
 package main.level_editor.backend.model;
 
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import main.level_editor.backend.brush.LE_Brush;
 import main.level_editor.backend.display.LE_DisplayMode;
@@ -21,6 +22,7 @@ public class LE_DataModel {
     LE_TreeModel treeModel;
     private LevelZone currentZone;
     private Module module;
+    private LevelBlock block;
 
     public LE_DataModel() {
     }
@@ -80,5 +82,13 @@ public class LE_DataModel {
 
     public void setModule(Module module) {
         this.module = module;
+    }
+
+    public LevelBlock getBlock() {
+        return block;
+    }
+
+    public void setBlock(LevelBlock block) {
+        this.block = block;
     }
 }

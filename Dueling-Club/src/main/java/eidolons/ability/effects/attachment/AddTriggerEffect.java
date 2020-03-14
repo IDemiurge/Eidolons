@@ -6,6 +6,7 @@ import main.ability.effects.AttachmentEffect;
 import main.ability.effects.ContainerEffect;
 import main.ability.effects.Effect;
 import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.elements.conditions.Condition;
 import main.elements.targeting.FixedTargeting;
 import main.elements.triggers.Trigger;
@@ -63,7 +64,7 @@ public class AddTriggerEffect extends MultiEffect implements
                         if (conditions.toXml() == null)
                             if (!StringMaster.isEmpty(toXml()))
                                 try {
-                                    Node xml = XML_Converter.findNode(toXml(), "Conditions");
+                                    Node xml = XmlNodeMaster.findNode(toXml(), "Conditions");
                                     if (xml != null)
                                         conditions.setXml(XML_Converter.getStringFromXML(xml));
                                 } catch (Exception e) {

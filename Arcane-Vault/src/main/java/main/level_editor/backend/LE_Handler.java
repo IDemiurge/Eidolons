@@ -1,7 +1,11 @@
 package main.level_editor.backend;
 
 
-import main.level_editor.backend.advanced.LE_AdvFuncs;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import main.game.bf.Coordinates;
+import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
+import main.level_editor.backend.functions.mapping.LE_ModuleHandler;
+import main.level_editor.backend.functions.structure.LE_StructureManager;
 import main.level_editor.backend.io.LE_DataHandler;
 import main.level_editor.backend.menu.LE_MenuHandler;
 import main.level_editor.backend.model.LE_DataModel;
@@ -18,6 +22,18 @@ public class LE_Handler {
 
     public LE_Handler(LE_Manager manager) {
         this.manager = manager;
+    }
+
+    public Module getModule(Coordinates c) {
+        return manager.getModule(c);
+    }
+
+    public LE_StructureManager getStructureManager() {
+        return manager.getStructureManager();
+    }
+
+    public LE_ModuleHandler getModuleHandler() {
+        return manager.getModuleHandler();
     }
 
     public LE_SelectionHandler getSelectionHandler() {

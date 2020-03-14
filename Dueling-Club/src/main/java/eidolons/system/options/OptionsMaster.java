@@ -48,6 +48,7 @@ import eidolons.system.options.SystemOptions.SYSTEM_OPTION;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.EnumMaster;
@@ -597,7 +598,7 @@ public class OptionsMaster {
     public Map<OPTIONS_GROUP, Options> readOptions(String data) {
         Document doc = XML_Converter.getDoc(data);
         Map<OPTIONS_GROUP, Options> optionsMap = new XLinkedMap<>();
-        for (Node sub : XML_Converter.getNodeListFromFirstChild(doc, true)) {
+        for (Node sub : XmlNodeMaster.getNodeListFromFirstChild(doc, true)) {
             OPTIONS_GROUP group = OPTIONS_GROUP.valueOf(sub.getNodeName());
             Options options = createOptions(group, sub);
             if (options != null)
@@ -609,7 +610,7 @@ public class OptionsMaster {
 
     protected Options createOptions(OPTIONS_GROUP group, Node doc) {
         Options options = createOptions(group);
-        for (Node optionNode : XML_Converter.getNodeList(doc)) {
+        for (Node optionNode : XmlNodeMaster.getNodeList(doc)) {
             options.setValue(optionNode.getNodeName(), optionNode.getTextContent());
         }
         return options;

@@ -216,10 +216,10 @@ public class XML_Transformer {
         if (doc == null) {
             return;
         }
-        for (Node groupNode : XML_Converter.getNodeList(doc.getFirstChild())) {
-            for (Node typeNode : XML_Converter.getNodeList(groupNode)) {
-                for (Node valueGroupNode : XML_Converter.getNodeList(typeNode)) {
-                    for (Node valueNode : XML_Converter.getNodeList(valueGroupNode)) {
+        for (Node groupNode : XmlNodeMaster.getNodeList(doc.getFirstChild())) {
+            for (Node typeNode : XmlNodeMaster.getNodeList(groupNode)) {
+                for (Node valueGroupNode : XmlNodeMaster.getNodeList(typeNode)) {
+                    for (Node valueNode : XmlNodeMaster.getNodeList(valueGroupNode)) {
                         if (StringMaster.isEmpty(valueNode.getTextContent())) {
                             valueGroupNode.removeChild(valueNode);
                         }
@@ -247,7 +247,7 @@ public class XML_Transformer {
                     closeIndex += XML_Converter
                             .closeXmlFormatted(XML_Converter.getXmlNodeName(val)).length();
                     subString = subString.substring(0, openIndex)
-                            + subString.substring(closeIndex, subString.length());
+                            + subString.substring(closeIndex);
                     changed = true;
                 }
             } finally {

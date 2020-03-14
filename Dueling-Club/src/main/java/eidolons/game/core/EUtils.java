@@ -45,6 +45,9 @@ public class EUtils {
         return GdxMaster.getWidth() / 3 / FontMaster.getDefaultStringWidth("1");
     }
 
+    public static boolean confirm(String text) {
+        return onConfirm(true, text, false, null, true);
+    }
     public static void info(String text, boolean wait, boolean onAnotherThread) {
         onConfirm(wait, text, false, null, onAnotherThread);
     }

@@ -11,7 +11,7 @@ import main.content.values.parameters.Param;
 import main.content.values.properties.Prop;
 import main.data.dialogue.SpeechData;
 import main.data.dialogue.Speeches;
-import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.elements.conditions.Conditions;
 import main.system.auxiliary.ClassFinder;
 import main.system.auxiliary.Loop;
@@ -120,7 +120,7 @@ public class Mapper {
             return getItem(e.getNodeName());
         }
 
-        return getItem(e.getNodeName(), getArgs(XML_Converter.getNodeList(e)));
+        return getItem(e.getNodeName(), getArgs(XmlNodeMaster.getNodeList(e)));
     }
 
     private static List<Argument> getArgList(Class<?>[] parameterTypes) {

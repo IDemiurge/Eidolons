@@ -40,7 +40,7 @@ public class LE_XmlMaster {
         xmlBuilder.append(buildCoordinateMap(floor));
         String planXml =  "";
         try {
-            planXml = (floor.getGame().getDungeonMaster().getDungeonWrapper()).getPlan().getXml();
+//            planXml = (floor.getGame().getDungeonMaster().getDungeonWrapper()).getXml();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

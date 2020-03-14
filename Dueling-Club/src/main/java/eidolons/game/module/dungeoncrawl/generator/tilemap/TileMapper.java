@@ -13,9 +13,12 @@ import eidolons.game.module.dungeoncrawl.generator.pregeneration.Pregenerator;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Created by JustMe on 2/15/2018.
@@ -227,6 +230,36 @@ public class TileMapper {
 
     public static void setLoggingOff(boolean loggingOff) {
         TileMapper.loggingOff = loggingOff;
+    }
+
+    public static TileMap createTileMap(String data) {
+        int lineN = 0;
+        int w = 0;
+        Map<Coordinates, ROOM_CELL> map = new LinkedHashMap<>();
+        String[] lines = StringMaster.splitLines(data);
+        for (String line : lines) {
+            if (lineN++ < RngXmlMaster.SKIPPED_LINES)
+                continue;
+            if (lineN > lines.length - RngXmlMaster.SKIPPED_LINES) {
+                break;
+            }
+            String row = line.split(Pattern.quote(RngXmlMaster.TILEMAP_ROW_SEPARATOR))[1];
+            row = row.replace(" ", "");
+            int i = 0;
+            for (char c : row.toCharArray()) {
+                ROOM_CELL cell = ROOM_CELL.getBySymbol(c + "");
+                i++;
+                if (cell != null) {
+                    map.put(new AbstractCoordinates(i - 1, lineN - RngXmlMaster.SKIPPED_LINES - 1), cell);
+                } else {
+                }
+            }
+            if (i > w)
+                w = i;
+        }
+        return new TileMap(map);
+        //        String[][] cells = TileMapper.toSymbolArray(TileMapper.getCells(tileMap));
+        //        ArrayMaster.
     }
 
     public TileMap joinTileMaps() {

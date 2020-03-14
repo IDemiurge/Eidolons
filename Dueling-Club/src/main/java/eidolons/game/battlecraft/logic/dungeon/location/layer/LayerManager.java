@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.location.layer;
 
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.ContainerUtils;
@@ -30,8 +30,8 @@ public class LayerManager extends DungeonHandler {
         Set<Integer> ids = null ;
         getMaster().getObjIdMap();
         getMaster().getIdTypeMap();
-        for (Node node : XML_Converter.getNodeList(main)) {
-            for (Node sub : XML_Converter.getNodeList(node)) {
+        for (Node node : XmlNodeMaster.getNodeList(main)) {
+            for (Node sub : XmlNodeMaster.getNodeList(node)) {
                 switch (sub.getNodeName().toUpperCase()) {
                     case VFX_NODE:
                         break;

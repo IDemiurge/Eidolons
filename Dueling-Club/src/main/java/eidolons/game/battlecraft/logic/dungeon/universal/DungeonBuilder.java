@@ -1,10 +1,8 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
-import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.system.text.NameMaster;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.DC_TYPE;
@@ -12,6 +10,7 @@ import main.content.values.parameters.G_PARAMS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -66,9 +65,9 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
         }
         Document levelDocument = XML_Converter.getDoc(data, true);
         Node levelNode = XML_Converter.getChildAt(levelDocument, 0);
-        List<Node> nodeList = XML_Converter.getNodeList(levelNode);
-        Node planNode = XML_Converter.getChildByName(levelNode, "Plan");
-        nodeList.addAll(XML_Converter.getNodeList(planNode));
+        List<Node> nodeList = XmlNodeMaster.getNodeList(levelNode);
+        Node planNode = XmlNodeMaster.getChildByName(levelNode, "Plan");
+        nodeList.addAll(XmlNodeMaster.getNodeList(planNode));
         E dungeonWrapper = buildDungeon(path, data, nodeList);
 
         dungeonWrapper.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
@@ -91,7 +90,7 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
     }
 
     public E buildDungeon(String s, String path, List<Node> nodeList) {
-        Node typeNode = XML_Converter.getNodeByName(nodeList, DUNGEON_TYPE_NODE);
+        Node typeNode = XmlNodeMaster.getNodeByName(nodeList, DUNGEON_TYPE_NODE);
         ObjType type = null;
         if (typeNode == null) {
             type = DataManager.getRandomType(DC_TYPE.DUNGEONS, null);
@@ -112,25 +111,14 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
 
     }
 
-    protected void processNode(Node n, E dungeon, DungeonPlan plan) {
-        if (StringMaster.compareByChar(n.getNodeName(), (WALL_OBJ_DATA_NODE))) {
-
-            String wallObjData = n.getTextContent();
-
-            if (!StringMaster.isEmpty(wallObjData)) {
-                plan.setWallObjects(DC_ObjInitializer.createUnits(DC_Player.NEUTRAL,
-                 wallObjData));
-            }
-
-        }
-
+    protected void processNode(Node n, E dungeon) {
         if (StringMaster.compareByChar(n.getNodeName(), (FLIP_MAP_NODE))) {
-            plan.setFlipMap(new RandomWizard<FLIP>().constructStringWeightMapInversed(n
+            dungeon.setFlipMap(new RandomWizard<FLIP>().constructStringWeightMapInversed(n
              .getTextContent(), FLIP.class));
 
         }
         else if (StringMaster.compareByChar(n.getNodeName(), (DIRECTION_MAP_NODE))) {
-            plan.setDirectionMap(new RandomWizard<DIRECTION>()
+            dungeon.setDirectionMap(new RandomWizard<DIRECTION>()
              .constructStringWeightMapInversed(n.getTextContent(), DIRECTION.class));
 
         } else if (StringMaster.compareByChar(n.getNodeName(), (CUSTOM_PARAMS_NODE))) {
@@ -145,18 +133,18 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
         }
     }
 
-    protected void initDynamicObjData(Location location, DungeonPlan plan) {
+    protected void initDynamicObjData(Location location) {
         int z = location.getIntParam(G_PARAMS.Z_LEVEL);
-        if (plan.getDirectionMap() != null) {
+        if (location.getDirectionMap() != null) {
             try {
-                DC_ObjInitializer.initDirectionMap(z, plan.getDirectionMap());
+                DC_ObjInitializer.initDirectionMap(z, location.getDirectionMap());
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        if (plan.getFlipMap() != null) {
+        if (location.getFlipMap() != null) {
             try {
-                DC_ObjInitializer.initFlipMap(z, plan.getFlipMap());
+                DC_ObjInitializer.initFlipMap(z, location.getFlipMap());
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

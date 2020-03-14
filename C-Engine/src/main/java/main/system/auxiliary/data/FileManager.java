@@ -1,7 +1,7 @@
 package main.system.auxiliary.data;
 
 import main.data.filesys.PathFinder;
-import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.system.PathUtils;
 import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster;
@@ -165,12 +165,12 @@ public class FileManager {
                         }
                         new Inflater().inflate(array);
                         String string = new String(array);
-                        xmlString.append(string.substring(0, n));
+                        xmlString.append(string, 0, n);
                     }
 
-                    Node node = XML_Converter.findAndBuildNode(xmlString.toString(), "office:text");
+                    Node node = XmlNodeMaster.findAndBuildNode(xmlString.toString(), "office:text");
                     StringBuilder string = new StringBuilder();
-                    for (Node child : XML_Converter.getNodeList(node)) {
+                    for (Node child : XmlNodeMaster.getNodeList(node)) {
                         string.append(child.getTextContent());
                     }
                     return string.toString();
@@ -265,7 +265,7 @@ public class FileManager {
             index += PathFinder.getRootPath().length() - 1;
         }
         String afterClass = force ? path : path.substring(
-                index, path.length());
+                index);
 
         //fix slashes
         if (!afterClass.isEmpty()) {
@@ -650,5 +650,9 @@ public class FileManager {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+    }
+
+    public static String getFileName(String template) {
+        return StringMaster.cropFormat(getFile(template).getName());
     }
 }

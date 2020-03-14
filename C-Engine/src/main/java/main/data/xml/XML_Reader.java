@@ -216,7 +216,7 @@ public class XML_Reader {
         if (fileName.contains("-")) {
             final int indexOf = fileName.indexOf("-");
             xmlName = fileName.substring(0, indexOf).trim();
-            group = fileName.substring(indexOf + 1, fileName.length());
+            group = fileName.substring(indexOf + 1);
         }
 
         xmlFile = new XML_File(DC_TYPE.getType(xmlName), xmlName, group, macro, text);
@@ -252,7 +252,7 @@ public class XML_Reader {
         }
         Document doc = XML_Converter.getDoc(xml);
 
-        List<Node> nodes = XML_Converter.getNodeList(XML_Converter.getNodeList(doc).get(0));
+        List<Node> nodes = XmlNodeMaster.getNodeList(XmlNodeMaster.getNodeList(doc).get(0));
         for (Node node : nodes) {
             // typeName = node.getNodeName();
 

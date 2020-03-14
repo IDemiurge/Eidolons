@@ -1,13 +1,18 @@
-package main.level_editor.backend.structure;
+package main.level_editor.backend.functions.structure;
 
+import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.dungeon.BlockTemplate;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
+import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.data.FileManager;
+import main.system.threading.WaitMaster;
 
 import java.util.List;
 
@@ -16,6 +21,10 @@ public class LE_StructureManager extends LE_Handler implements IStructureManager
 
     public LE_StructureManager(LE_Manager manager) {
         super(manager);
+    }
+
+    private LevelBlock getBlock() {
+        return getModel().getBlock();
     }
 
     public void addZone(){
@@ -76,19 +85,35 @@ public class LE_StructureManager extends LE_Handler implements IStructureManager
     }
 
     @Override
-    public void mergeCurBlock() {
+    public void mergeBlock() {
+        LevelBlock block = getBlock();
+        EUtils.info("Select an adjacent block");
+        WaitMaster.waitForInput(LevelEditor.SELECTION_EVENT);
+        LevelBlock newBlock = getBlock();
+        if (isAdjacent(block, newBlock)){
+            mergeBlocks(block , newBlock);
+        }
+        GuiEventManager.trigger(GuiEventType.LE_TREE_RESET);
+    }
+
+    private void mergeBlocks(LevelBlock block, LevelBlock newBlock) {
+    }
+
+    private boolean isAdjacent(LevelBlock block, LevelBlock newBlock) {
+        return false;
+    }
+
+
+    @Override
+    public void removeCellsFromBlock() {
 
     }
 
     @Override
-    public void removeSelectedCellsFromCurBlock() {
+    public void addCellsToBlock() {
 
     }
 
-    @Override
-    public void addSelectedCellsToCurBlock() {
-
-    }
 
     @Override
     public void transformBlock() {
@@ -101,17 +126,8 @@ public class LE_StructureManager extends LE_Handler implements IStructureManager
     }
 
     @Override
-    public void assignBlockToZone() {
+    public void assignBlock() {
 
     }
 
-    @Override
-    public void addModule() {
-
-    }
-
-    @Override
-    public void transformModule() {
-
-    }
 }

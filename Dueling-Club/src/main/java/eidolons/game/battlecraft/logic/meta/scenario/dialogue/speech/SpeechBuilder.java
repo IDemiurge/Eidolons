@@ -8,6 +8,7 @@ import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.dialogue.SpeechData;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
+import main.data.xml.XmlNodeMaster;
 import main.elements.conditions.Condition;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
@@ -105,13 +106,13 @@ public class SpeechBuilder {
         idToDataMap = new HashMap<>();
         String xml = FileManager.readFile(linesPath);
         Document doc = XML_Converter.getDoc(xml);
-        for (Node node : XML_Converter.getNodeList(doc.getFirstChild())) {
+        for (Node node : XmlNodeMaster.getNodeList(doc.getFirstChild())) {
             String idString = node.getNodeName();
             int id = NumberUtils.getInteger(idString.replace(DialogueLineFormatter.ID, ""));
 
             if (node.hasChildNodes()) {
                 SpeechData data = new SpeechData();
-                for (Node subNode : XML_Converter.getNodeList(node)) {
+                for (Node subNode : XmlNodeMaster.getNodeList(node)) {
                     String value = subNode.getTextContent();
                     value = XML_Formatter.restoreXmlNodeText(value);
                     data.setValue(

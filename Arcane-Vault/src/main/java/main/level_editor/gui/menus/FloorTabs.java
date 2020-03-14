@@ -2,7 +2,7 @@ package main.level_editor.gui.menus;
 
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
-import main.level_editor.backend.structure.FloorManager;
+import main.level_editor.backend.functions.structure.FloorManager;
 import main.level_editor.gui.components.UiButton;
 import main.level_editor.struct.campaign.Campaign;
 import main.level_editor.struct.level.Floor;

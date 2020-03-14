@@ -3,6 +3,7 @@ package main.data.ability.construct;
 import main.data.ability.AE_Item;
 import main.data.ability.Mapper;
 import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import org.apache.commons.lang3.tuple.Pair;
 import org.w3c.dom.Node;
 
@@ -66,7 +67,7 @@ public class ConstructionManager {
 
     private static List<Construct> getConstructs(Node node) {
         List<Construct> list = new ArrayList<>();
-        for (Node NODE : XML_Converter.getNodeList(node)) {
+        for (Node NODE : XmlNodeMaster.getNodeList(node)) {
             Construct construct = getConstruct(NODE);
             list.add(construct);
         }

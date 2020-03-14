@@ -2,7 +2,7 @@ package main.level_editor.backend.menu;
 
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
-import main.level_editor.backend.structure.FloorManager;
+import main.level_editor.backend.functions.structure.FloorManager;
 
 public class LE_MenuHandler extends LE_Handler {
 

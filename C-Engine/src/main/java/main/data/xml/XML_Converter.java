@@ -8,7 +8,6 @@ import main.data.DataManager;
 import main.data.ability.AE_Item;
 import main.data.ability.Mapper;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TreeMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.XMap;
@@ -36,10 +35,6 @@ public class XML_Converter {
     private static final String DOCUMENT_ROOT = null;
     public static Pattern p = Pattern.compile("\n");
     private static DocumentBuilder builder;
-
-    public static List<Node> getNodeList(Node node) {
-        return getNodeList(node, true);
-    }
 
     // public Document reformDocument(Collection<String> newGroups)
     // {
@@ -73,36 +68,6 @@ public class XML_Converter {
         return groupDoc;
 
     }*/
-
-    //    public static List<Node> getNodeList(Node node, boolean ignoreTextNodes, boolean recursive) {
-//         List<Object> list = new ArrayList<>();
-//        if (recursive) {
-//            getNodeList(node).stream().
-//        }
-//    }
-    public static List<Node> getNodeList(Node node, boolean ignoreTextNodes) {
-        List<Node> list = new ArrayList<>();
-        if (node == null) {
-            return list;
-        }
-        NodeList nl = node.getChildNodes();
-        for (int i = 0; i < nl.getLength(); i++) {
-
-            Node item = nl.item(i);
-            if (ignoreTextNodes)
-                if (isTextNode(item)) {
-                    continue;
-                }
-            list.add(item);
-
-        }
-        return list;
-
-    }
-
-    public static List<Node> getNodeListFromFirstChild(Node node, boolean ignoreTextNodes) {
-        return getNodeList(getNodeList(node, true).get(0), ignoreTextNodes);
-    }
 
     public static List getConvertedDoc(Node node) {
         List list = new ArrayList();
@@ -140,7 +105,7 @@ public class XML_Converter {
     }
 
     public static Node getChildAt(Node levelDocument, int i) {
-        List<Node> nodeList = getNodeList(levelDocument);
+        List<Node> nodeList = XmlNodeMaster.getNodeList(levelDocument);
         if (nodeList.size() <= i) {
             return null;
         }
@@ -329,14 +294,14 @@ public class XML_Converter {
     }
 
     public static Node getAbilitiesDoc(Node node) {
-        List<Node> nodeList = XML_Converter.getNodeList(node);
+        List<Node> nodeList = XmlNodeMaster.getNodeList(node);
         if (nodeList.size() < 1) {
             return node;
         }
         while (nodeList.size() < 2 && nodeList.get(0).getNodeName().equals(Mapper.ABILITIES)) {
 
             Node child = node.getFirstChild();
-            nodeList = XML_Converter.getNodeList(child);
+            nodeList = XmlNodeMaster.getNodeList(child);
             if (nodeList.size() < 1) {
                 return node;
             }
@@ -360,9 +325,9 @@ public class XML_Converter {
         Document doc = getDoc(xml);
         List<ObjType> list = new ArrayList<>();
         List<Node> typeGroupsList = null;
-        for (Node n : getNodeList(doc)) {
+        for (Node n : XmlNodeMaster.getNodeList(doc)) {
             if (n.getNodeName().equalsIgnoreCase(TYPES_NODE)) {
-                typeGroupsList = getNodeList(n);
+                typeGroupsList = XmlNodeMaster.getNodeList(n);
             }
         }
         if (typeGroupsList == null) {
@@ -370,7 +335,7 @@ public class XML_Converter {
         }
         for (Node groupNode : typeGroupsList) {
             DC_TYPE obj_type = DC_TYPE.getType(groupNode.getNodeName());
-            for (Node typeNode : getNodeList(groupNode)) {
+            for (Node typeNode : XmlNodeMaster.getNodeList(groupNode)) {
                 ObjType type = DataManager.getType(typeNode.getNodeName(), obj_type);
                 if (type != null) // TODO find?
                 {
@@ -381,62 +346,6 @@ public class XML_Converter {
         }
 
         return list;
-    }
-
-    public static String findNodeText(String xml, String nodeName) {
-        return wrap(nodeName, findNode(xml, nodeName).getTextContent());
-    }
-
-    public static Node findNode(String xml, String nodeName) {
-
-        Document document = getDoc(xml);
-        return findNode(document, nodeName);
-    }
-
-    public static Node findNode(Document document, String nodeName) {
-        //TODO recursive
-
-        for (Node sub : getNodeList(document)) {
-            if (sub.getNodeName().equalsIgnoreCase(nodeName)) {
-                return sub;
-            }
-        }
-        for (Node sub : getNodeListFromFirstChild(document, true)) {
-            Node found = findNode(getStringFromXML(sub, false), nodeName);
-            if (found != null)
-                return found;
-        }
-
-        return null;
-    }
-
-    public static Node find(Node parent, String nodeName) {
-        return findNode(getNodeList(parent), nodeName);
-    }
-
-    private static Node findNode(List<Node> nodes, String nodeName) {
-        for (Node sub : nodes) {
-            if (sub.getNodeName().equalsIgnoreCase(nodeName)) {
-                return sub;
-            }
-        }
-
-        for (Node node : nodes) {
-            Node found = findNode(getNodeListFromFirstChild(node, true), nodeName);
-            if (found != null)
-                return found;
-        }
-        return null;
-    }
-
-    public static Document findAndBuildNode(String xmlString, String string) {
-        int firstIndexOf = xmlString.indexOf(openXml(string));
-        int lastIndexOf = xmlString.lastIndexOf(closeXml(string));
-        String nodeContent = xmlString.substring(firstIndexOf, lastIndexOf);
-        Document node = getDoc(
-                // openXML(string) + already there?
-                nodeContent + closeXml(string));
-        return node;
     }
 
     public static String getXMLFromTypeList(List<ObjType> typeList) {
@@ -470,21 +379,6 @@ public class XML_Converter {
         } else {
             return openXml(enclosing) + node + closeXml(enclosing);
         }
-    }
-
-    public static Node getChildByName(Node parent, String name) {
-        return getNodeByName(getNodeList(parent), name);
-    }
-
-    public static Node getNodeByName(List<Node> list, String name) {
-        for (Node node : (list)) {
-            if (StringMaster.compare(node.getNodeName(), name)) { //node.getNodeName().equalsIgnoreCase(name))
-                return node;
-            }
-        }
-
-
-        return null;
     }
 
     public static DocumentBuilder getBuilder() {

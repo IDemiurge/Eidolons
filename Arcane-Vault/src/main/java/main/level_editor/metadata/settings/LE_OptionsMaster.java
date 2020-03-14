@@ -3,6 +3,7 @@ package main.level_editor.metadata.settings;
 import eidolons.system.options.OptionsMaster;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.system.auxiliary.data.FileManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -34,8 +35,8 @@ public class LE_OptionsMaster extends OptionsMaster {
         data = FileManager.readFile(getOptionsPath());
         Document doc = XML_Converter.getDoc((data));
         if (doc != null)
-            for (Node sub : XML_Converter.getNodeListFromFirstChild(doc, true)) {
-                for (Node s : XML_Converter.getNodeList(sub, true)) {
+            for (Node sub : XmlNodeMaster.getNodeListFromFirstChild(doc, true)) {
+                for (Node s : XmlNodeMaster.getNodeList(sub, true)) {
                     options.setValue(s.getNodeName(), s.getTextContent());
                 }
             }

@@ -13,15 +13,14 @@ public class Module {
     private int height;
 
     private String name;
-    private final String path;
+//    private final String path;
     private List<LevelZone> zones;
 
-    public Module(Coordinates origin, int width, int height, String name, String path) {
+    public Module(Coordinates origin, int width, int height, String name ) {
         this.origin = origin;
         this.width = width;
         this.height = height;
         this.name = name;
-        this.path = path;
     }
 
 

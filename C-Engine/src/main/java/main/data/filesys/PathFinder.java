@@ -117,6 +117,12 @@ public class PathFinder {
         return XML_PATH + "dungeons/levels/";
     }
 
+    public static String getModuleTemplatesPath() {
+        return XML_PATH + "dungeons/levels/modules/templates/";
+    }
+    public static String getModulesPath() {
+        return XML_PATH + "dungeons/levels/modules/";
+    }
     public static String getTextPath() {
         init();
         return RES_PATH + PathUtils.getPathSeparator() + "text" + PathUtils.getPathSeparator();
@@ -511,4 +517,5 @@ public class PathFinder {
     public static String getSoundCuesPath() {
         return getSoundPath() + "moments/cues/";
     }
+
 }

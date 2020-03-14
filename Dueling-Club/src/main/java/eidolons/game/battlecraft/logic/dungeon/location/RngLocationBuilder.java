@@ -14,7 +14,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
-import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
@@ -24,7 +23,7 @@ import eidolons.game.module.dungeoncrawl.generator.init.RngLevelPopulator;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
@@ -34,6 +33,7 @@ import main.content.enums.DungeonEnums.*;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.entity.EntityCheckMaster;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
@@ -49,7 +49,6 @@ import main.system.launch.CoreEngine;
 import org.w3c.dom.Node;
 
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster.SEPARATOR;
@@ -79,7 +78,7 @@ public class RngLocationBuilder extends LocationBuilder {
                     path.contains(PathFinder.getDungeonLevelFolder()) ? path
                             : PathFinder.getDungeonLevelFolder() + path);
         }
-        DungeonLevel level =null ;
+        DungeonLevel level = null;
         if (!data.isEmpty()) {
             level = loadLevel(path, data);
         } else {
@@ -100,7 +99,7 @@ public class RngLocationBuilder extends LocationBuilder {
         Location location = new Location(getMaster(), new Dungeon(level.getDungeonType()));
         initWidthAndHeight(location);
 
-        if (CoreEngine.isIggDemo()){
+        if (CoreEngine.isIggDemo()) {
             level.setEntranceData(IGG_XmlMaster.getEntrancesData(location, path));
             location.getDungeon().setProperty(PROPS.KEY_DOOR_PAIRS, IGG_XmlMaster.getDoorKeyData(path), true);
         }
@@ -174,24 +173,25 @@ public class RngLocationBuilder extends LocationBuilder {
 
 
     public static DungeonLevel loadLevelFromPath(String path) {
-        String xml =  FileManager.readFile(path);
+        String xml = FileManager.readFile(path);
         String name = PathUtils.getLastPathSegment(xml);
         return loadLevel(name, xml);
     }
-        public static DungeonLevel loadLevel(String name,String xml) {
+
+    public static DungeonLevel loadLevel(String name, String xml) {
 
         DungeonLevel level = new RestoredDungeonLevel(name);
         int n = 0;
-        for (Node node : XML_Converter.getNodeListFromFirstChild(XML_Converter.getDoc(xml), true)) {
+        for (Node node : XmlNodeMaster.getNodeListFromFirstChild(XML_Converter.getDoc(xml), true)) {
             //TODO
             if (node.getNodeName().equalsIgnoreCase(RngXmlMaster.ZONES_NODE)) {
                 LevelZone zone = new LevelZone(n++);
-                List<Node> subNodes = XML_Converter.getNodeList(node);
+                List<Node> subNodes = XmlNodeMaster.getNodeList(node);
                 for (Node zoneNode : new ArrayList<>(subNodes)) {
-                    subNodes = XML_Converter.getNodeList(zoneNode);
+                    subNodes = XmlNodeMaster.getNodeList(zoneNode);
                     for (Node subNode : subNodes) {
                         if (subNode.getNodeName().equalsIgnoreCase(RngXmlMaster.BLOCKS_NODE)) {
-                            for (Node blockNode : XML_Converter.getNodeList(subNode)) {
+                            for (Node blockNode : XmlNodeMaster.getNodeList(subNode)) {
                                 zone.getSubParts().add(createBlock(blockNode, zone));
                             }
                         } else {
@@ -348,7 +348,7 @@ public class RngLocationBuilder extends LocationBuilder {
 
 
     private static void processZoneValues(LevelZone zone, Node subNode) {
-        for (Node node : XML_Converter.getNodeList(subNode)) {
+        for (Node node : XmlNodeMaster.getNodeList(subNode)) {
             String name = node.getNodeName().toUpperCase();
             switch (name) {
                 case RngXmlMaster.ZONE_STYLE_NODE:
@@ -370,44 +370,17 @@ public class RngLocationBuilder extends LocationBuilder {
 
     private static void initTileMap(Node n, DungeonLevel level) {
         String data = n.getTextContent();
-        int lineN = 0;
-        int w = 0;
-        Map<Coordinates, ROOM_CELL> map = new LinkedHashMap<>();
-        String[] lines = StringMaster.splitLines(data);
-        for (String line : lines) {
-            if (lineN++ < RngXmlMaster.SKIPPED_LINES)
-                continue;
-            if (lineN > lines.length - RngXmlMaster.SKIPPED_LINES) {
-                break;
-            }
-            String row = line.split(Pattern.quote(RngXmlMaster.TILEMAP_ROW_SEPARATOR))[1];
-            row = row.replace(" ", "");
-            int i = 0;
-            for (char c : row.toCharArray()) {
-                ROOM_CELL cell = ROOM_CELL.getBySymbol(c + "");
-                i++;
-                if (cell != null) {
-                    map.put(new AbstractCoordinates(i - 1, lineN - RngXmlMaster.SKIPPED_LINES - 1), cell);
-                } else {
-                }
-            }
-            if (i > w)
-                w = i;
-        }
-        TileMap tileMap = new TileMap(map);
-        //        String[][] cells = TileMapper.toSymbolArray(TileMapper.getCells(tileMap));
-        //        ArrayMaster.
-        level.setTileMap(tileMap);
+        level.setTileMap(TileMapper.createTileMap(data));
     }
 
     private static void initValuesNode(Node n, DungeonLevel level) {
-        Node node = XML_Converter.find(n, RngXmlMaster.LOCATION_TYPE_NODE);
+        Node node = XmlNodeMaster.find(n, RngXmlMaster.LOCATION_TYPE_NODE);
         if (node != null) {
             LOCATION_TYPE locationType = new EnumMaster<LOCATION_TYPE>().
                     retrieveEnumConst(LOCATION_TYPE.class, node.getTextContent());
             level.setLocationType(locationType);
         }
-        node = XML_Converter.find(n, RngXmlMaster.SUBLEVEL_TYPE_NODE);
+        node = XmlNodeMaster.find(n, RngXmlMaster.SUBLEVEL_TYPE_NODE);
         if (node != null) {
             SUBLEVEL_TYPE locationType = new EnumMaster<SUBLEVEL_TYPE>().
                     retrieveEnumConst(SUBLEVEL_TYPE.class, node.getTextContent());
@@ -423,11 +396,11 @@ public class RngLocationBuilder extends LocationBuilder {
                 || isPresetBackground()) {
             type.setProperty(PROPS.MAP_BACKGROUND, getBackground(level.getLocationType()).getBackgroundFilePath());
         }
-        node = XML_Converter.find(n, PARAMS.BF_HEIGHT.name());
+        node = XmlNodeMaster.find(n, PARAMS.BF_HEIGHT.name());
         if (node != null) {
             type.setValue(PARAMS.BF_HEIGHT.name(), node.getTextContent());
         }
-        node = XML_Converter.find(n, PARAMS.BF_WIDTH.name());
+        node = XmlNodeMaster.find(n, PARAMS.BF_WIDTH.name());
         if (node != null) {
             type.setValue(PARAMS.BF_WIDTH.name(), node.getTextContent());
         }
@@ -504,7 +477,7 @@ public class RngLocationBuilder extends LocationBuilder {
     protected static LevelBlock createBlock(Node node, LevelZone zone) {
         LevelBlock b = new LevelBlock(zone);
 
-        for (Node subNode : XML_Converter.getNodeList(node)) {
+        for (Node subNode : XmlNodeMaster.getNodeList(node)) {
             if (StringMaster.compareByChar(subNode.getNodeName(), COORDINATES_NODE)) {
                 //                if (subNode.getTextContent().isEmpty()){
                 //              TODO     b.initDefaultCoordinatesList();

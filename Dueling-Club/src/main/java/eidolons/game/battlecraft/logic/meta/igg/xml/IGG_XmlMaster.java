@@ -21,6 +21,7 @@ import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.entity.type.ObjAtCoordinate;
 import main.system.PathUtils;
 import main.system.auxiliary.RandomWizard;
@@ -285,7 +286,7 @@ public class IGG_XmlMaster {
         this.name = levelName;
         String le_data = FileManager.readFile(getOutputPath() + getLevelName());
 
-        rngFilePath = XML_Converter.unwrap(XML_Converter.findNodeText(le_data, "Dungeon_Level"));
+        rngFilePath = XML_Converter.unwrap(XmlNodeMaster.findNodeText(le_data, "Dungeon_Level"));
         String rng = FileManager.readFile(getRngPath());
 
         DungeonLevel level = RngLocationBuilder.loadLevelFromPath(getRngPath());
@@ -298,7 +299,7 @@ public class IGG_XmlMaster {
          * for new - no ai, just stand still
          */
 
-        String objNode = XML_Converter.findNode(le_data, RngXmlMaster.OBJECTS_NODE).getTextContent();
+        String objNode = XmlNodeMaster.findNode(le_data, RngXmlMaster.OBJECTS_NODE).getTextContent();
         List<ObjAtCoordinate> objects = validateObjects(objNode);
         if (objects == null) {
             return;
@@ -310,7 +311,7 @@ public class IGG_XmlMaster {
             }
         }
         String nonVoid = nonVoidBuilder.toString();
-        String aiNode = XML_Converter.findNode(metaData, RngXmlMaster.AI_GROUPS_NODE).getTextContent();
+        String aiNode = XmlNodeMaster.findNode(metaData, RngXmlMaster.AI_GROUPS_NODE).getTextContent();
 
         Map<List<ObjAtCoordinate>, RngMainSpawner.UNIT_GROUP_TYPE> groups = RngLocationBuilder.initAiData(aiNode, null);
         //TODO remove if missing!
@@ -344,7 +345,7 @@ public class IGG_XmlMaster {
 
         rng = rng.replaceFirst("<AI_GROUPS></AI_GROUPS>", "");
         String directionMapData =
-                XML_Converter.findNode(le_data, RngXmlMaster.DIRECTION_MAP_NODE).getTextContent();
+                XmlNodeMaster.findNode(le_data, RngXmlMaster.DIRECTION_MAP_NODE).getTextContent();
 
         rng = rng.replaceFirst("<DIRECTION_MAP></DIRECTION_MAP>", "");
         rng +=
@@ -412,7 +413,7 @@ public class IGG_XmlMaster {
 
         copy_xml =
                 StringMaster.replaceFirst(copy_xml,
-                        XML_Converter.unwrap(XML_Converter.findNodeText(copy_xml, RngXmlMaster.DIRECTION_MAP_NODE)), directionMapData);
+                        XML_Converter.unwrap(XmlNodeMaster.findNodeText(copy_xml, RngXmlMaster.DIRECTION_MAP_NODE)), directionMapData);
 
         String w = "<Bf_Width>" +
                 level.getTileMap().getWidth() +
@@ -421,9 +422,9 @@ public class IGG_XmlMaster {
                 level.getTileMap().getHeight() +
                 "</Bf_Height>";
         copy_xml = copy_xml.replaceFirst(
-                XML_Converter.findNodeText(copy_xml, "Bf_Width"), w);
+                XmlNodeMaster.findNodeText(copy_xml, "Bf_Width"), w);
         copy_xml = copy_xml.replaceFirst(
-                XML_Converter.findNodeText(copy_xml, "Bf_Height"), h);
+                XmlNodeMaster.findNodeText(copy_xml, "Bf_Height"), h);
 
 
         int from = copy_xml.indexOf(XML_Converter.openXml(LocationBuilder.ZONES_NODE));
