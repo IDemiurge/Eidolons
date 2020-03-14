@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaInitializer;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import main.level_editor.LevelEditor;
-import main.level_editor.functions.model.LE_TreeModel;
+import main.level_editor.backend.model.LE_TreeModel;
 import main.level_editor.struct.campaign.Campaign;
 
 public class LE_MetaMaster extends ScenarioMetaMaster {

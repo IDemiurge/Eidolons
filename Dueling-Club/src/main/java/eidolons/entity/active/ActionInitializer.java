@@ -13,7 +13,6 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.boss_.logic.BossActionMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
@@ -332,7 +331,7 @@ public class ActionInitializer extends DC_ActionManager {
         // TODO also add to Actives container!
 
         if (unit.isBoss()) {
-            actives.addAll(BossActionMaster.getStandardActions(unit));
+//            actives.addAll(BossMaster.getActionMaster(unit).getStandardActions(unit));
         } else
             for (ActionEnums.ACTION_TYPE type : ActionEnums.ACTION_TYPE.values()) {
                 // I could actually centralize all action-adding to HERE! Dual, INV

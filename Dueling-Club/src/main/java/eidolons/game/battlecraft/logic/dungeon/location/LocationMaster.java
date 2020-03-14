@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.logic.dungeon.location;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.LayerManager;
 import eidolons.game.battlecraft.logic.dungeon.universal.*;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.boss.cinematic.BossLocationInitializer;
 import main.system.launch.CoreEngine;
 
 /**
@@ -58,9 +57,6 @@ public class LocationMaster extends DungeonMaster<Location> {
 
     @Override
     protected DungeonInitializer<Location> createInitializer() {
-        if (getGame().isBossFight()) {
-            return new BossLocationInitializer(this);
-        }
         return new LocationInitializer(this);
     }
 

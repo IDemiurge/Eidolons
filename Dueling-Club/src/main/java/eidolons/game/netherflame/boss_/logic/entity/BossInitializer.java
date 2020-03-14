@@ -2,7 +2,6 @@ package eidolons.game.netherflame.boss_.logic.entity;
 
 import eidolons.entity.handlers.bf.unit.UnitInitializer;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.netherflame.boss_.logic.BossActionMaster;
 import main.entity.handlers.EntityMaster;
 
 public class BossInitializer extends UnitInitializer {
@@ -20,9 +19,6 @@ public class BossInitializer extends UnitInitializer {
         * actions from the enum?
         */
 
-       for (BossActionMaster.BOSS_ACTION_REAPER action : BossActionMaster.BOSS_ACTION_REAPER.values()) {
-
-       }
 
    }
 

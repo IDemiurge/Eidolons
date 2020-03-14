@@ -56,6 +56,14 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         this.zone = zone;
     }
 
+    public LevelBlock( BlockTemplate blockTemplate, LevelZone zone) {
+      this(zone);
+        unitGroups = new LinkedHashMap<>();
+//      blockTemplate.get().for
+//        unitGroups.put(list, type);
+
+    }
+
     public ROOM_TYPE getRoomType() {
         return roomType;
     }
@@ -73,7 +81,9 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     @Override
     public String toXml() {
         String xml = "";
-        xml += XML_Converter.wrap(RngXmlMaster.BLOCK_ROOM_TYPE_NODE, roomType.name());
+        if (roomType != null) {
+            xml += XML_Converter.wrap(RngXmlMaster.BLOCK_ROOM_TYPE_NODE, roomType.name());
+        }
 
 //     TODO    if (isCustomCoordinateList())
         xml += XML_Converter.wrap(RngXmlMaster.COORDINATES_NODE, ContainerUtils.

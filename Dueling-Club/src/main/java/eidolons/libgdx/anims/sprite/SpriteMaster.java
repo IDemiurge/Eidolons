@@ -3,7 +3,6 @@ package eidolons.libgdx.anims.sprite;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.netherflame.boss.anim.BossAnimator;
 import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums;
@@ -165,9 +164,7 @@ public class SpriteMaster {
             if (obj.isLightEmitter()) {
                 return Sprites.FIRE_LIGHT;
             }
-            if (obj.isBoss()) {
-                spritePath = BossAnimator.getSpritePath(obj);
-            } else {
+              {
                 switch (obj.getName()) {
                     case "Dream Siphon":
                         return StringMaster.getStringXTimes(4, Sprites.WHITE_TENTACLE + ";");

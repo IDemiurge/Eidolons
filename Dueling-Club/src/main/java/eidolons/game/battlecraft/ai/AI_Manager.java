@@ -20,7 +20,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
-import eidolons.game.netherflame.boss.logic.BossAi;
+import eidolons.game.netherflame.boss_.ai.BossAi;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.content.enums.system.AiEnums;
@@ -228,7 +228,7 @@ public class AI_Manager extends AiMaster {
 
     protected BossAi getBossAi(Unit unit) {
         if (bossAi == null) {
-            bossAi = new BossAi(unit.getAI());
+//            bossAi = new BossAi(unit.getAI());
         }
         return bossAi;
     }

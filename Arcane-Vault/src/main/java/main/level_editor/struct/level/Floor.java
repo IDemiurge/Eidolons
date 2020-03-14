@@ -1,7 +1,7 @@
 package main.level_editor.struct.level;
 
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import main.level_editor.functions.LE_Manager;
+import main.level_editor.backend.LE_Manager;
 import main.level_editor.gui.tree.data.LayeredData;
 import main.level_editor.sim.LE_GameSim;
 import main.level_editor.struct.boss.BossDungeon;

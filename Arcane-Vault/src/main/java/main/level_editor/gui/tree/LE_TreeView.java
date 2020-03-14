@@ -10,8 +10,8 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.texture.TextureCache;
-import main.level_editor.functions.model.LE_TreeModel;
-import main.level_editor.gui.tree.data.LE_Node;
+import main.level_editor.backend.model.LE_TreeModel;
+import main.level_editor.gui.tree.data.LE_DataNode;
 import main.level_editor.struct.boss.BossDungeon;
 import main.level_editor.struct.campaign.Campaign;
 import main.level_editor.struct.level.Floor;
@@ -33,23 +33,23 @@ public class LE_TreeView extends VisTree {
     @Override
     public void setUserObject(Object userObject) {
         LE_TreeModel treeModel = (LE_TreeModel) userObject;
-        LE_Node rootNode = treeModel.getRootNode();
+        LE_DataNode rootNode = treeModel.getRootNode();
         add(root = createRootNode(rootNode));
         recursiveAdd(root, rootNode);
         super.setUserObject(userObject);
         debugAll();
     }
 
-    private Node createRootNode(LE_Node rootNode) {
+    private Node createRootNode(LE_DataNode rootNode) {
         //just name
         return (createNodeComp(rootNode));
     }
 
-    private void recursiveAdd(Node root, LE_Node node) {
+    private void recursiveAdd(Node root, LE_DataNode node) {
         root.add(root = createNodeComp(node));
 
-        Set<? extends LE_Node> set = node.getChildren();
-        for (LE_Node child : set) {
+        Set<? extends LE_DataNode> set = node.getChildren();
+        for (LE_DataNode child : set) {
             if (child.isLeaf()) {
                  root.add(createNodeComp(node));
             } else
@@ -57,7 +57,7 @@ public class LE_TreeView extends VisTree {
         }
     }
 
-    private Node createNodeComp(LE_Node node) {
+    private Node createNodeComp(LE_DataNode node) {
         Label.LabelStyle style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 16);
         TextureRegion texture = null;
         String name = null;

@@ -63,8 +63,11 @@ Nether Realm => Relic
         ;
         String[] module_names;
 
+        ACT_I_MODULES(String... module_names) {
+            this.module_names = module_names;
+        }
 
-        /*
+/*
         size, placement order, zones,
         ai perks, encounter info,
 

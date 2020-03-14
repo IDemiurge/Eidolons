@@ -24,6 +24,7 @@ public class BossAnim2dHandler implements BossAnimHandler {
     @Override
     public void animate(BossPart part, BossAnims.BOSS_ANIM animType) {
 
+//        createWeaponAnim(part, animType);
     }
 
     @Override

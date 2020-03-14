@@ -10,7 +10,7 @@ public abstract class BossAi extends AiMaster {
         super(game);
         atomicAi = new BossAtomicAi(this, model);
         //ignore facing - how?
-        priorityManager = new BossPriorityManager(this, model);
+//        priorityManager = new BossPriorityManager(this, model);
     }
 
     /*

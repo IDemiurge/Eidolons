@@ -3,7 +3,6 @@ package eidolons.libgdx.launch;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.igg.CustomLaunch;
-import eidolons.game.netherflame.boss.anim.BossAnimator;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.swing.generic.services.dialog.DialogMaster;
@@ -125,7 +124,6 @@ public class MainLauncher extends GenericLauncher {
             CoreEngine.setFastMode(args.length > 1);
             CoreEngine.setFullFastMode(args.length > 3);
         }
-        BossAnimator.setFastMode(args.length > 5);
         if (CoreEngine.isIDE()) {
             CoreEngine.setJarlike(!CoreEngine.isFastMode());
             if (CoreEngine.isFastMode())//|| CoreEngine.isActiveTestMode())

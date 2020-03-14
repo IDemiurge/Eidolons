@@ -9,7 +9,7 @@ import java.util.List;
 
 public class QD_Assembler {
 
-    public QD_Model assemble(Act_I.QD_TYPE type, QuestSubject subject,) {
+    public QD_Model assemble(Act_I.QD_TYPE type, QuestSubject subject) {
 
         List<String> modulePaths = new ArrayList<>();
         // pre-gen? when do we transform? decide what layers are active?
@@ -26,6 +26,7 @@ public class QD_Assembler {
 
          */
 
+        return null;
     }
 
 }

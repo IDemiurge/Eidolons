@@ -3,7 +3,6 @@ package eidolons.game.netherflame.boss_.anims.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import eidolons.game.netherflame.boss.anim.BossAnimator;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.UnitViewOptions;
 import eidolons.libgdx.bf.grid.UnitViewSprite;
@@ -37,9 +36,6 @@ public class BossView extends UnitViewSprite {
 
     }
 
-    protected String getSpritePath() {
-        return  BossAnimator.getSpritePath(getUserObject());
-    }
     @Override
     protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
         return super.initPortrait(portraitTexture, path);

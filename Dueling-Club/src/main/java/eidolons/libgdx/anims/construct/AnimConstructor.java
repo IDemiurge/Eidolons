@@ -11,9 +11,7 @@ import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.boss.anim.BossAnimator;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimData;
@@ -142,7 +140,7 @@ public class AnimConstructor {
     }
 
     public static boolean isPreconstructAllOnGameInit() {
-        return !CoreEngine.isIDE() || (!BossAnimator.getFastMode() && EidolonsGame.BOSS_FIGHT);
+        return !CoreEngine.isIDE()  ;
     }
 
     public static boolean isPreconstructEnemiesOnCombatStart() {
@@ -150,12 +148,6 @@ public class AnimConstructor {
     }
 
     public static void preconstruct(Unit unit) {
-        if (EidolonsGame.BOSS_FIGHT)
-            if (unit.isBoss()) {
-                BossAnimator.preloadBoss();
-            } else {
-                return;
-            }
         unit.getActives().forEach(spell ->
                 getOrCreate(spell));
         AnimMaster3d.preloadAtlases(unit);

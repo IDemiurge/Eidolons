@@ -13,8 +13,6 @@ import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.boss.anim.BossAnimator;
-import eidolons.game.netherflame.boss_.anims.view.BossView;
 import eidolons.game.netherflame.boss_.logic.entity.BossUnit;
 import eidolons.libgdx.anims.*;
 import eidolons.libgdx.anims.construct.AnimConstructor;
@@ -59,7 +57,6 @@ public class AnimMaster extends Group {
     private final AnimDrawMaster drawer;
     private final ActionAnimMaster actionMaster;
     private final BuffAnimMaster buffMaster;
-    private BossAnimator bossAnimator;
 
     //animations will use emitters, light, sprites, text and icons
     private AnimMaster() {
@@ -298,11 +295,6 @@ public class AnimMaster extends Group {
     public void bindEvents() {
         DC_SoundMaster.bindEvents();
         floatTextLayer.bindEvents();
-        GuiEventManager.bind(GuiEventType.BOSS_VIEW_CREATED, p -> {
-            BossView b = (BossView) p.get();
-            bossAnimator = new BossAnimator(b, this  );
-
-        });
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
             if (!isOn()) {
                 return;
@@ -502,7 +494,4 @@ public class AnimMaster extends Group {
         drawer.addAttached(a);
     }
 
-    public BossAnimator getBossAnimator() {
-        return bossAnimator;
-    }
 }
