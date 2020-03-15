@@ -4,14 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.selection.LE_Selection;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
 import main.system.threading.WaitMaster;
 
@@ -42,8 +39,8 @@ public class LE_MouseHandler extends LE_Handler {
 
         switch (mode) {
             case RIGHT:
-                getGame().createUnit(getModel().getPaletteSelection().getObjType(), gridX, gridY, DC_Player.NEUTRAL);
-                return;
+                getModelManager().addSelectedObj(gridX, gridY);
+               return;
             //copy metadata
             //delete top
             //delete all
@@ -77,8 +74,7 @@ public class LE_MouseHandler extends LE_Handler {
             //remove
             case DOUBLE:
             case RIGHT:
-                getGame().softRemove(bfObj);
-                GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, bfObj);
+                getModelManager().remove(bfObj);
                 break;
             case DOUBLE_RIGHT:
                 break;

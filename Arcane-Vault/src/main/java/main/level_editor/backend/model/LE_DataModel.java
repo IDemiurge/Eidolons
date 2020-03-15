@@ -3,6 +3,8 @@ package main.level_editor.backend.model;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
+import main.data.DataManager;
+import main.entity.type.ObjType;
 import main.level_editor.backend.brush.LE_Brush;
 import main.level_editor.backend.display.LE_DisplayMode;
 import main.level_editor.backend.mouse.MouseMode;
@@ -23,6 +25,7 @@ public class LE_DataModel {
     private LevelZone currentZone;
     private Module module;
     private LevelBlock block;
+    private ObjType defaultWallType;
 
     public LE_DataModel() {
     }
@@ -90,5 +93,16 @@ public class LE_DataModel {
 
     public void setBlock(LevelBlock block) {
         this.block = block;
+    }
+
+    public ObjType getDefaultWallType() {
+        if (defaultWallType == null) {
+            defaultWallType = DataManager.getType("Stone Wall");
+        }
+        return defaultWallType;
+    }
+
+    public void setDefaultWallType(ObjType defaultWallType) {
+        this.defaultWallType = defaultWallType;
     }
 }

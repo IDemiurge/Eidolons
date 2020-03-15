@@ -52,7 +52,7 @@ public class SmartButton extends TextButton implements EventListener {
     }
 
     public SmartButton(String text, TextButtonStyle style, Runnable runnable, STD_BUTTON btnStyle) {
-        super(text, style);
+        super(text, StyleHolder.getTextButtonStyle(style, btnStyle));
         this.runnable = runnable;
         addListener(this);
 //        getStyle(). TODO this won't affect  *** !

@@ -72,7 +72,7 @@ public class TileMapper {
     public static TileMap createTileMap(LevelModel model) {
         ROOM_CELL[][] cells = TileMapper.build(model);
         return TileMapper.createTileMap(TileMapper.toSymbolArray(cells),
-         new AbstractCoordinates(0, 0));
+                new AbstractCoordinates(0, 0));
     }
 
     public static TileMap createTileMap(Room room) {
@@ -121,39 +121,40 @@ public class TileMapper {
     }
 
     public static String toASCII_String(ROOM_CELL[][] cells, boolean nullToX
-     , boolean OtoDot) {
+            , boolean OtoDot) {
         return toASCII_String(cells, nullToX, OtoDot, false);
     }
 
     public static String toASCII_String(TileMap map, boolean nullToX
-     , boolean OtoDot, boolean overrideBlock) {
+            , boolean OtoDot, boolean overrideBlock) {
         return toASCII_String(getCells(map), nullToX, OtoDot, overrideBlock);
     }
-        public static String toASCII_String(ROOM_CELL[][] cells, boolean nullToX
-     , boolean OtoDot, boolean overrideBlock) {
+
+    public static String toASCII_String(ROOM_CELL[][] cells, boolean nullToX
+            , boolean OtoDot, boolean overrideBlock) {
         if (!overrideBlock)
             if (loggingOff)
                 return "";
         String string;
         String columns;
 
-            StringBuilder separatorBuilder = new StringBuilder("\n      ");
-            StringBuilder columnsBuilder = new StringBuilder("\nX     ");
-            for (int x = 0; x < cells.length; x++) {
+        StringBuilder separatorBuilder = new StringBuilder("\n      ");
+        StringBuilder columnsBuilder = new StringBuilder("\nX     ");
+        for (int x = 0; x < cells.length; x++) {
             columnsBuilder.append(x).append(RngXmlMaster.TILEMAP_ROW_SEPARATOR);
             if (x < 10) columnsBuilder.append(" ");
             separatorBuilder.append("___");
         }
-            columns = columnsBuilder.toString();
-            String separator = separatorBuilder.toString();
-            StringBuilder stringBuilder1 = new StringBuilder("\n");
-            for (int y = 0; y < cells[0].length; y++) {
+        columns = columnsBuilder.toString();
+        String separator = separatorBuilder.toString();
+        StringBuilder stringBuilder1 = new StringBuilder("\n");
+        for (int y = 0; y < cells[0].length; y++) {
             if (y < 10)
                 stringBuilder1.append(y).append("  | ");
             else
                 stringBuilder1.append(y).append(" | ");
-                StringBuilder stringBuilder = new StringBuilder(stringBuilder1.toString());
-                for (int x = 0; x < cells.length; x++) {
+            StringBuilder stringBuilder = new StringBuilder(stringBuilder1.toString());
+            for (int x = 0; x < cells.length; x++) {
                 if (cells[x][y] == null) {
                     if (nullToX)
                         stringBuilder.append("  X");
@@ -162,15 +163,15 @@ public class TileMapper {
                 } else
                     stringBuilder.append("  ").append(cells[x][y].getSymbol());
             }
-                stringBuilder1 = new StringBuilder(stringBuilder.toString());
-                stringBuilder1.append("\n");
+            stringBuilder1 = new StringBuilder(stringBuilder.toString());
+            stringBuilder1.append("\n");
 
         }
-            string = stringBuilder1.toString();
-            separator += "\n";
+        string = stringBuilder1.toString();
+        separator += "\n";
         if (OtoDot) {
             return (columns + separator + string + separator + columns).replace(
-             "O", "."
+                    "O", "."
             );
         }
         return columns + separator + string + separator + columns;
@@ -180,7 +181,7 @@ public class TileMapper {
         int offsetX = -(model.getLeftMost());
         int offsetY = -(model.getTopMost());
         return build(model.getRoomMap(), offsetX, offsetY,
-         model.getCurrentWidth(), model.getCurrentHeight());
+                model.getCurrentWidth(), model.getCurrentHeight());
     }
 
     public static ROOM_CELL[][] build(Map<Coordinates, Room> map, int offsetX, int offsetY,
@@ -202,10 +203,10 @@ public class TileMapper {
                             if (j == room.getHeight() / 2) {
                                 if (ZoneCreator.TEST_MODE)
                                     cell = new EnumMaster<ROOM_CELL>().retrieveEnumConst(ROOM_CELL.class,
-                                     "" + room.getZone().getIndex());
+                                            "" + room.getZone().getIndex());
                                 else
                                     cell = new EnumMaster<ROOM_CELL>().retrieveEnumConst(ROOM_CELL.class,
-                                     map.get(point).getType().name());
+                                            map.get(point).getType().name());
                             }
                     }
                     if (cell != null)
@@ -262,15 +263,29 @@ public class TileMapper {
         //        ArrayMaster.
     }
 
+    public static String[] getLinesFromCells(String[][] cells) {
+        String[] lines = new String[cells.length];
+        int i=0;
+        for (String[] column : cells) {
+            String line = "";
+            for (int y = 0; y < column.length; y++) {
+                line += column[y];
+            }
+
+            lines[i++] = line;
+        }
+        return lines;
+    }
+
     public TileMap joinTileMaps() {
 //        model.assignAdditionalCoordinates();
         Map<Coordinates, ROOM_CELL> map = new XLinkedMap<>();
         for (LevelBlock block : model.getBlocks().values()) {
             for (Coordinates coordinates : block.getTileMap().getMap().keySet()) {
                 map.put(coordinates
-                  .getOffset(new AbstractCoordinates(-model.getLeftMost(), -model.getTopMost()))
-                 ,
-                 block.getTileMap().getMap().get(coordinates));
+                                .getOffset(new AbstractCoordinates(-model.getLeftMost(), -model.getTopMost()))
+                        ,
+                        block.getTileMap().getMap().get(coordinates));
             }
         }
         model.offsetCoordinates();

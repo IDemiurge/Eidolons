@@ -137,8 +137,8 @@ public class LE_Screen extends GenericDungeonScreen {
     }
 
     @Override
-    public GenericGuiStage getGuiStage() {
-        return guiStage;
+    public LE_GuiStage getGuiStage() {
+        return (LE_GuiStage) guiStage;
     }
 
     @Override

@@ -7,7 +7,17 @@ import main.level_editor.gui.panels.control.LE_ControlPanel;
 public class CtrlModulePanel extends LE_ControlPanel<IModuleHandler> {
 
     public CtrlModulePanel() {
-        super(IModuleHandler.class, LevelEditor.getCurrent().getManager().getModuleHandler());
+        super();
+    }
+
+    @Override
+    protected IModuleHandler getHandler() {
+        return LevelEditor.getCurrent().getManager().getModuleHandler();
+    }
+
+    @Override
+    protected Class<IModuleHandler> getClazz() {
+        return IModuleHandler.class;
     }
 
     @Override

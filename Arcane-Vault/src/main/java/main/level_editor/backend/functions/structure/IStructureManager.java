@@ -13,9 +13,9 @@ public interface IStructureManager {
     void removeBlock();
 
     void addZone();
+    void updateTree();
     void removeZone();
     void assignBlock();
-    void moveZone();
 
 
 

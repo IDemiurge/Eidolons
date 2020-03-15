@@ -321,6 +321,11 @@ public class StyleHolder {
          20);
     }
 
+    public static TextButtonStyle getTextButtonStyle(TextButtonStyle style, STD_BUTTON btnStyle) {
+        style = new TextButtonStyle(style);
+        initBtnStyle(style, btnStyle);
+        return style;
+    }
     public static TextButtonStyle getTextButtonStyle(
      STD_BUTTON button, FONT FONT, Color color, int size) {
         Map<LabelStyle, TextButtonStyle> map = textButtonStyleMap.get(button);
@@ -336,25 +341,7 @@ public class StyleHolder {
             return style;
 
         style = new TextButtonStyle();
-        if (button != null) {
-            style.up = button.getTexture();
-            if (button.isVersioned()) {
-                style.down = button.getTextureDown();
-                style.over = button.getTextureOver();
-                style.disabled = button.getTextureDisabled();
-                style.checked = button.getTextureChecked();
-                style.checkedOver = button.getTextureCheckedOver();
-            } else {
-                style.down = button.getTexture();
-                style.over = button.getTexture();
-                style.disabled = button.getTexture();
-            }
-        }
-        if (button == STD_BUTTON.MENU) {
-            if (isHieroOn()) {
-                style.font = getHieroFontMagic();
-            }
-        }
+        initBtnStyle(style, button);
         if (style.font == null)
             style.font = getFont(FONT, color, size);
         style.fontColor = new Color(color);
@@ -381,6 +368,29 @@ public class StyleHolder {
 
         map.put(labelStyle, style);
         return style;
+    }
+
+    private static void initBtnStyle(TextButtonStyle style, STD_BUTTON button) {
+
+        if (button != null) {
+            style.up = button.getTexture();
+            if (button.isVersioned()) {
+                style.down = button.getTextureDown();
+                style.over = button.getTextureOver();
+                style.disabled = button.getTextureDisabled();
+                style.checked = button.getTextureChecked();
+                style.checkedOver = button.getTextureCheckedOver();
+            } else {
+                style.down = button.getTexture();
+                style.over = button.getTexture();
+                style.disabled = button.getTexture();
+            }
+        }
+        if (button == STD_BUTTON.MENU) {
+            if (isHieroOn()) {
+                style.font = getHieroFontMagic();
+            }
+        }
     }
 
     public static TextButtonStyle getTabStyle(TextButtonStyle style) {

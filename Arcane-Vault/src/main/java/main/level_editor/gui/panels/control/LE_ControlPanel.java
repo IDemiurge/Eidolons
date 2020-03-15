@@ -7,18 +7,29 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import main.system.SortMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 public  abstract class LE_ControlPanel<T>  extends TablePanelX {
 
-    public LE_ControlPanel(Class<T> clazz, T handler){
+    private boolean initialized;
+
+    public LE_ControlPanel(){
         super(300, 800);
+    }
+
+    public void init(Class<T> clazz, T handler) {
         int j=0;
-        for (Method method : clazz.getMethods()) {
+        List<Method> sorted = Arrays.asList(clazz.getMethods());
+        sorted.sort(getSorter());
+        for (Method method : sorted) {
 //            if (method.getAnnotation(getIgnoreAnnotation()) != null) {
 //                continue;
 //            }
@@ -29,7 +40,26 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
                 j = 0;
             }
         }
+        initialized = true;
     }
+
+    private Comparator<? super Method> getSorter() {
+        return (Comparator<Method>) (o1, o2
+        ) -> SortMaster.compareAlphabetically(o1.getName(), o2.getName());
+    }
+
+    @Override
+    public void act(float delta) {
+        if (!initialized){
+            init(getClazz(), getHandler());
+        }
+        super.act(delta);
+    }
+
+    protected abstract T getHandler();
+
+    protected abstract Class<T> getClazz();
+
 
     protected  abstract int getWrap();
 
@@ -55,10 +85,10 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
     }
 
     protected ButtonStyled.STD_BUTTON getButtonStyle() {
-        return ButtonStyled.STD_BUTTON.MENU;
+        return ButtonStyled.STD_BUTTON.TAB_HIGHLIGHT_COLUMN;
     }
 
     protected TextButton.TextButtonStyle getButtonTextStyle() {
-        return StyleHolder.getDefaultTextButtonStyle();
+        return StyleHolder.getHqTextButtonStyle(14);
     }
 }

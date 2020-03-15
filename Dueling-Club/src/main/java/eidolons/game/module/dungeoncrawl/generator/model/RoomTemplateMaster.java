@@ -22,8 +22,8 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 import static main.system.auxiliary.log.LogMaster.log;
 import static main.system.auxiliary.log.LogMaster.verbose;
@@ -479,9 +479,7 @@ public class RoomTemplateMaster {
             }
             if (r.getWidth() == width && r.getHeight() == height)
                 return false;
-            if (r.getWidth() == height && r.getHeight() == width)
-                return false;
-            return true;
+            return r.getWidth() != height || r.getHeight() != width;
         });
 
         RoomModel model = null;
@@ -503,4 +501,12 @@ public class RoomTemplateMaster {
     }
     //TODO multiple objects on cell?
 
+
+    public ROOM_TEMPLATE_GROUP[] getGroups() {
+        return groups;
+    }
+
+    public Map<ROOM_TEMPLATE_GROUP, Set<RoomModel>> getModels() {
+        return models;
+    }
 }

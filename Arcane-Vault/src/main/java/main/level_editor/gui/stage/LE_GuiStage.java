@@ -6,9 +6,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.GenericGuiStage;
+import main.level_editor.gui.dialog.BlockTemplateChooser;
+import main.level_editor.gui.dialog.EnumChooser;
 import main.level_editor.gui.palette.PaletteHolder;
 import main.level_editor.gui.panels.LE_ToolPanel;
-import main.level_editor.gui.panels.control.structure.CtrlModulePanel;
+import main.level_editor.gui.panels.control.structure.CtrlStructurePanel;
 import main.level_editor.gui.top.TopPanel;
 import main.level_editor.gui.tree.LE_TreePanel;
 
@@ -19,12 +21,19 @@ public class LE_GuiStage extends GenericGuiStage {
     private final LE_ToolPanel toolPanel;
     LE_TreePanel treePanel;
 
+    BlockTemplateChooser templateChooser;
+    EnumChooser enumChooser;
+
     public LE_GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
-        addActor(palettePanel= new PaletteHolder());
-        addActor(topPanel= new TopPanel());
+        addActor(palettePanel = new PaletteHolder());
+        addActor(topPanel = new TopPanel());
 //        addActor(treePanel=new LE_TreePanel());
-        addActor(toolPanel=new LE_ToolPanel(new CtrlModulePanel()));
+        addActor(toolPanel = new LE_ToolPanel(new CtrlStructurePanel()));
+        addActor(templateChooser = new BlockTemplateChooser());
+        addActor(enumChooser = new EnumChooser());
+        GdxMaster.center(templateChooser);
+        GdxMaster.center(enumChooser);
 
     }
 
@@ -40,8 +49,10 @@ public class LE_GuiStage extends GenericGuiStage {
         GdxMaster.center(palettePanel);
         palettePanel.setY(100);
 
-        toolPanel.setX(Gdx.graphics.getWidth() - toolPanel.getWidth() );
-        toolPanel.setY(Gdx.graphics.getHeight() - toolPanel.getHeight() );
+        GdxMaster.center(templateChooser);
+        GdxMaster.center(enumChooser);
+        toolPanel.setX(Gdx.graphics.getWidth() - toolPanel.getWidth() - 199);
+        toolPanel.setY(Gdx.graphics.getHeight() - toolPanel.getHeight() - 199);
 //        treePanel.setX(Gdx.graphics.getWidth() - treePanel.getWidth() );
 //        treePanel.setY(Gdx.graphics.getHeight() - treePanel.getHeight() );
         super.act(delta);
@@ -62,5 +73,11 @@ public class LE_GuiStage extends GenericGuiStage {
         return true;
     }
 
+    public EnumChooser getEnumChooser() {
+        return enumChooser;
+    }
 
+    public BlockTemplateChooser getTemplateChooser() {
+        return templateChooser;
+    }
 }

@@ -37,6 +37,8 @@ public class LE_Manager {
         dataHandler = new LE_DataHandler(this);
         game = floor.getGame();
         idManager = game.getSimIdManager();
+        structureManager = new LE_StructureManager(this);
+        moduleHandler = new LE_ModuleHandler(this);
     }
 
     public LE_GameSim getGame() {

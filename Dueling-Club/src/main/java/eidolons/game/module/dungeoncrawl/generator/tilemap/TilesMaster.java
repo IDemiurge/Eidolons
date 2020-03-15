@@ -16,6 +16,8 @@ import java.util.Map;
  * Created by JustMe on 7/25/2018.
  */
 public class TilesMaster {
+    private static final String IGNORE_CELL = "-";
+
     public static int getCellsOfType(ROOM_CELL roomCell, TileMap tileMap) {
         return (int) tileMap.getMap().values().stream().filter(cell -> cell == roomCell).count();
     }
@@ -167,8 +169,7 @@ public class TilesMaster {
         if (entranceSide != null) {
             Coordinates nextC = entrance
              .getAdjacentCoordinate(entranceSide.getDirection().rotate180());
-            if (c.equals(nextC))
-                return true;
+            return c.equals(nextC);
         }
         return false;
     }
@@ -223,4 +224,7 @@ public class TilesMaster {
          c.y == room.getHeight() - 1;
     }
 
+    public static boolean isIgnoredCell(String cell) {
+        return cell.equalsIgnoreCase(IGNORE_CELL);
+    }
 }
