@@ -19,7 +19,7 @@ import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
-import eidolons.libgdx.screens.dungeon.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
@@ -303,7 +303,7 @@ public class ShadeLightCell extends SuperContainer {
                             //so if 2+ overlays, will be centered between them...
                         } else {
 
-                            BaseView view = DungeonScreen.getInstance().getGridPanel().getViewMap().get(sub);
+                            BaseView view = ScreenMaster.getDungeonGrid().getViewMap().get(sub);
                             offsetX += view.getX() * 3;
                             offsetY += view.getY() * 3;
                             if (view.getParent() instanceof GridCellContainer) {

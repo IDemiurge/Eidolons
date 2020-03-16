@@ -27,11 +27,6 @@ public class SelectableImageItem extends FadeImageContainer{
         table = selectionImageTable;
         addActor(highlight =new ImageContainer( (data.getBorderSelected())));
         highlight.setColor(new Color(1,1,1,0));
-        highlight.setPosition((Arrays.asList( table.getData()) .indexOf(data)*(
-          getWidth()+selectionImageTable.getSpace()))-selectionImageTable.getSpace()/2+
-         GdxMaster.centerWidth(highlight),
-         //dirty hack
-         GdxMaster.centerHeight(highlight));
         setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.ATB_POS);
         this.data = data;
         if (data.isSelectionUnderneath())
@@ -39,6 +34,21 @@ public class SelectableImageItem extends FadeImageContainer{
         highlight.setTouchable(Touchable.disabled);
         addListener(new ValueTooltip("Select " + data.getName()).getController());
 //            debug();
+    }
+
+    @Override
+    public void act(float delta) {
+        highlight.setPosition((Arrays.asList( table.getData()) .indexOf(data)*(
+                        getWidth()+table.getSpace()))-table.getSpace()/2+
+                        GdxMaster.centerWidth(highlight),
+                GdxMaster.centerHeight(highlight));
+        super.act(delta);
+    }
+
+    @Override
+    public void setScale(float scaleXY) {
+        super.setScale(scaleXY);
+        highlight.setScale(scaleXY);
     }
 
     @Override

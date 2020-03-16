@@ -2,6 +2,7 @@ package main.level_editor.gui.stage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -10,7 +11,8 @@ import main.level_editor.gui.dialog.BlockTemplateChooser;
 import main.level_editor.gui.dialog.EnumChooser;
 import main.level_editor.gui.palette.PaletteHolder;
 import main.level_editor.gui.panels.LE_ToolPanel;
-import main.level_editor.gui.panels.control.structure.CtrlStructurePanel;
+import main.level_editor.gui.panels.control.ControlPanelHolder;
+import main.level_editor.gui.panels.control.TabbedControlPanel;
 import main.level_editor.gui.top.TopPanel;
 import main.level_editor.gui.tree.LE_TreePanel;
 
@@ -28,8 +30,15 @@ public class LE_GuiStage extends GenericGuiStage {
         super(viewport, batch);
         addActor(palettePanel = new PaletteHolder());
         addActor(topPanel = new TopPanel());
-//        addActor(treePanel=new LE_TreePanel());
-        addActor(toolPanel = new LE_ToolPanel(new CtrlStructurePanel()));
+        addActor(treePanel=new LE_TreePanel());
+        TablePanelX toolHolder=new ControlPanelHolder();
+
+        TabbedControlPanel tabs = new TabbedControlPanel(toolHolder);
+        TablePanelX<Actor> table = new TablePanelX<>();
+        table.add(tabs.getTabsPane()).row();
+        table.add(toolHolder);
+
+        addActor(toolPanel = new LE_ToolPanel(table));
         addActor(templateChooser = new BlockTemplateChooser());
         addActor(enumChooser = new EnumChooser());
         GdxMaster.center(templateChooser);
@@ -51,10 +60,11 @@ public class LE_GuiStage extends GenericGuiStage {
 
         GdxMaster.center(templateChooser);
         GdxMaster.center(enumChooser);
-        toolPanel.setX(Gdx.graphics.getWidth() - toolPanel.getWidth() - 199);
+        toolPanel.setX(99);
         toolPanel.setY(Gdx.graphics.getHeight() - toolPanel.getHeight() - 199);
-//        treePanel.setX(Gdx.graphics.getWidth() - treePanel.getWidth() );
-//        treePanel.setY(Gdx.graphics.getHeight() - treePanel.getHeight() );
+
+        treePanel.setX(Gdx.graphics.getWidth() - treePanel.getWidth() );
+        treePanel.setY(Gdx.graphics.getHeight() - treePanel.getHeight() );
         super.act(delta);
     }
 

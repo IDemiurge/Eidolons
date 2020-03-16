@@ -11,6 +11,7 @@ import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.gui.CursorPosVector2;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
@@ -56,11 +57,11 @@ public class GridMaster {
                                                  boolean center,
                                                  boolean camera) {
         return getVectorForCoordinate(sourceCoordinates, center, camera, false,
-                DungeonScreen.getInstance().getGridPanel());
+                ScreenMaster.getDungeonGrid());
     }
 
     public static Coordinates invertGdxY(Coordinates c) {
-        return new Coordinates(c.x, DungeonScreen.getInstance().getGridPanel().getRows() - 1 - c.getY());
+        return new Coordinates(c.x, ScreenMaster.getDungeonGrid().getRows() - 1 - c.getY());
     }
 
     public static Vector2 getVectorForCoordinate(Coordinates sourceCoordinates,

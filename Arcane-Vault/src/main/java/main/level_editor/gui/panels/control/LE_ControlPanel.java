@@ -70,7 +70,7 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
     }
 
     protected SmartButton createButton(Method method, T handler) {
-        String name = StringMaster.getWellFormattedString(method.getName());
+        String name = StringMaster.getWellFormattedString(method.getName(), true);
         return new SmartButton(name, getButtonTextStyle(), () -> {
             Eidolons.onNonGdxThread(() -> {
                 try {

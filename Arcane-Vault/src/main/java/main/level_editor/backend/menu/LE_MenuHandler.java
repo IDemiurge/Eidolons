@@ -15,6 +15,17 @@ public class LE_MenuHandler extends LE_Handler {
             case add_floor:
                 FloorManager.addFloor();
                 break;
+            case open:
+                //campaign?
+                //close current?
+                getDataHandler().openFloor();
+                //how to dispose safely?
+                break;
+            case save_all:
+
+                break;
+            case clone:
+                //floor
         }
     }
 

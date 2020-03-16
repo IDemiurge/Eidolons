@@ -10,7 +10,7 @@ import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.grid.GridCellContainer;
-import eidolons.libgdx.screens.dungeon.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.texture.TextureCache;
 import main.ability.Ability;
 import main.entity.Entity;
@@ -92,7 +92,7 @@ public class ActionAnim extends Anim {
     }
 
     public Actor getActor() {
-        return DungeonScreen.getInstance().getGridPanel().getViewMap()
+        return ScreenMaster.getDungeonGrid().getViewMap()
          .get(getActive().getOwnerUnit());
     }
 

@@ -39,7 +39,7 @@ import eidolons.libgdx.gui.panels.dc.SpeedControlPanel;
 import eidolons.libgdx.gui.panels.dc.clock.ClockActor;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.screens.CustomSpriteBatch;
-import eidolons.libgdx.screens.dungeon.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
@@ -175,13 +175,13 @@ public class AtbPanel extends GroupX {
                 if (view != null)
                     view.setZIndex(Integer.MAX_VALUE - 1);
             }
-            DungeonScreen.getInstance().getGridPanel().resetZIndices();
+            ScreenMaster.getDungeonGrid().resetZIndices();
         });
         GuiEventManager.bind(GuiEventType.GRID_OBJ_HOVER_OFF, obj -> {
             if (!isRealTime()) {
                 resetZIndices();
             }
-            DungeonScreen.getInstance().getGridPanel().resetZIndices();
+            ScreenMaster.getDungeonGrid().resetZIndices();
 
         });
         GuiEventManager.bind(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, obj -> {
@@ -345,7 +345,7 @@ public class AtbPanel extends GroupX {
     private void cleanUp() {
         Map<Integer, QueueView> views = new XLinkedMap<>();
         DC_Game.game.getTurnManager().getDisplayedUnitQueue().stream().forEach(unit -> {
-            Object o = DungeonScreen.getInstance().getGridPanel().getViewMap().get(unit);
+            Object o = ScreenMaster.getDungeonGrid().getViewMap().get(unit);
             if (o instanceof GridUnitView) {
                 GridUnitView view = ((GridUnitView) o);
                 views.put(view.getCurId(), view.getInitiativeQueueUnitView());

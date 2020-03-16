@@ -29,7 +29,7 @@ import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import eidolons.libgdx.screens.dungeon.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
@@ -238,7 +238,7 @@ public class HitAnim extends ActionAnim {
         if (Bools.isTrue(d.growY)) {
             dy = -dy;
         }
-        //DungeonScreen.getInstance().getGridPanel().detachUnitView()
+        //ScreenMaster.getDungeonGrid().detachUnitView()
         originalActorX = getActor().getX();
         originalActorY = getActor().getY();
         float x = originalActorX;
@@ -290,7 +290,7 @@ public class HitAnim extends ActionAnim {
 
     @Override
     public Actor getActor() {
-        return DungeonScreen.getInstance().getGridPanel().getViewMap()
+        return ScreenMaster.getDungeonGrid().getViewMap()
                 .get(getRef().getTargetObj());
     }
 
@@ -347,7 +347,7 @@ public class HitAnim extends ActionAnim {
         //        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
         //         MoveEffect.class)))
         //            BattleFieldObject = (BattleFieldObject) getRef().getTargetObj();
-        //        BaseView actor = DungeonScreen.getInstance().getGridPanel().getViewMap()
+        //        BaseView actor = ScreenMaster.getDungeonGrid().getViewMap()
         //         .getVar(BattleFieldObject);
         //        return actor;
         return getActor();

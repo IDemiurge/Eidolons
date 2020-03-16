@@ -23,6 +23,7 @@ import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.PassiveAbilityObj;
@@ -582,7 +583,7 @@ public class DC_GameManager extends GameManager {
                             && GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())) {
 
                 try {
-                    DungeonScreen.getInstance().getGridPanel().getGridManager().
+                    ScreenMaster.getDungeonGrid().getGridManager().
                             checkHpBarReset(event.getRef().getSourceObj());
                 } catch (NullPointerException e) {
                 } catch (Exception e) {

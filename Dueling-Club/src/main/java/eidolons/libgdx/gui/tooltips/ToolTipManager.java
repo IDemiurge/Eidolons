@@ -25,6 +25,7 @@ import eidolons.libgdx.gui.controls.StackViewMaster;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.HqTooltipPanel;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.ConfirmationPanel;
@@ -184,6 +185,7 @@ public class ToolTipManager extends TablePanel {
             if (tooltip instanceof UnitViewTooltip)
                 return;
         }
+        if (DungeonScreen.getInstance() != null)
         if (DungeonScreen.getInstance().getGridPanel() != null)
         if (DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().size()>0) {
             return;
@@ -466,7 +468,7 @@ public class ToolTipManager extends TablePanel {
         stackMaster.checkShowStack(object);
 
 
-        DungeonScreen.getInstance().getGridPanel().setUpdateRequired(true);
+        ScreenMaster.getDungeonGrid().setUpdateRequired(true);
 
     }
 
@@ -536,7 +538,7 @@ public class ToolTipManager extends TablePanel {
         hoverOff = true;
         object.setHovered(false);
         stackMaster.checkStackOff(object);
-        DungeonScreen.getInstance().getGridPanel().setUpdateRequired(true);
+        ScreenMaster.getDungeonGrid().setUpdateRequired(true);
 
     }
 

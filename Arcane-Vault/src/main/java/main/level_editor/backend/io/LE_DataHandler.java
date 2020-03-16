@@ -1,9 +1,12 @@
 package main.level_editor.backend.io;
 
+import eidolons.libgdx.gui.utils.FileChooserX;
 import main.data.filesys.PathFinder;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
+import main.level_editor.backend.functions.structure.FloorManager;
+import main.level_editor.gui.screen.LE_Screen;
 import main.level_editor.struct.campaign.Campaign;
 import main.level_editor.struct.level.Floor;
 import main.system.auxiliary.data.FileManager;
@@ -59,4 +62,10 @@ public class LE_DataHandler extends LE_Handler {
         return campaign;
     }
 
+    public void openFloor() {
+        String file = FileChooserX.chooseFile(PathFinder.getDungeonLevelFolder(),
+                "xml", LE_Screen.getInstance().getGuiStage());
+
+        FloorManager.addFloor();
+    }
 }

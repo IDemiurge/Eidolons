@@ -25,7 +25,7 @@ import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.screens.dungeon.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.system.config.ConfigKeys;
 import eidolons.system.config.ConfigMaster;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
@@ -461,7 +461,7 @@ public class FloatingTextMaster {
     }
 
     public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity) {
-        if (DungeonScreen.getInstance().getGridPanel() == null) {
+        if (ScreenMaster.getDungeonGrid() == null) {
             main.system.auxiliary.log.LogMaster.dev("Cannot do float text w/o grid: " + arg);
             return;
         }
@@ -566,7 +566,7 @@ public class FloatingTextMaster {
         if (obj == null)
             obj = active.getRef().getSourceObj();
         if (obj != null) {
-            BaseView view = DungeonScreen.getInstance().getGridPanel().getViewMap().get(obj);
+            BaseView view = ScreenMaster.getDungeonGrid().getViewMap().get(obj);
             if (view != null) {
                 Vector2 v = view.localToStageCoordinates(new Vector2(view.getX(), view.getY()));
                 text.setPosition(v.x, v.y);

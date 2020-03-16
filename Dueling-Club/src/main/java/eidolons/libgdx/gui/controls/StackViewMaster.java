@@ -8,7 +8,7 @@ import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GenericGridView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridUnitView;
-import eidolons.libgdx.screens.dungeon.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
@@ -98,7 +98,7 @@ public class StackViewMaster {
             view.setHovered(true);
 
             ActionMaster.addScaleAction(view, 1, 1.2f);
-            //                DungeonScreen.getInstance().getGridPanel().getCells()[c.x][c.y];
+            //                ScreenMaster.getDungeonGrid().getCells()[c.x][c.y];
             //stackView(true);
             scaleMap.put(view, view.getScaleX());
 
@@ -150,7 +150,7 @@ public class StackViewMaster {
     public void checkShowStack(BaseView object) {
 
         Coordinates c = object.getUserObject().getCoordinates();
-        GridCellContainer cell = DungeonScreen.getInstance().getGridPanel().getCells()[c.x][
+        GridCellContainer cell = ScreenMaster.getDungeonGrid().getCells()[c.x][
          PositionMaster.getLogicalY(c.y)];
 
 

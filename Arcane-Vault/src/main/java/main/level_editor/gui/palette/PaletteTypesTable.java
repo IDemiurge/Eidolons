@@ -17,6 +17,9 @@ public class PaletteTypesTable extends SelectionImageTable {
 
     private  List<ObjType> types;
 
+    protected boolean isTableFixedSize() {
+        return false;
+    }
     @Override
     protected SelectableItemData[] initDataArray() {
         if (types==null) {

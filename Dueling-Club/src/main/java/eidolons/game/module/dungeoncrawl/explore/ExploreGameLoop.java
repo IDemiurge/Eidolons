@@ -8,6 +8,7 @@ import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.screens.GameScreen;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
@@ -236,7 +237,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
 
     protected boolean isMustWaitForAnim(ActionInput action) {
-        return DungeonScreen.getInstance().getGridPanel()
+        return ScreenMaster.getDungeonGrid()
                 .getViewMap().get(activeUnit).getActions().size > 0 || AnimMaster.getInstance().isDrawingPlayer();
     }
 

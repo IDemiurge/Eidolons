@@ -9,7 +9,9 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.launch.GenericLauncher;
+import eidolons.libgdx.screens.dungeon.GenericDungeonScreen;
 import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
@@ -193,5 +195,12 @@ public class ScreenMaster {
 
     public static SCREEN_TYPE getPreviousScreenType() {
         return previousScreenType;
+    }
+
+    public static GridPanel getDungeonGrid() {
+        if (screen instanceof GenericDungeonScreen) {
+            return ((GenericDungeonScreen) screen).getGridPanel();
+        }
+        return null;
     }
 }

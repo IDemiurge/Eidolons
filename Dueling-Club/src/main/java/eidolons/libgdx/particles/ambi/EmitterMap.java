@@ -10,6 +10,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -84,9 +85,9 @@ public class EmitterMap extends Group {
 
     public void init() {
         int x1 = 0;
-        int x2 = DungeonScreen.getInstance().getGridPanel().getRows();
+        int x2 = ScreenMaster.getDungeonGrid().getRows();
         int y1 = 0;
-        int y2 = DungeonScreen.getInstance().getGridPanel().getCols();
+        int y2 = ScreenMaster.getDungeonGrid().getCols();
         if (topLeft != null) {
             x1 = topLeft.x;
             y1 = topLeft.y;

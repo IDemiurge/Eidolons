@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.vision.LastSeenMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
@@ -47,8 +48,8 @@ import main.system.datatypes.DequeImpl;
 import main.system.threading.WaitMaster;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 import static main.system.GuiEventType.*;
 
@@ -100,10 +101,7 @@ public class GridPanel extends Group {
         if (EidolonsGame.FOOTAGE) {
             return false;
         }
-        if (EidolonsGame.BOSS_FIGHT) {
-            return false;
-        }
-        return true;
+        return !EidolonsGame.BOSS_FIGHT;
     }
 
     public GridPanel init(DequeImpl<BattleFieldObject> objects) {
@@ -115,9 +113,7 @@ public class GridPanel extends Group {
                         return true;
                     if (unit.getCoordinates().x >= cols)
                         return true;
-                    if (unit.getCoordinates().y >= rows)
-                        return true;
-                    return false;
+                    return unit.getCoordinates().y >= rows;
                 }
         );
         this.viewMap = new HashMap<>();
@@ -796,6 +792,16 @@ public class GridPanel extends Group {
         });
 
 
+    }
+
+    public void setUpdateRequired(boolean b) {
+    }
+
+    public void clearSelection() {
+    }
+
+    public boolean detachUnitView(Unit unit) {
+        return false;
     }
 
 }

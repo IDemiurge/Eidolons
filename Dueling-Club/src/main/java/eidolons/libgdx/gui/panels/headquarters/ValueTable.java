@@ -28,18 +28,23 @@ public abstract class ValueTable<D, A extends Actor> extends TablePanelX {
         initSize(wrap, size);
     }
 
-    protected void initSize(int wrap, int size ) {
+    protected void initSize(int wrap, int size) {
         this.wrap = wrap;
         this.size = size;
         columns = wrap;
         rows = size / wrap;
-        if (size % wrap > 0)
-            rows++;
-        if (getElementSize() != null) {
+//        if (size % wrap > 0)
+//            rows++;
+        if (getElementSize() != null && isTableFixedSize()) {
             setFixedSize(true);
-            setSize(columns * (space+getElementSize().x), rows * getElementSize().y);
+            setSize(columns * (space + getElementSize().x), rows * getElementSize().y);
         }
     }
+
+    protected boolean isTableFixedSize() {
+        return true;
+    }
+
 
     protected Vector2 getElementSize() {
         return null;
@@ -81,19 +86,22 @@ public abstract class ValueTable<D, A extends Actor> extends TablePanelX {
         data = initDataArray();
         size = data.length;
         actors = initActorArray();
+
+        initSize(wrap, data.length);
         if (wrap == 0) {
             new HorizontalFlowGroup(getSpace());
             //needs fixed size
         }
         int j = 0, i = 0;
         int wrap = this.wrap + getDynamicWrap(i);
-        if (getElementSize() != null)
-            getContentTable().defaults().height(getElementSize().y).width(getElementSize().x);
-
+        if (getElementSize() != null) {
+            float h = getElementSize().y;
+            getContentTable().defaults().height(h).width(getElementSize().x);
+        }
         for (D sub : data) {
             if (i >= actors.length)
                 break;
-            Cell cell =getContentTable().addElement(actors[i] = createElement(sub)).top().space(getSpace());
+            Cell cell = getContentTable().addElement(actors[i] = createElement(sub)).top().space(getSpace());
             if (getElementSize() != null) {
                 cell.size(getElementSize().x, getElementSize().y);
             }
@@ -106,6 +114,7 @@ public abstract class ValueTable<D, A extends Actor> extends TablePanelX {
             }
         }
     }
+
 
     protected TablePanel getContentTable() {
         return this;

@@ -39,6 +39,7 @@ import eidolons.libgdx.bf.datasource.SpriteData;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.particles.ParticlesSprite.PARTICLES_SPRITE;
 import eidolons.libgdx.particles.spell.SpellVfxMaster;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.post.PostFxUpdater.POST_FX_TEMPLATE;
 import eidolons.libgdx.stage.camera.CameraMan;
@@ -947,7 +948,7 @@ public class SpeechExecutor {
                     GridObject x;
                     obj = new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, value);
                     if (speechAction == LINKED_OBJ) {
-                        BaseView view = DungeonScreen.getInstance().getGridPanel().getViewMap().get(unit);
+                        BaseView view = ScreenMaster.getDungeonGrid().getViewMap().get(unit);
                         x = new LinkedGridObject(view, obj, c);
                         x.setUnder(under);
                         GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, x);

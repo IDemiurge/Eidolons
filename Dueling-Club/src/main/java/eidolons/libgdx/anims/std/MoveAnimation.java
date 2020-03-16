@@ -12,6 +12,7 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.particles.spell.SpellVfx;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.OptionsMaster;
@@ -122,14 +123,14 @@ public class MoveAnimation extends ActionAnim {
         if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
          MoveEffect.class)))
             unit = (Unit) getRef().getTargetObj();
-        GridUnitView actor = (GridUnitView) DungeonScreen.getInstance().getGridPanel().getViewMap()
+        GridUnitView actor = (GridUnitView) ScreenMaster.getDungeonGrid().getViewMap()
          .get(unit);
 
         if (actor.isStackView()) {
             DungeonScreen.getInstance().getGuiStage().getTooltips().getStackMaster().stackOff();
         }
 
-        if (!DungeonScreen.getInstance().getGridPanel().detachUnitView(unit)) {
+        if (!ScreenMaster.getDungeonGrid().detachUnitView(unit)) {
             return;
         }
 
@@ -208,7 +209,7 @@ public class MoveAnimation extends ActionAnim {
     @Override
     public void finished() {
         super.finished();
-        DungeonScreen.getInstance().getGridPanel().unitViewMoved((BaseView) getActor());
+        ScreenMaster.getDungeonGrid().unitViewMoved((BaseView) getActor());
     }
 
     @Override
