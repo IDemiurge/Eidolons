@@ -14,9 +14,9 @@ import eidolons.libgdx.screens.ScreenWithLoader;
 import eidolons.libgdx.screens.dungeon.GenericDungeonScreen;
 import eidolons.libgdx.stage.GenericGuiStage;
 import eidolons.libgdx.stage.StageX;
+import main.level_editor.backend.struct.level.Floor;
 import main.level_editor.gui.grid.LE_BfGrid;
 import main.level_editor.gui.stage.LE_GuiStage;
-import main.level_editor.struct.level.Floor;
 import main.system.threading.WaitMaster;
 
 import java.util.HashMap;

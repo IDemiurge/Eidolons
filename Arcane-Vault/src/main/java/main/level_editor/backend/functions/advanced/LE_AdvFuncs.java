@@ -2,7 +2,7 @@ package main.level_editor.backend.functions.advanced;
 
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
-import main.level_editor.backend.selection.LE_Selection;
+import main.level_editor.backend.functions.selection.LE_Selection;
 import main.system.auxiliary.data.ListMaster;
 
 public class LE_AdvFuncs extends LE_Handler {

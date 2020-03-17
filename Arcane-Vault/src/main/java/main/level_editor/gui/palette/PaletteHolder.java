@@ -21,7 +21,8 @@ public class PaletteHolder extends TabbedPanel {
         super();
         addTab(new UpperPalette(DC_TYPE.UNITS) , "Units");
         addTab(new UpperPalette(DC_TYPE.BF_OBJ) , "Objects");
-//        addTab(new ObjectPalette(), "Vfx");
+        addTab(new UpperPalette(null) , "Custom");
+//        addTab(new ObjectPalette(), "Vfx"); //into dummy objTypes?!
 //        addTab(new ObjectPalette(), "Templates");
 //        addTab(new ObjectPalette(), "Groups");
     }

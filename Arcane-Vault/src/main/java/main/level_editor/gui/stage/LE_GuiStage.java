@@ -26,11 +26,14 @@ public class LE_GuiStage extends GenericGuiStage {
     BlockTemplateChooser templateChooser;
     EnumChooser enumChooser;
 
+    TablePanelX innerTable;
+
+
     public LE_GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
-        addActor(palettePanel = new PaletteHolder());
-        addActor(topPanel = new TopPanel());
-        addActor(treePanel=new LE_TreePanel());
+
+        addActor(innerTable=new TablePanelX<>(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+
         TablePanelX toolHolder=new ControlPanelHolder();
 
         TabbedControlPanel tabs = new TabbedControlPanel(toolHolder);
@@ -38,11 +41,24 @@ public class LE_GuiStage extends GenericGuiStage {
         table.add(tabs.getTabsPane()).row();
         table.add(toolHolder);
 
-        addActor(toolPanel = new LE_ToolPanel(table));
+//        addActor(palettePanel = new PaletteHolder());
+//        addActor(topPanel = new TopPanel());
+//        addActor(treePanel=new LE_TreePanel());
+//        addActor(toolPanel = new LE_ToolPanel(table));
+        
+        innerTable.add(topPanel = new TopPanel()).left().top().expandX().row();
+        innerTable.add(treePanel=new LE_TreePanel()).left();
+        innerTable.add(toolPanel = new LE_ToolPanel(table)).colspan(4).center().top();
+        //could have 2 - one top and one bottom?
+        innerTable.add(palettePanel = new PaletteHolder()).right();
+
+        //what about info panel?
+
+        //popups, draggable, closable? closable is just about hiding...
+
+        //separate table?
         addActor(templateChooser = new BlockTemplateChooser());
         addActor(enumChooser = new EnumChooser());
-        GdxMaster.center(templateChooser);
-        GdxMaster.center(enumChooser);
 
     }
 
@@ -53,18 +69,19 @@ public class LE_GuiStage extends GenericGuiStage {
 
     @Override
     public void act(float delta) {
+        if (innerTable == null) {
         topPanel.setY(Gdx.graphics.getHeight() - 50);
         topPanel.setX(200);
         GdxMaster.center(palettePanel);
-        palettePanel.setY(100);
+        palettePanel.setY(800);
 
         GdxMaster.center(templateChooser);
         GdxMaster.center(enumChooser);
         toolPanel.setX(99);
         toolPanel.setY(Gdx.graphics.getHeight() - toolPanel.getHeight() - 199);
-
         treePanel.setX(Gdx.graphics.getWidth() - treePanel.getWidth() );
         treePanel.setY(Gdx.graphics.getHeight() - treePanel.getHeight() );
+        }
         super.act(delta);
     }
 

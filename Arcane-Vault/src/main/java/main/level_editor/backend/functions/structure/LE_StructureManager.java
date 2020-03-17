@@ -74,7 +74,7 @@ public class LE_StructureManager extends LE_Handler implements IStructureManager
         //what about exits? 
 
         LevelZone zone = getModel().getCurrentZone();
-        LevelBlock block = new LevelBlock(  zone);
+        LevelBlock block = new LevelBlock(blockTemplate,  zone);
 //        zone.addBlock(block);
         int x=0;
         int y=0;

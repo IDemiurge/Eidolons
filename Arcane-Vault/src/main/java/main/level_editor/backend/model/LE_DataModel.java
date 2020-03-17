@@ -7,9 +7,12 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.level_editor.backend.brush.LE_Brush;
 import main.level_editor.backend.display.LE_DisplayMode;
-import main.level_editor.backend.mouse.MouseMode;
-import main.level_editor.backend.selection.LE_Selection;
-import main.level_editor.backend.selection.PaletteSelection;
+import main.level_editor.backend.functions.mouse.MouseMode;
+import main.level_editor.backend.functions.selection.LE_Selection;
+import main.level_editor.backend.functions.selection.PaletteSelection;
+import main.level_editor.gui.tree.data.LE_DataNode;
+import main.level_editor.gui.tree.data.LE_TreeBuilder;
+import main.level_editor.gui.tree.data.LayeredData;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -21,7 +24,7 @@ public class LE_DataModel {
     LE_Brush brush;
     PaletteSelection paletteSelection;
 
-    LE_TreeModel treeModel;
+    LE_DataNode treeModel;
     private LevelZone currentZone;
     private Module module;
     private LevelBlock block;
@@ -30,12 +33,12 @@ public class LE_DataModel {
     public LE_DataModel() {
     }
 
-    public LE_TreeModel getTreeModel() {
+    public LE_DataNode getTreeModel() {
         return treeModel;
     }
 
-    public void setTreeModel(LE_TreeModel treeModel) {
-        this.treeModel = treeModel;
+    public void setTreeModel(LayeredData data) {
+        this.treeModel = new LE_TreeBuilder(data).getRoot();
         GuiEventManager.trigger(GuiEventType.LE_TREE_RESET, treeModel);
     }
 

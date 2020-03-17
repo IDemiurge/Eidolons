@@ -31,7 +31,7 @@ public class PaletteTabs extends TabbedPane implements TabbedPaneListener {
     Map<PaletteTab, List<PaletteTab>> tabMap = new LinkedHashMap<>();
     private Tab lastGroupTab;
 
-    public PaletteTabs(PaletteTypesTable holder, OBJ_TYPE TYPE) {
+    public PaletteTabs(PaletteTypesTable holder, OBJ_TYPE TYPE ) {
         super(StyleHolder.getHorTabStyle());
         this.holder = holder;
         addListener(this);

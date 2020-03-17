@@ -2,11 +2,11 @@ package main.level_editor.backend.functions.palette;
 
 public interface IPaletteHandler {
 
-    void createTab();
-    void removeTab();
-    void mergeTabs();
-    void cloneTab();
+    void createPalette();
+    void removePalette();
+    void mergePalettes();
+    void clonePalette();
 
-    void addToTab();
-    void removeFromTab();
+    void addToPalette();
+    void removeFromPalette();
 }

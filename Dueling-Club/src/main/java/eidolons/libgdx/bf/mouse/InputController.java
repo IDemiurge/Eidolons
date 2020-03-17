@@ -21,7 +21,10 @@ import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.badlogic.gdx.Input.Buttons.LEFT;
 import static com.badlogic.gdx.Input.Keys.ALT_LEFT;
@@ -299,9 +302,7 @@ public abstract class InputController implements InputProcessor {
 
     private boolean isManualCameraDisabled() {
         if (!CoreEngine.isIDE())
-            if (Cinematics.ON) {
-                return true;
-            }
+            return Cinematics.ON;
         return false;
     }
 
@@ -313,7 +314,10 @@ public abstract class InputController implements InputProcessor {
 
     protected void tryPullCameraY(int screenY) {
         float diffY = (yTouchPos - screenY) * camera.zoom * getDragCoef();
-        camera.position.y = MathMaster.getMinMax(
+        if (isFreeDrag()){
+            camera.position.y =camera.position.y + diffY;
+        } else
+            camera.position.y = MathMaster.getMinMax(
                 camera.position.y - diffY,
                 halfHeight - getMargin(),
                 getHeight() - halfHeight + getMargin());
@@ -321,9 +325,16 @@ public abstract class InputController implements InputProcessor {
         cameraPosChanged();
     }
 
+    protected boolean isFreeDrag() {
+        return false;
+    }
+
     protected void tryPullCameraX(int screenX) {
         //TODO custom bounds
         float diffX = (xTouchPos - screenX) * camera.zoom * getDragCoef();
+        if (isFreeDrag()){
+            camera.position.x =camera.position.x + diffX;
+        } else
         camera.position.x = MathMaster.getMinMax(
                 camera.position.x + diffX,//-getMargin(),
                 halfWidth - getMargin(),

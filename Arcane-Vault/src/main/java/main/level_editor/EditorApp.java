@@ -10,9 +10,9 @@ import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.ScreenWithLoader;
 import main.data.filesys.PathFinder;
+import main.level_editor.backend.struct.level.Floor;
 import main.level_editor.gui.screen.LE_Screen;
 import main.level_editor.gui.screen.LE_WaitingScreen;
-import main.level_editor.struct.level.Floor;
 
 import java.util.function.Supplier;
 

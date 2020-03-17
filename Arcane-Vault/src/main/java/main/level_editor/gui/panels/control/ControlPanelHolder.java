@@ -6,7 +6,7 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 public class ControlPanelHolder extends TablePanelX {
 
     public ControlPanelHolder() {
-        super(400, 800);
+        super();
     }
 
     @Override

@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYP
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
+import eidolons.game.module.dungeoncrawl.generator.model.RoomModel;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.data.XLinkedMap;
@@ -32,6 +33,8 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     private boolean customCoordinateList;
     private Map<List<ObjAtCoordinate>, UNIT_GROUP_TYPE> unitGroups;
     private Coordinates centerCoordinate;
+    private  RoomModel model;
+    private boolean template;
 
     public LevelBlock(Coordinates coordinates, LevelZone zone, ROOM_TYPE roomType, int width, int height, TileMap tileMap) {
         this.roomType = roomType;
@@ -56,12 +59,11 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         this.zone = zone;
     }
 
-    public LevelBlock( BlockTemplate blockTemplate, LevelZone zone) {
-      this(zone);
+    public LevelBlock(RoomModel blockTemplate, LevelZone zone) {
+        this(zone);
         unitGroups = new LinkedHashMap<>();
-//      blockTemplate.get().for
-//        unitGroups.put(list, type);
-
+        template = true;
+        this.model = blockTemplate;
     }
 
     public ROOM_TYPE getRoomType() {
@@ -210,5 +212,17 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
 
     public void setZone(LevelZone zone) {
         this.zone = zone;
+    }
+
+    public boolean isTemplate() {
+        return template;
+    }
+
+    public void setTemplate(boolean template) {
+        this.template = template;
+    }
+
+    public RoomModel getModel() {
+        return model;
     }
 }

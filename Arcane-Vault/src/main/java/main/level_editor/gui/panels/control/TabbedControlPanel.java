@@ -13,18 +13,18 @@ import main.system.auxiliary.StringMaster;
 public class TabbedControlPanel extends TabbedPane {
 
     private final TablePanelX holder;
-    CtrlModulePanel modulePanel;
-    CtrlStructurePanel structurePanel;
-    CtrlFloorPanel floorPanel;
-    CtrlLayerPanel layerPanel;
-    CtrlFuncsPanel funcsPanel;
+    CtrlModulePanel modulePanel= new CtrlModulePanel();
+    CtrlStructurePanel structurePanel= new CtrlStructurePanel();
+    CtrlFloorPanel floorPanel= new CtrlFloorPanel();
+    CtrlLayerPanel layerPanel= new CtrlLayerPanel();
+    CtrlFuncsPanel funcsPanel= new CtrlFuncsPanel();
 
     LE_ControlPanel[] panels = {
             modulePanel,
             structurePanel,
-            floorPanel,
-            layerPanel,
-            funcsPanel,
+//            floorPanel,
+//            layerPanel,
+//            funcsPanel,
     };
 
     public TabbedControlPanel(TablePanelX holder) {
@@ -36,6 +36,7 @@ public class TabbedControlPanel extends TabbedPane {
             Tab tab = new LE_Tab(panel, title);
             add(tab);
         }
+        //tTODO nit hotkeys
     }
 
     @Override

@@ -7,11 +7,11 @@ import eidolons.libgdx.gui.panels.headquarters.creation.selection.SelectableImag
 import eidolons.libgdx.gui.panels.headquarters.creation.selection.SelectionImageTable;
 import main.entity.type.ObjType;
 import main.level_editor.LevelEditor;
-import main.level_editor.metadata.settings.LE_OptionsMaster;
+import main.level_editor.backend.metadata.options.LE_OptionsMaster;
 
 import java.util.List;
 
-import static main.level_editor.metadata.settings.LE_Options.EDITOR_OPTIONS.PALETTE_SCALE;
+import static main.level_editor.backend.metadata.options.LE_Options.EDITOR_OPTIONS.PALETTE_SCALE;
 
 public class PaletteTypesTable extends SelectionImageTable {
 

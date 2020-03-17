@@ -2,7 +2,7 @@ package main.level_editor.gui.screen;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
-import main.level_editor.struct.level.Floor;
+import main.level_editor.backend.struct.level.Floor;
 
 public class LE_InputProcessor extends DungeonInputController {
 
@@ -13,6 +13,9 @@ public class LE_InputProcessor extends DungeonInputController {
 
     }
 
+    protected boolean isFreeDrag() {
+        return true;
+    }
     @Override
     protected float getMargin() {
         return 1200;

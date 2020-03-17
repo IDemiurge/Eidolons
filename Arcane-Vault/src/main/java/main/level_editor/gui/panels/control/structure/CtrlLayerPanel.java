@@ -1,18 +1,19 @@
 package main.level_editor.gui.panels.control.structure;
 
-import main.level_editor.backend.functions.handlers.ILayerHandler;
+import main.level_editor.backend.functions.structure.layer.ILayerHandler;
 import main.level_editor.gui.panels.control.LE_ControlPanel;
 
 public class CtrlLayerPanel extends LE_ControlPanel<ILayerHandler> {
 
     @Override
     protected ILayerHandler getHandler() {
+//        return LevelEditor.getCurrent().getManager().getLayerHandler();
         return null;
     }
 
     @Override
     protected Class<ILayerHandler> getClazz() {
-        return null;
+        return ILayerHandler.class;
     }
 
     @Override

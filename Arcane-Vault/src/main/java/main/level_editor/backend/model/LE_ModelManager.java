@@ -8,7 +8,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
-import main.level_editor.backend.selection.PaletteSelection;
+import main.level_editor.backend.functions.selection.PaletteSelection;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
