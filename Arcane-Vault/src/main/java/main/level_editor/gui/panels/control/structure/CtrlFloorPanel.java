@@ -1,6 +1,6 @@
 package main.level_editor.gui.panels.control.structure;
 
-import main.level_editor.backend.functions.structure.IFloorHandler;
+import main.level_editor.backend.handlers.structure.IFloorHandler;
 import main.level_editor.gui.panels.control.LE_ControlPanel;
 
 public class CtrlFloorPanel extends LE_ControlPanel<IFloorHandler> {

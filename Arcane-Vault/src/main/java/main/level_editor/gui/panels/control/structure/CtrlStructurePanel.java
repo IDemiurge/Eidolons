@@ -1,7 +1,7 @@
 package main.level_editor.gui.panels.control.structure;
 
 import main.level_editor.LevelEditor;
-import main.level_editor.backend.functions.structure.IStructureManager;
+import main.level_editor.backend.handlers.structure.IStructureManager;
 import main.level_editor.gui.panels.control.LE_ControlPanel;
 
 public class CtrlStructurePanel extends LE_ControlPanel<IStructureManager> {

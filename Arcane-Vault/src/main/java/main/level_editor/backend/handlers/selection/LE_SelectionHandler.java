@@ -1,4 +1,4 @@
-package main.level_editor.backend.functions.selection;
+package main.level_editor.backend.handlers.selection;
 
 import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;

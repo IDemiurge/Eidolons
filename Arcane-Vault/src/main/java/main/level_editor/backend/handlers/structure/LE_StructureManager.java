@@ -1,4 +1,4 @@
-package main.level_editor.backend.functions.structure;
+package main.level_editor.backend.handlers.structure;
 
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
@@ -111,7 +111,7 @@ public class LE_StructureManager extends LE_Handler implements IStructureManager
 
     private void initWall(Coordinates c) {
        ObjType type=  getModelManager().getDefaultWallType();
-       getModelManager().addObj(type, c.x, c.y );
+       getObjHandler().addObj(type, c.x, c.y );
     }
 
     @Override

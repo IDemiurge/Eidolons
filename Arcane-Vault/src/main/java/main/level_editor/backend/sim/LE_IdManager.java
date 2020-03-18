@@ -1,4 +1,4 @@
-package main.level_editor.backend.metadata.object;
+package main.level_editor.backend.sim;
 
 import eidolons.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;

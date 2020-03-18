@@ -8,7 +8,6 @@ import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import main.content.DC_TYPE;
 import main.entity.Entity;
-import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldManager;
 import main.game.bf.Coordinates;
@@ -42,15 +41,6 @@ public class DC_BattleFieldManager extends BattleFieldManager {
     }
 
 
-    public Coordinates pickCoordinate() {
-        Integer id = game.getManager().select(game.getCells(), new Ref(game));
-
-        if (id == null) {
-            return null;
-        }
-
-        return game.getObjectById(id).getCoordinates();
-    }
 
     @Override
     public boolean isCellVisiblyFree(Coordinates c) {
@@ -230,4 +220,5 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         set.removeIf(cell -> PositionMaster.getDistance(observer, cell) > i);
         return set;
     }
+
 }

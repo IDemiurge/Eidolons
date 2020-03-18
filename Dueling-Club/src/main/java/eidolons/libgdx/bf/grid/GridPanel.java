@@ -78,6 +78,7 @@ public class GridPanel extends Group {
 
     protected GridManager manager;
     protected GridOverlaysManager overlayManager;
+    protected GridCellContainer[][] removedCells;
 
     public GridPanel(int cols, int rows) {
         this.square = rows * cols;
@@ -93,15 +94,30 @@ public class GridPanel extends Group {
         GridPanel.gridEmitters = gridEmitters;
     }
 
-    public static  boolean isDrawEmitters() {
+    public static boolean isDrawEmitters() {
         return GridPanel.isGridEmitters();
     }
 
-    public static  boolean isDrawEmittersOnTop() {
+    public static boolean isDrawEmittersOnTop() {
         if (EidolonsGame.FOOTAGE) {
             return false;
         }
         return !EidolonsGame.BOSS_FIGHT;
+    }
+
+    public void restoreVoid(int x, int y) {
+        GridCellContainer cell =
+                removedCells[x][getGdxY(y)];
+        addActor(cell);
+        cell.getUserObject().setVOID(false);
+//        resetDecorators();
+    }
+
+    public void setVoid(int x, int y) {
+        GridCellContainer cell = cells[x][getGdxY(y)];
+        cell.remove();
+        removedCells[x][getGdxY(y)] = cell;
+        cell.getUserObject().setVOID(true);
     }
 
     public GridPanel init(DequeImpl<BattleFieldObject> objects) {
@@ -118,26 +134,31 @@ public class GridPanel extends Group {
         );
         this.viewMap = new HashMap<>();
         cells = new GridCellContainer[cols][rows];
+        removedCells = new GridCellContainer[cols][rows];
 
         int rows1 = rows - 1;
         boolean hasVoid = false;
         TextureRegion emptyImage = TextureCache.getOrCreateR(getCellImagePath());
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
-                DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(x, rows1 - y));
-                if (cell == null) {
-                    hasVoid = true;
-                    continue;
-                }
+                DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(x, getGdxY(y)));
                 emptyImage = TextureCache.getOrCreateR(cell.getImagePath());
+
                 cells[x][y] = createGridCell(emptyImage, x, getGdxY(y));
                 cells[x][y].setX(x * GridMaster.CELL_W);
                 cells[x][y].setY(y * GridMaster.CELL_H);
-                addActor(cells[x][y].init());
+
+                if (cell.isVOID()) {
+                    hasVoid = true;
+                } else {
+                    addActor(cells[x][y].init());
+                }
                 cells[x][y].setUserObject(cell);
+
+
             }
         }
-        addVoid(hasVoid);
+        addVoidDecorators(hasVoid);
 
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.SPRITE_CACHE_ON))
             TextureManager.addCellsToCache(cols, rows);
@@ -180,7 +201,7 @@ public class GridPanel extends Group {
         return new GridCellContainer(emptyImage, x, y);
     }
 
-    protected void addVoid(boolean hasVoid) {
+    protected void addVoidDecorators(boolean hasVoid) {
         if (hasVoid) {
             if (isShardsOn())
                 addActor(shards = new ShardVisuals(this));
@@ -639,6 +660,16 @@ public class GridPanel extends Group {
 
 
     protected void bindEvents() {
+        GuiEventManager.bind(CELL_RESET_VOID, obj -> {
+            Coordinates c = (Coordinates) obj.get();
+            restoreVoid(c.x, c.y);
+        });
+
+        GuiEventManager.bind(CELL_SET_VOID, obj -> {
+            Coordinates c = (Coordinates) obj.get();
+            setVoid(c.x, c.y);
+        });
+
         GuiEventManager.bind(MOVE_OVERLAYING, obj -> {
             for (OverlayView overlay : overlays) {
                 if (overlay.getUserObject() == obj.get()) {
@@ -804,4 +835,11 @@ public class GridPanel extends Group {
         return false;
     }
 
+    public boolean isVoid(Coordinates c) {
+        return isVoid(c.x, c.y);
+    }
+
+    public boolean isVoid(int x, int y) {
+        return getCell(x, y).isVOID();
+    }
 }

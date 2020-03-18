@@ -1,16 +1,16 @@
 package main.level_editor.gui.stage;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.GenericGuiStage;
 import main.level_editor.gui.dialog.BlockTemplateChooser;
 import main.level_editor.gui.dialog.EnumChooser;
-import main.level_editor.gui.palette.PaletteHolder;
-import main.level_editor.gui.panels.LE_ToolPanel;
+import main.level_editor.gui.palette.HybridPalette;
+import main.level_editor.gui.panels.ClosablePanel;
 import main.level_editor.gui.panels.control.ControlPanelHolder;
 import main.level_editor.gui.panels.control.TabbedControlPanel;
 import main.level_editor.gui.top.TopPanel;
@@ -18,39 +18,38 @@ import main.level_editor.gui.tree.LE_TreePanel;
 
 public class LE_GuiStage extends GenericGuiStage {
 
-    private final TablePanelX palettePanel;
-    private final TopPanel topPanel;
-    private final LE_ToolPanel toolPanel;
-    LE_TreePanel treePanel;
+    private TablePanelX palettePanel;
+    private TopPanel topPanel;
+    private final ClosablePanel toolPanel;
 
+    LE_TreePanel treePanel;
     BlockTemplateChooser templateChooser;
     EnumChooser enumChooser;
-
     TablePanelX innerTable;
 
 
     public LE_GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
 
-        addActor(innerTable=new TablePanelX<>(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-
-        TablePanelX toolHolder=new ControlPanelHolder();
+        TablePanelX toolHolder = new ControlPanelHolder();
 
         TabbedControlPanel tabs = new TabbedControlPanel(toolHolder);
-        TablePanelX<Actor> table = new TablePanelX<>();
-        table.add(tabs.getTabsPane()).row();
-        table.add(toolHolder);
+        toolPanel = new ClosablePanel();
+        toolPanel.add(tabs.getTabsPane()).row();
+        toolPanel.add(toolHolder);
 
-//        addActor(palettePanel = new PaletteHolder());
-//        addActor(topPanel = new TopPanel());
-//        addActor(treePanel=new LE_TreePanel());
-//        addActor(toolPanel = new LE_ToolPanel(table));
-        
-        innerTable.add(topPanel = new TopPanel()).left().top().expandX().row();
-        innerTable.add(treePanel=new LE_TreePanel()).left();
-        innerTable.add(toolPanel = new LE_ToolPanel(table)).colspan(4).center().top();
-        //could have 2 - one top and one bottom?
-        innerTable.add(palettePanel = new PaletteHolder()).right();
+        ClosablePanel treeHolderPanel = new ClosablePanel();
+        treeHolderPanel.add(treePanel = new LE_TreePanel());
+        if (isTableMode()) {
+            initTable();
+        } else {
+            addActor(palettePanel = new HybridPalette());
+            addActor(topPanel = new TopPanel());
+
+            addActor(treeHolderPanel);
+            addActor((toolPanel));
+        }
+
 
         //what about info panel?
 
@@ -62,6 +61,28 @@ public class LE_GuiStage extends GenericGuiStage {
 
     }
 
+    private void initTable() {
+        clear();
+        addActor(innerTable = new TablePanelX(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) {
+            @Override
+            public void layout() {
+                super.layout();
+                return;
+            }
+        });
+        innerTable.debugAll();
+        innerTable.add(topPanel = new TopPanel()).left().top().expandX().height(100).row();
+//        innerTable.add(treePanel = new LE_TreePanel()).left();
+//        innerTable.add(toolPanel).colspan(4).center().top();
+        //could have 2 - one top and one bottom?
+        innerTable.add(palettePanel = new HybridPalette()).size(400, 900).right();
+    }
+
+
+    private boolean isTableMode() {
+        return true;
+    }
+
     @Override
     public void draw() {
         super.draw();
@@ -69,24 +90,27 @@ public class LE_GuiStage extends GenericGuiStage {
 
     @Override
     public void act(float delta) {
-        if (innerTable == null) {
-        topPanel.setY(Gdx.graphics.getHeight() - 50);
-        topPanel.setX(200);
-        GdxMaster.center(palettePanel);
-        palettePanel.setY(800);
+        if (!isTableMode()) {
+            topPanel.setY(Gdx.graphics.getHeight() - 50);
+            topPanel.setX(200);
+            GdxMaster.center(palettePanel);
+            palettePanel.setY(800);
 
-        GdxMaster.center(templateChooser);
-        GdxMaster.center(enumChooser);
-        toolPanel.setX(99);
-        toolPanel.setY(Gdx.graphics.getHeight() - toolPanel.getHeight() - 199);
-        treePanel.setX(Gdx.graphics.getWidth() - treePanel.getWidth() );
-        treePanel.setY(Gdx.graphics.getHeight() - treePanel.getHeight() );
+            GdxMaster.center(templateChooser);
+            GdxMaster.center(enumChooser);
+            toolPanel.setX(99);
+            toolPanel.setY(Gdx.graphics.getHeight() - toolPanel.getHeight() - 199);
+            treePanel.setX(Gdx.graphics.getWidth() - treePanel.getWidth());
+            treePanel.setY(Gdx.graphics.getHeight() - treePanel.getHeight());
         }
         super.act(delta);
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+            initTable();
+        }
         return super.touchDown(screenX, screenY, pointer, button);
     }
 

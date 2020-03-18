@@ -176,8 +176,8 @@ public class DC_GridPanel extends GridPanel {
                 }
     }
 
-    protected void addVoid(boolean hasVoid) {
-        super.addVoid(hasVoid);
+    protected void addVoidDecorators(boolean hasVoid) {
+        super.addVoidDecorators(hasVoid);
         if (!hasVoid)
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {

@@ -1,4 +1,4 @@
-package main.level_editor.backend.model;
+package main.level_editor.backend.handlers.model;
 
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
@@ -8,8 +8,8 @@ import main.entity.type.ObjType;
 import main.level_editor.backend.brush.LE_Brush;
 import main.level_editor.backend.display.LE_DisplayMode;
 import main.level_editor.backend.functions.mouse.MouseMode;
-import main.level_editor.backend.functions.selection.LE_Selection;
-import main.level_editor.backend.functions.selection.PaletteSelection;
+import main.level_editor.backend.handlers.selection.LE_Selection;
+import main.level_editor.backend.handlers.selection.PaletteSelection;
 import main.level_editor.gui.tree.data.LE_DataNode;
 import main.level_editor.gui.tree.data.LE_TreeBuilder;
 import main.level_editor.gui.tree.data.LayeredData;

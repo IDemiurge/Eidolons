@@ -8,7 +8,8 @@ import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
-import main.level_editor.backend.functions.selection.LE_Selection;
+import main.level_editor.backend.handlers.operation.Operation;
+import main.level_editor.backend.handlers.selection.LE_Selection;
 import main.system.auxiliary.data.ListMaster;
 import main.system.threading.WaitMaster;
 
@@ -39,8 +40,8 @@ public class LE_MouseHandler extends LE_Handler {
 
         switch (mode) {
             case RIGHT:
-                getModelManager().addSelectedObj(gridX, gridY);
-               return;
+                getObjHandler().addSelectedObj(gridX, gridY);
+                return;
             //copy metadata
             //delete top
             //delete all
@@ -54,6 +55,9 @@ public class LE_MouseHandler extends LE_Handler {
                 to be fair, it'd be much better to edit modules REALLY separately
 
                  */
+                break;
+            case ALT_R:
+                manager.getOperationHandler().execute(Operation.LE_OPERATION.VOID, c);
                 break;
         }
     }
@@ -74,7 +78,7 @@ public class LE_MouseHandler extends LE_Handler {
             //remove
             case DOUBLE:
             case RIGHT:
-                getModelManager().remove(bfObj);
+                getObjHandler().remove(bfObj);
                 break;
             case DOUBLE_RIGHT:
                 break;
@@ -119,11 +123,11 @@ public class LE_MouseHandler extends LE_Handler {
                         return value;
                     break;
                 case DOUBLE:
-                    if (doubleClick  )
+                    if (doubleClick)
                         return value;
                     break;
                 case RIGHT:
-                    if (  right)
+                    if (right)
                         return value;
                     break;
                 case DOUBLE_RIGHT:

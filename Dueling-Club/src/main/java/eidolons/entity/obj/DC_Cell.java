@@ -37,6 +37,11 @@ public class DC_Cell extends DC_Obj implements Cell {
     float overlayRotation;
     private String overlayData;
 
+    public DC_Cell(boolean b, int i, int j, DC_Game game) {
+        this(i, j ,game);
+        setVOID(b);
+    }
+
 
     @Override
     public void setCoordinates(Coordinates coordinates) {

@@ -908,6 +908,14 @@ public class DC_Game extends GenericGame {
         this.bossFight = bossFight;
     }
 
+    public boolean toggleVoid(Coordinates c) {
+        DC_Cell cell = getCellByCoordinate(c);
+        boolean v;
+        cell.setVOID(v = !cell.isVOID());
+        //what about things on this cell?
+        return v;
+    }
+
     public enum GAME_MODES {
         ARENA, SIMULATION, DUEL, ENCOUNTER, DUNGEON_CRAWL, ARENA_ARCADE
     }

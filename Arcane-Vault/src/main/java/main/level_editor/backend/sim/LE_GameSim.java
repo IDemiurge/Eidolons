@@ -20,7 +20,6 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.battle.player.Player;
-import main.level_editor.backend.metadata.object.LE_IdManager;
 import main.level_editor.backend.sim.impl.LE_DungeonMaster;
 import main.level_editor.gui.stage.LE_KeyManager;
 

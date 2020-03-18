@@ -1,4 +1,4 @@
-package main.level_editor.backend.functions.structure;
+package main.level_editor.backend.handlers.structure;
 
 public interface IStructureManager {
 

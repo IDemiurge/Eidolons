@@ -1,4 +1,4 @@
-package main.level_editor.backend.functions.structure.layer;
+package main.level_editor.backend.handlers.structure.layer;
 
 import java.util.Set;
 

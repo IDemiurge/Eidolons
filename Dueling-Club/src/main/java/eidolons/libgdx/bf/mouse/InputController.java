@@ -315,7 +315,7 @@ public abstract class InputController implements InputProcessor {
     protected void tryPullCameraY(int screenY) {
         float diffY = (yTouchPos - screenY) * camera.zoom * getDragCoef();
         if (isFreeDrag()){
-            camera.position.y =camera.position.y + diffY;
+            camera.position.y =camera.position.y - diffY;
         } else
             camera.position.y = MathMaster.getMinMax(
                 camera.position.y - diffY,

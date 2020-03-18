@@ -1,8 +1,8 @@
-package main.level_editor.backend.functions.menu;
+package main.level_editor.backend.handlers;
 
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
-import main.level_editor.backend.functions.structure.FloorManager;
+import main.level_editor.backend.handlers.structure.FloorManager;
 
 public class LE_MenuHandler extends LE_Handler {
 

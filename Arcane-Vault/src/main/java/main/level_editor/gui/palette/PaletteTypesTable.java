@@ -15,14 +15,15 @@ import static main.level_editor.backend.metadata.options.LE_Options.EDITOR_OPTIO
 
 public class PaletteTypesTable extends SelectionImageTable {
 
-    private  List<ObjType> types;
+    private List<ObjType> types;
 
     protected boolean isTableFixedSize() {
         return false;
     }
+
     @Override
     protected SelectableItemData[] initDataArray() {
-        if (types==null) {
+        if (types == null) {
             return data;
         }
         data = new SelectableItemData[size];
@@ -56,8 +57,7 @@ public class PaletteTypesTable extends SelectionImageTable {
     }
 
     private static int getWrap() {
-        return
-                Math.round(1000 / (LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE))+1); //sca
+        return   Math.round(200 / (LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE)) + 1); //sca
     }
 
     @Override
@@ -81,8 +81,8 @@ public class PaletteTypesTable extends SelectionImageTable {
 
     @Override
     protected Vector2 getElementSize() {
-        return new Vector2(128 * LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE)/100f,
-                128 * LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE)/100f);
+        return new Vector2(128 * LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE) / 100f,
+                128 * LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE) / 100f);
     }
 
     @Override

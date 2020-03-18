@@ -49,8 +49,8 @@ public class PaletteTree extends TreeX<PaletteNode> {
         }
 
         boolean hidden;
-
-
         return new Node(actor);
     }
+
+
 }

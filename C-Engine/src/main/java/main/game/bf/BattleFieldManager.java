@@ -17,9 +17,6 @@ public abstract class BattleFieldManager {
 
     }
 
-    public abstract Coordinates pickCoordinate();
-
-
     public abstract boolean isCellVisiblyFree(Coordinates c);
 
 

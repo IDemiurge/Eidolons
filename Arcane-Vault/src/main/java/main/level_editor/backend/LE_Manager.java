@@ -5,19 +5,24 @@ import main.game.bf.Coordinates;
 import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
 import main.level_editor.backend.functions.mapping.LE_ModuleHandler;
-import main.level_editor.backend.functions.menu.LE_MenuHandler;
 import main.level_editor.backend.functions.mouse.LE_MouseHandler;
-import main.level_editor.backend.functions.selection.LE_SelectionHandler;
-import main.level_editor.backend.functions.structure.LE_StructureManager;
-import main.level_editor.backend.metadata.object.LE_IdManager;
-import main.level_editor.backend.model.LE_ModelManager;
+import main.level_editor.backend.functions.palette.PaletteHandlerImpl;
+import main.level_editor.backend.handlers.LE_MenuHandler;
+import main.level_editor.backend.handlers.model.LE_ModelManager;
+import main.level_editor.backend.handlers.operation.OperationHandler;
+import main.level_editor.backend.handlers.operation.obj.LE_ObjHandler;
+import main.level_editor.backend.handlers.selection.LE_SelectionHandler;
+import main.level_editor.backend.handlers.structure.LE_StructureManager;
 import main.level_editor.backend.sim.LE_GameSim;
+import main.level_editor.backend.sim.LE_IdManager;
 import main.level_editor.backend.struct.level.Floor;
 
 public class LE_Manager {
 
     private final LE_GameSim game;
     private final LE_IdManager idManager;
+    private final OperationHandler operationHandler;
+    private final LE_ObjHandler objHandler;
     private Floor floor;
     private LE_SelectionHandler selectionHandler;
     private LE_ModelManager modelManager;
@@ -27,6 +32,7 @@ public class LE_Manager {
     private LE_MenuHandler menuHandler;
     private LE_StructureManager structureManager;
     private LE_ModuleHandler moduleHandler;
+    private PaletteHandlerImpl paletteHandler;
 
     public LE_Manager(Floor floor) {
         this.floor = floor;
@@ -39,6 +45,9 @@ public class LE_Manager {
         idManager = game.getSimIdManager();
         structureManager = new LE_StructureManager(this);
         moduleHandler = new LE_ModuleHandler(this);
+        operationHandler = new OperationHandler(this);
+        objHandler = new LE_ObjHandler(this);
+        paletteHandler = new PaletteHandlerImpl(this);
     }
 
     public LE_GameSim getGame() {
@@ -88,4 +97,17 @@ public class LE_Manager {
     public LE_ModuleHandler getModuleHandler() {
         return moduleHandler;
     }
+
+    public OperationHandler getOperationHandler() {
+        return operationHandler;
+    }
+
+    public LE_ObjHandler getObjHandler() {
+        return objHandler;
+    }
+
+    public PaletteHandlerImpl getPaletteHandler() {
+        return paletteHandler;
+    }
+
 }

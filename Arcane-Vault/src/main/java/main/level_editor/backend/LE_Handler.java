@@ -6,14 +6,17 @@ import main.game.bf.Coordinates;
 import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
 import main.level_editor.backend.functions.mapping.LE_ModuleHandler;
-import main.level_editor.backend.functions.menu.LE_MenuHandler;
 import main.level_editor.backend.functions.mouse.LE_MouseHandler;
-import main.level_editor.backend.functions.selection.LE_SelectionHandler;
-import main.level_editor.backend.functions.structure.LE_StructureManager;
-import main.level_editor.backend.metadata.object.LE_IdManager;
-import main.level_editor.backend.model.LE_DataModel;
-import main.level_editor.backend.model.LE_ModelManager;
+import main.level_editor.backend.handlers.LE_MenuHandler;
+import main.level_editor.backend.handlers.model.LE_DataModel;
+import main.level_editor.backend.handlers.model.LE_ModelManager;
+import main.level_editor.backend.handlers.operation.Operation;
+import main.level_editor.backend.handlers.operation.OperationHandler;
+import main.level_editor.backend.handlers.operation.obj.LE_ObjHandler;
+import main.level_editor.backend.handlers.selection.LE_SelectionHandler;
+import main.level_editor.backend.handlers.structure.LE_StructureManager;
 import main.level_editor.backend.sim.LE_GameSim;
+import main.level_editor.backend.sim.LE_IdManager;
 import main.level_editor.backend.struct.level.Floor;
 
 public class LE_Handler {
@@ -22,6 +25,14 @@ public class LE_Handler {
 
     public LE_Handler(LE_Manager manager) {
         this.manager = manager;
+    }
+
+    public void operation(Operation.LE_OPERATION operation, Object... args) {
+        getOperationHandler().operation(operation, args);
+    }
+
+    public OperationHandler getOperationHandler() {
+        return manager.getOperationHandler();
     }
 
     public Module getModule(Coordinates c) {
@@ -38,6 +49,10 @@ public class LE_Handler {
 
     public LE_SelectionHandler getSelectionHandler() {
         return manager.getSelectionHandler();
+    }
+
+    public LE_ObjHandler getObjHandler() {
+        return manager.getObjHandler();
     }
 
     public LE_ModelManager getModelManager() {

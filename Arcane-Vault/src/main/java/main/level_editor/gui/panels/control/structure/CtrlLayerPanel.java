@@ -1,6 +1,6 @@
 package main.level_editor.gui.panels.control.structure;
 
-import main.level_editor.backend.functions.structure.layer.ILayerHandler;
+import main.level_editor.backend.handlers.structure.layer.ILayerHandler;
 import main.level_editor.gui.panels.control.LE_ControlPanel;
 
 public class CtrlLayerPanel extends LE_ControlPanel<ILayerHandler> {

@@ -7,7 +7,7 @@ import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuBar;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import main.level_editor.LevelEditor;
-import main.level_editor.backend.functions.menu.LE_MenuHandler;
+import main.level_editor.backend.handlers.LE_MenuHandler;
 
 public class MenuPanel extends MenuBar {
 

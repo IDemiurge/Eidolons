@@ -1,4 +1,4 @@
-package main.level_editor.backend.metadata.ai;
+package main.level_editor.backend.handlers.ai;
 
 public interface IAiHandler {
 
