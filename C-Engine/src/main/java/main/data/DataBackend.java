@@ -511,7 +511,7 @@ public class DataBackend {
             return getTypeNames(TYPE);
         }
 
-        List<String> list = getTypesSubGroups().get(TYPE).get(subgroup);
+//        List<String> list = getTypesSubGroups().get(TYPE).get(subgroup);
         // if (list != null)
         // return list;
 
@@ -529,7 +529,8 @@ public class DataBackend {
         //        }
         // if (ListMaster.contains(groupsList, subgroup, true)
         // || isCustomGroup(subgroup)) {
-        list = new ArrayList<>();
+
+        List<String> list = new ArrayList<>();
 
         Map<String, Map<String, ObjType>> map = XML_Reader.getTypeMaps();
         Collection<ObjType> set = map.get(TYPE.toString()).values();

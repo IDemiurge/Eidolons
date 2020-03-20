@@ -375,8 +375,7 @@ public class StringMaster {
         }
         String string = null;
 
-        // if (s.contains("_") || s.contains(" ")) {
-        if (s.contains(" ")) {
+        if (s.contains(" ")) {  // TODO pattern_space.matcher("").matches()
             StringBuilder builder = new StringBuilder(s.length() + 5);
             s = s.trim();
             for (String str : pattern_space.split(s)) {
@@ -395,11 +394,15 @@ public class StringMaster {
             string = string.substring(0, string.length() - 1);
             return string;
         }
-        // } else {
+
+
         if (insertSpaceAfterCapitals) {
             StringBuilder builder = new StringBuilder(s.length() + 5);
-            string = "";
+
             for (char c : s.toCharArray()) {
+                if (Character.isUpperCase(c)){
+                    builder.append(" ");
+                }
                 builder.append(c);
             }
             string = builder.toString();

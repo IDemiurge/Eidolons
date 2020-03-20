@@ -9,10 +9,10 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
-import main.content.enums.DungeonEnums;
-import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums;
+import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.DUNGEON_TAGS;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
@@ -30,7 +30,6 @@ import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.TypeBuilder;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -326,12 +325,6 @@ public class Dungeon extends LightweightEntity {
         return null;
     }
 
-    public Collection<Coordinates> getVoidCoordinates() {
-        if (voidCoordinates == null) {
-            voidCoordinates = new ArrayList<>();
-        }
-        return voidCoordinates;
-    }
 
     public Map<String, String> getCustomDataMap() {
         if (customDataMap == null) {

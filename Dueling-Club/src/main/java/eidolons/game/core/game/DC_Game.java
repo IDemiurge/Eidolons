@@ -875,6 +875,16 @@ public class DC_Game extends GenericGame {
 
     }
 
+    @Override
+    public BattleFieldObject createUnit(ObjType type, int x, int y, Player owner) {
+        return (BattleFieldObject) super.createUnit(type, x, y, owner);
+    }
+
+    @Override
+    public BattleFieldObject createUnit(ObjType type, Coordinates c, Player owner) {
+        return (BattleFieldObject) super.createUnit(type, c, owner);
+    }
+
     protected void clearCaches() {
         combatMaster.getActionManager().clearCache();
     }

@@ -7,6 +7,7 @@ import main.level_editor.backend.functions.io.LE_DataHandler;
 import main.level_editor.backend.functions.mapping.LE_ModuleHandler;
 import main.level_editor.backend.functions.mouse.LE_MouseHandler;
 import main.level_editor.backend.functions.palette.PaletteHandlerImpl;
+import main.level_editor.backend.handlers.EditHandler;
 import main.level_editor.backend.handlers.LE_MenuHandler;
 import main.level_editor.backend.handlers.model.LE_ModelManager;
 import main.level_editor.backend.handlers.operation.OperationHandler;
@@ -16,6 +17,7 @@ import main.level_editor.backend.handlers.structure.LE_StructureManager;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.sim.LE_IdManager;
 import main.level_editor.backend.struct.level.Floor;
+import main.level_editor.gui.grid.LE_CameraHandler;
 
 public class LE_Manager {
 
@@ -23,6 +25,8 @@ public class LE_Manager {
     private final LE_IdManager idManager;
     private final OperationHandler operationHandler;
     private final LE_ObjHandler objHandler;
+    private final LE_CameraHandler cameraHandler;
+    private final EditHandler editHandler;
     private Floor floor;
     private LE_SelectionHandler selectionHandler;
     private LE_ModelManager modelManager;
@@ -48,6 +52,8 @@ public class LE_Manager {
         operationHandler = new OperationHandler(this);
         objHandler = new LE_ObjHandler(this);
         paletteHandler = new PaletteHandlerImpl(this);
+        cameraHandler = new LE_CameraHandler(this);
+        editHandler = new EditHandler(this);
     }
 
     public LE_GameSim getGame() {
@@ -60,6 +66,14 @@ public class LE_Manager {
 
     public LE_SelectionHandler getSelectionHandler() {
         return selectionHandler;
+    }
+
+    public LE_CameraHandler getCameraHandler() {
+        return cameraHandler;
+    }
+
+    public EditHandler getEditHandler() {
+        return editHandler;
     }
 
     public LE_ModelManager getModelManager() {

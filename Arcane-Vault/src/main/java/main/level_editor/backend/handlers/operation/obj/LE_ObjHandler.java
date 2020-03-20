@@ -2,7 +2,6 @@ package main.level_editor.backend.handlers.operation.obj;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import main.entity.obj.MicroObj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
@@ -18,7 +17,6 @@ public class LE_ObjHandler extends LE_Handler {
 
 
     public void move(BattleFieldObject bfObj, Coordinates c) {
-        operation(Operation.LE_OPERATION.MOVE_OBJ, bfObj, bfObj.getCoordinates());
         bfObj.setCoordinates(c);
         GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, bfObj);
     }
@@ -27,18 +25,22 @@ public class LE_ObjHandler extends LE_Handler {
         getGame().softRemove(bfObj);
         GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, bfObj);
 
-        operation(Operation.LE_OPERATION.ADD_OBJ, bfObj);
     }
 
     public void addSelectedObj(int gridX, int gridY) {
-        addObj(getModel().getPaletteSelection().getObjType(), gridX, gridY);
+        operation(Operation.LE_OPERATION.ADD_OBJ, getModel().getPaletteSelection().getObjType(), Coordinates.get(gridX,gridY));
     }
 
-    public void addObj(ObjType objType, int gridX, int gridY) {
-        MicroObj unit = getGame().createUnit(objType,
-                gridX, gridY, DC_Player.NEUTRAL); //TODO Player!!!
+    public BattleFieldObject addObj(ObjType objType, int gridX, int gridY) {
+      return    getGame().createUnit(objType, gridX, gridY, DC_Player.NEUTRAL);
+        //TODO Player!!!
 
-        operation(Operation.LE_OPERATION.ADD_OBJ, unit);
 
+    }
+
+    public void clear(Coordinates coordinates) {
+        for (BattleFieldObject battleFieldObject : getGame().getObjectsAt(coordinates)) {
+            remove(battleFieldObject);
+        }
     }
 }

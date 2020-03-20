@@ -57,7 +57,7 @@ public class LE_MouseHandler extends LE_Handler {
                  */
                 break;
             case ALT_R:
-                manager.getOperationHandler().execute(Operation.LE_OPERATION.VOID, c);
+                manager.getOperationHandler().execute(Operation.LE_OPERATION.VOID_TOGGLE, c);
                 break;
         }
     }
@@ -76,9 +76,15 @@ public class LE_MouseHandler extends LE_Handler {
             //edit
             //add to selection
             //remove
+            case CTRL:
+                getSelectionHandler().addToSelected(bfObj);
+                break;
+            case NORMAL:
+                getSelectionHandler().select(bfObj);
+                break;
             case DOUBLE:
             case RIGHT:
-                getObjHandler().remove(bfObj);
+                operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
                 break;
             case DOUBLE_RIGHT:
                 break;

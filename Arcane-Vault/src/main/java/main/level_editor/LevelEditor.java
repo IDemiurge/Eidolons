@@ -12,13 +12,14 @@ import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
+import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.model.LE_DataModel;
 import main.level_editor.backend.handlers.structure.FloorManager;
 import main.level_editor.backend.metadata.options.LE_OptionsMaster;
 import main.level_editor.backend.sim.LE_MetaMaster;
 import main.level_editor.backend.struct.campaign.Campaign;
 import main.level_editor.backend.struct.level.Floor;
-import main.level_editor.gui.palette.PaletteHolder;
+import main.level_editor.gui.panels.palette.PaletteHolder;
 import main.level_editor.gui.screen.LE_WaitingScreen;
 import main.system.launch.CoreEngine;
 import main.system.launch.TypeBuilder;
@@ -61,6 +62,9 @@ public class LevelEditor {
 
     public static Floor getCurrent() {
         return FloorManager.current;
+    }
+    public static LE_Manager getManager() {
+        return FloorManager.current.getManager();
     }
 
 

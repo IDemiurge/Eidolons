@@ -401,7 +401,7 @@ public class OptionsMaster {
                 Fluctuating.fluctuatingAlphaPeriodGlobal = (Integer.valueOf(value)) / 10;
                 break;
             case GRID_VFX:
-                GridPanel.setGridEmitters(bool);
+                GridPanel.setShowGridEmitters(bool);
                 break;
             case UI_VFX:
                 GuiVisualEffects.setOff(!bool);

@@ -55,6 +55,9 @@ public class DC_KeyManager
     private ACTION_TYPE action_group = ActionEnums.ACTION_TYPE.STANDARD;
     private Controller controller;
 
+    public DC_KeyManager() {
+
+    }
     public DC_KeyManager(DC_GameManager mngr) {
         this.mngr = mngr;
         stdActionKeyMap = new ConcurrentHashMap<>();

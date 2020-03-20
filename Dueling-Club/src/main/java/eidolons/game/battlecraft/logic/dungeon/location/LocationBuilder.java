@@ -74,8 +74,6 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             level.setDirectionMap(location.getDirectionMap());
         }
         master.setDungeonLevel(level);
-        level.getVoidCoordinates().addAll(location.getDungeon().getVoidCoordinates());
-//        location.setEntranceData();
         try {
             location.initEntrances();
         } catch (Exception e) {

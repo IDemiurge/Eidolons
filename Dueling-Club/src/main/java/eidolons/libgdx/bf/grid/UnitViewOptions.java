@@ -156,9 +156,7 @@ public class UnitViewOptions {
             if (EidolonsGame.DUEL) {
                 altColor = false;
             } else {
-            altColor= true;
-            if (obj.getName().contains("Carnifex"))
-                altColor=false;
+                altColor= !obj.getName().contains("Carnifex");
             if (obj.getName().contains("Igor"))
                 altColor=false;
             if (obj.getName().contains("Hollow Reaper"))
@@ -195,5 +193,19 @@ public class UnitViewOptions {
         return portraitPath;
     }
 
+    public void setDirectionPointerTexture(TextureRegion directionPointerTexture) {
+        this.directionPointerTexture = directionPointerTexture;
+    }
 
+    public void setEmblem(TextureRegion emblem) {
+        this.emblem = emblem;
+    }
+
+    public void setTeamColor(Color teamColor) {
+        this.teamColor = teamColor;
+    }
+
+    public void setHoverResponsive(boolean hoverResponsive) {
+        this.hoverResponsive = hoverResponsive;
+    }
 }

@@ -3,6 +3,7 @@ package main.level_editor.gui.panels.control;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
+import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import main.level_editor.gui.panels.control.structure.CtrlFloorPanel;
 import main.level_editor.gui.panels.control.structure.CtrlLayerPanel;
@@ -10,7 +11,7 @@ import main.level_editor.gui.panels.control.structure.CtrlModulePanel;
 import main.level_editor.gui.panels.control.structure.CtrlStructurePanel;
 import main.system.auxiliary.StringMaster;
 
-public class TabbedControlPanel extends TabbedPane {
+public class TabbedControlPanel extends TabbedPane implements TabbedPaneListener {
 
     private final TablePanelX holder;
     CtrlModulePanel modulePanel= new CtrlModulePanel();
@@ -36,14 +37,25 @@ public class TabbedControlPanel extends TabbedPane {
             Tab tab = new LE_Tab(panel, title);
             add(tab);
         }
+        addListener(this);
         //tTODO nit hotkeys
     }
 
+
     @Override
-    public void switchTab(Tab tab) {
+    public void switchedTab(Tab tab) {
         super.switchTab(tab);
         holder.setUserObject(
                 tab.getContentTable());
+    }
+
+    @Override
+    public void removedTab(Tab tab) {
+
+    }
+    @Override
+    public void removedAllTabs() {
+
     }
 
     public class LE_Tab extends Tab {

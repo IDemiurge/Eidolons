@@ -21,8 +21,8 @@ import main.system.auxiliary.NumberUtils;
 import java.awt.*;
 
 public class ScreenMaster {
-    private static final Integer WIDTH_WINDOWED = 95;
-    private static final Integer HEIGHT_WINDOWED = 90;
+    public static final Integer WIDTH_WINDOWED = 95;
+    public static final Integer HEIGHT_WINDOWED = 90;
     public static Application gdxApplication;
     public static LwjglApplication application;
     private static boolean fullscreen;

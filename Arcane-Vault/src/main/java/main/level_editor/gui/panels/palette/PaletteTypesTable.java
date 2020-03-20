@@ -1,4 +1,4 @@
-package main.level_editor.gui.palette;
+package main.level_editor.gui.panels.palette;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;

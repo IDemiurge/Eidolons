@@ -1,4 +1,4 @@
-package main.level_editor.gui.palette;
+package main.level_editor.gui.panels.palette;
 
 
 import com.badlogic.gdx.Gdx;

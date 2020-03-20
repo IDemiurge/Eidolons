@@ -18,19 +18,21 @@ import main.system.GuiEventType;
 
 public class LE_DataModel {
 
-    MouseMode mouseMode;
-    LE_DisplayMode displayMode;
-    LE_Selection selection;
-    LE_Brush brush;
-    PaletteSelection paletteSelection;
+    private  MouseMode mouseMode;
+    private LE_DisplayMode displayMode;
+    private LE_Selection selection;
+    private LE_Brush brush;
+    private PaletteSelection paletteSelection;
 
-    LE_DataNode treeModel;
+    private LE_DataNode treeModel;
     private LevelZone currentZone;
     private Module module;
     private LevelBlock block;
     private ObjType defaultWallType;
 
     public LE_DataModel() {
+        selection = new LE_Selection();
+        displayMode = new LE_DisplayMode();
     }
 
     public LE_DataNode getTreeModel() {
@@ -39,11 +41,16 @@ public class LE_DataModel {
 
     public void setTreeModel(LayeredData data) {
         this.treeModel = new LE_TreeBuilder(data).getRoot();
+
         GuiEventManager.trigger(GuiEventType.LE_TREE_RESET, treeModel);
     }
 
     public MouseMode getMouseMode() {
         return mouseMode;
+    }
+
+    public LE_Brush getBrush() {
+        return brush;
     }
 
     public void setMouseMode(MouseMode mouseMode) {

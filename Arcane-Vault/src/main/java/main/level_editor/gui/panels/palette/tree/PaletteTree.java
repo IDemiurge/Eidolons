@@ -1,24 +1,34 @@
-package main.level_editor.gui.palette.tree;
+package main.level_editor.gui.panels.palette.tree;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.ValueContainer;
-import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
 import main.entity.type.ObjType;
+import main.level_editor.LevelEditor;
+import main.level_editor.gui.components.TreeX;
+import main.level_editor.gui.panels.palette.PaletteTypesTable;
 import main.system.graphics.FontMaster;
 
+import java.util.List;
+
 public class PaletteTree extends TreeX<PaletteNode> {
+    private final PaletteTypesTable table;
+    private final DC_TYPE TYPE;
 
     //we need a way to collapse double nodes
 
-    public PaletteTree(DC_TYPE type) {
-        setUserObject(new PaletteTreeBuilder().buildPaletteTreeModel(type));
-        addActor(new SmartButton(ButtonStyled.STD_BUTTON.UNDO,
-                () -> collapseAll()));
+    public PaletteTree(DC_TYPE type, PaletteTypesTable table) {
+        this.table = table;
+        this.TYPE = type;
+        PaletteTreeBuilder builder = new PaletteTreeBuilder();
+        builder.setShowLeaf(false);
+        setUserObject(builder.buildPaletteTreeModel(type));
+//        addActor(new SmartButton(ButtonStyled.STD_BUTTON.UNDO,
+//                () -> collapseAll()));
 
 //        addActor(new SmartButton(ButtonStyled.STD_BUTTON.UNDO, () -> collapseAll()));
     }
@@ -29,7 +39,15 @@ public class PaletteTree extends TreeX<PaletteNode> {
     }
 
     @Override
-    protected Node createNodeComp(PaletteNode node) {
+    protected void selected(PaletteNode node) {
+                List<ObjType> types = LevelEditor.getCurrent().
+                        getManager().getPaletteHandler().
+                        getTypesForTreeNode(TYPE, node.getData());
+                table.setUserObject(types);
+    }
+
+    @Override
+    protected Actor createNodeComp(PaletteNode node) {
         Label.LabelStyle style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 20);
         TextureRegion texture = null;
         String name = node.getData().toString();
@@ -47,9 +65,7 @@ public class PaletteTree extends TreeX<PaletteNode> {
         if (texture!=null ){
             actor.getImageContainer().getActor().setScale(0.25f);
         }
-
-        boolean hidden;
-        return new Node(actor);
+        return actor;
     }
 
 

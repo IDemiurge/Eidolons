@@ -1,16 +1,13 @@
 package main.level_editor.gui.menus;
 
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.VisWindow;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.NinePatchFactory;
 import main.level_editor.LevelEditor;
 
-public class DataTable extends VisWindow {
+public class InnerWindow extends VisWindow {
 
-    public DataTable(String title) {
+    public InnerWindow(String title) {
         super(title, LevelEditor.getWindowStyle()        );
 
         setVisible(false);

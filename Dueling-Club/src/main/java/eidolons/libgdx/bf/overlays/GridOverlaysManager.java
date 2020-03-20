@@ -51,14 +51,14 @@ import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.*;
 public class GridOverlaysManager extends SuperActor {
 
     private final GridCellContainer[][] cells;
-    DC_GridPanel gridPanel;
+    GridPanel gridPanel;
     boolean sightInfoDisplayed;
     Map<OVERLAY, Map<Actor, ClickListener>> listenerCaches = new HashMap<>();
     Map<Entity, Map<Rectangle, Tooltip>> tooltipMap = new HashMap<>();
     Map<Entity, Map<OVERLAY, Rectangle>> overlayMap = new HashMap<>();
     private BattleFieldObject observer;
 
-    public GridOverlaysManager(DC_GridPanel gridPanel) {
+    public GridOverlaysManager(GridPanel gridPanel) {
         this.gridPanel = gridPanel;
         cells = gridPanel.getCells();
         setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.OVERLAYS);
@@ -183,7 +183,9 @@ public class GridOverlaysManager extends SuperActor {
                 observer = gridPanel.getObjectForView(gridPanel.getHoverObj());
             }
             if (!(observer instanceof Unit)) {
-                observer = gridPanel.getObjectForView(gridPanel.getMainHeroView());
+                if (gridPanel instanceof DC_GridPanel) {
+                    observer = gridPanel.getObjectForView(((DC_GridPanel) gridPanel).getMainHeroView());
+                }
             } else {
                 if (!VisionRule.isSightInfoAvailable(observer))
                     sightInfoDisplayed = false;
@@ -216,7 +218,7 @@ public class GridOverlaysManager extends SuperActor {
     public void setSightInfoDisplayed(boolean sightInfoDisplayed) {
         if (sightInfoDisplayed != this.sightInfoDisplayed) {
             this.sightInfoDisplayed = sightInfoDisplayed;
-            ((DC_GridPanel) getParent()).setUpdateRequired(true);
+            (( GridPanel) getParent()).setUpdateRequired(true);
         }
     }
 
@@ -268,7 +270,7 @@ public class GridOverlaysManager extends SuperActor {
         //        }
     }
 
-    private void drawOverlaysForCell(GridCellContainer container, int x, int y,
+    protected void drawOverlaysForCell(GridCellContainer container, int x, int y,
                                      Batch batch) {
         if (sightInfoDisplayed) {
             DC_Cell cell = Eidolons.getGame().getMaster().getCellByCoordinate(Coordinates.get(x, y));
@@ -388,7 +390,7 @@ public class GridOverlaysManager extends SuperActor {
         return false;
     }
 
-    private void drawOverlay(Actor parent, OVERLAY overlay, Batch batch, Vector2 v) {
+    protected void drawOverlay(Actor parent, OVERLAY overlay, Batch batch, Vector2 v) {
         TextureRegion region = getRegion(overlay);
         if (region != null) {
             batch.draw(region, v.x, v.y);

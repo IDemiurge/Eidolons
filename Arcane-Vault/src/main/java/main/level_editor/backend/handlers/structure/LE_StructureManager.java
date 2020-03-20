@@ -14,6 +14,7 @@ import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
+import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -79,6 +80,7 @@ public class LE_StructureManager extends LE_Handler implements IStructureManager
         int x=0;
         int y=0;
         List<Coordinates> coords=    new ArrayList<>() ;
+        getOperationHandler().operation(Operation.LE_OPERATION.INSERT_START);
         for (String[] column : blockTemplate.getCells()) {
             for (String cell : column) {
                 if (TilesMaster.isIgnoredCell(cell)) {
@@ -92,6 +94,7 @@ public class LE_StructureManager extends LE_Handler implements IStructureManager
             y=0;
             x++;
         }
+        getOperationHandler().operation(Operation.LE_OPERATION.INSERT_END);
         block.setCoordinatesList(coords);
         updateTree();
     }
@@ -111,7 +114,7 @@ public class LE_StructureManager extends LE_Handler implements IStructureManager
 
     private void initWall(Coordinates c) {
        ObjType type=  getModelManager().getDefaultWallType();
-       getObjHandler().addObj(type, c.x, c.y );
+       operation(Operation.LE_OPERATION.ADD_OBJ, type, c);
     }
 
     @Override

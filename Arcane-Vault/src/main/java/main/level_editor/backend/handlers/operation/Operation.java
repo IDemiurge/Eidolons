@@ -13,14 +13,28 @@ public class Operation {
     public enum LE_OPERATION {
         SELECTION,
         MODEL_CHANGE,
-        VOID,
-        RESTORE_VOID,
+        VOID_TOGGLE,
         ADD_OBJ,
         REMOVE_OBJ,
         MODIFY_STRUCTURE_START(true, false),
         MODIFY_STRUCTURE_END(false, true),
 
-        MOVE_OBJ;
+        MOVE_OBJ,
+
+        CLEAR_START(true, false),
+        CLEAR_END(false, true),
+
+        FILL_START(true, false),
+        FILL_END(false, true),
+
+        PASTE_START(true, false),
+        PASTE_END(false, true),
+
+        INSERT_START(true, false),
+        INSERT_END(false, true),
+
+
+        EDIT;
 
         LE_OPERATION() {
         }
@@ -33,5 +47,13 @@ public class Operation {
         boolean bulkStart;
         boolean bulkEnd;
 
+    }
+
+    public LE_OPERATION getOperation() {
+        return operation;
+    }
+
+    public Object[] getArgs() {
+        return args;
     }
 }

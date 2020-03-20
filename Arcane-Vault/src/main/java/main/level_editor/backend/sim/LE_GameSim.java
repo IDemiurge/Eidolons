@@ -48,7 +48,7 @@ public class LE_GameSim extends ScenarioGame {
 
     @Override
     protected DC_KeyManager createKeyManager() {
-        return new LE_KeyManager(getManager());
+        return new LE_KeyManager();
     }
 
     @Override
@@ -115,13 +115,18 @@ public class LE_GameSim extends ScenarioGame {
     @Override
     public void battleInit() {
         Coordinates c = Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
-        dummyPC = (Unit) createUnit(DataManager.getType(DUMMY, DC_TYPE.UNITS), c.x, c.y, getPlayer(true),
+        dummyPC = (Unit) createUnit(getDummyType(), c.x, c.y, getPlayer(true),
                 new Ref(LE_GameSim.this));
         Eidolons.setMainHero(dummyPC);
         dungeonMaster.init();
         grid = new DC_BattleFieldGrid(getDungeon());
         battleFieldManager = new DC_BattleFieldManager(this);
 //        dummyPC = createUnit()
+    }
+
+    private ObjType getDummyType() {
+        return DataManager.getType("Robber Band", DC_TYPE.ENCOUNTERS);
+//        return DataManager.getType(DUMMY, DC_TYPE.UNITS);
     }
 
     @Override

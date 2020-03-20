@@ -33,7 +33,7 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
 //            if (method.getAnnotation(getIgnoreAnnotation()) != null) {
 //                continue;
 //            }
-            Cell cell = addElement( createButton(method, handler)).top().space(getSpace());
+            Cell cell = addNormalSize( createButton(method, handler)).top().space(getSpace());
             j++;
             if (j >= getWrap()) {
                 row();
@@ -59,7 +59,6 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
     protected abstract T getHandler();
 
     protected abstract Class<T> getClazz();
-
 
     protected  abstract int getWrap();
 

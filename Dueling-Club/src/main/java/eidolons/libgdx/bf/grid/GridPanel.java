@@ -53,14 +53,14 @@ import java.util.*;
 
 import static main.system.GuiEventType.*;
 
-public class GridPanel extends Group {
+public abstract class GridPanel extends Group {
     protected final int square;
     protected GridCellContainer[][] cells;
     protected int cols;
     protected int rows;
     protected Map<BattleFieldObject, BaseView> viewMap;
     protected GridUnitView hoverObj;
-    protected static boolean gridEmitters;
+    protected static boolean showGridEmitters;
     protected boolean resetVisibleRequired;
 
     protected ShadowMap shadowMap;
@@ -86,39 +86,7 @@ public class GridPanel extends Group {
         this.rows = rows;
     }
 
-    public static boolean isGridEmitters() {
-        return gridEmitters;
-    }
-
-    public static void setGridEmitters(boolean gridEmitters) {
-        GridPanel.gridEmitters = gridEmitters;
-    }
-
-    public static boolean isDrawEmitters() {
-        return GridPanel.isGridEmitters();
-    }
-
-    public static boolean isDrawEmittersOnTop() {
-        if (EidolonsGame.FOOTAGE) {
-            return false;
-        }
-        return !EidolonsGame.BOSS_FIGHT;
-    }
-
-    public void restoreVoid(int x, int y) {
-        GridCellContainer cell =
-                removedCells[x][getGdxY(y)];
-        addActor(cell);
-        cell.getUserObject().setVOID(false);
-//        resetDecorators();
-    }
-
-    public void setVoid(int x, int y) {
-        GridCellContainer cell = cells[x][getGdxY(y)];
-        cell.remove();
-        removedCells[x][getGdxY(y)] = cell;
-        cell.getUserObject().setVOID(true);
-    }
+    protected abstract GridOverlaysManager createOverlays();
 
     public GridPanel init(DequeImpl<BattleFieldObject> objects) {
         objects.removeIf(unit ->
@@ -201,6 +169,21 @@ public class GridPanel extends Group {
         return new GridCellContainer(emptyImage, x, y);
     }
 
+    public void restoreVoid(int x, int y) {
+        GridCellContainer cell =
+                removedCells[x][getGdxY(y)];
+        addActor(cell);
+        cell.getUserObject().setVOID(false);
+//        resetDecorators();
+    }
+
+    public void setVoid(int x, int y) {
+        GridCellContainer cell = cells[x][getGdxY(y)];
+        cell.remove();
+        removedCells[x][getGdxY(y)] = cell;
+        cell.getUserObject().setVOID(true);
+    }
+
     protected void addVoidDecorators(boolean hasVoid) {
         if (hasVoid) {
             if (isShardsOn())
@@ -221,7 +204,7 @@ public class GridPanel extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, 1);
-        if (isDrawEmitters())
+        if (isShowGridEmitters())
             if (isDrawEmittersOnTop())
                 drawEmitters(batch);
     }
@@ -823,6 +806,21 @@ public class GridPanel extends Group {
         });
 
 
+    }
+
+    public static void setShowGridEmitters(boolean showGridEmitters) {
+        GridPanel.showGridEmitters = showGridEmitters;
+    }
+
+    public static boolean isShowGridEmitters() {
+        return GridPanel.showGridEmitters;
+    }
+
+    public static boolean isDrawEmittersOnTop() {
+        if (EidolonsGame.FOOTAGE) {
+            return false;
+        }
+        return !EidolonsGame.BOSS_FIGHT;
     }
 
     public void setUpdateRequired(boolean b) {

@@ -9,6 +9,8 @@ import eidolons.libgdx.bf.grid.CellBorderManager;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.bf.grid.UnitViewOptions;
 import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.texture.TextureCache;
+import main.content.DC_TYPE;
 import main.system.graphics.FontMaster;
 
 public class LE_UnitView extends GridUnitView {
@@ -16,10 +18,29 @@ public class LE_UnitView extends GridUnitView {
     LabelX idLabel;
 
     public LE_UnitView(BattleFieldObject bfObj, UnitViewOptions options) {
-        super(bfObj, adjustOptions(options));
+        super(bfObj, adjustOptions(bfObj, options));
     }
 
-    private static UnitViewOptions adjustOptions(UnitViewOptions options) {
+    private static UnitViewOptions adjustOptions(BattleFieldObject bfObj, UnitViewOptions options) {
+        if (bfObj.getType().getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
+//options.createFromGameObject();
+            /*
+            No facing
+            special emblem
+            additional label
+
+            selection
+            filters
+            getObjs()
+             */
+        options.setHoverResponsive(false);
+        options.setEmblem(
+                TextureCache.getOrCreateR("ui\\level_editor\\anew/jack.png"));
+        options.setDirectionPointerTexture(
+                TextureCache.getOrCreateR("gen/perk/abil/1.png")
+        );
+        options.setTeamColor(GdxColorMaster.BLUE);
+        }
 //                    options.createFromGameObject();
         return options;
     }

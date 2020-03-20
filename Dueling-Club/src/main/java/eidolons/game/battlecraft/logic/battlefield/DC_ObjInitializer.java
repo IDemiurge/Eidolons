@@ -35,8 +35,6 @@ import main.system.launch.CoreEngine;
 
 import java.util.*;
 
-import static eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel.VOID_CELL;
-
 /**
  * parses data strings for various purposes:
  * 1) create units on coordinates at any time (default game init method)
@@ -210,11 +208,6 @@ public class DC_ObjInitializer {
             }
 
 
-            if (type.getName().equalsIgnoreCase(VOID_CELL)) {
-                c_dungeon.getVoidCoordinates().add(c);
-                continue;
-            }
-
             if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ)
                 owner = DC_Player.NEUTRAL;
             else if (level == 0) {
@@ -304,7 +297,7 @@ public class DC_ObjInitializer {
                 }
             }
             last = false;
-            BattleFieldObject unit = (BattleFieldObject) game.createUnit(type, c, owner);
+            BattleFieldObject unit = game.createUnit(type, c, owner);
             if (unit == null) {
                 continue;
             }

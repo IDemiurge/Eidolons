@@ -1,4 +1,4 @@
-package main.level_editor.gui.palette.tree;
+package main.level_editor.gui.panels.palette.tree;
 
 import main.entity.type.ObjType;
 import main.level_editor.gui.tree.data.DataNode;

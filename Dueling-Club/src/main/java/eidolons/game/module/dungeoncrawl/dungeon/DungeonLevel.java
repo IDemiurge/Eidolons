@@ -539,19 +539,6 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         this.nonVoidCoordinates = nonVoidCoordinates;
     }
 
-    public Set<Coordinates> getNonVoidCoordinates() {
-        if (nonVoidCoordinates == null) {
-            nonVoidCoordinates = new LinkedHashSet<>();
-        }
-        return nonVoidCoordinates;
-    }
-
-    public Set<Coordinates> getVoidCoordinates() {
-        if (voidCoordinates == null) {
-            voidCoordinates = new LinkedHashSet<>();
-        }
-        return voidCoordinates;
-    }
 
     public void addUnitGroup(LevelBlock levelBlock,
                              List<ObjAtCoordinate> unitsAtCoordinates, RngMainSpawner.UNIT_GROUP_TYPE groupType) {
@@ -561,14 +548,6 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public void addObj(ObjAtCoordinate obj) {
-        if (obj.getType().getName().equalsIgnoreCase(VOID_CELL)) {
-            getVoidCoordinates().add(obj.getCoordinates());
-            return;
-        }
-        if (obj.getType().getName().equalsIgnoreCase(NON_VOID_CELL)) {
-            getNonVoidCoordinates().add(obj.getCoordinates());
-            return;
-        }
         if (obj.getType().getOBJ_TYPE_ENUM() == DC_TYPE.UNITS) {
             addUnit(obj);
         } else {

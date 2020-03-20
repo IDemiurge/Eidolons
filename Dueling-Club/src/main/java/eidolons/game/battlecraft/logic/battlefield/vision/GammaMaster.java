@@ -6,6 +6,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
@@ -192,7 +193,7 @@ public class GammaMaster {
             return 0;
 
         float value = (float) (LIGHT_EMITTER_ALPHA_FACTOR / Math.sqrt(dst) *
-                master.getGame().getRules().getIlluminationRule()
+                IlluminationRule
                         .getLightEmission((DC_Obj) sub));
 
         boolean overlaying = ((BattleFieldObject) sub).isOverlaying();
@@ -259,7 +260,7 @@ public class GammaMaster {
         return alpha;
     }
 
-    private float getHiglightAlpha(int x, int y) {
+    protected float getHiglightAlpha(int x, int y) {
         //tutorial info
 
         if (mainExitCoordingates == null) {

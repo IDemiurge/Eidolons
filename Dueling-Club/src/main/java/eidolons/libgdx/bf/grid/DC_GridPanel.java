@@ -129,7 +129,7 @@ public class DC_GridPanel extends GridPanel {
             animMaster.setVisible(false);
 
             super.draw(batch, 1);
-            if (isDrawEmitters())
+            if (isShowGridEmitters())
                 if (isDrawEmittersOnTop())
                 drawEmitters(batch);
             drawComments(batch);
@@ -192,9 +192,13 @@ public class DC_GridPanel extends GridPanel {
         addActor(animMaster = AnimMaster.getInstance());
         animMaster.bindEvents();
         manager = new GridManager(this);
-        addActor(overlayManager = new GridOverlaysManager(this));
+        addActor(overlayManager = createOverlays());
 
         return this;
+    }
+
+    protected GridOverlaysManager createOverlays() {
+        return new GridOverlaysManager(this);
     }
 
     private void drawComments(Batch batch) {

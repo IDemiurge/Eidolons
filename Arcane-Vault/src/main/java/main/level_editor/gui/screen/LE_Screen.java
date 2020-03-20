@@ -26,8 +26,8 @@ import java.util.function.Supplier;
 public class LE_Screen extends GenericDungeonScreen {
 
     private static Map<Floor, Supplier<ScreenWithLoader>> cached = new HashMap();
-    static LE_Screen instance;
-    Floor floor;
+    private static LE_Screen instance;
+    private Floor floor;
     private LE_InputProcessor processor;
     private InputMultiplexer multiplexer;
 

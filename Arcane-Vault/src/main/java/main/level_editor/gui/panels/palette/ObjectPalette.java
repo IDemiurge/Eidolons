@@ -1,4 +1,4 @@
-package main.level_editor.gui.palette;
+package main.level_editor.gui.panels.palette;
 
 import main.content.DC_TYPE;
 import main.data.DataManager;
