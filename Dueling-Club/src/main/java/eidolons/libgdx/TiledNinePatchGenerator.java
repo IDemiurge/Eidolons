@@ -140,11 +140,11 @@ public class TiledNinePatchGenerator implements ApplicationListener {
         FileHandle handle = GDX.file(
          PathFinder.getImagePath() +
           path);
-        if (bottom == null || bottom == TextureCache.getEmptyTexture()) {
+        if (bottom == null || bottom == TextureCache.getMissingTexture()) {
             //            GdxImageMaster.flip()
             bottom = top;
         }
-        if (left == null || left == TextureCache.getEmptyTexture())
+        if (left == null || left == TextureCache.getMissingTexture())
             left = right;
         int offset = preventOverlapping ? 1 : 0;
         int timesL = maxHeight / left.getHeight();
@@ -230,7 +230,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
                                                boolean fillWithBlack) {
         String path = getPath(ninePatch, background, w, h);
         Texture texture = TextureCache.getOrCreate(path, true);
-        if (texture != null && texture != TextureCache.getEmptyTexture())
+        if (texture != null && texture != TextureCache.getMissingTexture())
             return texture;
         main.system.auxiliary.log.LogMaster.log(1,"NinePatch generated " + path );
         return generate(ninePatch, background, w, h,

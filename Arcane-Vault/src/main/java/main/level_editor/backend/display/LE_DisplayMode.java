@@ -1,25 +1,48 @@
 package main.level_editor.backend.display;
 
-public class LE_DisplayMode {
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+
+import java.io.Serializable;
+
+public class LE_DisplayMode  implements Serializable {
 
     boolean showStacks;
     boolean showMetaAi;
     boolean showScripts;
 
-    boolean showCoordinates;
+    boolean showCoordinates = true;
     boolean showIllumination;
     boolean showSpace;
 
     boolean useColors;
 
     public void toggleAll(){
-
+        showCoordinates = !showCoordinates;
+        showScripts = !showScripts;
+        showScripts = !showScripts;
+        showIllumination = !showIllumination;
+        showSpace = !showSpace;
+        useColors = !useColors;
+        GuiEventManager.trigger(GuiEventType.LE_DISPLAY_MODE_UPDATE );
     }
     public void onAll(){
-
+        showCoordinates = true;
+        showScripts = true;
+        showScripts = true ;
+        showIllumination = true;
+        showSpace = true;
+        useColors = true;
+        GuiEventManager.trigger(GuiEventType.LE_DISPLAY_MODE_UPDATE );
     }
     public void offAll(){
-
+        useColors = false;
+        showCoordinates = false;
+        showScripts = false;
+        showScripts = false;
+        showIllumination = false;
+        showSpace = false;
+        GuiEventManager.trigger(GuiEventType.LE_DISPLAY_MODE_UPDATE );
     }
 
     public boolean isShowStacks() {
@@ -76,5 +99,6 @@ public class LE_DisplayMode {
 
     public void setUseColors(boolean useColors) {
         this.useColors = useColors;
+        GuiEventManager.trigger(GuiEventType.LE_DISPLAY_MODE_UPDATE );
     }
 }

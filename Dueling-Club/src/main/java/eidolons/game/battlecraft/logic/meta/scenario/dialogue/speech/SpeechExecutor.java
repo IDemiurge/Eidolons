@@ -383,14 +383,14 @@ public class SpeechExecutor {
                         if (!RandomWizard.chance(chance)) {
                             continue;
                         }
-                        master.getGame().createUnit(bfType, coordinates,
+                        master.getGame().createObject(bfType, coordinates,
                                 speechAction == ADD ? master.getGame().getPlayer(false)
                                         : DC_Player.NEUTRAL);
                     }
                     break;
                 }
 
-                master.getGame().createUnit(bfType, c,
+                master.getGame().createObject(bfType, c,
                         speechAction == ADD ? master.getGame().getPlayer(false)
                                 : DC_Player.NEUTRAL);
                 break;

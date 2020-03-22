@@ -302,11 +302,8 @@ public class GridOverlaysManager extends SuperActor {
 
     public void drawOverlay(Actor parent, OVERLAY overlay, Batch batch, Obj obj, int x, int y) {
         //TODO SCALING
-        if (isOverlayAlphaOn(overlay)) {
-            batch.setColor(1, 1, 1, fluctuatingAlpha);
-        } else {
-            batch.setColor(1, 1, 1, 1);
-        }
+        initOverlayColor(batch, obj, overlay);
+
         float xPos = 0, yPos = 0;
         if (overlay.alignment != null) {
             Vector2 v = GdxMaster.getAlignedPos(parent, overlay.alignment,
@@ -332,7 +329,15 @@ public class GridOverlaysManager extends SuperActor {
 
     }
 
-    private void addTooltip(Obj obj, Actor parent, OVERLAY overlay, Vector2 v, int x, int y) {
+    protected void initOverlayColor(Batch batch, Obj obj, OVERLAY overlay) {
+        if (isOverlayAlphaOn(overlay)) {
+            batch.setColor(1, 1, 1, fluctuatingAlpha);
+        } else {
+            batch.setColor(1, 1, 1, 1);
+        }
+    }
+
+    protected void addTooltip(Obj obj, Actor parent, OVERLAY overlay, Vector2 v, int x, int y) {
         Rectangle rect = null;
         if (isTooltipRequired(overlay)) {
             if (obj == null) {

@@ -8,7 +8,9 @@ import main.level_editor.backend.functions.mapping.LE_ModuleHandler;
 import main.level_editor.backend.functions.mouse.LE_MouseHandler;
 import main.level_editor.backend.functions.palette.PaletteHandlerImpl;
 import main.level_editor.backend.handlers.EditHandler;
+import main.level_editor.backend.handlers.LE_DialogHandler;
 import main.level_editor.backend.handlers.LE_MenuHandler;
+import main.level_editor.backend.handlers.ai.LE_AiHandler;
 import main.level_editor.backend.handlers.model.LE_ModelManager;
 import main.level_editor.backend.handlers.operation.OperationHandler;
 import main.level_editor.backend.handlers.operation.obj.LE_ObjHandler;
@@ -18,6 +20,7 @@ import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.sim.LE_IdManager;
 import main.level_editor.backend.struct.level.Floor;
 import main.level_editor.gui.grid.LE_CameraHandler;
+import main.level_editor.gui.stage.LE_KeyHandler;
 
 public class LE_Manager {
 
@@ -27,6 +30,9 @@ public class LE_Manager {
     private final LE_ObjHandler objHandler;
     private final LE_CameraHandler cameraHandler;
     private final EditHandler editHandler;
+    private final LE_KeyHandler keyHandler;
+    private final LE_AiHandler aiHandler;
+    private final LE_DialogHandler dialogHandler;
     private Floor floor;
     private LE_SelectionHandler selectionHandler;
     private LE_ModelManager modelManager;
@@ -54,6 +60,21 @@ public class LE_Manager {
         paletteHandler = new PaletteHandlerImpl(this);
         cameraHandler = new LE_CameraHandler(this);
         editHandler = new EditHandler(this);
+        keyHandler = new LE_KeyHandler(this);
+        aiHandler = new LE_AiHandler(this);
+        dialogHandler = new LE_DialogHandler(this);
+    }
+
+    public LE_DialogHandler getDialogHandler() {
+        return dialogHandler;
+    }
+
+    public LE_AiHandler getAiHandler() {
+        return aiHandler;
+    }
+
+    public LE_KeyHandler getKeyHandler() {
+        return keyHandler;
     }
 
     public LE_GameSim getGame() {

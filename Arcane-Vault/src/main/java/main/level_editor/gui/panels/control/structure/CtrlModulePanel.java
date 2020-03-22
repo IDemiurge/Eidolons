@@ -22,7 +22,7 @@ public class CtrlModulePanel extends LE_ControlPanel<IModuleHandler> {
 
     @Override
     protected int getWrap() {
-        return 3;
+        return 5;
     }
 
     @Override

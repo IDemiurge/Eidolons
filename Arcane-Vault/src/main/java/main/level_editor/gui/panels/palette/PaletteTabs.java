@@ -61,7 +61,7 @@ public class PaletteTabs extends TabbedPane implements TabbedPaneListener {
                     String s = XmlNodeMaster.getNodeList (n, true).stream().map(
                             node -> XML_Formatter.restoreXmlNodeName(node.getNodeName()
                             )).collect(Collectors.joining(";"));
-                        types.addAll(DataManager.toTypeList(s , C_OBJ_TYPE.BF_OBJ));
+                        types.addAll(DataManager.toTypeList(s , C_OBJ_TYPE.BF_OBJ_LE));
                     }
                     groupTabs.add(new PaletteTab(file.getName(), types));
                 }

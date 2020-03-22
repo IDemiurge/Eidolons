@@ -23,6 +23,11 @@ public class LE_Module implements LayeredData<LE_Zone> {
     }
 
     @Override
+    public String toString() {
+        return module.toString();
+    }
+
+    @Override
     public Set<LE_Zone> getChildren() {
         return zones;
     }

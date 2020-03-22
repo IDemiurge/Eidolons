@@ -23,7 +23,7 @@ public class CtrlStructurePanel extends LE_ControlPanel<IStructureManager> {
 
     @Override
     protected int getWrap() {
-        return 4;
+        return 5;
     }
 
     @Override

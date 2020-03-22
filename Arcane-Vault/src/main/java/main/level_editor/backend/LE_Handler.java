@@ -7,7 +7,11 @@ import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
 import main.level_editor.backend.functions.mapping.LE_ModuleHandler;
 import main.level_editor.backend.functions.mouse.LE_MouseHandler;
+import main.level_editor.backend.functions.palette.PaletteHandlerImpl;
+import main.level_editor.backend.handlers.EditHandler;
+import main.level_editor.backend.handlers.LE_DialogHandler;
 import main.level_editor.backend.handlers.LE_MenuHandler;
+import main.level_editor.backend.handlers.ai.LE_AiHandler;
 import main.level_editor.backend.handlers.model.LE_DataModel;
 import main.level_editor.backend.handlers.model.LE_ModelManager;
 import main.level_editor.backend.handlers.operation.Operation;
@@ -18,6 +22,8 @@ import main.level_editor.backend.handlers.structure.LE_StructureManager;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.sim.LE_IdManager;
 import main.level_editor.backend.struct.level.Floor;
+import main.level_editor.gui.grid.LE_CameraHandler;
+import main.level_editor.gui.stage.LE_KeyHandler;
 
 public class LE_Handler {
 
@@ -29,6 +35,30 @@ public class LE_Handler {
 
     public void operation(Operation.LE_OPERATION operation, Object... args) {
         getOperationHandler().operation(operation, args);
+    }
+
+    public LE_DialogHandler getDialogHandler() {
+        return manager.getDialogHandler();
+    }
+
+    public LE_AiHandler getAiHandler() {
+        return manager.getAiHandler();
+    }
+
+    public LE_KeyHandler getKeyHandler() {
+        return manager.getKeyHandler();
+    }
+
+    public LE_CameraHandler getCameraHandler() {
+        return manager.getCameraHandler();
+    }
+
+    public EditHandler getEditHandler() {
+        return manager.getEditHandler();
+    }
+
+    public PaletteHandlerImpl getPaletteHandler() {
+        return manager.getPaletteHandler();
     }
 
     public OperationHandler getOperationHandler() {

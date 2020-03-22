@@ -1,6 +1,7 @@
 package main.level_editor.gui.grid;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.core.Eidolons;
@@ -19,6 +20,18 @@ public class LE_GridOverlays extends GridOverlaysManager {
     @Override
     public void drawOverlay(Actor parent, OVERLAY overlay, Batch batch, Obj obj, int x, int y) {
         super.drawOverlay(parent, overlay, batch, obj, x, y);
+    }
+
+    @Override
+    protected void initOverlayColor(Batch batch, Obj obj, OVERLAY overlay) {
+        //zone colors?
+        super.initOverlayColor(batch, obj, overlay);
+    }
+
+    @Override
+    protected void addTooltip(Obj obj, Actor parent, OVERLAY overlay, Vector2 v, int x, int y) {
+
+
     }
 
     @Override

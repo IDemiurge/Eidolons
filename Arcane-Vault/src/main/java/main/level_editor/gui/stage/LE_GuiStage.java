@@ -3,12 +3,12 @@ package main.level_editor.gui.stage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.stage.GenericGuiStage;
 import main.level_editor.LevelEditor;
 import main.level_editor.gui.components.DataTable;
@@ -25,7 +25,6 @@ import main.level_editor.gui.tree.LE_TreeHolder;
 public class LE_GuiStage extends GenericGuiStage {
 
     private   ClosablePanel dialogueTable;
-    private ClosablePanel treeHolderPanel;
     private TopPanel topPanel;
     private LE_ButtonStripe buttons;
     private ClosablePanel controlPanel;
@@ -49,8 +48,7 @@ public class LE_GuiStage extends GenericGuiStage {
         controlPanel.add(toolHolder);
         tabs.switchTab(0);
 
-        treeHolderPanel = new ClosablePanel();
-        treeHolderPanel.add(treePanel = new LE_TreeHolder());
+        treePanel = new LE_TreeHolder();
         palettePanel = new HybridPalette();
         topPanel = new TopPanel();
         initButtons();
@@ -59,7 +57,6 @@ public class LE_GuiStage extends GenericGuiStage {
         } else {
             addActor(palettePanel);
             addActor(topPanel);
-            addActor(treeHolderPanel);
             addActor((controlPanel));
         }
 
@@ -73,7 +70,7 @@ public class LE_GuiStage extends GenericGuiStage {
 
     private void initButtons() {
         buttons = new LE_ButtonStripe();
-        treeHolderPanel.setLinkedButton(buttons.getStructurePanel());
+        treePanel.setLinkedButton(buttons.getStructurePanel());
         controlPanel.setLinkedButton(buttons.getControlPanel());
         palettePanel.setLinkedButton(buttons.getPalettePanel());
 //treeHolderPanel.setLinkedButton(buttons.getBrushes());
@@ -82,25 +79,39 @@ public class LE_GuiStage extends GenericGuiStage {
 
     private void initTable() {
         clear();
-        addActor(innerTable = new TablePanelX(Gdx.graphics.getWidth()
-                * ScreenMaster.WIDTH_WINDOWED /100, Gdx.graphics.getHeight()* ScreenMaster.HEIGHT_WINDOWED/100) {
-            @Override
-            public void layout() {
-                super.layout();
-                return;
-            }
-        });
+        addActor(innerTable = new TablePanelX( ));
+//        Gdx.graphics.getWidth()
+//                * ScreenMaster.WIDTH_WINDOWED /100* ScreenMaster.WIDTH_WINDOWED /100,
+//                Gdx.graphics.getHeight()* ScreenMaster.HEIGHT_WINDOWED/100* ScreenMaster.HEIGHT_WINDOWED/100) {
+//            @Override
+//            public void layout() {
+//                super.layout();
+//                GdxMaster.top(topPanel);
+//                GdxMaster.top(controlPanel);
+//                GdxMaster.top(buttons);
+//                return;
+//            }
+//        });
+        GdxMaster.center(innerTable);
         innerTable.debugAll();
-        Cell cell = innerTable.add(topPanel = new TopPanel()).expandX().height(100);
+        Cell cell = innerTable.add(topPanel = new TopPanel());
 
-        cell = innerTable.add(buttons).left().right().expandX().height(100);
+        cell = innerTable.add(buttons).left().right().expandX();
+//        innerTable.row();
+        cell =  innerTable.add(controlPanel).center().top();
         innerTable.row();
-        cell =  innerTable.add(controlPanel).colspan(2).center().top().height(200);
-        innerTable.row();
-        cell =   innerTable.add(treePanel = new LE_TreeHolder()).left();
+        TablePanelX  c;
+        cell =   innerTable.add(c= new TablePanelX<>());
+        cell =   c.add(treePanel).colspan(1).left();
         //could have 2 - one top and one bottom?
-        cell = innerTable.add(palettePanel = new HybridPalette()).size(400, 900).center();
+        cell =   c.add(new Actor()).colspan(3).width(1200);
+        cell = c.add(palettePanel).colspan(1).right().top().size(400, 900) ;
 
+
+        innerTable.setY(0);
+//        innerTable.setLayoutEnabled(false);
+//        innerTable.background(NinePatchFactory.getLightDecorPanelDrawable());
+        innerTable.setFillParent(true);
     }
 
 
@@ -145,9 +156,17 @@ public class LE_GuiStage extends GenericGuiStage {
     @Override
     public boolean keyDown(int keyCode) {
         Eidolons.onNonGdxThread(()->{
-            LevelEditor.getCurrent().getGame().getKeyManager().handleKeyDown(keyCode);
+            LevelEditor.getManager().getKeyHandler().keyDown(keyCode);
         });
         return super.keyDown(keyCode);
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        Eidolons.onNonGdxThread(()->{
+            LevelEditor.getManager().getKeyHandler().keyTyped(character);
+        });
+        return super.keyTyped(character);
     }
 
     @Override

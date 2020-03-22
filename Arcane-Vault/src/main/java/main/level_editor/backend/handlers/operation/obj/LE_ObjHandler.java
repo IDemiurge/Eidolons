@@ -4,6 +4,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.operation.Operation;
@@ -19,28 +20,54 @@ public class LE_ObjHandler extends LE_Handler {
     public void move(BattleFieldObject bfObj, Coordinates c) {
         bfObj.setCoordinates(c);
         GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, bfObj);
+        //TODO overlays!
     }
 
     public void remove(BattleFieldObject bfObj) {
         getGame().softRemove(bfObj);
+        getAiHandler().removed(bfObj);
         GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, bfObj);
 
     }
 
     public void addSelectedObj(int gridX, int gridY) {
-        operation(Operation.LE_OPERATION.ADD_OBJ, getModel().getPaletteSelection().getObjType(), Coordinates.get(gridX,gridY));
+        operation(Operation.LE_OPERATION.ADD_OBJ, getModel().getPaletteSelection().getObjType(), Coordinates.get(gridX, gridY));
     }
 
     public BattleFieldObject addObj(ObjType objType, int gridX, int gridY) {
-      return    getGame().createUnit(objType, gridX, gridY, DC_Player.NEUTRAL);
+        BattleFieldObject bfObj = getGame().createObject(objType, gridX, gridY, DC_Player.NEUTRAL);
+        getAiHandler().objectAdded(bfObj);
+        return bfObj;
         //TODO Player!!!
+    }
 
-
+    public BattleFieldObject addOverlay(DIRECTION d, ObjType objType, int gridX, int gridY) {
+        BattleFieldObject object = getGame().createObject(objType, gridX, gridY, DC_Player.NEUTRAL);
+        object.setDirection(d);
+        //TODO Player!!!
+        return object;
     }
 
     public void clear(Coordinates coordinates) {
         for (BattleFieldObject battleFieldObject : getGame().getObjectsAt(coordinates)) {
             remove(battleFieldObject);
         }
+    }
+
+    public void removeSelected() {
+        operation(Operation.LE_OPERATION.CLEAR_START);
+
+        for (Integer id : getSelectionHandler().getSelection().getIds()) {
+            removeById(id);
+        }
+
+        operation(Operation.LE_OPERATION.CLEAR_END);
+    }
+
+    private void removeById(Integer id) {
+        if (getIdManager().getObjectById(id) instanceof BattleFieldObject) {
+            operation(Operation.LE_OPERATION.REMOVE_OBJ,  getIdManager().getObjectById(id));
+        }
+
     }
 }

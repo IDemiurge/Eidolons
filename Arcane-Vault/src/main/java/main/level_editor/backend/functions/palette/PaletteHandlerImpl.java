@@ -44,10 +44,10 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
                     String s = XmlNodeMaster.getNodeList(n, true).stream().map(
                             node -> XML_Formatter.restoreXmlNodeName(node.getNodeName()
                             )).collect(Collectors.joining(";"));
-                    types.addAll(DataManager.toTypeList(s, C_OBJ_TYPE.BF_OBJ));
+                    types.addAll(DataManager.toTypeList(s, C_OBJ_TYPE.BF_OBJ_LE));
                 }
             } else {
-                types.addAll(DataManager.toTypeList(data, C_OBJ_TYPE.BF_OBJ));
+                types.addAll(DataManager.toTypeList(data, C_OBJ_TYPE.BF_OBJ_LE));
             }
             String fileName = StringMaster.cropFormat(file.getName());
             workspaceTypeMap.put(fileName, types);

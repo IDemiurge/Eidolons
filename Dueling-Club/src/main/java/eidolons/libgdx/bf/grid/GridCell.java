@@ -32,6 +32,7 @@ import eidolons.system.controls.GlobalController;
 import main.game.bf.Coordinates;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
+import main.system.auxiliary.ContainerUtils;
 
 import static main.system.GuiEventType.*;
 
@@ -207,17 +208,20 @@ public class GridCell extends Group implements Borderable {
 //        }
         super.act(delta);
         if (isCoordinatesShown()) {
-            if (GammaMaster.DEBUG_MODE) {
-                DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(gridX, gridY));
-                cordsText.setText(getGridX() + ":" + getGridY() + "\n gamma="
-                        + DC_Game.game.getVisionMaster().getGammaMaster().
-                        getGammaForCell(getGridX(), getGridY())
-                        + "\n illumination="
-                        + cell.getIntParam(PARAMS.ILLUMINATION)
-                );
-                cordsText.setPosition(0, getHeight() / 2 - cordsText.getHeight() / 2);
+            DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(gridX, gridY));
+            cordsText.setText(
+                    ContainerUtils.build(getGridX(), ":", getGridY())
+                            +
+                            (GammaMaster.DEBUG_MODE ? //TODO into method
+                                    "\n gamma="
+                                            + DC_Game.game.getVisionMaster().getGammaMaster().
+                                            getGammaForCell(getGridX(), getGridY())
+                                            + "\n illumination="
+                                            + cell.getIntParam(PARAMS.ILLUMINATION)
+                                    : "")
+            );
+            cordsText.setPosition(0, getHeight() / 2 - cordsText.getHeight() / 2);
 
-            }
         } else {
             if (cordsText.isVisible()) {
                 cordsText.setVisible(false);

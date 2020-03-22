@@ -23,4 +23,9 @@ public class LE_Zone  implements LayeredData<LE_Block> {
     public Set<LE_Block> getChildren() {
         return blocks;
     }
+
+    @Override
+    public String toString() {
+        return zone.toString();
+    }
 }

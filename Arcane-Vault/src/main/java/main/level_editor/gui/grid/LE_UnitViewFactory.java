@@ -3,6 +3,7 @@ package main.level_editor.gui.grid;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.bf.grid.OverlayView;
 import eidolons.libgdx.bf.grid.UnitViewFactory;
@@ -11,13 +12,25 @@ import main.level_editor.LevelEditor;
 
 public class LE_UnitViewFactory extends UnitViewFactory {
 
+    private static LE_UnitViewFactory instance;
+
+    public static LE_UnitViewFactory getInstance() {
+        if (instance == null) {
+            instance = new LE_UnitViewFactory();
+        }
+        return instance;
+    }
+
     @Override
     public ClickListener createListener(BattleFieldObject bfObj) {
         return new ClickListener(-1) {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelEditor.getCurrent().getManager().getMouseHandler().handleObjectClick(event, getTapCount(), bfObj);
+                InputEvent e = new InputEvent();
+                e.setButton(event.getButton());
+                Eidolons.onNonGdxThread(() -> LevelEditor.getCurrent().
+                        getManager().getMouseHandler().handleObjectClick(e, getTapCount(), bfObj));
             }
 
             @Override
@@ -29,13 +42,9 @@ public class LE_UnitViewFactory extends UnitViewFactory {
         };
     }
 
-    private static LE_UnitViewFactory instance;
-
-    public static LE_UnitViewFactory getInstance() {
-        if (instance == null) {
-            instance = new LE_UnitViewFactory();
-        }
-        return instance;
+    @Override
+    public void addOverlayingListener(OverlayView view, BattleFieldObject bfObj) {
+        view.addListener(UnitViewFactory.doCreateListener(bfObj));
     }
 
     public static GridUnitView doCreate(BattleFieldObject battleFieldObject) {

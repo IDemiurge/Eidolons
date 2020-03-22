@@ -70,7 +70,7 @@ public class PuzzleActions extends PuzzleElement {
             case animate_enemies:
                 for (BattleFieldObject object : getObjects(puzzle)) {
                     if (object.checkBool(GenericEnums.STD_BOOLS.LIVING_STATUE)) {
-                        Unit unit = (Unit) object.getGame().createUnit(DataManager.getType("Living " + object.getName(), DC_TYPE.UNITS),
+                        Unit unit = (Unit) object.getGame().createObject(DataManager.getType("Living " + object.getName(), DC_TYPE.UNITS),
                                 object.getCoordinates(), object.getGame().getPlayer(false));
                         object.kill();
                         unit.getAI().setEngaged(true);
@@ -100,9 +100,7 @@ public class PuzzleActions extends PuzzleElement {
     }
 
     private static boolean isPaleReturn(Puzzle puzzle, PuzzleResolution.PUZZLE_PUNISHMENT punishment) {
-        if (EidolonsGame.BRIDGE)
-            return false;
-        return true;
+        return !EidolonsGame.BRIDGE;
     }
 
     public static void resolution(PuzzleResolution.PUZZLE_RESOLUTION resolution, Puzzle puzzle, String s) {

@@ -1,10 +1,11 @@
 package main.level_editor.gui.tree;
 
-import com.kotcrab.vis.ui.widget.VisTable;
+import eidolons.libgdx.gui.NinePatchFactory;
+import main.level_editor.gui.panels.ClosablePanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
-public class LE_TreeHolder extends VisTable {
+public class LE_TreeHolder extends ClosablePanel {
 
     LE_TreeView treeView;
 
@@ -14,7 +15,7 @@ public class LE_TreeHolder extends VisTable {
         //size?
         add(treeView = new LE_TreeView()).width(500).height(900).center();
 
-//        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
 
         GuiEventManager.bind(GuiEventType.LE_TREE_RESET , p->{
             setUserObject(p.get());

@@ -11,7 +11,8 @@ import java.util.Set;
 import static main.system.auxiliary.log.LogMaster.log;
 
 public abstract class TreeX<T extends DataNode> extends VisTree {
-    private Node root;
+    private static final boolean LOGGED = false;
+    protected Node root;
 
     @Override
     public void setUserObject(Object userObject) {
@@ -22,18 +23,20 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
         expandAll();
     }
 
-    private Node createRootNode(T rootNode) {
+    protected Node createRootNode(T rootNode) {
         return (createNode(rootNode));
     }
 
-    private void recursiveAdd(Node root, T node) {
+    protected void recursiveAdd(Node root, T node) {
         root.add(root = createNode(node));
-        log(1, hashCode() + ": recursiveAdd " + node + " " + root);
+        if (LOGGED)
+            log(1, hashCode() + ": recursiveAdd " + node + " " + root);
         Set<? extends T> set = node.getChildren();
         if (set != null)
             for (T child : set) {
                 if (child.isLeaf()) {
-                    log(1, hashCode() + ": add child " + child);
+                    if (LOGGED)
+                        log(1, hashCode() + ": add child " + child);
                     root.add(createNode(child));
                 } else
                     recursiveAdd(root, child);

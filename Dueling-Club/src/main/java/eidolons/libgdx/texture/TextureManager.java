@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.bf.GridMaster;
 import main.content.values.parameters.PARAMETER;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -108,7 +108,7 @@ public class TextureManager {
             FRAME_ROWS = 1;
         }
         Texture sheet = path == null ? texture : TextureCache.getOrCreate(path);
-        if (sheet == TextureCache.getEmptyTexture()) {
+        if (sheet == TextureCache.getMissingTexture()) {
             main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>> Sprite not found: " + path);
         }
         TextureRegion[][] tmp = null;

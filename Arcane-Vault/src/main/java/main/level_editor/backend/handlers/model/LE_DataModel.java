@@ -15,6 +15,7 @@ import main.level_editor.gui.tree.data.LE_TreeBuilder;
 import main.level_editor.gui.tree.data.LayeredData;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.CloneMaster;
 
 public class LE_DataModel {
 
@@ -33,6 +34,17 @@ public class LE_DataModel {
     public LE_DataModel() {
         selection = new LE_Selection();
         displayMode = new LE_DisplayMode();
+        paletteSelection = new PaletteSelection(getDefaultWallType());
+    }
+
+    public LE_DataModel(LE_DataModel model) {
+        copy(model);
+    }
+
+    private void copy(LE_DataModel model) {
+        selection = (LE_Selection) CloneMaster.deepCopy(model.getSelection());
+        displayMode = (LE_DisplayMode) CloneMaster.deepCopy(model.getDisplayMode());
+        paletteSelection = (PaletteSelection) CloneMaster.deepCopy(model.getPaletteSelection());
     }
 
     public LE_DataNode getTreeModel() {

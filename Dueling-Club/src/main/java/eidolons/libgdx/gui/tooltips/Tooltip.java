@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.StageX;
@@ -45,8 +46,11 @@ public abstract class Tooltip<T extends Actor> extends TablePanelX<T> {
 
             public boolean handle(Event e) {
                 if (isBattlefield()) {
-                    if (DungeonScreen.getInstance().isBlocked())
-                        return true;
+                    if (ScreenMaster.getScreen() instanceof DungeonScreen){
+                        if (((DungeonScreen) ScreenMaster.getScreen()).isBlocked()) {
+                            return true;
+                        }
+                    }
                 } else {
                     if (ConfirmationPanel.getInstance().isVisible())
                         return true;

@@ -120,7 +120,7 @@ public class SummonEffect extends MicroEffect implements OneshotEffect {
         }
         Ref REF2 = ref.getCopy();
         REF2.removeValue(KEYS.TARGET);
-        setUnit((BattleFieldObject) game.createUnit(type, c.x, c.y, owner, REF2));
+        setUnit((BattleFieldObject) game.createObject(type, c.x, c.y, owner, REF2));
         unit.setSummoned(true);
         if (unit instanceof Unit) {
             if (!((Unit) unit).isHero()) {

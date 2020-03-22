@@ -90,7 +90,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
         }
 
         TextureRegion texture = getOrCreateR(path);
-        if (texture.getTexture() != TextureCache.getEmptyTexture())
+        if (texture.getTexture() != TextureCache.getMissingTexture())
             backTexture = texture;
 
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.SPRITE_CACHE_ON)) {

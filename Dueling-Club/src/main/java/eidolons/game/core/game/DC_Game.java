@@ -407,8 +407,8 @@ public class DC_Game extends GenericGame {
     }
 
     @Override
-    public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
-        BattleFieldObject unit = ((BattleFieldObject) super.createUnit(type, x, y, owner, ref.getCopy()));
+    public MicroObj createObject(ObjType type, int x, int y, Player owner, Ref ref) {
+        BattleFieldObject unit = ((BattleFieldObject) super.createObject(type, x, y, owner, ref.getCopy()));
         game.getState().addObject(unit);
         unit.toBase();
         unit.resetObjects();
@@ -876,13 +876,13 @@ public class DC_Game extends GenericGame {
     }
 
     @Override
-    public BattleFieldObject createUnit(ObjType type, int x, int y, Player owner) {
-        return (BattleFieldObject) super.createUnit(type, x, y, owner);
+    public BattleFieldObject createObject(ObjType type, int x, int y, Player owner) {
+        return (BattleFieldObject) super.createObject(type, x, y, owner);
     }
 
     @Override
-    public BattleFieldObject createUnit(ObjType type, Coordinates c, Player owner) {
-        return (BattleFieldObject) super.createUnit(type, c, owner);
+    public BattleFieldObject createObject(ObjType type, Coordinates c, Player owner) {
+        return (BattleFieldObject) super.createObject(type, c, owner);
     }
 
     protected void clearCaches() {

@@ -19,21 +19,12 @@ import java.util.Set;
 
 public class LE_SelectionHandler extends LE_Handler {
 
-    LE_Selection previousSelection;
-    LE_Selection selection;
+    //    LE_Selection previousSelection;
+//    LE_Selection selection;
     private SELECTION_MODE mode = SELECTION_MODE.NONE;
 
     public LE_SelectionHandler(LE_Manager manager) {
         super(manager);
-        selection = new LE_Selection();
-    }
-
-    public void previousSelection() {
-        if (previousSelection == null) {
-            return;
-        }
-        setSelection(getPreviousSelection());
-        previousSelection = null;
     }
 
     public Set<Coordinates> selectArea() {
@@ -46,22 +37,14 @@ public class LE_SelectionHandler extends LE_Handler {
         return new LinkedHashSet<>(CoordinatesMaster.getCoordinatesBetween(c1, c2));
     }
 
-    public LE_Selection getPreviousSelection() {
-        return previousSelection;
-    }
-
     public LE_Selection getSelection() {
-        return selection;
+        return getModel().getSelection();
     }
 
     public void deselect() {
-        setSelection(new LE_Selection());
+        getModelManager().modelChanged();
+        getModel().setSelection(new LE_Selection());
         mode = SELECTION_MODE.NONE;
-    }
-
-    public void setSelection(LE_Selection selection) {
-        previousSelection = this.selection;
-        this.selection = selection;
     }
 
 
@@ -72,18 +55,22 @@ public class LE_SelectionHandler extends LE_Handler {
         } else {
             getModel().getSelection().getIds().add(id);
         }
-        GuiEventManager.trigger(GuiEventType.LE_SELECTION_CHANGED, getModel().getSelection());
+        selectionChanged();
     }
 
     public void select(BattleFieldObject bfObj) {
         Integer id = getIdManager().getId(bfObj);
         getModel().getSelection().setSingleSelection(id);
+        selectionChanged();
+    }
+
+    private void selectionChanged() {
         GuiEventManager.trigger(GuiEventType.LE_SELECTION_CHANGED, getModel().getSelection());
     }
 
     public boolean isSelected(DC_Obj obj) {
         if (obj instanceof DC_Cell) {
-            if (selection.getCoordinates().contains(obj.getCoordinates())) {
+            if (getSelection().getCoordinates().contains(obj.getCoordinates())) {
                 return true;
             }
         }
@@ -92,7 +79,7 @@ public class LE_SelectionHandler extends LE_Handler {
         }
         Integer id = getIdManager().getId((BattleFieldObject) obj);
         if (id != null)
-            return selection.getIds().contains(id);
+            return getSelection().getIds().contains(id);
         return false;
     }
 
@@ -104,12 +91,37 @@ public class LE_SelectionHandler extends LE_Handler {
         return (BattleFieldObject) obj;
     }
 
+    public void areaSelected() {
+        for (Coordinates c : getSelection().getCoordinates()) {
+            for (BattleFieldObject object : getGame().getObjectsAt(c)) {
+                getSelection().getIds().add(getIdManager().getId(object));
+            }
+        }
+        getModelManager().modelChanged();
+    }
+
+    public void addAreaToSelectedCoordinates(Coordinates c) {
+        Coordinates origin = getSelection().getCoordinates().iterator().next();
+        getSelection().getCoordinates().addAll(CoordinatesMaster.getCoordinatesBetween(c, origin));
+        selectionChanged();
+        getModelManager().modelChanged();
+    }
+
     public enum SELECTION_MODE {
         NONE,
         COORDINATE,
         OBJECT,
         AREA,
         ;
+    }
+
+    public void selectedCoordinate(Coordinates c) {
+        getSelection().getCoordinates().clear();
+        addSelectedCoordinate(c);
+    }
+
+    public void addSelectedCoordinate(Coordinates c) {
+        getSelection().getCoordinates().add(c);
     }
 
     public Coordinates selectCoordinate() {

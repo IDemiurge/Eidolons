@@ -393,9 +393,6 @@ public abstract class GridPanel extends Group {
                     if (!isVisibleByDefault(object))
                         overlay.setVisible(false);
                     viewMap.put(object, overlay);
-                    Vector2 v = GridMaster.getVectorForCoordinate(
-                            object.getCoordinates(), false, false, this);
-                    overlay.setPosition(v.x, v.y - GridMaster.CELL_H);
                     addOverlay(overlay);
                 }
             }
@@ -471,13 +468,17 @@ public abstract class GridPanel extends Group {
         return view;
     }
 
-    protected void addUnitView(BattleFieldObject heroObj) {
-        if (viewMap.get(heroObj) != null) {
+    protected void addUnitView(BattleFieldObject object) {
+        if (viewMap.get(object) != null) {
             return;
         }
-        BaseView uv = createUnitView(heroObj);
-        unitMoved(heroObj);
-        if (!isVisibleByDefault(heroObj))
+        if (object.isOverlaying()) {
+            addOverlay( doCreateOverlay(object));
+            return;
+        }
+        BaseView uv = createUnitView(object);
+        unitMoved(object);
+        if (!isVisibleByDefault(object))
             uv.setVisible(false);
     }
 
@@ -587,6 +588,9 @@ public abstract class GridPanel extends Group {
     }
 
     public void addOverlay(OverlayView view) {
+        Vector2 v = GridMaster.getVectorForCoordinate(
+                view.getUserObject().getCoordinates(), false, false, this);
+        view.setPosition(v.x, v.y - GridMaster.CELL_H);
         int width = (int) (GridMaster.CELL_W * view.getScale());
         int height = (int) (GridMaster.CELL_H * view.getScale());
         Dimension dimension = OverlayingMaster.getOffsetsForOverlaying(view.getDirection(), width, height, view);

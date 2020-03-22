@@ -34,7 +34,9 @@ public class Operation {
         INSERT_END(false, true),
 
 
-        EDIT;
+        EDIT,
+        REMOVE_OVERLAY,
+        ADD_OVERLAY;
 
         LE_OPERATION() {
         }

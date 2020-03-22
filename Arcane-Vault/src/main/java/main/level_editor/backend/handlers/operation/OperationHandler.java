@@ -3,6 +3,7 @@ package main.level_editor.backend.handlers.operation;
 import eidolons.entity.obj.BattleFieldObject;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.system.GuiEventManager;
@@ -24,10 +25,14 @@ public class OperationHandler extends LE_Handler {
         Coordinates c;
         ObjType type;
         BattleFieldObject obj = null;
-
-                main.system.auxiliary.log.LogMaster.log(1, "operation: " + operation + " args:" + ListMaster.toStringList(args));
+        DIRECTION d = null;
+        main.system.auxiliary.log.LogMaster.log(1, "operation: " + operation + " args:" + ListMaster.toStringList(args));
         switch (operation) {
 
+            case SELECTION:
+                break;
+            case MODEL_CHANGE:
+                break;
             case VOID_TOGGLE:
                 c = (Coordinates) args[0];
                 boolean isVoid = manager.getGame().toggleVoid(c);
@@ -40,6 +45,10 @@ public class OperationHandler extends LE_Handler {
                                 : GuiEventType.CELL_RESET_VOID, c);
                 //TODO no guarantee of success!!!
                 break;
+            case MODIFY_STRUCTURE_START:
+                break;
+            case MODIFY_STRUCTURE_END:
+                break;
             case MOVE_OBJ:
                 obj = (BattleFieldObject) args[0];
                 args = new Object[]{obj.getCoordinates()};
@@ -50,22 +59,37 @@ public class OperationHandler extends LE_Handler {
                 BattleFieldObject unit = getObjHandler().addObj(type, c.x, c.y);
                 args = new BattleFieldObject[]{unit};
                 break;
+            case REMOVE_OVERLAY:
+                obj = (BattleFieldObject) args[0];
+                d = obj.getDirection();
+                //continues
             case REMOVE_OBJ:
-                  obj = (BattleFieldObject) args[0];
+                obj = (BattleFieldObject) args[0];
                 getObjHandler().remove(obj);
                 type = obj.getType();
                 c = obj.getCoordinates();
-                args = new Object[]{type, c};
+                args = new Object[]{type, c, d};
+                break;
+            case ADD_OVERLAY:
+                type = (ObjType) args[0];
+                c = (Coordinates) args[1];
+                d = (DIRECTION) args[2];
+                args = new BattleFieldObject[]{getObjHandler().addOverlay(d, type, c.x, c.y)};
                 break;
         }
         return args;
     }
 
     public void operation(Operation.LE_OPERATION operation, Object... args) {
+        operation(false, operation, args);
+    }
+
+    public void operation(boolean redo, Operation.LE_OPERATION operation, Object... args) {
         args = execute(operation, args);
         operations.add(this.lastOperation = new Operation(operation, args));
         main.system.auxiliary.log.LogMaster.log(1, "operation: " + operation + " args = " + ListMaster.toStringList(args));
-        undone.clear();
+        if (!redo)
+            undone.clear();
     }
 
     public void undo() {
@@ -83,7 +107,7 @@ public class OperationHandler extends LE_Handler {
         }
         Operation op =
                 undone.pop();
-        revert(op, true);
+        operation(true, op.operation, op.args);
     }
 
     private void revert(Operation op, boolean redo) {
@@ -104,9 +128,17 @@ public class OperationHandler extends LE_Handler {
                 break;
             case ADD_OBJ:
                 execute(Operation.LE_OPERATION.REMOVE_OBJ, op.args);
+                getAiHandler().undone();
                 break;
             case REMOVE_OBJ:
                 execute(Operation.LE_OPERATION.ADD_OBJ, op.args);
+                getAiHandler().undone();
+                break;
+            case ADD_OVERLAY:
+                execute(Operation.LE_OPERATION.REMOVE_OVERLAY, op.args);
+                break;
+            case REMOVE_OVERLAY:
+                execute(Operation.LE_OPERATION.ADD_OVERLAY, op.args);
                 break;
         }
         if (!redo)

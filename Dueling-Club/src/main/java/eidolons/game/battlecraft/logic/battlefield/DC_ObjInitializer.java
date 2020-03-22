@@ -297,7 +297,7 @@ public class DC_ObjInitializer {
                 }
             }
             last = false;
-            BattleFieldObject unit = game.createUnit(type, c, owner);
+            BattleFieldObject unit = game.createObject(type, c, owner);
             if (unit == null) {
                 continue;
             }

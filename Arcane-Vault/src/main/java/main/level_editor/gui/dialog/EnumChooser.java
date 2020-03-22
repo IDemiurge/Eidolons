@@ -34,8 +34,9 @@ public class EnumChooser extends ChooserDialog<Object, SmartButton> {
     protected Vector2 getElementSize() {
         return new Vector2(120, 40);
     }
-    public <T> T choose(T[] from, Class<T> c) {
-        return (T) super.choose(from);
+
+    public <T extends Enum> T chooseEnum(Class<T> c) {
+        return (T) choose(c.getEnumConstants());
     }
 
     @Override

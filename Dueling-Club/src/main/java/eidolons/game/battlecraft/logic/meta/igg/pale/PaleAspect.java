@@ -19,7 +19,8 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
-import static main.system.auxiliary.log.LogMaster.*;
+import static main.system.auxiliary.log.LogMaster.important;
+import static main.system.auxiliary.log.LogMaster.log;
 
 public class PaleAspect {
     private static final String AVATAR_TYPE = IGG_Demo.IMAGE_KESERIM;
@@ -66,7 +67,7 @@ public class PaleAspect {
     }
 
     private static Unit createPaleAvatar(boolean alt) {
-        Unit avatar = (Unit) DC_Game.game.createUnit(DataManager.getType(alt ? AVATAR_TYPE_BRIDGE : AVATAR_TYPE,
+        Unit avatar = (Unit) DC_Game.game.createObject(DataManager.getType(alt ? AVATAR_TYPE_BRIDGE : AVATAR_TYPE,
                 alt ? DC_TYPE.UNITS : DC_TYPE.CHARS),
                 Eidolons.getMainHero().getX(),
                 Eidolons.getMainHero().getY(), DC_Game.game.getPlayer(true));

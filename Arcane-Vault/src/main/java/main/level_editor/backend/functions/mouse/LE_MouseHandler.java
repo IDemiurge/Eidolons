@@ -4,13 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.Structure;
 import main.game.bf.Coordinates;
-import main.level_editor.LevelEditor;
+import main.game.bf.directions.DIRECTION;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.operation.Operation;
-import main.level_editor.backend.handlers.selection.LE_Selection;
-import main.system.auxiliary.data.ListMaster;
+import main.level_editor.gui.screen.LE_Screen;
 import main.system.threading.WaitMaster;
 
 public class LE_MouseHandler extends LE_Handler {
@@ -39,6 +39,17 @@ public class LE_MouseHandler extends LE_Handler {
         CLICK_MODE mode = getModeForClick(event, tapCount);
 
         switch (mode) {
+            case SHIFT:
+                getSelectionHandler().addAreaToSelectedCoordinates(c);
+                getSelectionHandler().areaSelected();
+                //TODO add alternative w/o objs
+                break;
+            case CTRL:
+                getSelectionHandler().addSelectedCoordinate(c);
+                break;
+            case NORMAL:
+                getSelectionHandler().selectedCoordinate(c);
+                break;
             case RIGHT:
                 getObjHandler().addSelectedObj(gridX, gridY);
                 return;
@@ -63,11 +74,6 @@ public class LE_MouseHandler extends LE_Handler {
     }
 
     public void handleObjectClick(InputEvent event, int tapCount, BattleFieldObject bfObj) {
-        LE_Selection selection = getSelectionHandler().getSelection();
-
-
-        selection.setIds(new ListMaster<Integer>().toSet(LevelEditor.getId(bfObj)));
-
         CLICK_MODE mode = getModeForClick(event, tapCount);
 
         switch (mode) {
@@ -76,6 +82,10 @@ public class LE_MouseHandler extends LE_Handler {
             //edit
             //add to selection
             //remove
+            case SHIFT_R:
+                //TODO check space!
+                getObjHandler().addSelectedObj(bfObj.getX(), bfObj.getY());
+                break;
             case CTRL:
                 getSelectionHandler().addToSelected(bfObj);
                 break;
@@ -84,6 +94,17 @@ public class LE_MouseHandler extends LE_Handler {
                 break;
             case DOUBLE:
             case RIGHT:
+                if (getModel().getPaletteSelection().getObjTypeOverlaying() != null) {
+                    if (bfObj instanceof Structure) {
+//                    event.getStageY()
+                        DIRECTION d =   LE_Screen.getInstance().getGuiStage().getEnumChooser()
+                                .choose(DIRECTION.values() ,
+                                        DIRECTION.class);
+                        operation(Operation.LE_OPERATION.ADD_OVERLAY , getModel().getPaletteSelection().getObjTypeOverlaying(),
+                                bfObj.getCoordinates(), d);
+                        break;
+                    }
+                }
                 operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
                 break;
             case DOUBLE_RIGHT:
@@ -98,7 +119,7 @@ public class LE_MouseHandler extends LE_Handler {
             doubleClick = true;
         }
         boolean right = false;
-        if (event.getButton() == 1) {
+        if (event.getButton() != 0) {
             right = true;
         }
         boolean shift = false;

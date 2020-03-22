@@ -18,7 +18,27 @@ public class PaletteTypesTable extends SelectionImageTable {
     private List<ObjType> types;
 
     protected boolean isTableFixedSize() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public float getMinHeight() {
+        return super.getMinHeight();
+    }
+
+    @Override
+    public float getMaxHeight() {
+        return super.getMaxHeight();
+    }
+
+    @Override
+    public float getMaxWidth() {
+        return super.getMaxWidth();
+    }
+
+    @Override
+    public void layout() {
+        super.layout();
     }
 
     @Override
@@ -75,8 +95,8 @@ public class PaletteTypesTable extends SelectionImageTable {
 
     @Override
     protected void selected(SelectableItemData item) {
-        LevelEditor.getCurrent().getManager().
-                getModelManager().paletteSelection(item.getEntity());
+            LevelEditor.getCurrent().getManager().
+                getModelManager().paletteSelection((ObjType) item.getEntity());
     }
 
     @Override

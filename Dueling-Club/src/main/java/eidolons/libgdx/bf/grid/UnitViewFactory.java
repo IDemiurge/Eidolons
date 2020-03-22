@@ -52,7 +52,7 @@ public class UnitViewFactory {
     }
 
     public static GridUnitView doCreate(BattleFieldObject battleFieldObject) {
-        return  getInstance().create(battleFieldObject);
+        return getInstance().create(battleFieldObject);
     }
 
     public static OverlayView doCreateOverlay(BattleFieldObject bfObj) {
@@ -145,6 +145,7 @@ public class UnitViewFactory {
             return (path);
         });
     }
+
     protected void addForDC(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
         view.createHpBar();
         if (bfObj instanceof Unit) {
@@ -177,7 +178,8 @@ public class UnitViewFactory {
     public static ClickListener doCreateListener(BattleFieldObject bfObj) {
         return getInstance().createListener(bfObj);
     }
-    public  ClickListener createListener(BattleFieldObject bfObj) {
+
+    public ClickListener createListener(BattleFieldObject bfObj) {
         return new BattleClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -261,16 +263,25 @@ public class UnitViewFactory {
                 ;
     }
 
+    public void addOverlayingListener(OverlayView view, BattleFieldObject bfObj) {
+        final UnitViewTooltip tooltip = new UnitViewTooltip(view);
+        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
+        view.addListener(tooltip.getController());
+        view.addListener(UnitViewFactory.doCreateListener(bfObj));
+    }
+
     public OverlayView createOverlay(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         OverlayView view = new OverlayView(options, bfObj);
-
+        addOverlayingListener(view, bfObj);
 
         Map<Coordinates, Map<BattleFieldObject, DIRECTION>> directionMap = DC_Game.game.getDirectionMap();
         Map<BattleFieldObject, DIRECTION> map = directionMap.get(bfObj.getCoordinates());
 
         if (map != null) {
             view.setDirection(map.get(bfObj));
+        } else {
+            view.setDirection((bfObj).getDirection());
         }
 
         view.setUserObject(bfObj);

@@ -10,8 +10,6 @@ import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
-import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
-import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
 import main.content.enums.GenericEnums;
 import main.game.bf.directions.DIRECTION;
 
@@ -116,10 +114,6 @@ public class OverlayView extends BaseView implements HpBarView {
 //        ValueTooltip tooltip = new ValueTooltip();
 //        tooltip.setUserObject(Arrays.asList(new ValueContainer(viewOptions.getName(), "")));
 //         addListener(tooltip.getController());
-        final UnitViewTooltip tooltip = new UnitViewTooltip(this);
-        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
-        addListener(tooltip.getController());
-        addListener(UnitViewFactory.doCreateListener(bfObj));
 
         initSprite(viewOptions);
     }

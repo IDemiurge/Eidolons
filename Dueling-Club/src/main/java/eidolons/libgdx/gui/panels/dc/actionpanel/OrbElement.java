@@ -81,7 +81,7 @@ public class OrbElement extends SuperActor {
                 getOrbPath(param.getName()), " border"
         ));
 
-        if (texture == TextureCache.getEmptyTexture()) return;
+        if (texture == TextureCache.getMissingTexture()) return;
         lighting = new Image(texture);
         addActor(lighting);
         lighting.setPosition(-15, -15);

@@ -2,7 +2,6 @@ package main.level_editor.backend.handlers.model;
 
 import main.content.DC_TYPE;
 import main.data.DataManager;
-import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -70,9 +69,8 @@ public class LE_ModelManager extends LE_Handler {
         return model;
     }
 
-    public void paletteSelection(Entity entity) {
-        PaletteSelection selection = new PaletteSelection((ObjType) entity, false);
-        getModel().setPaletteSelection(selection);
+    public void paletteSelection(ObjType entity) {
+        getModel().getPaletteSelection().setType(entity);
     }
 
     public ObjType getDefaultWallType() {
@@ -80,4 +78,8 @@ public class LE_ModelManager extends LE_Handler {
     }
 
 
+    public void modelChanged() {
+        modelStack.push(model);
+        model = new LE_DataModel(model);
+    }
 }

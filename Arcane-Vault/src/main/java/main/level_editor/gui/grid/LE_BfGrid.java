@@ -11,8 +11,7 @@ import main.level_editor.backend.handlers.selection.LE_Selection;
 import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
 
-import static main.system.GuiEventType.LE_SELECTION_CHANGED;
-import static main.system.GuiEventType.UPDATE_GUI;
+import static main.system.GuiEventType.*;
 
 public class LE_BfGrid extends GridPanel {
 
@@ -62,7 +61,7 @@ public class LE_BfGrid extends GridPanel {
         GuiEventManager.bind(LE_SELECTION_CHANGED, obj -> {
             LE_Selection selection = (LE_Selection) obj.get();
             for (BaseView value : viewMap.values()) {
-                value.setBorder(null);
+                value.setBorder(TextureCache.getOrCreateR(TextureCache.getEmptyPath()));
             }
             for (Integer id : selection.getIds()) {
                 Obj object = LevelEditor.getManager().getIdManager().getObjectById(id);
@@ -75,6 +74,15 @@ public class LE_BfGrid extends GridPanel {
 
         GuiEventManager.bind(UPDATE_GUI, obj -> {
             resetVisibleRequired = true;
+        });
+        GuiEventManager.bind(LE_DISPLAY_MODE_UPDATE, obj -> {
+            for (GridCellContainer[] col : cells) {
+                for (GridCellContainer container : col) {
+                    if (container instanceof LE_GridCell) {
+                        ((LE_GridCell) container).displayModeUpdated();
+                    }
+                }
+            }
         });
     }
 }

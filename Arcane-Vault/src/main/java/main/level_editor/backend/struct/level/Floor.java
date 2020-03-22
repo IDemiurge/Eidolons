@@ -40,6 +40,10 @@ public class Floor implements LayeredData<LE_Module> {
         return game.getMetaMaster().getModuleMaster().getModules();
     }
 
+    @Override
+    public String toString() {
+        return "Floor: " + name;
+    }
 
     @Override
     public Set<LE_Module> getChildren() {

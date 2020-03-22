@@ -144,11 +144,11 @@ public class RngLocationBuilder extends LocationBuilder {
 //               if (!EntityCheckMaster.isDoor(at.getType()))
 //                   continue;
 //           }
-            game.createUnit(at.getType(), at.getCoordinates().x, at.getCoordinates().y, DC_Player.NEUTRAL);
+            game.createObject(at.getType(), at.getCoordinates().x, at.getCoordinates().y, DC_Player.NEUTRAL);
             main.system.auxiliary.log.LogMaster.log(1, at + " spawed");
         }
         for (ObjAtCoordinate at : level.collectUnits()) {
-            Unit unit = (Unit) game.createUnit(at.getType(), at.getCoordinates().x, at.getCoordinates().y,
+            Unit unit = (Unit) game.createObject(at.getType(), at.getCoordinates().x, at.getCoordinates().y,
                     game.getPlayer(false));
             UnitTrainingMaster.train(unit);
             main.system.auxiliary.log.LogMaster.log(1, at + " unit spawed");

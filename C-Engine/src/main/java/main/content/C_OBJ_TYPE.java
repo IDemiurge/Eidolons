@@ -17,7 +17,9 @@ public class C_OBJ_TYPE implements OBJ_TYPE {
     public static final C_OBJ_TYPE BF = new C_OBJ_TYPE(DC_TYPE.UNITS, DC_TYPE.BF_OBJ,
      DC_TYPE.CHARS, DC_TYPE.TERRAIN);
     public static final C_OBJ_TYPE BF_OBJ = new C_OBJ_TYPE(DC_TYPE.UNITS, DC_TYPE.BF_OBJ,
-     DC_TYPE.CHARS);
+            DC_TYPE.CHARS);
+    public static final C_OBJ_TYPE BF_OBJ_LE = new C_OBJ_TYPE(DC_TYPE.ENCOUNTERS,DC_TYPE.UNITS, DC_TYPE.BF_OBJ,
+            DC_TYPE.CHARS);
     public static final C_OBJ_TYPE QUICK_ITEMS = new C_OBJ_TYPE(DC_TYPE.ITEMS, DC_TYPE.WEAPONS);
     public static final C_OBJ_TYPE SLOT_ITEMS = new C_OBJ_TYPE(DC_TYPE.ARMOR, DC_TYPE.WEAPONS);
     public static final C_OBJ_TYPE ACTIVE = new C_OBJ_TYPE(DC_TYPE.ACTIONS, DC_TYPE.SPELLS);

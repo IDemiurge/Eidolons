@@ -2,10 +2,11 @@ package main.level_editor.backend.handlers.selection;
 
 import main.game.bf.Coordinates;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class LE_Selection {
+public class LE_Selection  implements Serializable {
 
     Set<Integer> ids=new LinkedHashSet<>();
     Set<Coordinates> coordinates=new LinkedHashSet<>();

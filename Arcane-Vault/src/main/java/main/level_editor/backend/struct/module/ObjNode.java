@@ -21,4 +21,9 @@ public class ObjNode implements LayeredData {
     public Set getChildren() {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return obj.getNameAndCoordinate();
+    }
 }

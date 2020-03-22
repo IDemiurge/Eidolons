@@ -12,9 +12,9 @@ import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.components.DataTable;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.data.DataUnit;
 
 public class EditHandler extends LE_Handler {
-
 
     public EditHandler(LE_Manager manager) {
         super(manager);
@@ -35,6 +35,12 @@ public class EditHandler extends LE_Handler {
 //        WaitMaster.waitForInput()
     }
 
+    public <T extends Enum<T>> void editDataUnit(DataUnit<T> dataUnit) {
+        for (String s : dataUnit.getValues().keySet()) {
+
+        }
+
+    }
 
     public static DataTable.DataPair[] getDataPairs(Entity editEntity) {
         DataTable.DataPair[] pairs=new DataTable.DataPair[0];
@@ -50,4 +56,5 @@ public class EditHandler extends LE_Handler {
 
         return pairs;
     }
+
 }

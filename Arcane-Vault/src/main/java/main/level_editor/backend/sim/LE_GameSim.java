@@ -21,7 +21,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.level_editor.backend.sim.impl.LE_DungeonMaster;
-import main.level_editor.gui.stage.LE_KeyManager;
+import org.mockito.Mockito;
 
 import java.util.Map;
 
@@ -48,7 +48,7 @@ public class LE_GameSim extends ScenarioGame {
 
     @Override
     protected DC_KeyManager createKeyManager() {
-        return new LE_KeyManager();
+        return Mockito.mock(DC_KeyManager.class);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class LE_GameSim extends ScenarioGame {
     @Override
     public void battleInit() {
         Coordinates c = Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
-        dummyPC = (Unit) createUnit(getDummyType(), c.x, c.y, getPlayer(true),
+        dummyPC = (Unit) createObject(getDummyType(), c.x, c.y, getPlayer(true),
                 new Ref(LE_GameSim.this));
         Eidolons.setMainHero(dummyPC);
         dungeonMaster.init();

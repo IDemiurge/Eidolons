@@ -292,7 +292,7 @@ public class UnitView extends BaseView implements HpBarView {
     @Override
     public void setBorder(TextureRegion texture) {
         super.setBorder(texture);
-        if (getHpBar() == null)
+        if (getHpBar() != null)
             getHpBar().setZIndex(Integer.MAX_VALUE);
     }
 
