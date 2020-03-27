@@ -1,7 +1,10 @@
 package main.level_editor.gui.tree;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.kotcrab.vis.ui.VisUI;
@@ -10,10 +13,13 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
+import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.handlers.ai.AiData;
 import main.level_editor.backend.struct.boss.BossDungeon;
@@ -25,6 +31,8 @@ import main.level_editor.backend.struct.module.ObjNode;
 import main.level_editor.gui.components.TreeX;
 import main.level_editor.gui.tree.data.LE_DataNode;
 import main.level_editor.gui.tree.data.LayeredData;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.graphics.FontMaster;
 
 public class LE_TreeView extends TreeX<LE_DataNode> {
@@ -36,21 +44,48 @@ public class LE_TreeView extends TreeX<LE_DataNode> {
     }
 
     @Override
-    protected void selected(LE_DataNode node) {
-        if (node.getData() instanceof LE_Block) {
-            LevelBlock block = ((LE_Block) node.getData()).getBlock();
-            LevelEditor.getModel().setBlock( block);
-            LevelEditor.getModel().setCurrentZone(block.getZone());
+    protected void doubleClick(LE_DataNode node) {
+        Coordinates c = null;
+        if (node.getData() instanceof ObjNode) {
+            c = ((ObjNode) node.getData()).getObj().getCoordinates();
+            LevelEditor.getManager().getSelectionHandler().
+                    select(((ObjNode) node.getData()).getObj());
+        } else {
+            //center coordinate
+
         }
-        if (node.getData() instanceof LevelZone) {
+        Vector2 v = GridMaster.getCenteredPos(c);
+        CameraMan.MotionData data = new CameraMan.MotionData(v, 0.5f, null);
+        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, data);
+
+//        data =  new CameraMan.MotionData(z, 0.5f, null);
+//        GuiEventManager.trigger(GuiEventType.CAMERA_ZOOM, data);
+    }
+
+    @Override
+    protected void selected(LE_DataNode node) {
+        if (node.getData() instanceof ObjNode) {
+            if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+                    Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
+                LevelEditor.getManager().getSelectionHandler().addToSelected(
+                        ((ObjNode) node.getData()).getObj());
+            } else {
+                LevelEditor.getManager().getSelectionHandler().select(((ObjNode) node.getData()).getObj());
+            }
+        } else if (node.getData() instanceof LE_Block) {
+            LevelBlock block = ((LE_Block) node.getData()).getBlock();
+            LevelEditor.getModel().setBlock(block);
+            LevelEditor.getModel().setCurrentZone(block.getZone());
+        } else if (node.getData() instanceof LevelZone) {
             LevelEditor.getModel().setCurrentZone(((LevelZone) node.getData()));
             LevelEditor.getModel().setBlock(((LevelZone) node.getData()).getSubParts().get(0));
             //camera!
-        }
-        if (node.getData() instanceof Module) {
+        } else if (node.getData() instanceof Module) {
 
-        }
-        if (node.getData() instanceof Layer) {
+        } else if (node.getData() instanceof Layer) {
+            //select all?
+
+
             // if on > select
             // if off > preview
             //

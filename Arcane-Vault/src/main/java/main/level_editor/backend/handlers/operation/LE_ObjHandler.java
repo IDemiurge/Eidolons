@@ -1,4 +1,4 @@
-package main.level_editor.backend.handlers.operation.obj;
+package main.level_editor.backend.handlers.operation;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
@@ -7,7 +7,6 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
-import main.level_editor.backend.handlers.operation.Operation;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -23,7 +22,7 @@ public class LE_ObjHandler extends LE_Handler {
         //TODO overlays!
     }
 
-    public void remove(BattleFieldObject bfObj) {
+    protected void remove(BattleFieldObject bfObj) {
         getGame().softRemove(bfObj);
         getAiHandler().removed(bfObj);
         GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, bfObj);
@@ -34,7 +33,7 @@ public class LE_ObjHandler extends LE_Handler {
         operation(Operation.LE_OPERATION.ADD_OBJ, getModel().getPaletteSelection().getObjType(), Coordinates.get(gridX, gridY));
     }
 
-    public BattleFieldObject addObj(ObjType objType, int gridX, int gridY) {
+    protected BattleFieldObject addObj(ObjType objType, int gridX, int gridY) {
         BattleFieldObject bfObj = getGame().createObject(objType, gridX, gridY, DC_Player.NEUTRAL);
         getAiHandler().objectAdded(bfObj);
         return bfObj;
@@ -50,7 +49,7 @@ public class LE_ObjHandler extends LE_Handler {
 
     public void clear(Coordinates coordinates) {
         for (BattleFieldObject battleFieldObject : getGame().getObjectsAt(coordinates)) {
-            remove(battleFieldObject);
+            operation(Operation.LE_OPERATION.REMOVE_OBJ, battleFieldObject);
         }
     }
 

@@ -75,7 +75,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
         chosen(null);
         close();
     }
-    private void ok() {
+    public void ok() {
         chosen(selected);
         close();
     }
@@ -132,4 +132,8 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
         return scrolledTable;
     }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
 }

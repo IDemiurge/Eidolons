@@ -8,6 +8,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.utils.FileChooserX;
+import main.content.DC_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -19,11 +20,12 @@ import main.level_editor.backend.metadata.options.LE_OptionsMaster;
 import main.level_editor.backend.sim.LE_MetaMaster;
 import main.level_editor.backend.struct.campaign.Campaign;
 import main.level_editor.backend.struct.level.Floor;
-import main.level_editor.gui.panels.palette.PaletteHolder;
 import main.level_editor.gui.screen.LE_WaitingScreen;
 import main.system.launch.CoreEngine;
 import main.system.launch.TypeBuilder;
 import main.system.threading.WaitMaster;
+
+import java.util.Arrays;
 
 public class LevelEditor {
     public static final WaitMaster.WAIT_OPERATIONS SELECTION_EVENT = WaitMaster.WAIT_OPERATIONS.SELECTION;
@@ -35,8 +37,8 @@ public class LevelEditor {
         CoreEngine.setLevelEditor(true);
 
         CoreEngine.setSelectivelyReadTypes("terrain;dungeons;bf obj;units;encounters;");
-        TypeBuilder.typeBuildOverride.addAll(PaletteHolder.tabTypes);
-        Assets.setON(false);
+        TypeBuilder.typeBuildOverride.addAll( Arrays.asList(DC_TYPE.BF_OBJ, DC_TYPE.UNITS, DC_TYPE.ENCOUNTERS));
+        Assets.setON(true);
 //        DC_Engine.systemInit(false);
         new EditorApp(args).start();
         LE_OptionsMaster.init();

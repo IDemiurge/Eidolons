@@ -9,13 +9,12 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
-import eidolons.libgdx.shaders.ShaderMaster;
 import main.content.enums.GenericEnums;
 
 /**
  * Created by JustMe on 7/3/2018.
  */
-public class SelectableImageItem extends FadeImageContainer{
+public class SelectableImageItem extends FadeImageContainer {
     private final ImageContainer highlight;
     private final SelectionImageTable table;
     SelectableItemData data;
@@ -24,12 +23,13 @@ public class SelectableImageItem extends FadeImageContainer{
     public SelectableImageItem(SelectionImageTable selectionImageTable, SelectableItemData data) {
         super(selectionImageTable.getDisplayablePath(data));
         table = selectionImageTable;
-        addActor(highlight =new ImageContainer( (data.getBorderSelected())));
-        highlight.setColor(new Color(1,1,1,0));
+
+        addActor(highlight = new ImageContainer((data.getBorderSelected())));
+        highlight.setColor(new Color(1, 1, 1, 0));
         setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.ATB_POS);
         this.data = data;
         if (data.isSelectionUnderneath())
-        highlight.setZIndex(0);
+            highlight.setZIndex(0);
         highlight.setTouchable(Touchable.disabled);
         addListener(new ValueTooltip("Select " + data.getName()).getController());
 //            debug();
@@ -37,21 +37,14 @@ public class SelectableImageItem extends FadeImageContainer{
 
     @Override
     public void act(float delta) {
-//        highlight.setPosition((Arrays.asList( table.getData()) .indexOf(data)*(
-//                        getWidth()+table.getSpace()))-table.getSpace()/2+
-//                        GdxMaster.centerWidth(highlight),
-//                  (getParent().getHeight()));
-highlight.setSize(getWidth(), getHeight());
+        highlight.setSize(getWidth(), getHeight());
         super.act(delta);
     }
 
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (isSelected()){
-            batch.setShader(ShaderMaster.getShader(ShaderMaster.SHADER.INVERT));
-        } else {
-            batch.setShader(null);
-        }
+        highlight.setPosition(getX(), getY());
         super.draw(batch, parentAlpha);
     }
 
@@ -71,16 +64,16 @@ highlight.setSize(getWidth(), getHeight());
         if (isAlphaFluctuationOn())
             alphaFluctuation(highlight, delta);
         else {
-            if (highlight.getColor().a>0) {
-                if (highlight.getActions().size==0)
-                    ActionMaster.addFadeOutAction(highlight,1, false);
+            if (highlight.getColor().a > 0) {
+                if (highlight.getActions().size == 0)
+                    ActionMaster.addFadeOutAction(highlight, 1, false);
             }
         }
     }
 
     @Override
     public boolean isAlphaFluctuationOn() {
-        return table.getSelectedItem()==this;
+        return table.getSelectedItem() == this;
     }
 
     public SelectableItemData getData() {
@@ -89,10 +82,14 @@ highlight.setSize(getWidth(), getHeight());
 
     public void setSelected(boolean selected) {
         this.selected = selected;
-        if (!selected)
-            ActionMaster.addFadeOutAction(highlight,1, false);
-            else {
-            ActionMaster.addFadeInAction(highlight,1 );
+        if (!selected) {
+            ActionMaster.addScaleAction(getContent(), highlight.getScaleX(), 0.3f);
+            ActionMaster.addFadeOutAction(highlight, 1, false);
+            setZIndex(999);
+        } else {
+            ActionMaster.addScaleAction(getContent(), highlight.getScaleX() * 1.4f, 0.3f);
+            ActionMaster.addFadeInAction(highlight, 1);
+            setZIndex(0);
         }
     }
 

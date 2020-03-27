@@ -1,7 +1,6 @@
 package main.level_editor.backend.sim;
 
 import eidolons.entity.obj.BattleFieldObject;
-import main.entity.obj.Obj;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,18 +8,18 @@ import java.util.Map;
 public class LE_IdManager {
 
     private static int ID = 0;
-    Map<Integer, Obj> objMap = new LinkedHashMap<>();
+    Map<Integer, BattleFieldObject> objMap = new LinkedHashMap<>();
 
     public void objectRemoved(Integer id) {
         objMap.remove(id);
     }
 
-    public void setObjIds(Map<Integer, Obj> objIdMap) {
+    public void setObjIds(Map<Integer, BattleFieldObject> objIdMap) {
         ID = objIdMap.size();
         objMap = objIdMap;
     }
 
-    public Integer objectRemoved(Obj obj) {
+    public Integer objectRemoved(BattleFieldObject obj) {
         for (Integer integer : objMap.keySet()) {
             if (objMap.get(integer) == obj) {
                 objMap.remove(integer);
@@ -31,13 +30,13 @@ public class LE_IdManager {
         return null;
     }
 
-    public Integer objectCreated(Obj obj) {
+    public Integer objectCreated(BattleFieldObject obj) {
         Integer id = ID++;
         objMap.put(id, obj);
         return id;
     }
 
-    public Obj getObjectById(Integer id) {
+    public BattleFieldObject getObjectById(Integer id) {
         return objMap.get(id);
     }
 
@@ -51,7 +50,7 @@ public class LE_IdManager {
         return null;
     }
 
-    public Map<Integer, Obj> getObjMap() {
+    public Map<Integer, BattleFieldObject> getObjMap() {
         return objMap;
     }
 }

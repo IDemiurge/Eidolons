@@ -6,7 +6,6 @@ import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import main.content.DC_TYPE;
 import main.level_editor.gui.panels.ClosablePanel;
 import main.level_editor.gui.panels.palette.tab.TabImpl;
 
@@ -15,7 +14,7 @@ public class HybridPalette extends ClosablePanel implements TabbedPaneListener {
     private final TabbedPane tabs;
 
     public enum PALETTE {
-        obj, unit, vfx, custom, script
+        encounters, obj, unit, vfx, custom, script, blocks, templates //groups
     }
 
     private final TablePanelX<Actor> table;
@@ -29,19 +28,7 @@ public class HybridPalette extends ClosablePanel implements TabbedPaneListener {
         table.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
         tabs.addListener(this);
         for (PALETTE value : PALETTE.values()) {
-            DC_TYPE arg = null;
-            switch (value) {
-                case obj:
-                    arg = DC_TYPE.BF_OBJ;
-                    break;
-                case unit:
-                    arg = DC_TYPE.UNITS;
-                    break;
-                default:
-                    arg = null;
-                    break;
-            }
-            tabs.add(new TabImpl(value.toString(), new UpperPalette(arg)));
+            tabs.add(new TabImpl(value.toString(), new UpperPalette(value)));
         }
 
     }

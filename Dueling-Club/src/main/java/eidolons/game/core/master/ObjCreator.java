@@ -18,7 +18,6 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.EntityCheckMaster;
 import main.entity.Ref;
-import main.entity.obj.MicroObj;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
@@ -42,7 +41,7 @@ public class ObjCreator extends Master {
     }
 
 
-    public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
+    public BattleFieldObject createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
         if (!CoreEngine.isArcaneVault()) {
             if (!CoreEngine.isLevelEditor()) {
                 if (!type.isGenerated() && DC_Engine.isUseCustomTypesAlways()) {

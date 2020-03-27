@@ -34,6 +34,8 @@ public class NinePatchFactory {
      StrPathBuilder.build(PathFinder.getComponentsPath(),
       "ninepatch", "std", "light ninepatch filled small.png");
     private static final java.lang.String SCROLL = "ui/components/generic/scroll/scroll.png";
+    private static final java.lang.String SCROLL_KNOB_H = "ui/components/generic/scroll/scroll_knob h.png";
+    private static final java.lang.String SCROLL_H = "ui/components/generic/scroll/scroll h.png";
     private static final java.lang.String SCROLL_KNOB = "ui/components/generic/scroll/scroll_knob.png";
 
     public static NinePatch getTooltip() {
@@ -127,18 +129,19 @@ public class NinePatchFactory {
 
     public static NinePatchDrawable getScrollH() {
         return new NinePatchDrawable(new NinePatch(getOrCreateR(
-         SCROLL), 0, 0, 30, 30));
+         SCROLL_H), 0, 0, 30, 30));
     }
     public static NinePatchDrawable getScrollKnobH() {
         return new NinePatchDrawable(new NinePatch(getOrCreateR(
-         SCROLL_KNOB), 0, 0, 0, 0));
+         SCROLL_KNOB_H), 0, 0, 0, 0));
     }
     public static NinePatchDrawable getScrollV() {
-//        GdxImageMaster.getrotated
-        return getScrollH();
+        return new NinePatchDrawable(new NinePatch(getOrCreateR(
+                SCROLL), 0, 0, 30, 30));
     }
     public static NinePatchDrawable getScrollKnobV() {
-        return getScrollKnobH();
+        return new NinePatchDrawable(new NinePatch(getOrCreateR(
+                SCROLL_KNOB), 0, 0, 0, 0));
     }
 
 }

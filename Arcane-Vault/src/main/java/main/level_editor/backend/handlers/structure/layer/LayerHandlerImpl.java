@@ -1,11 +1,11 @@
 package main.level_editor.backend.handlers.structure.layer;
 
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.LayerManager;
 import main.elements.triggers.Trigger;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
+import main.level_editor.backend.handlers.operation.Operation;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -73,8 +73,7 @@ public class LayerHandlerImpl extends LE_Handler implements ILayerHandler {
 
     private void remove(Layer layer) {
         for (Integer id : layer.getIds()) {
-            getObjHandler().remove((BattleFieldObject)
-                    getIdManager().getObjectById(id));
+            operation(Operation.LE_OPERATION.REMOVE_OBJ, getIdManager().getObjectById(id));
 //SCRIPTS?!
         }
 //        getLayerManager().remove(layer);

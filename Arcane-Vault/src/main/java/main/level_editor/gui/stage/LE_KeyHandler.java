@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
+import main.level_editor.gui.screen.LE_Screen;
 
 public class LE_KeyHandler extends LE_Handler {
 
@@ -58,6 +59,7 @@ public class LE_KeyHandler extends LE_Handler {
                 getSelectionHandler().deselect();
                 break;
             case Input.Keys.ENTER:
+                LE_Screen.getInstance().getGuiStage().getDialog().ok();
                 //approve dialogue?
 
             case Input.Keys.SPACE:

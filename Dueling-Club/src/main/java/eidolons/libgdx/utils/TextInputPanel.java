@@ -1,11 +1,14 @@
 package eidolons.libgdx.utils;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.TextInputListener;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import com.kotcrab.vis.ui.VisUI;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -30,8 +33,13 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
         add(tf = new TextField(text, VisUI.getSkin())).width(800).height(500).row();
         tf.setTextFieldListener(this);
         tf.setTextFieldFilter(this);
-        add(new SmartButton(ButtonStyled.STD_BUTTON.OK, () -> ok())).left().bottom();
-        add(new SmartButton(ButtonStyled.STD_BUTTON.CANCEL, () -> close())).right().bottom();
+        TablePanelX<Actor> table = new TablePanelX<>();
+        add(table);
+        table.setBackground(NinePatchFactory.getLightPanelFilledSmallDrawable());
+        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+
+        table.add(new SmartButton(ButtonStyled.STD_BUTTON.OK, () -> ok())).left().bottom();
+        table.add(new SmartButton(ButtonStyled.STD_BUTTON.CANCEL, () -> close())).right().bottom();
     }
 
     @Override
@@ -57,8 +65,9 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
 
     @Override
     public void keyTyped(TextField textField, char c) {
-//        Input.Keys.ENTER
-        textField.appendText(c+"");
+        if (Input.Keys.ENTER==(int)c) {
+            main.system.auxiliary.log.LogMaster.log(1,"Input: " +textField.getText());
+        }
         main.system.auxiliary.log.LogMaster.log(1,"Input: " +textField.getText());
         return;
     }

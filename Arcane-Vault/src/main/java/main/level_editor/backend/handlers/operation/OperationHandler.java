@@ -39,6 +39,8 @@ public class OperationHandler extends LE_Handler {
                     //color, hidden, ...
                 }
 
+                GuiEventManager.triggerWithParams(
+                        GuiEventType.LE_CELL_SCRIPTS_LABEL_UPDATE, c, text);
                 break;
             case SELECTION:
                 break;
@@ -63,12 +65,14 @@ public class OperationHandler extends LE_Handler {
             case MOVE_OBJ:
                 obj = (BattleFieldObject) args[0];
                 args = new Object[]{obj.getCoordinates()};
+                //TODO between blocks?
                 break;
             case ADD_OBJ:
                 type = (ObjType) args[0];
                 c = (Coordinates) args[1];
                 BattleFieldObject unit = getObjHandler().addObj(type, c.x, c.y);
                 args = new BattleFieldObject[]{unit};
+                getStructureManager().updateTree();
                 break;
             case REMOVE_OVERLAY:
                 obj = (BattleFieldObject) args[0];
@@ -80,6 +84,7 @@ public class OperationHandler extends LE_Handler {
                 type = obj.getType();
                 c = obj.getCoordinates();
                 args = new Object[]{type, c, d};
+                getStructureManager().updateTree();
                 break;
             case ADD_OVERLAY:
                 type = (ObjType) args[0];

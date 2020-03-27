@@ -3,7 +3,7 @@ package eidolons.game.module.dungeoncrawl.dungeon;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 
-public class BlockTemplate {
+public class BlockTemplate  {
 
     private final TileMap tileMap;
 

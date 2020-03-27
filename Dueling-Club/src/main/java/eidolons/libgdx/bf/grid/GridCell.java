@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -90,10 +91,11 @@ public class GridCell extends Group implements Borderable {
 
         cordsText = new Label(getGridX() + ":" + getGridY(),
                 StyleHolder.getDebugLabelStyle());
-        cordsText.setPosition(getWidth() / 2 - cordsText.getWidth() / 2, getHeight() / 2 - cordsText.getHeight() / 2);
+        cordsText.setPosition(getWidth() / 2 - cordsText.getWidth() / 2,
+                getHeight() / 2 - cordsText.getHeight() / 2);
         cordsText.setVisible(false);
         addActor(cordsText);
-
+        cordsText.setTouchable(Touchable.disabled);
         addListener(
                 createListener());
 
@@ -218,7 +220,6 @@ public class GridCell extends Group implements Borderable {
                                     + cell.getIntParam(PARAMS.ILLUMINATION)
                             : "")
             );
-            cordsText.setPosition(0, getHeight() / 2 - cordsText.getHeight() / 2);
             cordsText.setVisible(true);
         } else {
             if (cordsText.isVisible()) {

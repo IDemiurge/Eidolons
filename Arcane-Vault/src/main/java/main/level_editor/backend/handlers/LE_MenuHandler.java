@@ -22,7 +22,8 @@ public class LE_MenuHandler extends LE_Handler {
                 //how to dispose safely?
                 break;
             case save_all:
-
+//                LevelEditor.getCurrent()
+getDataHandler().saveFloor();
                 break;
             case clone:
                 //floor

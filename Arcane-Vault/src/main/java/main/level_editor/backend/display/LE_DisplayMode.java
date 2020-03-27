@@ -20,7 +20,7 @@ public class LE_DisplayMode  implements Serializable {
     public void toggleAll(){
         showCoordinates = !showCoordinates;
         showScripts = !showScripts;
-        showScripts = !showScripts;
+        showMetaAi = !showMetaAi;
         showIllumination = !showIllumination;
         showSpace = !showSpace;
         useColors = !useColors;

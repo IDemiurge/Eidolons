@@ -237,7 +237,7 @@ public class Assets {
 
         if (isOptimizationTest()){
 //            loadSprite("", false, true);
-            return true;
+            return false;
         }
         if (!CoreEngine.isIDE()) {
         Chronos.mark("preload Audio");

@@ -49,6 +49,8 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             GdxColorMaster.GREEN,
     };
 
+    private  RoomTemplateMaster roomTemplateMaster;
+
     public LE_StructureHandler(LE_Manager manager) {
         super(manager);
     }
@@ -76,11 +78,9 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
 
     @Override
     public void insertBlock() {
-        LevelData data = new LevelData("");
-        data.setTemplateGroups(TEMPLATE_GROUPS);
 
 
-        RoomTemplateMaster templateMaster = new RoomTemplateMaster(data);
+        RoomTemplateMaster templateMaster = getRoomTemplateManager();
         ROOM_TEMPLATE_GROUP room_template_group
                 = (ROOM_TEMPLATE_GROUP) LE_Screen.getInstance().getGuiStage().getEnumChooser()
                 .choose(templateMaster.getModels().keySet().toArray(new ROOM_TEMPLATE_GROUP[0]));
@@ -96,6 +96,16 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         Coordinates c = getSelectionHandler().selectCoordinate();
         insertBlock(template, c);
     }
+
+    public RoomTemplateMaster getRoomTemplateManager() {
+        if (roomTemplateMaster == null) {
+            LevelData data = new LevelData("");
+            data.setTemplateGroups(TEMPLATE_GROUPS);
+            roomTemplateMaster = new RoomTemplateMaster(data);
+        }
+        return roomTemplateMaster;
+    }
+
     public void insertBlock(RoomModel blockTemplate, Coordinates at){
         //confirm if TRANSFORM
 
@@ -114,7 +124,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
                     continue;
                 }
                 Coordinates c;
-                coords.add(c=Coordinates.get(x, blockTemplate.getHeight()- y +1).getOffset(at));
+                coords.add(c=Coordinates.get(x, y ).getOffset(at));
                 processCell(c, cell);
                 y++;
             }
@@ -127,7 +137,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     }
     @Override
     public void updateTree() {
-        GuiEventManager.trigger(GuiEventType.LE_TREE_RESET);
+        getModel().setTreeModel( LevelEditor.getCurrent( ));
     }
 
     private void processCell(Coordinates c, String cell) {

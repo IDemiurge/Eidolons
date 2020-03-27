@@ -21,6 +21,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
 
 import java.io.File;
 import java.util.*;
@@ -67,10 +68,7 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         if (PaleAspect.ON) {
             return true;
         }
-        if (Eidolons.getMainHero().getCoordinates().dst_(c) > visionRange) {
-            return false;
-        }
-        return true;
+        return !(Eidolons.getMainHero().getCoordinates().dst_(c) > visionRange);
     }
 
     public void setKey(String key) {
@@ -106,6 +104,7 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
     protected void init() {
         getColor().a = 0;
         createEmittersUnder();
+        if (isSpriteShown())
         try {
             sprite = new SpriteX(spritePath);
         } catch (Exception e) {
@@ -132,6 +131,10 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
 
         if (sprite != null)
             sprite.act(RandomWizard.getRandomFloatBetween(0, 4));
+    }
+
+    private boolean isSpriteShown() {
+        return !CoreEngine.isLevelEditor();
     }
 
     protected void createEmittersUnder() {

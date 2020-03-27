@@ -16,12 +16,17 @@ public class BlockTemplateChooser extends ChooserDialog<RoomModel, TileMapView> 
 
     @Override
     protected boolean isScrolled() {
-        return true;
+        return false;
     }
 
     @Override
     protected TileMapView createElement_(RoomModel datum) {
-        return new TileMapView(TileMapper.getLinesFromCells(datum.getCells()));
+        return new TileMapView(size, TileMapper.getLinesFromCells(datum.getCells()));
+    }
+
+    @Override
+    protected boolean isSquare() {
+        return true;
     }
 
     @Override
@@ -31,7 +36,11 @@ public class BlockTemplateChooser extends ChooserDialog<RoomModel, TileMapView> 
 
     @Override
     protected Vector2 getElementSize() {
-        return new Vector2(110, 160);
+        return new Vector2(110*getSizeCoef(size), 160*getSizeCoef(size));
+    }
+
+    private float getSizeCoef(int size) {
+        return 1 + 2/(float) Math.sqrt(size);
     }
 
     @Override

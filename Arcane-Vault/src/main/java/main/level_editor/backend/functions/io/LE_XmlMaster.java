@@ -5,7 +5,6 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlStringBuilder;
-import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.struct.boss.BossDungeon;
@@ -60,7 +59,7 @@ public class LE_XmlMaster {
 
     private static String buildCoordinateMap(Floor floor) {
         StringBuilder builder = new StringBuilder();
-        Map<Integer, Obj> map = floor.getGame().getSimIdManager().getObjMap();
+        Map<Integer, BattleFieldObject> map = floor.getGame().getSimIdManager().getObjMap();
         for (Coordinates c : floor.getGame().getCoordinates()) {
             Set<BattleFieldObject> set = floor.getGame().getObjectsOnCoordinate(c);
             if (set.isEmpty()) {
@@ -69,6 +68,9 @@ public class LE_XmlMaster {
             builder.append(c).append("=");
             for (BattleFieldObject obj : set) {
                 Integer id = (Integer) MapMaster.getKeyForValue_(map, obj);
+                if (id == null) {
+                    continue;
+                }
                 builder.append(id);
             }
             builder.append(";");
@@ -80,7 +82,7 @@ public class LE_XmlMaster {
     //TODO DC_TYPE ?
     private static String buildIdMap(Floor floor) {
         StringBuilder builder = new StringBuilder();
-        Map<Integer, Obj> map = floor.getGame().getSimIdManager().getObjMap();
+        Map<Integer, BattleFieldObject> map = floor.getGame().getSimIdManager().getObjMap();
         for (Integer integer : map.keySet()) {
             Integer id = map.get(integer).getId();
             ObjType type = map.get(integer).getType();

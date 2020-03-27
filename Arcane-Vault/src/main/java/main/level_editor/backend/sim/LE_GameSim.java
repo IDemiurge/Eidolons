@@ -14,7 +14,6 @@ import eidolons.system.hotkey.DC_KeyManager;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
-import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -72,8 +71,8 @@ public class LE_GameSim extends ScenarioGame {
 
                 setObjCreator(new ObjCreator(getGame()) {
                     @Override
-                    public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
-                        MicroObj obj = super.createUnit(type, x, y, owner, ref);
+                    public BattleFieldObject createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
+                        BattleFieldObject obj = super.createUnit(type, x, y, owner, ref);
                         if (type.getName().equalsIgnoreCase(DUMMY)) {
                             return obj;
                         }
@@ -90,13 +89,13 @@ public class LE_GameSim extends ScenarioGame {
         return simIdManager.getId(bfObj);
     }
 
-    public void setObjIdMap(Map<Integer, Obj> objIdMap) {
+    public void setObjIdMap(Map<Integer, BattleFieldObject> objIdMap) {
         simIdManager.setObjIds(objIdMap);
     }
 
     @Override
     public void removed(Obj obj) {
-        Integer id = simIdManager.objectRemoved(obj);
+        Integer id = simIdManager.objectRemoved((BattleFieldObject) obj);
         getMetaMaster().getDungeonMaster().getLayerManager().removeFromCurrent(id, obj);
     }
 

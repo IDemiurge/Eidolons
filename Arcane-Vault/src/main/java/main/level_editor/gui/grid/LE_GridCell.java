@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxColorMaster;
@@ -34,8 +35,8 @@ public class LE_GridCell extends GridCellContainer {
                 12, GdxColorMaster.PURPLE)));
         addActor(aiLabel = new LabelX("", StyleHolder.getSizedColoredLabelStyle(FontMaster.FONT.NYALA,
                 12, GdxColorMaster.CYAN)));
-        GdxMaster.right(aiLabel);
-        GdxMaster.top(scriptsLabel);
+        scriptsLabel.setTouchable(Touchable.disabled);
+        aiLabel.setTouchable(Touchable.disabled);
     }
 
     @Override
@@ -61,6 +62,8 @@ public class LE_GridCell extends GridCellContainer {
     @Override
     public void act(float delta) {
         super.act(delta);
+        GdxMaster.right(aiLabel);
+        GdxMaster.top(scriptsLabel);
         aiLabel.setVisible(getDisplayMode().isShowMetaAi());
         scriptsLabel.setVisible(getDisplayMode().isShowScripts());
     }

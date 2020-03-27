@@ -94,8 +94,12 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
     }
 
     public void undone() {
+        if (!customAiStack.isEmpty()) {
         customAiMap = customAiStack.pop();
-        encounterAiMap = encounterAiStack.pop();
+        }
+        if (!encounterAiStack.isEmpty()) {
+            encounterAiMap = encounterAiStack.pop();
+        }
     }
 
     public void removed(BattleFieldObject obj) {
@@ -151,11 +155,19 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
         AiData aiData = new AiData(from.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS,
                 t, getIdManager().getId(from));
         aiData.setIds(getSelectionHandler().getSelection().getIds());
+        if (aiData.getBooleanValue(AiData.AI_VALUE.encounter)) {
+            putEncounter(from, aiData);
+        } else {
+            putCustom(from, aiData);
+        }
     }
 
     @Override
     public void addToGroup() {
         AiData group = getSelectedGroup();
+        for (Integer id : getSelectionHandler().getSelection().getIds()) {
+            putCustom(getIdManager().getObjectById(id), group);
+        }
     }
 
     private AiData getSelectedGroup() {

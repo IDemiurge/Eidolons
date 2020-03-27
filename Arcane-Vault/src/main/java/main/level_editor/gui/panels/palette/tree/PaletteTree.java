@@ -5,23 +5,23 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
 import main.entity.type.ObjType;
 import main.level_editor.LevelEditor;
 import main.level_editor.gui.components.TreeX;
-import main.level_editor.gui.panels.palette.PaletteTypesTable;
 import main.system.graphics.FontMaster;
 
 import java.util.List;
 
 public class PaletteTree extends TreeX<PaletteNode> {
-    private final PaletteTypesTable table;
+    private final TablePanelX table;
     private final DC_TYPE TYPE;
 
     //we need a way to collapse double nodes
 
-    public PaletteTree(DC_TYPE type, PaletteTypesTable table) {
+    public PaletteTree(DC_TYPE type, TablePanelX table) {
         this.table = table;
         this.TYPE = type;
         PaletteTreeBuilder builder = new PaletteTreeBuilder();
@@ -36,6 +36,11 @@ public class PaletteTree extends TreeX<PaletteNode> {
     @Override
     public void act(float delta) {
         super.act(delta);
+    }
+
+    @Override
+    protected void doubleClick(PaletteNode node) {
+
     }
 
     @Override
@@ -58,7 +63,7 @@ public class PaletteTree extends TreeX<PaletteNode> {
             ObjType ty = (ObjType) node.getData();
              name = node.getData().toString();
             texture = TextureCache.getOrCreateR(ty.getImagePath());
-//emblem? auto-gen 32x32?
+            //emblem? auto-gen 32x32?
         }
         ValueContainer actor = new ValueContainer(style, texture, name, val);
 

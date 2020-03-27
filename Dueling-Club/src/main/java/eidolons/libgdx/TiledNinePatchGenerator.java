@@ -245,7 +245,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
 
     @Override
     public void create() {
-        generate(NINE_PATCH.FRAME, BACKGROUND_NINE_PATCH.TRANSPARENT, 1950, 1210, false);
+        generate(NINE_PATCH.HL, BACKGROUND_NINE_PATCH.TRANSPARENT, 256, 196, false);
         //        generateNinePatches();
     }
 
@@ -292,6 +292,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
         FRAME(),
         DEMIURGE,
         LIGHT,
+        HL,
         VIGNETTE {
             public boolean isPreventOverlapping() {
                 return true;

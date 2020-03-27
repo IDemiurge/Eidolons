@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class PaletteNode extends DataNode<Object, PaletteNode> {
 
-    public PaletteNode(String data) {
+    public PaletteNode(Object data) {
         this.data = data;
     }
     public PaletteNode(ObjType data) {

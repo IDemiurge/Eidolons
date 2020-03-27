@@ -13,6 +13,7 @@ import eidolons.libgdx.utils.TextInputPanel;
 import main.level_editor.LevelEditor;
 import main.level_editor.gui.components.DataTable;
 import main.level_editor.gui.dialog.BlockTemplateChooser;
+import main.level_editor.gui.dialog.ChooserDialog;
 import main.level_editor.gui.dialog.EnumChooser;
 import main.level_editor.gui.dialog.ModuleDialog;
 import main.level_editor.gui.panels.ClosablePanel;
@@ -26,7 +27,7 @@ import main.system.ExceptionMaster;
 
 public class LE_GuiStage extends GenericGuiStage {
 
-    private   ClosablePanel dialogueTable;
+    private   TablePanelX dialogueTable;
     private TopPanel topPanel;
     private LE_ButtonStripe buttons;
     private ClosablePanel controlPanel;
@@ -40,6 +41,7 @@ public class LE_GuiStage extends GenericGuiStage {
 
     private TablePanelX innerTable;
     private TextInputPanel textInput;
+    private ChooserDialog dialog;
 
 
     public LE_GuiStage(Viewport viewport, Batch batch) {
@@ -65,7 +67,7 @@ public class LE_GuiStage extends GenericGuiStage {
         }
 
         //separate table?
-        addActor(dialogueTable = new ClosablePanel());
+        addActor(dialogueTable = new TablePanelX());
 
         dialogueTable.add(  templateChooser = new BlockTemplateChooser());
         dialogueTable.add(enumChooser = new EnumChooser());
@@ -82,7 +84,6 @@ public class LE_GuiStage extends GenericGuiStage {
     }
 
     private void initTable() {
-        clear();
         addActor(innerTable = new TablePanelX( ));
         innerTable.row().maxHeight(120);
         innerTable.padTop(30);
@@ -142,9 +143,25 @@ public class LE_GuiStage extends GenericGuiStage {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+            innerTable.remove();
             initTable();
         }
         return super.touchDown(screenX, screenY, pointer, button);
+    }
+
+    @Override
+    public void unfocus(Actor actor) {
+        super.unfocus(actor);
+    }
+
+    @Override
+    public void unfocusAll() {
+        super.unfocusAll();
+    }
+
+    @Override
+    public boolean setScrollFocus(Actor actor) {
+        return super.setScrollFocus(actor);
     }
 
     @Override
@@ -166,11 +183,6 @@ public class LE_GuiStage extends GenericGuiStage {
     }
 
     @Override
-    public boolean keyUp(int keyCode) {
-        return super.keyUp(keyCode);
-    }
-
-    @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         try {
             return super.touchUp(screenX, screenY, pointer, button);
@@ -181,15 +193,22 @@ public class LE_GuiStage extends GenericGuiStage {
     }
 
     public EnumChooser getEnumChooser() {
+        dialog = enumChooser;
         return enumChooser;
     }
 
     public BlockTemplateChooser getTemplateChooser() {
+        dialog = templateChooser;
         return templateChooser;
     }
 
     public ModuleDialog getModuleDialog() {
+        dialog = moduleDialog;
         return moduleDialog;
+    }
+
+    public ChooserDialog getDialog() {
+        return dialog;
     }
 
 }

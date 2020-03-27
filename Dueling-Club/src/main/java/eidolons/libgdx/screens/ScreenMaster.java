@@ -29,7 +29,6 @@ public class ScreenMaster {
     public static RESOLUTION resolution;
     public static ScreenViewport mainViewport;
     public static GenericLauncher launcher;
-    private static GameScreen screen;
     private static SCREEN_TYPE screenType;
     private static SCREEN_TYPE previousScreenType;
 
@@ -198,8 +197,8 @@ public class ScreenMaster {
     }
 
     public static GridPanel getDungeonGrid() {
-        if (screen instanceof GenericDungeonScreen) {
-            return ((GenericDungeonScreen) screen).getGridPanel();
+        if (getScreen() instanceof GenericDungeonScreen) {
+            return ((GenericDungeonScreen) getScreen()).getGridPanel();
         }
         return null;
     }

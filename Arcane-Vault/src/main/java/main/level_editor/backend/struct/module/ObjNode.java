@@ -1,19 +1,19 @@
 package main.level_editor.backend.struct.module;
 
-import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.BattleFieldObject;
 import main.level_editor.gui.tree.data.LayeredData;
 
 import java.util.Set;
 
 public class ObjNode implements LayeredData {
 
-    DC_Obj obj;
+    BattleFieldObject obj;
 
-    public ObjNode(DC_Obj obj) {
+    public ObjNode(BattleFieldObject obj) {
         this.obj = obj;
     }
 
-    public DC_Obj getObj() {
+    public BattleFieldObject getObj() {
         return obj;
     }
 

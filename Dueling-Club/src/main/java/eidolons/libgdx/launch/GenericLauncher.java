@@ -120,8 +120,8 @@ public abstract class GenericLauncher extends Game {
         ScreenMaster.setApplication(new LwjglApplication(this,
                 getConf()));
         OptionsMaster.applyGraphicsOptions();
+        //must always do real gdx operations on gdx thread!
         Eidolons.setLauncher(this);
-        ScreenMaster.setFullscreen(fullscreen);
     }
 
     protected void screenInit() {

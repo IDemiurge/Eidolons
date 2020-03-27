@@ -22,11 +22,11 @@ public class CtrlStructurePanel extends LE_ControlPanel<IStructureHandler> {
 
     @Override
     protected int getWrap() {
-        return 5;
+        return 6;
     }
 
     @Override
     protected float getSpace() {
-        return 5;
+        return 0;
     }
 }

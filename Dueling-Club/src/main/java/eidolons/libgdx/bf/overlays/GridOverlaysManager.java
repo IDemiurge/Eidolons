@@ -488,7 +488,7 @@ public class GridOverlaysManager extends SuperActor {
         return false;
     }
 
-    private boolean isOverlayAlphaOn(OVERLAY overlay) {
+    protected boolean isOverlayAlphaOn(OVERLAY overlay) {
         switch (overlay) {
             case IN_PLAIN_SIGHT:
             case IN_SIGHT:

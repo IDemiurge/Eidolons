@@ -31,14 +31,21 @@ public abstract class ValueTable<D, A extends Actor> extends TablePanelX {
     protected void initSize(int wrap, int size) {
         this.wrap = wrap;
         this.size = size;
+        if (isSquare()) {
+            this.wrap = (int) Math.round(Math.sqrt(size));
+        }
         columns = wrap;
         rows = size / wrap;
 //        if (size % wrap > 0)
 //            rows++;
         if (getElementSize() != null && isTableFixedSize()) {
             setFixedSize(true);
-            setSize(columns * (space + getElementSize().x), rows * getElementSize().y);
+            setSize(columns * (space + getElementSize().x), Math.max(1, rows) * getElementSize().y);
         }
+    }
+
+    protected boolean isSquare() {
+        return false;
     }
 
     protected boolean isTableFixedSize() {

@@ -14,14 +14,14 @@ public class TileMapView extends TablePanelX {
         this(tileMap.toString());
     }
     public TileMapView(String tileMap) {
-        this(StringMaster.splitLines(tileMap));
+        this(0, StringMaster.splitLines(tileMap));
     }
-    public TileMapView(String[] lines) {
+    public TileMapView(int size, String[] lines) {
         for (String s : lines) {
             Label label;
             add(label = new Label(s, VisUI.getSkin())).left().spaceTop(2);
             label.setStyle(StyleHolder.getSizedLabelStyle(
-                    FontMaster.FONT.NYALA, 11
+                    FontMaster.FONT.NYALA, (int) (18-Math.sqrt(size)/2)
             ));
 
             row();

@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
@@ -116,7 +117,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     @Refactor
     //TODO the way it's done, we can't have Structures in non-Location dungeons!!!
     public LevelBlock constructBlock(Node node, int id, LevelZone zone,
-                                   Dungeon dungeon) {
+                                     Dungeon dungeon) {
         List<Coordinates> coordinates = new ArrayList<>();
         Map<Coordinates, ? extends Obj> objectMap = new LinkedHashMap<>();
         LevelBlock b = new LevelBlock(zone);
@@ -167,7 +168,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         if (idMap == null) {
             throw new RuntimeException("No ID MAP FOR OBJECTS!");
         }
-        Map<Integer, Obj> objIdMap = master.getObjIdMap();
+        Map<Integer, BattleFieldObject> objIdMap = master.getObjIdMap();
         // x-y=id,id,id;...
         //TODO   create player=> ids map and make multiple maps here!
         Map<Coordinates, Obj> fullMap = new HashMap<>();
@@ -189,8 +190,10 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             Map<Coordinates, ? extends Obj> subMap = DC_ObjInitializer.initMapBlockObjects(dungeon, b, objectsString);
             int i = 0;
             for (Obj value : subMap.values()) {
-                Integer id = Integer.valueOf(ids.get(i++));
-                objIdMap.put(id, value);
+                if (value instanceof BattleFieldObject) {
+                    Integer id = Integer.valueOf(ids.get(i++));
+                    objIdMap.put(id, (BattleFieldObject) value);
+                }
             }
             fullMap.putAll(subMap);
         }
@@ -241,7 +244,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
 
     @Override
-    protected void processNode(Node n, Location dungeon ) {
+    protected void processNode(Node n, Location dungeon) {
         if (StringMaster.compareByChar(n.getNodeName(), (META_DATA_NODE))) {
             dungeon.setUnitFacingMap(createUnitFacingMap(n.getTextContent()));
         } else if (StringMaster.compareByChar(n.getNodeName(), (ZONES_NODE))) {
@@ -258,7 +261,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         } else if (StringMaster.compareByChar(n.getNodeName(), (LAYERS))) {
             processLayers(n);
         } else
-            super.processNode(n, dungeon );
+            super.processNode(n, dungeon);
     }
 
     protected void processLayers(Node node) {
@@ -325,12 +328,12 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             //                main.system.ExceptionMaster.printStackTrace(e);
             zone = new LevelZone(id);
         } // ++ add coord exceptions
-          id = 0;
+        id = 0;
         for (Node node : XmlNodeMaster.getNodeList(XmlNodeMaster.getNodeList(zoneNode).get(0))) {
             // if (node.getNodeName().equalsIgnoreCase(BLOCKS_NODE))
             // blocks = initBlocks(XML_Converter.getStringFromXML(node));
 
-            LevelBlock block = constructBlock(node, id, zone,  dungeon);
+            LevelBlock block = constructBlock(node, id, zone, dungeon);
             id++;
             zone.addBlock(block);
 //            plan.getBlocks().add(block);
@@ -428,7 +431,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     }
 
     protected boolean isZoneModulesLazy() {
-        if (CoreEngine.TEST_LAUNCH){
+        if (CoreEngine.TEST_LAUNCH) {
             return false;
         }
         return getMaster().getGame().getMetaMaster().getModuleMaster().isModuleInitOn();

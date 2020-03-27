@@ -250,7 +250,7 @@ public abstract class InputController implements InputProcessor {
         charsUp.remove(str);
         lastTyped = c;
 
-        return true;
+        return false;
     }
 
     @Override
@@ -288,16 +288,16 @@ public abstract class InputController implements InputProcessor {
         if (isDragOff())
             return false;
         if (isBlocked())
-            return true;
+            return false;
         if (isManualCameraDisabled())
-            return true;
+            return false;
         if (mouseButtonPresed == LEFT) {
             tryPullCameraX(screenX);
             tryPullCameraY(screenY);
             cameraStop();
         }
 
-        return false;
+        return true;
     }
 
     private boolean isManualCameraDisabled() {

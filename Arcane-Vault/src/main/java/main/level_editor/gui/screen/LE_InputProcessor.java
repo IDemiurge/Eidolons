@@ -13,9 +13,41 @@ public class LE_InputProcessor extends DungeonInputController {
 
     }
 
+    @Override
+    public boolean scrolled(int i) {
+        if (getScreen().getGuiStage().getScrollFocus() != null) {
+            return false;
+        }
+        return super.scrolled(i);
+    }
+
+
+    @Override
+    public boolean mouseMoved(int i, int i1) {
+        try {
+            if (getScreen().getGuiStage().hit(i, i1, true) != null) {
+                if (getScreen().getGuiStage().getScrollFocus() != null) {
+                    getScreen().getGuiStage().unfocus(getScreen().getGuiStage().getScrollFocus());
+                }
+            }
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return super.mouseMoved(i, i1);
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if (getScreen().getGuiStage().hit(screenX, screenY, true) != null) {
+            return false;
+        }
+        return super.touchDragged(screenX, screenY, pointer);
+    }
+
     protected boolean isFreeDrag() {
         return true;
     }
+
     @Override
     protected float getMargin() {
         return 1200;
@@ -37,6 +69,6 @@ public class LE_InputProcessor extends DungeonInputController {
 
     @Override
     protected LE_Screen getScreen() {
-        return LE_Screen.getInstance ();
+        return LE_Screen.getInstance();
     }
 }
