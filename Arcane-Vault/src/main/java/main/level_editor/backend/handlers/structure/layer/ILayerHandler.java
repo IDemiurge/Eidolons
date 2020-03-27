@@ -1,6 +1,8 @@
 package main.level_editor.backend.handlers.structure.layer;
 
-public interface ILayerHandler {
+import main.level_editor.backend.handlers.ControlButtonHandler;
+
+public interface ILayerHandler  extends ControlButtonHandler {
 
     void cloneLayer();
 
@@ -15,6 +17,10 @@ public interface ILayerHandler {
 
     void add();
     void remove();
+
+    void mergeWithDefault();
+
+    void mergeWith();
 
     void setDefault();
 

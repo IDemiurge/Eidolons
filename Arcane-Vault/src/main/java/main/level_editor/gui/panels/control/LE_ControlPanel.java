@@ -7,6 +7,8 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import main.level_editor.LevelEditor;
+import main.level_editor.backend.LE_Manager;
 import main.system.SortMaster;
 import main.system.auxiliary.StringMaster;
 
@@ -43,6 +45,10 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
         initialized = true;
     }
 
+    protected LE_Manager getManager() {
+        return LevelEditor.getCurrent().getManager();
+    }
+
     private Comparator<? super Method> getSorter() {
         return (Comparator<Method>) (o1, o2
         ) -> SortMaster.compareAlphabetically(o1.getName(), o2.getName());
@@ -60,7 +66,7 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
 
     protected abstract Class<T> getClazz();
 
-    protected  abstract int getWrap();
+    protected    int getWrap(){return 5;}
 
     protected abstract float getSpace() ;
 

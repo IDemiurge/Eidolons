@@ -2,11 +2,13 @@ package eidolons.game.battlecraft.logic.dungeon.location.layer;
 
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import main.data.xml.XML_Converter;
 import main.data.xml.XmlNodeMaster;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
+import main.system.data.DataUnit;
 import org.w3c.dom.Node;
 
 import java.util.LinkedHashSet;
@@ -18,6 +20,7 @@ public class LayerManager extends DungeonHandler {
     public static final String VFX_NODE = "VFX";
     public static final String ID_NODE = "OBJS";
     public static final String SCRIPT_NODE = "SCRIPTS";
+    public static final String META_NODE = "META";
     Set<Layer> layers;
     private Layer current;
     private Layer baseLayer;
@@ -26,43 +29,79 @@ public class LayerManager extends DungeonHandler {
         super(master);
     }
 
-    public void initLayers(Node main) {
-        Set<Integer> ids = null ;
-        getMaster().getObjIdMap();
-        getMaster().getIdTypeMap();
-        for (Node node : XmlNodeMaster.getNodeList(main)) {
-            for (Node sub : XmlNodeMaster.getNodeList(node)) {
-                switch (sub.getNodeName().toUpperCase()) {
-                    case VFX_NODE:
-                        break;
-                    case SCRIPT_NODE:
-                        break;
-                    case ID_NODE:
-                        ids = toIdSet(node.getTextContent());
-                        break;
+    public void initLayers(String data) {
+        initLayers(XML_Converter.getDoc(data));
+    }
+        public void initLayers(Node main) {
 
-                }
-            }
+        for (Node node : XmlNodeMaster.getNodeList(main)) {
             String name = node.getNodeName();
-            ids = toIdSet(node.getTextContent());
+            Layer layer = addLayer(name);
+
+            for (Node sub : XmlNodeMaster.getNodeList(node)) {
+                initLayerNode(layer, sub.getNodeName().toUpperCase(), sub.getTextContent());
+            }
+
+            initLayer(layer);
+        }
+
+    }
+
+    private void initLayer(Layer layer) {
+//        addObjects etc
+    }
+
+    private Layer addLayer(String name) {
+        Layer layer = null;
+        layers.add(layer = new Layer(name, new LinkedHashSet<>()));
+        if (current == null) {
+            current = layer;
+        }
+        return layer;
+    }
+    public enum LAYER_VALUE{
+        active,
+        trigger,
+        name,
+        hidden,
+
+    }
+public class LayerData extends DataUnit<LAYER_VALUE>{
+    public LayerData(String text) {
+        super(text);
+    }
+}
+    private void initLayerNode(Layer layer, String type, String textContent) {
+//        XML_Converter.getDoc(textContent)
+        switch (type) {
+            case META_NODE:
+                LayerData data = new LayerData(textContent);
+                layer.setActive(data.getBooleanValue(LAYER_VALUE.active));
+                layer.setTriggerText(data.getValue(LAYER_VALUE.trigger));
+                break;
+            case VFX_NODE:
+                break;
+            case SCRIPT_NODE:
+                break;
+            case ID_NODE:
+                layer.setIds(toIdSet(textContent));
+                break;
+
+        }
 //            boolean active = getMaster().isLayerActive(name);
 //            boolean trigger = getMaster().isLayerActive(name);
-            Layer layer = null;
-            layers.add(layer = new Layer(name, ids));
-            if (current == null) {
-                current = layer;
-            }
-            if (layer.isActive()){
+
+        if(layer.isActive())
+
+    {
 //                getMaster();
 //                LayerInitializer.initLayer(layer);
 //                if (layer.isTrigger()){
 //                    LayerInitializer.cacheLayer(layer); //prepare trigger conditions? or should only happen via global script func
 //                }
-            }
-            //script vfx
-        }
-
     }
+
+}
 
     private Set<Integer> toIdSet(String textContent) {
         List<String> ids = ContainerUtils.openContainer(textContent, ",");
@@ -91,11 +130,12 @@ public class LayerManager extends DungeonHandler {
     public void activateLayer(String name) {
         toggleLayer(true, name);
     }
+
     public void deactivateLayer(String name) {
         toggleLayer(false, name);
     }
 
-    private Layer getLayer(String name) {
+    public Layer getLayer(String name) {
         for (Layer layer : layers) {
             if (layer.getName().equalsIgnoreCase(name)) {
                 return layer;
@@ -111,6 +151,7 @@ public class LayerManager extends DungeonHandler {
         current.getIds().add(id);
 //        current.getObjMap().put(id, obj);
     }
+
     public Layer getCurrent() {
         if (current == null) {
             return getBaseLayer();
@@ -124,7 +165,7 @@ public class LayerManager extends DungeonHandler {
 
     public Layer getBaseLayer() {
         if (baseLayer == null) {
-            baseLayer= initBaseLayer();
+            baseLayer = initBaseLayer();
         }
         return baseLayer;
     }
@@ -136,5 +177,9 @@ public class LayerManager extends DungeonHandler {
     }
 
     public void removeFromCurrent(Integer id, Obj obj) {
+    }
+
+    public void setBaseLayer(Layer selectedLayer) {
+        baseLayer = selectedLayer;
     }
 }

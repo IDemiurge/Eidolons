@@ -11,14 +11,20 @@ import eidolons.libgdx.bf.grid.UnitViewOptions;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
+import main.level_editor.LevelEditor;
+import main.level_editor.backend.sim.LE_GameSim;
 import main.system.graphics.FontMaster;
 
 public class LE_UnitView extends GridUnitView {
 
-    LabelX idLabel;
+    LabelX idLabel = new LabelX("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 12));
+    LabelX aiLabel = new LabelX("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 12));
 
     public LE_UnitView(BattleFieldObject bfObj, UnitViewOptions options) {
         super(bfObj, adjustOptions(bfObj, options));
+        if (bfObj.getGame() instanceof LE_GameSim) {
+            initLE_Id(((LE_GameSim) bfObj.getGame()).getSimIdManager().getId(bfObj));
+        }
     }
 
     private static UnitViewOptions adjustOptions(BattleFieldObject bfObj, UnitViewOptions options) {
@@ -33,30 +39,39 @@ public class LE_UnitView extends GridUnitView {
             filters
             getObjs()
              */
-        options.setHoverResponsive(false);
-        options.setEmblem(
-                TextureCache.getOrCreateR("ui\\level_editor\\anew/jack.png"));
-        options.setDirectionPointerTexture(
-                TextureCache.getOrCreateR("gen/perk/abil/1.png")
-        );
-        options.setTeamColor(GdxColorMaster.BLUE);
+            options.setHoverResponsive(false);
+            options.setEmblem(
+                    TextureCache.getOrCreateR("ui\\level_editor\\anew/jack.png"));
+            options.setDirectionPointerTexture(
+                    TextureCache.getOrCreateR("gen/perk/abil/1.png")
+            );
+            options.setTeamColor(GdxColorMaster.BLUE);
         }
 //                    options.createFromGameObject();
         return options;
     }
 
-    public void initLE_Id(Integer id){
-
-        idLabel=new LabelX(id+"", StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 12));
+    public void initLE_Id(Integer id) {
+        idLabel.setText("[Id=" + id + "]");
     }
-        public void selected(){
+
+    public void selected() {
         setTeamColorBorder(true);
         setBorder(CellBorderManager.getTeamcolorTexture());
         setTeamColor(GdxColorMaster.YELLOW);
     }
+
     @Override
     public void act(float delta) {
         super.act(delta);
+        idLabel.setVisible(LevelEditor.getCurrent().getManager().
+                getModelManager().getModel().getDisplayMode().isShowMetaAi());
+        aiLabel.setVisible(LevelEditor.getCurrent().getManager().
+                getModelManager().getModel().getDisplayMode().isShowMetaAi());
+    }
+
+    public LabelX getAiLabel() {
+        return aiLabel;
     }
 
     @Override
@@ -112,6 +127,6 @@ public class LE_UnitView extends GridUnitView {
 
     @Override
     public TextureRegion getOutline() {
-        return null ;
+        return null;
     }
 }

@@ -6,12 +6,13 @@ import main.level_editor.gui.panels.control.LE_ControlPanel;
 public class CtrlFloorPanel extends LE_ControlPanel<IFloorHandler> {
     @Override
     protected IFloorHandler getHandler() {
+//        return getManager().getAdvFuncs();
         return null;
     }
 
     @Override
     protected Class<IFloorHandler> getClazz() {
-        return null;
+        return IFloorHandler.class;
     }
 
     @Override

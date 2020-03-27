@@ -329,7 +329,7 @@ public class Dungeon extends LightweightEntity {
     public Map<String, String> getCustomDataMap() {
         if (customDataMap == null) {
             customDataMap= new DataUnitFactory(true).
-                    deconstructDataString(getProperty(PROPS.NAMED_COORDINATE_POINTS));
+                    deconstructDataString(getProperty(PROPS.COORDINATE_SCRIPTS));
         }
         return customDataMap;
     }

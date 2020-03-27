@@ -11,9 +11,9 @@ import main.data.xml.XmlNodeMaster;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
+import main.level_editor.backend.handlers.dialog.ModuleData;
+import main.level_editor.backend.struct.LE_Structure;
 import main.level_editor.gui.screen.LE_Screen;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.data.FileManager;
 
 import java.awt.*;
@@ -31,30 +31,46 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
 
     public LE_ModuleHandler(LE_Manager manager) {
         super(manager);
-        GuiEventManager.bind(GuiEventType.LE_REMAP_MODULES, p -> remapAll());
+//        GuiEventManager.bind(GuiEventType.LE_REMAP_MODULES, p -> remapAll());
     }
 
-    public void resize(Module module, int newWidth, int newHeight) {
-//        Point gridPos = moduleGrid.get(module);
-//        int offsetX = newWidth - module.getWidth();
-//        int offsetY = newHeight - module.getHeight();
-//
-//        for (Module module1 : moduleGrid.keySet()) {
-//            Point pos = moduleGrid.get(module1);
-////            offset = new Point(pos.x - );
-//        }
-        // sort it so that we offset the farthest is displaced first , by x then by y
-    }
 
-    public void remapAll() {
-        Coordinates offset;
-        for (Module module : getModules()) {
-            //module should have outer walls and void border
-        }
-    }
-
-    private Set<Module> getModules() {
+    public Set<Module> getModules() {
         return getGame().getMetaMaster().getModuleMaster().getModules();
+    }
+
+    private Module addLogicalModule(int w, int h, String name) {
+        Point p = choosePointAt();
+        Coordinates at = getMappedCoordForPoint(p);
+
+        Module module = new Module(at, w, h, name);
+        moduleGrid.put(p, module);
+        getModules().add(module);
+        return module;
+    }
+
+    public void addModule(Module module) {
+
+    }
+
+    public void addModule(ModuleData data) {
+
+//        zones = data.getValue("zones");
+        //general structure - what zones have what blocks
+        int w = data.getIntValue(LE_Structure.MODULE_VALUES.width);
+        int h = data.getIntValue(LE_Structure.MODULE_VALUES.height);
+        String name = data.getValue(LE_Structure.MODULE_VALUES.name);
+        Module module = addLogicalModule(w, h, name);
+        //TODO add ZONES AND BLOCKS from this!
+
+        getGame().getMetaMaster().getDungeonMaster().getLayerManager().
+                initLayers(data.getValue(LE_Structure.MODULE_VALUES.layer_data));
+
+        if (data.getBooleanValue(LE_Structure.MODULE_VALUES.replace_default)){
+//            initDefaultModule();
+//            getMapHandler().setOffset(offset);
+        }
+
     }
 
     @Override
@@ -64,45 +80,58 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         layers
          */
         boolean tileMapVariant = EUtils.confirm("Tilemap template?");
-        String template = FileChooserX.chooseFile(
-                tileMapVariant ? PathFinder.getModuleTemplatesPath()
-                        : PathFinder.getModulesPath(),
-                "xml", LE_Screen.getInstance().getGuiStage());
+        String template = null;
+        boolean empty = false;
+        if (tileMapVariant) {
+            template = FileChooserX.chooseFile(PathFinder.getModuleTemplatesPath(),
+                    "xml", LE_Screen.getInstance().getGuiStage());
+        } else {
+            empty = EUtils.confirm("Empty module?");
 
+            if (!empty) {
+                template = FileChooserX.chooseFile(PathFinder.getModulesPath(),
+                        "xml", LE_Screen.getInstance().getGuiStage());
+            } else {
+                template = getDefaultModulePath();
+            }
+        }
         String name = FileManager.getFileName(template);
-        String data = FileManager.readFile(template);
+        String contents = FileManager.readFile(template);
         int w = 0;
         int h = 0;
+        ModuleData data = new ModuleData();
+        data.setValue(LE_Structure.MODULE_VALUES.name, name);
         if (tileMapVariant) {
-            String gridData = XmlNodeMaster.findNodeText(data, "tilemap");
+            String gridData = XmlNodeMaster.findNodeText(contents, "tilemap");
             TileMap tileMap = TileMapper.createTileMap(gridData);
             //translate based on preferences of the floor?
             w = tileMap.getWidth();
             h = tileMap.getHeight();
 
+            data.setValue(LE_Structure.MODULE_VALUES.tile_map, gridData);
 
-            String layerData = XmlNodeMaster.findNodeText(data, "layers");
-            String structureData = XmlNodeMaster.findNodeText(data, LocationBuilder.ZONES_NODE);
-
-//            getGame().getMetaMaster().getDungeonMaster().getLayerManager().initLayers(n);
 
         } else {
-//TODO
+            if (empty) {
+
+            } else {
+
+            }
+            String layerData = XmlNodeMaster.findNodeText(contents, "layers");
+            String structureData = XmlNodeMaster.findNodeText(contents, LocationBuilder.ZONES_NODE);
+            data.setValue(LE_Structure.MODULE_VALUES.layer_data, layerData);
+//            data.setValue(LE_Structure.MODULE_VALUES.structureData, structureData);
         }
-//TODO       initModuleObjects();
+        data.setValue(LE_Structure.MODULE_VALUES.height, h);
+        data.setValue(LE_Structure.MODULE_VALUES.width, w);
 
-        addLogicalModule(w, h, name);
-//TODO add ZONES AND BLOCKS from this!
+        addModule(data);
     }
 
-    private void addLogicalModule(int w, int h, String name) {
-        Point p = choosePointAt();
-        Coordinates at = getMappedCoordForPoint(p);
-
-        Module module = new Module(at, w, h, name);
-        moduleGrid.put(p, module);
-        getModules().add(module);
+    private String getDefaultModulePath() {
+        return PathFinder.getModulesPath() + "default.xml";
     }
+
 
     private Coordinates getMappedCoordForPoint(Point p) {
         /*
@@ -168,6 +197,10 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
 
     @Override
     public void cloneModule() {
+        addModule(getSelected());
+    }
 
+    private Module getSelected() {
+        return getModel().getModule();
     }
 }

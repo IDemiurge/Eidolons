@@ -7,11 +7,14 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.gui.LabelX;
 import main.level_editor.LevelEditor;
+import main.level_editor.backend.display.LE_DisplayMode;
 import main.system.graphics.FontMaster;
 
 import java.util.HashMap;
@@ -27,20 +30,28 @@ public class LE_GridCell extends GridCellContainer {
 
     public LE_GridCell(TextureRegion backTexture, int gridX, int gridY) {
         super(backTexture, gridX, gridY);
-        scriptsLabel = new LabelX("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 12));
-        aiLabel = new LabelX("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 12));
+        addActor(scriptsLabel = new LabelX("", StyleHolder.getSizedColoredLabelStyle(FontMaster.FONT.NYALA,
+                12, GdxColorMaster.PURPLE)));
+        addActor(aiLabel = new LabelX("", StyleHolder.getSizedColoredLabelStyle(FontMaster.FONT.NYALA,
+                12, GdxColorMaster.CYAN)));
+        GdxMaster.right(aiLabel);
+        GdxMaster.top(scriptsLabel);
     }
 
     @Override
     protected boolean isCoordinatesShown() {
         return
-                LevelEditor.getModel().getDisplayMode().isShowCoordinates();
+                getDisplayMode().isShowCoordinates();
+    }
+
+    private LE_DisplayMode getDisplayMode() {
+        return LevelEditor.getModel().getDisplayMode();
     }
 
     public void displayModeUpdated() {
         for (Color color : colorOverlays.keySet()) {
             //check?
-            if (LevelEditor.getModel().getDisplayMode().isUseColors())
+            if (getDisplayMode().isUseColors())
                 colorOverlays.get(color).fadeIn();
             else
                 colorOverlays.get(color).fadeOut();
@@ -50,6 +61,16 @@ public class LE_GridCell extends GridCellContainer {
     @Override
     public void act(float delta) {
         super.act(delta);
+        aiLabel.setVisible(getDisplayMode().isShowMetaAi());
+        scriptsLabel.setVisible(getDisplayMode().isShowScripts());
+    }
+
+    public LabelX getScriptsLabel() {
+        return scriptsLabel;
+    }
+
+    public LabelX getAiLabel() {
+        return aiLabel;
     }
 
     @Override
@@ -68,7 +89,11 @@ public class LE_GridCell extends GridCellContainer {
         return new ClickListener(-1) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelEditor.getCurrent().getManager().getMouseHandler().handleCellClick(event, getTapCount(), getGridX(), getGridY());
+                InputEvent e = new InputEvent();
+                e.setButton(event.getButton());
+              Eidolons.onNonGdxThread(()->
+                LevelEditor.getCurrent().getManager().getMouseHandler().
+                        handleCellClick(e, getTapCount(), getGridX(), getGridY()));
             }
 
             @Override

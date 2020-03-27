@@ -2,10 +2,7 @@ package eidolons.libgdx.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.TextInputListener;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.screens.map.MapScreen;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -20,7 +17,8 @@ public class GdxDialogMaster {
     }
 
     public static String inputText(String title, String hint, String text) {
-        if (GdxMaster.isLwjglThread()) {
+//        if (GdxMaster.isLwjglThread())
+//            else
             Gdx.app.postRunnable(() -> textInput(new TextInputListener() {
                                                      @Override
                                                      public void input(String text) {
@@ -34,17 +32,14 @@ public class GdxDialogMaster {
                                                  }
              , title, text, hint
             ));
-        }
+
         String input = (String) WaitMaster.waitForInput(OPERATION);
         return input;
     }
 
     private static void textInput(TextInputListener textInputListener, String title,
                                   String text, String hint) {
-        GameScreen screen = ScreenMaster.getScreen();
-        if (screen instanceof MapScreen) {
-            MapScreen.getInstance().getGuiStage().textInput(textInputListener, title,
+            ScreenMaster.getScreen().getGuiStage().textInput(textInputListener, title,
              text, hint);
-        }
     }
 }

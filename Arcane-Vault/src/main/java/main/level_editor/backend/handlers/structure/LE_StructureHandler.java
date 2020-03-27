@@ -1,5 +1,7 @@
 package main.level_editor.backend.handlers.structure;
 
+import com.badlogic.gdx.graphics.Color;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
@@ -9,6 +11,7 @@ import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.model.RoomModel;
 import eidolons.game.module.dungeoncrawl.generator.model.RoomTemplateMaster;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
+import eidolons.libgdx.GdxColorMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
@@ -24,10 +27,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class LE_StructureManager extends LE_Handler implements IStructureManager{
+public class LE_StructureHandler extends LE_Handler implements IStructureHandler {
 
 
-    public LE_StructureManager(LE_Manager manager) {
+    private static final ROOM_TEMPLATE_GROUP[] TEMPLATE_GROUPS =
+            new ROOM_TEMPLATE_GROUP[]{
+                    ROOM_TEMPLATE_GROUP.TEMPLE,
+                    ROOM_TEMPLATE_GROUP.CASTLE,
+                    ROOM_TEMPLATE_GROUP.CAVE,
+                    ROOM_TEMPLATE_GROUP.TOWER,
+                    ROOM_TEMPLATE_GROUP.CRYPT,
+                    ROOM_TEMPLATE_GROUP.DUNGEON,
+                    ROOM_TEMPLATE_GROUP.CEMETERY,
+    };
+    private static final Color[] BLOCK_COLORS = {
+            GdxColorMaster.PURPLE,
+            GdxColorMaster.CYAN,
+            GdxColorMaster.BLUE,
+            GdxColorMaster.RED,
+            GdxColorMaster.BEIGE,
+            GdxColorMaster.GREEN,
+    };
+
+    public LE_StructureHandler(LE_Manager manager) {
         super(manager);
     }
 
@@ -55,15 +77,20 @@ public class LE_StructureManager extends LE_Handler implements IStructureManager
     @Override
     public void insertBlock() {
         LevelData data = new LevelData("");
-        data.setTemplateGroups(new ROOM_TEMPLATE_GROUP[]{ROOM_TEMPLATE_GROUP.TEMPLE});
+        data.setTemplateGroups(TEMPLATE_GROUPS);
+
+
         RoomTemplateMaster templateMaster = new RoomTemplateMaster(data);
         ROOM_TEMPLATE_GROUP room_template_group
-                = LE_Screen.getInstance().getGuiStage().getEnumChooser()
-                .choose(templateMaster.getModels().keySet().toArray(new ROOM_TEMPLATE_GROUP[0]),
-                        ROOM_TEMPLATE_GROUP.class);
+                = (ROOM_TEMPLATE_GROUP) LE_Screen.getInstance().getGuiStage().getEnumChooser()
+                .choose(templateMaster.getModels().keySet().toArray(new ROOM_TEMPLATE_GROUP[0]));
+
+        LocationBuilder.ROOM_TYPE type= LocationBuilder.ROOM_TYPE.THRONE_ROOM;
+        //TODO choose
 
         Set<RoomModel> from = templateMaster.getModels().get(room_template_group);
         from.removeIf(model -> model == null);
+        from.removeIf(model -> model.getType()!= type);
         RoomModel template = LE_Screen.getInstance().getGuiStage().getTemplateChooser()
                 .choose(from);
         Coordinates c = getSelectionHandler().selectCoordinate();
@@ -180,4 +207,12 @@ public class LE_StructureManager extends LE_Handler implements IStructureManager
 
     }
 
+    public Color getColorForBlock(LevelBlock block) {
+        int i = block.getZone().getSubParts().indexOf(block);
+        int max=BLOCK_COLORS.length;
+        if (i>max){
+            i = i%max;
+        }
+        return BLOCK_COLORS[i];
+    }
 }

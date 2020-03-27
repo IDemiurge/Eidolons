@@ -37,6 +37,7 @@ import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
+import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -267,16 +268,21 @@ public class Eidolons {
     }
 
     public static void onNonGdxThread(Runnable o) {
-//        if (!logicThreadBusy) {
-//            SwingUtilities.invokeLater(new Runnable() {
-//                @Override
-//                public void run() {
-//                    logicThreadBusy = true;
-//                    o.run();
-//                    logicThreadBusy = false;
-//                }
-//            });
-//        } else
+        if (!logicThreadBusy) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    logicThreadBusy = true;
+                    try {
+                        o.run();
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    } finally {
+                        logicThreadBusy = false;
+                    }
+                }
+            });
+        } else
         new Thread(o, "single task thread " + customThreadsUsed++).start();
 
 

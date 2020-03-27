@@ -72,12 +72,6 @@ public class Module {
     }
 
 
-    public enum MODULE_VALUE{
-        //like zone?
-        ambience,
-        vfx,
-
-    }
 
     @Override
     public String toString() {

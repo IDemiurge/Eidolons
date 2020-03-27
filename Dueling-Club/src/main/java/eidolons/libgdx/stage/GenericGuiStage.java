@@ -147,11 +147,11 @@ public class GenericGuiStage extends StageX {
     }
 
     public void textInput(Input.TextInputListener textInputListener, String title, String text, String hint) {
-        if (tf == null)
-            tf = new TextInputPanel(title, text, hint, textInputListener);
+        TextInputPanel tf = new TextInputPanel(title, text, hint, textInputListener);
+        addActor(tf);
         tf.setPosition(GdxMaster.centerWidth(tf), GdxMaster.centerHeight(tf));
-        //textInputListener.input(text);
-        tf.setVisible(true);
+        tf.open();
+        setKeyboardFocus(tf);
 
     }
 

@@ -134,6 +134,7 @@ public class NinePatchFactory {
          SCROLL_KNOB), 0, 0, 0, 0));
     }
     public static NinePatchDrawable getScrollV() {
+//        GdxImageMaster.getrotated
         return getScrollH();
     }
     public static NinePatchDrawable getScrollKnobV() {

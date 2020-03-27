@@ -1,6 +1,8 @@
 package main.level_editor.backend.handlers.structure;
 
-public interface IStructureManager {
+import main.level_editor.backend.handlers.ControlButtonHandler;
+
+public interface IStructureHandler extends ControlButtonHandler {
 
     void addBlock();
     void insertBlock();

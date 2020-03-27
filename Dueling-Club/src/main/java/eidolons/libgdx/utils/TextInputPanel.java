@@ -3,14 +3,19 @@ package eidolons.libgdx.utils;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
-import eidolons.libgdx.gui.panels.TablePanel;
+import com.kotcrab.vis.ui.VisUI;
+import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.gui.generic.btn.ButtonStyled;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 
 /**
  * Created by JustMe on 2/22/2018.
  */
-public class TextInputPanel extends TablePanel implements Blocking, TextFieldListener {
+public class TextInputPanel extends TablePanelX implements Blocking, TextFieldListener, TextField.TextFieldFilter {
     String title, text, hint;
     TextInputListener textInputListener;
     private TextField tf;
@@ -20,9 +25,13 @@ public class TextInputPanel extends TablePanel implements Blocking, TextFieldLis
         this.text = text;
         this.hint = hint;
         this.textInputListener = textInputListener;
-
-//        tf= new TextField(text, style);
-//        tf.setTextFieldListener(this);
+//StyleHolder.getTextButtonStyle()
+        add(new LabelX(title)).top().row();
+        add(tf = new TextField(text, VisUI.getSkin())).width(800).height(500).row();
+        tf.setTextFieldListener(this);
+        tf.setTextFieldFilter(this);
+        add(new SmartButton(ButtonStyled.STD_BUTTON.OK, () -> ok())).left().bottom();
+        add(new SmartButton(ButtonStyled.STD_BUTTON.CANCEL, () -> close())).right().bottom();
     }
 
     @Override
@@ -31,17 +40,42 @@ public class TextInputPanel extends TablePanel implements Blocking, TextFieldLis
     }
     @Override
     public void close() {
+        fadeOut();
+        textInputListener.canceled();
+    }
+    public void ok(){
+        fadeOut();
+        textInputListener.input(tf.getText());
+    }
 
+    @Override
+    public void fadeOut() {
+        clearActions();
+        ActionMaster.addFadeOutAction(this, 0.25f);
+        ActionMaster.addRemoveAfter(this);
     }
 
     @Override
     public void keyTyped(TextField textField, char c) {
 //        Input.Keys.ENTER
+        textField.appendText(c+"");
+        main.system.auxiliary.log.LogMaster.log(1,"Input: " +textField.getText());
+        return;
     }
 
     @Override
     public void open() {
-
+        fadeIn();
+        tf.setText("Input something...");
     }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
+
+    @Override
+    public boolean acceptChar(TextField textField, char c) {
+        return true;
+    }
 }

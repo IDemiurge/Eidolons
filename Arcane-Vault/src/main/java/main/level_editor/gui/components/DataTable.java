@@ -9,7 +9,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import main.entity.Entity;
-import main.level_editor.backend.handlers.EditHandler;
+import main.level_editor.backend.handlers.LE_EditHandler;
 import main.system.graphics.FontMaster;
 
 public class DataTable extends ValueTable<DataTable.DataPair, ValueContainer> {
@@ -49,7 +49,7 @@ public class DataTable extends ValueTable<DataTable.DataPair, ValueContainer> {
     @Override
     public void setUserObject(Object userObject) {
         Entity editEntity = (Entity) userObject;
-        data= EditHandler.getDataPairs(editEntity);
+        data= LE_EditHandler.getDataPairs(editEntity);
         super.setUserObject(userObject);
     }
 
@@ -80,9 +80,18 @@ public class DataTable extends ValueTable<DataTable.DataPair, ValueContainer> {
         return new DataPair[0];
     }
 
-    public class DataPair{
+    public static class DataPair{
         String name;
         Object value;
         String stringValue;
+
+        public DataPair(String name, Object value ) {
+            this(name, value, value.toString());
+        }
+        public DataPair(String name, Object value, String stringValue) {
+            this.name = name;
+            this.value = value;
+            this.stringValue = stringValue;
+        }
     }
 }

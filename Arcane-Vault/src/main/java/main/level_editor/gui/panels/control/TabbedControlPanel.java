@@ -5,10 +5,7 @@ import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import main.level_editor.gui.panels.control.structure.CtrlFloorPanel;
-import main.level_editor.gui.panels.control.structure.CtrlLayerPanel;
-import main.level_editor.gui.panels.control.structure.CtrlModulePanel;
-import main.level_editor.gui.panels.control.structure.CtrlStructurePanel;
+import main.level_editor.gui.panels.control.structure.*;
 import main.system.auxiliary.StringMaster;
 
 public class TabbedControlPanel extends TabbedPane implements TabbedPaneListener {
@@ -19,13 +16,18 @@ public class TabbedControlPanel extends TabbedPane implements TabbedPaneListener
     CtrlFloorPanel floorPanel= new CtrlFloorPanel();
     CtrlLayerPanel layerPanel= new CtrlLayerPanel();
     CtrlFuncsPanel funcsPanel= new CtrlFuncsPanel();
+    CtrlAiPanel aiPanel= new CtrlAiPanel();
+    CtrlRngPanel rngPanel= new CtrlRngPanel();
+    CtrlSelectionPanel selectionPanel= new CtrlSelectionPanel();
+    CtrlPalettePanel palettePanel= new CtrlPalettePanel();
 
     LE_ControlPanel[] panels = {
             modulePanel,
             structurePanel,
-//            floorPanel,
-//            layerPanel,
-//            funcsPanel,
+            layerPanel,
+            funcsPanel,
+            aiPanel,
+            selectionPanel,
     };
 
     public TabbedControlPanel(TablePanelX holder) {

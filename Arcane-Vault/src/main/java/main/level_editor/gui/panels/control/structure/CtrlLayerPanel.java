@@ -7,8 +7,7 @@ public class CtrlLayerPanel extends LE_ControlPanel<ILayerHandler> {
 
     @Override
     protected ILayerHandler getHandler() {
-//        return LevelEditor.getCurrent().getManager().getLayerHandler();
-        return null;
+        return  getManager().getLayerHandler();
     }
 
     @Override

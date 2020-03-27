@@ -39,6 +39,9 @@ public class LE_MouseHandler extends LE_Handler {
         CLICK_MODE mode = getModeForClick(event, tapCount);
 
         switch (mode) {
+            case ALT:
+               manager.getScriptHandler().editScriptData(c);
+                break;
             case SHIFT:
                 getSelectionHandler().addAreaToSelectedCoordinates(c);
                 getSelectionHandler().areaSelected();
@@ -51,13 +54,13 @@ public class LE_MouseHandler extends LE_Handler {
                 getSelectionHandler().selectedCoordinate(c);
                 break;
             case RIGHT:
-                getObjHandler().addSelectedObj(gridX, gridY);
+                getObjHandler().addFromPalette(gridX, gridY);
                 return;
             //copy metadata
             //delete top
             //delete all
             //select area
-            case ALT:
+            case ALT_R:
                 manager.getModule(c).toggleCoordinate(c); //expand or cut
                 // remap modules - put them far enough apart...
                 //switch to adjacent?
@@ -67,7 +70,7 @@ public class LE_MouseHandler extends LE_Handler {
 
                  */
                 break;
-            case ALT_R:
+            case ALT_CTRL:
                 manager.getOperationHandler().execute(Operation.LE_OPERATION.VOID_TOGGLE, c);
                 break;
         }
@@ -84,7 +87,7 @@ public class LE_MouseHandler extends LE_Handler {
             //remove
             case SHIFT_R:
                 //TODO check space!
-                getObjHandler().addSelectedObj(bfObj.getX(), bfObj.getY());
+                getObjHandler().addFromPalette(bfObj.getX(), bfObj.getY());
                 break;
             case CTRL:
                 getSelectionHandler().addToSelected(bfObj);
@@ -97,10 +100,9 @@ public class LE_MouseHandler extends LE_Handler {
                 if (getModel().getPaletteSelection().getObjTypeOverlaying() != null) {
                     if (bfObj instanceof Structure) {
 //                    event.getStageY()
-                        DIRECTION d =   LE_Screen.getInstance().getGuiStage().getEnumChooser()
-                                .choose(DIRECTION.values() ,
-                                        DIRECTION.class);
-                        operation(Operation.LE_OPERATION.ADD_OVERLAY , getModel().getPaletteSelection().getObjTypeOverlaying(),
+                        DIRECTION d = LE_Screen.getInstance().getGuiStage().getEnumChooser()
+                                .chooseEnum(DIRECTION.class);
+                        operation(Operation.LE_OPERATION.ADD_OVERLAY, getModel().getPaletteSelection().getObjTypeOverlaying(),
                                 bfObj.getCoordinates(), d);
                         break;
                     }

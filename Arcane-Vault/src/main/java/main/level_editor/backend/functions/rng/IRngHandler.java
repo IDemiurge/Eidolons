@@ -1,6 +1,8 @@
 package main.level_editor.backend.functions.rng;
 
-public interface IRngHandler {
+import main.level_editor.backend.handlers.ControlButtonHandler;
+
+public interface IRngHandler  extends ControlButtonHandler {
 
     void randomBlock();
 

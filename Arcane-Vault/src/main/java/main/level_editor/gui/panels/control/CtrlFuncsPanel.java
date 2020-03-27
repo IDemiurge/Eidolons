@@ -5,17 +5,12 @@ import main.level_editor.backend.functions.advanced.IAdvFuncs;
 public class CtrlFuncsPanel extends LE_ControlPanel<IAdvFuncs> {
     @Override
     protected IAdvFuncs getHandler() {
-        return null;
+        return getManager().getAdvFuncs();
     }
 
     @Override
     protected Class<IAdvFuncs> getClazz() {
-        return null;
-    }
-
-    @Override
-    protected int getWrap() {
-        return 0;
+        return IAdvFuncs.class;
     }
 
     @Override

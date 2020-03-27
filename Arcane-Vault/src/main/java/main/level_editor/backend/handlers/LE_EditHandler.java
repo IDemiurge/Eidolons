@@ -14,9 +14,9 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.data.DataUnit;
 
-public class EditHandler extends LE_Handler {
+public class LE_EditHandler extends LE_Handler {
 
-    public EditHandler(LE_Manager manager) {
+    public LE_EditHandler(LE_Manager manager) {
         super(manager);
     }
 

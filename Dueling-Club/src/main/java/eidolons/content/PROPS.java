@@ -53,7 +53,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     DUNGEON_TAGS(null, true, "dungeons"),
     MAP_BACKGROUND(null, false, "dungeons", "area", "route", "place"),
     COORDINATE_POINTS("", true, "dungeons"),
-    NAMED_COORDINATE_POINTS("", true, "dungeons"),
+    COORDINATE_SCRIPTS("", true, "dungeons"),
     ENCOUNTER_INFO("", true, "dungeons"),
     ENCOUNTER_SETS(null, true, "dungeons", "encounters"),
     ENCOUNTERS(null, true, "dungeons"),

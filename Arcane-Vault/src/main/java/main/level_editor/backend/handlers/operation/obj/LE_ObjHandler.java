@@ -30,7 +30,7 @@ public class LE_ObjHandler extends LE_Handler {
 
     }
 
-    public void addSelectedObj(int gridX, int gridY) {
+    public void addFromPalette(int gridX, int gridY) {
         operation(Operation.LE_OPERATION.ADD_OBJ, getModel().getPaletteSelection().getObjType(), Coordinates.get(gridX, gridY));
     }
 

@@ -38,7 +38,7 @@ public class InscriptionMaster {
     }
 
     private void initCustomData(BattleFieldObject obj) {
-        for (String substring : ContainerUtils.openContainer(obj.getGame().getDungeon().getProperty(PROPS.NAMED_COORDINATE_POINTS))) {
+        for (String substring : ContainerUtils.openContainer(obj.getGame().getDungeon().getProperty(PROPS.COORDINATE_SCRIPTS))) {
             String key = substring.split("=")[0];
             String value = substring.split("=")[1];
             map.put(key, value);

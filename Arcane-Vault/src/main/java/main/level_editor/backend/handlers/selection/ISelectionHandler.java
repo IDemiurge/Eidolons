@@ -1,6 +1,12 @@
 package main.level_editor.backend.handlers.selection;
 
-public interface ISelectionHandler {
+import main.level_editor.backend.handlers.ControlButtonHandler;
+
+public interface ISelectionHandler  extends ControlButtonHandler {
+
+
+    void count();
+
 
     void selectAll();
 

@@ -1,6 +1,8 @@
 package main.level_editor.backend.functions.advanced;
 
-public interface IAdvFuncs {
+import main.level_editor.backend.handlers.ControlButtonHandler;
+
+public interface IAdvFuncs extends ControlButtonHandler {
     //operates on selection?
 
     void fill();

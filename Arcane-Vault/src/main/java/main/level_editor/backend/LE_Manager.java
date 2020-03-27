@@ -7,15 +7,17 @@ import main.level_editor.backend.functions.io.LE_DataHandler;
 import main.level_editor.backend.functions.mapping.LE_ModuleHandler;
 import main.level_editor.backend.functions.mouse.LE_MouseHandler;
 import main.level_editor.backend.functions.palette.PaletteHandlerImpl;
-import main.level_editor.backend.handlers.EditHandler;
-import main.level_editor.backend.handlers.LE_DialogHandler;
+import main.level_editor.backend.handlers.LE_EditHandler;
 import main.level_editor.backend.handlers.LE_MenuHandler;
 import main.level_editor.backend.handlers.ai.LE_AiHandler;
+import main.level_editor.backend.handlers.dialog.LE_DialogHandler;
 import main.level_editor.backend.handlers.model.LE_ModelManager;
 import main.level_editor.backend.handlers.operation.OperationHandler;
 import main.level_editor.backend.handlers.operation.obj.LE_ObjHandler;
 import main.level_editor.backend.handlers.selection.LE_SelectionHandler;
-import main.level_editor.backend.handlers.structure.LE_StructureManager;
+import main.level_editor.backend.handlers.structure.LE_StructureHandler;
+import main.level_editor.backend.handlers.structure.layer.LayerHandlerImpl;
+import main.level_editor.backend.metadata.script.LE_ScriptHandler;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.sim.LE_IdManager;
 import main.level_editor.backend.struct.level.Floor;
@@ -29,10 +31,12 @@ public class LE_Manager {
     private final OperationHandler operationHandler;
     private final LE_ObjHandler objHandler;
     private final LE_CameraHandler cameraHandler;
-    private final EditHandler editHandler;
+    private final LE_EditHandler editHandler;
     private final LE_KeyHandler keyHandler;
     private final LE_AiHandler aiHandler;
     private final LE_DialogHandler dialogHandler;
+    private final LE_ScriptHandler scriptHandler;
+    private final LayerHandlerImpl layerHandler;
     private Floor floor;
     private LE_SelectionHandler selectionHandler;
     private LE_ModelManager modelManager;
@@ -40,7 +44,7 @@ public class LE_Manager {
     private LE_MouseHandler mouseHandler;
     private LE_AdvFuncs advFuncs;
     private LE_MenuHandler menuHandler;
-    private LE_StructureManager structureManager;
+    private LE_StructureHandler structureManager;
     private LE_ModuleHandler moduleHandler;
     private PaletteHandlerImpl paletteHandler;
 
@@ -53,16 +57,23 @@ public class LE_Manager {
         dataHandler = new LE_DataHandler(this);
         game = floor.getGame();
         idManager = game.getSimIdManager();
-        structureManager = new LE_StructureManager(this);
+        structureManager = new LE_StructureHandler(this);
         moduleHandler = new LE_ModuleHandler(this);
         operationHandler = new OperationHandler(this);
         objHandler = new LE_ObjHandler(this);
         paletteHandler = new PaletteHandlerImpl(this);
         cameraHandler = new LE_CameraHandler(this);
-        editHandler = new EditHandler(this);
+        editHandler = new LE_EditHandler(this);
         keyHandler = new LE_KeyHandler(this);
         aiHandler = new LE_AiHandler(this);
         dialogHandler = new LE_DialogHandler(this);
+        scriptHandler = new LE_ScriptHandler(this);
+        layerHandler = new LayerHandlerImpl(this);
+//        layerHandler = new IRngHandler(this);
+    }
+
+    public LE_ScriptHandler getScriptHandler() {
+        return scriptHandler;
     }
 
     public LE_DialogHandler getDialogHandler() {
@@ -93,7 +104,7 @@ public class LE_Manager {
         return cameraHandler;
     }
 
-    public EditHandler getEditHandler() {
+    public LE_EditHandler getEditHandler() {
         return editHandler;
     }
 
@@ -125,7 +136,7 @@ public class LE_Manager {
         return getGame().getMetaMaster().getModuleMaster().getModule(c);
     }
 
-    public LE_StructureManager getStructureManager() {
+    public LE_StructureHandler getStructureManager() {
         return structureManager;
     }
 
@@ -145,4 +156,7 @@ public class LE_Manager {
         return paletteHandler;
     }
 
+    public LayerHandlerImpl getLayerHandler() {
+        return layerHandler;
+    }
 }

@@ -1,17 +1,16 @@
 package eidolons.libgdx.gui.panels.headquarters.creation.selection;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.libgdx.shaders.ShaderMaster;
 import main.content.enums.GenericEnums;
-
-import java.util.Arrays;
 
 /**
  * Created by JustMe on 7/3/2018.
@@ -38,11 +37,22 @@ public class SelectableImageItem extends FadeImageContainer{
 
     @Override
     public void act(float delta) {
-        highlight.setPosition((Arrays.asList( table.getData()) .indexOf(data)*(
-                        getWidth()+table.getSpace()))-table.getSpace()/2+
-                        GdxMaster.centerWidth(highlight),
-                GdxMaster.centerHeight(highlight));
+//        highlight.setPosition((Arrays.asList( table.getData()) .indexOf(data)*(
+//                        getWidth()+table.getSpace()))-table.getSpace()/2+
+//                        GdxMaster.centerWidth(highlight),
+//                  (getParent().getHeight()));
+highlight.setSize(getWidth(), getHeight());
         super.act(delta);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (isSelected()){
+            batch.setShader(ShaderMaster.getShader(ShaderMaster.SHADER.INVERT));
+        } else {
+            batch.setShader(null);
+        }
+        super.draw(batch, parentAlpha);
     }
 
     @Override
@@ -82,6 +92,7 @@ public class SelectableImageItem extends FadeImageContainer{
         if (!selected)
             ActionMaster.addFadeOutAction(highlight,1, false);
             else {
+            ActionMaster.addFadeInAction(highlight,1 );
         }
     }
 

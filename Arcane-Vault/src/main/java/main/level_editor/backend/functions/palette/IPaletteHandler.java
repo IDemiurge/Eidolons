@@ -1,6 +1,8 @@
 package main.level_editor.backend.functions.palette;
 
-public interface IPaletteHandler {
+import main.level_editor.backend.handlers.ControlButtonHandler;
+
+public interface IPaletteHandler  extends ControlButtonHandler {
 
     void createPalette();
     void removePalette();

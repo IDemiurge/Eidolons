@@ -8,16 +8,17 @@ import main.system.auxiliary.data.ArrayMaster;
 import main.system.graphics.GuiManager;
 import main.system.math.PositionMaster;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class Coordinates {
+public class Coordinates implements Serializable {
 
     private static final int MAX_WIDTH = 200;
     private static final int MAX_HEIGHT = 200;
-    static Coordinates[][] coordinates = new Coordinates[MAX_WIDTH][MAX_HEIGHT];
+    private static Coordinates[][] coordinates = new Coordinates[MAX_WIDTH][MAX_HEIGHT];
     private static boolean flipX;
     private static boolean flipY;
     private static boolean rotate;
@@ -28,9 +29,9 @@ public class Coordinates {
     public int x;
     public int y;
     protected int z = 0;
-    Coordinates[] adjacent;
-    Coordinates[] adjacenctNoDiags;
-    Coordinates[] adjacenctDiagsOnly;
+    protected Coordinates[] adjacent;
+    protected Coordinates[] adjacenctNoDiags;
+    protected Coordinates[] adjacenctDiagsOnly;
     private boolean invalid = false;
 
     public Coordinates() {

@@ -1,6 +1,8 @@
 package main.level_editor.backend.handlers.structure;
 
-public interface IFloorHandler {
+import main.level_editor.backend.handlers.ControlButtonHandler;
+
+public interface IFloorHandler  extends ControlButtonHandler {
 
     void editMeta(); //background, default atmo/vfx, module grid, entrances,  params - global illum, TYPE, cell types,
     //should have similar options PER MODULE

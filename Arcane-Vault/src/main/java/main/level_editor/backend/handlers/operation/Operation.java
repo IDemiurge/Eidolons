@@ -36,7 +36,7 @@ public class Operation {
 
         EDIT,
         REMOVE_OVERLAY,
-        ADD_OVERLAY;
+        ADD_OVERLAY, CELL_SCRIPT_CHANGE;
 
         LE_OPERATION() {
         }

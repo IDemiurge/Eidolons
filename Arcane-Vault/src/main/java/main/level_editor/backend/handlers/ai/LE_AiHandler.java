@@ -8,10 +8,13 @@ import main.data.xml.XmlNodeMaster;
 import main.entity.obj.Obj;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Stack;
 
@@ -21,8 +24,8 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
     private static final String CUSTOM_AI_GROUPS = "custom";
     private static final String ENCOUNTER_AI_GROUPS = "encounter";
-    Map<BattleFieldObject, AiData> encounterAiMap;
-    Map<BattleFieldObject, AiData> customAiMap;
+    Map<BattleFieldObject, AiData> encounterAiMap= new LinkedHashMap<>();
+    Map<BattleFieldObject, AiData> customAiMap= new LinkedHashMap<>();
 
     Stack<Map<BattleFieldObject, AiData>> encounterAiStack = new Stack<>();
     Stack<Map<BattleFieldObject, AiData>> customAiStack = new Stack<>();
@@ -32,7 +35,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
     }
 
     public void objectAdded(BattleFieldObject obj) {
-//    wtf?
+//    TODO wtf?
 //    Integer id = getIdManager().getId(obj);
 //        AiData ai = new AiData(id);
 //        if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
@@ -42,50 +45,16 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 //        }
     }
 
-    private void putEncounter(BattleFieldObject obj, AiData ai) {
-        encounterAiStack.push(encounterAiMap);
-        encounterAiMap = new HashMap<>(encounterAiMap);
-        encounterAiMap.put(obj, ai);
-    }
-
-    private void putCustom(BattleFieldObject obj, AiData ai) {
-        customAiStack.push(customAiMap);
-        customAiMap = new HashMap<>(customAiMap);
-        customAiMap.put(obj, ai);
-    }
-
-    public void undone() {
-        customAiMap = customAiStack.pop();
-        encounterAiMap = encounterAiStack.pop();
+    private AiData getAiForObject(BattleFieldObject obj) {
+        if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
+            return getAiForEncounter(obj);
+        }
+        return customAiMap.get(obj);
     }
 
     public AiData getAiForEncounter(DC_Obj obj) {
         return encounterAiMap.get(obj);
     }
-
-    public String toXml() {
-        StringBuilder builder = new StringBuilder();
-        for (BattleFieldObject object : encounterAiMap.keySet()) {
-            builder.append(getIdManager().getId(object)).append("=");
-            builder.append(encounterAiMap.get(object).toString()).append(";");
-        }
-        String xml = XML_Converter.wrap(ENCOUNTER_AI_GROUPS, builder.toString());
-
-        builder = new StringBuilder();
-        for (AiData data : customAiMap.values()) {
-            for (BattleFieldObject object : customAiMap.keySet()) {
-                if (customAiMap.get(object) == data) {
-                    builder.append(getIdManager().getId(object)).append(";");
-                }
-            }
-            builder.append("=");
-            builder.append(data.toString()).append(";");
-        }
-        xml += XML_Converter.wrap(CUSTOM_AI_GROUPS, builder.toString());
-
-        return xml;
-    }
-
 
     public void initAiData(String nodeContents) {
         String node = XmlNodeMaster.findNodeText(nodeContents, ENCOUNTER_AI_GROUPS);
@@ -110,14 +79,61 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
     }
 
+    private void putEncounter(BattleFieldObject obj, AiData ai) {
+        encounterAiStack.push(encounterAiMap);
+        encounterAiMap = new HashMap<>(encounterAiMap);
+        encounterAiMap.put(obj, ai);
+        updateText(obj);
+    }
+
+    private void putCustom(BattleFieldObject obj, AiData ai) {
+        customAiStack.push(customAiMap);
+        customAiMap = new HashMap<>(customAiMap);
+        customAiMap.put(obj, ai);
+        updateText(obj);
+    }
+
+    public void undone() {
+        customAiMap = customAiStack.pop();
+        encounterAiMap = encounterAiStack.pop();
+    }
+
     public void removed(BattleFieldObject obj) {
+        removeEncounterAiMap(obj);
+        removeCustomAiMap(obj);
+    }
+
+    private void removeCustomAiMap(BattleFieldObject obj) {
+        if (!customAiMap.containsKey(obj)) {
+            return;
+        }
+        customAiStack.push(customAiMap);
+        customAiMap = new HashMap<>(customAiMap);
+        if (customAiMap.remove(obj) != null)
+            updateText(obj);
+    }
+
+    private void updateText(BattleFieldObject obj) {
+        String text = "";
+        AiData ai = getAiForObject(obj);
         Integer id = getIdManager().getId(obj);
-        encounterAiMap.remove(obj);
-        customAiMap.remove(obj);
+        if (id == ai.getLeader()) {
+            text += "+++";
+        }
+        text += ai.getType();
+        text += "[" + ai.id + "]";
+        GuiEventManager.triggerWithParams(GuiEventType.LE_AI_DATA_UPDATE, obj, text);
+    }
 
-        //UNDO?!
 
-
+    private void removeEncounterAiMap(BattleFieldObject obj) {
+        if (!encounterAiMap.containsKey(obj)) {
+            return;
+        }
+        encounterAiStack.push(encounterAiMap);
+        encounterAiMap = new HashMap<>(encounterAiMap);
+        if (encounterAiMap.remove(obj) != null)
+            updateText(obj);
     }
 
     @Override
@@ -164,12 +180,35 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
     @Override
     public void toggleEncounter() {
-
+//show units?
     }
 
     @Override
     public void toggleShowInfo() {
+        getModel().getDisplayMode().setShowMetaAi(!getModel().getDisplayMode().isShowMetaAi());
+    }
 
+    public String toXml() {
+        StringBuilder builder = new StringBuilder();
+        for (BattleFieldObject object : encounterAiMap.keySet()) {
+            builder.append(getIdManager().getId(object)).append("=");
+            builder.append(encounterAiMap.get(object).toString()).append(";");
+        }
+        String xml = XML_Converter.wrap(ENCOUNTER_AI_GROUPS, builder.toString());
+
+        builder = new StringBuilder();
+        for (AiData data : customAiMap.values()) {
+            for (BattleFieldObject object : customAiMap.keySet()) {
+                if (customAiMap.get(object) == data) {
+                    builder.append(getIdManager().getId(object)).append(";");
+                }
+            }
+            builder.append("=");
+            builder.append(data.toString()).append(";");
+        }
+        xml += XML_Converter.wrap(CUSTOM_AI_GROUPS, builder.toString());
+
+        return xml;
     }
 
 }

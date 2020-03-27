@@ -74,7 +74,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
             return INTERACTIVE_OBJ_TYPE.LIGHT_EMITTER;
         }
 
-        if (DataManager.getType(getConsumableItemName(type.getName()), DC_TYPE.ITEMS) != null) {
+        if (DataManager.isTypeName(getConsumableItemName(type.getName()), DC_TYPE.ITEMS)) {
             return INTERACTIVE_OBJ_TYPE.CONSUMABLE;
         }
         return INTERACTIVE_OBJ_TYPE.RUNE;
@@ -111,7 +111,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         ref.setID(KEYS.ITEM, obj.getId());
         boolean off = obj.isOff();
         if (off) {
-            if (isToggleOffForObj(obj)){
+            if (isToggleOffForObj(obj)) {
                 obj.setOff(false);
             }
             return;
@@ -148,7 +148,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
 
         }
         obj.setUsed(true);
-        if (isToggleOffForObj(obj)){
+        if (isToggleOffForObj(obj)) {
             obj.setOff(true);
         }
     }
@@ -172,7 +172,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
             text = src.split("|")[1];
         }
 
-        MusicMaster.playMoment(RandomWizard.random()? MusicMaster.MUSIC_MOMENT.TOWN : MusicMaster.MUSIC_MOMENT.SAD);
+        MusicMaster.playMoment(RandomWizard.random() ? MusicMaster.MUSIC_MOMENT.TOWN : MusicMaster.MUSIC_MOMENT.SAD);
         GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, new TipMessageSource(
                 text, image, "Continue", false, () ->
         {

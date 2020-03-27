@@ -8,17 +8,19 @@ import main.level_editor.backend.functions.io.LE_DataHandler;
 import main.level_editor.backend.functions.mapping.LE_ModuleHandler;
 import main.level_editor.backend.functions.mouse.LE_MouseHandler;
 import main.level_editor.backend.functions.palette.PaletteHandlerImpl;
-import main.level_editor.backend.handlers.EditHandler;
-import main.level_editor.backend.handlers.LE_DialogHandler;
+import main.level_editor.backend.handlers.LE_EditHandler;
 import main.level_editor.backend.handlers.LE_MenuHandler;
 import main.level_editor.backend.handlers.ai.LE_AiHandler;
+import main.level_editor.backend.handlers.dialog.LE_DialogHandler;
 import main.level_editor.backend.handlers.model.LE_DataModel;
 import main.level_editor.backend.handlers.model.LE_ModelManager;
 import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.backend.handlers.operation.OperationHandler;
 import main.level_editor.backend.handlers.operation.obj.LE_ObjHandler;
 import main.level_editor.backend.handlers.selection.LE_SelectionHandler;
-import main.level_editor.backend.handlers.structure.LE_StructureManager;
+import main.level_editor.backend.handlers.structure.LE_StructureHandler;
+import main.level_editor.backend.handlers.structure.layer.LayerHandlerImpl;
+import main.level_editor.backend.metadata.script.LE_ScriptHandler;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.sim.LE_IdManager;
 import main.level_editor.backend.struct.level.Floor;
@@ -53,7 +55,7 @@ public class LE_Handler {
         return manager.getCameraHandler();
     }
 
-    public EditHandler getEditHandler() {
+    public LE_EditHandler getEditHandler() {
         return manager.getEditHandler();
     }
 
@@ -69,7 +71,7 @@ public class LE_Handler {
         return manager.getModule(c);
     }
 
-    public LE_StructureManager getStructureManager() {
+    public LE_StructureHandler getStructureManager() {
         return manager.getStructureManager();
     }
 
@@ -79,6 +81,14 @@ public class LE_Handler {
 
     public LE_SelectionHandler getSelectionHandler() {
         return manager.getSelectionHandler();
+    }
+
+    public LE_ScriptHandler getScriptHandler() {
+        return manager.getScriptHandler();
+    }
+
+    public LayerHandlerImpl getLayerHandler() {
+        return manager.getLayerHandler();
     }
 
     public LE_ObjHandler getObjHandler() {

@@ -1,10 +1,9 @@
 package main.level_editor.gui.panels.control.structure;
 
-import main.level_editor.LevelEditor;
-import main.level_editor.backend.handlers.structure.IStructureManager;
+import main.level_editor.backend.handlers.structure.IStructureHandler;
 import main.level_editor.gui.panels.control.LE_ControlPanel;
 
-public class CtrlStructurePanel extends LE_ControlPanel<IStructureManager> {
+public class CtrlStructurePanel extends LE_ControlPanel<IStructureHandler> {
 
 
     public CtrlStructurePanel() {
@@ -12,13 +11,13 @@ public class CtrlStructurePanel extends LE_ControlPanel<IStructureManager> {
     }
 
     @Override
-    protected IStructureManager getHandler() {
-        return LevelEditor.getCurrent().getManager().getStructureManager();
+    protected IStructureHandler getHandler() {
+        return getManager().getStructureManager();
     }
 
     @Override
-    protected Class<IStructureManager> getClazz() {
-        return IStructureManager.class;
+    protected Class<IStructureHandler> getClazz() {
+        return IStructureHandler.class;
     }
 
     @Override

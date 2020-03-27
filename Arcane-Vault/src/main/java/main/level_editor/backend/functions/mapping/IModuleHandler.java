@@ -1,6 +1,8 @@
 package main.level_editor.backend.functions.mapping;
 
-public interface IModuleHandler {
+import main.level_editor.backend.handlers.ControlButtonHandler;
+
+public interface IModuleHandler extends ControlButtonHandler {
 
     void addModule();
     void removeModule();

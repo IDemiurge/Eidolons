@@ -6,10 +6,13 @@ import eidolons.libgdx.bf.grid.*;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.handlers.selection.LE_Selection;
 import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
+
+import java.util.List;
 
 import static main.system.GuiEventType.*;
 
@@ -75,14 +78,40 @@ public class LE_BfGrid extends GridPanel {
         GuiEventManager.bind(UPDATE_GUI, obj -> {
             resetVisibleRequired = true;
         });
-        GuiEventManager.bind(LE_DISPLAY_MODE_UPDATE, obj -> {
+        GuiEventManager.bind(LE_AI_DATA_UPDATE, obj -> {
+            List list = (List) obj.get();
+            UnitView v = getUnitView((BattleFieldObject) list.get(0));
+            if (v instanceof LE_UnitView) {
+                ((LE_UnitView) v).getAiLabel().setText((String) list.get(1) );
+            }
+        });
+        GuiEventManager.bind(LE_CELL_SCRIPTS_LABEL_UPDATE, obj -> {
+            updateCellLabel( (List) obj.get(), false);
+        });
+        GuiEventManager.bind(LE_CELL_AI_LABEL_UPDATE, obj -> {
+            updateCellLabel( (List) obj.get(), true);
+        });
+            GuiEventManager.bind(LE_DISPLAY_MODE_UPDATE, obj -> {
             for (GridCellContainer[] col : cells) {
                 for (GridCellContainer container : col) {
                     if (container instanceof LE_GridCell) {
                         ((LE_GridCell) container).displayModeUpdated();
+
                     }
                 }
             }
         });
+    }
+
+    private void updateCellLabel(List list, boolean aiOrScripts) {
+        Coordinates c = (Coordinates) list.get(0);
+        String data = (String) list.get(1);
+        GridCellContainer container = cells[c.x][getGdxY(c.y)];
+        if (aiOrScripts) {
+            ((LE_GridCell) container).getAiLabel().setText(data);
+        } else {
+            ((LE_GridCell) container).getScriptsLabel().setText(data);
+        }
+
     }
 }

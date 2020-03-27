@@ -7,6 +7,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AiData extends DataUnit<AiData.AI_VALUE> {
+    static Integer ID=0;
+    Integer id;
+
     private RngMainSpawner.UNIT_GROUP_TYPE type;
     private Set<Integer> ids;
     private boolean encounter;
@@ -18,15 +21,18 @@ public class AiData extends DataUnit<AiData.AI_VALUE> {
 
     public AiData(String text) {
         super(text);
+        id = ID++;
     }
 
     public AiData(boolean encounter, RngMainSpawner.UNIT_GROUP_TYPE type, Integer leader) {
+        this("");
         this.setType(type);
         this.setEncounter(encounter);
         this.setLeader(leader);
     }
 
     public AiData(Integer id) {
+        this("");
         setLeader(id);
         setEncounter(true);
         setType(RngMainSpawner.UNIT_GROUP_TYPE.IDLERS);

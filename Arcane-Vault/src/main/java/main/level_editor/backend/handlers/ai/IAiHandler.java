@@ -1,6 +1,8 @@
 package main.level_editor.backend.handlers.ai;
 
-public interface IAiHandler {
+import main.level_editor.backend.handlers.ControlButtonHandler;
+
+public interface IAiHandler  extends ControlButtonHandler {
 
     void setLeader();
 

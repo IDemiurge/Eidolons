@@ -17,10 +17,18 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
     @Override
     public void setUserObject(Object userObject) {
         T rootNode = (T) userObject;
-        add(root = createRootNode(rootNode));
-        recursiveAdd(root, rootNode);
+        if (isShowRoot()){
+            add(root = createRootNode(rootNode));
+            recursiveAdd(root, rootNode);
+        } else {
+            recursiveAdd(null, rootNode);
+        }
         super.setUserObject(userObject);
         expandAll();
+    }
+
+    protected boolean isShowRoot() {
+        return false;
     }
 
     protected Node createRootNode(T rootNode) {
@@ -28,7 +36,11 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
     }
 
     protected void recursiveAdd(Node root, T node) {
-        root.add(root = createNode(node));
+        if (root == null) {
+            add(root = createNode(node));
+        } else {
+            root.add(root = createNode(node));
+        }
         if (LOGGED)
             log(1, hashCode() + ": recursiveAdd " + node + " " + root);
         Set<? extends T> set = node.getChildren();
@@ -58,4 +70,5 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
     protected abstract void selected(T node);
 
     protected abstract Actor createNodeComp(T node);
+
 }

@@ -115,4 +115,9 @@ public abstract class ScriptManager<T extends Battle, E> extends BattleHandler<T
         lastTrigger.remove();
 //        lastTrigger = null;
     }
+
+    public Trigger parseTrigger(String text) {
+        return ScriptParser.parseScript(text, getMaster().getGame(), this,
+                getFunctionClass());
+    }
 }

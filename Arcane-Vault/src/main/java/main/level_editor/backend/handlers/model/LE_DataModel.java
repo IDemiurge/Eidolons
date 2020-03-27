@@ -1,5 +1,6 @@
 package main.level_editor.backend.handlers.model;
 
+import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
@@ -29,6 +30,7 @@ public class LE_DataModel {
     private LevelZone currentZone;
     private Module module;
     private LevelBlock block;
+    private Layer layer;
     private ObjType defaultWallType;
 
     public LE_DataModel() {
@@ -55,6 +57,14 @@ public class LE_DataModel {
         this.treeModel = new LE_TreeBuilder(data).getRoot();
 
         GuiEventManager.trigger(GuiEventType.LE_TREE_RESET, treeModel);
+    }
+
+    public Layer getLayer() {
+        return layer;
+    }
+
+    public void setLayer(Layer layer) {
+        this.layer = layer;
     }
 
     public MouseMode getMouseMode() {

@@ -17,7 +17,7 @@ import main.system.threading.WaitMaster;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class LE_SelectionHandler extends LE_Handler {
+public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler{
 
     //    LE_Selection previousSelection;
 //    LE_Selection selection;
@@ -41,10 +41,35 @@ public class LE_SelectionHandler extends LE_Handler {
         return getModel().getSelection();
     }
 
+    @Override
+    public void count() {
+
+    }
+
+    @Override
+    public void selectAll() {
+
+    }
+
+    @Override
+    public void selectFilter() {
+
+    }
+
     public void deselect() {
         getModelManager().modelChanged();
         getModel().setSelection(new LE_Selection());
         mode = SELECTION_MODE.NONE;
+    }
+
+    @Override
+    public void undo() {
+
+    }
+
+    @Override
+    public void redo() {
+
     }
 
 

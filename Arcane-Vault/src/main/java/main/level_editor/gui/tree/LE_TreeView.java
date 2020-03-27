@@ -1,5 +1,6 @@
 package main.level_editor.gui.tree;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -18,6 +19,7 @@ import main.level_editor.backend.handlers.ai.AiData;
 import main.level_editor.backend.struct.boss.BossDungeon;
 import main.level_editor.backend.struct.campaign.Campaign;
 import main.level_editor.backend.struct.level.Floor;
+import main.level_editor.backend.struct.module.LE_Block;
 import main.level_editor.backend.struct.module.LE_Module;
 import main.level_editor.backend.struct.module.ObjNode;
 import main.level_editor.gui.components.TreeX;
@@ -35,9 +37,10 @@ public class LE_TreeView extends TreeX<LE_DataNode> {
 
     @Override
     protected void selected(LE_DataNode node) {
-        if (node.getData() instanceof LevelBlock) {
-            LevelEditor.getModel().setBlock(((LevelBlock) node.getData()));
-            LevelEditor.getModel().setCurrentZone(((LevelBlock) node.getData()).getZone());
+        if (node.getData() instanceof LE_Block) {
+            LevelBlock block = ((LE_Block) node.getData()).getBlock();
+            LevelEditor.getModel().setBlock( block);
+            LevelEditor.getModel().setCurrentZone(block.getZone());
         }
         if (node.getData() instanceof LevelZone) {
             LevelEditor.getModel().setCurrentZone(((LevelZone) node.getData()));
@@ -67,8 +70,10 @@ public class LE_TreeView extends TreeX<LE_DataNode> {
         }
         String name = node.getData().toString();
         String val = null;
-        float w=64;
-        float h=64;
+        float w = 64;
+        float h = 64;
+
+        Color c = null;
         if (node.getData() instanceof Campaign) {
             Campaign campaign = ((Campaign) node.getData());
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 16);
@@ -91,7 +96,7 @@ public class LE_TreeView extends TreeX<LE_DataNode> {
         if (node.getData() instanceof LevelZone) {
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 19);
             LevelZone zone = ((LevelZone) node.getData());
-            name = "-- " +"Zone " + zone.toString();
+            name = "-- " + "Zone " + zone.toString();
 //            val = zone.getSubParts().size();
             zone.getTemplateGroup();
             zone.getStyle();
@@ -101,13 +106,16 @@ public class LE_TreeView extends TreeX<LE_DataNode> {
             name = "- " + (block.isTemplate() ? "Template " : "Custom ") + block.getRoomType() + " [" +
                     block.getSquare() +
                     "]";
+            c = LevelEditor.getCurrent().getManager().getStructureManager().getColorForBlock(block);
+
             //img per room type
-            texture = TextureCache.getOrCreateR(Images.ITEM_BACKGROUND_STONE);
+//            texture = TextureCache.getOrCreateR(Images.ITEM_BACKGROUND_STONE);
+            texture = TextureCache.getOrCreateR(Images.COLOR_EMBLEM);
         }
         if (node.getData() instanceof ObjNode) { // or id?
             ObjNode dcObj = ((ObjNode) node.getData());
             texture = TextureCache.getOrCreateR(dcObj.getObj().getImagePath());
-            if (dcObj.getObj().getOBJ_TYPE_ENUM()== DC_TYPE.ENCOUNTERS) {
+            if (dcObj.getObj().getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
                 name = "[Encounter]" + name;
                 //get ai info!
             }
@@ -117,9 +125,15 @@ public class LE_TreeView extends TreeX<LE_DataNode> {
 //other stuff...
 //        }
         ValueContainer actor = new ValueContainer(style, texture, name, val);
-        actor.getImageContainer().size(w, h);
-        actor.getImageContainer().getActor().setSize(w, h);
-       return (actor);
+        if (c != null) {
+            actor.getImageContainer().getActor().setColor(c);
+        }
+
+        if (actor.getImageContainer().getActor() != null) {
+            actor.getImageContainer().size(w, h);
+            actor.getImageContainer().getActor().setSize(w, h);
+        }
+        return (actor);
     }
 
     public String toString(LayeredData data) {

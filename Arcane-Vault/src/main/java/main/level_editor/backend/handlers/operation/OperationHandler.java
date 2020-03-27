@@ -1,6 +1,7 @@
 package main.level_editor.backend.handlers.operation;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -28,7 +29,17 @@ public class OperationHandler extends LE_Handler {
         DIRECTION d = null;
         main.system.auxiliary.log.LogMaster.log(1, "operation: " + operation + " args:" + ListMaster.toStringList(args));
         switch (operation) {
+            case CELL_SCRIPT_CHANGE:
+                c = (Coordinates) args[0];
+                String text = (String) args[1];
+                String layerName = (String) args[2];
+                if (layerName != null) {
+                    Layer layer = getLayerHandler().getLayer(layerName);
+                   layer.getScripts().put( c , text);
+                    //color, hidden, ...
+                }
 
+                break;
             case SELECTION:
                 break;
             case MODEL_CHANGE:
@@ -113,9 +124,12 @@ public class OperationHandler extends LE_Handler {
     private void revert(Operation op, boolean redo) {
         if (op.operation.bulkEnd) {
             Operation rev = operations.pop();
-            while (!operations.empty() && (!rev.operation.bulkStart)) {
+            while (!operations.empty()  ) {
                 revert(rev, redo);
                 rev = operations.pop();
+                if (rev.operation.bulkStart) {
+                    break;
+                }
             }
 
         }

@@ -3,8 +3,13 @@ package main.level_editor.backend.struct;
 public class LE_Structure {
 
     public enum MODULE_VALUES { //enough to create a standalone floor
+        name,
         width,
         height,
+        zones,
+        replace_default,
+        default_wall,
+        default_style,
 
         ambience,
         lighting, //both hue and rays
@@ -18,7 +23,7 @@ public class LE_Structure {
         border_wall_type,
         border_void,
 
-        entrance,
+        entrance, tile_map, layer_data,
 
         //RNG
 
