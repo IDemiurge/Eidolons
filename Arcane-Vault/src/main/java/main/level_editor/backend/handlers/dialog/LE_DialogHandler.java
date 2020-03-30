@@ -1,5 +1,8 @@
 package main.level_editor.backend.handlers.dialog;
 
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Module;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.libgdx.utils.GdxDialogMaster;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
@@ -22,12 +25,13 @@ public class LE_DialogHandler extends LE_Handler {
     }
 
     public void newModule(){
-        ModuleData data = getDefaultModuleData();
+        Module module = new Module();
+        ModuleData data = getDefaultModuleData(module);
 //        return getGuiStage().getModuleDialog().addModule(data);
     }
 
-    private ModuleData getDefaultModuleData() {
-        return new ModuleData();
+    private ModuleData getDefaultModuleData(Module module) {
+        return new ModuleData(new LE_Module(module));
     }
 
     public String textInput(String tip, String text) {

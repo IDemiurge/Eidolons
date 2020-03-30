@@ -23,7 +23,7 @@ public class LE_MenuHandler extends LE_Handler {
                 break;
             case save_all:
 //                LevelEditor.getCurrent()
-getDataHandler().saveFloor();
+                getDataHandler().saveFloor();
                 break;
             case clone:
                 //floor

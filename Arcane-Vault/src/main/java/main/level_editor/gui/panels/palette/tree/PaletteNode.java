@@ -1,7 +1,7 @@
 package main.level_editor.gui.panels.palette.tree;
 
+import main.data.tree.DataNode;
 import main.entity.type.ObjType;
-import main.level_editor.gui.tree.data.DataNode;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -29,4 +29,8 @@ public class PaletteNode extends DataNode<Object, PaletteNode> {
         this.children = children;
     }
 
+    @Override
+    public String toString() {
+        return data.toString();
+    }
 }

@@ -1,5 +1,6 @@
 package main.level_editor.backend.functions.io;
 
+import eidolons.game.core.EUtils;
 import eidolons.libgdx.gui.utils.FileChooserX;
 import main.data.filesys.PathFinder;
 import main.level_editor.LevelEditor;
@@ -9,41 +10,97 @@ import main.level_editor.backend.handlers.structure.FloorManager;
 import main.level_editor.backend.struct.campaign.Campaign;
 import main.level_editor.backend.struct.level.Floor;
 import main.level_editor.gui.screen.LE_Screen;
+import main.system.PathUtils;
 import main.system.auxiliary.data.FileManager;
+
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class LE_DataHandler extends LE_Handler {
     private Campaign campaign;
+    private Timer timer;
 
     public LE_DataHandler(LE_Manager manager) {
         super(manager);
-    }
-
-    public void openCampaign(String path) {
 
     }
+
+    public void afterLoaded() {
+        backup();
+         timer = new Timer("autosaver");
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (isAutosave()){
+                    autosave();
+                }
+            }
+        };
+        timer.schedule(task, Calendar.getInstance().getTime(), getAutosavePeriod());
+
+    }
+    private long getAutosavePeriod() {
+        return 30000;
+    }
+
+    public void backup() {
+        saveAs(getBackupPath(getFloor()));
+    }
+
+
+    public void autosave() {
+//        LE_OptionsMaster.getOptions_().getBooleanValue(AUTOSAVE)
+        if (isBackupAutosave()) {
+            backup();
+        } else {
+            saveFloor();
+        }
+    }
+
+    private boolean isBackupAutosave() {
+        return false;
+    }
+
+    private boolean isAutosave() {
+        return true;
+    }
+
+
     public void saveFloor() {
         String path = getDefaultSavePath(getFloor());
-        String contents = LE_XmlMaster.toXml(getFloor());
-        FileManager.write(contents, path);
+        saveAs(path);
     }
 
-    private String getDefaultSavePath(Floor floor) {
+    public void saveAs(String path) {
+        String contents = LE_XmlMaster.toXml(getFloor());
+        FileManager.write(contents, path);
+        EUtils.info("Saved as " + PathUtils.getLastPathSegment(path));
+    }
+    private String getBackupPath(Floor floor) {
+      return   getDefaultSavePath(floor, "backup");
+    }
+
+    private String getDefaultSavePath(Floor floor, String prefix) {
+        return PathFinder.getDungeonLevelFolder() + prefix + "/"+ floor.getName() + ".xml";
+    }
+    private String getDefaultSavePath(Floor floor ) {
         String prefix = "";
         if (campaign == null) {
             if (LevelEditor.TEST_MODE) {
                 prefix = "test/";
             } else {
                 prefix = "scenario/";
-                prefix +=  floor.getGame().getDungeon().getGroup()+"/";
+                prefix += floor.getGame().getDungeon().getGroup() + "/";
             }
         } else {
 //            TODO campaign
         }
-        return PathFinder.getDungeonLevelFolder() +prefix+ floor.getName()+ ".xml";
+        return getDefaultSavePath(floor, prefix);
     }
 
     public void open(String floorName) {
-        Campaign campaign=getDataHandler().getCampaign();
+        Campaign campaign = getDataHandler().getCampaign();
 //        campaign.getFloorPath(floorName);
 //        Floor floor = getDataHandler().loadFloor(floorName);
 //        LevelEditor.floorSelected(floor);

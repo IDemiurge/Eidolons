@@ -20,9 +20,9 @@ import java.util.Collection;
 public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T1> {
 
     public static final WaitMaster.WAIT_OPERATIONS SELECTION = WaitMaster.WAIT_OPERATIONS.SELECTION;
-    private T selected;
-    private TablePanel scrolledTable;
-    private ScrollPane scroll;
+    protected T selected;
+    protected TablePanel scrolledTable;
+    protected ScrollPane scroll;
 
     public ChooserDialog(int wrap, int size) {
         super(wrap, size);
@@ -71,7 +71,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
 
     protected abstract T1 createElement_(T datum);
 
-    private void cancel() {
+    protected void cancel() {
         chosen(null);
         close();
     }
@@ -80,11 +80,11 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
         close();
     }
 
-    private void chosen(T selected) {
+    protected void chosen(T selected) {
         WaitMaster.receiveInput(SELECTION, selected);
     }
 
-    private void close() {
+    protected void close() {
         fadeOut();
     }
 
@@ -118,7 +118,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
         return false;
     }
 
-    private void show() {
+    protected void show() {
         fadeIn();
     }
 

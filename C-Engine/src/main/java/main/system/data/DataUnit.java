@@ -74,6 +74,10 @@ public class DataUnit<T extends Enum<T>> {
         return val;
     }
 
+    public String[] getRelevantValues() {
+        return relevantValues;
+    }
+
     public int getIntValue(T value) {
         return getIntValue(value.name());
     }
@@ -146,7 +150,7 @@ public class DataUnit<T extends Enum<T>> {
     protected String getSeparator() {
         return DataUnitFactory.getSeparator(getFormat());
     }
-    public void setData(String data) {
+    public DataUnit<T> setData(String data) {
         String[] entries = data.split(getSeparator());
         for (String entry : entries) {
             String[] pair = entry.split( getPairSeparator( ));
@@ -161,6 +165,7 @@ public class DataUnit<T extends Enum<T>> {
             name = name.trim();
             setValue(name, pair[1]);
         }
+        return this;
     }
 
     protected void handleMalformedData(String entry) {
@@ -300,6 +305,7 @@ public class DataUnit<T extends Enum<T>> {
         } else
             setValue(name, val.toString());
     }
+
 
     public enum GAME_VALUES {
         HOST_NAME, TITLE, HOST_IP, STARTED, PLAYERS_NUMBER,

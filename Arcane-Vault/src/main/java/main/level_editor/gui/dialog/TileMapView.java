@@ -21,12 +21,14 @@ public class TileMapView extends TablePanelX {
             Label label;
             add(label = new Label(s, VisUI.getSkin())).left().spaceTop(2);
             label.setStyle(StyleHolder.getSizedLabelStyle(
-                    FontMaster.FONT.NYALA, (int) (18-Math.sqrt(size)/2)
+                    FontMaster.FONT.MONO_LARGE,
+                    18
+//                    (int) (18-Math.sqrt(size)/2)
             ));
-
+//            label.setFontScaleY(0.8f);
+            setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
             row();
         }
-        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
     }
 
 }

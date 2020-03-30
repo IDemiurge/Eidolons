@@ -534,6 +534,20 @@ public class CoordinatesMaster {
          c -> (int) -(100 * c.dist(coordinates)))).collect(Collectors.toList()).get(0);
     }
 
+    public static Set<Coordinates> getMissingCoordinatesFromRect(Coordinates c, int w, int h,
+                                                                 Set<Coordinates> coordinates) {
+      Set <Coordinates> missing = new LinkedHashSet<>();
+        for (int i = c.x; i < c.x+w; i++) {
+            for (int j = c.y; j < c.y+h; j++) {
+                Coordinates c1;
+                if (coordinates.contains(c1=Coordinates.get(i , j ))) {
+                    missing.add(c1);
+                }
+            }
+        }
+        return missing;
+    }
+
     public boolean isOnEdge(Coordinates c, int border) {
         return false;
     }

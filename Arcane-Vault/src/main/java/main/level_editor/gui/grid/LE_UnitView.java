@@ -66,6 +66,7 @@ public class LE_UnitView extends GridUnitView {
         super.act(delta);
         idLabel.setVisible(LevelEditor.getCurrent().getManager().
                 getModelManager().getModel().getDisplayMode().isShowMetaAi());
+        aiLabel.setDebug(true);
         aiLabel.setVisible(LevelEditor.getCurrent().getManager().
                 getModelManager().getModel().getDisplayMode().isShowMetaAi());
     }

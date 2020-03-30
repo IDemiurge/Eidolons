@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.core.EUtils;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.level_editor.backend.LE_Handler;
@@ -12,6 +14,8 @@ import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.threading.WaitMaster;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class LE_MouseHandler extends LE_Handler {
     public static final WaitMaster.WAIT_OPERATIONS SELECTION_OPERATION = WaitMaster.WAIT_OPERATIONS.SELECT_BF_OBJ;
@@ -37,10 +41,14 @@ public class LE_MouseHandler extends LE_Handler {
 
 
         CLICK_MODE mode = getModeForClick(event, tapCount);
+        clickedCell(mode, c);
 
+    }
+
+    private void clickedCell(CLICK_MODE mode, Coordinates c) {
         switch (mode) {
             case ALT:
-               manager.getScriptHandler().editScriptData(c);
+                manager.getScriptHandler().editScriptData(c);
                 break;
             case SHIFT:
                 getSelectionHandler().addAreaToSelectedCoordinates(c);
@@ -54,24 +62,22 @@ public class LE_MouseHandler extends LE_Handler {
                 getSelectionHandler().selectedCoordinate(c);
                 break;
             case RIGHT:
-                getObjHandler().addFromPalette(gridX, gridY);
+                getObjHandler().addFromPalette(c);
                 return;
             //copy metadata
             //delete top
             //delete all
             //select area
             case ALT_R:
-                manager.getModule(c).toggleCoordinate(c); //expand or cut
+                getStructureManager().insertBlock(getModel().getPaletteSelection().getTemplate(), c);
                 // remap modules - put them far enough apart...
                 //switch to adjacent?
-
                 /*
                 to be fair, it'd be much better to edit modules REALLY separately
-
                  */
                 break;
             case ALT_CTRL:
-                manager.getOperationHandler().execute(Operation.LE_OPERATION.VOID_TOGGLE, c);
+                operation(Operation.LE_OPERATION.VOID_TOGGLE, c);
                 break;
         }
     }
@@ -85,6 +91,14 @@ public class LE_MouseHandler extends LE_Handler {
             //edit
             //add to selection
             //remove
+            case ALT_2:
+                getSelectionHandler().select(bfObj);
+                getModel().getPaletteSelection().setType(bfObj.getType());
+                break;
+
+            case SHIFT:
+                clickedCell(mode, bfObj.getCoordinates());
+                break;
             case SHIFT_R:
                 //TODO check space!
                 getObjHandler().addFromPalette(bfObj.getX(), bfObj.getY());
@@ -100,10 +114,14 @@ public class LE_MouseHandler extends LE_Handler {
                 if (getModel().getPaletteSelection().getObjTypeOverlaying() != null) {
                     if (bfObj instanceof Structure) {
 //                    event.getStageY()
-                        DIRECTION d = LE_Screen.getInstance().getGuiStage().getEnumChooser()
-                                .chooseEnum(DIRECTION.class);
+                        AtomicReference<DIRECTION> d = new AtomicReference<>(LE_Screen.getInstance().getGuiStage().getEnumChooser()
+                                .chooseEnum(DIRECTION.class));
+                        if (d.get() == null) {
+                            EUtils.onConfirm("Random or center?", ()-> d.set(FacingMaster.getRandomFacing().getDirection()),
+                                    ()-> {});
+                        }
                         operation(Operation.LE_OPERATION.ADD_OVERLAY, getModel().getPaletteSelection().getObjTypeOverlaying(),
-                                bfObj.getCoordinates(), d);
+                                bfObj.getCoordinates(), d.get());
                         break;
                     }
                 }

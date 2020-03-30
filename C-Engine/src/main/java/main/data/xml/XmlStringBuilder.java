@@ -16,12 +16,18 @@ public class XmlStringBuilder {
         builder.append(XML_Converter.wrap(nodeName, contents));
     }
 
-    public void append(String s) {
+    public XmlStringBuilder append(String s) {
         builder.append(s);
+        return this;
     }
 
     @Override
     public String toString() {
         return builder.toString();
+    }
+
+    public XmlStringBuilder append(Integer integer) {
+        builder.append(integer);
+        return this;
     }
 }

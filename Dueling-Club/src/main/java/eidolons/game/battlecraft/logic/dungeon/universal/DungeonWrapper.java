@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import main.content.CONTENT_CONSTS;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
@@ -88,13 +87,6 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
         dungeon.setZ(i);
     }
 
-    public DUNGEON_TEMPLATES getTemplate() {
-        return dungeon.getTemplate();
-    }
-
-    public void setTemplate(DUNGEON_TEMPLATES template) {
-        dungeon.setTemplate(template);
-    }
 
     public boolean isSurface() {
         return dungeon.isSurface();

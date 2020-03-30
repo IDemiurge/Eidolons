@@ -1,9 +1,9 @@
 package main.level_editor.backend.struct.boss;
 
+import main.data.tree.LayeredData;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
 import main.level_editor.backend.struct.level.Floor;
-import main.level_editor.gui.tree.data.LayeredData;
 
 import java.util.Set;
 

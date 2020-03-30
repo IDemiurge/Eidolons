@@ -4,7 +4,6 @@ import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.system.text.NameMaster;
-import main.content.CONTENT_CONSTS.FLIP;
 import main.content.DC_TYPE;
 import main.content.values.parameters.G_PARAMS;
 import main.data.DataManager;
@@ -13,9 +12,7 @@ import main.data.xml.XML_Converter;
 import main.data.xml.XmlNodeMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
-import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.GuiManager;
@@ -34,11 +31,9 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
     public static final String CUSTOM_PARAMS_NODE = "Custom Params";
     public static final String CUSTOM_PROPS_NODE = "Custom Props";
     public static final String DIRECTION_MAP_NODE = "Direction Map";
-    public static final String WALL_OBJ_DATA_NODE = "Wall Objects";
     public static final int BASE_WIDTH = 15;
     public static final int BASE_HEIGHT = 11;
     protected static final String FLIP_MAP_NODE = "Flipping";
-
 
     public DungeonBuilder(DungeonMaster master) {
         super(master);
@@ -109,28 +104,6 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
 
         return dungeon;
 
-    }
-
-    protected void processNode(Node n, E dungeon) {
-        if (StringMaster.compareByChar(n.getNodeName(), (FLIP_MAP_NODE))) {
-            dungeon.setFlipMap(new RandomWizard<FLIP>().constructStringWeightMapInversed(n
-             .getTextContent(), FLIP.class));
-
-        }
-        else if (StringMaster.compareByChar(n.getNodeName(), (DIRECTION_MAP_NODE))) {
-            dungeon.setDirectionMap(new RandomWizard<DIRECTION>()
-             .constructStringWeightMapInversed(n.getTextContent(), DIRECTION.class));
-
-        } else if (StringMaster.compareByChar(n.getNodeName(), (CUSTOM_PARAMS_NODE))) {
-            TypeBuilder.setParams(dungeon.getDungeon(), n);
-            //                getDungeon().getGame().getDungeonMaster().setDungeon(getDungeon());
-            //wtf?
-
-            // TypeBuilder.setParams(type, n); // toBase()? TODO new type?
-        } else if (StringMaster.compareByChar(n.getNodeName(), (CUSTOM_PROPS_NODE))) {
-            TypeBuilder.setProps(dungeon.getDungeon(), n);
-            // TypeBuilder.setProps(type, n);
-        }
     }
 
     protected void initDynamicObjData(Location location) {

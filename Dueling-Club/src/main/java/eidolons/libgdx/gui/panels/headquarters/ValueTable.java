@@ -110,7 +110,7 @@ public abstract class ValueTable<D, A extends Actor> extends TablePanelX {
                 break;
             Cell cell = getContentTable().addElement(actors[i] = createElement(sub)).top().space(getSpace());
             if (getElementSize() != null) {
-                cell.size(getElementSize().x, getElementSize().y);
+                cell.size(getElementSize(sub).x, getElementSize(sub).y);
             }
             j++;
             i++;
@@ -120,6 +120,10 @@ public abstract class ValueTable<D, A extends Actor> extends TablePanelX {
                 wrap = this.wrap + getDynamicWrap(i);
             }
         }
+    }
+
+    protected Vector2 getElementSize(D sub) {
+        return getElementSize();
     }
 
 

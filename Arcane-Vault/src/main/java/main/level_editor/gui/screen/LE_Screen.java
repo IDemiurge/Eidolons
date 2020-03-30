@@ -83,11 +83,9 @@ public class LE_Screen extends GenericDungeonScreen {
 
     @Override
     public void updateInputController() {
-        if (guiStage == null) {
-            main.system.auxiliary.log.LogMaster.log(1, "NULL GUI! ");
-        } else
-            main.system.auxiliary.log.LogMaster.log(1, "updateInputController for GUI! ");
-        GdxMaster.setInputProcessor(getMultiplexer());
+        if (getCam() != null) {
+            GdxMaster.setInputProcessor(getMultiplexer());
+        }
     }
 
     @Override

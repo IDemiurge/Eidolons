@@ -1,16 +1,16 @@
 package main.level_editor.gui.dialog;
 
-import main.level_editor.backend.handlers.dialog.ModuleData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import main.level_editor.gui.components.DataTable;
-import main.level_editor.gui.components.EditValueContainer;
 
 public class ModuleDialog extends DataEditDialog<ModuleData> {
-    public ModuleDialog(int size) {
-        super(size);
+    public ModuleDialog( ) {
+        super(1);
     }
 
     @Override
-    protected EditValueContainer.EDIT_VALUE_TYPE getType(DataTable.DataPair datum) {
+    protected LevelStructure.EDIT_VALUE_TYPE getType(DataTable.DataPair datum) {
         return null;
     }
 
@@ -34,6 +34,11 @@ public class ModuleDialog extends DataEditDialog<ModuleData> {
 
     @Override
     protected String getName(DataTable.DataPair datum) {
+        return null;
+    }
+
+    @Override
+    protected ModuleData createDataCopy() {
         return null;
     }
 

@@ -1,14 +1,17 @@
 package eidolons.system.utils;
 
+import eidolons.content.PROPS;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.SkillEnums;
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 
 import java.util.ArrayList;
@@ -17,7 +20,7 @@ import java.util.List;
 
 public class XmlCleaner {
 
-    private static List<DC_TYPE> cleaned=    new ArrayList<>() ;
+    private static List<DC_TYPE> cleaned = new ArrayList<>();
 
     public static final void cleanTypesXml(DC_TYPE TYPE) {
 //        DC_TYPE.values()
@@ -36,7 +39,7 @@ public class XmlCleaner {
         if (!cleaned.contains(TYPE)) {
             return false;
         }
-        switch (((DC_TYPE)TYPE)) {
+        switch (((DC_TYPE) TYPE)) {
             case UNITS:
                 return isRemoveUnit(type);
             case SPELLS:
@@ -52,6 +55,7 @@ public class XmlCleaner {
             case PARTY:
                 return isRemovePARTY(type);
             case ENCOUNTERS:
+                return isRemoveEncounter(type);
             case ARCADES:
             case PLACES:
             case DIALOGUE:
@@ -72,7 +76,7 @@ public class XmlCleaner {
     }
 
     private static boolean isRemoveSPELLS(ObjType type) {
-        if (type.getIntParam("circle")>=3) {
+        if (type.getIntParam("circle") >= 3) {
             return true;
         }
         SpellEnums.SPELL_GROUP group =
@@ -90,7 +94,7 @@ public class XmlCleaner {
             case REDEMPTION:
             case SYLVAN:
             case ELEMENTAL:
-                return  true;
+                return true;
         }
         return false;
     }
@@ -100,21 +104,39 @@ public class XmlCleaner {
                 type.getName())) {
             return false;
         }
-        if (type.getGroup().equalsIgnoreCase("igg")) {
-            return false;
-        }
-        return true;
+        return !type.getGroup().equalsIgnoreCase("igg");
     }
 
     private static boolean isRemoveUnit(ObjType type) {
-        return type.getWorkspaceGroup()== MetaEnums.WORKSPACE_GROUP.IGG_CONTENT;
+        return type.getWorkspaceGroup() == MetaEnums.WORKSPACE_GROUP.IGG_CONTENT;
     }
+
+    public static final PROPERTY[] encounterProperties = {
+            PROPS.PRESET_GROUP,
+            PROPS.EXTENDED_PRESET_GROUP,
+            PROPS.SHRUNK_PRESET_GROUP,
+            PROPS.UNIT_TYPES,
+            PROPS.FILLER_TYPES};
+
+    private static boolean isRemoveEncounter(ObjType type) {
+        for (PROPERTY encounterProperty : encounterProperties) {
+        for (String substring : ContainerUtils.openContainer(
+                type.getProperty(encounterProperty).trim())) {
+            if (!DataManager.isTypeName(substring)) {
+                return true;
+            }
+        }
+        }
+
+        return false;
+    }
+
     private static boolean isRemoveBF_OBJ(ObjType type) {
         return false;
     }
 
     private static boolean isRemoveSKILLS(ObjType type) {
-        if (type.getIntParam("circle")>=2) {
+        if (type.getIntParam("circle") >= 2) {
             return true;
         }
         SkillEnums.SKILL_GROUP group =
@@ -128,7 +150,7 @@ public class XmlCleaner {
             case ARCANE_ARTS:
             case COMMAND:
             case CRAFT:
-                return  true;
+                return true;
 
         }
         return false;
@@ -146,6 +168,6 @@ public class XmlCleaner {
     public static void setCleanReadTypes(DC_TYPE... types) {
         cleaned.addAll(Arrays.asList(types));
 //        clean = true;
-        XML_Reader.setTypeChecker(t-> !isRemoveType(t, t.getOBJ_TYPE_ENUM()));
+        XML_Reader.setTypeChecker(t -> !isRemoveType(t, t.getOBJ_TYPE_ENUM()));
     }
 }

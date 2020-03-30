@@ -1,10 +1,10 @@
 package main.level_editor.backend.struct.campaign;
 
+import main.data.tree.LayeredData;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
 import main.level_editor.backend.struct.adventure.AdventureLocation;
 import main.level_editor.backend.struct.boss.BossDungeon;
-import main.level_editor.gui.tree.data.LayeredData;
 
 import java.util.Set;
 

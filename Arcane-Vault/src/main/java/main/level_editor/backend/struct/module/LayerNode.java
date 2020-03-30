@@ -1,8 +1,9 @@
 package main.level_editor.backend.struct.module;
 
 import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjNode;
+import main.data.tree.LayeredData;
 import main.level_editor.LevelEditor;
-import main.level_editor.gui.tree.data.LayeredData;
 
 import java.util.Set;
 import java.util.stream.Collectors;

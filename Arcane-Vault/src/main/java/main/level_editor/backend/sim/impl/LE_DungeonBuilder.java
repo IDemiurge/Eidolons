@@ -1,14 +1,10 @@
 package main.level_editor.backend.sim.impl;
 
-import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
+import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
-import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import main.game.bf.Coordinates;
-import main.game.bf.directions.DirectionMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.level_editor.backend.sim.LE_GameSim;
-import main.system.graphics.GuiManager;
-import main.system.math.PositionMaster;
 import org.w3c.dom.Node;
 
 import java.util.List;
@@ -24,18 +20,16 @@ public class LE_DungeonBuilder extends LocationBuilder {
     editor data?
      */
 
-    protected void initWidthAndHeight(Location dungeonWrapper) {
-        GuiManager.setBattleFieldCellsX(dungeonWrapper.getDungeon().getCellsX());
-        GuiManager.setBattleFieldCellsY(dungeonWrapper.getDungeon().getCellsY());
-        GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
-        GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());
-        //TODO clean up this shit!
+    public LE_DungeonBuilder(DungeonMaster master) {
+        super(master);
+    }
 
-        PositionMaster.initDistancesCache();
-        DirectionMaster.initCache(dungeonWrapper.getDungeon().getCellsX(),
-                dungeonWrapper.getDungeon().getCellsY());
-        Coordinates.resetCaches();
-        GammaMaster.resetCaches();
+    protected void initWidthAndHeight(Location dungeonWrapper) {
+        int w = 45;
+        int h = 45;
+        dungeonWrapper.getDungeon().setParam(PARAMS.BF_HEIGHT, h);
+        dungeonWrapper.getDungeon().setParam(PARAMS.BF_WIDTH, w);
+        super.initWidthAndHeight(dungeonWrapper);
     }
 
     @Override
@@ -48,10 +42,7 @@ public class LE_DungeonBuilder extends LocationBuilder {
         return location;
     }
 
-    @Override
-    public void initModuleZoneLazily(Module module) {
-        super.initModuleZoneLazily(module);
-    }
+
 
     @Override
     public Location loadDungeonMap(String data) {

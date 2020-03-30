@@ -348,7 +348,7 @@ public abstract class RngFiller implements RngFillerInterface {
             return 1;
         float filled =
          (int) block.getTileMap().getMap().values().stream().filter(cell ->
-          fillerMap.keySet().contains(cell)).count();
+          fillerMap.containsKey(cell)).count();
         return filled / fillable;
     }
 
@@ -441,7 +441,7 @@ public abstract class RngFiller implements RngFillerInterface {
 
     private void tryFillWithBound(LevelBlock block, Coordinates... c) {
         for (Coordinates coordinates : c) {
-            coordinates.offset(block.getCoordinates());
+            coordinates.offset(block.getOrigin());
         }
         for (Coordinates coordinates : c) {
             if (block.getTileMap().getMap().get(coordinates)

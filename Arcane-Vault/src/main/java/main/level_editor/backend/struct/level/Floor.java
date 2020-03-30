@@ -1,11 +1,11 @@
 package main.level_editor.backend.struct.level;
 
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Module;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import main.data.tree.LayeredData;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.struct.boss.BossDungeon;
-import main.level_editor.backend.struct.module.LE_Module;
-import main.level_editor.gui.tree.data.LayeredData;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -48,5 +48,9 @@ public class Floor implements LayeredData<LE_Module> {
     @Override
     public Set<LE_Module> getChildren() {
        return getModules().stream().map(module -> new LE_Module(module)).collect(Collectors.toSet());
+    }
+
+    public Module getDefaultModule() {
+        return game.getMetaMaster().getModuleMaster().getBase();
     }
 }

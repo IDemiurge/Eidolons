@@ -172,14 +172,16 @@ public abstract class GridPanel extends Group {
     public void restoreVoid(int x, int y) {
         GridCellContainer cell =
                 removedCells[x][getGdxY(y)];
-        addActor(cell);
+//        addActor(cell);
+        ActionMaster.addFadeInAction(cell, 0.5f );
         cell.getUserObject().setVOID(false);
 //        resetDecorators();
     }
 
     public void setVoid(int x, int y) {
         GridCellContainer cell = cells[x][getGdxY(y)];
-        cell.remove();
+//        cell.remove();
+        ActionMaster.addFadeOutAction(cell, 0.5f, false);
         removedCells[x][getGdxY(y)] = cell;
         cell.getUserObject().setVOID(true);
     }

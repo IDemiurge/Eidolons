@@ -5,10 +5,12 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.system.auxiliary.data.ArrayMaster;
 
+import java.io.Serializable;
+
 /**
  * Created by JustMe on 2/13/2018.
  */
-public class RoomModel {
+public class RoomModel implements Serializable {
     protected   EXIT_TEMPLATE exitTemplate;
     protected final ROOM_TYPE type;
     protected   String[][] cells;

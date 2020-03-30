@@ -1,13 +1,21 @@
 package main.level_editor.backend.handlers.selection;
 
+import eidolons.game.core.EUtils;
+import eidolons.game.module.dungeoncrawl.generator.model.RoomModel;
 import main.content.enums.GenericEnums;
 import main.entity.EntityCheckMaster;
 import main.entity.type.ObjType;
+import main.level_editor.LevelEditor;
 
 import java.io.Serializable;
 
 public class PaletteSelection implements Serializable {
 
+    private RoomModel template;
+
+    public PaletteSelection( ) {
+        this(LevelEditor.getManager().getObjHandler().getDefaultWallType());
+    }
     public PaletteSelection(ObjType type) {
         this(type, false);
     }
@@ -44,12 +52,24 @@ public class PaletteSelection implements Serializable {
     public void setType(ObjType objType) {
         if (EntityCheckMaster.isOverlaying(objType)) {
                   setOverlayingType(objType);
+            EUtils.info("Palette overlaying type selected: " + objType);
         } else
+        {
             this.objType = objType;
+            EUtils.info("Palette type selected: " + objType);
+        }
     }
 
     public void setOverlayingType(ObjType objTypeOverlaying) {
         this.objTypeOverlaying = objTypeOverlaying;
+    }
+
+    public void setTemplate(RoomModel template) {
+        this.template = template;
+    }
+
+    public RoomModel getTemplate() {
+        return template;
     }
 //custom type?
 

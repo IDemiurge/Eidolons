@@ -10,13 +10,16 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.screens.CustomSpriteBatch;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.utils.TextInputPanel;
+import main.content.enums.GenericEnums;
 import main.entity.Entity;
 
 public class GenericGuiStage extends StageX {
@@ -87,6 +90,35 @@ public class GenericGuiStage extends StageX {
 
     }
 
+    protected void initTooltipsAndMisc() {
+
+        textPanel = new OverlayTextPanel();
+        addActor(textPanel);
+        textPanel.setPosition(GdxMaster.centerWidth(textPanel),
+                GdxMaster.centerHeight(textPanel));
+
+        addActor(tooltips = new ToolTipManager(this));
+
+        addActor(infoTooltipContainer = new SuperContainer(infoTooltip) {
+            @Override
+            public int getFluctuatingAlphaPeriod() {
+                return 0;
+            }
+
+            @Override
+            public void draw(Batch batch, float parentAlpha) {
+                if (parentAlpha == ShaderDrawer.SUPER_DRAW)
+                    super.draw(batch, 1);
+                else
+                    ShaderDrawer.drawWithCustomShader(this, batch, null, false, false);
+            }
+        });
+        infoTooltipContainer.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_MAP);
+        Fluctuating.setAlphaFluctuationOn(true);
+
+        addActor(confirmationPanel = ConfirmationPanel.getInstance());
+
+    }
     protected void showTooltip(String s, LabelX tooltip, float dur) {
         showTooltip(false, s, tooltip, dur);
     }

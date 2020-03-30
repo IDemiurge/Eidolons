@@ -1,8 +1,8 @@
 package main.level_editor.gui.dialog;
 
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import main.content.values.ValuePair;
 import main.entity.Entity;
-import main.level_editor.gui.components.EditValueContainer;
 
 public class EntityEditDiag extends EditDialog<ValuePair> {
     private final Entity entity;
@@ -19,7 +19,12 @@ public class EntityEditDiag extends EditDialog<ValuePair> {
     }
 
     @Override
-    protected EditValueContainer.EDIT_VALUE_TYPE getType(ValuePair datum) {
+    protected void edit(ValuePair item) {
+
+    }
+
+    @Override
+    protected LevelStructure.EDIT_VALUE_TYPE getType(ValuePair datum) {
         return null;
     }
 

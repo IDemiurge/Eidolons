@@ -231,6 +231,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         if (locationType != null)
             surface = locationType.isSurface();
     }
+
     public List<ObjAtCoordinate> getObjects() {
 //        if (!ListMaster.isNotEmpty(objects)) {
 //            objects = new ArrayList<>();
@@ -238,7 +239,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 //                objects.addAll(block.getObjects());
 //            }
 //        }
-        return    objects ;
+        return objects;
     }
 
     public Set<ObjAtCoordinate> collectUnits() {
@@ -423,6 +424,9 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         for (LevelBlock block : getBlocks()) {
             MapMaster.addToIntegerMap(map, block.getZone().getStyle(), 1);
         }
+        if (map.isEmpty()) {
+            return DUNGEON_STYLE.Somber;
+        }
         return mainStyle = map.firstKey();
         //        return new ArrayList<>(map.values()).getVar(0);
         //        return map.values().iterator().next();
@@ -452,7 +456,10 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         }
 
         LevelBlock block = getBlockForCoordinate(c);
-        img = cellTypeMap.get(block);
+        if (block != null) {
+            img = block.getCellType();
+        }
+
         if (img == null) {
             DUNGEON_STYLE style = block == null ? getMainStyle() : block.getZone().getStyle();
             img = getCellImageType(style);
@@ -564,13 +571,11 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     private void addUnit(ObjAtCoordinate obj) {
         LevelBlock b = getBlockForCoordinate(obj.getCoordinates());
-        if (b != null)
-        {
+        if (b != null) {
             LogMaster.log(1, "FIX UNITS FOR BLOCKS!");
 
             b.getUnits().add(obj);
-        }
-        else {
+        } else {
             getUnassignedUnits().add(obj);
             LogMaster.log(1, "Added into Void  " + obj);
         }
@@ -619,6 +624,15 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         cellTypeSpecialMap = (map);
     }
 
+    public LevelZone getZoneById(int index) {
+
+        for (LevelZone zone : getZones()) {
+            if (zone.getIndex() == index) {
+                return zone;
+            }
+        }
+        return null;
+    }
 
     public enum CELL_IMAGE {
         tiles,

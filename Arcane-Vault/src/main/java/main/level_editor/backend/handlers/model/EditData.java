@@ -5,56 +5,59 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import main.data.DataManager;
+import main.data.tree.LayeredData;
+import main.data.tree.StructNode;
+import main.data.tree.StructTreeBuilder;
 import main.entity.type.ObjType;
+import main.level_editor.LevelEditor;
 import main.level_editor.backend.brush.LE_Brush;
 import main.level_editor.backend.display.LE_DisplayMode;
 import main.level_editor.backend.functions.mouse.MouseMode;
 import main.level_editor.backend.handlers.selection.LE_Selection;
 import main.level_editor.backend.handlers.selection.PaletteSelection;
-import main.level_editor.gui.tree.data.LE_DataNode;
-import main.level_editor.gui.tree.data.LE_TreeBuilder;
-import main.level_editor.gui.tree.data.LayeredData;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.CloneMaster;
 
-public class LE_DataModel {
+public class EditData {
 
-    private  MouseMode mouseMode;
+    private MouseMode mouseMode;
     private LE_DisplayMode displayMode;
     private LE_Selection selection;
     private LE_Brush brush;
     private PaletteSelection paletteSelection;
 
-    private LE_DataNode treeModel;
-    private LevelZone currentZone;
+    private StructNode treeModel;
+    private LevelZone zone;
     private Module module;
     private LevelBlock block;
     private Layer layer;
     private ObjType defaultWallType;
 
-    public LE_DataModel() {
+    public EditData() {
         selection = new LE_Selection();
         displayMode = new LE_DisplayMode();
         paletteSelection = new PaletteSelection(getDefaultWallType());
+
     }
 
-    public LE_DataModel(LE_DataModel model) {
+    public EditData(EditData model) {
         copy(model);
     }
 
-    private void copy(LE_DataModel model) {
+
+    private void copy(EditData model) {
         selection = (LE_Selection) CloneMaster.deepCopy(model.getSelection());
         displayMode = (LE_DisplayMode) CloneMaster.deepCopy(model.getDisplayMode());
         paletteSelection = (PaletteSelection) CloneMaster.deepCopy(model.getPaletteSelection());
     }
 
-    public LE_DataNode getTreeModel() {
+    public StructNode getTreeModel() {
         return treeModel;
     }
 
     public void setTreeModel(LayeredData data) {
-        this.treeModel = new LE_TreeBuilder(data).getRoot();
+        this.treeModel = new StructTreeBuilder(data).getRoot();
 
         GuiEventManager.trigger(GuiEventType.LE_TREE_RESET, treeModel);
     }
@@ -103,15 +106,21 @@ public class LE_DataModel {
         this.paletteSelection = paletteSelection;
     }
 
-    public LevelZone getCurrentZone() {
-        return currentZone;
+    public LevelZone getZone() {
+        if (zone == null) {
+            return getModule().getZones().get(0);
+        }
+        return zone;
     }
 
-    public void setCurrentZone(LevelZone currentZone) {
-        this.currentZone = currentZone;
+    public void setZone(LevelZone zone) {
+        this.zone = zone;
     }
 
     public Module getModule() {
+        if (module == null) {
+            return LevelEditor.getCurrent().getDefaultModule();
+        }
         return module;
     }
 

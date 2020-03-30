@@ -10,7 +10,7 @@ import com.kotcrab.vis.ui.widget.VisTree;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
-import main.level_editor.gui.tree.data.DataNode;
+import main.data.tree.DataNode;
 import main.system.graphics.FontMaster;
 
 import java.util.LinkedHashSet;
@@ -74,27 +74,32 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
 
     protected Node createNode(T node) {
         Node n = new Node(createNodeComp(node));
-        n.getActor().addListener(new ClickListener() {
+        n.getActor().addListener(new ClickListener(-1) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 if (getTapCount()>1) {
                     doubleClick(node);
+                } else if (event.getButton()==1) {
+                    rightClick(node);
                 } else
                     selected(node);
                 for (Node node1 : nodes) {
                     if (node1.getActor() instanceof Table) {
+                        main.system.auxiliary.log.LogMaster.log(1,"node bg removed: " +node1.getActor());
                         ((Table) node1.getActor()).setBackground((Drawable) null);
                     }
                 }
                 if (n.getActor() instanceof Table) {
-                    ((Table) n.getActor()).setBackground(NinePatchFactory.getLightPanelFilledSmallDrawable());
+                    ((Table) n.getActor()).setBackground(NinePatchFactory.getHighlightSmallDrawable());
                 }
             }
 
         });
         return n;
     }
+
+    protected abstract void rightClick(T node);
 
     protected abstract void doubleClick(T node);
 

@@ -63,9 +63,12 @@ public class LE_GridCell extends GridCellContainer {
     public void act(float delta) {
         super.act(delta);
         GdxMaster.right(aiLabel);
-        GdxMaster.top(scriptsLabel);
+        GdxMaster.center(scriptsLabel);
+        scriptsLabel.setY(GdxMaster.getTopY(scriptsLabel) - 15);
         aiLabel.setVisible(getDisplayMode().isShowMetaAi());
         scriptsLabel.setVisible(getDisplayMode().isShowScripts());
+        aiLabel.setZIndex(Integer.MAX_VALUE);
+        scriptsLabel.setZIndex(Integer.MAX_VALUE);
     }
 
     public LabelX getScriptsLabel() {
@@ -84,7 +87,7 @@ public class LE_GridCell extends GridCellContainer {
 
     @Override
     public int getUnitViewCountEffective() {
-        return super.getUnitViewCountEffective()+1;
+        return super.getUnitViewCountEffective() + 1;
     }
 
     @Override
@@ -94,9 +97,9 @@ public class LE_GridCell extends GridCellContainer {
             public void clicked(InputEvent event, float x, float y) {
                 InputEvent e = new InputEvent();
                 e.setButton(event.getButton());
-              Eidolons.onNonGdxThread(()->
-                LevelEditor.getCurrent().getManager().getMouseHandler().
-                        handleCellClick(e, getTapCount(), getGridX(), getGridY()));
+                Eidolons.onNonGdxThread(() ->
+                        LevelEditor.getCurrent().getManager().getMouseHandler().
+                                handleCellClick(e, getTapCount(), getGridX(), getGridY()));
             }
 
             @Override

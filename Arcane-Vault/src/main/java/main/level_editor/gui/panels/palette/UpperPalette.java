@@ -1,11 +1,13 @@
 package main.level_editor.gui.panels.palette;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.kotcrab.vis.ui.widget.VisSplitPane;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
+import eidolons.libgdx.gui.panels.ScrollPaneX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import main.content.DC_TYPE;
 import main.level_editor.gui.dialog.BlockTemplateChooser;
@@ -19,29 +21,39 @@ public class UpperPalette extends TablePanelX {
     private VisSplitPane split;
 
     public UpperPalette(HybridPalette.PALETTE value) {
-        super(500, 800);
+        super(650, 800);
         initTable(value);
         initScrollPane(value);
 
-        TablePanelX<Actor> container = new TablePanelX<>();
-        container.add(table).top().right().height(500);
+        TablePanelX<Actor> container ;
+        if (value == HybridPalette.PALETTE.blocks) {
+            container = new TablePanelX<>(320, 800);
+            container.add(table).top().left();
+
+        } else {
+            container = new TablePanelX<>(500, 800);
+            container.add(table).top().left().height(500);
+        }
         VisSplitPane.VisSplitPaneStyle style = new VisSplitPane.VisSplitPaneStyle(
                 StyleHolder.getScrollStyle().vScroll,
                 StyleHolder.getScrollStyle().vScroll);
 
-
-        add(split = new VisSplitPane(container, treeScroll, false, style)).fill().size(500, 800);
+        Group tableContainer= container;
+        if (value == HybridPalette.PALETTE.blocks) {
+            tableContainer = new ScrollPaneX(container);
+        }
+        add(split = new VisSplitPane(tableContainer, treeScroll, false, style)).fill().size(650, 800);
         container.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
-        split.setSplitAmount(0.7f);
+        split.setSplitAmount(0.75f);
         split.setFillParent(true);
-        split.setSize(500, 800);
+        split.setSize(650, 800);
 
 
     }
 
     private void initTable(HybridPalette.PALETTE value) {
         if (value == HybridPalette.PALETTE.blocks) {
-            table = new BlockTemplateChooser();
+            table = new BlockTemplateChooser(true);
             table.setBackground((Drawable) null);
             return;
         }
@@ -61,14 +73,16 @@ public class UpperPalette extends TablePanelX {
                 arg = DC_TYPE.ENCOUNTERS;
                 break;
             case custom:
-                treeScroll = new ScrollPane(new PaletteTree(null, table), StyleHolder.getScrollStyle());
+                treeScroll = new ScrollPaneX(new PaletteTree(null, table)
+                         );
                 return;
             case blocks:
-                treeScroll = new ScrollPane(new BlockTemplateTree((BlockTemplateChooser) table), StyleHolder.getScrollStyle());
+                treeScroll = new ScrollPaneX(new BlockTemplateTree((BlockTemplateChooser) table)
+                         );
                 return;
         }
         if (arg != null) {
-            treeScroll = new ScrollPane(new PaletteTree(arg, table), StyleHolder.getScrollStyle());
+            treeScroll = new ScrollPaneX(new PaletteTree(arg, table)  );
         } else {
 
         }

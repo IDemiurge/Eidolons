@@ -23,6 +23,10 @@ public class Module {
         this.name = name;
     }
 
+    public Module() {
+
+    }
+
 
     public int getX() {
         return origin.x;
@@ -71,7 +75,25 @@ public class Module {
         this.zones = zones;
     }
 
+    public void setVfx(AmbienceDataSource.AMBIENCE_TEMPLATE vfx) {
+        this.vfx = vfx;
+    }
 
+    public void setOrigin(Coordinates origin) {
+        this.origin = origin;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @Override
     public String toString() {

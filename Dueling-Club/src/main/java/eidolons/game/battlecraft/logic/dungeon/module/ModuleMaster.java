@@ -1,17 +1,13 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.battlecraft.logic.meta.igg.xml.XmlLevelTools;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
-import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.PathUtils;
-import org.junit.Test;
 import org.w3c.dom.Node;
 
 import java.util.LinkedHashSet;
@@ -19,27 +15,29 @@ import java.util.Set;
 
 public class ModuleMaster extends MetaGameHandler {
 
+    Module base;
     Module current;
     Set<Module> modules;
-    MODULE_LEVEL scheme = MODULE_LEVEL.ASHEN_PATH;
 
     public ModuleMaster(MetaGameMaster master) {
         super(master);
-        initModules();
-        current = getInitialModule();
 
     }
 
     public Set<Module> getModules() {
+        if (modules == null) {
+            initModules();
+            base = getInitialModule();
+            current = getInitialModule();
+        }
         return modules;
     }
 
+    public void setModules(Set<Module> modules) {
+        this.modules = modules;
+    }
+
     private Module getInitialModule() {
-        for (Module module : modules) {
-            if (module.getName().equalsIgnoreCase(scheme.initialModule)){
-                return module;
-            }
-        }
         return modules.iterator().next();
     }
     private Module getModuleByPosition() {
@@ -58,26 +56,14 @@ public class ModuleMaster extends MetaGameHandler {
 
     private void initModules() {
         modules = new LinkedHashSet<>();
-        for (String s : scheme.modules) {
-            String path = VariableManager.removeVarPart(s);
-            String name = PathUtils.getLastPathSegment(path);
-            Coordinates c = Coordinates.get(VariableManager.getVars(s));
-            int w = 15;
-            int h = 15;
-            Module module = new Module(c, w, h, name );
+            Module module =  createDefaultModule();
             modules.add(module);
-        }
     }
 
-    @Test
-    public void packModule(MODULE_LEVEL moduleLevel) {
-        for (String module : moduleLevel.modules) {
-            String name = VariableManager.removeVarPart(module) + ".xml";
-            Coordinates c = Coordinates.get(VariableManager.getVars(module));
-            XmlLevelTools.insertModule(  moduleLevel.path + ".xml", name, c.x, c.y);
-
-        }
-
+    private Module createDefaultModule() {
+        Module module = new Module(Coordinates.get(0,0), 25, 25, "Main" );
+        module.setZones(master.getDungeonMaster().getDungeonLevel().getZones());
+        return module;
     }
 
     public boolean isModuleInitOn() {
@@ -99,24 +85,6 @@ public class ModuleMaster extends MetaGameHandler {
     }
 
 
-    public enum MODULE_LEVEL {
-        ASHEN_PATH("sublevels/ashen path modular", false, "sublevels/main(0-0)", "sublevels/maze module(0-0);"),
-        ;
-        public String initialModule;
-
-        MODULE_LEVEL(String path, boolean wtf, String... modules) {
-            this(VariableManager.removeVarPart(PathUtils.getLastPathSegment(modules[0])), path, wtf, modules);
-        }
-        MODULE_LEVEL(String initialModule, String path, boolean wtf, String... modules) {
-            this.path = path;
-            this.initialModule = initialModule;
-            this.modules = modules;
-        }
-
-        String path;
-        String[] modules;
-    }
-
     public void moduleEntered(Module module) {
         AmbienceDataSource.AMBIENCE_TEMPLATE template = module.getVfx();
         GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, template);
@@ -124,15 +92,6 @@ public class ModuleMaster extends MetaGameHandler {
 //        AmbientMaster.override(module.height)
 
 
-/**
- * >>> Can we return ?
- *
- * camera control
- * visibility
- * custom render
- * vfx?
- *
- */
     }
 
     public boolean isWithinModule(Coordinates c) {
@@ -146,4 +105,13 @@ public class ModuleMaster extends MetaGameHandler {
 //module.getCameraMargin();
         return false;
     }
+
+    public Module getBase() {
+        return base;
+    }
+
+    public Module getCurrent() {
+        return current;
+    }
+
 }

@@ -227,7 +227,7 @@ public class ArcaneVault {
                 mainBuilder = new MainBuilder();
         mainBuilder.setKeyListener(new AV_KeyListener(getGame()));
         if (!isCustomLaunch()) {
-            if (XML_Reader.getTypeMaps().keySet().contains(MACRO_OBJ_TYPES.FACTIONS.getName())) {
+            if (XML_Reader.getTypeMaps().containsKey(MACRO_OBJ_TYPES.FACTIONS.getName())) {
                 UnitGroupMaster.modifyFactions();
             }
         }
@@ -284,10 +284,9 @@ public class ArcaneVault {
         // MacroEngine.init();
         // } else
 
-//        XmlCleaner.setCleanReadTypes(
-//                DC_TYPE.SKILLS,
-//                DC_TYPE.CHARS
-//                );
+        XmlCleaner.setCleanReadTypes(
+                DC_TYPE.ENCOUNTERS
+                );
         getContentValsManager().init();
         AV_DataManager.init();
 
@@ -311,7 +310,7 @@ public class ArcaneVault {
             if (DataManager.isTypesRead(DC_TYPE.ITEMS))
                 ContentGenerator.generateKeyObjects();
 
-//        XmlCleaner.cleanTypesXml(DC_TYPE.SKILLS);
+        XmlCleaner.cleanTypesXml(DC_TYPE.ENCOUNTERS);
 //        ContentGenerator.afterRead();
 
         CharacterCreator.setAV(true);

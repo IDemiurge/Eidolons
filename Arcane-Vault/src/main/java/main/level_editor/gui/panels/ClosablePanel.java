@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 
@@ -28,6 +29,9 @@ public class ClosablePanel extends TablePanelX {
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 super.exit(event, x, y, pointer, toActor);
+                if (GdxMaster.getAncestors(toActor).contains(this)) {
+                    return;
+                }
                 getStage().unfocusAll();
             }
         });

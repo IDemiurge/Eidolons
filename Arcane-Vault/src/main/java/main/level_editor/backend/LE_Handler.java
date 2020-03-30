@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
+import main.level_editor.backend.functions.mapping.LE_MapHandler;
 import main.level_editor.backend.functions.mapping.LE_ModuleHandler;
 import main.level_editor.backend.functions.mouse.LE_MouseHandler;
 import main.level_editor.backend.functions.palette.PaletteHandlerImpl;
@@ -12,7 +13,7 @@ import main.level_editor.backend.handlers.LE_EditHandler;
 import main.level_editor.backend.handlers.LE_MenuHandler;
 import main.level_editor.backend.handlers.ai.LE_AiHandler;
 import main.level_editor.backend.handlers.dialog.LE_DialogHandler;
-import main.level_editor.backend.handlers.model.LE_DataModel;
+import main.level_editor.backend.handlers.model.EditData;
 import main.level_editor.backend.handlers.model.LE_ModelManager;
 import main.level_editor.backend.handlers.operation.LE_ObjHandler;
 import main.level_editor.backend.handlers.operation.Operation;
@@ -37,6 +38,16 @@ public class LE_Handler {
 
     public void operation(Operation.LE_OPERATION operation, Object... args) {
         getOperationHandler().operation(operation, args);
+    }
+
+    public void afterLoaded() {
+    }
+
+    public void load() {
+    }
+
+    public String getXml() {
+        return "";
     }
 
     public LE_DialogHandler getDialogHandler() {
@@ -107,7 +118,7 @@ public class LE_Handler {
         return manager.getFloor();
     }
 
-    public LE_DataModel getModel() {
+    public EditData getModel() {
         return getModelManager().getModel();
     }
 
@@ -127,7 +138,12 @@ public class LE_Handler {
         return manager.getAdvFuncs();
     }
 
+    public LE_MapHandler getMapHandler() {
+        return manager.getMapHandler();
+    }
+
     public LE_MenuHandler getMenuHandler() {
         return manager.getMenuHandler();
     }
+
 }

@@ -605,6 +605,14 @@ public class StringMaster {
         }
         return str.substring(str.lastIndexOf("."));
     }
+    public static String getValueTooltip(Entity obj , VALUE... vals) {
+        return ContainerUtils.join(NEW_LINE, Arrays.stream(vals).map(val -> getValueTip(obj, val))
+                .collect(Collectors.toList()));
+    }
+
+    private static String getValueTip(Entity obj, VALUE val) {
+        return new StringBuilder().append(val.getDisplayedName()).append(": ").append(obj.getValue(val)).toString();
+    }
 
     public static String getValueRefs(KEYS objRef, VALUE... valRef) {
         return ContainerUtils.build(Arrays.stream(valRef).map(val -> getValueRef(objRef, val))

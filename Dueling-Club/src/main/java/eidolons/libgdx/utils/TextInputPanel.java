@@ -1,5 +1,6 @@
 package eidolons.libgdx.utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -30,7 +31,7 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
         this.textInputListener = textInputListener;
 //StyleHolder.getTextButtonStyle()
         add(new LabelX(title)).top().row();
-        add(tf = new TextField(text, VisUI.getSkin())).width(800).height(500).row();
+        add(tf = new TextField(text, VisUI.getSkin())).width(600).height(330).row();
         tf.setTextFieldListener(this);
         tf.setTextFieldFilter(this);
         TablePanelX<Actor> table = new TablePanelX<>();
@@ -46,12 +47,14 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
     public StageWithClosable getStageWithClosable() {
         return (StageWithClosable) getStage();
     }
+
     @Override
     public void close() {
         fadeOut();
         textInputListener.canceled();
     }
-    public void ok(){
+
+    public void ok() {
         fadeOut();
         textInputListener.input(tf.getText());
     }
@@ -65,11 +68,17 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
 
     @Override
     public void keyTyped(TextField textField, char c) {
-        if (Input.Keys.ENTER==(int)c) {
-            main.system.auxiliary.log.LogMaster.log(1,"Input: " +textField.getText());
+        if (13 == (int) c) {
+            if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+                return;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
+                return;
+            }
+            ok();
+        } else if (59 == (int) c) {
+            close();
         }
-        main.system.auxiliary.log.LogMaster.log(1,"Input: " +textField.getText());
-        return;
     }
 
     @Override

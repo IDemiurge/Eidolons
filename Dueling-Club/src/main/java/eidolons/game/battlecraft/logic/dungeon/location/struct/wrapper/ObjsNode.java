@@ -1,10 +1,10 @@
-package main.level_editor.backend.struct.module;
+package eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.content.DC_TYPE;
-import main.level_editor.LevelEditor;
-import main.level_editor.gui.tree.data.LayeredData;
+import main.data.tree.LayeredData;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,9 +16,14 @@ public class ObjsNode  implements LayeredData<ObjNode>{
 
     public ObjsNode(LevelBlock block) {
         this.block = block;
-        objs= LevelEditor.getCurrent().getGame().getBfObjects().stream().filter(obj->
+        objs= DC_Game.game.getBfObjects().stream().filter(obj->
               obj.getOBJ_TYPE_ENUM()!= DC_TYPE.ENCOUNTERS   && isWithinBlock(obj)).map(
                 obj-> new ObjNode(obj)).collect(Collectors.toSet());
+    }
+
+    @Override
+    public String toString() {
+        return "--- Objects" ;
     }
 
     private boolean isWithinBlock(BattleFieldObject obj) {

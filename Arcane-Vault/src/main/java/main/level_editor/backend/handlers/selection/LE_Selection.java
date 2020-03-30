@@ -17,7 +17,8 @@ public class LE_Selection  implements Serializable {
 
     }
     public LE_Selection(LE_Selection selection) {
-        this(selection.ids, selection.coordinates, selection.meta, selection.layer);
+        this(new LinkedHashSet<>(selection.ids),
+                new LinkedHashSet<>(selection.coordinates), selection.meta, selection.layer);
         //can be - block, layer, ... but those cases should be separate?
     }
 

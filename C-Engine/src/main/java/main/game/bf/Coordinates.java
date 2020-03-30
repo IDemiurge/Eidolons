@@ -264,11 +264,11 @@ public class Coordinates implements Serializable {
     }
 
     public Coordinates invertY() {
-        return get(x, GuiManager.getBF_CompDisplayedCellsY() - 1 - y );
+        return get(x, GuiManager.getBF_CompDisplayedCellsY() - 1 - y);
     }
 
     public Coordinates invertX() {
-        return get(  GuiManager.getBF_CompDisplayedCellsX() - 1 - x,y  );
+        return get(GuiManager.getBF_CompDisplayedCellsX() - 1 - x, y);
     }
 
     public Coordinates invert() {
@@ -542,6 +542,10 @@ public class Coordinates implements Serializable {
         setX(c.getX());
         setY(c.getY());
         return this;
+    }
+
+    public Coordinates getOffset(int x, int y) {
+        return get(getX() + x, getY() + y);
     }
 
     public Coordinates getOffset(Coordinates coordinates) {

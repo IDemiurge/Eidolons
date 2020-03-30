@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
+import main.level_editor.backend.functions.mapping.LE_MapHandler;
 import main.level_editor.backend.functions.mapping.LE_ModuleHandler;
 import main.level_editor.backend.functions.mouse.LE_MouseHandler;
 import main.level_editor.backend.functions.palette.PaletteHandlerImpl;
@@ -13,6 +14,7 @@ import main.level_editor.backend.handlers.ai.LE_AiHandler;
 import main.level_editor.backend.handlers.dialog.LE_DialogHandler;
 import main.level_editor.backend.handlers.model.LE_ModelManager;
 import main.level_editor.backend.handlers.operation.LE_ObjHandler;
+import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.backend.handlers.operation.OperationHandler;
 import main.level_editor.backend.handlers.selection.LE_SelectionHandler;
 import main.level_editor.backend.handlers.structure.LE_StructureHandler;
@@ -23,6 +25,9 @@ import main.level_editor.backend.sim.LE_IdManager;
 import main.level_editor.backend.struct.level.Floor;
 import main.level_editor.gui.grid.LE_CameraHandler;
 import main.level_editor.gui.stage.LE_KeyHandler;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class LE_Manager {
 
@@ -47,31 +52,49 @@ public class LE_Manager {
     private LE_StructureHandler structureManager;
     private LE_ModuleHandler moduleHandler;
     private PaletteHandlerImpl paletteHandler;
+    private LE_MapHandler mapHandler;
+    private Set<LE_Handler> handlers= new LinkedHashSet<>();
 
     public LE_Manager(Floor floor) {
-        this.floor = floor;
-        mouseHandler = new LE_MouseHandler(this);
-        menuHandler = new LE_MenuHandler(this);
-        selectionHandler = new LE_SelectionHandler(this);
-        modelManager = new LE_ModelManager(this);
-        dataHandler = new LE_DataHandler(this);
+        this.floor = floor;        
+        
         game = floor.getGame();
         idManager = game.getSimIdManager();
-        structureManager = new LE_StructureHandler(this);
-        moduleHandler = new LE_ModuleHandler(this);
-        operationHandler = new OperationHandler(this);
-        objHandler = new LE_ObjHandler(this);
-        paletteHandler = new PaletteHandlerImpl(this);
-        cameraHandler = new LE_CameraHandler(this);
-        editHandler = new LE_EditHandler(this);
-        keyHandler = new LE_KeyHandler(this);
-        aiHandler = new LE_AiHandler(this);
-        dialogHandler = new LE_DialogHandler(this);
-        scriptHandler = new LE_ScriptHandler(this);
-        layerHandler = new LayerHandlerImpl(this);
+        handlers.add(  mouseHandler = new LE_MouseHandler(this));
+        handlers.add( menuHandler = new LE_MenuHandler(this));
+        handlers.add( selectionHandler = new LE_SelectionHandler(this));
+        handlers.add(  modelManager = new LE_ModelManager(this));
+        handlers.add( dataHandler = new LE_DataHandler(this));
+        handlers.add( structureManager = new LE_StructureHandler(this));
+        handlers.add( moduleHandler = new LE_ModuleHandler(this));
+        handlers.add( operationHandler = new OperationHandler(this));
+        handlers.add( objHandler = new LE_ObjHandler(this));
+        handlers.add( paletteHandler = new PaletteHandlerImpl(this));
+        handlers.add(  cameraHandler = new LE_CameraHandler(this));
+        handlers.add( editHandler = new LE_EditHandler(this));
+        handlers.add( keyHandler = new LE_KeyHandler(this));
+        handlers.add( aiHandler = new LE_AiHandler(this));
+        handlers.add( dialogHandler = new LE_DialogHandler(this));
+        handlers.add( scriptHandler = new LE_ScriptHandler(this));
+        handlers.add(layerHandler = new LayerHandlerImpl(this));
+        handlers.add(  mapHandler = new LE_MapHandler(this));
 //        layerHandler = new IRngHandler(this);
     }
 
+    public void load() {
+        for (LE_Handler handler : handlers) {
+            handler.load();
+        }
+    }
+
+    public void afterLoaded() {
+        for (LE_Handler handler : handlers) {
+            handler.afterLoaded();
+        }
+    }
+    public LE_MapHandler getMapHandler() {
+        return mapHandler;
+    }
     public LE_ScriptHandler getScriptHandler() {
         return scriptHandler;
     }
@@ -159,4 +182,13 @@ public class LE_Manager {
     public LayerHandlerImpl getLayerHandler() {
         return layerHandler;
     }
+
+    public   void operation(Operation.LE_OPERATION operation, Object... args ) {
+        getOperationHandler().operation(operation, args);
+    }
+
+    public Set<LE_Handler> getHandlers() {
+                return handlers;
+    }
+
 }

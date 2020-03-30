@@ -72,7 +72,7 @@ public class DungeonScreen extends GameScreenWithTown {
         int h = module.getHeight();
         gridPanel = new DC_GridPanel(w, h);
         if (Eidolons.getGame().getDungeonMaster().getBuilder() instanceof LocationBuilder) {
-            ((LocationBuilder) Eidolons.getGame().getDungeonMaster().getBuilder()).initModuleZoneLazily(module);
+//            ((LocationBuilder) Eidolons.getGame().getDungeonMaster().getBuilder()).initModuleZoneLazily(module);
 
 //            gridPanel.init(units);
         }

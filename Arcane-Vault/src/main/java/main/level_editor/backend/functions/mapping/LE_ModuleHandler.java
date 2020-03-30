@@ -1,6 +1,8 @@
 package main.level_editor.backend.functions.mapping;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
@@ -11,8 +13,6 @@ import main.data.xml.XmlNodeMaster;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
-import main.level_editor.backend.handlers.dialog.ModuleData;
-import main.level_editor.backend.struct.LE_Structure;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.auxiliary.data.FileManager;
 
@@ -57,16 +57,16 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
 
 //        zones = data.getValue("zones");
         //general structure - what zones have what blocks
-        int w = data.getIntValue(LE_Structure.MODULE_VALUES.width);
-        int h = data.getIntValue(LE_Structure.MODULE_VALUES.height);
-        String name = data.getValue(LE_Structure.MODULE_VALUES.name);
+        int w = data.getIntValue(LevelStructure.MODULE_VALUE.width);
+        int h = data.getIntValue(LevelStructure.MODULE_VALUE.height);
+        String name = data.getValue(LevelStructure.MODULE_VALUE.name);
         Module module = addLogicalModule(w, h, name);
         //TODO add ZONES AND BLOCKS from this!
 
         getGame().getMetaMaster().getDungeonMaster().getLayerManager().
-                initLayers(data.getValue(LE_Structure.MODULE_VALUES.layer_data));
+                initLayers(data.getValue(LevelStructure.MODULE_VALUE.layer_data));
 
-        if (data.getBooleanValue(LE_Structure.MODULE_VALUES.replace_default)){
+        if (data.getBooleanValue(LevelStructure.MODULE_VALUE.replace_default)){
 //            initDefaultModule();
 //            getMapHandler().setOffset(offset);
         }
@@ -99,8 +99,8 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         String contents = FileManager.readFile(template);
         int w = 0;
         int h = 0;
-        ModuleData data = new ModuleData();
-        data.setValue(LE_Structure.MODULE_VALUES.name, name);
+        ModuleData data = new ModuleData(null);
+        data.setValue(LevelStructure.MODULE_VALUE.name, name);
         if (tileMapVariant) {
             String gridData = XmlNodeMaster.findNodeText(contents, "tilemap");
             TileMap tileMap = TileMapper.createTileMap(gridData);
@@ -108,7 +108,7 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
             w = tileMap.getWidth();
             h = tileMap.getHeight();
 
-            data.setValue(LE_Structure.MODULE_VALUES.tile_map, gridData);
+            data.setValue(LevelStructure.MODULE_VALUE.tile_map, gridData);
 
 
         } else {
@@ -119,11 +119,11 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
             }
             String layerData = XmlNodeMaster.findNodeText(contents, "layers");
             String structureData = XmlNodeMaster.findNodeText(contents, LocationBuilder.ZONES_NODE);
-            data.setValue(LE_Structure.MODULE_VALUES.layer_data, layerData);
+            data.setValue(LevelStructure.MODULE_VALUE.layer_data, layerData);
 //            data.setValue(LE_Structure.MODULE_VALUES.structureData, structureData);
         }
-        data.setValue(LE_Structure.MODULE_VALUES.height, h);
-        data.setValue(LE_Structure.MODULE_VALUES.width, w);
+        data.setValue(LevelStructure.MODULE_VALUE.height, h);
+        data.setValue(LevelStructure.MODULE_VALUE.width, w);
 
         addModule(data);
     }

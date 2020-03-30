@@ -81,9 +81,9 @@ public class DataTable extends ValueTable<DataTable.DataPair, ValueContainer> {
     }
 
     public static class DataPair{
-        String name;
-        Object value;
-        String stringValue;
+        public String name;
+        public Object value;
+        public  String stringValue;
 
         public DataPair(String name, Object value ) {
             this(name, value, value.toString());

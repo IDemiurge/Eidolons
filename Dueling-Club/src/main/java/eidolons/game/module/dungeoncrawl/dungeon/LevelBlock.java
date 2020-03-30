@@ -6,6 +6,7 @@ import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROU
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.RoomModel;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Converter;
@@ -33,8 +34,10 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     private boolean customCoordinateList;
     private Map<List<ObjAtCoordinate>, UNIT_GROUP_TYPE> unitGroups;
     private Coordinates centerCoordinate;
-    private  RoomModel model;
+    private RoomModel model;
     private boolean template;
+    private DungeonLevel.CELL_IMAGE cellType;
+    private String wallType;
 
     public LevelBlock(Coordinates coordinates, LevelZone zone, ROOM_TYPE roomType, int width, int height, TileMap tileMap) {
         this.roomType = roomType;
@@ -64,6 +67,7 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         unitGroups = new LinkedHashMap<>();
         template = true;
         this.model = blockTemplate;
+        setTileMap(TileMapper.createTileMap(blockTemplate.getCells()));
     }
 
     public ROOM_TYPE getRoomType() {
@@ -143,7 +147,7 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         this.tileMap = tileMap;
     }
 
-    public Coordinates getCoordinates() {
+    public Coordinates getOrigin() {
         return coordinates;
     }
 
@@ -160,7 +164,7 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
 
 
     public void offsetCoordinates() {
-        offsetCoordinates(getCoordinates());
+        offsetCoordinates(getOrigin());
     }
 
     public void offsetCoordinates(Coordinates offset) {
@@ -225,4 +229,22 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     public RoomModel getModel() {
         return model;
     }
+
+    public DungeonLevel.CELL_IMAGE getCellType() {
+        return cellType;
+    }
+
+    public void setCellType(DungeonLevel.CELL_IMAGE cellType) {
+        this.cellType = cellType;
+    }
+
+    public String getWallType() {
+        return wallType;
+    }
+
+    public void setWallType(String wallType) {
+        this.wallType = wallType;
+    }
+
+
 }

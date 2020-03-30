@@ -2,12 +2,17 @@ package main.level_editor.gui.panels.palette;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import eidolons.content.PROPS;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.headquarters.creation.selection.SelectableImageItem;
 import eidolons.libgdx.gui.panels.headquarters.creation.selection.SelectionImageTable;
+import eidolons.libgdx.gui.tooltips.Tooltip;
+import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import main.content.DC_TYPE;
 import main.entity.type.ObjType;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.metadata.options.LE_OptionsMaster;
+import main.system.auxiliary.StringMaster;
 
 import java.util.List;
 
@@ -77,7 +82,7 @@ public class PaletteTypesTable extends SelectionImageTable {
     }
 
     private static int getWrap() {
-        return   Math.round(200 / (LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE)) + 1); //sca
+        return Math.round(200 / (LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE)) + 1); //sca
     }
 
     @Override
@@ -90,12 +95,31 @@ public class PaletteTypesTable extends SelectionImageTable {
         SelectableImageItem s = super.createElement(datum);
 //        s.setScale(LE_OptionsMaster.getOptions_().getFloatValue(PALETTE_SCALE));
         s.setSize(getElementSize().x, getElementSize().y);
+
+        Tooltip tooltip = createTooltip(datum);
+        if (tooltip != null) {
+            s.addListener(tooltip.getController());
+        }
         return s;
+    }
+
+    private Tooltip createTooltip(SelectableItemData datum) {
+        String text = datum.getEntity().getName();
+        if (datum.getEntity().getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
+            text= StringMaster.getValueTooltip(datum.getEntity(),
+                    PROPS.PRESET_GROUP,
+                    PROPS.EXTENDED_PRESET_GROUP,
+                    PROPS.SHRUNK_PRESET_GROUP,
+                    PROPS.UNIT_TYPES,
+                    PROPS.FILLER_TYPES);
+//
+        }
+        return new ValueTooltip(text);
     }
 
     @Override
     protected void selected(SelectableItemData item) {
-            LevelEditor.getCurrent().getManager().
+        LevelEditor.getCurrent().getManager().
                 getModelManager().paletteSelection((ObjType) item.getEntity());
     }
 

@@ -33,6 +33,7 @@ public class SelectableImageItem extends FadeImageContainer {
         highlight.setTouchable(Touchable.disabled);
         addListener(new ValueTooltip("Select " + data.getName()).getController());
 //            debug();
+
     }
 
     @Override
@@ -84,11 +85,9 @@ public class SelectableImageItem extends FadeImageContainer {
         this.selected = selected;
         if (!selected) {
             ActionMaster.addScaleAction(getContent(), highlight.getScaleX(), 0.3f);
-            ActionMaster.addFadeOutAction(highlight, 1, false);
             setZIndex(999);
         } else {
-            ActionMaster.addScaleAction(getContent(), highlight.getScaleX() * 1.4f, 0.3f);
-            ActionMaster.addFadeInAction(highlight, 1);
+            ActionMaster.addScaleAction(getContent(), highlight.getScaleX() * 1.3f, 0.3f);
             setZIndex(0);
         }
     }

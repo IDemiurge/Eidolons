@@ -47,10 +47,12 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
 
     @Override
     public void setVoid() {
-        Coordinates c = getSelectionHandler().selectCoordinate();
-        if (c != null) {
-            getGame().toggleVoid(c);
+
+        operation(Operation.LE_OPERATION.CLEAR_START);
+        for (Coordinates c : getSelectionHandler().getSelection().getCoordinates()) {
+            operation(Operation.LE_OPERATION.VOID_TOGGLE,c);
         }
+        operation(Operation.LE_OPERATION.CLEAR_END);
     }
 
     public void mirror() {

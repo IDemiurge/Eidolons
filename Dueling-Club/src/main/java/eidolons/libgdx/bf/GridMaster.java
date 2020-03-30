@@ -16,6 +16,7 @@ import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.graphics.GuiManager;
 
 /**
  * Created by JustMe on 1/29/2017.
@@ -88,9 +89,14 @@ public class GridMaster {
         return new Vector2(x, y);
     }
 
+    public static Coordinates getCenter() {
+        int x = Math.round((GuiManager.getCurrentLevelCellsX()  / 2));
+        int y = Math.round((GuiManager.getCurrentLevelCellsY() / 2));
+        return (Coordinates.get(x, y));
+    }
     public static Coordinates getCameraCenter() {
-        int x = Math.round((DungeonScreen.getInstance().getController().getXCamPos() ) / 128);
-        int y = Math.round((DungeonScreen.getInstance().getController().getYCamPos() ) / 128);
+        int x = Math.round((ScreenMaster.getScreen().getController().getXCamPos() ) / 128);
+        int y = Math.round((ScreenMaster.getScreen().getController().getYCamPos() ) / 128);
         return invertGdxY(Coordinates.get(x, y));
     }
     public static Vector2 getMouseCoordinates() {

@@ -44,11 +44,9 @@ import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.quest.QuestJournal;
 import eidolons.libgdx.gui.panels.quest.QuestProgressPanel;
-import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.screens.Blackout;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.map.town.navigation.PlaceNavigationPanel;
-import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
@@ -222,35 +220,6 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         dragManager.setGuiStage(this);
     }
 
-    protected void initTooltipsAndMisc() {
-
-        textPanel = new OverlayTextPanel();
-        addActor(textPanel);
-        textPanel.setPosition(GdxMaster.centerWidth(textPanel),
-                GdxMaster.centerHeight(textPanel));
-
-        addActor(tooltips = new ToolTipManager(this));
-
-        addActor(infoTooltipContainer = new SuperContainer(infoTooltip) {
-            @Override
-            public int getFluctuatingAlphaPeriod() {
-                return 0;
-            }
-
-            @Override
-            public void draw(Batch batch, float parentAlpha) {
-                if (parentAlpha == ShaderDrawer.SUPER_DRAW)
-                    super.draw(batch, 1);
-                else
-                    ShaderDrawer.drawWithCustomShader(this, batch, null, false, false);
-            }
-        });
-        infoTooltipContainer.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_MAP);
-        Fluctuating.setAlphaFluctuationOn(true);
-
-        addActor(confirmationPanel = ConfirmationPanel.getInstance());
-
-    }
 
     protected void initGameMenu() {
         gameMenu = createGameMenu();

@@ -2,6 +2,8 @@ package main.level_editor.backend.handlers.operation;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -35,7 +37,7 @@ public class OperationHandler extends LE_Handler {
                 String layerName = (String) args[2];
                 if (layerName != null) {
                     Layer layer = getLayerHandler().getLayer(layerName);
-                   layer.getScripts().put( c , text);
+                    layer.getScripts().put(c, text);
                     //color, hidden, ...
                 }
 
@@ -51,7 +53,7 @@ public class OperationHandler extends LE_Handler {
                 boolean isVoid = manager.getGame().toggleVoid(c);
                 if (isVoid)
                     for (BattleFieldObject bfObj : manager.getGame().getObjectsAt(c)) {
-                        getObjHandler().remove(bfObj);
+                        operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
                     }
                 GuiEventManager.trigger(
                         isVoid ? GuiEventType.CELL_SET_VOID
@@ -92,6 +94,15 @@ public class OperationHandler extends LE_Handler {
                 d = (DIRECTION) args[2];
                 args = new BattleFieldObject[]{getObjHandler().addOverlay(d, type, c.x, c.y)};
                 break;
+
+            case MODIFY_STRUCTURE:
+                LevelStructure.StructureData data = (LevelStructure.StructureData) args [0];
+                data.apply();
+                if (data instanceof BlockData) {
+                    getStructureManager().blockReset(((BlockData) data).getBlock());
+                    getStructureManager().updateTree();
+                }
+                break;
         }
         return args;
     }
@@ -129,7 +140,7 @@ public class OperationHandler extends LE_Handler {
     private void revert(Operation op, boolean redo) {
         if (op.operation.bulkEnd) {
             Operation rev = operations.pop();
-            while (!operations.empty()  ) {
+            while (!operations.empty()) {
                 revert(rev, redo);
                 rev = operations.pop();
                 if (rev.operation.bulkStart) {
@@ -139,9 +150,13 @@ public class OperationHandler extends LE_Handler {
 
         }
         switch (op.operation) {
+            case SAVE_STRUCTURE:
+                execute(Operation.LE_OPERATION.MODIFY_STRUCTURE, op.args);
+                break;
             case MODEL_CHANGE:
                 getModelManager().back();
-                //all kindsd of meta info
+                break;
+            //all kindsd of meta info
             case VOID_TOGGLE:
                 execute(Operation.LE_OPERATION.VOID_TOGGLE, op.args);
                 break;

@@ -29,6 +29,7 @@ import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.ConfirmationPanel;
+import eidolons.libgdx.stage.GenericGuiStage;
 import eidolons.libgdx.stage.GuiStage;
 import main.entity.Entity;
 import main.system.GuiEventManager;
@@ -43,7 +44,7 @@ public class ToolTipManager extends TablePanel {
 
     private static final float DEFAULT_WAIT_TIME = 1.0f;
     private static final float TOOLTIP_HIDE_DISTANCE = 80;
-    private final GuiStage guiStage;
+    private final GenericGuiStage guiStage;
     private float tooltipTimer;
     private Tooltip tooltip;
     private Cell actorCell;
@@ -66,7 +67,7 @@ public class ToolTipManager extends TablePanel {
         ToolTipManager.presetTooltipPos = presetTooltipPos;
     }
 
-    public ToolTipManager(GuiStage battleGuiStage) {
+    public ToolTipManager(GenericGuiStage battleGuiStage) {
         guiStage = battleGuiStage;
         GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
             Object object = event.get();
@@ -435,7 +436,9 @@ public class ToolTipManager extends TablePanel {
         if (entity instanceof DC_UnitAction) {
             AnimMaster3d.hoverOff((DC_UnitAction) entity);
         }
-        guiStage.getRadial().hoverOff(entity);
+        if (guiStage instanceof GuiStage) {
+            ((GuiStage) guiStage).getRadial().hoverOff(entity);
+        }
     }
 
     public void entityHover(Entity entity) {
@@ -448,7 +451,9 @@ public class ToolTipManager extends TablePanel {
             return;
         }
 
-        guiStage.getRadial().hover(entity);
+        if (guiStage instanceof GuiStage) {
+            ((GuiStage) guiStage).getRadial().hover(entity);
+        }
         //differentiate radial from bottom panel? no matter really ... sync :)
         //        guiStage.getBottomPanel().getSpellPanel().getCellsSet();
 

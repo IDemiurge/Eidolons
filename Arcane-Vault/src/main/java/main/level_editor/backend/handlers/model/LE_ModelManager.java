@@ -1,7 +1,5 @@
 package main.level_editor.backend.handlers.model;
 
-import main.content.DC_TYPE;
-import main.data.DataManager;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -12,7 +10,10 @@ import main.level_editor.backend.handlers.selection.LE_Selection;
 import main.level_editor.backend.handlers.selection.PaletteSelection;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.SortMaster;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 import static main.level_editor.backend.handlers.operation.Operation.LE_OPERATION.PASTE_END;
@@ -20,31 +21,56 @@ import static main.level_editor.backend.handlers.operation.Operation.LE_OPERATIO
 
 public class LE_ModelManager extends LE_Handler {
 
-    private static final String DEFAULT_TYPE = "Bone Wall";
-    LE_DataModel model;
-    Stack<LE_DataModel> modelStack = new Stack<>();
+    EditData model;
+    Stack<EditData> modelStack = new Stack<>();
     private LE_Selection copied;
 
     public LE_ModelManager(LE_Manager manager) {
         super(manager);
+    }
+
+    @Override
+    public void load() {
         model = createDefault();
     }
 
-    private LE_DataModel createDefault() {
-        LE_DataModel model = new LE_DataModel();
+    private EditData createDefault() {
+        EditData model = new EditData();
 //model.setCoordinateSelection(CoordinatesMaster.getCenterCoordinate(getModule().getCoordinates()));
-        model.setPaletteSelection(new PaletteSelection(DataManager.getType(DEFAULT_TYPE, DC_TYPE.BF_OBJ)));
+        model.setPaletteSelection(new PaletteSelection());
         return model;
     }
 
     public void paste() {
-        Coordinates origin = getSelectionHandler().selectCoordinate();
+        Coordinates origin = null;
+        if (getSelectionHandler().getSelection().getCoordinates().size() == 1) {
+            origin = getSelectionHandler().getSelection().getCoordinates().iterator().next();
+//            origin =getSelectionHandler().getSelectedCoordinate();
+        } else {
+            origin = getSelectionHandler().selectCoordinate();
+        }
         operation(PASTE_START);
+        //TODO all data - ai, script, layer props...
+        Coordinates offset = null;
+        List<Obj> sorted = new LinkedList<>();
         for (Integer id : copied.getIds()) {
-            Obj obj = getGame().getSimIdManager().getObjectById(id);
+            sorted.add(getGame().getSimIdManager().getObjectById(id));
+        }
+        sorted.sort(SortMaster.getSorterByExpression(obj -> -(((Obj) obj).getX() + ((Obj) obj).getY())));
+
+        for (Obj obj : sorted) {
             ObjType type = obj.getType();
-            Coordinates с = obj.getCoordinates().getOffset(origin);
-            operation(Operation.LE_OPERATION.ADD_OBJ, type, с);
+            Coordinates c = origin;
+            if (copied.getIds().size() > 1 && offset == null) {
+                offset = obj.getCoordinates();
+            } else {
+                if (offset != null) {
+                    c = c.getOffset(obj.getX() - offset.x,
+                            obj.getY() - offset.y);
+                }
+            }
+
+            operation(Operation.LE_OPERATION.ADD_OBJ, type, c);
 
         }
         operation(PASTE_END);
@@ -62,10 +88,10 @@ public class LE_ModelManager extends LE_Handler {
 
     public void toDefault() {
         modelStack.push(model);
-        model = new LE_DataModel();
+        model = createDefault();
     }
 
-    public LE_DataModel getModel() {
+    public EditData getModel() {
         return model;
     }
 
@@ -80,6 +106,6 @@ public class LE_ModelManager extends LE_Handler {
 
     public void modelChanged() {
         modelStack.push(model);
-        model = new LE_DataModel(model);
+        model = new EditData(model);
     }
 }

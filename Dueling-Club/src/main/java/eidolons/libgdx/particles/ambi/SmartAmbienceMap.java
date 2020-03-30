@@ -72,8 +72,8 @@ public class SmartAmbienceMap extends GroupX {
                     EmitterMap emitters = new EmitterMap(path,
                      chance,
                      data.getColorHue()); //TODO
-                    emitters.setTopLeft(block.getCoordinates());
-                    emitters.setBottomRight(block.getCoordinates().getOffset(
+                    emitters.setTopLeft(block.getOrigin());
+                    emitters.setBottomRight(block.getOrigin().getOffset(
                      Coordinates.get(block.getWidth(), block.getHeight())
                     ));
                     maps.add(emitters);

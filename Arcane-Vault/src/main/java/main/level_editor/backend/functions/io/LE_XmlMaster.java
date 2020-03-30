@@ -1,12 +1,23 @@
 package main.level_editor.backend.functions.io;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Block;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Module;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Zone;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlStringBuilder;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.struct.boss.BossDungeon;
 import main.level_editor.backend.struct.level.Floor;
 import main.system.auxiliary.data.MapMaster;
@@ -35,25 +46,28 @@ public class LE_XmlMaster {
 
         xmlBuilder.open("Plan");
 
-        xmlBuilder.append(buildIdMap(floor));
-        xmlBuilder.append(buildCoordinateMap(floor));
-        String planXml =  "";
-        try {
-//            planXml = (floor.getGame().getDungeonMaster().getDungeonWrapper()).getXml();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-
-        xmlBuilder.append(planXml);
-
-        xmlBuilder.close("Plan");
-
         xmlBuilder.open(LocationBuilder.MODULES_NODE);
+
         for (Module module : floor.getModules()) {
+            //recursive? maybe better just plain loops - modules>zones>blocks with common methods
             String contents = toXml(module, false);
             xmlBuilder.appendNode(contents, module.getName());
         }
         xmlBuilder.close(LocationBuilder.MODULES_NODE);
+
+        xmlBuilder.close("Plan");
+
+        xmlBuilder.append(buildIdMap(floor));
+        xmlBuilder.append(buildCoordinateMap(floor));
+
+        for (LE_Handler handler : floor.getManager().getHandlers()) {
+            String xml = handler.getXml();
+            if (xml.isEmpty()) {
+                continue;
+            }
+            xmlBuilder.append(xml).append("\n");
+        }
+
         return XML_Converter.wrap("Floor", xmlBuilder.toString()); //name?
     }
 
@@ -92,32 +106,51 @@ public class LE_XmlMaster {
         return XML_Converter.wrap(LocationBuilder.ID_MAP, builder.toString());
     }
 
+    //must be a valid floor in itself?! No global id's then? So we can re-use modules, mix them up...
+    //interesting. So maybe we can have ... duplicate id maps?
     public static String toXml(Module module, boolean standalone) {
-        StringBuilder xmlBuilder = new StringBuilder();
-        //must be a valid floor in itself?! No global id's then? So we can re-use modules, mix them up...
-        //interesting. So maybe we can have ... duplicate id maps?
-        /*
-        we need to have single id_map and coordinate->ids for FLOOR
-        we can build it here too,
-         */
-
         if (standalone) {
-            /*
-            LAYERS
-
-            common id and coordinate map!
-
-             */
-
-            //transform id maps!
-            //ignore origin
         }
-//        Set<BattleFieldObject> objects =
-//        LE_GameSim.getGame().getMetaMaster().getModuleMaster().getObjectsForModule(module);
-//        Set<Integer> ids =
-//        LE_GameSim.getGame().toFloorIds(objects);
+        XmlStringBuilder xmlBuilder = new XmlStringBuilder();
+        xmlBuilder.appendNode(new ModuleData(new LE_Module(module)).toString(),
+                FloorLoader.DATA);
+        xmlBuilder.open("Zones");
+        for (LevelZone zone : module.getZones()) {
+            xmlBuilder.appendNode(toXml(zone), "Zone");
+        }
+        xmlBuilder.close("Zones");
 
-        //in fact splitting objects on WRITE may not be necessary.
+        return xmlBuilder.toString();
+    }
+
+    private static String toXml(LevelZone zone) {
+        XmlStringBuilder xmlBuilder = new XmlStringBuilder();
+        xmlBuilder.appendNode(new ZoneData(new LE_Zone(zone)).toString(),
+                FloorLoader.DATA);
+        xmlBuilder.open("Blocks");
+        for (LevelBlock block :   zone.getSubParts()) {
+            xmlBuilder.appendNode(toXml(block), "Block");
+        }
+        xmlBuilder.close("Blocks");
+
+        return xmlBuilder.toString();
+    }
+
+    private static String toXml(LevelBlock block) {
+
+        XmlStringBuilder xmlBuilder = new XmlStringBuilder();
+        xmlBuilder.appendNode(new BlockData(new LE_Block(block)).toString(),
+                FloorLoader.DATA);
+        int w = block.getWidth();
+        int h = block.getHeight();
+        Coordinates c = block.getOrigin();
+      Set<Coordinates>  missing = CoordinatesMaster.getMissingCoordinatesFromRect(c, w, h, block.getCoordinatesList());
+
+        xmlBuilder.open("Missing");
+        for (Coordinates coordinate :  missing) {
+            xmlBuilder.append (coordinate+";");
+        }
+        xmlBuilder.close("Missing");
 
         return xmlBuilder.toString();
     }

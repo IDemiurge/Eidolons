@@ -9,13 +9,9 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.GenericGuiStage;
-import eidolons.libgdx.utils.TextInputPanel;
 import main.level_editor.LevelEditor;
 import main.level_editor.gui.components.DataTable;
-import main.level_editor.gui.dialog.BlockTemplateChooser;
-import main.level_editor.gui.dialog.ChooserDialog;
-import main.level_editor.gui.dialog.EnumChooser;
-import main.level_editor.gui.dialog.ModuleDialog;
+import main.level_editor.gui.dialog.*;
 import main.level_editor.gui.panels.ClosablePanel;
 import main.level_editor.gui.panels.control.ControlPanelHolder;
 import main.level_editor.gui.panels.control.TabbedControlPanel;
@@ -24,6 +20,7 @@ import main.level_editor.gui.top.LE_ButtonStripe;
 import main.level_editor.gui.top.TopPanel;
 import main.level_editor.gui.tree.LE_TreeHolder;
 import main.system.ExceptionMaster;
+import main.system.auxiliary.log.LogMaster;
 
 public class LE_GuiStage extends GenericGuiStage {
 
@@ -37,11 +34,11 @@ public class LE_GuiStage extends GenericGuiStage {
     private  BlockTemplateChooser templateChooser;
     private  EnumChooser enumChooser;
     private DataTable editTable;
-    private ModuleDialog moduleDialog;
 
     private TablePanelX innerTable;
-    private TextInputPanel textInput;
     private ChooserDialog dialog;
+    private BlockEditDialog blockEditor;
+    private ModuleDialog moduleEditor;
 
 
     public LE_GuiStage(Viewport viewport, Batch batch) {
@@ -71,6 +68,8 @@ public class LE_GuiStage extends GenericGuiStage {
 
         dialogueTable.add(  templateChooser = new BlockTemplateChooser());
         dialogueTable.add(enumChooser = new EnumChooser());
+        dialogueTable.add(blockEditor = new BlockEditDialog());
+        dialogueTable.add(moduleEditor = new ModuleDialog( ));
         dialogueTable.add(editTable = new DataTable(2, 50));
     }
 
@@ -87,7 +86,7 @@ public class LE_GuiStage extends GenericGuiStage {
         addActor(innerTable = new TablePanelX( ));
         innerTable.row().maxHeight(120);
         innerTable.padTop(30);
-        innerTable.add(topPanel = new TopPanel());
+        innerTable.add(topPanel = new TopPanel()).top();
 
         innerTable.add(buttons).bottom().right().expandX();
 //        innerTable.row();
@@ -161,7 +160,11 @@ public class LE_GuiStage extends GenericGuiStage {
 
     @Override
     public boolean setScrollFocus(Actor actor) {
-        return super.setScrollFocus(actor);
+        boolean r = super.setScrollFocus(actor);
+        if (!r){
+            LogMaster.log(1,"------ setScrollFocus "  + actor);
+        }
+        return r;
     }
 
     @Override
@@ -203,12 +206,16 @@ public class LE_GuiStage extends GenericGuiStage {
     }
 
     public ModuleDialog getModuleDialog() {
-        dialog = moduleDialog;
-        return moduleDialog;
+        dialog = moduleEditor;
+        return moduleEditor;
     }
 
     public ChooserDialog getDialog() {
         return dialog;
+    }
+
+    public BlockEditDialog getBlockEditor() {
+        return blockEditor;
     }
 
 }

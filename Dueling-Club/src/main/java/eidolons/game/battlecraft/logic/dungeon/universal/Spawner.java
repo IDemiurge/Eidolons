@@ -27,6 +27,7 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.secondary.Bools;
+import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.util.Refactor;
@@ -75,8 +76,8 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         unitsList.addAll(game.getUnits());
         getFacingAdjuster().adjustFacing(unitsList);
 
-        final Integer cellsX = game.getDungeon().getCellsX();
-        final Integer cellsY = game.getDungeon().getCellsY();
+        final Integer cellsX =GuiManager.getCurrentLevelCellsX() ;
+        final Integer cellsY = GuiManager.getCurrentLevelCellsY();
         GuiEventManager.trigger(SCREEN_LOADED,
          new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
 

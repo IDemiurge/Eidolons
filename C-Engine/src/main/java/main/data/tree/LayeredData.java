@@ -1,4 +1,4 @@
-package main.level_editor.gui.tree.data;
+package main.data.tree;
 
 import java.util.Set;
 

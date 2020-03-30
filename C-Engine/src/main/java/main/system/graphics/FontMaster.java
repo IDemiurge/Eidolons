@@ -244,6 +244,8 @@ public class FontMaster {
         SC("/starcraft.ttf"),
         DARK("/dark.ttf"),
         NYALA("/nyala.ttf", true),
+        MONO("/SmallTypeWriting.ttf" ),
+        MONO_LARGE("/SmallTypeWritingMedium.ttf" ),
         RU("/philosopher-regular.ttf"),
         MAIN("/main.otf"),
         METAMORPH("/metamorphous-regular.ttf", true),

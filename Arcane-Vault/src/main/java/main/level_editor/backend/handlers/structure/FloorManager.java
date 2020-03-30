@@ -64,10 +64,12 @@ public class FloorManager {
         WaitMaster.WAIT(500);
         game.initAndStart();
 
-        meta.gameStarted();
         if (saveTest){
             floor.getManager().getDataHandler().saveFloor();
         }
+        floor.getManager().load();
+        meta.gameStarted();
+        floor.getManager().afterLoaded();
     }
 
     public static void floorSelected(Floor floor) {

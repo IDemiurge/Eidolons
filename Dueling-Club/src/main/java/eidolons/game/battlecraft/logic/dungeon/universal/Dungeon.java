@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battlefield.vision.IlluminationMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
@@ -38,7 +37,6 @@ public class Dungeon extends LightweightEntity {
     Integer z;
     private COLOR_THEME colorTheme;
     private DUNGEON_TYPE dungeonType;
-    private DUNGEON_TEMPLATES template;
     private String levelFilePath;
     private LOCATION_TYPE dungeonSubtype;
     private Collection<Coordinates> voidCoordinates;
@@ -154,38 +152,9 @@ public class Dungeon extends LightweightEntity {
         z = i;
     }
 
-    public DUNGEON_TEMPLATES getTemplate() {
-        if (template == null) {
-            initTemplate();
-        }
-        return template;
-    }
-
-    public void setTemplate(DUNGEON_TEMPLATES template) {
-        this.template = template;
-    }
 
     public DC_Game getGame() {
         return (DC_Game) super.getGame();
-    }
-
-    private void initTemplate() {
-        template = new RandomWizard<DUNGEON_TEMPLATES>().getObjectByWeight(
-                getProperty(PROPS.DUNGEON_TEMPLATES), DUNGEON_TEMPLATES.class);
-        if (template == null)
-        // if (getProperty(PROPS.DUNGEON_TEMPLATES).isEmpty())
-        {
-            if (getDungeonType() == DUNGEON_TYPE.BOSS) {
-                // to be set upon sublevel generation?
-                template = DUNGEON_TEMPLATES.GREAT_ROOM;
-            }
-            // if (getSublevelType() == SUBLEVEL_TYPE.PRE_BOSS) {
-            //
-            // }
-            // random getSublevelType().getTemplates();
-            // getDungeonLevel
-        }
-
     }
 
     public boolean isSurface() {

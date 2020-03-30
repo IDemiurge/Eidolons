@@ -184,9 +184,7 @@ public class RngMainSpawner {
             if (!isBlockForGroup(block, UNIT_GROUP_TYPE.IDLERS))
                 if (!isBlockForGroup(block, UNIT_GROUP_TYPE.GUARDS))
                     if (!isBlockForGroup(block, UNIT_GROUP_TYPE.CROWD))
-                        if (!isBlockForGroup(block, UNIT_GROUP_TYPE.PATROL)) {
-                            return true;
-                        }
+                        return !isBlockForGroup(block, UNIT_GROUP_TYPE.PATROL);
             return false;
         });
         //        Collections.sort(blocks, );
@@ -485,7 +483,7 @@ public class RngMainSpawner {
         //peaks of difficulty!
         List<LevelBlock> sorted = coefMap.keySet().stream().sorted(new SortMaster<LevelBlock>().getSorterByExpression_(
                 b ->
-                        -block.getCoordinates().dst(b.getCoordinates())
+                        -block.getOrigin().dst(b.getOrigin())
         )).limit(3).collect(Collectors.toList());
 
         float min;
@@ -714,7 +712,7 @@ level.addUnitGroup(levelBlock, unitsAtCoordinates, groupType);
         //TODO
         int maxStack = getMaxStack();
         Coordinates center = new AbstractCoordinates(levelBlock.getWidth() / 2, levelBlock.getHeight() / 2)
-                .getOffset(levelBlock.getCoordinates());
+                .getOffset(levelBlock.getOrigin());
 
         float max = levelBlock.getTileMap().getMap().
                 values().stream().filter(cell -> TilesMaster.isPassable(cell)).count() * getCellLimitCoef();
@@ -759,9 +757,7 @@ level.addUnitGroup(levelBlock, unitsAtCoordinates, groupType);
     }
 
     private boolean isShuffleSpawnCells(List<Coordinates> emptyCells) {
-        if (emptyCells.size() > 5)
-            return false;
-        return true;
+        return emptyCells.size() <= 5;
     }
 
     private float getCellLimitCoef() {
@@ -782,8 +778,7 @@ level.addUnitGroup(levelBlock, unitsAtCoordinates, groupType);
         if (!TilesMaster.isPassable(levelBlock.getTileMap().getMap().get(c)))
             return false;
         if (!isEnclosedSpawnAllowed())
-            if (TilesMaster.isEnclosedCell(c, levelBlock.getTileMap()))
-                return false;
+            return !TilesMaster.isEnclosedCell(c, levelBlock.getTileMap());
         return true;
     }
 

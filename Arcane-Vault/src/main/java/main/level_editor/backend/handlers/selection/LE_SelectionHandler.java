@@ -59,6 +59,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
     public void deselect() {
         getModelManager().modelChanged();
         getModel().setSelection(new LE_Selection());
+        getModel().setPaletteSelection(new PaletteSelection());
         mode = SELECTION_MODE.NONE;
     }
 

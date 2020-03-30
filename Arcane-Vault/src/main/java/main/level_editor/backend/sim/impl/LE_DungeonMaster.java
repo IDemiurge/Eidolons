@@ -1,6 +1,7 @@
 package main.level_editor.backend.sim.impl;
 
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationSpawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
@@ -50,6 +51,11 @@ public class LE_DungeonMaster extends LocationMaster {
                 super.spawnDone();
             }
         };
+    }
+
+    @Override
+    protected LocationBuilder createBuilder() {
+        return new LE_DungeonBuilder(this);
     }
 
     @Override

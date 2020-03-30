@@ -14,6 +14,11 @@ public class BlockTemplateTree extends TreeX<PaletteNode> {
     }
 
     @Override
+    protected void rightClick(PaletteNode node) {
+
+    }
+
+    @Override
     protected void doubleClick(PaletteNode node) {
 
     }

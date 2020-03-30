@@ -13,6 +13,7 @@ public class SuperContainer extends SuperActor {
     protected Actor content;
     protected boolean fluctuateAlpha;
 
+    //TODO background
 
     public SuperContainer() {
 

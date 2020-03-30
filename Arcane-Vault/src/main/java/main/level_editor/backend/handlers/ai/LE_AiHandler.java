@@ -2,6 +2,7 @@ package main.level_editor.backend.handlers.ai;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import main.content.DC_TYPE;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlNodeMaster;
@@ -22,8 +23,6 @@ import static eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UN
 
 public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
-    private static final String CUSTOM_AI_GROUPS = "custom";
-    private static final String ENCOUNTER_AI_GROUPS = "encounter";
     Map<BattleFieldObject, AiData> encounterAiMap= new LinkedHashMap<>();
     Map<BattleFieldObject, AiData> customAiMap= new LinkedHashMap<>();
 
@@ -57,7 +56,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
     }
 
     public void initAiData(String nodeContents) {
-        String node = XmlNodeMaster.findNodeText(nodeContents, ENCOUNTER_AI_GROUPS);
+        String node = XmlNodeMaster.findNodeText(nodeContents,FloorLoader. ENCOUNTER_AI_GROUPS);
         for (String sub : ContainerUtils.openContainer(node)) {
             String[] split = sub.split("=");
             Obj obj = getIdManager().getObjectById(
@@ -66,7 +65,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
             encounterAiMap.put((BattleFieldObject) obj, data);
         }
 
-        node = XmlNodeMaster.findNodeText(nodeContents, CUSTOM_AI_GROUPS);
+        node = XmlNodeMaster.findNodeText(nodeContents, FloorLoader.CUSTOM_AI_GROUPS);
         for (String sub : ContainerUtils.openContainer(node)) {
             String[] split = sub.split("=");
             for (String s : ContainerUtils.openContainer(split[0])) {
@@ -120,6 +119,9 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
     private void updateText(BattleFieldObject obj) {
         String text = "";
         AiData ai = getAiForObject(obj);
+        if (ai == null) {
+            return;
+        }
         Integer id = getIdManager().getId(obj);
         if (id == ai.getLeader()) {
             text += "+++";
@@ -200,13 +202,13 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
         getModel().getDisplayMode().setShowMetaAi(!getModel().getDisplayMode().isShowMetaAi());
     }
 
-    public String toXml() {
+    public String getXml() {
         StringBuilder builder = new StringBuilder();
         for (BattleFieldObject object : encounterAiMap.keySet()) {
             builder.append(getIdManager().getId(object)).append("=");
             builder.append(encounterAiMap.get(object).toString()).append(";");
         }
-        String xml = XML_Converter.wrap(ENCOUNTER_AI_GROUPS, builder.toString());
+        String xml = XML_Converter.wrap(FloorLoader.ENCOUNTER_AI_GROUPS, builder.toString());
 
         builder = new StringBuilder();
         for (AiData data : customAiMap.values()) {
@@ -218,7 +220,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
             builder.append("=");
             builder.append(data.toString()).append(";");
         }
-        xml += XML_Converter.wrap(CUSTOM_AI_GROUPS, builder.toString());
+        xml += XML_Converter.wrap(FloorLoader.CUSTOM_AI_GROUPS, builder.toString());
 
         return xml;
     }

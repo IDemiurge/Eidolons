@@ -14,7 +14,7 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
 import main.level_editor.backend.LE_Manager;
-import main.level_editor.backend.handlers.model.LE_DataModel;
+import main.level_editor.backend.handlers.model.EditData;
 import main.level_editor.backend.handlers.structure.FloorManager;
 import main.level_editor.backend.metadata.options.LE_OptionsMaster;
 import main.level_editor.backend.sim.LE_MetaMaster;
@@ -50,7 +50,7 @@ public class LevelEditor {
         return getCurrent().getGame().getId(bfObj);
     }
 
-    public static LE_DataModel getModel() {
+    public static EditData getModel() {
         return getCurrent().getManager().getModelManager().getModel();
     }
 
@@ -93,6 +93,7 @@ public class LevelEditor {
             meta = new LE_MetaMaster(toOpen);
         }
         FloorManager.initFloor(meta);
+
     }
 
 

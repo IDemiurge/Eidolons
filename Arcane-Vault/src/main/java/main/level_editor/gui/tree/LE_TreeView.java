@@ -9,6 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.kotcrab.vis.ui.VisUI;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Block;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Module;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjNode;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
@@ -19,23 +23,21 @@ import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
+import main.data.tree.LayeredData;
+import main.data.tree.StructNode;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.handlers.ai.AiData;
 import main.level_editor.backend.struct.boss.BossDungeon;
 import main.level_editor.backend.struct.campaign.Campaign;
 import main.level_editor.backend.struct.level.Floor;
-import main.level_editor.backend.struct.module.LE_Block;
-import main.level_editor.backend.struct.module.LE_Module;
-import main.level_editor.backend.struct.module.ObjNode;
 import main.level_editor.gui.components.TreeX;
-import main.level_editor.gui.tree.data.LE_DataNode;
-import main.level_editor.gui.tree.data.LayeredData;
+import main.level_editor.gui.stage.LE_GuiStage;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.FontMaster;
 
-public class LE_TreeView extends TreeX<LE_DataNode> {
+public class LE_TreeView extends TreeX<StructNode> {
 
 
     @Override
@@ -44,7 +46,17 @@ public class LE_TreeView extends TreeX<LE_DataNode> {
     }
 
     @Override
-    protected void doubleClick(LE_DataNode node) {
+    protected void rightClick(StructNode node) {
+
+        if (node.getData() instanceof LE_Block) {
+            BlockData data = new BlockData(((LE_Block) node.getData()) );
+            if (getStage() instanceof LE_GuiStage) {
+                ((LE_GuiStage) getStage()).getBlockEditor().setUserObject(data);
+            }
+        }
+    }
+    @Override
+    protected void doubleClick(StructNode node) {
         Coordinates c = null;
         if (node.getData() instanceof ObjNode) {
             c = ((ObjNode) node.getData()).getObj().getCoordinates();
@@ -63,7 +75,7 @@ public class LE_TreeView extends TreeX<LE_DataNode> {
     }
 
     @Override
-    protected void selected(LE_DataNode node) {
+    protected void selected(StructNode node) {
         if (node.getData() instanceof ObjNode) {
             if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
                     Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
@@ -75,9 +87,9 @@ public class LE_TreeView extends TreeX<LE_DataNode> {
         } else if (node.getData() instanceof LE_Block) {
             LevelBlock block = ((LE_Block) node.getData()).getBlock();
             LevelEditor.getModel().setBlock(block);
-            LevelEditor.getModel().setCurrentZone(block.getZone());
+            LevelEditor.getModel().setZone(block.getZone());
         } else if (node.getData() instanceof LevelZone) {
-            LevelEditor.getModel().setCurrentZone(((LevelZone) node.getData()));
+            LevelEditor.getModel().setZone(((LevelZone) node.getData()));
             LevelEditor.getModel().setBlock(((LevelZone) node.getData()).getSubParts().get(0));
             //camera!
         } else if (node.getData() instanceof Module) {
@@ -93,7 +105,7 @@ public class LE_TreeView extends TreeX<LE_DataNode> {
     }
 
     @Override
-    protected Actor createNodeComp(LE_DataNode node) {
+    protected Actor createNodeComp(StructNode node) {
 
         Label.LabelStyle style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 16);
         TextureRegion texture = null;
@@ -136,15 +148,17 @@ public class LE_TreeView extends TreeX<LE_DataNode> {
             zone.getTemplateGroup();
             zone.getStyle();
         }
-        if (node.getData() instanceof LevelBlock) {
-            LevelBlock block = ((LevelBlock) node.getData());
-            name = "- " + (block.isTemplate() ? "Template " : "Custom ") + block.getRoomType() + " [" +
-                    block.getSquare() +
-                    "]";
+        if (node.getData() instanceof LE_Block) {
+            LevelBlock block = ((LE_Block) node.getData()).getBlock();
+            name = "-- " + (block.isTemplate() ? "Template " : "Custom ") + block.getRoomType() + " Block [" +
+                    block.getCoordinatesList().size() +
+                    "] at " + block.getOrigin();
             c = LevelEditor.getCurrent().getManager().getStructureManager().getColorForBlock(block);
 
             //img per room type
 //            texture = TextureCache.getOrCreateR(Images.ITEM_BACKGROUND_STONE);
+              w = 32;
+              h = 32;
             texture = TextureCache.getOrCreateR(Images.COLOR_EMBLEM);
         }
         if (node.getData() instanceof ObjNode) { // or id?
@@ -156,9 +170,7 @@ public class LE_TreeView extends TreeX<LE_DataNode> {
             }
             AiData ai = LevelEditor.getManager().getAiHandler().getAiForEncounter(dcObj.getObj());
         }
-//        if (node.getData() instanceof String) {
-//other stuff...
-//        }
+
         ValueContainer actor = new ValueContainer(style, texture, name, val);
         if (c != null) {
             actor.getImageContainer().getActor().setColor(c);
