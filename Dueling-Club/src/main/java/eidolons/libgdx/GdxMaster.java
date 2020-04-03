@@ -569,6 +569,11 @@ public class GdxMaster {
         ScreenMaster.getScreen().getController().input();
     }
 
+    public static void setWindowName(String s) {
+        Gdx.app.postRunnable(() ->
+                Gdx.graphics.setTitle(s));
+    }
+
     public enum CURSOR {
         DEFAULT,
         TARGETING,

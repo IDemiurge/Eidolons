@@ -29,6 +29,7 @@ import java.util.Arrays;
 
 public class LevelEditor {
     public static final WaitMaster.WAIT_OPERATIONS SELECTION_EVENT = WaitMaster.WAIT_OPERATIONS.SELECTION;
+    private static final String VERSION = "0.01";
     public static Window.WindowStyle windowStyle;
     private static boolean campaignMode;
     public  static final boolean TEST_MODE = true;
@@ -99,5 +100,9 @@ public class LevelEditor {
 
     private static String getDefaultOpenPath() {
         return PathFinder.getDungeonLevelFolder();
+    }
+
+    public static String getWindowName() {
+        return "Level Editor v"+ VERSION;
     }
 }

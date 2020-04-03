@@ -1,5 +1,6 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
@@ -27,6 +28,7 @@ public class LevelZone extends LevelLayer<LevelBlock> {
     private DUNGEON_STYLE style;
     private WeightMap<UNIT_GROUP> unitGroupWeightMap;
     private int nodeCount;
+    private ZoneData data;
 
     public LevelZone(DUNGEON_STYLE style, AMBIENCE ambience,
                      COLOR_THEME colorTheme, int globalIllumination, int id) {
@@ -130,5 +132,13 @@ public class LevelZone extends LevelLayer<LevelBlock> {
 
     public int getNodeCount() {
         return nodeCount;
+    }
+
+    public void setData(ZoneData data) {
+        this.data = data;
+    }
+
+    public ZoneData getData() {
+        return data;
     }
 }

@@ -145,7 +145,10 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         }
         getOperationHandler().operation(Operation.LE_OPERATION.INSERT_END);
         block.setCoordinatesList(coords);
-
+        block.setOrigin(at);
+block.setWidth(blockTemplate.getWidth());
+block.setHeight(blockTemplate.getHeight());
+//block.setName(blockTemplate);
         block.setRoomType(blockTemplate.getType());
 
 

@@ -60,6 +60,8 @@ public class AiMaster {
     protected AiPriorityConstantMaster priorityConstantMaster;
     protected PriorityModifier priorityModifier;
     protected PathBuilderAtomic pathBuilderAtomic;
+    private AiGroupHandler groupHandler;
+
     public AiMaster(DC_Game game) {
         this.game = game;
         this.actionSequenceConstructor = new ActionSequenceConstructor(this);
@@ -83,7 +85,7 @@ public class AiMaster {
         this.priorityConstantMaster = new AiPriorityConstantMaster(this);
         this.priorityModifier = new PriorityModifier(this);
         this.pathBuilderAtomic = new PathBuilderAtomic(this);
-
+        this.groupHandler = new AiGroupHandler(this);
         executor = new AiExecutor(game);
 
     }
@@ -250,5 +252,9 @@ public class AiMaster {
         return game.getAiManager();
     }
 
+
+    public AiGroupHandler getGroupHandler() {
+        return groupHandler;
+    }
 
 }

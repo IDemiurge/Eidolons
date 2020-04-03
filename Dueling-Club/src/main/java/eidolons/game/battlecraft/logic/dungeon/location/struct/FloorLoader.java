@@ -1,17 +1,20 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Block;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
+import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import main.content.DC_TYPE;
 import main.data.DataManager;
+import main.data.xml.XmlNodeMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
 import main.system.data.DataUnit;
 import main.system.launch.TypeBuilder;
 import org.w3c.dom.Node;
@@ -31,6 +34,8 @@ public class FloorLoader extends DungeonHandler<Location> {
     public static final String CUSTOM_AI_GROUPS = "CUSTOM_AI_GROUPS";
     public static final String ID_MAP = "ID_MAP";
     public static final String MODULES = "MODULES";
+    public static final String OBJ_NODE_NEW = "OBJ_IDS";
+    public static final String DATA_MAPS = "DATA_MAPS";
     //subnodes
     public static final String TRANSIT_IDS = "TRANSIT_IDS";
     public static final String TRANSIT_ONE_END = "TRANSIT_ONE_END";
@@ -43,21 +48,38 @@ public class FloorLoader extends DungeonHandler<Location> {
         super(master);
     }
 
-    public void processSubnode(Node node, LevelBlock block) {
-        BlockData data = new BlockData(new LE_Block(block));
-        data.setData(node.getTextContent());
-        data.apply();
-
-    }
 
     public void processNode(Node node, Location location) {
-
-        switch (node.getNodeName().toUpperCase()) {
+        switch (node.getNodeName()) {
             case MODULES:
-               new StructureBuilder(master).build(node, location);
+                new StructureBuilder(master).build(node, location);
+                break;
+            case DATA_MAPS:
+                Map<DataMap, Map<Integer, String>> map = new LinkedHashMap<>();
+                for (Node sub : XmlNodeMaster.getNodeList(node)) {
+                    Map<Integer, String> submap = new LinkedHashMap<>();
+                    for (Node idNode : XmlNodeMaster.getNodeList(node)) {
+                        submap.put(Integer.valueOf(idNode.getNodeName()), sub.getTextContent());
+                    }
+                    map.put(DataMap.valueOf(sub.getNodeName()), submap);
+
+                }
+            case ENCOUNTER_AI_GROUPS:
+//                getMaster().getGame().getAiManager().getGroupHandler()
+//                        .initEncounterGroups(node.getTextContent());
+                break;
+            case CUSTOM_AI_GROUPS:
+//                getMaster().getGame().getAiManager().getGroupHandler()
+//                        .initCustomGroups(node.getTextContent());
+                break;
+
+            case OBJ_NODE_NEW:
+                Map<Integer, BattleFieldObject> objectMap = ObjIdLoader.processObjects(master.getIdTypeMap(),
+                        location.getDungeon(), node);
+                master.setObjIdMap(objectMap);
                 break;
             case TRANSIT_IDS:
-
+                initTransits(node.getTextContent(), location);
                 break;
             case CUSTOM_PARAMS_NODE:
                 TypeBuilder.setParams(location.getDungeon(), node);
@@ -67,10 +89,6 @@ public class FloorLoader extends DungeonHandler<Location> {
                 break;
 //                case FLIP_MAP_NODE
             case OVERLAY_DIRECTIONS:
-                break;
-            case ENCOUNTER_AI_GROUPS:
-                break;
-            case CUSTOM_AI_GROUPS:
                 break;
             case ID_MAP:
                 getMaster().setIdTypeMap(processIdTypesMap(node.getTextContent()));
@@ -83,6 +101,24 @@ public class FloorLoader extends DungeonHandler<Location> {
         }
 
     }
+
+    protected void initTransits(String textContent, Location location) {
+        for (String substring : ContainerUtils.openContainer(textContent)) {
+            Integer id = NumberUtils.getInteger(substring.split("->")[0]);
+            Integer id2 = NumberUtils.getInteger(substring.split("->")[1]);
+            processTransitPair(id, id2, location);
+
+        }
+    }
+
+    protected void processTransitPair(Integer id, Integer id2, Location location) {
+//        TODO
+        Entrance e = (Entrance) master.getObjIdMap().get(id);
+        Entrance ex = (Entrance) master.getObjIdMap().get(id2);
+        location.setMainEntrance(e);
+        location.setMainExit(ex);
+    }
+
 
     protected void processLayers(Node node) {
         game.getMetaMaster().getDungeonMaster().getLayerManager().initLayers(node);

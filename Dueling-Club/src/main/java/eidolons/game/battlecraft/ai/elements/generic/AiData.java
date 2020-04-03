@@ -1,4 +1,4 @@
-package main.level_editor.backend.handlers.ai;
+package eidolons.game.battlecraft.ai.elements.generic;
 
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner;
 import main.system.data.DataUnit;

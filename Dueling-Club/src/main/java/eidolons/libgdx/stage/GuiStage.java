@@ -56,13 +56,11 @@ import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
-import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
 
@@ -519,24 +517,6 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
             hqPanel.open();
             hqPanel.setUserObject(p.get());
         });
-        GuiEventManager.bind(GuiEventType.SHOW_INFO_TEXT, p -> {
-            if (p.get() == null) {
-                hideTooltip(infoTooltip, 1f);
-            } else {
-                String text = p.get().toString();
-                LABEL_STYLE style = null;
-                if (text.contains(EUtils.STYLE)) {
-                    String[] parts = text.split(EUtils.STYLE);
-                    style = new EnumMaster<LABEL_STYLE>().retrieveEnumConst(LABEL_STYLE.class, parts[0]);
-                    text = parts[1];
-                }
-
-                //                textToShow.add() queue!
-                infoTooltipContainer.setContents(infoTooltip);
-                hideTooltip(actionTooltip, 1f);
-                showTooltip(style, false, text, infoTooltip, 2f);
-            }
-        });
         GuiEventManager.bind(GuiEventType.TARGET_SELECTION, p -> {
             hideTooltip(actionTooltip, 0.5f);
         });
@@ -555,39 +535,6 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
                         , actionTooltip, 2f);
             }
             hideTooltip(infoTooltip, 1f);
-        });
-
-        GuiEventManager.bind(GuiEventType.HIDE_ALL_TEXT, p -> {
-            hideTooltip(infoTooltip, 1f);
-            hideTooltip(actionTooltip, 1f);
-            infoTooltip.setVisible(false);
-            actionTooltip.setVisible(false);
-        });
-        GuiEventManager.bind(GuiEventType.HIDE_ACTION_INFO_TEXT, p -> {
-            hideTooltip(actionTooltip, 1f);
-        });
-        GuiEventManager.bind(GuiEventType.HIDE_INFO_TEXT, p -> {
-            hideTooltip(infoTooltip, 1f);
-        });
-        GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
-            DC_ActiveObj active = (DC_ActiveObj) p.get();
-            if (ExplorationMaster.isExplorationOn()) {
-                return;
-            }
-
-            showTooltip(true, active.getOwnerUnit().getNameIfKnown()
-                    + " activates " + active.getName(), actionTooltip, 3f);
-            hideTooltip(infoTooltip, 1f);
-
-        });
-
-        GuiEventManager.bind(GuiEventType.CONFIRM, p -> {
-            Triple<String, Object, Runnable> triple = (Triple<String, Object, Runnable>) p.get();
-            if (triple.getMiddle() instanceof Runnable) {
-                confirm(triple.getLeft(), true, triple.getRight(), ((Runnable) triple.getMiddle()));
-            } else
-                confirm(triple.getLeft(), (Boolean) triple.getMiddle(), triple.getRight(), null);
-
         });
 
         GuiEventManager.bind(GuiEventType.TIP_MESSAGE, p -> {

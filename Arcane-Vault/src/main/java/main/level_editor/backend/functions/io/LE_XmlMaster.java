@@ -2,7 +2,6 @@ package main.level_editor.backend.functions.io;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
@@ -46,19 +45,28 @@ public class LE_XmlMaster {
 
         xmlBuilder.open("Plan");
 
-        xmlBuilder.open(LocationBuilder.MODULES_NODE);
+        xmlBuilder.open(FloorLoader.MODULES);
 
         for (Module module : floor.getModules()) {
             //recursive? maybe better just plain loops - modules>zones>blocks with common methods
             String contents = toXml(module, false);
-            xmlBuilder.appendNode(contents, module.getName());
+            xmlBuilder.append(contents);
         }
-        xmlBuilder.close(LocationBuilder.MODULES_NODE);
+        xmlBuilder.close(FloorLoader.MODULES);
 
-        xmlBuilder.close("Plan");
 
         xmlBuilder.append(buildIdMap(floor));
         xmlBuilder.append(buildCoordinateMap(floor));
+
+        xmlBuilder.open(FloorLoader.DATA_MAPS);
+        for (LE_Handler handler : floor.getManager().getHandlers()) {
+            String xml = handler.getDataMapString();
+            if (xml.isEmpty()) {
+                continue;
+            }
+            xmlBuilder.append(xml).append("\n");
+        }
+        xmlBuilder.close(FloorLoader.DATA_MAPS);
 
         for (LE_Handler handler : floor.getManager().getHandlers()) {
             String xml = handler.getXml();
@@ -67,7 +75,7 @@ public class LE_XmlMaster {
             }
             xmlBuilder.append(xml).append("\n");
         }
-
+        xmlBuilder.close("Plan");
         return XML_Converter.wrap("Floor", xmlBuilder.toString()); //name?
     }
 
@@ -90,7 +98,7 @@ public class LE_XmlMaster {
             builder.append(";");
 
         }
-        return XML_Converter.wrap(LocationBuilder.OBJ_NODE_NEW, builder.toString());
+        return XML_Converter.wrap(FloorLoader.OBJ_NODE_NEW, builder.toString());
     }
 
     //TODO DC_TYPE ?
@@ -98,12 +106,17 @@ public class LE_XmlMaster {
         StringBuilder builder = new StringBuilder();
         Map<Integer, BattleFieldObject> map = floor.getGame().getSimIdManager().getObjMap();
         for (Integer integer : map.keySet()) {
-            Integer id = map.get(integer).getId();
-            ObjType type = map.get(integer).getType();
-            builder.append(id).append("=").append(type.getName()).append(";");
+            try {
+                Integer id =
+                        floor.getGame().getSimIdManager().getId(map.get(integer));
+                ObjType type = map.get(integer).getType();
+                builder.append(id).append("=").append(type.getName()).append(";");
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
 
         }
-        return XML_Converter.wrap(LocationBuilder.ID_MAP, builder.toString());
+        return XML_Converter.wrap(FloorLoader.ID_MAP, builder.toString());
     }
 
     //must be a valid floor in itself?! No global id's then? So we can re-use modules, mix them up...
@@ -112,6 +125,7 @@ public class LE_XmlMaster {
         if (standalone) {
         }
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
+        xmlBuilder.open(module.getName());
         xmlBuilder.appendNode(new ModuleData(new LE_Module(module)).toString(),
                 FloorLoader.DATA);
         xmlBuilder.open("Zones");
@@ -119,6 +133,7 @@ public class LE_XmlMaster {
             xmlBuilder.appendNode(toXml(zone), "Zone");
         }
         xmlBuilder.close("Zones");
+        xmlBuilder.close(module.getName());
 
         return xmlBuilder.toString();
     }
@@ -128,7 +143,7 @@ public class LE_XmlMaster {
         xmlBuilder.appendNode(new ZoneData(new LE_Zone(zone)).toString(),
                 FloorLoader.DATA);
         xmlBuilder.open("Blocks");
-        for (LevelBlock block :   zone.getSubParts()) {
+        for (LevelBlock block : zone.getSubParts()) {
             xmlBuilder.appendNode(toXml(block), "Block");
         }
         xmlBuilder.close("Blocks");
@@ -144,11 +159,11 @@ public class LE_XmlMaster {
         int w = block.getWidth();
         int h = block.getHeight();
         Coordinates c = block.getOrigin();
-      Set<Coordinates>  missing = CoordinatesMaster.getMissingCoordinatesFromRect(c, w, h, block.getCoordinatesList());
+        Set<Coordinates> missing = CoordinatesMaster.getMissingCoordinatesFromRect(c, w, h, block.getCoordinatesList());
 
         xmlBuilder.open("Missing");
-        for (Coordinates coordinate :  missing) {
-            xmlBuilder.append (coordinate+";");
+        for (Coordinates coordinate : missing) {
+            xmlBuilder.append(coordinate + ";");
         }
         xmlBuilder.close("Missing");
 

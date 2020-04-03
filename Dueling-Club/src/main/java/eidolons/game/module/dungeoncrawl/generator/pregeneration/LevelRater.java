@@ -35,10 +35,10 @@ public class LevelRater {
 
     public LevelRater(DungeonLevel level) {
         this.level = level;
-        this.data = level.getData();
+        this.data = level.getLevelData();
         this.model = level.getModel();
         this.graph = model.getGraph();
-        this.reqs = level.getData().getReqs();
+        this.reqs = level.getLevelData().getReqs();
         this.stats = new LevelStats(level);
     }
 

@@ -160,7 +160,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
             z += "\n" + levelZone.toXml();
         }
         xml += "\n" + XML_Converter.wrap(RngXmlMaster.ZONES_NODE, z);
-        xml += "\n" + XML_Converter.wrap(RngXmlMaster.LEVEL_DATA_NODE, getData().toString());
+        xml += "\n" + XML_Converter.wrap(RngXmlMaster.LEVEL_DATA_NODE, getLevelData().toString());
         xml += "\n" + XML_Converter.wrap(RngXmlMaster.DIRECTION_MAP_NODE, directionMapData == null ?
                 "" //TODO
                 : directionMapData);
@@ -310,7 +310,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         this.dungeonType = dungeonType;
     }
 
-    public LevelData getData() {
+    public LevelData getLevelData() {
         return model.getData();
     }
 

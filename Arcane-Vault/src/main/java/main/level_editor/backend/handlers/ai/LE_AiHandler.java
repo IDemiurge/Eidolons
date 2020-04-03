@@ -2,6 +2,7 @@ package main.level_editor.backend.handlers.ai;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.game.battlecraft.ai.elements.generic.AiData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import main.content.DC_TYPE;
 import main.data.xml.XML_Converter;
@@ -127,7 +128,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
             text += "+++";
         }
         text += ai.getType();
-        text += "[" + ai.id + "]";
+        text += "[" +  id + "]";
         GuiEventManager.triggerWithParams(GuiEventType.LE_AI_DATA_UPDATE, obj, text);
     }
 

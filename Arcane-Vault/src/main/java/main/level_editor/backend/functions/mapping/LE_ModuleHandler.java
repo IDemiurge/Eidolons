@@ -63,8 +63,8 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         Module module = addLogicalModule(w, h, name);
         //TODO add ZONES AND BLOCKS from this!
 
-        getGame().getMetaMaster().getDungeonMaster().getLayerManager().
-                initLayers(data.getValue(LevelStructure.MODULE_VALUE.layer_data));
+//        getGame().getMetaMaster().getDungeonMaster().getLayerManager().
+//                initLayers(data.getValue(LevelStructure.MODULE_VALUE.layer_data));
 
         if (data.getBooleanValue(LevelStructure.MODULE_VALUE.replace_default)){
 //            initDefaultModule();

@@ -1,6 +1,10 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel.CELL_IMAGE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
@@ -13,7 +17,7 @@ import main.data.xml.XML_Converter;
 import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.*;
@@ -22,7 +26,7 @@ import java.util.*;
  * Created by JustMe on 7/20/2018.
  */
 public class LevelBlock extends LevelLayer<LevelBlock> {
-    Coordinates coordinates;
+    private Coordinates origin;
     private ROOM_TYPE roomType;
     private int width;
     private int height;
@@ -31,13 +35,11 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     private TileMap originalTileMap;
     private LevelZone zone;
     private Map<Coordinates, Coordinates> boundCells;
-    private boolean customCoordinateList;
     private Map<List<ObjAtCoordinate>, UNIT_GROUP_TYPE> unitGroups;
-    private Coordinates centerCoordinate;
     private RoomModel model;
     private boolean template;
-    private DungeonLevel.CELL_IMAGE cellType;
-    private String wallType;
+    private BlockData data;
+    private int zoneIndex;
 
     public LevelBlock(Coordinates coordinates, LevelZone zone, ROOM_TYPE roomType, int width, int height, TileMap tileMap) {
         this.roomType = roomType;
@@ -47,15 +49,9 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         this.originalTileMap = new TileMap(
                 new MapMaster<Coordinates, ROOM_CELL>().cloneHashMap(
                         tileMap.getMap()));
-        this.coordinates = coordinates;
+        this.origin = coordinates;
         this.zone = zone;
-        if (RandomWizard.chance(75)) {
-            setColorTheme(zone.getColorTheme());
-            setAltColorTheme(zone.getAltColorTheme());
-        } else {
-            setColorTheme(zone.getAltColorTheme());
-            setAltColorTheme(zone.getColorTheme());
-        }
+
     }
 
     public LevelBlock(LevelZone zone) {
@@ -80,6 +76,9 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
 
     @Override
     public String toString() {
+        if (tileMap == null) {
+            return getRoomType() + " block of " + zone;
+        }
         return getRoomType() + " block of " + zone
                 + "\n" + tileMap.toString();
     }
@@ -120,12 +119,16 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     }
 
     public Set<Coordinates> getCoordinatesList() {
-        if (coordinatesList == null)
+        if (coordinatesList == null) {
+            if (tileMap == null) {
+                return new LinkedHashSet<>();
+            }
             coordinatesList = new LinkedHashSet<>(
                     tileMap.getMap().keySet()
 //              .stream().map(c ->
 //              c.getOffset(getCoordinates())).collect(Collectors.toSet())
             );
+        }
         return coordinatesList;
     }
 
@@ -148,10 +151,17 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     }
 
     public Coordinates getOrigin() {
-        return coordinates;
+        if (origin == null) {
+            return Coordinates.get(0, 0);
+        }
+        return origin;
     }
 
     public LevelZone getZone() {
+        if (zone == null) {
+            zone = DC_Game.game.getMetaMaster().getDungeonMaster().
+                    getDungeonLevel().getZoneById(getZoneIndex());
+        }
         return zone;
     }
 
@@ -179,8 +189,8 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         this.height = height;
     }
 
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
+    public void setOrigin(Coordinates coordinates) {
+        this.origin = coordinates;
     }
 
     public int getSquare() {
@@ -191,14 +201,6 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         return originalTileMap;
     }
 
-    public boolean isCustomCoordinateList() {
-        return customCoordinateList;
-    }
-
-    public void setCustomCoordinateList(boolean customCoordinateList) {
-        this.customCoordinateList = customCoordinateList;
-    }
-
     public Map<List<ObjAtCoordinate>, UNIT_GROUP_TYPE> getUnitGroups() {
         if (unitGroups == null) {
             unitGroups = new XLinkedMap<>();
@@ -206,12 +208,8 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         return unitGroups;
     }
 
-
     public Coordinates getCenterCoordinate() {
-        if (centerCoordinate == null) {
-            centerCoordinate = coordinates.getOffsetByX(getWidth() / 2).getOffsetByY(getHeight() / 2);
-        }
-        return centerCoordinate;
+        return origin.getOffsetByX(getWidth() / 2).getOffsetByY(getHeight() / 2);
     }
 
     public void setZone(LevelZone zone) {
@@ -230,21 +228,43 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         return model;
     }
 
-    public DungeonLevel.CELL_IMAGE getCellType() {
-        return cellType;
+    public CELL_IMAGE getCellType() {
+        if (getData() == null) {
+            return null;
+        }
+        return new EnumMaster<CELL_IMAGE>().retrieveEnumConst(CELL_IMAGE.class,
+                getData().getValue(LevelStructure.BLOCK_VALUE.cell_type));
     }
 
-    public void setCellType(DungeonLevel.CELL_IMAGE cellType) {
-        this.cellType = cellType;
+    public void setCellType(CELL_IMAGE cellType) {
+        getData().setValue(LevelStructure.BLOCK_VALUE.cell_type, cellType.toString());
     }
 
     public String getWallType() {
-        return wallType;
+        if (getData() == null) {
+            return null;
+        }
+        return getData().getValue(LevelStructure.BLOCK_VALUE.wall_type);
     }
 
     public void setWallType(String wallType) {
-        this.wallType = wallType;
+        getData().setValue(LevelStructure.BLOCK_VALUE.wall_type, wallType);
     }
 
 
+    public void setData(BlockData data) {
+        this.data = data;
+    }
+
+    public BlockData getData() {
+        return data;
+    }
+
+    public void setZoneIndex(int zoneIndex) {
+        this.zoneIndex = zoneIndex;
+    }
+
+    public int getZoneIndex() {
+        return zoneIndex;
+    }
 }

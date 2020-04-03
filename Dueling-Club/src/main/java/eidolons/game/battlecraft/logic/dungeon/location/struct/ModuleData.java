@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.MODULE_VALUE;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Module;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import main.game.bf.Coordinates;
 
 public class ModuleData extends LevelStructure.StructureData<MODULE_VALUE, LE_Module> {
 
@@ -14,7 +15,12 @@ public class ModuleData extends LevelStructure.StructureData<MODULE_VALUE, LE_Mo
         if (getStructure() == null) {
             return;
         }
-
+        Module module = getStructure().getModule();
+        setValue(MODULE_VALUE.name, module.getName());
+        setValue(MODULE_VALUE.height, module.getHeight());
+        setValue(MODULE_VALUE.width, module.getWidth());
+        setValue(MODULE_VALUE.origin, module.getOrigin());
+        //defaults?
     }
     @Override
     public void apply() {
@@ -22,7 +28,6 @@ public class ModuleData extends LevelStructure.StructureData<MODULE_VALUE, LE_Mo
         for (MODULE_VALUE value : MODULE_VALUE.values()) {
             String val = getValue(value);
             switch (value) {
-
                 case name:
                     module.setName(val);
                     break;
@@ -32,39 +37,8 @@ public class ModuleData extends LevelStructure.StructureData<MODULE_VALUE, LE_Mo
                 case height:
                     module.setHeight(getIntValue(value));
                     break;
-                case zones:
-                    break;
-                case replace_default:
-                    break;
-                case default_wall:
-                    break;
-                case default_style:
-                    break;
-                case ambience:
-                    break;
-                case lighting:
-                    break;
-                case fires_color:
-                    break;
-                case vfx_template:
-                    break;
-                case default_pillar_type:
-                    break;
-                case default_shard_type:
-                    break;
-                case irregular_border:
-                    break;
-                case border_wall:
-                    break;
-                case border_wall_type:
-                    break;
-                case border_void:
-                    break;
-                case entrance:
-                    break;
-                case tile_map:
-                    break;
-                case layer_data:
+                case origin:
+                    module.setOrigin(Coordinates.get(getValue(MODULE_VALUE.origin)));
                     break;
             }
         }

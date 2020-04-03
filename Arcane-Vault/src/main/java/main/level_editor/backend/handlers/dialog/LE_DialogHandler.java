@@ -31,7 +31,7 @@ public class LE_DialogHandler extends LE_Handler {
     }
 
     private ModuleData getDefaultModuleData(Module module) {
-        return new ModuleData(new LE_Module(module));
+        return (ModuleData) new ModuleData(new LE_Module(module)).setData("width:45;height:45;");
     }
 
     public String textInput(String tip, String text) {

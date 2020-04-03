@@ -46,6 +46,10 @@ public class LE_Handler {
     public void load() {
     }
 
+    public String getDataMapString() {
+        return "";
+    }
+
     public String getXml() {
         return "";
     }

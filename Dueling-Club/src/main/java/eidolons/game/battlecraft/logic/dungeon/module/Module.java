@@ -1,20 +1,26 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelLayer;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
-import eidolons.libgdx.particles.ambi.AmbienceDataSource;
+import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 
 import java.util.List;
 
-public class Module {
-    private AmbienceDataSource.AMBIENCE_TEMPLATE vfx;
+import static eidolons.system.audio.MusicMaster.AMBIENCE;
+
+public class Module extends LevelLayer<LevelZone> {
+    private String name;
     private Coordinates origin;
     private int width;
     private int height;
 
-    private String name;
-//    private final String path;
     private List<LevelZone> zones;
+    ModuleData data;
 
     public Module(Coordinates origin, int width, int height, String name ) {
         this.origin = origin;
@@ -24,7 +30,12 @@ public class Module {
     }
 
     public Module() {
+        super();
+    }
 
+    @Override
+    public String toXml() {
+        return null;
     }
 
 
@@ -36,8 +47,13 @@ public class Module {
         return origin.y;
     }
 
-    public AmbienceDataSource.AMBIENCE_TEMPLATE getVfx() {
-        return vfx;
+    public AMBIENCE getAmbi() {
+        return  new EnumMaster<AMBIENCE>().retrieveEnumConst(AMBIENCE.class,
+                data.getValue(LevelStructure.MODULE_VALUE.ambience));
+    }
+    public AMBIENCE_TEMPLATE getVfx() {
+        return  new EnumMaster<AMBIENCE_TEMPLATE>().retrieveEnumConst(AMBIENCE_TEMPLATE.class,
+                data.getValue(LevelStructure.MODULE_VALUE.vfx_template));
     }
 
     public Coordinates getOrigin() {
@@ -53,6 +69,9 @@ public class Module {
     }
 
     public String getName() {
+        if (StringMaster.isEmpty(name)) {
+            name = "Main";
+        }
         return name;
     }
 
@@ -64,8 +83,6 @@ public class Module {
         return getY()+getHeight();
     }
 
-    public void toggleCoordinate(Coordinates c) {
-    }
 
     public List<LevelZone> getZones() {
         return zones;
@@ -73,10 +90,6 @@ public class Module {
 
     public void setZones(List<LevelZone> zones) {
         this.zones = zones;
-    }
-
-    public void setVfx(AmbienceDataSource.AMBIENCE_TEMPLATE vfx) {
-        this.vfx = vfx;
     }
 
     public void setOrigin(Coordinates origin) {
@@ -95,6 +108,22 @@ public class Module {
         this.name = name;
     }
 
+    public ModuleData getData() {
+        return data;
+    }
+
+    public void setData(ModuleData data) {
+        this.data = data;
+    }
+
+    public String getValue(LevelStructure.MODULE_VALUE module_value) {
+        return getData().getValue(module_value);
+    }
+
+    public String getValue(String name) {
+        return getData().getValue(name);
+    }
+
     @Override
     public String toString() {
         return "Module: " +
@@ -102,6 +131,7 @@ public class Module {
                 "origin=" + origin +
                 ", width=" + width +
                 ", height=" + height +
-                ", zones=" + zones;
+                ", zones=" + zones+
+                ", data=" + data;
     }
 }

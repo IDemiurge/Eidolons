@@ -104,6 +104,7 @@ public class OperationHandler extends LE_Handler {
                 }
                 break;
         }
+        getDataHandler().setDirty(true);
         return args;
     }
 

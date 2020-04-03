@@ -17,10 +17,10 @@ import java.util.Map;
 public class LE_MapHandler extends LE_Handler {
 
     private Coordinates offset;
-    private  Coordinates previousOffset;
+    private Coordinates previousOffset;
 
-    private  Map<Integer, Integer> moduleTransitMap= new LinkedHashMap<>(); //entrance obj to entrance obj
-    private  List<Integer> oneWayExits=new LinkedList<>();
+    private Map<Integer, Integer> moduleTransitMap = new LinkedHashMap<>(); //entrance obj to entrance obj
+    private List<Integer> oneWayExits = new LinkedList<>();
     private Integer addingExitFor;
 
 
@@ -28,6 +28,15 @@ public class LE_MapHandler extends LE_Handler {
         super(manager);
     }
 
+    @Override
+    public void afterLoaded() {
+        super.afterLoaded();
+    }
+
+    public void addTransit(Integer id, Integer id2) {
+        moduleTransitMap.put( id, id2);
+
+    }
     public String getXml() {
         StringBuilder xmlBuilder = new StringBuilder();
         StringBuilder builder = new StringBuilder();
@@ -58,6 +67,8 @@ public class LE_MapHandler extends LE_Handler {
     public void entranceAdded(BattleFieldObject obj) {
         if (addingExitFor != null) {
             moduleTransitMap.put(addingExitFor, getIdManager().getId(obj));
+            addingExitFor = null;
+            return;
         }
         boolean oneWay; //can be altered via trigger scripts}
 
@@ -114,4 +125,5 @@ public class LE_MapHandler extends LE_Handler {
             //module should have outer walls and void border
         }
     }
+
 }

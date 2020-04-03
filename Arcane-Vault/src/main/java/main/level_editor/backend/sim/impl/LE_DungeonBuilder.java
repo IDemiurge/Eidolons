@@ -3,6 +3,7 @@ package main.level_editor.backend.sim.impl;
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.level_editor.backend.sim.LE_GameSim;
 import org.w3c.dom.Node;
@@ -42,7 +43,10 @@ public class LE_DungeonBuilder extends LocationBuilder {
         return location;
     }
 
-
+    @Override
+    protected FloorLoader createFloorLoader() {
+        return new LE_FloorLoader(getMaster());
+    }
 
     @Override
     public Location loadDungeonMap(String data) {

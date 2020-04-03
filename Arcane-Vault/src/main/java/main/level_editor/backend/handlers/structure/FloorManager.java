@@ -22,7 +22,6 @@ import main.system.threading.WaitMaster;
 
 public class FloorManager {
     public static Floor current;
-    private static boolean saveTest = true;
     public static Campaign campaign;
     public static BossDungeon dungeon;
     /*
@@ -64,9 +63,6 @@ public class FloorManager {
         WaitMaster.WAIT(500);
         game.initAndStart();
 
-        if (saveTest){
-            floor.getManager().getDataHandler().saveFloor();
-        }
         floor.getManager().load();
         meta.gameStarted();
         floor.getManager().afterLoaded();

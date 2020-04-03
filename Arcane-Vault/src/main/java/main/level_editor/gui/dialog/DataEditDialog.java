@@ -18,10 +18,10 @@ public abstract class DataEditDialog<T extends DataUnit> extends EditDialog<Data
     @Override
     protected void edit(DataTable.DataPair item) {
         Object value = input(item);
-        String stringValue=null ;
+        String stringValue = null;
         switch (getType(item)) {
             case text:
-                 stringValue = string(value);
+                stringValue = string(value);
                 break;
         }
         data.setValue(item.name, stringValue);
@@ -57,8 +57,9 @@ public abstract class DataEditDialog<T extends DataUnit> extends EditDialog<Data
 
     @Override
     public void setUserObject(Object userObject) {
-        LevelEditor.getManager().operation(Operation.LE_OPERATION.SAVE_STRUCTURE,
-               createDataCopy());
+        if (data != null)
+            LevelEditor.getManager().operation(Operation.LE_OPERATION.SAVE_STRUCTURE,
+                    createDataCopy());
         super.setUserObject(userObject);
         data = (T) userObject;
         show();

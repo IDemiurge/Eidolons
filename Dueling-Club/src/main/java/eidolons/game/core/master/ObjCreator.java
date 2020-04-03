@@ -5,6 +5,7 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
@@ -57,8 +58,7 @@ public class ObjCreator extends Master {
         BattleFieldObject obj = null;
 
         if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.ENTRANCE.toString())) {
-            //       TODO      obj = new Entrance(x, y, type, getGame().getDungeon(), null);
-            return null;
+            obj = new Entrance(x, y, type, getGame().getDungeon(), null);
         } else if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
             obj = newStructure(type, x, y, owner, ref);
             game.getMaster().clearCache(obj.getCoordinates());
@@ -110,7 +110,7 @@ public class ObjCreator extends Master {
     }
 
     protected boolean isUnitFullResetRequired(BattleFieldObject obj) {
-        if (CoreEngine.isLevelEditor()){
+        if (CoreEngine.isLevelEditor()) {
             return false;
         }
         if (obj.isPlayerCharacter()) {

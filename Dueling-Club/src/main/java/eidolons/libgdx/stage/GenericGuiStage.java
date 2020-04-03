@@ -5,7 +5,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
+import eidolons.game.core.EUtils;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -21,6 +24,10 @@ import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.utils.TextInputPanel;
 import main.content.enums.GenericEnums;
 import main.entity.Entity;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.auxiliary.EnumMaster;
+import org.apache.commons.lang3.tuple.Triple;
 
 public class GenericGuiStage extends StageX {
 
@@ -45,6 +52,58 @@ public class GenericGuiStage extends StageX {
                 batch == null
                         ? new CustomSpriteBatch()
                         : batch);
+
+        GuiEventManager.bind(GuiEventType.SHOW_INFO_TEXT, p -> {
+            if (p.get() == null) {
+                hideTooltip(infoTooltip, 1f);
+            } else {
+                String text = p.get().toString();
+                GuiStage.LABEL_STYLE style = null;
+                if (text.contains(EUtils.STYLE)) {
+                    String[] parts = text.split(EUtils.STYLE);
+                    style = new EnumMaster<GuiStage.LABEL_STYLE>().retrieveEnumConst(GuiStage.LABEL_STYLE.class, parts[0]);
+                    text = parts[1];
+                }
+
+                //                textToShow.add() queue!
+                infoTooltipContainer.setContents(infoTooltip);
+                hideTooltip(actionTooltip, 1f);
+                showTooltip(style, false, text, infoTooltip, 2f);
+            }
+        });
+
+        GuiEventManager.bind(GuiEventType.HIDE_ALL_TEXT, p -> {
+            hideTooltip(infoTooltip, 1f);
+            hideTooltip(actionTooltip, 1f);
+            infoTooltip.setVisible(false);
+            actionTooltip.setVisible(false);
+        });
+        GuiEventManager.bind(GuiEventType.HIDE_ACTION_INFO_TEXT, p -> {
+            hideTooltip(actionTooltip, 1f);
+        });
+        GuiEventManager.bind(GuiEventType.HIDE_INFO_TEXT, p -> {
+            hideTooltip(infoTooltip, 1f);
+        });
+        GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
+            DC_ActiveObj active = (DC_ActiveObj) p.get();
+            if (ExplorationMaster.isExplorationOn()) {
+                return;
+            }
+
+            showTooltip(true, active.getOwnerUnit().getNameIfKnown()
+                    + " activates " + active.getName(), actionTooltip, 3f);
+            hideTooltip(infoTooltip, 1f);
+
+        });
+
+        GuiEventManager.bind(GuiEventType.CONFIRM, p -> {
+            Triple<String, Object, Runnable> triple = (Triple<String, Object, Runnable>) p.get();
+            if (triple.getMiddle() instanceof Runnable) {
+                confirm(triple.getLeft(), true, triple.getRight(), ((Runnable) triple.getMiddle()));
+            } else
+                confirm(triple.getLeft(), (Boolean) triple.getMiddle(), triple.getRight(), null);
+
+        });
     }
 
     public void confirm(String text,

@@ -86,7 +86,7 @@ public class RngLevelInitializer {
                 block.setTileMap(subMap);
                 block.setWidth(w);
                 block.setHeight(h);
-                block.setCoordinates(CoordinatesMaster.
+                block.setOrigin(CoordinatesMaster.
                         getUpperLeftCornerCoordinates(block.getCoordinatesList()));
             }
         }

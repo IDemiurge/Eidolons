@@ -1,6 +1,7 @@
 package main.level_editor.backend.functions.io;
 
 import eidolons.game.core.EUtils;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.utils.FileChooserX;
 import main.data.filesys.PathFinder;
 import main.level_editor.LevelEditor;
@@ -20,6 +21,7 @@ import java.util.TimerTask;
 public class LE_DataHandler extends LE_Handler {
     private Campaign campaign;
     private Timer timer;
+    private boolean dirty;
 
     public LE_DataHandler(LE_Manager manager) {
         super(manager);
@@ -28,24 +30,29 @@ public class LE_DataHandler extends LE_Handler {
 
     public void afterLoaded() {
         backup();
-         timer = new Timer("autosaver");
+        timer = new Timer("autosaver");
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if (isAutosave()){
-                    autosave();
-                }
+                if (isDirty())
+                    if (isAutosave()) {
+                        autosave();
+                    }
             }
         };
         timer.schedule(task, Calendar.getInstance().getTime(), getAutosavePeriod());
 
     }
+
     private long getAutosavePeriod() {
         return 30000;
     }
 
     public void backup() {
-        saveAs(getBackupPath(getFloor()));
+        String path = getBackupPath(getFloor());
+        String contents = FileManager.readFile(getDefaultSavePath(getFloor()));
+        FileManager.write(contents, path);
+        EUtils.info("Backed up as " + PathUtils.getLastPathSegment(path));
     }
 
 
@@ -70,6 +77,7 @@ public class LE_DataHandler extends LE_Handler {
     public void saveFloor() {
         String path = getDefaultSavePath(getFloor());
         saveAs(path);
+        dirty = false;
     }
 
     public void saveAs(String path) {
@@ -77,20 +85,22 @@ public class LE_DataHandler extends LE_Handler {
         FileManager.write(contents, path);
         EUtils.info("Saved as " + PathUtils.getLastPathSegment(path));
     }
+
     private String getBackupPath(Floor floor) {
-      return   getDefaultSavePath(floor, "backup");
+        return getDefaultSavePath(floor, "backup");
     }
 
     private String getDefaultSavePath(Floor floor, String prefix) {
-        return PathFinder.getDungeonLevelFolder() + prefix + "/"+ floor.getName() + ".xml";
+        return PathFinder.getDungeonLevelFolder() + prefix + "/" + floor.getName() + ".xml";
     }
-    private String getDefaultSavePath(Floor floor ) {
+
+    private String getDefaultSavePath(Floor floor) {
         String prefix = "";
         if (campaign == null) {
             if (LevelEditor.TEST_MODE) {
                 prefix = "test/";
             } else {
-                prefix = "scenario/";
+                prefix = "crawl/";
                 prefix += floor.getGame().getDungeon().getGroup() + "/";
             }
         } else {
@@ -127,4 +137,16 @@ public class LE_DataHandler extends LE_Handler {
     }
 
 
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
+        if (dirty) {
+            GdxMaster.setWindowName("*" + LevelEditor.getWindowName());
+        } else {
+            GdxMaster.setWindowName( LevelEditor.getWindowName());
+        }
+    }
 }

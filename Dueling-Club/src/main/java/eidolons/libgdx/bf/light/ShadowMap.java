@@ -15,11 +15,11 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
-import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -103,8 +103,8 @@ public class ShadowMap extends GroupX {
         CONTENT_CONSTS.COLOR_THEME colorTheme = null;
         if (userObject != null) {
             colorTheme = new EnumMaster<CONTENT_CONSTS.COLOR_THEME>().
-             retrieveEnumConst(CONTENT_CONSTS.COLOR_THEME.class, userObject.getProperty
-              (PROPS.COLOR_THEME, true));
+                    retrieveEnumConst(CONTENT_CONSTS.COLOR_THEME.class, userObject.getProperty
+                            (PROPS.COLOR_THEME, true));
         }
         if (colorTheme == null) {
             Dungeon obj = Eidolons.game.getDungeon();
@@ -115,7 +115,7 @@ public class ShadowMap extends GroupX {
         if (colorTheme != null)
             c = GdxColorMaster.getColorForTheme(colorTheme);
         if (c != null) return c;
-        return  DEFAULT_COLOR;
+        return DEFAULT_COLOR;
     }
 
     @Override
@@ -171,8 +171,13 @@ public class ShadowMap extends GroupX {
                             BattleFieldObject obj = iterator.next();
                             if (obj instanceof Unit)
                                 continue;
-                            LightEmittingEffect effect = DC_Game.game.getRules().getIlluminationRule().
-                                    getLightEmissionEffect(obj);
+                            LightEmittingEffect effect = null;
+                            try {
+                                effect =  DC_Game.game.getRules().getIlluminationRule().
+                                        getLightEmissionEffect(obj);
+                            } catch (Exception e) {
+                                main.system.ExceptionMaster.printStackTrace(e);
+                            }
                             if (effect == null) {
                                 continue;
                             }
@@ -220,10 +225,11 @@ public class ShadowMap extends GroupX {
         }
         return emitter;
     }
+
     private void bindEvents() {
         GuiEventManager.bind(GuiEventType.RESET_LIGHT_EMITTER, p -> {
             BattleFieldObject obj = (BattleFieldObject) p.get();
-            LightEmitter emitter =getEmitterForObj(obj);
+            LightEmitter emitter = getEmitterForObj(obj);
 //            emitter.setTeamColor(color);
             emitter.reset();
 
@@ -234,7 +240,7 @@ public class ShadowMap extends GroupX {
             Coordinates c = obj.getBufferedCoordinates();
             List<LightEmitter> list = emitters[c.x][grid.getRows() - c.y];
 
-            LightEmitter emitter =getEmitterForObj(obj);
+            LightEmitter emitter = getEmitterForObj(obj);
 
             list.remove(emitter);
 

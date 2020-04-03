@@ -71,9 +71,7 @@ public class LevelValidator {
 
     public boolean validateModel(LevelGraph graph, LevelModel model) {
         initRequirements(model.getData(), model);
-        if (!checkModel())
-            return false;
-        return true;
+        return checkModel();
     }
 
     public LevelStats getStats() {
@@ -86,7 +84,7 @@ public class LevelValidator {
 
     public boolean isLevelValid(DungeonLevel level) {
         this.level = level;
-        initRequirements(level.getData(), level.getModel());
+        initRequirements(level.getLevelData(), level.getModel());
         if (stats == null)
             stats = new LevelStats(level);
         main.system.auxiliary.log.LogMaster.log(1, "Validating stats: " + stats);
@@ -107,11 +105,9 @@ public class LevelValidator {
             return false;
         if (!checkObjects())
             return false;
-        if (!checkTileMap())
-            return false;
+        return checkTileMap();
 
         //check population
-        return true;
     }
 
     private boolean checkTileMap() {
@@ -133,9 +129,7 @@ public class LevelValidator {
             return false;
         }).collect(Collectors.toList());
 
-        if (!toClear.isEmpty())
-            return false;
-        return true;
+        return toClear.isEmpty();
     }
 
     private boolean checkModel() {
@@ -184,10 +178,7 @@ public class LevelValidator {
         if (room == null )
             return false;
 
-        if (!TileMapper.createTileMap(room).getMap().values().stream().anyMatch(c -> c == ROOM_CELL.EXIT)) {
-            return false;
-        }
-        return true;
+        return TileMapper.createTileMap(room).getMap().values().stream().anyMatch(c -> c == ROOM_CELL.EXIT);
     }
 
     private boolean checkEntrace() {
@@ -209,9 +200,7 @@ public class LevelValidator {
     }
 
     private boolean checkRooms() {
-        if (model.getRoomMap().size() < minRooms)
-            return false;
-        return true;
+        return model.getRoomMap().size() >= minRooms;
     }
 
     private boolean checkSize() {
@@ -238,10 +227,7 @@ public class LevelValidator {
             return false;
         if (maxSquare /(h * w) < sizeGap_ )
             return false;
-        if (minDimensionRatio >= Math.min(w / h, h / w)) {
-            return false;
-        }
-        return true;
+        return !(minDimensionRatio >= Math.min(w / h, h / w));
     }
 
     private boolean checkFillRatio() {

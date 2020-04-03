@@ -59,7 +59,7 @@ public class LevelStructure {
         origin(),
         width(EDIT_VALUE_TYPE.number),
         height(EDIT_VALUE_TYPE.number),
-        main_wall_type,
+        wall_type,
         alt_wall_type,
 
         zone(EDIT_VALUE_TYPE.number),
@@ -96,6 +96,7 @@ public class LevelStructure {
         name,
         width,
         height,
+        origin,
         zones,
         replace_default,
         default_wall,
@@ -111,9 +112,9 @@ public class LevelStructure {
         irregular_border,
         border_wall,
         border_wall_type,
-        border_void,
+        border_void, tile_map, layer_data,
 
-        entrance, tile_map, layer_data,
+//        entrance, tile_map, layer_data,
 
         //RNG
 

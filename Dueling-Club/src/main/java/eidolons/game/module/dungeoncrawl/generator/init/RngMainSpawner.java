@@ -114,7 +114,7 @@ public class RngMainSpawner {
     public void spawn(DungeonLevel level) {
         //via groups/encounters?
         this.level = level;
-        this.data = level.getData();
+        this.data = level.getLevelData();
         if (TEST_MODE) {
             level.setPowerLevel(TEST_POWER);
         }

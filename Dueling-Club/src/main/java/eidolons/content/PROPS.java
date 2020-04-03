@@ -303,12 +303,12 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     FACTION_DUNGEONS(null, true, "factions"),
     HEADQUARTER_DUNGEON(null, true, "factions"),
     ALLY_FACTIONS(null, true, "factions"),
+
     GROWTH_PRIORITIES(null, true, "encounters"), // POOL
 
     EXTENDED_PRESET_GROUP(null, true, "encounters"),
     SHRUNK_PRESET_GROUP(null, true, "encounters"),
     PRESET_GROUP("PRESET_GROUP", true, "encounters"),
-    SPAWNING_SIDE(null, false, "encounters"),
     // for
     ENCHANTMENT(null, true, "jewelry", "weapons", "armor"),
 
@@ -510,7 +510,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
         // VERBATIM_SPELLS.setDynamic(true);
         // MEMORIZED_SPELLS.setDynamic(true);
         DIVINED_SPELLS.setDynamic(true);
-        SPAWNING_SIDE.setDynamic(true);
         // KNOWN_SPELLS.setDynamic(true);
         // LEARNED_SPELLS.setDynamic(true);
 

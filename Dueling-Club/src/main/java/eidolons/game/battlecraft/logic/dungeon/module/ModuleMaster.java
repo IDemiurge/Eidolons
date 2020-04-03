@@ -21,7 +21,6 @@ public class ModuleMaster extends MetaGameHandler {
 
     public ModuleMaster(MetaGameMaster master) {
         super(master);
-
     }
 
     public Set<Module> getModules() {
@@ -35,11 +34,16 @@ public class ModuleMaster extends MetaGameHandler {
 
     public void setModules(Set<Module> modules) {
         this.modules = modules;
+        if (!modules.isEmpty()) {
+            base = getInitialModule();
+            current = getInitialModule();
+        }
     }
 
     private Module getInitialModule() {
         return modules.iterator().next();
     }
+
     private Module getModuleByPosition() {
         Coordinates c = Eidolons.getMainHero().getCoordinates();
         for (Module module : modules) {
@@ -55,13 +59,13 @@ public class ModuleMaster extends MetaGameHandler {
     }
 
     private void initModules() {
-        modules = new LinkedHashSet<>();
-            Module module =  createDefaultModule();
-            modules.add(module);
+        setModules(new LinkedHashSet<>());
+        Module module = createDefaultModule();
+        modules.add(module);
     }
 
     private Module createDefaultModule() {
-        Module module = new Module(Coordinates.get(0,0), 25, 25, "Main" );
+        Module module = new Module(Coordinates.get(0, 0), 25, 25, "Main");
         module.setZones(master.getDungeonMaster().getDungeonLevel().getZones());
         return module;
     }
@@ -107,10 +111,16 @@ public class ModuleMaster extends MetaGameHandler {
     }
 
     public Module getBase() {
+        if (base == null) {
+            base = getInitialModule();
+        }
         return base;
     }
 
     public Module getCurrent() {
+        if (current == null) {
+            current = getInitialModule();
+        }
         return current;
     }
 

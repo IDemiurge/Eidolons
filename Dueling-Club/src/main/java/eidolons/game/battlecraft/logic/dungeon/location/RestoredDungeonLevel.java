@@ -21,7 +21,7 @@ public class RestoredDungeonLevel extends DungeonLevel {
         this(    new ArrayList<>() , name);
     }
 
-    public LevelData getData() {
+    public LevelData getLevelData() {
         return data;
     }
 
