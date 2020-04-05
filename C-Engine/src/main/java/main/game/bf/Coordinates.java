@@ -6,6 +6,7 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.graphics.GuiManager;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
 import java.io.Serializable;
@@ -156,6 +157,9 @@ public class Coordinates implements Serializable {
     }
 
     protected static boolean checkInvalid(Coordinates c) {
+        if (CoreEngine.isLevelEditor()) {
+            return false;
+        }
         if (c.x >= GuiManager.getCurrentLevelCellsX()) {
             c.x = GuiManager.getCurrentLevelCellsX() - 1;
             c.setInvalid(true);

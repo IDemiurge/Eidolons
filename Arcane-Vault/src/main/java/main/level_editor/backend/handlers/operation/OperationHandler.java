@@ -83,6 +83,11 @@ public class OperationHandler extends LE_Handler {
             case REMOVE_OBJ:
                 obj = (BattleFieldObject) args[0];
                 getObjHandler().remove(obj);
+                if (!obj.isOverlaying()) {
+                    for (BattleFieldObject overlayingObject : obj.getGame().getOverlayingObjects(obj.getCoordinates())) {
+                        operation(Operation.LE_OPERATION.REMOVE_OVERLAY, overlayingObject);
+                    }
+                }
                 type = obj.getType();
                 c = obj.getCoordinates();
                 args = new Object[]{type, c, d};
@@ -151,7 +156,7 @@ public class OperationHandler extends LE_Handler {
 
         }
         switch (op.operation) {
-            case SAVE_STRUCTURE:
+            case MODIFY_STRUCTURE:
                 execute(Operation.LE_OPERATION.MODIFY_STRUCTURE, op.args);
                 break;
             case MODEL_CHANGE:

@@ -7,6 +7,7 @@ import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.struct.boss.BossDungeon;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,7 @@ public class Floor implements LayeredData<LE_Module> {
 
     @Override
     public Set<LE_Module> getChildren() {
-       return getModules().stream().map(module -> new LE_Module(module)).collect(Collectors.toSet());
+       return getModules().stream().map(module -> new LE_Module(module)).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public Module getDefaultModule() {

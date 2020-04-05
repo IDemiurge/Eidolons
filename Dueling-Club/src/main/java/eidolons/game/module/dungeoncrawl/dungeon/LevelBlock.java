@@ -92,7 +92,7 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
 
 //     TODO    if (isCustomCoordinateList())
         xml += XML_Converter.wrap(RngXmlMaster.COORDINATES_NODE, ContainerUtils.
-                toStringContainer(getCoordinatesList(), RngXmlMaster.SEPARATOR));
+                toStringContainer(getCoordinatesSet(), RngXmlMaster.SEPARATOR));
 
 
 //        xml += XML_Converter.wrap(RngXmlMaster.COLOR_THEME, colorTheme.toString());
@@ -118,7 +118,7 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         return new ArrayList<>();
     }
 
-    public Set<Coordinates> getCoordinatesList() {
+    public Set<Coordinates> getCoordinatesSet() {
         if (coordinatesList == null) {
             if (tileMap == null) {
                 return new LinkedHashSet<>();

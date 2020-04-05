@@ -185,10 +185,6 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 break;
             }
 
-            case "Group": {
-                UnitGroupMaster.createUnitGroup(null);
-                break;
-            }
             case "Edit": {
 //                if (ArcaneVault.getSelectedType() != null)
                 MapEditor.launch( );

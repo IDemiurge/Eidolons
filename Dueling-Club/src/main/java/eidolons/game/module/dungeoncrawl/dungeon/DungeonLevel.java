@@ -257,7 +257,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
             return cache.get(coordinates);
         for (LevelZone zone : getSubParts()) {
             for (LevelBlock block : zone.getSubParts()) {
-                if (block.getCoordinatesList().contains(coordinates)) {
+                if (block.getCoordinatesSet().contains(coordinates)) {
                     cache.put(coordinates, block);
                     return block;
                 }

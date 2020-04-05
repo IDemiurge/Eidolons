@@ -502,6 +502,12 @@ public class CoordinatesMaster {
 
     public static List<Coordinates> getCoordinatesBetween(Coordinates c, Coordinates c2) {
         List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(
+                Math.min(c.x, c2.x) , Math.max(c.x, c2.x), Math.min(c.y, c2.y) , Math.max(
+                        c.y, c2.y));
+        return coordinates;
+    }
+        public static List<Coordinates> getCoordinatesBetweenWithOffset(Coordinates c, Coordinates c2) {
+        List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(
          Math.min(c.x, c2.x) - 1, Math.max(c.x, c2.x), Math.min(c.y, c2.y) - 1, Math.max(
           c.y, c2.y));
         return coordinates;
@@ -540,7 +546,7 @@ public class CoordinatesMaster {
         for (int i = c.x; i < c.x+w; i++) {
             for (int j = c.y; j < c.y+h; j++) {
                 Coordinates c1;
-                if (coordinates.contains(c1=Coordinates.get(i , j ))) {
+                if (!coordinates.contains(c1=Coordinates.get(i , j ))) {
                     missing.add(c1);
                 }
             }

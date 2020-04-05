@@ -65,7 +65,7 @@ public class GuardAi extends AiBehavior {
     @Override
     protected DC_Obj updateTarget() {
         if (guardedZone == null)
-            guardedZone = block.getCoordinatesList().stream().filter(c -> c.dst_(guarded.getCoordinates())
+            guardedZone = block.getCoordinatesSet().stream().filter(c -> c.dst_(guarded.getCoordinates())
               < getMaxDistanceFromGuarded()
             && guarded.getGame().getMovementManager().canMove(null, c) //0 girth
             ).collect(Collectors.toList());

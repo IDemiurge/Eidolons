@@ -1,6 +1,7 @@
 package main.level_editor.backend.functions.io;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
@@ -21,6 +22,8 @@ import main.level_editor.backend.struct.boss.BossDungeon;
 import main.level_editor.backend.struct.level.Floor;
 import main.system.auxiliary.data.MapMaster;
 
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -55,10 +58,10 @@ public class LE_XmlMaster {
         xmlBuilder.close(FloorLoader.MODULES);
 
 
-        xmlBuilder.append(buildIdMap(floor));
-        xmlBuilder.append(buildCoordinateMap(floor));
+        xmlBuilder.append("\n").append(buildIdMap(floor));
+        xmlBuilder.append("\n").append(buildCoordinateMap(floor));
 
-        xmlBuilder.open(FloorLoader.DATA_MAPS);
+        xmlBuilder.append("\n").open(FloorLoader.DATA_MAPS);
         for (LE_Handler handler : floor.getManager().getHandlers()) {
             String xml = handler.getDataMapString();
             if (xml.isEmpty()) {
@@ -66,7 +69,17 @@ public class LE_XmlMaster {
             }
             xmlBuilder.append(xml).append("\n");
         }
-        xmlBuilder.close(FloorLoader.DATA_MAPS);
+        xmlBuilder.close(FloorLoader.DATA_MAPS).append("\n");
+
+//        xmlBuilder.append("\n").open(FloorLoader.COORDINATE_DATA);
+        xmlBuilder.append("\n").open(FloorLoader.COORDINATES_VOID);
+        for (DC_Cell cell : floor.getGame().getCells()) {
+            if (cell.isVOID()) {
+                xmlBuilder.append(cell.getCoordinates().toString()).append(";");
+            }
+        }
+        xmlBuilder.close(FloorLoader.COORDINATES_VOID).append("\n");
+//        xmlBuilder.close(FloorLoader.COORDINATE_DATA).append("\n");
 
         for (LE_Handler handler : floor.getManager().getHandlers()) {
             String xml = handler.getXml();
@@ -105,17 +118,26 @@ public class LE_XmlMaster {
     private static String buildIdMap(Floor floor) {
         StringBuilder builder = new StringBuilder();
         Map<Integer, BattleFieldObject> map = floor.getGame().getSimIdManager().getObjMap();
+        Map<ObjType, List<Integer>> nestedMap = new LinkedHashMap<>();
         for (Integer integer : map.keySet()) {
             try {
                 Integer id =
                         floor.getGame().getSimIdManager().getId(map.get(integer));
                 ObjType type = map.get(integer).getType();
-                builder.append(id).append("=").append(type.getName()).append(";");
+                MapMaster.addToListMap(nestedMap, type, id);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-
         }
+
+        for (ObjType type : nestedMap.keySet()) {
+            builder.append(type).append("=");
+            for (Integer integer : nestedMap.get(type)) {
+                builder.append(integer).append(",");
+            }
+            builder.append(";");
+        }
+
         return XML_Converter.wrap(FloorLoader.ID_MAP, builder.toString());
     }
 
@@ -123,17 +145,18 @@ public class LE_XmlMaster {
     //interesting. So maybe we can have ... duplicate id maps?
     public static String toXml(Module module, boolean standalone) {
         if (standalone) {
+            //TODO
         }
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
-        xmlBuilder.open(module.getName());
+        xmlBuilder.append("\n").open(module.getName());
         xmlBuilder.appendNode(new ModuleData(new LE_Module(module)).toString(),
                 FloorLoader.DATA);
-        xmlBuilder.open("Zones");
+        xmlBuilder.append("\n").open("Zones");
         for (LevelZone zone : module.getZones()) {
             xmlBuilder.appendNode(toXml(zone), "Zone");
         }
-        xmlBuilder.close("Zones");
-        xmlBuilder.close(module.getName());
+        xmlBuilder.close("Zones").append("\n");
+        xmlBuilder.close(module.getName()).append("\n");
 
         return xmlBuilder.toString();
     }
@@ -159,7 +182,7 @@ public class LE_XmlMaster {
         int w = block.getWidth();
         int h = block.getHeight();
         Coordinates c = block.getOrigin();
-        Set<Coordinates> missing = CoordinatesMaster.getMissingCoordinatesFromRect(c, w, h, block.getCoordinatesList());
+        Set<Coordinates> missing = CoordinatesMaster.getMissingCoordinatesFromRect(c, w, h, block.getCoordinatesSet());
 
         xmlBuilder.open("Missing");
         for (Coordinates coordinate : missing) {

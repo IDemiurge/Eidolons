@@ -6,6 +6,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.content.DC_TYPE;
 import main.data.tree.LayeredData;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,7 @@ public class ObjsNode  implements LayeredData<ObjNode>{
         this.block = block;
         objs= DC_Game.game.getBfObjects().stream().filter(obj->
               obj.getOBJ_TYPE_ENUM()!= DC_TYPE.ENCOUNTERS   && isWithinBlock(obj)).map(
-                obj-> new ObjNode(obj)).collect(Collectors.toSet());
+                obj-> new ObjNode(obj)).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override
@@ -27,7 +28,7 @@ public class ObjsNode  implements LayeredData<ObjNode>{
     }
 
     private boolean isWithinBlock(BattleFieldObject obj) {
-        return block.getCoordinatesList().contains(obj.getCoordinates());
+        return block.getCoordinatesSet().contains(obj.getCoordinates());
     }
     @Override
     public Set<ObjNode> getChildren() {

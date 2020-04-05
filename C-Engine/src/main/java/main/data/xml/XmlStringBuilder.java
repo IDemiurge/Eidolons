@@ -4,12 +4,14 @@ public class XmlStringBuilder {
     StringBuilder builder = new StringBuilder();
 
 
-    public void close(String nodeName) {
+    public XmlStringBuilder close(String nodeName) {
         builder.append(XML_Converter.closeXml(nodeName));
+        return this;
     }
 
-    public void open(String nodeName) {
+    public XmlStringBuilder open(String nodeName) {
         builder.append(XML_Converter.openXml(nodeName));
+        return this;
     }
 
     public void appendNode(String contents, String nodeName) {

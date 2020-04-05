@@ -38,12 +38,12 @@ public class RestEffect extends DC_Effect {
 
         if (!ExplorationMaster.isExplorationOn()){
             ref.getActive().setCancelled(true);
-            EUtils.info("You cannot do this while in combat!");
+            EUtils.infoPopup("You cannot do this while in combat!");
             return false;
         }
         if (!Eidolons.getMainHero().isLiving()) {
             ref.getActive().setCancelled(true);
-            EUtils.info("You are a restless living corpse, you must feed on blood!");
+            EUtils.infoPopup("You are a restless living corpse, you must feed on blood!");
             return false;
         }
 

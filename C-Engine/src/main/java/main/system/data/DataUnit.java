@@ -282,7 +282,7 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     public String getRelevantData() {
-        return getData(new HashSet<>(Arrays.asList(relevantValues)));
+        return getData(new HashSet<>(Arrays.asList(getRelevantValues())));
 
     }
 

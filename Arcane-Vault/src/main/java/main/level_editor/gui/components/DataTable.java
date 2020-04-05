@@ -86,7 +86,7 @@ public class DataTable extends ValueTable<DataTable.DataPair, ValueContainer> {
         public  String stringValue;
 
         public DataPair(String name, Object value ) {
-            this(name, value, value.toString());
+            this(name, value, value+"");
         }
         public DataPair(String name, Object value, String stringValue) {
             this.name = name;

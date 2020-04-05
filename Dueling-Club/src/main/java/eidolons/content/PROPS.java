@@ -254,9 +254,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     SPECIAL_ACTION_MODES(null, true, "units", "chars", "skills", "classes"),
     ACTION_MODES(null, true, "actions"),
-    PARTY_UNITS("chars", null),
     FACTION("chars", null),
-    HIRED_MERCENARIES("chars", null),
 
     DEFAULT_ATTACK_ACTION(null, false, "weapons"),
     DEFAULT_COUNTER_ATTACK_ACTION(null, false, "weapons"),
@@ -277,9 +275,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     SECOND_FAVORED_ASPECT("deities", "Second Favored Aspect"),
     THIRD_FAVORED_ASPECT("deities", "Third Favored Aspect"),
 
-    PRIME_MISSION("deities", null),
-    SECONDARY_MISSION("deities", null),
-    WORLDS("deities", null), // TODO: WORLD enum with pics, music and specials
     BUFF_NAME(null, true, "spells", "actions", "items"),
     RESISTANCE_TYPE("spells", "Resistance type"),
     TARGETING_MODIFIERS(null, true, "spells", "actions", "items"),
@@ -293,31 +288,22 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ON_ACTIVATE("", true, "spells", "actions"),
     ON_KILL("", true, "spells", "actions", "units", "chars", "weapons"),
     WEAPON_ATTACKS("", true, "weapons"),
-    FILLER_TYPES("encounters", null), // adjust for difficulty if
-    // cannot add
-    // GROUP
-    UNIT_TYPES(null, true, "encounters"), // POOL
-    FLAG_COLOR(null, true, "factions"),
-    UNIT_POOL(null, true, "factions"),
-    HERO_BACKGROUNDS(null, true, "factions"),
-    FACTION_DUNGEONS(null, true, "factions"),
-    HEADQUARTER_DUNGEON(null, true, "factions"),
-    ALLY_FACTIONS(null, true, "factions"),
-
-    GROWTH_PRIORITIES(null, true, "encounters"), // POOL
-
-    EXTENDED_PRESET_GROUP(null, true, "encounters"),
-    SHRUNK_PRESET_GROUP(null, true, "encounters"),
-    PRESET_GROUP("PRESET_GROUP", true, "encounters"),
-    // for
     ENCHANTMENT(null, true, "jewelry", "weapons", "armor"),
-
-    BOSS_TYPE("encounters", null),
     JEWELRY_PASSIVE_ENCHANTMENT("jewelry", null),
     MAGICAL_ITEM_LEVEL("jewelry", null),
     MAGICAL_ITEM_TRAIT("jewelry", null),
 
-    DEAD_UNITS(null, true, "terrain"),
+
+    FILLER_TYPES("encounters", null),
+    UNIT_TYPES(null, true, "encounters"),
+    GROWTH_PRIORITIES(null, true, "encounters"),
+    EXTENDED_PRESET_GROUP(null, true, "encounters"),
+    SHRUNK_PRESET_GROUP(null, true, "encounters"),
+    PRESET_GROUP("PRESET_GROUP", true, "encounters"),
+    BOSS_TYPE("encounters", null),
+    DEFAULT_AI_TYPE("encounters", null),
+
+
     DROPPED_ITEMS(null, true, "terrain"),
     BASE_CLASSES_ONE(null, true, "classes"),
     BASE_CLASSES_TWO(null, true, "classes"),
@@ -335,17 +321,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     PARAMETER_BONUSES(null, true, "skills", "classes", "perks"),
     ATTRIBUTE_BONUSES(null, true, "skills", "classes", "perks"),
     APPLY_REQS(null, true, "skills", "classes"),
-
-//    AUTO_TEST_TYPE(null, true, "skills", "actions", "spells", "abils", "classes"),
-//    AUTO_TEST_GROUP(null, true, "skills", "actions", "spells", "abils", "classes"),
-//    AUTO_TEST_RULE_FLAGS(null, true, "skills", "actions", "spells", "abils", "classes"),
-//    AUTO_TEST_ASSERTIONS(null, true, "skills", "actions", "spells", "abils", "classes"),
-//    AUTO_TEST_MEASUREMENTS(null, true, "skills", "actions", "spells", "abils", "classes"),
-//    AUTO_TEST_PREFS(null, true, "skills", "actions", "spells", "abils", "classes"),
-//    AUTO_TEST_CONSTRAINTS(null, true, "skills", "actions", "spells", "abils", "classes"),
-//
-//    AUTO_TEST_WEAPON(null, false, "skills", "actions", "classes"),
-//    AUTO_TEST_OFFHAND_WEAPON(null, false, "skills", "actions", "classes"),
 
     ARCADE_LEVELS(null, true, "arcades"),
     ARCADE_ENEMY_GROUPS(null, true, "arcades"),
@@ -501,7 +476,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
         HINTS.setDynamic(true);
         LAST_SEEN.setDynamic(true);
-        DEAD_UNITS.setDynamic(true);
         UPKEEP_FAIL_ACTION.setDynamic(true);
         DROPPED_ITEMS.setDynamic(true);
         // QUICK_ITEMS.setDynamic(true);
@@ -530,8 +504,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
         SPELLBOOK.setLowPriority(true);
         VERBATIM_SPELLS.setLowPriority(true);
         MEMORIZED_SPELLS.setLowPriority(true);
-        PARTY_UNITS.setLowPriority(true);
-        HIRED_MERCENARIES.setLowPriority(true);
         PREPARED_SPELLS.setLowPriority(true);
 
         ON_BEING_HIT.setLowPriority(true);

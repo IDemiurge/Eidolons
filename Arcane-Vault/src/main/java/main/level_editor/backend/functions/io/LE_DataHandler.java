@@ -52,7 +52,7 @@ public class LE_DataHandler extends LE_Handler {
         String path = getBackupPath(getFloor());
         String contents = FileManager.readFile(getDefaultSavePath(getFloor()));
         FileManager.write(contents, path);
-        EUtils.info("Backed up as " + PathUtils.getLastPathSegment(path));
+        EUtils.showInfoText("Backed up as " + PathUtils.getLastPathSegment(path));
     }
 
 
@@ -77,13 +77,13 @@ public class LE_DataHandler extends LE_Handler {
     public void saveFloor() {
         String path = getDefaultSavePath(getFloor());
         saveAs(path);
-        dirty = false;
+        setDirty(false);
     }
 
     public void saveAs(String path) {
         String contents = LE_XmlMaster.toXml(getFloor());
         FileManager.write(contents, path);
-        EUtils.info("Saved as " + PathUtils.getLastPathSegment(path));
+        EUtils.showInfoText("Saved as " + PathUtils.getLastPathSegment(path));
     }
 
     private String getBackupPath(Floor floor) {
@@ -101,7 +101,7 @@ public class LE_DataHandler extends LE_Handler {
                 prefix = "test/";
             } else {
                 prefix = "crawl/";
-                prefix += floor.getGame().getDungeon().getGroup() + "/";
+//                prefix += floor.getGame().getDungeon().getGroup() + "/";
             }
         } else {
 //            TODO campaign

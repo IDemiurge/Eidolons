@@ -64,6 +64,9 @@ public abstract class LevelLayer<T> {
     }
 
     public String getName() {
+        if (name == null) {
+            name = data.getValue("name");
+        }
         return name;
     }
 

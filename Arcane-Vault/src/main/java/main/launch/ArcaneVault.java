@@ -2,7 +2,6 @@ package main.launch;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.game.Simulation;
-import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
@@ -226,11 +225,11 @@ public class ArcaneVault {
 
                 mainBuilder = new MainBuilder();
         mainBuilder.setKeyListener(new AV_KeyListener(getGame()));
-        if (!isCustomLaunch()) {
-            if (XML_Reader.getTypeMaps().containsKey(MACRO_OBJ_TYPES.FACTIONS.getName())) {
-                UnitGroupMaster.modifyFactions();
-            }
-        }
+//        if (!isCustomLaunch()) {
+//            if (XML_Reader.getTypeMaps().containsKey(MACRO_OBJ_TYPES.FACTIONS.getName())) {
+//                UnitGroupMaster.modifyFactions();
+//            }
+//        }
         // ModelManager.generateFactions();
         showAndCreateGUI();
 

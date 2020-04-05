@@ -15,6 +15,7 @@ import main.system.graphics.ColorManager.FLAG_COLOR;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -84,12 +85,12 @@ public class DC_Player extends Player {
 
     public Set<Unit>  collectControlledUnits_() {
         return getGame().getUnits().stream().filter(unit -> unit.isOwnedBy(this))
-         .collect(Collectors.toSet());
+         .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public Set<Obj> collectControlledUnits() {
         return getGame().getUnits().stream().
-         filter(unit -> unit.isOwnedBy(this)).collect(Collectors.toSet());
+         filter(unit -> unit.isOwnedBy(this)).collect(Collectors.toCollection(LinkedHashSet::new));
 //        Set<Obj> units = new LinkedHashSet<>();
 //        for (Unit unit : (getGame().getUnits())) {
 //            if (unit.getOwner() == this) {

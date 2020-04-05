@@ -30,6 +30,7 @@ import main.system.images.ImageManager;
 import main.system.launch.TypeBuilder;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +42,7 @@ public class Dungeon extends LightweightEntity {
     private LOCATION_TYPE dungeonSubtype;
     private Collection<Coordinates> voidCoordinates;
     private Map<String, String> customDataMap;
+    private Collection<Coordinates> voidCells = new LinkedList<>();
 
     /*
      * Encounters Levels Rewards Loot
@@ -311,6 +313,11 @@ public class Dungeon extends LightweightEntity {
         }
         return null;
     }
+
+    public Collection<Coordinates> getVoidCells() {
+        return voidCells;
+    }
+
 
 
     public enum POINTS {

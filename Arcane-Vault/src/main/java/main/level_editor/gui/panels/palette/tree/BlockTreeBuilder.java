@@ -31,7 +31,8 @@ public class BlockTreeBuilder {
             }
             roomModels.removeIf(model -> model == null);
             for (LocationBuilder.ROOM_TYPE value : LocationBuilder.ROOM_TYPE.values()) {
-                Set<RoomModel> models = roomModels.stream().filter(roomModel -> roomModel.getType() == value).collect(Collectors.toSet());
+                Set<RoomModel> models = roomModels.stream().filter(roomModel -> roomModel.getType() == value)
+                        .collect(Collectors.toCollection(LinkedHashSet::new));
                 if (models.isEmpty()) {
                     continue;
                 }

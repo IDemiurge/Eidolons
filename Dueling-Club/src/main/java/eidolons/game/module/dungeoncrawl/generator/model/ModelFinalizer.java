@@ -71,7 +71,7 @@ public class ModelFinalizer {
                 if (RandomWizard.chance(50 + last)) {
                     last -= 25;
                     Coordinates c = new RandomWizard<Coordinates>().getRandomListItem(voidCells);
-                    model.getBlocks().get(room).getCoordinatesList().add(c);
+                    model.getBlocks().get(room).getCoordinatesSet().add(c);
                     block.getTileMap().getMapModifiable().put(c, ROOM_CELL.INDESTRUCTIBLE);
 
                     if (edgeCell.x == c.x || edgeCell.y == c.y)
@@ -420,10 +420,7 @@ public class ModelFinalizer {
     }
 
     private boolean checkBuildDone(LevelModel model, LevelData data) {
-        if (model.getRoomMap().size() > maxRooms) {
-            return true;
-        }
-        return false;
+        return model.getRoomMap().size() > maxRooms;
     }
 
     private void tryAdditionalBuild(LevelModel model) {

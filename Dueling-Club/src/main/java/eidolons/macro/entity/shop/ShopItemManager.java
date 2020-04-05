@@ -68,9 +68,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
         if (canUseDebt) {
             price -= getMaxDebt() - playerDebt;
         }
-        if (buyer.getGold() < price)
-            return false;
-        return true;
+        return buyer.getGold() >= price;
     }
 
     public boolean canSellTo(DC_HeroItemObj item, Unit seller, boolean canUseDebt) {
@@ -78,9 +76,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
         if (canUseDebt) {
             price += getMinBalance()+ playerDebt;
         }
-        if (getGold() < price)
-            return false;
-        return true;
+        return getGold() >= price;
     }
 
     private Integer getMinBalance() {
@@ -442,6 +438,6 @@ public class ShopItemManager extends EntityHandler<Shop> {
         }
         //reputation impact?!
 
-        EUtils.info(message, true, true);
+        EUtils.infoPopup(message, true, true);
     }
 }

@@ -72,7 +72,7 @@ public class LE_MapHandler extends LE_Handler {
         }
         boolean oneWay; //can be altered via trigger scripts}
 
-        EUtils.info("Add an exit");
+        EUtils.infoPopup("Add an exit");
         addingExitFor = getIdManager().getId(obj);
     }
 

@@ -330,7 +330,7 @@ public class DC_GameObjMaster extends GameObjMaster {
         getStructures().clear();
     }
 
-    public Set<Obj> getCells() {
+    public Set<DC_Cell> getCells() {
         return new LinkedHashSet<>(getGame().getGrid().getCellsSet());
     }
 

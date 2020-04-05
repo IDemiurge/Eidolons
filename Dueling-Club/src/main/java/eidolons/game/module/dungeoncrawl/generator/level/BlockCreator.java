@@ -33,7 +33,7 @@ public class BlockCreator {
              model.getBlocks().values().stream().sorted(
               new SortMaster<LevelBlock>().getSorterByExpression_(b ->
                (int) (-100 * CoordinatesMaster.getMinDistanceBetweenGroups(
-                b.getCoordinatesList(), new ListMaster<Coordinates>().asList(c), 3)
+                b.getCoordinatesSet(), new ListMaster<Coordinates>().asList(c), 3)
                ))).findFirst().get();
             block.getTileMap().getMapModifiable().put(c, model.getAdditionalCells().get(c));
 if (Pregenerator.TEST_MODE)

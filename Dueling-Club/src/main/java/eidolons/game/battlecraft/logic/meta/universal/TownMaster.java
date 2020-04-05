@@ -82,7 +82,7 @@ public class TownMaster extends MetaGameHandler {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         if (!result) {
-            EUtils.info("Something went wrong in this town...");
+            EUtils.infoPopup("Something went wrong in this town...");
             GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, null);
 //            Eidolons.exitToMenu();
             return;
@@ -197,7 +197,7 @@ public class TownMaster extends MetaGameHandler {
 
     public void tryReenterTown() {
         if (!ExplorationMaster.isExplorationOn()) {
-            EUtils.info("You cannot travel back while in battle!");
+            EUtils.infoPopup("You cannot travel back while in battle!");
             return;
         }
 
@@ -211,7 +211,7 @@ public class TownMaster extends MetaGameHandler {
         }
         if (isFoodRequired())
             if (!Eidolons.getMainHero().hasItems("Food", n)) {
-                EUtils.info("You need at least " +
+                EUtils.infoPopup("You need at least " +
                         n + " Food to travel back to " +
                         town.getName() +
                         " (Get closer to where you entered here to reduce the cost)");

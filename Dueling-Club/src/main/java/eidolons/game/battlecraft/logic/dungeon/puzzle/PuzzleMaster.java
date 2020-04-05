@@ -79,7 +79,7 @@ public class PuzzleMaster {
         String args = VariableManager.getVars(s);
 
         String setupData = "";
-        for (Coordinates c : block.getCoordinatesList()) {
+        for (Coordinates c : block.getCoordinatesSet()) {
             String data = customDataMap.get(c.toString());
             if (data != null) {
                 setupData += VariableManager.getStringWithVariable(c.toString(), data) + ";";

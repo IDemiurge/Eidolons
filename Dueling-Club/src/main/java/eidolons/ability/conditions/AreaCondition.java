@@ -14,16 +14,13 @@ public class AreaCondition extends DC_Condition {
     }
     public AreaCondition(Coordinates coordinates, int width, int height, boolean bottomToTop) {
         super();
-        this.coordinates = CoordinatesMaster.getCoordinatesBetween(coordinates,
+        this.coordinates = CoordinatesMaster.getCoordinatesBetweenWithOffset(coordinates,
                 new Coordinates(coordinates.x + width, coordinates.y + height * ((bottomToTop)? -1 : 1)));
 
     }
 
     @Override
     public boolean check(Ref ref) {
-        if (coordinates.contains(ref.getSourceObj().getCoordinates())) {
-            return true;
-        }
-        return false;
+        return coordinates.contains(ref.getSourceObj().getCoordinates());
     }
 }

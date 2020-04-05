@@ -151,7 +151,7 @@ public class RngLevelPopulator  {
     }
 
     private void spawnUnitGroup(UNIT_GROUPS group, LevelBlock block, int level) {
-        Coordinates at = CoordinatesMaster.getCenterCoordinate(block.getCoordinatesList());
+        Coordinates at = CoordinatesMaster.getCenterCoordinate(block.getCoordinatesSet());
 
         String data = UnitGroupMaster.getUnitGroupData(StringMaster.getWellFormattedString(group.name()), level);
         for (String unitData : data.split(UnitGroupMaster.PAIR_SEPARATOR)) {

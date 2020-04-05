@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import main.data.tree.LayeredData;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -12,7 +13,8 @@ public class LE_Zone  implements LayeredData<LE_Block> {
 
     public LE_Zone(LevelZone zone) {
         this.zone = zone;
-        blocks = zone.getSubParts().stream().map(block -> new LE_Block(block)).collect(Collectors.toSet());
+        blocks = zone.getSubParts().stream().map(block -> new LE_Block(block))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public LevelZone getZone() {

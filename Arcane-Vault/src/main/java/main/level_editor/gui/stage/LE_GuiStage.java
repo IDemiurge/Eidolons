@@ -11,7 +11,12 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.GenericGuiStage;
 import main.level_editor.LevelEditor;
 import main.level_editor.gui.components.DataTable;
-import main.level_editor.gui.dialog.*;
+import main.level_editor.gui.dialog.BlockTemplateChooser;
+import main.level_editor.gui.dialog.ChooserDialog;
+import main.level_editor.gui.dialog.EnumChooser;
+import main.level_editor.gui.dialog.struct.BlockEditDialog;
+import main.level_editor.gui.dialog.struct.ModuleDialog;
+import main.level_editor.gui.dialog.struct.ZoneEditDialog;
 import main.level_editor.gui.panels.ClosablePanel;
 import main.level_editor.gui.panels.control.ControlPanelHolder;
 import main.level_editor.gui.panels.control.TabbedControlPanel;
@@ -24,21 +29,22 @@ import main.system.auxiliary.log.LogMaster;
 
 public class LE_GuiStage extends GenericGuiStage {
 
-    private   TablePanelX dialogueTable;
+    private TablePanelX dialogueTable;
     private TopPanel topPanel;
     private LE_ButtonStripe buttons;
     private ClosablePanel controlPanel;
     private ClosablePanel palettePanel;
 
-    private  LE_TreeHolder treePanel;
-    private  BlockTemplateChooser templateChooser;
-    private  EnumChooser enumChooser;
+    private LE_TreeHolder treePanel;
+    private BlockTemplateChooser templateChooser;
+    private EnumChooser enumChooser;
     private DataTable editTable;
 
     private TablePanelX innerTable;
     private ChooserDialog dialog;
     private BlockEditDialog blockEditor;
     private ModuleDialog moduleEditor;
+    private ZoneEditDialog zoneEditor;
 
 
     public LE_GuiStage(Viewport viewport, Batch batch) {
@@ -64,13 +70,16 @@ public class LE_GuiStage extends GenericGuiStage {
         }
 
         //separate table?
-        addActor(dialogueTable = new TablePanelX());
 
-        dialogueTable.add(  templateChooser = new BlockTemplateChooser());
-        dialogueTable.add(enumChooser = new EnumChooser());
-        dialogueTable.add(blockEditor = new BlockEditDialog());
-        dialogueTable.add(moduleEditor = new ModuleDialog( ));
-        dialogueTable.add(editTable = new DataTable(2, 50));
+        addActor(templateChooser = new BlockTemplateChooser());
+        addActor(enumChooser = new EnumChooser());
+        addActor(blockEditor = new BlockEditDialog());
+        addActor(moduleEditor = new ModuleDialog());
+        addActor(zoneEditor = new ZoneEditDialog());
+        addActor(editTable = new DataTable(2, 50));
+
+        tooltips.setZIndex(Integer.MAX_VALUE);
+        confirmationPanel.setZIndex(Integer.MAX_VALUE);
     }
 
     private void initButtons() {
@@ -83,7 +92,7 @@ public class LE_GuiStage extends GenericGuiStage {
     }
 
     private void initTable() {
-        addActor(innerTable = new TablePanelX( ));
+        addActor(innerTable = new TablePanelX());
         innerTable.row().maxHeight(120);
         innerTable.padTop(30);
         innerTable.add(topPanel = new TopPanel()).top();
@@ -94,7 +103,7 @@ public class LE_GuiStage extends GenericGuiStage {
 
 
         innerTable.row();
-        TablePanelX  c;
+        TablePanelX c;
         innerTable.add(c = new TablePanelX<>());
         c.add(treePanel).colspan(1).left();
         //could have 2 - one top and one bottom?
@@ -134,8 +143,9 @@ public class LE_GuiStage extends GenericGuiStage {
             treePanel.setX(Gdx.graphics.getWidth() - treePanel.getWidth());
             treePanel.setY(Gdx.graphics.getHeight() - treePanel.getHeight());
         }
-        GdxMaster.center(templateChooser);
-        GdxMaster.center(enumChooser);
+        if (dialog != null) {
+            GdxMaster.center(dialog);
+        }
         super.act(delta);
     }
 
@@ -161,8 +171,8 @@ public class LE_GuiStage extends GenericGuiStage {
     @Override
     public boolean setScrollFocus(Actor actor) {
         boolean r = super.setScrollFocus(actor);
-        if (!r){
-            LogMaster.log(1,"------ setScrollFocus "  + actor);
+        if (!r) {
+            LogMaster.log(1, "------ setScrollFocus " + actor);
         }
         return r;
     }
@@ -170,16 +180,16 @@ public class LE_GuiStage extends GenericGuiStage {
     @Override
     public boolean keyDown(int keyCode) {
         boolean r = super.keyDown(keyCode);
-        Eidolons.onNonGdxThread(()->{
+        Eidolons.onNonGdxThread(() -> {
             LevelEditor.getManager().getKeyHandler().keyDown(keyCode);
         });
-        return  r;
+        return r;
     }
 
     @Override
     public boolean keyTyped(char character) {
         boolean r = super.keyTyped(character);
-        Eidolons.onNonGdxThread(()->{
+        Eidolons.onNonGdxThread(() -> {
             LevelEditor.getManager().getKeyHandler().keyTyped(character);
         });
         return r;
@@ -210,12 +220,22 @@ public class LE_GuiStage extends GenericGuiStage {
         return moduleEditor;
     }
 
+    public ZoneEditDialog getZoneEditor() {
+        dialog = zoneEditor;
+        return zoneEditor;
+    }
     public ChooserDialog getDialog() {
         return dialog;
     }
 
     public BlockEditDialog getBlockEditor() {
+        dialog = blockEditor;
         return blockEditor;
     }
 
+    public void toggleUiVisible() {
+        controlPanel.toggleFade();
+        treePanel.toggleFade();
+        palettePanel.toggleFade();
+    }
 }

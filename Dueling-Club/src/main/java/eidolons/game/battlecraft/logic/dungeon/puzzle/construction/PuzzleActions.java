@@ -92,7 +92,7 @@ public class PuzzleActions extends PuzzleElement {
 
     private static Set<BattleFieldObject> getObjects(Puzzle puzzle) {
         Set<BattleFieldObject> set = new LinkedHashSet<>();
-        for (Coordinates c : puzzle.getBlock().getCoordinatesList()) {
+        for (Coordinates c : puzzle.getBlock().getCoordinatesSet()) {
             set.addAll(Eidolons.getGame().getObjectsOnCoordinate(c));
         }
         return set;
@@ -113,7 +113,7 @@ public class PuzzleActions extends PuzzleElement {
                 break;
             case unseal_door:
                 LevelBlock block = puzzle.getBlock();
-                for (Coordinates c : block.getCoordinatesList()) {
+                for (Coordinates c : block.getCoordinatesSet()) {
                     for (BattleFieldObject object : Eidolons.getGame().getObjectsOnCoordinate(c)) {
                         if (object instanceof Door) {
 //                            ((Door) object).setState(DoorMaster.DOOR_STATE.OPEN);

@@ -1,5 +1,6 @@
 package main.data.tree;
 
+import java.util.LinkedHashSet;
 import java.util.stream.Collectors;
 
 public class StructTreeBuilder<T extends LayeredData<T>> {
@@ -20,7 +21,7 @@ public class StructTreeBuilder<T extends LayeredData<T>> {
             return new StructNode(data);
         }
         StructNode node = new StructNode(data, data.getChildren().stream().map(
-                child -> create((LayeredData<LayeredData<T>>) child)).collect(Collectors.toSet())
+                child -> create((LayeredData<LayeredData<T>>) child)).collect(Collectors.toCollection(LinkedHashSet::new))
         );
         return node;
     }

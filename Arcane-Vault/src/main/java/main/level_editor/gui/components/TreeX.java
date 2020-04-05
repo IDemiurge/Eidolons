@@ -22,12 +22,13 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
     private static final boolean LOGGED = false;
     protected Node root;
     protected Set<Node> nodes = new LinkedHashSet<>();
+
     @Override
     public void setUserObject(Object userObject) {
         clearChildren();
         T rootNode = (T) userObject;
         nodes.clear();
-        if (isShowRoot()){
+        if (isShowRoot()) {
             add(root = createRootNode(rootNode));
             recursiveAdd(root, rootNode);
         } else {
@@ -36,7 +37,7 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
         super.setUserObject(userObject);
         expandAll();
         for (Node node : nodes) {
-            if (node.getChildren().size==0) {
+            if (node.getChildren().size == 0) {
                 node.getParent().collapseAll();
             }
 
@@ -57,7 +58,7 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
         } else {
             root.add(root = createNode(node));
         }
-            nodes.add(root);
+        nodes.add(root);
         if (LOGGED)
             log(1, hashCode() + ": recursiveAdd " + node + " " + root);
         Set<? extends T> set = node.getChildren();
@@ -78,15 +79,22 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                if (getTapCount()>1) {
-                    doubleClick(node);
-                } else if (event.getButton()==1) {
-                    rightClick(node);
+                if (getTapCount() > 1) {
+                    try {
+                        doubleClick(node);
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
+                } else if (event.getButton() == 1) {
+                    try {
+                        rightClick(node);
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
                 } else
                     selected(node);
                 for (Node node1 : nodes) {
                     if (node1.getActor() instanceof Table) {
-                        main.system.auxiliary.log.LogMaster.log(1,"node bg removed: " +node1.getActor());
                         ((Table) node1.getActor()).setBackground((Drawable) null);
                     }
                 }
@@ -108,7 +116,7 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
     protected Actor createNodeComp(T node) {
         Label.LabelStyle style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 20);
         String name = node.toString();
-        ValueContainer actor = new ValueContainer(style, null , name, null );
+        ValueContainer actor = new ValueContainer(style, null, name, null);
         return actor;
     }
 

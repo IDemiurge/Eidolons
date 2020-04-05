@@ -17,7 +17,6 @@ public class GdxDialogMaster {
     }
 
     public static String inputText(String title, String hint, String text) {
-//        if (GdxMaster.isLwjglThread())
 //            else
             Gdx.app.postRunnable(() -> textInput(new TextInputListener() {
                                                      @Override

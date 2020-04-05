@@ -21,17 +21,17 @@ public class UpperPalette extends TablePanelX {
     private VisSplitPane split;
 
     public UpperPalette(HybridPalette.PALETTE value) {
-        super(650, 800);
+        super(650, 880);
         initTable(value);
         initScrollPane(value);
 
         TablePanelX<Actor> container ;
         if (value == HybridPalette.PALETTE.blocks) {
-            container = new TablePanelX<>(320, 800);
+            container = new TablePanelX<>(320, 880);
             container.add(table).top().left();
 
         } else {
-            container = new TablePanelX<>(500, 800);
+            container = new TablePanelX<>(500, 880);
             container.add(table).top().left().height(500);
         }
         VisSplitPane.VisSplitPaneStyle style = new VisSplitPane.VisSplitPaneStyle(
@@ -42,11 +42,11 @@ public class UpperPalette extends TablePanelX {
         if (value == HybridPalette.PALETTE.blocks) {
             tableContainer = new ScrollPaneX(container);
         }
-        add(split = new VisSplitPane(tableContainer, treeScroll, false, style)).fill().size(650, 800);
+        add(split = new VisSplitPane(tableContainer, treeScroll, false, style)).fill().size(650, 880);
         container.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
-        split.setSplitAmount(0.75f);
+        split.setSplitAmount(0.5f);
         split.setFillParent(true);
-        split.setSize(650, 800);
+        split.setSize(650, 880);
 
 
     }

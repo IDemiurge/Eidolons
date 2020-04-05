@@ -320,7 +320,7 @@ public class AI_Manager extends AiMaster {
         switch (type) {
             case BOSS:
             case GUARDS:
-                List<Coordinates> sorted = block.getCoordinatesList().stream().sorted(new SortMaster<Coordinates>().getSorterByExpression_(
+                List<Coordinates> sorted = block.getCoordinatesSet().stream().sorted(new SortMaster<Coordinates>().getSorterByExpression_(
                  c -> -c.dst(leader.getCoordinates())
                 )).collect(Collectors.toList());
 

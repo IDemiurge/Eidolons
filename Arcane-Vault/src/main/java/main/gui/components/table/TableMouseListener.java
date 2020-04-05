@@ -5,7 +5,6 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DC_ValueManager.VALUE_GROUP;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.swing.generic.services.dialog.EnumChooser;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.content.*;
 import main.content.enums.GenericEnums;
@@ -30,7 +29,6 @@ import main.gui.builders.EditViewPanel;
 import main.gui.components.editors.AV_ImgChooser;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.editors.*;
-import main.swing.generic.components.editors.lists.EnumListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.misc.G_Table;
 import main.system.auxiliary.EnumMaster;
@@ -123,7 +121,6 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 
 
      PROPS.CLASS_PERK_GROUP.name(),
-     PROPS.FLAG_COLOR.name(),
      PROPS.COLOR_THEME.name(),
      PROPS.DIFFICULTY.name(),
      PROPS.ITEM_RARITY.name(),
@@ -146,8 +143,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
      G_PROPS.ARMOR_GROUP.name(), PROPS.DAMAGE_TYPE.name(), G_PROPS.WEAPON_SIZE.name(),
      G_PROPS.WEAPON_CLASS.name(), G_PROPS.WEAPON_GROUP.name(), G_PROPS.WEAPON_TYPE.name(),
      G_PROPS.QUALITY_LEVEL.name(), G_PROPS.MATERIAL.name(), G_PROPS.SKILL_GROUP.name(),
-     G_PROPS.ACTION_TYPE.name(), G_PROPS.MASTERY.name(), PROPS.PRIME_MISSION.name(),
-     PROPS.SECONDARY_MISSION.name(), G_PROPS.SPELL_GROUP.name(),
+     G_PROPS.ACTION_TYPE.name(), G_PROPS.MASTERY.name(),   G_PROPS.SPELL_GROUP.name(),
      PROPS.RESISTANCE_TYPE.name(), G_PROPS.TARGETING_MODE.name(), G_PROPS.RACE.name(),
      G_PROPS.ASPECT.name(),
       G_PROPS.SOUNDSET.name(),
@@ -180,10 +176,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
     public static final String[] MULTI_TYPE_LIST_IDS = {
 
             PROPS.PERKS.getName(),
-     MACRO_PROPS.FACTIONS.getName(),
-     PROPS.HERO_BACKGROUNDS.getName(),
-     PROPS.HEADQUARTER_DUNGEON.getName(), PROPS.FACTION_DUNGEONS.getName(),
-     PROPS.ALLY_FACTIONS.getName(), PROPS.UNIT_POOL.getName(), MACRO_PROPS.AREAS.getName(),
+     MACRO_PROPS.FACTIONS.getName(),  MACRO_PROPS.AREAS.getName(),
      G_PROPS.DEITY.getName(), PROPS.SPELL_PLAN.name(), PROPS.VERBATIM_PRIORITY.name(),
      PROPS.MEMORIZATION_PRIORITY.name(), PROPS.MAIN_HAND_REPERTOIRE.name(),
      PROPS.ARMOR_REPERTOIRE.name(), PROPS.OFF_HAND_REPERTOIRE.name(),
@@ -196,7 +189,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
      PROPS.UNIT_TYPES.name(), MACRO_PROPS.HEROES.name(), MACRO_PROPS.PLACES.name(),
      PROPS.SKILL_OR_REQUIREMENTS.name(), PROPS.SKILL_REQUIREMENTS.name(),
      PROPS.SKILLS.name(), PROPS.SPELLBOOK.name(), PROPS.VERBATIM_SPELLS.name(),
-     PROPS.MEMORIZED_SPELLS.name(), PROPS.PARTY_UNITS.name(), PROPS.FOLLOWER_UNITS.name(),
+     PROPS.MEMORIZED_SPELLS.name(),  PROPS.FOLLOWER_UNITS.name(),
      PROPS.ALLIED_DEITIES.name(), PROPS.FRIEND_DEITIES.name(), PROPS.ENEMY_DEITIES.name(),
 
     };
@@ -259,7 +252,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
     private static final String[] FILTER_GROUPS = {
 
     };
-    private static final String[] SUBGROUP_FILTERED = {PROPS.HERO_BACKGROUNDS.getName(),};
+    private static final String[] SUBGROUP_FILTERED = { };
     private static final String[] FILTER_SUBGROUPS = {"Background",};
     static AV_ImgChooser imageChooser = new AV_ImgChooser();
     static ListEditor multiListEditor = new ListEditor(false);

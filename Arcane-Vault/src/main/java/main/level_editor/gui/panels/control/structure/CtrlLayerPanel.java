@@ -16,11 +16,6 @@ public class CtrlLayerPanel extends LE_ControlPanel<ILayerHandler> {
     }
 
     @Override
-    protected int getWrap() {
-        return 0;
-    }
-
-    @Override
     protected float getSpace() {
         return 0;
     }

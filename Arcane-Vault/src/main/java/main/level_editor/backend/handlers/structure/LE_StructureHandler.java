@@ -11,11 +11,13 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
+import eidolons.game.module.dungeoncrawl.generator.init.RngTypeChooser;
 import eidolons.game.module.dungeoncrawl.generator.model.RoomModel;
 import eidolons.game.module.dungeoncrawl.generator.model.RoomTemplateMaster;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import eidolons.libgdx.GdxColorMaster;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -26,6 +28,7 @@ import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
@@ -65,19 +68,13 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     }
 
     public void addZone() {
-        //at first, it is EMPTY
-        // then assign blocks...
-
-
         //should we have a number of Floor templates?
         List<LevelZone> zones = getModel().getModule().getZones();
-        if (zones.isEmpty()) {
-
-        }
         LevelZone zone = new LevelZone(zones.size()); //or default per floor template
+
+        zones.add(zone);
         getModel().setZone(zone);
-        LevelBlock block = new LevelBlock(zone);
-        zone.addBlock(block); //de
+        updateTree();
     }
 
     @Override
@@ -122,7 +119,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
 
         LevelZone zone = getModel().getZone();
         if (zone == null) {
-            zone=getModel().getModule().getZones().get(0);
+            zone = getModel().getModule().getZones().get(0);
         }
         LevelBlock block = new LevelBlock(blockTemplate, zone);
         zone.addBlock(block);
@@ -146,8 +143,8 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         getOperationHandler().operation(Operation.LE_OPERATION.INSERT_END);
         block.setCoordinatesList(coords);
         block.setOrigin(at);
-block.setWidth(blockTemplate.getWidth());
-block.setHeight(blockTemplate.getHeight());
+        block.setWidth(blockTemplate.getWidth());
+        block.setHeight(blockTemplate.getHeight());
 //block.setName(blockTemplate);
         block.setRoomType(blockTemplate.getType());
 
@@ -161,44 +158,83 @@ block.setHeight(blockTemplate.getHeight());
     }
 
     private void processCell(Coordinates c, String cell) {
-
-        switch (GeneratorEnums.ROOM_CELL.getBySymbol(cell)) {
+        GeneratorEnums.ROOM_CELL s = GeneratorEnums.ROOM_CELL.getBySymbol(cell);
+        switch (s) {
             case WALL:
-                initWall(c);
+            case ART_OBJ:
+            case SPECIAL_ART_OBJ:
+            case CONTAINER:
+            case SPECIAL_CONTAINER:
+            case DOOR:
+                initObject(c, s);
+                break;
+            case VOID:
+                operation(Operation.LE_OPERATION.VOID_TOGGLE, c);
                 break;
         }
     }
 
-    private void initWall(Coordinates c) {
-        ObjType type = getModelManager().getDefaultWallType();
+    private void initObject(Coordinates c, GeneratorEnums.ROOM_CELL s) {
+        ObjType type = getObjectType(c, s);
         operation(Operation.LE_OPERATION.ADD_OBJ, type, c);
     }
 
+    private ObjType getObjectType(Coordinates c, GeneratorEnums.ROOM_CELL s) {
+        switch (s) {
+            case WALL:
+                return   getModelManager().getDefaultWallType();
+        }
+        DungeonEnums.DUNGEON_STYLE style = getModel().getZone().getStyle();
+       return  RngTypeChooser.getType(s, style, false);
+    }
+
+
     @Override
     public void removeZone() {
-
+        if (getModel().getZone() != null) {
+            getModel().getModule().getZones().remove(getModel().getZone());
+            updateTree();
+        }
     }
 
     @Override
     public void addBlock() {
+        LevelZone zone = getModel().getZone();
+        Set<Coordinates> coordinates = getSelectionHandler().getSelection().getCoordinates();
+        LevelBlock block = new LevelBlock(zone);
 
+        block.setName("Custom block");
+        block.setOrigin(coordinates.iterator().next());
+        block.setCoordinatesList(new ArrayList<>(coordinates));
     }
 
     @Override
     public void removeBlock() {
-
+        LevelBlock block = getModel().getBlock();
+        if (block != null) {
+            getOperationHandler().operation(Operation.LE_OPERATION.CLEAR_START);
+            for (Coordinates coordinates : block.getCoordinatesSet()) {
+                for (BattleFieldObject battleFieldObject : getGame().getObjectsAt(coordinates)) {
+                    getOperationHandler().operation(Operation.LE_OPERATION.REMOVE_OBJ, battleFieldObject);
+                }
+                //full clear - scripts, ..?
+            }
+            getOperationHandler().operation(Operation.LE_OPERATION.CLEAR_END);
+            block.getZone().getSubParts().remove(block);
+            updateTree();
+        }
     }
 
     @Override
     public void moveBlock() {
-
+//TODO tricky!..
     }
 
 
     @Override
     public void mergeBlock() {
         LevelBlock block = getBlock();
-        EUtils.info("Select an adjacent block");
+        EUtils.infoPopup("Select an adjacent block");
         WaitMaster.waitForInput(LevelEditor.SELECTION_EVENT);
         LevelBlock newBlock = getBlock();
         if (isAdjacent(block, newBlock)) {
@@ -217,24 +253,32 @@ block.setHeight(blockTemplate.getHeight());
 
     @Override
     public void removeCellsFromBlock() {
-
+        for (Coordinates c : getSelectionHandler().getSelection().getCoordinates()) {
+            getModel().getBlock().getCoordinatesSet().remove(c);
+        }
     }
 
     @Override
     public void addCellsToBlock() {
-
+        Set<Coordinates> set = getModel().getBlock().getCoordinatesSet();
+        for (Coordinates c : getSelectionHandler().getSelection().getCoordinates()) {
+           set.add(c);
+        }
     }
 
 
     @Override
     public void transformBlock() {
-
+//getOperationHandler().operation(Operation.LE_OPERATION.REMOVE_OBJ, transform);
     }
 
 
     @Override
     public void assignBlock() {
-
+        LevelBlock block = getModel().getBlock();
+        block.getZone().getSubParts().remove(block);
+        getModel().getZone().addBlock(block);
+        updateTree();
     }
 
     public Color getColorForBlock(LevelBlock block) {
@@ -259,11 +303,14 @@ block.setHeight(blockTemplate.getHeight());
     }
 
     public void blockReset(LevelBlock block) {
-        for (Coordinates coordinates : block.getCoordinatesList()) {
+        for (Coordinates coordinates : block.getCoordinatesSet()) {
             DungeonLevel.CELL_IMAGE type = block.getCellType();
             getGame().getCellByCoordinate(coordinates).setCellType(type);
 //            getGame().getCellByCoordinate(coordinates).setCellVariant(type);
-            ObjType wallType = DataManager.getType( block.getWallType(), DC_TYPE.BF_OBJ);
+            if (StringMaster.isEmpty(block.getWallType())) {
+                return;
+            }
+            ObjType wallType = DataManager.getType(block.getWallType(), DC_TYPE.BF_OBJ);
             for (BattleFieldObject obj : getGame().getObjectsOnCoordinate(coordinates)) {
                 if (obj.isWall()) {
                     getOperationHandler().execute(Operation.LE_OPERATION.REMOVE_OBJ, obj);

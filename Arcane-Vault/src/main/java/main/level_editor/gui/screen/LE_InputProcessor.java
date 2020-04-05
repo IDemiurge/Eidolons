@@ -25,7 +25,7 @@ public class LE_InputProcessor extends DungeonInputController {
     @Override
     public boolean mouseMoved(int i, int i1) {
         try {
-            if (getScreen().getGuiStage().hit(i, i1, true) != null) {
+            if (getScreen().getGuiStage().hit(i, i1, true) == null) {
                 if (getScreen().getGuiStage().getScrollFocus() != null) {
                     getScreen().getGuiStage().unfocus(getScreen().getGuiStage().getScrollFocus());
                 }

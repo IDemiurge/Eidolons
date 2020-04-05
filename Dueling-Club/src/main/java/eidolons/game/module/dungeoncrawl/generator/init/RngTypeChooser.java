@@ -22,6 +22,19 @@ import main.system.launch.CoreEngine;
  * Created by JustMe on 7/26/2018.
  */
 public class RngTypeChooser {
+
+    public static ObjType getType(
+            ROOM_CELL value,
+            DUNGEON_STYLE style, boolean random) {
+        OBJ_TYPE T = DC_TYPE.BF_OBJ;
+        String mapString = RngBfObjProvider.getWeightString(value, style);
+        WeightMap<ObjType> map = RandomWizard.constructWeightMap(mapString, T);
+        if (random) {
+            return map.getRandomByWeight();
+        }
+        return map.getGreatest();
+    }
+
     public static ObjType chooseType(Coordinates c,
                                      ROOM_CELL value,
                                      LevelBlock block, DungeonLevel dungeonLevel) {
@@ -34,7 +47,6 @@ public class RngTypeChooser {
         //for all special chars!
         if (mapString == null)
             return null;
-        mapString = filter(mapString, c, block, dungeonLevel);
         OBJ_TYPE T = DC_TYPE.BF_OBJ;
         ObjType type = null;
         Loop loop = new Loop(100);
@@ -46,13 +58,13 @@ public class RngTypeChooser {
 //        }
 
         while (!checkType(type, block) && loop.continues()) {
-            type =map.getRandomByWeight();
+            type = map.getRandomByWeight();
 
         }
-        if (isNeverRepeat(value)){
+        if (isNeverRepeat(value)) {
             map.remove(type);
             if (map.isEmpty()) {
-               RandomWizard.constructWeightMap(mapString, T, false);
+                RandomWizard.constructWeightMap(mapString, T, false);
             }
         }
         return type;
@@ -71,27 +83,26 @@ public class RngTypeChooser {
         if (type == null) {
             return false;
         }
-        if (block.getColorTheme()!=null )
-        if (type.checkProperty(PROPS.COLOR_THEME)) {
-            COLOR_THEME theme = new EnumMaster<COLOR_THEME>().retrieveEnumConst(COLOR_THEME.class,
-             type.getProperty(PROPS.COLOR_THEME));
-            if (theme == block.getColorTheme())
-                return true;
-            if (theme == block.getAltColorTheme())
-                if (RandomWizard.chance(50))
+        if (block.getColorTheme() != null)
+            if (type.checkProperty(PROPS.COLOR_THEME)) {
+                COLOR_THEME theme = new EnumMaster<COLOR_THEME>().retrieveEnumConst(COLOR_THEME.class,
+                        type.getProperty(PROPS.COLOR_THEME));
+                if (theme == block.getColorTheme())
                     return true;
+                if (theme == block.getAltColorTheme())
+                    return RandomWizard.chance(50);
 
-            return false;
-        }
+                return false;
+            }
 
         return true;
     }
 
     private static ROOM_CELL checkRandomCellResolves(ROOM_CELL value) {
         if (CoreEngine.isFullFastMode()) {
-                if (TilesMaster.isPassable(value)) {
-                   return ROOM_CELL.FLOOR;
-                }
+            if (TilesMaster.isPassable(value)) {
+                return ROOM_CELL.FLOOR;
+            }
         }
         if (value.getRandomWeightMap() == null) {
             return value;
@@ -100,13 +111,8 @@ public class RngTypeChooser {
         return map.getRandomByWeight();
     }
 
-    private static String filter(String mapString, Coordinates c,
-                                 LevelBlock block, DungeonLevel dungeonLevel) {
-        //remove what?
-        return mapString;
-    }
 
-    public static   boolean isCellTranslated(ROOM_CELL value) {
+    public static boolean isCellTranslated(ROOM_CELL value) {
         switch (value) {
             case VOID:
             case TRAP:

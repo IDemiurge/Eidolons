@@ -11,6 +11,7 @@ public class ModuleData extends LevelStructure.StructureData<MODULE_VALUE, LE_Mo
         super(structure);
     }
 
+
     protected void init() {
         if (getStructure() == null) {
             return;

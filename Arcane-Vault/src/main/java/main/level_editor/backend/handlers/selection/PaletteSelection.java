@@ -52,11 +52,11 @@ public class PaletteSelection implements Serializable {
     public void setType(ObjType objType) {
         if (EntityCheckMaster.isOverlaying(objType)) {
                   setOverlayingType(objType);
-            EUtils.info("Palette overlaying type selected: " + objType);
+            EUtils.infoPopup("Palette overlaying type selected: " + objType);
         } else
         {
             this.objType = objType;
-            EUtils.info("Palette type selected: " + objType);
+            EUtils.infoPopup("Palette type selected: " + objType);
         }
     }
 

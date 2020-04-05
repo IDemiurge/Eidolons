@@ -722,6 +722,8 @@ public enum PARAMS implements PARAMETER {
     LUCK_MOD(true, null, "", false, 0, "skills", "armor", "jewelry", "weapons", "units", "chars", "perks"),
     LUCK_BONUS(null, "", false, 0, "skills", "armor", "jewelry", "weapons", "units", "chars", "perks"),
 
+
+    ADJUST_COEF("encounters"),
     GROUP_NUMBER("encounters"),
     MAX_GROUP_NUMBER("encounters"),
     MIN_GROUP_NUMBER("encounters"),

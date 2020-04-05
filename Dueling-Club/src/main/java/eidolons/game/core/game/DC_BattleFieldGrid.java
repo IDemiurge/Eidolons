@@ -52,7 +52,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                         }
                     }
                 cellsSet.add(cells[i][j] = new DC_Cell(i, j, game));
-
+                cells[i][j].setVOID(dungeon.getVoidCells().contains(Coordinates.get(i, j)));
             }
         }
 

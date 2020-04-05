@@ -81,6 +81,11 @@ public class LE_ModelManager extends LE_Handler {
 
     }
 
+    public void cut() {
+        copied = new LE_Selection(model.getSelection());
+        getObjHandler().removeSelected();
+
+    }
     public void back() {
         model = modelStack.pop();
         GuiEventManager.trigger(GuiEventType.LE_GUI_RESET);

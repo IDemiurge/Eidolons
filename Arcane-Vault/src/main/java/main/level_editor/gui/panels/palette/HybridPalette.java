@@ -41,7 +41,7 @@ public class HybridPalette extends ClosablePanel implements TabbedPaneListener {
     @Override
     public void switchedTab(Tab tab) {
         table.clearChildren();
-        table.add(tab.getContentTable()).bottom().left().fill().size(400, 700);
+        table.add(tab.getContentTable()).fill();
         tab.getContentTable().act(0);
     }
 

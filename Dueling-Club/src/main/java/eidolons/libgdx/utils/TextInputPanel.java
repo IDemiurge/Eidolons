@@ -84,7 +84,9 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
     @Override
     public void open() {
         fadeIn();
-        tf.setText("Input something...");
+//        if (tf.getText().isEmpty()) {
+//            tf.setText("Input something...");
+//        }
     }
 
     @Override

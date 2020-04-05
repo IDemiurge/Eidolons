@@ -44,6 +44,9 @@ public class FloorLoader extends DungeonHandler<Location> {
     public static final String LAYERS = "LAYERS";
     public static final String MISSING = "Missing";
 
+    public static final String COORDINATE_DATA = "COORDINATE_DATA";
+    public static final String COORDINATES_VOID = "coordinates_void";
+
     public FloorLoader(DungeonMaster<Location> master) {
         super(master);
     }
@@ -51,6 +54,10 @@ public class FloorLoader extends DungeonHandler<Location> {
 
     public void processNode(Node node, Location location) {
         switch (node.getNodeName()) {
+            case COORDINATES_VOID:
+                for (String substring : ContainerUtils.openContainer(node.getTextContent())) {
+                    location.getDungeon().getVoidCells().add(Coordinates.get(substring));
+                }
             case MODULES:
                 new StructureBuilder(master).build(node, location);
                 break;
@@ -132,13 +139,16 @@ public class FloorLoader extends DungeonHandler<Location> {
         Map<Integer, ObjType> idMap = new LinkedHashMap<>();
         textContent = textContent.trim();
         for (String content : ContainerUtils.openContainer(textContent)) {
-            Integer id = Integer.valueOf(content.split("=")[0]);
-            String typeName = content.split("=")[1];
+            String typeName = content.split("=")[0];
             ObjType type = DataManager.getType(typeName, DC_TYPE.BF_OBJ);
             if (type == null) {
                 type = DataManager.getType(typeName, DC_TYPE.UNITS);
             }
-            idMap.put(id, type);
+            String ids = content.split("=")[1];
+            for (String substring : ContainerUtils.openContainer(ids, ",")) {
+                Integer id = Integer.valueOf(substring);
+                idMap.put(id, type);
+            }
         }
         return idMap;
     }

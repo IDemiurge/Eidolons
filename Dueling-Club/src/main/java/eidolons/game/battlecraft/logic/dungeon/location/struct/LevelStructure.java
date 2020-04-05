@@ -24,7 +24,6 @@ public class LevelStructure {
 
         public StructureData(S structure) {
             this.structure = structure;
-            relevantValues = getRelevantValues();
             init();
         }
 
@@ -35,7 +34,7 @@ public class LevelStructure {
         @Override
         public String[] getRelevantValues() {
             return Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
-                    collect(Collectors.toSet()).toArray(new String[0]);
+                    collect(Collectors.toList()).toArray(new String[0]);
         }
 
         public S getStructure() {
@@ -54,6 +53,15 @@ public class LevelStructure {
         }
     }
 
+    public enum ZONE_VALUE {
+        name,
+        id,
+        illumination,
+        style,
+        color_theme,
+        ambience,
+
+    }
     public enum BLOCK_VALUE implements EditableValue {
         name(),
         origin(),

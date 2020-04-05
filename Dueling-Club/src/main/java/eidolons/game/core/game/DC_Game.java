@@ -513,7 +513,7 @@ public class DC_Game extends GenericGame {
         getMaster().removeUnit(unit);
     }
 
-    public Set<Obj> getCells() {
+    public Set<DC_Cell> getCells() {
         return getMaster().getCells();
     }
 

@@ -33,6 +33,9 @@ public class LE_KeyHandler extends LE_Handler {
                 case Input.Keys.C:
                     LevelEditor.getCurrent().getManager().getModelManager().copy();
                     break;
+                case Input.Keys.X:
+                    LevelEditor.getCurrent().getManager().getModelManager().cut();
+                    break;
                 case Input.Keys.V:
                     LevelEditor.getCurrent().getManager().getModelManager().paste();
                     break;
@@ -61,20 +64,11 @@ public class LE_KeyHandler extends LE_Handler {
             case Input.Keys.ENTER:
                 LE_Screen.getInstance().getGuiStage().getDialog().ok();
                 //approve dialogue?
-
             case Input.Keys.SPACE:
-
+                getCameraHandler().centerOnSelection();
                 //camera?
-
         }
         }
-        //hold down:
-        /*
-        apply view mode
-        toggle layer
-        toggle mouse mode
-
-         */
 
     public void keyTyped(char character) {
         boolean alt = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) ||

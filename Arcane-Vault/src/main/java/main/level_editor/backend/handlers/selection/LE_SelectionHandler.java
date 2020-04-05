@@ -30,11 +30,11 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
     public Set<Coordinates> selectArea() {
         mode = SELECTION_MODE.AREA;
 
-        EUtils.info("Select area corner coordinate...");
+        EUtils.infoPopup("Select area corner coordinate...");
         Coordinates c1 =
                 (Coordinates) WaitMaster.waitForInput(LE_MouseHandler.SELECTION_OPERATION);
         Coordinates c2 = selectCoordinate();
-        return new LinkedHashSet<>(CoordinatesMaster.getCoordinatesBetween(c1, c2));
+        return new LinkedHashSet<>(CoordinatesMaster.getCoordinatesBetweenWithOffset(c1, c2));
     }
 
     public LE_Selection getSelection() {
@@ -128,7 +128,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
 
     public void addAreaToSelectedCoordinates(Coordinates c) {
         Coordinates origin = getSelection().getCoordinates().iterator().next();
-        getSelection().getCoordinates().addAll(CoordinatesMaster.getCoordinatesBetween(c, origin));
+        getSelection().getCoordinates().addAll(CoordinatesMaster.getCoordinatesBetweenWithOffset(c, origin));
         selectionChanged();
         getModelManager().modelChanged();
     }
@@ -152,7 +152,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
 
     public Coordinates selectCoordinate() {
         mode = SELECTION_MODE.COORDINATE;
-        EUtils.info("Select coordinate...");
+        EUtils.infoPopup("Select coordinate...");
         Coordinates c = (Coordinates) WaitMaster.waitForInput(LE_MouseHandler.SELECTION_OPERATION);
         downgradeMode();
         return c;

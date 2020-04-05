@@ -53,6 +53,8 @@ public class GenericGuiStage extends StageX {
                         ? new CustomSpriteBatch()
                         : batch);
 
+        initTooltipsAndMisc();
+
         GuiEventManager.bind(GuiEventType.SHOW_INFO_TEXT, p -> {
             if (p.get() == null) {
                 hideTooltip(infoTooltip, 1f);

@@ -4,11 +4,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 
 public class TopPanel extends TablePanelX {
-    FunctionsPanel functionsPanel;
     MenuPanel menuPanel;
-    ModesPanel modesPanel;
-    EditPanel editPanel;
-    InfoPanel infoPanel;
 
     public TopPanel(){
 //        functionsPanel = new FunctionsPanel();

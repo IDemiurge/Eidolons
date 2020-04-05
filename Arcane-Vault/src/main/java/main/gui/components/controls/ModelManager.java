@@ -104,7 +104,6 @@ public class ModelManager {
         for (FACTION u : FACTION.values()) {
             ObjType newType = new ObjType();
             ArcaneVault.getGame().initType(newType);
-            newType.setProperty(PROPS.UNIT_POOL, u.getUnits());
             newType.setProperty(PROPS.UNIT_TYPES, u.getUnits());
             newType.setProperty(G_PROPS.NAME, u.toString());
             newType.setProperty(G_PROPS.TYPE, MACRO_OBJ_TYPES.FACTIONS.toString());

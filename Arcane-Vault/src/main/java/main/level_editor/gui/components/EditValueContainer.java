@@ -5,9 +5,10 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.libgdx.gui.generic.ValueContainer;
 
 public class EditValueContainer extends ValueContainer {
+    private static int max_length=15;
     /*
-    default listeners?
-     */
+        default listeners?
+         */
     Object edit_arg; //default path, number limit, enum class
     LevelStructure.EDIT_VALUE_TYPE type;
 
@@ -18,7 +19,14 @@ public class EditValueContainer extends ValueContainer {
     }
 
     private static String getString(Object value) {
-        return value instanceof String ? (String) value : null;
+        return value instanceof String ? formatString(value.toString()) : null;
+    }
+
+    private static String formatString(String toString) {
+        if (toString.length()>max_length) {
+            return toString.substring(0, max_length) + "...";
+        }
+        return toString;
     }
 
     private static TextureRegion getTexture(Object value) {

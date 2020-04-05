@@ -32,7 +32,7 @@ public class LevelEditor {
     private static final String VERSION = "0.01";
     public static Window.WindowStyle windowStyle;
     private static boolean campaignMode;
-    public  static final boolean TEST_MODE = true;
+    public  static final boolean TEST_MODE = false;
 
     public static void main(String[] args) {
         CoreEngine.setLevelEditor(true);

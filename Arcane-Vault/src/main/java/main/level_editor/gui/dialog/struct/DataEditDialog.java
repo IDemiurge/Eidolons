@@ -1,15 +1,17 @@
-package main.level_editor.gui.dialog;
+package main.level_editor.gui.dialog.struct;
 
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.libgdx.utils.GdxDialogMaster;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.components.DataTable;
+import main.level_editor.gui.dialog.EditDialog;
 import main.system.data.DataUnit;
 
 public abstract class DataEditDialog<T extends DataUnit> extends EditDialog<DataTable.DataPair> {
 
-    T data;
+    protected T data;
+    protected T cached;
 
     public DataEditDialog(int size) {
         super(size);
@@ -25,6 +27,7 @@ public abstract class DataEditDialog<T extends DataUnit> extends EditDialog<Data
                 break;
         }
         data.setValue(item.name, stringValue);
+        setUpdateRequired(true);
     }
 
     private String string(Object value) {
@@ -57,22 +60,24 @@ public abstract class DataEditDialog<T extends DataUnit> extends EditDialog<Data
 
     @Override
     public void setUserObject(Object userObject) {
-        if (data != null)
-            LevelEditor.getManager().operation(Operation.LE_OPERATION.SAVE_STRUCTURE,
-                    createDataCopy());
         super.setUserObject(userObject);
-        data = (T) userObject;
+        cached =(T) userObject;
+        data =createDataCopy(cached);
+
         show();
     }
 
     @Override
     public void ok() {
-        LevelEditor.getManager().getOperationHandler().execute(Operation.LE_OPERATION.SAVE_STRUCTURE,
-                createDataCopy());
+        LevelEditor.getManager().getOperationHandler().execute(Operation.LE_OPERATION.MODIFY_STRUCTURE,
+                cached);
+        apply(data);
         super.ok();
     }
 
-    protected abstract T createDataCopy();
+    protected abstract void apply(T data);
+
+    protected abstract T createDataCopy(T userObject);
 
 
     @Override

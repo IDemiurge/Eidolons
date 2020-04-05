@@ -63,7 +63,7 @@ public class AiBehaviorManager extends AiHandler {
         //            units = units.stream().filter(unit -> unit.isAiControlled()).
         //             sorted(
         //             SortMaster.getObjSorterByExpression(obj -> obj.getCoordinates().
-        //              dst(Eidolons.getMainHero().getCoordinates()))).collect(Collectors.toSet()) ;
+        //              dst(Eidolons.getMainHero().getCoordinates()))).collect(Collectors.toCollection(LinkedHashSet::new)) ;
         //            for (Unit unit : new HashSet<>(units)) {
         //                units.addAll(unit.getAI().getGroup().getMembers());
         //            }
@@ -142,9 +142,7 @@ public class AiBehaviorManager extends AiHandler {
     }
 
     private boolean isUpdated(UnitExploreAI ai, AiBehavior behavior) {
-        if (ai.isBehaviorOff())
-            return false;
-        return true;
+        return !ai.isBehaviorOff();
     }
 
     public DequeImpl<ActionInput> getAiActionQueue() {

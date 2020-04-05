@@ -71,10 +71,10 @@ public class RngLevelInitializer {
         ROOM_CELL[][] cells = TileMapper.getCells(map);
         for (LevelZone zone : level.getSubParts()) {
             for (LevelBlock block : zone.getSubParts()) {
-                int w = CoordinatesMaster.getWidth(block.getCoordinatesList());
-                int h = CoordinatesMaster.getHeight(block.getCoordinatesList());
+                int w = CoordinatesMaster.getWidth(block.getCoordinatesSet());
+                int h = CoordinatesMaster.getHeight(block.getCoordinatesSet());
                 Map<Coordinates, ROOM_CELL> cellMap = new LinkedHashMap<>();
-                for (Coordinates coordinates : block.getCoordinatesList()) {
+                for (Coordinates coordinates : block.getCoordinatesSet()) {
                     try {
                         cellMap.put(coordinates, cells[coordinates.x][coordinates.y]);
                     } catch (Exception e) {
@@ -87,7 +87,7 @@ public class RngLevelInitializer {
                 block.setWidth(w);
                 block.setHeight(h);
                 block.setOrigin(CoordinatesMaster.
-                        getUpperLeftCornerCoordinates(block.getCoordinatesList()));
+                        getUpperLeftCornerCoordinates(block.getCoordinatesSet()));
             }
         }
     }

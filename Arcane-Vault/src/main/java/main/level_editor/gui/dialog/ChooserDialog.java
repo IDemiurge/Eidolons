@@ -6,12 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
+import eidolons.libgdx.texture.Images;
 import main.system.threading.WaitMaster;
 
 import java.util.Arrays;
@@ -64,6 +66,9 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
         if (isInstaOk()) {
             return;
         }
+        row();
+
+        addNormalSize(new ImageContainer(Images.SEPARATOR_ALT)).center().colspan(2).padBottom(10) ;
         row();
         addNormalSize(new SmartButton(ButtonStyled.STD_BUTTON.OK, () -> ok())).left() ;
         addNormalSize(new SmartButton(ButtonStyled.STD_BUTTON.CANCEL, () -> cancel())).right();

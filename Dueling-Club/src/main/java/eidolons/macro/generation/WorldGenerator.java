@@ -1,7 +1,5 @@
 package eidolons.macro.generation;
 
-import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.screens.map.town.navigation.data.NavigationMaster;
@@ -17,17 +15,13 @@ import eidolons.macro.map.Route;
 import eidolons.macro.map.area.Area;
 import main.content.DC_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
-import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.data.PlayerData.ALLEGIENCE;
-import main.system.graphics.ColorManager.FLAG_COLOR;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +39,6 @@ public class WorldGenerator {
         game = ref.getGame();
         world = new World(ref.getGame(), wType, ref);
         ref.getGame().setWorld(world);
-        generateFactions();
         world.setRegions(generateRegions(ref));
 
 //        FactionMaster.generateFactions(ref);
@@ -115,26 +108,26 @@ public class WorldGenerator {
     }
 
     private static void generateFactions() {
-        for (String sub : ContainerUtils.openContainer(world.getProperty(MACRO_PROPS.FACTIONS))) {
-            boolean me = world.checkProperty(MACRO_PROPS.PLAYER_FACTION, sub);
-            ObjType type = DataManager.getType(sub, MACRO_OBJ_TYPES.FACTIONS);
-            if (type == null) {
-                type = new ObjType(sub, MACRO_OBJ_TYPES.FACTIONS);
-            }
-            FLAG_COLOR color =
-             new EnumMaster<FLAG_COLOR>().retrieveEnumConst
-              (FLAG_COLOR.class, type.getProperty(PROPS.FLAG_COLOR));
-            if (color == null)
-                color = FLAG_COLOR.BROWN;
-            DC_Player player = new DC_Player(sub, color,
-             type.getProperty(G_PROPS.EMBLEM), type.getProperty(G_PROPS.IMAGE),
-             me ? ALLEGIENCE.ALLY : ALLEGIENCE.ENEMY);
-
-            Faction faction = new Faction(type, player);
-            game.addFaction(faction);
-            if (me)
-                game.setPlayerFaction(faction);
-        }
+//        for (String sub : ContainerUtils.openContainer(world.getProperty(MACRO_PROPS.FACTIONS))) {
+//            boolean me = world.checkProperty(MACRO_PROPS.PLAYER_FACTION, sub);
+//            ObjType type = DataManager.getType(sub, MACRO_OBJ_TYPES.FACTIONS);
+//            if (type == null) {
+//                type = new ObjType(sub, MACRO_OBJ_TYPES.FACTIONS);
+//            }
+//            FLAG_COLOR color =
+//             new EnumMaster<FLAG_COLOR>().retrieveEnumConst
+//              (FLAG_COLOR.class, type.getProperty(PROPS.FLAG_COLOR));
+//            if (color == null)
+//                color = FLAG_COLOR.BROWN;
+//            DC_Player player = new DC_Player(sub, color,
+//             type.getProperty(G_PROPS.EMBLEM), type.getProperty(G_PROPS.IMAGE),
+//             me ? ALLEGIENCE.ALLY : ALLEGIENCE.ENEMY);
+//
+//            Faction faction = new Faction(type, player);
+//            game.addFaction(faction);
+//            if (me)
+//                game.setPlayerFaction(faction);
+//        }
     }
 
     private static ObjType getMacroPartyType(Party party) {

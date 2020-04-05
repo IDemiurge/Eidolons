@@ -41,7 +41,7 @@ public class LE_GridOverlays extends GridOverlaysManager {
         if (LevelEditor.getModel().getBlock() == null) {
             return;
         }
-        boolean block = LevelEditor.getModel().getBlock().getCoordinatesList().contains(cell.getCoordinates());
+        boolean block = LevelEditor.getModel().getBlock().getCoordinatesSet().contains(cell.getCoordinates());
 
         if (block) {
             Color c = LevelEditor.getCurrent().getManager().getStructureManager().

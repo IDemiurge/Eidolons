@@ -113,14 +113,14 @@ public class LE_GameSim extends ScenarioGame {
 
     @Override
     public void battleInit() {
+        dungeonMaster.init();
+        grid = new DC_BattleFieldGrid(getDungeon());
+        battleFieldManager = new DC_BattleFieldManager(this);
+
         Coordinates c = Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
         dummyPC = (Unit) createObject(getDummyType(), c.x, c.y, getPlayer(true),
                 new Ref(LE_GameSim.this));
         Eidolons.setMainHero(dummyPC);
-        dungeonMaster.init();
-        grid = new DC_BattleFieldGrid(getDungeon());
-        battleFieldManager = new DC_BattleFieldManager(this);
-//        dummyPC = createUnit()
     }
 
     private ObjType getDummyType() {

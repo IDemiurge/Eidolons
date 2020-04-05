@@ -1,4 +1,40 @@
-<Floor><Plan><MODULES><Main><DATA>origin:0-0;name:Main;width:0;height:0;</DATA><Zones><Zone><DATA>illumination:0;</DATA><Blocks><Block><DATA>zone:0;origin:0-0;width:0;name:COMMON_ROOM block of Zone #0:null with style null, 2blocks;height:0;room_type:COMMON_ROOM;</DATA><Missing></Missing></Block><Block><DATA>zone:0;origin:0-0;width:0;name:COMMON_ROOM block of Zone #0:null with style null, 2blocks;height:0;room_type:COMMON_ROOM;</DATA><Missing></Missing></Block></Blocks></Zone></Zones></Main></MODULES><ID_MAP>0=Bone Wall;1=Stone Wall;2=Stone Wall;3=Stone Wall;4=Stone Wall;5=Stone Wall;6=Stone Wall;7=Stone Wall;8=Stone Wall;9=Stone Wall;10=Stone Wall;11=Stone Wall;12=Stone Wall;13=Stone Wall;14=Stone Wall;15=Stone Wall;16=Stone Wall;17=Stone Wall;18=Stone Wall;19=Stone Wall;20=Stone Wall;21=Stone Wall;22=Stone Wall;23=Stone Wall;24=Stone Wall;25=Stone Wall;26=Stone Wall;27=Stone Wall;28=Stone Wall;29=Bone Wall;31=Dark Entrance;32=Dark Entrance;33=Elven Lantern;34=Elven Lantern;</ID_MAP><OBJ_IDS>0-0=;6-40=0;9-39=1;9-40=2;9-41=3;9-43=4;9-44=5;9-45=6;10-44=7;11-39=8;11-40=9;11-41=3310;11-43=11;11-44=12;12-40=13;12-41=29;12-44=14;14-40=15;14-44=16;15-39=17;15-40=18;15-41=1934;15-43=20;15-44=21;16-44=22;17-39=23;17-40=24;17-41=25;17-43=26;17-44=27;17-45=28;</OBJ_IDS><OVERLAY_DIRECTIONS>33=DOWN;34=DOWN;</OVERLAY_DIRECTIONS>
+<Floor><Plan><MODULES>
+<Main><DATA>origin:12-23;name:Main;width:9;height:7;</DATA>
+<Zones><Zone><DATA>illumination:10;</DATA><Blocks><Block><DATA>zone:0;origin:0-0;width:0;name:COMMON_ROOM block of Zone #0:null with style null, 6blocks;height:0;room_type:COMMON_ROOM;</DATA><Missing></Missing></Block><Block><DATA>zone:0;origin:10-10;width:10;name:COMMON_ROOM block of Zone #0:null with style null, 6blocks;height:10;room_type:COMMON_ROOM;</DATA><Missing>10-10;10-11;10-12;10-13;10-14;10-15;10-16;10-17;10-18;10-19;11-10;11-11;11-12;11-13;11-14;11-15;11-16;11-17;11-18;11-19;12-10;12-11;12-12;12-13;12-14;12-15;12-16;12-17;12-18;12-19;13-10;13-11;13-12;13-13;13-14;13-15;13-16;13-17;13-18;13-19;14-10;14-11;14-12;14-13;14-14;14-15;14-16;14-17;14-18;14-19;15-10;15-11;15-12;15-13;15-14;15-15;15-16;15-17;15-18;15-19;16-10;16-11;16-12;16-13;16-14;16-15;16-16;16-17;16-18;16-19;17-10;17-11;17-12;17-13;17-14;17-15;17-16;17-17;17-18;17-19;18-10;18-11;18-12;18-13;18-14;18-15;18-16;18-17;18-18;18-19;19-10;19-11;19-12;19-13;19-14;19-15;19-16;19-17;19-18;19-19;</Missing></Block><Block><DATA>zone:0;origin:3-30;width:9;name:TREASURE_ROOM block of Zone #0:null with style null, 6blocks;height:7;room_type:TREASURE_ROOM;</DATA><Missing>3-30;3-31;3-32;3-33;3-34;3-35;3-36;4-30;4-31;4-32;4-33;4-34;4-35;4-36;5-30;5-31;5-32;5-33;5-34;5-35;5-36;6-30;6-31;6-32;6-33;6-34;6-35;6-36;7-30;7-31;7-32;7-33;7-34;7-35;7-36;8-30;8-31;8-32;8-33;8-34;8-35;8-36;9-30;9-31;9-32;9-33;9-34;9-35;9-36;10-30;10-31;10-32;10-33;10-34;10-35;10-36;11-30;11-31;11-32;11-33;11-34;11-35;11-36;</Missing></Block><Block><DATA>zone:0;origin:12-23;width:9;name:COMMON_ROOM block of Zone #0:null with style null, 6blocks;height:7;room_type:COMMON_ROOM;</DATA><Missing>12-23;12-24;12-25;12-26;12-27;12-28;12-29;13-23;14-23;15-23;16-23;17-23;18-23;19-23;20-23;</Missing></Block><Block><DATA>zone:0;origin:20-32;width:5;name:CORRIDOR block of Zone #0:null with style null, 6blocks
+
+X     0| 1| 2| 3| 4| 
+      _______________
+
+0  |   #  #  .  #  #
+1  |   #  #  .  #  #
+2  |   .  .  .  .  .
+3  |   #  #  .  #  #
+4  |   #  #  .  #  #
+
+      _______________
+
+X     0| 1| 2| 3| 4| ;height:5;room_type:CORRIDOR;</DATA><Missing></Missing></Block><Block><DATA>zone:0;origin:24-38;width:7;name:CORRIDOR block of Zone #0:null with style null, 6blocks
+
+X     0| 1| 2| 3| 4| 5| 6| 
+      _____________________
+
+0  |   #  #  #  .  #  #  #
+1  |   #  .  .  .  .  .  #
+2  |   .  .  .  .  .  .  .
+3  |   #  .  #  .  #  .  #
+4  |   #  #  .  .  .  #  #
+
+      _____________________
+
+X     0| 1| 2| 3| 4| 5| 6| ;height:5;room_type:CORRIDOR;</DATA><Missing></Missing></Block></Blocks></Zone><Zone><DATA>illumination:0;</DATA><Blocks></Blocks></Zone></Zones>
+</Main>
+</MODULES>
+<ID_MAP></ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+<DATA_MAPS></DATA_MAPS>
+
+<coordinates_void>8-37;9-36;9-37;</coordinates_void>
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
 <ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
-<TRANSITS><TRANSIT_IDS>31->32;</TRANSIT_IDS><TRANSIT_ONE_END>31->32;</TRANSIT_ONE_END></TRANSITS>
+<TRANSITS><TRANSIT_IDS></TRANSIT_IDS><TRANSIT_ONE_END></TRANSIT_ONE_END></TRANSITS>
 </Plan></Floor>

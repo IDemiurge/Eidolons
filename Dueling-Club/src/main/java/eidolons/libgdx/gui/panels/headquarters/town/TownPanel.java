@@ -77,7 +77,7 @@ public class TownPanel extends TabbedPanel {
             }
         });
         okBtn.setDisabledRunnable(() -> {
-            EUtils.info(tooltip);
+            EUtils.infoPopup(tooltip);
         });
         addActor(hqBtn = new SmartButton("Hero Screen", STD_BUTTON.MENU, () -> openHq()));
         okBtn.addListener(new DynamicTooltip(() -> getDoneTooltip()).getController());

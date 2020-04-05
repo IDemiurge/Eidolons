@@ -93,10 +93,6 @@ public class EditorApp extends GenericLauncher {
     @Override
     public LwjglApplicationConfiguration getConf() {
         LwjglApplicationConfiguration c = super.getConf();
-        if (LevelEditor.TEST_MODE) {
-            c.width = 1;
-            c.height = 1;
-        }
         return c;
     }
 

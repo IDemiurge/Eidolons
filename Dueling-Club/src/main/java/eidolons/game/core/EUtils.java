@@ -48,10 +48,10 @@ public class EUtils {
     public static boolean confirm(String text) {
         return onConfirm(true, text, false, null, true);
     }
-    public static void info(String text, boolean wait, boolean onAnotherThread) {
+    public static void infoPopup(String text, boolean wait, boolean onAnotherThread) {
         onConfirm(wait, text, false, null, onAnotherThread);
     }
-    public static void info(String text) {
+    public static void infoPopup(String text) {
         onConfirm(text, false, null);
     }
 

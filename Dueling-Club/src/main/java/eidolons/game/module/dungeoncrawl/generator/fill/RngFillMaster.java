@@ -238,7 +238,7 @@ public class RngFillMaster {
             }
             List<Coordinates> list = new ArrayList<>();
             for (LevelBlock block : zone.getSubParts()) {
-                list.addAll(block.getCoordinatesList());
+                list.addAll(block.getCoordinatesSet());
             }
             Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection(DIRECTION.UP_LEFT, list);
             int w = CoordinatesMaster.getWidth(list);

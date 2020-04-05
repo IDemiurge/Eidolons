@@ -29,7 +29,7 @@ public class ClosablePanel extends TablePanelX {
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 super.exit(event, x, y, pointer, toActor);
-                if (GdxMaster.getAncestors(toActor).contains(this)) {
+                if (GdxMaster.getAncestors(toActor).contains(ClosablePanel.this)) {
                     return;
                 }
                 getStage().unfocusAll();

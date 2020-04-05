@@ -197,7 +197,7 @@ public class PatrolMaster {
         Coordinates c;
         if (patrol.getBlock() != null) {
             c = CoordinatesMaster.getFarmostCoordinateInDirection(d,     new ArrayList<>(  patrol.getBlock()
-             .getCoordinatesList()), prefLessMoreMiddle);
+             .getCoordinatesSet()), prefLessMoreMiddle);
         } else {
             if (distance == null) {
                 distance = WanderAiMaster.getMaxWanderTotalDistance(patrol.getGroup(),
@@ -206,7 +206,7 @@ public class PatrolMaster {
             }
             if (distance == null) {
                 c = CoordinatesMaster.getFarmostCoordinateInDirection(d,     new ArrayList<>( patrol.getBlock()
-                 .getCoordinatesList()), prefLessMoreMiddle);
+                 .getCoordinatesSet()), prefLessMoreMiddle);
             }
             c = patrol.getLeadingUnit().getCoordinates();
             Integer offsetX = distance;
