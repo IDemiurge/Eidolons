@@ -7,6 +7,7 @@ import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
 import main.level_editor.backend.functions.mapping.LE_MapHandler;
 import main.level_editor.backend.functions.mapping.LE_ModuleHandler;
+import main.level_editor.backend.functions.mapping.LE_TransitHandler;
 import main.level_editor.backend.functions.mouse.LE_MouseHandler;
 import main.level_editor.backend.functions.palette.PaletteHandlerImpl;
 import main.level_editor.backend.handlers.LE_EditHandler;
@@ -140,6 +141,10 @@ public class LE_Handler {
 
     public LE_AdvFuncs getAdvFuncs() {
         return manager.getAdvFuncs();
+    }
+
+    public LE_TransitHandler getTransitHandler() {
+        return manager.getTransitHandler();
     }
 
     public LE_MapHandler getMapHandler() {

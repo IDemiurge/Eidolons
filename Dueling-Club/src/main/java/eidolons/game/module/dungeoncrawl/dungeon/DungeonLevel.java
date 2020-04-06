@@ -11,7 +11,6 @@ import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.test.LevelStats;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
-import eidolons.libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
@@ -463,10 +462,10 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         if (img == null) {
             DUNGEON_STYLE style = block == null ? getMainStyle() : block.getZone().getStyle();
             img = getCellImageType(style);
-            if (!TextureCache.isImage(StrPathBuilder.build(PathFinder.getCellImagesPath(), img + ".png"))) {
-                style = getMainStyle();
-                img = getCellImageType(style);
-            }
+//           TODO  if (!TextureCache.isImage(StrPathBuilder.build(PathFinder.getCellImagesPath(), img + ".png"))) {
+//                style = getMainStyle();
+//                img = getCellImageType(style);
+//            }
             cellTypeMap.put(block, img);
         }
         return img;

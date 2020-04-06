@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.MO
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Module;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.StringMaster;
 
 public class ModuleData extends LevelStructure.StructureData<MODULE_VALUE, LE_Module> {
 
@@ -26,6 +27,7 @@ public class ModuleData extends LevelStructure.StructureData<MODULE_VALUE, LE_Mo
     @Override
     public void apply() {
         Module module = getStructure().getModule();
+        module.setData(this);
         for (MODULE_VALUE value : MODULE_VALUE.values()) {
             String val = getValue(value);
             switch (value) {
@@ -39,7 +41,8 @@ public class ModuleData extends LevelStructure.StructureData<MODULE_VALUE, LE_Mo
                     module.setHeight(getIntValue(value));
                     break;
                 case origin:
-                    module.setOrigin(Coordinates.get(getValue(MODULE_VALUE.origin)));
+                    if (!StringMaster.isEmpty( getValue(MODULE_VALUE.origin)))
+                         module.setOrigin(Coordinates.get(getValue(MODULE_VALUE.origin)));
                     break;
             }
         }

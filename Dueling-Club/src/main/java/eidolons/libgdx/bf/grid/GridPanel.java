@@ -406,14 +406,19 @@ public abstract class GridPanel extends Group {
             }
             views.forEach(gridCellContainer::addActor);
         }
-
-        shadowMap = new ShadowMap(this);
-        addActor(shadowMap);
+        if (isShadowMapOn()) {
+            shadowMap = new ShadowMap(this);
+            addActor(shadowMap);
+        }
         wallMap = new WallMap();
         addActor(wallMap);
 
         WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.GUI_READY, true);
         WaitMaster.markAsComplete(WaitMaster.WAIT_OPERATIONS.GUI_READY);
+    }
+
+    protected boolean isShadowMapOn() {
+        return true;
     }
 
     protected boolean isVisibleByDefault(BattleFieldObject battleFieldObject) {
@@ -567,8 +572,9 @@ public abstract class GridPanel extends Group {
         wallMap.setVisible(WallMap.isOn());
         wallMap.setZIndex(Integer.MAX_VALUE);
 
-
-        shadowMap.setZIndex(Integer.MAX_VALUE);
+        if (shadowMap != null) {
+            shadowMap.setZIndex(Integer.MAX_VALUE);
+        }
 
         customOverlayingObjects.forEach(obj -> {
             obj.setZIndex(Integer.MAX_VALUE);

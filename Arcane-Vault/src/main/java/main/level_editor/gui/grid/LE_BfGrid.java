@@ -26,6 +26,11 @@ public class LE_BfGrid extends GridPanel {
     }
 
     @Override
+    protected boolean isShadowMapOn() {
+        return false;
+    }
+
+    @Override
     protected void resetVisible() {
         super.resetVisible();
         for (BattleFieldObject battleFieldObject : viewMap.keySet()) {

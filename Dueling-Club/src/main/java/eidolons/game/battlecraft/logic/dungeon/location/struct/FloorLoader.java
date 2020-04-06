@@ -60,6 +60,7 @@ public class FloorLoader extends DungeonHandler<Location> {
                 }
             case MODULES:
                 new StructureBuilder(master).build(node, location);
+                checkModuleRemap();
                 break;
             case DATA_MAPS:
                 Map<DataMap, Map<Integer, String>> map = new LinkedHashMap<>();
@@ -107,6 +108,9 @@ public class FloorLoader extends DungeonHandler<Location> {
                 break;
         }
 
+    }
+
+    protected void checkModuleRemap() {
     }
 
     protected void initTransits(String textContent, Location location) {

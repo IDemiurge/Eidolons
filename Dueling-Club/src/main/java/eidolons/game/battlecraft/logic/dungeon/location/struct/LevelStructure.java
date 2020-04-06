@@ -105,8 +105,13 @@ public class LevelStructure {
         width,
         height,
         origin,
-        zones,
-        replace_default,
+
+        border_width,
+        border_type,
+
+        width_buffer,
+        height_buffer,
+
         default_wall,
         default_style,
 
@@ -117,10 +122,7 @@ public class LevelStructure {
         default_pillar_type,
         default_shard_type,
 
-        irregular_border,
-        border_wall,
-        border_wall_type,
-        border_void, tile_map, layer_data,
+        tile_map, layer_data,
 
 //        entrance, tile_map, layer_data,
 
@@ -128,11 +130,17 @@ public class LevelStructure {
 
 
     }
+    public enum BORDER_TYPE {
+        wall,
+        chism,
+        irregular,
+        wall_and_chism,
+        //obj type name for custom
+    }
 
     public enum FLOOR_VALUES {
 
     }
-
     public enum QUEST_DUNGEON_VALUES {
 
     }

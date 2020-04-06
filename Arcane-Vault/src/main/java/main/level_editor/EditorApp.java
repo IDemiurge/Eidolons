@@ -28,7 +28,7 @@ public class EditorApp extends GenericLauncher {
     protected void screenSwitcher(ScreenData newMeta) {
         switch (newMeta.getType()) {
             case EDITOR_WELCOME:
-                switchScreen(LE_WaitingScreen::new, newMeta);
+                switchScreen(LE_WaitingScreen::getInstance, newMeta);
                 break;
             case EDITOR:
                 Supplier<ScreenWithLoader> fac = LE_Screen.getScreen((Floor) newMeta.getParameter());
@@ -67,7 +67,7 @@ public class EditorApp extends GenericLauncher {
 //            // ???
 //        } else
         {
-            LE_WaitingScreen newScreen = new LE_WaitingScreen();
+            LE_WaitingScreen newScreen =LE_WaitingScreen.getInstance();
             ScreenData meta = new ScreenData(SCREEN_TYPE.EDITOR_WELCOME, "Welcome!");
             newScreen.initLoadingStage(meta);
             setScreen(newScreen);
@@ -78,6 +78,8 @@ public class EditorApp extends GenericLauncher {
     }
 
     private void load() {
+        LE_WaitingScreen.getInstance();
+
         Eidolons.onNonGdxThread(() -> {
             DC_Engine.dataInit();
 //            DC_Engine.dataInit(true);

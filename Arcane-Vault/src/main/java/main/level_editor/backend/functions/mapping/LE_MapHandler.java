@@ -1,91 +1,80 @@
 package main.level_editor.backend.functions.mapping;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.core.EUtils;
-import main.data.xml.XML_Converter;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
+import main.system.datatypes.DequeImpl;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class LE_MapHandler extends LE_Handler {
 
+    public static final int DEFAULT_MAX_WIDTH = 100;
+    public static final int DEFAULT_MAX_HEIGHT = 100;
     private Coordinates offset;
     private Coordinates previousOffset;
 
-    private Map<Integer, Integer> moduleTransitMap = new LinkedHashMap<>(); //entrance obj to entrance obj
-    private List<Integer> oneWayExits = new LinkedList<>();
-    private Integer addingExitFor;
 
 
     public LE_MapHandler(LE_Manager manager) {
         super(manager);
     }
 
-    @Override
-    public void afterLoaded() {
-        super.afterLoaded();
-    }
+    public void initModuleSize(Module module) {
+//        Set<BattleFieldObject> objects = getObjects(module);
+        //non-block objects?!
 
-    public void addTransit(Integer id, Integer id2) {
-        moduleTransitMap.put( id, id2);
+        Collection<Coordinates> coordinates = new ArrayList<>();
+        for (LevelZone zone : module.getZones()) {
+            for (LevelBlock subPart : zone.getSubParts()) {
+                coordinates.addAll(subPart.getCoordinatesSet());
 
-    }
-    public String getXml() {
-        StringBuilder xmlBuilder = new StringBuilder();
-        StringBuilder builder = new StringBuilder();
-        for (Integer integer : moduleTransitMap.keySet()) {
-            //should we support random/multi?
-            builder.append(integer).append("->").append(moduleTransitMap.get(integer)).append(";");
+            }
+
         }
-        xmlBuilder.append(XML_Converter.wrap(FloorLoader.TRANSIT_IDS, builder.toString()));
+        int w = CoordinatesMaster.getWidth(coordinates);
+        int h = CoordinatesMaster.getHeight(coordinates);
+//        padding
 
-        for (Integer integer : oneWayExits) {
-            builder.append(integer).append(";");
-        }
-        xmlBuilder.append(XML_Converter.wrap(FloorLoader.TRANSIT_ONE_END, builder.toString()));
-
-        return
-                XML_Converter.wrap(FloorLoader.TRANSITS, xmlBuilder.toString());
+        module.getData().setValue(LevelStructure.MODULE_VALUE.width, w);
+        module.getData().setValue(LevelStructure.MODULE_VALUE.height, h);
     }
 
-    public void entranceRemoved(BattleFieldObject obj) {
-        addingExitFor = null;
-        Integer id = moduleTransitMap.remove(getIdManager().getId(obj));
-        if (id == null) {
-            id = moduleTransitMap.remove(moduleTransitMap.get(getIdManager().getId(obj)));
-        }
-        entranceAdded(getIdManager().getObjectById(id));
+    public Coordinates getModulePlacement(Module module) {
+        return null;
     }
 
-    public void entranceAdded(BattleFieldObject obj) {
-        if (addingExitFor != null) {
-            moduleTransitMap.put(addingExitFor, getIdManager().getId(obj));
-            addingExitFor = null;
-            return;
-        }
-        boolean oneWay; //can be altered via trigger scripts}
+    public void reloadAndIncreaseSize() {
 
-        EUtils.infoPopup("Add an exit");
-        addingExitFor = getIdManager().getId(obj);
     }
+
 
     private void offsetChanged() {
+
+        reload();
     /*
     how to do this graphically?
     removeAll(), units_created() ?
     alternative:
     if we always create 100x100 and have max 4 modules each in its corner... and handle them separately...
     will we still need to change offset?
-
      */
 
+    }
+
+    private void reload() {
+        DequeImpl<BattleFieldObject> objects = getGame().getBfObjects();
+        //overlaying?!
+
+//        getObjHandler().removeAll();
+//        getObjHandler().addAll();
     }
 
     public void changeOffset() {
@@ -119,11 +108,6 @@ public class LE_MapHandler extends LE_Handler {
         // sort it so that we offset the farthest is displaced first , by x then by y
     }
 
-    public void remapAll() {
-        Coordinates offset;
-        for (Module module : getModuleHandler().getModules()) {
-            //module should have outer walls and void border
-        }
-    }
+
 
 }

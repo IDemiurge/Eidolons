@@ -30,7 +30,14 @@ public class LE_GridOverlays extends GridOverlaysManager {
 
 
     }
-
+    protected void drawOverlays(Batch batch) {
+        for (int x = 0; x < cells.length; x++) {
+            for (int y = cells[x].length - 1; y >=0 ; y--) {
+                GridCellContainer cell = cells[x][y];
+                drawOverlaysForCell(cell, x, y, batch);
+            }
+        }
+    }
     @Override
     protected void drawOverlaysForCell(GridCellContainer container, int x, int y, Batch batch) {
         DC_Cell cell = Eidolons.getGame().getMaster().getCellByCoordinate(Coordinates.get(x, y));

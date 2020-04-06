@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import main.level_editor.backend.functions.mapping.ModuleGridMapper;
 import main.level_editor.backend.sim.LE_GameSim;
 import org.w3c.dom.Node;
 
@@ -26,8 +27,8 @@ public class LE_DungeonBuilder extends LocationBuilder {
     }
 
     protected void initWidthAndHeight(Location dungeonWrapper) {
-        int w = 45;
-        int h = 45;
+        int w = ModuleGridMapper.maxWidth;
+        int h = ModuleGridMapper.maxHeight;
         dungeonWrapper.getDungeon().setParam(PARAMS.BF_HEIGHT, h);
         dungeonWrapper.getDungeon().setParam(PARAMS.BF_WIDTH, w);
         super.initWidthAndHeight(dungeonWrapper);

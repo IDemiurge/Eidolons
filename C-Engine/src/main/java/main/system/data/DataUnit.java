@@ -136,7 +136,11 @@ public class DataUnit<T extends Enum<T>> {
         if (t == null) {
             return "";
         }
-        return values.get(t.name());
+        String val = values.get(t.name());
+        if (val == null) {
+            return "";
+        }
+        return val;
     }
 
     public String getValue(String name) {

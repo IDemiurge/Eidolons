@@ -22,7 +22,7 @@ public class Module extends LevelLayer<LevelZone> {
     private List<LevelZone> zones;
     ModuleData data;
 
-    public Module(Coordinates origin, int width, int height, String name ) {
+    public Module(Coordinates origin, int width, int height, String name) {
         this.origin = origin;
         this.width = width;
         this.height = height;
@@ -31,6 +31,11 @@ public class Module extends LevelLayer<LevelZone> {
 
     public Module() {
         super();
+    }
+
+    public Module(ModuleData data) {
+        this.data = data;
+        name = data.getValue(LevelStructure.MODULE_VALUE.name);
     }
 
     @Override
@@ -48,11 +53,12 @@ public class Module extends LevelLayer<LevelZone> {
     }
 
     public AMBIENCE getAmbi() {
-        return  new EnumMaster<AMBIENCE>().retrieveEnumConst(AMBIENCE.class,
+        return new EnumMaster<AMBIENCE>().retrieveEnumConst(AMBIENCE.class,
                 data.getValue(LevelStructure.MODULE_VALUE.ambience));
     }
+
     public AMBIENCE_TEMPLATE getVfx() {
-        return  new EnumMaster<AMBIENCE_TEMPLATE>().retrieveEnumConst(AMBIENCE_TEMPLATE.class,
+        return new EnumMaster<AMBIENCE_TEMPLATE>().retrieveEnumConst(AMBIENCE_TEMPLATE.class,
                 data.getValue(LevelStructure.MODULE_VALUE.vfx_template));
     }
 
@@ -76,11 +82,11 @@ public class Module extends LevelLayer<LevelZone> {
     }
 
     public int getX2() {
-        return getX()+getWidth();
+        return getX() + getWidth();
     }
 
     public int getY2() {
-        return getY()+getHeight();
+        return getY() + getHeight();
     }
 
 
@@ -131,7 +137,25 @@ public class Module extends LevelLayer<LevelZone> {
                 "origin=" + origin +
                 ", width=" + width +
                 ", height=" + height +
-                ", zones=" + zones+
+                ", zones=" + zones +
                 ", data=" + data;
+    }
+
+    public int getEffectiveHeight() {
+        if (getData() == null) {
+            return getHeight();
+        }
+        return getHeight() +
+                getData().getIntValue(LevelStructure.MODULE_VALUE.height_buffer) +
+                getData().getIntValue(LevelStructure.MODULE_VALUE.border_width);
+    }
+
+    public int getEffectiveWidth() {
+        if (getData() == null) {
+            return getWidth();
+        }
+        return getWidth() +
+                getData().getIntValue(LevelStructure.MODULE_VALUE.width_buffer) +
+                getData().getIntValue(LevelStructure.MODULE_VALUE.border_width);
     }
 }

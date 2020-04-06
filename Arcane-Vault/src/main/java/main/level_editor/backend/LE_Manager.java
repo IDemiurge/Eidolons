@@ -6,6 +6,7 @@ import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
 import main.level_editor.backend.functions.mapping.LE_MapHandler;
 import main.level_editor.backend.functions.mapping.LE_ModuleHandler;
+import main.level_editor.backend.functions.mapping.LE_TransitHandler;
 import main.level_editor.backend.functions.mouse.LE_MouseHandler;
 import main.level_editor.backend.functions.palette.PaletteHandlerImpl;
 import main.level_editor.backend.handlers.LE_EditHandler;
@@ -54,6 +55,7 @@ public class LE_Manager {
     private PaletteHandlerImpl paletteHandler;
     private LE_MapHandler mapHandler;
     private Set<LE_Handler> handlers= new LinkedHashSet<>();
+    private LE_TransitHandler transitHandler;
 
     public LE_Manager(Floor floor) {
         this.floor = floor;        
@@ -78,6 +80,7 @@ public class LE_Manager {
         handlers.add( scriptHandler = new LE_ScriptHandler(this));
         handlers.add(layerHandler = new LayerHandlerImpl(this));
         handlers.add(  mapHandler = new LE_MapHandler(this));
+        handlers.add(  transitHandler = new LE_TransitHandler(this));
 //        layerHandler = new IRngHandler(this);
     }
 
@@ -189,6 +192,10 @@ public class LE_Manager {
 
     public Set<LE_Handler> getHandlers() {
                 return handlers;
+    }
+
+    public LE_TransitHandler getTransitHandler() {
+        return transitHandler;
     }
 
 }

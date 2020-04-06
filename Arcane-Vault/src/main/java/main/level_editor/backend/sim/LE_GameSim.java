@@ -20,7 +20,6 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.level_editor.backend.sim.impl.LE_DungeonMaster;
-import org.mockito.Mockito;
 
 import java.util.Map;
 
@@ -47,7 +46,7 @@ public class LE_GameSim extends ScenarioGame {
 
     @Override
     protected DC_KeyManager createKeyManager() {
-        return Mockito.mock(DC_KeyManager.class);
+        return null ;
     }
 
     @Override

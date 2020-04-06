@@ -39,7 +39,7 @@ public class LE_ObjHandler extends LE_Handler {
         getGame().softRemove(bfObj);
         getAiHandler().removed(bfObj);
         if (EntityCheckMaster.isEntrance(bfObj)) {
-            getMapHandler().entranceRemoved(bfObj);
+            getTransitHandler().entranceRemoved(bfObj);
         }
         GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, bfObj);
 
@@ -54,11 +54,14 @@ public class LE_ObjHandler extends LE_Handler {
                 c);
     }
 
-    protected BattleFieldObject addObj(ObjType objType, int gridX, int gridY) {
+    public BattleFieldObject addObjIgnoreWrap(ObjType objType, int gridX, int gridY) {
+        return  addObj(objType, gridX, gridY) ;
+    }
+        protected BattleFieldObject addObj(ObjType objType, int gridX, int gridY) {
         BattleFieldObject bfObj = getGame().createObject(objType, gridX, gridY, DC_Player.NEUTRAL);
         getAiHandler().objectAdded(bfObj);
         if (EntityCheckMaster.isEntrance(bfObj)) {
-            getMapHandler().entranceAdded(bfObj);
+            getTransitHandler().entranceAdded(bfObj);
         }
         return bfObj;
         //TODO Player!!!

@@ -13,8 +13,14 @@ public class LE_WaitingScreen extends ScreenWithLoader {
     FadeImageContainer background;
     Stage stage;
 
+    private LE_WaitingScreen() {
+        stage = new Stage();
+    }
+
     public static LE_WaitingScreen getInstance() {
+        main.system.auxiliary.log.LogMaster.log(1,"getInstance " );
         if (instance == null) {
+            main.system.auxiliary.log.LogMaster.log(1,"create Instance " );
             instance = new LE_WaitingScreen();
         }
         return instance;
@@ -33,7 +39,6 @@ public class LE_WaitingScreen extends ScreenWithLoader {
     @Override
     public void initLoadingStage(ScreenData meta) {
         super.initLoadingStage(meta);
-        stage = new Stage();
 //        background = new FadeImageContainer();
 //        stage.addActor(background);
 //        background.setImage(DungeonEnums.MAP_BACKGROUND.BASTION.getBackgroundFilePath());
