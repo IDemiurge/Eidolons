@@ -17,6 +17,11 @@ public class LE_Zone  implements LayeredData<LE_Block> {
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
+    @Override
+    public Object getLevelLayer() {
+        return getZone();
+    }
+
     public LevelZone getZone() {
         return zone;
     }

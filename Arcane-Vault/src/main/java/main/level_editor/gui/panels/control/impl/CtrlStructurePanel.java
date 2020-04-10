@@ -1,4 +1,4 @@
-package main.level_editor.gui.panels.control.structure;
+package main.level_editor.gui.panels.control.impl;
 
 import main.level_editor.backend.handlers.structure.IStructureHandler;
 import main.level_editor.gui.panels.control.LE_ControlPanel;
@@ -22,7 +22,7 @@ public class CtrlStructurePanel extends LE_ControlPanel<IStructureHandler> {
 
     @Override
     protected int getWrap() {
-        return 6;
+        return 5;
     }
 
     @Override

@@ -1,15 +1,15 @@
 package main.level_editor.backend.struct.boss;
 
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
 import main.data.tree.LayeredData;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
-import main.level_editor.backend.struct.level.Floor;
 
 import java.util.Set;
 
-public class BossDungeon extends LightweightEntity implements LayeredData<Floor> {
+public class BossDungeon extends LightweightEntity implements LayeredData<LE_Floor> {
 
-    Set<Floor> floors;
+    Set<LE_Floor> floors;
 
     public BossDungeon(ObjType type) {
         super(type);
@@ -22,12 +22,12 @@ public class BossDungeon extends LightweightEntity implements LayeredData<Floor>
 
      */
 
-    public Set<Floor> getFloors() {
+    public Set<LE_Floor> getFloors() {
         return floors;
     }
 
     @Override
-    public Set<Floor> getChildren() {
+    public Set<LE_Floor> getChildren() {
         return getFloors();
     }
 }

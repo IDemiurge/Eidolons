@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
@@ -371,8 +372,9 @@ public class RngMainSpawner {
         // control fill level
 
         //N per groupType, or? at least preferred, min/max
+        for (Module module : level.getSubParts()) {
         zones:
-        for (LevelZone zone : level.getSubParts()) {
+            for (LevelZone zone : module.getSubParts()) {
             for (UNIT_GROUP_TYPE groupType : ADDITIONAL_SPAWN_GROUPS) {
                 List<LevelBlock> blocks = getBlocksForSpawn(groupType, zone);
                 if (blocks.isEmpty())
@@ -390,6 +392,7 @@ public class RngMainSpawner {
                     if (checkDone()) {
                         return;
                     }
+                }
                 }
             }
         }

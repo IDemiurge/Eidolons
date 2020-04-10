@@ -3,13 +3,8 @@ package main.level_editor.backend.functions.io;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Block;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Module;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Zone;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
@@ -17,9 +12,9 @@ import main.data.xml.XML_Converter;
 import main.data.xml.XmlStringBuilder;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.struct.boss.BossDungeon;
-import main.level_editor.backend.struct.level.Floor;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.LinkedHashMap;
@@ -32,7 +27,7 @@ public class LE_XmlMaster {
     public static String toXml(BossDungeon dungeon) {
 
         StringBuilder xmlBuilder = new StringBuilder();
-        for (Floor floor : dungeon.getFloors()) {
+        for (LE_Floor floor : dungeon.getFloors()) {
             xmlBuilder.append(toXml(floor));
 
         }
@@ -41,10 +36,13 @@ public class LE_XmlMaster {
         return xmlBuilder.toString();
     }
 
-    public static String toXml(Floor floor) {
+    public static String toXml(LE_Floor floor) {
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
 
         //from old - dungeon params props etc
+
+        xmlBuilder.appendNode((floor).getData().toString(),
+                FloorLoader.DATA);
 
         xmlBuilder.open("Plan");
 
@@ -58,11 +56,11 @@ public class LE_XmlMaster {
         xmlBuilder.close(FloorLoader.MODULES);
 
 
-        xmlBuilder.append("\n").append(buildIdMap(floor));
-        xmlBuilder.append("\n").append(buildCoordinateMap(floor));
+        xmlBuilder.append("\n").append(buildIdMap( ));
+        xmlBuilder.append("\n").append(buildCoordinateMap( ));
 
         xmlBuilder.append("\n").open(FloorLoader.DATA_MAPS);
-        for (LE_Handler handler : floor.getManager().getHandlers()) {
+        for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
             String xml = handler.getDataMapString();
             if (xml.isEmpty()) {
                 continue;
@@ -81,7 +79,7 @@ public class LE_XmlMaster {
         xmlBuilder.close(FloorLoader.COORDINATES_VOID).append("\n");
 //        xmlBuilder.close(FloorLoader.COORDINATE_DATA).append("\n");
 
-        for (LE_Handler handler : floor.getManager().getHandlers()) {
+        for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
             String xml = handler.getXml();
             if (xml.isEmpty()) {
                 continue;
@@ -92,11 +90,12 @@ public class LE_XmlMaster {
         return XML_Converter.wrap("Floor", xmlBuilder.toString()); //name?
     }
 
-    private static String buildCoordinateMap(Floor floor) {
+    private static String buildCoordinateMap( ) {
         StringBuilder builder = new StringBuilder();
-        Map<Integer, BattleFieldObject> map = floor.getGame().getSimIdManager().getObjMap();
-        for (Coordinates c : floor.getGame().getCoordinates()) {
-            Set<BattleFieldObject> set = floor.getGame().getObjectsOnCoordinate(c);
+        Map<Integer, BattleFieldObject> map = LevelEditor.getGame().getSimIdManager().getObjMap();
+        for (Coordinates c : LevelEditor.getGame().getCoordinates()) {
+            Set<BattleFieldObject> set = LevelEditor.getGame().getObjectsOnCoordinate(c);
+            set.removeIf(obj-> obj.isModuleBorder());
             if (set.isEmpty()) {
                 continue;
             }
@@ -115,14 +114,14 @@ public class LE_XmlMaster {
     }
 
     //TODO DC_TYPE ?
-    private static String buildIdMap(Floor floor) {
+    private static String buildIdMap( ) {
         StringBuilder builder = new StringBuilder();
-        Map<Integer, BattleFieldObject> map = floor.getGame().getSimIdManager().getObjMap();
+        Map<Integer, BattleFieldObject> map = LevelEditor.getGame() .getSimIdManager().getObjMap();
         Map<ObjType, List<Integer>> nestedMap = new LinkedHashMap<>();
         for (Integer integer : map.keySet()) {
             try {
                 Integer id =
-                        floor.getGame().getSimIdManager().getId(map.get(integer));
+                        LevelEditor.getGame().getSimIdManager().getId(map.get(integer));
                 ObjType type = map.get(integer).getType();
                 MapMaster.addToListMap(nestedMap, type, id);
             } catch (Exception e) {
@@ -131,7 +130,7 @@ public class LE_XmlMaster {
         }
 
         for (ObjType type : nestedMap.keySet()) {
-            builder.append(type).append("=");
+            builder.append(type.getName()).append("=");
             for (Integer integer : nestedMap.get(type)) {
                 builder.append(integer).append(",");
             }
@@ -149,7 +148,7 @@ public class LE_XmlMaster {
         }
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
         xmlBuilder.append("\n").open(module.getName());
-        xmlBuilder.appendNode(new ModuleData(new LE_Module(module)).toString(),
+        xmlBuilder.appendNode((module).getData() .toString(),
                 FloorLoader.DATA);
         xmlBuilder.append("\n").open("Zones");
         for (LevelZone zone : module.getZones()) {
@@ -163,7 +162,7 @@ public class LE_XmlMaster {
 
     private static String toXml(LevelZone zone) {
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
-        xmlBuilder.appendNode(new ZoneData(new LE_Zone(zone)).toString(),
+        xmlBuilder.appendNode( (zone).getData().toString(),
                 FloorLoader.DATA);
         xmlBuilder.open("Blocks");
         for (LevelBlock block : zone.getSubParts()) {
@@ -177,7 +176,7 @@ public class LE_XmlMaster {
     private static String toXml(LevelBlock block) {
 
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
-        xmlBuilder.appendNode(new BlockData(new LE_Block(block)).toString(),
+        xmlBuilder.appendNode(block.getData().toString(),
                 FloorLoader.DATA);
         int w = block.getWidth();
         int h = block.getHeight();

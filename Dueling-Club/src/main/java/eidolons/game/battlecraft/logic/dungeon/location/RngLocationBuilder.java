@@ -201,7 +201,8 @@ public class RngLocationBuilder extends LocationBuilder {
                         }
                     }
                 }
-                level.getSubParts().add(zone);
+                //DUNGEON LEVEL FIX
+//                level.getSubParts().add(zone);
             } else {
                 String output = processNode(node, level);
                 if (output != null) {
@@ -482,7 +483,7 @@ public class RngLocationBuilder extends LocationBuilder {
                 //                if (subNode.getTextContent().isEmpty()){
                 //              TODO     b.initDefaultCoordinatesList();
                 //                } else
-                b.setCoordinatesList(CoordinatesMaster.
+                b.setCoordinates(CoordinatesMaster.
                         getCoordinatesFromString(subNode.getTextContent()));
             } else if (StringMaster.compareByChar(subNode.getNodeName(), OBJ_NODE)) {
                 for (String s : ContainerUtils.open(subNode.getTextContent())) {

@@ -5,12 +5,12 @@ public class XmlStringBuilder {
 
 
     public XmlStringBuilder close(String nodeName) {
-        builder.append(XML_Converter.closeXml(nodeName));
+        builder.append(XML_Converter.closeXmlFormatted(nodeName));
         return this;
     }
 
     public XmlStringBuilder open(String nodeName) {
-        builder.append(XML_Converter.openXml(nodeName));
+        builder.append(XML_Converter.openXmlFormatted(nodeName));
         return this;
     }
 

@@ -1,25 +1,22 @@
 package main.level_editor.backend.handlers.structure;
 
 import main.level_editor.backend.handlers.ControlButtonHandler;
+import main.level_editor.gui.panels.control.IgnoredCtrlMethod;
 
 public interface IStructureHandler extends ControlButtonHandler {
 
     void addBlock();
-    void insertBlock();
-    void moveBlock();
-    void transformBlock();
-
     void mergeBlock();
-    void removeCellsFromBlock();
-    void addCellsToBlock();
+    @IgnoredCtrlMethod
     void removeBlock();
-
-    void addZone();
-    void updateTree();
-    void removeZone();
+    void insertBlock();
     void assignBlock();
 
-
-
+    @IgnoredCtrlMethod
+    void removeCells();
+    void addCells();
+    void addZone();
+    @IgnoredCtrlMethod
+    void removeZone();
 
 }

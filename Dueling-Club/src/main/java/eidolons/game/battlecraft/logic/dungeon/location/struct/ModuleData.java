@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 
-public class ModuleData extends LevelStructure.StructureData<MODULE_VALUE, LE_Module> {
+public class ModuleData extends StructureData<MODULE_VALUE, LE_Module> {
 
     public ModuleData(LE_Module structure) {
         super(structure);
@@ -18,10 +18,15 @@ public class ModuleData extends LevelStructure.StructureData<MODULE_VALUE, LE_Mo
             return;
         }
         Module module = getStructure().getModule();
-        setValue(MODULE_VALUE.name, module.getName());
-        setValue(MODULE_VALUE.height, module.getHeight());
-        setValue(MODULE_VALUE.width, module.getWidth());
-        setValue(MODULE_VALUE.origin, module.getOrigin());
+        if (module.getData() != null) {
+            setData(module.getData().getData());
+        } else {
+            setValue(MODULE_VALUE.name, module.getName());
+            setValue(MODULE_VALUE.height, module.getHeight());
+            setValue(MODULE_VALUE.width, module.getWidth());
+            setValue(MODULE_VALUE.origin, module.getOrigin());
+        }
+        levelStruct = module;
         //defaults?
     }
     @Override

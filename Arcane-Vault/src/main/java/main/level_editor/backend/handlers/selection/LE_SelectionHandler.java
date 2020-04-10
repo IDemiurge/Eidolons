@@ -17,7 +17,7 @@ import main.system.threading.WaitMaster;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler{
+public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler {
 
     //    LE_Selection previousSelection;
 //    LE_Selection selection;
@@ -113,7 +113,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
         if (getSelection().getIds().isEmpty()) {
             return null;
         }
-        Obj obj = getIdManager().getObjectById(getSelection().getIds().iterator().next());
+        Obj obj = getIdManager().getObjectById((Integer) getSelection().getIds().toArray()[0]);
         return (BattleFieldObject) obj;
     }
 
@@ -127,7 +127,12 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
     }
 
     public void addAreaToSelectedCoordinates(Coordinates c) {
-        Coordinates origin = getSelection().getCoordinates().iterator().next();
+        Coordinates origin = null;
+        if ( getSelection().getCoordinates().isEmpty()) {
+            origin = getSelectionHandler().getObject().getCoordinates();
+        } else {
+            origin = getSelection().getCoordinates().iterator().next();
+        }
         getSelection().getCoordinates().addAll(CoordinatesMaster.getCoordinatesBetweenWithOffset(c, origin));
         selectionChanged();
         getModelManager().modelChanged();

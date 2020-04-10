@@ -18,7 +18,6 @@ import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.sound.SoundMaster;
-import main.system.threading.WaitMaster;
 
 public class FloorManager {
     public static Floor current;
@@ -58,11 +57,10 @@ public class FloorManager {
         String name = meta.getMetaDataManager().getMissionPath();
         name = StringMaster.cropFormat(
                 PathUtils.getLastPathSegment(name));
+
         Floor floor = new Floor(name, game);
         floorSelected(floor);
-        WaitMaster.WAIT(500);
         game.initAndStart();
-
         floor.getManager().load();
         meta.gameStarted();
         floor.getManager().afterLoaded();

@@ -246,24 +246,25 @@ public class DataUnit<T extends Enum<T>> {
     }
 
 
-
-    public String getData(Boolean format) {
-        return getData(values.keySet(), format);
-    }
-
-    public String getData(Set<String> set) {
-        return getData(set, getFormat());
-    }
-
-    // std_alt_map
     public Boolean getFormat() {
         return true;
     }
 
-    public String getData(Set<String> set, Boolean format) {
+    public String getData(Boolean format) {
+        return getData(values.keySet(),
+                DataUnitFactory.getPairSeparator(format),
+                DataUnitFactory.getSeparator(format) );
+    }
+
+    public String getData(Set<String> set) {
+        return getData(set, getPairSeparator(), getSeparator());
+    }
+
+
+    public String getData(Set<String> set, String pairSeparator, String separator  ) {
         StringBuilder data = new StringBuilder();
         for (String v : set) {
-            data.append(v).append(DataUnitFactory.getPairSeparator(format)).append(values.get(v)).append(DataUnitFactory.getSeparator(format));
+            data.append(v).append(pairSeparator).append(values.get(v)).append(separator);
         }
         return data.toString();
     }
@@ -308,6 +309,11 @@ public class DataUnit<T extends Enum<T>> {
             removeValue(name);
         } else
             setValue(name, val.toString());
+    }
+
+    public DataUnit<T> clear() {
+        values.clear();
+        return this;
     }
 
 

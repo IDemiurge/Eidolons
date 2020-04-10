@@ -40,6 +40,7 @@ import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.data.ability.construct.VariableManager;
+import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -169,19 +170,27 @@ public abstract class GridPanel extends Group {
         return new GridCellContainer(emptyImage, x, y);
     }
 
-    public void restoreVoid(int x, int y) {
+    public void restoreVoid(int x, int y, boolean animated) {
         GridCellContainer cell =
                 removedCells[x][getGdxY(y)];
 //        addActor(cell);
-        ActionMaster.addFadeInAction(cell, 0.5f );
+        if (animated) {
+            ActionMaster.addFadeInAction(cell, 0.5f);
+        } else {
+            cell.setVisible(true);
+        }
         cell.getUserObject().setVOID(false);
 //        resetDecorators();
     }
 
-    public void setVoid(int x, int y) {
+    public void setVoid(int x, int y, boolean animated) {
         GridCellContainer cell = cells[x][getGdxY(y)];
 //        cell.remove();
+        if (animated) {
         ActionMaster.addFadeOutAction(cell, 0.5f, false);
+        } else
+            cell.setVisible(false);
+
         removedCells[x][getGdxY(y)] = cell;
         cell.getUserObject().setVOID(true);
     }
@@ -491,6 +500,11 @@ public abstract class GridPanel extends Group {
 
     protected BaseView removeUnitView(BattleFieldObject obj) {
         BaseView uv = viewMap.get(obj);
+        if (obj.isOverlaying()) {
+            return    removeOverlay(obj);
+
+        }
+
         if (uv == null) {
             LogMaster.log(1, obj + " IS NOT ON UNIT MAP!");
             return null;
@@ -503,6 +517,14 @@ public abstract class GridPanel extends Group {
             overlayManager.clearTooltip(obj);
         LogMaster.log(1, obj + " unit view REMOVED!");
         return uv;
+    }
+
+    private BaseView removeOverlay(BattleFieldObject obj) {
+        BaseView overlay = getOverlay(obj);
+        overlays.remove(overlay);
+        overlay.fadeOut();
+        LogMaster.log(1, obj + " overlay view REMOVED!");
+        return overlay;
     }
 
     protected void resetVisible() {
@@ -655,14 +677,32 @@ public abstract class GridPanel extends Group {
 
 
     protected void bindEvents() {
+        GuiEventManager.bind(RESET_VIEW, obj -> {
+            BattleFieldObject object = (BattleFieldObject) obj.get();
+            UnitView unitView = getUnitView(object);
+            unitView.setPortraitTexture(TextureCache.getOrCreateR(object.getImagePath()));
+        });
+
         GuiEventManager.bind(CELL_RESET_VOID, obj -> {
             Coordinates c = (Coordinates) obj.get();
-            restoreVoid(c.x, c.y);
+            restoreVoid(c.x, c.y, true);
         });
 
         GuiEventManager.bind(CELL_SET_VOID, obj -> {
             Coordinates c = (Coordinates) obj.get();
-            setVoid(c.x, c.y);
+            setVoid(c.x, c.y, true);
+        });
+        GuiEventManager.bind(CELLS_MASS_RESET_VOID, obj -> {
+            Collection<Coordinates> c = (Collection<Coordinates>) obj.get();
+            for (Coordinates coordinates : c) {
+                restoreVoid(coordinates.x, coordinates.y, true);
+            }
+        });
+        GuiEventManager.bind(CELLS_MASS_SET_VOID, obj -> {
+            Collection<Coordinates> c = (Collection<Coordinates>) obj.get();
+            for (Coordinates coordinates : c) {
+                setVoid(coordinates.x, coordinates.y, true);
+            }
         });
 
         GuiEventManager.bind(MOVE_OVERLAYING, obj -> {
@@ -792,6 +832,10 @@ public abstract class GridPanel extends Group {
             removeUnitView(unit);
         });
 
+        GuiEventManager.bind(REMOVE_OVERLAY_VIEW, param -> {
+            BattleFieldObject obj = (BattleFieldObject) param.get();
+            removeOverlay(obj);
+        });
 
         GuiEventManager.bind(UNIT_VISIBLE_ON, p -> {
             if (p.get() instanceof Collection) {
@@ -801,11 +845,6 @@ public abstract class GridPanel extends Group {
                 return;
             }
             setVisible((BattleFieldObject) p.get(), true);
-        });
-        GuiEventManager.bind(REMOVE_UNIT_VIEW, p -> {
-
-            getUnitView((BattleFieldObject) p.get()).setVisible(false);
-            getUnitView((BattleFieldObject) p.get()).remove();
         });
         GuiEventManager.bind(UNIT_VISIBLE_OFF, p -> {
             if (p.get() instanceof Collection) {
@@ -818,6 +857,15 @@ public abstract class GridPanel extends Group {
         });
 
 
+    }
+
+    public BaseView getOverlay(Obj object) {
+        for (OverlayView overlay : overlays) {
+            if (overlay.getUserObject()==object) {
+                return overlay;
+            }
+        }
+        return null;
     }
 
     public static void setShowGridEmitters(boolean showGridEmitters) {

@@ -29,6 +29,14 @@ public class EditValueContainer extends ValueContainer {
         return toString;
     }
 
+    public Object getEdit_arg() {
+        return edit_arg;
+    }
+
+    public LevelStructure.EDIT_VALUE_TYPE getType() {
+        return type;
+    }
+
     private static TextureRegion getTexture(Object value) {
         return value instanceof TextureRegion ? (TextureRegion) value : null;
     }

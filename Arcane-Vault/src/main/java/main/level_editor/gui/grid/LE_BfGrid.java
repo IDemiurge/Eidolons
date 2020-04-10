@@ -73,7 +73,10 @@ public class LE_BfGrid extends GridPanel {
             }
             for (Integer id : selection.getIds()) {
                 Obj object = LevelEditor.getManager().getIdManager().getObjectById(id);
-                UnitView view = getUnitView((BattleFieldObject) object);
+                BaseView view = getUnitView((BattleFieldObject) object);
+                if (view == null) {
+                    view = getOverlay(object);
+                }
                 view.setBorder(selectionBorder);
 
 
@@ -107,6 +110,7 @@ public class LE_BfGrid extends GridPanel {
             }
         });
     }
+
 
     private void updateCellLabel(List list, boolean aiOrScripts) {
         Coordinates c = (Coordinates) list.get(0);

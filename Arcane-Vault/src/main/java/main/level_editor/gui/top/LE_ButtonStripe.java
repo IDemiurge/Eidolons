@@ -5,7 +5,6 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import main.level_editor.LevelEditor;
-import main.level_editor.gui.stage.LE_GuiStage;
 
 public class LE_ButtonStripe extends HorizontalFlowGroup {
 
@@ -31,9 +30,12 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
         addActor(structurePanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_STRUCT, null));
 
         addActor(brushes = new SmartButton(ButtonStyled.STD_BUTTON.LE_BRUSH, ()->{
-            if (getStage() instanceof LE_GuiStage) {
-                ((LE_GuiStage) getStage()).toggleUiVisible();
-            }
+            boolean b = LevelEditor.getModel().isBrushMode();
+            LevelEditor.getModel().setBrushMode(!b);
+            brushes.setChecked(b);
+//            if (getStage() instanceof LE_GuiStage) {
+//                ((LE_GuiStage) getStage()).toggleUiVisible();
+//            }
         }));
         addActor(viewModes = new SmartButton(ButtonStyled.STD_BUTTON.LE_VIEWS, ()-> {
             LevelEditor.getModel().getDisplayMode().toggleAll();

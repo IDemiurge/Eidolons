@@ -1,19 +1,44 @@
 package main.level_editor.gui.dialog.struct;
 
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
+import eidolons.system.audio.MusicMaster;
+import main.content.enums.GenericEnums;
 
-public class ZoneEditDialog extends DataEditDialog<ZoneData> {
+import static eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.EDIT_VALUE_TYPE;
+import static eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.ZONE_VALUE;
+
+public class ZoneEditDialog extends DataEditDialog<ZONE_VALUE, ZoneData> {
     public ZoneEditDialog() {
         super(1);
     }
 
     @Override
-    protected void apply(ZoneData data) {
-        data.apply();
+    protected EDIT_VALUE_TYPE getEditor(ZONE_VALUE enumConst) {
+        switch (enumConst) {
+            case ambience:
+            case style:
+            case vfx_template:
+                return LevelStructure.EDIT_VALUE_TYPE.enum_const;
+
+        }
+        return null;
+    }
+
+    @Override
+    protected Object getArg(ZONE_VALUE enumConst) {
+        switch (enumConst) {
+            case vfx_template:
+                return GenericEnums.VFX.class;
+            case ambience:
+                return MusicMaster.AMBIENCE.class;
+
+        }
+        return null;
     }
 
     @Override
     protected ZoneData createDataCopy(ZoneData data) {
-        return (ZoneData) new ZoneData(data.getStructure()).setData(data.getData());
+        return (ZoneData) new ZoneData(data.getStructure()).clear(). setData(data.getData());
     }
 }

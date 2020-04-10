@@ -6,8 +6,8 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.entity.type.ObjType;
@@ -35,10 +35,10 @@ public class LocationSpawner extends Spawner<Location> {
     }
 
     @Override
-    public List<Unit> spawn(UnitData data, DC_Player player, SPAWN_MODE mode) {
+    public List<Unit> spawn(UnitsData data, DC_Player player, SPAWN_MODE mode) {
         if (data.getValue(PARTY_VALUE.MEMBERS) != null) {
             String units = data.getValue(PARTY_VALUE.MEMBERS).
-                    replace(DataUnitFactory.getContainerSeparator(UnitData.FORMAT), "");
+                    replace(DataUnitFactory.getContainerSeparator(UnitsData.FORMAT), "");
             if (FileManager.isFile(units))
                 return spawnUnitGroup(player.isMe(), units);
         }

@@ -42,9 +42,9 @@ import static main.system.auxiliary.log.LogMaster.verbose;
 public class RoomTemplateMaster {
     public static final boolean SINGLE_FILE_DATA = false;
     public static final FACING_DIRECTION DEFAULT_ENTRANCE_SIDE = FACING_DIRECTION.WEST;
-    private static final String MODEL_SPLITTER = "=";
-    private static final String EXIT_TEMPLATE_SEPARATOR = "><" + StringMaster.NEW_LINE;
-    private static final String ROOM_TYPE_SEPARATOR = "<>" + StringMaster.NEW_LINE;
+    public static final String MODEL_SPLITTER = "=";
+    public static final String EXIT_TEMPLATE_SEPARATOR = "><" + StringMaster.NEW_LINE;
+    public static final String ROOM_TYPE_SEPARATOR = "<>" + StringMaster.NEW_LINE;
     private static final boolean APPLY_FAIL_SAFE_EXITS = true;
     private final LevelData data;
     Stack<List<RoomModel>> roomPoolStack = new Stack<>();

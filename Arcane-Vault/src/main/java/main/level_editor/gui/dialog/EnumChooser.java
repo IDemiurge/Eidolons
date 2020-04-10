@@ -24,6 +24,11 @@ public class EnumChooser extends ChooserDialog<Object, SmartButton> {
     }
 
     @Override
+    protected boolean isSquare() {
+        return size > 8;
+    }
+
+    @Override
     public void setUserObject(Object userObject) {
         Collection c= (Collection) userObject;
         consts = c.toArray( );

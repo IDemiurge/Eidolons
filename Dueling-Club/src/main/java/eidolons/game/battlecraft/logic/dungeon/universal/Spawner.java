@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.core.game.DC_Game.GAME_MODES;
 import eidolons.game.core.launch.LaunchDataKeeper;
@@ -60,7 +60,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
             if (player.isNeutral()) {
                 continue;
             }
-            UnitData data = player.getUnitData();
+            UnitsData data = player.getUnitData();
             if (data == null)
                 data = generateData("", player, null);
             spawn(data, player, getSpawnMode(player, true));
@@ -90,14 +90,14 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         return SPAWN_MODE.UNIT_GROUP;
     }
 
-    public UnitData generateData(String dataString, DC_Player player,
-                                 Coordinates spawnAt) {
+    public UnitsData generateData(String dataString, DC_Player player,
+                                  Coordinates spawnAt) {
         return LaunchDataKeeper.generateData(dataString,
          player,
          spawnAt, getPositioner());
     }
 
-    public List<Unit> spawn(UnitData data, DC_Player owner, SPAWN_MODE mode) {
+    public List<Unit> spawn(UnitsData data, DC_Player owner, SPAWN_MODE mode) {
         List<Unit> units = new ArrayList<>();
         int i = 0;
         if (owner == null)
@@ -196,7 +196,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         if (!partyData.contains(DC_ObjInitializer.COORDINATES_OBJ_SEPARATOR)) {
             partyData = DC_ObjInitializer.convertVarStringToObjCoordinates(partyData);
         }
-        UnitData data = generateData(partyData, player, null);
+        UnitsData data = generateData(partyData, player, null);
         spawn(data, player, SPAWN_MODE.PARTY);
 //        List<MicroObj> list = DC_ObjInitializer.processUnitDataString(player, partyData, game);
 //        if (!ListMaster.isNotEmpty(list)) {

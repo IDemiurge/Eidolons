@@ -75,7 +75,7 @@ public abstract class GenericGame extends Game {
     }
 
     public MicroObj createObject(ObjType type, int x, int y, Player owner) {
-        return manager.createUnit(type, x, y, owner);
+        return manager.createObject(type, x, y, owner);
     }
 
 
@@ -88,11 +88,11 @@ public abstract class GenericGame extends Game {
     }
 
     public MicroObj createObject(ObjType type, Coordinates c, Player owner) {
-        return manager.createUnit(type, c, owner);
+        return manager.createObject(type, c, owner);
     }
 
     public MicroObj createObject(ObjType type, int x, int y, Player owner, Ref ref) {
-        return manager.createUnit(type, x, y, owner, ref);
+        return manager.createObject(type, x, y, owner, ref);
     }
 
     public MicroObj createBuff(BuffType type, Obj active, Player player, Ref ref, Effect effect,

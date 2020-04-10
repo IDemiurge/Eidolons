@@ -1,5 +1,6 @@
 package main.level_editor.backend.handlers.model;
 
+import eidolons.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -21,8 +22,8 @@ import static main.level_editor.backend.handlers.operation.Operation.LE_OPERATIO
 
 public class LE_ModelManager extends LE_Handler {
 
-    EditData model;
-    Stack<EditData> modelStack = new Stack<>();
+    EditorModel model;
+    Stack<EditorModel> modelStack = new Stack<>();
     private LE_Selection copied;
 
     public LE_ModelManager(LE_Manager manager) {
@@ -34,8 +35,8 @@ public class LE_ModelManager extends LE_Handler {
         model = createDefault();
     }
 
-    private EditData createDefault() {
-        EditData model = new EditData();
+    private EditorModel createDefault() {
+        EditorModel model = new EditorModel();
 //model.setCoordinateSelection(CoordinatesMaster.getCenterCoordinate(getModule().getCoordinates()));
         model.setPaletteSelection(new PaletteSelection());
         return model;
@@ -52,13 +53,13 @@ public class LE_ModelManager extends LE_Handler {
         operation(PASTE_START);
         //TODO all data - ai, script, layer props...
         Coordinates offset = null;
-        List<Obj> sorted = new LinkedList<>();
+        List<BattleFieldObject> sorted = new LinkedList<>();
         for (Integer id : copied.getIds()) {
             sorted.add(getGame().getSimIdManager().getObjectById(id));
         }
         sorted.sort(SortMaster.getSorterByExpression(obj -> -(((Obj) obj).getX() + ((Obj) obj).getY())));
 
-        for (Obj obj : sorted) {
+        for (BattleFieldObject obj : sorted) {
             ObjType type = obj.getType();
             Coordinates c = origin;
             if (copied.getIds().size() > 1 && offset == null) {
@@ -69,8 +70,10 @@ public class LE_ModelManager extends LE_Handler {
                             obj.getY() - offset.y);
                 }
             }
-
-            operation(Operation.LE_OPERATION.ADD_OBJ, type, c);
+            if (obj.isOverlaying()) {
+                operation(Operation.LE_OPERATION.ADD_OVERLAY, type, c, obj.getDirection());
+            } else
+                operation(Operation.LE_OPERATION.ADD_OBJ, type, c);
 
         }
         operation(PASTE_END);
@@ -86,6 +89,7 @@ public class LE_ModelManager extends LE_Handler {
         getObjHandler().removeSelected();
 
     }
+
     public void back() {
         model = modelStack.pop();
         GuiEventManager.trigger(GuiEventType.LE_GUI_RESET);
@@ -96,7 +100,7 @@ public class LE_ModelManager extends LE_Handler {
         model = createDefault();
     }
 
-    public EditData getModel() {
+    public EditorModel getModel() {
         return model;
     }
 
@@ -104,13 +108,8 @@ public class LE_ModelManager extends LE_Handler {
         getModel().getPaletteSelection().setType(entity);
     }
 
-    public ObjType getDefaultWallType() {
-        return getModel().getDefaultWallType();
-    }
-
-
     public void modelChanged() {
         modelStack.push(model);
-        model = new EditData(model);
+        model = new EditorModel(model);
     }
 }

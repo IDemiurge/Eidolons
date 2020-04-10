@@ -34,7 +34,7 @@ public class LE_GridOverlays extends GridOverlaysManager {
         for (int x = 0; x < cells.length; x++) {
             for (int y = cells[x].length - 1; y >=0 ; y--) {
                 GridCellContainer cell = cells[x][y];
-                drawOverlaysForCell(cell, x, y, batch);
+                drawOverlaysForCell(cell, x, cells[x].length - 1 - y, batch);
             }
         }
     }
@@ -53,7 +53,7 @@ public class LE_GridOverlays extends GridOverlaysManager {
         if (block) {
             Color c = LevelEditor.getCurrent().getManager().getStructureManager().
                     getColorForBlock(LevelEditor.getModel().getBlock());
-            batch.setColor(c);
+            batch.setColor(new Color(c.r, c.g, c.b, 0.33f));
             try {
                 drawOverlay(container, IN_PLAIN_SIGHT, batch, cell, x, y);
             } catch (Exception e) {

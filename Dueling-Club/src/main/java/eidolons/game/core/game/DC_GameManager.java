@@ -514,17 +514,17 @@ public class DC_GameManager extends GameManager {
 
 
     @Override
-    public BattleFieldObject createUnit(ObjType type, int x, int y, Player owner) {
-        return (BattleFieldObject) createUnit(type, x, y, owner, new Ref());
+    public BattleFieldObject createObject(ObjType type, int x, int y, Player owner) {
+        return (BattleFieldObject) createObject(type, x, y, owner, new Ref());
     }
 
     @Override
-    public MicroObj createUnit(ObjType type, Coordinates c, Player owner) {
-        return createUnit(type, c.x, c.y, owner);
+    public MicroObj createObject(ObjType type, Coordinates c, Player owner) {
+        return createObject(type, c.x, c.y, owner);
     }
 
     @Override
-    public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
+    public MicroObj createObject(ObjType type, int x, int y, Player owner, Ref ref) {
         return objCreator.createUnit(type, x, y, owner, ref);
     }
 

@@ -1,7 +1,9 @@
 package main.level_editor.backend;
 
 
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
@@ -14,7 +16,7 @@ import main.level_editor.backend.handlers.LE_EditHandler;
 import main.level_editor.backend.handlers.LE_MenuHandler;
 import main.level_editor.backend.handlers.ai.LE_AiHandler;
 import main.level_editor.backend.handlers.dialog.LE_DialogHandler;
-import main.level_editor.backend.handlers.model.EditData;
+import main.level_editor.backend.handlers.model.EditorModel;
 import main.level_editor.backend.handlers.model.LE_ModelManager;
 import main.level_editor.backend.handlers.operation.LE_ObjHandler;
 import main.level_editor.backend.handlers.operation.Operation;
@@ -22,6 +24,7 @@ import main.level_editor.backend.handlers.operation.OperationHandler;
 import main.level_editor.backend.handlers.selection.LE_SelectionHandler;
 import main.level_editor.backend.handlers.structure.LE_StructureHandler;
 import main.level_editor.backend.handlers.structure.layer.LayerHandlerImpl;
+import main.level_editor.backend.metadata.object.LE_EntityHandler;
 import main.level_editor.backend.metadata.script.LE_ScriptHandler;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.sim.LE_IdManager;
@@ -47,12 +50,23 @@ public class LE_Handler {
     public void load() {
     }
 
+    protected boolean isLoaded() {
+        return manager.isLoaded();
+    }
     public String getDataMapString() {
         return "";
     }
 
     public String getXml() {
         return "";
+    }
+
+    public LE_EntityHandler getEntityHandler() {
+        return manager.getEntityHandler();
+    }
+
+    protected LevelStruct getDungeonLevel() {
+        return getGame().getDungeonMaster().getDungeonLevel();
     }
 
     public LE_DialogHandler getDialogHandler() {
@@ -119,11 +133,14 @@ public class LE_Handler {
         return manager.getDataHandler();
     }
 
-    public Floor getFloor() {
-        return manager.getFloor();
+    public LE_Floor getFloorWrapper() {
+        return manager.getFloor().getWrapper();
     }
 
-    public EditData getModel() {
+    public Floor getFloor() {
+        return manager.getFloor() ;
+    }
+    public EditorModel getModel() {
         return getModelManager().getModel();
     }
 

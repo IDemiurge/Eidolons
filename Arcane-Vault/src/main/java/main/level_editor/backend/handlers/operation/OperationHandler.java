@@ -1,9 +1,10 @@
 package main.level_editor.backend.handlers.operation;
 
+import eidolons.content.data.EntityData;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -13,6 +14,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
 
+import java.util.Collection;
 import java.util.Stack;
 
 public class OperationHandler extends LE_Handler {
@@ -48,6 +50,14 @@ public class OperationHandler extends LE_Handler {
                 break;
             case MODEL_CHANGE:
                 break;
+            case ADD_BLOCK:
+                LevelBlock block = (LevelBlock) args[0];
+                block.getZone().addBlock(block);
+                break;
+            case REMOVE_BLOCK:
+                block = (LevelBlock) args[0];
+                block.getZone().getSubParts().remove(block);
+                break;
             case VOID_TOGGLE:
                 c = (Coordinates) args[0];
                 boolean isVoid = manager.getGame().toggleVoid(c);
@@ -58,7 +68,21 @@ public class OperationHandler extends LE_Handler {
                 GuiEventManager.trigger(
                         isVoid ? GuiEventType.CELL_SET_VOID
                                 : GuiEventType.CELL_RESET_VOID, c);
-                //TODO no guarantee of success!!!
+                break;
+            case MASS_RESET_VOID:
+            case MASS_SET_VOID:
+                Collection<Coordinates> collection = (Collection<Coordinates>) args[0];
+                for (Coordinates coordinates : collection) {
+                    isVoid = manager.getGame().toggleVoid(coordinates);
+                    if (isVoid)
+                        for (BattleFieldObject bfObj : manager.getGame().getObjectsAt(coordinates)) {
+                            operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
+                        }
+                }
+                if (operation == Operation.LE_OPERATION.MASS_RESET_VOID) {
+                    GuiEventManager.trigger(GuiEventType.CELLS_MASS_RESET_VOID, collection);
+                } else
+                    GuiEventManager.trigger(GuiEventType.CELLS_MASS_SET_VOID, collection);
                 break;
             case MODIFY_STRUCTURE_START:
                 break;
@@ -99,14 +123,22 @@ public class OperationHandler extends LE_Handler {
                 d = (DIRECTION) args[2];
                 args = new BattleFieldObject[]{getObjHandler().addOverlay(d, type, c.x, c.y)};
                 break;
-
+            case MODIFY_TYPE_DATA:
+                break;
             case MODIFY_STRUCTURE:
-                LevelStructure.StructureData data = (LevelStructure.StructureData) args [0];
+                StructureData data = (StructureData) args[0];
                 data.apply();
-                if (data instanceof BlockData) {
-                    getStructureManager().blockReset(((BlockData) data).getBlock());
-                    getStructureManager().updateTree();
-                }
+
+                getStructureManager().reset(data.getLevelStruct());
+                getStructureManager().updateTree();
+//                if (data instanceof BlockData) {
+//                    getStructureManager().blockReset(((BlockData) data).getBlock());
+//                    getStructureManager().updateTree();
+//                }
+                break;
+
+            case MODIFY_ENTITY:
+                getEntityHandler().modified((EntityData) args[0]);
                 break;
         }
         getDataHandler().setDirty(true);
@@ -126,12 +158,8 @@ public class OperationHandler extends LE_Handler {
     }
 
     public void undo() {
-        if (operations.empty()) {
-            return; //TODO result
-        }
-        Operation op =
-                operations.pop();
-        revert(op, false);
+        while (!operations.empty() &&
+                revert(operations.pop(), false)) ;
     }
 
     public void redo() {
@@ -143,7 +171,7 @@ public class OperationHandler extends LE_Handler {
         operation(true, op.operation, op.args);
     }
 
-    private void revert(Operation op, boolean redo) {
+    private boolean revert(Operation op, boolean redo) {
         if (op.operation.bulkEnd) {
             Operation rev = operations.pop();
             while (!operations.empty()) {
@@ -156,7 +184,18 @@ public class OperationHandler extends LE_Handler {
 
         }
         switch (op.operation) {
+            case SAVE_ENTITY_DATA:
+                execute(Operation.LE_OPERATION.MODIFY_ENTITY, op.args);
+                break;
+            case ADD_BLOCK:
+                execute(Operation.LE_OPERATION.REMOVE_BLOCK, op.args);
+                break;
+            case REMOVE_BLOCK:
+                execute(Operation.LE_OPERATION.ADD_BLOCK, op.args);
+                break;
             case MODIFY_STRUCTURE:
+                return false;
+            case SAVE_STRUCTURE:
                 execute(Operation.LE_OPERATION.MODIFY_STRUCTURE, op.args);
                 break;
             case MODEL_CHANGE:
@@ -183,6 +222,8 @@ public class OperationHandler extends LE_Handler {
         }
         if (!redo)
             undone.push(op);
+
+        return true;
     }
 
 }

@@ -1,4 +1,4 @@
-package main.level_editor.gui.panels.control.structure;
+package main.level_editor.gui.panels.control.impl;
 
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.functions.mapping.IModuleHandler;

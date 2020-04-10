@@ -13,6 +13,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
+import main.level_editor.backend.brush.LE_BrushType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -35,13 +36,19 @@ public class LE_ObjHandler extends LE_Handler {
         //TODO overlays!
     }
 
+    public void removeIgnoreWrap(BattleFieldObject bfObj) {
+        remove(bfObj);
+    }
     protected void remove(BattleFieldObject bfObj) {
         getGame().softRemove(bfObj);
         getAiHandler().removed(bfObj);
         if (EntityCheckMaster.isEntrance(bfObj)) {
             getTransitHandler().entranceRemoved(bfObj);
         }
-        GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, bfObj);
+        if (bfObj.isOverlaying()) {
+            GuiEventManager.trigger(GuiEventType.REMOVE_OVERLAY_VIEW, bfObj);
+        } else
+            GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, bfObj);
 
     }
 
@@ -50,6 +57,16 @@ public class LE_ObjHandler extends LE_Handler {
     }
 
     public void addFromPalette(Coordinates c) {
+        if (getModel().isBrushMode() && getModel().getBrush().getBrushType() != LE_BrushType.none)
+        {
+            ObjType type = getPaletteHandler().getFiller(
+                    getModel().getBrush().getBrushType());
+            operation(Operation.LE_OPERATION.ADD_OBJ,  type,
+                    c);
+            getStructureManager().initWall(c);
+//            getCoordinatesForShape(PositionMaster.SHAPES.STAR)
+        }
+        else
         operation(Operation.LE_OPERATION.ADD_OBJ, getModel().getPaletteSelection().getObjType(),
                 c);
     }

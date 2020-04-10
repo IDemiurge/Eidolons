@@ -32,7 +32,7 @@ public abstract  class EditDialog<T > extends ChooserDialog<T, EditValueContaine
                 selected = item;
                 resetBackgrounds();
                 actor.setBackground(NinePatchFactory.getHighlightSmallDrawable());
-                Eidolons.onNonGdxThread(() -> edit(item));
+                Eidolons.onNonGdxThread(() -> edit(actor, item));
             }
         };
     }
@@ -41,7 +41,7 @@ public abstract  class EditDialog<T > extends ChooserDialog<T, EditValueContaine
         return NinePatchFactory.getLightPanelDrawable();
     }
 
-    protected abstract void edit(T item);
+    protected abstract void edit(EditValueContainer actor, T item);
 
     @Override
     public void init() {
@@ -69,9 +69,21 @@ public abstract  class EditDialog<T > extends ChooserDialog<T, EditValueContaine
         return new Vector2(360, 64);
     }
 
-    protected abstract LevelStructure.EDIT_VALUE_TYPE getType(T datum);
+    protected   LevelStructure.EDIT_VALUE_TYPE getType(T datum){
+        return getSpecificType(datum);
+    }
 
-    protected abstract Object getArg(T datum);
+    protected LevelStructure.EDIT_VALUE_TYPE getSpecificType(T datum) {
+        return null;
+    }
+
+    protected Object getArg(T datum){
+        return getSpecificArg(datum);
+    }
+
+    protected Object getSpecificArg(T datum) {
+        return null;
+    }
 
     protected abstract Object getVal(T datum);
 

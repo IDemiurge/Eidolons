@@ -52,11 +52,11 @@ public class PaletteSelection implements Serializable {
     public void setType(ObjType objType) {
         if (EntityCheckMaster.isOverlaying(objType)) {
                   setOverlayingType(objType);
-            EUtils.infoPopup("Palette overlaying type selected: " + objType);
+            EUtils.showInfoText("Palette overlaying type selected: " + objType);
         } else
         {
             this.objType = objType;
-            EUtils.infoPopup("Palette type selected: " + objType);
+            EUtils.showInfoText("Palette type selected: " + objType);
         }
     }
 
@@ -71,6 +71,8 @@ public class PaletteSelection implements Serializable {
     public RoomModel getTemplate() {
         return template;
     }
+
+
 //custom type?
 
     //templates of rooms, scripts,

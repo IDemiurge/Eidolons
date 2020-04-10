@@ -23,6 +23,13 @@ public class LE_TreeHolder extends ClosablePanel {
         GuiEventManager.bind(GuiEventType.LE_TREE_RESET, p -> {
             setUserObject(p.get());
             treeView.setUserObject(p.get());
+            treeView.reselect();
+        });
+        GuiEventManager.bind(GuiEventType.LE_TREE_RESELECT, p -> {
+            treeView.reselect();
+        });
+        GuiEventManager.bind(GuiEventType.LE_TREE_SELECT, p -> {
+            treeView.select(p.get());
         });
     }
 

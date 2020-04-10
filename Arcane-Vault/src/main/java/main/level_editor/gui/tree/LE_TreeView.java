@@ -6,18 +6,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.kotcrab.vis.ui.VisUI;
 import eidolons.game.battlecraft.ai.elements.generic.AiData;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Block;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Module;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Zone;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjNode;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.*;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
@@ -34,15 +33,17 @@ import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.struct.boss.BossDungeon;
 import main.level_editor.backend.struct.campaign.Campaign;
-import main.level_editor.backend.struct.level.Floor;
 import main.level_editor.gui.components.TreeX;
 import main.level_editor.gui.stage.LE_GuiStage;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.FontMaster;
+import main.system.threading.WaitMaster;
 
 public class LE_TreeView extends TreeX<StructNode> {
 
+    private Object lastSelected;
+    private Object lastSelectedParent;
 
     @Override
     public void act(float delta) {
@@ -53,21 +54,28 @@ public class LE_TreeView extends TreeX<StructNode> {
     protected void rightClick(StructNode node) {
 
         if (node.getData() instanceof LE_Block) {
-            BlockData data = new BlockData(((LE_Block) node.getData()));
+            BlockData data = ((LE_Block) node.getData()).getBlock().getData();
             if (getStage() instanceof LE_GuiStage) {
                 ((LE_GuiStage) getStage()).getBlockEditor().setUserObject(data);
             }
         }
         if (node.getData() instanceof LE_Zone) {
-            ZoneData data = new ZoneData(((LE_Zone) node.getData()));
+            ZoneData data = ((LE_Zone) node.getData()).getZone().getData();
             if (getStage() instanceof LE_GuiStage) {
                 ((LE_GuiStage) getStage()).getZoneEditor().setUserObject(data);
             }
         }
         if (node.getData() instanceof LE_Module) {
-            ModuleData data = new ModuleData(((LE_Module) node.getData()));
+            ModuleData data = ((LE_Module) node.getData()).getModule().getData();
             if (getStage() instanceof LE_GuiStage) {
                 ((LE_GuiStage) getStage()).getModuleDialog().setUserObject(data);
+            }
+        }
+
+        if (node.getData() instanceof LE_Floor) {
+            FloorData data = ((LE_Floor) node.getData()).getData();
+            if (getStage() instanceof LE_GuiStage) {
+                ((LE_GuiStage) getStage()).getFloorDialog().setUserObject(data);
             }
         }
     }
@@ -97,13 +105,55 @@ public class LE_TreeView extends TreeX<StructNode> {
         Vector2 v = GridMaster.getCenteredPos(c);
         CameraMan.MotionData data = new CameraMan.MotionData(v, 0.5f, null);
         GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, data);
-
 //        data =  new CameraMan.MotionData(z, 0.5f, null);
 //        GuiEventManager.trigger(GuiEventType.CAMERA_ZOOM, data);
     }
 
     @Override
-    protected void selected(StructNode node) {
+    protected void click(int tapCount, InputEvent event, Node n, StructNode node) {
+        super.click(tapCount, event, n, node);
+        lastSelected = node.getData();
+        if (lastSelected instanceof StructNode) {
+            lastSelected = ((StructNode) lastSelected).getData().getLevelLayer();
+        }
+        if (n.getParent() != null) {
+            lastSelectedParent = n.getParent().getObject();
+            if (lastSelectedParent instanceof StructNode) {
+                lastSelectedParent = ((StructNode) lastSelectedParent).getData().getLevelLayer();
+            }
+        }
+    }
+
+    public void reselect() {
+        if (!forceSelect(lastSelected)) {
+            forceSelect(lastSelectedParent);
+        }
+    }
+
+    @Override
+    public void select(Object o) {
+        forceSelect(o);
+    }
+
+    private boolean forceSelect(Object lastSelected) {
+        for (Node node : nodes) {
+            try {
+                if (node.getObject() instanceof StructNode) {
+                    if (((StructNode) node.getObject()).getData().getLevelLayer() == lastSelected) {
+                        click(1, null, node, (StructNode) node.getObject());
+                        node.expandTo();
+                        return true;
+                    }
+                }
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected void selected(StructNode node, Node n) {
         if (node.getData() instanceof ObjNode) {
             if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
                     Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
@@ -116,6 +166,7 @@ public class LE_TreeView extends TreeX<StructNode> {
             LevelBlock block = ((LE_Block) node.getData()).getBlock();
             LevelEditor.getModel().setBlock(block);
             LevelEditor.getModel().setZone(block.getZone());
+            WaitMaster.receiveInput(LevelEditor.SELECTION_EVENT, true);
         } else if (node.getData() instanceof LE_Zone) {
             LevelEditor.getModel().setZone(((LE_Zone) node.getData()).getZone());
 //            LevelEditor.getModel().setBlock(((LE_Zone) node.getData()).getZone().getSubParts().get(0));
@@ -157,10 +208,12 @@ public class LE_TreeView extends TreeX<StructNode> {
         if (node.getData() instanceof BossDungeon) {
             BossDungeon dungeon = ((BossDungeon) node.getData());
         }
-        if (node.getData() instanceof Floor) {
+
+
+        if (node.getData() instanceof LE_Floor) {
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 21);
-            Floor floor = ((Floor) node.getData());
-            texture = TextureCache.getOrCreateR(floor.getGame().getDungeon().getImagePath());
+            LE_Floor floor = ((LE_Floor) node.getData());
+            texture = TextureCache.getOrCreateR(floor.getDungeon().getImagePath());
         }
         if (node.getData() instanceof LE_Module) {
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 21);
@@ -168,19 +221,22 @@ public class LE_TreeView extends TreeX<StructNode> {
             name = "--- " + module.toString();
             texture = TextureCache.getOrCreateR(Images.ITEM_BACKGROUND_STONE);
         }
-        if (node.getData() instanceof LevelZone) {
+        if (node.getData() instanceof LE_Zone) {
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 19);
-            LevelZone zone = ((LevelZone) node.getData());
-            name = "-- " + "Zone " + zone.getName();
+            LevelZone zone = ((LE_Zone) node.getData()).getZone();
+            name = "-- " + "Zone " + zone.getName() + ", Data: " + zone.getData();
 //            val = zone.getSubParts().size();
-            zone.getTemplateGroup();
-            zone.getStyle();
+//            zone.getTemplateGroup();
+//            zone.getStyle();
         }
         if (node.getData() instanceof LE_Block) {
             LevelBlock block = ((LE_Block) node.getData()).getBlock();
-            name = "-- " + (block.isTemplate() ? "Template " : "Custom ") + block.getRoomType() + " Block [" +
+            name = "-- " +
+                    //(block.isTemplate() ? "Template " : "Custom ") +
+                    block.getRoomType() +
+                    " at " + block.getOrigin() + " with Cells [" +
                     block.getCoordinatesSet().size() +
-                    "] at " + block.getOrigin();
+                    "]" + ", Data: " + block.getData();
             c = LevelEditor.getCurrent().getManager().getStructureManager().getColorForBlock(block);
 
             //img per room type

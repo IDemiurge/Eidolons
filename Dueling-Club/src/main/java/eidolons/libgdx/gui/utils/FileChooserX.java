@@ -6,6 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
+import eidolons.libgdx.stage.GenericGuiStage;
+import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
@@ -32,15 +34,22 @@ public class FileChooserX {
     private static void initFileChooser(Stage stage, String folder, String format) {
 //        FileChooser.setFavoritesPrefsName("com.your.package.here.filechooser");
         FileChooser fileChooser = map.get(stage);
+        if (!folder.contains(PathFinder.getRootPath())) {
+            folder= PathFinder.getRootPath() +folder;
+        }
         Gdx.input.setInputProcessor(stage);
         if (fileChooser == null) {
             fileChooser = new FileChooser(FileChooser.Mode.OPEN);
+            if (stage instanceof GenericGuiStage) {
+                ((GenericGuiStage) stage).setFileChooser(fileChooser);
+            }
             stage.addActor(fileChooser.fadeIn());
             map.put(stage, fileChooser);
             fileChooser.setDirectory(folder);
-            fileChooser.setFileFilter(
-                    new OrFileFilter(DirectoryFileFilter.DIRECTORY,
-                            new SuffixFileFilter("." + format)));
+            if (format != null)
+                fileChooser.setFileFilter(
+                        new OrFileFilter(DirectoryFileFilter.DIRECTORY,
+                                new SuffixFileFilter("." + format)));
         } else {
             stage.addActor(fileChooser.fadeIn());
 
@@ -56,7 +65,9 @@ public class FileChooserX {
                 WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.SELECTION, file.get(0).file().getAbsolutePath());
                 finalFileChooser.fadeOut();
             }
-        });
+        }
+
+        );
 
     }
 }

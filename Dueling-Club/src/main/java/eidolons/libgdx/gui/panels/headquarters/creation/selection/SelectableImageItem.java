@@ -82,13 +82,16 @@ public class SelectableImageItem extends FadeImageContainer {
     }
 
     public void setSelected(boolean selected) {
+        if (this.selected == selected) {
+            return;
+        }
         this.selected = selected;
         if (!selected) {
             ActionMaster.addScaleAction(getContent(), highlight.getScaleX(), 0.3f);
-            setZIndex(999);
+            setZIndex(0);
         } else {
             ActionMaster.addScaleAction(getContent(), highlight.getScaleX() * 1.3f, 0.3f);
-            setZIndex(0);
+            setZIndex(999);
         }
     }
 

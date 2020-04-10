@@ -1,20 +1,46 @@
 package main.level_editor.gui.dialog.struct;
 
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
+import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 
-public class BlockEditDialog extends DataEditDialog<BlockData> {
+public class BlockEditDialog extends DataEditDialog<LevelStructure.BLOCK_VALUE, BlockData> {
     public BlockEditDialog() {
         super(1);
     }
 
 
     @Override
-    protected void apply(BlockData data) {
-        data.apply();
+    protected LevelStructure.EDIT_VALUE_TYPE getEditor(LevelStructure.BLOCK_VALUE enumConst) {
+        switch (enumConst) {
+            case cell_type:
+            case room_type:
+                return LevelStructure.EDIT_VALUE_TYPE.enum_const;
+        }
+        if (enumConst.getEditValueType() != null) {
+            return enumConst.getEditValueType();
+        }
+        return null;
+    }
+
+    @Override
+    protected Object getArg(LevelStructure.BLOCK_VALUE enumConst) {
+        switch (enumConst) {
+            case cell_type:
+                return DungeonLevel.CELL_IMAGE.class;
+            case room_type:
+                return LocationBuilder.ROOM_TYPE.class;
+        }
+        if (enumConst.getArg() != null) {
+            return enumConst.getArg();
+        }
+        return null;
     }
 
     @Override
     protected BlockData createDataCopy(BlockData data) {
-        return new BlockData(data.getStructure()).setData(data.getData());
+        return (BlockData) new BlockData(data.getStructure()).clear().setData(data.getData());
     }
+
 }

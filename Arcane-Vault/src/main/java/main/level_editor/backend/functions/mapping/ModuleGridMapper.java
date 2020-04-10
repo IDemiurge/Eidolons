@@ -45,8 +45,8 @@ public class ModuleGridMapper {
         int[][] combos = new int[n % 2 == 0 ? 3 : 4][2];
         if (n % 2 == 0) {
             combos[0] = new int[]{cols[1], rows[1]};
-            combos[2] = new int[]{cols[0], rows[2]};
-            combos[3] = new int[]{cols[2], rows[0]};
+            combos[1] = new int[]{cols[0], rows[2]};
+            combos[2] = new int[]{cols[2], rows[0]};
         } else {
             combos[0] = new int[]{cols[1], rows[2]};
             combos[1] = new int[]{cols[2], rows[1]};

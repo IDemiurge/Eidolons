@@ -18,6 +18,9 @@ import java.util.List;
 public class PaletteTree extends TreeX<PaletteNode> {
     private final TablePanelX table;
     private final DC_TYPE TYPE;
+    private String lastSelected;
+    private String lastSelectedName;
+    private String lastSelectedParent;
 
     //we need a way to collapse double nodes
 
@@ -31,6 +34,28 @@ public class PaletteTree extends TreeX<PaletteNode> {
 //                () -> collapseAll()));
 
 //        addActor(new SmartButton(ButtonStyled.STD_BUTTON.UNDO, () -> collapseAll()));
+    }
+
+    public void reselect() {
+       if (!forceSelectByName(lastSelected )){
+           forceSelectByName(lastSelectedParent);
+       }
+
+    }
+
+    private boolean forceSelectByName(String lastSelected) {
+        for (Node node : nodes) {
+            try {
+                if (node.toString().equalsIgnoreCase(lastSelected)) {
+                    click(1, null, node, (PaletteNode) node.getObject());
+                    node.expandTo();
+                    return true;
+                }
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
+        return false;
     }
 
     @Override
@@ -49,11 +74,16 @@ public class PaletteTree extends TreeX<PaletteNode> {
     }
 
     @Override
-    protected void selected(PaletteNode node) {
-                List<ObjType> types = LevelEditor.getCurrent().
-                        getManager().getPaletteHandler().
-                        getTypesForTreeNode(TYPE, node.getData());
-                table.setUserObject(types);
+    protected void selected(PaletteNode node, Node n) {
+        lastSelected = node.getData().toString();
+        lastSelectedName = node.toString();
+        if (n.getParent() != null) {
+             lastSelectedParent = n.getParent().toString();
+        }
+        List<ObjType> types = LevelEditor.getCurrent().
+                getManager().getPaletteHandler().
+                getTypesForTreeNode(TYPE, node.getData());
+        table.setUserObject(types);
     }
 
     @Override
@@ -66,17 +96,23 @@ public class PaletteTree extends TreeX<PaletteNode> {
         if (node.getData() instanceof ObjType) {
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 15);
             ObjType ty = (ObjType) node.getData();
-             name = node.getData().toString();
+            name = node.getData().toString();
             texture = TextureCache.getOrCreateR(ty.getImagePath());
             //emblem? auto-gen 32x32?
         }
         ValueContainer actor = new ValueContainer(style, texture, name, val);
 
-        if (texture!=null ){
+        if (texture != null) {
             actor.getImageContainer().getActor().setScale(0.25f);
         }
         return actor;
     }
 
+    public String getLastSelected() {
+        return lastSelected;
+    }
 
+    public String getLastSelectedName() {
+        return lastSelectedName;
+    }
 }

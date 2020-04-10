@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.battle.universal;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.PlayerAI;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.core.game.DC_Game;
 import eidolons.macro.entity.faction.Faction;
 import main.content.enums.system.AiEnums;
@@ -31,7 +31,7 @@ public class DC_Player extends Player {
     private Map<DC_Obj, Coordinates> detectionCache = new HashMap<>();
     private PlayerAI playerAI;
     private String partyDataString;
-    private UnitData unitData;
+    private UnitsData unitData;
     private Faction faction;
     private FLAG_COLOR flagColorAlt;
 
@@ -119,11 +119,11 @@ public class DC_Player extends Player {
         this.playerAI = playerAI;
     }
 
-    public UnitData getUnitData() {
+    public UnitsData getUnitData() {
         return unitData;
     }
 
-    public void setUnitData(UnitData unitData) {
+    public void setUnitData(UnitsData unitData) {
         this.unitData = unitData;
     }
 

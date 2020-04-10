@@ -25,7 +25,7 @@ public class LE_MetaMaster extends ScenarioMetaMaster {
                      campaign );
         } else {
             try {
-                LevelEditor.getModel().setTreeModel( LevelEditor.getCurrent( ));
+                LevelEditor.getModel().setTreeModel( LevelEditor.getCurrent( ).getWrapper());
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

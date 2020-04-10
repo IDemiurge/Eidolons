@@ -72,6 +72,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     private ObjType originalType;
     private boolean summoned;
     private boolean revealed;
+    private boolean moduleBorder;
 
     public BattleFieldObject(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -274,11 +275,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             //                return false;
             //            }
 
-            if (source_height < height)
             // if (!source.isFlying()) //add height TODO
-            {
-                return true;
-            }
+            return source_height < height;
 
         }
 
@@ -551,9 +549,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public boolean isValidMapStored(PARAMETER p) {
         if (p == PARAMS.ENDURANCE)
             return true;
-        if (p == PARAMS.TOUGHNESS)
-            return true;
-        return false;
+        return p == PARAMS.TOUGHNESS;
     }
 
     public int getMaxVisionDistance() {
@@ -723,4 +719,11 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         return checkBool(STD_BOOLS.IMPASSABLE);
     }
 
+    public boolean isModuleBorder() {
+        return moduleBorder;
+    }
+
+    public void setModuleBorder(boolean moduleBorder) {
+        this.moduleBorder = moduleBorder;
+    }
 }

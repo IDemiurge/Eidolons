@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.system.auxiliary.ContainerUtils;
 import main.system.data.DataUnit;
@@ -8,12 +8,12 @@ import main.system.data.DataUnitFactory;
 
 import java.util.stream.Collectors;
 
-public class UnitData extends DataUnit<PARTY_VALUE> {
+public class UnitsData extends DataUnit<PARTY_VALUE> {
 
 
     public static final Boolean FORMAT = false;
 
-    public UnitData(Party party) {
+    public UnitsData(Party party) {
         this(PARTY_VALUE.MEMBERS +
          DataUnitFactory.getPairSeparator(FORMAT) +
          ContainerUtils.joinList(party.getMembers().stream().
@@ -22,7 +22,7 @@ public class UnitData extends DataUnit<PARTY_VALUE> {
          ) + DataUnitFactory.getSeparator(FORMAT));
     }
 
-    public UnitData(String data) {
+    public UnitsData(String data) {
         super(data);
     }
 

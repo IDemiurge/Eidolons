@@ -7,12 +7,15 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.EUtils;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.screen.LE_Screen;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -47,6 +50,10 @@ public class LE_MouseHandler extends LE_Handler {
 
     private void clickedCell(CLICK_MODE mode, Coordinates c) {
         switch (mode) {
+            case CTRL_SHIFT:
+                LevelStruct lowestStruct = getStructureManager().findLowestStruct(c);
+                GuiEventManager.trigger(GuiEventType.LE_TREE_SELECT, lowestStruct);
+                break;
             case ALT:
                 manager.getScriptHandler().editScriptData(c);
                 break;
@@ -95,7 +102,17 @@ public class LE_MouseHandler extends LE_Handler {
                 getSelectionHandler().select(bfObj);
                 getModel().getPaletteSelection().setType(bfObj.getType());
                 break;
-
+            case CTRL_SHIFT:
+                if (bfObj.isOverlaying()) {
+            /*
+            change direction?
+            copy-paste
+             */
+                    DIRECTION d = bfObj.getDirection().rotate45(true);
+                     bfObj.setDirection(d);
+                    GuiEventManager.trigger(GuiEventType.MOVE_OVERLAYING, bfObj);
+                }
+                break;
             case SHIFT:
                 clickedCell(mode, bfObj.getCoordinates());
                 break;

@@ -13,6 +13,7 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import main.data.tree.DataNode;
 import main.system.graphics.FontMaster;
 
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -26,14 +27,15 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
     @Override
     public void setUserObject(Object userObject) {
         clearChildren();
-        T rootNode = (T) userObject;
         nodes.clear();
-        if (isShowRoot()) {
-            add(root = createRootNode(rootNode));
-            recursiveAdd(root, rootNode);
+        if (userObject instanceof Collection) {
+            for (Object o : ((Collection) userObject)) {
+                initRoot(o);
+            }
         } else {
-            recursiveAdd(null, rootNode);
+            initRoot(userObject);
         }
+
         super.setUserObject(userObject);
         expandAll();
         for (Node node : nodes) {
@@ -41,6 +43,16 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
                 node.getParent().collapseAll();
             }
 
+        }
+    }
+
+    protected void initRoot(Object userObject) {
+        T rootNode = (T) userObject;
+        if (isShowRoot()) {
+            add(root = createRootNode(rootNode));
+            recursiveAdd(root, rootNode);
+        } else {
+            recursiveAdd(null, rootNode);
         }
     }
 
@@ -75,43 +87,50 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
 
     protected Node createNode(T node) {
         Node n = new Node(createNodeComp(node));
+        n.setObject(node);
         n.getActor().addListener(new ClickListener(-1) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                if (getTapCount() > 1) {
-                    try {
-                        doubleClick(node);
-                    } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
-                    }
-                } else if (event.getButton() == 1) {
-                    try {
-                        rightClick(node);
-                    } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
-                    }
-                } else
-                    selected(node);
-                for (Node node1 : nodes) {
-                    if (node1.getActor() instanceof Table) {
-                        ((Table) node1.getActor()).setBackground((Drawable) null);
-                    }
-                }
-                if (n.getActor() instanceof Table) {
-                    ((Table) n.getActor()).setBackground(NinePatchFactory.getHighlightSmallDrawable());
-                }
+                click(getTapCount(), event, n, node);
             }
 
         });
         return n;
     }
 
+    protected void click(int tapCount, InputEvent event, Node n, T node) {
+        if (tapCount > 1) {
+            try {
+                doubleClick(node);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        } else if (event!=null && event.getButton() == 1) {
+            try {
+                rightClick(node);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        } else
+        {
+            selected(node, n);
+        }
+        for (Node node1 : nodes) {
+            if (node1.getActor() instanceof Table) {
+                ((Table) node1.getActor()).setBackground((Drawable) null);
+            }
+        }
+        if (n.getActor() instanceof Table) {
+            ((Table) n.getActor()).setBackground(NinePatchFactory.getHighlightSmallDrawable());
+        }
+    }
+
     protected abstract void rightClick(T node);
 
     protected abstract void doubleClick(T node);
 
-    protected abstract void selected(T node);
+    protected abstract void selected(T node, Node n);
 
     protected Actor createNodeComp(T node) {
         Label.LabelStyle style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 20);
@@ -120,4 +139,10 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
         return actor;
     }
 
+    public void reselect() {
+    }
+
+    public void select(Object o) {
+
+    }
 }

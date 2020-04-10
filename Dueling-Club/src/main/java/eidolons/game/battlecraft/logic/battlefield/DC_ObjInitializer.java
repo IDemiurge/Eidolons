@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.objects.HungItemMaster;
@@ -48,14 +48,14 @@ public class DC_ObjInitializer {
     public static final String OBJ_SEPARATOR = StringMaster.getAltSeparator();
     public static final String COORDINATES_OBJ_SEPARATOR = StringMaster.getAltPairSeparator();
     private static final String MULTI_DIRECTION_SUFFIX = "MULTI_DIRECTION-";
-    private static UnitData data;
+    private static UnitsData data;
     private static boolean mapBlockMode;
     private static LevelBlock block;
     private static Dungeon c_dungeon;
     private static Coordinates offset;
 
 
-    public static void processUnitData(UnitData gameData, DC_Game game) {
+    public static void processUnitData(UnitsData gameData, DC_Game game) {
         data = gameData;
 //        processUnitDataStringToMap(game.getPlayer(true), data.getPlayerUnitData(), game, true);
 //        processUnitDataStringToMap(game.getPlayer(false), data.getPlayer2UnitData(), game, true);

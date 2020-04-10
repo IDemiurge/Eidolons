@@ -28,7 +28,7 @@ public class LE_Screen extends GenericDungeonScreen {
     private static Map<Floor, Supplier<ScreenWithLoader>> cached = new HashMap();
     private static LE_Screen instance;
     private Floor floor;
-    private LE_InputProcessor processor;
+    private LE_InputController processor;
     private InputMultiplexer multiplexer;
 
     public static Supplier<ScreenWithLoader> getScreen(Floor parameter) {
@@ -96,7 +96,7 @@ public class LE_Screen extends GenericDungeonScreen {
     @Override
     protected InputProcessor createInputController() {
         if (processor == null) {
-            processor = new LE_InputProcessor(getCamera(), floor);
+            processor = new LE_InputController(getCamera(), floor);
         }
         return processor;
     }

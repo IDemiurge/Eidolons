@@ -1,5 +1,6 @@
 package main.level_editor.backend.functions.io;
 
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.core.EUtils;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.utils.FileChooserX;
@@ -49,8 +50,8 @@ public class LE_DataHandler extends LE_Handler {
     }
 
     public void backup() {
-        String path = getBackupPath(getFloor());
-        String contents = FileManager.readFile(getDefaultSavePath(getFloor()));
+        String path = getBackupPath(getFloor() );
+        String contents = FileManager.readFile(getDefaultSavePath(getFloor ()));
         FileManager.write(contents, path);
         EUtils.showInfoText("Backed up as " + PathUtils.getLastPathSegment(path));
     }
@@ -75,13 +76,13 @@ public class LE_DataHandler extends LE_Handler {
 
 
     public void saveFloor() {
-        String path = getDefaultSavePath(getFloor());
+        String path = getDefaultSavePath(getFloor ());
         saveAs(path);
         setDirty(false);
     }
 
     public void saveAs(String path) {
-        String contents = LE_XmlMaster.toXml(getFloor());
+        String contents = LE_XmlMaster.toXml(getFloorWrapper());
         FileManager.write(contents, path);
         EUtils.showInfoText("Saved as " + PathUtils.getLastPathSegment(path));
     }
@@ -91,6 +92,10 @@ public class LE_DataHandler extends LE_Handler {
     }
 
     private String getDefaultSavePath(Floor floor, String prefix) {
+        String value = floor.getWrapper().getData().getValue(LevelStructure.FLOOR_VALUES.filepath);
+        if (!value.isEmpty()) {
+            return PathFinder.getDungeonLevelFolder() + prefix + "/" + value + ".xml";
+        }
         return PathFinder.getDungeonLevelFolder() + prefix + "/" + floor.getName() + ".xml";
     }
 

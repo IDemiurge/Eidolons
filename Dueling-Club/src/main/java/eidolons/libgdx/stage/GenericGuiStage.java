@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.kotcrab.vis.ui.widget.file.FileChooser;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
 import eidolons.game.core.EUtils;
@@ -35,7 +36,7 @@ public class GenericGuiStage extends StageX {
     protected final LabelX infoTooltip = new LabelX("", StyleHolder.getDefaultInfoStyle());
     protected OverlayTextPanel textPanel;
     protected ValueContainer locationLabel;
-    protected TextInputPanel tf;
+    protected TextInputPanel textInputPanel;
     protected ToolTipManager tooltips;
     protected SuperContainer actionTooltipContainer;
     protected SuperContainer infoTooltipContainer;
@@ -43,6 +44,7 @@ public class GenericGuiStage extends StageX {
     protected DragManager dragManager;
     protected Entity draggedEntity;
     protected TipMessageWindow tipMessageWindow;
+    private FileChooser fileChooser;
 
     public GenericGuiStage(Viewport viewport, Batch batch) {
         super(viewport == null
@@ -180,6 +182,7 @@ public class GenericGuiStage extends StageX {
         addActor(confirmationPanel = ConfirmationPanel.getInstance());
 
     }
+
     protected void showTooltip(String s, LabelX tooltip, float dur) {
         showTooltip(false, s, tooltip, dur);
     }
@@ -240,11 +243,11 @@ public class GenericGuiStage extends StageX {
     }
 
     public void textInput(Input.TextInputListener textInputListener, String title, String text, String hint) {
-        TextInputPanel tf = new TextInputPanel(title, text, hint, textInputListener);
-        addActor(tf);
-        tf.setPosition(GdxMaster.centerWidth(tf), GdxMaster.centerHeight(tf));
-        tf.open();
-        setKeyboardFocus(tf);
+        textInputPanel = new TextInputPanel(title, text, hint, textInputListener);
+        addActor(textInputPanel);
+        textInputPanel.setPosition(GdxMaster.centerWidth(textInputPanel), GdxMaster.centerHeight(textInputPanel));
+        textInputPanel.open();
+        setKeyboardFocus(textInputPanel);
 
     }
 
@@ -268,5 +271,13 @@ public class GenericGuiStage extends StageX {
     }
 
     public void outsideClick() {
+    }
+
+    public void setFileChooser(FileChooser fileChooser) {
+        this.fileChooser = fileChooser;
+    }
+
+    public FileChooser getFileChooser() {
+        return fileChooser;
     }
 }

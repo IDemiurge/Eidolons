@@ -35,6 +35,11 @@ public class LE_Module implements LayeredData<LE_Zone> {
         return zones;
     }
 
+    @Override
+    public Object getLevelLayer() {
+        return getModule();
+    }
+
     public Module getModule() {
         return module;
     }

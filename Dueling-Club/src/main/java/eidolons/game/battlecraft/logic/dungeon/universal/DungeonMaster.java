@@ -5,6 +5,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.LayerManager;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
 import eidolons.game.battlecraft.logic.dungeon.module.BridgeMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
@@ -51,7 +52,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private  Map<Integer, BattleFieldObject> objIdMap= new LinkedHashMap<>();
     private Map<Integer, ObjType> idTypeMap;
     private Map<DataMap, Map<Integer, String>> dataMaps;
-
+    private LE_Floor floor;
 
 
     public DungeonMaster(DC_Game game) {
@@ -307,5 +308,13 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
     public void setDataMaps(Map<DataMap, Map<Integer, String>> dataMaps) {
         this.dataMaps = dataMaps;
+    }
+
+    public void setFloor(LE_Floor floor) {
+        this.floor = floor;
+    }
+
+    public LE_Floor getFloor() {
+        return floor;
     }
 }

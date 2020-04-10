@@ -4,9 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.FauxDungeonLevel;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
-import main.content.enums.DungeonEnums;
 import main.system.PathUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
@@ -60,22 +58,8 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
     private FauxDungeonLevel createFauxDungeonLevel(String path, Location location) {
         FauxDungeonLevel level = new FauxDungeonLevel(PathUtils.getLastPathSegment(path));
-
-        List<LevelZone> zones = createFauxZones(location);
-        level.setZones(zones);
-
-
         return level;
     }
-
-    private List<LevelZone> createFauxZones(Location location) {
-        List<LevelZone> zones = new ArrayList<>();
-        LevelZone zone = new LevelZone(0);
-        zones.add(zone);
-        zone.setStyle(DungeonEnums.DUNGEON_STYLE.Somber);
-        return zones;
-    }
-
 
 
 

@@ -4,7 +4,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.meta.igg.death.ChainHero;
 import eidolons.game.battlecraft.logic.meta.igg.death.HeroChain;
 import eidolons.game.battlecraft.logic.meta.igg.hero.ChainParty;
@@ -86,7 +86,7 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
         chain = new HeroChain(party, //getMetaGame().getActIndex()+
                 1);
         getGame().getState().addObject(party);
-        getGame().getDataKeeper().addUnitData(new UnitData(party));
+        getGame().getDataKeeper().addUnitData(new UnitsData(party));
 
         new EidolonLord(DataManager.getType(LORD_TYPE, DC_TYPE.LORD)).setChain(chain);
 

@@ -4,8 +4,8 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
@@ -39,11 +39,11 @@ public class TestSpawner extends Spawner<TestDungeon> {
 
 
     @Override
-    public List<Unit> spawn(UnitData data, DC_Player owner, SPAWN_MODE mode) {
+    public List<Unit> spawn(UnitsData data, DC_Player owner, SPAWN_MODE mode) {
         if (data.getValue(PARTY_VALUE.MEMBERS) == null)
             return new ArrayList<>();
         String units = data.getValue(PARTY_VALUE.MEMBERS).
-         replace(DataUnitFactory.getContainerSeparator(UnitData.FORMAT), "");
+         replace(DataUnitFactory.getContainerSeparator(UnitsData.FORMAT), "");
         if (FileManager.isFile(units))
             return spawnUnitGroup(owner.isMe(), units);
         return super.spawn(data, owner, mode);

@@ -44,7 +44,7 @@ public class LE_UnitViewFactory extends UnitViewFactory {
 
     @Override
     public void addOverlayingListener(OverlayView view, BattleFieldObject bfObj) {
-        view.addListener(UnitViewFactory.doCreateListener(bfObj));
+        view.addListener(createListener(bfObj));
     }
 
     public static GridUnitView doCreate(BattleFieldObject battleFieldObject) {

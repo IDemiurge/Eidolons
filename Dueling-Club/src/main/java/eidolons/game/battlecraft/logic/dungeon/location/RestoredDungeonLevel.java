@@ -29,11 +29,6 @@ public class RestoredDungeonLevel extends DungeonLevel {
         this.data = data;
     }
 
-    @Override
-    public List<LevelZone> getSubParts() {
-        return zones;
-    }
-
     public List<LevelZone> getZones() {
         return zones;
     }

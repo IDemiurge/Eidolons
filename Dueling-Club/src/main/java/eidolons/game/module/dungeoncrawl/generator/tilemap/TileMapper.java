@@ -122,16 +122,16 @@ public class TileMapper {
 
     public static String toASCII_String(ROOM_CELL[][] cells, boolean nullToX
             , boolean OtoDot) {
-        return toASCII_String(cells, nullToX, OtoDot, false);
+        return toASCII_String(cells, nullToX, OtoDot, false, true);
     }
 
     public static String toASCII_String(TileMap map, boolean nullToX
             , boolean OtoDot, boolean overrideBlock) {
-        return toASCII_String(getCells(map), nullToX, OtoDot, overrideBlock);
+        return toASCII_String(getCells(map), nullToX, OtoDot, overrideBlock, true);
     }
 
     public static String toASCII_String(ROOM_CELL[][] cells, boolean nullToX
-            , boolean OtoDot, boolean overrideBlock) {
+            , boolean OtoDot, boolean overrideBlock, boolean decorate) {
         if (!overrideBlock)
             if (loggingOff)
                 return "";
@@ -141,7 +141,7 @@ public class TileMapper {
         StringBuilder separatorBuilder = new StringBuilder("\n      ");
         StringBuilder columnsBuilder = new StringBuilder("\nX     ");
         for (int x = 0; x < cells.length; x++) {
-            columnsBuilder.append(x).append(RngXmlMaster.TILEMAP_ROW_SEPARATOR);
+            columnsBuilder.append(x+1).append(RngXmlMaster.TILEMAP_ROW_SEPARATOR);
             if (x < 10) columnsBuilder.append(" ");
             separatorBuilder.append("___");
         }
@@ -149,10 +149,12 @@ public class TileMapper {
         String separator = separatorBuilder.toString();
         StringBuilder stringBuilder1 = new StringBuilder("\n");
         for (int y = 0; y < cells[0].length; y++) {
+
+            if (decorate)
             if (y < 10)
-                stringBuilder1.append(y).append("  | ");
+                stringBuilder1.append(y+1).append("  | ");
             else
-                stringBuilder1.append(y).append(" | ");
+                stringBuilder1.append(y+1).append(" | ");
             StringBuilder stringBuilder = new StringBuilder(stringBuilder1.toString());
             for (int x = 0; x < cells.length; x++) {
                 if (cells[x][y] == null) {
@@ -161,7 +163,12 @@ public class TileMapper {
                     else
                         stringBuilder.append("  -");
                 } else
-                    stringBuilder.append("  ").append(cells[x][y].getSymbol());
+                {
+                    if (decorate) {
+                        stringBuilder.append("  ");
+                    }
+                    stringBuilder.append(cells[x][y].getSymbol());
+                }
             }
             stringBuilder1 = new StringBuilder(stringBuilder.toString());
             stringBuilder1.append("\n");
@@ -169,6 +176,10 @@ public class TileMapper {
         }
         string = stringBuilder1.toString();
         separator += "\n";
+
+        if (!decorate)
+            return string;
+
         if (OtoDot) {
             return (columns + separator + string + separator + columns).replace(
                     "O", "."
@@ -237,6 +248,7 @@ public class TileMapper {
         int lineN = 0;
         int w = 0;
         Map<Coordinates, ROOM_CELL> map = new LinkedHashMap<>();
+        data = data.trim();
         String[] lines = StringMaster.splitLines(data);
         for (String line : lines) {
             if (lineN++ < RngXmlMaster.SKIPPED_LINES)
@@ -276,6 +288,21 @@ public class TileMapper {
         }
         return lines;
     }
+
+    public static String toASCII_String(String[][] tileMap) {
+        StringBuilder builder = new StringBuilder();
+        for (String[] line : tileMap) {
+            for (String symbol : line) {
+                builder.append(symbol);
+            }
+            builder.append("\n");
+        }
+        return builder.toString();
+    }
+    public static String[][] toSymbolArray(String room) {
+        return toSymbolArray(getCells(createTileMap(room)));
+    }
+
 
     public TileMap joinTileMaps() {
 //        model.assignAdditionalCoordinates();

@@ -1,14 +1,17 @@
 package main.level_editor.gui.dialog.struct;
 
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
+import eidolons.libgdx.gui.utils.FileChooserX;
 import eidolons.libgdx.utils.GdxDialogMaster;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.components.DataTable;
+import main.level_editor.gui.components.EditValueContainer;
 import main.level_editor.gui.dialog.EditDialog;
+import main.level_editor.gui.screen.LE_Screen;
 import main.system.data.DataUnit;
 
-public abstract class DataEditDialog<T extends DataUnit> extends EditDialog<DataTable.DataPair> {
+public abstract class DataEditDialog<S extends Enum<S> , T extends DataUnit<S>> extends EditDialog<DataTable.DataPair> {
 
     protected T data;
     protected T cached;
@@ -18,16 +21,33 @@ public abstract class DataEditDialog<T extends DataUnit> extends EditDialog<Data
     }
 
     @Override
-    protected void edit(DataTable.DataPair item) {
-        Object value = input(item);
+    protected void edit(EditValueContainer actor, DataTable.DataPair item) {
+        Object value =null ;
         String stringValue = null;
-        switch (getType(item)) {
-            case text:
-                stringValue = string(value);
+        LevelStructure.EDIT_VALUE_TYPE type = actor.getType();
+        if (type == null) {
+            type = LevelStructure.EDIT_VALUE_TYPE.text;
+        }
+        switch (type) {
+            case enum_const:
+                value = enumConst(value, actor.getEdit_arg());
+                break;
+            case file:
+                value = FileChooserX.chooseFile((String) actor.getEdit_arg(), null, getStage());
+                break;
+            case none:
+                return;
+            default:
+                value= input(item);
                 break;
         }
+        stringValue = string(value);
         data.setValue(item.name, stringValue);
         setUpdateRequired(true);
+    }
+
+    private Object enumConst(Object value, Object edit_arg) {
+        return LE_Screen.getInstance().getGuiStage().getEnumChooser().chooseEnum((Class<S>) edit_arg);
     }
 
     private String string(Object value) {
@@ -39,14 +59,38 @@ public abstract class DataEditDialog<T extends DataUnit> extends EditDialog<Data
     }
 
     @Override
-    protected LevelStructure.EDIT_VALUE_TYPE getType(DataTable.DataPair datum) {
+    protected LevelStructure.EDIT_VALUE_TYPE getSpecificType(DataTable.DataPair datum) {
+        if (data != null) {
+            S enumConst = data.getEnumConst(datum.name);
+            if (enumConst instanceof LevelStructure.EditableValue) {
+                LevelStructure.EDIT_VALUE_TYPE type = ((LevelStructure.EditableValue) enumConst).getEditValueType();
+                if (type != null) {
+                    return type;
+                }
+            }
+            return getEditor(enumConst);
+        }
         return LevelStructure.EDIT_VALUE_TYPE.text;
     }
 
+    protected abstract LevelStructure.EDIT_VALUE_TYPE getEditor(S enumConst);
+
     @Override
-    protected Object getArg(DataTable.DataPair datum) {
+    protected Object getSpecificArg(DataTable.DataPair datum) {
+        if (data != null) {
+            S enumConst = data.getEnumConst(datum.name);
+            if (enumConst instanceof LevelStructure.EditableValue) {
+                Object arg = ((LevelStructure.EditableValue) enumConst).getArg();
+                if (arg != null) {
+                    return arg;
+                }
+            }
+            return getArg(enumConst);
+        }
         return null;
     }
+
+    protected abstract Object getArg(S enumConst);
 
     @Override
     protected Object getVal(DataTable.DataPair datum) {
@@ -61,21 +105,20 @@ public abstract class DataEditDialog<T extends DataUnit> extends EditDialog<Data
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
-        cached =(T) userObject;
-        data =createDataCopy(cached);
+        data = (T) userObject;
+        cached  = createDataCopy(data);
 
         show();
     }
 
     @Override
     public void ok() {
-        LevelEditor.getManager().getOperationHandler().execute(Operation.LE_OPERATION.MODIFY_STRUCTURE,
+        LevelEditor.getManager().getOperationHandler().execute(Operation.LE_OPERATION.SAVE_STRUCTURE,
                 cached);
-        apply(data);
+        LevelEditor.getManager().getOperationHandler().execute(Operation.LE_OPERATION.MODIFY_STRUCTURE,
+                data);
         super.ok();
     }
-
-    protected abstract void apply(T data);
 
     protected abstract T createDataCopy(T userObject);
 

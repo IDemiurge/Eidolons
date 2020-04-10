@@ -84,6 +84,7 @@ public class GridCellContainer extends GridCell {
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
+        if (graveyard != null)
         graveyard.setUserObject(new GridCellDataSource(
          Coordinates.get(getGridX(), getGridY())
         ));

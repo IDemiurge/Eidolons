@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.logic.battle.mission.MissionBattle;
 import eidolons.game.battlecraft.logic.battle.universal.BattleHandler;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -61,7 +61,7 @@ some groups will be defensive, relying on Reinforcements!
         new Encounter(data);
         //can we have 2+ encounters in a fight/block?
 
-        UnitData sdata = new UnitData(""); //can be partially specified in LE?
+        UnitsData sdata = new UnitsData(""); //can be partially specified in LE?
 //        sdata.setValue(UnitData.PARTY_VALUE.COORDINATES, coordinatesString);
         List<Unit> units = getSpawner().spawn(sdata, getGame().getPlayer(false), Spawner.SPAWN_MODE.DUNGEON);
 

@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Block;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Module;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Zone;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -11,6 +12,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
+import main.data.xml.XML_Formatter;
 import main.data.xml.XmlNodeMaster;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
@@ -31,45 +33,54 @@ public class StructureBuilder extends DungeonHandler<Location> {
         super(master);
     }
 
-    public void build(Node node, Location location) {
+    public LE_Floor build(Node node, Location location) {
         Set<Module> modules = new LinkedHashSet<>();
+        LE_Floor floor = new LE_Floor(() -> location.getDungeon());
         for (Node sub : XmlNodeMaster.getNodeList(node)) {
-            modules.add(createModule(sub, location));
+            if (sub.getNodeName().equalsIgnoreCase(FloorLoader.DATA)) {
+                FloorData data = new FloorData(floor);
+                data.setData(sub.getTextContent());
+                data.apply();
+            } else {
+                modules.add(createModule(sub, location));
+            }
         }
+
         getMetaMaster().getModuleMaster().setModules(modules);
+        getMetaMaster().getDungeonMaster().setFloor(floor);
+        return floor;
     }
 
     private Module createModule(Node node, Location location) {
-        Module m = new Module();
+        Module module = new Module();
         for (Node sub : XmlNodeMaster.getNodeList(node)) {
             if (sub.getNodeName().equalsIgnoreCase(FloorLoader.DATA)) {
-                ModuleData data = new ModuleData(new LE_Module(m));
+                ModuleData data = new ModuleData(new LE_Module(module));
                 data.setData(node.getTextContent());
                 data.apply();
             } else {
-                List<LevelZone> zones = createZones(sub, location);
-                m.setZones(zones);
+                List<LevelZone> zones = createZones(module, sub, location);
+                module.setZones(zones);
             }
         }
-        return m;
+        return module;
     }
 
-    private List<LevelZone> createZones(Node sub, Location location) {
+    private List<LevelZone> createZones(Module module, Node sub, Location location) {
         List<LevelZone> zones = new LinkedList<>();
         for (Node node : XmlNodeMaster.getNodeList(sub)) {
-            zones.add(buildZone(location.getDungeon(), ZONE_ID++, node));
+            zones.add(buildZone(module, location.getDungeon(), ZONE_ID++, node));
         }
         return zones;
     }
 
 
-    private LevelZone buildZone(Dungeon dungeon, Integer id, Node zoneNode) {
+    private LevelZone buildZone(Module module, Dungeon dungeon, Integer id, Node zoneNode) {
         LevelZone zone = new LevelZone(id);
+        String dataString = "";
         for (Node node : XmlNodeMaster.getNodeList(zoneNode)) {
             if (node.getNodeName().equalsIgnoreCase(FloorLoader.DATA)) {
-                ZoneData data = new ZoneData(new LE_Zone(zone));
-                data.setData(node.getTextContent());
-                data.apply();
+                dataString = node.getTextContent();
             } else {
                 for (Node subNode : XmlNodeMaster.getNodeList(node)) {
                     LevelBlock block = constructBlock(subNode, BLOCK_ID++, zone, dungeon);
@@ -79,6 +90,12 @@ public class StructureBuilder extends DungeonHandler<Location> {
 
             }
         }
+        ZoneData data = new ZoneData(new LE_Zone(zone));
+        data.setData(dataString);
+        zone .setData( data);
+        zone.setModule(module);
+
+        zone.setName(XML_Formatter.restoreXmlNodeName(zoneNode.getNodeName()));
         return zone;
     }
 
@@ -105,7 +122,7 @@ public class StructureBuilder extends DungeonHandler<Location> {
             }
         }
 
-        b.setCoordinatesList(coordinates);
+        b.setCoordinates(coordinates);
         if (objectMap == null) {
             return b;
         }

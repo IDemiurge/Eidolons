@@ -4,13 +4,18 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
 import main.level_editor.backend.struct.level.Floor;
 
-public class LE_InputProcessor extends DungeonInputController {
+public class LE_InputController extends DungeonInputController {
 
-    public LE_InputProcessor(OrthographicCamera camera, Floor parameter) {
+    public LE_InputController(OrthographicCamera camera, Floor parameter) {
         super(camera);
-        setZoomStep(0.2f);
         setUnlimitedZoom(true);
 
+    }
+
+    @Override
+    protected void initZoom() {
+        super.initZoom();
+        zoomStep=0.1f;
     }
 
     @Override

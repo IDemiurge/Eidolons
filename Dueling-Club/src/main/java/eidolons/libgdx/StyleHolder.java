@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.Menu;
+import com.kotcrab.vis.ui.widget.MenuItem;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
@@ -68,6 +70,7 @@ public class StyleHolder {
     private static LabelStyle defaultHiero;
     private static LabelStyle defaultInfoStyle;
     private static TabbedPane.TabbedPaneStyle horTabStyle;
+    private static Menu.MenuStyle menuStyle;
 
     static {
         for (FONT font : FONT.values()) {
@@ -505,6 +508,27 @@ public class StyleHolder {
             horTabStyle.background = NinePatchFactory.getLightPanelFilledDrawable();
         }
         return horTabStyle;
+    }
+
+    public static Menu.MenuStyle getMenuStyle() {
+        if (menuStyle == null) {
+            menuStyle = new Menu.MenuStyle(VisUI.getSkin().get(Menu.MenuStyle.class));
+            TextButtonStyle s =getMenuBtnStyle();
+            menuStyle.openButtonStyle.font= s.font;
+//            =new VisTextButton.VisTextButtonStyle(
+//                    s.up,
+//                    s.down,
+//                    s.checked,
+//                    s.font
+//            );
+        }
+        return menuStyle;
+    }
+
+    public static MenuItem.MenuItemStyle getMenuBtnStyle() {
+        MenuItem.MenuItemStyle menuItemStyle = new MenuItem.MenuItemStyle(VisUI.getSkin().get(MenuItem.MenuItemStyle.class));
+        menuItemStyle.font = getButtonStyle(STD_BUTTON.MENU).font;
+        return  menuItemStyle;
     }
 
 }

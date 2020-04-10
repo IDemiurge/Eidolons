@@ -93,7 +93,7 @@ OOO##
         INCREASE_ROOM_COUNT,
         DECREASE_SIZE,
         DECREASE_ROOM_COUNT,
-        NO_ROOM_CHANCE, NO_RANDOM_ROTATIONS;
+        NO_ROOM_CHANCE, NO_RANDOM_ROTATIONS
     }
 
     public enum LEVEL_VALUES
@@ -245,7 +245,13 @@ OOO##
     public enum ROOM_CELL { //water, void
         VOID("-"),
         INDESTRUCTIBLE("I"),
+
         WALL("#"),
+        ALT_WALL("*"),
+        WALL_WITH_LIGHT_OVERLAY("@"),
+        WALL_WITH_DECOR_OVERLAY("$"),
+        DESTRUCTIBLE("%"),
+
         FLOOR("O"),
         ENTRANCE("E"),
         EXIT("X"),
@@ -253,7 +259,6 @@ OOO##
         CONTAINER("C"),
         DOOR("D"),
         ART_OBJ("A"),
-        DESTRUCTIBLE_WALL("*"),
         SECRET_DOOR("S"),
         SECRET_DOOR_BUTTON("!"),
 
@@ -267,11 +272,8 @@ OOO##
         BOSS("B"),
 
         LIGHT_EMITTER("L"),
-        WALL_WITH_LIGHT_OVERLAY("@"),
-        WALL_WITH_DECOR_OVERLAY("$"),
         LOCAL_KEY("k"),
         GLOBAL_KEY("K"),
-        DESTRUCTIBLE("%"),
 
 //RANDOM
 

@@ -6,9 +6,11 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.EUtils;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import eidolons.libgdx.gui.utils.FileChooserX;
+import eidolons.system.content.PlaceholderGenerator;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -17,15 +19,14 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
+import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.awt.*;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.BORDER_TYPE;
 import static eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.MODULE_VALUE;
@@ -35,6 +36,7 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
     Map<Point, Module> moduleGrid = new LinkedHashMap<>();
     Map<Point, Coordinates> pointCoordMap = new LinkedHashMap<>();
     int grids = 1;
+    private Set<BattleFieldObject> borderObjects = new HashSet<>();
 
     public LE_ModuleHandler(LE_Manager manager) {
         super(manager);
@@ -49,7 +51,10 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
             module.setOrigin(c);
         }
         resetBorders();
+        if (isLoaded())
+            resetBuffer();
     }
+
 
     private Coordinates getMappedCoordForPoint(Point p, Module module) {
         int offsetX = 0;
@@ -60,68 +65,112 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
             offsetX += w;
         }
         for (int i = 1; i <= p.y; i++) {
-            Module relativeTo = moduleGrid.get(new Point(p.x , p.y- i));
+            Module relativeTo = moduleGrid.get(new Point(p.x, p.y - i));
             int h = relativeTo.getHeight() + relativeTo.getData().getIntValue(MODULE_VALUE.border_width);
             offsetY += h;
         }
 
-        offsetX+= module.getData().getIntValue(MODULE_VALUE.width_buffer);
-        offsetY+= module.getData().getIntValue(MODULE_VALUE.height_buffer);
+        offsetX += module.getData().getIntValue(MODULE_VALUE.width_buffer);
+        offsetY += module.getData().getIntValue(MODULE_VALUE.height_buffer);
 
         return Coordinates.get(offsetX, offsetY);
     }
 
+    private void resetBuffer() {
+        LinkedHashSet<Coordinates> set = new LinkedHashSet<>();
+        LinkedHashSet<Coordinates> full = new LinkedHashSet<>(getGame().getCoordinates());
+        for (Module module : getModules()) {
+            set.addAll(module.getCoordinatesSet());
+        }
+        full.removeAll(set);
+        getOperationHandler().execute(Operation.LE_OPERATION.MASS_SET_VOID, full);
+    }
 
     @Override
     public void resetBorders() {
+        for (BattleFieldObject borderObject : borderObjects) {
+            getObjHandler().removeIgnoreWrap(borderObject);
+        }
+        borderObjects.clear();
         for (Module module : getModules()) {
-            List<Coordinates> borderCoords = getBorderCoordinates(module);
+            List<Coordinates> borderCoords = getBorderCoordinates(module, false);
 
-            ObjType objType =null ;
-                    BORDER_TYPE type = new EnumMaster<BORDER_TYPE>().retrieveEnumConst(BORDER_TYPE.class,
+            ObjType objType = null;
+            BORDER_TYPE type = new EnumMaster<BORDER_TYPE>().retrieveEnumConst(BORDER_TYPE.class,
                     module.getData().getValue(MODULE_VALUE.border_type));
             if (type == null) {
-                  objType = DataManager.getType( module.getData().getValue(MODULE_VALUE.border_type)
+                objType = DataManager.getType(module.getData().getValue(MODULE_VALUE.border_type)
                         , DC_TYPE.BF_OBJ);
                 if (objType == null) {
-                    type=BORDER_TYPE.wall;
+                    type = BORDER_TYPE.wall;
                 }
             }
-            switch (type) {
-                case wall:
-                    String wallType = module.getData().getValue(MODULE_VALUE.default_wall);
-                    if (wallType.isEmpty()) {
-                        wallType = "Stone Wall";
-                    }
-                    objType= DataManager.getType(
-                                    wallType + " Indestructible"
-                            , DC_TYPE.BF_OBJ);
-                    break;
-                case chism:
-                    break;
-                case irregular:
-                    break;
-                case wall_and_chism:
-                    break;
+            if (objType == null) {
+                String objTypeName = null;
+                switch (type) {
+                    case wall_alt:
+                        objTypeName = PlaceholderGenerator.getPlaceholderName(GeneratorEnums.ROOM_CELL.ALT_WALL) + " Indestructible";
+                        break;
+                    case wall:
+                        objTypeName = PlaceholderGenerator.getPlaceholderName(GeneratorEnums.ROOM_CELL.WALL) + " Indestructible";
+                        break;
+                    case chism:
+                        break;
+                    case irregular:
+                        break;
+                    case wall_and_chism:
+                        break;
+                }
+                objType = DataManager.getType(objTypeName
+                        , DC_TYPE.BF_OBJ);
             }
 
             for (Coordinates borderCoord : borderCoords) {
                 BattleFieldObject obj = getObjHandler().addObjIgnoreWrap(objType, borderCoord.x, borderCoord.y);
+                obj.setModuleBorder(true);
+                borderObjects.add(obj);
                 //TODO set border flag to remove when resetting.. or put into a map
             }
         }
     }
 
-    private List<Coordinates> getBorderCoordinates(Module module) {
+    @Override
+    public void afterLoaded() {
+        for (Module module : getModules()) {
+            List<Coordinates> borderCoords = getBorderCoordinates(module, false);
+            getStructureManager().resetWalls(getDungeonLevel(), borderCoords);
+        }
+        resetBuffer();
+    }
+
+    private List<Coordinates> getBufferCoordinates(Module module) {
+        return getBorderCoordinates(module, true);
+    }
+
+    private List<Coordinates> getBorderCoordinates(Module module, boolean buffer) {
         Coordinates origin = module.getOrigin();
         int border = module.getData().getIntValue(MODULE_VALUE.border_width);
-        int h= module.getHeight() + border *2;
-        int w= module.getWidth() + border *2;
-        Coordinates corner= origin.getOffset(w, h);
+        int borderW = border;
+        int borderH = border;
+        if (buffer) {
+            int bufferW = module.getData().getIntValue(MODULE_VALUE.width_buffer) - 1;
+            int bufferH = module.getData().getIntValue(MODULE_VALUE.height_buffer) - 1;
+            borderH += bufferH;
+            borderW += bufferW;
+        }
+
+        int h = module.getHeight() + borderH * 2;
+        int w = module.getWidth() + borderW * 2;
+        Coordinates corner = origin.getOffset(w, h);
         List<Coordinates> full = CoordinatesMaster.getCoordinatesBetween(origin, corner);
-        List<Coordinates> inner = CoordinatesMaster.getCoordinatesBetween(
-                origin.getOffset( border,  border), corner.getOffset(-border, -border));
-        full.removeIf(c-> inner.contains(c));
+        List<Coordinates> inner = buffer ?
+                CoordinatesMaster.getCoordinatesBetween(
+                        origin.getOffset(borderW - border, borderH - border),
+                        corner.getOffset(-borderW + border, -borderH + border))
+                :
+                CoordinatesMaster.getCoordinatesBetween(
+                        origin.getOffset(borderW, borderH), corner.getOffset(-borderW, -borderH));
+        full.removeIf(c -> inner.contains(c));
         return full;
     }
 

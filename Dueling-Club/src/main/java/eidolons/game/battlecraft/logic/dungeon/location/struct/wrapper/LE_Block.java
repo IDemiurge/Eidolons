@@ -27,6 +27,11 @@ public class LE_Block implements LayeredData<LayeredData> {
     }
 
     @Override
+    public Object getLevelLayer() {
+        return getBlock();
+    }
+
+    @Override
     public Set<LayeredData> getChildren() {
         objs= DC_Game.game.getBfObjects().stream().filter(
                 obj-> isWithinBlock(obj) && obj.getOBJ_TYPE_ENUM()== DC_TYPE.ENCOUNTERS).map(

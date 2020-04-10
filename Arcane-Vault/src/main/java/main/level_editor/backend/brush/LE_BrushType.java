@@ -1,7 +1,8 @@
 package main.level_editor.backend.brush;
 
 public enum LE_BrushType {
-
+wall,
+    alt_wall,
     debris,
     undergrowth,
     overlays_mushrooms,
@@ -19,6 +20,6 @@ critters,
     vfx_fire,
     vfx_smoke,
 
-    ;
+    none;
     String weightMap;
 }

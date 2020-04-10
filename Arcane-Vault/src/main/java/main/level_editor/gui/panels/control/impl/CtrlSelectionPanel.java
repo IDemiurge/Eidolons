@@ -1,4 +1,4 @@
-package main.level_editor.gui.panels.control.structure;
+package main.level_editor.gui.panels.control.impl;
 
 import main.level_editor.backend.handlers.selection.ISelectionHandler;
 import main.level_editor.gui.panels.control.LE_ControlPanel;

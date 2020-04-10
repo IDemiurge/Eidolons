@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.meta.scenario;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.meta.igg.CustomLaunch;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
@@ -143,7 +143,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         }
 
         getGame().getState().addObject(party);
-        getGame().getDataKeeper().addUnitData(new UnitData(party));
+        getGame().getDataKeeper().addUnitData(new UnitsData(party));
 
         party.setProperty(PROPS.PARTY_MISSION,
                 ContainerUtils.openContainer(getMetaGame().getScenario().

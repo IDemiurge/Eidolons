@@ -3,6 +3,7 @@ package eidolons.game.module.dungeoncrawl.generator.init;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.battlecraft.logic.dungeon.location.RestoredDungeonLevel;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
@@ -41,11 +42,12 @@ public class RngLevelInitializer {
             if (!level.getObjects().isEmpty())
                 return; //no need to translate symbols to objects, already done
         }
-        for (LevelZone levelZone : level.getSubParts()) {
-            for (LevelBlock block : levelZone.getSubParts()) {
-                initTileMapBlock(block);
-            }
-        }
+        //DUNGEON LEVEL FIX
+//        for (LevelZone levelZone : level.getSubParts()) {
+//            for (LevelBlock block : levelZone.getSubParts()) {
+//                initTileMapBlock(block);
+//            }
+//        }
         initVoid();
         new RngOverlayManager().initDirectionMap(level);
         //        level.addCustomValue(G_PROPS.BACKGROUND, bgImagePath);
@@ -69,7 +71,8 @@ public class RngLevelInitializer {
     private void assignBlockTileMaps(DungeonLevel level) {
         TileMap map = level.getTileMap();
         ROOM_CELL[][] cells = TileMapper.getCells(map);
-        for (LevelZone zone : level.getSubParts()) {
+        for (Module module : level.getSubParts()) {
+        for (LevelZone zone : module.getSubParts()) {
             for (LevelBlock block : zone.getSubParts()) {
                 int w = CoordinatesMaster.getWidth(block.getCoordinatesSet());
                 int h = CoordinatesMaster.getHeight(block.getCoordinatesSet());
@@ -88,6 +91,7 @@ public class RngLevelInitializer {
                 block.setHeight(h);
                 block.setOrigin(CoordinatesMaster.
                         getUpperLeftCornerCoordinates(block.getCoordinatesSet()));
+            }
             }
         }
     }

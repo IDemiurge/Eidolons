@@ -18,7 +18,7 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
 
     @Override
     public void fill() {
-        Set<Coordinates> area = getSelectionHandler().selectArea();
+        Set<Coordinates> area = getSelectionHandler().getSelection().getCoordinates();
         if (area.isEmpty()) {
             return;
         }
@@ -46,7 +46,7 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
     }
 
     @Override
-    public void setVoid() {
+    public void toggleVoid() {
 
         operation(Operation.LE_OPERATION.CLEAR_START);
         for (Coordinates c : getSelectionHandler().getSelection().getCoordinates()) {

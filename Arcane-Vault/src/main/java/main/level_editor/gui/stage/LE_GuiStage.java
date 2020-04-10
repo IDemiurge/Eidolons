@@ -15,6 +15,7 @@ import main.level_editor.gui.dialog.BlockTemplateChooser;
 import main.level_editor.gui.dialog.ChooserDialog;
 import main.level_editor.gui.dialog.EnumChooser;
 import main.level_editor.gui.dialog.struct.BlockEditDialog;
+import main.level_editor.gui.dialog.struct.FloorEditDialog;
 import main.level_editor.gui.dialog.struct.ModuleDialog;
 import main.level_editor.gui.dialog.struct.ZoneEditDialog;
 import main.level_editor.gui.panels.ClosablePanel;
@@ -29,11 +30,11 @@ import main.system.auxiliary.log.LogMaster;
 
 public class LE_GuiStage extends GenericGuiStage {
 
-    private TablePanelX dialogueTable;
     private TopPanel topPanel;
     private LE_ButtonStripe buttons;
     private ClosablePanel controlPanel;
-    private ClosablePanel palettePanel;
+    private TabbedControlPanel controlTabs;
+    private HybridPalette palettePanel;
 
     private LE_TreeHolder treePanel;
     private BlockTemplateChooser templateChooser;
@@ -45,17 +46,19 @@ public class LE_GuiStage extends GenericGuiStage {
     private BlockEditDialog blockEditor;
     private ModuleDialog moduleEditor;
     private ZoneEditDialog zoneEditor;
+    private FloorEditDialog floorDialog;
+    private boolean positionsAdjusted;
 
 
     public LE_GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
 
         TablePanelX toolHolder = new ControlPanelHolder();
-        TabbedControlPanel tabs = new TabbedControlPanel(toolHolder);
+        controlTabs = new TabbedControlPanel(toolHolder);
         controlPanel = new ClosablePanel();
-        controlPanel.add(tabs.getTabsPane()).width(600).row();
+        controlPanel.add(controlTabs.getTabsPane()).width(600).row();
         controlPanel.add(toolHolder);
-        tabs.switchTab(0);
+        controlTabs.switchTab(0);
 
         treePanel = new LE_TreeHolder();
         palettePanel = new HybridPalette();
@@ -73,13 +76,12 @@ public class LE_GuiStage extends GenericGuiStage {
 
         addActor(templateChooser = new BlockTemplateChooser());
         addActor(enumChooser = new EnumChooser());
+        addActor(floorDialog = new FloorEditDialog());
         addActor(blockEditor = new BlockEditDialog());
         addActor(moduleEditor = new ModuleDialog());
         addActor(zoneEditor = new ZoneEditDialog());
         addActor(editTable = new DataTable(2, 50));
 
-        tooltips.setZIndex(Integer.MAX_VALUE);
-        confirmationPanel.setZIndex(Integer.MAX_VALUE);
     }
 
     private void initButtons() {
@@ -93,14 +95,24 @@ public class LE_GuiStage extends GenericGuiStage {
 
     private void initTable() {
         addActor(innerTable = new TablePanelX());
-        innerTable.row().maxHeight(120);
-        innerTable.padTop(30);
-        innerTable.add(topPanel = new TopPanel()).top();
-
-        innerTable.add(buttons).bottom().right().expandX();
+//        innerTable.padTop(30);
+        TablePanelX upperTable;
+        innerTable.add(upperTable = new TablePanelX(){
+            @Override
+            public void layout() {
+                super.layout();
+                buttons.setY(buttons.getY()-20);
+                buttons.setX(buttons.getX()+276);
+                topPanel.setX(topPanel.getX()+190);
+                topPanel.setY(topPanel.getY()+18);
+                controlPanel.setX(controlPanel.getX()-190);
+                controlPanel.setY(controlPanel.getY()-20);
+            }
+        }).maxHeight(120) ;
+        upperTable.add(topPanel = new TopPanel()).left();
+        upperTable.add(buttons).center();
 //        innerTable.row();
-        innerTable.add(controlPanel).center().top();
-
+        upperTable.add(controlPanel).center().top();
 
         innerTable.row();
         TablePanelX c;
@@ -143,10 +155,21 @@ public class LE_GuiStage extends GenericGuiStage {
             treePanel.setX(Gdx.graphics.getWidth() - treePanel.getWidth());
             treePanel.setY(Gdx.graphics.getHeight() - treePanel.getHeight());
         }
+        super.act(delta);
+
         if (dialog != null) {
             GdxMaster.center(dialog);
+            dialog.setZIndex(Integer.MAX_VALUE);
         }
-        super.act(delta);
+        enumChooser.setZIndex(Integer.MAX_VALUE);
+        if (textInputPanel != null) {
+            textInputPanel.setZIndex(Integer.MAX_VALUE);
+        }
+        confirmationPanel.setZIndex(Integer.MAX_VALUE);
+        if (getFileChooser() != null) {
+            getFileChooser().setZIndex(Integer.MAX_VALUE);
+        }
+        tooltips.setZIndex(Integer.MAX_VALUE);
     }
 
     @Override
@@ -224,6 +247,7 @@ public class LE_GuiStage extends GenericGuiStage {
         dialog = zoneEditor;
         return zoneEditor;
     }
+
     public ChooserDialog getDialog() {
         return dialog;
     }
@@ -238,4 +262,18 @@ public class LE_GuiStage extends GenericGuiStage {
         treePanel.toggleFade();
         palettePanel.toggleFade();
     }
+
+    public HybridPalette getPalettePanel() {
+        return palettePanel;
+    }
+
+    public FloorEditDialog getFloorDialog() {
+        dialog = floorDialog;
+        return floorDialog;
+    }
+
+    public TabbedControlPanel getControlTabs() {
+        return controlTabs;
+    }
+
 }

@@ -20,6 +20,7 @@ import main.level_editor.backend.handlers.operation.OperationHandler;
 import main.level_editor.backend.handlers.selection.LE_SelectionHandler;
 import main.level_editor.backend.handlers.structure.LE_StructureHandler;
 import main.level_editor.backend.handlers.structure.layer.LayerHandlerImpl;
+import main.level_editor.backend.metadata.object.LE_EntityHandler;
 import main.level_editor.backend.metadata.script.LE_ScriptHandler;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.sim.LE_IdManager;
@@ -43,6 +44,7 @@ public class LE_Manager {
     private final LE_DialogHandler dialogHandler;
     private final LE_ScriptHandler scriptHandler;
     private final LayerHandlerImpl layerHandler;
+    private final LE_EntityHandler entityHandler;
     private Floor floor;
     private LE_SelectionHandler selectionHandler;
     private LE_ModelManager modelManager;
@@ -56,12 +58,14 @@ public class LE_Manager {
     private LE_MapHandler mapHandler;
     private Set<LE_Handler> handlers= new LinkedHashSet<>();
     private LE_TransitHandler transitHandler;
+    private boolean loaded;
 
     public LE_Manager(Floor floor) {
         this.floor = floor;        
         
         game = floor.getGame();
         idManager = game.getSimIdManager();
+        handlers.add(  entityHandler = new LE_EntityHandler(this));
         handlers.add(  mouseHandler = new LE_MouseHandler(this));
         handlers.add( menuHandler = new LE_MenuHandler(this));
         handlers.add( selectionHandler = new LE_SelectionHandler(this));
@@ -81,6 +85,7 @@ public class LE_Manager {
         handlers.add(layerHandler = new LayerHandlerImpl(this));
         handlers.add(  mapHandler = new LE_MapHandler(this));
         handlers.add(  transitHandler = new LE_TransitHandler(this));
+        handlers.add(  advFuncs = new LE_AdvFuncs(this));
 //        layerHandler = new IRngHandler(this);
     }
 
@@ -88,6 +93,7 @@ public class LE_Manager {
         for (LE_Handler handler : handlers) {
             handler.load();
         }
+        loaded=true;
     }
 
     public void afterLoaded() {
@@ -166,6 +172,10 @@ public class LE_Manager {
         return structureManager;
     }
 
+    public LE_EntityHandler getEntityHandler() {
+        return entityHandler;
+    }
+
     public LE_ModuleHandler getModuleHandler() {
         return moduleHandler;
     }
@@ -198,4 +208,11 @@ public class LE_Manager {
         return transitHandler;
     }
 
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
+    }
 }

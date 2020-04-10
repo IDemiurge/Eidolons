@@ -4,13 +4,14 @@ import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
-import main.data.DataManager;
 import main.data.tree.LayeredData;
 import main.data.tree.StructNode;
 import main.data.tree.StructTreeBuilder;
 import main.entity.type.ObjType;
 import main.level_editor.LevelEditor;
+import main.level_editor.backend.brush.BrushShape;
 import main.level_editor.backend.brush.LE_Brush;
+import main.level_editor.backend.brush.LE_BrushType;
 import main.level_editor.backend.display.LE_DisplayMode;
 import main.level_editor.backend.functions.mouse.MouseMode;
 import main.level_editor.backend.handlers.selection.LE_Selection;
@@ -19,7 +20,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.CloneMaster;
 
-public class EditData {
+public class EditorModel {
 
     private MouseMode mouseMode;
     private LE_DisplayMode displayMode;
@@ -33,23 +34,25 @@ public class EditData {
     private LevelBlock block;
     private Layer layer;
     private ObjType defaultWallType;
+    private boolean brushMode;
 
-    public EditData() {
+    public EditorModel() {
         selection = new LE_Selection();
         displayMode = new LE_DisplayMode();
-        paletteSelection = new PaletteSelection(getDefaultWallType());
-
+        paletteSelection = new PaletteSelection(null);
+        brush = new LE_Brush(BrushShape.single, LE_BrushType.none);
     }
 
-    public EditData(EditData model) {
+    public EditorModel(EditorModel model) {
         copy(model);
     }
 
 
-    private void copy(EditData model) {
+    private void copy(EditorModel model) {
         selection = (LE_Selection) CloneMaster.deepCopy(model.getSelection());
         displayMode = (LE_DisplayMode) CloneMaster.deepCopy(model.getDisplayMode());
         paletteSelection = (PaletteSelection) CloneMaster.deepCopy(model.getPaletteSelection());
+        brush=model.getBrush();
     }
 
     public StructNode getTreeModel() {
@@ -136,14 +139,11 @@ public class EditData {
         this.block = block;
     }
 
-    public ObjType getDefaultWallType() {
-        if (defaultWallType == null) {
-            defaultWallType = DataManager.getType("Stone Wall");
-        }
-        return defaultWallType;
+    public boolean isBrushMode() {
+        return brushMode;
     }
 
-    public void setDefaultWallType(ObjType defaultWallType) {
-        this.defaultWallType = defaultWallType;
+    public void setBrushMode(boolean brushMode) {
+        this.brushMode = brushMode;
     }
 }

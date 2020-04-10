@@ -1,8 +1,13 @@
 package eidolons.game.battlecraft.logic.battle.encounter;
 
-import main.system.data.DataUnit;
+import eidolons.content.data.EntityData;
+import eidolons.entity.obj.BattleFieldObject;
 
-public class EncounterData extends DataUnit<EncounterData.ENCOUNTER_VALUE> {
+public class EncounterData extends EntityData<EncounterData.ENCOUNTER_VALUE> {
+
+    public EncounterData(BattleFieldObject entity) {
+        super(entity);
+    }
 
     public enum ENCOUNTER_VALUE {
         type,

@@ -2,25 +2,20 @@ package eidolons.game.battlecraft.logic.dungeon.module;
 
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelLayer;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Module;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
-import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.List;
+import java.util.Set;
 
-import static eidolons.system.audio.MusicMaster.AMBIENCE;
-
-public class Module extends LevelLayer<LevelZone> {
-    private String name;
-    private Coordinates origin;
-    private int width;
-    private int height;
+public class Module extends LevelStruct<LevelZone> {
 
     private List<LevelZone> zones;
-    ModuleData data;
 
     public Module(Coordinates origin, int width, int height, String name) {
         this.origin = origin;
@@ -33,45 +28,14 @@ public class Module extends LevelLayer<LevelZone> {
         super();
     }
 
+    @Override
+    protected LevelStruct getParent() {
+        return DC_Game.game.getDungeonMaster().getDungeonLevel();
+    }
+
     public Module(ModuleData data) {
         this.data = data;
         name = data.getValue(LevelStructure.MODULE_VALUE.name);
-    }
-
-    @Override
-    public String toXml() {
-        return null;
-    }
-
-
-    public int getX() {
-        return origin.x;
-    }
-
-    public int getY() {
-        return origin.y;
-    }
-
-    public AMBIENCE getAmbi() {
-        return new EnumMaster<AMBIENCE>().retrieveEnumConst(AMBIENCE.class,
-                data.getValue(LevelStructure.MODULE_VALUE.ambience));
-    }
-
-    public AMBIENCE_TEMPLATE getVfx() {
-        return new EnumMaster<AMBIENCE_TEMPLATE>().retrieveEnumConst(AMBIENCE_TEMPLATE.class,
-                data.getValue(LevelStructure.MODULE_VALUE.vfx_template));
-    }
-
-    public Coordinates getOrigin() {
-        return origin;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 
     public String getName() {
@@ -81,14 +45,15 @@ public class Module extends LevelLayer<LevelZone> {
         return name;
     }
 
-    public int getX2() {
-        return getX() + getWidth();
+    @Override
+    public List<LevelZone> getSubParts() {
+        return getZones();
     }
 
-    public int getY2() {
-        return getY() + getHeight();
+    @Override
+    public Set<Coordinates> getCoordinatesSet() {
+        return super.getCoordinatesSet();
     }
-
 
     public List<LevelZone> getZones() {
         return zones;
@@ -98,24 +63,14 @@ public class Module extends LevelLayer<LevelZone> {
         this.zones = zones;
     }
 
-    public void setOrigin(Coordinates origin) {
-        this.origin = origin;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public ModuleData getData() {
-        return data;
+        return (ModuleData) data;
+    }
+
+    @Override
+    protected StructureData createData() {
+        return                new ModuleData(new LE_Module(this));
+
     }
 
     public void setData(ModuleData data) {
@@ -132,13 +87,10 @@ public class Module extends LevelLayer<LevelZone> {
 
     @Override
     public String toString() {
-        return "Module: " +
-                "name=" + name +
-                "origin=" + origin +
-                ", width=" + width +
-                ", height=" + height +
-                ", zones=" + zones +
-                ", data=" + data;
+        return  name +
+                " - Module with " +
+                zones.size() +
+                " zones"+ ", Data: " + getData() ;
     }
 
     public int getEffectiveHeight() {

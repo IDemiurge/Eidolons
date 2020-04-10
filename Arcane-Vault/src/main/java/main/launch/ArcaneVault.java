@@ -7,6 +7,7 @@ import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.content.ContentGenerator;
+import eidolons.system.content.PlaceholderGenerator;
 import eidolons.system.file.ResourceMaster;
 import eidolons.system.utils.XmlCleaner;
 import main.AV_DataManager;
@@ -305,9 +306,12 @@ public class ArcaneVault {
             SimulationManager.init();
         }
 
-        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ)  )
+        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ)) {
+            PlaceholderGenerator.generateForRoomCells();
+
             if (DataManager.isTypesRead(DC_TYPE.ITEMS))
                 ContentGenerator.generateKeyObjects();
+        }
 
         XmlCleaner.cleanTypesXml(DC_TYPE.ENCOUNTERS);
 //        ContentGenerator.afterRead();

@@ -252,12 +252,23 @@ public class NumberUtils {
             o = StringMaster.getSubStringBetween(o, UNICODE, CODEEND);
             try {
                 // Character.toChars((int) StringMaster.getInteger(o)).
-                result.append(Character.toString((char) (int) getInteger(o)));
+                result.append((char) (int) getInteger(o));
             } catch (Exception e) {
                 return result.toString();
             }
         }
         return result.toString();
+    }
+    public static String getNumericSuffix(String indexString) {
+        StringBuilder result = new StringBuilder();
+        for (int i = indexString.length()-1; i >= 0; i--) {
+            char c = indexString.charAt(i);
+            if (Character.isDigit(c)) {
+                result.append(c);
+            } else
+                break;
+        }
+        return result.reverse().toString();
     }
 
     public static String prependZeroes(int number, int digits) {

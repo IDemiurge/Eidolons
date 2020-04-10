@@ -14,8 +14,8 @@ import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.module.BridgeMaster;
 import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
@@ -508,13 +508,13 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
                 getCoordinatesListForUnits(unitString, player, units, ref);
         String data = "";
         data +=
-                DataUnitFactory.getKeyValueString(UnitData.FORMAT,
-                        PARTY_VALUE.COORDINATES, ContainerUtils.joinList(coordinates, DataUnitFactory.getContainerSeparator(UnitData.FORMAT)));
+                DataUnitFactory.getKeyValueString(UnitsData.FORMAT,
+                        PARTY_VALUE.COORDINATES, ContainerUtils.joinList(coordinates, DataUnitFactory.getContainerSeparator(UnitsData.FORMAT)));
         data +=
-                DataUnitFactory.getKeyValueString(UnitData.FORMAT,
-                        PARTY_VALUE.MEMBERS, ContainerUtils.joinStringList(units, DataUnitFactory.getContainerSeparator(UnitData.FORMAT)));
+                DataUnitFactory.getKeyValueString(UnitsData.FORMAT,
+                        PARTY_VALUE.MEMBERS, ContainerUtils.joinStringList(units, DataUnitFactory.getContainerSeparator(UnitsData.FORMAT)));
 
-        UnitData unitData = new UnitData(data);
+        UnitsData unitData = new UnitsData(data);
 
         SPAWN_MODE mode = SPAWN_MODE.SCRIPT;
 
@@ -579,7 +579,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         ATOMIC,
         AGGRO,
         DIALOGUE, TIP, MESSAGE, QUEST, TIP_MSG, TIP_QUEST, DIALOGUE_TIP,
-        ESOTERICA, CINEMATIC;
+        ESOTERICA, CINEMATIC
     }
 
 }

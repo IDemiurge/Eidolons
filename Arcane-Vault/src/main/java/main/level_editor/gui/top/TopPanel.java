@@ -2,19 +2,27 @@ package main.level_editor.gui.top;
 
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import main.level_editor.gui.panels.control.MenuPanel;
+import main.level_editor.gui.screen.LE_Screen;
 
 public class TopPanel extends TablePanelX {
-    MenuPanel menuPanel;
+    private final MenuPanel menuPanel;
+    private boolean fullControlPanelInitialized;
 
-    public TopPanel(){
-//        functionsPanel = new FunctionsPanel();
-//        modesPanel = new ModesPanel();
-//        editPanel = new EditPanel();
-//        infoPanel = new InfoPanel();
+    public TopPanel() {
+
         menuPanel = new MenuPanel();
-        add(menuPanel.getTable()).fillX().expandX().top().row();
+        add(menuPanel.getTable()).fillX().expandX().top();
 
         GDX.top(menuPanel.getTable());
-//        add(menuPanel, infoPanel, editPanel, modesPanel, functionsPanel);
+    }
+
+    @Override
+    public void act(float delta) {
+        if (!fullControlPanelInitialized) {
+            menuPanel.initControlMenus(LE_Screen.getInstance().getGuiStage().getControlTabs().getPanels());
+            fullControlPanelInitialized = true;
+        }
+        super.act(delta);
     }
 }

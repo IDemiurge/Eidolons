@@ -14,9 +14,10 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
 import main.level_editor.backend.LE_Manager;
-import main.level_editor.backend.handlers.model.EditData;
+import main.level_editor.backend.handlers.model.EditorModel;
 import main.level_editor.backend.handlers.structure.FloorManager;
 import main.level_editor.backend.metadata.options.LE_OptionsMaster;
+import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.sim.LE_MetaMaster;
 import main.level_editor.backend.struct.campaign.Campaign;
 import main.level_editor.backend.struct.level.Floor;
@@ -28,7 +29,8 @@ import main.system.threading.WaitMaster;
 import java.util.Arrays;
 
 public class LevelEditor {
-    public static final WaitMaster.WAIT_OPERATIONS SELECTION_EVENT = WaitMaster.WAIT_OPERATIONS.SELECTION;
+    public static final WaitMaster.WAIT_OPERATIONS SELECTION_EVENT =
+            WaitMaster.WAIT_OPERATIONS.CUSTOM_SELECT;
     private static final String VERSION = "0.01";
     public static Window.WindowStyle windowStyle;
     private static boolean campaignMode;
@@ -51,7 +53,7 @@ public class LevelEditor {
         return getCurrent().getGame().getId(bfObj);
     }
 
-    public static EditData getModel() {
+    public static EditorModel getModel() {
         return getCurrent().getManager().getModelManager().getModel();
     }
 
@@ -104,5 +106,9 @@ public class LevelEditor {
 
     public static String getWindowName() {
         return "Level Editor v"+ VERSION;
+    }
+
+    public static LE_GameSim getGame() {
+        return getCurrent().getGame();
     }
 }

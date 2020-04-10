@@ -1,23 +1,17 @@
-package main.level_editor.backend.struct.level;
+ package main.level_editor.backend.struct.level;
 
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Module;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import main.data.tree.LayeredData;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.sim.LE_GameSim;
-import main.level_editor.backend.struct.boss.BossDungeon;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-public class Floor implements LayeredData<LE_Module> {
-//this is just a wrapper for a real Dungeon?
+public class Floor  {
     String name;
-//    FloorData data;
     LE_Manager manager;
     LE_GameSim game;
-    BossDungeon bossDungeon;
+//    BossDungeon bossDungeon;
 
     public Floor(String name, LE_GameSim game ) {
         this.name = name;
@@ -46,9 +40,8 @@ public class Floor implements LayeredData<LE_Module> {
         return "Floor: " + name;
     }
 
-    @Override
-    public Set<LE_Module> getChildren() {
-       return getModules().stream().map(module -> new LE_Module(module)).collect(Collectors.toCollection(LinkedHashSet::new));
+    public LE_Floor getWrapper() {
+        return game.getDungeonMaster().getFloor();
     }
 
     public Module getDefaultModule() {
