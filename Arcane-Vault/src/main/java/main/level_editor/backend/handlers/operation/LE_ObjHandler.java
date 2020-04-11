@@ -19,6 +19,7 @@ import main.system.GuiEventType;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 public class LE_ObjHandler extends LE_Handler {
     Map<Integer, DIRECTION> overlayDirectionMap = new LinkedHashMap<>();
@@ -63,7 +64,7 @@ public class LE_ObjHandler extends LE_Handler {
                     getModel().getBrush().getBrushType());
             operation(Operation.LE_OPERATION.ADD_OBJ,  type,
                     c);
-            getStructureManager().initWall(c);
+            getStructureHandler().initWall(c);
 //            getCoordinatesForShape(PositionMaster.SHAPES.STAR)
         }
         else
@@ -116,7 +117,7 @@ public class LE_ObjHandler extends LE_Handler {
     }
 
     @Override
-    public String getXml() {
+    public String getXml(Function<Integer, Boolean> idFilter) {
         XmlStringBuilder builder = new XmlStringBuilder();
         for (Integer integer : overlayDirectionMap.keySet()) {
             builder.append(integer).append("=").append(overlayDirectionMap.get(integer).toString()).append(";");

@@ -66,6 +66,7 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
         E dungeonWrapper = buildDungeon(path, data, nodeList);
 
         dungeonWrapper.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
+
         initWidthAndHeight(dungeonWrapper);
         return getDungeon();
     }

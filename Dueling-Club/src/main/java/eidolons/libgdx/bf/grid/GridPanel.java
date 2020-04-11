@@ -144,13 +144,13 @@ public abstract class GridPanel extends Group {
         addListener(new BattleClickListener() {
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
+                //TODO ? 
                 GridPanel.this.getStage().setScrollFocus(GridPanel.this);
                 return false;
             }
 
             @Override
             public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
-                //                return PhaseAnimator.getInstance().checkAnimClicked(x, y, pointer, button);
                 return false;
             }
         });
@@ -187,7 +187,7 @@ public abstract class GridPanel extends Group {
         GridCellContainer cell = cells[x][getGdxY(y)];
 //        cell.remove();
         if (animated) {
-        ActionMaster.addFadeOutAction(cell, 0.5f, false);
+            ActionMaster.addFadeOutAction(cell, 0.5f, false);
         } else
             cell.setVisible(false);
 
@@ -489,7 +489,7 @@ public abstract class GridPanel extends Group {
             return;
         }
         if (object.isOverlaying()) {
-            addOverlay( doCreateOverlay(object));
+            addOverlay(doCreateOverlay(object));
             return;
         }
         BaseView uv = createUnitView(object);
@@ -501,7 +501,7 @@ public abstract class GridPanel extends Group {
     protected BaseView removeUnitView(BattleFieldObject obj) {
         BaseView uv = viewMap.get(obj);
         if (obj.isOverlaying()) {
-            return    removeOverlay(obj);
+            return removeOverlay(obj);
 
         }
 
@@ -677,35 +677,37 @@ public abstract class GridPanel extends Group {
 
 
     protected void bindEvents() {
-        GuiEventManager.bind(RESET_VIEW, obj -> {
+        boolean removePrevious = true;
+
+        GuiEventManager.bind(removePrevious, RESET_VIEW, obj -> {
             BattleFieldObject object = (BattleFieldObject) obj.get();
             UnitView unitView = getUnitView(object);
             unitView.setPortraitTexture(TextureCache.getOrCreateR(object.getImagePath()));
         });
 
-        GuiEventManager.bind(CELL_RESET_VOID, obj -> {
+        GuiEventManager.bind(removePrevious, CELL_RESET_VOID, obj -> {
             Coordinates c = (Coordinates) obj.get();
             restoreVoid(c.x, c.y, true);
         });
 
-        GuiEventManager.bind(CELL_SET_VOID, obj -> {
+        GuiEventManager.bind(removePrevious, CELL_SET_VOID, obj -> {
             Coordinates c = (Coordinates) obj.get();
             setVoid(c.x, c.y, true);
         });
-        GuiEventManager.bind(CELLS_MASS_RESET_VOID, obj -> {
+        GuiEventManager.bind(removePrevious, CELLS_MASS_RESET_VOID, obj -> {
             Collection<Coordinates> c = (Collection<Coordinates>) obj.get();
             for (Coordinates coordinates : c) {
                 restoreVoid(coordinates.x, coordinates.y, true);
             }
         });
-        GuiEventManager.bind(CELLS_MASS_SET_VOID, obj -> {
+        GuiEventManager.bind(removePrevious, CELLS_MASS_SET_VOID, obj -> {
             Collection<Coordinates> c = (Collection<Coordinates>) obj.get();
             for (Coordinates coordinates : c) {
                 setVoid(coordinates.x, coordinates.y, true);
             }
         });
 
-        GuiEventManager.bind(MOVE_OVERLAYING, obj -> {
+        GuiEventManager.bind(removePrevious, MOVE_OVERLAYING, obj -> {
             for (OverlayView overlay : overlays) {
                 if (overlay.getUserObject() == obj.get()) {
                     Vector2 v = OverlayingMaster.getOffset(overlay.getDirection(),
@@ -719,10 +721,10 @@ public abstract class GridPanel extends Group {
             }
 
         });
-        GuiEventManager.bind(UNIT_CREATED, p -> {
+        GuiEventManager.bind(removePrevious, UNIT_CREATED, p -> {
             addUnitView((BattleFieldObject) p.get());
         });
-        GuiEventManager.bind(REMOVE_GRID_OBJ, p -> {
+        GuiEventManager.bind(removePrevious, REMOVE_GRID_OBJ, p -> {
             List list = (List) p.get();
             String key = (String) list.get(0);
             Coordinates c = (Coordinates) list.get(1);
@@ -738,7 +740,7 @@ public abstract class GridPanel extends Group {
             gridObjects.remove(gridObj);
         });
 
-        GuiEventManager.bind(GuiEventType.ADD_GRID_OBJ, p -> {
+        GuiEventManager.bind(removePrevious, GuiEventType.ADD_GRID_OBJ, p -> {
             GridObject object = (GridObject) p.get();
             addActor(object);
 
@@ -763,7 +765,7 @@ public abstract class GridPanel extends Group {
             }
             getCustomOverlayingObjects().add(object);
         });
-        GuiEventManager.bind(INIT_MANIPULATOR, (obj) -> {
+        GuiEventManager.bind(removePrevious, INIT_MANIPULATOR, (obj) -> {
             Manipulator manipulator = (Manipulator) obj.get();
             addActor(manipulator);
             manipulators.add(manipulator);
@@ -771,7 +773,7 @@ public abstract class GridPanel extends Group {
             manipulator.setPosition(c.x * 128,
                     (getGdxY(c.y)));
         });
-        GuiEventManager.bind(INIT_CELL_OVERLAY, (obj) -> {
+        GuiEventManager.bind(removePrevious, INIT_CELL_OVERLAY, (obj) -> {
             DC_Cell cell = (DC_Cell) obj.get();
             GridCellContainer container = cells[cell.getX()][rows - 1 - cell.getY()];
             String overlayData = cell.getOverlayData();
@@ -786,7 +788,7 @@ public abstract class GridPanel extends Group {
 
             container.getBackImage().setDrawable(new TextureRegionDrawable(region));
         });
-        GuiEventManager.bind(CELL_RESET, obj -> {
+        GuiEventManager.bind(removePrevious, CELL_RESET, obj -> {
             DC_Cell cell = (DC_Cell) obj.get();
             GridCellContainer container = cells[cell.getX()][getGdxY(cell.getY())];
             //overlays
@@ -796,7 +798,7 @@ public abstract class GridPanel extends Group {
             container.setOverlayRotation(cell.getOverlayRotation());
 
         });
-        GuiEventManager.bind(UNIT_GREYED_OUT_ON, obj -> {
+        GuiEventManager.bind(removePrevious, UNIT_GREYED_OUT_ON, obj -> {
             BattleFieldObject bfObj = (BattleFieldObject) obj.get();
             if (bfObj.isOverlaying())
                 return;
@@ -805,13 +807,13 @@ public abstract class GridPanel extends Group {
             unitView.setGreyedOut(true);
             //            unitView.setVisible(true);
         });
-        GuiEventManager.bind(UNIT_FADE_OUT_AND_BACK, obj -> {
+        GuiEventManager.bind(removePrevious, UNIT_FADE_OUT_AND_BACK, obj -> {
             UnitView unitView = getUnitView((BattleFieldObject) obj.get());
             if (unitView != null) {
                 unitView.fadeOut();
             }
         });
-        GuiEventManager.bind(UNIT_GREYED_OUT_OFF, obj -> {
+        GuiEventManager.bind(removePrevious, UNIT_GREYED_OUT_OFF, obj -> {
             BattleFieldObject bfObj = (BattleFieldObject) obj.get();
             if (bfObj.isOverlaying())
                 return;
@@ -823,21 +825,21 @@ public abstract class GridPanel extends Group {
             //            unitView.setVisible(true);
         });
 
-        GuiEventManager.bind(UNIT_MOVED, obj -> {
+        GuiEventManager.bind(removePrevious, UNIT_MOVED, obj -> {
             unitMoved((BattleFieldObject) obj.get());
         });
 
-        GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
+        GuiEventManager.bind(removePrevious, DESTROY_UNIT_MODEL, param -> {
             BattleFieldObject unit = (BattleFieldObject) param.get();
             removeUnitView(unit);
         });
 
-        GuiEventManager.bind(REMOVE_OVERLAY_VIEW, param -> {
+        GuiEventManager.bind(removePrevious, REMOVE_OVERLAY_VIEW, param -> {
             BattleFieldObject obj = (BattleFieldObject) param.get();
             removeOverlay(obj);
         });
 
-        GuiEventManager.bind(UNIT_VISIBLE_ON, p -> {
+        GuiEventManager.bind(removePrevious, UNIT_VISIBLE_ON, p -> {
             if (p.get() instanceof Collection) {
                 for (Object sub : ((Collection) p.get())) {
                     setVisible((BattleFieldObject) sub, true);
@@ -846,7 +848,7 @@ public abstract class GridPanel extends Group {
             }
             setVisible((BattleFieldObject) p.get(), true);
         });
-        GuiEventManager.bind(UNIT_VISIBLE_OFF, p -> {
+        GuiEventManager.bind(removePrevious, UNIT_VISIBLE_OFF, p -> {
             if (p.get() instanceof Collection) {
                 for (Object sub : ((Collection) p.get())) {
                     setVisible((BattleFieldObject) sub, false);
@@ -861,7 +863,7 @@ public abstract class GridPanel extends Group {
 
     public BaseView getOverlay(Obj object) {
         for (OverlayView overlay : overlays) {
-            if (overlay.getUserObject()==object) {
+            if (overlay.getUserObject() == object) {
                 return overlay;
             }
         }

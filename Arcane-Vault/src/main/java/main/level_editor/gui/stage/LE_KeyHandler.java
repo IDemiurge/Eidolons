@@ -23,29 +23,6 @@ public class LE_KeyHandler extends LE_Handler {
         boolean ctrl = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
                 Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT);
 
-        if (ctrl){
-            switch (keyCode) {
-                case Input.Keys.SPACE:
-                    LevelEditor.getCurrent().getManager().getEditHandler().edit();
-                    break;
-                case Input.Keys.Z:
-                    LevelEditor.getCurrent().getManager().getOperationHandler().undo();
-                    break;
-                case Input.Keys.Y:
-                    LevelEditor.getCurrent().getManager().getOperationHandler().redo();
-                    break;
-                case Input.Keys.C:
-                    LevelEditor.getCurrent().getManager().getModelManager().copy();
-                    break;
-                case Input.Keys.X:
-                    LevelEditor.getCurrent().getManager().getModelManager().cut();
-                    break;
-                case Input.Keys.V:
-                    LevelEditor.getCurrent().getManager().getModelManager().paste();
-                    break;
-
-            }
-        }
         switch (keyCode) {
             case Input.Keys.TAB:
                 globalController.keyDown(keyCode);
@@ -82,11 +59,13 @@ public class LE_KeyHandler extends LE_Handler {
                 Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
         boolean ctrl = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
                 Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT);
-
-        if (ctrl){
+        if (ctrl) {
             switch (character) {
                 case Input.Keys.SPACE:
                     LevelEditor.getCurrent().getManager().getEditHandler().edit();
+                    break;
+                case Input.Keys.X:
+                    LevelEditor.getCurrent().getManager().getModelManager().cut();
                     break;
                 case Input.Keys.Z:
                     LevelEditor.getCurrent().getManager().getOperationHandler().undo();
@@ -102,6 +81,12 @@ public class LE_KeyHandler extends LE_Handler {
                     break;
 
             }
+        } else {
+            switch (character) {
+                case Input.Keys.TAB:
+                    globalController.keyDown(character);
+                    break;
         }
-    }
+}
+}
 }

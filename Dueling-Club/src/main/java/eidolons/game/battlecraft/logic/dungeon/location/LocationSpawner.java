@@ -7,14 +7,11 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
-import main.system.data.DataUnitFactory;
 
 import java.util.*;
 
@@ -36,12 +33,6 @@ public class LocationSpawner extends Spawner<Location> {
 
     @Override
     public List<Unit> spawn(UnitsData data, DC_Player player, SPAWN_MODE mode) {
-        if (data.getValue(PARTY_VALUE.MEMBERS) != null) {
-            String units = data.getValue(PARTY_VALUE.MEMBERS).
-                    replace(DataUnitFactory.getContainerSeparator(UnitsData.FORMAT), "");
-            if (FileManager.isFile(units))
-                return spawnUnitGroup(player.isMe(), units);
-        }
         if (player.isMe() &&   getGame().getMetaMaster() != null) {
             Party party = getGame().getMetaMaster().getPartyManager()
                     .getParty();

@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 public class LE_XmlMaster {
 
@@ -36,8 +37,12 @@ public class LE_XmlMaster {
         return xmlBuilder.toString();
     }
 
-    public static String toXml(LE_Floor floor) {
+    public static String toXml(LE_Floor floor ) {
+        return toXml(floor, null);
+    }
+    public static String toXml(LE_Floor floor, Module standalone) {
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
+        Function<Integer, Boolean> idFilter =getIdFilter(standalone);
 
         //from old - dungeon params props etc
 
@@ -57,11 +62,10 @@ public class LE_XmlMaster {
 
 
         xmlBuilder.append("\n").append(buildIdMap( ));
-        xmlBuilder.append("\n").append(buildCoordinateMap( ));
 
         xmlBuilder.append("\n").open(FloorLoader.DATA_MAPS);
         for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
-            String xml = handler.getDataMapString();
+            String xml = handler.getDataMapString(idFilter);
             if (xml.isEmpty()) {
                 continue;
             }
@@ -70,17 +74,10 @@ public class LE_XmlMaster {
         xmlBuilder.close(FloorLoader.DATA_MAPS).append("\n");
 
 //        xmlBuilder.append("\n").open(FloorLoader.COORDINATE_DATA);
-        xmlBuilder.append("\n").open(FloorLoader.COORDINATES_VOID);
-        for (DC_Cell cell : floor.getGame().getCells()) {
-            if (cell.isVOID()) {
-                xmlBuilder.append(cell.getCoordinates().toString()).append(";");
-            }
-        }
-        xmlBuilder.close(FloorLoader.COORDINATES_VOID).append("\n");
 //        xmlBuilder.close(FloorLoader.COORDINATE_DATA).append("\n");
 
         for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
-            String xml = handler.getXml();
+            String xml = handler.getXml(idFilter);
             if (xml.isEmpty()) {
                 continue;
             }
@@ -90,10 +87,16 @@ public class LE_XmlMaster {
         return XML_Converter.wrap("Floor", xmlBuilder.toString()); //name?
     }
 
-    private static String buildCoordinateMap( ) {
+    private static Function<Integer, Boolean> getIdFilter(Module standalone) {
+        return id ->
+                standalone == null || standalone.getCoordinatesSet().
+                        contains(LevelEditor.getManager().getIdManager().getObjectById(id).getCoordinates());
+    }
+
+    private static String buildCoordinateMap(Module module ) {
         StringBuilder builder = new StringBuilder();
         Map<Integer, BattleFieldObject> map = LevelEditor.getGame().getSimIdManager().getObjMap();
-        for (Coordinates c : LevelEditor.getGame().getCoordinates()) {
+        for (Coordinates c : module.getCoordinatesSet()) {
             Set<BattleFieldObject> set = LevelEditor.getGame().getObjectsOnCoordinate(c);
             set.removeIf(obj-> obj.isModuleBorder());
             if (set.isEmpty()) {
@@ -117,6 +120,7 @@ public class LE_XmlMaster {
     private static String buildIdMap( ) {
         StringBuilder builder = new StringBuilder();
         Map<Integer, BattleFieldObject> map = LevelEditor.getGame() .getSimIdManager().getObjMap();
+
         Map<ObjType, List<Integer>> nestedMap = new LinkedHashMap<>();
         for (Integer integer : map.keySet()) {
             try {
@@ -136,13 +140,12 @@ public class LE_XmlMaster {
             }
             builder.append(";");
         }
-
         return XML_Converter.wrap(FloorLoader.ID_MAP, builder.toString());
     }
 
     //must be a valid floor in itself?! No global id's then? So we can re-use modules, mix them up...
     //interesting. So maybe we can have ... duplicate id maps?
-    public static String toXml(Module module, boolean standalone) {
+    public static   String toXml(Module module, boolean standalone) {
         if (standalone) {
             //TODO
         }
@@ -155,6 +158,18 @@ public class LE_XmlMaster {
             xmlBuilder.appendNode(toXml(zone), "Zone");
         }
         xmlBuilder.close("Zones").append("\n");
+
+        xmlBuilder.append("\n").append(buildCoordinateMap(module));
+
+        xmlBuilder.append("\n").open(FloorLoader.COORDINATES_VOID);
+        for (Coordinates coordinates : module.getCoordinatesSet()) {
+            DC_Cell cell = module.getFloor().getGame().getCellByCoordinate(coordinates);
+            if (cell.isVOID()) {
+                xmlBuilder.append(cell.getCoordinates().toString()).append(";");
+            }
+        }
+        xmlBuilder.close(FloorLoader.COORDINATES_VOID).append("\n");
+
         xmlBuilder.close(module.getName()).append("\n");
 
         return xmlBuilder.toString();

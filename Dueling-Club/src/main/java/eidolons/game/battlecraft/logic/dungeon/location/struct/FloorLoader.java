@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
@@ -15,6 +16,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.data.MapMaster;
 import main.system.data.DataUnit;
 import main.system.launch.TypeBuilder;
 import org.w3c.dom.Node;
@@ -46,18 +48,63 @@ public class FloorLoader extends DungeonHandler<Location> {
 
     public static final String COORDINATE_DATA = "COORDINATE_DATA";
     public static final String COORDINATES_VOID = "coordinates_void";
+    public static final String CUSTOM_TYPE_DATA = "CUSTOM_TYPE_DATA";
+    public static final String ZONES = "Zones" ;
 
-    public FloorLoader(DungeonMaster<Location> master) {
+    public FloorLoader(DungeonMaster  master) {
         super(master);
     }
 
 
-    public void processNode(Node node, Location location) {
+    private static ObjType applyCustomData(ObjType type, Map<String, String> data) {
+        ObjType newType = new ObjType(type);
+        for (String val : data.keySet()) {
+            newType.setValue(val, data.get(val));
+        }
+        return newType;
+    }
+
+    public void processModuleSubNode(Node node, Location location, Module module) {
         switch (node.getNodeName()) {
+            case CUSTOM_TYPE_DATA:
+                Map<Integer, ObjType> idTypeMap = master.getIdTypeMap();
+                Map<Integer, Map<String, String>> customTypesData = MapMaster.createDataMap(node.getTextContent());
+                for (Integer id : customTypesData.keySet()) {
+                    Map<String, String> data = customTypesData.get(id);
+                    ObjType type = idTypeMap.get(id);
+                    if (data != null) {
+                        type = applyCustomData(type, data);
+                    }
+                    idTypeMap.put(id, type);
+                }
+                break;
+            case OBJ_NODE_NEW:
+                Map<Integer, BattleFieldObject> objectMap =
+                        getObjInitializer().processObjects(module,
+                                master.getIdTypeMap(),
+                                new HashMap<>(), node);
+
+                master.getObjIdMap().putAll(objectMap);
+                break;
             case COORDINATES_VOID:
                 for (String substring : ContainerUtils.openContainer(node.getTextContent())) {
                     location.getDungeon().getVoidCells().add(Coordinates.get(substring));
                 }
+                break;
+            case OVERLAY_DIRECTIONS:
+                break;
+            case LAYERS:
+                processLayers(node);
+                break;
+            case FACING:
+                location.setUnitFacingMap(createUnitFacingMap(node.getTextContent()));
+                break;
+        }
+
+    }
+
+    public void processNode(Node node, Location location) {
+        switch (node.getNodeName()) {
             case MODULES:
                 new StructureBuilder(master).build(node, location);
                 checkModuleRemap();
@@ -81,10 +128,8 @@ public class FloorLoader extends DungeonHandler<Location> {
 //                        .initCustomGroups(node.getTextContent());
                 break;
 
-            case OBJ_NODE_NEW:
-                Map<Integer, BattleFieldObject> objectMap = ObjIdLoader.processObjects(master.getIdTypeMap(),
-                        location.getDungeon(), node);
-                master.setObjIdMap(objectMap);
+            case ID_MAP:
+                getMaster().setIdTypeMap(processIdTypesMap(node.getTextContent()));
                 break;
             case TRANSIT_IDS:
                 initTransits(node.getTextContent(), location);
@@ -96,16 +141,6 @@ public class FloorLoader extends DungeonHandler<Location> {
                 TypeBuilder.setProps(location.getDungeon(), node);
                 break;
 //                case FLIP_MAP_NODE
-            case OVERLAY_DIRECTIONS:
-                break;
-            case ID_MAP:
-                getMaster().setIdTypeMap(processIdTypesMap(node.getTextContent()));
-            case LAYERS:
-                processLayers(node);
-                break;
-            case FACING:
-                location.setUnitFacingMap(createUnitFacingMap(node.getTextContent()));
-                break;
         }
 
     }
@@ -126,6 +161,8 @@ public class FloorLoader extends DungeonHandler<Location> {
 //        TODO
         Entrance e = (Entrance) master.getObjIdMap().get(id);
         Entrance ex = (Entrance) master.getObjIdMap().get(id2);
+//        e.setTargetCoordinates(c);
+//        e.setTargetModule(module);
         location.setMainEntrance(e);
         location.setMainExit(ex);
     }

@@ -1,8 +1,10 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
+import eidolons.game.battlecraft.logic.battle.encounter.Encounter;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Module;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
@@ -16,6 +18,8 @@ import java.util.Set;
 public class Module extends LevelStruct<LevelZone> {
 
     private List<LevelZone> zones;
+    private LE_Floor floor;
+    private List<Encounter> encounters;
 
     public Module(Coordinates origin, int width, int height, String name) {
         this.origin = origin;
@@ -109,5 +113,21 @@ public class Module extends LevelStruct<LevelZone> {
         return getWidth() +
                 getData().getIntValue(LevelStructure.MODULE_VALUE.width_buffer) +
                 getData().getIntValue(LevelStructure.MODULE_VALUE.border_width);
+    }
+
+    public void setFloor(LE_Floor floor) {
+        this.floor = floor;
+    }
+
+    public LE_Floor getFloor() {
+        return floor;
+    }
+
+    public void setEncounters(List<Encounter> encounters) {
+        this.encounters = encounters;
+    }
+
+    public List<Encounter> getEncounters() {
+        return encounters;
     }
 }

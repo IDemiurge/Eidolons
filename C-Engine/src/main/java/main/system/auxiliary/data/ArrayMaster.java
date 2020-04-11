@@ -146,6 +146,10 @@ public class ArrayMaster<T> {
         }
         return clone;
     }
+
+    public static Object getLastElement(Object[] args) {
+        return args[args.length-1];
+    }
 //    private static boolean[][][][] booleanFalseArrays = new boolean[100][100][1][1]; // speed up clearshot if we can
 
 //    public static void resetBufferArray() {

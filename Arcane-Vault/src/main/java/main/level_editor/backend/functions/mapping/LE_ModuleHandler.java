@@ -138,7 +138,7 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
     public void afterLoaded() {
         for (Module module : getModules()) {
             List<Coordinates> borderCoords = getBorderCoordinates(module, false);
-            getStructureManager().resetWalls(getDungeonLevel(), borderCoords);
+            getStructureHandler().resetWalls(getDungeonLevel(), borderCoords);
         }
         resetBuffer();
     }

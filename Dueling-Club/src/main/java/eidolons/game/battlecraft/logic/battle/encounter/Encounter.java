@@ -9,9 +9,7 @@ import eidolons.game.battlecraft.ai.elements.generic.AiData;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.adventure.map.travel.encounter.EncounterMaster;
-import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
-import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -34,14 +32,10 @@ public class Encounter extends DC_Obj {
     AiData aiData;
     GroupAI groupAI;
 
-    public Encounter(ObjType waveType, DC_Game game, Ref ref, DC_Player player) {
+    public Encounter(ObjType waveType, DC_Game game, Ref ref, DC_Player player, Coordinates c) {
         super(waveType, player, game, ref);
     }
 
-    public Encounter(EncounterData data) {
-        this(DataManager.getType(data.getValue(EncounterData.ENCOUNTER_VALUE.type), DC_TYPE.ENCOUNTERS),
-                DC_Game.game, new Ref(), DC_Game.game.getPlayer(false));
-    }
 
 
     public void setAi(GroupAI groupAi) {

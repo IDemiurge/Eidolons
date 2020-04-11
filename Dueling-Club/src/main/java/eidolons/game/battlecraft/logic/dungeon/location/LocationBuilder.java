@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
-import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.FauxDungeonLevel;
@@ -22,11 +21,6 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     public static final String ZONES_NODE = StringMaster.getWellFormattedString(RngXmlMaster.ZONES_NODE);
     public static final String META_DATA_NODE = "Named_Coordinate_Points";
 
-
-
-
-    @Refactor
-    private List<Node> nodeList;
     private Location location;
 
     private List<Node> lazyInitZones = new ArrayList<>();
@@ -65,31 +59,23 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
     @Override
     public Location buildDungeon(String path, String data, List<Node> nodeList) {
-        this.nodeList = nodeList;
         location = (super.buildDungeon(path, data, nodeList));
-        FloorLoader loader = createFloorLoader();
+
         for (Node n : nodeList) {
-            loader.processNode(n, location);
+            getFloorLoader().processNode(n, location);
         }
         initDynamicObjData(location);
 
         return location;
     }
 
-    protected FloorLoader createFloorLoader() {
-        return new FloorLoader(master);
-    }
+
+
 
     @Refactor
     @Override
     public Location getDungeon() {
         return location;
-    }
-
-
-
-    public Location loadDungeonMap(String data) {
-        return buildDungeon("", data, nodeList);
     }
 
     public enum ROOM_TYPE {
@@ -134,14 +120,4 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
     }
 
-    protected boolean checkZoneModule(Node zoneNode) {
-        return getMaster().getGame().getMetaMaster().getModuleMaster().isZoneInitRequired(zoneNode);
-    }
-
-    protected boolean isZoneModulesLazy() {
-        if (CoreEngine.TEST_LAUNCH) {
-            return false;
-        }
-        return getMaster().getGame().getMetaMaster().getModuleMaster().isModuleInitOn();
-    }
 }

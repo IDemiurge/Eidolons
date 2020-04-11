@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 public class LE_TransitHandler extends LE_Handler {
 
@@ -27,12 +28,25 @@ public class LE_TransitHandler extends LE_Handler {
 
     }
 
-    public String getXml() {
+    public String getXml(Function<Integer, Boolean> idFilter) {
         StringBuilder xmlBuilder = new StringBuilder();
         StringBuilder builder = new StringBuilder();
-        for (Integer integer : moduleTransitMap.keySet()) {
-            //should we support random/multi?
-            builder.append(integer).append("->").append(moduleTransitMap.get(integer)).append(";");
+
+        for (Integer id : moduleTransitMap.keySet()) {
+            Integer pairId = moduleTransitMap.get(id);
+            if (!idFilter.apply(id)) {
+                if (!idFilter.apply(pairId))
+                    continue;
+            }
+            BattleFieldObject entrance = getIdManager().getObjectById(id);
+            BattleFieldObject pair = getIdManager().getObjectById(pairId);
+            boolean oneWay=false; //TODO
+            if (oneWay){
+                builder.append(id).append("->").append(pair.getCoordinates()).append(";");
+            } else {
+                builder.append(id).append("->").append(pair.getCoordinates()).append(";");
+                builder.append(pairId).append("->").append(entrance.getCoordinates()).append(";");
+            }
         }
         xmlBuilder.append(XML_Converter.wrap(FloorLoader.TRANSIT_IDS, builder.toString()));
 

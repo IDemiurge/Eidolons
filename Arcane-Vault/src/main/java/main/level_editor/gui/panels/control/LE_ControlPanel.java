@@ -112,10 +112,10 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
     }
 
     protected ButtonStyled.STD_BUTTON getButtonStyle() {
-        return ButtonStyled.STD_BUTTON.TAB_HIGHLIGHT_COLUMN;
+        return ButtonStyled.STD_BUTTON.BUTTON_ZARK;
     }
 
     protected TextButton.TextButtonStyle getButtonTextStyle() {
-        return StyleHolder.getHqTextButtonStyle(14);
+        return StyleHolder.getMenuTextButtonStyle(14);
     }
 }

@@ -316,6 +316,14 @@ public class DataUnit<T extends Enum<T>> {
         return this;
     }
 
+    public String getDataExcept(String... exceptions ) {
+        Set<String> set = new LinkedHashSet<>(values.keySet());
+        for (String exception : exceptions) {
+            set.remove(exception);
+        }
+        return getData(set);
+    }
+
 
     public enum GAME_VALUES {
         HOST_NAME, TITLE, HOST_IP, STARTED, PLAYERS_NUMBER,

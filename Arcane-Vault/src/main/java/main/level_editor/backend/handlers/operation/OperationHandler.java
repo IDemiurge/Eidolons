@@ -97,8 +97,12 @@ public class OperationHandler extends LE_Handler {
                 type = (ObjType) args[0];
                 c = (Coordinates) args[1];
                 BattleFieldObject unit = getObjHandler().addObj(type, c.x, c.y);
-                args = new BattleFieldObject[]{unit};
-                getStructureManager().updateTree();
+                if (args[args.length-1]==new Boolean(false)) {
+                    args = new BattleFieldObject[]{unit};
+                } else {
+                    args = new BattleFieldObject[]{unit};
+                    getStructureHandler().updateTree();
+                }
                 break;
             case REMOVE_OVERLAY:
                 obj = (BattleFieldObject) args[0];
@@ -115,7 +119,7 @@ public class OperationHandler extends LE_Handler {
                 type = obj.getType();
                 c = obj.getCoordinates();
                 args = new Object[]{type, c, d};
-                getStructureManager().updateTree();
+                getStructureHandler().updateTree();
                 break;
             case ADD_OVERLAY:
                 type = (ObjType) args[0];
@@ -123,14 +127,12 @@ public class OperationHandler extends LE_Handler {
                 d = (DIRECTION) args[2];
                 args = new BattleFieldObject[]{getObjHandler().addOverlay(d, type, c.x, c.y)};
                 break;
-            case MODIFY_TYPE_DATA:
-                break;
             case MODIFY_STRUCTURE:
                 StructureData data = (StructureData) args[0];
                 data.apply();
 
-                getStructureManager().reset(data.getLevelStruct());
-                getStructureManager().updateTree();
+                getStructureHandler().reset(data.getLevelStruct());
+                getStructureHandler().updateTree();
 //                if (data instanceof BlockData) {
 //                    getStructureManager().blockReset(((BlockData) data).getBlock());
 //                    getStructureManager().updateTree();

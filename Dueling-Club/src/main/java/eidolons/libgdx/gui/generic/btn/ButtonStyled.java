@@ -119,6 +119,9 @@ public class ButtonStyled extends ImageContainer {
         SOULS_BTN(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic",
                 "buttons","special", "souls.png")),
 
+
+        BUTTON_ZARK("ui/components/generic/buttons/zark/std/btn.png"),
+
         LE_UNDO("ui/level_editor/anew/buttons/undo.png"),
         LE_REDO("ui/level_editor/anew/buttons/redo.png"),
         LE_CTRL("ui/level_editor/anew/buttons/control.png"),
@@ -126,9 +129,7 @@ public class ButtonStyled extends ImageContainer {
         LE_STRUCT("ui/level_editor/anew/buttons/struct.png"),
         LE_BRUSH("ui/level_editor/anew/buttons/brush.png"),
         LE_VIEWS("ui/level_editor/anew/buttons/view.png"),
-
-
-        ;
+;
 
         String path;
         private Drawable texture;

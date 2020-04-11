@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationSpawner;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.FacingAdjuster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
@@ -22,7 +23,8 @@ public class LE_DungeonMaster extends LocationMaster {
     protected boolean isPuzzlesOn() {
         return false;
     }
-//    @Override
+
+    //    @Override
 //    protected FacingAdjuster createFacingAdjuster() {
 //        return Mockito.mock(FacingAdjuster.class);
 //    }
@@ -31,10 +33,14 @@ public class LE_DungeonMaster extends LocationMaster {
 //    protected Positioner createPositioner() {
 //        return Mockito.mock(Positioner.class);
 //    }
+    @Override
+    protected FloorLoader createFloorLoader() {
+        return new LE_FloorLoader(this);
+    }
 
     @Override
     protected Spawner createSpawner() {
-        return new LocationSpawner(this){
+        return new LocationSpawner(this) {
             @Override
             public void spawn() {
 //                UnitData data=new UnitData();
@@ -42,7 +48,7 @@ public class LE_DungeonMaster extends LocationMaster {
 //                spawn(data, player, SPAWN_MODE.DUNGEON);
 //                super.spawn();
 //                spawn(new UnitData())
-                main.system.auxiliary.log.LogMaster.log(1,"LE: Units present - \n " +game.getBfObjects());
+                main.system.auxiliary.log.LogMaster.log(1, "LE: Units present - \n " + game.getBfObjects());
                 spawnDone();
             }
 

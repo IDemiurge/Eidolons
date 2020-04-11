@@ -24,12 +24,10 @@ import java.util.*;
 
 public class StructureBuilder extends DungeonHandler<Location> {
 
-
-    private static final String OBJ_NODE_NEW = null;
     private int ZONE_ID = 0;
     private int BLOCK_ID = 0;
 
-    public StructureBuilder(DungeonMaster<Location> master) {
+    public StructureBuilder(DungeonMaster  master) {
         super(master);
     }
 
@@ -42,7 +40,9 @@ public class StructureBuilder extends DungeonHandler<Location> {
                 data.setData(sub.getTextContent());
                 data.apply();
             } else {
-                modules.add(createModule(sub, location));
+                Module module;
+                modules.add(module = createModule(sub, location));
+                module.setFloor(floor );
             }
         }
 
@@ -58,9 +58,11 @@ public class StructureBuilder extends DungeonHandler<Location> {
                 ModuleData data = new ModuleData(new LE_Module(module));
                 data.setData(node.getTextContent());
                 data.apply();
-            } else {
+            } else if (sub.getNodeName().equalsIgnoreCase(FloorLoader.ZONES)) {
                 List<LevelZone> zones = createZones(module, sub, location);
                 module.setZones(zones);
+            } else {
+                getFloorLoader().processModuleSubNode(  sub, location ,module);
             }
         }
         return module;
@@ -86,8 +88,6 @@ public class StructureBuilder extends DungeonHandler<Location> {
                     LevelBlock block = constructBlock(subNode, BLOCK_ID++, zone, dungeon);
                     zone.addBlock(block);
                 }
-
-
             }
         }
         ZoneData data = new ZoneData(new LE_Zone(zone));

@@ -54,6 +54,7 @@ public class PlaceholderGenerator {
             type.setName(getPlaceholderName(cell));
             PROPERTY groupsProp = PROPS.PLACEHOLDER_DATA;
             type.setProperty(groupsProp, getSubgroupsForCell(cell));
+            type.setProperty(PROPS.PLACEHOLDER_SYMBOL, cell.symbol);
             type.setGenerated(false);
 
             type.setProperty(G_PROPS.BF_OBJECT_GROUP, "Placeholder");

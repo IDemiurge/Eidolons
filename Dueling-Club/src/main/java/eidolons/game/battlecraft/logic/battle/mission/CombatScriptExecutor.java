@@ -523,6 +523,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         return true;
     }
 
+
     private List<Coordinates> getCoordinatesListForUnits(String arg, DC_Player player, List<String> units, Ref ref) {
         List<Coordinates> list = new ArrayList<>();
         Coordinates origin = getCoordinates(arg, ref);

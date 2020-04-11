@@ -1,6 +1,7 @@
 package main.level_editor.backend;
 
 
+import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
@@ -32,6 +33,8 @@ import main.level_editor.backend.struct.level.Floor;
 import main.level_editor.gui.grid.LE_CameraHandler;
 import main.level_editor.gui.stage.LE_KeyHandler;
 
+import java.util.function.Function;
+
 public class LE_Handler {
 
     protected final LE_Manager manager;
@@ -53,12 +56,16 @@ public class LE_Handler {
     protected boolean isLoaded() {
         return manager.isLoaded();
     }
-    public String getDataMapString() {
+    public String getDataMapString(Function<Integer, Boolean> idFilter) {
         return "";
     }
 
-    public String getXml() {
+    public String getXml(Function<Integer, Boolean> idFilter) {
         return "";
+    }
+
+    protected StructureMaster getStructureMaster() {
+        return getGame().getMetaMaster().getDungeonMaster().getStructureMaster();
     }
 
     public LE_EntityHandler getEntityHandler() {
@@ -101,7 +108,7 @@ public class LE_Handler {
         return manager.getModule(c);
     }
 
-    public LE_StructureHandler getStructureManager() {
+    public LE_StructureHandler getStructureHandler() {
         return manager.getStructureManager();
     }
 

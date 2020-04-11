@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.meta.scenario;
 
 import eidolons.game.battlecraft.logic.battle.mission.MissionBattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
+import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.meta.igg.death.IGG_DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.universal.*;
 import eidolons.game.core.Eidolons;
@@ -19,6 +20,11 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
     public ScenarioMetaMaster(String data) {
         super(data);
+    }
+
+    @Override
+    public ModuleMaster getModuleMaster() {
+        return getDungeonMaster().getModuleMaster();
     }
 
     @Override

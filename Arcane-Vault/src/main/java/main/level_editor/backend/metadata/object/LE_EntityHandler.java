@@ -5,14 +5,19 @@ import eidolons.content.data.EntityData;
 import eidolons.content.data.UnitData;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battle.encounter.EncounterData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
+import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
+import main.system.auxiliary.data.MapMaster;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class LE_EntityHandler extends LE_Handler {
 
@@ -36,6 +41,23 @@ public class LE_EntityHandler extends LE_Handler {
 //      TODO   LE_Screen.getInstance().getGuiStage().getEntityEditDialog().setUserObject(data);
 
     }
+
+    @Override
+    public String getXml(Function<Integer, Boolean> idFilter) {
+
+        String xml =
+                dataMap.keySet().stream().filter(id -> idFilter.apply(id)).
+                map(
+//                        id -> ImmutableMap.builder().put(id, dataMap.get(id).getValues())
+                id -> getDataString(id)).collect(Collectors.joining(MapMaster.DATA_MAP_SEPARATOR));
+        return XML_Converter.wrap(FloorLoader.CUSTOM_TYPE_DATA, xml);
+    }
+
+    private String getDataString(Integer id) {
+        return id +
+                "=" + dataMap.get(id).getDataExcept("id");
+    }
+
 
     private EntityData createData(BattleFieldObject entity) {
         OBJ_TYPE type = entity.getOBJ_TYPE_ENUM();

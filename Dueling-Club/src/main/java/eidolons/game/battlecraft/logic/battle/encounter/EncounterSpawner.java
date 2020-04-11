@@ -49,7 +49,6 @@ some groups will be defensive, relying on Reinforcements!
         EncounterData data =
                 new EncounterData(dataMap.get(id));
 
-
         ObjType encounterType = DataManager.getType(data.getValue(ENCOUNTER_VALUE.type)
                 , DC_TYPE.ENCOUNTERS);
         Coordinates coordinates;
@@ -58,7 +57,7 @@ some groups will be defensive, relying on Reinforcements!
 
     public void spawnEncounter(ObjType encounterType, Coordinates coordinates, EncounterData data) {
         float adjustCoef = data.getFloatValue(ENCOUNTER_VALUE.adjust_coef);
-        new Encounter(data);
+//        new Encounter(data);
         //can we have 2+ encounters in a fight/block?
 
         UnitsData sdata = new UnitsData(""); //can be partially specified in LE?
@@ -72,7 +71,6 @@ some groups will be defensive, relying on Reinforcements!
         hero variants - depending on what eidolon goes?
         soulforce smart adjust - don't spawn deadly if no SF?
 
-         */
 
 //                PROPS.PRESET_GROUP,
 //                PROPS.EXTENDED_PRESET_GROUP,
@@ -80,6 +78,31 @@ some groups will be defensive, relying on Reinforcements!
 //                PROPS.UNIT_TYPES,
 //                PROPS.FILLER_TYPES
 
+  int height = UnitGroupMaster.getGroupSizeY(owner);// UnitGroupMaster.getCurrentGroupHeight();
+            int width = UnitGroupMaster.getGroupSizeX(owner);
+
+
+  if (UnitGroupMaster.getFlip() == FLIP.CW90) {
+                int buffer = c.x;
+                c.setX(c.y);
+                c.setY(buffer);
+            } else if (UnitGroupMaster.getFlip() == FLIP.CCW90) {
+                int buffer = width - c.x;
+                c.setX(height - c.y);
+                c.setY(buffer);
+
+            }
+            if (UnitGroupMaster.isMirror()) {
+                if (UnitGroupMaster.getFlip() == FLIP.CW90
+                        || UnitGroupMaster.getFlip() == FLIP.CCW90) {
+                    c.setX(width - c.x);
+                } else {
+
+                    c.setY(height - c.y);
+                }
+
+            }
+         */
     }
 
 }

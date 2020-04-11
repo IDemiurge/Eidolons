@@ -51,7 +51,7 @@ public class LE_MouseHandler extends LE_Handler {
     private void clickedCell(CLICK_MODE mode, Coordinates c) {
         switch (mode) {
             case CTRL_SHIFT:
-                LevelStruct lowestStruct = getStructureManager().findLowestStruct(c);
+                LevelStruct lowestStruct = getStructureMaster().findLowestStruct(c);
                 GuiEventManager.trigger(GuiEventType.LE_TREE_SELECT, lowestStruct);
                 break;
             case ALT:
@@ -76,7 +76,7 @@ public class LE_MouseHandler extends LE_Handler {
             //delete all
             //select area
             case ALT_R:
-                getStructureManager().insertBlock(getModel().getPaletteSelection().getTemplate(), c);
+                getStructureHandler().insertBlock(getModel().getPaletteSelection().getTemplate(), c);
                 // remap modules - put them far enough apart...
                 //switch to adjacent?
                 /*

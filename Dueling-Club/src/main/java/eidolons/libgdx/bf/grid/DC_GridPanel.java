@@ -82,31 +82,15 @@ public class DC_GridPanel extends GridPanel {
     }
 
     @Override
-    protected BaseView createUnitView(BattleFieldObject battleFieldObjectbj) {
-        BaseView view = super.createUnitView(battleFieldObjectbj);
-        if (battleFieldObjectbj.isPlayerCharacter()) {
-            if (PaleAspect.ON) {
-                mainHeroViewPale = (GridUnitView) view;
-            }
-            if (ShadowMaster.isShadowAlive()) {
-                mainHeroViewShadow = (GridUnitView) view;
-            }
-            mainHeroView = (GridUnitView) view;
-        }
-        return view;
-    }
+    public GridPanel init(DequeImpl<BattleFieldObject> objects) {
 
-    @Override
-    public void unitMoved(BattleFieldObject object) {
-        super.unitMoved(object);
+        super.init(objects);
+        addActor(animMaster = AnimMaster.getInstance());
+        animMaster.bindEvents();
+        manager = new GridManager(this);
+        addActor(overlayManager = createOverlays());
 
-        setUpdateRequired(true);
-    }
-
-    @Override
-    public void resetZIndices() {
-        super.resetZIndices();
-        animMaster.setZIndex(Integer.MAX_VALUE);
+        return this;
     }
 
     @Override
@@ -131,7 +115,7 @@ public class DC_GridPanel extends GridPanel {
             super.draw(batch, 1);
             if (isShowGridEmitters())
                 if (isDrawEmittersOnTop())
-                drawEmitters(batch);
+                    drawEmitters(batch);
             drawComments(batch);
             animMaster.setVisible(true);
             animMaster.draw(batch, 1f);
@@ -176,25 +160,42 @@ public class DC_GridPanel extends GridPanel {
                 }
     }
 
+    @Override
+    protected BaseView createUnitView(BattleFieldObject battleFieldObjectbj) {
+        BaseView view = super.createUnitView(battleFieldObjectbj);
+        if (battleFieldObjectbj.isPlayerCharacter()) {
+            if (PaleAspect.ON) {
+                mainHeroViewPale = (GridUnitView) view;
+            }
+            if (ShadowMaster.isShadowAlive()) {
+                mainHeroViewShadow = (GridUnitView) view;
+            }
+            mainHeroView = (GridUnitView) view;
+        }
+        return view;
+    }
+
+    @Override
+    public void unitMoved(BattleFieldObject object) {
+        super.unitMoved(object);
+
+        setUpdateRequired(true);
+    }
+
+    @Override
+    public void resetZIndices() {
+        super.resetZIndices();
+        animMaster.setZIndex(Integer.MAX_VALUE);
+    }
+
     protected void addVoidDecorators(boolean hasVoid) {
         super.addVoidDecorators(hasVoid);
         if (!hasVoid)
-        for (int x = 0; x < cols; x++) {
-            for (int y = 0; y < rows; y++) {
-                checkAddBorder(x, y);
+            for (int x = 0; x < cols; x++) {
+                for (int y = 0; y < rows; y++) {
+                    checkAddBorder(x, y);
+                }
             }
-        }
-    }
-    @Override
-    public GridPanel init(DequeImpl<BattleFieldObject> objects) {
-
-        super.init(objects);
-        addActor(animMaster = AnimMaster.getInstance());
-        animMaster.bindEvents();
-        manager = new GridManager(this);
-        addActor(overlayManager = createOverlays());
-
-        return this;
     }
 
     protected GridOverlaysManager createOverlays() {
@@ -207,6 +208,7 @@ public class DC_GridPanel extends GridPanel {
             commentSprite.draw(batch, 1f);
         }
     }
+
     public void updateOutlines() {
 
         Object[] array = viewMap.keySet().toArray();
@@ -237,6 +239,7 @@ public class DC_GridPanel extends GridPanel {
                     }
         }
     }
+
     protected boolean isShardsOn() {
         if (EidolonsGame.FOOTAGE) {
             return true;
@@ -261,6 +264,7 @@ public class DC_GridPanel extends GridPanel {
         }
         return false;
     }
+
     protected void checkAddBorder(int x, int y) {
         Boolean hor = null;
         Boolean vert = null;
@@ -327,8 +331,6 @@ public class DC_GridPanel extends GridPanel {
     }
 
 
-
-
     private void initMaze(boolean hide, MazePuzzle.MazeData data) {
         Coordinates c = null;
         for (Coordinates coordinates : data.mazeWalls) {
@@ -349,7 +351,9 @@ public class DC_GridPanel extends GridPanel {
     protected void bindEvents() {
         super.bindEvents();
 
-        GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
+        boolean removePrevious = true;
+
+        GuiEventManager.bind(removePrevious, SHOW_MODE_ICON, obj -> {
             List list = (List) obj.get();
             UnitView view = (UnitView) getViewMap().get(list.get(0));
             if (view == null) {
@@ -359,7 +363,7 @@ public class DC_GridPanel extends GridPanel {
             view.updateModeImage((String) list.get(1));
         });
         if (DC_Engine.isAtbMode()) {
-            GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
+            GuiEventManager.bind(removePrevious, INITIATIVE_CHANGED, obj -> {
                 Pair<Unit, Pair<Integer, Float>> p = (Pair<Unit, Pair<Integer, Float>>) obj.get();
                 GridUnitView uv = (GridUnitView) viewMap.get(p.getLeft());
                 if (uv == null) {
@@ -372,7 +376,7 @@ public class DC_GridPanel extends GridPanel {
                 }
             });
         } else
-            GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
+            GuiEventManager.bind(removePrevious, INITIATIVE_CHANGED, obj -> {
                 Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
                 GridUnitView uv = (GridUnitView) viewMap.get(p.getLeft());
                 if (uv == null) {
@@ -382,11 +386,11 @@ public class DC_GridPanel extends GridPanel {
                 if (uv != null)
                     uv.getInitiativeQueueUnitView().updateInitiative(p.getRight());
             });
-        GuiEventManager.bind(VALUE_MOD, p -> {
+        GuiEventManager.bind(removePrevious, VALUE_MOD, p -> {
             FloatingTextMaster.getInstance().
                     createAndShowParamModText(p.get());
         });
-        GuiEventManager.bind(ACTOR_SPEAKS, p -> {
+        GuiEventManager.bind(removePrevious, ACTOR_SPEAKS, p -> {
             if (p.get() == null) {
                 return;
             }
@@ -418,7 +422,7 @@ public class DC_GridPanel extends GridPanel {
 //                }
 //            }
         });
-        GuiEventManager.bind(GuiEventType.GRID_OBJ_ANIM, p -> {
+        GuiEventManager.bind(removePrevious, GuiEventType.GRID_OBJ_ANIM, p -> {
             List list = (List) p.get();
             String key = (String) list.get(0);
             Coordinates c = (Coordinates) list.get(1);
@@ -427,23 +431,23 @@ public class DC_GridPanel extends GridPanel {
             gridViewAnimator.animate(gridObj, data);
         });
 
-        GuiEventManager.bind(HIDE_MAZE, p -> {
+        GuiEventManager.bind(removePrevious, HIDE_MAZE, p -> {
             initMaze(true, (MazePuzzle.MazeData) p.get());
         });
-        GuiEventManager.bind(SHOW_MAZE, p -> {
+        GuiEventManager.bind(removePrevious, SHOW_MAZE, p -> {
             initMaze(false, (MazePuzzle.MazeData) p.get());
         });
-        GuiEventManager.bind(INTERACTIVE_OBJ_RESET, (p) -> {
+        GuiEventManager.bind(removePrevious, INTERACTIVE_OBJ_RESET, (p) -> {
             InteractiveObj obj = (InteractiveObj) p.get();
             if (obj.isOff()) {
                 //TODO find and disble  light emitter
                 GuiEventManager.trigger(RESET_LIGHT_EMITTER, obj);
             }
         });
-        GuiEventManager.bind(GuiEventType.ANIMATION_QUEUE_FINISHED, (p) -> {
+        GuiEventManager.bind(removePrevious, GuiEventType.ANIMATION_QUEUE_FINISHED, (p) -> {
             resetVisible();
         });
-        GuiEventManager.bind(UPDATE_GUI, obj -> {
+        GuiEventManager.bind(removePrevious, UPDATE_GUI, obj -> {
             if (!VisionManager.isVisionHacked())
                 if (OutlineMaster.isAutoOutlinesOff())
                     if (OutlineMaster.isOutlinesOn()) {
@@ -458,7 +462,7 @@ public class DC_GridPanel extends GridPanel {
 
         });
 
-        GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
+        GuiEventManager.bind(removePrevious, SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p = (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             if (p.getLeft().isEmpty()) {
                 FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.REQUIREMENT,
@@ -481,7 +485,7 @@ public class DC_GridPanel extends GridPanel {
                     final GridUnitView gridView = (GridUnitView) b;
                     final UnitView unitView = gridView.getInitiativeQueueUnitView();
                     if (unitView != null) {
-                    map.put(unitView, () -> p.getRight().run(obj1));
+                        map.put(unitView, () -> p.getRight().run(obj1));
                     }
                 }
 
@@ -490,13 +494,13 @@ public class DC_GridPanel extends GridPanel {
             GuiEventManager.trigger(SHOW_TARGET_BORDERS, map);
         });
 
-        GuiEventManager.bind(UPDATE_GRAVEYARD, obj -> {
+        GuiEventManager.bind(removePrevious, UPDATE_GRAVEYARD, obj -> {
             final Coordinates coordinates = (Coordinates) obj.get();
             cells[coordinates.getX()][rows - 1 - coordinates.getY()].updateGraveyard();
         });
 
 
-        GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
+        GuiEventManager.bind(removePrevious, ACTIVE_UNIT_SELECTED, obj -> {
             BattleFieldObject hero = (BattleFieldObject) obj.get();
             DungeonScreen.getInstance().getCameraMan().unitActive(hero);
             AnimConstructor.tryPreconstruct((Unit) hero);
@@ -534,7 +538,7 @@ public class DC_GridPanel extends GridPanel {
                     welcomeInfoShown = true;
                 }
         });
-        GuiEventManager.bind(UPDATE_UNIT_ACT_STATE, obj -> {
+        GuiEventManager.bind(removePrevious, UPDATE_UNIT_ACT_STATE, obj -> {
             final Pair<Unit, Boolean> pair = (Pair<Unit, Boolean>) obj.get();
             final BaseView baseView = viewMap.get(pair.getLeft());
             if (baseView instanceof GridUnitView) {
@@ -543,11 +547,11 @@ public class DC_GridPanel extends GridPanel {
             }
         });
 
-        GuiEventManager.bind(GuiEventType.HP_BAR_UPDATE_MANY, p -> {
+        GuiEventManager.bind(removePrevious, GuiEventType.HP_BAR_UPDATE_MANY, p -> {
             List list = (List) p.get();
             list.forEach(o -> updateHpBar(o));
         });
-        GuiEventManager.bind(GuiEventType.HP_BAR_UPDATE, p -> {
+        GuiEventManager.bind(removePrevious, GuiEventType.HP_BAR_UPDATE, p -> {
             updateHpBar(p.get());
         });
 

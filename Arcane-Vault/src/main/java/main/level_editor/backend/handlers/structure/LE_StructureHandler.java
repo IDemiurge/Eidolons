@@ -197,7 +197,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
 
     private void initObject(Coordinates c, GeneratorEnums.ROOM_CELL cell) {
         ObjType type = getObjectType(c, cell);
-        operation(Operation.LE_OPERATION.ADD_OBJ, type, c);
+        operation(Operation.LE_OPERATION.ADD_OBJ, type, c, new Boolean(false));
     }
 
     private ObjType getObjectType(Coordinates c, GeneratorEnums.ROOM_CELL cell) {
@@ -387,57 +387,10 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     }
 
     public void initWall(Coordinates c) {
-        LevelStruct block = findLowestStruct(c);
+        LevelStruct block = getStructureMaster().findLowestStruct(c);
         resetWalls(block, ImmutableSet.of(c));
     }
 
-    public LevelStruct findLowestStruct(Coordinates c) {
-        LevelBlock block = findBlock(c);
-        if (block == null) {
-           return findModule(c);
-        }
-        return block;
-    }
-
-    private LevelStruct findModule(Coordinates c) {
-        for (Module module : getModuleHandler().getModules()) {
-            if (module.getCoordinatesSet().contains(c)) {
-                return module;
-            }
-        }
-        return null;
-    }
-
-    private LevelBlock findBlock(Coordinates c) {
-        for (LevelBlock block : getBlocks()) {
-            if (block.getCoordinatesSet().contains(c)) {
-                return block;
-            }
-        }
-        return null;
-    }
-
-    public Set<LevelBlock> getBlocks() {
-        Set<LevelBlock> blocks = new LinkedHashSet<>();
-        for (Module module : getFloor().getModules()) {
-            for (LevelZone zone : module.getZones()) {
-                for (LevelBlock block : zone.getSubParts()) {
-                    blocks.add(block);
-                }
-            }
-        }
-        return blocks;
-    }
-
-    public Set<LevelZone> getZones() {
-        Set<LevelZone> zones = new LinkedHashSet<>();
-        for (Module module : getFloor().getModules()) {
-            for (LevelZone zone : module.getSubParts()) {
-                zones.add(zone);
-            }
-        }
-        return zones;
-    }
 
     public void resetWalls(LevelStruct<LevelStruct> subPart) {
         resetWalls(subPart, subPart.getCoordinatesSet());

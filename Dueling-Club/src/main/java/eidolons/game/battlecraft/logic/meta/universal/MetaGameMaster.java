@@ -56,7 +56,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected LootMaster<E> lootMaster;
 
     protected GameEventHandler eventHandler;
-    protected ModuleMaster moduleMaster;
 
     ShadowMaster shadowMaster = new ShadowMaster(this);
 
@@ -83,7 +82,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected abstract MetaInitializer<E> createMetaInitializer();
 
     public void initHandlers() {
-        moduleMaster = new ModuleMaster(this);
         partyManager = createPartyManager();
         initializer = createMetaInitializer();
         metaDataManager = createMetaDataManager();
@@ -343,6 +341,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public ModuleMaster getModuleMaster() {
-        return moduleMaster;
+        return null;
     }
 }

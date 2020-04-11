@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Stack;
+import java.util.function.Function;
 
 import static eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 
@@ -203,7 +204,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
         getModel().getDisplayMode().setShowMetaAi(!getModel().getDisplayMode().isShowMetaAi());
     }
 
-    public String getXml() {
+    public String getXml(Function<Integer, Boolean> idFilter) {
         StringBuilder builder = new StringBuilder();
         for (BattleFieldObject object : encounterAiMap.keySet()) {
             builder.append(getIdManager().getId(object)).append("=");

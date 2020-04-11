@@ -329,7 +329,7 @@ public class LevelStructure {
         },
 
 
-        ;
+        assets;
         private EDIT_VALUE_TYPE type;
 
         MODULE_VALUE() {

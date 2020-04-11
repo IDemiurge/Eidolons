@@ -4,9 +4,14 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
+import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.LayerManager;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureBuilder;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
 import eidolons.game.battlecraft.logic.dungeon.module.BridgeMaster;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
@@ -48,11 +53,15 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private PuzzleMaster puzzleMaster;
     private PortalMaster portalMaster;
     private LayerManager layerManager;
+    private StructureMaster structureMaster;
+    private FloorLoader floorLoader;
 
-    private  Map<Integer, BattleFieldObject> objIdMap= new LinkedHashMap<>();
+    private Map<Integer, BattleFieldObject> objIdMap = new LinkedHashMap<>();
     private Map<Integer, ObjType> idTypeMap;
     private Map<DataMap, Map<Integer, String>> dataMaps;
     private LE_Floor floor;
+    private DC_ObjInitializer objInitializer;
+    private StructureBuilder structureBuilder;
 
 
     public DungeonMaster(DC_Game game) {
@@ -61,11 +70,14 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         portalMaster = new PortalMaster(this);
         initializer = createInitializer();
         spawner = createSpawner();
-        layerManager=createLayerManager();
+        layerManager = createLayerManager();
         positioner = createPositioner();
         facingAdjuster = createFacingAdjuster();
         builder = createBuilder();
-
+        structureMaster = new StructureMaster(this);
+        objInitializer = new DC_ObjInitializer(this);
+        structureBuilder = new StructureBuilder(this);
+        floorLoader = createFloorLoader();
         if (CoreEngine.isCombatGame()) {
             explorationMaster = new ExplorationMaster(game);
             doorMaster = new DoorMaster(this);
@@ -75,7 +87,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
             puzzleMaster = new PuzzleMaster(this);
         }
     }
-
+    protected FloorLoader createFloorLoader() {
+        return new FloorLoader(this);
+    }
     protected LayerManager createLayerManager() {
         return null;
     }
@@ -167,6 +181,10 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
     public DC_Game getGame() {
         return game;
+    }
+
+    public StructureMaster getStructureMaster() {
+        return structureMaster;
     }
 
     public DungeonInitializer<E> getInitializer() {
@@ -316,5 +334,21 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
     public LE_Floor getFloor() {
         return floor;
+    }
+
+    public Module getModule() {
+        return null;
+    }
+
+    public DC_ObjInitializer getObjInitializer() {
+        return objInitializer;
+    }
+
+    public StructureBuilder getStructureBuilder() {
+        return structureBuilder;
+    }
+
+    public FloorLoader getFloorLoader() {
+        return floorLoader;
     }
 }
