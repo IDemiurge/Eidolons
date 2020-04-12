@@ -8,8 +8,7 @@ import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.bf.grid.cell.OverlayView;
 import eidolons.libgdx.bf.grid.cell.UnitViewFactory;
 import eidolons.libgdx.bf.grid.cell.UnitViewOptions;
-import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
-import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
+import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import main.level_editor.LevelEditor;
 
 public class LE_UnitViewFactory extends UnitViewFactory {
@@ -82,9 +81,7 @@ public class LE_UnitViewFactory extends UnitViewFactory {
 
     @Override
     protected void addForDC(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
-        final UnitViewTooltip tooltip = new UnitViewTooltip(view);
-        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
-        view.setToolTip(tooltip);
+        view.setToolTip(new ValueTooltip(bfObj.getName()));
     }
 
     @Override

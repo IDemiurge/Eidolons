@@ -1,10 +1,16 @@
 package main.level_editor.backend.functions.io;
 
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.EUtils;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.utils.FileChooserX;
 import main.data.filesys.PathFinder;
+import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
@@ -16,6 +22,7 @@ import main.system.PathUtils;
 import main.system.auxiliary.data.FileManager;
 
 import java.util.Calendar;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -50,8 +57,8 @@ public class LE_DataHandler extends LE_Handler {
     }
 
     public void backup() {
-        String path = getBackupPath(getFloor() );
-        String contents = FileManager.readFile(getDefaultSavePath(getFloor ()));
+        String path = getBackupPath(getFloor());
+        String contents = FileManager.readFile(getDefaultSavePath(getFloor()));
         FileManager.write(contents, path);
         EUtils.showInfoText("Backed up as " + PathUtils.getLastPathSegment(path));
     }
@@ -76,13 +83,79 @@ public class LE_DataHandler extends LE_Handler {
 
 
     public void saveFloor() {
-        String path = getDefaultSavePath(getFloor ());
+        doPresave();
+        String path = getDefaultSavePath(getFloor());
         saveAs(path);
         setDirty(false);
     }
 
+    private void doPresave() {
+        boolean changed = false;
+        for (Module module : getModuleHandler().getModules()) {
+            ModuleData data = (ModuleData) new ModuleData(module).setData(module.getData().getData());
+            changed |= recalcModuleParams(data, false);
+        }
+        if (changed) {
+            getModuleHandler().resetBorders();
+            getModuleHandler().resetBufferVoid();
+            getStructureHandler().resetWalls(getDungeonLevel());
+        }
+    }
+
+    private boolean recalcModuleParams(ModuleData data, boolean standalone) {
+        Module structure = data.getStructure();
+        int w = structure.getEffectiveWidth();
+        int h = structure.getEffectiveHeight();
+        int originalH = h;
+        int originalW = w;
+//        structure.getEffectiveHeight()
+        Set<Coordinates> coordinatesSet = structure.initCoordinateSet(false);
+        Set<Coordinates> coordinatesSetToSearch = structure.initCoordinateSet(true);
+        int maxX = CoordinatesMaster.getMaxX(coordinatesSet);
+        int maxY = CoordinatesMaster.getMaxY(coordinatesSet);
+        int minX = CoordinatesMaster.getMinX(coordinatesSet);
+        int minY = CoordinatesMaster.getMinY(coordinatesSet);
+
+        for (Coordinates coordinates : coordinatesSetToSearch) {
+            Set<BattleFieldObject> objects = DC_Game.game.getObjectsOnCoordinate(coordinates);
+            if (!objects.isEmpty()) {
+                for (BattleFieldObject object : objects) {
+                    if (object.isModuleBorder()) {
+                        continue;
+                    }
+                    if (object.getCoordinates().x > maxX) {
+                        maxX = object.getCoordinates().x;
+                    }
+                    if (object.getCoordinates().y > maxY) {
+                        maxY = object.getCoordinates().y;
+                    }
+                    if (object.getCoordinates().x < minX) {
+                        minX = object.getCoordinates().x;
+                    }
+                    if (object.getCoordinates().y < minY) {
+                        minY = object.getCoordinates().y;
+                    }
+                }
+            }
+        }
+        w = maxX - minX + 1;
+        h = maxY - minY + 1;
+        boolean changed = false;
+        if (w != originalW || h != originalH) {
+            changed = true;
+        }
+        if (changed) {
+            data.setValue(LevelStructure.MODULE_VALUE.width, w);
+            data.setValue(LevelStructure.MODULE_VALUE.origin, Coordinates.get(minX, minY));
+            data.setValue(LevelStructure.MODULE_VALUE.height, h);
+            data.apply();
+        }
+
+        return changed;
+    }
+
     public void saveAs(String path) {
-        String contents = LE_XmlMaster.toXml(getFloorWrapper());
+        String contents = getXmlMaster().toXml(getFloorWrapper());
         FileManager.write(contents, path);
         EUtils.showInfoText("Saved as " + PathUtils.getLastPathSegment(path));
     }
@@ -151,7 +224,7 @@ public class LE_DataHandler extends LE_Handler {
         if (dirty) {
             GdxMaster.setWindowName("*" + LevelEditor.getWindowName());
         } else {
-            GdxMaster.setWindowName( LevelEditor.getWindowName());
+            GdxMaster.setWindowName(LevelEditor.getWindowName());
         }
     }
 }

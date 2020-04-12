@@ -96,7 +96,7 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
 
     protected SmartButton createButton(Method method, T handler) {
         i++;
-        String name = StringMaster.wrapInBraces(i+"")+
+        String name =// StringMaster.wrapInBraces(i+"")+
                 StringMaster.getWellFormattedString(method.getName(), true);
         return new SmartButton(name, getButtonTextStyle(), () -> {
             Eidolons.onNonGdxThread(() -> {
@@ -112,7 +112,7 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
     }
 
     protected ButtonStyled.STD_BUTTON getButtonStyle() {
-        return ButtonStyled.STD_BUTTON.BUTTON_ZARK;
+        return ButtonStyled.STD_BUTTON.BUTTON_ZARK_SMALL;
     }
 
     protected TextButton.TextButtonStyle getButtonTextStyle() {

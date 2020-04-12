@@ -36,7 +36,6 @@ import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -124,9 +123,11 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             zone = getModel().getModule().getZones().get(0);
         }
         LevelBlock block = new LevelBlock(zone);
+        block.setModel(blockTemplate);
+        block.setOrigin(at);
         int x = 0;
         int y = 0;
-        Set<Coordinates> coords = new LinkedHashSet<>();
+        Set<Coordinates> coords = block.getCoordinatesSet();
         getOperationHandler().operation(Operation.LE_OPERATION.INSERT_START);
        if (!addBlock(block))
        {
@@ -138,8 +139,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
                 if (TilesMaster.isIgnoredCell(cell)) {
                     continue;
                 }
-                Coordinates c;
-                coords.add(c = Coordinates.get(x, y).getOffset(at));
+                Coordinates  c = Coordinates.get(x, y) .getOffset(at) ;
                 processCell(c, cell);
                 y++;
             }
@@ -239,8 +239,9 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         }
         LevelZone zone = block.getZone();
         Set<Coordinates> coordinates = block.getCoordinatesSet();
+
         if (!zone.getModule().getCoordinatesSet().containsAll(coordinates)) {
-            if (EUtils.confirm("Wrong module! Add to nearest zone?")) {
+            if (EUtils.waitConfirm("Wrong module! Add to nearest zone?")) {
                 zone = getZoneForBlock(block);
                 block.setZone(zone);
             } else {
@@ -416,12 +417,13 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         if (wallType != null)
             for (Coordinates coordinates : coordinatesSet) {
                 for (BattleFieldObject obj : getGame().getObjectsOnCoordinate(coordinates)) {
-                    if (obj.getType().getName()
+                    String name = obj.getType().getName().replace("Indestructible", "").trim();
+                    if (name
                             .equalsIgnoreCase(PaletteHandlerImpl.WALL_PLACEHOLDER)) {
                         obj.setImage(wallType.getImagePath());
                         GuiEventManager.trigger(GuiEventType.RESET_VIEW, obj);
                     }
-                    if (obj.getType().getName()
+                    if (name
                             .equalsIgnoreCase(PaletteHandlerImpl.ALT_WALL_PLACEHOLDER)) {
                         obj.setImage(altWallType.getImagePath());
                         //objsToReset.add(obj);
@@ -436,6 +438,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         if (type != null) {
             for (Coordinates coordinates : layer.getCoordinatesSet()) {
                 DC_Cell cell = getGame().getCellByCoordinate(coordinates);
+                if (cell != null) //TODO without buffer!
                 if (cell.getCellType() != type) {
                     cell.setCellType(type);
                 }

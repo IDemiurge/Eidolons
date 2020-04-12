@@ -8,19 +8,16 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import main.content.DC_TYPE;
-import main.content.enums.DungeonEnums;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by JustMe on 5/8/2017.
@@ -31,11 +28,20 @@ public class Location extends DungeonWrapper    {
     private String entranceData;
     private Entrance mainEntrance;
     private Entrance mainExit;
-    private Map<Coordinates, FACING_DIRECTION> unitFacingMap;
 
     public Location(DungeonMaster master, Dungeon dungeon) {
         super(dungeon, master);
         this.master = master;
+    }
+
+    @Override
+    public int getWidth() {
+        return super.getWidth();
+    }
+
+    @Override
+    public void setWidth(int width) {
+        super.setWidth(width);
     }
 
     public Coordinates getPlayerSpawnCoordinates() {
@@ -131,10 +137,6 @@ public class Location extends DungeonWrapper    {
         return (DC_Game) super.getGame();
     }
 
-    public boolean isUnderground() {
-        return checkProperty(PROPS.DUNGEON_TAGS, DungeonEnums.DUNGEON_TAGS.UNDERGROUND + "");
-    }
-
     public Entrance getMainEntrance() {
         return mainEntrance;
     }
@@ -149,10 +151,6 @@ public class Location extends DungeonWrapper    {
 
     public void setMainExit(Entrance mainExit) {
         this.mainExit = mainExit;
-    }
-
-    public void setUnitFacingMap(Map<Coordinates, FACING_DIRECTION> unitFacingMap) {
-        this.unitFacingMap = unitFacingMap;
     }
 
     @Override

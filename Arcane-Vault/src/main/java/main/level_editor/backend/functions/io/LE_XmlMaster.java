@@ -11,10 +11,10 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlStringBuilder;
-import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
+import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.struct.boss.BossDungeon;
 import main.system.auxiliary.data.MapMaster;
 
@@ -24,9 +24,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-public class LE_XmlMaster {
+public class LE_XmlMaster extends LE_Handler {
 
-    public static String toXml(BossDungeon dungeon) {
+    public LE_XmlMaster(LE_Manager manager) {
+        super(manager);
+    }
+
+    public String toXml(BossDungeon dungeon) {
 
         StringBuilder xmlBuilder = new StringBuilder();
 
@@ -34,12 +38,13 @@ public class LE_XmlMaster {
         return xmlBuilder.toString();
     }
 
-    public static String toXml(Location floor ) {
+    public String toXml(Location floor) {
         return toXml(floor, null);
     }
-    public static String toXml(Location floor, Module standalone) {
+
+    public String toXml(Location floor, Module standalone) {
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
-        Function<Integer, Boolean> idFilter =getIdFilter(standalone);
+        Function<Integer, Boolean> idFilter = getIdFilter(standalone);
 
         //from old - dungeon params props etc
 
@@ -58,7 +63,7 @@ public class LE_XmlMaster {
         xmlBuilder.close(FloorLoader.MODULES);
 
 
-        xmlBuilder.append("\n").append(buildIdMap( ));
+        xmlBuilder.append("\n").append(buildIdMap());
 
         xmlBuilder.append("\n").open(FloorLoader.DATA_MAPS);
         for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
@@ -84,23 +89,40 @@ public class LE_XmlMaster {
         return XML_Converter.wrap("Floor", xmlBuilder.toString()); //name?
     }
 
-    private static Function<Integer, Boolean> getIdFilter(Module standalone) {
+    private Function<Integer, Boolean> getIdFilter(Module standalone) {
         return id ->
                 standalone == null || standalone.getCoordinatesSet().
                         contains(LevelEditor.getManager().getIdManager().getObjectById(id).getCoordinates());
     }
 
-    private static String buildCoordinateMap(Module module ) {
+    private String buildBorderMap(Module module) {
+        return buildCoordinateMap(module, true);
+    }
+
+    private String buildCoordinateMap(Module module) {
+        return buildCoordinateMap(module, false);
+    }
+
+    private String buildCoordinateMap(Module module, boolean borders) {
         StringBuilder builder = new StringBuilder();
         Map<Integer, BattleFieldObject> map = LevelEditor.getGame().getSimIdManager().getObjMap();
-        for (Coordinates c : module.getCoordinatesSet()) {
+        for (Coordinates c : module.initCoordinateSet(false)) {
             Set<BattleFieldObject> set = LevelEditor.getGame().getObjectsOnCoordinate(c);
-            set.removeIf(obj-> obj.isModuleBorder());
+
+            set.removeIf(obj -> obj.isModuleBorder() != borders);
+            //TODO  save separately!!!!
             if (set.isEmpty()) {
                 continue;
             }
-            builder.append(c).append("=");
+            builder.append(c);
+            if (borders)
+            {
+                builder.append(";");
+                continue; //just the coordinate
+            }
+            builder.append("=");
             for (BattleFieldObject obj : set) {
+
                 Integer id = (Integer) MapMaster.getKeyForValue_(map, obj);
                 if (id == null) {
                     continue;
@@ -110,28 +132,32 @@ public class LE_XmlMaster {
             builder.append(";");
 
         }
-        return XML_Converter.wrap(FloorLoader.OBJ_NODE_NEW, builder.toString());
+        return XML_Converter.wrap(
+                borders
+                        ? FloorLoader.BORDERS
+                        : FloorLoader.OBJ_NODE_NEW
+                , builder.toString());
     }
 
     //TODO DC_TYPE ?
-    private static String buildIdMap( ) {
+    private String buildIdMap() {
         StringBuilder builder = new StringBuilder();
-        Map<Integer, BattleFieldObject> map = LevelEditor.getGame() .getSimIdManager().getObjMap();
+        Map<Integer, BattleFieldObject> map = LevelEditor.getGame().getSimIdManager().getObjMap();
 
-        Map<ObjType, List<Integer>> nestedMap = new LinkedHashMap<>();
+        Map<String, List<Integer>> nestedMap = new LinkedHashMap<>();
         for (Integer integer : map.keySet()) {
             try {
                 Integer id =
                         LevelEditor.getGame().getSimIdManager().getId(map.get(integer));
-                ObjType type = map.get(integer).getType();
+                String type = map.get(integer).getType().getName();
                 MapMaster.addToListMap(nestedMap, type, id);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
-        for (ObjType type : nestedMap.keySet()) {
-            builder.append(type.getName()).append("=");
+        for (String type : nestedMap.keySet()) {
+            builder.append(type ).append("=");
             for (Integer integer : nestedMap.get(type)) {
                 builder.append(integer).append(",");
             }
@@ -142,13 +168,14 @@ public class LE_XmlMaster {
 
     //must be a valid floor in itself?! No global id's then? So we can re-use modules, mix them up...
     //interesting. So maybe we can have ... duplicate id maps?
-    public static   String toXml(Module module, boolean standalone) {
+    public String toXml(Module module, boolean standalone) {
         if (standalone) {
             //TODO
         }
+
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
         xmlBuilder.append("\n").open(module.getName());
-        xmlBuilder.appendNode((module).getData() .toString(),
+        xmlBuilder.appendNode(module.getData().toString(),
                 FloorLoader.DATA);
         xmlBuilder.append("\n").open("Zones");
         for (LevelZone zone : module.getZones()) {
@@ -157,10 +184,12 @@ public class LE_XmlMaster {
         xmlBuilder.close("Zones").append("\n");
 
         xmlBuilder.append("\n").append(buildCoordinateMap(module));
+        xmlBuilder.append("\n").append(buildBorderMap(module));
 
         xmlBuilder.append("\n").open(FloorLoader.COORDINATES_VOID);
-        for (Coordinates coordinates : module.getCoordinatesSet()) {
+        for (Coordinates coordinates : module.initCoordinateSet(false)) {
             DC_Cell cell = DC_Game.game.getCellByCoordinate(coordinates);
+            if (cell != null) //TODO buffer!
             if (cell.isVOID()) {
                 xmlBuilder.append(cell.getCoordinates().toString()).append(";");
             }
@@ -172,9 +201,10 @@ public class LE_XmlMaster {
         return xmlBuilder.toString();
     }
 
-    private static String toXml(LevelZone zone) {
+
+    private String toXml(LevelZone zone) {
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
-        xmlBuilder.appendNode( (zone).getData().toString(),
+        xmlBuilder.appendNode((zone).getData().toString(),
                 FloorLoader.DATA);
         xmlBuilder.open("Blocks");
         for (LevelBlock block : zone.getSubParts()) {
@@ -185,7 +215,7 @@ public class LE_XmlMaster {
         return xmlBuilder.toString();
     }
 
-    private static String toXml(LevelBlock block) {
+    private String toXml(LevelBlock block) {
 
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
         xmlBuilder.appendNode(block.getData().toString(),

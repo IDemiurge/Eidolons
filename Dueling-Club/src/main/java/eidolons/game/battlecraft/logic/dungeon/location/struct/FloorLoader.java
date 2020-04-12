@@ -37,6 +37,7 @@ public class FloorLoader extends DungeonHandler<Location> {
     public static final String ID_MAP = "ID_MAP";
     public static final String MODULES = "MODULES";
     public static final String OBJ_NODE_NEW = "OBJ_IDS";
+    public static final String BORDERS = "BORDERS";
     public static final String DATA_MAPS = "DATA_MAPS";
     //subnodes
     public static final String TRANSIT_IDS = "TRANSIT_IDS";
@@ -97,7 +98,6 @@ public class FloorLoader extends DungeonHandler<Location> {
                 processLayers(node);
                 break;
             case FACING:
-                location.setUnitFacingMap(createUnitFacingMap(node.getTextContent()));
                 break;
         }
 
@@ -107,7 +107,7 @@ public class FloorLoader extends DungeonHandler<Location> {
         switch (node.getNodeName()) {
             case MODULES:
                 new StructureBuilder(master).build(node, location);
-                checkModuleRemap();
+                checkModuleRemap(false);
                 break;
             case DATA_MAPS:
                 Map<DataMap, Map<Integer, String>> map = new LinkedHashMap<>();
@@ -145,7 +145,7 @@ public class FloorLoader extends DungeonHandler<Location> {
 
     }
 
-    protected void checkModuleRemap() {
+    protected void checkModuleRemap(boolean b) {
     }
 
     protected void initTransits(String textContent, Location location) {

@@ -35,8 +35,7 @@ public class StructureBuilder extends DungeonHandler<Location> {
                 data.setData(sub.getTextContent());
                 data.apply();
             } else {
-                Module module;
-                modules.add(module = createModule(sub, location));
+                modules.add(createModule(sub, location));
             }
         }
 

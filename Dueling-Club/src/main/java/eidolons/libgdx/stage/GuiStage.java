@@ -77,7 +77,6 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     protected List<String> charsUp = new ArrayList<>();
     protected char lastTyped;
 
-    protected Closable displayedClosable;
 
     protected RadialMenu radial;
     protected ContainerPanel containerPanel;
@@ -463,16 +462,6 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         return false;
     }
 
-    public Closable getDisplayedClosable() {
-        return displayedClosable;
-    }
-
-    @Override
-    public void setDisplayedClosable(Closable displayedClosable) {
-        this.displayedClosable = displayedClosable;
-        if (displayedClosable == null)
-            setDraggedEntity(null);
-    }
 
     protected void bindEvents() {
 

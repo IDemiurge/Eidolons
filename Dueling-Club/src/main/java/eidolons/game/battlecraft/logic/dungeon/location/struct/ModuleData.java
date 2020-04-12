@@ -53,6 +53,10 @@ public class ModuleData extends StructureData<MODULE_VALUE,  Module> {
                             int offsetX = module.getData().getIntValue(MODULE_VALUE.width_buffer);
                             int offsetY = module.getData().getIntValue(MODULE_VALUE.height_buffer);
                             c= c.getOffset(-offsetX, -offsetY);
+                        } else {
+                            int offsetX = module.getData().getIntValue(MODULE_VALUE.border_width);
+                            int offsetY = module.getData().getIntValue(MODULE_VALUE.border_width);
+                            c= c.getOffset(-offsetX, -offsetY);
                         }
                         module.setOrigin(c);
                         }

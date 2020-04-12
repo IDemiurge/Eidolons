@@ -22,7 +22,7 @@ public class LE_FloorLoader extends FloorLoader {
     }
 
     @Override
-    protected void checkModuleRemap() {
+    protected void checkModuleRemap(boolean forced) {
 
         boolean remap = false;
         Set<Module> modules = getMetaMaster().getModuleMaster().getModules();
@@ -32,28 +32,16 @@ public class LE_FloorLoader extends FloorLoader {
                 break;
             }
         }
-        if (!remap)
-            return;
+        if (!remap) {
+            if (!forced) {
+                return;
+            }
+        }
 
 
         LinkedHashMap<Point, Module> grid = new ModuleGridMapper().getOptimalGrid(modules);
 
         LevelEditor.getManager().getModuleHandler().setGrid(grid);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }

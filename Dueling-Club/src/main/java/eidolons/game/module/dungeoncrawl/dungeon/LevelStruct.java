@@ -11,6 +11,7 @@ import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
 
@@ -80,13 +81,13 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
 
     public Set<Coordinates> getCoordinatesSet() {
         if (!ListMaster.isNotEmpty(coordinatesSet)) {
-            initCoordinateSet();
+            coordinatesSet =   initCoordinateSet(CoreEngine.isLevelEditor());
         }
         return coordinatesSet;
     }
 
-    private void initCoordinateSet() {
-         coordinatesSet = new LinkedHashSet<>();
+    public Set<Coordinates> initCoordinateSet(boolean levelEditor) {
+        Set<Coordinates> coordinatesSet = new LinkedHashSet<>();
         for (T subPart : getSubParts()) {
             if (subPart instanceof LevelStruct) {
                 coordinatesSet.addAll(((LevelStruct) subPart).getCoordinatesSet());
@@ -95,8 +96,9 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         if (coordinatesSet.isEmpty()) {
             if (getOrigin() != null)
                 coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetween(
-                        getOrigin(), getOrigin().getOffset(getEffectiveWidth(), getEffectiveHeight())));
+                                getOrigin(), getOrigin().getOffset(getEffectiveWidth(), getEffectiveHeight())));
         }
+        return coordinatesSet;
     }
 
     protected int getEffectiveHeight() {

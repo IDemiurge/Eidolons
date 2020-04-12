@@ -44,6 +44,11 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
     }
 
     public void setGrid(LinkedHashMap<Point, Module> grid) {
+        if (moduleGrid!=null ){
+            if (moduleGrid.equals(grid)){
+                return;
+            }
+        }
         moduleGrid = grid;
         for (Point point : grid.keySet()) {
             Module module = grid.get(point);
@@ -52,7 +57,7 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         }
         resetBorders();
         if (isLoaded())
-            resetBuffer();
+            resetBufferVoid();
     }
 
 
@@ -76,10 +81,11 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         return Coordinates.get(offsetX, offsetY);
     }
 
-    private void resetBuffer() {
+    public void resetBufferVoid() {
         LinkedHashSet<Coordinates> set = new LinkedHashSet<>();
         LinkedHashSet<Coordinates> full = new LinkedHashSet<>(getGame().getCoordinates());
         for (Module module : getModules()) {
+            module.setCoordinatesSet(null);
             set.addAll(module.getCoordinatesSet());
         }
         full.removeAll(set);
@@ -140,7 +146,7 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
             List<Coordinates> borderCoords = getBorderCoordinates(module, false);
             getStructureHandler().resetWalls(getDungeonLevel(), borderCoords);
         }
-        resetBuffer();
+        resetBufferVoid();
     }
 
     private List<Coordinates> getBufferCoordinates(Module module) {
@@ -159,8 +165,8 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
             borderW += bufferW;
         }
 
-        int h = module.getHeight() + borderH * 2;
-        int w = module.getWidth() + borderW * 2;
+        int h = module.getHeight() + borderH  ;
+        int w = module.getWidth() + borderW  ;
         Coordinates corner = origin.getOffset(w, h);
         List<Coordinates> full = CoordinatesMaster.getCoordinatesBetween(origin, corner);
         List<Coordinates> inner = buffer ?

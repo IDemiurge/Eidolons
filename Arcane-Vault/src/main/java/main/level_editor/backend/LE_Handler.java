@@ -8,6 +8,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
+import main.level_editor.backend.functions.io.LE_XmlMaster;
 import main.level_editor.backend.functions.mapping.LE_MapHandler;
 import main.level_editor.backend.functions.mapping.LE_ModuleHandler;
 import main.level_editor.backend.functions.mapping.LE_TransitHandler;
@@ -70,6 +71,10 @@ public class LE_Handler {
 
     public LE_EntityHandler getEntityHandler() {
         return manager.getEntityHandler();
+    }
+
+    public LE_XmlMaster getXmlMaster() {
+        return manager.getXmlMaster();
     }
 
     protected LevelStruct getDungeonLevel() {

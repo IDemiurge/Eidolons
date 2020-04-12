@@ -25,6 +25,8 @@ public class FloorData extends StructureData<FLOOR_VALUES, Location> {
         dungeon.setProperty(PROPS.MAP_BACKGROUND, getValue(FLOOR_VALUES.background), true);
         //why type??
         dungeon.setName(getValue(FLOOR_VALUES.name));
+        getStructure().setWidth(getIntValue(FLOOR_VALUES.width));
+        getStructure().setHeight(getIntValue(FLOOR_VALUES.height));
 
         GuiEventManager.trigger(GuiEventType.UPDATE_DUNGEON_BACKGROUND, dungeon.getMapBackground());
     }
@@ -39,6 +41,9 @@ public class FloorData extends StructureData<FLOOR_VALUES, Location> {
         if (getStructure().getData() != null) {
             setData(getStructure().getData().getData());
         }
+        //support manual resizing?
+        setValue(FLOOR_VALUES.width, getStructure().getWidth());
+        setValue(FLOOR_VALUES.height, getStructure().getHeight());
         setValue(FLOOR_VALUES.name, getStructure().getDungeon().getName());
         setValue(FLOOR_VALUES.background, getStructure().getDungeon().getMapBackground());
     }

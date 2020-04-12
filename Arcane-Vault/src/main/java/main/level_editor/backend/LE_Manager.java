@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
+import main.level_editor.backend.functions.io.LE_XmlMaster;
 import main.level_editor.backend.functions.mapping.LE_MapHandler;
 import main.level_editor.backend.functions.mapping.LE_ModuleHandler;
 import main.level_editor.backend.functions.mapping.LE_TransitHandler;
@@ -58,6 +59,7 @@ public class LE_Manager {
     private LE_MapHandler mapHandler;
     private Set<LE_Handler> handlers= new LinkedHashSet<>();
     private LE_TransitHandler transitHandler;
+    private LE_XmlMaster xmlMaster;
     private boolean loaded;
 
     public LE_Manager(Floor floor) {
@@ -65,6 +67,7 @@ public class LE_Manager {
         
         game = floor.getGame();
         idManager = game.getSimIdManager();
+        handlers.add( xmlMaster = new LE_XmlMaster(this));
         handlers.add(  entityHandler = new LE_EntityHandler(this));
         handlers.add(  mouseHandler = new LE_MouseHandler(this));
         handlers.add( menuHandler = new LE_MenuHandler(this));
@@ -198,6 +201,10 @@ public class LE_Manager {
 
     public   void operation(Operation.LE_OPERATION operation, Object... args ) {
         getOperationHandler().operation(operation, args);
+    }
+
+    public LE_XmlMaster getXmlMaster() {
+        return xmlMaster;
     }
 
     public Set<LE_Handler> getHandlers() {

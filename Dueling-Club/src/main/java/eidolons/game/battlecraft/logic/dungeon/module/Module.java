@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
 import eidolons.game.battlecraft.logic.battle.encounter.Encounter;
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import eidolons.game.core.game.DC_Game;
@@ -49,6 +50,27 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
             name = "Main";
         }
         return name;
+    }
+
+    @Override
+    public Set<Coordinates> initCoordinateSet(boolean levelEditor) {
+        //TODO nullify this on reset!
+        Set<Coordinates> coordinatesSet = new LinkedHashSet<>();
+        coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetween(
+                levelEditor
+                        ? getOrigin().getOffset(-getWidthBuffer(), -getHeightBuffer())
+                        : getOrigin(),
+                getOrigin().getOffset(getEffectiveWidth(levelEditor), getEffectiveHeight(levelEditor))));
+
+        return coordinatesSet;
+    }
+
+    public int getWidthBuffer() {
+        return getData().getIntValue(LevelStructure.MODULE_VALUE.width_buffer);
+    }
+
+    public int getHeightBuffer() {
+        return getData().getIntValue(LevelStructure.MODULE_VALUE.height_buffer);
     }
 
     @Override

@@ -115,12 +115,12 @@ public class LE_TreeView extends TreeX<StructNode> {
         super.click(tapCount, event, n, node);
         lastSelected = node.getData();
         if (lastSelected instanceof StructNode) {
-            lastSelected = ((StructNode) lastSelected).getData().getLevelLayer();
+            lastSelected = ((StructNode) lastSelected).getData() ;
         }
         if (n.getParent() != null) {
             lastSelectedParent = n.getParent().getObject();
             if (lastSelectedParent instanceof StructNode) {
-                lastSelectedParent = ((StructNode) lastSelectedParent).getData().getLevelLayer();
+                lastSelectedParent = ((StructNode) lastSelectedParent).getData() ;
             }
         }
     }
@@ -140,7 +140,7 @@ public class LE_TreeView extends TreeX<StructNode> {
         for (Node node : nodes) {
             try {
                 if (node.getObject() instanceof StructNode) {
-                    if (((StructNode) node.getObject()).getData().getLevelLayer() == lastSelected) {
+                    if (((StructNode) node.getObject()).getData()  == lastSelected) {
                         click(1, null, node, (StructNode) node.getObject());
                         node.expandTo();
                         return true;

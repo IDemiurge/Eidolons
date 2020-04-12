@@ -30,7 +30,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import org.apache.commons.lang3.tuple.Triple;
 
-public class GenericGuiStage extends StageX {
+public class GenericGuiStage extends StageX  implements StageWithClosable{
 
     protected final LabelX actionTooltip = new LabelX("", StyleHolder.getDefaultInfoStyle());
     protected final LabelX infoTooltip = new LabelX("", StyleHolder.getDefaultInfoStyle());
@@ -44,6 +44,7 @@ public class GenericGuiStage extends StageX {
     protected DragManager dragManager;
     protected Entity draggedEntity;
     protected TipMessageWindow tipMessageWindow;
+    protected Closable displayedClosable;
     private FileChooser fileChooser;
 
     public GenericGuiStage(Viewport viewport, Batch batch) {
@@ -122,6 +123,7 @@ public class GenericGuiStage extends StageX {
                         Runnable onConfirm,
                         Runnable onCancel,
                         boolean recursion) {
+        if (tipMessageWindow != null)
         if (tipMessageWindow.isVisible()) {
 //                tipMessageWindow.getOnClose() TODO
             tipMessageWindow.setOnClose(() -> {
@@ -255,8 +257,16 @@ public class GenericGuiStage extends StageX {
         return tooltips;
     }
 
+
     public Closable getDisplayedClosable() {
-        return null;
+        return displayedClosable;
+    }
+
+    @Override
+    public void setDisplayedClosable(Closable displayedClosable) {
+        this.displayedClosable = displayedClosable;
+        if (displayedClosable == null)
+            setDraggedEntity(null);
     }
 
     public boolean isBlocked() {
