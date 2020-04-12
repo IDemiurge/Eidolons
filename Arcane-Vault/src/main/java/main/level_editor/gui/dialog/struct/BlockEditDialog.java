@@ -3,7 +3,7 @@ package main.level_editor.gui.dialog.struct;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
+import main.content.enums.DungeonEnums;
 
 public class BlockEditDialog extends DataEditDialog<LevelStructure.BLOCK_VALUE, BlockData> {
     public BlockEditDialog() {
@@ -28,7 +28,7 @@ public class BlockEditDialog extends DataEditDialog<LevelStructure.BLOCK_VALUE, 
     protected Object getArg(LevelStructure.BLOCK_VALUE enumConst) {
         switch (enumConst) {
             case cell_type:
-                return DungeonLevel.CELL_IMAGE.class;
+                return DungeonEnums.CELL_IMAGE.class;
             case room_type:
                 return LocationBuilder.ROOM_TYPE.class;
         }

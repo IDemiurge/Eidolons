@@ -28,7 +28,7 @@ public class StructureMaster extends DungeonHandler<Location> {
     }
 
     private LevelStruct findModule(Coordinates c) {
-        for (Module module :  getModules()) {
+        for (Module module : getModules()) {
             if (module.getCoordinatesSet().contains(c)) {
                 return module;
             }
@@ -43,6 +43,16 @@ public class StructureMaster extends DungeonHandler<Location> {
             }
         }
         return null;
+    }
+
+    public Set<LevelBlock> getCurrentBlocks() {
+        Set<LevelBlock> blocks = new LinkedHashSet<>();
+        for (LevelZone zone : getModule().getZones()) {
+            for (LevelBlock block : zone.getSubParts()) {
+                blocks.add(block);
+            }
+        }
+        return blocks;
     }
 
     public Set<LevelBlock> getBlocks() {
@@ -66,4 +76,5 @@ public class StructureMaster extends DungeonHandler<Location> {
         }
         return zones;
     }
+
 }

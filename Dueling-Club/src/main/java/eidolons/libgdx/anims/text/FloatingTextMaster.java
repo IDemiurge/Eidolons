@@ -24,7 +24,7 @@ import eidolons.libgdx.anims.Animation;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.system.config.ConfigKeys;
 import eidolons.system.config.ConfigMaster;

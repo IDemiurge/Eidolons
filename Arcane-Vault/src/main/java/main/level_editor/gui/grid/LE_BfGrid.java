@@ -2,7 +2,10 @@ package main.level_editor.gui.grid;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.libgdx.bf.grid.*;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.grid.GridSubParts;
+import eidolons.libgdx.bf.grid.cell.*;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.obj.Obj;
@@ -36,6 +39,24 @@ public class LE_BfGrid extends GridPanel {
         for (BattleFieldObject battleFieldObject : viewMap.keySet()) {
             //check layers and modules
         }
+    }
+
+    @Override
+    public void setModule(Module module) {
+        x2 = cols ;
+        y2 = rows  ;
+        GridSubParts container = new GridSubParts();
+        viewMap = container.viewMap;
+        customOverlayingObjectsUnder = container.customOverlayingObjects;
+        customOverlayingObjectsTop = container.customOverlayingObjectsTop;
+        customOverlayingObjectsUnder = container.customOverlayingObjectsUnder;
+        emitterGroups = container.emitterGroups;
+        gridObjects = container.gridObjects;
+        manipulators = container.manipulators;
+        overlays = container.overlays;
+        //for others too?
+
+        initGrid();
     }
 
     @Override

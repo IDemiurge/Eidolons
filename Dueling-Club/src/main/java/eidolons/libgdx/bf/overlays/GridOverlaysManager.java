@@ -16,11 +16,17 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.SuperActor;
-import eidolons.libgdx.bf.grid.*;
+import eidolons.libgdx.bf.grid.DC_GridPanel;
+import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.grid.cell.GenericGridView;
+import eidolons.libgdx.bf.grid.cell.GridCellContainer;
+import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.sub.GridElement;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
@@ -48,7 +54,7 @@ import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.*;
 /**
  * Created by JustMe on 2/20/2017.
  */
-public class GridOverlaysManager extends SuperActor {
+public class GridOverlaysManager extends SuperActor  implements GridElement {
 
     protected final GridCellContainer[][] cells;
     protected GridPanel gridPanel;
@@ -57,6 +63,10 @@ public class GridOverlaysManager extends SuperActor {
     protected Map<Entity, Map<Rectangle, Tooltip>> tooltipMap = new HashMap<>();
     protected Map<Entity, Map<OVERLAY, Rectangle>> overlayMap = new HashMap<>();
     protected BattleFieldObject observer;
+
+    protected int cols;
+    protected int rows;
+    private int x1, x2, y1, y2;
 
     public GridOverlaysManager(GridPanel gridPanel) {
         this.gridPanel = gridPanel;
@@ -222,9 +232,18 @@ public class GridOverlaysManager extends SuperActor {
         }
     }
 
+    @Override
+    public void setModule(Module module) {
+        x1 = module.getOrigin().x;
+        y1 =  module.getOrigin().y;
+        cols = module.getEffectiveWidth();
+        rows = module.getEffectiveHeight();
+        x2 = cols +  module.getOrigin().x;
+        y2 = rows +  module.getOrigin().y;
+    }
     protected void drawOverlays(Batch batch) {
-        for (int x = 0; x < cells.length; x++) {
-            for (int y = cells[x].length - 1; y >=0 ; y--) {
+        for (int x = x1; x < x2; x++) {
+            for (int y = y2 - 1; y >=y1 ; y--) {
                 GridCellContainer cell = cells[x][y];
                 for (Actor c : cell.getChildren()) {
                     if (c instanceof GridUnitView) {
@@ -566,6 +585,7 @@ public class GridOverlaysManager extends SuperActor {
         return (int) getOverlayActor(parent, overlay).getHeight();
 
     }
+
 
     public enum OVERLAY {
         SPOTTED(Alignment.TOP_LEFT),

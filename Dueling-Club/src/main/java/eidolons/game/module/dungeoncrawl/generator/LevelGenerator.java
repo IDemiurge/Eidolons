@@ -124,7 +124,7 @@ public class LevelGenerator {
         while (loop.continues()) {
             try {
                 LevelModel model = generateLevelModel(data);
-                PositionMaster.initDistancesCache(model.getCurrentWidth(), model.getCurrentHeight());
+                PositionMaster.initDistancesCache(null , model.getCurrentWidth(), model.getCurrentHeight());
                 new BlockCreator().createBlocks(model);
                 RngFillMaster.fill(model, data);
                 for (int i = 0; i < data.getIntValue(GeneratorEnums.LEVEL_VALUES.ADDITIONAL_FILL_RUNS); i++) {
@@ -171,9 +171,7 @@ public class LevelGenerator {
 
 
     public boolean validate(LevelModel model) {
-        if (!validator.validateModel(builder.getGraph(), model))
-            return false;
-        return true;
+        return validator.validateModel(builder.getGraph(), model);
     }
 
     public LevelValidator getValidator() {

@@ -6,7 +6,6 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.Eidolons;
-import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.core.master.ObjCreator;
@@ -113,8 +112,9 @@ public class LE_GameSim extends ScenarioGame {
     @Override
     public void battleInit() {
         dungeonMaster.init();
-        grid = new DC_BattleFieldGrid(getDungeon());
-        battleFieldManager = new DC_BattleFieldManager(this);
+        getDungeonMaster().getModuleLoader().loadInitial();
+//        grid = new DC_BattleFieldGrid(getModule());
+        battleFieldManager = new DC_BattleFieldManager(this, getModule().getId(), getModule().getEffectiveWidth(), getModule().getEffectiveHeight());
 
         Coordinates c = Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
         dummyPC = (Unit) createObject(getDummyType(), c.x, c.y, getPlayer(true),

@@ -2,10 +2,6 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Block;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Module;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Zone;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
@@ -31,33 +27,30 @@ public class StructureBuilder extends DungeonHandler<Location> {
         super(master);
     }
 
-    public LE_Floor build(Node node, Location location) {
+    public void build(Node node, Location location) {
         Set<Module> modules = new LinkedHashSet<>();
-        LE_Floor floor = new LE_Floor(() -> location.getDungeon());
         for (Node sub : XmlNodeMaster.getNodeList(node)) {
             if (sub.getNodeName().equalsIgnoreCase(FloorLoader.DATA)) {
-                FloorData data = new FloorData(floor);
+                FloorData data = new FloorData(location);
                 data.setData(sub.getTextContent());
                 data.apply();
             } else {
                 Module module;
                 modules.add(module = createModule(sub, location));
-                module.setFloor(floor );
             }
         }
 
         getMetaMaster().getModuleMaster().setModules(modules);
-        getMetaMaster().getDungeonMaster().setFloor(floor);
-        return floor;
     }
 
     private Module createModule(Node node, Location location) {
         Module module = new Module();
         for (Node sub : XmlNodeMaster.getNodeList(node)) {
             if (sub.getNodeName().equalsIgnoreCase(FloorLoader.DATA)) {
-                ModuleData data = new ModuleData(new LE_Module(module));
+                ModuleData data = new ModuleData(module);
                 data.setData(node.getTextContent());
                 data.apply();
+
             } else if (sub.getNodeName().equalsIgnoreCase(FloorLoader.ZONES)) {
                 List<LevelZone> zones = createZones(module, sub, location);
                 module.setZones(zones);
@@ -90,7 +83,7 @@ public class StructureBuilder extends DungeonHandler<Location> {
                 }
             }
         }
-        ZoneData data = new ZoneData(new LE_Zone(zone));
+        ZoneData data = new ZoneData( (zone));
         data.setData(dataString);
         zone .setData( data);
         zone.setModule(module);
@@ -110,7 +103,7 @@ public class StructureBuilder extends DungeonHandler<Location> {
         // TODO b-data, coordinates, objects
         for (Node subNode : XmlNodeMaster.getNodeList(node)) {
             if (StringMaster.compareByChar(subNode.getNodeName(), FloorLoader.DATA)) {
-                new BlockData(new LE_Block(b)).setData(subNode.getTextContent()).apply();
+                new BlockData( (b)).setData(subNode.getTextContent()).apply();
                 c = b.getOrigin();
             } else if (StringMaster.compareByChar(subNode.getNodeName(), FloorLoader.MISSING)) {
 

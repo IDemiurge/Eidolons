@@ -8,8 +8,4 @@ public class FauxDungeonLevel extends RestoredDungeonLevel {
         super(name);
     }
 
-    @Override
-    public boolean isVoid(int i, int j) {
-        return super.isVoidExplicit(i, j);
-    }
 }

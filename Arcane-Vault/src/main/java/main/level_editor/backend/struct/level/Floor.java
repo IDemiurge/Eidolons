@@ -1,6 +1,6 @@
  package main.level_editor.backend.struct.level;
 
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.sim.LE_GameSim;
@@ -40,8 +40,8 @@ public class Floor  {
         return "Floor: " + name;
     }
 
-    public LE_Floor getWrapper() {
-        return game.getDungeonMaster().getFloor();
+    public Location getWrapper() {
+        return game.getDungeonMaster().getDungeonWrapper();
     }
 
     public Module getDefaultModule() {

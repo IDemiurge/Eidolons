@@ -5,7 +5,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.game.DC_Game.GAME_TYPE;
 import main.data.XList;
 import main.entity.Ref;
 import main.entity.obj.Obj;
@@ -51,14 +50,6 @@ public class DC_GameObjMaster extends GameObjMaster {
         super(game);
         structures = new HashSet<>();
         units = new HashSet<>();
-        //         new DequeImpl<Unit>() {
-        //            public boolean add(Unit e) {
-        //                if (e.isHidden()) {
-        //                    return false;
-        //                }
-        //                return super.add(e);
-        //            }
-        //        };
     }
 
     @Override
@@ -66,33 +57,21 @@ public class DC_GameObjMaster extends GameObjMaster {
         return (DC_Game) super.getGame();
     }
 
-    public boolean isSkirmishOrScenario() {
-        return getGame().getGameType() == GAME_TYPE.SKIRMISH || getGame().getGameType() == GAME_TYPE.SCENARIO;
-    }
-
-
     public Obj getObjectVisibleByCoordinate(Coordinates c) {
-        return getObjectByCoordinate(null, c, true);
-    }
-
-    public Obj getObjectVisibleByCoordinate(Integer z, Coordinates c) {
-        return getObjectByCoordinate(z, c, true);
+        return getObjectByCoordinate(  c, true);
     }
 
     public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded) {
-        return getObjectByCoordinate(null, c, cellsIncluded, true, null);
+        return getObjectByCoordinate(  c, cellsIncluded, true, null);
     }
 
-    public Obj getObjectByCoordinate(Integer z, Coordinates c, boolean cellsIncluded) {
-        return getObjectByCoordinate(z, c, cellsIncluded, true, true);
-    }
 
-    public Obj getObjectByCoordinate(Integer z, Coordinates c, boolean cellsIncluded,
+    public Obj getObjectByCoordinate( Coordinates c, boolean cellsIncluded,
                                      boolean passableIncluded, Boolean overlayingIncluded) {
         if (c == null) {
             return null;
         }
-        Set<BattleFieldObject> list = getObjectsOnCoordinate(z, c, overlayingIncluded, passableIncluded, cellsIncluded);
+        Set<BattleFieldObject> list = getObjectsOnCoordinate(  c, overlayingIncluded, passableIncluded, cellsIncluded);
         if (list.isEmpty()) {
             if (cellsIncluded) {
                 return getCellByCoordinate(c);
@@ -101,35 +80,14 @@ public class DC_GameObjMaster extends GameObjMaster {
         }
         return list.iterator().next();
     }
-
-    //    @Deprecated
-    //    public Set<Unit> getObjectsOnCoordinate(Coordinates c) {
-    //        // [QUICK FIX] - consider no-reset coordinate changes for AI etc
-    //        //        Set<Unit> units = getUnitCache().getVar(c);
-    //        //        if (units != null) {
-    //        //            return units;
-    //        //        }
-    //        //        units = getObjectsOnCoordinate(null, c, null, true, false);
-    //        //        getUnitCache().put(c, units);
-    //        //        return units;
-    //        Set<Unit> set = new HashSet<>();
-    //        for (BattleFieldObject object : getObjectsOnCoordinate(c, null)) {
-    //            if (object instanceof Unit)
-    //                set.add((Unit) object);
-    //        }
-    //        return set;
-    //        return
-    //         getUnits().stream().filter(u -> u.getCoordinates().equals(c)).collect(Collectors.toSet());
-    //    }
-
     public Set<BattleFieldObject> getOverlayingObjects(Coordinates c) {
-        return getObjectsOnCoordinate(null, c, null, true, false);
+        return getObjectsOnCoordinate(  c, null, true, false);
 
     }
 
     public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c,
                                                          Boolean overlayingIncluded) {
-        return getObjectsOnCoordinate(null, c, overlayingIncluded, true, false);
+        return getObjectsOnCoordinate(  c, overlayingIncluded, true, false);
     }
 
     public void clearCache(Coordinates c) {
@@ -139,7 +97,7 @@ public class DC_GameObjMaster extends GameObjMaster {
         //TODO also remove if dead
     }
 
-    public Set<BattleFieldObject> getObjectsOnCoordinate(Integer z, Coordinates c,
+    public Set<BattleFieldObject> getObjectsOnCoordinate(  Coordinates c,
                                                          Boolean overlayingIncluded_Not_Only, boolean passableIncluded, boolean cellsIncluded) {
         // TODO auto adding cells won't work!
         //        if (c == null) {

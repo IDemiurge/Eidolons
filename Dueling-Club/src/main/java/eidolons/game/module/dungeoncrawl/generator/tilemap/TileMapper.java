@@ -103,7 +103,9 @@ public class TileMapper {
         ROOM_CELL[][] cells = new ROOM_CELL[map.getWidth()][map.getHeight()];
         for (Coordinates point : map.getMap().keySet()) {
             ROOM_CELL val = map.getMap().get(point);
-            point = point.getOffset(offset.negative());
+            if (offset.x > 0 || offset.y > 0) {
+                point = point.getOffset(offset.negative());
+            }
             if (val == null)
                 continue;
             try {
@@ -141,7 +143,7 @@ public class TileMapper {
         StringBuilder separatorBuilder = new StringBuilder("\n      ");
         StringBuilder columnsBuilder = new StringBuilder("\nX     ");
         for (int x = 0; x < cells.length; x++) {
-            columnsBuilder.append(x+1).append(RngXmlMaster.TILEMAP_ROW_SEPARATOR);
+            columnsBuilder.append(x + 1).append(RngXmlMaster.TILEMAP_ROW_SEPARATOR);
             if (x < 10) columnsBuilder.append(" ");
             separatorBuilder.append("___");
         }
@@ -151,10 +153,10 @@ public class TileMapper {
         for (int y = 0; y < cells[0].length; y++) {
 
             if (decorate)
-            if (y < 10)
-                stringBuilder1.append(y+1).append("  | ");
-            else
-                stringBuilder1.append(y+1).append(" | ");
+                if (y < 10)
+                    stringBuilder1.append(y + 1).append("  | ");
+                else
+                    stringBuilder1.append(y + 1).append(" | ");
             StringBuilder stringBuilder = new StringBuilder(stringBuilder1.toString());
             for (int x = 0; x < cells.length; x++) {
                 if (cells[x][y] == null) {
@@ -162,8 +164,7 @@ public class TileMapper {
                         stringBuilder.append("  X");
                     else
                         stringBuilder.append("  -");
-                } else
-                {
+                } else {
                     if (decorate) {
                         stringBuilder.append("  ");
                     }
@@ -277,7 +278,7 @@ public class TileMapper {
 
     public static String[] getLinesFromCells(String[][] cells) {
         String[] lines = new String[cells.length];
-        int i=0;
+        int i = 0;
         for (String[] column : cells) {
             String line = "";
             for (int y = 0; y < column.length; y++) {
@@ -299,6 +300,7 @@ public class TileMapper {
         }
         return builder.toString();
     }
+
     public static String[][] toSymbolArray(String room) {
         return toSymbolArray(getCells(createTileMap(room)));
     }

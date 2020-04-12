@@ -44,8 +44,7 @@ public class LocationMaster extends DungeonMaster<Location> {
     }
 
     protected LocationBuilder createBuilder() {
-        return isRngDungeon() ? new RngLocationBuilder(this) :
-                new LocationBuilder(this);
+        return new LocationBuilder(this);
     }
 
     private boolean isRngDungeon() {

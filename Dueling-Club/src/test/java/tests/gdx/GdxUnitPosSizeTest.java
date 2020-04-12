@@ -3,8 +3,8 @@ package tests.gdx;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.bf.grid.GridCellContainer;
+import eidolons.libgdx.bf.grid.cell.BaseView;
+import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -90,7 +90,7 @@ public class GdxUnitPosSizeTest extends LibgdxTest {
     }
 
     private BattleFieldObject getUnit() {
-        return (BattleFieldObject) DC_Game.game.getManager().getObjCreator().createUnit(getType(),
+        return DC_Game.game.getManager().getObjCreator().createUnit(getType(),
          X, Y, player, new Ref());
     }
 

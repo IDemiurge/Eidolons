@@ -5,21 +5,21 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
+import main.content.enums.DungeonEnums;
+import main.data.tree.LayeredData;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static main.content.enums.DungeonEnums.DUNGEON_STYLE;
 
 /**
  * Created by JustMe on 7/20/2018.
  */
-public abstract class LevelStruct<T> {
+public abstract class LevelStruct<T, S> implements LayeredData<S> {
     protected String name;
     protected Coordinates origin;
     protected int width;
@@ -29,6 +29,11 @@ public abstract class LevelStruct<T> {
     protected StructureData data;
 
     public LevelStruct() {
+    }
+
+    @Override
+    public Collection<S> getChildren() {
+        return (Collection<S>) getSubParts();
     }
 
     public String getPropagatedValue(String valueName) {
@@ -74,21 +79,24 @@ public abstract class LevelStruct<T> {
     }
 
     public Set<Coordinates> getCoordinatesSet() {
-        if (coordinatesSet == null) {
-            LinkedHashSet<Coordinates> cells = new LinkedHashSet<>();
-            for (T subPart : getSubParts()) {
-                if (subPart instanceof LevelStruct) {
-                    cells.addAll(((LevelStruct) subPart).getCoordinatesSet());
-                }
-            }
-            if (cells.isEmpty()) {
-                if (getOrigin() != null)
-                cells.addAll(CoordinatesMaster.getCoordinatesBetween(
-                        getOrigin(), getOrigin().getOffset(getEffectiveWidth(), getEffectiveHeight())));
-            }
-            return cells;
+        if (!ListMaster.isNotEmpty(coordinatesSet)) {
+            initCoordinateSet();
         }
         return coordinatesSet;
+    }
+
+    private void initCoordinateSet() {
+         coordinatesSet = new LinkedHashSet<>();
+        for (T subPart : getSubParts()) {
+            if (subPart instanceof LevelStruct) {
+                coordinatesSet.addAll(((LevelStruct) subPart).getCoordinatesSet());
+            }
+        }
+        if (coordinatesSet.isEmpty()) {
+            if (getOrigin() != null)
+                coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetween(
+                        getOrigin(), getOrigin().getOffset(getEffectiveWidth(), getEffectiveHeight())));
+        }
     }
 
     protected int getEffectiveHeight() {
@@ -107,7 +115,7 @@ public abstract class LevelStruct<T> {
         this.subParts = subParts;
     }
 
-    public List<T> getSubParts() {
+    public Collection<T> getSubParts() {
         return subParts;
     }
 
@@ -137,12 +145,12 @@ public abstract class LevelStruct<T> {
     }
 
 
-    public DungeonLevel.CELL_IMAGE getCellType() {
-        return new EnumMaster<DungeonLevel.CELL_IMAGE>().retrieveEnumConst(DungeonLevel.CELL_IMAGE.class,
+    public DungeonEnums.CELL_IMAGE getCellType() {
+        return new EnumMaster<DungeonEnums.CELL_IMAGE>().retrieveEnumConst(DungeonEnums.CELL_IMAGE.class,
                 getPropagatedValue("cell_type"));
     }
 
-    public void setCellType(DungeonLevel.CELL_IMAGE cellType) {
+    public void setCellType(DungeonEnums.CELL_IMAGE cellType) {
         setValue("cell_type", cellType.toString());
     }
 
@@ -213,8 +221,6 @@ public abstract class LevelStruct<T> {
 //        }
         return data;
     }
-
-    protected abstract StructureData createData();
 
     public void setData(StructureData data) {
         this.data = data;

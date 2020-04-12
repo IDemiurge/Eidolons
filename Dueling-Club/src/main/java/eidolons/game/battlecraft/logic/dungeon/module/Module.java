@@ -3,29 +3,31 @@ package eidolons.game.battlecraft.logic.dungeon.module;
 import eidolons.game.battlecraft.logic.battle.encounter.Encounter;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Module;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Module extends LevelStruct<LevelZone> {
+public class Module extends LevelStruct<LevelZone, LevelZone> {
 
     private List<LevelZone> zones;
-    private LE_Floor floor;
     private List<Encounter> encounters;
+    private Integer id;
+    private static Integer ID = 0;
+    private Set<Coordinates> voidCells = new LinkedHashSet<>();
 
     public Module(Coordinates origin, int width, int height, String name) {
         this.origin = origin;
         this.width = width;
         this.height = height;
         this.name = name;
+        id = ID++;
     }
 
     public Module() {
@@ -34,7 +36,7 @@ public class Module extends LevelStruct<LevelZone> {
 
     @Override
     protected LevelStruct getParent() {
-        return DC_Game.game.getDungeonMaster().getDungeonLevel();
+        return DC_Game.game.getDungeonMaster().getDungeonWrapper();
     }
 
     public Module(ModuleData data) {
@@ -50,7 +52,7 @@ public class Module extends LevelStruct<LevelZone> {
     }
 
     @Override
-    public List<LevelZone> getSubParts() {
+    public Collection<LevelZone> getSubParts() {
         return getZones();
     }
 
@@ -71,12 +73,6 @@ public class Module extends LevelStruct<LevelZone> {
         return (ModuleData) data;
     }
 
-    @Override
-    protected StructureData createData() {
-        return                new ModuleData(new LE_Module(this));
-
-    }
-
     public void setData(ModuleData data) {
         this.data = data;
     }
@@ -91,36 +87,36 @@ public class Module extends LevelStruct<LevelZone> {
 
     @Override
     public String toString() {
-        return  name +
+        return name +
                 " - Module with " +
                 zones.size() +
-                " zones"+ ", Data: " + getData() ;
+                " zones" + ", Data: " + getData();
     }
 
-    public int getEffectiveHeight() {
+    public int getEffectiveHeight(boolean buffer) {
         if (getData() == null) {
             return getHeight();
         }
         return getHeight() +
-                getData().getIntValue(LevelStructure.MODULE_VALUE.height_buffer) +
+                (buffer ? getData().getIntValue(LevelStructure.MODULE_VALUE.height_buffer) : 0) +
                 getData().getIntValue(LevelStructure.MODULE_VALUE.border_width);
     }
 
+    public int getEffectiveHeight() {
+        return getEffectiveHeight(false);
+    }
+
     public int getEffectiveWidth() {
+        return getEffectiveWidth(false);
+    }
+
+    public int getEffectiveWidth(boolean buffer) {
         if (getData() == null) {
             return getWidth();
         }
         return getWidth() +
-                getData().getIntValue(LevelStructure.MODULE_VALUE.width_buffer) +
+                (buffer ? getData().getIntValue(LevelStructure.MODULE_VALUE.width_buffer) : 0) +
                 getData().getIntValue(LevelStructure.MODULE_VALUE.border_width);
-    }
-
-    public void setFloor(LE_Floor floor) {
-        this.floor = floor;
-    }
-
-    public LE_Floor getFloor() {
-        return floor;
     }
 
     public void setEncounters(List<Encounter> encounters) {
@@ -129,5 +125,13 @@ public class Module extends LevelStruct<LevelZone> {
 
     public List<Encounter> getEncounters() {
         return encounters;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Set<Coordinates> getVoidCells() {
+        return voidCells;
     }
 }

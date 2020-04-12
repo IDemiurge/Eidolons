@@ -2,7 +2,7 @@ package main.gui.components.controls;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitGroupMaster;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.libgdx.anims.construct.AnimConstructor;

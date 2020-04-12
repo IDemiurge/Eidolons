@@ -5,10 +5,9 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battlefield.vision.IlluminationMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
-import main.content.CONTENT_CONSTS.COLOR_THEME;
+import main.content.CONTENT_CONSTS;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
@@ -18,31 +17,25 @@ import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
-import main.data.xml.XML_Converter;
 import main.entity.LightweightEntity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.*;
-import main.system.data.DataUnitFactory;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
-import main.system.launch.TypeBuilder;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class Dungeon extends LightweightEntity {
-    Integer z;
-    private COLOR_THEME colorTheme;
     private DUNGEON_TYPE dungeonType;
     private String levelFilePath;
     private LOCATION_TYPE dungeonSubtype;
-    private Collection<Coordinates> voidCoordinates;
     private Map<String, String> customDataMap;
     private Collection<Coordinates> voidCells = new LinkedList<>();
+    private DungeonWrapper wrapper;
 
     /*
      * Encounters Levels Rewards Loot
@@ -57,47 +50,19 @@ public class Dungeon extends LightweightEntity {
         setRef(new Ref());
     }
 
-    /*
-        dimensions
-        dungeon type (non-changeable)
-        custom params
-        or
-        level xml path
-         */
     public Dungeon(String typeName, boolean sublevel) {
         this(DataManager.getType(typeName, DC_TYPE.DUNGEONS), sublevel);
     }
 
-    public String toXml() {
-        String xml = XML_Converter.wrap("Name", getType().getName());
-        //        xml += XML_Converter.wrap(PARAMS.BF_WIDTH.getName(), getCellsX() + "");
-//        xml += XML_Converter.wrap(PARAMS.BF_HEIGHT.getName(), getCellsY() + "");
-        xml +=
-                TypeBuilder.getAlteredValuesXml(this, getType());
-
-        if (levelFilePath != null)
-            xml += XML_Converter.wrap("LevelFilePath", levelFilePath);
-        return XML_Converter.wrap("Dungeon", xml);
+    public CONTENT_CONSTS.COLOR_THEME getColorTheme() {
+        return wrapper.getColorTheme();
     }
-
-//    public void init() {
-//        toBase();
-//    }
+    public CONTENT_CONSTS.COLOR_THEME getAltColorTheme() {
+        return wrapper.getAltColorTheme();
+    }
 
     public String getMapBackground() {
         return type.getProperty(PROPS.MAP_BACKGROUND);
-    }
-
-    public COLOR_THEME getColorTheme() {
-        if (colorTheme == null) {
-            setColorTheme(new EnumMaster<COLOR_THEME>().retrieveEnumConst(COLOR_THEME.class,
-                    getProperty(PROPS.COLOR_THEME)));
-        }
-        return colorTheme;
-    }
-
-    public void setColorTheme(COLOR_THEME colorTheme) {
-        this.colorTheme = colorTheme;
     }
 
     public DUNGEON_TYPE getDungeonType() {
@@ -141,17 +106,6 @@ public class Dungeon extends LightweightEntity {
                     getDefaultHeight());
 
         return getIntParam(PARAMS.BF_HEIGHT)+1;
-    }
-
-
-    public Integer getZ() {
-        if (z == null)
-            return 0;
-        return z;
-    }
-
-    public void setZ(int i) {
-        z = i;
     }
 
 
@@ -202,19 +156,19 @@ public class Dungeon extends LightweightEntity {
         return IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_UNDERGROUND;
 
     }
-
+    @Deprecated
     public Coordinates getPoint(Integer index) {
         return getPoint("" + (index + 1));
     }
-
+@Deprecated
     public Coordinates getPoint(String arg) {
         Coordinates c = null;
         if (arg.contains(ScriptSyntax.SPAWN_POINT) || NumberUtils.isInteger(arg)) {
             arg = arg.replace(ScriptSyntax.SPAWN_POINT, "");
             Integer i = NumberUtils.getInteger(arg) - 1;
-            List<String> spawnPoints = ContainerUtils.openContainer(
-                    getProperty(PROPS.COORDINATE_POINTS));
-            c = Coordinates.get(spawnPoints.get(i));
+//            List<String> spawnPoints = ContainerUtils.openContainer(
+//                    getProperty(PROPS.COORDINATE_POINTS));
+//            c = Coordinates.get(spawnPoints.get(i));
         } else {
             Map<String, String> map =getCustomDataMap();
             String string = map.get(arg);
@@ -255,7 +209,7 @@ public class Dungeon extends LightweightEntity {
     public int getCellVariant(int i, int j) {
         return getGame().getDungeonMaster().getDungeonLevel().getCellVariant(i, j);
     }
-    public DungeonLevel.CELL_IMAGE getCellType(int i, int j) {
+    public DungeonEnums.CELL_IMAGE getCellType(int i, int j) {
         return getGame().getDungeonMaster().getDungeonLevel().getCellType(i, j);
     }
 
@@ -283,15 +237,15 @@ public class Dungeon extends LightweightEntity {
     private String getCellImgForGroup(DungeonEnums.DUNGEON_GROUP group) {
         switch(group){
             case UNDERWORLD:
-                return DungeonLevel.CELL_IMAGE.octagonal.toString();
+                return DungeonEnums.CELL_IMAGE.octagonal.toString();
             case ARCANE:
-                return DungeonLevel.CELL_IMAGE.star.toString();
+                return DungeonEnums.CELL_IMAGE.star.toString();
             case UNDEAD:
-                return DungeonLevel.CELL_IMAGE.circle.toString();
+                return DungeonEnums.CELL_IMAGE.circle.toString();
             case HUMAN:
-                return DungeonLevel.CELL_IMAGE.cross.toString();
+                return DungeonEnums.CELL_IMAGE.cross.toString();
             case MISC:
-                return DungeonLevel.CELL_IMAGE.natural.toString();
+                return DungeonEnums.CELL_IMAGE.natural.toString();
         }
         return null;
     }
@@ -299,8 +253,8 @@ public class Dungeon extends LightweightEntity {
 
     public Map<String, String> getCustomDataMap() {
         if (customDataMap == null) {
-            customDataMap= new DataUnitFactory(true).
-                    deconstructDataString(getProperty(PROPS.COORDINATE_SCRIPTS));
+//      TODO       customDataMap= new DataUnitFactory(true).
+//                    deconstructDataString(getProperty(PROPS.COORDINATE_SCRIPTS));
         }
         return customDataMap;
     }
@@ -318,6 +272,13 @@ public class Dungeon extends LightweightEntity {
         return voidCells;
     }
 
+    public void setWrapper(DungeonWrapper wrapper) {
+        this.wrapper = wrapper;
+    }
+
+    public DungeonWrapper getWrapper() {
+        return wrapper;
+    }
 
 
     public enum POINTS {

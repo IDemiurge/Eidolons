@@ -1,4 +1,4 @@
-package eidolons.libgdx.bf.grid;
+package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -196,7 +196,7 @@ public abstract class UnitViewSprite extends GridUnitView {
     }
 
     @Override
-    protected void setPortraitTexture(TextureRegion textureRegion) {
+    public void setPortraitTexture(TextureRegion textureRegion) {
         //        super.setPortraitTexture(textureRegion);
     }
 

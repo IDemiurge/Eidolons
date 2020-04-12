@@ -45,7 +45,7 @@ public abstract class StructureData<T extends Enum<T>, S extends LayeredData> ex
         return StringMaster.ALT_PAIR_SEPARATOR;
     }
 
-    public LevelStruct<LevelStruct> getLevelStruct() {
+    public LevelStruct<LevelStruct, LevelStruct> getLevelStruct() {
         return levelStruct;
     }
 

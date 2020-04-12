@@ -7,10 +7,8 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Block;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.EUtils;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
@@ -22,6 +20,7 @@ import eidolons.game.module.dungeoncrawl.generator.model.RoomTemplateMaster;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import eidolons.libgdx.GdxColorMaster;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -151,7 +150,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         initBlock(block, coords);
         block.setRoomType(blockTemplate.getType());
 
-        LevelStruct level = getGame().getDungeonMaster().getDungeonLevel();
+        LevelStruct level = getGame().getDungeonMaster().getDungeonWrapper();
         reset(level);
         updateTree();
     }
@@ -358,7 +357,13 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     }
 
     public Color getColorForBlock(LevelBlock block) {
-        int i = block.getZone().getSubParts().indexOf(block);
+        int i =0;
+        for (LevelBlock subPart : block.getZone().getSubParts()) {
+            if (block==subPart) {
+                break;
+            }
+            i++;
+        }
         int max = BLOCK_COLORS.length - 1;
         if (i >= max) {
             i = i % max;
@@ -378,7 +383,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         return null;
     }
 
-    public void reset(LevelStruct<LevelStruct> layer) {
+    public void reset(LevelStruct<LevelStruct, LevelStruct> layer) {
         resetWalls(layer);
         resetCells(layer);
         for (LevelStruct subPart : layer.getSubParts()) {
@@ -392,11 +397,11 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     }
 
 
-    public void resetWalls(LevelStruct<LevelStruct> subPart) {
+    public void resetWalls(LevelStruct<LevelStruct, LevelStruct> subPart) {
         resetWalls(subPart, subPart.getCoordinatesSet());
     }
 
-    public void resetWalls(LevelStruct<LevelStruct> subPart, Collection<Coordinates> coordinatesSet) {
+    public void resetWalls(LevelStruct<LevelStruct, LevelStruct> subPart, Collection<Coordinates> coordinatesSet) {
         ObjType wallType = null;
         ObjType altWallType = null;
         if (subPart.getData() != null) {
@@ -426,8 +431,8 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             }
     }
 
-    private void resetCells(LevelStruct<LevelStruct> layer) {
-        DungeonLevel.CELL_IMAGE type = layer.getCellType();
+    private void resetCells(LevelStruct<LevelStruct, LevelStruct> layer) {
+        DungeonEnums.CELL_IMAGE type = layer.getCellType();
         if (type != null) {
             for (Coordinates coordinates : layer.getCoordinatesSet()) {
                 DC_Cell cell = getGame().getCellByCoordinate(coordinates);
@@ -453,7 +458,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         int h = CoordinatesMaster.getHeight(block.getCoordinatesSet());
         block.setWidth(w);
         block.setWidth(h);
-        block.setData(new BlockData(new LE_Block(block)));
+        block.setData(new BlockData(  (block)));
         return block;
     }
 

@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjNode;
 import main.data.tree.LayeredData;
 import main.level_editor.LevelEditor;
 
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,7 +26,7 @@ public class LayerNode implements LayeredData<LayeredData> {
     }
 
     @Override
-    public Set<LayeredData> getChildren() {
+    public Collection<LayeredData> getChildren() {
         return objs;
     }
 }

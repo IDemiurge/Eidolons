@@ -1,4 +1,4 @@
-package eidolons.libgdx.bf.grid;
+package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -31,7 +31,7 @@ public class GenericGridView extends UnitView {
     protected float alpha = 1f;
     protected boolean cellBackground;
     protected LastSeenView lastSeenView;
-    protected FadeImageContainer torch;
+    public FadeImageContainer torch;
     private boolean stackView;
     private boolean invisible;
 
@@ -252,7 +252,7 @@ public class GenericGridView extends UnitView {
         }
     }
 
-    protected void setPortraitTexture(TextureRegion textureRegion) {
+    public void setPortraitTexture(TextureRegion textureRegion) {
         if (((FileTextureData) textureRegion.getTexture().getTextureData()).getFileHandle().name().toLowerCase().
                 contains("unknown")) {
             if (getUserObject().isWater()) {

@@ -3,7 +3,7 @@ package eidolons.libgdx.bf.overlays;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.bf.grid.OverlayView;
+import eidolons.libgdx.bf.grid.cell.OverlayView;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;

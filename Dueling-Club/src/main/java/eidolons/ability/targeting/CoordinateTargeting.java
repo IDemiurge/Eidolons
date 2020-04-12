@@ -98,7 +98,7 @@ public class CoordinateTargeting extends TargetingImpl {
         if (ref.getEffect() instanceof CustomTargetEffect) {//TODO EA hack - overlaying!
             if (((CustomTargetEffect) ref.getEffect()).getEffect() instanceof SummonEffect) {
                 try {
-                    ref.setTarget(obj.getGame().getObjectByCoordinate(null, coordinate,
+                    ref.setTarget(obj.getGame().getObjectByCoordinate(  coordinate,
                             false, false, true).getId());
                     return true;
                 } catch (Exception e) {

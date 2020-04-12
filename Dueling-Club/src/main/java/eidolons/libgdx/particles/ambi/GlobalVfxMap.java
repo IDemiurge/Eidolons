@@ -1,7 +1,7 @@
 package eidolons.libgdx.particles.ambi;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -20,15 +20,13 @@ import java.util.Map;
 /**
  * Created by JustMe on 9/5/2018.
  */
-public class SmartAmbienceMap extends GroupX {
+public class GlobalVfxMap extends GroupX {
 
-    DungeonLevel level;
     Map<DAY_TIME, Map<LevelBlock, List<EmitterMap>>> caches = new HashMap<>();
     private List<EmitterMap> maps=    new ArrayList<>() ;
     private Integer emitterCountControlCoef;
 
-    public SmartAmbienceMap(DungeonLevel level) {
-        this.level = level;
+    public GlobalVfxMap( ) {
         GuiEventManager.bind(GuiEventType.UPDATE_MAIN_HERO, p -> {
             Unit hero = (Unit) p.get();
 
@@ -57,7 +55,9 @@ public class SmartAmbienceMap extends GroupX {
         if (cache == null) {
             cache = new HashMap<>();
         }
-        for (LevelBlock block : level.getBlocks()) {
+
+        for (LevelBlock block :    DC_Game.game.getDungeonMaster().
+                getStructureMaster().getCurrentBlocks()) {
             maps = cache.get(block);
             if (maps == null) {
                 maps = new ArrayList<>();

@@ -88,7 +88,7 @@ public class FloorLoader extends DungeonHandler<Location> {
                 break;
             case COORDINATES_VOID:
                 for (String substring : ContainerUtils.openContainer(node.getTextContent())) {
-                    location.getDungeon().getVoidCells().add(Coordinates.get(substring));
+                    module.getVoidCells().add(Coordinates.get(substring));
                 }
                 break;
             case OVERLAY_DIRECTIONS:

@@ -6,7 +6,6 @@ import main.content.values.parameters.G_PARAMS;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.GraveyardManager;
-import main.game.bf.ZCoordinates;
 import main.system.GuiEventManager;
 
 import java.util.*;
@@ -20,7 +19,7 @@ import static main.system.GuiEventType.UPDATE_GRAVEYARD;
 public class DC_GraveyardManager implements GraveyardManager {
 
     public static final String RIP = "Here lie: ";
-    protected Map<ZCoordinates, Stack<Obj>> graveMap = new ConcurrentHashMap<>();
+    protected Map< Coordinates, Stack<Obj>> graveMap = new ConcurrentHashMap<>();
     protected List<Obj> removed = new ArrayList<>();
     private DC_Game game;
     private Map<Obj, Integer> indexMap = new HashMap<>();
@@ -33,27 +32,23 @@ public class DC_GraveyardManager implements GraveyardManager {
     @Override
     public void init() {
         for (Obj c : game.getCells()) {
-            graveMap.put(getZCoordinate(c.getCoordinates()), new Stack<>());
+            graveMap.put( (c.getCoordinates()), new Stack<>());
         }
     }
 
-    @Override
-    public ZCoordinates getZCoordinate(Coordinates c) {
-        return new ZCoordinates(c.x, c.y, game.getDungeon().getZ());
-    }
 
     @Override
     public Obj removeCorpse(Obj unit) {
         // this does not tell us which corpse has been removed???
 
-        graveMap.get(getZCoordinate(unit.getCoordinates())).remove(unit); // ???
-        game.getCellByCoordinate(getZCoordinate(unit.getCoordinates())).setParam(G_PARAMS.N_OF_CORPSES,
-         graveMap.get(getZCoordinate(unit.getCoordinates())).size());
+        graveMap.get( (unit.getCoordinates())).remove(unit); // ???
+        game.getCellByCoordinate( (unit.getCoordinates())).setParam(G_PARAMS.N_OF_CORPSES,
+         graveMap.get( (unit.getCoordinates())).size());
 
-        if (game.getObjectByCoordinate(getZCoordinate(unit.getCoordinates())) != null) {
-            game.getObjectByCoordinate(getZCoordinate(unit.getCoordinates())).setParam(
+        if (game.getObjectByCoordinate( (unit.getCoordinates())) != null) {
+            game.getObjectByCoordinate( (unit.getCoordinates())).setParam(
              G_PARAMS.N_OF_CORPSES,
-             graveMap.get(getZCoordinate(unit.getCoordinates())).size());
+             graveMap.get( (unit.getCoordinates())).size());
         }
 
         removed.add(unit);
@@ -76,14 +71,14 @@ public class DC_GraveyardManager implements GraveyardManager {
 
     @Override
     public void addCorpse(Obj unit) {
-        graveMap.get(getZCoordinate(unit.getCoordinates())).push(unit);
-        Obj cell = game.getCellByCoordinate(getZCoordinate(unit.getCoordinates()));
-        cell.setParam(G_PARAMS.N_OF_CORPSES, graveMap.get(getZCoordinate(unit.getCoordinates()))
+        graveMap.get( (unit.getCoordinates())).push(unit);
+        Obj cell = game.getCellByCoordinate( (unit.getCoordinates()));
+        cell.setParam(G_PARAMS.N_OF_CORPSES, graveMap.get( (unit.getCoordinates()))
          .size());
-        if (game.getObjectByCoordinate(getZCoordinate(unit.getCoordinates())) != null) {
-            game.getObjectByCoordinate(getZCoordinate(unit.getCoordinates())).setParam(
+        if (game.getObjectByCoordinate( (unit.getCoordinates())) != null) {
+            game.getObjectByCoordinate( (unit.getCoordinates())).setParam(
              G_PARAMS.N_OF_CORPSES,
-             graveMap.get(getZCoordinate(unit.getCoordinates())).size());
+             graveMap.get( (unit.getCoordinates())).size());
         }
 
         GuiEventManager.trigger(UPDATE_GRAVEYARD, unit.getCoordinates());
@@ -127,7 +122,7 @@ public class DC_GraveyardManager implements GraveyardManager {
     @Override
     public boolean checkForCorpses(Obj obj) {
         try {
-            return !getDeadUnits(getZCoordinate(obj.getCoordinates())).isEmpty();
+            return !getDeadUnits( (obj.getCoordinates())).isEmpty();
         } catch (Exception e) {
             return false;
         }
@@ -136,7 +131,7 @@ public class DC_GraveyardManager implements GraveyardManager {
     @Override
     public String getRipString(Obj obj) {
         StringBuilder resultBuilder = new StringBuilder(RIP);
-        for (Obj corpse : getDeadUnits(getZCoordinate(obj.getCoordinates()))) {
+        for (Obj corpse : getDeadUnits( (obj.getCoordinates()))) {
             resultBuilder.append(corpse.getName()).append(", ");
         }
         String result = resultBuilder.toString();

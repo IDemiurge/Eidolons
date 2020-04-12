@@ -6,6 +6,7 @@ import main.entity.type.ObjType;
 import main.level_editor.backend.struct.adventure.AdventureLocation;
 import main.level_editor.backend.struct.boss.BossDungeon;
 
+import java.util.Collection;
 import java.util.Set;
 
 public class Campaign extends LightweightEntity implements LayeredData<BossDungeon> {
@@ -49,7 +50,7 @@ public class Campaign extends LightweightEntity implements LayeredData<BossDunge
     }
 
     @Override
-    public Set<BossDungeon> getChildren() {
+    public Collection<BossDungeon> getChildren() {
         return getDungeons();
     }
 }

@@ -400,7 +400,7 @@ public class ModelFinalizer {
 
         tryAdditionalBuild(model);
 
-        PositionMaster.initDistancesCache(model.getCurrentWidth(), model.getCurrentHeight());
+        PositionMaster.initDistancesCache(null , model.getCurrentWidth(), model.getCurrentHeight());
 
         if (model.getData().isLoopBackAllowed())
             try {

@@ -2,7 +2,7 @@ package eidolons.libgdx.gui.tooltips;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 

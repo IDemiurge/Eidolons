@@ -356,4 +356,29 @@ public class DungeonEnums {
     public enum SUBLEVEL_TYPE {
         COMMON, PRE_BOSS, BOSS, SECRET, TRANSIT, FALSE_LEVEL
     }
+
+    public enum CELL_IMAGE {
+        tiles,
+        diamond,
+        circle("cr"),
+        star,
+        cross,
+        natural,
+        octagonal("oct"),
+        ;
+        String name;
+
+        CELL_IMAGE() {
+            name = name();
+        }
+
+        CELL_IMAGE(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
 }

@@ -1,9 +1,10 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Block;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjNode;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjsNode;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
@@ -11,7 +12,9 @@ import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.RoomModel;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
+import main.content.DC_TYPE;
 import main.data.XLinkedMap;
+import main.data.tree.LayeredData;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
@@ -19,11 +22,12 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 7/20/2018.
  */
-public class LevelBlock extends LevelStruct<LevelBlock> {
+public class LevelBlock extends LevelStruct<LevelBlock, Object> {
 
     private ROOM_TYPE roomType;
     private RoomModel model;
@@ -48,6 +52,17 @@ public class LevelBlock extends LevelStruct<LevelBlock> {
 
     }
 
+    @Override
+    public Collection  getChildren() {
+            LinkedHashSet<LayeredData> objs = DC_Game.game.getBfObjects().stream().filter(
+                    obj -> isWithinBlock(obj) && obj.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS).map(
+                    obj -> new ObjNode(obj)).collect(Collectors.toCollection(LinkedHashSet::new));
+            objs.add(new ObjsNode(this));
+            return objs;
+    }
+    private boolean isWithinBlock(BattleFieldObject obj) {
+        return  getCoordinatesSet().contains(obj.getCoordinates());
+    }
     public LevelBlock(LevelZone zone) {
         this.zone = zone;
     }
@@ -226,11 +241,6 @@ public class LevelBlock extends LevelStruct<LevelBlock> {
 
     public BlockData getData() {
         return (BlockData) data;
-    }
-
-    @Override
-    protected StructureData createData() {
-        return new BlockData(new LE_Block(this));
     }
 
     public void setZoneIndex(int zoneIndex) {

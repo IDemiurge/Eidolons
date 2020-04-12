@@ -66,18 +66,19 @@ public class RngMainSpawner {
     Map<LevelBlock, Float> coefMap = new LinkedHashMap<>();
     private DungeonLevel level;
     private LevelData data;
-    static  UNIT_GROUP presetUnitGroup;
-    static   List<UNIT_GROUP> groupFilter;
+    static UNIT_GROUP presetUnitGroup;
+    static List<UNIT_GROUP> groupFilter;
+
     public static UNIT_GROUP getUnitGroup(
             LOCATION_TYPE locationType, LevelZone zone,
             UNIT_GROUP_TYPE groupType) {
-        if (presetUnitGroup!=null )
+        if (presetUnitGroup != null)
             return presetUnitGroup;
 
-        if (groupFilter==null )
-        if (zone.getUnitGroupWeightMap() != null) {
-            return zone.getUnitGroupWeightMap().getRandomByWeight();
-        }
+        if (groupFilter == null)
+            if (zone.getUnitGroupWeightMap() != null) {
+                return zone.getUnitGroupWeightMap().getRandomByWeight();
+            }
         //        return getUnitGroup(locationType.isSurface(),
         //         zone.getStyle(), groupType);
         //    }
@@ -99,11 +100,11 @@ public class RngMainSpawner {
             map.put(group, i + 1);
         }
 
-        if (groupFilter!=null ){
-            map.keySet().removeIf(s-> !groupFilter.contains(s));
-        if (map.keySet().isEmpty()){
-            map.put(groupFilter.get(0), 1);
-        }
+        if (groupFilter != null) {
+            map.keySet().removeIf(s -> !groupFilter.contains(s));
+            if (map.keySet().isEmpty()) {
+                map.put(groupFilter.get(0), 1);
+            }
         }
         return map.getRandomByWeight();
     }
@@ -123,16 +124,15 @@ public class RngMainSpawner {
 
         log(1, "Spawning for quests ");
         if (!CoreEngine.isFullFastMode())
-            if ( CoreEngine.isCombatGame())
-            if ( Eidolons.getGame().getMetaMaster().isRngQuestsEnabled())
-            try {
-                spawnForQuests();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        if (level.isPregen())
-        {
-            main.system.auxiliary.log.LogMaster.log(1,level.getDungeonType()+" level is pregen, no spawning required" );
+            if (CoreEngine.isCombatGame())
+                if (Eidolons.getGame().getMetaMaster().isRngQuestsEnabled())
+                    try {
+                        spawnForQuests();
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
+        if (level.isPregen()) {
+            main.system.auxiliary.log.LogMaster.log(1, level.getDungeonType() + " level is pregen, no spawning required");
             return;
         }
         log(1, "Spawning for symbols ");
@@ -155,12 +155,12 @@ public class RngMainSpawner {
         }
         for (Quest quest : quests) {
             if (quest instanceof DungeonQuest) {
-                switch ( ((DungeonQuest) quest).getType()) {
+                switch (((DungeonQuest) quest).getType()) {
                     case BOSS:
-                        spawnQuestBoss( ((DungeonQuest) quest));
+                        spawnQuestBoss(((DungeonQuest) quest));
                         break;
                     case HUNT:
-                        spawnQuestMob( ((DungeonQuest) quest));
+                        spawnQuestMob(((DungeonQuest) quest));
                         break;
                 }
             }
@@ -366,33 +366,35 @@ public class RngMainSpawner {
         return false;
     }
 
+    @Deprecated
     private void spawnAdditional() {
         //control power level
 
         // control fill level
 
         //N per groupType, or? at least preferred, min/max
-        for (Module module : level.getSubParts()) {
-        zones:
+        Module[] asd = new Module[0];
+        for (Module module : asd) {
+            zones:
             for (LevelZone zone : module.getSubParts()) {
-            for (UNIT_GROUP_TYPE groupType : ADDITIONAL_SPAWN_GROUPS) {
-                List<LevelBlock> blocks = getBlocksForSpawn(groupType, zone);
-                if (blocks.isEmpty())
-                    continue;
-                float requiredFill = 0.8f;
-                float current = calculatePowerFill(zone);
-                UNIT_GROUP group = getUnitGroup(level.getLocationType(), zone, groupType);
-                for (LevelBlock block : blocks) {
-                    if ((requiredFill < current)) {
-                        continue zones;
+                for (UNIT_GROUP_TYPE groupType : ADDITIONAL_SPAWN_GROUPS) {
+                    List<LevelBlock> blocks = getBlocksForSpawn(groupType, zone);
+                    if (blocks.isEmpty())
+                        continue;
+                    float requiredFill = 0.8f;
+                    float current = calculatePowerFill(zone);
+                    UNIT_GROUP group = getUnitGroup(level.getLocationType(), zone, groupType);
+                    for (LevelBlock block : blocks) {
+                        if ((requiredFill < current)) {
+                            continue zones;
+                        }
+                        current = calculatePowerFill(zone);
+                        float powerCoef = getPowerCoef(block, groupType);
+                        spawnForGroup(block, groupType, group, powerCoef);
+                        if (checkDone()) {
+                            return;
+                        }
                     }
-                    current = calculatePowerFill(zone);
-                    float powerCoef = getPowerCoef(block, groupType);
-                    spawnForGroup(block, groupType, group, powerCoef);
-                    if (checkDone()) {
-                        return;
-                    }
-                }
                 }
             }
         }
@@ -702,7 +704,7 @@ public class RngMainSpawner {
                 max, minPreferred);
 
         List<ObjAtCoordinate> unitsAtCoordinates = spawnUnits(levelBlock, units);
-level.addUnitGroup(levelBlock, unitsAtCoordinates, groupType);
+        level.addUnitGroup(levelBlock, unitsAtCoordinates, groupType);
         //            level.getAiMap().put(c, aiType)
         //            filter weight map?
 
@@ -726,7 +728,7 @@ level.addUnitGroup(levelBlock, unitsAtCoordinates, groupType);
                                 .anyMatch(list -> list.stream().anyMatch(at -> at.getCoordinates().equals(c)))).
                 //no other units there
                         sorted(new SortMaster<Coordinates>().getSorterByExpression_(c ->
-                                -c.dst(center) + (isCellGoodForSpawn(c, levelBlock)? 0: -5)
+                                -c.dst(center) + (isCellGoodForSpawn(c, levelBlock) ? 0 : -5)
 //           +RandomWizard.getRandomInt( (levelBlock.getWidth()))
 //           +RandomWizard.getRandomInt((int) Math.sqrt(levelBlock.getSquare())))
                 )).limit(Math.max(1, Math.round(max))).
@@ -775,9 +777,10 @@ level.addUnitGroup(levelBlock, unitsAtCoordinates, groupType);
         if (!isEnclosedSpawnAllowed())
             if (TilesMaster.isEnclosedCell(c, levelBlock.getTileMap()))
                 return false;
-        return  levelBlock.getTileMap().getMap().get(c)  == ROOM_CELL.FLOOR ;
+        return levelBlock.getTileMap().getMap().get(c) == ROOM_CELL.FLOOR;
     }
-        private boolean isCellValidForSpawn(Coordinates c, LevelBlock levelBlock) {
+
+    private boolean isCellValidForSpawn(Coordinates c, LevelBlock levelBlock) {
         if (!TilesMaster.isPassable(levelBlock.getTileMap().getMap().get(c)))
             return false;
         if (!isEnclosedSpawnAllowed())

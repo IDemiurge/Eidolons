@@ -14,8 +14,8 @@ import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
-import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
 import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
@@ -165,14 +165,6 @@ public class DungeonScreen extends GameScreenWithTown {
         });
     }
 
-    public void moduleEntered(Module module) {
-        int w = module.getEffectiveWidth();
-        int h = module.getEffectiveHeight();
-        gridPanel.remove();
-        gridStage.addActor(gridPanel = new DC_GridPanel(w, h));
-        gridPanel.setZIndex(0);
-//        grids.put(module, gridPanel);
-    }
 
     private boolean isDrawGridOnInit() {
         return false;

@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.dungeon.test.TestSpawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.core.game.DC_Game;
@@ -13,8 +12,8 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.game.bf.directions.DirectionMaster;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
@@ -171,7 +170,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         Coordinates playerC = getPlayerSpawnCoordinates();
         if (true) //TODO sometimes not?
             return Coordinates.get(playerC.x, playerC.y - (
-             TestSpawner.isPlayerUnitGroupMode() ? 1 : 3));
+               3));
         if (playerC == null) {
             playerC = getPlayerSpawnCoordinates();// Coordinates.getMiddleCoordinate(ArenaPositioner.DEFAULT_PLAYER_SIDE);
         }

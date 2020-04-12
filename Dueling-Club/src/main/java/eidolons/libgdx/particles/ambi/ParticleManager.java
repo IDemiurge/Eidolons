@@ -4,11 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
-import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.libgdx.gui.generic.GroupX;
-import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import eidolons.libgdx.particles.EmitterActor;
+import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -31,7 +29,7 @@ import java.util.Map;
 public class ParticleManager extends GroupX {
     private static final GenericEnums.VFX FOG_VFX = GenericEnums.VFX.SMOKE_TEST;
     private static boolean ambienceOn = OptionsMaster.getGraphicsOptions().getBooleanValue(
-     GRAPHIC_OPTION.AMBIENCE_VFX) ;
+            GRAPHIC_OPTION.AMBIENCE_VFX);
     private static boolean ambienceMoveOn;
     private static Dungeon dungeon_;
     public boolean debugMode;
@@ -39,17 +37,13 @@ public class ParticleManager extends GroupX {
     List<EmitterActor> dynamicVfx = new ArrayList<>();
     Map<String, EmitterMap> cache = new HashMap<>();
 
-    SmartAmbienceMap ambienceMap;
+    GlobalVfxMap ambienceMap;
 
     public ParticleManager() {
 //        if (OptionsMaster) TODO
 //        new AttachEmitterManager();
         GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {
-            DC_Game game = (DC_Game) p.get();
-            DungeonLevel level = game.getDungeonMaster().getDungeonLevel();
-            if (level != null) {
-                addActor(ambienceMap = new SmartAmbienceMap(level));
-            }
+            addActor(ambienceMap = new GlobalVfxMap());
         });
         GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
             if (isAmbienceOn())
@@ -60,7 +54,7 @@ public class ParticleManager extends GroupX {
                 }
             if (isAmbienceOn())
                 GuiEventManager.trigger(GuiEventType.INIT_AMBIENCE,
-                 new AmbienceDataSource(getTemplate(dungeon_), (DAY_TIME) p.get()));
+                        new AmbienceDataSource(getTemplate(dungeon_), (DAY_TIME) p.get()));
         });
 
         GuiEventManager.bind(GuiEventType.SHOW_CUSTOM_VFX, p -> {
@@ -82,7 +76,7 @@ public class ParticleManager extends GroupX {
             newList.add(preset.getPath());
             newList.add(list.get(1));
             GuiEventManager.trigger(GuiEventType.SHOW_CUSTOM_VFX,
-             newList);
+                    newList);
 
         });
 
@@ -90,8 +84,8 @@ public class ParticleManager extends GroupX {
             List l = (List) p.get();
             GenericEnums.VFX vfx = (GenericEnums.VFX) l.get(0);
             Vector2 v = (Vector2) l.get(1);
-            Ambience ambi=null ;
-            addActor(ambi=new Ambience(vfx));
+            Ambience ambi = null;
+            addActor(ambi = new Ambience(vfx));
             ambi.setPosition(v.x, v.y);
 
 
@@ -176,8 +170,8 @@ public class ParticleManager extends GroupX {
             }
         };
         fog.setPosition(
-         at.x,
-         at.y);
+                at.x,
+                at.y);
         fog.added();
         fog.setVisible(true);
         fog.getEffect().start();

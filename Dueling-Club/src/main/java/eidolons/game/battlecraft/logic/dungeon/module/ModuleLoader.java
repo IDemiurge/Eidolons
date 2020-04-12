@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
+import main.game.bf.BattleFieldManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
@@ -15,7 +16,7 @@ public class ModuleLoader extends DungeonHandler<Location> {
     private Module loading;
     private Module last;
 
-    public ModuleLoader(DungeonMaster<Location> master) {
+    public ModuleLoader(DungeonMaster  master) {
         super(master);
     }
 
@@ -41,14 +42,27 @@ public class ModuleLoader extends DungeonHandler<Location> {
         last = getMetaMaster().getModuleMaster()
                 .getCurrent();
         loading = module;
-        freeResources();
+        initLogicalGrid();
+
+//        freeResources();
 //        initTransitFx();
 //        showLoadScreen();
-        initMusic();
+//        initMusic();
 
-        spawnEncounters();
-        loadAssets(module);
+//        spawnEncounters();
+//        loadAssets(module);
         loadGrid(module);
+    }
+
+    public void loadInitial() {
+        loadModule(getModule());
+    }
+    private void initLogicalGrid() {
+        game.initGrid(loading);
+        BattleFieldManager.entered(loading.getId());
+//        PositionMaster.initDistancesCache(loading.getId(),
+//                getModule().getEffectiveWidth(),
+//                getModule().getEffectiveHeight());
     }
 
     private void spawnEncounters() {
@@ -100,4 +114,5 @@ public class ModuleLoader extends DungeonHandler<Location> {
          */
         GuiEventManager.trigger(GuiEventType.DISPOSE_SCOPE);
     }
+
 }

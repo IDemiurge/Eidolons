@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.bf.grid.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 
 /**
@@ -11,9 +11,8 @@ import main.content.enums.rules.VisionEnums.UNIT_VISION;
 public class LastSeenMaster {
     public static boolean isUpdateRequired(BattleFieldObject object) {
         if (object.isDetectedByPlayer())
-            if (object.getUnitVisionStatus() == UNIT_VISION.IN_SIGHT
-             || object.getUnitVisionStatus() == UNIT_VISION.IN_PLAIN_SIGHT)
-                return true;
+            return object.getUnitVisionStatus() == UNIT_VISION.IN_SIGHT
+                    || object.getUnitVisionStatus() == UNIT_VISION.IN_PLAIN_SIGHT;
         return false;
     }
 

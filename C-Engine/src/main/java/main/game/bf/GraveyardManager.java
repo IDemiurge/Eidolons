@@ -22,8 +22,6 @@ public interface GraveyardManager {
 
     void init();
 
-    ZCoordinates getZCoordinate(Coordinates c);
-
     Obj removeCorpse(Obj unit);
 
     void unitDies(Obj unit);

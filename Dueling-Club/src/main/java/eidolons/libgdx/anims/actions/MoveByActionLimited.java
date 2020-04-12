@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
-import eidolons.libgdx.bf.grid.GridCellContainer;
+import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 
 /**
  * Created by JustMe on 9/10/2017.

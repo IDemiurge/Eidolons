@@ -3,17 +3,16 @@ package eidolons.libgdx.stage;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.decor.ShardVisuals;
 import eidolons.libgdx.bf.decor.ShardVisuals.SHARD_SIZE;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
+import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
-import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.shaders.VignetteShader;
@@ -22,7 +21,6 @@ import eidolons.system.options.OptionsMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.MapEvent;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
@@ -36,7 +34,6 @@ import java.util.List;
  */
 public class GuiVisualEffects extends GroupX {
     LightLayer lightLayer;
-    private DungeonLevel level;
     private SuperContainer vignette;
     private List<EmitterActor> emitters;
     private int emitterTypesCount;
@@ -54,19 +51,13 @@ public class GuiVisualEffects extends GroupX {
         //        initEmitters();
         addActor(lightLayer = new LightLayer(true));
 
-        GuiEventManager.bind(GuiEventType.GAME_STARTED, p ->
-        {
-            DC_Game game = (DC_Game) p.get();
-            level = game.getDungeonMaster().getDungeonLevel();
-            //set current block?
-        });
         GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
             //                getEmitterData((DAY_TIME) p.getVar());
             if (!isCustomEmitters())
                 return;
-            LevelBlock block = level.getBlockForCoordinate(
+            LevelStruct struct = DC_Game.game.getDungeonMaster().getStructureMaster().findLowestStruct(
              Eidolons.getMainHero().getCoordinates());
-            initEmitters(AmbienceDataSource.getTemplate(block.getStyle()), (DAY_TIME) p.get());
+            initEmitters(AmbienceDataSource.getTemplate(struct.getStyle()), (DAY_TIME) p.get());
 
         });
 

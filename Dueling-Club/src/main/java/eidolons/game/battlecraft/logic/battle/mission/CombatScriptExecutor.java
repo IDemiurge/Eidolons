@@ -12,8 +12,8 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battle.universal.ScriptManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.module.BridgeMaster;
-import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
 import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
@@ -536,23 +536,11 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     private Coordinates getCoordinates(String arg, Ref ref) {
 //TODO have an arg for N of Units
         Coordinates origin = null;
-        if (arg.contains(ScriptSyntax.SPAWN_POINT) || NumberUtils.isInteger(arg)) {
-            arg = arg.replace(ScriptSyntax.SPAWN_POINT, "");
-            Integer i = NumberUtils.getInteger(arg) - 1;
-            List<String> spawnPoints = ContainerUtils.openContainer(
-                    getMaster().getDungeon().getProperty(PROPS.ENEMY_SPAWN_COORDINATES));
-            origin = Coordinates.get(spawnPoints.get(i));
-            origin = getMaster().getDungeon().getPoint(arg);
-//            getUnit(arg).getCoordinates()
-            //another units' coordinates
-            //closest point
-        } else {
             try {
                 origin = Coordinates.get(arg);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        }
         return origin;
     }
 

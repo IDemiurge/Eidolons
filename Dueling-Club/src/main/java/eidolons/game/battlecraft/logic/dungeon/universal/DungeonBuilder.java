@@ -52,8 +52,8 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
 
         if (data.isEmpty()) {
             data = FileManager.readFile(
-             path.contains(PathFinder.getDungeonLevelFolder()) ? path
-              : PathFinder.getDungeonLevelFolder() + path);
+                    path.contains(PathFinder.getDungeonLevelFolder()) ? path
+                            : PathFinder.getDungeonLevelFolder() + path);
         }
         if (data.isEmpty()) {
             data = path;
@@ -72,15 +72,16 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
     }
 
     protected void initWidthAndHeight(E dungeonWrapper) {
-        GuiManager.setBattleFieldCellsX(dungeonWrapper.getDungeon().getCellsX());
-        GuiManager.setBattleFieldCellsY(dungeonWrapper.getDungeon().getCellsY());
-        GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
-        GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());
+        int w = dungeonWrapper.getWidth();
+        int h = dungeonWrapper.getHeight();
+        GuiManager.setBattleFieldCellsX(w);
+        GuiManager.setBattleFieldCellsY(h);
+        GuiManager.setCurrentLevelCellsX(w);
+        GuiManager.setCurrentLevelCellsY(h);
         //TODO clean up this shit!
 
         PositionMaster.initDistancesCache();
-        DirectionMaster.initCache(dungeonWrapper.getDungeon().getCellsX(),
-         dungeonWrapper.getDungeon().getCellsY());
+        DirectionMaster.initCache(w, h);
         Coordinates.resetCaches();
         GammaMaster.resetCaches();
     }

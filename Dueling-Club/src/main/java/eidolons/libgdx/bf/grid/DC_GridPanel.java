@@ -29,6 +29,7 @@ import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.bf.datasource.GraphicData;
+import eidolons.libgdx.bf.grid.cell.*;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
@@ -77,8 +78,10 @@ public class DC_GridPanel extends GridPanel {
         super(cols, rows);
     }
 
-    public void reactivateModule() {
-        bindEvents();
+
+    @Override
+    public GridPanel init() {
+        return super.init();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package eidolons.libgdx.bf.grid;
+package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -201,7 +201,7 @@ public class QueueView extends UnitView {
     //         greyedOut ? GrayscaleShader.getGrayscaleShader() : null, true);
     //    }
 
-    protected void setPortraitTexture(TextureRegion textureRegion) {
+    public void setPortraitTexture(TextureRegion textureRegion) {
         getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
     }
 

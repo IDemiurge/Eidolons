@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.dungeon.test;
+package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;

@@ -2,7 +2,7 @@ package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
-import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitGroupMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;

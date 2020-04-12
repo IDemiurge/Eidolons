@@ -1,16 +1,15 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Zone;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 
-public class ZoneData extends StructureData<LevelStructure.ZONE_VALUE, LE_Zone> {
+public class ZoneData extends StructureData<LevelStructure.ZONE_VALUE, LevelZone> {
 
-    public ZoneData(LE_Zone structure) {
+    public ZoneData(LevelZone structure) {
         super(structure);
     }
 
     protected void init() {
-        levelStruct = getStructure().getZone();
+        levelStruct = getStructure() ;
         if (levelStruct.getData() != null) {
             setData(levelStruct.getData().getData());
         }
@@ -18,7 +17,7 @@ public class ZoneData extends StructureData<LevelStructure.ZONE_VALUE, LE_Zone> 
 
     @Override
     public void apply() {
-        LevelZone zone = getStructure().getZone();
+        LevelZone zone = getStructure() ;
         zone.setData(this);
 //        zone.setStyle(new EnumMaster<DUNGEON_STYLE>().retrieveEnumConst(DUNGEON_STYLE.class,
 //                getValue(LevelStructure.ZONE_VALUE.style)));

@@ -1,8 +1,9 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.content.PROPS;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.content.CONTENT_CONSTS;
-import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.entity.EntityWrapper;
 import main.game.bf.Coordinates;
@@ -14,19 +15,26 @@ import java.util.Map;
 /**
  * Created by JustMe on 5/10/2017.
  */
-public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dungeon> {
-    protected DungeonMaster<E> master;
+public class DungeonWrapper  extends LevelStruct<Module, Module> implements EntityWrapper<Dungeon> {
+    protected DungeonMaster master;
     protected Dungeon dungeon;
     private Map<String, CONTENT_CONSTS.FLIP> flipMap;
     private Map<String, DIRECTION> directionMap;
 
-
-    public DungeonWrapper(Dungeon entity, DungeonMaster<E> master) {
-        super(entity);
+    public DungeonWrapper(Dungeon entity, DungeonMaster master) {
         dungeon = entity;
         this.master = master;
+        dungeon.setWrapper(this);
     }
 
+    @Override
+    protected LevelStruct getParent() {
+        return null; //campaign?
+    }
+    @Override
+    public Dungeon getEntity() {
+        return dungeon;
+    }
     public Coordinates getPlayerSpawnCoordinates() {
         String prop = getProperty(PROPS.ENTRANCE_COORDINATES);
         if (prop.isEmpty()) {
@@ -35,7 +43,7 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
         return Coordinates.get(prop);
     }
 
-    public DungeonMaster<E> getDungeonMaster() {
+    public DungeonMaster getDungeonMaster() {
         return master;
     }
 
@@ -45,14 +53,6 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
 
     public String getMapBackground() {
         return dungeon.getMapBackground();
-    }
-
-    public COLOR_THEME getColorTheme() {
-        return dungeon.getColorTheme();
-    }
-
-    public void setColorTheme(COLOR_THEME colorTheme) {
-        dungeon.setColorTheme(colorTheme);
     }
 
     public DUNGEON_TYPE getDungeonType() {
@@ -67,24 +67,10 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
         return dungeon.getCellsX();
     }
 
-    public Integer getWidth() {
-        return dungeon.getWidth();
-    }
+
 
     public Integer getCellsY() {
         return dungeon.getCellsY();
-    }
-
-    public Integer getHeight() {
-        return dungeon.getHeight();
-    }
-
-    public int getZ() {
-        return dungeon.getZ();
-    }
-
-    public void setZ(int i) {
-        dungeon.setZ(i);
     }
 
 
@@ -127,4 +113,5 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
     public Map<String, DIRECTION> getDirectionMap() {
         return directionMap;
     }
+
 }

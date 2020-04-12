@@ -100,9 +100,9 @@ public class ModuleGridMapper {
         for (Point point : moduleGrid.keySet()) {
             Module module = moduleGrid.get(point);
 //            Coordinates at= getModulePlacement(module);
-            int h = module.getEffectiveHeight();
+            int h = module.getEffectiveHeight(true);
             MapMaster.addToIntegerMap(colMap, point.x, h);
-            int w = module.getEffectiveWidth();
+            int w = module.getEffectiveWidth(true);
             MapMaster.addToIntegerMap(rowMap, point.y, w);
             //cols and rows!
         }

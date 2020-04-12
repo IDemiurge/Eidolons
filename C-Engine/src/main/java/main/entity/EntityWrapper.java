@@ -23,705 +23,702 @@ import java.util.Map;
 /**
  * Created by JustMe on 5/10/2017.
  */
-public class EntityWrapper<E extends DataModel> {
-    E entity;
+public interface EntityWrapper<E extends DataModel> {
 
-    public EntityWrapper(E entity) {
-        this.entity = entity;
+    default String getToolTip() {
+        return getEntity().getToolTip();
     }
 
-
-    public String getToolTip() {
-        return entity.getToolTip();
-    }
-
-    public String getDescription() {
-        return entity.getDescription();
+    default String getDescription() {
+        return getEntity().getDescription();
     }
 
-    public String getCustomValue(String value_ref) {
-        return entity.getCustomValue(value_ref);
+    default String getCustomValue(String value_ref) {
+        return getEntity().getCustomValue(value_ref);
     }
 
 
-    public String getCustomProperty(String value_ref) {
-        return entity.getCustomProperty(value_ref);
+    default String getCustomProperty(String value_ref) {
+        return getEntity().getCustomProperty(value_ref);
     }
 
-    public Integer getCounter(String value_ref) {
-        return entity.getCounter(value_ref);
+    default Integer getCounter(String value_ref) {
+        return getEntity().getCounter(value_ref);
     }
 
 
-    public void setGroup(String group, boolean base) {
-        entity.setGroup(group, base);
+    default void setGroup(String group, boolean base) {
+        getEntity().setGroup(group, base);
     }
 
 
-    public boolean setCounter(String name, int newValue) {
-        return entity.setCounter(name, newValue);
+    default boolean setCounter(String name, int newValue) {
+        return getEntity().setCounter(name, newValue);
     }
 
-    public boolean setCounter(String name, int newValue, boolean strict) {
-        return entity.setCounter(name, newValue, strict);
+    default boolean setCounter(String name, int newValue, boolean strict) {
+        return getEntity().setCounter(name, newValue, strict);
     }
 
-    public void removeCounter(String name) {
-        entity.removeCounter(name);
+    default void removeCounter(String name) {
+        getEntity().removeCounter(name);
     }
 
-    public boolean modifyCounter(String name, int modValue) {
-        return entity.modifyCounter(name, modValue);
+    default boolean modifyCounter(String name, int modValue) {
+        return getEntity().modifyCounter(name, modValue);
     }
 
-    public boolean modifyCounter(COUNTER counter, int modValue) {
-        return entity.modifyCounter(counter, modValue);
+    default boolean modifyCounter(COUNTER counter, int modValue) {
+        return getEntity().modifyCounter(counter, modValue);
     }
 
-    public boolean modifyCounter(String name, int modValue, boolean strict) {
-        return entity.modifyCounter(name, modValue, strict);
+    default boolean modifyCounter(String name, int modValue, boolean strict) {
+        return getEntity().modifyCounter(name, modValue, strict);
     }
 
 
 
-    public String getParam(String p) {
-        return entity.getParam(p);
+    default String getParam(String p) {
+        return getEntity().getParam(p);
     }
 
-    public String getParam(PARAMETER param) {
-        return entity.getParam(param);
+    default String getParam(PARAMETER param) {
+        return getEntity().getParam(param);
     }
 
 
-    public String getParamRounded(PARAMETER param, boolean base) {
-        return entity.getParamRounded(param, base);
+    default String getParamRounded(PARAMETER param, boolean base) {
+        return getEntity().getParamRounded(param, base);
     }
 
 
-    public Double getParamDouble(PARAMETER param) {
-        return entity.getParamDouble(param);
+    default Double getParamDouble(PARAMETER param) {
+        return getEntity().getParamDouble(param);
     }
 
 
-    public Double getParamDouble(PARAMETER param, boolean base) {
-        return entity.getParamDouble(param, base);
+    default Double getParamDouble(PARAMETER param, boolean base) {
+        return getEntity().getParamDouble(param, base);
     }
 
 
-    public String getDoubleParam(PARAMETER param) {
-        return entity.getDoubleParam(param);
+    default String getDoubleParam(PARAMETER param) {
+        return getEntity().getDoubleParam(param);
     }
 
-    public Game getGame() {
-        return entity.getGame();
+    default Game getGame() {
+        return getEntity().getGame();
     }
 
 
-    public String getDoubleParam(PARAMETER param, boolean base) {
-        return entity.getDoubleParam(param, base);
+    default String getDoubleParam(PARAMETER param, boolean base) {
+        return getEntity().getDoubleParam(param, base);
     }
 
 
-    public Integer getIntParam(String param) {
-        return entity.getIntParam(param);
+    default Integer getIntParam(String param) {
+        return getEntity().getIntParam(param);
     }
 
-    public String getStrParam(PARAMETER param) {
-        return entity.getStrParam(param);
+    default String getStrParam(PARAMETER param) {
+        return getEntity().getStrParam(param);
     }
 
 
-    public Integer getIntParam(PARAMETER param) {
-        return entity.getIntParam(param);
+    default Integer getIntParam(PARAMETER param) {
+        return getEntity().getIntParam(param);
     }
 
 
-    public Integer getIntParam(PARAMETER param, boolean base) {
-        return entity.getIntParam(param, base);
+    default Integer getIntParam(PARAMETER param, boolean base) {
+        return getEntity().getIntParam(param, base);
     }
 
 
-    public Map<PARAMETER, Integer> getIntegerMap(boolean base) {
-        return entity.getIntegerMap(base);
+    default Map<PARAMETER, Integer> getIntegerMap(boolean base) {
+        return getEntity().getIntegerMap(base);
     }
 
 
-    public ParamMap getParamMap() {
-        return entity.getParamMap();
+    default ParamMap getParamMap() {
+        return getEntity().getParamMap();
     }
 
-    public void setParamMap(ParamMap paramMap) {
-        entity.setParamMap(paramMap);
+    default void setParamMap(ParamMap paramMap) {
+        getEntity().setParamMap(paramMap);
     }
 
 
-    public void getBoolean(VALUE prop, Boolean b) {
-        entity.getBoolean(prop, b);
+    default void getBoolean(VALUE prop, Boolean b) {
+        getEntity().getBoolean(prop, b);
     }
 
 
-    public Boolean getBoolean(String prop) {
-        return entity.getBoolean(prop);
+    default Boolean getBoolean(String prop) {
+        return getEntity().getBoolean(prop);
     }
 
-    public String getProperty(String prop) {
-        return entity.getProperty(prop);
+    default String getProperty(String prop) {
+        return getEntity().getProperty(prop);
     }
 
 
-    public String getProp(String prop) {
-        return entity.getProp(prop);
+    default String getProp(String prop) {
+        return getEntity().getProp(prop);
     }
 
-    public String getGroup() {
-        return entity.getGroup();
+    default String getGroup() {
+        return getEntity().getGroup();
     }
 
-    public String getProperty(PROPERTY prop) {
-        return entity.getProperty(prop);
+    default String getProperty(PROPERTY prop) {
+        return getEntity().getProperty(prop);
     }
 
-    public boolean checkValue(VALUE v) {
-        return entity.checkValue(v);
+    default boolean checkValue(VALUE v) {
+        return getEntity().checkValue(v);
     }
 
 
-    public boolean checkValue(VALUE v, String value) {
-        return entity.checkValue(v, value);
+    default boolean checkValue(VALUE v, String value) {
+        return getEntity().checkValue(v, value);
     }
 
 
-    public boolean checkParam(PARAMETER param) {
-        return entity.checkParam(param);
+    default boolean checkParam(PARAMETER param) {
+        return getEntity().checkParam(param);
     }
 
 
-    public boolean checkParameter(PARAMETER param, int value) {
-        return entity.checkParameter(param, value);
+    default boolean checkParameter(PARAMETER param, int value) {
+        return getEntity().checkParameter(param, value);
     }
 
 
-    public boolean checkParam(PARAMETER param, String value) {
-        return entity.checkParam(param, value);
+    default boolean checkParam(PARAMETER param, String value) {
+        return getEntity().checkParam(param, value);
     }
 
 
-    public boolean checkProperty(PROPERTY p, String value) {
-        return entity.checkProperty(p, value);
+    default boolean checkProperty(PROPERTY p, String value) {
+        return getEntity().checkProperty(p, value);
     }
 
 
-    public Map<PROPERTY, Map<String, Boolean>> getPropCache(boolean base) {
-        return entity.getPropCache(base);
+    default Map<PROPERTY, Map<String, Boolean>> getPropCache(boolean base) {
+        return getEntity().getPropCache(base);
     }
 
-    public boolean checkProperty(PROPERTY p, String value, boolean base) {
-        return entity.checkProperty(p, value, base);
+    default boolean checkProperty(PROPERTY p, String value, boolean base) {
+        return getEntity().checkProperty(p, value, base);
     }
 
-    public boolean checkSingleProp(String PROP, String value) {
-        return entity.checkSingleProp(PROP, value);
+    default boolean checkSingleProp(String PROP, String value) {
+        return getEntity().checkSingleProp(PROP, value);
     }
 
-    public boolean checkSingleProp(PROPERTY PROP, String value) {
-        return entity.checkSingleProp(PROP, value);
+    default boolean checkSingleProp(PROPERTY PROP, String value) {
+        return getEntity().checkSingleProp(PROP, value);
     }
 
-    public boolean checkContainerProp(PROPERTY PROP, String value) {
-        return entity.checkContainerProp(PROP, value);
+    default boolean checkContainerProp(PROPERTY PROP, String value) {
+        return getEntity().checkContainerProp(PROP, value);
     }
 
-    public boolean checkContainerProp(PROPERTY PROP, String value, boolean any) {
-        return entity.checkContainerProp(PROP, value, any);
+    default boolean checkContainerProp(PROPERTY PROP, String value, boolean any) {
+        return getEntity().checkContainerProp(PROP, value, any);
     }
 
-    public boolean checkSubGroup(String string) {
-        return entity.checkSubGroup(string);
+    default boolean checkSubGroup(String string) {
+        return getEntity().checkSubGroup(string);
     }
 
-    public boolean checkProperty(PROPERTY p) {
-        return entity.checkProperty(p);
+    default boolean checkProperty(PROPERTY p) {
+        return getEntity().checkProperty(p);
     }
 
-    public boolean checkGroup(String string) {
-        return entity.checkGroup(string);
+    default boolean checkGroup(String string) {
+        return getEntity().checkGroup(string);
     }
 
-    public String getProperty(PROPERTY prop, boolean base) {
-        return entity.getProperty(prop, base);
+    default String getProperty(PROPERTY prop, boolean base) {
+        return getEntity().getProperty(prop, base);
     }
 
-    public PropMap getPropMap() {
-        return entity.getPropMap();
+    default PropMap getPropMap() {
+        return getEntity().getPropMap();
     }
 
-    public void setPropMap(PropMap propMap) {
-        entity.setPropMap(propMap);
+    default void setPropMap(PropMap propMap) {
+        getEntity().setPropMap(propMap);
     }
 
-    public Ref getRef() {
-        return entity.getRef();
+    default Ref getRef() {
+        return getEntity().getRef();
     }
 
-    public void setRef(Ref ref) {
-        entity.setRef(ref);
+    default void setRef(Ref ref) {
+        getEntity().setRef(ref);
     }
 
-    public ObjType getType() {
-        return entity.getType();
+    default ObjType getType() {
+        return getEntity().getType();
     }
 
-    public void setType(ObjType type) {
-        entity.setType(type);
+    default void setType(ObjType type) {
+        getEntity().setType(type);
     }
 
-    public String getValue(String valName) {
-        return entity.getValue(valName);
+    default String getValue(String valName) {
+        return getEntity().getValue(valName);
     }
 
-    public String getValue(VALUE valName) {
-        return entity.getValue(valName);
+    default String getValue(VALUE valName) {
+        return getEntity().getValue(valName);
     }
 
-    public String getValue(VALUE val, boolean base) {
-        return entity.getValue(val, base);
+    default String getValue(VALUE val, boolean base) {
+        return getEntity().getValue(val, base);
     }
 
-    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax, boolean quietly, String modifierKey) {
-        return entity.modifyParameter(param, amount, minMax, quietly, modifierKey);
+    default boolean modifyParameter(PARAMETER param, int amount, Integer minMax, boolean quietly, String modifierKey) {
+        return getEntity().modifyParameter(param, amount, minMax, quietly, modifierKey);
     }
 
-    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax, boolean quietly) {
-        return entity.modifyParameter(param, amount, minMax, quietly);
+    default boolean modifyParameter(PARAMETER param, int amount, Integer minMax, boolean quietly) {
+        return getEntity().modifyParameter(param, amount, minMax, quietly);
     }
 
-    public boolean modifyParameter(PARAMETER param, String amountString, Integer minMax, boolean quietly) {
-        return entity.modifyParameter(param, amountString, minMax, quietly);
+    default boolean modifyParameter(PARAMETER param, String amountString, Integer minMax, boolean quietly) {
+        return getEntity().modifyParameter(param, amountString, minMax, quietly);
     }
 
-    public boolean modifyParameter(PARAMETER param, String amountString, Integer minMax, boolean quietly, String modifierKey) {
-        return entity.modifyParameter(param, amountString, minMax, quietly, modifierKey);
+    default boolean modifyParameter(PARAMETER param, String amountString, Integer minMax, boolean quietly, String modifierKey) {
+        return getEntity().modifyParameter(param, amountString, minMax, quietly, modifierKey);
     }
 
-    public Map<PARAMETER, Map<String, Double>> getModifierMaps() {
-        return entity.getModifierMaps();
+    default Map<PARAMETER, Map<String, Double>> getModifierMaps() {
+        return getEntity().getModifierMaps();
     }
 
-    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax, String modifierKey) {
-        return entity.modifyParameter(param, amount, minMax, modifierKey);
+    default boolean modifyParameter(PARAMETER param, int amount, Integer minMax, String modifierKey) {
+        return getEntity().modifyParameter(param, amount, minMax, modifierKey);
     }
 
-    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax) {
-        return entity.modifyParameter(param, amount, minMax);
+    default boolean modifyParameter(PARAMETER param, int amount, Integer minMax) {
+        return getEntity().modifyParameter(param, amount, minMax);
     }
 
-    public void modifyParameter(PARAMETER param, int amount, boolean base) {
-        entity.modifyParameter(param, amount, base);
+    default void modifyParameter(PARAMETER param, int amount, boolean base) {
+        getEntity().modifyParameter(param, amount, base);
     }
 
-    public void modifyParameter(PARAMETER param, int amount, boolean base, String modifierKey) {
-        entity.modifyParameter(param, amount, base, modifierKey);
+    default void modifyParameter(PARAMETER param, int amount, boolean base, String modifierKey) {
+        getEntity().modifyParameter(param, amount, base, modifierKey);
     }
 
-    public boolean modifyParameter(PARAMETER param, int amount, String modifierKey) {
-        return entity.modifyParameter(param, amount, modifierKey);
+    default boolean modifyParameter(PARAMETER param, int amount, String modifierKey) {
+        return getEntity().modifyParameter(param, amount, modifierKey);
     }
 
-    public boolean modifyParameter(PARAMETER param, int amount) {
-        return entity.modifyParameter(param, amount);
+    default boolean modifyParameter(PARAMETER param, int amount) {
+        return getEntity().modifyParameter(param, amount);
     }
 
-    public void decrementParam(PARAMETER param) {
-        entity.decrementParam(param);
+    default void decrementParam(PARAMETER param) {
+        getEntity().decrementParam(param);
     }
 
-    public int getContainerCount(PROPERTY p) {
-        return entity.getContainerCount(p);
+    default int getContainerCount(PROPERTY p) {
+        return getEntity().getContainerCount(p);
     }
 
-    public void incrementParam(PARAMETER param) {
-        entity.incrementParam(param);
+    default void incrementParam(PARAMETER param) {
+        getEntity().incrementParam(param);
     }
 
-    public boolean multiplyParamByPercent(PARAMETER param, int perc, boolean base) {
-        return entity.multiplyParamByPercent(param, perc, base);
+    default boolean multiplyParamByPercent(PARAMETER param, int perc, boolean base) {
+        return getEntity().multiplyParamByPercent(param, perc, base);
     }
 
-    public boolean modifyParamByPercent(PARAMETER[] params, int perc) {
-        return entity.modifyParamByPercent(params, perc);
+    default boolean modifyParamByPercent(PARAMETER[] params, int perc) {
+        return getEntity().modifyParamByPercent(params, perc);
     }
 
-    public boolean modifyParamByPercent(PARAMETER param, int perc) {
-        return entity.modifyParamByPercent(param, perc);
+    default boolean modifyParamByPercent(PARAMETER param, int perc) {
+        return getEntity().modifyParamByPercent(param, perc);
     }
 
-    public boolean modifyParamByPercent(PARAMETER param, int perc, boolean base) {
-        return entity.modifyParamByPercent(param, perc, base);
+    default boolean modifyParamByPercent(PARAMETER param, int perc, boolean base) {
+        return getEntity().modifyParamByPercent(param, perc, base);
     }
 
-    public boolean firePropEvent(CONSTRUCTED_EVENT_TYPE EVENT_TYPE, String val) {
-        return entity.firePropEvent(EVENT_TYPE, val);
+    default boolean firePropEvent(CONSTRUCTED_EVENT_TYPE EVENT_TYPE, String val) {
+        return getEntity().firePropEvent(EVENT_TYPE, val);
     }
 
-    public boolean fireParamEvent(PARAMETER param, String amount, CONSTRUCTED_EVENT_TYPE event_type) {
-        return entity.fireParamEvent(param, amount, event_type);
+    default boolean fireParamEvent(PARAMETER param, String amount, CONSTRUCTED_EVENT_TYPE event_type) {
+        return getEntity().fireParamEvent(param, amount, event_type);
     }
 
-    public void resetParam(PARAMETER param) {
-        entity.resetDynamicParam(param);
+    default void resetParam(PARAMETER param) {
+        getEntity().resetDynamicParam(param);
     }
 
-    public void setParam(PARAMETER param, int i, boolean quietly, boolean base) {
-        entity.setParam(param, i, quietly, base);
+    default void setParam(PARAMETER param, int i, boolean quietly, boolean base) {
+        getEntity().setParam(param, i, quietly, base);
     }
 
-    public void setParam(PARAMETER param, int i, boolean quietly) {
-        entity.setParam(param, i, quietly);
+    default void setParam(PARAMETER param, int i, boolean quietly) {
+        getEntity().setParam(param, i, quietly);
     }
 
-    public void setParamDouble(PARAMETER param, double i, boolean quietly) {
-        entity.setParamDouble(param, i, quietly);
+    default void setParamDouble(PARAMETER param, double i, boolean quietly) {
+        getEntity().setParamDouble(param, i, quietly);
     }
 
-    public void setParameter(PARAMETER param, int i) {
-        entity.setParameter(param, i);
+    default void setParameter(PARAMETER param, int i) {
+        getEntity().setParameter(param, i);
     }
 
-    public void setParam(PARAMETER param, int i) {
-        entity.setParam(param, i);
+    default void setParam(PARAMETER param, int i) {
+        getEntity().setParam(param, i);
     }
 
-    public void setParam(String param, int i) {
-        entity.setParam(param, i);
+    default void setParam(String param, int i) {
+        getEntity().setParam(param, i);
     }
 
-    public void setParamMax(PARAMETER p, int i) {
-        entity.setParamMax(p, i);
+    default void setParamMax(PARAMETER p, int i) {
+        getEntity().setParamMax(p, i);
     }
 
-    public void setParamMin(PARAMETER p, int i) {
-        entity.setParamMin(p, i);
+    default void setParamMin(PARAMETER p, int i) {
+        getEntity().setParamMin(p, i);
     }
 
-    public String getDisplayedName() {
-        return entity.getDisplayedName();
+    default String getDisplayedName() {
+        return getEntity().getDisplayedName();
     }
 
-    public void modifyParameter(String param, String string) {
-        entity.modifyParameter(param, string);
+    default void modifyParameter(String param, String string) {
+        getEntity().modifyParameter(param, string);
     }
 
-    public void modifyParamByPercent(String param, String string) {
-        entity.modifyParamByPercent(param, string);
+    default void modifyParamByPercent(String param, String string) {
+        getEntity().modifyParamByPercent(param, string);
     }
 
-    public boolean setParam(PARAMETER param, String value, boolean quiety) {
-        return entity.setParam(param, value, quiety);
+    default boolean setParam(PARAMETER param, String value, boolean quiety) {
+        return getEntity().setParam(param, value, quiety);
     }
 
-    public void resetPercentages() {
-        entity.resetPercentages();
+    default void resetPercentages() {
+        getEntity().resetPercentages();
     }
 
-    public void resetCurrentValues() {
-        entity.resetCurrentValues();
+    default void resetCurrentValues() {
+        getEntity().resetCurrentValues();
     }
 
-    public void resetCurrentValue(PARAMETER base_p) {
-        entity.resetCurrentValue(base_p);
+    default void resetCurrentValue(PARAMETER base_p) {
+        getEntity().resetCurrentValue(base_p);
     }
 
-    public void resetPercentage(PARAMETER p) {
-        entity.resetPercentage(p);
+    default void resetPercentage(PARAMETER p) {
+        getEntity().resetPercentage(p);
     }
 
-    public boolean setParam(PARAMETER param, String value) {
-        return entity.setParam(param, value);
+    default boolean setParam(PARAMETER param, String value) {
+        return getEntity().setParam(param, value);
     }
 
-    public void setProperty(PROPERTY name, String value, boolean base) {
-        entity.setProperty(name, value, base);
+    default void setProperty(PROPERTY name, String value, boolean base) {
+        getEntity().setProperty(name, value, base);
     }
 
-    public void setProperty(String prop, String value) {
-        entity.setProperty(prop, value);
+    default void setProperty(String prop, String value) {
+        getEntity().setProperty(prop, value);
     }
 
-    public void setProperty(PROPERTY prop, String value) {
-        entity.setProperty(prop, value);
+    default void setProperty(PROPERTY prop, String value) {
+        getEntity().setProperty(prop, value);
     }
 
-    public void modifyProperty(MOD_PROP_TYPE p, PROPERTY prop, String value) {
-        entity.modifyProperty(p, prop, value);
+    default void modifyProperty(MOD_PROP_TYPE p, PROPERTY prop, String value) {
+        getEntity().modifyProperty(p, prop, value);
     }
 
-    public void removeLastPartFromProperty(PROPERTY prop) {
-        entity.removeLastPartFromProperty(prop);
+    default void removeLastPartFromProperty(PROPERTY prop) {
+        getEntity().removeLastPartFromProperty(prop);
     }
 
-    public void removeFromProperty(PROPERTY prop, String value) {
-        entity.removeFromProperty(prop, value);
+    default void removeFromProperty(PROPERTY prop, String value) {
+        getEntity().removeFromProperty(prop, value);
     }
 
-    public void appendProperty(PROPERTY prop, String value) {
-        entity.appendProperty(prop, value);
+    default void appendProperty(PROPERTY prop, String value) {
+        getEntity().appendProperty(prop, value);
     }
 
-    public boolean addOrRemoveProperty(PROPERTY prop, String value) {
-        return entity.addOrRemoveProperty(prop, value);
+    default boolean addOrRemoveProperty(PROPERTY prop, String value) {
+        return getEntity().addOrRemoveProperty(prop, value);
     }
 
-    public boolean addProperty(PROPERTY prop, String value) {
-        return entity.addProperty(prop, value);
+    default boolean addProperty(PROPERTY prop, String value) {
+        return getEntity().addProperty(prop, value);
     }
 
-    public boolean addProperty(PROPERTY prop, List<String> values, boolean noDuplicates) {
-        return entity.addProperty(prop, values, noDuplicates);
+    default boolean addProperty(PROPERTY prop, List<String> values, boolean noDuplicates) {
+        return getEntity().addProperty(prop, values, noDuplicates);
     }
 
-    public boolean addProperty(PROPERTY prop, String value, boolean noDuplicates) {
-        return entity.addProperty(prop, value, noDuplicates);
+    default boolean addProperty(PROPERTY prop, String value, boolean noDuplicates) {
+        return getEntity().addProperty(prop, value, noDuplicates);
     }
 
-    public boolean addProperty(PROPERTY prop, String value, boolean noDuplicates, boolean addInFront) {
-        return entity.addProperty(prop, value, noDuplicates, addInFront);
+    default boolean addProperty(PROPERTY prop, String value, boolean noDuplicates, boolean addInFront) {
+        return getEntity().addProperty(prop, value, noDuplicates, addInFront);
     }
 
-    public void putProperty(PROPERTY prop, String value) {
-        entity.putProperty(prop, value);
+    default void putProperty(PROPERTY prop, String value) {
+        getEntity().putProperty(prop, value);
     }
 
-    public void putParameter(PARAMETER param, String value) {
-        entity.putParameter(param, value);
+    default void putParameter(PARAMETER param, String value) {
+        getEntity().putParameter(param, value);
     }
 
-    public boolean isTypeLinked() {
-        return entity.isTypeLinked();
+    default boolean isTypeLinked() {
+        return getEntity().isTypeLinked();
     }
 
-    public void addProperty(String prop, String value) {
-        entity.addProperty(prop, value);
+    default void addProperty(String prop, String value) {
+        getEntity().addProperty(prop, value);
     }
 
-    public boolean clearProperty(PROPERTY prop) {
-        return entity.clearProperty(prop);
+    default boolean clearProperty(PROPERTY prop) {
+        return getEntity().clearProperty(prop);
     }
 
-    public boolean removeProperty(PROPERTY prop) {
-        return entity.removeProperty(prop);
+    default boolean removeProperty(PROPERTY prop) {
+        return getEntity().removeProperty(prop);
     }
 
-    public boolean removeProperty(PROPERTY prop, String value) {
-        return entity.removeProperty(prop, value);
+    default boolean removeProperty(PROPERTY prop, String value) {
+        return getEntity().removeProperty(prop, value);
     }
 
-    public boolean removeProperty(PROPERTY prop, String value, boolean all) {
-        return entity.removeProperty(prop, value, all);
+    default boolean removeProperty(PROPERTY prop, String value, boolean all) {
+        return getEntity().removeProperty(prop, value, all);
     }
 
-    public boolean removeMultiProp(String prop, String value, boolean all) {
-        return entity.removeMultiProp(prop, value, all);
+    default boolean removeMultiProp(String prop, String value, boolean all) {
+        return getEntity().removeMultiProp(prop, value, all);
     }
 
-    public String getSubGroupingKey() {
-        return entity.getSubGroupingKey();
+    default String getSubGroupingKey() {
+        return getEntity().getSubGroupingKey();
     }
 
-    public boolean isSetThis() {
-        return entity.isSetThis();
+    default boolean isSetThis() {
+        return getEntity().isSetThis();
     }
 
-    public void setValue(VALUE valName, String value) {
-        entity.setValue(valName, value);
+    default void setValue(VALUE valName, String value) {
+        getEntity().setValue(valName, value);
     }
 
-    public void setValue(VALUE valName, String value, boolean base) {
-        entity.setValue(valName, value, base);
+    default void setValue(VALUE valName, String value, boolean base) {
+        getEntity().setValue(valName, value, base);
     }
 
-    public void setValue(String name, String value) {
-        entity.setValue(name, value);
+    default void setValue(String name, String value) {
+        getEntity().setValue(name, value);
     }
 
-    public void setValue(String name, String value, boolean base) {
-        entity.setValue(name, value, base);
+    default void setValue(String name, String value, boolean base) {
+        getEntity().setValue(name, value, base);
     }
 
-    public void cloneMaps(Entity type) {
-        entity.cloneMaps(type);
+    default void cloneMaps(Entity type) {
+        getEntity().cloneMaps(type);
     }
 
-    public void mergeValues(Entity type, VALUE... vals) {
-        entity.mergeValues(type, vals);
+    default void mergeValues(Entity type, VALUE... vals) {
+        getEntity().mergeValues(type, vals);
     }
 
-    public void addParam(PARAMETER parameter, String param, boolean base) {
-        entity.addParam(parameter, param, base);
+    default void addParam(PARAMETER parameter, String param, boolean base) {
+        getEntity().addParam(parameter, param, base);
     }
 
-    public void copyValues(Entity type, List<VALUE> list) {
-        entity.copyValues(type, list);
+    default void copyValues(Entity type, List<VALUE> list) {
+        getEntity().copyValues(type, list);
     }
 
-    public void copyValues(Entity type, VALUE... vals) {
-        entity.copyValues(type, vals);
+    default void copyValues(Entity type, VALUE... vals) {
+        getEntity().copyValues(type, vals);
     }
 
-    public void cloneMapsWithExceptions(Entity type, VALUE... exceptions) {
-        entity.cloneMapsWithExceptions(type, exceptions);
+    default void cloneMapsWithExceptions(Entity type, VALUE... exceptions) {
+        getEntity().cloneMapsWithExceptions(type, exceptions);
     }
 
-    public ParamMap cloneParamMap(Map<PARAMETER, String> map) {
-        return entity.cloneParamMap(map);
+    default ParamMap cloneParamMap(Map<PARAMETER, String> map) {
+        return getEntity().cloneParamMap(map);
     }
 
-    public PropMap clonePropMap(Map<PROPERTY, String> map) {
-        return entity.clonePropMap(map);
+    default PropMap clonePropMap(Map<PROPERTY, String> map) {
+        return getEntity().clonePropMap(map);
     }
 
-    public Integer getId() {
-        return entity.getId();
+    default Integer getId() {
+        return getEntity().getId();
     }
 
-    public void setId(Integer id) {
-        entity.setId(id);
+    default void setId(Integer id) {
+        getEntity().setId(id);
     }
 
-    public String getNameIfKnown() {
-        return entity.getNameIfKnown();
+    default String getNameIfKnown() {
+        return getEntity().getNameIfKnown();
     }
 
-    public String getName() {
-        return entity.getName();
+    default String getName() {
+        return getEntity().getName();
     }
 
-    public void setName(String name) {
-        entity.setName(name);
+    default void setName(String name) {
+        getEntity().setName(name);
     }
 
-    public String getUniqueId() {
-        return entity.getUniqueId();
+    default String getUniqueId() {
+        return getEntity().getUniqueId();
     }
 
-    public boolean isConstructed() {
-        return entity.isConstructed();
+    default boolean isConstructed() {
+        return getEntity().isConstructed();
     }
 
-    public void setConstructed(boolean b) {
-        entity.setConstructed(b);
+    default void setConstructed(boolean b) {
+        getEntity().setConstructed(b);
     }
 
-    public boolean isDirty() {
-        return entity.isDirty();
+    default boolean isDirty() {
+        return getEntity().isDirty();
     }
 
-    public void setDirty(boolean dirty) {
-        entity.setDirty(dirty);
+    default void setDirty(boolean dirty) {
+        getEntity().setDirty(dirty);
     }
 
-    public boolean isPassivesReady() {
-        return entity.isPassivesReady();
+    default boolean isPassivesReady() {
+        return getEntity().isPassivesReady();
     }
 
-    public void setPassivesReady(boolean passivesReady) {
-        entity.setPassivesReady(passivesReady);
+    default void setPassivesReady(boolean passivesReady) {
+        getEntity().setPassivesReady(passivesReady);
     }
 
-    public boolean isActivesReady() {
-        return entity.isActivesReady();
+    default boolean isActivesReady() {
+        return getEntity().isActivesReady();
     }
 
-    public void setActivesReady(boolean activesReady) {
-        entity.setActivesReady(activesReady);
+    default void setActivesReady(boolean activesReady) {
+        getEntity().setActivesReady(activesReady);
     }
 
-    public boolean checkBool(DYNAMIC_BOOLS bool) {
-        return entity.checkBool(bool);
+    default boolean checkBool(DYNAMIC_BOOLS bool) {
+        return getEntity().checkBool(bool);
     }
 
-    public boolean checkBool(STD_BOOLS bool) {
-        return entity.checkBool(bool);
+    default boolean checkBool(STD_BOOLS bool) {
+        return getEntity().checkBool(bool);
     }
 
 
-    public void removed() {
-        entity.removed();
+    default void removed() {
+        getEntity().removed();
     }
 
-    public boolean isInitialized() {
-        return entity.isInitialized();
+    default boolean isInitialized() {
+        return getEntity().isInitialized();
     }
 
-    public void setInitialized(boolean initialized) {
-        entity.setInitialized(initialized);
+    default void setInitialized(boolean initialized) {
+        getEntity().setInitialized(initialized);
     }
 
-    public String getNameOrId() {
-        return entity.getNameOrId();
+    default String getNameOrId() {
+        return getEntity().getNameOrId();
     }
 
-    public String getRawValue(VALUE value) {
-        return entity.getRawValue(value);
+    default String getRawValue(VALUE value) {
+        return getEntity().getRawValue(value);
     }
 
-    public XLinkedMap<VALUE, String> getRawValues() {
-        return entity.getRawValues();
+    default XLinkedMap<VALUE, String> getRawValues() {
+        return getEntity().getRawValues();
     }
 
-    public void setRawValues(XLinkedMap<VALUE, String> rawValues) {
-        entity.setRawValues(rawValues);
+    default void setRawValues(XLinkedMap<VALUE, String> rawValues) {
+        getEntity().setRawValues(rawValues);
     }
 
-    public boolean isDefaultValuesInitialized() {
-        return entity.isDefaultValuesInitialized();
+    default boolean isDefaultValuesInitialized() {
+        return getEntity().isDefaultValuesInitialized();
     }
 
-    public void setDefaultValuesInitialized(boolean defaultValuesInitialized) {
-        entity.setDefaultValuesInitialized(defaultValuesInitialized);
+    default void setDefaultValuesInitialized(boolean defaultValuesInitialized) {
+        getEntity().setDefaultValuesInitialized(defaultValuesInitialized);
     }
 
-    public void cloned() {
-        entity.cloned();
+    default void cloned() {
+        getEntity().cloned();
     }
 
-    public int getLevel() {
-        return entity.getLevel();
+    default int getLevel() {
+        return getEntity().getLevel();
     }
 
-    public String getOriginalName() {
-        return entity.getOriginalName();
+    default String getOriginalName() {
+        return getEntity().getOriginalName();
     }
 
-    public void setOriginalName(String originalName) {
-        entity.setOriginalName(originalName);
+    default void setOriginalName(String originalName) {
+        getEntity().setOriginalName(originalName);
     }
 
 
-    public WORKSPACE_GROUP getWorkspaceGroup() {
-        return entity.getWorkspaceGroup();
+    default WORKSPACE_GROUP getWorkspaceGroup() {
+        return getEntity().getWorkspaceGroup();
     }
 
-    public void setWorkspaceGroup(WORKSPACE_GROUP value) {
-        entity.setWorkspaceGroup(value);
+    default void setWorkspaceGroup(WORKSPACE_GROUP value) {
+        getEntity().setWorkspaceGroup(value);
     }
 
-    public int getTypeId() {
-        return entity.getTypeId();
+    default int getTypeId() {
+        return getEntity().getTypeId();
     }
 
-    public List<ObjType> getListFromProperty(OBJ_TYPE TYPE, PROPERTY prop) {
-        return entity.getListFromProperty(TYPE, prop);
+    default List<ObjType> getListFromProperty(OBJ_TYPE TYPE, PROPERTY prop) {
+        return getEntity().getListFromProperty(TYPE, prop);
     }
 
-    public void resetPropertyFromList(PROPERTY prop, List<? extends Entity> list) {
-        entity.resetPropertyFromList(prop, list);
+    default void resetPropertyFromList(PROPERTY prop, List<? extends Entity> list) {
+        getEntity().resetPropertyFromList(prop, list);
     }
 
-    public HashMap<PROPERTY, Map<String, Boolean>> getPropCache() {
-        return entity.getPropCache();
+    default HashMap<PROPERTY, Map<String, Boolean>> getPropCache() {
+        return getEntity().getPropCache();
     }
 
-    public int getSumOfParams(PARAMETER... params) {
-        return entity.getSumOfParams(params);
+    default int getSumOfParams(PARAMETER... params) {
+        return getEntity().getSumOfParams(params);
     }
+
+   E getEntity();
+
 }

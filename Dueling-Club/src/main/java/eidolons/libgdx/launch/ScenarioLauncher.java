@@ -3,8 +3,8 @@ package eidolons.libgdx.launch;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.SCREEN_TYPE;
+import eidolons.libgdx.screens.ScreenData;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
@@ -55,7 +55,6 @@ public class ScenarioLauncher {
         //new SceneFactory("Test")
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         DC_Engine.gameStartInit();
-        Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
         Eidolons.mainGame.getMetaMaster().getGame().battleInit();
         Eidolons.mainGame.getMetaMaster().getGame().start(true);
 

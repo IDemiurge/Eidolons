@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.game.DC_Game;
@@ -192,11 +193,19 @@ public abstract class GenericDungeonScreen extends GameScreen {
 
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = createGrid(param);
-
+        Module module = DC_Game.game.getModule();
+        moduleEntered(module); //TODO
         //do not chain - will fail ...
+        if (!CoreEngine.isLevelEditor())
+            param.getObjects().removeIf(obj -> !module.getCoordinatesSet().
+                    contains(obj.getCoordinates()));
         gridPanel.init(param.getObjects());
-
+        gridPanel.afterInit();
         gridStage.addActor(gridPanel);
+    }
+
+    public void moduleEntered(Module module) {
+        gridPanel.setModule(module);
     }
 
     @Override

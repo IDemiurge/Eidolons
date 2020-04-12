@@ -1,4 +1,4 @@
-package eidolons.libgdx.bf.grid;
+package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -90,7 +90,7 @@ public class UnitView extends BaseView implements HpBarView {
 
     }
 
-    protected void updateModeImage(String pathToImage) {
+    public void updateModeImage(String pathToImage) {
         if (StringMaster.isEmpty(pathToImage)) {
 
             modeImage.setImage("ui/really empty 32.png");
@@ -236,7 +236,7 @@ public class UnitView extends BaseView implements HpBarView {
                         : null, true);
     }
 
-    protected void setPortraitTexture(TextureRegion textureRegion) {
+    public void setPortraitTexture(TextureRegion textureRegion) {
         getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
     }
 

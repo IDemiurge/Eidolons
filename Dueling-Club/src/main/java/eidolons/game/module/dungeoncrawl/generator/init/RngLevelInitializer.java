@@ -68,30 +68,31 @@ public class RngLevelInitializer {
                 entrance.getZone().getStyle()).getRandomByWeight());
     }
 
+    @Deprecated
     private void assignBlockTileMaps(DungeonLevel level) {
         TileMap map = level.getTileMap();
         ROOM_CELL[][] cells = TileMapper.getCells(map);
         for (Module module : level.getSubParts()) {
-        for (LevelZone zone : module.getSubParts()) {
-            for (LevelBlock block : zone.getSubParts()) {
-                int w = CoordinatesMaster.getWidth(block.getCoordinatesSet());
-                int h = CoordinatesMaster.getHeight(block.getCoordinatesSet());
-                Map<Coordinates, ROOM_CELL> cellMap = new LinkedHashMap<>();
-                for (Coordinates coordinates : block.getCoordinatesSet()) {
-                    try {
-                        cellMap.put(coordinates, cells[coordinates.x][coordinates.y]);
-                    } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
+            for (LevelZone zone : module.getSubParts()) {
+                for (LevelBlock block : zone.getSubParts()) {
+                    int w = CoordinatesMaster.getWidth(block.getCoordinatesSet());
+                    int h = CoordinatesMaster.getHeight(block.getCoordinatesSet());
+                    Map<Coordinates, ROOM_CELL> cellMap = new LinkedHashMap<>();
+                    for (Coordinates coordinates : block.getCoordinatesSet()) {
+                        try {
+                            cellMap.put(coordinates, cells[coordinates.x][coordinates.y]);
+                        } catch (Exception e) {
+                            main.system.ExceptionMaster.printStackTrace(e);
+                        }
                     }
-                }
-                TileMap subMap = new TileMap(cellMap);
+                    TileMap subMap = new TileMap(cellMap);
 
-                block.setTileMap(subMap);
-                block.setWidth(w);
-                block.setHeight(h);
-                block.setOrigin(CoordinatesMaster.
-                        getUpperLeftCornerCoordinates(block.getCoordinatesSet()));
-            }
+                    block.setTileMap(subMap);
+                    block.setWidth(w);
+                    block.setHeight(h);
+                    block.setOrigin(CoordinatesMaster.
+                            getUpperLeftCornerCoordinates(block.getCoordinatesSet()));
+                }
             }
         }
     }
@@ -114,10 +115,10 @@ public class RngLevelInitializer {
 //                addObj(block, type.getType(), block.getBoundCells().get(c));
 //            }
 //        }
-    //        addLocks();
-    //        setupAiGroups();
-    //        saveLevel();
-}
+        //        addLocks();
+        //        setupAiGroups();
+        //        saveLevel();
+    }
 
     private void createEntity(Coordinates c, ROOM_CELL value, LevelBlock block) {
         //just write into new xml?
@@ -161,7 +162,7 @@ public class RngLevelInitializer {
     }
 
     private ObjType chooseType(Coordinates c, ROOM_CELL value, LevelBlock block) {
-        return RngTypeChooser.chooseType(c, value, block, dungeonLevel);
+        return RngTypeChooser.chooseType(c, value, block);
     }
 
 

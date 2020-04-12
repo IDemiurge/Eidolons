@@ -36,7 +36,7 @@ import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.audio.SoundPlayer;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.datasource.SpriteData;
-import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.particles.ParticlesSprite.PARTICLES_SPRITE;
 import eidolons.libgdx.particles.spell.SpellVfxMaster;
 import eidolons.libgdx.screens.ScreenMaster;

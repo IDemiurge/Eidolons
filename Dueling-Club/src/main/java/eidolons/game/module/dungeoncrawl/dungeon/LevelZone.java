@@ -1,8 +1,6 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
-import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Zone;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
@@ -20,7 +18,7 @@ import java.util.Set;
 /**
  * Created by JustMe on 7/20/2018.
  */
-public class LevelZone extends LevelStruct<LevelBlock> {
+public class LevelZone extends LevelStruct<LevelBlock, LevelBlock> {
 
     int id;
     List<LevelGraphNode> nodes = new ArrayList<>();
@@ -113,11 +111,6 @@ public class LevelZone extends LevelStruct<LevelBlock> {
 
     public ZoneData getData() {
         return (ZoneData) super.getData();
-    }
-
-    @Override
-    public StructureData createData() {
-        return new ZoneData(new LE_Zone(this));
     }
 
     public Module getModule() {

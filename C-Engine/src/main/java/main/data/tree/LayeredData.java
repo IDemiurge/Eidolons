@@ -1,10 +1,10 @@
 package main.data.tree;
 
-import java.util.Set;
+import java.util.Collection;
 
-public interface LayeredData<T extends LayeredData> {
+public interface LayeredData<T> {
 
-    Set<T> getChildren();
+    Collection<T> getChildren();
 
     default Object getLevelLayer() {
         return null;

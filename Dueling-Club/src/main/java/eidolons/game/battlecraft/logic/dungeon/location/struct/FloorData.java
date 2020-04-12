@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
@@ -10,9 +10,9 @@ import main.system.GuiEventType;
 
 import static eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.FLOOR_VALUES;
 
-public class FloorData extends StructureData<FLOOR_VALUES, LE_Floor> {
+public class FloorData extends StructureData<FLOOR_VALUES, Location> {
 
-    public FloorData(LE_Floor structure) {
+    public FloorData(Location structure) {
         super(structure);
     }
 
@@ -31,7 +31,7 @@ public class FloorData extends StructureData<FLOOR_VALUES, LE_Floor> {
 
     @Override
     public LevelStruct getLevelStruct() {
-        return DC_Game.game.getDungeonMaster().getDungeonLevel();
+        return DC_Game.game.getDungeonMaster().getDungeonWrapper();
     }
 
     @Override

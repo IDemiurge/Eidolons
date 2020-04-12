@@ -61,12 +61,12 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         int offsetY = 0;
         for (int i = 1; i <= p.x; i++) {
             Module relativeTo = moduleGrid.get(new Point(p.x - i, p.y));
-            int w = relativeTo.getWidth() + relativeTo.getData().getIntValue(MODULE_VALUE.border_width);
+            int w = relativeTo.getEffectiveWidth(true);
             offsetX += w;
         }
         for (int i = 1; i <= p.y; i++) {
             Module relativeTo = moduleGrid.get(new Point(p.x, p.y - i));
-            int h = relativeTo.getHeight() + relativeTo.getData().getIntValue(MODULE_VALUE.border_width);
+            int h = relativeTo.getEffectiveHeight(true);
             offsetY += h;
         }
 

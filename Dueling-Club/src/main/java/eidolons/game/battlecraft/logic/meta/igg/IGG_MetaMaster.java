@@ -159,7 +159,6 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
         Eidolons.mainGame.getMetaMaster().getGame().initMasters();
 
 
-        Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
         Eidolons.mainGame.getMetaMaster().getGame().battleInit();
         Eidolons.mainGame.getMetaMaster().getGame().start(restart);
 
@@ -176,9 +175,7 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
 
     @Override
     protected boolean isTownEnabled() {
-        if (getMetaGame().getMission().isTown())
-            return true;
-        return false;
+        return getMetaGame().getMission().isTown();
     }
 
     public boolean isCustomQuestsEnabled() {

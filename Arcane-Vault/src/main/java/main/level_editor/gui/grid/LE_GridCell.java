@@ -12,7 +12,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.bf.grid.GridCellContainer;
+import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.gui.LabelX;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.display.LE_DisplayMode;

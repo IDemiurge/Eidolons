@@ -3,9 +3,10 @@ package main.level_editor.backend.functions.io;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import main.data.xml.XML_Converter;
@@ -28,19 +29,15 @@ public class LE_XmlMaster {
     public static String toXml(BossDungeon dungeon) {
 
         StringBuilder xmlBuilder = new StringBuilder();
-        for (LE_Floor floor : dungeon.getFloors()) {
-            xmlBuilder.append(toXml(floor));
-
-        }
 
 
         return xmlBuilder.toString();
     }
 
-    public static String toXml(LE_Floor floor ) {
+    public static String toXml(Location floor ) {
         return toXml(floor, null);
     }
-    public static String toXml(LE_Floor floor, Module standalone) {
+    public static String toXml(Location floor, Module standalone) {
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
         Function<Integer, Boolean> idFilter =getIdFilter(standalone);
 
@@ -163,7 +160,7 @@ public class LE_XmlMaster {
 
         xmlBuilder.append("\n").open(FloorLoader.COORDINATES_VOID);
         for (Coordinates coordinates : module.getCoordinatesSet()) {
-            DC_Cell cell = module.getFloor().getGame().getCellByCoordinate(coordinates);
+            DC_Cell cell = DC_Game.game.getCellByCoordinate(coordinates);
             if (cell.isVOID()) {
                 xmlBuilder.append(cell.getCoordinates().toString()).append(";");
             }

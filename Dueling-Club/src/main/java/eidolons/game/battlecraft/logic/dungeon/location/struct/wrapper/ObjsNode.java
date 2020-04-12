@@ -6,6 +6,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.content.DC_TYPE;
 import main.data.tree.LayeredData;
 
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,7 +32,7 @@ public class ObjsNode  implements LayeredData<ObjNode>{
         return block.getCoordinatesSet().contains(obj.getCoordinates());
     }
     @Override
-    public Set<ObjNode> getChildren() {
+    public Collection<ObjNode> getChildren() {
         return objs;
     }
 }

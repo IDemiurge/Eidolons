@@ -1,7 +1,6 @@
 package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.content.PROPS;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
@@ -37,7 +36,7 @@ public class RngTypeChooser {
 
     public static ObjType chooseType(Coordinates c,
                                      ROOM_CELL value,
-                                     LevelBlock block, DungeonLevel dungeonLevel) {
+                                     LevelBlock block ) {
         value = checkRandomCellResolves(value);
         if (!isCellTranslated(value))
             return null;

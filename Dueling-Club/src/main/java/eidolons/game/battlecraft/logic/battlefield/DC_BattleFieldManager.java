@@ -12,6 +12,7 @@ import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldManager;
 import main.game.bf.Coordinates;
+import main.game.bf.GraveyardManager;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.system.GuiEventManager;
@@ -25,7 +26,7 @@ import java.util.*;
  * Supposed to provide all Grid-relevant data and methods for changing it
  * TODO extract gameManager into here!
  */
-public class DC_BattleFieldManager extends BattleFieldManager {
+public class DC_BattleFieldManager extends BattleFieldManager   {
 
     private DC_Game game;
     private Map<Coordinates, List<DIRECTION>> wallMap;
@@ -35,9 +36,12 @@ public class DC_BattleFieldManager extends BattleFieldManager {
     private boolean wallResetRequired = true;
     private Map<Coordinates, DOOR_STATE> doorMap = new HashMap<>();
 
+    DroppedItemManager droppedItemManager;
+    GraveyardManager graveyardManager;
+    CoordinatesMaster coordinatesMaster;
 
-    public DC_BattleFieldManager(DC_Game game) {
-        super(game);
+    public DC_BattleFieldManager(DC_Game game, Integer id, int w, int h) {
+        super(game, id, w, h);
         this.game = game;
     }
 
@@ -94,14 +98,11 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         Map<Coordinates, BattleFieldObject> wallObjects = new HashMap<>();
         for (Obj obj : game.getObjects(DC_TYPE.BF_OBJ)) {
             BattleFieldObject bfObj = (BattleFieldObject) obj;
-            if (bfObj.getZ() == game.getDungeon().getZ()) {
                 if (bfObj.isWall()) {
                     wallObjects.put(obj.getCoordinates(), bfObj);
                 }
                 if (bfObj instanceof Door) {
                     doorMap.put(obj.getCoordinates(), ((Door) bfObj).getState());
-
-                }
             }
         }
         if (wallMap == null) {

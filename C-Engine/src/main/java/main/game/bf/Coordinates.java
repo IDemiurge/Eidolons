@@ -17,23 +17,19 @@ import java.util.Set;
 
 public class Coordinates implements Serializable {
 
-    private static final int MAX_WIDTH = 200;
-    private static final int MAX_HEIGHT = 200;
-    private static Coordinates[][] coordinates = new Coordinates[MAX_WIDTH][MAX_HEIGHT];
-    private static boolean flipX;
-    private static boolean flipY;
-    private static boolean rotate;
-    private static Map<Coordinates, Map<DIRECTION, Coordinates>> adjacenctDirectionMap = new HashMap<>();
-    private static Map<Coordinates, Set<Coordinates>> adjacenctMap = new HashMap<>();
-    private static Map<Coordinates, Set<Coordinates>> adjacenctMapNoDiags = new HashMap<>();
-    private static Map<Coordinates, Set<Coordinates>> adjacenctMapDiagsOnly = new HashMap<>();
+
+    public static Coordinates[][] coordinates = new Coordinates[100][100];
     public int x;
     public int y;
-    protected int z = 0;
+
     protected Coordinates[] adjacent;
     protected Coordinates[] adjacenctNoDiags;
     protected Coordinates[] adjacenctDiagsOnly;
     private boolean invalid = false;
+
+    private static boolean flipX;
+    private static boolean flipY;
+    private static boolean rotate;
 
     public Coordinates() {
         this.x = 0;
@@ -77,13 +73,13 @@ public class Coordinates implements Serializable {
     }
 
     public static void resetCaches() {
-        adjacenctDirectionMap.clear();
-        adjacenctMap.clear();
-        adjacenctMapNoDiags.clear();
-        adjacenctMapDiagsOnly.clear();
-        int w = GuiManager.getBF_CompDisplayedCellsX();
-        int h = GuiManager.getBF_CompDisplayedCellsY();
-        coordinates = new Coordinates[MAX_WIDTH][MAX_HEIGHT]; //just in case... memory be damned
+//    TODO     adjacenctDirectionMap.clear();
+//        adjacenctMap.clear();
+//        adjacenctMapNoDiags.clear();
+//        adjacenctMapDiagsOnly.clear();
+//        int w = GuiManager.getBF_CompDisplayedCellsX();
+//        int h = GuiManager.getBF_CompDisplayedCellsY();
+//        coordinates = new Coordinates[MAX_WIDTH][MAX_HEIGHT]; //just in case... memory be damned
 
     }
 
@@ -92,15 +88,6 @@ public class Coordinates implements Serializable {
 
     }
 
-    public static Map<Coordinates, Map<DIRECTION, Coordinates>> getAdjacenctDirectionMap() {
-        return adjacenctDirectionMap;
-    }
-
-    public static Map<Coordinates, Set<Coordinates>> getAdjacenctMap(Boolean diags) {
-        if (diags != null)
-            return diags ? adjacenctMap : adjacenctMapNoDiags;
-        return adjacenctMapDiagsOnly;
-    }
 
     public static boolean withinBounds(int x, int y) {
         if (x < 0) {
@@ -240,7 +227,7 @@ public class Coordinates implements Serializable {
         //        }
         if (arg0 instanceof Coordinates) {
             Coordinates c = (Coordinates) arg0;
-            return c.x == x && c.y == y && c.z == z;
+            return c.x == x && c.y == y;
         }
         return false;
     }
@@ -295,7 +282,7 @@ public class Coordinates implements Serializable {
     }
 
     public Coordinates getAdjacentCoordinate(boolean allowInvalid, DIRECTION direction) {
-        Map<DIRECTION, Coordinates> map = getAdjacenctDirectionMap().get(this);
+        Map<DIRECTION, Coordinates> map = BattleFieldManager.getInstance().getAdjacenctDirectionMap().get(this);
         Coordinates c = null;
         if (map == null) {
             map = new HashMap<>();
@@ -348,7 +335,7 @@ public class Coordinates implements Serializable {
             }
         c = create(allowInvalid, x1, y1);
         map.put(direction, c);
-        getAdjacenctDirectionMap().put(this, map);
+       BattleFieldManager.getInstance().getAdjacenctDirectionMap().put(this, map);
         return c;
     }
 
@@ -439,7 +426,7 @@ public class Coordinates implements Serializable {
 
     public Set<Coordinates> getAdjacentCoordinates(Boolean diagonals_included_not_only) {
 
-        Set<Coordinates> set = getAdjacenctMap(diagonals_included_not_only).get(this);
+        Set<Coordinates> set = BattleFieldManager.getInstance().getAdjacenctMap(diagonals_included_not_only).get(this);
         if (set != null)
             return set;
         set = new HashSet<>();
@@ -452,7 +439,7 @@ public class Coordinates implements Serializable {
         } else {
             set.addAll(getAdjacentDiagonal());
         }
-        getAdjacenctMap(diagonals_included_not_only).put(this, set);
+        BattleFieldManager.getInstance().getAdjacenctMap(diagonals_included_not_only).put(this, set);
         return set;
 
     }

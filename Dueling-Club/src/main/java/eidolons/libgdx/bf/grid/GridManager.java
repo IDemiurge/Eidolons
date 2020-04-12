@@ -26,6 +26,9 @@ import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.bf.grid.cell.BaseView;
+import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.HpBarView;
 import eidolons.libgdx.bf.grid.comment.CommentData;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.bf.overlays.HpBarManager;
@@ -79,7 +82,7 @@ public class GridManager {
     private List<Runnable> commentRunnables =    new ArrayList<>() ;
 
     public GridManager(DC_GridPanel panel) {
-        this.instance = this;
+        instance = this;
         this.panel = panel;
         GuiEventManager.bind(INGAME_EVENT_TRIGGERED, onIngameEvent());
 

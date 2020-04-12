@@ -16,7 +16,7 @@ import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.anims.sprite.FadeSprite;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.bf.grid.OverlayView;
+import eidolons.libgdx.bf.grid.cell.OverlayView;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
@@ -28,8 +28,8 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * Created by JustMe on 9/1/2018.

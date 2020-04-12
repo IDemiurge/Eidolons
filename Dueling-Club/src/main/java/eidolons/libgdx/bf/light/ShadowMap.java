@@ -9,6 +9,7 @@ import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -16,6 +17,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.grid.sub.GridElement;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.GenericEnums;
@@ -35,16 +37,12 @@ import static eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL.*;
 /**
  * Created by JustMe on 8/16/2017.
  */
-public class ShadowMap extends GroupX {
+public class ShadowMap extends GroupX implements GridElement {
 
-    public static final SHADE_CELL[] SHADE_CELL_VALUES = {
-            VOID,
-            GAMMA_SHADOW,
-            GAMMA_LIGHT,
-            LIGHT_EMITTER,
-            BLACKOUT,
-            HIGLIGHT
-    };
+    protected int cols;
+    protected int rows;
+    private int x1, x2, y1, y2;
+
     private static final Color DEFAULT_COLOR = new Color(1, 0.9f, 0.7f, 1);
     private static boolean on = true;
     private GridPanel grid;
@@ -53,12 +51,9 @@ public class ShadowMap extends GroupX {
 
     public ShadowMap(GridPanel grid) {
         this.grid = grid;
+        bindEvents();
         setSize(grid.getWidth(), grid.getHeight());
-        try {
-            init();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+        emitters = new List[grid.getCols()][grid.getRows()];
         setTransform(false);
     }
 
@@ -79,25 +74,6 @@ public class ShadowMap extends GroupX {
         return 0.8f;
     }
 
-    public static ALPHA_TEMPLATE getTemplateForShadeLight(SHADE_CELL type) {
-        switch (type) {
-            case VOID:
-                return null;
-            case GAMMA_SHADOW:
-                return GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_GAMMA_SHADOW;
-            case GAMMA_LIGHT:
-                return GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_GAMMA_LIGHT;
-            case LIGHT_EMITTER:
-                return GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_LIGHT_EMITTER;
-            case CONCEALMENT:
-            case BLACKOUT:
-                break;
-            case HIGLIGHT:
-                return GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_HIGHLIGHT;
-        }
-        return GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_MAP;
-    }
-
     public static Color getLightColor(BattleFieldObject userObject) {
 
         CONTENT_CONSTS.COLOR_THEME colorTheme = null;
@@ -108,7 +84,7 @@ public class ShadowMap extends GroupX {
         }
         if (colorTheme == null) {
             Dungeon obj = Eidolons.game.getDungeon();
-            colorTheme = obj.getColorTheme();
+//            colorTheme = obj.getColorTheme();
         }
 
         Color c = null;
@@ -133,9 +109,21 @@ public class ShadowMap extends GroupX {
         super.act(delta);
     }
 
+    @Override
+    public void setModule(Module module) {
+        x1 = module.getOrigin().x;
+        y1 =  module.getOrigin().y;
+        cols = module.getEffectiveWidth();
+        rows = module.getEffectiveHeight();
+        x2 = cols +  module.getOrigin().x;
+        y2 = rows +  module.getOrigin().y;
+        try {
+            init();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+    }
     private void init() {
-        setSize(grid.getWidth(), grid.getHeight());
-        emitters = new List[grid.getCols()][grid.getRows()];
         for (SHADE_CELL type : SHADE_CELL_VALUES) {
 //            if (type == VOID) {
 //                if (EidolonsGame.BOSS_FIGHT)
@@ -143,8 +131,8 @@ public class ShadowMap extends GroupX {
 //            }
             getCells().put(type, new ShadeLightCell[grid.getCols()][grid.getRows()]);
 
-            for (int x = 0; x < grid.getCols(); x++) {
-                for (int y = 0; y < grid.getRows(); y++) {
+            for (int x = x1; x < x2; x++) {
+                for (int y = y1; y < y2; y++) {
                     if (grid.getCells()[x][y] == null) {
                         if (type != VOID)
                             continue;
@@ -191,7 +179,6 @@ public class ShadowMap extends GroupX {
                 }
             }
         }
-        bindEvents();
         //        update();
 
     }
@@ -335,6 +322,34 @@ public class ShadowMap extends GroupX {
         }
 
     }
+
+    public static final SHADE_CELL[] SHADE_CELL_VALUES = {
+            VOID,
+            GAMMA_SHADOW,
+            GAMMA_LIGHT,
+            LIGHT_EMITTER,
+            BLACKOUT,
+            HIGLIGHT
+    };
+    public static ALPHA_TEMPLATE getTemplateForShadeLight(SHADE_CELL type) {
+        switch (type) {
+            case VOID:
+                return null;
+            case GAMMA_SHADOW:
+                return GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_GAMMA_SHADOW;
+            case GAMMA_LIGHT:
+                return GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_GAMMA_LIGHT;
+            case LIGHT_EMITTER:
+                return GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_LIGHT_EMITTER;
+            case CONCEALMENT:
+            case BLACKOUT:
+                break;
+            case HIGLIGHT:
+                return GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_HIGHLIGHT;
+        }
+        return GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_MAP;
+    }
+
 
     public enum SHADE_CELL {
         GAMMA_SHADOW(0.75f, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "shadow neu.png")),

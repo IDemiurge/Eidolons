@@ -4,7 +4,6 @@ import eidolons.ability.UnitTrainingMaster;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
 import eidolons.game.core.launch.LaunchDataKeeper;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;

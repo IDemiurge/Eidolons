@@ -138,7 +138,7 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
             for (String data : flipMap.keySet()) {
                 Coordinates c = getCoordinatesFromObjString(data);
                 FLIP d = flipMap.get(data);
-                for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(z, c, false, false, false)) {
+                for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(   c, false, false, false)) {
                     String name = getNameFromObjString(data);
                     if (name.contains(MULTI_DIRECTION_SUFFIX)) {
                         name = name.split(MULTI_DIRECTION_SUFFIX)[0];
@@ -164,7 +164,7 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
         for (String data : directionMap.keySet()) {
             Coordinates c = getCoordinatesFromObjString(data);
             DIRECTION d = directionMap.get(data);
-            for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(z, c, null, false, false)) {
+            for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(  c, null, false, false)) {
 
                 String name = getNameFromObjString(data);
                 if (name.contains(MULTI_DIRECTION_SUFFIX)) {

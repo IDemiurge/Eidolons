@@ -10,6 +10,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.datasource.GraphicData;
+import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.system.EventType;
 import main.system.GuiEventManager;

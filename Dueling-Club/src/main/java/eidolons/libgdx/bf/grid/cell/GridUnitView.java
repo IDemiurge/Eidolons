@@ -1,4 +1,4 @@
-package eidolons.libgdx.bf.grid;
+package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -15,6 +15,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
@@ -241,7 +242,7 @@ public class GridUnitView extends GenericGridView {
 
 
     @Override
-    protected void updateModeImage(String pathToImage) {
+    public void updateModeImage(String pathToImage) {
         super.updateModeImage(pathToImage);
         initiativeQueueUnitView.updateModeImage(pathToImage);
         modeImage.setPosition(0, 0);

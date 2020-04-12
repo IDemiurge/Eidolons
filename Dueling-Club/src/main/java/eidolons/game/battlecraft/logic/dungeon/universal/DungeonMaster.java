@@ -9,9 +9,9 @@ import eidolons.game.battlecraft.logic.dungeon.location.layer.LayerManager;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
 import eidolons.game.battlecraft.logic.dungeon.module.BridgeMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.battlecraft.logic.dungeon.module.ModuleLoader;
 import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
@@ -59,9 +59,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private Map<Integer, BattleFieldObject> objIdMap = new LinkedHashMap<>();
     private Map<Integer, ObjType> idTypeMap;
     private Map<DataMap, Map<Integer, String>> dataMaps;
-    private LE_Floor floor;
     private DC_ObjInitializer objInitializer;
     private StructureBuilder structureBuilder;
+    private ModuleLoader moduleLoader;
 
 
     public DungeonMaster(DC_Game game) {
@@ -86,6 +86,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
             interactiveMaster = new InteractiveObjMaster(this);
             puzzleMaster = new PuzzleMaster(this);
         }
+        moduleLoader = new ModuleLoader(this);
     }
     protected FloorLoader createFloorLoader() {
         return new FloorLoader(this);
@@ -105,7 +106,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     public void gameStarted() {
         if (isPuzzlesOn())
             try {
-                puzzleMaster.initPuzzles(getDungeon(), getDungeonLevel());
+                puzzleMaster.initPuzzles(getDungeon() );
             } catch (Exception e) {
                 ExceptionMaster.printStackTrace(e);
             }
@@ -328,14 +329,6 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         this.dataMaps = dataMaps;
     }
 
-    public void setFloor(LE_Floor floor) {
-        this.floor = floor;
-    }
-
-    public LE_Floor getFloor() {
-        return floor;
-    }
-
     public Module getModule() {
         return null;
     }
@@ -351,4 +344,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     public FloorLoader getFloorLoader() {
         return floorLoader;
     }
+
+    public ModuleLoader getModuleLoader() {
+        return moduleLoader;
+    }
+
 }

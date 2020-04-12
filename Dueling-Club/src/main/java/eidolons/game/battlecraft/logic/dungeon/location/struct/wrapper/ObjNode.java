@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper;
 import eidolons.entity.obj.BattleFieldObject;
 import main.data.tree.LayeredData;
 
-import java.util.Set;
+import java.util.Collection;
 
 public class ObjNode implements LayeredData {
 
@@ -18,7 +18,7 @@ public class ObjNode implements LayeredData {
     }
 
     @Override
-    public Set getChildren() {
+    public Collection getChildren() {
         return null;
     }
 

@@ -5,7 +5,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.bf.grid.cell.BaseView;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.system.GuiEventManager;

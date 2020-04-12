@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.content.PROPS;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
@@ -17,18 +18,15 @@ import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class Location extends DungeonWrapper {
+public class Location extends DungeonWrapper    {
 
-    private Integer nextZ;
-    private List<Dungeon> subLevels;
-    private Dungeon parent;
     private List<Entrance> entrances; //TODO
     private String entranceData;
     private Entrance mainEntrance;
@@ -153,34 +151,21 @@ public class Location extends DungeonWrapper {
         this.mainExit = mainExit;
     }
 
-
-    public void setEntranceData(String entranceData) {
-        this.entranceData = entranceData;
-    }
-
-    public List<Dungeon> getSubLevels() {
-        if (subLevels == null) {
-            subLevels = new ArrayList<>();
-        }
-        return subLevels;
-    }
-
-    public Dungeon getParent() {
-        return parent;
-    }
-
-    public void setParent(Dungeon parent) {
-        this.parent = parent;
-    }
-
     public void setUnitFacingMap(Map<Coordinates, FACING_DIRECTION> unitFacingMap) {
         this.unitFacingMap = unitFacingMap;
     }
 
-    public Map<Coordinates, FACING_DIRECTION> getUnitFacingMap() {
-        if (unitFacingMap == null) {
-            unitFacingMap = new HashMap<>();
-        }
-        return unitFacingMap;
+    @Override
+    public Collection<Module> getSubParts() {
+        return getModules();
+    }
+
+    @Override
+    public Collection<Module> getChildren() {
+        return getSubParts();
+    }
+
+    public Collection<Module> getModules() {
+        return getGame().getMetaMaster().getModuleMaster().getModules();
     }
 }

@@ -1,6 +1,5 @@
 package main.level_editor.backend.metadata.script;
 
-import eidolons.content.PROPS;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
@@ -36,7 +35,7 @@ public class LE_ScriptHandler extends LE_Handler {
     public void saved() {
         String text = null;
         //LAYERS - on top of this MAIN?
-        getGame().getDungeon().setProperty(PROPS.COORDINATE_SCRIPTS, text);
+//        getGame().getDungeon().setProperty(PROPS.COORDINATE_SCRIPTS, text);
     }
 
     public String getDisplayedScriptData(Coordinates c) {

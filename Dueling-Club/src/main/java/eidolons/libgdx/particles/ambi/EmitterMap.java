@@ -14,7 +14,7 @@ import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
-import main.content.CONTENT_CONSTS.COLOR_THEME;
+import main.content.CONTENT_CONSTS;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;
@@ -64,7 +64,7 @@ public class EmitterMap extends Group {
         if (colorHue != null)
             color = colorHue;
         else if (Eidolons.game instanceof DC_Game) {
-            COLOR_THEME colorTheme = Eidolons.game.getDungeon().getColorTheme();
+            CONTENT_CONSTS.COLOR_THEME colorTheme = Eidolons.game.getDungeon().getColorTheme();
             if (colorTheme != null)
                 color = GdxColorMaster.getColorForTheme(colorTheme);
         }

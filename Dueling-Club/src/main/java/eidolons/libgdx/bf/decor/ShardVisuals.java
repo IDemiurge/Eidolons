@@ -1,11 +1,13 @@
 package eidolons.libgdx.bf.decor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.grid.cell.GridCellContainer;
+import eidolons.libgdx.bf.grid.sub.GridElement;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
@@ -37,7 +39,7 @@ import java.util.*;
  * <p>
  * placement should be a bit smarter too
  */
-public class ShardVisuals extends GroupX {
+public class ShardVisuals extends GroupX  implements GridElement {
 
     private static final int LARGE_SHARD_CHANCE = 85;
     List<Shard> last = new ArrayList<>();
@@ -161,6 +163,10 @@ public class ShardVisuals extends GroupX {
         }
     }
 
+    @Override
+    public void setModule(Module module) {
+        init();
+    }
     public void init() {
         setSize(grid.getWidth(), grid.getHeight());
 
@@ -461,6 +467,7 @@ public class ShardVisuals extends GroupX {
     private int getIsleChanceEmpty() {
         return 12;
     }
+
 
     public enum SHARD_OVERLAY {
         MIST,

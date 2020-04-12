@@ -7,7 +7,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.enums.GenericEnums;
@@ -40,8 +40,8 @@ public class IlluminationRule {
         }
 
         for (Obj obj : DC_Game.game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
-               if (isOutsideBoundaries(obj))
-                    continue;
+            if (isOutsideBoundaries(obj))
+                continue;
             LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
             if (effect != null) {
                 //                effect.setFormula(new Formula(getLightEmission((DC_Obj) obj) + ""));
@@ -53,16 +53,11 @@ public class IlluminationRule {
 
     private boolean isOutsideBoundaries(Obj obj) {
         Coordinates c = obj.getCoordinates();
-        DungeonLevel level =
-         Eidolons.getGame().getMetaMaster().getDungeonMaster().getDungeonLevel();
-        if (level != null) {
-            if (level.getBlockForCoordinate(c) !=
-             level.getBlockForCoordinate(
-              Eidolons.getMainHero().getCoordinates())) {
-                    if (c.dst(Eidolons.getMainHero().getCoordinates())>10)
-                        return true;
-            }
+        LevelStruct struct = DC_Game.game.getDungeonMaster().getStructureMaster().findLowestStruct(c);
+        LevelStruct struct2 = DC_Game.game.getDungeonMaster().getStructureMaster().findLowestStruct(Eidolons.getMainHero().getCoordinates());
 
+        if (struct != struct2) {
+            return c.dst(Eidolons.getMainHero().getCoordinates()) > 10;
         }
         return false;
     }
@@ -77,7 +72,7 @@ public class IlluminationRule {
         applied = false;
 
         for (Obj obj : effectCache.keySet()) {
-            if (!ExplorationMaster.isExplorationOn()|| isSpectrumResetRequired(obj)){
+            if (!ExplorationMaster.isExplorationOn() || isSpectrumResetRequired(obj)) {
                 effectCache.get(obj).resetCache();
             }
 
@@ -85,7 +80,7 @@ public class IlluminationRule {
     }
 
     private boolean isSpectrumResetRequired(Obj obj) {
-        return obj.getCoordinates().dst_(Eidolons.getMainHero().getCoordinates())<8;
+        return obj.getCoordinates().dst_(Eidolons.getMainHero().getCoordinates()) < 8;
     }
 
     public Map<Obj, LightEmittingEffect> getEffectCache() {
@@ -119,14 +114,14 @@ public class IlluminationRule {
             effectCache.put(source, effect);
         } else
             effect.getEffects().setFormula(new Formula("" +
-             getLightEmission(source)));
+                    getLightEmission(source)));
         return effect;
 
     }
 
     public static int getLightEmission(DC_Obj source) {
         int value =
-         source.getIntParam(PARAMS.LIGHT_EMISSION, BASE_ILLUMINATION);
+                source.getIntParam(PARAMS.LIGHT_EMISSION, BASE_ILLUMINATION);
         if (source instanceof Unit) {
             if (((Unit) source).isPlayerCharacter())
                 //                if (source.getGame().getVisionMaster().
@@ -137,7 +132,7 @@ public class IlluminationRule {
                 return 0;
         }
         Integer mod = source.getGame().getVisionMaster().getIlluminationMaster().
-         getLightEmissionModifier();
+                getLightEmissionModifier();
         if (mod != null)
             value = value * mod / 100;
 

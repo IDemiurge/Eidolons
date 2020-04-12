@@ -15,6 +15,8 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.vision.LastSeenMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
@@ -27,6 +29,8 @@ import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.decor.Pillars;
 import eidolons.libgdx.bf.decor.ShardVisuals;
+import eidolons.libgdx.bf.grid.cell.*;
+import eidolons.libgdx.bf.grid.sub.GridElement;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
@@ -46,6 +50,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import java.awt.*;
@@ -56,10 +61,9 @@ import static main.system.GuiEventType.*;
 
 public abstract class GridPanel extends Group {
     protected final int square;
-    protected GridCellContainer[][] cells;
     protected int cols;
     protected int rows;
-    protected Map<BattleFieldObject, BaseView> viewMap;
+    protected int x1, x2, y1, y2;
     protected GridUnitView hoverObj;
     protected static boolean showGridEmitters;
     protected boolean resetVisibleRequired;
@@ -69,6 +73,9 @@ public abstract class GridPanel extends Group {
     protected ShardVisuals shards;
     protected Pillars pillars;
 
+    protected GridCellContainer[][] cells;
+    protected GridCellContainer[][] removedCells;
+    protected Map<BattleFieldObject, BaseView> viewMap;
     protected List<Manipulator> manipulators = new ArrayList<>();
     protected List<GridObject> gridObjects = new ArrayList<>();
     protected List<GroupX> customOverlayingObjects = new ArrayList<>();
@@ -79,67 +86,96 @@ public abstract class GridPanel extends Group {
 
     protected GridManager manager;
     protected GridOverlaysManager overlayManager;
-    protected GridCellContainer[][] removedCells;
+
+    GridElement[] gridElements = new GridElement[]{
+            shadowMap, shards, overlayManager
+    };
+    private Coordinates offset;
+    private Map<Module, GridSubParts> containerMap = new HashMap<>();
 
     public GridPanel(int cols, int rows) {
         this.square = rows * cols;
         this.cols = cols;
         this.rows = rows;
+        init();
     }
 
-    protected abstract GridOverlaysManager createOverlays();
+    public void setModule(Module module) {
+        offset = module.getOrigin();
+        if (CoreEngine.isLevelEditor()) {
+            int offsetX = module.getData().getIntValue(LevelStructure.MODULE_VALUE.width_buffer);
+            int offsetY = module.getData().getIntValue(LevelStructure.MODULE_VALUE.height_buffer);
+            offset = offset.getOffset(-offsetX, -offsetY);
+        }
+        x1 = offset.x;
+        y1 = offset.y;
+        cols = module.getEffectiveWidth(CoreEngine.isLevelEditor());
+        rows = module.getEffectiveHeight(CoreEngine.isLevelEditor());
+        x2 = cols + offset.x;
+        y2 = rows + offset.y;
+        GridSubParts container = containerMap.get(module);
+        if (container == null) {
+            container = new GridSubParts();
+            containerMap.put(module, container);
+        }
+        viewMap = container.viewMap;
+        customOverlayingObjectsUnder = container.customOverlayingObjects;
+        customOverlayingObjectsTop = container.customOverlayingObjectsTop;
+        customOverlayingObjectsUnder = container.customOverlayingObjectsUnder;
+        emitterGroups = container.emitterGroups;
+        gridObjects = container.gridObjects;
+        manipulators = container.manipulators;
+        overlays = container.overlays;
+        //for others too?
 
-    public GridPanel init(DequeImpl<BattleFieldObject> objects) {
-        objects.removeIf(unit ->
-                {
-                    if (unit.getCoordinates().x < 0)
-                        return true;
-                    if (unit.getCoordinates().y < 0)
-                        return true;
-                    if (unit.getCoordinates().x >= cols)
-                        return true;
-                    return unit.getCoordinates().y >= rows;
-                }
-        );
-        this.viewMap = new HashMap<>();
-        cells = new GridCellContainer[cols][rows];
-        removedCells = new GridCellContainer[cols][rows];
+        initGrid();
+        for (GridElement gridElement : gridElements) {
+            gridElement.setModule(module);
+        }
+    }
 
-        int rows1 = rows - 1;
-        boolean hasVoid = false;
-        TextureRegion emptyImage = TextureCache.getOrCreateR(getCellImagePath());
-        for (int x = 0; x < cols; x++) {
-            for (int y = 0; y < rows; y++) {
-                DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(x, getGdxY(y)));
-                emptyImage = TextureCache.getOrCreateR(cell.getImagePath());
+    protected void initGrid() {
+        for (int x = x1; x < x2; x++) {
+            for (int y = y1; y < y2; y++) {
+                DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(x,
+                        getGdxY(y)));
+                TextureRegion image = TextureCache.getOrCreateR(cell.getImagePath());
 
-                cells[x][y] = createGridCell(emptyImage, x, getGdxY(y));
+                cells[x][y] = createGridCell(image, x, getGdxY(y));
                 cells[x][y].setX(x * GridMaster.CELL_W);
                 cells[x][y].setY(y * GridMaster.CELL_H);
 
-                if (cell.isVOID()) {
-                    hasVoid = true;
-                } else {
-                    addActor(cells[x][y].init());
-                }
+                addActor(cells[x][y].init());
                 cells[x][y].setUserObject(cell);
-
-
             }
         }
-        addVoidDecorators(hasVoid);
+
+    }
+
+    public GridPanel init(DequeImpl<BattleFieldObject> objects) {
+        createUnitsViews(objects);
+        return this;
+    }
+
+    public GridPanel init() {
+        //entire dungeon?
+        cells = new GridCellContainer[cols][rows];
+        removedCells = new GridCellContainer[cols][rows];
+        setHeight(GridMaster.CELL_W * rows);
+        setWidth(GridMaster.CELL_H * cols);
+
+        addVoidDecorators(true);
 
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.SPRITE_CACHE_ON))
             TextureManager.addCellsToCache(cols, rows);
 
         addActor(new CellBorderManager());
+        if (isShadowMapOn()) {
+            addActor(shadowMap = new ShadowMap(this));
+        }
+        addActor(wallMap = new WallMap());
 
         bindEvents();
-
-        createUnitsViews(objects);
-
-        setHeight(GridMaster.CELL_W * rows);
-        setWidth(GridMaster.CELL_H * cols);
 
         addListener(new BattleClickListener() {
             @Override
@@ -155,44 +191,7 @@ public abstract class GridPanel extends Group {
             }
         });
 
-        //        if (AnimConstructor.isPreconstructAllOnGameInit())
-        //            units.forEach(unit ->
-        //            {
-        //                if (unit instanceof Unit)
-        //                    animMaster.getConstructor().preconstructAll((Unit) unit);
-        //            });
-
-
         return this;
-    }
-
-    protected GridCellContainer createGridCell(TextureRegion emptyImage, int x, int y) {
-        return new GridCellContainer(emptyImage, x, y);
-    }
-
-    public void restoreVoid(int x, int y, boolean animated) {
-        GridCellContainer cell =
-                removedCells[x][getGdxY(y)];
-//        addActor(cell);
-        if (animated) {
-            ActionMaster.addFadeInAction(cell, 0.5f);
-        } else {
-            cell.setVisible(true);
-        }
-        cell.getUserObject().setVOID(false);
-//        resetDecorators();
-    }
-
-    public void setVoid(int x, int y, boolean animated) {
-        GridCellContainer cell = cells[x][getGdxY(y)];
-//        cell.remove();
-        if (animated) {
-            ActionMaster.addFadeOutAction(cell, 0.5f, false);
-        } else
-            cell.setVisible(false);
-
-        removedCells[x][getGdxY(y)] = cell;
-        cell.getUserObject().setVOID(true);
     }
 
     protected void addVoidDecorators(boolean hasVoid) {
@@ -203,6 +202,8 @@ public abstract class GridPanel extends Group {
                 addActor(pillars = new Pillars(this));
         }
     }
+
+    protected abstract GridOverlaysManager createOverlays();
 
     protected String getCellImagePath() {
         if (Eidolons.getGame().getDungeon() != null) {
@@ -269,6 +270,35 @@ public abstract class GridPanel extends Group {
             }
         }
         return null;
+    }
+
+    protected GridCellContainer createGridCell(TextureRegion emptyImage, int x, int y) {
+        return new GridCellContainer(emptyImage, x, y);
+    }
+
+    public void restoreVoid(int x, int y, boolean animated) {
+        GridCellContainer cell =
+                removedCells[x][getGdxY(y)];
+//        addActor(cell);
+        if (animated) {
+            ActionMaster.addFadeInAction(cell, 0.5f);
+        } else {
+            cell.setVisible(true);
+        }
+        cell.getUserObject().setVOID(false);
+//        resetDecorators();
+    }
+
+    public void setVoid(int x, int y, boolean animated) {
+        GridCellContainer cell = cells[x][getGdxY(y)];
+//        cell.remove();
+        if (animated) {
+            ActionMaster.addFadeOutAction(cell, 0.5f, false);
+        } else
+            cell.setVisible(false);
+
+        removedCells[x][getGdxY(y)] = cell;
+        cell.getUserObject().setVOID(true);
     }
 
     public int getGdxY(int y) {
@@ -407,20 +437,21 @@ public abstract class GridPanel extends Group {
                     addOverlay(overlay);
                 }
             }
-
-            final GridCellContainer gridCellContainer = cells[coordinates.getX()]
-                    [rows - 1 - coordinates.getY()];
-            if (gridCellContainer == null) {
-                continue;
+            try {
+                final GridCellContainer gridCellContainer = cells[coordinates.getX()]
+                        [getGdxY(coordinates.getY())];
+                if (gridCellContainer == null) {
+                    continue;
+                }
+                views.forEach(gridCellContainer::addActor);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
             }
-            views.forEach(gridCellContainer::addActor);
+
         }
-        if (isShadowMapOn()) {
-            shadowMap = new ShadowMap(this);
-            addActor(shadowMap);
-        }
-        wallMap = new WallMap();
-        addActor(wallMap);
+    }
+
+    public void afterInit() {
 
         WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.GUI_READY, true);
         WaitMaster.markAsComplete(WaitMaster.WAIT_OPERATIONS.GUI_READY);
@@ -555,8 +586,8 @@ public abstract class GridPanel extends Group {
     public void resetZIndices() {
         List<GridCellContainer> topCells = new ArrayList<>();
         loop:
-        for (int x = 0; x < cols; x++) {
-            for (int y = 0; y < rows; y++) {
+        for (int x = x1; x < x2; x++) {
+            for (int y = y1; y < y2; y++) {
                 GridCellContainer cell = cells[x][y];
                 if (cell == null) {
                     continue;

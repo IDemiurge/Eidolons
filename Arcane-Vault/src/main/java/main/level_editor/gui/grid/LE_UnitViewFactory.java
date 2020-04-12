@@ -4,10 +4,12 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.bf.grid.GridUnitView;
-import eidolons.libgdx.bf.grid.OverlayView;
-import eidolons.libgdx.bf.grid.UnitViewFactory;
-import eidolons.libgdx.bf.grid.UnitViewOptions;
+import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.OverlayView;
+import eidolons.libgdx.bf.grid.cell.UnitViewFactory;
+import eidolons.libgdx.bf.grid.cell.UnitViewOptions;
+import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
+import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
 import main.level_editor.LevelEditor;
 
 public class LE_UnitViewFactory extends UnitViewFactory {
@@ -80,6 +82,9 @@ public class LE_UnitViewFactory extends UnitViewFactory {
 
     @Override
     protected void addForDC(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
+        final UnitViewTooltip tooltip = new UnitViewTooltip(view);
+        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
+        view.setToolTip(tooltip);
     }
 
     @Override

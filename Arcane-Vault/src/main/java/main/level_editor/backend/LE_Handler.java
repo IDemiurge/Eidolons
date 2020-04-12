@@ -1,8 +1,8 @@
 package main.level_editor.backend;
 
 
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Floor;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.game.bf.Coordinates;
@@ -73,7 +73,7 @@ public class LE_Handler {
     }
 
     protected LevelStruct getDungeonLevel() {
-        return getGame().getDungeonMaster().getDungeonLevel();
+        return getGame().getDungeonMaster().getDungeonWrapper();
     }
 
     public LE_DialogHandler getDialogHandler() {
@@ -140,7 +140,7 @@ public class LE_Handler {
         return manager.getDataHandler();
     }
 
-    public LE_Floor getFloorWrapper() {
+    public Location getFloorWrapper() {
         return manager.getFloor().getWrapper();
     }
 

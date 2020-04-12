@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.system.audio.MusicMaster;
 import main.content.CONTENT_CONSTS;
@@ -57,7 +56,7 @@ public class LevelStructure {
         cell_type(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return DungeonLevel.CELL_IMAGE.class;
+                return DungeonEnums.CELL_IMAGE.class;
             }
         },
         color_theme(EDIT_VALUE_TYPE.enum_const) {
@@ -135,7 +134,7 @@ public class LevelStructure {
         cell_type(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return DungeonLevel.CELL_IMAGE.class;
+                return DungeonEnums.CELL_IMAGE.class;
             }
         },
         color_theme(EDIT_VALUE_TYPE.enum_const) {
@@ -217,7 +216,7 @@ public class LevelStructure {
         cell_type(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return DungeonLevel.CELL_IMAGE.class;
+                return DungeonEnums.CELL_IMAGE.class;
             }
         },
         color_theme(EDIT_VALUE_TYPE.enum_const) {
@@ -300,7 +299,7 @@ public class LevelStructure {
         cell_type(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return DungeonLevel.CELL_IMAGE.class;
+                return DungeonEnums.CELL_IMAGE.class;
             }
         },
         color_theme(EDIT_VALUE_TYPE.enum_const) {

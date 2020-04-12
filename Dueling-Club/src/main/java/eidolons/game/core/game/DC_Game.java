@@ -23,7 +23,7 @@ import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.DroppedItemManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
-import eidolons.game.battlecraft.logic.dungeon.test.TestDungeonMaster;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
@@ -201,7 +201,7 @@ public class DC_Game extends GenericGame {
         logManager = new DC_LogManager(this);
 
 //        if (isCombatGame())
-           rules = new DC_Rules(this);
+        rules = new DC_Rules(this);
 
         if (!isCombatGame() && !CoreEngine.isDungeonTool() && !CoreEngine.isLevelEditor())
             return;
@@ -238,7 +238,7 @@ public class DC_Game extends GenericGame {
         initObjTypes();
 
         setInitialized(true);
-        keyManager =  createKeyManager();
+        keyManager = createKeyManager();
         Chronos.logTimeElapsedForMark("GAME_INIT");
     }
 
@@ -255,13 +255,13 @@ public class DC_Game extends GenericGame {
     }
 
     protected DungeonMaster createDungeonMaster() {
-        if (isLocation())
-            return new LocationMaster(this);
-        return new TestDungeonMaster(this);
+        return new LocationMaster(this);
     }
 
-    // after meta
-    public void dungeonInit() {
+    public void initGrid(Module module) {
+        if (grid == null) {
+            grid = new DC_BattleFieldGrid(module);
+        } else grid.setModule(module);
     }
 
     public void battleInit() {
@@ -277,10 +277,11 @@ public class DC_Game extends GenericGame {
         inventoryManager = new DC_InventoryManager();
         battleMaster.init();
         dungeonMaster.init();
+        getDungeonMaster().getModuleLoader().loadInitial();
         setOffline(true);
 
-        grid = new DC_BattleFieldGrid(getDungeon());
-        battleFieldManager = new DC_BattleFieldManager(this);
+        battleFieldManager = new DC_BattleFieldManager(this, getModule().getId(),
+                getModule().getEffectiveWidth(), getModule().getEffectiveHeight());
 
         droppedItemManager.init();
 
@@ -290,6 +291,10 @@ public class DC_Game extends GenericGame {
             dungeonMaster.getExplorationMaster().getAiMaster().getExploreAiManager().initialize();
         }
         setBattleInit(true);
+    }
+
+    public Module getModule() {
+        return getMetaMaster().getModuleMaster().getCurrent();
     }
 
     public void start(boolean first) {
@@ -399,10 +404,6 @@ public class DC_Game extends GenericGame {
 
     @Override
     public DC_BattleFieldManager getBattleFieldManager() {
-
-        if (battleFieldManager == null) {
-            battleFieldManager = new DC_BattleFieldManager(this);
-        }
         return (DC_BattleFieldManager) super.getBattleFieldManager();
     }
 
@@ -467,16 +468,16 @@ public class DC_Game extends GenericGame {
         return getMaster().getObjectByCoordinate(c, cellsIncluded);
     }
 
-    public Obj getObjectByCoordinate(Integer z, Coordinates c, boolean cellsIncluded, boolean passableIncluded, boolean overlayingIncluded) {
-        return getMaster().getObjectByCoordinate(z, c, cellsIncluded, passableIncluded, overlayingIncluded);
+    public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded, boolean passableIncluded, boolean overlayingIncluded) {
+        return getMaster().getObjectByCoordinate(c, cellsIncluded, passableIncluded, overlayingIncluded);
     }
 
     public Set<BattleFieldObject> getOverlayingObjects(Coordinates c) {
         return getMaster().getOverlayingObjects(c);
     }
 
-    public Set<BattleFieldObject> getObjectsOnCoordinate(Integer z, Coordinates c, Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
-        return getMaster().getObjectsOnCoordinate(z, c, overlayingIncluded, passableIncluded, cellsIncluded);
+    public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c, Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
+        return getMaster().getObjectsOnCoordinate(c, overlayingIncluded, passableIncluded, cellsIncluded);
     }
 
     public Set<DC_Cell> getCellsForCoordinates(Set<Coordinates> coordinates) {
@@ -716,7 +717,7 @@ public class DC_Game extends GenericGame {
     }
 
     public Set<BattleFieldObject> getObjectsAt(Coordinates c) {
-        return getMaster().getObjectsOnCoordinate(getDungeon().getZ(), c, false, true, false);
+        return getMaster().getObjectsOnCoordinate(c, false, true, false);
     }
 
     public DC_InventoryManager getInventoryManager() {
@@ -725,7 +726,7 @@ public class DC_Game extends GenericGame {
 
     public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c) {
         //        return getMaster().getObjectsOnCoordinate(c);
-        return getObjectsOnCoordinate(null, c, false, true, false);
+        return getObjectsOnCoordinate(c, false, true, false);
     }
 
     public Obj getObjectByCoordinate(Coordinates
@@ -896,7 +897,6 @@ public class DC_Game extends GenericGame {
     public void initAndStart() {
         if (isInitialized())
             reinit();
-        dungeonInit();
         battleInit();
         metaMaster.reinit();
         start(true);
@@ -925,6 +925,7 @@ public class DC_Game extends GenericGame {
         //what about things on this cell?
         return v;
     }
+
 
     public enum GAME_MODES {
         ARENA, SIMULATION, DUEL, ENCOUNTER, DUNGEON_CRAWL, ARENA_ARCADE

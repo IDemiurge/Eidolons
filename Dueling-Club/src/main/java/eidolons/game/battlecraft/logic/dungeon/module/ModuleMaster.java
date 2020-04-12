@@ -42,7 +42,7 @@ public class ModuleMaster extends DungeonHandler<Location> {
     }
 
     private Module getInitialModule() {
-        return modules.iterator().next();
+        return getModules().iterator().next();
     }
 
     private Module getModuleByPosition() {

@@ -2,15 +2,14 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.BLOCK_VALUE;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.LE_Block;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.game.bf.Coordinates;
 
-public class BlockData extends StructureData<BLOCK_VALUE, LE_Block> {
+public class BlockData extends StructureData<BLOCK_VALUE,  LevelBlock> {
 
     private LevelBlock block;
 
-    public BlockData(LE_Block block) {
+    public BlockData(LevelBlock block) {
         super(block);
     }
 
@@ -22,7 +21,7 @@ public class BlockData extends StructureData<BLOCK_VALUE, LE_Block> {
     @Override
     protected void init() {
         if (block == null) {
-            this.block = getStructure().getBlock();
+            this.block = getStructure() ;
             levelStruct = block;
             if (block.getData() != null) {
                 setData(block.getData().getData());
@@ -44,7 +43,7 @@ public class BlockData extends StructureData<BLOCK_VALUE, LE_Block> {
 
     public void apply() {
         if (block == null) {
-            this.block = getStructure().getBlock();
+            this.block = getStructure() ;
         }
         block.setData(this);
         block.setWidth(getIntValue(BLOCK_VALUE.width));
