@@ -38,7 +38,7 @@ public class LE_EntityHandler extends LE_Handler {
         }
         data.setValue("id", id+"");
 
-//      TODO   LE_Screen.getInstance().getGuiStage().getEntityEditDialog().setUserObject(data);
+//          LE_Screen.getInstance().getGuiStage().getEntityEditDialog().setUserObject(data);
 
     }
 

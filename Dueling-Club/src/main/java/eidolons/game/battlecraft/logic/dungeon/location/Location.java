@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class Location extends DungeonWrapper    {
+public class Location extends DungeonWrapper {
 
     private List<Entrance> entrances; //TODO
     private String entranceData;
@@ -56,14 +56,14 @@ public class Location extends DungeonWrapper    {
         }
         return entrances;
     }
- 
+
 
     public void initEntrances() {
 
         if (StringMaster.isEmpty(entranceData)) {
             entranceData = getProperty(PROPS.DUNGEON_MAIN_ENTRANCES, true);
         }
-        if (StringMaster.isEmpty(entranceData) &&( !getProperty(PROPS.ENTRANCE_COORDINATES, true).isEmpty())) {
+        if (StringMaster.isEmpty(entranceData) && (!getProperty(PROPS.ENTRANCE_COORDINATES, true).isEmpty())) {
             entranceData = getProperty(PROPS.ENTRANCE_COORDINATES, true);
         }
         if (StringMaster.isEmpty(entranceData)) {
@@ -87,8 +87,7 @@ public class Location extends DungeonWrapper    {
             if (type == null) {
                 type = getEntranceType();
             }
-            setMainEntrance(new Entrance(c.x, c.y, type,
-                    getDungeon(), getDungeon()));
+            setMainEntrance(new Entrance(c.x, c.y, type, getGame() ));
         }
         if (entranceData.split(";").length < 2) {
             return;
@@ -112,8 +111,7 @@ public class Location extends DungeonWrapper    {
             if (type == null) {
                 type = getExitType();
             }
-            setMainExit(new Entrance(c.x, c.y, type,
-                    getDungeon(), getDungeon()));
+            setMainExit(new Entrance(c.x, c.y, type, getGame()));
         }
         if (CoreEngine.isReverseExit()) {
             Entrance e = getMainEntrance();
@@ -143,6 +141,9 @@ public class Location extends DungeonWrapper    {
 
     public void setMainEntrance(Entrance mainEntrance) {
         this.mainEntrance = mainEntrance;
+        if (mainEntrance != null) {
+            mainEntrance.setMainEntrance(true);
+        }
     }
 
     public Entrance getMainExit() {
@@ -151,6 +152,9 @@ public class Location extends DungeonWrapper    {
 
     public void setMainExit(Entrance mainExit) {
         this.mainExit = mainExit;
+        if (mainExit != null) {
+            mainExit.setMainExit(true);
+        }
     }
 
     @Override

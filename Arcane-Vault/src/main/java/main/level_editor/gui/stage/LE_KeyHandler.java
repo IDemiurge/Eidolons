@@ -2,6 +2,7 @@ package main.level_editor.gui.stage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import eidolons.game.core.EUtils;
 import eidolons.system.controls.GlobalController;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
@@ -34,11 +35,17 @@ public class LE_KeyHandler extends LE_Handler {
                 getModel().getDisplayMode().onAll();
                 break;
             case Input.Keys.SHIFT_RIGHT:
-                getModel().getDisplayMode(). offAll();
+                getModel().getDisplayMode().offAll();
                 break;
 
             case Input.Keys.FORWARD_DEL:
             case Input.Keys.DEL:
+                if (getModel().getBlock() != null) {
+                    if (EUtils.waitConfirm("Delete block " + getModel().getBlock() + "?")) {
+                        getStructureHandler().removeBlock();
+                        return;
+                    }
+                }
                 getObjHandler().removeSelected();
                 break;
             case Input.Keys.ESCAPE:
@@ -52,7 +59,7 @@ public class LE_KeyHandler extends LE_Handler {
                 getCameraHandler().centerOnSelection();
                 //camera?
         }
-        }
+    }
 
     public void keyTyped(char character) {
         boolean alt = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) ||
@@ -86,7 +93,7 @@ public class LE_KeyHandler extends LE_Handler {
                 case Input.Keys.TAB:
                     globalController.keyDown(character);
                     break;
+            }
         }
-}
-}
+    }
 }

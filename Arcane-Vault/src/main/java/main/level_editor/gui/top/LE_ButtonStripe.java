@@ -13,6 +13,7 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
     SmartButton structurePanel;
     SmartButton brushes;
     SmartButton viewModes;
+    SmartButton save;
 
     SmartButton undo;
 
@@ -22,8 +23,8 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
         setWidth(900);
         addActor(undo = new SmartButton(ButtonStyled.STD_BUTTON.LE_UNDO, ()->
                 LevelEditor.getCurrent().getManager().getOperationHandler().undo()));
-//        addActor(redo = new SmartButton(ButtonStyled.STD_BUTTON.LE_REDO, ()->
-//                LevelEditor.getCurrent().getManager().getOperationHandler().redo()));
+        addActor(save = new SmartButton(ButtonStyled.STD_BUTTON.LE_REDO, ()->
+                LevelEditor.getCurrent().getManager().getDataHandler().saveFloor()));
         addActor(new TablePanelX<>(40, getHeight()));
         addActor(controlPanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_CTRL, null));
         addActor(palettePanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_PALETTE, null));

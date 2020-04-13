@@ -58,7 +58,7 @@ public class ObjCreator extends Master {
         BattleFieldObject obj = null;
 
         if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.ENTRANCE.toString())) {
-            obj = new Entrance(x, y, type, getGame().getDungeon(), null);
+            obj = new Entrance(x, y, type, game);
         } else if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
             obj = newStructure(type, x, y, owner, ref);
             game.getMaster().clearCache(obj.getCoordinates());

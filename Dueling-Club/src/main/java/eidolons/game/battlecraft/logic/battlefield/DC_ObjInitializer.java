@@ -9,15 +9,20 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums;
+import eidolons.libgdx.bf.overlays.WallMap;
+import eidolons.system.content.PlaceholderGenerator;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -38,6 +43,7 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
     public static final String OBJ_SEPARATOR = StringMaster.getAltSeparator();
     public static final String COORDINATES_OBJ_SEPARATOR = StringMaster.getAltPairSeparator();
     private static final String MULTI_DIRECTION_SUFFIX = "MULTI_DIRECTION-";
+    private ObjType borderType;
 
     public DC_ObjInitializer(DungeonMaster  master) {
         super(master);
@@ -103,18 +109,19 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
             try {
                 ids = ContainerUtils.openContainer(substring.split("=")[1], ",");
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
                 continue;
             }
             for (String idString : ids) {
                 Integer id = Integer.valueOf(idString);
                 ObjType type = idMap.get(id);
                 if (type == null) {
-                    main.system.auxiliary.log.LogMaster.log(1, "ERROR: Type not found - " + id);
+                    LogMaster.log(1, "ERROR: Type not found - " + id);
                     continue;
                 }
                 DC_Player owner = ownerMap.get(id);
-                DC_Obj value = initObject(c, type, owner, owner.getGame());
+
+                DC_Obj value = initObject(c, type, owner, DC_Game.game);
 
                 if (value instanceof BattleFieldObject) {
                     objIdMap.put(id, (BattleFieldObject) value);
@@ -122,17 +129,25 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
                     encounters.add((Encounter) value);
                 }
             }
-
-//            if (level != 0) {
-//                type = new UnitLevelManager().getLeveledType(type, level);
-//            }
-
             module.setEncounters(encounters);
         }
 
         return objIdMap;
     }
+    public void processBorderObjects(
+            Node subNode ) {
 
+        for (String substring : ContainerUtils.openContainer(
+                subNode.getTextContent())) {
+            Coordinates c = Coordinates.get(true, substring );
+            ObjType type=  getBorderType();
+            DC_Obj value = initObject(c, type, null  , DC_Game.game);
+
+            if (value instanceof BattleFieldObject) {
+                ((BattleFieldObject) value).setModuleBorder(true);
+            }
+        }
+    }
     public static void initFlipMap(int z, Map<String, FLIP> flipMap) {
         if (flipMap != null) {
             for (String data : flipMap.keySet()) {
@@ -209,4 +224,13 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
         }
         return list;
     }
+
+    public ObjType getBorderType() {
+        if (borderType == null) {
+            borderType = DataManager.getType(
+                    PlaceholderGenerator.getPlaceholderName(GeneratorEnums.ROOM_CELL.WALL)+ WallMap.v(true));
+        }
+        return borderType;
+    }
+
 }

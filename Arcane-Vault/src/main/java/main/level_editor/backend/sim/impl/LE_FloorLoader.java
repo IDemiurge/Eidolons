@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.functions.mapping.ModuleGridMapper;
 
@@ -17,8 +18,8 @@ public class LE_FloorLoader extends FloorLoader {
     }
 
     @Override
-    protected void processTransitPair(Integer id, Integer id2, Location location) {
-        LevelEditor.getManager().getTransitHandler().addTransit(id, id2);
+    protected void processTransitPair(Integer id, Coordinates c, Location location ) {
+        LevelEditor.getManager().getTransitHandler().addTransit(id,       c );
     }
 
     @Override

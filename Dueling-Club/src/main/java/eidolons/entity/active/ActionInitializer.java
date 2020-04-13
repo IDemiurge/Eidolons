@@ -10,7 +10,6 @@ import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.battlecraft.rules.combat.attack.dual.DualAttackMaster;
 import eidolons.game.battlecraft.rules.mechanics.FleeRule;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
@@ -284,21 +283,6 @@ public class ActionInitializer extends DC_ActionManager {
         // for (Trap trap : TrapMaster.getTrapsToDisarm(unit)) {
         // actives.add(getDisarmAction(unit, trap));
         // }
-    }
-
-    private DC_UnitAction getEnterAction(final Unit hero, final Entrance e) {
-        DC_UnitAction action = new DC_UnitAction(DataManager.getType(ENTER, DC_TYPE.ACTIONS),
-                hero.getOwner(), game, hero.getRef().getCopy()) {
-            public boolean resolve() {
-//                animate();
-                e.enter(hero, coordinates);
-                game.getManager().reset();
-                game.getManager().refresh(ownerObj.getOwner().isMe());
-                return true;
-            }
-        };
-        actionsCache.get(hero).put(ENTER, action);
-        return action;
     }
 
     private void addOffhandActions(DequeImpl<DC_UnitAction> actives, Unit unit) {

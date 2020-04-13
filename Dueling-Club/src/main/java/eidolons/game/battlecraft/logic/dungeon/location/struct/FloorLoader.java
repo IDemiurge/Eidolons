@@ -18,15 +18,11 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.MapMaster;
 import main.system.data.DataUnit;
-import main.system.launch.TypeBuilder;
 import org.w3c.dom.Node;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import static eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder.CUSTOM_PARAMS_NODE;
-import static eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder.CUSTOM_PROPS_NODE;
 
 public class FloorLoader extends DungeonHandler<Location> {
     //nodes
@@ -50,9 +46,11 @@ public class FloorLoader extends DungeonHandler<Location> {
     public static final String COORDINATE_DATA = "COORDINATE_DATA";
     public static final String COORDINATES_VOID = "coordinates_void";
     public static final String CUSTOM_TYPE_DATA = "CUSTOM_TYPE_DATA";
-    public static final String ZONES = "Zones" ;
+    public static final String ZONES = "Zones";
+    public static final String MAIN_ENTRANCE = "MAIN_ENTRANCE";
+    public static final String MAIN_EXIT = "MAIN_EXIT";
 
-    public FloorLoader(DungeonMaster  master) {
+    public FloorLoader(DungeonMaster master) {
         super(master);
     }
 
@@ -79,6 +77,9 @@ public class FloorLoader extends DungeonHandler<Location> {
                     idTypeMap.put(id, type);
                 }
                 break;
+            case BORDERS:
+                getObjInitializer().processBorderObjects(node);
+                break;
             case OBJ_NODE_NEW:
                 Map<Integer, BattleFieldObject> objectMap =
                         getObjInitializer().processObjects(module,
@@ -104,6 +105,7 @@ public class FloorLoader extends DungeonHandler<Location> {
     }
 
     public void processNode(Node node, Location location) {
+        boolean entrance = false;
         switch (node.getNodeName()) {
             case MODULES:
                 new StructureBuilder(master).build(node, location);
@@ -127,18 +129,23 @@ public class FloorLoader extends DungeonHandler<Location> {
 //                getMaster().getGame().getAiManager().getGroupHandler()
 //                        .initCustomGroups(node.getTextContent());
                 break;
-
             case ID_MAP:
                 getMaster().setIdTypeMap(processIdTypesMap(node.getTextContent()));
                 break;
             case TRANSIT_IDS:
                 initTransits(node.getTextContent(), location);
                 break;
-            case CUSTOM_PARAMS_NODE:
-                TypeBuilder.setParams(location.getDungeon(), node);
-                break;
-            case CUSTOM_PROPS_NODE:
-                TypeBuilder.setProps(location.getDungeon(), node);
+            case MAIN_ENTRANCE:
+                entrance = true;
+            case MAIN_EXIT:
+                Integer id = Integer.valueOf(node.getTextContent());
+                Object e = getMetaMaster().getDungeonMaster().getObjIdMap().get(id);
+                if (e instanceof Entrance) {
+                    if (entrance)
+                        location.setMainExit((Entrance) e);
+                    else location.setMainEntrance((Entrance) e);
+                } else
+                    main.system.auxiliary.log.LogMaster.log(1, e+ " is not ENTRANCE! id= "+id);
                 break;
 //                case FLIP_MAP_NODE
         }
@@ -151,20 +158,19 @@ public class FloorLoader extends DungeonHandler<Location> {
     protected void initTransits(String textContent, Location location) {
         for (String substring : ContainerUtils.openContainer(textContent)) {
             Integer id = NumberUtils.getInteger(substring.split("->")[0]);
-            Integer id2 = NumberUtils.getInteger(substring.split("->")[1]);
-            processTransitPair(id, id2, location);
+            Coordinates c = Coordinates.get(substring.split("->")[1]);
+            processTransitPair(id, c, location);
 
         }
     }
 
-    protected void processTransitPair(Integer id, Integer id2, Location location) {
+    protected void processTransitPair(Integer id, Coordinates c, Location location) {
 //        TODO
         Entrance e = (Entrance) master.getObjIdMap().get(id);
-        Entrance ex = (Entrance) master.getObjIdMap().get(id2);
-//        e.setTargetCoordinates(c);
-//        e.setTargetModule(module);
-        location.setMainEntrance(e);
-        location.setMainExit(ex);
+        e.setTargetCoordinates(c);
+
+        Module module = getMetaMaster().getModuleMaster().getModule(c);
+        e.setTargetModule(module);
     }
 
 

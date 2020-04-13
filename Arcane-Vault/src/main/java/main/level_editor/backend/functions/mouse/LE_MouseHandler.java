@@ -7,6 +7,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.EUtils;
+import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -93,6 +94,7 @@ public class LE_MouseHandler extends LE_Handler {
         CLICK_MODE mode = getModeForClick(event, tapCount);
 
         switch (mode) {
+
             //replace
             //drag
             //edit
@@ -144,7 +146,12 @@ public class LE_MouseHandler extends LE_Handler {
                 }
                 operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
                 break;
-            case DOUBLE_RIGHT:
+            case CTRL_R:
+                if (bfObj instanceof Entrance) {
+                    getTransitHandler().edit((Entrance) bfObj);
+                } else {
+                    getEntityHandler().edit(bfObj);
+                }
                 break;
 
         }

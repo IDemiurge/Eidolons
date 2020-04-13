@@ -100,12 +100,6 @@ public class DC_GameObjMaster extends GameObjMaster {
     public Set<BattleFieldObject> getObjectsOnCoordinate(  Coordinates c,
                                                          Boolean overlayingIncluded_Not_Only, boolean passableIncluded, boolean cellsIncluded) {
         // TODO auto adding cells won't work!
-        //        if (c == null) {
-        //            return null;
-        //        }
-        //        = null;
-        //        if (getCache(overlayingIncluded) != null)
-        //            set =
         Set<BattleFieldObject> set = getCache(overlayingIncluded_Not_Only).get(c);
 
         if (set != null) {
@@ -113,7 +107,6 @@ public class DC_GameObjMaster extends GameObjMaster {
                 return set;
             set = new HashSet<>(set);
         }
-
 
         if (!isCacheForStructures() || set == null) {
             set = new HashSet<>();
@@ -280,6 +273,7 @@ public class DC_GameObjMaster extends GameObjMaster {
 
     private boolean isCacheForStructures() {
         return true;
+//        !CoreEngine.isLevelEditor();
     }
 
 
@@ -315,14 +309,10 @@ public class DC_GameObjMaster extends GameObjMaster {
 
     public void tryAddUnit(Obj obj) {
         if (obj instanceof Unit) {
-            if (!getUnits().contains(obj)) {
                 getUnits().add((Unit) obj);
-            }
-        }
+        } else
         if (obj instanceof Structure) {
-            if (!getStructures().contains(obj)) {
                 getStructures().add((Structure) obj);
-            }
         }
     }
 

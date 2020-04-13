@@ -3,11 +3,11 @@ package main.level_editor.backend.handlers.operation;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
+import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlStringBuilder;
-import main.entity.EntityCheckMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -40,11 +40,12 @@ public class LE_ObjHandler extends LE_Handler {
     public void removeIgnoreWrap(BattleFieldObject bfObj) {
         remove(bfObj);
     }
+
     protected void remove(BattleFieldObject bfObj) {
         getGame().softRemove(bfObj);
         getAiHandler().removed(bfObj);
-        if (EntityCheckMaster.isEntrance(bfObj)) {
-            getTransitHandler().entranceRemoved(bfObj);
+        if ( bfObj instanceof Entrance) {
+            getTransitHandler().entranceRemoved((Entrance) bfObj);
         }
         if (bfObj.isOverlaying()) {
             GuiEventManager.trigger(GuiEventType.REMOVE_OVERLAY_VIEW, bfObj);
@@ -58,29 +59,28 @@ public class LE_ObjHandler extends LE_Handler {
     }
 
     public void addFromPalette(Coordinates c) {
-        if (getModel().isBrushMode() && getModel().getBrush().getBrushType() != LE_BrushType.none)
-        {
+        if (getModel().isBrushMode() && getModel().getBrush().getBrushType() != LE_BrushType.none) {
             ObjType type = getPaletteHandler().getFiller(
                     getModel().getBrush().getBrushType());
-            operation(Operation.LE_OPERATION.ADD_OBJ,  type,
+            operation(Operation.LE_OPERATION.ADD_OBJ, type,
                     c);
             getStructureHandler().initWall(c);
 //            getCoordinatesForShape(PositionMaster.SHAPES.STAR)
-        }
-        else
-        operation(Operation.LE_OPERATION.ADD_OBJ, getModel().getPaletteSelection().getObjType(),
-                c);
+        } else
+            operation(Operation.LE_OPERATION.ADD_OBJ, getModel().getPaletteSelection().getObjType(),
+                    c);
     }
 
     public BattleFieldObject addObjIgnoreWrap(ObjType objType, int gridX, int gridY) {
-        return  addObj(objType, gridX, gridY) ;
+        return addObj(objType, gridX, gridY);
     }
-        protected BattleFieldObject addObj(ObjType objType, int gridX, int gridY) {
+
+    protected BattleFieldObject addObj(ObjType objType, int gridX, int gridY) {
         BattleFieldObject bfObj = getGame().createObject(objType, gridX, gridY, DC_Player.NEUTRAL);
         getAiHandler().objectAdded(bfObj);
-        if (EntityCheckMaster.isEntrance(bfObj)) {
-            getTransitHandler().entranceAdded(bfObj);
-        }
+
+        getTransitHandler().objAdded(bfObj);
+
         return bfObj;
         //TODO Player!!!
     }
@@ -129,10 +129,10 @@ public class LE_ObjHandler extends LE_Handler {
 
     public ObjType getDefaultWallType() {
 //         getModel().getModule().getDefaultWallType();
-        if (getModel()  != null)
-        if (getModel().getBlock() != null) {
-            return DataManager.getType(getModel().getBlock().getWallType(), DC_TYPE.BF_OBJ);
-        }
+        if (getModel() != null)
+            if (getModel().getBlock() != null) {
+                return DataManager.getType(getModel().getBlock().getWallType(), DC_TYPE.BF_OBJ);
+            }
         return DataManager.getType(DEFAULT_TYPE, DC_TYPE.BF_OBJ);
     }
 }

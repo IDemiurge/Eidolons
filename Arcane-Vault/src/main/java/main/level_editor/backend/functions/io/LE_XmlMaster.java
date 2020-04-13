@@ -5,8 +5,10 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import main.data.xml.XML_Converter;
@@ -50,9 +52,8 @@ public class LE_XmlMaster extends LE_Handler {
 
         xmlBuilder.appendNode((floor).getData().toString(),
                 FloorLoader.DATA);
-
         xmlBuilder.open("Plan");
-
+        xmlBuilder.append("\n").append(buildIdMap());
         xmlBuilder.open(FloorLoader.MODULES);
 
         for (Module module : floor.getModules()) {
@@ -63,7 +64,6 @@ public class LE_XmlMaster extends LE_Handler {
         xmlBuilder.close(FloorLoader.MODULES);
 
 
-        xmlBuilder.append("\n").append(buildIdMap());
 
         xmlBuilder.append("\n").open(FloorLoader.DATA_MAPS);
         for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
@@ -108,15 +108,19 @@ public class LE_XmlMaster extends LE_Handler {
         Map<Integer, BattleFieldObject> map = LevelEditor.getGame().getSimIdManager().getObjMap();
         for (Coordinates c : module.initCoordinateSet(false)) {
             Set<BattleFieldObject> set = LevelEditor.getGame().getObjectsOnCoordinate(c);
-
+            if (!borders)
+                for (Entrance entrance : getTransitHandler().entrances) {
+                    if (entrance.getCoordinates().equals(c)) {
+                        set.add(entrance);
+                    }
+                }
             set.removeIf(obj -> obj.isModuleBorder() != borders);
             //TODO  save separately!!!!
             if (set.isEmpty()) {
                 continue;
             }
             builder.append(c);
-            if (borders)
-            {
+            if (borders) {
                 builder.append(";");
                 continue; //just the coordinate
             }
@@ -157,7 +161,7 @@ public class LE_XmlMaster extends LE_Handler {
         }
 
         for (String type : nestedMap.keySet()) {
-            builder.append(type ).append("=");
+            builder.append(type).append("=");
             for (Integer integer : nestedMap.get(type)) {
                 builder.append(integer).append(",");
             }
@@ -175,7 +179,7 @@ public class LE_XmlMaster extends LE_Handler {
 
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
         xmlBuilder.append("\n").open(module.getName());
-        xmlBuilder.appendNode(module.getData().toString(),
+        xmlBuilder.appendNode(new ModuleData( module).toString(),
                 FloorLoader.DATA);
         xmlBuilder.append("\n").open("Zones");
         for (LevelZone zone : module.getZones()) {
@@ -190,9 +194,9 @@ public class LE_XmlMaster extends LE_Handler {
         for (Coordinates coordinates : module.initCoordinateSet(false)) {
             DC_Cell cell = DC_Game.game.getCellByCoordinate(coordinates);
             if (cell != null) //TODO buffer!
-            if (cell.isVOID()) {
-                xmlBuilder.append(cell.getCoordinates().toString()).append(";");
-            }
+                if (cell.isVOID()) {
+                    xmlBuilder.append(cell.getCoordinates().toString()).append(";");
+                }
         }
         xmlBuilder.close(FloorLoader.COORDINATES_VOID).append("\n");
 
