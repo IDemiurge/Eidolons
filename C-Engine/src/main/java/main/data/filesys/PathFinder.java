@@ -116,9 +116,12 @@ public class PathFinder {
         init();
         return XML_PATH + "dungeons/levels/";
     }
-
     public static String getModuleTemplatesPath() {
-        return XML_PATH + "dungeons/levels/modules/templates/";
+        return XML_PATH + "dungeons/levels/templates/modules/";
+    }
+
+    public static String getFloorTemplatesPath() {
+        return XML_PATH + "dungeons/levels/templates/floors/";
     }
     public static String getModulesPath() {
         return XML_PATH + "dungeons/levels/modules/";

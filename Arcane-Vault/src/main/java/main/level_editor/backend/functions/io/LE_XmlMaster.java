@@ -17,7 +17,6 @@ import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
-import main.level_editor.backend.struct.boss.BossDungeon;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.LinkedHashMap;
@@ -32,13 +31,6 @@ public class LE_XmlMaster extends LE_Handler {
         super(manager);
     }
 
-    public String toXml(BossDungeon dungeon) {
-
-        StringBuilder xmlBuilder = new StringBuilder();
-
-
-        return xmlBuilder.toString();
-    }
 
     public String toXml(Location floor) {
         return toXml(floor, null);

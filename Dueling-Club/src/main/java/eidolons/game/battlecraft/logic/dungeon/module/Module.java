@@ -111,7 +111,7 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     public String toString() {
         return name +
                 " - Module with " +
-                zones.size() +
+                (zones==null ? "no": zones.size()) +
                 " zones" + ", Data: " + getData();
     }
 

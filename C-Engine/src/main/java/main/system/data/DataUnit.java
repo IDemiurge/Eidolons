@@ -37,9 +37,18 @@ public class DataUnit<T extends Enum<T>> {
         return values.get(index);
     }
 
+    public <S> S getEnum(T value, Class<S> clazz) {
+        return getEnum(value.toString(), clazz);
+    }
+
+    public <S> S getEnum(String value, Class<S> clazz) {
+        return new EnumMaster<S>().retrieveEnumConst(clazz,
+                getValue(value));
+    }
+
     public List<String> getContainerValues(T t) {
         return
-         ContainerUtils.openContainer(getValue(t));
+                ContainerUtils.openContainer(getValue(t));
     }
 
     public T getKeyConst(String name) {
@@ -125,7 +134,7 @@ public class DataUnit<T extends Enum<T>> {
 
     public void addValue(T name, String value) {
         MapMaster.addToStringMap(values, name.name(), value,
-         DataUnitFactory.getSeparator(false));
+                DataUnitFactory.getSeparator(false));
     }
 
     public void setValue(String name, String value) {
@@ -151,13 +160,15 @@ public class DataUnit<T extends Enum<T>> {
     protected String getPairSeparator() {
         return DataUnitFactory.getPairSeparator(getFormat());
     }
+
     protected String getSeparator() {
         return DataUnitFactory.getSeparator(getFormat());
     }
+
     public DataUnit<T> setData(String data) {
         String[] entries = data.split(getSeparator());
         for (String entry : entries) {
-            String[] pair = entry.split( getPairSeparator( ));
+            String[] pair = entry.split(getPairSeparator());
             if (pair.length != 2) {
 //                format=
                 LogMaster.log(0, "malformed data:" + entry);
@@ -253,7 +264,7 @@ public class DataUnit<T extends Enum<T>> {
     public String getData(Boolean format) {
         return getData(values.keySet(),
                 DataUnitFactory.getPairSeparator(format),
-                DataUnitFactory.getSeparator(format) );
+                DataUnitFactory.getSeparator(format));
     }
 
     public String getData(Set<String> set) {
@@ -261,7 +272,7 @@ public class DataUnit<T extends Enum<T>> {
     }
 
 
-    public String getData(Set<String> set, String pairSeparator, String separator  ) {
+    public String getData(Set<String> set, String pairSeparator, String separator) {
         StringBuilder data = new StringBuilder();
         for (String v : set) {
             data.append(v).append(pairSeparator).append(values.get(v)).append(separator);
@@ -316,7 +327,7 @@ public class DataUnit<T extends Enum<T>> {
         return this;
     }
 
-    public String getDataExcept(String... exceptions ) {
+    public String getDataExcept(String... exceptions) {
         Set<String> set = new LinkedHashSet<>(values.keySet());
         for (String exception : exceptions) {
             set.remove(exception);

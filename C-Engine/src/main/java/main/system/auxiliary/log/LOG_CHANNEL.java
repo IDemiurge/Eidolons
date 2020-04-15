@@ -55,7 +55,7 @@ public enum LOG_CHANNEL {
     GENERATION(LOG.SYSTEM_INFO, LogMaster.GENERATION_PREFIX, LogMaster.GENERATION_ON, LogMaster.GENERATION),
     ERROR_CRITICAL(LOG.SYSTEM_INFO, LogMaster.ERROR_CRITICAL_PREFIX, LogMaster.ERROR_CRITICAL_ON, LogMaster.GENERATION),
 
-    ;
+    BUILDING(LogMaster.BUILDING_PREFIX, LogMaster.BUILDING_ON, LogMaster.BUILDING );
     private boolean on;
     private String prefix;
     private int code;

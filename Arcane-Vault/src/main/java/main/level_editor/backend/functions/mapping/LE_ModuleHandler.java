@@ -23,6 +23,7 @@ import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.awt.*;
 import java.util.List;
@@ -30,17 +31,15 @@ import java.util.*;
 
 import static eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.BORDER_TYPE;
 import static eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.MODULE_VALUE;
+import static main.system.auxiliary.log.LogMaster.log;
 
 public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
     //let's assume maximum of 4 modules, so we have a simple 2x2 grid, ok? damn, I did want to have 5 in some..
     Map<Point, Module> moduleGrid = new LinkedHashMap<>();
-    Map<Point, Coordinates> pointCoordMap = new LinkedHashMap<>();
-    int grids = 1;
     private Set<BattleFieldObject> borderObjects = new HashSet<>();
 
     public LE_ModuleHandler(LE_Manager manager) {
         super(manager);
-//        GuiEventManager.bind(GuiEventType.LE_REMAP_MODULES, p -> remapAll());
     }
 
     public void setGrid(LinkedHashMap<Point, Module> grid) {
@@ -53,6 +52,8 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         for (Point point : grid.keySet()) {
             Module module = grid.get(point);
             Coordinates c = getMappedCoordForPoint(point, module);
+
+            log(LOG_CHANNEL.BUILDING, module.getName()+ " Module placed at " + c);
             module.setOrigin(c);
         }
         resetBorders();
@@ -89,11 +90,13 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
             set.addAll(module.getCoordinatesSet());
         }
         full.removeAll(set);
+        log(LOG_CHANNEL.BUILDING,   " Buffer void being reset " + full.size());
         getOperationHandler().execute(Operation.LE_OPERATION.MASS_SET_VOID, full);
     }
 
     @Override
     public void resetBorders() {
+        //TODO can optimize not to remove/add unnecessarily!
         for (BattleFieldObject borderObject : borderObjects) {
             getObjHandler().removeIgnoreWrap(borderObject);
         }
@@ -131,6 +134,7 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
                         , DC_TYPE.BF_OBJ);
             }
 
+            log(LOG_CHANNEL.BUILDING, module.getName()+ " borders being reset " + borderCoords.size());
             for (Coordinates borderCoord : borderCoords) {
                 BattleFieldObject obj = getObjHandler().addObjIgnoreWrap(objType, borderCoord.x, borderCoord.y);
                 obj.setModuleBorder(true);

@@ -4,11 +4,14 @@ import com.google.inject.internal.util.ImmutableSet;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import org.junit.Test;
 
 import java.awt.*;
 import java.util.List;
 import java.util.*;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 public class ModuleGridMapper {
 
@@ -18,8 +21,8 @@ public class ModuleGridMapper {
     private static final Module M4 = new Module(null, 110, 40, "4");
     private static final Module M5 = new Module(null, 110, 20, "5");
 
-    public static int maxHeight=45;
-    public static int maxWidth=45;
+    public static int maxHeight = 45;
+    public static int maxWidth = 45;
     private static int height;
     private static int width;
 
@@ -28,19 +31,21 @@ public class ModuleGridMapper {
     }
 
     @Test
-    public void test(){
+    public void test() {
         getOptimalGrid(getModules());
     }
+
     public LinkedHashMap<Point, Module> getOptimalGrid(Set<Module> modules) {
+        log(LOG_CHANNEL.BUILDING, "Making Optimal Grid for: " + modules);
         int n = modules.size();// getModuleHandler().modules.size();
-        int min_size =Integer.MAX_VALUE;
+        int min_size = Integer.MAX_VALUE;
 
         int[] cols = n % 2 == 0
-                ? new int[]{0, n / 2, n }
-                : new int[]{0, n / 2, n / 2 + 1, n };
+                ? new int[]{0, n / 2, n}
+                : new int[]{0, n / 2, n / 2 + 1, n};
         int[] rows = n % 2 == 0
-                ? new int[]{0,n / 2, n }
-                : new int[]{0,n / 2, n / 2 + 1, n };
+                ? new int[]{0, n / 2, n}
+                : new int[]{0, n / 2, n / 2 + 1, n};
 
         int[][] combos = new int[n % 2 == 0 ? 3 : 4][2];
         if (n % 2 == 0) {
@@ -60,6 +65,10 @@ public class ModuleGridMapper {
         java.util.List<java.util.List<Module>> orderVariants =
                 new ListMaster<Module>().generatePerm(pool);
 
+        log(LOG_CHANNEL.BUILDING, "Grid params: " +
+                "orderVariants=" + orderVariants +
+                "\ncombos=" + Arrays.deepToString(combos));
+
         LinkedHashMap<Point, Module> pick = null;
         for (int[] combo : combos) {
             int w = combo[0];
@@ -77,9 +86,9 @@ public class ModuleGridMapper {
                 }
                 int size =
                         calculateTotalSquareSize(moduleGrid);
-                if (size <  min_size) {
+                if (size < min_size) {
                     pick = moduleGrid;
-                    min_size= size;
+                    min_size = size;
                     maxHeight = height;
                     maxWidth = width;
                 }
@@ -88,12 +97,17 @@ public class ModuleGridMapper {
 
         }
 
+        log(LOG_CHANNEL.BUILDING, "Grid params: " +
+                "Final pick=" + pick +
+                "\nFinal Width=" + maxWidth +
+                "\nFinal Height=" + maxHeight);
+
         return pick;
     }
 
     private static int calculateTotalSquareSize(Map<Point, Module> moduleGrid) {
-          height = 0;
-          width = 0;
+        height = 0;
+        width = 0;
         Map<Integer, Integer> colMap = new LinkedHashMap<>();
         Map<Integer, Integer> rowMap = new LinkedHashMap<>();
 
@@ -117,6 +131,6 @@ public class ModuleGridMapper {
             }
         }
 
-        return height * width + Math.round(height*height*0.1f);
+        return height * width + Math.round(height * height * 0.1f);
     }
 }

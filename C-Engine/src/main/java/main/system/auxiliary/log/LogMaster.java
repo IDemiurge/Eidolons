@@ -109,6 +109,10 @@ public class LogMaster {
     public static final int PUZZLE_DEBUG = -37;
     public static final boolean PUZZLE_DEBUG_ON = true;
 
+    public static final String BUILDING_PREFIX = "BUILDING: ";
+    public static final int BUILDING = -38;
+    public static final boolean BUILDING_ON = true;
+
     public static final LOG_CHANNEL[] specialLogChannels = {
 
     };

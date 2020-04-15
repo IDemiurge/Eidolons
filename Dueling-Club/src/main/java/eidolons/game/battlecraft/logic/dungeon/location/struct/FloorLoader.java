@@ -17,12 +17,15 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.data.DataUnit;
 import org.w3c.dom.Node;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 public class FloorLoader extends DungeonHandler<Location> {
     //nodes
@@ -64,6 +67,7 @@ public class FloorLoader extends DungeonHandler<Location> {
     }
 
     public void processModuleSubNode(Node node, Location location, Module module) {
+        log(LOG_CHANNEL.BUILDING, "Module Sub Node: " + node.getNodeName());
         switch (node.getNodeName()) {
             case CUSTOM_TYPE_DATA:
                 Map<Integer, ObjType> idTypeMap = master.getIdTypeMap();
@@ -86,6 +90,7 @@ public class FloorLoader extends DungeonHandler<Location> {
                                 master.getIdTypeMap(),
                                 new HashMap<>(), node);
 
+                log(LOG_CHANNEL.BUILDING, "Objects created: " + objectMap.size());
                 master.getObjIdMap().putAll(objectMap);
                 break;
             case COORDINATES_VOID:
@@ -106,9 +111,10 @@ public class FloorLoader extends DungeonHandler<Location> {
 
     public void processNode(Node node, Location location) {
         boolean entrance = false;
+        log(LOG_CHANNEL.BUILDING, "Xml node: " + node.getNodeName());
         switch (node.getNodeName()) {
             case MODULES:
-                new StructureBuilder(master).build(node, location);
+                getStructureBuilder().build(node, location);
                 checkModuleRemap(false);
                 break;
             case DATA_MAPS:
@@ -131,6 +137,8 @@ public class FloorLoader extends DungeonHandler<Location> {
                 break;
             case ID_MAP:
                 getMaster().setIdTypeMap(processIdTypesMap(node.getTextContent()));
+                log(LOG_CHANNEL.BUILDING, "Id-Type Map built: " +
+                        getMaster().getIdTypeMap());
                 break;
             case TRANSIT_IDS:
                 initTransits(node.getTextContent(), location);
@@ -141,11 +149,16 @@ public class FloorLoader extends DungeonHandler<Location> {
                 Integer id = Integer.valueOf(node.getTextContent());
                 Object e = getMetaMaster().getDungeonMaster().getObjIdMap().get(id);
                 if (e instanceof Entrance) {
-                    if (entrance)
+                    if (entrance) {
                         location.setMainExit((Entrance) e);
-                    else location.setMainEntrance((Entrance) e);
+                        log(LOG_CHANNEL.BUILDING, "Main exit: " + ((Entrance) e).getNameAndCoordinate());
+                    } else {
+                        location.setMainEntrance((Entrance) e);
+                        log(LOG_CHANNEL.BUILDING, "Main Entrance: " + ((Entrance) e).getNameAndCoordinate());
+
+                    }
                 } else
-                    main.system.auxiliary.log.LogMaster.log(1, e+ " is not ENTRANCE! id= "+id);
+                    log(1, e + " is not ENTRANCE! id= " + id);
                 break;
 //                case FLIP_MAP_NODE
         }

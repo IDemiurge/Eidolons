@@ -13,32 +13,41 @@ import main.data.xml.XmlNodeMaster;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.util.Refactor;
 import org.w3c.dom.Node;
 
 import java.util.*;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 public class StructureBuilder extends DungeonHandler<Location> {
 
     private int ZONE_ID = 0;
     private int BLOCK_ID = 0;
 
-    public StructureBuilder(DungeonMaster  master) {
+    public StructureBuilder(DungeonMaster master) {
         super(master);
     }
 
     public void build(Node node, Location location) {
         Set<Module> modules = new LinkedHashSet<>();
+        log(LOG_CHANNEL.BUILDING, "Main floor node");
         for (Node sub : XmlNodeMaster.getNodeList(node)) {
             if (sub.getNodeName().equalsIgnoreCase(FloorLoader.DATA)) {
                 FloorData data = new FloorData(location);
                 data.setData(sub.getTextContent());
+                log(LOG_CHANNEL.BUILDING, "Floor data: " + data);
                 data.apply();
+                log(LOG_CHANNEL.BUILDING, "Location after data applies: " +
+                        location);
             } else {
                 modules.add(createModule(sub, location));
             }
         }
 
+        log(LOG_CHANNEL.BUILDING, "Location has modules: " +
+                modules.size());
         getMetaMaster().getModuleMaster().setModules(modules);
     }
 
@@ -48,13 +57,18 @@ public class StructureBuilder extends DungeonHandler<Location> {
             if (sub.getNodeName().equalsIgnoreCase(FloorLoader.DATA)) {
                 ModuleData data = new ModuleData(module);
                 data.setData(node.getTextContent());
+                log(LOG_CHANNEL.BUILDING, "Module data: " + data);
                 data.apply();
+                log(LOG_CHANNEL.BUILDING, "Module after data applies: " +
+                        module);
 
             } else if (sub.getNodeName().equalsIgnoreCase(FloorLoader.ZONES)) {
                 List<LevelZone> zones = createZones(module, sub, location);
                 module.setZones(zones);
+                log(LOG_CHANNEL.BUILDING, "Module has zones: " +
+                        zones.size());
             } else {
-                getFloorLoader().processModuleSubNode(  sub, location ,module);
+                getFloorLoader().processModuleSubNode(sub, location, module);
             }
         }
         return module;
@@ -75,19 +89,26 @@ public class StructureBuilder extends DungeonHandler<Location> {
         for (Node node : XmlNodeMaster.getNodeList(zoneNode)) {
             if (node.getNodeName().equalsIgnoreCase(FloorLoader.DATA)) {
                 dataString = node.getTextContent();
+                log(LOG_CHANNEL.BUILDING, "Zone data read: " +                        dataString);
             } else {
                 for (Node subNode : XmlNodeMaster.getNodeList(node)) {
                     LevelBlock block = constructBlock(subNode, BLOCK_ID++, zone, dungeon);
                     zone.addBlock(block);
                 }
+                log(LOG_CHANNEL.BUILDING, "Module has zones: " +
+                        zone.getSubParts().size());
             }
         }
-        ZoneData data = new ZoneData( (zone));
-        data.setData(dataString);
-        zone .setData( data);
-        zone.setModule(module);
 
         zone.setName(XML_Formatter.restoreXmlNodeName(zoneNode.getNodeName()));
+        ZoneData data = new ZoneData((zone));
+        data.setData(dataString);
+        zone.setData(data);
+        zone.setModule(module);
+        log(LOG_CHANNEL.BUILDING, "Zone data: " +                        data);
+        data.apply();
+        log(LOG_CHANNEL.BUILDING, "Zone after data applies: " +
+                module);
         return zone;
     }
 
@@ -102,7 +123,7 @@ public class StructureBuilder extends DungeonHandler<Location> {
         // TODO b-data, coordinates, objects
         for (Node subNode : XmlNodeMaster.getNodeList(node)) {
             if (StringMaster.compareByChar(subNode.getNodeName(), FloorLoader.DATA)) {
-                new BlockData( (b)).setData(subNode.getTextContent()).apply();
+                new BlockData((b)).setData(subNode.getTextContent()).apply();
                 c = b.getOrigin();
             } else if (StringMaster.compareByChar(subNode.getNodeName(), FloorLoader.MISSING)) {
 
