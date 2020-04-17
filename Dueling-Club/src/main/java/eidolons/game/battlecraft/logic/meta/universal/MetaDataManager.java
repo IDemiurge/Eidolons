@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
-import eidolons.game.battlecraft.logic.meta.igg.CustomLaunch;
+import eidolons.game.netherflame.igg.CustomLaunch;
 import eidolons.libgdx.launch.MainLauncher;
 
 /**

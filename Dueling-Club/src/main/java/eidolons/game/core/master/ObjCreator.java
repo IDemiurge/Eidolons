@@ -11,7 +11,7 @@ import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
 import eidolons.game.module.dungeoncrawl.objects.LockObj;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
-import eidolons.game.netherflame.boss_.logic.entity.BossUnit;
+import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;

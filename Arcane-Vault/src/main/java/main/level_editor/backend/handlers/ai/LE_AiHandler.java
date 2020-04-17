@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.function.Function;
 
-import static eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
+import static eidolons.game.module.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 
 public class LE_AiHandler extends LE_Handler implements IAiHandler {
 

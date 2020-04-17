@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.view;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import eidolons.game.battlecraft.logic.meta.igg.story.brief.BriefBackground;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueDataSource;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
+import eidolons.game.netherflame.igg.story.brief.BriefBackground;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.GuiStage;

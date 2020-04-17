@@ -4,8 +4,8 @@ import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
-import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.core.EUtils;
+import eidolons.game.netherflame.igg.death.ShadowMaster;
 import main.ability.effects.OneshotEffect;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
@@ -99,10 +99,7 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
             }
         if (pick == null)
             pick = pickAutomatically(subActions);
-        if (pick != null) {
-            return pick;
-        }
-        return null;
+        return pick;
     }
 
     private boolean isPickAutomaticallyOn() {

@@ -1,8 +1,8 @@
 package eidolons.libgdx.screens.menu;
 
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
 import eidolons.game.core.Eidolons;
+import eidolons.game.netherflame.igg.IGG_Launcher;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.macro.AdventureInitializer;

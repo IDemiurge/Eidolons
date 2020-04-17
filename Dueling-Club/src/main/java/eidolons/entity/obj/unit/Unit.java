@@ -19,14 +19,14 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battle.universal.PlayerManager;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
-import eidolons.game.battlecraft.logic.meta.igg.hero.ChainParty;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.game.netherflame.igg.death.ShadowMaster;
+import eidolons.game.netherflame.igg.hero.ChainParty;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
@@ -1137,9 +1137,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
         activeWeapon = getActiveWeapon(false);
         if (activeWeapon != null) {
-            if (activeWeapon.checkPassive(passive)) {
-                return true;
-            }
+            return activeWeapon.checkPassive(passive);
         }
 
         return false;

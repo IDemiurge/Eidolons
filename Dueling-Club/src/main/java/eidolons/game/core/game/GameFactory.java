@@ -26,8 +26,6 @@ public class GameFactory {
                 };
             case TEST:
                 return new DC_Game();
-            case ARCADE:
-                return new ArcadeGame();
 
         }
         return new DC_Game();

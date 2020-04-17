@@ -2,8 +2,8 @@ package eidolons.entity.obj.attach;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.netherflame.igg.IGG_MetaMaster;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;

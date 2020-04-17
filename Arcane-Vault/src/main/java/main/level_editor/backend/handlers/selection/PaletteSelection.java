@@ -1,7 +1,7 @@
 package main.level_editor.backend.handlers.selection;
 
 import eidolons.game.core.EUtils;
-import eidolons.game.module.dungeoncrawl.generator.model.RoomModel;
+import eidolons.game.module.generator.model.RoomModel;
 import main.content.enums.GenericEnums;
 import main.entity.EntityCheckMaster;
 import main.entity.type.ObjType;

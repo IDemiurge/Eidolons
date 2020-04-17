@@ -71,6 +71,24 @@ public class EncounterEnums {
         CONTINUOUS, REGULAR, ELITE, BOSS
     }
 
+    //    PRE_BATTLE_EVENT("encounters", null),
+//    AFTER_BATTLE_EVENT(
+    public enum REINFORCEMENT_CHANCE {
+none, low, normal, high, always
+    }
+
+    public enum REINFORCEMENT_TYPE {
+        call_help, portal, patrol, ambush,
+    }
+
+    public enum REINFORCEMENT_STRENGTH {
+        low, normal, high
+    }
+
+    public enum LOOT_TYPE {
+        gold, artifact, treasure, arcane, items, random, junk, none
+    }
+
     public enum GROWTH_PRIORITIES {
         GROUP, LEVEL, FILL, EXTEND
     }

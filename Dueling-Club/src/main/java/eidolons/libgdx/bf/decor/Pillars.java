@@ -1,6 +1,6 @@
 package eidolons.libgdx.bf.decor;
 
-import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
+import eidolons.game.module.generator.model.AbstractCoordinates;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.gui.generic.GroupX;

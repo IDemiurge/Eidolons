@@ -236,8 +236,18 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     EXTENDED_PRESET_GROUP(null, true, "encounters"),
     SHRUNK_PRESET_GROUP(null, true, "encounters"),
     PRESET_GROUP("PRESET_GROUP", true, "encounters"),
-    BOSS_TYPE("encounters", null),
-    DEFAULT_AI_TYPE("encounters", null),
+
+    REINFORCEMENT_TYPE("encounters", null),
+    REINFORCEMENT_CUSTOM("encounters", null),
+    REINFORCEMENT_CHANCE("encounters", null),
+    REINFORCEMENT_STRENGTH("encounters", null),
+
+    UNIT_GROUP_TYPE("encounters", null),
+    LOOT_TYPE("encounters", null),
+    AI_BEHAVIOR_MODE("encounters", null),
+    PRE_BATTLE_EVENT("encounters", null),
+    AFTER_BATTLE_EVENT("encounters", null),
+
 
 
     DROPPED_ITEMS(null, true, "terrain"),

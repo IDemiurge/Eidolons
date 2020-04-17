@@ -2,7 +2,8 @@ package eidolons.game.battlecraft.logic.battle.encounter;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.battle.mission.MissionBattleMaster;
+import eidolons.game.battlecraft.logic.battle.universal.BattleHandler;
+import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import main.content.C_OBJ_TYPE;
@@ -28,7 +29,7 @@ import static main.content.enums.EncounterEnums.GROWTH_PRIORITIES;
 
 //TODO  support WEIGHT-format: pick from unit pool until target-power is filled or
 // apply growth per random
-public class EncounterAdjuster {
+public class EncounterAdjuster extends BattleHandler {
 
     public static final int REGULAR_POWER = 100;
     public static final int ELITE_POWER = 100;
@@ -38,14 +39,11 @@ public class EncounterAdjuster {
     public static final Integer DUNGEON_DEFAULT_BOSS_POWER_MOD = 125;
     public static final Integer ENCOUNTER_DEFAULT_BOSS_POWER_MOD = 120;
 
-    private final MissionBattleMaster manager;
     public GenericEnums.DIFFICULTY difficulty;
     public Encounter encounter;
     public List<List<ObjType>> unitGroups;
-    private List<ObjType> typeMap = new LinkedList<>();
 
     List<GROWTH_PRIORITIES> growthPriorities;
-    public int unitLevel = 0;
     public int groups = 0;
     public int fillApplied = 0;
     public int groupsExtended = 0;
@@ -54,35 +52,29 @@ public class EncounterAdjuster {
     public Integer power = 0;
     Integer forcedPower;
 
-    public EncounterAdjuster(MissionBattleMaster manager) {
-        this.manager = manager;
-        this.difficulty = manager.getOptionManager().getDifficulty();
+    public EncounterAdjuster(BattleMaster master) {
+        super(master);
     }
 
-    public void assembleWave(Encounter encounter) {
-        try {
-            assembleWave(encounter, true, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void assembleWave(Encounter encounter, boolean adjustPower, boolean presetCoordinate) {
+    public void adjustEncounter(Encounter encounter, Integer target_power) {
+        this.difficulty = master.getOptionManager().getDifficulty();
         this.encounter = encounter;
         groupsExtended = 0;
         fillApplied = 0;
         groups = 0;
         unitGroups = new LinkedList<>();
         // map?
-        initPower();
+        if (target_power == null) {
+            initPower();
+        } else {
+            this.target_power = target_power;
+        }
         applyAddGroup();
         if (!ListMaster.isNotEmpty(unitGroups))
         {
             main.system.auxiliary.log.LogMaster.log(1," empty encounter! " );
             return;
         }
-        if (adjustPower)
             if (checkPowerAdjustmentNeeded())
                 try {
                     adjustPower();
@@ -309,7 +301,7 @@ public class EncounterAdjuster {
         }
         power = MathMaster.applyMod(power, mod);
 
-        Dungeon dungeon = manager.getGame().getDungeonMaster().getDungeon();
+        Dungeon dungeon = master.getGame().getDungeonMaster().getDungeon();
         if (dungeon != null) {
             mod = dungeon.getIntParam(PARAMS.POWER_MOD);
             if (mod == 0) {

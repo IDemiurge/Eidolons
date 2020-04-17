@@ -16,8 +16,6 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
-import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
@@ -28,6 +26,8 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
+import eidolons.game.netherflame.igg.event.TipMessageMaster;
+import eidolons.game.netherflame.igg.pale.PaleAspect;
 import eidolons.libgdx.bf.grid.GridManager;
 import eidolons.system.text.Texts;
 import main.content.DC_TYPE;
@@ -512,7 +512,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
                         PARTY_VALUE.COORDINATES, ContainerUtils.joinList(coordinates, DataUnitFactory.getContainerSeparator(UnitsData.FORMAT)));
         data +=
                 DataUnitFactory.getKeyValueString(UnitsData.FORMAT,
-                        PARTY_VALUE.MEMBERS, ContainerUtils.joinStringList(units, DataUnitFactory.getContainerSeparator(UnitsData.FORMAT)));
+                        PARTY_VALUE.UNITS, ContainerUtils.joinStringList(units, DataUnitFactory.getContainerSeparator(UnitsData.FORMAT)));
 
         UnitsData unitData = new UnitsData(data);
 
@@ -528,7 +528,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         List<Coordinates> list = new ArrayList<>();
         Coordinates origin = getCoordinates(arg, ref);
         // formation as arg? ;)
-        list = getPositioner().getPartyCoordinates(origin, player.isMe(), units);
+        list = getPositioner().getCoordinates(origin, player.isMe(), units);
 
         return list;
     }

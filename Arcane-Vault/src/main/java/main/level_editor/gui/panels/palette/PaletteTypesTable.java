@@ -110,7 +110,6 @@ public class PaletteTypesTable extends SelectionImageTable {
                     PROPS.PRESET_GROUP,
                     PROPS.EXTENDED_PRESET_GROUP,
                     PROPS.SHRUNK_PRESET_GROUP,
-                    PROPS.UNIT_TYPES,
                     PROPS.FILLER_TYPES);
 //
         }

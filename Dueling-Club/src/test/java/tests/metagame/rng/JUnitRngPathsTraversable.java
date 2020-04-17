@@ -1,11 +1,11 @@
 package tests.metagame.rng;
 
-import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
-import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
-import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphEdge;
-import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
-import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
-import eidolons.game.module.dungeoncrawl.generator.model.Room;
+import eidolons.game.module.generator.GeneratorEnums.ROOM_CELL;
+import eidolons.game.module.generator.graph.LevelGraph;
+import eidolons.game.module.generator.graph.LevelGraphEdge;
+import eidolons.game.module.generator.graph.LevelGraphNode;
+import eidolons.game.module.generator.model.LevelModel;
+import eidolons.game.module.generator.model.Room;
 import main.game.bf.Coordinates;
 import org.junit.Test;
 

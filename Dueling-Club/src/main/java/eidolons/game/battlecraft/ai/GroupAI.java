@@ -1,13 +1,10 @@
 package eidolons.game.battlecraft.ai;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.battlecraft.ai.explore.Patrol;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
-import eidolons.game.module.herocreator.logic.party.Party;
-import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
+import eidolons.game.module.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import main.data.XStack;
 import main.entity.obj.MicroObj;
 import main.game.bf.Coordinates;
@@ -15,32 +12,34 @@ import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
 
 public class GroupAI {
     UNIT_GROUP_TYPE type = UNIT_GROUP_TYPE.CROWD;
-    private ENCOUNTER_TYPE encounterType;
     private Unit leader;
     private DequeImpl<Unit> members = new DequeImpl<>();
-    private Party party;
+
     private ENGAGEMENT_LEVEL engagementLevel;
-    private AI_BEHAVIOR_MODE behaviorPref;
-    private DIRECTION wanderDirection;
     private boolean followLeader;
     private boolean forceBehavior;
-    private List<LevelBlock> permittedBlocks;
-    private int wanderDistance;
-    private List<Coordinates> knownEnemyCoordinates;
-    private Map<Unit, Coordinates> knownEnemyCoordinatesMap;
-    private Map<Unit, List<Coordinates>> suspectedEnemyCoordinatesMap;
-    private Coordinates originCoordinates;
-    private Stack<Coordinates> wanderStepCoordinateStack;
     private boolean clockwisePatrol;
     private boolean backAndForth;
-    private Patrol patrol;
+
+    private int wanderDistance;
+
+// TODO into    private Map<Unit, Coordinates> knownEnemyCoordinatesMap;
+//    private Map<Unit, List<Coordinates>> suspectedEnemyCoordinatesMap;
+
+    private Coordinates originCoordinates;
     private Unit originalLeader;
     private Object arg;
     private LevelBlock block;
+    private DIRECTION wanderDirection;
+    private Stack<Coordinates> wanderStepCoordinateStack;
+    private Patrol patrol;
 
     public GroupAI() {
 
@@ -171,9 +170,6 @@ public class GroupAI {
         this.wanderDistance = wanderDistance;
     }
 
-    public Party getParty() {
-        return party;
-    }
 
     public ENGAGEMENT_LEVEL getEngagementLevel() {
         if (engagementLevel == null) {
@@ -192,15 +188,7 @@ public class GroupAI {
     }
 
     private List<Coordinates> getKnownEnemyCoordinates() {
-        return knownEnemyCoordinates;
-    }
-
-    public Map<Unit, Coordinates> getKnownEnemyCoordinatesMap() {
-        return knownEnemyCoordinatesMap;
-    }
-
-    public void setKnownEnemyCoordinatesMap(Map<Unit, Coordinates> knownEnemyCoordinatesMap) {
-        this.knownEnemyCoordinatesMap = knownEnemyCoordinatesMap;
+        return null ;
     }
 
     public Coordinates getOriginCoordinates() {
@@ -210,37 +198,12 @@ public class GroupAI {
         return originCoordinates;
     }
 
-    public void setOriginCoordinates(Coordinates originCoordinates) {
-        this.originCoordinates = originCoordinates;
-    }
-
     public boolean isClockwisePatrol() {
         return clockwisePatrol;
     }
 
-    public void setClockwisePatrol(boolean clockwisePatrol) {
-        this.clockwisePatrol = clockwisePatrol;
-    }
-
     public boolean isBackAndForth() {
         return backAndForth;
-    }
-
-    public void setBackAndForth(boolean backAndForth) {
-        this.backAndForth = backAndForth;
-    }
-
-    public Map<Unit, List<Coordinates>> getSuspectedEnemyCoordinatesMap() {
-        return suspectedEnemyCoordinatesMap;
-    }
-
-    public void setSuspectedEnemyCoordinatesMap(
-     Map<Unit, List<Coordinates>> suspectedEnemyCoordinatesMap) {
-        this.suspectedEnemyCoordinatesMap = suspectedEnemyCoordinatesMap;
-    }
-
-    public ENCOUNTER_TYPE getEncounterType() {
-        return encounterType;
     }
 
     public Object getArg() {

@@ -1,5 +1,7 @@
 package eidolons.game.battlecraft.logic.battle.universal;
 
+import eidolons.game.battlecraft.logic.battle.encounter.EncounterAdjuster;
+import eidolons.game.battlecraft.logic.battle.encounter.EncounterSpawner;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
@@ -40,6 +42,12 @@ public class BattleHandler<E extends Battle> {
 
     public Spawner getSpawner() {
         return master.getSpawner();
+    }
+    public EncounterSpawner getEncounterSpawner() {
+        return master.getEncounterSpawner();
+    }
+    public EncounterAdjuster getEncounterAdjuster() {
+        return master.getEncounterAdjuster();
     }
 
     public BattleOptionManager getOptionManager() {

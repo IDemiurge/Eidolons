@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.generic;
 
-import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner;
+import eidolons.game.module.generator.init.RngMainSpawner;
 import main.system.data.DataUnit;
 
 import java.util.Set;

@@ -11,10 +11,10 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.DC_RuleMaster;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.netherflame.igg.death.ShadowMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
@@ -71,13 +71,10 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         int req = unit.isPlayerCharacter() ? 20 : 40;
         req *= MathMaster.MULTIPLIER;//TODO
         if (unit.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE) >= req) {
-            if (unit.getIntParam(PARAMS.C_FOCUS) >=
-             unit.getCalculator().getFocusRecoveryRequirement()
-                // Math.min(unit.getIntParam(PARAMS.FOCUS_RECOVER_REQ),
-                // DEFAULT_FOCUS_REQ )
-             ) {
-                return true;
-            }
+            // Math.min(unit.getIntParam(PARAMS.FOCUS_RECOVER_REQ),
+            // DEFAULT_FOCUS_REQ )
+            return unit.getIntParam(PARAMS.C_FOCUS) >=
+                    unit.getCalculator().getFocusRecoveryRequirement();
         }
         return false;
     }
@@ -205,19 +202,13 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     }
 
     private static boolean canBeAnnihilated(Unit unit) {
-        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)) {
-            return false;
-        }
+        return !unit.checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH);
         // special? vampires and such...
-        return true;
     }
 
     private static boolean canFallUnconscious(Unit unit) {
-        if (!unit.isLiving()) {
-            return false;
-        }
+        return unit.isLiving();
         // special? vampires and such...
-        return true;
     }
 
     public static int getDeathBarrier(BattleFieldObject attacked) {

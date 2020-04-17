@@ -2,8 +2,8 @@ package eidolons.system.content;
 
 import eidolons.content.PROPS;
 import eidolons.game.core.master.ObjCreator;
-import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums;
-import eidolons.game.module.dungeoncrawl.generator.init.RngBfObjProvider;
+import eidolons.game.module.generator.GeneratorEnums;
+import eidolons.game.module.generator.init.RngBfObjProvider;
 import eidolons.libgdx.bf.overlays.WallMap;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;

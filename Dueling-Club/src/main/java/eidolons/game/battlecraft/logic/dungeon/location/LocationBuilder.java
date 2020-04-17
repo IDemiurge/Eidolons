@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.location;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.FauxDungeonLevel;
-import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
+import eidolons.game.module.generator.init.RngXmlMaster;
 import main.system.PathUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;

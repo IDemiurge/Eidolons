@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
-import eidolons.game.module.dungeoncrawl.generator.LevelData;
+import eidolons.game.module.generator.LevelData;
 
 import java.util.ArrayList;
 import java.util.List;

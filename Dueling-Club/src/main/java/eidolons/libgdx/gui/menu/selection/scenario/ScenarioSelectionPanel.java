@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.menu.selection.scenario;
 
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
+import eidolons.game.netherflame.igg.IGG_Launcher;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;

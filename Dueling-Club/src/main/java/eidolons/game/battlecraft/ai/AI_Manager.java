@@ -19,8 +19,8 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
-import eidolons.game.netherflame.boss_.ai.BossAi;
+import eidolons.game.module.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
+import eidolons.game.netherflame.boss.ai.BossAi;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.content.enums.system.AiEnums;
@@ -128,7 +128,6 @@ public class AI_Manager extends AiMaster {
 
     public void init() {
         initialize();
-        game.getPlayer(false).setPlayerAI(new PlayerAI(getType()));
     }
     public Action getAction(Unit unit) {
         if (unit.isBoss()) {

@@ -27,7 +27,6 @@ import java.util.List;
 public class CoreEngine {
 
 
-
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
     public static final String VERSION = "1.0.0";
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Backer;
@@ -98,10 +97,11 @@ public class CoreEngine {
     private static boolean weakGpu;
     private static boolean youTube;
     private static boolean fraps;
+    private static boolean reflectionMapDisabled;
 
     public static void setWeakGpu(boolean weakGpu) {
         CoreEngine.weakGpu = weakGpu;
-        LogMaster.important("Setting Weak GPU to " +weakGpu);
+        LogMaster.important("Setting Weak GPU to " + weakGpu);
     }
 
     public static boolean getWeakGpu() {
@@ -384,18 +384,20 @@ public class CoreEngine {
 
         Chronos.logTimeElapsedForMark("TYPES INIT");
         if (isCompileReflectionMap())
-        try {
-            Chronos.mark("MAPPER INIT");
-            Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
-                    classFolders);
-            Chronos.logTimeElapsedForMark("MAPPER INIT");
-        } catch (ClassNotFoundException | SecurityException | IOException e) {
-            ExceptionMaster.printStackTrace(e);
-        }
+            try {
+                Chronos.mark("MAPPER INIT");
+                Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
+                        classFolders);
+                Chronos.logTimeElapsedForMark("MAPPER INIT");
+            } catch (ClassNotFoundException | SecurityException | IOException e) {
+                ExceptionMaster.printStackTrace(e);
+            }
 
     }
 
     private static boolean isCompileReflectionMap() {
+        if (reflectionMapDisabled)
+            return false;
         return !isLevelEditor();
     }
 
@@ -413,6 +415,10 @@ public class CoreEngine {
 
     public static CoreEngine getEngineObject() {
         return engineObject;
+    }
+
+    public static void setReflectionMapDisabled(boolean reflectionMapDisabled) {
+        CoreEngine.reflectionMapDisabled = reflectionMapDisabled;
     }
 
     public static void setEngineObject(CoreEngine engineObject) {
@@ -545,8 +551,8 @@ public class CoreEngine {
     }
 
     public static boolean isWindows() {
-        if (windows==null) {
-            windows= System.getProperty("os.name").startsWith("Windows");
+        if (windows == null) {
+            windows = System.getProperty("os.name").startsWith("Windows");
         }
         return windows;
     }
@@ -760,6 +766,7 @@ public class CoreEngine {
     public static boolean isVfxOff() {
         return vfxOff || isSuperLite();
     }
+
     public static void setVfxOff(boolean vfxOff) {
         CoreEngine.vfxOff = vfxOff;
     }

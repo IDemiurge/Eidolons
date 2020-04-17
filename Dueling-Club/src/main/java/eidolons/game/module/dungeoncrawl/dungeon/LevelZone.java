@@ -2,10 +2,10 @@ package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
-import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
-import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
-import eidolons.game.module.dungeoncrawl.generator.pregeneration.Pregenerator;
+import eidolons.game.module.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
+import eidolons.game.module.generator.GeneratorEnums.ZONE_TYPE;
+import eidolons.game.module.generator.graph.LevelGraphNode;
+import eidolons.game.module.generator.pregeneration.Pregenerator;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.entity.UnitEnums.UNIT_GROUP;
 import main.game.bf.Coordinates;

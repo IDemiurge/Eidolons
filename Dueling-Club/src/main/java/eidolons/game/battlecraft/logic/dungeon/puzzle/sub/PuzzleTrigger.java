@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.sub;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
-import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
+import eidolons.game.netherflame.igg.pale.PaleAspect;
 import main.elements.conditions.Condition;
 import main.elements.triggers.Trigger;
 import main.game.logic.event.Event;

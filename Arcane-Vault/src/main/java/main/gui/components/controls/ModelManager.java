@@ -7,8 +7,6 @@ import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.rpg.PrincipleMaster;
-import eidolons.game.module.adventure.map.travel.encounter.EncounterMaster;
-import eidolons.game.module.adventure.utils.SaveMasterOld;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.HeroCreator;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
@@ -104,7 +102,6 @@ public class ModelManager {
         for (FACTION u : FACTION.values()) {
             ObjType newType = new ObjType();
             ArcaneVault.getGame().initType(newType);
-            newType.setProperty(PROPS.UNIT_TYPES, u.getUnits());
             newType.setProperty(G_PROPS.NAME, u.toString());
             newType.setProperty(G_PROPS.TYPE, MACRO_OBJ_TYPES.FACTIONS.toString());
             newType.setImage(u.getImage());

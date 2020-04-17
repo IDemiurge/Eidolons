@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 5/7/2017.
@@ -100,7 +101,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         return true;
     }
 
-    public Map<Unit, Coordinates> getPartyCoordinates(List<Unit> members) {
+    public Map<Unit, Coordinates> getCoordinates(List<Unit> members) {
         List<String> list = new ArrayList<>();
         for (Unit h : members) {
             list.add(h.getName());
@@ -111,19 +112,25 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
     }
 
     public List<Coordinates> getPlayerPartyCoordinates(List<String> partyTypes) {
-        return getPartyCoordinates(getDungeon().getPlayerSpawnCoordinates(), true, partyTypes);
+        return getCoordinates(getDungeon().getPlayerSpawnCoordinates(), true, partyTypes);
     }
 
     public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MODE mode) {
         return
          ContainerUtils.convertToStringList(
-          getPartyCoordinates(null, owner.isMe(), types));
+          getCoordinates(null, owner.isMe(), types));
     }
 
 
-    public List<Coordinates> getPartyCoordinates(Coordinates origin, Boolean me,
-                                                 List<String> partyTypes) {
+    public List<Coordinates> getCoordinates(Coordinates origin, Boolean me,
+                                            List<String> partyTypes) {
+        return getGroupCoordinates(origin, me == null ? DC_Player.NEUTRAL : game.getPlayer(me), partyTypes.stream().map(type ->
+                DataManager.getType(type, C_OBJ_TYPE.UNITS_CHARS)).collect(Collectors.toList()));
+    }
 
+        public List<Coordinates> getGroupCoordinates(Coordinates origin, DC_Player owner,
+                List<ObjType> partyTypes) {
+            Boolean me = owner.isMe();
         List<Coordinates> list = new ArrayList<>();
         if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor()) {
             origin = Coordinates.get(PositionMaster.getMiddleIndex(false), PositionMaster
@@ -144,10 +151,9 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         }
 
         unitCache = new HashMap<>(partyTypes.size(), 1f);
-        for (String type : partyTypes) {
-            ObjType objType = DataManager.getType(type, C_OBJ_TYPE.UNITS_CHARS);
-            Coordinates c = getFirstLayerCenterCoordinate(origin, objType, false);
-            MapMaster.addToListMap(unitCache, c, objType);
+        for (ObjType type : partyTypes) {
+            Coordinates c = getFirstLayerCenterCoordinate(origin, type, false);
+            MapMaster.addToListMap(unitCache, c, type);
             list.add(c);
         }
         unitCache.clear();

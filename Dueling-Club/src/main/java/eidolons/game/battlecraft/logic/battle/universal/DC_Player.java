@@ -2,11 +2,9 @@ package eidolons.game.battlecraft.logic.battle.universal;
 
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.PlayerAI;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.core.game.DC_Game;
 import eidolons.macro.entity.faction.Faction;
-import main.content.enums.system.AiEnums;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
@@ -29,7 +27,6 @@ public class DC_Player extends Player {
 
     protected ALLEGIENCE allegiance;
     private Map<DC_Obj, Coordinates> detectionCache = new HashMap<>();
-    private PlayerAI playerAI;
     private String partyDataString;
     private UnitsData unitData;
     private Faction faction;
@@ -102,21 +99,6 @@ public class DC_Player extends Player {
 
     public Map<DC_Obj, Coordinates> getLastSeenCache() {
         return detectionCache;
-    }
-
-    public PlayerAI getAI() {
-        return getPlayerAI();
-    }
-
-    public PlayerAI getPlayerAI() {
-        if (playerAI == null) {
-            playerAI = new PlayerAI(AiEnums.PLAYER_AI_TYPE.NORMAL);
-        }
-        return playerAI;
-    }
-
-    public void setPlayerAI(PlayerAI playerAI) {
-        this.playerAI = playerAI;
     }
 
     public UnitsData getUnitData() {

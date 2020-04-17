@@ -99,7 +99,7 @@ public class LaunchDataKeeper {
             }
         if (!coordinates.isEmpty())
             data += PARTY_VALUE.COORDINATES + PAIR_SEPARATOR + coordinates + SEPARATOR;
-        data += PARTY_VALUE.MEMBERS + PAIR_SEPARATOR + units + SEPARATOR;
+        data += PARTY_VALUE.UNITS + PAIR_SEPARATOR + units + SEPARATOR;
         return new UnitsData(data);
     }
 

@@ -4,7 +4,6 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.PlayerAI.SITUATION;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
@@ -147,55 +146,41 @@ public class ParamPriorityAnalyzer extends AiHandler {
             switch ((PARAMS) param) {
                 case C_STAMINA:
                     if (target instanceof Unit) {
-                        if (ParamAnalyzer.isStaminaIgnore((Unit) target)) {
-                            return true;
-                        }
+                        return ParamAnalyzer.isStaminaIgnore((Unit) target);
                     }
                     return false;
                 case C_FOCUS:
                     if (target instanceof Unit) {
-                        if (ParamAnalyzer.isFocusIgnore((Unit) target)) {
-                            return true;
-                        }
+                        return ParamAnalyzer.isFocusIgnore((Unit) target);
                     }
                     return false;
                 case C_MORALE:
                     if (target instanceof Unit) {
-                        if (ParamAnalyzer.isMoraleIgnore((Unit) target)) {
-                            return true;
-                        }
+                        return ParamAnalyzer.isMoraleIgnore((Unit) target);
                     }
                     return false;
                 case C_ESSENCE:
                     if (target instanceof Unit) {
-                        if (!UnitAnalyzer.checkIsCaster((Unit) target)) {
-                            return true;
-                        }
+                        return !UnitAnalyzer.checkIsCaster((Unit) target);
                     }
                     return false;
 
                 case C_N_OF_ACTIONS:
                     if (target instanceof Unit) {
                         Unit heroObj = (Unit) target;
-                        if (heroObj.isImmobilized()) {
-                            return true;
-                        }
+                        return heroObj.isImmobilized();
                     }
                     return false;
                 case C_N_OF_COUNTERS:
                     if (target instanceof Unit) {
                         Unit heroObj = (Unit) target;
-                        if (!heroObj.canCounter()) {
-                            return true;
-                        }
+                        return !heroObj.canCounter();
                     }
                     return false;
                 case SPIRIT:
                     if (target instanceof Unit) {
                         Unit heroObj = (Unit) target;
-                        if (!heroObj.isLiving()) {
-                            return true;
-                        }
+                        return !heroObj.isLiving();
                     }
                     return false;
                 case CONCEALMENT:

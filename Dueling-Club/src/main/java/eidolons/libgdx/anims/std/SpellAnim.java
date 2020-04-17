@@ -7,7 +7,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.module.cinematic.FootageInitializer;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
@@ -343,9 +342,6 @@ public class SpellAnim extends ActionAnim {
                 break;
         }
 
-        if (EidolonsGame.FOOTAGE) {
-            return FootageInitializer.getVfx(group, part);
-        }
         return null;
     }
 

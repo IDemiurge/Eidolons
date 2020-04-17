@@ -6,15 +6,14 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiData;
+import eidolons.game.battlecraft.logic.battle.encounter.reinforce.Reinforcer;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.map.travel.encounter.EncounterMaster;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,18 +24,19 @@ public class Encounter extends DC_Obj {
 
     private Integer power;
     private List<Unit> units = new LinkedList<>();
-
+    private List<ObjType> types = new LinkedList<>();
     private ENCOUNTER_TYPE waveType;
     private EncounterSpawner.ENCOUNTER_STATUS status;
 
     AiData aiData;
     GroupAI groupAI;
+    Reinforcer reinforcer;
+    boolean spawned;
 
     public Encounter(ObjType waveType, DC_Game game, Ref ref, DC_Player player, Coordinates c) {
         super(waveType, player, game, ref);
+        reinforcer = new Reinforcer(this);
     }
-
-
 
     public void setAi(GroupAI groupAi) {
         for (Unit unit : units) {
@@ -70,12 +70,37 @@ public class Encounter extends DC_Obj {
         ref.setSource(getId());
     }
 
+    public Integer getPower() {
+//        if (power == 0)
+//            power = PowerCalculator.getPower(type, null);
+        return power;
+    }
     public boolean isBoss(ObjType type) {
-        return StringMaster.compare(type.getName(), getProperty(PROPS.BOSS_TYPE), true);
+//        return StringMaster.compare(type.getName(), getProperty(PROPS.BOSS_TYPE), true);
+        return false;
     }
 
+    public Reinforcer getReinforcer() {
+        return reinforcer;
+    }
+
+    public int getCurrentUnitNumber() {
+        return units.size();
+    }
     public int getUnitNumber() {
-        return getIntParam(PARAMS.UNIT_NUMBER);
+        return types.size();
+    }
+
+    public List<ObjType> getTypes() {
+        return types;
+    }
+
+    public AiData getAiData() {
+        return aiData;
+    }
+
+    public GroupAI getGroupAI() {
+        return groupAI;
     }
 
     public int getMaxUnitsPerGroup() {
@@ -103,11 +128,6 @@ public class Encounter extends DC_Obj {
         return getProperty(PROPS.SHRUNK_PRESET_GROUP);
     }
 
-    public Integer getPower() {
-        if (power == 0)
-            power = EncounterMaster.getPower(type, null);
-        return power;
-    }
 
     public void setPower(Integer power) {
         this.power = power;

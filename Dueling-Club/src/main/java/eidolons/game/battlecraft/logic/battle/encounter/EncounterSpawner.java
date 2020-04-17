@@ -5,42 +5,27 @@ import eidolons.game.battlecraft.logic.battle.encounter.EncounterData.ENCOUNTER_
 import eidolons.game.battlecraft.logic.battle.mission.MissionBattle;
 import eidolons.game.battlecraft.logic.battle.universal.BattleHandler;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
+import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
 import main.content.DC_TYPE;
 import main.data.DataManager;
+import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 
 import java.util.List;
 import java.util.Map;
 
-import static eidolons.game.battlecraft.logic.battle.encounter.EncounterSpawner.ENCOUNTER_STATUS.ENGAGED;
-
 
 public class EncounterSpawner extends BattleHandler<MissionBattle> {
 
-    public EncounterSpawner(BattleMaster<MissionBattle> master) {
+    public EncounterSpawner(BattleMaster  master) {
         super(master);
     }
 
     public enum ENCOUNTER_STATUS {
         ENGAGED, ALERT, IDLE, REGROUPING
-    }
-
-    public void newRound(Encounter encounter) {
-/*
-if it is engaged...
-some groups will be defensive, relying on Reinforcements!
- */
-        if (encounter.getStatus() == ENGAGED) {
-            //turns before spawn
-//            getTotalSpawnedPower();
-//            getCurrentPower();
-//            checkCanSpawnReinforcements();
-        }
-
     }
 
     //on enter module?
@@ -51,58 +36,36 @@ some groups will be defensive, relying on Reinforcements!
 
         ObjType encounterType = DataManager.getType(data.getValue(ENCOUNTER_VALUE.type)
                 , DC_TYPE.ENCOUNTERS);
-        Coordinates coordinates;
-
+        Coordinates coordinates = null;
+        spawnEncounter(encounterType, coordinates, data);
     }
 
     public void spawnEncounter(ObjType encounterType, Coordinates coordinates, EncounterData data) {
+        DC_Player owner = getGame().getPlayer(false);
+        Encounter encounter = new Encounter(encounterType, game, new Ref(), owner, coordinates);
         float adjustCoef = data.getFloatValue(ENCOUNTER_VALUE.adjust_coef);
 //        new Encounter(data);
         //can we have 2+ encounters in a fight/block?
+        //into handlers? GOOD practice to create in advance
 
-        UnitsData sdata = new UnitsData(""); //can be partially specified in LE?
-//        sdata.setValue(UnitData.PARTY_VALUE.COORDINATES, coordinatesString);
-        List<Unit> units = getSpawner().spawn(sdata, getGame().getPlayer(false), Spawner.SPAWN_MODE.DUNGEON);
-
-        //getMap()
-//        AiData aiData = getGame().getAiManager().getGroupHandler().getAiData(id);
-//        createGroup(units);
+        int targetPower;
+        new EncounterAdjuster(master).adjustEncounter(encounter, null );
+        List<ObjType> types = encounter.getTypes();
+        List<Unit> units = getSpawner().spawn(coordinates, types, owner, Spawner.SPAWN_MODE.DUNGEON);
+//        GuiEventManager.trigger(GuiEventType.UNIT_CREATED);
         /*
-        hero variants - depending on what eidolon goes?
-        soulforce smart adjust - don't spawn deadly if no SF?
-
-
-//                PROPS.PRESET_GROUP,
-//                PROPS.EXTENDED_PRESET_GROUP,
-//                PROPS.SHRUNK_PRESET_GROUP,
-//                PROPS.UNIT_TYPES,
-//                PROPS.FILLER_TYPES
-
-  int height = UnitGroupMaster.getGroupSizeY(owner);// UnitGroupMaster.getCurrentGroupHeight();
-            int width = UnitGroupMaster.getGroupSizeX(owner);
-
-
-  if (UnitGroupMaster.getFlip() == FLIP.CW90) {
-                int buffer = c.x;
-                c.setX(c.y);
-                c.setY(buffer);
-            } else if (UnitGroupMaster.getFlip() == FLIP.CCW90) {
-                int buffer = width - c.x;
-                c.setX(height - c.y);
-                c.setY(buffer);
-
-            }
-            if (UnitGroupMaster.isMirror()) {
-                if (UnitGroupMaster.getFlip() == FLIP.CW90
-                        || UnitGroupMaster.getFlip() == FLIP.CCW90) {
-                    c.setX(width - c.x);
-                } else {
-
-                    c.setY(height - c.y);
-                }
-
-            }
+        multiple in one event + some more visuals?
          */
+        encounter.setUnits(units);
+
+//        GroupAI groupAI = new GroupAI(encounter.getLeader());
+//        units.forEach(unit -> groupAI.add(unit));
+//        AiData aiData = getGame().getAiManager().getGroupHandler().getAiData(id);
+
+//        aiData.getArg()
+
+//        groupAI.setType(RngMainSpawner.UNIT_GROUP_TYPE.BOSS);
     }
+
 
 }

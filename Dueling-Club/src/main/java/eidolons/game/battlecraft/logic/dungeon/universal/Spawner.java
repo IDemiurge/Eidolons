@@ -87,12 +87,17 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
                 spawnAt, getPositioner());
     }
 
+    public List<Unit> spawn(Coordinates coordinates, List<ObjType> types, DC_Player owner, SPAWN_MODE mode) {
+        UnitsData data = new UnitsData(getPositioner().getGroupCoordinates(coordinates, owner, types),
+                types);
+        return spawn(data, owner, mode);
+    }
     public List<Unit> spawn(UnitsData data, DC_Player owner, SPAWN_MODE mode) {
         List<Unit> units = new ArrayList<>();
         int i = 0;
         if (owner == null)
             owner = getPlayerManager().getPlayer(data.getContainerValue(PARTY_VALUE.PLAYER_NAME, i));
-        List<String> types = data.getContainerValues(PARTY_VALUE.MEMBERS);
+        List<String> types = data.getContainerValues(PARTY_VALUE.UNITS);
         if (types.isEmpty())
             return new ArrayList<>();
         List<String> coordinates = data.getContainerValues(PARTY_VALUE.COORDINATES);
@@ -105,7 +110,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
             String facing = data.getContainerValue(PARTY_VALUE.FACING, i);
             String c = coordinates.get(i);
 
-            String type = data.getContainerValue(PARTY_VALUE.MEMBERS, i);
+            String type = data.getContainerValue(PARTY_VALUE.UNITS, i);
             String level = data.getContainerValue(PARTY_VALUE.LEVEL, i);
             if (!owner.isMe())
                 if (owner.isAi())

@@ -7,7 +7,7 @@ import com.bitfire.postprocessing.PostProcessorEffect;
 import com.bitfire.postprocessing.demo.PostProcessing;
 import com.bitfire.postprocessing.effects.*;
 import com.bitfire.postprocessing.effects.Bloom.Settings;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
+import eidolons.game.netherflame.igg.IGG_Images;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.screens.SCREEN_TYPE;

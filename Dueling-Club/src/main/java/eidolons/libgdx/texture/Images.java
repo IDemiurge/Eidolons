@@ -1,7 +1,7 @@
 package eidolons.libgdx.texture;
 
 import eidolons.entity.Deity;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
+import eidolons.game.netherflame.igg.IGG_Images;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;

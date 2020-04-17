@@ -9,7 +9,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums;
+import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.system.content.PlaceholderGenerator;
 import main.content.CONTENT_CONSTS.FLIP;
