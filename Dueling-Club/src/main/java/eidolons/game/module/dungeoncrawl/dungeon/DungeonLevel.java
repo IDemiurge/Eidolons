@@ -6,7 +6,6 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.generator.LevelData;
 import eidolons.game.module.generator.fill.RngFillMaster;
-import eidolons.game.module.generator.init.RngMainSpawner;
 import eidolons.game.module.generator.init.RngXmlMaster;
 import eidolons.game.module.generator.model.LevelModel;
 import eidolons.game.module.generator.test.LevelStats;
@@ -18,6 +17,7 @@ import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
+import main.content.enums.EncounterEnums;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
@@ -462,7 +462,7 @@ public class DungeonLevel  {
 
 
     public void addUnitGroup(LevelBlock levelBlock,
-                             List<ObjAtCoordinate> unitsAtCoordinates, RngMainSpawner.UNIT_GROUP_TYPE groupType) {
+                             List<ObjAtCoordinate> unitsAtCoordinates, EncounterEnums.UNIT_GROUP_TYPE groupType) {
 
         levelBlock.getUnitGroups().put(unitsAtCoordinates, groupType);
     }
@@ -479,7 +479,7 @@ public class DungeonLevel  {
     public void setUnitFacingMap(Map<Coordinates, FACING_DIRECTION> unitFacingMap) {
         this.unitFacingMap = unitFacingMap;
     }
-
+//TODO dc init fix
     public void initUnitFacingMap(Map<String, String> customDataMap) {
         Map<Coordinates, FACING_DIRECTION> map = new HashMap<>();
         for (String s : customDataMap.keySet()) {

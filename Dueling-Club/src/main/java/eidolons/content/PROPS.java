@@ -231,11 +231,10 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
 
     FILLER_TYPES("encounters", null),
-    UNIT_TYPES(null, true, "encounters"),
     GROWTH_PRIORITIES(null, true, "encounters"),
     EXTENDED_PRESET_GROUP(null, true, "encounters"),
-    SHRUNK_PRESET_GROUP(null, true, "encounters"),
     PRESET_GROUP("PRESET_GROUP", true, "encounters"),
+    SHRUNK_PRESET_GROUP(null, true, "encounters"),
 
     REINFORCEMENT_TYPE("encounters", null),
     REINFORCEMENT_CUSTOM("encounters", null),

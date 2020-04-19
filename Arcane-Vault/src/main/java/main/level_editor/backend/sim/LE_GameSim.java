@@ -5,7 +5,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.core.master.ObjCreator;
@@ -15,8 +14,6 @@ import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.level_editor.backend.sim.impl.LE_DungeonMaster;
 
@@ -116,10 +113,10 @@ public class LE_GameSim extends ScenarioGame {
 //        grid = new DC_BattleFieldGrid(getModule());
         battleFieldManager = new DC_BattleFieldManager(this, getModule().getId(), getModule().getEffectiveWidth(), getModule().getEffectiveHeight());
 
-        Coordinates c = Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
-        dummyPC = (Unit) createObject(getDummyType(), c.x, c.y, getPlayer(true),
-                new Ref(LE_GameSim.this));
-        Eidolons.setMainHero(dummyPC);
+//        Coordinates c = Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
+//        dummyPC = (Unit) createObject(getDummyType(), c.x, c.y, getPlayer(true),
+//                new Ref(LE_GameSim.this));
+//        Eidolons.setMainHero(dummyPC);
     }
 
     private ObjType getDummyType() {

@@ -62,7 +62,7 @@ public class FileManager {
 //                }
                 return "";
             }
-            if (!file.getPath().contains(PathFinder.getRootPath()))
+            if (!PathUtils.fixSlashes(file.getPath()).toLowerCase().contains(PathFinder.getRootPath().toLowerCase()))
                 return readFile(FileManager.getFile(PathFinder.getRootPath() + file.getPath()),
                         lineSeparator);
             return "";
@@ -254,6 +254,7 @@ public class FileManager {
         String v = formatPath(path, force);
         return v.substring(0, v.length() - 1);
     }
+
 
     public static String formatPath(String path, boolean force) {
         StringBuilder formatted = new StringBuilder();

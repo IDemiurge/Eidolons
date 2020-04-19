@@ -12,7 +12,8 @@ import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
+import main.content.enums.EncounterEnums;
+import main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.game.logic.action.context.Context;
@@ -32,7 +33,7 @@ public class AiBehaviorManager extends AiHandler {
             AI_BEHAVIOR_MODE.GUARD;
     public static final boolean TEST_MODE = TESTED != null;
     private static UNIT_GROUP_TYPE TESTED_GROUP = !CoreEngine.isFullFastMode() ? null :
-            UNIT_GROUP_TYPE.GUARDS;
+            EncounterEnums.UNIT_GROUP_TYPE.GUARDS;
     Set<UnitExploreAI> aiSet = new LinkedHashSet<>();
     private DequeImpl<ActionInput> aiActionQueue = new DequeImpl<>();
     private Integer maxActiveCount = null;
@@ -204,9 +205,9 @@ public class AiBehaviorManager extends AiHandler {
         UNIT_GROUP_TYPE t = null;
 
         if (EidolonsGame.BOSS_FIGHT || EidolonsGame.TUTORIAL_MISSION)
-            t = UNIT_GROUP_TYPE.GUARDS;
+            t = EncounterEnums.UNIT_GROUP_TYPE.GUARDS;
         else if (ai.getGroupAI() == null || ai.getGroupAI().getMembers().size() == 1) {
-            t = UNIT_GROUP_TYPE.IDLERS;
+            t = EncounterEnums.UNIT_GROUP_TYPE.IDLERS;
         } else {
             t = ai.getGroupAI().getType();
         }

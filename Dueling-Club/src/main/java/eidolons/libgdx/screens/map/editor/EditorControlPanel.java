@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
-import eidolons.game.module.adventure.utils.SaveMasterOld;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -66,11 +65,7 @@ public class EditorControlPanel extends HorizontalFlowGroup {
                 //type? create local type
                 break;
             case SAVE:
-                try {
-                    SaveMasterOld.saveTheWorld();
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
+                //save master worked?TODO
                 EditorMapView.getInstance().getEditorParticles().saveAll();
                 MapPointMaster.getInstance()
                         .save();

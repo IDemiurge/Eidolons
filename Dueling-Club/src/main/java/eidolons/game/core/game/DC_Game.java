@@ -101,7 +101,6 @@ public class DC_Game extends GenericGame {
     protected BattleMaster battleMaster;
     protected CombatMaster combatMaster;
 
-    protected DroppedItemManager droppedItemManager;
     protected InventoryTransactionManager inventoryTransactionManager;
     protected DC_InventoryManager inventoryManager;
     protected DC_GameManager manager;
@@ -112,6 +111,7 @@ public class DC_Game extends GenericGame {
     protected DC_KeyManager keyManager; //where to move?
 
     protected DC_Rules rules;
+    private DroppedItemManager droppedItemManager;
 
     protected GAME_MODES gameMode;
     protected GAME_TYPE gameType;
@@ -195,7 +195,6 @@ public class DC_Game extends GenericGame {
             visionMaster = new VisionMaster(this);
         mathManager = new DC_MathManager(this);
         effectManager = new DC_EffectManager(this);
-        droppedItemManager = new DroppedItemManager(this);
         setTestMaster(new TestMasterContent(this));
         conditionMaster = new DC_ConditionMaster();
         logManager = new DC_LogManager(this);
@@ -283,6 +282,7 @@ public class DC_Game extends GenericGame {
         battleFieldManager = new DC_BattleFieldManager(this, getModule().getId(),
                 getModule().getEffectiveWidth(), getModule().getEffectiveHeight());
 
+        droppedItemManager = new DroppedItemManager(this);
         droppedItemManager.init();
 
         if (AI_ON) {

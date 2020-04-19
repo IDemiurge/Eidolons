@@ -114,8 +114,8 @@ public enum G_PROPS implements PROPERTY {
     CUSTOM_PROPS("all"),
     CUSTOM_PARAMS("all"),
     ABILITY_GROUP("abils"),
-    ENCOUNTER_GROUP("encounters"),
-    ENCOUNTER_SUBGROUP("encounters"),
+    ENCOUNTER_GROUP("", false, "encounters", "units"),
+    ENCOUNTER_SUBGROUP("", false, "encounters", "units"),
     ENCOUNTER_TYPE("encounters"),
 
     DUNGEON_GROUP("dungeons"),

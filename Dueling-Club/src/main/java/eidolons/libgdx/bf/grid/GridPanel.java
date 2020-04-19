@@ -48,6 +48,7 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
@@ -87,9 +88,6 @@ public abstract class GridPanel extends Group {
     protected GridManager manager;
     protected GridOverlaysManager overlayManager;
 
-    GridElement[] gridElements = new GridElement[]{
-            shadowMap, shards, overlayManager
-    };
     private Coordinates offset;
     private Map<Module, GridSubParts> containerMap = new HashMap<>();
 
@@ -129,9 +127,17 @@ public abstract class GridPanel extends Group {
         //for others too?
 
         initGrid();
-        for (GridElement gridElement : gridElements) {
-            gridElement.setModule(module);
+        for (GridElement gridElement : getGridElements()) {
+            if (gridElement != null) {
+                gridElement.setModule(module);
+            }
         }
+    }
+
+    private GridElement[] getGridElements() {
+        return new GridElement[]{
+                shadowMap, shards, overlayManager
+        };
     }
 
     protected void initGrid() {
@@ -200,6 +206,13 @@ public abstract class GridPanel extends Group {
                 addActor(shards = new ShardVisuals(this));
             if (isPillarsOn())
                 addActor(pillars = new Pillars(this));
+        } else {
+
+            for (int x = 0; x < cols; x++) {
+                for (int y = 0; y < rows; y++) {
+                    checkAddBorder(x, y);
+                }
+            }
         }
     }
 
@@ -714,6 +727,8 @@ public abstract class GridPanel extends Group {
             BattleFieldObject object = (BattleFieldObject) obj.get();
             UnitView unitView = getUnitView(object);
             unitView.setPortraitTexture(TextureCache.getOrCreateR(object.getImagePath()));
+//            main.system.auxiliary.log.LogMaster.log(1,object.getNameAndCoordinate()+
+//                    " RESET_VIEW: " +object.getImagePath());
         });
 
         GuiEventManager.bind(removePrevious, CELL_RESET_VOID, obj -> {
@@ -933,4 +948,70 @@ public abstract class GridPanel extends Group {
     public boolean isVoid(int x, int y) {
         return getCell(x, y).isVOID();
     }
+
+    protected void checkAddBorder(int x, int y) {
+        Boolean hor = null;
+        Boolean vert = null;
+        if (x + 1 == cols)
+            hor = true;
+        if (x == 0)
+            hor = false;
+        if (y + 1 == rows)
+            vert = true;
+        if (y == 0)
+            vert = false;
+
+        float posX = x * GridMaster.CELL_W;
+        float posY = y * GridMaster.CELL_H;
+        String suffix = null;
+        if (hor != null) {
+            int i = hor ? 1 : -1;
+            suffix = hor ? "right" : "left";
+            com.badlogic.gdx.scenes.scene2d.ui.Image image = new com.badlogic.gdx.scenes.scene2d.ui.Image(TextureCache.getOrCreateR(
+                    StrPathBuilder.build(
+                            "ui", "cells", "bf", "gridBorder " +
+                                    suffix +
+                                    ".png")));
+            addActor(image);
+            image.setPosition(posX + i * GridMaster.CELL_W + (20 - 20 * i)//+40
+                    , posY
+                    //+ i * 35
+            );
+        }
+        if (vert != null) {
+            int i = vert ? 1 : -1;
+            suffix = vert ? "up" : "down";
+            com.badlogic.gdx.scenes.scene2d.ui.Image image = new com.badlogic.gdx.scenes.scene2d.ui.Image(TextureCache.getOrCreateR(StrPathBuilder.build(
+                    "ui", "cells", "bf", "gridBorder " +
+                            suffix +
+                            ".png")));
+            addActor(image);
+            image.setPosition(posX //+ i * 35
+                    , posY
+                            + i * GridMaster.CELL_H + (20 - 20 * i));//+40
+        }
+        TextureRegion cornerRegion = TextureCache.getOrCreateR(GridMaster.gridCornerElementPath);
+        if (hor != null)
+            if (vert != null) {
+                int i = vert ? 1 : -1;
+                com.badlogic.gdx.scenes.scene2d.ui.Image image = new com.badlogic.gdx.scenes.scene2d.ui.Image(cornerRegion);
+                image.setPosition(posX + i * 40 + i * GridMaster.CELL_W + i * -77, posY
+                        + i * 40 + i * GridMaster.CELL_H + i * -77);
+
+                if (!vert && hor) {
+                    image.setX(image.getX() + 170);
+                    image.setY(image.getY() + 12);
+                }
+                if (vert && !hor) {
+                    image.setX(image.getX() - 180);
+                    image.setY(image.getY() - 25);
+                }
+                if (vert && hor) {
+                    image.setX(image.getX() - 15);
+                    image.setY(image.getY() - 15);
+                }
+                addActor(image);
+            }
+    }
+
 }

@@ -1,6 +1,8 @@
 package main.system;
 
+import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +24,13 @@ public class PathUtils {
         return PATH_SEPARATOR;
     }
 
+    public static String fixSlashes(String path) {
+        StringBuilder formatted = new StringBuilder();
+        for (String sub : splitPath(path)) {
+            formatted.append(StringMaster.replace(true, sub, "/", "")).append("/");
+        }
+        return formatted.toString();
+    }
     public static List<String> splitPath(String path) {
         if (path.isEmpty()) {
             return new ArrayList<>();
@@ -197,4 +206,8 @@ public class PathUtils {
         return path;
     }
 
+    public static String cropResourcePath(String path) {
+            return FileManager.formatPath( path.toLowerCase(), true)
+                    .replace(PathFinder.getResPath().toLowerCase(), "");
+    }
 }

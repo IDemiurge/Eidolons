@@ -20,6 +20,7 @@ import eidolons.game.module.generator.tilemap.TilesMaster;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
+import main.content.enums.EncounterEnums;
 import main.content.enums.entity.UnitEnums.UNIT_GROUP;
 import main.data.DataManager;
 import main.data.xml.XML_Formatter;
@@ -48,17 +49,17 @@ public class RngMainSpawner {
     public static final boolean TEST_MODE = false;
     private static final float SINGLE_UNIT_BONUS_COEF = 1.5f;
     private static final int TEST_POWER = 250;
-    private static final UNIT_GROUP_TYPE[] MANDATORY_SPAWN_GROUPS = {
+    private static final EncounterEnums.UNIT_GROUP_TYPE[] MANDATORY_SPAWN_GROUPS = {
 //            UNIT_GROUP_TYPE.BOSS,
-            UNIT_GROUP_TYPE.GUARDS,
-            UNIT_GROUP_TYPE.PATROL,
-            UNIT_GROUP_TYPE.STALKER,
-            UNIT_GROUP_TYPE.AMBUSH,
+            EncounterEnums.UNIT_GROUP_TYPE.GUARDS,
+            EncounterEnums.UNIT_GROUP_TYPE.PATROL,
+            EncounterEnums.UNIT_GROUP_TYPE.STALKER,
+            EncounterEnums.UNIT_GROUP_TYPE.AMBUSH,
     };
-    private static final UNIT_GROUP_TYPE[] ADDITIONAL_SPAWN_GROUPS = {
-            UNIT_GROUP_TYPE.CROWD,
-            UNIT_GROUP_TYPE.IDLERS,
-            UNIT_GROUP_TYPE.PATROL,
+    private static final EncounterEnums.UNIT_GROUP_TYPE[] ADDITIONAL_SPAWN_GROUPS = {
+            EncounterEnums.UNIT_GROUP_TYPE.CROWD,
+            EncounterEnums.UNIT_GROUP_TYPE.IDLERS,
+            EncounterEnums.UNIT_GROUP_TYPE.PATROL,
     };
     private static final float POWER_FILL_COEF = 1.25f;
     private static final boolean SPAWN_GROUP_ON_ONE_CELL = CoreEngine.isCombatGame();
@@ -71,7 +72,7 @@ public class RngMainSpawner {
 
     public static UNIT_GROUP getUnitGroup(
             LOCATION_TYPE locationType, LevelZone zone,
-            UNIT_GROUP_TYPE groupType) {
+            EncounterEnums.UNIT_GROUP_TYPE groupType) {
         if (presetUnitGroup != null)
             return presetUnitGroup;
 
@@ -109,7 +110,7 @@ public class RngMainSpawner {
         return map.getRandomByWeight();
     }
 
-    private static int getMaxGroupsForType(UNIT_GROUP_TYPE groupType) {
+    private static int getMaxGroupsForType(EncounterEnums.UNIT_GROUP_TYPE groupType) {
         return 2;
     }
 
@@ -182,10 +183,10 @@ public class RngMainSpawner {
         int groups = n / perGroup;
         List<LevelBlock> blocks = new ArrayList<>(level.getBlocks());
         blocks.removeIf(block -> {
-            if (!isBlockForGroup(block, UNIT_GROUP_TYPE.IDLERS))
-                if (!isBlockForGroup(block, UNIT_GROUP_TYPE.GUARDS))
-                    if (!isBlockForGroup(block, UNIT_GROUP_TYPE.CROWD))
-                        return !isBlockForGroup(block, UNIT_GROUP_TYPE.PATROL);
+            if (!isBlockForGroup(block, EncounterEnums.UNIT_GROUP_TYPE.IDLERS))
+                if (!isBlockForGroup(block, EncounterEnums.UNIT_GROUP_TYPE.GUARDS))
+                    if (!isBlockForGroup(block, EncounterEnums.UNIT_GROUP_TYPE.CROWD))
+                        return !isBlockForGroup(block, EncounterEnums.UNIT_GROUP_TYPE.PATROL);
             return false;
         });
         //        Collections.sort(blocks, );
@@ -196,7 +197,7 @@ public class RngMainSpawner {
                 units.add(type);
             }
             List<ObjAtCoordinate> list = spawnUnits(block, units);
-            level.addUnitGroup(block, list, UNIT_GROUP_TYPE.IDLERS);
+            level.addUnitGroup(block, list, EncounterEnums.UNIT_GROUP_TYPE.IDLERS);
             groups--;
             if (groups == 0)
                 perGroup = n % perGroup;
@@ -220,10 +221,10 @@ public class RngMainSpawner {
         ObjType type = (ObjType) quest.getArg();
         List<ObjType> units = new ArrayList<>();
         units.add(type);
-        List<LevelBlock> blocks = getBlocksForSpawn(UNIT_GROUP_TYPE.BOSS, zone);
+        List<LevelBlock> blocks = getBlocksForSpawn(EncounterEnums.UNIT_GROUP_TYPE.BOSS, zone);
         if (blocks.isEmpty()) {
             for (LevelZone levelZone : level.getZones()) {
-                blocks = getBlocksForSpawn(UNIT_GROUP_TYPE.BOSS, levelZone);
+                blocks = getBlocksForSpawn(EncounterEnums.UNIT_GROUP_TYPE.BOSS, levelZone);
                 if (!blocks.isEmpty()) {
                     zone = levelZone;
                     break;
@@ -241,7 +242,7 @@ public class RngMainSpawner {
                         : blocks.get(n);
 
         List<ObjAtCoordinate> list = spawnUnits(block, units);
-        level.addUnitGroup(block, list, UNIT_GROUP_TYPE.BOSS);
+        level.addUnitGroup(block, list, EncounterEnums.UNIT_GROUP_TYPE.BOSS);
         ObjAtCoordinate objAt = list.get(0);
 
         quest.setArg(objAt);
@@ -286,7 +287,7 @@ public class RngMainSpawner {
 
     private void spawnMandatory() {
 
-        for (UNIT_GROUP_TYPE groupType : MANDATORY_SPAWN_GROUPS) {
+        for (EncounterEnums.UNIT_GROUP_TYPE groupType : MANDATORY_SPAWN_GROUPS) {
             blocks:
             for (LevelBlock block : level.getBlocks()) {
                 if (!isBlockForGroup(block, groupType)) {
@@ -334,8 +335,8 @@ public class RngMainSpawner {
             List<Coordinates> filledCells = block.getTileMap().getMap().keySet().stream().filter(
                     c -> isSpawnSymbol(map.get(c))).collect(Collectors.toList());
             filledCells.forEach(c -> {
-                UNIT_GROUP_TYPE type = new EnumMaster<UNIT_GROUP_TYPE>()
-                        .retrieveEnumConst(UNIT_GROUP_TYPE.class,
+                EncounterEnums.UNIT_GROUP_TYPE type = new EnumMaster<EncounterEnums.UNIT_GROUP_TYPE>()
+                        .retrieveEnumConst(EncounterEnums.UNIT_GROUP_TYPE.class,
                                 map.get(c).name());
                 List<ObjType> units = getUnitsForGroup(getPowerCoef(block, type), type,
                         getUnitGroup(level.getLocationType(), block.getZone(), type), 3, 1);
@@ -377,7 +378,7 @@ public class RngMainSpawner {
         for (Module module : asd) {
             zones:
             for (LevelZone zone : module.getSubParts()) {
-                for (UNIT_GROUP_TYPE groupType : ADDITIONAL_SPAWN_GROUPS) {
+                for (EncounterEnums.UNIT_GROUP_TYPE groupType : ADDITIONAL_SPAWN_GROUPS) {
                     List<LevelBlock> blocks = getBlocksForSpawn(groupType, zone);
                     if (blocks.isEmpty())
                         continue;
@@ -406,7 +407,7 @@ public class RngMainSpawner {
                         data.getFloatValue(LEVEL_VALUES.POWER_PER_SQUARE_MAX_MOD) / 100;
     }
 
-    private List<LevelBlock> getBlocksForSpawn(UNIT_GROUP_TYPE groupType, LevelZone zone) {
+    private List<LevelBlock> getBlocksForSpawn(EncounterEnums.UNIT_GROUP_TYPE groupType, LevelZone zone) {
         return
                 level.getBlocks().stream()
                         .filter(block -> block.getZone() == zone)
@@ -456,7 +457,7 @@ public class RngMainSpawner {
         return 1.5f;
     }
 
-    private float getPowerCoef(LevelBlock block, UNIT_GROUP_TYPE groupType) {
+    private float getPowerCoef(LevelBlock block, EncounterEnums.UNIT_GROUP_TYPE groupType) {
         float coef = 2f;
         switch (block.getRoomType()) {
             case THRONE_ROOM:
@@ -519,14 +520,14 @@ public class RngMainSpawner {
         return coef * random;
     }
 
-    private int getLimit(UNIT_GROUP_TYPE group, LevelZone zone, int size) {
+    private int getLimit(EncounterEnums.UNIT_GROUP_TYPE group, LevelZone zone, int size) {
         int max =
                 data.getIntValue(LEVEL_VALUES.valueOf("SPAWN_GROUP_COEF_" + group.name())) *
                         size / 100;
         return RandomWizard.getRandomIntBetween(max / 2, max * 3 / 2) + 1;
     }
 
-    private boolean isBlockForGroup(LevelBlock block, UNIT_GROUP_TYPE group) {
+    private boolean isBlockForGroup(LevelBlock block, EncounterEnums.UNIT_GROUP_TYPE group) {
 //       madness  if (AiBehaviorManager.TEST_MODE) {
 //            if (block.getRoomType() == ROOM_TYPE.ENTRANCE_ROOM) {
 //                return true;
@@ -564,21 +565,21 @@ public class RngMainSpawner {
         return false;
     }
 
-    private void spawnForGroup(LevelBlock levelBlock, UNIT_GROUP_TYPE groupType, UNIT_GROUP group, float powerCoef) {
+    private void spawnForGroup(LevelBlock levelBlock, EncounterEnums.UNIT_GROUP_TYPE groupType, UNIT_GROUP group, float powerCoef) {
         spawnForGroup(levelBlock, groupType, group, getMaxUnits(group, groupType, powerCoef),
                 getMinUnits(group, groupType, powerCoef), powerCoef);
     }
 
 
-    private int getMinUnits(UNIT_GROUP group, UNIT_GROUP_TYPE groupType, float powerCoef) {
+    private int getMinUnits(UNIT_GROUP group, EncounterEnums.UNIT_GROUP_TYPE groupType, float powerCoef) {
         return getMinMaxUnits(true, group, groupType, powerCoef);
     }
 
-    private int getMaxUnits(UNIT_GROUP group, UNIT_GROUP_TYPE groupType, float powerCoef) {
+    private int getMaxUnits(UNIT_GROUP group, EncounterEnums.UNIT_GROUP_TYPE groupType, float powerCoef) {
         return getMinMaxUnits(false, group, groupType, powerCoef);
     }
 
-    private int getMinMaxUnits(boolean min, UNIT_GROUP group, UNIT_GROUP_TYPE groupType, float powerCoef) {
+    private int getMinMaxUnits(boolean min, UNIT_GROUP group, EncounterEnums.UNIT_GROUP_TYPE groupType, float powerCoef) {
         float base = min ? getBaseMin(group) : getBaseMax(group);
         switch (groupType) {
             case GUARDS:
@@ -608,7 +609,7 @@ public class RngMainSpawner {
     }
 
     private List<ObjType> getUnitsForGroup(float powerCoef,
-                                           UNIT_GROUP_TYPE groupType,
+                                           EncounterEnums.UNIT_GROUP_TYPE groupType,
                                            UNIT_GROUP group, int max, int minPreferred) {
         int powerLevel = Math.round(level.getPowerLevel() * powerCoef);
 
@@ -672,7 +673,7 @@ public class RngMainSpawner {
         return units;
     }
 
-    private boolean isOneOfAType(UNIT_GROUP_TYPE groupType, WeightMap<String> map, int minPreferred) {
+    private boolean isOneOfAType(EncounterEnums.UNIT_GROUP_TYPE groupType, WeightMap<String> map, int minPreferred) {
         switch (groupType) {
             case PATROL:
             case AMBUSH:
@@ -685,7 +686,7 @@ public class RngMainSpawner {
         return false;
     }
 
-    private boolean isOneFromAboveRank(UNIT_GROUP_TYPE group, int max) {
+    private boolean isOneFromAboveRank(EncounterEnums.UNIT_GROUP_TYPE group, int max) {
         switch (group) {
             case GUARDS:
                 return RandomWizard.chance(20 + max * 6);
@@ -698,7 +699,7 @@ public class RngMainSpawner {
     }
 
     private void spawnForGroup(LevelBlock levelBlock,
-                               UNIT_GROUP_TYPE groupType,
+                               EncounterEnums.UNIT_GROUP_TYPE groupType,
                                UNIT_GROUP group, int max, int minPreferred, float powerCoef) {
         List<ObjType> units = getUnitsForGroup(powerCoef, groupType, group,
                 max, minPreferred);
@@ -795,44 +796,6 @@ public class RngMainSpawner {
     private void addUnit(ObjAtCoordinate at, LevelBlock levelBlock) {
         levelBlock.getUnits().add(at);
         log(1, at + " spawned for " + levelBlock.getRoomType());
-    }
-
-    /*
-    Guard Ai - stand still, only turn this way or that
-    > alerted - goes to investigate
-    ++ voice comments
-    ++ chance to Sleep
-    Idlers/Crowd - chaotic wandering within the Block
-    > alerted - hold still and enters Alert Mode
-    ++ periodic Rest
-    Patrol Ai - orderly traversal of the Block
-    > alerted - investigate
-    Stalker Ai - moves in stealth mode within the Zone, follows enemy until they enter combat, then add to the AggroGroup
-    > alerted -
-    Boss Ai - walks in small circles
-     */
-    public enum UNIT_GROUP_TYPE {
-        //this is gonna be used for fill probably too
-        GUARDS(0.05f),
-        PATROL(1f),
-        AMBUSH(0.15f),
-        CROWD(0.3f),
-        IDLERS(0.2f),
-        STALKER(1.25f),
-        BOSS(0.1f),
-        ;
-        //determines what? Except AI behavior -
-        // N preference, power level, placement,
-
-        private float speedMod = 0;
-
-        UNIT_GROUP_TYPE(float speedMod) {
-            this.speedMod = speedMod;
-        }
-
-        public float getSpeedMod() {
-            return speedMod;
-        }
     }
 
     public static void setPresetUnitGroup(UNIT_GROUP presetUnitGroup) {

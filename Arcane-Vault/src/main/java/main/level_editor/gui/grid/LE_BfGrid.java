@@ -42,6 +42,11 @@ public class LE_BfGrid extends GridPanel {
     }
 
     @Override
+    protected void addVoidDecorators(boolean hasVoid) {
+        super.addVoidDecorators(false);
+    }
+
+    @Override
     public void setModule(Module module) {
         x2 = cols ;
         y2 = rows  ;

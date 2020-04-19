@@ -205,6 +205,10 @@ public class Coordinates implements Serializable {
         return c;
     }
 
+    public static void initCache(int w, int h) {
+        coordinates = new Coordinates[w][h];
+    }
+
     protected void checkInvalid() {
         Coordinates.checkInvalid(this);
     }
@@ -536,7 +540,7 @@ public class Coordinates implements Serializable {
     }
 
     public Coordinates getOffset(int x, int y) {
-        return get(getX() + x, getY() + y);
+        return get(Math.max(0, getX()  + x), Math.max(0, getY() + y));
     }
 
     public Coordinates getOffset(Coordinates coordinates) {

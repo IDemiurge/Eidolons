@@ -59,9 +59,10 @@ public class PlaceholderGenerator {
 
             type.setProperty(G_PROPS.BF_OBJECT_GROUP, "Placeholder");
             type.setProperty(G_PROPS.BF_OBJECT_TYPE, "Special");
-            type.setProperty(G_PROPS.IMAGE, "ui/content/placeholders/" +
+            type.setProperty(G_PROPS.IMAGE, "main/bf/placeholder/" +
+                    "placeholder " +
                     name +
-                    " placeholder.png");
+                    ".png");
             DataManager.addType(type);
             boolean indestructible=false;
             switch (cell) {

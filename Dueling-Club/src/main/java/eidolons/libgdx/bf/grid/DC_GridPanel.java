@@ -3,7 +3,6 @@ package eidolons.libgdx.bf.grid;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
@@ -43,7 +42,6 @@ import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
@@ -191,16 +189,6 @@ public class DC_GridPanel extends GridPanel {
         animMaster.setZIndex(Integer.MAX_VALUE);
     }
 
-    protected void addVoidDecorators(boolean hasVoid) {
-        super.addVoidDecorators(hasVoid);
-        if (!hasVoid)
-            for (int x = 0; x < cols; x++) {
-                for (int y = 0; y < rows; y++) {
-                    checkAddBorder(x, y);
-                }
-            }
-    }
-
     protected GridOverlaysManager createOverlays() {
         return new GridOverlaysManager(this);
     }
@@ -266,71 +254,6 @@ public class DC_GridPanel extends GridPanel {
             }
         }
         return false;
-    }
-
-    protected void checkAddBorder(int x, int y) {
-        Boolean hor = null;
-        Boolean vert = null;
-        if (x + 1 == cols)
-            hor = true;
-        if (x == 0)
-            hor = false;
-        if (y + 1 == rows)
-            vert = true;
-        if (y == 0)
-            vert = false;
-
-        float posX = x * GridMaster.CELL_W;
-        float posY = y * GridMaster.CELL_H;
-        String suffix = null;
-        if (hor != null) {
-            int i = hor ? 1 : -1;
-            suffix = hor ? "right" : "left";
-            Image image = new Image(TextureCache.getOrCreateR(
-                    StrPathBuilder.build(
-                            "ui", "cells", "bf", "gridBorder " +
-                                    suffix +
-                                    ".png")));
-            addActor(image);
-            image.setPosition(posX + i * GridMaster.CELL_W + (20 - 20 * i)//+40
-                    , posY
-                    //+ i * 35
-            );
-        }
-        if (vert != null) {
-            int i = vert ? 1 : -1;
-            suffix = vert ? "up" : "down";
-            Image image = new Image(TextureCache.getOrCreateR(StrPathBuilder.build(
-                    "ui", "cells", "bf", "gridBorder " +
-                            suffix +
-                            ".png")));
-            addActor(image);
-            image.setPosition(posX //+ i * 35
-                    , posY
-                            + i * GridMaster.CELL_H + (20 - 20 * i));//+40
-        }
-        TextureRegion cornerRegion = TextureCache.getOrCreateR(GridMaster.gridCornerElementPath);
-        if (hor != null)
-            if (vert != null) {
-                int i = vert ? 1 : -1;
-                Image image = new Image(cornerRegion);
-                image.setPosition(posX + i * 40 + i * GridMaster.CELL_W + i * -77, posY
-                        + i * 40 + i * GridMaster.CELL_H + i * -77);
-
-                if (!vert && hor) {
-                    image.setX(image.getX() + 170);
-                    image.setY(image.getY() + 12);
-                }
-                if (vert && !hor) {
-                    image.setX(image.getX() - 180);
-                    image.setY(image.getY() - 25);
-                }
-                if (vert && hor) {
-                    image.setX(image.getX() - 15);
-                    image.setY(image.getY() - 15);
-                }
-                addActor(image);
-            }
     }
 
 

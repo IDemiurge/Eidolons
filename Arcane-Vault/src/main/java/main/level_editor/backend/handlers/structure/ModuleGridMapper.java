@@ -1,4 +1,4 @@
-package main.level_editor.backend.functions.mapping;
+package main.level_editor.backend.handlers.structure;
 
 import com.google.inject.internal.util.ImmutableSet;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -23,8 +23,8 @@ public class ModuleGridMapper {
 
     public static int maxHeight = 45;
     public static int maxWidth = 45;
-    private static int height;
-    private static int width;
+    public static int height;
+    public static int width;
 
     private Set<Module> getModules() {
         return ImmutableSet.of(M1, M2, M3, M4, M5);
@@ -105,7 +105,7 @@ public class ModuleGridMapper {
         return pick;
     }
 
-    private static int calculateTotalSquareSize(Map<Point, Module> moduleGrid) {
+    public static int calculateTotalSquareSize(Map<Point, Module> moduleGrid) {
         height = 0;
         width = 0;
         Map<Integer, Integer> colMap = new LinkedHashMap<>();
@@ -114,20 +114,20 @@ public class ModuleGridMapper {
         for (Point point : moduleGrid.keySet()) {
             Module module = moduleGrid.get(point);
 //            Coordinates at= getModulePlacement(module);
-            int h = module.getEffectiveHeight(true);
+            int h = module.getEffectiveHeight(true)+1;
             MapMaster.addToIntegerMap(colMap, point.x, h);
-            int w = module.getEffectiveWidth(true);
+            int w = module.getEffectiveWidth(true)+1;
             MapMaster.addToIntegerMap(rowMap, point.y, w);
             //cols and rows!
         }
         for (Integer value : colMap.values()) {
             if (value >= height) {
-                height = value;
+                height = value+1;
             }
         }
         for (Integer value : rowMap.values()) {
             if (value >= width) {
-                width = value;
+                width = value+1;
             }
         }
 

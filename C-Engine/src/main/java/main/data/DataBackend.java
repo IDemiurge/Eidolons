@@ -781,7 +781,11 @@ public class DataBackend {
     }
 
     public   void addType(ObjType type) {
-        addType(type.getName(), type.getOBJ_TYPE_ENUM(), type);
+        String name = type.getName();
+        if (name.isEmpty()) {
+            return;
+        }
+        addType(name, type.getOBJ_TYPE_ENUM(), type);
     }
 
     public   ObjType addType(String typeName, OBJ_TYPE TYPE) {

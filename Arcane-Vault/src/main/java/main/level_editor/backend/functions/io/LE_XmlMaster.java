@@ -38,24 +38,35 @@ public class LE_XmlMaster extends LE_Handler {
 
     public String toXml(Location floor, Module standalone) {
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
-        Function<Integer, Boolean> idFilter = getIdFilter(standalone);
 
         //from old - dungeon params props etc
 
         xmlBuilder.appendNode((floor).getData().toString(),
                 FloorLoader.DATA);
-        xmlBuilder.open("Plan");
-        xmlBuilder.append("\n").append(buildIdMap());
+        xmlBuilder.append("\n").append(buildIdMap(standalone));
         xmlBuilder.open(FloorLoader.MODULES);
 
         for (Module module : floor.getModules()) {
+            if (standalone != null) {
+                if (module != standalone) {
+                    continue;
+                }
+            }
             //recursive? maybe better just plain loops - modules>zones>blocks with common methods
             String contents = toXml(module, false);
+            if (standalone != null) {
+                return contents;
+            }
             xmlBuilder.append(contents);
         }
         xmlBuilder.close(FloorLoader.MODULES);
 
+        return XML_Converter.wrap("Floor", xmlBuilder.toString());
+    }
 
+    public String getMetaXml(Module standalone) {
+        XmlStringBuilder xmlBuilder = new XmlStringBuilder();
+        Function<Integer, Boolean> idFilter = getIdFilter(standalone);
 
         xmlBuilder.append("\n").open(FloorLoader.DATA_MAPS);
         for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
@@ -77,14 +88,14 @@ public class LE_XmlMaster extends LE_Handler {
             }
             xmlBuilder.append(xml).append("\n");
         }
-        xmlBuilder.close("Plan");
-        return XML_Converter.wrap("Floor", xmlBuilder.toString()); //name?
+        return xmlBuilder.toString();
     }
 
     private Function<Integer, Boolean> getIdFilter(Module standalone) {
         return id ->
                 standalone == null || standalone.getCoordinatesSet().
-                        contains(LevelEditor.getManager().getIdManager().getObjectById(id).getCoordinates());
+                        contains(LevelEditor.getManager().getIdManager().getObjectById(id).
+                                getCoordinates());
     }
 
     private String buildBorderMap(Module module) {
@@ -136,16 +147,21 @@ public class LE_XmlMaster extends LE_Handler {
     }
 
     //TODO DC_TYPE ?
-    private String buildIdMap() {
+    private String buildIdMap(Module standalone) {
         StringBuilder builder = new StringBuilder();
         Map<Integer, BattleFieldObject> map = LevelEditor.getGame().getSimIdManager().getObjMap();
 
         Map<String, List<Integer>> nestedMap = new LinkedHashMap<>();
         for (Integer integer : map.keySet()) {
             try {
-                Integer id =
-                        LevelEditor.getGame().getSimIdManager().getId(map.get(integer));
-                String type = map.get(integer).getType().getName();
+                BattleFieldObject object = map.get(integer);
+                if (standalone != null) {
+                    if (!standalone.getCoordinatesSet().contains(object.getCoordinates())) {
+                        continue;
+                    }
+                }
+                Integer id = LevelEditor.getGame().getSimIdManager().getId(object);
+                String type = object.getType().getName();
                 MapMaster.addToListMap(nestedMap, type, id);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
@@ -171,8 +187,11 @@ public class LE_XmlMaster extends LE_Handler {
 
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
         xmlBuilder.append("\n").open(module.getName());
-        xmlBuilder.appendNode(new ModuleData( module).toString(),
+        xmlBuilder.appendNode(new ModuleData(module).toString(),
                 FloorLoader.DATA);
+        String meta = getMetaXml(module);
+        xmlBuilder.append("\n").append(meta);
+
         xmlBuilder.append("\n").open("Zones");
         for (LevelZone zone : module.getZones()) {
             xmlBuilder.appendNode(toXml(zone), "Zone");

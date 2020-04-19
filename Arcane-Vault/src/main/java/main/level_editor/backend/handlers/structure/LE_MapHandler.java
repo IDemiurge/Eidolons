@@ -1,4 +1,4 @@
-package main.level_editor.backend.functions.mapping;
+package main.level_editor.backend.handlers.structure;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;

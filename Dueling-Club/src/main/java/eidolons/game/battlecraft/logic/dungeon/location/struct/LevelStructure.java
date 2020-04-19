@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
+import eidolons.game.netherflame.dungeons.QD_Enums;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.system.audio.MusicMaster;
 import main.content.CONTENT_CONSTS;
@@ -179,7 +180,12 @@ public class LevelStructure {
     }
 
     public enum FLOOR_VALUES implements EditableValue {
-        background,
+        background(LevelStructure.EDIT_VALUE_TYPE.file){
+            @Override
+            public Object getArg() {
+                return "resources/img/main/background";
+            }
+        },
         filepath,
         floor_type,
 
@@ -269,9 +275,27 @@ public class LevelStructure {
         default_pillar_type,
         default_shard_type,
 
+        background,
         tile_map, layer_data,
 
-
+        type(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return QD_Enums.ModuleType.class;
+            }
+        },
+        location(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return QD_Enums.QD_LOCATION.class;
+            }
+        },
+        elevation(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return QD_Enums.ElevationLevel.class;
+            }
+        },
 
         name(EDIT_VALUE_TYPE.text),
         origin(EDIT_VALUE_TYPE.none),
@@ -329,18 +353,18 @@ public class LevelStructure {
 
 
         assets;
-        private EDIT_VALUE_TYPE type;
+        private EDIT_VALUE_TYPE editValueType;
 
         MODULE_VALUE() {
         }
 
         MODULE_VALUE(EDIT_VALUE_TYPE type) {
-            this.type = type;
+            this.editValueType = type;
         }
 
         @Override
         public EDIT_VALUE_TYPE getEditValueType() {
-            return type;
+            return editValueType;
         }
 //        entrance, tile_map, layer_data,
 

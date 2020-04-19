@@ -254,42 +254,6 @@ public class ParamPriorityAnalyzer extends AiHandler {
     }
 
     //TODO generate combinatorical AiConsts per GOAL_SITUATION !
-    public static int getSituationFactor(GOAL_TYPE type, SITUATION situation) {
-        if (situation == null) {
-            return 0;
-        }
-        if (type == null) {
-            return 0;
-        }
-        switch (situation) {
-            case STALLING: {
-                if (type == AiEnums.GOAL_TYPE.WAIT) {
-                    return 30;
-                }
-                break;
-            }
-            case PREPARING: {
-                if (type == AiEnums.GOAL_TYPE.PREPARE) {
-                    return 20;
-                }
-                break;
-            }
-            case ENGAGED: {
-                if (type == AiEnums.GOAL_TYPE.ATTACK) {
-                    return 25;
-                }
-                if (type == AiEnums.GOAL_TYPE.DEBILITATE) {
-                    return 15;
-                }
-                if (type == AiEnums.GOAL_TYPE.DEBUFF) {
-                    return 15;
-                }
-                break;
-            }
-        }
-        return 0;
-    }
-
     public static int getAI_TypeFactor(GOAL_TYPE goal, AI_TYPE type) {
         if (type == null) {
             return 0;

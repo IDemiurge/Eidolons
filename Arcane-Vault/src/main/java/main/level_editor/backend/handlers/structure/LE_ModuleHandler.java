@@ -1,4 +1,4 @@
-package main.level_editor.backend.functions.mapping;
+package main.level_editor.backend.handlers.structure;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
@@ -42,6 +42,9 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         super(manager);
     }
 
+    public Map<Point, Module> getModuleGrid() {
+        return moduleGrid;
+    }
     public void setGrid(LinkedHashMap<Point, Module> grid) {
         if (moduleGrid!=null ){
             if (moduleGrid.equals(grid)){
@@ -169,8 +172,8 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
             borderW += bufferW;
         }
 
-        int h = module.getHeight() + borderH  ;
-        int w = module.getWidth() + borderW  ;
+        int h = module.getHeight() + borderH *2 ;
+        int w = module.getWidth() + borderW *2 ;
         Coordinates corner = origin.getOffset(w, h);
         List<Coordinates> full = CoordinatesMaster.getCoordinatesBetween(origin, corner);
         List<Coordinates> inner = buffer ?

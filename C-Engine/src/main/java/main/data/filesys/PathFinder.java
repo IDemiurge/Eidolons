@@ -36,13 +36,12 @@ public class PathFinder {
         ClassLoader classLoader = PathFinder.class.getClassLoader();
         if (classLoader.getResource("") != null) {
             File temp = new File(classLoader.getResource("").getFile());
-            ROOT_PATH = new File(temp.getParentFile().toURI()) + File.separator;
-            XML_PATH = new File(temp.getParentFile() + File.separator + "xml") + File.separator;
+            ROOT_PATH=PathUtils.fixSlashes(new File(temp.getParentFile().toURI()).getPath());
+            XML_PATH = ROOT_PATH + "xml/";
             System.out.println("Root path: " + ROOT_PATH);
         } else {
             //FOR JARS
             CoreEngine.setJar(true);
-
 
             URI uri = null;
             try {
@@ -64,12 +63,13 @@ public class PathFinder {
             path = path.split("file:")[0];
             System.out.println("Root path for Jar: " + path);
 
-            ROOT_PATH = path + File.separator;
-            XML_PATH = path + File.separator + "xml" + File.separator;
+            ROOT_PATH=PathUtils.fixSlashes(path);
+            XML_PATH = ROOT_PATH + "xml/";
 
         }
 
-        RES_PATH = RES_FOLDER_NAME + File.separator;
+        RES_PATH = RES_FOLDER_NAME + "/";
+
         IMG_PATH = ROOT_PATH + RES_PATH + "img/";
 
         SND_PATH = ROOT_PATH + RES_PATH + "sound/";
@@ -203,7 +203,7 @@ public class PathFinder {
 
     public static String getResPath() {
         init();
-        return ROOT_PATH + "/" + RES_FOLDER_NAME + "/";
+        return ROOT_PATH + RES_FOLDER_NAME + "/";
     }
 
     public static String getMACRO_TYPES_PATH() {

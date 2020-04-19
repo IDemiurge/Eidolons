@@ -453,7 +453,7 @@ public final class UnitEnums {
 
         ORCS("goblins,orcs"),
         PALE_ORCS,
-
+        TUTORIAL,
         UNDEAD("Plague,Crimson,Wraith,Pale"),
         UNDEAD_PLAGUE("Plague,Crimson,Wraith,Pale"),
         UNDEAD_CRIMSON("Plague,Crimson,Wraith,Pale"),
@@ -465,6 +465,8 @@ public final class UnitEnums {
         DEMONS_WARPED("chaos,abyss,demons,demon worshippers"),
 
         MAGI,
+        MISTSPAWN,
+        CULT_CONGREGATION,
         CULT_CERBERUS("constructs,apostates,magi,,"),
         CULT_DEATH,
         CULT_DARK,
@@ -1340,6 +1342,6 @@ public final class UnitEnums {
         WILD,
         WOADS,
         WOLVES,
-        DWARVES;
+        DWARVES
     }
 }

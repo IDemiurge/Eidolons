@@ -18,6 +18,7 @@ public class TileMapView extends TablePanelX {
     }
     public TileMapView(int size, String[] lines) {
         for (String s : lines) {
+            s= s.replace("O", ".").replace("0", ".");
             Label label;
             add(label = new Label(s, VisUI.getSkin())).left().spaceTop(2);
             label.setStyle(StyleHolder.getSizedLabelStyle(

@@ -10,7 +10,6 @@ import eidolons.game.battlecraft.rules.rpg.PrincipleMaster;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.HeroCreator;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
-import eidolons.macro.MacroGame;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.DC_Formulas;
 import eidolons.system.content.BfObjPropGenerator;
@@ -42,7 +41,6 @@ import main.simulation.SimulationManager;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -337,11 +335,7 @@ public class ModelManager {
                 PrincipleMaster.initPrincipleIdentification(type);
             }
         } else if (obj_type == DC_TYPE.ENCOUNTERS) {
-            for (ObjType type : DataManager.getTypes(obj_type)) {
-                type.setParam(PARAMS.POWER_MINIMUM, EncounterMaster.getMinimumPower(type));
-                type.setParam(PARAMS.POWER_BASE, EncounterMaster.getPower(type, null));
-                type.setParam(PARAMS.POWER_MAXIMUM, EncounterMaster.getPower(type, false));
-            }
+
         } else if (obj_type == DC_TYPE.ACTIONS) {
             for (ObjType type : DataManager.getTypes(obj_type)) {
                 ActionGenerator.addDefaultSneakModsToAction(type);
@@ -802,10 +796,6 @@ public class ModelManager {
     }
 
     public static void saveAll() {
-        if (!auto)
-            if (CoreEngine.isMacro())
-                if (MacroGame.getGame() != null)
-                    SaveMasterOld.saveTheWorld();
         ArcaneVault.setDirty(true);
         SoundMaster.playStandardSound(STD_SOUNDS.DONE);
         Weaver.inNewThread(new Runnable() {

@@ -9,6 +9,7 @@ import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.model.RoomTemplateMaster;
 import eidolons.game.module.generator.tilemap.TileMapper;
 import eidolons.libgdx.utils.GdxDialogMaster;
+import eidolons.system.content.PlaceholderGenerator;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -258,7 +259,7 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
     private Comparator<? super Coordinates> getCoordSorter() {
         return (Comparator<Coordinates>) (o1, o2) -> {
-            if (o1.x * 10 + o1.y > o2.x * 10 + o2.y) {
+            if (-o1.x * 1000 - o1.y < -o2.x* 1000  - o2.y) {
                 return 1;
             }
             return -1;
@@ -266,11 +267,22 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
     }
 
     private String getTileForCoordinate(Coordinates c) {
-        if (getGame().getObjectsOnCoordinate(c).isEmpty()) {
+        Set<BattleFieldObject> objects = getGame().getObjectsOnCoordinate(c);
+        if (objects.isEmpty()) {
             return GeneratorEnums.ROOM_CELL.FLOOR.symbol;
         }
         //art, doors, ...
-        return GeneratorEnums.ROOM_CELL.WALL.symbol;
+        for (BattleFieldObject object : objects) {
+            if (object.isWall()) {
+                return GeneratorEnums.ROOM_CELL.WALL.symbol;
+            }
+        for (GeneratorEnums.ROOM_CELL value : GeneratorEnums.ROOM_CELL.values()) {
+            if (PlaceholderGenerator.getPlaceholderName(value).equalsIgnoreCase(object.getName())) {
+                return value.getSymbol();
+            }
+        }
+    }
+        return "?";
     }
 
     @Override

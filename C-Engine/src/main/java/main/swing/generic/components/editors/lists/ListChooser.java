@@ -438,7 +438,7 @@ public class ListChooser extends GenericListChooser<String> {
 
     @Override
     protected int getPanelWidth() {
-        return GuiManager.getScreenWidthInt() / 2;
+        return Math.max(1420, GuiManager.getScreenWidthInt() * 2 / 3);
     }
 
     protected void addSortOptionComp() {

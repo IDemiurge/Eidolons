@@ -15,6 +15,7 @@ import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.structure.FloorManager;
+import main.level_editor.backend.handlers.structure.ModuleGridMapper;
 import main.level_editor.backend.struct.campaign.Campaign;
 import main.level_editor.backend.struct.level.Floor;
 import main.level_editor.gui.screen.LE_Screen;
@@ -87,6 +88,11 @@ public class LE_DataHandler extends LE_Handler {
         String path = getDefaultSavePath(getFloor());
         saveAs(path);
         setDirty(false);
+        try {
+            saveModulesSeparately();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     private void doPresave() {
@@ -99,6 +105,13 @@ public class LE_DataHandler extends LE_Handler {
             getModuleHandler().resetBorders();
             getModuleHandler().resetBufferVoid();
             getStructureHandler().resetWalls(getDungeonLevel());
+        }
+        if (getModuleHandler().getModuleGrid() != null) {
+            ModuleGridMapper.calculateTotalSquareSize(getModuleHandler().getModuleGrid());
+            if (ModuleGridMapper.width > 0) {
+                getFloor().getWrapper().setWidth(ModuleGridMapper.width);
+                getFloor().getWrapper().setHeight(ModuleGridMapper.height);
+            }
         }
     }
 
@@ -152,6 +165,21 @@ public class LE_DataHandler extends LE_Handler {
         }
 
         return changed;
+    }
+
+    public void saveModulesSeparately() {
+        for (Module module : getModuleHandler().getModules()) {
+            String contents = getXmlMaster().toXml(getFloorWrapper(), module);
+            String path = getStandalonePath(module);
+            FileManager.write(contents, path);
+            EUtils.showInfoText("Saved " +
+                    module +
+                    " as " + PathUtils.getLastPathSegment(path));
+        }
+    }
+
+    private String getStandalonePath(Module module) {
+        return PathFinder.getModuleTemplatesPath() + " " + module.getName() + ".xml";
     }
 
     public void saveAs(String path) {

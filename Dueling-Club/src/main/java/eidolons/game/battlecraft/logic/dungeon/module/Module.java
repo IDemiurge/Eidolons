@@ -56,11 +56,13 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     public Set<Coordinates> initCoordinateSet(boolean levelEditor) {
         //TODO nullify this on reset!
         Set<Coordinates> coordinatesSet = new LinkedHashSet<>();
+        Coordinates c = levelEditor
+                ? getOrigin()
+                .getOffset(-getWidthBuffer(), -getHeightBuffer())
+                : getOrigin();
         coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetween(
-                levelEditor
-                        ? getOrigin().getOffset(-getWidthBuffer(), -getHeightBuffer())
-                        : getOrigin(),
-                getOrigin().getOffset(getEffectiveWidth(levelEditor), getEffectiveHeight(levelEditor))));
+                c,
+                c.getOffset(getEffectiveWidth(levelEditor), getEffectiveHeight(levelEditor))));
 
         return coordinatesSet;
     }
@@ -120,8 +122,8 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
             return getHeight();
         }
         return getHeight() +
-                (buffer ? getData().getIntValue(LevelStructure.MODULE_VALUE.height_buffer) : 0) +
-                getData().getIntValue(LevelStructure.MODULE_VALUE.border_width);
+                (buffer ? getData().getIntValue(LevelStructure.MODULE_VALUE.height_buffer)*2 : 0) +
+                getData().getIntValue(LevelStructure.MODULE_VALUE.border_width)*2;
     }
 
     public int getEffectiveHeight() {
@@ -137,8 +139,8 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
             return getWidth();
         }
         return getWidth() +
-                (buffer ? getData().getIntValue(LevelStructure.MODULE_VALUE.width_buffer) : 0) +
-                getData().getIntValue(LevelStructure.MODULE_VALUE.border_width);
+                (buffer ? getData().getIntValue(LevelStructure.MODULE_VALUE.width_buffer)*2 : 0) +
+                getData().getIntValue(LevelStructure.MODULE_VALUE.border_width)*2;
     }
 
     public void setEncounters(List<Encounter> encounters) {

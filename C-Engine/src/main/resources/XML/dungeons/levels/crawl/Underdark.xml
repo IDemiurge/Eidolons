@@ -1,40 +1,48 @@
-<Floor><Plan><MODULES>
-<Main><DATA>origin:12-23;name:Main;width:9;height:7;</DATA>
-<Zones><Zone><DATA>illumination:10;</DATA><Blocks><Block><DATA>zone:0;origin:0-0;width:0;name:COMMON_ROOM block of Zone #0:null with style null, 6blocks;height:0;room_type:COMMON_ROOM;</DATA><Missing></Missing></Block><Block><DATA>zone:0;origin:10-10;width:10;name:COMMON_ROOM block of Zone #0:null with style null, 6blocks;height:10;room_type:COMMON_ROOM;</DATA><Missing>10-10;10-11;10-12;10-13;10-14;10-15;10-16;10-17;10-18;10-19;11-10;11-11;11-12;11-13;11-14;11-15;11-16;11-17;11-18;11-19;12-10;12-11;12-12;12-13;12-14;12-15;12-16;12-17;12-18;12-19;13-10;13-11;13-12;13-13;13-14;13-15;13-16;13-17;13-18;13-19;14-10;14-11;14-12;14-13;14-14;14-15;14-16;14-17;14-18;14-19;15-10;15-11;15-12;15-13;15-14;15-15;15-16;15-17;15-18;15-19;16-10;16-11;16-12;16-13;16-14;16-15;16-16;16-17;16-18;16-19;17-10;17-11;17-12;17-13;17-14;17-15;17-16;17-17;17-18;17-19;18-10;18-11;18-12;18-13;18-14;18-15;18-16;18-17;18-18;18-19;19-10;19-11;19-12;19-13;19-14;19-15;19-16;19-17;19-18;19-19;</Missing></Block><Block><DATA>zone:0;origin:3-30;width:9;name:TREASURE_ROOM block of Zone #0:null with style null, 6blocks;height:7;room_type:TREASURE_ROOM;</DATA><Missing>3-30;3-31;3-32;3-33;3-34;3-35;3-36;4-30;4-31;4-32;4-33;4-34;4-35;4-36;5-30;5-31;5-32;5-33;5-34;5-35;5-36;6-30;6-31;6-32;6-33;6-34;6-35;6-36;7-30;7-31;7-32;7-33;7-34;7-35;7-36;8-30;8-31;8-32;8-33;8-34;8-35;8-36;9-30;9-31;9-32;9-33;9-34;9-35;9-36;10-30;10-31;10-32;10-33;10-34;10-35;10-36;11-30;11-31;11-32;11-33;11-34;11-35;11-36;</Missing></Block><Block><DATA>zone:0;origin:12-23;width:9;name:COMMON_ROOM block of Zone #0:null with style null, 6blocks;height:7;room_type:COMMON_ROOM;</DATA><Missing>12-23;12-24;12-25;12-26;12-27;12-28;12-29;13-23;14-23;15-23;16-23;17-23;18-23;19-23;20-23;</Missing></Block><Block><DATA>zone:0;origin:20-32;width:5;name:CORRIDOR block of Zone #0:null with style null, 6blocks
+<Floor><DATA>wall_type=stone wall;background=img\main\background\moon valley(1)
+;width=120;name=Utmar Hold;cell_type=natural;height=80;</DATA>
+<ID_MAP>Wall Placeholder=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,23,24,26,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,73,74,76,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,;Special Container Placeholder=21,22,27,28,71,72,77,78,;Special Art Obj Placeholder=25,75,;Tower Stairs=100,;Spiral Stairway=101,;Staircase=102,;Wide Upward Stairs=103,;</ID_MAP><MODULES>
+<The_Charred_Gate><DATA>width_buffer=5;border_width=2;height_buffer=7;default_wall=Bone Wall;origin=5-7;name=The Charred Gate;width=20;height=50;border_type=wall;</DATA>
 
-X     0| 1| 2| 3| 4| 
-      _______________
-
-0  |   #  #  .  #  #
-1  |   #  #  .  #  #
-2  |   .  .  .  .  .
-3  |   #  #  .  #  #
-4  |   #  #  .  #  #
-
-      _______________
-
-X     0| 1| 2| 3| 4| ;height:5;room_type:CORRIDOR;</DATA><Missing></Missing></Block><Block><DATA>zone:0;origin:24-38;width:7;name:CORRIDOR block of Zone #0:null with style null, 6blocks
-
-X     0| 1| 2| 3| 4| 5| 6| 
-      _____________________
-
-0  |   #  #  #  .  #  #  #
-1  |   #  .  .  .  .  .  #
-2  |   .  .  .  .  .  .  .
-3  |   #  .  #  .  #  .  #
-4  |   #  #  .  .  .  #  #
-
-      _____________________
-
-X     0| 1| 2| 3| 4| 5| 6| ;height:5;room_type:CORRIDOR;</DATA><Missing></Missing></Block></Blocks></Zone><Zone><DATA>illumination:0;</DATA><Blocks></Blocks></Zone></Zones>
-</Main>
-</MODULES>
-<ID_MAP></ID_MAP>
-<OBJ_IDS></OBJ_IDS>
 <DATA_MAPS></DATA_MAPS>
-
-<coordinates_void>8-37;9-36;9-37;</coordinates_void>
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
 <OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
 <ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
-<TRANSITS><TRANSIT_IDS></TRANSIT_IDS><TRANSIT_ONE_END></TRANSIT_ONE_END></TRANSITS>
-</Plan></Floor>
+<TRANSITS><TRANSIT_IDS>100->43-42;101->23-43;101->23-43;100->43-42;</TRANSIT_IDS><MAIN_ENTRANCE>102</MAIN_ENTRANCE><MAIN_EXIT>103</MAIN_EXIT></TRANSITS>
+
+<Zones><Zone><DATA>name=zone;</DATA><Blocks><Block><DATA>wall_type=;origin=14-42;width=11;name=null block of Zone #0:null with style null, 1blocks;height=11;</DATA><Missing></Missing></Block></Blocks></Zone><Zone><DATA>name=zone;</DATA><Blocks></Blocks></Zone></Zones>
+
+<OBJ_IDS>24-52=49;24-51=48;24-50=47;24-49=46;24-48=45;24-46=44;24-45=43;24-44=42;24-43=41;24-42=40;23-52=39;23-51=102;23-43=100;23-42=38;22-52=37;22-48=36;22-47=35;22-42=34;21-52=33;21-49=32;21-46=31;21-42=30;20-50=29;20-48=28;20-46=27;20-45=26;19-46=25;19-44=24;18-50=23;18-48=22;18-46=21;18-45=20;17-52=19;17-49=18;17-46=17;17-42=16;16-52=15;16-48=14;16-47=13;16-42=12;15-52=11;15-42=10;14-52=9;14-51=8;14-50=7;14-49=6;14-48=5;14-46=4;14-45=3;14-44=2;14-43=1;14-42=0;</OBJ_IDS>
+<BORDERS>29-61;29-60;29-59;29-58;29-57;29-56;29-55;29-54;29-53;29-52;29-51;29-50;29-49;29-48;29-47;29-46;29-45;29-44;29-43;29-42;29-41;29-40;29-39;29-38;29-37;29-36;29-35;29-34;29-33;29-32;29-31;29-30;29-29;29-28;29-27;29-26;29-25;29-24;29-23;29-22;29-21;29-20;29-19;29-18;29-17;29-16;29-15;29-14;29-13;29-12;29-11;29-10;29-9;29-8;28-61;28-60;28-59;28-58;28-57;28-56;28-55;28-54;28-53;28-52;28-51;28-50;28-49;28-48;28-47;28-46;28-45;28-44;28-43;28-42;28-41;28-40;28-39;28-38;28-37;28-36;28-35;28-34;28-33;28-32;28-31;28-30;28-29;28-28;28-27;28-26;28-25;28-24;28-23;28-22;28-21;28-20;28-19;28-18;28-17;28-16;28-15;28-14;28-13;28-12;28-11;28-10;28-9;28-8;27-61;27-60;27-9;27-8;26-61;26-60;26-9;26-8;25-61;25-60;25-9;25-8;24-61;24-60;24-9;24-8;23-61;23-60;23-9;23-8;22-61;22-60;22-9;22-8;21-61;21-60;21-9;21-8;20-61;20-60;20-9;20-8;19-61;19-60;19-9;19-8;18-61;18-60;18-9;18-8;17-61;17-60;17-9;17-8;16-61;16-60;16-9;16-8;15-61;15-60;15-9;15-8;14-61;14-60;14-9;14-8;13-61;13-60;13-9;13-8;12-61;12-60;12-9;12-8;11-61;11-60;11-9;11-8;10-61;10-60;10-9;10-8;9-61;9-60;9-9;9-8;8-61;8-60;8-9;8-8;7-61;7-60;7-59;7-58;7-57;7-56;7-55;7-54;7-53;7-52;7-51;7-50;7-49;7-48;7-47;7-46;7-45;7-44;7-43;7-42;7-41;7-40;7-39;7-38;7-37;7-36;7-35;7-34;7-33;7-32;7-31;7-30;7-29;7-28;7-27;7-26;7-25;7-24;7-23;7-22;7-21;7-20;7-19;7-18;7-17;7-16;7-15;7-14;7-13;7-12;7-11;7-10;7-9;7-8;6-61;6-60;6-59;6-58;6-57;6-56;6-55;6-54;6-53;6-52;6-51;6-50;6-49;6-48;6-47;6-46;6-45;6-44;6-43;6-42;6-41;6-40;6-39;6-38;6-37;6-36;6-35;6-34;6-33;6-32;6-31;6-30;6-29;6-28;6-27;6-26;6-25;6-24;6-23;6-22;6-21;6-20;6-19;6-18;6-17;6-16;6-15;6-14;6-13;6-12;6-11;6-10;6-9;6-8;</BORDERS>
+<coordinates_void></coordinates_void>
+</The_Charred_Gate>
+
+<Old_Fort><DATA>width_buffer=6;border_width=2;height_buffer=7;origin=40-7;name=Old Fort;width=25;height=60;border_type=wall;</DATA>
+
+<DATA_MAPS></DATA_MAPS>
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<TRANSITS><TRANSIT_IDS>100->43-42;101->23-43;101->23-43;100->43-42;</TRANSIT_IDS><MAIN_ENTRANCE>102</MAIN_ENTRANCE><MAIN_EXIT>103</MAIN_EXIT></TRANSITS>
+
+<Zones><Zone><DATA>name=zone;</DATA><Blocks><Block><DATA>wall_type=;origin=48-40;width=11;name=null block of Zone #2:null with style null, 1blocks;height=11;</DATA><Missing></Missing></Block></Blocks></Zone><Zone><DATA>name=zone;</DATA><Blocks></Blocks></Zone></Zones>
+
+<OBJ_IDS>58-50=99;58-49=98;58-48=97;58-47=96;58-46=95;58-44=94;58-43=93;58-42=92;58-41=91;58-40=90;57-50=89;57-40=88;56-50=87;56-46=86;56-45=85;56-40=84;55-50=83;55-47=82;55-44=81;55-40=80;54-48=79;54-46=78;54-44=77;54-43=76;53-44=75;53-42=74;52-48=73;52-46=72;52-44=71;52-43=70;51-50=69;51-47=68;51-44=67;51-40=66;50-50=65;50-46=64;50-45=63;50-40=62;49-50=61;49-49=103;49-40=60;48-50=59;48-49=58;48-48=57;48-47=56;48-46=55;48-44=54;48-43=53;48-42=52;48-41=51;48-40=50;43-42=101;</OBJ_IDS>
+<BORDERS> </BORDERS>
+<coordinates_void></coordinates_void>
+</Old_Fort>
+
+<Halls><DATA>width_buffer=6;border_width=2;height_buffer=7;origin=81-7;name=Halls;width=25;height=60;border_type=wall;</DATA>
+
+<DATA_MAPS></DATA_MAPS>
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<TRANSITS><TRANSIT_IDS></TRANSIT_IDS><MAIN_ENTRANCE>102</MAIN_ENTRANCE><MAIN_EXIT>103</MAIN_EXIT></TRANSITS>
+
+<Zones><Zone><DATA>name=zone;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=zone;</DATA><Blocks></Blocks></Zone></Zones>
+
+<OBJ_IDS></OBJ_IDS>
+<BORDERS> </BORDERS>
+<coordinates_void></coordinates_void>
+</Halls>
+</MODULES></Floor>

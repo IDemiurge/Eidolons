@@ -1,7 +1,6 @@
 package eidolons.macro.map.area;
 
 import eidolons.content.PARAMS;
-import eidolons.game.module.adventure.map.travel.encounter.EncounterMaster;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.macro.AdventureInitializer;
 import eidolons.macro.global.time.TimeMaster;
@@ -17,7 +16,6 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
-import main.system.entity.FilterMaster;
 
 import java.util.List;
 
@@ -55,9 +53,9 @@ public class AreaManager {
 
     private static void checkAddGroups(Area area) {
         int power = area.getIntParam(MACRO_PARAMS.AREA_CREEP_POWER_TOTAL);
-        if (power > EncounterMaster.getMinCreepWavePower()) { // area's mod
-            addRandomGroup(area);
-        }
+//        if (power > EncounterMaster.getMinCreepWavePower()) { // area's mod
+//            addRandomGroup(area);
+//        }
 
     }
 
@@ -150,9 +148,9 @@ public class AreaManager {
         }
         addGroup(area, group);
         Boolean min_max_normal = null;
-        area.modifyParameter(MACRO_PARAMS.AREA_CREEP_POWER_TOTAL,
-         EncounterMaster.getPower(group.getEncounterType(),
-          min_max_normal));
+//        area.modifyParameter(MACRO_PARAMS.AREA_CREEP_POWER_TOTAL,
+//         EncounterMaster.getPower(group.getEncounterType(),
+//          min_max_normal));
     }
 
     private static void addGroup(Area area, MacroGroup group) {
@@ -186,7 +184,8 @@ public class AreaManager {
         if (mod == 0) {
             mod = MINIMUM_TOTAL_POWER_MOD;
         }
-        return EncounterMaster.getMinCreepWavePower() * mod / 100;
+//        return EncounterMaster.getMinCreepWavePower() * mod / 100;
+        return 0;
     }
 
     // TODO pass MIN_MAX !
@@ -207,12 +206,12 @@ public class AreaManager {
                 pool = DataManager.getTypes(DC_TYPE.ENCOUNTERS);
             }
 
-            FilterMaster.filterByParam(pool, PARAMS.POWER_MINIMUM,
-             EncounterMaster.getMaxCreepWavePower(),
-             DC_TYPE.ENCOUNTERS, false);
-            FilterMaster.filterByParam(pool, PARAMS.POWER_MAXIMUM,
-             EncounterMaster.getMinCreepWavePower(),
-             DC_TYPE.ENCOUNTERS, true);
+//            FilterMaster.filterByParam(pool, PARAMS.POWER_MINIMUM,
+//             EncounterMaster.getMaxCreepWavePower(),
+//             DC_TYPE.ENCOUNTERS, false);
+//            FilterMaster.filterByParam(pool, PARAMS.POWER_MAXIMUM,
+//             EncounterMaster.getMinCreepWavePower(),
+//             DC_TYPE.ENCOUNTERS, true);
             // more filter! By TYPE? TODO
             if (pool.isEmpty()) {
                 continue;

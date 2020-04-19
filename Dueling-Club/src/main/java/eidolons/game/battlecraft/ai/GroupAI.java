@@ -4,7 +4,8 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.battlecraft.ai.explore.Patrol;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.game.module.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
+import main.content.enums.EncounterEnums;
+import main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
 import main.data.XStack;
 import main.entity.obj.MicroObj;
 import main.game.bf.Coordinates;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Stack;
 
 public class GroupAI {
-    UNIT_GROUP_TYPE type = UNIT_GROUP_TYPE.CROWD;
+    UNIT_GROUP_TYPE type = EncounterEnums.UNIT_GROUP_TYPE.CROWD;
     private Unit leader;
     private DequeImpl<Unit> members = new DequeImpl<>();
 

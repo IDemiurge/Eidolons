@@ -26,6 +26,7 @@ import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -90,10 +91,7 @@ public class Dungeon extends LightweightEntity {
     }
 
     public Integer getWidth() {
-
-        if (getIntParam(PARAMS.BF_WIDTH) == 0)
-            setParam(PARAMS.BF_WIDTH, getGame().getDungeonMaster().getBuilder().getDefaultWidth());
-        return getIntParam(PARAMS.BF_WIDTH)+1;
+        return getGame().getDungeonMaster().getDungeonWrapper().getWidth();
     }
 
     public Integer getCellsY() {
@@ -101,11 +99,7 @@ public class Dungeon extends LightweightEntity {
     }
 
     public Integer getHeight() {
-        if (getIntParam(PARAMS.BF_HEIGHT) == 0)
-            setParam(PARAMS.BF_HEIGHT, getGame().getDungeonMaster().getBuilder().
-                    getDefaultHeight());
-
-        return getIntParam(PARAMS.BF_HEIGHT)+1;
+        return getGame().getDungeonMaster().getDungeonWrapper().getHeight();
     }
 
 
@@ -250,9 +244,10 @@ public class Dungeon extends LightweightEntity {
         return null;
     }
 
-
+@Deprecated
     public Map<String, String> getCustomDataMap() {
         if (customDataMap == null) {
+            return new LinkedHashMap<>();
 //      TODO       customDataMap= new DataUnitFactory(true).
 //                    deconstructDataString(getProperty(PROPS.COORDINATE_SCRIPTS));
         }

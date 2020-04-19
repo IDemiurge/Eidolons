@@ -22,12 +22,14 @@ public class FileChooserX {
 
 
     private static Map<Stage, FileChooser> map = new HashMap<>();
+    public static final WaitMaster.WAIT_OPERATIONS waitOperation =
+            WaitMaster.WAIT_OPERATIONS.FILE_SELECTION;
 
     public static String chooseFile(String folder, String format, Stage stage) {
         GuiEventManager.triggerWithParams(GuiEventType.CHOOSE_FILE, folder, format);
         initFileChooser(stage, folder, format);
         return (String)
-                WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.SELECTION);
+                WaitMaster.waitForInput(waitOperation);
     }
 
 
@@ -62,7 +64,7 @@ public class FileChooserX {
                 if (file.size == 0) {
                     return;
                 }
-                WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.SELECTION, file.get(0).file().getAbsolutePath());
+                WaitMaster.receiveInput(waitOperation, file.get(0).file().getAbsolutePath());
                 finalFileChooser.fadeOut();
             }
         }

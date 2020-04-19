@@ -46,6 +46,11 @@ public abstract class StructureData<T extends Enum<T>, S extends LayeredData> ex
     }
 
     public LevelStruct<LevelStruct, LevelStruct> getLevelStruct() {
+        if (levelStruct == null) {
+            if (structure instanceof LevelStruct) {
+                return (LevelStruct<LevelStruct, LevelStruct>) structure;
+            }
+        }
         return levelStruct;
     }
 

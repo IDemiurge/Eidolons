@@ -1,4 +1,4 @@
-package main.level_editor.backend.functions.mapping;
+package main.level_editor.backend.handlers.structure;
 
 import main.level_editor.backend.handlers.ControlButtonHandler;
 

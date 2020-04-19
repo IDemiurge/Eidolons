@@ -69,6 +69,9 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
 
     public void setWidth(int width) {
         this.width = width;
+        if (getData() != null) {
+            getData().setValue("width", width+"");
+        }
     }
 
     public int getHeight() {
@@ -77,6 +80,9 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
 
     public void setHeight(int height) {
         this.height = height;
+        if (getData() != null) {
+            getData().setValue("height", height+"");
+        }
     }
 
     public Set<Coordinates> getCoordinatesSet() {

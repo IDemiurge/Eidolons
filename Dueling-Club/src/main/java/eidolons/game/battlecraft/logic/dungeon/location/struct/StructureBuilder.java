@@ -34,16 +34,7 @@ public class StructureBuilder extends DungeonHandler<Location> {
         Set<Module> modules = new LinkedHashSet<>();
         log(LOG_CHANNEL.BUILDING, "Main floor node");
         for (Node sub : XmlNodeMaster.getNodeList(node)) {
-            if (sub.getNodeName().equalsIgnoreCase(FloorLoader.DATA)) {
-                FloorData data = new FloorData(location);
-                data.setData(sub.getTextContent());
-                log(LOG_CHANNEL.BUILDING, "Floor data: " + data);
-                data.apply();
-                log(LOG_CHANNEL.BUILDING, "Location after data applies: " +
-                        location);
-            } else {
-                modules.add(createModule(sub, location));
-            }
+            modules.add(createModule(sub, location));
         }
 
         log(LOG_CHANNEL.BUILDING, "Location has modules: " +
@@ -56,7 +47,7 @@ public class StructureBuilder extends DungeonHandler<Location> {
         for (Node sub : XmlNodeMaster.getNodeList(node)) {
             if (sub.getNodeName().equalsIgnoreCase(FloorLoader.DATA)) {
                 ModuleData data = new ModuleData(module);
-                data.setData(node.getTextContent());
+                data.setData(sub.getTextContent());
                 log(LOG_CHANNEL.BUILDING, "Module data: " + data);
                 data.apply();
                 log(LOG_CHANNEL.BUILDING, "Module after data applies: " +
@@ -89,7 +80,7 @@ public class StructureBuilder extends DungeonHandler<Location> {
         for (Node node : XmlNodeMaster.getNodeList(zoneNode)) {
             if (node.getNodeName().equalsIgnoreCase(FloorLoader.DATA)) {
                 dataString = node.getTextContent();
-                log(LOG_CHANNEL.BUILDING, "Zone data read: " +                        dataString);
+                log(LOG_CHANNEL.BUILDING, "Zone data read: " + dataString);
             } else {
                 for (Node subNode : XmlNodeMaster.getNodeList(node)) {
                     LevelBlock block = constructBlock(subNode, BLOCK_ID++, zone, dungeon);
@@ -100,12 +91,12 @@ public class StructureBuilder extends DungeonHandler<Location> {
             }
         }
 
-        zone.setName(XML_Formatter.restoreXmlNodeName(zoneNode.getNodeName()));
         ZoneData data = new ZoneData((zone));
         data.setData(dataString);
         zone.setData(data);
+        zone.setName(XML_Formatter.restoreXmlNodeName(zoneNode.getNodeName()));
         zone.setModule(module);
-        log(LOG_CHANNEL.BUILDING, "Zone data: " +                        data);
+        log(LOG_CHANNEL.BUILDING, "Zone data: " + data);
         data.apply();
         log(LOG_CHANNEL.BUILDING, "Zone after data applies: " +
                 module);

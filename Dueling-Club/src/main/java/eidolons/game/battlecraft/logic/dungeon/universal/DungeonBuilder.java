@@ -60,9 +60,12 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
         }
         Document levelDocument = XML_Converter.getDoc(data, true);
         Node levelNode = XML_Converter.getChildAt(levelDocument, 0);
-        List<Node> nodeList = XmlNodeMaster.getNodeList(levelNode);
-        Node planNode = XmlNodeMaster.getChildByName(levelNode, "Plan");
-        nodeList.addAll(XmlNodeMaster.getNodeList(planNode));
+
+        Node planNode =
+                levelNode.getNodeName().equalsIgnoreCase("Floor")
+                        ? levelNode
+                        : XmlNodeMaster.getChildByName(levelNode, "Floor");
+        List<Node> nodeList = XmlNodeMaster.getNodeList(planNode);
         E dungeonWrapper = buildDungeon(path, data, nodeList);
 
         dungeonWrapper.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
@@ -71,7 +74,7 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
         return getDungeon();
     }
 
-    protected void initWidthAndHeight(E dungeonWrapper) {
+    public void initWidthAndHeight(E dungeonWrapper) {
         int w = dungeonWrapper.getWidth();
         int h = dungeonWrapper.getHeight();
         GuiManager.setBattleFieldCellsX(w);
@@ -82,6 +85,7 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
 
         PositionMaster.initDistancesCache();
         DirectionMaster.initCache(w, h);
+        Coordinates.initCache(w , h);
         Coordinates.resetCaches();
         GammaMaster.resetCaches();
     }

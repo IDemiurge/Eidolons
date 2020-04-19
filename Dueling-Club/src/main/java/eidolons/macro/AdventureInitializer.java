@@ -1,6 +1,5 @@
 package eidolons.macro;
 
-import eidolons.game.battlecraft.logic.meta.adventure.AdventureMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.screens.SCREEN_TYPE;
@@ -38,7 +37,7 @@ public class AdventureInitializer {
         {
             load = true;
         }
-        metaMaster = new AdventureMetaMaster(scenario, load);
+//    TODO     metaMaster = new AdventureMetaMaster(scenario, load);
         if (!CoreEngine.isMapEditor()) {
             metaMaster.init();
             if (metaMaster.getPartyManager().getParty() == null)

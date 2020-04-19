@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.generic;
 
-import eidolons.game.module.generator.init.RngMainSpawner;
+import main.content.enums.EncounterEnums;
 import main.system.data.DataUnit;
 
 import java.util.Set;
@@ -10,7 +10,7 @@ public class AiData extends DataUnit<AiData.AI_VALUE> {
     static Integer ID=0;
     Integer id;
 
-    private RngMainSpawner.UNIT_GROUP_TYPE type;
+    private EncounterEnums.UNIT_GROUP_TYPE type;
     private Set<Integer> ids;
     private boolean encounter;
     private  Integer leader;
@@ -24,7 +24,7 @@ public class AiData extends DataUnit<AiData.AI_VALUE> {
         id = ID++;
     }
 
-    public AiData(boolean encounter, RngMainSpawner.UNIT_GROUP_TYPE type, Integer leader) {
+    public AiData(boolean encounter, EncounterEnums.UNIT_GROUP_TYPE type, Integer leader) {
         this("");
         this.setType(type);
         this.setEncounter(encounter);
@@ -35,14 +35,14 @@ public class AiData extends DataUnit<AiData.AI_VALUE> {
         this("");
         setLeader(id);
         setEncounter(true);
-        setType(RngMainSpawner.UNIT_GROUP_TYPE.IDLERS);
+        setType(EncounterEnums.UNIT_GROUP_TYPE.IDLERS);
     }
 
-    public RngMainSpawner.UNIT_GROUP_TYPE getType() {
+    public EncounterEnums.UNIT_GROUP_TYPE getType() {
         return type;
     }
 
-    public void setType(RngMainSpawner.UNIT_GROUP_TYPE type) {
+    public void setType(EncounterEnums.UNIT_GROUP_TYPE type) {
         this.type = type;
         setValue(AI_VALUE.type, type);
     }

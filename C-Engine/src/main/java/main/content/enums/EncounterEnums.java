@@ -92,4 +92,42 @@ none, low, normal, high, always
     public enum GROWTH_PRIORITIES {
         GROUP, LEVEL, FILL, EXTEND
     }
+
+    /*
+        Guard Ai - stand still, only turn this way or that
+        > alerted - goes to investigate
+        ++ voice comments
+        ++ chance to Sleep
+        Idlers/Crowd - chaotic wandering within the Block
+        > alerted - hold still and enters Alert Mode
+        ++ periodic Rest
+        Patrol Ai - orderly traversal of the Block
+        > alerted - investigate
+        Stalker Ai - moves in stealth mode within the Zone, follows enemy until they enter combat, then add to the AggroGroup
+        > alerted -
+        Boss Ai - walks in small circles
+         */
+    public enum UNIT_GROUP_TYPE {
+        //this is gonna be used for fill probably too
+        GUARDS(0.05f),
+        PATROL(1f),
+        AMBUSH(0.15f),
+        CROWD(0.3f),
+        IDLERS(0.2f),
+        STALKER(1.25f),
+        BOSS(0.1f),
+        ;
+        //determines what? Except AI behavior -
+        // N preference, power level, placement,
+
+        private float speedMod = 0;
+
+        UNIT_GROUP_TYPE(float speedMod) {
+            this.speedMod = speedMod;
+        }
+
+        public float getSpeedMod() {
+            return speedMod;
+        }
+    }
 }

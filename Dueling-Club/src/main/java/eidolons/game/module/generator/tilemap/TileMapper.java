@@ -277,16 +277,23 @@ public class TileMapper {
     }
 
     public static String[] getLinesFromCells(String[][] cells) {
-        String[] lines = new String[cells.length];
-        int i = 0;
-        for (String[] column : cells) {
+        String[] lines = new String[cells[0].length];
+        for (int y = 0; y < cells[0].length; y++) {
             String line = "";
-            for (int y = 0; y < column.length; y++) {
-                line += column[y];
+            for (int x = 0; x < cells.length; x++) {
+                line += cells[x][y];
             }
-
-            lines[i++] = line;
+            lines[y] = line;
         }
+        //does rotation!
+//        for (String[] column : cells) {
+//            String line = "";
+//            for (int y = 0; y < column.length; y++) {
+//                line += column[y];
+//            }
+//
+//            lines[i++] = line;
+//        }
         return lines;
     }
 

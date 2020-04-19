@@ -42,11 +42,12 @@ public class LE_ObjHandler extends LE_Handler {
     }
 
     protected void remove(BattleFieldObject bfObj) {
-        getGame().softRemove(bfObj);
-        getAiHandler().removed(bfObj);
         if ( bfObj instanceof Entrance) {
             getTransitHandler().entranceRemoved((Entrance) bfObj);
         }
+        getGame().softRemove(bfObj);
+        getAiHandler().removed(bfObj);
+
         if (bfObj.isOverlaying()) {
             GuiEventManager.trigger(GuiEventType.REMOVE_OVERLAY_VIEW, bfObj);
         } else
@@ -129,6 +130,7 @@ public class LE_ObjHandler extends LE_Handler {
 
     public ObjType getDefaultWallType() {
 //         getModel().getModule().getDefaultWallType();
+//        getGame().getDungeonMaster().getStructureMaster().findLowestStruct()
         if (getModel() != null)
             if (getModel().getBlock() != null) {
                 return DataManager.getType(getModel().getBlock().getWallType(), DC_TYPE.BF_OBJ);

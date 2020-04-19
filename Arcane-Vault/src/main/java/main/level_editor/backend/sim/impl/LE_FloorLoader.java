@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
-import main.level_editor.backend.functions.mapping.ModuleGridMapper;
+import main.level_editor.backend.handlers.structure.ModuleGridMapper;
 
 import java.awt.*;
 import java.util.LinkedHashMap;
@@ -23,7 +23,7 @@ public class LE_FloorLoader extends FloorLoader {
     }
 
     @Override
-    protected void checkModuleRemap(boolean forced) {
+    protected void checkModuleRemap(boolean forced, Location location) {
 
         boolean remap = false;
         Set<Module> modules = getMetaMaster().getModuleMaster().getModules();
@@ -41,7 +41,7 @@ public class LE_FloorLoader extends FloorLoader {
 
 
         LinkedHashMap<Point, Module> grid = new ModuleGridMapper().getOptimalGrid(modules);
-
+        getBuilder().initWidthAndHeight( location);
         LevelEditor.getManager().getModuleHandler().setGrid(grid);
 
 

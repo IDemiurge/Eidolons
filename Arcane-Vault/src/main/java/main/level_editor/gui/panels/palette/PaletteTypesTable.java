@@ -107,8 +107,8 @@ public class PaletteTypesTable extends SelectionImageTable {
         String text = datum.getEntity().getName();
         if (datum.getEntity().getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
             text= StringMaster.getValueTooltip(datum.getEntity(),
-                    PROPS.PRESET_GROUP,
                     PROPS.EXTENDED_PRESET_GROUP,
+                    PROPS.PRESET_GROUP,
                     PROPS.SHRUNK_PRESET_GROUP,
                     PROPS.FILLER_TYPES);
 //

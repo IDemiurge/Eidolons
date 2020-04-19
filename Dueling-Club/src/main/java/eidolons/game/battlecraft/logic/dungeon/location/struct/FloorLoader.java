@@ -113,9 +113,20 @@ public class FloorLoader extends DungeonHandler<Location> {
         boolean entrance = false;
         log(LOG_CHANNEL.BUILDING, "Xml node: " + node.getNodeName());
         switch (node.getNodeName()) {
+            case DATA:
+                FloorData data = new FloorData(location);
+                data.setData(node.getTextContent());
+                log(LOG_CHANNEL.BUILDING, "Floor data: " + data);
+                data.apply();
+                log(LOG_CHANNEL.BUILDING, "Location after data applies: " +
+                        location);
+                if (location.getWidth()>0 && location.getHeight()>0) {
+                    getBuilder().initWidthAndHeight(location);
+                }
+                break;
             case MODULES:
                 getStructureBuilder().build(node, location);
-                checkModuleRemap(false);
+                checkModuleRemap(false, location);
                 break;
             case DATA_MAPS:
                 Map<DataMap, Map<Integer, String>> map = new LinkedHashMap<>();
@@ -165,7 +176,7 @@ public class FloorLoader extends DungeonHandler<Location> {
 
     }
 
-    protected void checkModuleRemap(boolean b) {
+    protected void checkModuleRemap(boolean b, Location location) {
     }
 
     protected void initTransits(String textContent, Location location) {

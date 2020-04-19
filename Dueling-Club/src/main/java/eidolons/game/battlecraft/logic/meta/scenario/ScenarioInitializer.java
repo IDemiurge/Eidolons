@@ -22,7 +22,8 @@ public class ScenarioInitializer extends MetaInitializer<ScenarioMeta> {
     public ScenarioMeta initMetaGame(String data) {
         ObjType type = DataManager.getType(data, DC_TYPE.SCENARIOS);
         if (type == null) {
-            type = DataManager.getRandomType( DC_TYPE.SCENARIOS);
+            type = DataManager.getType("Hell", DC_TYPE.DUNGEONS);
+            //DataManager.getRandomType( DC_TYPE.SCENARIOS);
         }
 
         if (isReverseLevels()) {

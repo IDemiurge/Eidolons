@@ -21,7 +21,7 @@ import java.util.Collection;
 
 public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T1> {
 
-    public static final WaitMaster.WAIT_OPERATIONS SELECTION = WaitMaster.WAIT_OPERATIONS.SELECTION;
+    public static final WaitMaster.WAIT_OPERATIONS SELECTION = WaitMaster.WAIT_OPERATIONS.DIALOG_SELECTION;
     protected T selected;
     protected TablePanel scrolledTable;
     protected ScrollPane scroll;

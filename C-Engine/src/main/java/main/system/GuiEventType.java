@@ -137,7 +137,21 @@ public enum GuiEventType implements EventType {
     LE_GUI_RESET, LE_SELECTION_CHANGED, LE_EDIT, LE_CENTER_ON_SELECT, LE_ENUM_CHOICE,
     LE_DISPLAY_MODE_UPDATE,  LE_AI_DATA_UPDATE,
     LE_CELL_SCRIPTS_LABEL_UPDATE, LE_CELL_AI_LABEL_UPDATE,
-    LE_PALETTE_SELECTION, LE_BLOCK_PALETTE_SELECTION, LE_PALETTE_RESELECT, RESET_VIEW,
+    LE_PALETTE_SELECTION, LE_BLOCK_PALETTE_SELECTION, LE_PALETTE_RESELECT, RESET_VIEW(true),
     LE_TREE_SELECT,LE_TREE_RESELECT, REMOVE_OVERLAY_VIEW, GRID_RESET,
+;
 
+    private boolean multiArgs;
+
+    @Override
+    public boolean isMultiArgsInvocationSupported() {
+        return multiArgs;
+    }
+
+    GuiEventType() {
+    }
+
+    GuiEventType(boolean multiArgs) {
+        this.multiArgs = multiArgs;
+    }
 }

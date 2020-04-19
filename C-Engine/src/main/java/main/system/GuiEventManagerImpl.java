@@ -2,10 +2,7 @@ package main.system;
 
 import main.system.auxiliary.data.MapMaster;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -112,7 +109,21 @@ public class GuiEventManagerImpl {
                     event.call(obj);
                 });
             } else {
-                eventMap.put(type, event);
+               if (type.isMultiArgsInvocationSupported()){
+                    eventMap.put(type, (obj) -> {
+                        if (obj.get() instanceof Collection) {
+                            Collection list = (Collection) obj.get();
+                            main.system.auxiliary.log.LogMaster.log(1,">>>>> MultiArgs Invocation with elements: " +list.size());
+                            for (Object o : list) {
+                                event.call(new EventCallbackParam(o));
+                            }
+                        } else {
+                            event.call(obj);
+                        }
+                    });
+                } else {
+                    eventMap.put(type, event);
+                }
             }
 //            if (onDemand.containsKey(type)) {
 //                EventCallbackParam r = onDemand.remove(type);
@@ -137,9 +148,7 @@ public class GuiEventManagerImpl {
 //                    lock.unlock();
 //                }
         } else {
-            if (eventMap.containsKey(type)) {
-                eventMap.remove(type);
-            }
+            eventMap.remove(type);
         }
     }
 

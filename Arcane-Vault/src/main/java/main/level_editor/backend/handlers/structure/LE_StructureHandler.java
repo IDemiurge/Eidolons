@@ -36,6 +36,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -413,7 +414,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
                 altWallType = DataManager.getType(subPart.getWallTypeAlt(), DC_TYPE.BF_OBJ);
             }
         }
-
+        Set<BattleFieldObject> wallObjs = new HashSet<>();
         if (wallType != null)
             for (Coordinates coordinates : coordinatesSet) {
                 for (BattleFieldObject obj : getGame().getObjectsOnCoordinate(coordinates)) {
@@ -421,16 +422,17 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
                     if (name
                             .equalsIgnoreCase(PaletteHandlerImpl.WALL_PLACEHOLDER)) {
                         obj.setImage(wallType.getImagePath());
-                        GuiEventManager.trigger(GuiEventType.RESET_VIEW, obj);
+                       wallObjs.add(obj);
                     }
                     if (name
                             .equalsIgnoreCase(PaletteHandlerImpl.ALT_WALL_PLACEHOLDER)) {
                         obj.setImage(altWallType.getImagePath());
                         //objsToReset.add(obj);
-                        GuiEventManager.trigger(GuiEventType.RESET_VIEW, obj);
+                        wallObjs.add(obj);
                     }
                 }
             }
+        GuiEventManager.trigger(GuiEventType.RESET_VIEW, wallObjs);
     }
 
     private void resetCells(LevelStruct<LevelStruct, LevelStruct> layer) {

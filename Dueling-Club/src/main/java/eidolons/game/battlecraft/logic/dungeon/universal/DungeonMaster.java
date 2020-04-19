@@ -132,12 +132,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         if (!CoreEngine.isCombatGame()) {
             return;
         }
-
-        processMetaDataMap(dungeonWrapper.getDungeon().getCustomDataMap());
-
-        getBattleMaster().getScriptManager().parseDungeonScripts(dungeonWrapper.getDungeon());
-
-        trapMaster.initTraps(getDungeon());
+//TODO dc init fix
+//        getBattleMaster().getScriptManager().parseDungeonScripts(dungeonWrapper.getDungeon());
+//        trapMaster.initTraps(getDungeon());
 
         GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
         GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());

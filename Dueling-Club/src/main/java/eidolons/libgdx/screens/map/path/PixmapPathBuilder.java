@@ -14,7 +14,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import eidolons.game.module.adventure.map.travel.old.FreeTravelMaster;
 import eidolons.libgdx.screens.map.layers.AlphaMap;
 import eidolons.libgdx.screens.map.layers.AlphaMap.ALPHA_MAP;
 import main.data.XLinkedMap;
@@ -274,9 +273,9 @@ public class PixmapPathBuilder {
         int n = 4;
         for (int i = 0; i < n; i++) {
             Vector2 checkPoint = new Vector2(v).lerp(v2, 1f / n * (i));
-            for (ALPHA_MAP map : mapTypes)
-                if (FreeTravelMaster.getInstance().check(map, checkPoint.x, checkPoint.y))
-                    return true;
+//            for (ALPHA_MAP map : mapTypes)
+//                if (FreeTravelMaster.getInstance().check(map, checkPoint.x, checkPoint.y))
+//                    return true;
         }
         return false;
     }

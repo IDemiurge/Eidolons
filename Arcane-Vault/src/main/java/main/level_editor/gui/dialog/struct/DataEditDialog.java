@@ -9,6 +9,8 @@ import main.level_editor.gui.components.DataTable;
 import main.level_editor.gui.components.EditValueContainer;
 import main.level_editor.gui.dialog.EditDialog;
 import main.level_editor.gui.screen.LE_Screen;
+import main.system.PathUtils;
+import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnit;
 
 public abstract class DataEditDialog<S extends Enum<S> , T extends DataUnit<S>> extends EditDialog<DataTable.DataPair> {
@@ -34,6 +36,7 @@ public abstract class DataEditDialog<S extends Enum<S> , T extends DataUnit<S>> 
                 break;
             case file:
                 value = FileChooserX.chooseFile((String) actor.getEdit_arg(), null, getStage());
+                value = formatFilePath(value);
                 break;
             case none:
                 return;
@@ -44,6 +47,11 @@ public abstract class DataEditDialog<S extends Enum<S> , T extends DataUnit<S>> 
         stringValue = string(value);
         data.setValue(item.name, stringValue);
         setUpdateRequired(true);
+    }
+
+    private Object formatFilePath(Object value) {
+        String path = FileManager.formatPath(value.toString(), true);
+        return PathUtils.cropResourcePath(path);
     }
 
     private Object enumConst(Object value, Object edit_arg) {
