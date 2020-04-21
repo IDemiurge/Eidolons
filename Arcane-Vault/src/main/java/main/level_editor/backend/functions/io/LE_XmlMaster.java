@@ -43,7 +43,7 @@ public class LE_XmlMaster extends LE_Handler {
 
         xmlBuilder.appendNode((floor).getData().toString(),
                 FloorLoader.DATA);
-        xmlBuilder.append("\n").append(buildIdMap(standalone));
+        xmlBuilder.append("\n").append(buildIdMap(standalone)); //ideally after modules, but read order..
         xmlBuilder.open(FloorLoader.MODULES);
 
         for (Module module : floor.getModules()) {
@@ -181,14 +181,17 @@ public class LE_XmlMaster extends LE_Handler {
     //must be a valid floor in itself?! No global id's then? So we can re-use modules, mix them up...
     //interesting. So maybe we can have ... duplicate id maps?
     public String toXml(Module module, boolean standalone) {
-        if (standalone) {
-            //TODO
-        }
-
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
+
+
         xmlBuilder.append("\n").open(module.getName());
         xmlBuilder.appendNode(new ModuleData(module).toString(),
                 FloorLoader.DATA);
+
+        if (standalone) {
+            //TODO
+            xmlBuilder.append("\n").append(buildIdMap(module));
+        }
         String meta = getMetaXml(module);
         xmlBuilder.append("\n").append(meta);
 

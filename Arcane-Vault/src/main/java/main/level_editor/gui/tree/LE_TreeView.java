@@ -98,7 +98,7 @@ public class LE_TreeView extends TreeX<StructNode> {
             }
             if (node.getData() instanceof  Module) {
                 Module m = (Module) node.getData();
-                c = m.getOrigin().getOffset(m.getWidth() / 2, m.getHeight() / 2);
+                c = m.getOrigin().getOffset(m.getEffectiveWidth() / 2, m.getEffectiveHeight() / 2);
             }
             //center coordinate
 

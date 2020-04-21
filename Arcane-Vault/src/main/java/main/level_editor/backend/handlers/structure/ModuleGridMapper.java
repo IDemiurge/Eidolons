@@ -116,7 +116,7 @@ public class ModuleGridMapper {
 //            Coordinates at= getModulePlacement(module);
             int h = module.getEffectiveHeight(true)+1;
             MapMaster.addToIntegerMap(colMap, point.x, h);
-            int w = module.getEffectiveWidth(true)+1;
+            int w = module.getEffectiveWidth(true)+2;
             MapMaster.addToIntegerMap(rowMap, point.y, w);
             //cols and rows!
         }

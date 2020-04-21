@@ -117,10 +117,12 @@ public class DC_StateManager extends StateManager {
                                 || isAlwaysReset(obj)
 
                         ) {
-                            objectsToReset.add(obj);
                             if (obj instanceof Unit) {
                                 unitsToReset.add((Unit) obj);
                             }
+                            objectsToReset.add(obj); //for illumination too ?
+
+
                         }
                     }
                     //                    objectsToReset=getGame().getBfObjects().stream().filter(obj -> {
@@ -151,10 +153,7 @@ public class DC_StateManager extends StateManager {
     }
 
     private boolean isAlwaysReset(BattleFieldObject obj) {
-        if (obj.isPlayerCharacter()) {
-            return true;
-        }
-        return false;
+        return obj.isPlayerCharacter();
     }
 
     private boolean isSelectiveResetOn() {

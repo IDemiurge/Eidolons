@@ -142,6 +142,11 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
 
     public VISION_MODE getVisionMode() {
+        if (isMainHero()) {
+            if (game.getVisionMaster().isVisionTest()) {
+                return VISION_MODE.X_RAY_VISION;
+            }
+        }
         if (vision_mode == null) {
             String name = getProperty(PROPS.VISION_MODE);
             if (StringMaster.isEmpty(name)) {

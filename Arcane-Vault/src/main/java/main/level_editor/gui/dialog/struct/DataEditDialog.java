@@ -36,7 +36,7 @@ public abstract class DataEditDialog<S extends Enum<S> , T extends DataUnit<S>> 
                 break;
             case file:
                 value = FileChooserX.chooseFile((String) actor.getEdit_arg(), null, getStage());
-                value = formatFilePath(value);
+                value = formatFilePath(item, value);
                 break;
             case none:
                 return;
@@ -49,7 +49,7 @@ public abstract class DataEditDialog<S extends Enum<S> , T extends DataUnit<S>> 
         setUpdateRequired(true);
     }
 
-    private Object formatFilePath(Object value) {
+    protected Object formatFilePath(DataTable.DataPair item, Object value) {
         String path = FileManager.formatPath(value.toString(), true);
         return PathUtils.cropResourcePath(path);
     }

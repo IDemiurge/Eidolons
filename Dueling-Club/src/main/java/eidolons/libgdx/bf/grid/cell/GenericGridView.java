@@ -5,9 +5,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
@@ -34,6 +36,7 @@ public class GenericGridView extends UnitView {
     public FadeImageContainer torch;
     private boolean stackView;
     private boolean invisible;
+    private Label infoText=new Label("", StyleHolder.getDebugLabelStyle());
 
     public GenericGridView(BattleFieldObject obj, UnitViewOptions o) {
         super(o);
@@ -351,5 +354,10 @@ public class GenericGridView extends UnitView {
     public boolean getInvisible() {
         return invisible;
     }
+
+    public Label getInfoText() {
+        return infoText;
+    }
+
 }
 

@@ -53,16 +53,16 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     }
 
     @Override
-    public Set<Coordinates> initCoordinateSet(boolean levelEditor) {
+    public Set<Coordinates> initCoordinateSet(boolean buffer) {
         //TODO nullify this on reset!
         Set<Coordinates> coordinatesSet = new LinkedHashSet<>();
-        Coordinates c = levelEditor
+        Coordinates c = buffer
                 ? getOrigin()
                 .getOffset(-getWidthBuffer(), -getHeightBuffer())
                 : getOrigin();
         coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetween(
                 c,
-                c.getOffset(getEffectiveWidth(levelEditor), getEffectiveHeight(levelEditor))));
+                c.getOffset(getEffectiveWidth(buffer), getEffectiveHeight(buffer))));
 
         return coordinatesSet;
     }
@@ -127,11 +127,11 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     }
 
     public int getEffectiveHeight() {
-        return getEffectiveHeight(false);
+        return getEffectiveHeight(true);
     }
 
     public int getEffectiveWidth() {
-        return getEffectiveWidth(false);
+        return getEffectiveWidth(true);
     }
 
     public int getEffectiveWidth(boolean buffer) {

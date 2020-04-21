@@ -117,8 +117,8 @@ public class LE_DataHandler extends LE_Handler {
 
     private boolean recalcModuleParams(ModuleData data, boolean standalone) {
         Module structure = data.getStructure();
-        int w = structure.getEffectiveWidth();
-        int h = structure.getEffectiveHeight();
+        int w = structure.getEffectiveWidth(false);
+        int h = structure.getEffectiveHeight(false);
         int originalH = h;
         int originalW = w;
 //        structure.getEffectiveHeight()

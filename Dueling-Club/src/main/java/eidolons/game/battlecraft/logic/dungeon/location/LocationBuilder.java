@@ -43,8 +43,9 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         }
         master.setDungeonLevel(level);
         try {
-            location.initEntrances();
+            location.initMainEntrance();
         } catch (Exception e) {
+
             main.system.ExceptionMaster.printStackTrace(e);
         }
         return location;
@@ -60,17 +61,20 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     @Override
     public Location buildDungeon(String path, String data, List<Node> nodeList) {
         location = (super.buildDungeon(path, data, nodeList));
+        return location;
+    }
+
+    @Override
+    public void initLevel(List<Node> nodeList) {
+        getFloorLoader().start();
 
         for (Node n : nodeList) {
             getFloorLoader().processNode(n, location);
         }
+
+        getFloorLoader().finish(location);
         initDynamicObjData(location);
-
-        return location;
     }
-
-
-
 
     @Refactor
     @Override

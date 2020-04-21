@@ -89,6 +89,9 @@ public class SpriteX extends GroupX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (sprite == null) {
+            return;
+        }
         if (shader != null)
         if (parentAlpha!= ShaderDrawer.SUPER_DRAW)
         {
@@ -98,9 +101,7 @@ public class SpriteX extends GroupX {
         }
 
         super.draw(batch, parentAlpha);
-        if (sprite == null) {
-            return;
-        }
+
         if (fps > 0) {
             sprite.setFps(fps);
         }

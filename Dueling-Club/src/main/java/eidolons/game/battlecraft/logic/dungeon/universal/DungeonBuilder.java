@@ -67,7 +67,8 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
                         : XmlNodeMaster.getChildByName(levelNode, "Floor");
         List<Node> nodeList = XmlNodeMaster.getNodeList(planNode);
         E dungeonWrapper = buildDungeon(path, data, nodeList);
-
+        master.setDungeonWrapper(dungeonWrapper);
+        initLevel(nodeList);
         dungeonWrapper.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
 
         initWidthAndHeight(dungeonWrapper);
@@ -131,6 +132,6 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
     }
 
 
-    public void initLevel() {
+    public void initLevel(List<Node> nodeList) {
     }
 }

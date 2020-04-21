@@ -176,11 +176,6 @@ public enum MACRO_PARAMS implements PARAMETER {
     }
 
     @Override
-    public Metainfo getMetainfo() {
-        return metainfo;
-    }
-
-    @Override
     public boolean isDynamic() {
         return dynamic;
     }

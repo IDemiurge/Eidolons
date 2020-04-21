@@ -1,33 +1,28 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
-import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
-import main.content.DC_TYPE;
-import main.data.DataManager;
-import main.data.ability.construct.VariableManager;
-import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.auxiliary.log.LOG_CHANNEL;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 5/8/2017.
  */
 public class Location extends DungeonWrapper {
 
-    private List<Entrance> entrances; //TODO
-    private String entranceData;
     private Entrance mainEntrance;
     private Entrance mainExit;
+    private String entranceData;
+    private String exitData;
 
     public Location(DungeonMaster master, Dungeon dungeon) {
         super(dungeon, master);
@@ -44,90 +39,35 @@ public class Location extends DungeonWrapper {
         super.setWidth(width);
     }
 
-    public Coordinates getPlayerSpawnCoordinates() {
+    public Coordinates getDefaultPlayerSpawnCoordinates() {
         if (getMainEntrance() != null)
             return getMainEntrance().getCoordinates();
-        return super.getPlayerSpawnCoordinates();
+        return super.getDefaultPlayerSpawnCoordinates();
     }
 
-    public List<Entrance> getEntrances() {
-        if (entrances == null) {
-            entrances = new ArrayList<>();
-        }
-        return entrances;
+    public void setEntranceData(String entranceData) {
+        this.entranceData = entranceData;
     }
 
-
-    public void initEntrances() {
-
-        if (StringMaster.isEmpty(entranceData)) {
-            entranceData = getProperty(PROPS.DUNGEON_MAIN_ENTRANCES, true);
-        }
-        if (StringMaster.isEmpty(entranceData) && (!getProperty(PROPS.ENTRANCE_COORDINATES, true).isEmpty())) {
-            entranceData = getProperty(PROPS.ENTRANCE_COORDINATES, true);
-        }
-        if (StringMaster.isEmpty(entranceData)) {
+    public void initTransit(String data, boolean exit) {
+        if (StringMaster.isEmpty(data)) {
             return;
         }
-        String enterData = entranceData.split(";")[0];
-        String name = VariableManager.removeVarPart(enterData);
-        Coordinates c = Coordinates.get(true, VariableManager.getVarIfExists(enterData));
-        if (name.contains("=")) {
-            name = name.split("=")[1];
-        }
-        for (Entrance e : getEntrances()) {
-            if (e.getCoordinates().equals(c)) {
-                if (e.getName().equals(name)) {
-                    setMainEntrance(e);
-                }
-            }
-        }
-        if (getMainEntrance() == null) {
-            ObjType type = DataManager.getType(name, DC_TYPE.BF_OBJ);
-            if (type == null) {
-                type = getEntranceType();
-            }
-            setMainEntrance(new Entrance(c.x, c.y, type, getGame() ));
-        }
-        if (entranceData.split(";").length < 2) {
-            return;
-        }
-        String exitData = entranceData.split(";")[1];
-        name = VariableManager.removeVarPart(exitData);
-        c = Coordinates.get(true, VariableManager.getVarIfExists(exitData));
-        if (name.contains("=")) {
-            name = name.split("=")[1];
-        }
-        for (Entrance e : getEntrances()) {
-            if (e.getCoordinates().equals(c)) {
-                if (e.getName().equals(name)) {
-                    setMainExit(e);
-                }
-            }
-        }
-
-        if (getMainExit() == null) {
-            ObjType type = DataManager.getType(name, DC_TYPE.BF_OBJ);
-            if (type == null) {
-                type = getExitType();
-            }
-            setMainExit(new Entrance(c.x, c.y, type, getGame()));
-        }
-        if (CoreEngine.isReverseExit()) {
-            Entrance e = getMainEntrance();
-            setMainEntrance(getMainExit());
-            setMainExit(e);
-
+        Integer id = Integer.valueOf(data);
+        Entrance entrance = (Entrance) getGame().getMetaMaster().getDungeonMaster().getObjIdMap().get(id);
+        if (exit) {
+            setMainExit(entrance);
+        } else {
+            setMainEntrance(entrance);
         }
     }
 
-    protected ObjType getEntranceType() {
-        return DataManager.getType(getGame().getMetaMaster().getDungeonMaster().getDefaultEntranceType(), DC_TYPE.BF_OBJ);
+    public void initMainExit() {
+        initTransit(exitData, true);
     }
 
-    protected ObjType getExitType() {
-        return DataManager.getType(getGame().getMetaMaster().getDungeonMaster().
-                getDefaultExitType(), DC_TYPE.BF_OBJ);
+    public void initMainEntrance() {
+        initTransit(entranceData, false);
     }
 
     @Override
@@ -143,6 +83,7 @@ public class Location extends DungeonWrapper {
         this.mainEntrance = mainEntrance;
         if (mainEntrance != null) {
             mainEntrance.setMainEntrance(true);
+            log(LOG_CHANNEL.BUILDING, "Main Entrance: " + mainEntrance.getNameAndCoordinate());
         }
     }
 
@@ -154,6 +95,7 @@ public class Location extends DungeonWrapper {
         this.mainExit = mainExit;
         if (mainExit != null) {
             mainExit.setMainExit(true);
+            log(LOG_CHANNEL.BUILDING, "Main Exit: " + mainExit.getNameAndCoordinate());
         }
     }
 
@@ -169,5 +111,13 @@ public class Location extends DungeonWrapper {
 
     public Collection<Module> getModules() {
         return getGame().getMetaMaster().getModuleMaster().getModules();
+    }
+
+    public void setExitData(String exitData) {
+        this.exitData = exitData;
+    }
+
+    public String getExitData() {
+        return exitData;
     }
 }

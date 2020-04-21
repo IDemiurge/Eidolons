@@ -107,6 +107,7 @@ public class ShadowMap extends GroupX implements GridElement {
         if (!on)
             return;
         super.act(delta);
+        //TODO module fix - only act from x1 to x2
     }
 
     @Override
@@ -262,7 +263,11 @@ public class ShadowMap extends GroupX implements GridElement {
 //                        if (EidolonsGame.BOSS_FIGHT)
 //                            continue;
 //                    }
-                    ShadeLightCell cell = getCells(type)[x][y];
+                    ShadeLightCell[][] cells = getCells(type);
+                    if (cells.length<=x||cells[0].length<=y) {
+                        continue;
+                    }
+                    ShadeLightCell cell = cells[x][y];
                     if (cell != null) {
                         if (type == VOID) {
                             if (cell.getBaseAlpha() != 0) {

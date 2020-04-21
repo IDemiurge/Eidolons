@@ -1,7 +1,6 @@
 package main.content.values.parameters;
 
 import main.content.ContentValsManager;
-import main.content.Metainfo;
 import main.content.OBJ_TYPE;
 
 public class Param implements PARAMETER {
@@ -49,10 +48,6 @@ public class Param implements PARAMETER {
 
     public String[] getEntityTypes() {
         return parameter.getEntityTypes();
-    }
-
-    public Metainfo getMetainfo() {
-        return parameter.getMetainfo();
     }
 
     public String getDefaultValue() {

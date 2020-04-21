@@ -9,44 +9,65 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.init.RngBfObjProvider;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.system.datatypes.WeightMap;
+import main.system.launch.CoreEngine;
 
 public class PlaceholderResolver extends DungeonHandler<Location> {
-    public PlaceholderResolver(DungeonMaster<Location> master) {
+    public PlaceholderResolver(DungeonMaster master) {
         super(master);
     }
 
-    public void resolve(ObjType type, Coordinates c){
+    public ObjType resolve(Module module, ObjType type, Coordinates c){
+        if (CoreEngine.isLevelEditor())
+            return type;
         String property = type.getProperty(PROPS.PLACEHOLDER_DATA);
+        if (type.getProperty(PROPS.PLACEHOLDER_SYMBOL).isEmpty()) {
+            return type;
+        }
         GeneratorEnums.ROOM_CELL cellType= GeneratorEnums.ROOM_CELL.getBySymbol(
                 type.getProperty(PROPS.PLACEHOLDER_SYMBOL)) ;
-        Module module= getModule();
-        //style?
-        //
 
-        ObjType  resolvedType = getType(property, cellType, module, c);
+        ObjType  resolvedType = getType(module,property, cellType,   c);
+        return resolvedType;
     }
 
-    private ObjType getType(String property, GeneratorEnums.ROOM_CELL cellType,
-                            Module module, Coordinates c) {
-        LevelStruct struct =getStructureMaster().findLowestStruct(c);
-
+    private ObjType getType(Module module, String property, GeneratorEnums.ROOM_CELL cellType,
+                            Coordinates c) {
+        LevelStruct struct =getStructureMaster().findStructWithin(module, c);
+        if (struct == null) {
+            struct = module;
+        }
         switch (cellType) {
             case WALL:
-                if (!struct.getWallType().isEmpty()) {
-                    return getBfType(struct.getWallType());
+                String wallType = struct.getWallType();
+                if (!wallType.isEmpty()) {
+                    return getBfType(wallType);
                 }
+                break;
             case ALT_WALL:
-                if (!struct.getWallTypeAlt().isEmpty()) {
-                    return getBfType(struct.getWallTypeAlt());
+                String wallTypeAlt = struct.getWallTypeAlt();
+                if (!wallTypeAlt.isEmpty()) {
+                    return getBfType(wallTypeAlt);
                 }
+                break;
             case LIGHT_EMITTER:
             case DOOR:
 //apart from STYLE, what else ?
         }
-        return getBfType(RngBfObjProvider.getWeightMap(cellType, struct.getStyle()).getRandomByWeight());
+        DungeonEnums.DUNGEON_STYLE style = struct.getStyle();
+        if (style == null) {
+            style = DungeonEnums.DUNGEON_STYLE.Somber;
+        }
+        WeightMap<String> weightMap = RngBfObjProvider.getWeightMap(cellType, style);
+        ObjType bfType = getBfType(weightMap.getRandomByWeight());
+        while (bfType==null && !weightMap.isEmpty()){
+            bfType = getBfType(weightMap.getRandomByWeight());
+        }
+        return bfType;
     }
 
     private ObjType getBfType(String type) {

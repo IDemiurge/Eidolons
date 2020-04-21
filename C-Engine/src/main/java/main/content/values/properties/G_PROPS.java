@@ -1,6 +1,5 @@
 package main.content.values.properties;
 
-import main.content.Metainfo;
 import main.content.OBJ_TYPE;
 import main.system.auxiliary.StringMaster;
 
@@ -189,6 +188,7 @@ public enum G_PROPS implements PROPERTY {
     private String shortName;
     private String fullName;
     private Map<OBJ_TYPE, Object> defaultValuesMap;
+    private String iconPath;
 
     G_PROPS(String shortName, boolean container, String... entityTypes) {
         this(entityTypes[0], shortName);
@@ -277,11 +277,6 @@ public enum G_PROPS implements PROPERTY {
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
-    }
-
-    @Override
-    public Metainfo getMetainfo() {
-        return null;
     }
 
     @Override
@@ -377,5 +372,15 @@ public enum G_PROPS implements PROPERTY {
 
     public void setWriteToType(boolean writeToType) {
         this.writeToType = writeToType;
+    }
+
+    @Override
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    @Override
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
     }
 }

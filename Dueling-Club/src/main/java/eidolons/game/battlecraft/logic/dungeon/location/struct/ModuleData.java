@@ -4,7 +4,6 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.MO
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
 
 public class ModuleData extends StructureData<MODULE_VALUE, Module> {
 
@@ -47,15 +46,15 @@ public class ModuleData extends StructureData<MODULE_VALUE, Module> {
                 case origin:
                     if (!StringMaster.isEmpty(getValue(MODULE_VALUE.origin))) {
                         Coordinates c = Coordinates.get(getValue(MODULE_VALUE.origin));
-                        if (!CoreEngine.isLevelEditor()) {
-                            int offsetX = module.getData().getIntValue(MODULE_VALUE.width_buffer);
-                            int offsetY = module.getData().getIntValue(MODULE_VALUE.height_buffer);
-                            c = c.getOffset(-offsetX, -offsetY);
-                        } else {
-                            int offsetX = module.getData().getIntValue(MODULE_VALUE.border_width);
-                            int offsetY = module.getData().getIntValue(MODULE_VALUE.border_width);
-                            c = c.getOffset(-offsetX, -offsetY);
-                        }
+//                        if (!CoreEngine.isLevelEditor()) {
+//                            int offsetX = module.getData().getIntValue(MODULE_VALUE.width_buffer);
+//                            int offsetY = module.getData().getIntValue(MODULE_VALUE.height_buffer);
+//                            c = c.getOffset(-offsetX, -offsetY);
+//                        } else {
+//                            int offsetX = module.getData().getIntValue(MODULE_VALUE.border_width);
+//                            int offsetY = module.getData().getIntValue(MODULE_VALUE.border_width);
+//                            c = c.getOffset(-offsetX, -offsetY);
+//                        }
                         module.setOrigin(c);
                     }
                     break;

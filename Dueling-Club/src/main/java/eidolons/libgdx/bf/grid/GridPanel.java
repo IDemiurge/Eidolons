@@ -15,7 +15,6 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.vision.LastSeenMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObject;
@@ -51,7 +50,6 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import java.awt.*;
@@ -100,15 +98,10 @@ public abstract class GridPanel extends Group {
 
     public void setModule(Module module) {
         offset = module.getOrigin();
-        if (CoreEngine.isLevelEditor()) {
-            int offsetX = module.getData().getIntValue(LevelStructure.MODULE_VALUE.width_buffer);
-            int offsetY = module.getData().getIntValue(LevelStructure.MODULE_VALUE.height_buffer);
-            offset = offset.getOffset(-offsetX, -offsetY);
-        }
         x1 = offset.x;
         y1 = offset.y;
-        cols = module.getEffectiveWidth(CoreEngine.isLevelEditor());
-        rows = module.getEffectiveHeight(CoreEngine.isLevelEditor());
+        cols = module.getEffectiveWidth();
+        rows = module.getEffectiveHeight();
         x2 = cols + offset.x;
         y2 = rows + offset.y;
         GridSubParts container = containerMap.get(module);
@@ -144,10 +137,10 @@ public abstract class GridPanel extends Group {
         for (int x = x1; x < x2; x++) {
             for (int y = y1; y < y2; y++) {
                 DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(x,
-                        getGdxY(y)));
+                        getGdxY(y)+y1));
                 TextureRegion image = TextureCache.getOrCreateR(cell.getImagePath());
 
-                cells[x][y] = createGridCell(image, x, getGdxY(y));
+                cells[x][y] = createGridCell(image, x, getGdxY(y)+y1);
                 cells[x][y].setX(x * GridMaster.CELL_W);
                 cells[x][y].setY(y * GridMaster.CELL_H);
 

@@ -52,6 +52,7 @@ public class FloorLoader extends DungeonHandler<Location> {
     public static final String ZONES = "Zones";
     public static final String MAIN_ENTRANCE = "MAIN_ENTRANCE";
     public static final String MAIN_EXIT = "MAIN_EXIT";
+    private String entranceData = "";
 
     public FloorLoader(DungeonMaster master) {
         super(master);
@@ -67,6 +68,7 @@ public class FloorLoader extends DungeonHandler<Location> {
     }
 
     public void processModuleSubNode(Node node, Location location, Module module) {
+        boolean entrance = false;
         log(LOG_CHANNEL.BUILDING, "Module Sub Node: " + node.getNodeName());
         switch (node.getNodeName()) {
             case CUSTOM_TYPE_DATA:
@@ -82,7 +84,7 @@ public class FloorLoader extends DungeonHandler<Location> {
                 }
                 break;
             case BORDERS:
-                getObjInitializer().processBorderObjects(node);
+                getObjInitializer().processBorderObjects(module,node);
                 break;
             case OBJ_NODE_NEW:
                 Map<Integer, BattleFieldObject> objectMap =
@@ -98,19 +100,29 @@ public class FloorLoader extends DungeonHandler<Location> {
                     module.getVoidCells().add(Coordinates.get(substring));
                 }
                 break;
-            case OVERLAY_DIRECTIONS:
-                break;
             case LAYERS:
                 processLayers(node);
                 break;
+            case OVERLAY_DIRECTIONS:
+                //TODO
+                break;
             case FACING:
+                //TODO
+                break;
+            case TRANSIT_IDS:
+                processTransitsNode(node.getTextContent());
+                break;
+            case MAIN_ENTRANCE:
+                location.setEntranceData(node.getTextContent());
+                break;
+            case MAIN_EXIT:
+                location.setExitData(node.getTextContent());
                 break;
         }
 
     }
 
     public void processNode(Node node, Location location) {
-        boolean entrance = false;
         log(LOG_CHANNEL.BUILDING, "Xml node: " + node.getNodeName());
         switch (node.getNodeName()) {
             case DATA:
@@ -120,7 +132,7 @@ public class FloorLoader extends DungeonHandler<Location> {
                 data.apply();
                 log(LOG_CHANNEL.BUILDING, "Location after data applies: " +
                         location);
-                if (location.getWidth()>0 && location.getHeight()>0) {
+                if (location.getWidth() > 0 && location.getHeight() > 0) {
                     getBuilder().initWidthAndHeight(location);
                 }
                 break;
@@ -151,27 +163,8 @@ public class FloorLoader extends DungeonHandler<Location> {
                 log(LOG_CHANNEL.BUILDING, "Id-Type Map built: " +
                         getMaster().getIdTypeMap());
                 break;
-            case TRANSIT_IDS:
-                initTransits(node.getTextContent(), location);
-                break;
-            case MAIN_ENTRANCE:
-                entrance = true;
-            case MAIN_EXIT:
-                Integer id = Integer.valueOf(node.getTextContent());
-                Object e = getMetaMaster().getDungeonMaster().getObjIdMap().get(id);
-                if (e instanceof Entrance) {
-                    if (entrance) {
-                        location.setMainExit((Entrance) e);
-                        log(LOG_CHANNEL.BUILDING, "Main exit: " + ((Entrance) e).getNameAndCoordinate());
-                    } else {
-                        location.setMainEntrance((Entrance) e);
-                        log(LOG_CHANNEL.BUILDING, "Main Entrance: " + ((Entrance) e).getNameAndCoordinate());
 
-                    }
-                } else
-                    log(1, e + " is not ENTRANCE! id= " + id);
-                break;
-//                case FLIP_MAP_NODE
+
         }
 
     }
@@ -179,17 +172,19 @@ public class FloorLoader extends DungeonHandler<Location> {
     protected void checkModuleRemap(boolean b, Location location) {
     }
 
-    protected void initTransits(String textContent, Location location) {
-        for (String substring : ContainerUtils.openContainer(textContent)) {
+    protected void processTransitsNode(String textContent) {
+        entranceData += textContent;
+    }
+
+    protected void initTransits(Location location) {
+        for (String substring : ContainerUtils.openContainer(entranceData)) {
             Integer id = NumberUtils.getInteger(substring.split("->")[0]);
             Coordinates c = Coordinates.get(substring.split("->")[1]);
             processTransitPair(id, c, location);
-
         }
     }
 
     protected void processTransitPair(Integer id, Coordinates c, Location location) {
-//        TODO
         Entrance e = (Entrance) master.getObjIdMap().get(id);
         e.setTargetCoordinates(c);
 
@@ -232,5 +227,16 @@ public class FloorLoader extends DungeonHandler<Location> {
             map.put(new Coordinates(s), FacingMaster.getFacing(data.getValues().get(s)));
         }
         return map;
+    }
+
+    public void start() {
+        entranceData = "";
+    }
+
+    public void finish(Location location) {
+        initTransits(location);
+        location.initMainEntrance();
+        //TODO may not be initialized??
+        location.initMainExit();
     }
 }

@@ -45,9 +45,10 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
     public Map<Point, Module> getModuleGrid() {
         return moduleGrid;
     }
+
     public void setGrid(LinkedHashMap<Point, Module> grid) {
-        if (moduleGrid!=null ){
-            if (moduleGrid.equals(grid)){
+        if (moduleGrid != null) {
+            if (moduleGrid.equals(grid)) {
                 return;
             }
         }
@@ -56,7 +57,7 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
             Module module = grid.get(point);
             Coordinates c = getMappedCoordForPoint(point, module);
 
-            log(LOG_CHANNEL.BUILDING, module.getName()+ " Module placed at " + c);
+            log(LOG_CHANNEL.BUILDING, module.getName() + " Module placed at " + c);
             module.setOrigin(c);
         }
         resetBorders();
@@ -79,8 +80,8 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
             offsetY += h;
         }
 
-        offsetX += module.getData().getIntValue(MODULE_VALUE.width_buffer);
-        offsetY += module.getData().getIntValue(MODULE_VALUE.height_buffer);
+//        offsetX += module.getData().getIntValue(MODULE_VALUE.width_buffer);
+//        offsetY += module.getData().getIntValue(MODULE_VALUE.height_buffer);
 
         return Coordinates.get(offsetX, offsetY);
     }
@@ -93,7 +94,7 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
             set.addAll(module.getCoordinatesSet());
         }
         full.removeAll(set);
-        log(LOG_CHANNEL.BUILDING,   " Buffer void being reset " + full.size());
+        log(LOG_CHANNEL.BUILDING, " Buffer void being reset " + full.size());
         getOperationHandler().execute(Operation.LE_OPERATION.MASS_SET_VOID, full);
     }
 
@@ -137,7 +138,7 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
                         , DC_TYPE.BF_OBJ);
             }
 
-            log(LOG_CHANNEL.BUILDING, module.getName()+ " borders being reset " + borderCoords.size());
+            log(LOG_CHANNEL.BUILDING, module.getName() + " borders being reset " + borderCoords.size());
             for (Coordinates borderCoord : borderCoords) {
                 BattleFieldObject obj = getObjHandler().addObjIgnoreWrap(objType, borderCoord.x, borderCoord.y);
                 obj.setModuleBorder(true);
@@ -165,16 +166,20 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         int border = module.getData().getIntValue(MODULE_VALUE.border_width);
         int borderW = border;
         int borderH = border;
-        if (buffer) {
-            int bufferW = module.getData().getIntValue(MODULE_VALUE.width_buffer) - 1;
-            int bufferH = module.getData().getIntValue(MODULE_VALUE.height_buffer) - 1;
-            borderH += bufferH;
-            borderW += bufferW;
-        }
 
-        int h = module.getHeight() + borderH *2 ;
-        int w = module.getWidth() + borderW *2 ;
+        int h = module.getHeight() + borderH * 2;
+        int w = module.getWidth() + borderW * 2;
+
+        int bufferW = module.getWidthBuffer() - 1;
+        int bufferH = module.getHeightBuffer() - 1;
+        if (buffer) {
+            borderW += bufferW;
+            borderH += bufferH;
+        }
         Coordinates corner = origin.getOffset(w, h);
+        corner = corner.getOffset(bufferW, bufferH);
+        origin = origin.getOffset(bufferW, bufferH);
+
         List<Coordinates> full = CoordinatesMaster.getCoordinatesBetween(origin, corner);
         List<Coordinates> inner = buffer ?
                 CoordinatesMaster.getCoordinatesBetween(

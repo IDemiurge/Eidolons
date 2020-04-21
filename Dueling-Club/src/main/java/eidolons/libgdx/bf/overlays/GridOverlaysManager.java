@@ -8,12 +8,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -24,6 +26,7 @@ import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.GenericGridView;
+import eidolons.libgdx.bf.grid.cell.GridCell;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.bf.grid.sub.GridElement;
@@ -42,6 +45,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
@@ -54,11 +58,12 @@ import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.*;
 /**
  * Created by JustMe on 2/20/2017.
  */
-public class GridOverlaysManager extends SuperActor  implements GridElement {
+public class GridOverlaysManager extends SuperActor implements GridElement {
 
     protected final GridCellContainer[][] cells;
     protected GridPanel gridPanel;
     protected boolean sightInfoDisplayed;
+    protected boolean debug;
     protected Map<OVERLAY, Map<Actor, ClickListener>> listenerCaches = new HashMap<>();
     protected Map<Entity, Map<Rectangle, Tooltip>> tooltipMap = new HashMap<>();
     protected Map<Entity, Map<OVERLAY, Rectangle>> overlayMap = new HashMap<>();
@@ -187,6 +192,8 @@ public class GridOverlaysManager extends SuperActor  implements GridElement {
         if (Cinematics.ON) {
             return;
         }
+        if (CoreEngine.isIDE())
+            debug = (Gdx.input.isKeyPressed(Keys.ALT_LEFT));
         setSightInfoDisplayed(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT));
         if (sightInfoDisplayed) {
             if (gridPanel.getHoverObj() != null) {
@@ -228,22 +235,23 @@ public class GridOverlaysManager extends SuperActor  implements GridElement {
     public void setSightInfoDisplayed(boolean sightInfoDisplayed) {
         if (sightInfoDisplayed != this.sightInfoDisplayed) {
             this.sightInfoDisplayed = sightInfoDisplayed;
-            (( GridPanel) getParent()).setUpdateRequired(true);
+            ((GridPanel) getParent()).setUpdateRequired(true);
         }
     }
 
     @Override
     public void setModule(Module module) {
         x1 = module.getOrigin().x;
-        y1 =  module.getOrigin().y;
+        y1 = module.getOrigin().y;
         cols = module.getEffectiveWidth();
         rows = module.getEffectiveHeight();
-        x2 = cols +  module.getOrigin().x;
-        y2 = rows +  module.getOrigin().y;
+        x2 = cols + module.getOrigin().x;
+        y2 = rows + module.getOrigin().y;
     }
+
     protected void drawOverlays(Batch batch) {
         for (int x = x1; x < x2; x++) {
-            for (int y = y2 - 1; y >=y1 ; y--) {
+            for (int y = y2 - 1; y >= y1; y--) {
                 GridCellContainer cell = cells[x][y];
                 for (Actor c : cell.getChildren()) {
                     if (c instanceof GridUnitView) {
@@ -265,7 +273,12 @@ public class GridOverlaysManager extends SuperActor  implements GridElement {
         //emblem etc?
         //        }
         BattleFieldObject obj = actor.getUserObject();
-
+        if (debug) {
+            if (getOverlayActor(actor, INFO_TEXT) instanceof Label) {
+                ((Label) getOverlayActor(actor, INFO_TEXT)).setText(getInfoText(obj));
+            }
+            drawOverlay(actor,INFO_TEXT, batch, obj, x, y);
+        }
         if (actor.getHpBar() != null)
             if (checkOverlayForObj(HP_BAR, obj, actor))
                 drawOverlay(actor, HP_BAR, batch, obj, x, y);
@@ -281,10 +294,13 @@ public class GridOverlaysManager extends SuperActor  implements GridElement {
     }
 
     protected void drawOverlaysForCell(GridCellContainer container, int x, int y,
-                                     Batch batch) {
-        if (sightInfoDisplayed) {
-            DC_Cell cell = Eidolons.getGame().getMaster().getCellByCoordinate(Coordinates.get(x, y));
+                                       Batch batch) {
 
+        if (debug||sightInfoDisplayed) {
+            DC_Cell cell = Eidolons.getGame().getMaster().getCellByCoordinate(Coordinates.get(x, y));
+            if (debug) {
+                drawOverlay(container, INFO_TEXT, batch, cell, x, y);
+            }
             UNIT_VISION vision = cell.getUnitVisionStatus(observer);
             if (vision == null) {
                 return;
@@ -310,11 +326,15 @@ public class GridOverlaysManager extends SuperActor  implements GridElement {
         }
     }
 
-    public void drawOverlay(Actor parent, OVERLAY overlay, Batch batch, Obj obj, int x, int y) {
+    public void drawOverlay(Actor parent, OVERLAY overlay, Batch batch, DC_Obj obj, int x, int y) {
         //TODO SCALING
         initOverlayColor(batch, obj, overlay);
 
         float xPos = 0, yPos = 0;
+        if (overlay == INFO_TEXT) {
+            Label label = (Label) getOverlayActor(parent, overlay);
+            label.setText(getInfoText(obj));
+        }
         if (overlay.alignment != null) {
             Vector2 v = GdxMaster.getAlignedPos(parent, overlay.alignment,
                     getOverlayWidth(overlay, parent), getOverlayHeight(overlay, parent));
@@ -339,7 +359,15 @@ public class GridOverlaysManager extends SuperActor  implements GridElement {
 
     }
 
-    protected void initOverlayColor(Batch batch, Obj obj, OVERLAY overlay) {
+    private String getInfoText(DC_Obj obj) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(obj.getVisibilityLevel()).append("\n");
+        builder.append(obj.getPlayerVisionStatus()).append("\n");
+        builder.append(obj.getVisibilityLevel()).append("\n");
+        return builder.toString();
+    }
+
+    protected void initOverlayColor(Batch batch, DC_Obj obj, OVERLAY overlay) {
         if (isOverlayAlphaOn(overlay)) {
             batch.setColor(1, 1, 1, fluctuatingAlpha);
         } else {
@@ -347,7 +375,7 @@ public class GridOverlaysManager extends SuperActor  implements GridElement {
         }
     }
 
-    protected void addTooltip(Obj obj, Actor parent, OVERLAY overlay, Vector2 v, int x, int y) {
+    protected void addTooltip(DC_Obj obj, Actor parent, OVERLAY overlay, Vector2 v, int x, int y) {
         Rectangle rect = null;
         if (isTooltipRequired(overlay)) {
             if (obj == null) {
@@ -480,7 +508,15 @@ public class GridOverlaysManager extends SuperActor  implements GridElement {
     }
 
     protected Actor getOverlayActor(Actor parent, OVERLAY overlay) {
+
         switch (overlay) {
+            case INFO_TEXT: {
+                if (parent instanceof GridCell) {
+                    return ((GridCell) parent).getInfoText();
+                }
+                GenericGridView view = (GenericGridView) parent;
+                return view.getInfoText();
+            }
             case HP_BAR: {
                 GenericGridView view = (GenericGridView) parent;
                 return view.getHpBar();
@@ -517,7 +553,7 @@ public class GridOverlaysManager extends SuperActor  implements GridElement {
             case HP_BAR:
             case ITEM:
             case CORPSE:
-
+            case INFO_TEXT:
                 return null;
         }
         return TextureCache.getOrCreateR(
@@ -601,7 +637,7 @@ public class GridOverlaysManager extends SuperActor  implements GridElement {
         FOG_OF_WAR,
         WATCH,
         BLOCKED,
-        ;
+        INFO_TEXT;
 
         public Alignment alignment;
         String path = StrPathBuilder.build(PathFinder.getComponentsPath(),

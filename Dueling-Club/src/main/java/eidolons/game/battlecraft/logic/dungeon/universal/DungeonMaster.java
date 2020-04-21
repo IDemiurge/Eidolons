@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.LayerManager;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.PlaceholderResolver;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.BridgeMaster;
@@ -62,6 +63,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private DC_ObjInitializer objInitializer;
     private StructureBuilder structureBuilder;
     private ModuleLoader moduleLoader;
+    private PlaceholderResolver placeholderResolver;
 
 
     public DungeonMaster(DC_Game game) {
@@ -87,6 +89,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
             puzzleMaster = new PuzzleMaster(this);
         }
         moduleLoader = new ModuleLoader(this);
+        placeholderResolver = new PlaceholderResolver(this);
     }
     protected FloorLoader createFloorLoader() {
         return new FloorLoader(this);
@@ -122,12 +125,10 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     public void init() {
         if (dungeonWrapper == null)
             dungeonWrapper = initDungeon();
-        getBuilder().initLevel();
         //TODO remove this!
 
         if (dungeonWrapper == null) {
             dungeonWrapper = initDungeon();
-            getBuilder().initLevel();
         }
         if (!CoreEngine.isCombatGame()) {
             return;
@@ -139,6 +140,10 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
         GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());
 
+    }
+
+    public void setDungeonWrapper(E dungeonWrapper) {
+        this.dungeonWrapper = dungeonWrapper;
     }
 
     protected void processMetaDataMap(Map<String, String> dataMap) {
@@ -344,6 +349,10 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
     public ModuleLoader getModuleLoader() {
         return moduleLoader;
+    }
+
+    public PlaceholderResolver getPlaceholderResolver() {
+        return placeholderResolver;
     }
 
 }

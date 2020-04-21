@@ -112,7 +112,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
     }
 
     public List<Coordinates> getPlayerPartyCoordinates(List<String> partyTypes) {
-        return getCoordinates(getDungeon().getPlayerSpawnCoordinates(), true, partyTypes);
+        return getCoordinates(getDungeon().getDefaultPlayerSpawnCoordinates(), true, partyTypes);
     }
 
     public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MODE mode) {

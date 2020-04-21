@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.PlaceholderResolver;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -82,6 +83,9 @@ public class DungeonHandler<E extends DungeonWrapper> {
 
     public PlayerManager getPlayerManager() {
         return master.getPlayerManager();
+    }
+    public PlaceholderResolver getPlaceholderResolver() {
+        return master.getPlaceholderResolver();
     }
 
     public BattleMaster getBattleMaster() {

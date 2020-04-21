@@ -232,9 +232,12 @@ public abstract class GenericDungeonScreen extends GameScreen {
                 if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
                     if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                         DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
-                    } else {
+
+                       } else {
                         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                            CoreEngine.setCinematicMode(!CoreEngine.isFootageMode());
+//                            CoreEngine.setCinematicMode(!CoreEngine.isFootageMode());
+                            boolean visionDebugMode = DC_Game.game.getVisionMaster().isVisionDebugMode();
+                            DC_Game.game.getVisionMaster().setVisionDebugMode(!visionDebugMode);
                         }
                         if (Gdx.input.isKeyPressed(Input.Keys.TAB)) {
                             DC_Game.game.getVisionMaster().refresh();

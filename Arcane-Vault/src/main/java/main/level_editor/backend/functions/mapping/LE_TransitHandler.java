@@ -115,7 +115,7 @@ public class LE_TransitHandler extends LE_Handler {
             xmlBuilder.append(XML_Converter.wrap(FloorLoader.MAIN_EXIT, id.toString()));
 
         return
-                XML_Converter.wrap(FloorLoader.TRANSITS, xmlBuilder.toString());
+                xmlBuilder.toString();
     }
 
     public void entranceRemoved(Entrance obj) {
@@ -124,6 +124,9 @@ public class LE_TransitHandler extends LE_Handler {
         Integer id = moduleTransitMap.remove(getIdManager().getId(obj));
         if (id == null) {
             id = moduleTransitMap.remove(moduleTransitMap.get(getIdManager().getId(obj)));
+        }
+        if (id == null) {
+            return;
         }
         unpaired = (id);
         EUtils.showInfoText("Unpaired entrance: "
@@ -149,6 +152,7 @@ public class LE_TransitHandler extends LE_Handler {
             if (EUtils.waitConfirm("Pair with "
                     + getIdManager().getObjectById(unpaired).getNameAndCoordinate())) {
                 addingExitFor = unpaired;
+                unpaired=null ;
             }
         }
         Integer id = getIdManager().getId(obj);

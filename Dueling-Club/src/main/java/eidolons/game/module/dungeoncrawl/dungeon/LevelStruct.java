@@ -44,7 +44,7 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
             if (getParent() == null) {
                 return "";
             }
-            getParent().getPropagatedValue(valueName);
+           return getParent().getPropagatedValue(valueName);
         }
         return value;
     }

@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.content.CONTENT_CONSTS;
@@ -35,12 +34,9 @@ public class DungeonWrapper  extends LevelStruct<Module, Module> implements Enti
     public Dungeon getEntity() {
         return dungeon;
     }
-    public Coordinates getPlayerSpawnCoordinates() {
-        String prop = getProperty(PROPS.ENTRANCE_COORDINATES);
-        if (prop.isEmpty()) {
+
+    public Coordinates getDefaultPlayerSpawnCoordinates() {
             return Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
-        }
-        return Coordinates.get(prop);
     }
 
     public DungeonMaster getDungeonMaster() {

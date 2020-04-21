@@ -668,6 +668,10 @@ public class ImageManager {
         String imgPath = VALUE_ICONS_PATH;
         String name = value.getName().toLowerCase();
 
+        if (value.getIconPath()!=null) {
+            return value.getIconPath();
+        }
+
         boolean mastery = false;
         if (value instanceof MACRO_PARAMS) {
             imgPath = VALUE_ICONS_PATH + "macro" + separator;
@@ -695,7 +699,7 @@ public class ImageManager {
         String path = imgPath + name + ".png"; // free format
         if (!FileManager.isFile(getImageFolderPath() + path))
             path = imgPath + name + ".jpg";
-
+        value.setIconPath(path);
         return path;
 
     }

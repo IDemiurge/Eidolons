@@ -260,7 +260,8 @@ public class DC_Game extends GenericGame {
     public void initGrid(Module module) {
         if (grid == null) {
             grid = new DC_BattleFieldGrid(module);
-        } else grid.setModule(module);
+        } else
+            grid.setModule(module);
     }
 
     public void battleInit() {

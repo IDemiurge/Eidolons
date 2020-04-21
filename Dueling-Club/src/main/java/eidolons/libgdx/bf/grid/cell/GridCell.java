@@ -49,6 +49,7 @@ public class GridCell extends Group implements Borderable {
     protected int gridY;
     protected TextureRegion borderTexture;
     protected Label cordsText;
+    protected Label infoText;
 
     SpriteX overlay;
 
@@ -85,7 +86,7 @@ public class GridCell extends Group implements Borderable {
         backImage = new Image(backTexture);
         backImage.setFillParent(true);
         addActor(backImage);
-        addActor(overlay = new SpriteX());
+//        addActor(overlay = new SpriteX());
         addActor(overlayTexture = new Image());
         setSize(GridMaster.CELL_W, GridMaster.CELL_H);
 
@@ -98,6 +99,9 @@ public class GridCell extends Group implements Borderable {
         cordsText.setTouchable(Touchable.disabled);
         addListener(
                 createListener());
+
+        infoText = new Label("", StyleHolder.getDebugLabelStyle());
+//        addActor(infoText); NOW VIA OVERLAYS
 
         return this;
     }
@@ -229,7 +233,7 @@ public class GridCell extends Group implements Borderable {
     }
 
     protected boolean isCoordinatesShown() {
-        return DC_Game.game.isDebugMode();
+        return DC_Game.game.getVisionMaster().isVisionDebugMode();
     }
 
     @Override
@@ -315,6 +319,10 @@ public class GridCell extends Group implements Borderable {
 
     public SpriteX getOverlay() {
         return overlay;
+    }
+
+    public Label getInfoText() {
+        return infoText;
     }
 
     public float getOverlayRotation() {

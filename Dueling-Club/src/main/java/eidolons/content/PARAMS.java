@@ -993,6 +993,7 @@ public enum PARAMS implements PARAMETER {
     private boolean mastery;
     private boolean highPriority;
     private String fullName;
+    private String iconPath;
     private Map<OBJ_TYPE, Object> defaultValuesMap;
     private boolean mod;
 
@@ -1100,6 +1101,16 @@ public enum PARAMS implements PARAMETER {
     // getOrCreate(base)
 
     @Override
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    @Override
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
@@ -1118,11 +1129,6 @@ public enum PARAMS implements PARAMETER {
 
     public String[] getEntityTypes() {
         return entityTypes;
-    }
-
-    @Override
-    public Metainfo getMetainfo() {
-        return metainfo;
     }
 
     @Override

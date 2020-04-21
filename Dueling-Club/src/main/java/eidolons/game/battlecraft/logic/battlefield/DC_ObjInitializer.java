@@ -45,7 +45,7 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
     private static final String MULTI_DIRECTION_SUFFIX = "MULTI_DIRECTION-";
     private ObjType borderType;
 
-    public DC_ObjInitializer(DungeonMaster  master) {
+    public DC_ObjInitializer(DungeonMaster master) {
         super(master);
     }
 
@@ -71,21 +71,21 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
         return item.split(COORDINATES_OBJ_SEPARATOR)[1];
     }
 
-    public  DC_Obj initObject(Coordinates c, ObjType type, DC_Player owner, DC_Game game) {
+    public DC_Obj initObject(Module module, Coordinates c, ObjType type, DC_Player owner, DC_Game game) {
         DC_Obj obj;
         if (owner == null) {
             if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
                 owner = DC_Player.NEUTRAL;
             } else {
-            game.getPlayer(false);
-                            }
+                owner = game.getPlayer(false);
+            }
         }
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
             obj = new Encounter(type, game, new Ref(), game.getPlayer(false), c);
         } else {
-
-            if (type.getOBJ_TYPE_ENUM() == DC_TYPE.UNITS){
-                obj =getSpawner().spawnUnit(type, c, owner, null, null );
+            type = getPlaceholderResolver().resolve(module, type, c);
+            if (type.getOBJ_TYPE_ENUM() == DC_TYPE.UNITS) {
+                obj = getSpawner().spawnUnit(type, c, owner, null, null);
             } else
                 obj = game.createObject(type, c, owner);
 
@@ -94,7 +94,8 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
 
         return obj;
     }
-    public   Map<Integer, BattleFieldObject> processObjects(
+
+    public Map<Integer, BattleFieldObject> processObjects(
             Module module, Map<Integer, ObjType> idMap,
             Map<Integer, DC_Player> ownerMap, Node subNode) {
         //TODO   create player=> ids map and make multiple maps here!
@@ -121,7 +122,7 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
                 }
                 DC_Player owner = ownerMap.get(id);
 
-                DC_Obj value = initObject(c, type, owner, DC_Game.game);
+                DC_Obj value = initObject(module, c, type, owner, DC_Game.game);
 
                 if (value instanceof BattleFieldObject) {
                     objIdMap.put(id, (BattleFieldObject) value);
@@ -134,26 +135,28 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
 
         return objIdMap;
     }
+
     public void processBorderObjects(
-            Node subNode ) {
+            Module module, Node subNode) {
 
         for (String substring : ContainerUtils.openContainer(
                 subNode.getTextContent())) {
-            Coordinates c = Coordinates.get(true, substring );
-            ObjType type=  getBorderType();
-            DC_Obj value = initObject(c, type, null  , DC_Game.game);
+            Coordinates c = Coordinates.get(true, substring);
+            ObjType type = getBorderType();
+            DC_Obj value = initObject(module, c, type, null, DC_Game.game);
 
             if (value instanceof BattleFieldObject) {
                 ((BattleFieldObject) value).setModuleBorder(true);
             }
         }
     }
+
     public static void initFlipMap(int z, Map<String, FLIP> flipMap) {
         if (flipMap != null) {
             for (String data : flipMap.keySet()) {
                 Coordinates c = getCoordinatesFromObjString(data);
                 FLIP d = flipMap.get(data);
-                for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(   c, false, false, false)) {
+                for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(c, false, false, false)) {
                     String name = getNameFromObjString(data);
                     if (name.contains(MULTI_DIRECTION_SUFFIX)) {
                         name = name.split(MULTI_DIRECTION_SUFFIX)[0];
@@ -173,13 +176,14 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
     }
 
     public static Coordinates getCoordinatesFromObjString(String sub) {
-        return  Coordinates.get(true, sub.split(StringMaster.getAltPairSeparator())[0]);
+        return Coordinates.get(true, sub.split(StringMaster.getAltPairSeparator())[0]);
     }
+
     public static void initDirectionMap(int z, Map<String, DIRECTION> directionMap) {
         for (String data : directionMap.keySet()) {
             Coordinates c = getCoordinatesFromObjString(data);
             DIRECTION d = directionMap.get(data);
-            for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(  c, null, false, false)) {
+            for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(c, null, false, false)) {
 
                 String name = getNameFromObjString(data);
                 if (name.contains(MULTI_DIRECTION_SUFFIX)) {
@@ -228,7 +232,7 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
     public ObjType getBorderType() {
         if (borderType == null) {
             borderType = DataManager.getType(
-                    PlaceholderGenerator.getPlaceholderName(GeneratorEnums.ROOM_CELL.WALL)+ WallMap.v(true));
+                    PlaceholderGenerator.getPlaceholderName(GeneratorEnums.ROOM_CELL.WALL) + WallMap.v(true));
         }
         return borderType;
     }

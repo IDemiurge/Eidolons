@@ -12,7 +12,6 @@ import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldManager;
 import main.game.bf.Coordinates;
-import main.game.bf.GraveyardManager;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.system.GuiEventManager;
@@ -36,9 +35,9 @@ public class DC_BattleFieldManager extends BattleFieldManager   {
     private boolean wallResetRequired = true;
     private Map<Coordinates, DOOR_STATE> doorMap = new HashMap<>();
 
-    DroppedItemManager droppedItemManager;
-    GraveyardManager graveyardManager;
-    CoordinatesMaster coordinatesMaster;
+//    DroppedItemManager droppedItemManager;
+//    GraveyardManager graveyardManager;
+//    CoordinatesMaster coordinatesMaster;
 
     public DC_BattleFieldManager(DC_Game game, Integer id, int w, int h) {
         super(game, id, w, h);

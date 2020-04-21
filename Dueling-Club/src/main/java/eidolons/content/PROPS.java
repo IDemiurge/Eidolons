@@ -1,6 +1,9 @@
 package eidolons.content;
 
-import main.content.*;
+import main.content.C_OBJ_TYPE;
+import main.content.ContentValsManager;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.properties.PROPERTY;
@@ -57,8 +60,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ALT_COLOR_THEME(null, false, "dungeons"    ),
 
     SUBDUNGEON_TYPE(null, false , "dungeons"    ),
-
-    ENTRANCE_COORDINATES(null, true , "dungeons"    ),
 
     MASTERY_GROUPS_MAGIC(null, true, "units", "chars"),
     MASTERY_GROUPS_WEAPONS(null, true, "units", "chars"),
@@ -403,7 +404,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     COATING_MOD(null, false, "chars", "units", "skills"),
     KEY_DOOR_PAIRS(null, false, "dungeons"),
-    DUNGEON_MAIN_ENTRANCES (null, false, "dungeons"),
     LORD_SOULS(null, true, "lord"),
 
     EIDOLON_ASPECTS(null, true, "chars", "units"),
@@ -468,7 +468,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     boolean writeToType;
     INPUT_REQ inputReq;
-    private Metainfo metainfo;
     private String name;
     private String descr;
     private String entityType;
@@ -483,6 +482,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     private String fullName;
     private String shortName;
     private Map<OBJ_TYPE, Object> defaultValuesMap;
+    private String iconPath;
 
     PROPS(String shortName, boolean container, C_OBJ_TYPE entityType) {
         this(shortName, container, Arrays.stream(entityType.getTypes())
@@ -631,10 +631,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
         return entityTypes;
     }
 
-    @Override
-    public Metainfo getMetainfo() {
-        return metainfo;
-    }
 
     @Override
     public boolean isContainer() {
@@ -721,4 +717,13 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     }
 
+    @Override
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    @Override
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
+    }
 }

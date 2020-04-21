@@ -62,7 +62,7 @@ public class DC_GameObjMaster extends GameObjMaster {
     }
 
     public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded) {
-        return getObjectByCoordinate(  c, cellsIncluded, true, null);
+        return getObjectByCoordinate(  c, cellsIncluded, true, false);
     }
 
 

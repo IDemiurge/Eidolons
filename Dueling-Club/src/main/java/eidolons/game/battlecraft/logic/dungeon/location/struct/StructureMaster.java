@@ -77,4 +77,20 @@ public class StructureMaster extends DungeonHandler<Location> {
         return zones;
     }
 
+    public LevelStruct findStructWithin(LevelStruct struct, Coordinates c) {
+        if (struct.getChildren() != null)
+            for (Object o : struct.getChildren()) {
+                if (o instanceof LevelStruct) {
+                    LevelStruct child = (LevelStruct) o;
+                    LevelStruct sub = findStructWithin(child, c);
+                    if (sub != null) {
+                        return sub;
+                    }
+                }
+            }
+        if (struct.getCoordinatesSet().contains(c)) {
+            return struct;
+        }
+        return null;
+    }
 }

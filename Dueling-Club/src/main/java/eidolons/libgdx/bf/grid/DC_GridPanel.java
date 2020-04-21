@@ -20,7 +20,6 @@ import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
 import eidolons.game.netherflame.igg.death.ShadowMaster;
 import eidolons.game.netherflame.igg.pale.PaleAspect;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
@@ -429,7 +428,8 @@ public class DC_GridPanel extends GridPanel {
         GuiEventManager.bind(removePrevious, ACTIVE_UNIT_SELECTED, obj -> {
             BattleFieldObject hero = (BattleFieldObject) obj.get();
             DungeonScreen.getInstance().getCameraMan().unitActive(hero);
-            AnimConstructor.tryPreconstruct((Unit) hero);
+            //dc refactor
+//            AnimConstructor.tryPreconstruct((Unit) hero);
             BaseView view = viewMap.get(hero);
             if (view == null) {
                 System.out.println("viewMap not initiatilized at ACTIVE_UNIT_SELECTED!");
@@ -500,7 +500,7 @@ public class DC_GridPanel extends GridPanel {
     }
 
 
-    public boolean detachUnitView(BattleFieldObject heroObj) {
+    public boolean detachUnitView(Unit heroObj) {
         BaseView uv = viewMap.get(heroObj);
         if (!(uv.getParent() instanceof GridCellContainer))
             return false;

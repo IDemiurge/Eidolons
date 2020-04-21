@@ -6,4 +6,5 @@ public interface GenericVisionManager {
 
     boolean checkInvisible(Obj obj1);
 
+    boolean isVisionTest();
 }
