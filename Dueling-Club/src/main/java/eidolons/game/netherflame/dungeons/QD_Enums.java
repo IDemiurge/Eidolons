@@ -9,12 +9,12 @@ approx. list of modules I'd want
         location, tags, elevation, length, preset_floors
     }
         public enum FloorProperty {
-        type, location, tags, elevation, length, preset_modules,
+        type, location, tags, elevation, length, preset_modules, dc_data
         //for preset modules and as requirements! / generated
     }
 
     public enum ModuleProperty {
-        size, dimension, type, location, elevation,
+        size, dimension, type, location, elevation, file_path,
 
     }
 

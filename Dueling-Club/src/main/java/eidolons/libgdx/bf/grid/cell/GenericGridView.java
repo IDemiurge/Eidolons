@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.obj.BattleFieldObject;
@@ -44,6 +45,8 @@ public class GenericGridView extends UnitView {
         init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getEmblem());
         cellBackground = o.cellBackground;
         setVisible(false);
+
+        infoText.setTouchable(Touchable.disabled);
     }
 
     @Override

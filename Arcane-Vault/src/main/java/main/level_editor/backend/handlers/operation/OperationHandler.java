@@ -13,6 +13,7 @@ import main.level_editor.backend.LE_Manager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
+import main.system.data.DataUnit;
 
 import java.util.Collection;
 import java.util.Stack;
@@ -138,6 +139,11 @@ public class OperationHandler extends LE_Handler {
 //                    getStructureManager().updateTree();
 //                }
                 break;
+            case MODIFY_DATA:
+                DataUnit dataUnit = (DataUnit) args[0];
+                DataUnit dataUnitPrev = (DataUnit) args[1];
+                dataUnitPrev.setData(dataUnit.getData());
+                break;
 
             case MODIFY_ENTITY:
                 getEntityHandler().modified((EntityData) args[0]);
@@ -186,6 +192,13 @@ public class OperationHandler extends LE_Handler {
 
         }
         switch (op.operation) {
+            case SAVE_DATA:
+                execute(Operation.LE_OPERATION.MODIFY_DATA, op.args);
+                break;
+            case SAVE_STRUCTURE:
+                execute(Operation.LE_OPERATION.MODIFY_DATA, op.args);
+                execute(Operation.LE_OPERATION.MODIFY_STRUCTURE, op.args);
+                break;
             case SAVE_ENTITY_DATA:
                 execute(Operation.LE_OPERATION.MODIFY_ENTITY, op.args);
                 break;
@@ -197,9 +210,6 @@ public class OperationHandler extends LE_Handler {
                 break;
             case MODIFY_STRUCTURE:
                 return false;
-            case SAVE_STRUCTURE:
-                execute(Operation.LE_OPERATION.MODIFY_STRUCTURE, op.args);
-                break;
             case MODEL_CHANGE:
                 getModelManager().back();
                 break;

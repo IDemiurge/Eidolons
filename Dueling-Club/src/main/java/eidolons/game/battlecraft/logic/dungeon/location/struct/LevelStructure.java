@@ -9,7 +9,7 @@ import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 
 public class LevelStructure {
-    public enum EDIT_VALUE_TYPE{
+    public enum EDIT_VALUE_TYPE {
         text,
         number,
         none,
@@ -30,19 +30,20 @@ public class LevelStructure {
     }
 
     public enum ZONE_VALUE implements EditableValue {
+        id(EDIT_VALUE_TYPE.number),
 
         name(EDIT_VALUE_TYPE.text),
         origin(EDIT_VALUE_TYPE.none),
         width(EDIT_VALUE_TYPE.number),
         height(EDIT_VALUE_TYPE.number),
         illumination(EDIT_VALUE_TYPE.number),
-        wall_type(EDIT_VALUE_TYPE.objType){
+        wall_type(EDIT_VALUE_TYPE.objType) {
             @Override
             public Object getArg() {
                 return DC_TYPE.BF_OBJ;
             }
         },
-        alt_wall_type(EDIT_VALUE_TYPE.objType){
+        alt_wall_type(EDIT_VALUE_TYPE.objType) {
             @Override
             public Object getArg() {
                 return DC_TYPE.BF_OBJ;
@@ -84,7 +85,7 @@ public class LevelStructure {
                 return AmbienceDataSource.AMBIENCE_TEMPLATE.class;
             }
         },
-       ;
+        ;
 
         private EDIT_VALUE_TYPE type;
 
@@ -97,8 +98,10 @@ public class LevelStructure {
             return type;
         }
     }
+
     public enum BLOCK_VALUE implements EditableValue {
 
+        id(EDIT_VALUE_TYPE.number),
 
         room_type(EDIT_VALUE_TYPE.enum_const) {
             @Override
@@ -114,13 +117,13 @@ public class LevelStructure {
         width(EDIT_VALUE_TYPE.number),
         height(EDIT_VALUE_TYPE.number),
         illumination(EDIT_VALUE_TYPE.number),
-        wall_type(EDIT_VALUE_TYPE.objType){
+        wall_type(EDIT_VALUE_TYPE.objType) {
             @Override
             public Object getArg() {
                 return DC_TYPE.BF_OBJ;
             }
         },
-        alt_wall_type(EDIT_VALUE_TYPE.objType){
+        alt_wall_type(EDIT_VALUE_TYPE.objType) {
             @Override
             public Object getArg() {
                 return DC_TYPE.BF_OBJ;
@@ -180,7 +183,8 @@ public class LevelStructure {
     }
 
     public enum FLOOR_VALUES implements EditableValue {
-        background(LevelStructure.EDIT_VALUE_TYPE.file){
+        id(EDIT_VALUE_TYPE.number),
+        background(LevelStructure.EDIT_VALUE_TYPE.file) {
             @Override
             public Object getArg() {
                 return "resources/img/main/background";
@@ -201,13 +205,13 @@ public class LevelStructure {
         width(EDIT_VALUE_TYPE.number),
         height(EDIT_VALUE_TYPE.number),
         illumination(EDIT_VALUE_TYPE.number),
-        wall_type(EDIT_VALUE_TYPE.objType){
+        wall_type(EDIT_VALUE_TYPE.objType) {
             @Override
             public Object getArg() {
                 return DC_TYPE.BF_OBJ;
             }
         },
-        alt_wall_type(EDIT_VALUE_TYPE.objType){
+        alt_wall_type(EDIT_VALUE_TYPE.objType) {
             @Override
             public Object getArg() {
                 return DC_TYPE.BF_OBJ;
@@ -253,9 +257,10 @@ public class LevelStructure {
         ;
         private EDIT_VALUE_TYPE type;
 
-        FLOOR_VALUES(){
+        FLOOR_VALUES() {
 
         }
+
         FLOOR_VALUES(EDIT_VALUE_TYPE type) {
             this.type = type;
         }
@@ -265,7 +270,9 @@ public class LevelStructure {
             return type;
         }
     }
+
     public enum MODULE_VALUE implements EditableValue { //enough to create a standalone floor
+        id(EDIT_VALUE_TYPE.number),
         border_width,
         border_type,
 
@@ -302,13 +309,13 @@ public class LevelStructure {
         width(EDIT_VALUE_TYPE.number),
         height(EDIT_VALUE_TYPE.number),
         illumination(EDIT_VALUE_TYPE.number),
-        wall_type(EDIT_VALUE_TYPE.objType){
+        wall_type(EDIT_VALUE_TYPE.objType) {
             @Override
             public Object getArg() {
                 return DC_TYPE.BF_OBJ;
             }
         },
-        alt_wall_type(EDIT_VALUE_TYPE.objType){
+        alt_wall_type(EDIT_VALUE_TYPE.objType) {
             @Override
             public Object getArg() {
                 return DC_TYPE.BF_OBJ;
@@ -372,6 +379,7 @@ public class LevelStructure {
 
 
     }
+
     public enum BORDER_TYPE {
         wall,
         chism,

@@ -1,7 +1,10 @@
 package eidolons.game.battlecraft.logic.battle.encounter.reinforce;
 
 import eidolons.content.PROPS;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.encounter.Encounter;
+import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
@@ -66,10 +69,17 @@ public class Reinforcer {
          */
         preSpawn(reinforcement);
         Coordinates origin = null;
-        List<ObjType> types;
-//        List<Coordinates> coordinatesList=encounter.getGame().getDungeonMaster().
-//                getPositioner().getPartyCoordinates(origin, types);
-//        List<Unit> units=encounter.getGame().getDungeonMaster().getSpawner().spawn(data, owner, mode);
+        List<ObjType> types = null;
+//        List<Coordinates> coordinates=encounter.getGame().getDungeonMaster().
+//                getPositioner().getCoordinates(origin, false, types);
+        DC_Player owner=encounter.getGame().getPlayer(false);
+        List<Unit> units=encounter.getGame().getDungeonMaster().getSpawner().spawn(
+                origin, types, owner, Spawner.SPAWN_MODE.DUNGEON);
+
+        /*
+        new ai group
+
+         */
 
         afterSpawn(reinforcement, origin);
 

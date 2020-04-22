@@ -17,12 +17,10 @@ import main.level_editor.backend.brush.LE_BrushType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 public class LE_ObjHandler extends LE_Handler {
-    Map<Integer, DIRECTION> overlayDirectionMap = new LinkedHashMap<>();
 
     private static final String DEFAULT_TYPE = "Bone Wall";
 
@@ -45,13 +43,15 @@ public class LE_ObjHandler extends LE_Handler {
         if ( bfObj instanceof Entrance) {
             getTransitHandler().entranceRemoved((Entrance) bfObj);
         }
-        getGame().softRemove(bfObj);
-        getAiHandler().removed(bfObj);
-
         if (bfObj.isOverlaying()) {
+            Integer id = getIdManager().getId(bfObj);
+            getDirectionMap().remove(id);
             GuiEventManager.trigger(GuiEventType.REMOVE_OVERLAY_VIEW, bfObj);
         } else
             GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, bfObj);
+        getGame().softRemove(bfObj);
+        getAiHandler().removed(bfObj);
+
 
     }
 
@@ -89,9 +89,13 @@ public class LE_ObjHandler extends LE_Handler {
     public BattleFieldObject addOverlay(DIRECTION d, ObjType objType, int gridX, int gridY) {
         BattleFieldObject object = getGame().createObject(objType, gridX, gridY, DC_Player.NEUTRAL);
         object.setDirection(d);
-        overlayDirectionMap.put(getIdManager().getId(object), d);
+         getDirectionMap().put(getIdManager().getId(object), d);
         //TODO Player!!!
         return object;
+    }
+
+    private Map<Integer, DIRECTION> getDirectionMap() {
+        return getGame().getDungeonMaster().getObjInitializer().getDirectionMap();
     }
 
     public void clear(Coordinates coordinates) {
@@ -120,8 +124,8 @@ public class LE_ObjHandler extends LE_Handler {
     @Override
     public String getXml(Function<Integer, Boolean> idFilter) {
         XmlStringBuilder builder = new XmlStringBuilder();
-        for (Integer integer : overlayDirectionMap.keySet()) {
-            builder.append(integer).append("=").append(overlayDirectionMap.get(integer).toString()).append(";");
+        for (Integer integer : getDirectionMap().keySet()) {
+            builder.append(integer).append("=").append(getDirectionMap().get(integer).toString()).append(";");
         }
         return
                 XML_Converter.wrap(FloorLoader.OVERLAY_DIRECTIONS, builder.toString());

@@ -119,14 +119,14 @@ public class QD_Assembler {
             main.system.auxiliary.log.LogMaster.log(1,"FAILED TO FIND A MODULE FOR "+data );
         }
 
-        TransformData transformData= getTransform(pick, data, previous, next, i, max );
+        Transform transform = getTransform(pick, data, previous, next, i, max );
 
-        QD_Module module= new QD_Module(pick, transformData);
+        QD_Module module= new QD_Module(pick, transform);
         modules.put(i, module);
         return module;
     }
 
-    private TransformData getTransform(QD_Module pick, DataUnit<FloorProperty> data, QD_Module previous, QD_Module next, int i, int max) {
+    private Transform getTransform(QD_Module pick, DataUnit<FloorProperty> data, QD_Module previous, QD_Module next, int i, int max) {
         return null;
     }
 

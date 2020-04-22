@@ -4,7 +4,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.battlecraft.ai.explore.Patrol;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import main.content.enums.EncounterEnums;
 import main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
 import main.data.XStack;
 import main.entity.obj.MicroObj;
@@ -19,8 +18,11 @@ import java.util.List;
 import java.util.Stack;
 
 public class GroupAI {
-    UNIT_GROUP_TYPE type = EncounterEnums.UNIT_GROUP_TYPE.CROWD;
+    UNIT_GROUP_TYPE type = UNIT_GROUP_TYPE.CROWD;
+    // TODO into    private Map<Unit, Coordinates> knownEnemyCoordinatesMap;
+    //    private Map<Unit, List<Coordinates>> suspectedEnemyCoordinatesMap;
     private Unit leader;
+    private Unit originalLeader;
     private DequeImpl<Unit> members = new DequeImpl<>();
 
     private ENGAGEMENT_LEVEL engagementLevel;
@@ -29,18 +31,14 @@ public class GroupAI {
     private boolean clockwisePatrol;
     private boolean backAndForth;
 
-    private int wanderDistance;
-
-// TODO into    private Map<Unit, Coordinates> knownEnemyCoordinatesMap;
-//    private Map<Unit, List<Coordinates>> suspectedEnemyCoordinatesMap;
-
     private Coordinates originCoordinates;
-    private Unit originalLeader;
     private Object arg;
     private LevelBlock block;
+    private int wanderDistance;
     private DIRECTION wanderDirection;
     private Stack<Coordinates> wanderStepCoordinateStack;
     private Patrol patrol;
+    private UnitAI.AI_BEHAVIOR_MODE behavior;
 
     public GroupAI() {
 
@@ -221,5 +219,13 @@ public class GroupAI {
 
     public LevelBlock getBlock() {
         return block;
+    }
+
+    public void setBehavior(UnitAI.AI_BEHAVIOR_MODE behavior) {
+        this.behavior = behavior;
+    }
+
+    public UnitAI.AI_BEHAVIOR_MODE getBehavior() {
+        return behavior;
     }
 }

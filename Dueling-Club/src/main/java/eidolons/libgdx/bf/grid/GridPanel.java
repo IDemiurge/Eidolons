@@ -181,12 +181,12 @@ public abstract class GridPanel extends Group {
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 //TODO ? 
                 GridPanel.this.getStage().setScrollFocus(GridPanel.this);
-                return false;
+                return true;
             }
 
             @Override
             public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
-                return false;
+                return super.touchDown(e, x, y, pointer, button);
             }
         });
 

@@ -1,11 +1,8 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
-import main.content.values.parameters.G_PARAMS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
@@ -113,23 +110,6 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
 
     }
 
-    protected void initDynamicObjData(Location location) {
-        int z = location.getIntParam(G_PARAMS.Z_LEVEL);
-        if (location.getDirectionMap() != null) {
-            try {
-                DC_ObjInitializer.initDirectionMap(z, location.getDirectionMap());
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        }
-        if (location.getFlipMap() != null) {
-            try {
-                DC_ObjInitializer.initFlipMap(z, location.getFlipMap());
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        }
-    }
 
 
     public void initLevel(List<Node> nodeList) {

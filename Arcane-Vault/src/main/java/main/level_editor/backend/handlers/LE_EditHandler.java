@@ -10,6 +10,7 @@ import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.components.DataTable;
+import main.level_editor.gui.screen.LE_Screen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.data.DataUnit;
@@ -36,12 +37,8 @@ public class LE_EditHandler extends LE_Handler {
     }
 
     public <T extends Enum<T>> void editDataUnit(DataUnit<T> dataUnit) {
-        for (String s : dataUnit.getValues().keySet()) {
-
-        }
-
+        LE_Screen.getInstance().getGuiStage().getEditDialog(dataUnit).edit(dataUnit);
     }
-
     public static DataTable.DataPair[] getDataPairs(Entity editEntity) {
         DataTable.DataPair[] pairs=new DataTable.DataPair[0];
         VALUE[] arrays = null;

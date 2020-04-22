@@ -1,4 +1,4 @@
-package main.level_editor.backend.handlers.structure;
+package eidolons.game.netherflame.dungeons.model.assembly;
 
 import com.google.inject.internal.util.ImmutableSet;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;

@@ -4,8 +4,8 @@ import eidolons.game.battlecraft.logic.battle.encounter.EncounterData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 
 public class EncounterEditDialog extends EntityEditDiag<EncounterData.ENCOUNTER_VALUE, EncounterData> {
-    public EncounterEditDialog(int size) {
-        super(size);
+    public EncounterEditDialog() {
+        super(EncounterData.ENCOUNTER_VALUE.values().length);
     }
 
     @Override
@@ -16,5 +16,10 @@ public class EncounterEditDialog extends EntityEditDiag<EncounterData.ENCOUNTER_
     @Override
     protected Object getArg(EncounterData.ENCOUNTER_VALUE enumConst) {
         return null;
+    }
+
+    @Override
+    protected EncounterData createDataCopy(EncounterData userObject) {
+        return new EncounterData(userObject.getData());
     }
 }

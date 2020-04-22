@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import main.game.bf.Coordinates;
@@ -11,6 +12,8 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
@@ -23,6 +26,7 @@ public class Location extends DungeonWrapper {
     private Entrance mainExit;
     private String entranceData;
     private String exitData;
+    private Map<Coordinates, CellScriptData> textDataMap = new HashMap<>();
 
     public Location(DungeonMaster master, Dungeon dungeon) {
         super(dungeon, master);
@@ -54,7 +58,9 @@ public class Location extends DungeonWrapper {
             return;
         }
         Integer id = Integer.valueOf(data);
-        Entrance entrance = (Entrance) getGame().getMetaMaster().getDungeonMaster().getObjIdMap().get(id);
+        Entrance entrance = (Entrance) getGame().getMetaMaster()
+                .getDungeonMaster().getObjByOriginalModuleId(id);
+
         if (exit) {
             setMainExit(entrance);
         } else {
@@ -119,5 +125,13 @@ public class Location extends DungeonWrapper {
 
     public String getExitData() {
         return exitData;
+    }
+
+    public Map<Coordinates, CellScriptData> getTextDataMap() {
+        return textDataMap;
+    }
+
+    public void setTextDataMap(Map<Coordinates, CellScriptData> textDataMap) {
+        this.textDataMap = textDataMap;
     }
 }

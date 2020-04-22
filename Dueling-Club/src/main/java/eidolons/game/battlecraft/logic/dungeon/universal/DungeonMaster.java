@@ -22,14 +22,13 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import eidolons.libgdx.particles.ambi.ParticleManager;
-import main.entity.type.ObjType;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
 
@@ -57,8 +56,6 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private StructureMaster structureMaster;
     private FloorLoader floorLoader;
 
-    private Map<Integer, BattleFieldObject> objIdMap = new LinkedHashMap<>();
-    private Map<Integer, ObjType> idTypeMap;
     private Map<DataMap, Map<Integer, String>> dataMaps;
     private DC_ObjInitializer objInitializer;
     private StructureBuilder structureBuilder;
@@ -307,22 +304,6 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return layerManager;
     }
 
-    public Map<Integer, ObjType> getIdTypeMap() {
-        return idTypeMap;
-    }
-
-    public void setIdTypeMap(Map<Integer, ObjType> idTypeMap) {
-        this.idTypeMap = idTypeMap;
-    }
-
-    public Map<Integer, BattleFieldObject> getObjIdMap() {
-        return objIdMap;
-    }
-
-    public void setObjIdMap(Map<Integer, BattleFieldObject> objIdMap) {
-        this.objIdMap = objIdMap;
-    }
-
     public Map<Integer, String> getDataMap(DataMap type) {
         return dataMaps.get(type);
     }
@@ -355,4 +336,17 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return placeholderResolver;
     }
 
+    public BattleFieldObject getObjByOriginalModuleId(Integer id) {
+        for (Module module : getModules()) {
+            BattleFieldObject object = module.getObjIdMap().get(id);
+            if (object != null) {
+                return object;
+            }
+        }
+        return null;
+    }
+
+    public Set<Module> getModules() {
+        return getGame().getMetaMaster().getModuleMaster().getModules();
+    }
 }

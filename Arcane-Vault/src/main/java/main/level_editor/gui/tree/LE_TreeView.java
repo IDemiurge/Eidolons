@@ -57,26 +57,26 @@ public class LE_TreeView extends TreeX<StructNode> {
         if (node.getData() instanceof LevelBlock) {
             BlockData data = ((LevelBlock) node.getData()) .getData();
             if (getStage() instanceof LE_GuiStage) {
-                ((LE_GuiStage) getStage()).getBlockEditor().setUserObject(data);
+                ((LE_GuiStage) getStage()).getBlockEditor().edit(data);
             }
         }
         if (node.getData() instanceof LevelZone) {
             ZoneData data = ((LevelZone) node.getData() ).getData();
             if (getStage() instanceof LE_GuiStage) {
-                ((LE_GuiStage) getStage()).getZoneEditor().setUserObject(data);
+                ((LE_GuiStage) getStage()).getZoneEditor().edit(data);
             }
         }
         if (node.getData() instanceof  Module) {
             ModuleData data = ( (Module) node.getData()) .getData();
             if (getStage() instanceof LE_GuiStage) {
-                ((LE_GuiStage) getStage()).getModuleDialog().setUserObject(data);
+                ((LE_GuiStage) getStage()).getModuleDialog().edit(data);
             }
         }
 
         if (node.getData() instanceof Location) {
             FloorData data = (FloorData) ((Location) node.getData()).getData();
             if (getStage() instanceof LE_GuiStage) {
-                ((LE_GuiStage) getStage()).getFloorDialog().setUserObject(data);
+                ((LE_GuiStage) getStage()).getFloorDialog().edit(data);
             }
         }
     }

@@ -68,7 +68,9 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         if (PaleAspect.ON) {
             return true;
         }
-        return !(Eidolons.getMainHero().getCoordinates().dst_(c) > visionRange);
+        if (CoreEngine.isLevelEditor())
+            return true;
+        return !(Eidolons.getGame().getManager().getMainHeroCoordinates().dst_(c) > visionRange);
     }
 
     public void setKey(String key) {

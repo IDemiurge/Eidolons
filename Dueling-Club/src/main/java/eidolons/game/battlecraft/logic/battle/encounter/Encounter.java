@@ -21,21 +21,23 @@ import java.util.List;
 import static main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
 
 public class Encounter extends DC_Obj {
-
+//TODO DOES NOT EXIST BEYOND SPAWNING!
     private Integer power;
     private List<Unit> units = new LinkedList<>();
     private List<ObjType> types = new LinkedList<>();
     private ENCOUNTER_TYPE waveType;
     private EncounterSpawner.ENCOUNTER_STATUS status;
 
-    AiData aiData;
-    GroupAI groupAI;
-    Reinforcer reinforcer;
-    boolean spawned;
+    private AiData aiData;
+    private  GroupAI groupAI;
+    private Reinforcer reinforcer;
+    private  boolean spawned;
+    private Integer origId;
 
     public Encounter(ObjType waveType, DC_Game game, Ref ref, DC_Player player, Coordinates c) {
         super(waveType, player, game, ref);
         reinforcer = new Reinforcer(this);
+        setCoordinates(c);
     }
 
     public void setAi(GroupAI groupAi) {
@@ -151,4 +153,35 @@ public class Encounter extends DC_Obj {
         return getIntParam(PARAMS.POWER_BASE);
     }
 
+    public void setOrigId(Integer origId) {
+        this.origId = origId;
+    }
+
+    public Integer getOrigId() {
+        return origId;
+    }
+
+    public Unit getLeader() {
+        return units.get(0);
+    }
+
+    public void setAiData(AiData aiData) {
+        this.aiData = aiData;
+    }
+
+    public void setGroupAI(GroupAI groupAI) {
+        this.groupAI = groupAI;
+    }
+
+    public void setReinforcer(Reinforcer reinforcer) {
+        this.reinforcer = reinforcer;
+    }
+
+    public boolean isSpawned() {
+        return spawned;
+    }
+
+    public void setSpawned(boolean spawned) {
+        this.spawned = spawned;
+    }
 }

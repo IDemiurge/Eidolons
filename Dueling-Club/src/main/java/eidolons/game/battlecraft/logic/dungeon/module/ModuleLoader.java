@@ -49,7 +49,7 @@ public class ModuleLoader extends DungeonHandler<Location> {
 //        showLoadScreen();
 //        initMusic();
 
-//        spawnEncounters();
+        spawnEncounters();
 //        loadAssets(module);
         loadGrid(module);
     }
@@ -66,7 +66,8 @@ public class ModuleLoader extends DungeonHandler<Location> {
     }
 
     private void spawnEncounters() {
-//        getSpawner().getEncounterSpawner
+        getBattleMaster().getEncounterSpawner().spawnEncounters(
+                loading.getEncounters());
     }
 
     private void initMusic() {

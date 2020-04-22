@@ -32,4 +32,10 @@ public class XmlStringBuilder {
         builder.append(integer);
         return this;
     }
+
+    public XmlStringBuilder wrap(String scriptData) {
+        builder.insert(0, XML_Converter.openXml(scriptData)).
+                append(XML_Converter.closeXml(scriptData));
+        return this;
+    }
 }

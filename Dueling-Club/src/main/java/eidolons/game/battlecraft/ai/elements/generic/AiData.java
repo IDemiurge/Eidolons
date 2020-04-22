@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.generic;
 
+import eidolons.game.battlecraft.ai.UnitAI;
 import main.content.enums.EncounterEnums;
 import main.system.data.DataUnit;
 
@@ -36,6 +37,9 @@ public class AiData extends DataUnit<AiData.AI_VALUE> {
         setLeader(id);
         setEncounter(true);
         setType(EncounterEnums.UNIT_GROUP_TYPE.IDLERS);
+    }
+    public UnitAI.AI_BEHAVIOR_MODE getBehavior() {
+        return getEnum(getValue(AI_VALUE.behavior), UnitAI.AI_BEHAVIOR_MODE.class);
     }
 
     public EncounterEnums.UNIT_GROUP_TYPE getType() {
@@ -103,6 +107,7 @@ public class AiData extends DataUnit<AiData.AI_VALUE> {
         setValue(AI_VALUE.blockBound, blockBound);
     }
 
+
     public enum AI_VALUE{
         ids,
         type,
@@ -113,7 +118,7 @@ public class AiData extends DataUnit<AiData.AI_VALUE> {
         blockBound,
         pursuit_limit,
         awareness_coef,
-        ;
+        block_id, behavior
 
     }
 

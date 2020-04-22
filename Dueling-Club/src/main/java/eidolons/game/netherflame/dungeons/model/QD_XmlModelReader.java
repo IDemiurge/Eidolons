@@ -1,7 +1,7 @@
 package eidolons.game.netherflame.dungeons.model;
 
 import eidolons.game.netherflame.dungeons.QD_Enums;
-import eidolons.game.netherflame.dungeons.model.assembly.TransformData;
+import eidolons.game.netherflame.dungeons.model.assembly.Transform;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -67,12 +67,12 @@ public class QD_XmlModelReader {
     private static QD_Module constructModule(String fileName, String contents) {
         DataUnit<QD_Enums.ModuleProperty> data=new QD_FloorLoader().createModuleData(contents);
         QD_Module module= new QD_Module(data);
-        TransformData t= createTransformFromFileName(fileName);
-        module.setTransformData(t);
+        Transform t= createTransformFromFileName(fileName);
+        module.setTransform(t);
         return module;
     }
 
-    private static TransformData createTransformFromFileName(String fileName) {
+    private static Transform createTransformFromFileName(String fileName) {
         return null;
     }
 

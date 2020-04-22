@@ -12,7 +12,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.system.content.PlaceholderGenerator;
-import main.content.CONTENT_CONSTS.FLIP;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -44,6 +43,7 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
     public static final String COORDINATES_OBJ_SEPARATOR = StringMaster.getAltPairSeparator();
     private static final String MULTI_DIRECTION_SUFFIX = "MULTI_DIRECTION-";
     private ObjType borderType;
+    private Map<Integer, DIRECTION> directionMap;
 
     public DC_ObjInitializer(DungeonMaster master) {
         super(master);
@@ -91,7 +91,6 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
 
         }
 
-
         return obj;
     }
 
@@ -122,12 +121,17 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
                 }
                 DC_Player owner = ownerMap.get(id);
 
-                DC_Obj value = initObject(module, c, type, owner, DC_Game.game);
+                DC_Obj obj = initObject(module, c, type, owner, DC_Game.game);
 
-                if (value instanceof BattleFieldObject) {
-                    objIdMap.put(id, (BattleFieldObject) value);
-                } else if (value instanceof Encounter) {
-                    encounters.add((Encounter) value);
+                if (obj instanceof BattleFieldObject) {
+                    objIdMap.put(id, (BattleFieldObject) obj);
+                    if (obj.isOverlaying()) {
+                        DIRECTION d = directionMap.get(id);
+                        ((BattleFieldObject) obj).setDirection(d);
+                    }
+                } else if (obj instanceof Encounter) {
+                    encounters.add((Encounter) obj);
+                    ((Encounter) obj).setOrigId(id);
                 }
             }
             module.setEncounters(encounters);
@@ -151,58 +155,21 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
         }
     }
 
-    public static void initFlipMap(int z, Map<String, FLIP> flipMap) {
-        if (flipMap != null) {
-            for (String data : flipMap.keySet()) {
-                Coordinates c = getCoordinatesFromObjString(data);
-                FLIP d = flipMap.get(data);
-                for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(c, false, false, false)) {
-                    String name = getNameFromObjString(data);
-                    if (name.contains(MULTI_DIRECTION_SUFFIX)) {
-                        name = name.split(MULTI_DIRECTION_SUFFIX)[0];
-                    }
-                    if (!name.equals(obj.getName())) {
-                        continue;
-                    }
-                    Map<BattleFieldObject, FLIP> map = obj.getGame().getFlipMap().get(c);
-                    if (map == null) {
-                        map = new HashMap<>();
-                        obj.getGame().getFlipMap().put(c, map);
-                    }
-                    map.put(obj, d);
-                }
-            }
-        }
-    }
-
     public static Coordinates getCoordinatesFromObjString(String sub) {
         return Coordinates.get(true, sub.split(StringMaster.getAltPairSeparator())[0]);
     }
 
-    public static void initDirectionMap(int z, Map<String, DIRECTION> directionMap) {
-        for (String data : directionMap.keySet()) {
-            Coordinates c = getCoordinatesFromObjString(data);
-            DIRECTION d = directionMap.get(data);
-            for (BattleFieldObject obj : DC_Game.game.getObjectsOnCoordinate(c, null, false, false)) {
-
-                String name = getNameFromObjString(data);
-                if (name.contains(MULTI_DIRECTION_SUFFIX)) {
-                    name = name.split(MULTI_DIRECTION_SUFFIX)[0];
-                }
-                if (!name.equals(obj.getName())) {
-                    continue;
-                }
-                Map<BattleFieldObject, DIRECTION> map = obj.getGame().getDirectionMap().get(c);
-                if (map == null) {
-                    map = new HashMap<>();
-                    obj.getGame().getDirectionMap().put(c, map);
-
-                }
-                obj.setDirection(d);
-                map.put(obj, d);
-
-            }
+    public void initDirectionMap(String data) {
+        directionMap = new HashMap<>();
+        for (String substring : ContainerUtils.openContainer(data)) {
+            Integer id = Integer.valueOf(substring.split("=")[0]);
+            DIRECTION d = DIRECTION.valueOf(substring.split("=")[1]);
+            directionMap.put(id, d);
         }
+    }
+
+    public Map<Integer, DIRECTION> getDirectionMap() {
+        return directionMap;
     }
 
     public static String convertVarStringToObjCoordinates(String partyData) {

@@ -11,6 +11,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
+import eidolons.game.netherflame.dungeons.model.assembly.Transform;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlStringBuilder;
 import main.game.bf.Coordinates;
@@ -37,13 +38,15 @@ public class LE_XmlMaster extends LE_Handler {
     }
 
     public String toXml(Location floor, Module standalone) {
+        return toXml(floor, standalone, null);
+    }
+    public String toXml(Location floor, Module standalone, Transform transform) {
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
 
         //from old - dungeon params props etc
 
         xmlBuilder.appendNode((floor).getData().toString(),
                 FloorLoader.DATA);
-        xmlBuilder.append("\n").append(buildIdMap(standalone)); //ideally after modules, but read order..
         xmlBuilder.open(FloorLoader.MODULES);
 
         for (Module module : floor.getModules()) {
@@ -188,10 +191,7 @@ public class LE_XmlMaster extends LE_Handler {
         xmlBuilder.appendNode(new ModuleData(module).toString(),
                 FloorLoader.DATA);
 
-        if (standalone) {
-            //TODO
-            xmlBuilder.append("\n").append(buildIdMap(module));
-        }
+         xmlBuilder.append("\n").append(buildIdMap(module));
         String meta = getMetaXml(module);
         xmlBuilder.append("\n").append(meta);
 

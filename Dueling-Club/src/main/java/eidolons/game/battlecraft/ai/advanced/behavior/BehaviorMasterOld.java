@@ -21,7 +21,7 @@ import main.system.auxiliary.data.ListMaster;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BehaviorMaster extends AiHandler {
+public class BehaviorMasterOld extends AiHandler {
     /*
      * 	No priority-ordering for Behaviors I suppose...
 	 * Though I may want to pick optimal path for Stalking, e.g., based on some special factors like
@@ -33,7 +33,7 @@ public class BehaviorMaster extends AiHandler {
     Map<AI_BEHAVIOR_MODE, AiBehavior> behaviorMap = new HashMap<>();
     private boolean recursion;
 
-    public BehaviorMaster(AiMaster master) {
+    public BehaviorMasterOld(AiMaster master) {
         super(master);
     }
 

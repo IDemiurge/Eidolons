@@ -669,4 +669,8 @@ public class DC_GameManager extends GameManager {
     public BattleFieldObject getHighlightedObj() {
         return highlightedObj;
     }
+
+    public Coordinates getMainHeroCoordinates() {
+        return getMainHero().getCoordinates();
+    }
 }

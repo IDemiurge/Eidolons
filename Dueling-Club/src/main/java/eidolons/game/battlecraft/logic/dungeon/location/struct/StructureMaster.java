@@ -93,4 +93,13 @@ public class StructureMaster extends DungeonHandler<Location> {
         }
         return null;
     }
+
+    public LevelBlock findBlockById(Integer id) {
+        for (LevelBlock block : getBlocks()) {
+            if (block.getId()==id) {
+                return block;
+            }
+        }
+        return null;
+    }
 }

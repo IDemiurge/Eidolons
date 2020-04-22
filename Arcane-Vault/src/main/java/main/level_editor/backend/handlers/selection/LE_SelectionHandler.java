@@ -138,6 +138,10 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
         getModelManager().modelChanged();
     }
 
+    public boolean isSelected(Integer id) {
+        return getSelection().getIds().contains(id);
+    }
+
     public enum SELECTION_MODE {
         NONE,
         COORDINATE,

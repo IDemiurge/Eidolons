@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
@@ -55,6 +56,7 @@ public class ShadowMap extends GroupX implements GridElement {
         setSize(grid.getWidth(), grid.getHeight());
         emitters = new List[grid.getCols()][grid.getRows()];
         setTransform(false);
+        setTouchable(Touchable.disabled);
     }
 
     public static boolean isOn() {
@@ -107,6 +109,7 @@ public class ShadowMap extends GroupX implements GridElement {
         if (!on)
             return;
         super.act(delta);
+
         //TODO module fix - only act from x1 to x2
     }
 

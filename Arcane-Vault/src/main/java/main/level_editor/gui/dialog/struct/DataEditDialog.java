@@ -23,7 +23,7 @@ public abstract class DataEditDialog<S extends Enum<S> , T extends DataUnit<S>> 
     }
 
     @Override
-    protected void edit(EditValueContainer actor, DataTable.DataPair item) {
+    protected void editItem(EditValueContainer actor, DataTable.DataPair item) {
         Object value =null ;
         String stringValue = null;
         LevelStructure.EDIT_VALUE_TYPE type = actor.getType();
@@ -121,8 +121,8 @@ public abstract class DataEditDialog<S extends Enum<S> , T extends DataUnit<S>> 
 
     @Override
     public void ok() {
-        LevelEditor.getManager().getOperationHandler().execute(Operation.LE_OPERATION.SAVE_STRUCTURE,
-                cached);
+        LevelEditor.getManager().getOperationHandler().operation(Operation.LE_OPERATION.SAVE_STRUCTURE,
+                cached, data);
         LevelEditor.getManager().getOperationHandler().execute(Operation.LE_OPERATION.MODIFY_STRUCTURE,
                 data);
         super.ok();
@@ -140,5 +140,9 @@ public abstract class DataEditDialog<S extends Enum<S> , T extends DataUnit<S>> 
             array[i++] = new DataTable.DataPair(relevantValue, data.getValue(relevantValue));
         }
         return array;
+    }
+
+    public void edit(T data) {
+        setUserObject(data);
     }
 }

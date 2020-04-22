@@ -6,14 +6,10 @@ import eidolons.game.battlecraft.ai.elements.generic.AiData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import main.content.DC_TYPE;
 import main.data.xml.XML_Converter;
-import main.data.xml.XmlNodeMaster;
-import main.entity.obj.Obj;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.NumberUtils;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -25,15 +21,33 @@ import static main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
 
 public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
-    Map<BattleFieldObject, AiData> encounterAiMap= new LinkedHashMap<>();
+    Map<Integer, AiData> encounterAiMap= new LinkedHashMap<>();
     Map<BattleFieldObject, AiData> customAiMap= new LinkedHashMap<>();
 
-    Stack<Map<BattleFieldObject, AiData>> encounterAiStack = new Stack<>();
+    Stack<Map<Integer, AiData>> encounterAiStack = new Stack<>();
     Stack<Map<BattleFieldObject, AiData>> customAiStack = new Stack<>();
 
     public LE_AiHandler(LE_Manager manager) {
         super(manager);
     }
+
+
+    private AiData getAiForObject(BattleFieldObject obj) {
+        if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
+            return getAiForEncounter(obj);
+        }
+        return customAiMap.get(obj);
+    }
+
+    @Override
+    public void afterLoaded() {
+        encounterAiMap =  getGame().getAiManager().getGroupHandler().getEncounterAiMap();
+    }
+
+    public AiData getAiForEncounter(DC_Obj obj) {
+        return encounterAiMap.get(obj);
+    }
+
 
     public void objectAdded(BattleFieldObject obj) {
 //    TODO wtf?
@@ -45,45 +59,11 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 //            putCustom(obj, ai);
 //        }
     }
-
-    private AiData getAiForObject(BattleFieldObject obj) {
-        if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
-            return getAiForEncounter(obj);
-        }
-        return customAiMap.get(obj);
-    }
-
-    public AiData getAiForEncounter(DC_Obj obj) {
-        return encounterAiMap.get(obj);
-    }
-
-    public void initAiData(String nodeContents) {
-        String node = XmlNodeMaster.findNodeText(nodeContents,FloorLoader. ENCOUNTER_AI_GROUPS);
-        for (String sub : ContainerUtils.openContainer(node)) {
-            String[] split = sub.split("=");
-            Obj obj = getIdManager().getObjectById(
-                    NumberUtils.getInteger(split[0]));
-            AiData data = new AiData(split[1]);
-            encounterAiMap.put((BattleFieldObject) obj, data);
-        }
-
-        node = XmlNodeMaster.findNodeText(nodeContents, FloorLoader.CUSTOM_AI_GROUPS);
-        for (String sub : ContainerUtils.openContainer(node)) {
-            String[] split = sub.split("=");
-            for (String s : ContainerUtils.openContainer(split[0])) {
-                Obj obj = getIdManager().getObjectById(
-                        NumberUtils.getInteger(s));
-                AiData data = new AiData(split[1]);
-                customAiMap.put((BattleFieldObject) obj, data);
-            }
-        }
-
-    }
-
     private void putEncounter(BattleFieldObject obj, AiData ai) {
         encounterAiStack.push(encounterAiMap);
         encounterAiMap = new HashMap<>(encounterAiMap);
-        encounterAiMap.put(obj, ai);
+        Integer id = getIdManager().getId(obj);
+        encounterAiMap.put(id, ai);
         updateText(obj);
     }
 
@@ -135,12 +115,13 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
 
     private void removeEncounterAiMap(BattleFieldObject obj) {
-        if (!encounterAiMap.containsKey(obj)) {
+        Integer id = getIdManager().getId(obj);
+        if (!encounterAiMap.containsKey(id)) {
             return;
         }
         encounterAiStack.push(encounterAiMap);
         encounterAiMap = new HashMap<>(encounterAiMap);
-        if (encounterAiMap.remove(obj) != null)
+        if (encounterAiMap.remove(id) != null)
             updateText(obj);
     }
 
@@ -175,9 +156,9 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
     }
 
     private AiData getSelectedGroup() {
-        for (BattleFieldObject object : encounterAiMap.keySet()) {
-            if (getSelectionHandler().isSelected(object)) {
-                return encounterAiMap.get(encounterAiMap.get(object));
+        for (Integer id : encounterAiMap.keySet()) {
+            if (getSelectionHandler().isSelected(id)) {
+                return encounterAiMap.get(encounterAiMap.get(id));
             }
         }
         for (BattleFieldObject object : customAiMap.keySet()) {
@@ -206,9 +187,9 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
     public String getXml(Function<Integer, Boolean> idFilter) {
         StringBuilder builder = new StringBuilder();
-        for (BattleFieldObject object : encounterAiMap.keySet()) {
-            builder.append(getIdManager().getId(object)).append("=");
-            builder.append(encounterAiMap.get(object).toString()).append(";");
+        for (Integer id : encounterAiMap.keySet()) {
+            builder.append(id).append("=");
+            builder.append(encounterAiMap.get(id).toString()).append(";");
         }
         String xml = XML_Converter.wrap(FloorLoader.ENCOUNTER_AI_GROUPS, builder.toString());
 

@@ -14,6 +14,7 @@ import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
 import main.level_editor.backend.sim.impl.LE_DungeonMaster;
 
@@ -48,6 +49,11 @@ public class LE_GameSim extends ScenarioGame {
     @Override
     protected DC_GameManager createGameManager() {
         return new DC_GameManager(getState(), this) {
+            @Override
+            public Coordinates getMainHeroCoordinates() {
+                return null;
+            }
+
             @Override
             public Unit getActiveObj() {
                 return dummyPC;

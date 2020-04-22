@@ -1,5 +1,8 @@
 package main.level_editor.backend.metadata.script;
 
+import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
+import main.data.xml.XmlStringBuilder;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
@@ -7,20 +10,34 @@ import main.level_editor.backend.handlers.operation.Operation;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
+import java.util.function.Function;
+
 public class LE_ScriptHandler extends LE_Handler {
     public LE_ScriptHandler(LE_Manager manager) {
         super(manager);
     }
 
     public void editScriptData(Coordinates c) {
-        String text = getGame().getDungeon().getCustomDataMap().get(c);
-        String prev = getGame().getDungeon().getCustomDataMap().get(c);
-        text = getDialogHandler().textInput("", text);
-        if (text != null && !text.equals(prev)) {
-            operation(Operation.LE_OPERATION.CELL_SCRIPT_CHANGE, c, text, prev);
+
+        CellScriptData data = getFloorWrapper().getTextDataMap().get(c);
+        String prev = data.getData();
+        editData(data);
+        String text = data.getData();
+
+        if ( !text.equals(prev)) {
+            getOperationHandler().execute(Operation.LE_OPERATION.CELL_SCRIPT_CHANGE, c, text, prev);
         }
     }
 
+    @Override
+    public String getXml(Function<Integer, Boolean> idFilter) {
+        XmlStringBuilder builder = new XmlStringBuilder();
+        for (Coordinates coordinates : getFloorWrapper().getTextDataMap().keySet()) {
+            CellScriptData scriptData = getFloorWrapper().getTextDataMap().get(coordinates);
+            builder.append(coordinates.toString()).append("=").append(scriptData.getData());
+        }
+        return builder.wrap(FloorLoader.SCRIPT_DATA).toString();
+    }
     public void init() {
         for (Coordinates c : getGame().getCoordinates()) {
             String text = getDisplayedScriptData(c);
@@ -32,19 +49,14 @@ public class LE_ScriptHandler extends LE_Handler {
 
     }
 
-    public void saved() {
-        String text = null;
-        //LAYERS - on top of this MAIN?
-//        getGame().getDungeon().setProperty(PROPS.COORDINATE_SCRIPTS, text);
-    }
 
     public String getDisplayedScriptData(Coordinates c) {
-        String text = getGame().getDungeon().getCustomDataMap().get(c);
-        if ( text.isEmpty()) {
+        CellScriptData data = getFloorWrapper().getTextDataMap().get(c);
+        if (data == null) {
             return "";
         }
-        CellScriptData data = new CellScriptData(text);
-        return data.getRelevantData();
+        String text = data.getData();
+        return text;
     }
 
 }

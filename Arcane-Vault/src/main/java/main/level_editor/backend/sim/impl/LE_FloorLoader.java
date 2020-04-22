@@ -4,9 +4,9 @@ import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.netherflame.dungeons.model.assembly.ModuleGridMapper;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
-import main.level_editor.backend.handlers.structure.ModuleGridMapper;
 
 import java.awt.*;
 import java.util.LinkedHashMap;

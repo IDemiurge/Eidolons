@@ -1,31 +1,31 @@
 package eidolons.game.netherflame.dungeons.model;
 
 import eidolons.game.netherflame.dungeons.QD_Enums;
-import eidolons.game.netherflame.dungeons.model.assembly.TransformData;
+import eidolons.game.netherflame.dungeons.model.assembly.Transform;
 import main.system.data.DataUnit;
 
 public class QD_Module  {
-    private  TransformData transformData;
+    private Transform transform;
     private DataUnit<QD_Enums.ModuleProperty> data;
 
     public QD_Module(DataUnit<QD_Enums.ModuleProperty> data) {
         this.data = data;
     }
 
-    public QD_Module(QD_Module pick, TransformData transformData) {
+    public QD_Module(QD_Module pick, Transform transform) {
         this(pick.getData());
-        this.transformData = transformData;
+        this.transform = transform;
     }
 
     public DataUnit<QD_Enums.ModuleProperty> getData() {
         return data;
     }
 
-    public TransformData getTransformData() {
-        return transformData;
+    public Transform getTransform() {
+        return transform;
     }
 
-    public void setTransformData(TransformData transformData) {
-        this.transformData = transformData;
+    public void setTransform(Transform transform) {
+        this.transform = transform;
     }
 }

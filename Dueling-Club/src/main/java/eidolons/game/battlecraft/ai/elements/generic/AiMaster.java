@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.elements.generic;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
+import eidolons.game.battlecraft.ai.advanced.behavior.BehaviorMasterOld;
 import eidolons.game.battlecraft.ai.advanced.companion.MetaGoalMaster;
 import eidolons.game.battlecraft.ai.advanced.machine.AiConst;
 import eidolons.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster;
@@ -52,7 +52,7 @@ public class AiMaster {
     protected TurnSequenceConstructor turnSequenceConstructor;
     protected SituationAnalyzer situationAnalyzer;
     protected ThreatAnalyzer threatAnalyzer;
-    protected BehaviorMaster behaviorMaster;
+    protected BehaviorMasterOld behaviorMaster;
     protected AtomicAi atomicAi;
     protected List<AiHandler> handlers = new ArrayList<>();
     protected AiScriptExecutor scriptExecutor;
@@ -60,6 +60,7 @@ public class AiMaster {
     protected AiPriorityConstantMaster priorityConstantMaster;
     protected PriorityModifier priorityModifier;
     protected PathBuilderAtomic pathBuilderAtomic;
+    private AiAutoGroupHandler autoGroupHandler;
     private AiGroupHandler groupHandler;
 
     public AiMaster(DC_Game game) {
@@ -78,13 +79,14 @@ public class AiMaster {
         this.cellPrioritizer = new CellPrioritizer(this);
         this.pathSequenceConstructor = new PathSequenceConstructor(this);
         this.turnSequenceConstructor = new TurnSequenceConstructor(this);
-        this.behaviorMaster = new BehaviorMaster(this);
+        this.behaviorMaster = new BehaviorMasterOld(this);
         this.atomicAi = new AtomicAi(this);
         this.scriptExecutor = new AiScriptExecutor(this);
         this.metaGoalMaster = new MetaGoalMaster(this);
         this.priorityConstantMaster = new AiPriorityConstantMaster(this);
         this.priorityModifier = new PriorityModifier(this);
         this.pathBuilderAtomic = new PathBuilderAtomic(this);
+        this.autoGroupHandler = new AiAutoGroupHandler(this);
         this.groupHandler = new AiGroupHandler(this);
         executor = new AiExecutor(game);
 
@@ -131,7 +133,7 @@ public class AiMaster {
         return metaGoalMaster;
     }
 
-    public BehaviorMaster getBehaviorMaster() {
+    public BehaviorMasterOld getBehaviorMaster() {
         return behaviorMaster;
     }
 
@@ -253,8 +255,11 @@ public class AiMaster {
     }
 
 
+    public AiAutoGroupHandler getAutoGroupHandler() {
+        return autoGroupHandler;
+    }
+
     public AiGroupHandler getGroupHandler() {
         return groupHandler;
     }
-
 }

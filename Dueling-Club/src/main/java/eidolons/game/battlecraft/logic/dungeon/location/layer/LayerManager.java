@@ -171,8 +171,8 @@ public class LayerData extends DataUnit<LAYER_VALUE>{
     }
 
     private Layer initBaseLayer() {
-        Set<Integer> ids = new LinkedHashSet<>(getMaster().getObjIdMap().keySet());
-        baseLayer = new Layer("Base", ids);
+//        Set<Integer> ids = new LinkedHashSet<>(getMaster().getObjIdMap().keySet());
+//        baseLayer = new Layer("Base", ids);
         return baseLayer;
     }
 

@@ -573,7 +573,7 @@ public interface EntityWrapper<E extends DataModel> {
         return getEntity().clonePropMap(map);
     }
 
-    default Integer getId() {
+    default int getId() {
         return getEntity().getId();
     }
 

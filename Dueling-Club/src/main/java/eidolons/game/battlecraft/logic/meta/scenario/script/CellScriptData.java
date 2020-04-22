@@ -1,4 +1,4 @@
-package main.level_editor.backend.metadata.script;
+package eidolons.game.battlecraft.logic.meta.scenario.script;
 
 import main.system.data.DataUnit;
 

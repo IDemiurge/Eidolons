@@ -42,7 +42,7 @@ public class StructureBuilder extends DungeonHandler<Location> {
         getMetaMaster().getModuleMaster().setModules(modules);
     }
 
-    private Module createModule(Node node, Location location) {
+    public Module createModule(Node node, Location location) {
         Module module = new Module();
 //    TODO explicit order!    XmlNodeMaster.findNode()
         for (Node sub : XmlNodeMaster.getNodeList(node)) {

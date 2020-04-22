@@ -5,19 +5,24 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import eidolons.game.battlecraft.ai.elements.generic.AiData;
+import eidolons.game.battlecraft.logic.battle.encounter.EncounterData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.GenericGuiStage;
 import main.level_editor.LevelEditor;
 import main.level_editor.gui.components.DataTable;
+import main.level_editor.gui.dialog.AiEditDialog;
 import main.level_editor.gui.dialog.BlockTemplateChooser;
 import main.level_editor.gui.dialog.ChooserDialog;
 import main.level_editor.gui.dialog.EnumChooser;
-import main.level_editor.gui.dialog.struct.BlockEditDialog;
-import main.level_editor.gui.dialog.struct.FloorEditDialog;
-import main.level_editor.gui.dialog.struct.ModuleDialog;
-import main.level_editor.gui.dialog.struct.ZoneEditDialog;
+import main.level_editor.gui.dialog.entity.EncounterEditDialog;
+import main.level_editor.gui.dialog.struct.*;
 import main.level_editor.gui.panels.ClosablePanel;
 import main.level_editor.gui.panels.control.ControlPanelHolder;
 import main.level_editor.gui.panels.control.TabbedControlPanel;
@@ -27,6 +32,7 @@ import main.level_editor.gui.top.TopPanel;
 import main.level_editor.gui.tree.LE_TreeHolder;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.data.DataUnit;
 
 public class LE_GuiStage extends GenericGuiStage {
 
@@ -47,6 +53,8 @@ public class LE_GuiStage extends GenericGuiStage {
     private ModuleDialog moduleEditor;
     private ZoneEditDialog zoneEditor;
     private FloorEditDialog floorDialog;
+    private EncounterEditDialog encounterEditor;
+    private AiEditDialog aiEditor;
     private boolean positionsAdjusted;
 
 
@@ -80,6 +88,8 @@ public class LE_GuiStage extends GenericGuiStage {
         addActor(blockEditor = new BlockEditDialog());
         addActor(moduleEditor = new ModuleDialog());
         addActor(zoneEditor = new ZoneEditDialog());
+        addActor(aiEditor = new AiEditDialog());
+        addActor(encounterEditor = new EncounterEditDialog());
         addActor(editTable = new DataTable(2, 50));
 
     }
@@ -238,6 +248,14 @@ public class LE_GuiStage extends GenericGuiStage {
         return templateChooser;
     }
 
+    public AiEditDialog getAiEditorDialog() {
+        dialog = aiEditor;
+        return aiEditor;
+    }
+    public EncounterEditDialog getEncounterEditor() {
+        dialog = encounterEditor;
+        return encounterEditor;
+    }
     public ModuleDialog getModuleDialog() {
         dialog = moduleEditor;
         return moduleEditor;
@@ -276,4 +294,27 @@ public class LE_GuiStage extends GenericGuiStage {
         return controlTabs;
     }
 
+    public <S extends Enum<S>, T extends DataUnit<S>>
+    DataEditDialog<S, T> getEditDialog(DataUnit<S> dataUnit) {
+        if (dataUnit instanceof FloorData) {
+            return (DataEditDialog<S, T>) getFloorDialog();
+        }
+        if (dataUnit instanceof BlockData) {
+            return (DataEditDialog<S, T>) getBlockEditor();
+        }
+        if (dataUnit instanceof ZoneData) {
+            return (DataEditDialog<S, T>) getZoneEditor();
+        }
+        if (dataUnit instanceof ModuleData) {
+
+            return (DataEditDialog<S, T>) getModuleDialog();
+        }
+        if (dataUnit instanceof AiData) {
+            return (DataEditDialog<S, T>) getAiEditorDialog();
+        }
+        if (dataUnit instanceof EncounterData) {
+            return (DataEditDialog<S, T>) getEncounterEditor();
+        }
+        return null;
+    }
 }

@@ -33,6 +33,7 @@ import main.level_editor.backend.sim.LE_IdManager;
 import main.level_editor.backend.struct.level.Floor;
 import main.level_editor.gui.grid.LE_CameraHandler;
 import main.level_editor.gui.stage.LE_KeyHandler;
+import main.system.data.DataUnit;
 
 import java.util.function.Function;
 
@@ -54,6 +55,9 @@ public class LE_Handler {
     public void load() {
     }
 
+    public <T extends Enum<T>> void editData(DataUnit<T> data){
+        getEditHandler().editDataUnit(data);
+    }
     protected boolean isLoaded() {
         return manager.isLoaded();
     }

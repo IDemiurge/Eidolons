@@ -2,14 +2,10 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
-import main.content.CONTENT_CONSTS;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.entity.EntityWrapper;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
-
-import java.util.Map;
 
 /**
  * Created by JustMe on 5/10/2017.
@@ -17,8 +13,6 @@ import java.util.Map;
 public class DungeonWrapper  extends LevelStruct<Module, Module> implements EntityWrapper<Dungeon> {
     protected DungeonMaster master;
     protected Dungeon dungeon;
-    private Map<String, CONTENT_CONSTS.FLIP> flipMap;
-    private Map<String, DIRECTION> directionMap;
 
     public DungeonWrapper(Dungeon entity, DungeonMaster master) {
         dungeon = entity;
@@ -63,8 +57,6 @@ public class DungeonWrapper  extends LevelStruct<Module, Module> implements Enti
         return dungeon.getCellsX();
     }
 
-
-
     public Integer getCellsY() {
         return dungeon.getCellsY();
     }
@@ -94,20 +86,5 @@ public class DungeonWrapper  extends LevelStruct<Module, Module> implements Enti
         dungeon.setLevelFilePath(levelFilePath);
     }
 
-    public void setFlipMap(Map<String, CONTENT_CONSTS.FLIP> flipMap) {
-        this.flipMap = flipMap;
-    }
-
-    public Map<String, CONTENT_CONSTS.FLIP> getFlipMap() {
-        return flipMap;
-    }
-
-    public void setDirectionMap(Map<String, DIRECTION> directionMap) {
-        this.directionMap = directionMap;
-    }
-
-    public Map<String, DIRECTION> getDirectionMap() {
-        return directionMap;
-    }
 
 }

@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.action;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.AI_Manager;
+import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import eidolons.game.core.game.DC_Game;
@@ -12,6 +12,7 @@ import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.system.AiEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
@@ -93,13 +94,34 @@ public class EngagedRule implements ActionRule {
     private Unit chooseEngagedUnit(Unit obj, List<Unit> units) {
         // if (isAutoEngageOff(obj))
         if (obj.isAiControlled()) {
-            return AI_Manager.chooseEnemyToEngage(obj, units);
+            return  chooseEnemyToEngage(obj, units);
         }
         return (Unit) DialogMaster.objChoice("Choose an enemy to engage...", units
          .toArray(new Obj[0]));
 
     }
 
+    public static Unit chooseEnemyToEngage(Unit obj, List<Unit> units) {
+        if (obj.getAiType() == AiEnums.AI_TYPE.CASTER) {
+            return null;
+        }
+        if (obj.getAiType() == AiEnums.AI_TYPE.ARCHER) {
+            return null;
+        }
+        if (obj.getAiType() == AiEnums.AI_TYPE.SNEAK) {
+            return null;
+        }
+        Unit topPriorityUnit = null;
+        int topPriority = -1;
+        for (Unit u : units) {
+            int priority = DC_PriorityManager.getUnitPriority(u, true);
+            if (priority > topPriority) {
+                topPriority = priority;
+                topPriorityUnit = u;
+            }
+        }
+        return topPriorityUnit;
+    }
     public boolean checkCanDisengage(Unit disengager) {
         return disengager.getIntParam(PARAMS.C_N_OF_ACTIONS) >= 1 + getEngagers(disengager).size();
         // getDisengageCost(disengager).canBePaid();

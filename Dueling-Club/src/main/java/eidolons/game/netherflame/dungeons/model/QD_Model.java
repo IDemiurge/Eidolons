@@ -10,4 +10,8 @@ public class QD_Model  {
     public QD_Model(QD_Dungeon dungeon) {
         this.dungeon = dungeon;
     }
+
+    public QD_Dungeon getDungeon() {
+        return dungeon;
+    }
 }

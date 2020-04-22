@@ -577,4 +577,11 @@ public class Coordinates implements Serializable {
         return this;
     }
 
+    public void flipY(int h) {
+        setY(h-y);
+    }
+
+    public void flipX(int w) {
+        setX(w-x);
+    }
 }

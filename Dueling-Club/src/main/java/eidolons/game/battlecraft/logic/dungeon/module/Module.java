@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battle.encounter.Encounter;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
@@ -7,13 +8,11 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
+import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Module extends LevelStruct<LevelZone, LevelZone> {
 
@@ -22,6 +21,9 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     private Integer id;
     private static Integer ID = 0;
     private Set<Coordinates> voidCells = new LinkedHashSet<>();
+
+    private Map<Integer, BattleFieldObject> objIdMap = new LinkedHashMap<>();
+    private Map<Integer, ObjType> idTypeMap = new LinkedHashMap<>();
 
     public Module(Coordinates origin, int width, int height, String name) {
         this.origin = origin;
@@ -151,11 +153,19 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
         return encounters;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
     public Set<Coordinates> getVoidCells() {
         return voidCells;
+    }
+
+    public Map<Integer, BattleFieldObject> getObjIdMap() {
+        return objIdMap;
+    }
+
+    public Map<Integer, ObjType> getIdTypeMap() {
+        return idTypeMap;
     }
 }

@@ -6,7 +6,6 @@ import eidolons.game.module.dungeoncrawl.dungeon.FauxDungeonLevel;
 import eidolons.game.module.generator.init.RngXmlMaster;
 import main.system.PathUtils;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
 import main.system.util.Refactor;
 import org.w3c.dom.Node;
 
@@ -37,10 +36,6 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     public Location buildDungeon(String path) {
         location = super.buildDungeon(path);
         FauxDungeonLevel level = createFauxDungeonLevel(path, location);
-        if (CoreEngine.isDungeonTool()) {
-//            level.getObjects().addAll(location.getObjMap());
-            level.setDirectionMap(location.getDirectionMap());
-        }
         master.setDungeonLevel(level);
         try {
             location.initMainEntrance();

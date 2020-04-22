@@ -245,4 +245,8 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
     public void setColorTheme(COLOR_THEME c) {
         getData().setValue("color_theme", c.toString());
     }
+
+    public int getId() {
+        return getData().getIntValue("id");
+    }
 }
