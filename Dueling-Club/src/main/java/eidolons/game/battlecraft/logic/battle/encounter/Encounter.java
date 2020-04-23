@@ -9,11 +9,14 @@ import eidolons.game.battlecraft.ai.elements.generic.AiData;
 import eidolons.game.battlecraft.logic.battle.encounter.reinforce.Reinforcer;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
+import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
+import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -61,10 +64,6 @@ public class Encounter extends DC_Obj {
         return string;
     }
 
-    @Override
-    public Coordinates getCoordinates() {
-        return groupAI.getLeader().getCoordinates();
-    }
 
     @Override
     public void setRef(Ref ref) {
@@ -94,6 +93,9 @@ public class Encounter extends DC_Obj {
     }
 
     public List<ObjType> getTypes() {
+        if (!ListMaster.isNotEmpty(types)) {
+            return DataManager.toTypeList( getPresetGroupTypes(), DC_TYPE.UNITS);
+        }
         return types;
     }
 

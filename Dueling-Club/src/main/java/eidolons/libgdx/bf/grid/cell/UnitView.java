@@ -45,6 +45,8 @@ public class UnitView extends BaseView implements HpBarView {
     protected float timeTillTurn = 10;
     protected float resetTimer;
     protected Supplier<String> outlinePathSupplier;
+    protected TextureRegion defaultTexture;
+    protected TextureRegion defaultTextureSized;
 
     public UnitView(UnitViewOptions o) {
         this(o, lastId.getAndIncrement());
@@ -213,8 +215,12 @@ public class UnitView extends BaseView implements HpBarView {
         return new FadeImageContainer(new Image(getDefaultTexture()));
     }
 
-    protected TextureRegion getDefaultTexture() {
-        return TextureCache.getOrCreateR(OUTLINE_TYPE.UNKNOWN.getImagePath());
+    public TextureRegion getDefaultTexture() {
+        if (defaultTexture == null) {
+            defaultTexture = TextureCache.getOrCreateR(
+                    OUTLINE_TYPE.UNKNOWN.getImagePath());
+        }
+        return defaultTexture;
     }
 
 
@@ -251,8 +257,9 @@ public class UnitView extends BaseView implements HpBarView {
 
     public void setOutlinePathSupplier(Supplier<String> pathSupplier) {
         this.outlinePathSupplier = pathSupplier;
+        //null means no outline!
         if (pathSupplier.get() != null)
-            if (!ImageManager.isImage(pathSupplier.get())) {
+            if (!TextureCache.isCached(pathSupplier.get())) {
                 return;
             }
         this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());

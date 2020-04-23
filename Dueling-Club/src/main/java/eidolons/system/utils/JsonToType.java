@@ -47,8 +47,12 @@ public class JsonToType {
     public static void convertAlt(String base, String json, DC_TYPE TYPE) {
         String group = null;
         String subGroup = null;
-        PROPERTY groupP = TYPE.getGroupingKey();
-        PROPERTY subGroupP = TYPE.getSubGroupingKey();
+        PROPERTY groupP =TYPE==DC_TYPE.ENCOUNTERS
+                ? G_PROPS.ENCOUNTER_GROUP
+        : TYPE.getGroupingKey();
+        PROPERTY subGroupP = TYPE==DC_TYPE.ENCOUNTERS
+                ? G_PROPS.ENCOUNTER_SUBGROUP
+                :TYPE.getSubGroupingKey();
         Set<String> groups = XML_Reader.getTabGroupMap().get(TYPE.getName());
         Set<String> subGroups = XML_Reader.getSubGroups(TYPE);
         ObjType baseType = DataManager.getType(base, TYPE);
@@ -81,13 +85,18 @@ public class JsonToType {
                         continue;
                     }
                 }
+                String name = line;
+                if (!isOverwrite()){
+                    if (DataManager.getType(name, TYPE) != null) {
+                        continue;
+                    }
+                }
                 ObjType type = new ObjType(baseType);
 
                 for (Object o : customMap.keySet()) {
                     VALUE value = ContentValsManager.getValue(o.toString().trim());
                     type.setValue(value, customMap.get(o).toString().trim());
                 }
-                String name = line;
                 type.setProperty(groupP, group);
                 type.setProperty(G_PROPS.GROUP, group);
                 type.setProperty(subGroupP, subGroup);
@@ -102,4 +111,8 @@ public class JsonToType {
             }
         }
         }
+
+    private static boolean isOverwrite() {
+        return true;
     }
+}

@@ -29,7 +29,7 @@ public class FloorEditDialog extends DataEditDialog<LevelStructure.FLOOR_VALUES,
         return null;
     }
     protected Object formatFilePath(DataTable.DataPair item, Object value) {
-        String path = FileManager.formatPath(value.toString(), true);
+        String path = FileManager.formatPath(value.toString(), true, true);
         return GdxImageMaster.cropImagePath(path);
     }
     @Override

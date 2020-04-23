@@ -9,6 +9,7 @@ import eidolons.libgdx.gui.panels.headquarters.creation.selection.SelectionImage
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.metadata.options.LE_OptionsMaster;
@@ -107,9 +108,8 @@ public class PaletteTypesTable extends SelectionImageTable {
         String text = datum.getEntity().getName();
         if (datum.getEntity().getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
             text= StringMaster.getValueTooltip(datum.getEntity(),
-                    PROPS.EXTENDED_PRESET_GROUP,
+                    G_PROPS.NAME,
                     PROPS.PRESET_GROUP,
-                    PROPS.SHRUNK_PRESET_GROUP,
                     PROPS.FILLER_TYPES);
 //
         }

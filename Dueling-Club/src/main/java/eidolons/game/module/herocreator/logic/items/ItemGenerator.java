@@ -711,6 +711,8 @@ public class ItemGenerator implements GenericItemGenerator {
 
     public void init() {
         //        if (!basicMode)
+        if (CoreEngine.TEST_LAUNCH)
+            return;
         ContentGenerator.initMaterials();
         if (!isGenerationOn()) {
             return;
@@ -800,6 +802,9 @@ public class ItemGenerator implements GenericItemGenerator {
         ObjType baseType = DataManager.getType(typeName, type, true);
         if (baseType == null)
             return null;
+        if (CoreEngine.TEST_LAUNCH) {
+            return baseType;
+        }
         return generateItem(weapon, quality, material, baseType);
 
     }

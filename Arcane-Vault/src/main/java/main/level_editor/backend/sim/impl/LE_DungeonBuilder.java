@@ -39,8 +39,8 @@ public class LE_DungeonBuilder extends LocationBuilder {
     }
 
     @Override
-    public Location buildDungeon(String path, String data, List<Node> nodeList) {
-        Location location = super.buildDungeon(path, data, nodeList);
+    public void initLevel(List<Node> nodeList) {
+        super.initLevel(nodeList);
         if (getGame() instanceof LE_GameSim) {
             Map<Integer, BattleFieldObject> map = new LinkedHashMap<>();
             for (Module module : getModules()) {
@@ -53,9 +53,8 @@ public class LE_DungeonBuilder extends LocationBuilder {
                 }
             }
             ((LE_GameSim) getGame()).setObjIdMap(
-                   map);
+                    map);
         }
-        return location;
     }
 
     private boolean isIdShiftRequired() {

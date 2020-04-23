@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.bf.mouse.InputController;
@@ -13,6 +15,7 @@ import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.GenericGuiStage;
 import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.system.audio.DC_SoundMaster;
+import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,5 +119,8 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
 
     public GenericGuiStage getGuiStage() {
         return null;
+    }
+
+    public void moduleEntered(Module module, DequeImpl<BattleFieldObject> objects) {
     }
 }

@@ -440,10 +440,10 @@ public final class UnitEnums {
         Ravenguard("Traitor,Corrupted,Royal"),
         PRISONERS,
         HUMANS("Militia,Scum,Guards,Army,"),
-        HUMANS_BANDITS("Pirates,Thieves Guild,Robbers,"),
+        BANDITS("Pirates,Thieves Guild,Robbers,"),
         HUMANS_KNIGHTS("ravenguard,holy,"),
         HUMANS_CRUSADERS,
-        HUMANS_PIRATES,
+        PIRATES,
         HUMANS_BARBARIANS,
 
         DWARVEN_SCUM(),

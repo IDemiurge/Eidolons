@@ -48,50 +48,55 @@ public class EncounterAdjuster extends BattleHandler {
     public int fillApplied = 0;
     public int groupsExtended = 0;
 
-    public Integer target_power = 0;
-    public Integer power = 0;
-    Integer forcedPower;
+    private float target_power = 0;
+    private Integer power = 0;
+    private float adjustCoef;
+    private int base_power;
 
     public EncounterAdjuster(BattleMaster master) {
         super(master);
     }
 
-    public void adjustEncounter(Encounter encounter, Integer target_power) {
+    public void adjustEncounter(Encounter encounter, Integer target_power, float adjustCoef) {
         this.difficulty = master.getOptionManager().getDifficulty();
         this.encounter = encounter;
+        this.adjustCoef = adjustCoef;
         groupsExtended = 0;
         fillApplied = 0;
         groups = 0;
         unitGroups = new LinkedList<>();
         // map?
-        if (target_power == null) {
+        base_power = calculatePower(encounter.getTypes(), false);
+
+        if (target_power == null || target_power == 0) {
             initPower();
         } else {
             this.target_power = target_power;
         }
         applyAddGroup();
-        if (!ListMaster.isNotEmpty(unitGroups))
-        {
-            main.system.auxiliary.log.LogMaster.log(1," empty encounter! " );
+        if (!ListMaster.isNotEmpty(unitGroups)) {
+            main.system.auxiliary.log.LogMaster.log(1, " empty encounter! ");
             return;
         }
-            if (checkPowerAdjustmentNeeded())
-                try {
-                    adjustPower();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        if (checkPowerAdjustmentNeeded())
+            try {
+                adjustPower();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         encounter.setPower(power);
 
     }
 
     private void initPower() {
-        int percentage = getPowerPercentage(encounter);
-        percentage = percentage * difficulty.getPowerPercentage() / 100;
-        // Integer base_power = wave.getBasePower(); // min/max?
-        // power = base_power;
-        if (encounter.getPreferredPower() != 0)
-            target_power = encounter.getPreferredPower() * percentage / 100;
+        int percentage = 100 * difficulty.getPowerPercentage() / 100;
+        target_power = base_power * percentage / 100;
+        if (adjustCoef != 0) {
+            target_power = MathMaster.getMinMax(target_power,
+                    base_power * (1 - adjustCoef),
+                    base_power * (1 + adjustCoef));
+        }
+//        max_power =
 //        else
 //            target_power = manager.getBattleLevel() * percentage / 100;
     }
@@ -250,23 +255,21 @@ public class EncounterAdjuster extends BattleHandler {
         int power = calculatePower(DataManager.toTypeList(getTypeMap()), false);
         if (getTargetPower() <= power)
             return false;
-        int diff = (getTargetPower() - power) * 100 / getTargetPower();
+        float diff = (getTargetPower() - power) * 100 / getTargetPower();
         LogMaster.log(LOG_CHANNEL.WAVE_ASSEMBLING, encounter.getName() + "' Power = " + power
                 + " vs target of " + getTargetPower() + ", diff = " + diff);
         return diff > POWER_GAP;
 
     }
 
-    public int getTargetPower() {
-        if (forcedPower != null)
-            return forcedPower;
+    public float getTargetPower() {
         return target_power;
     }
 
     private boolean checkPowerExceeding(int i) {
         if (getTargetPower() >= i)
             return false;
-        int diff = (i - getTargetPower()) * 100 / i;
+        float diff = (i - getTargetPower()) * 100 / i;
         LogMaster.log(LOG_CHANNEL.WAVE_ASSEMBLING, i + " vs target of " + getTargetPower()
                 + ", diff = " + diff);
         return diff > POWER_GAP;
@@ -283,8 +286,10 @@ public class EncounterAdjuster extends BattleHandler {
         switch (TYPE) {
             case BOSS:
                 power = BOSS_POWER;
+                break;
             case ELITE:
                 power = ELITE_POWER;
+                break;
             case REGULAR:
                 power = REGULAR_POWER;
             case CONTINUOUS:
@@ -314,14 +319,6 @@ public class EncounterAdjuster extends BattleHandler {
         }
         return power;
 
-    }
-
-    public Integer getForcedPower() {
-        return forcedPower;
-    }
-
-    public void setForcedPower(Integer forcedPower) {
-        this.forcedPower = forcedPower;
     }
 
     public List<ObjType> getTypeMap() {

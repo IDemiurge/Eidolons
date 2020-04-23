@@ -124,6 +124,13 @@ public class FloorLoader extends DungeonHandler<Location> {
                 log(LOG_CHANNEL.BUILDING, module + " Id-Type Map built: " +
                         module.getIdTypeMap());
                 break;
+            case ENCOUNTER_AI_GROUPS:
+                initEncounterGroups(node.getTextContent());
+                break;
+            case CUSTOM_AI_GROUPS:
+//             TODO    getMaster().getGame().getAiManager().getGroupHandler()
+//                        .initCustomGroups(node.getTextContent());
+                break;
         }
 
     }
@@ -156,18 +163,17 @@ public class FloorLoader extends DungeonHandler<Location> {
                     map.put(DataMap.valueOf(sub.getNodeName()), submap);
 
                 }
-            case ENCOUNTER_AI_GROUPS:
-                getMaster().getGame().getAiManager().getGroupHandler()
-                        .initEncounterGroups(node.getTextContent());
-                break;
-            case CUSTOM_AI_GROUPS:
-//             TODO    getMaster().getGame().getAiManager().getGroupHandler()
-//                        .initCustomGroups(node.getTextContent());
+                master.setDataMaps(map);
                 break;
 
 
         }
 
+    }
+
+    protected void initEncounterGroups(String textContent) {
+        getMaster().getGame().getAiManager().getGroupHandler()
+                .initEncounterGroups(textContent);
     }
 
     protected void checkModuleRemap(boolean b, Location location) {
@@ -191,6 +197,7 @@ public class FloorLoader extends DungeonHandler<Location> {
 
         Module module = getMetaMaster().getModuleMaster().getModule(c);
         e.setTargetModule(module);
+        location.addTransit(e);
     }
 
 
@@ -208,6 +215,9 @@ public class FloorLoader extends DungeonHandler<Location> {
         for (String content : ContainerUtils.openContainer(textContent)) {
             String typeName = content.split("=")[0];
             ObjType type = DataManager.getType(typeName, DC_TYPE.BF_OBJ);
+            if (type == null) {
+                type = DataManager.getType(typeName, DC_TYPE.ENCOUNTERS);
+            } else
             if (type == null) {
                 type = DataManager.getType(typeName, DC_TYPE.UNITS);
             }

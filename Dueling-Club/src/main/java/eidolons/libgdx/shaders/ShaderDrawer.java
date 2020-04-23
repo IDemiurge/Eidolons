@@ -19,11 +19,21 @@ public class ShaderDrawer {
 
     public static void drawWithCustomShader(Actor actor, Batch batch,
                                             ShaderProgram shader) {
+
+        if (CoreEngine.TEST_LAUNCH) {
+            actor.draw(batch, ShaderDrawer.SUPER_DRAW);
+            return;
+        }
         drawWithCustomShader(actor, batch, shader, false);
     }
 
     public static void drawWithCustomShader(Actor actor, Batch batch,
                                             ShaderProgram shader, boolean nullMeansOriginal, boolean reset) {
+
+        if (CoreEngine.TEST_LAUNCH) {
+            actor.draw(batch, ShaderDrawer.SUPER_DRAW);
+            return;
+        }
         Runnable draw = getDrawRunnable(actor, batch);
         ShaderProgram originalShader = batch.getShader();
         if (originalShader != shader && !(shader == null && nullMeansOriginal))
@@ -38,6 +48,10 @@ public class ShaderDrawer {
     public static void drawWithCustomShader(Actor actor, Batch batch,
                                             ShaderProgram shader, boolean nullMeansOriginal
     ) {
+        if (CoreEngine.TEST_LAUNCH) {
+            actor.draw(batch, ShaderDrawer.SUPER_DRAW);
+            return;
+        }
         if (CoreEngine.isIDE())
             if (shader!=null && !shader.isCompiled())
             {

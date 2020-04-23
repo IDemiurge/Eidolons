@@ -68,7 +68,6 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         }
 
         getFloorLoader().finish(location);
-        initDynamicObjData(location);
     }
 
     @Refactor

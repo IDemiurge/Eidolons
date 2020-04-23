@@ -23,6 +23,7 @@ import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqMasteryTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqNewMasteryPanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.ConfirmationPanel;
@@ -170,6 +171,9 @@ public class HqPanel extends TablePanel implements Blocking {
         header.setPosition(130, GdxMaster.getTopY(header) - 75);
 //        header.setPosition(110, 110); // wtff TODO igg demo fix
         header.setVisible(true);
+        if (!ScreenMaster.isFullscreen())
+            setX(-60);
+
         super.act(delta);
     }
 

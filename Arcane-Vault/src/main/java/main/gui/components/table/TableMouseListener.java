@@ -561,7 +561,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             // SwingUtilities.isRightMouseButton(e)
         ) {
             if (val instanceof PARAMETER && (val != PARAMS.FORMULA)) {
-                new NumberEditor().launch(table, row, column, value);
+                new NumberEditor().launch(table, row, column, value, e);
                 return;
             }
 
@@ -576,7 +576,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
         }
         if (editor != null) {
             try {
-                editor.launch(table, row, column, value);
+                editor.launch(table, row, column, value, e );
             } catch (NullPointerException ex) {
                 main.system.ExceptionMaster.printStackTrace(ex);
                 handleMouseClick(e, true);
@@ -595,7 +595,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
         // if (ContentManager.isParameter(valueName)) {
         // numberEditor.launch(table, row, column, value);
         // } else
-        textEditor.launch(table, row, column, value);
+        textEditor.launch(table, row, column, value, null  );
     }
 
     @Override

@@ -80,14 +80,14 @@ public class XML_Reader {
         for (int i = 0; i < nl.getLength(); i++) {
             Node node = nl.item(i);
             NodeList nl1 = node.getChildNodes();
-            String aspect = node.getNodeName();
+            String group = node.getNodeName();
             PROPERTY groupingKey = DataManager.getGroupingKey(key);
             PROPERTY subGroupingKey = DataManager.getSubGroupingKey(key);
 
             for (int a = 0; a < nl1.getLength(); a++) {
                 Node typeNode = nl1.item(a);
                 String name = typeNode.getNodeName();
-                if ("#text".equals(name)) {
+                if (name.equals("#text")) {
                     continue;
                 }
                 ObjType type = TypeBuilder.buildType(typeNode, key);
@@ -99,13 +99,13 @@ public class XML_Reader {
                     name = type.getName();
                     // TAB GROUPS
                     if (type.getProperty(groupingKey) == null) {
-                        type.setProperty(G_PROPS.ASPECT, aspect);
+                        type.setProperty(G_PROPS.ASPECT, group);
                     }
                     groupSet.add(type.getProperty(groupingKey));
-                    aspect = type.getProperty(groupingKey);
+                    group = type.getProperty(groupingKey);
                     // TREE SUB GROUPS
                     String subKey = type.getProperty(subGroupingKey);
-                    treeSubGroupMap.computeIfAbsent(aspect, k -> new HashSet<>()).add(subKey);
+                    treeSubGroupMap.computeIfAbsent(group, k -> new HashSet<>()).add(subKey);
 
                     type.setInitialized(true);
                     typeMap.put(name, type);

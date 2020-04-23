@@ -77,14 +77,14 @@ public class DC_GridPanel extends GridPanel {
 
 
     @Override
-    public GridPanel init() {
-        return super.init();
+    public GridPanel initFullGrid() {
+        return super.initFullGrid();
     }
 
     @Override
-    public GridPanel init(DequeImpl<BattleFieldObject> objects) {
+    public GridPanel initObjects(DequeImpl<BattleFieldObject> objects) {
 
-        super.init(objects);
+        super.initObjects(objects);
         addActor(animMaster = AnimMaster.getInstance());
         animMaster.bindEvents();
         manager = new GridManager(this);
@@ -403,7 +403,7 @@ public class DC_GridPanel extends GridPanel {
             for (DC_Obj obj1 : p.getLeft()) {
                 Borderable b = viewMap.get(obj1);
                 if (b == null) {
-                    b = cells[obj1.getX()][rows - 1 - obj1.getY()];
+                    b = cells[obj1.getX()][getGdxY(obj1.getY())];
                 }
 
                 if (((Group) b).getUserObject() instanceof Unit) {
@@ -421,7 +421,7 @@ public class DC_GridPanel extends GridPanel {
 
         GuiEventManager.bind(removePrevious, UPDATE_GRAVEYARD, obj -> {
             final Coordinates coordinates = (Coordinates) obj.get();
-            cells[coordinates.getX()][rows - 1 - coordinates.getY()].updateGraveyard();
+            cells[coordinates.getX()][getGdxY(coordinates.getY())].updateGraveyard();
         });
 
 

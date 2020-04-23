@@ -611,7 +611,8 @@ public class StringMaster {
     }
 
     private static String getValueTip(Entity obj, VALUE val) {
-        return new StringBuilder().append(val.getDisplayedName()).append(": ").append(obj.getValue(val)).toString();
+        return new StringBuilder().append(val.getDisplayedName()).append(": ").
+                append(obj.getValue(val).replace(";", ", ")).toString();
     }
 
     public static String getValueRefs(KEYS objRef, VALUE... valRef) {

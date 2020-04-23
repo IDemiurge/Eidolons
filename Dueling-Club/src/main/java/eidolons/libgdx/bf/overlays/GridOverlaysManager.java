@@ -28,7 +28,6 @@ import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.GenericGridView;
 import eidolons.libgdx.bf.grid.cell.GridCell;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.bf.grid.sub.GridElement;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.Tooltip;
@@ -253,15 +252,8 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
         for (int x = x1; x < x2; x++) {
             for (int y = y2 - 1; y >= y1; y--) {
                 GridCellContainer cell = cells[x][y];
-                for (Actor c : cell.getChildren()) {
-                    if (c instanceof GridUnitView) {
-                        if (c.isVisible())
-                            drawOverlaysForView(((GenericGridView) c), batch, x, y);
-                        else {
-                            //TODO grave/corpse???
-                            //                            clearTooltip((Entity) c.getUserObject());
-                        }
-                    }
+                for (Actor c : cell.getUnitViews(true)) {
+                    drawOverlaysForView(((GenericGridView) c), batch, x, y);
                 }
                 drawOverlaysForCell(cell, x, y, batch);
             }
@@ -277,7 +269,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
             if (getOverlayActor(actor, INFO_TEXT) instanceof Label) {
                 ((Label) getOverlayActor(actor, INFO_TEXT)).setText(getInfoText(obj));
             }
-            drawOverlay(actor,INFO_TEXT, batch, obj, x, y);
+            drawOverlay(actor, INFO_TEXT, batch, obj, x, y);
         }
         if (actor.getHpBar() != null)
             if (checkOverlayForObj(HP_BAR, obj, actor))
@@ -296,7 +288,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
     protected void drawOverlaysForCell(GridCellContainer container, int x, int y,
                                        Batch batch) {
 
-        if (debug||sightInfoDisplayed) {
+        if (debug || sightInfoDisplayed) {
             DC_Cell cell = Eidolons.getGame().getMaster().getCellByCoordinate(Coordinates.get(x, y));
             if (debug) {
                 drawOverlay(container, INFO_TEXT, batch, cell, x, y);

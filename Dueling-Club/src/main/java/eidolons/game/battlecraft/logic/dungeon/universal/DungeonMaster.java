@@ -5,6 +5,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
+import eidolons.game.battlecraft.logic.dungeon.location.TransitHandler;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.LayerManager;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.PlaceholderResolver;
@@ -61,6 +62,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private StructureBuilder structureBuilder;
     private ModuleLoader moduleLoader;
     private PlaceholderResolver placeholderResolver;
+    private TransitHandler transitHandler;
 
 
     public DungeonMaster(DC_Game game) {
@@ -87,6 +89,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         }
         moduleLoader = new ModuleLoader(this);
         placeholderResolver = new PlaceholderResolver(this);
+        transitHandler = new TransitHandler(this);
     }
     protected FloorLoader createFloorLoader() {
         return new FloorLoader(this);
@@ -305,6 +308,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public Map<Integer, String> getDataMap(DataMap type) {
+        if (dataMaps == null) {
+            return null;
+        }
         return dataMaps.get(type);
     }
 
@@ -349,4 +355,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     public Set<Module> getModules() {
         return getGame().getMetaMaster().getModuleMaster().getModules();
     }
+
+    public TransitHandler getTransitHandler() {
+        return transitHandler;
+    }
+
 }

@@ -18,6 +18,7 @@ import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
+import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.texture.SmartTextureAtlas;
@@ -183,10 +184,9 @@ public class ShadeLightCell extends SuperContainer {
     @Override
     public boolean isIgnored() {
         // check cell is visible TODO
-        if (withinCamera != null)
+        if (!InputController.cameraMoved )
             return !withinCamera;
         withinCamera = getController().isWithinCamera(this);
-        getController().addCachedPositionActor(this);
         return !withinCamera;
     }
 

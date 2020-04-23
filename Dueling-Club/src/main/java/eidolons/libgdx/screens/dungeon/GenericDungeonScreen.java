@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
@@ -32,6 +33,8 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.Chronos;
+import main.system.datatypes.DequeImpl;
+import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 
 import static com.badlogic.gdx.graphics.GL20.GL_NICEST;
@@ -81,6 +84,9 @@ public abstract class GenericDungeonScreen extends GameScreen {
 
     protected void setBackground(String path) {
         if (path == null) {
+            return;
+        }
+        if (!ImageManager.isImageFile(path)) {
             return;
         }
         if (!TextureCache.isImage(path)) {
@@ -194,18 +200,18 @@ public abstract class GenericDungeonScreen extends GameScreen {
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = createGrid(param);
         Module module = DC_Game.game.getModule();
-        moduleEntered(module); //TODO
-        //do not chain - will fail ...
         if (!CoreEngine.isLevelEditor())
             param.getObjects().removeIf(obj -> !module.getCoordinatesSet().
                     contains(obj.getCoordinates()));
-        gridPanel.init(param.getObjects());
-        gridPanel.afterInit();
+        moduleEntered(module, param.getObjects()); //will be triggered, hopefully
+        //do not chain - will fail ...
         gridStage.addActor(gridPanel);
     }
 
-    public void moduleEntered(Module module) {
+    public void moduleEntered(Module module, DequeImpl<BattleFieldObject> objects) {
         gridPanel.setModule(module);
+        gridPanel.initObjects(objects );
+        gridPanel.afterInit();
     }
 
     @Override
@@ -224,6 +230,8 @@ public abstract class GenericDungeonScreen extends GameScreen {
         }
         doFlagsOnInput();
         super.render(delta);
+
+        InputController.cameraMoved = false;
     }
 
     private void doFlagsOnInput() {
@@ -233,7 +241,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
                     if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                         DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
 
-                       } else {
+                    } else {
                         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
 //                            CoreEngine.setCinematicMode(!CoreEngine.isFootageMode());
                             boolean visionDebugMode = DC_Game.game.getVisionMaster().isVisionDebugMode();

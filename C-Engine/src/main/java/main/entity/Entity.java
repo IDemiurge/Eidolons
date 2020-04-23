@@ -28,8 +28,8 @@ import main.system.threading.Weaver;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * Root class of every CoreEngine object
@@ -62,7 +62,7 @@ public abstract class Entity extends DataModel implements OBJ {
     protected Map<VALUE, String> valueCache = new HashMap<>(); //to cache valid tooltip values
     protected ImageIcon customIcon;
     protected ImageIcon icon;
-    EntityMaster master;
+    protected EntityMaster master;
     protected Map<PARAMETER, Integer> validParams;
 
 

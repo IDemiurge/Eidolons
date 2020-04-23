@@ -10,6 +10,9 @@ import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.MapBuilder;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -37,11 +40,6 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
             return getAiForEncounter(obj);
         }
         return customAiMap.get(obj);
-    }
-
-    @Override
-    public void afterLoaded() {
-        encounterAiMap =  getGame().getAiManager().getGroupHandler().getEncounterAiMap();
     }
 
     public AiData getAiForEncounter(DC_Obj obj) {
@@ -189,7 +187,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
         StringBuilder builder = new StringBuilder();
         for (Integer id : encounterAiMap.keySet()) {
             builder.append(id).append("=");
-            builder.append(encounterAiMap.get(id).toString()).append(";");
+            builder.append(encounterAiMap.get(id).toString()).append(StringMaster.AND_SEPARATOR);
         }
         String xml = XML_Converter.wrap(FloorLoader.ENCOUNTER_AI_GROUPS, builder.toString());
 
@@ -201,11 +199,19 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
                 }
             }
             builder.append("=");
-            builder.append(data.toString()).append(";");
+            builder.append(data.toString()).append(StringMaster.AND_SEPARATOR);
         }
         xml += XML_Converter.wrap(FloorLoader.CUSTOM_AI_GROUPS, builder.toString());
 
         return xml;
     }
 
+    public void initEncounterGroups(String textContent) {
+        encounterAiMap =
+                new MapBuilder<>("=", StringMaster.AND_SEPARATOR,
+                        s -> NumberUtils.getInteger(s),
+                        s -> new AiData(s)
+                )
+                        .build(textContent);
+    }
 }

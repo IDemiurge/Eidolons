@@ -72,6 +72,8 @@ public class MainLauncher extends GenericLauncher {
             if (args[0].contains("town")) {
                 EidolonsGame.TOWN = true;
             }
+            CoreEngine.TEST_LAUNCH = args[0].endsWith("test");
+            CoreEngine.setFastMode(CoreEngine.TEST_LAUNCH);
 
             if (args[0].contains("selectfootage")) {
                 CoreEngine.swingOn = true;

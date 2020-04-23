@@ -33,8 +33,11 @@ public class LastSeenView extends GenericGridView {
     }
 
     @Override
-    protected TextureRegion getDefaultTexture() {
-        return TextureCache.getOrCreateR(VisionEnums.OUTLINE_TYPE.UNKNOWN.getImagePath());
+    public TextureRegion getDefaultTexture() {
+        if (defaultTexture == null) {
+            defaultTexture = TextureCache.getOrCreateR(VisionEnums.OUTLINE_TYPE.UNKNOWN.getImagePath());
+        }
+        return defaultTexture;
     }
 
     @Override
@@ -78,8 +81,8 @@ public class LastSeenView extends GenericGridView {
             getHpBar().setVisible(false);
     }
 
-    protected void init(TextureRegion arrowTexture, int arrowRotation,  TextureRegion emblem) {
-        super.init(arrowTexture, arrowRotation,   emblem);
+    protected void init(TextureRegion arrowTexture, int arrowRotation, TextureRegion emblem) {
+        super.init(arrowTexture, arrowRotation, emblem);
         if (arrow != null)
             arrow.setVisible(false);
     }

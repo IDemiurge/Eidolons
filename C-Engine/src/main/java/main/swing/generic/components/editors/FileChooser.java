@@ -6,6 +6,7 @@ import main.system.auxiliary.data.FileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.io.File;
 
 public class FileChooser implements EDITOR {
@@ -125,7 +126,7 @@ public class FileChooser implements EDITOR {
     }
 
     @Override
-    public void launch(JTable table, int row, int column, String v) {
+    public void launch(JTable table, int row, int column, String v, MouseEvent e) {
 
         String selected = launch(v, (String) table.getModel().getValueAt(row, 1));
         table.getModel().setValueAt(selected, row, 1);

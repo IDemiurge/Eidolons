@@ -27,7 +27,7 @@ public abstract class SuperActor extends Fluctuating implements
     protected boolean hovered;
     protected boolean active;
     protected int blendDstFunc, blendSrcFunc, blendDstFuncAlpha, blendSrcFuncAlpha;
-    protected Boolean withinCamera;
+    protected boolean withinCamera;
     protected Runnable actionManger;
     private boolean hoverResponsive;
 
@@ -112,21 +112,15 @@ public abstract class SuperActor extends Fluctuating implements
     }
         public boolean isWithinCamera() {
 
-        if (withinCamera != null)
+        if (!InputController.cameraMoved )
             return withinCamera;
         if (isCachedPosition()) {
             withinCamera = isWithinCameraCheck();
-            getController().addCachedPositionActor(this);
             return withinCamera;
         }
         return isWithinCameraCheck();
 
     }
-    @Override
-    public void cameraMoved() {
-        this.withinCamera = null;
-    }
-
     @Override
     public boolean isCachedPosition() {
         return false;

@@ -13,6 +13,7 @@ import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.utils.ShaderBatch;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.BLENDING;
+import main.system.launch.CoreEngine;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -149,6 +150,9 @@ public class CustomSpriteBatch extends ShaderBatch {
 
     @Override
     public void setShader(ShaderProgram shader) {
+        if (CoreEngine.TEST_LAUNCH) {
+            return;
+        }
         if (shader != getShader()) {
             bufferedShader = getShader();
         }

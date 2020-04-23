@@ -10,7 +10,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
@@ -22,9 +21,7 @@ import main.system.math.MathMaster;
 import main.system.sound.SoundMaster;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static com.badlogic.gdx.Input.Buttons.LEFT;
 import static com.badlogic.gdx.Input.Keys.ALT_LEFT;
@@ -51,7 +48,6 @@ public abstract class InputController implements InputProcessor {
     protected float yTouchPos;
     protected static float halfWidth;
     protected static float halfHeight;
-    protected Set<SuperActor> cachedPosActors = new HashSet<>();
     protected static boolean unlimitedZoom;
     protected static boolean dragOff;
     private Runnable onInput;
@@ -62,6 +58,8 @@ public abstract class InputController implements InputProcessor {
     private DequeImpl<Runnable> onInputGdxQueue =  (new DequeImpl<>());
     private DequeImpl<Runnable> onPassInputQueue =  (new DequeImpl<>());
     protected float defaultZoom;
+
+    public static boolean cameraMoved;
 
 
     public InputController(OrthographicCamera camera) {
@@ -412,9 +410,10 @@ public abstract class InputController implements InputProcessor {
     }
 
     public void cameraPosChanged() {
-        for (SuperActor sub : cachedPosActors) {
-            sub.cameraMoved();
-        }
+        cameraMoved=true;
+//        for (SuperActor sub : cachedPosActors) {
+//            sub.cameraMoved();
+//        }
 
 //        cachedPosActors.clear(); not needed?
     }
@@ -462,10 +461,6 @@ public abstract class InputController implements InputProcessor {
 
     public float getYCamPos() {
         return camera.position.y;
-    }
-
-    public void addCachedPositionActor(SuperActor superActor) {
-        cachedPosActors.add(superActor);
     }
 
     public void onInput(Runnable runnable) {

@@ -23,6 +23,11 @@ public class LE_FloorLoader extends FloorLoader {
     }
 
     @Override
+    protected void initEncounterGroups(String textContent) {
+        LevelEditor.getManager().getAiHandler().initEncounterGroups(textContent);
+    }
+
+    @Override
     protected void checkModuleRemap(boolean forced, Location location) {
 
         boolean remap = false;

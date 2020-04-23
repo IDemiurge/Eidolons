@@ -45,7 +45,6 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.quest.QuestJournal;
 import eidolons.libgdx.gui.panels.quest.QuestProgressPanel;
 import eidolons.libgdx.screens.Blackout;
-import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.map.town.navigation.PlaceNavigationPanel;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.OptionsMaster;
@@ -149,6 +148,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         //        helpButton.setPosition(menuButton.getX() - helpButton.getWidth(),
         //         GdxMaster.getHeight() - helpButton.getHeight());
         //        addActor(helpButton);
+
         tipMessageWindow = new TipMessageWindow(null);
         addActor(dialogueContainer = new DialogueContainer());
         addActor(questProgressPanel = new QuestProgressPanel());
@@ -158,9 +158,8 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         questProgressPanel.setPosition(GdxMaster.right(questProgressPanel),
                 GdxMaster.getHeight() - questProgressPanel.getHeight() - GdxMaster.adjustHeight(128));
 
-
-        ExtendableLogPanel log = new ExtendableLogPanel(true);
-        logPanel = log;// RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
+        logPanel = new ExtendableLogPanel(true);
+        // RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
         addActor(logPanel);
 //        logPanel.setOnClose(()->{
 //            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_OUT);
@@ -175,11 +174,13 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         radial = new RadialMenu();
         addActor(radial);
 
-        containerPanel = new ContainerPanel();
-        addActor(containerPanel);
-        containerPanel.setPosition(GdxMaster.centerWidth(containerPanel),
-                GdxMaster.centerHeight(containerPanel));
-        containerPanel.setVisible(false);
+        if (!CoreEngine.TEST_LAUNCH) {
+            containerPanel = new ContainerPanel();
+            addActor(containerPanel);
+            containerPanel.setPosition(GdxMaster.centerWidth(containerPanel),
+                    GdxMaster.centerHeight(containerPanel));
+            containerPanel.setVisible(false);
+        }
         bindEvents();
 
         initGameMenu();
@@ -194,23 +195,23 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         actionTooltipContainer.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.ATB_POS);
         Fluctuating.setAlphaFluctuationOn(true);
 
-        addActor(hqPanel = new HqPanel());
-        hqPanel.setPosition(GdxMaster.centerWidth(hqPanel),
-                GdxMaster.centerHeight(hqPanel));
-        hqPanel.setVisible(false);
+        if (!CoreEngine.TEST_LAUNCH) {
+            addActor(hqPanel = new HqPanel());
+            hqPanel.setPosition(GdxMaster.centerWidth(hqPanel),
+                    GdxMaster.centerHeight(hqPanel));
+            hqPanel.setVisible(false);
+            if (LordPanel.ON) {
+                addActor(lordPanel = LordPanel.getInstance());
+                lordPanel.setPosition(GdxMaster.centerWidth(lordPanel),
+                        GdxMaster.centerHeight(lordPanel));
+                lordPanel.setVisible(false);
+            }
+            addActor(journal = new QuestJournal());
+            journal.setPosition(GdxMaster.centerWidth(journal),
+                    GdxMaster.centerHeight(journal));
+            journal.setVisible(false);
 
-        if (LordPanel.ON) {
-            addActor(lordPanel = LordPanel.getInstance());
-            lordPanel.setPosition(GdxMaster.centerWidth(lordPanel),
-                    GdxMaster.centerHeight(lordPanel));
-            lordPanel.setVisible(false);
         }
-
-        addActor(journal = new QuestJournal());
-        journal.setPosition(GdxMaster.centerWidth(journal),
-                GdxMaster.centerHeight(journal));
-        journal.setVisible(false);
-
         initTooltipsAndMisc();
 
         addActor(dragManager = DragManager.getInstance());
@@ -366,11 +367,6 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         super.act(delta);
         resetZIndices();
 
-        if (hqPanel.isVisible()) {
-            if (!ScreenMaster.isFullscreen()) {
-                hqPanel.setX(-80);
-            }
-        }
     }
 
 
@@ -651,15 +647,18 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     }
 
     public void outsideClick() {
-        if (textPanel.isVisible()) {
-            textPanel.close();
-        }
-        if (containerPanel.isVisible()) {
-            containerPanel.close();
-        }
-        if (gameMenu.isVisible()) {
-            gameMenu.close();
-        }
+        if (textPanel != null)
+            if (textPanel.isVisible()) {
+                textPanel.close();
+            }
+        if (containerPanel != null)
+            if (containerPanel.isVisible()) {
+                containerPanel.close();
+            }
+        if (gameMenu != null)
+            if (gameMenu.isVisible()) {
+                gameMenu.close();
+            }
 
     }
 

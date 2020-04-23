@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -159,9 +158,6 @@ public class DungeonScreen extends GameScreenWithTown {
                 MacroGame.getGame().getLoop().combatFinished();
                 main.system.auxiliary.log.LogMaster.log(1, " returning to the map...");
             }
-        });
-        GuiEventManager.bind(GuiEventType.GRID_RESET, p -> {
-            moduleEntered((Module) p.get());
         });
     }
 

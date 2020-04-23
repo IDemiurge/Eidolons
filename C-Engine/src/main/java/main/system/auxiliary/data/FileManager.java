@@ -252,7 +252,9 @@ public class FileManager {
 
     public static String formatPath(String path, boolean force, boolean removeLastSlash) {
         String v = formatPath(path, force);
-        return v.substring(0, v.length() - 1);
+        if (removeLastSlash)
+            return v.substring(0, v.length() - 1);
+        return v;
     }
 
 

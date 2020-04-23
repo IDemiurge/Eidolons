@@ -28,6 +28,7 @@ public enum PARAMS implements PARAMETER {
     POWER_MINIMUM(null, "", false, 0, "dungeons", "encounters"),
     POWER_BASE(null, "", false, 0, "dungeons", "encounters"),
     POWER_MAXIMUM(null, "", false, 0, "dungeons", "encounters"),
+
     FREE_MASTERIES(null, "", false, DC_MathManager.DEFAULT_FREE_MASTERY_COUNT, "chars"),
     GLORY("party"),
     MAX_HEROES(null, "", false, 0, "party", "arcades"),

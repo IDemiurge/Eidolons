@@ -60,6 +60,8 @@ import static main.system.GuiEventType.*;
 
 public abstract class GridPanel extends Group {
     protected final int square;
+    private final int full_rows;
+    private final int full_cols;
     protected int cols;
     protected int rows;
     protected int x1, x2, y1, y2;
@@ -93,7 +95,9 @@ public abstract class GridPanel extends Group {
         this.square = rows * cols;
         this.cols = cols;
         this.rows = rows;
-        init();
+        this.full_rows = rows;
+        this.full_cols = cols;
+        initFullGrid();
     }
 
     public void setModule(Module module) {
@@ -119,7 +123,7 @@ public abstract class GridPanel extends Group {
         overlays = container.overlays;
         //for others too?
 
-        initGrid();
+        initModuleGrid();
         for (GridElement gridElement : getGridElements()) {
             if (gridElement != null) {
                 gridElement.setModule(module);
@@ -133,14 +137,14 @@ public abstract class GridPanel extends Group {
         };
     }
 
-    protected void initGrid() {
+    protected void initModuleGrid() {
         for (int x = x1; x < x2; x++) {
             for (int y = y1; y < y2; y++) {
                 DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(x,
-                        getGdxY(y)+y1));
+                        getGdxY(y)));
                 TextureRegion image = TextureCache.getOrCreateR(cell.getImagePath());
 
-                cells[x][y] = createGridCell(image, x, getGdxY(y)+y1);
+                cells[x][y] = createGridCell(image, x, getGdxY(y));
                 cells[x][y].setX(x * GridMaster.CELL_W);
                 cells[x][y].setY(y * GridMaster.CELL_H);
 
@@ -151,12 +155,12 @@ public abstract class GridPanel extends Group {
 
     }
 
-    public GridPanel init(DequeImpl<BattleFieldObject> objects) {
+    public GridPanel initObjects(DequeImpl<BattleFieldObject> objects) {
         createUnitsViews(objects);
         return this;
     }
 
-    public GridPanel init() {
+    public GridPanel initFullGrid() {
         //entire dungeon?
         cells = new GridCellContainer[cols][rows];
         removedCells = new GridCellContainer[cols][rows];
@@ -308,7 +312,7 @@ public abstract class GridPanel extends Group {
     }
 
     public int getGdxY(int y) {
-        return getRows() - 1 - y;
+        return full_rows -1 - y ;
     }
 
     protected void setVisible(BattleFieldObject sub, boolean visible) {
@@ -478,7 +482,6 @@ public abstract class GridPanel extends Group {
     }
 
     public void unitMoved(BattleFieldObject object) {
-        int rows1 = rows - 1;
         GridUnitView uv = (GridUnitView) viewMap.get(object);
         if (uv == null) {
             return;
@@ -492,11 +495,11 @@ public abstract class GridPanel extends Group {
         //            }
         //        uv.setVisible(true);
         try {
-            cells[c.x][rows1 - c.y].addActor(uv);
+            cells[c.x][getGdxY(c.y)].addActor(uv);
             GuiEventManager.trigger(GuiEventType.UNIT_VIEW_MOVED, uv);
             if (uv.getLastSeenView() != null) {
                 if (LastSeenMaster.isUpdateRequired(object))
-                    cells[c.x][rows1 - c.y].addActor(uv.getLastSeenView());
+                    cells[c.x][getGdxY(c.y)].addActor(uv.getLastSeenView());
             }
         } catch (Exception e) {
             main.system.auxiliary.log.LogMaster.dev("No cell for view: " + object.getNameAndCoordinate());
@@ -705,11 +708,7 @@ public abstract class GridPanel extends Group {
     }
 
     public DC_Cell getCell(int i, int i1) {
-        try {
-            return cells[i][i1].getUserObject();
-        } catch (Exception e) {
-        }
-        return null;
+        return cells[i][i1].getUserObject();
     }
 
 
@@ -814,7 +813,7 @@ public abstract class GridPanel extends Group {
         });
         GuiEventManager.bind(removePrevious, INIT_CELL_OVERLAY, (obj) -> {
             DC_Cell cell = (DC_Cell) obj.get();
-            GridCellContainer container = cells[cell.getX()][rows - 1 - cell.getY()];
+            GridCellContainer container = cells[cell.getX()][getGdxY(cell.getY())];
             String overlayData = cell.getOverlayData();
 
             String path = VariableManager.removeVarPart(overlayData);
@@ -1007,4 +1006,10 @@ public abstract class GridPanel extends Group {
             }
     }
 
+    public int getFullCols() {
+        return full_cols;
+    }
+    public int getFullRows() {
+        return full_rows;
+    }
 }

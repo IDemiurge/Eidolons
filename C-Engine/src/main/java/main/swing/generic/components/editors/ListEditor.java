@@ -23,6 +23,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.Err;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,6 +49,7 @@ public class ListEditor implements EDITOR {
     private boolean listDataSet;
     private String filterSubgroup;
     private String filterGroup;
+    private MouseEvent mouseEvent;
 
     public ListEditor(boolean ENUM, OBJ_TYPE TYPE) {
         this(SELECTION_MODE.MULTIPLE, ENUM, TYPE);
@@ -79,8 +81,8 @@ public class ListEditor implements EDITOR {
     }
 
     @Override
-    public void launch(JTable table, int row, int column, String value) {
-
+    public void launch(JTable table, int row, int column, String value, MouseEvent e) {
+        this.mouseEvent = e;
         String name = (String) table.getValueAt(row, 0);
         String newValue = launch(value, name);
         if (newValue != null) {
@@ -184,6 +186,13 @@ public class ListEditor implements EDITOR {
     }
 
     private Predicate<String> getFilter() {
+        if (mouseEvent != null) {
+            if (mouseEvent.isShiftDown()) {
+//                listData=    new ArrayList<>() ;
+//                return null;
+                return s->true;
+            }
+        }
         if (BASE_TYPE instanceof DC_TYPE) {
             switch (((DC_TYPE) BASE_TYPE)) {
                 case ENCOUNTERS:

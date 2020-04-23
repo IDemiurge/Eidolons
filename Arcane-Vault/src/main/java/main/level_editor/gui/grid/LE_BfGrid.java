@@ -61,7 +61,7 @@ public class LE_BfGrid extends GridPanel {
         overlays = container.overlays;
         //for others too?
 
-        initGrid();
+        initModuleGrid();
     }
 
     @Override
@@ -83,8 +83,8 @@ public class LE_BfGrid extends GridPanel {
     }
 
     @Override
-    public GridPanel init(DequeImpl<BattleFieldObject> objects) {
-        super.init(objects);
+    public GridPanel initObjects(DequeImpl<BattleFieldObject> objects) {
+        super.initObjects(objects);
         addActor(overlayManager = createOverlays());
         return this;
     }

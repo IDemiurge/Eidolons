@@ -18,6 +18,15 @@ public class UtilUnitGrouper {
             for (ObjType objType : subGroup) {
 
                 switch (value) {
+                    case PIRATES:
+                    case BANDITS:
+                        objType.setProperty(G_PROPS.ENCOUNTER_GROUP, "Humans");
+                        objType.setProperty(G_PROPS.ENCOUNTER_SUBGROUP, "Outlaws");
+                        break;
+                    case Ravenguard:
+                        objType.setProperty(G_PROPS.ENCOUNTER_GROUP, "Humans");
+                        objType.setProperty(G_PROPS.ENCOUNTER_SUBGROUP, "Ravenguard");
+                        break;
                     case CULT_DARK:
                     case CULT_CHAOS:
                     case CULT_DEATH:

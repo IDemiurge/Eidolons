@@ -152,7 +152,6 @@ public class AiAutoGroupHandler extends AiHandler{
     }
     private void autoAssignGroups() {
         if (isAutoGroups()) {
-            if (getGroups() == null)
                 initGroups();
 //            if (isOnlyLargeGroups())
 //                return;
@@ -230,7 +229,6 @@ public class AiAutoGroupHandler extends AiHandler{
     }
 
     public List<GroupAI> getGroups() {
-        autoAssignGroups();
         return getGroupHandler().getGroups();
     }
 

@@ -1,6 +1,7 @@
 package main.level_editor.backend.handlers.operation;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.battle.encounter.EncounterData;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
@@ -40,11 +41,15 @@ public class LE_ObjHandler extends LE_Handler {
     }
 
     protected void remove(BattleFieldObject bfObj) {
+        Integer id = getIdManager().getId(bfObj);
         if ( bfObj instanceof Entrance) {
             getTransitHandler().entranceRemoved((Entrance) bfObj);
         }
+
+        if (bfObj.getOBJ_TYPE_ENUM()== DC_TYPE.ENCOUNTERS) {
+           getEntityHandler().encounterRemoved(id );
+        }
         if (bfObj.isOverlaying()) {
-            Integer id = getIdManager().getId(bfObj);
             getDirectionMap().remove(id);
             GuiEventManager.trigger(GuiEventType.REMOVE_OVERLAY_VIEW, bfObj);
         } else
@@ -81,6 +86,11 @@ public class LE_ObjHandler extends LE_Handler {
         getAiHandler().objectAdded(bfObj);
 
         getTransitHandler().objAdded(bfObj);
+
+        if (objType.getOBJ_TYPE_ENUM()== DC_TYPE.ENCOUNTERS) {
+            Integer id = getIdManager().getId(bfObj);
+            getEntityHandler().encounterAdded(id, new EncounterData(bfObj));
+        }
 
         return bfObj;
         //TODO Player!!!
@@ -121,8 +131,12 @@ public class LE_ObjHandler extends LE_Handler {
 
     }
 
+
     @Override
     public String getXml(Function<Integer, Boolean> idFilter) {
+        if (getDirectionMap() == null) {
+            return "";
+        }
         XmlStringBuilder builder = new XmlStringBuilder();
         for (Integer integer : getDirectionMap().keySet()) {
             builder.append(integer).append("=").append(getDirectionMap().get(integer).toString()).append(";");

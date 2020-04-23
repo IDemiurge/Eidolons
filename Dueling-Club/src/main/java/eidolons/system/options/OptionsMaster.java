@@ -503,6 +503,11 @@ public class OptionsMaster {
             {
                 applyAnimOptions(getAnimOptions());
             });
+
+        if (CoreEngine.TEST_LAUNCH) {
+            CoreEngine.setFullFastMode(true);
+            CoreEngine.setSuperLite(true);
+        }
     }
 
     public static void saveOptions() {

@@ -153,9 +153,11 @@ public class XML_Formatter {
     }
 
     public static String restoreXmlNodeName(String s) {
+        if (s.contains(ASCII_OPEN)) {
         for (String x : xmlFormatReplacements.keySet()) {
             String code = xmlFormatReplacements.get(x);
             s = s.replace(code, NumberUtils.getStringFromCode(code));
+        }
         }
         if (s.startsWith(FIRST_CHAR)) {
             s = s.substring(FIRST_CHAR.length());

@@ -7,6 +7,7 @@ import main.system.images.ImageManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -37,7 +38,7 @@ public class ImageChooser extends FileChooser {
     }
 
     @Override
-    public void launch(JTable table, int row, int column, String v) {
+    public void launch(JTable table, int row, int column, String v, MouseEvent e) {
         size = 64;
         if (table.getName() != null) {
             boolean big = table.getName().equals(DC_TYPE.CHARS.getName())
@@ -54,7 +55,7 @@ public class ImageChooser extends FileChooser {
         }
         addPreview();
 
-        super.launch(table, row, column, v);
+        super.launch(table, row, column, v, e);
     }
 
     private void addPreview() {

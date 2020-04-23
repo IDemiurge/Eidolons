@@ -54,7 +54,6 @@ public class ShadowMap extends GroupX implements GridElement {
         this.grid = grid;
         bindEvents();
         setSize(grid.getWidth(), grid.getHeight());
-        emitters = new List[grid.getCols()][grid.getRows()];
         setTransform(false);
         setTouchable(Touchable.disabled);
     }
@@ -116,17 +115,18 @@ public class ShadowMap extends GroupX implements GridElement {
     @Override
     public void setModule(Module module) {
         x1 = module.getOrigin().x;
-        y1 =  module.getOrigin().y;
+        y1 = module.getOrigin().y;
         cols = module.getEffectiveWidth();
         rows = module.getEffectiveHeight();
-        x2 = cols +  module.getOrigin().x;
-        y2 = rows +  module.getOrigin().y;
+        x2 = cols + module.getOrigin().x;
+        y2 = rows + module.getOrigin().y;
         try {
             init();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
     }
+
     private void init() {
         for (SHADE_CELL type : SHADE_CELL_VALUES) {
 //            if (type == VOID) {
@@ -134,9 +134,10 @@ public class ShadowMap extends GroupX implements GridElement {
 //                    continue;
 //            }
             getCells().put(type, new ShadeLightCell[grid.getCols()][grid.getRows()]);
+            emitters = new List[grid.getCols()][grid.getRows()];
 
-            for (int x = x1; x < x2; x++) {
-                for (int y = y1; y < y2; y++) {
+            for (int x = 0; x < grid.getCols(); x++) {
+                for (int y = 0; y < grid.getRows(); y++) {
                     if (grid.getCells()[x][y] == null) {
                         if (type != VOID)
                             continue;
@@ -147,14 +148,13 @@ public class ShadowMap extends GroupX implements GridElement {
                         getCells(type)[x][y] = cell;
                         addShadowMapElement(cell, x, y, type.defaultAlpha);
                     } else {
+
                         if (emitters[x][y] == null) {
                             emitters[x][y] = new ArrayList<>();
                         }
-                        Coordinates c = Coordinates.get(x, grid.getRows() - 1 - y);
+                        Coordinates c = Coordinates.get(x, grid.getGdxY(y));
                         Set<BattleFieldObject> objects = DC_Game.game.getOverlayingObjects(c);
-                        if (objects.isEmpty()) {
-                            objects = DC_Game.game.getObjectsAt(c);
-                        }
+                        objects.addAll(DC_Game.game.getObjectsAt(c));
                         if (objects.isEmpty()) {
                             continue;
                         }
@@ -165,7 +165,7 @@ public class ShadowMap extends GroupX implements GridElement {
                                 continue;
                             LightEmittingEffect effect = null;
                             try {
-                                effect =  DC_Game.game.getRules().getIlluminationRule().
+                                effect = DC_Game.game.getRules().getIlluminationRule().
                                         getLightEmissionEffect(obj);
                             } catch (Exception e) {
                                 main.system.ExceptionMaster.printStackTrace(e);
@@ -206,7 +206,7 @@ public class ShadowMap extends GroupX implements GridElement {
     private LightEmitter getEmitterForObj(BattleFieldObject obj) {
         LightEmitter emitter = null;
         Coordinates c = obj.getBufferedCoordinates();
-        List<LightEmitter> list = emitters[c.x][grid.getRows() - c.y];
+        List<LightEmitter> list = emitters[c.x][grid.getGdxY(c.y)];
 
         for (LightEmitter lightEmitter : list) {
             if (lightEmitter.getUserObject() == obj) {
@@ -229,14 +229,14 @@ public class ShadowMap extends GroupX implements GridElement {
 
             BattleFieldObject obj = (BattleFieldObject) p.get();
             Coordinates c = obj.getBufferedCoordinates();
-            List<LightEmitter> list = emitters[c.x][grid.getRows() - c.y];
+            List<LightEmitter> list = emitters[c.x][grid.getGdxY(c.y)];
 
             LightEmitter emitter = getEmitterForObj(obj);
 
             list.remove(emitter);
 
             Coordinates c1 = obj.getCoordinates();
-            list = emitters[c1.x][grid.getRows() - c1.y];
+            list = emitters[c1.x][grid.getRows() - grid.getGdxY(c1.y)];
 
             list.add(emitter);
 
@@ -267,7 +267,7 @@ public class ShadowMap extends GroupX implements GridElement {
 //                            continue;
 //                    }
                     ShadeLightCell[][] cells = getCells(type);
-                    if (cells.length<=x||cells[0].length<=y) {
+                    if (cells.length <= x || cells[0].length <= y) {
                         continue;
                     }
                     ShadeLightCell cell = cells[x][y];
@@ -339,6 +339,7 @@ public class ShadowMap extends GroupX implements GridElement {
             BLACKOUT,
             HIGLIGHT
     };
+
     public static ALPHA_TEMPLATE getTemplateForShadeLight(SHADE_CELL type) {
         switch (type) {
             case VOID:

@@ -39,6 +39,7 @@ import main.gui.builders.TabBuilder;
 import main.launch.ArcaneVault;
 import main.simulation.SimulationManager;
 import main.system.auxiliary.*;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
@@ -335,7 +336,7 @@ public class ModelManager {
                 PrincipleMaster.initPrincipleIdentification(type);
             }
         } else if (obj_type == DC_TYPE.ENCOUNTERS) {
-
+            adjustEncounters();
         } else if (obj_type == DC_TYPE.ACTIONS) {
             for (ObjType type : DataManager.getTypes(obj_type)) {
                 ActionGenerator.addDefaultSneakModsToAction(type);
@@ -457,6 +458,20 @@ public class ModelManager {
                 }
             }
 
+        }
+    }
+
+    private static void adjustEncounters() {
+        for (ObjType type : DataManager.getTypes(DC_TYPE.ENCOUNTERS)) {
+            if (!FileManager.isFile(type.getImagePath())) {
+                for (String substring : ContainerUtils.openContainer(type.getProperty(PROPS.PRESET_GROUP))) {
+                    ObjType objType = DataManager.getType(substring, DC_TYPE.UNITS);
+                    if (objType != null) {
+                        type.setImage(objType.getImagePath());
+                        //104?
+                    }
+                }
+            }
         }
     }
 

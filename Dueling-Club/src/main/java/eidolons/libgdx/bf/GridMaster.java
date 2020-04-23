@@ -62,7 +62,7 @@ public class GridMaster {
     }
 
     public static Coordinates invertGdxY(Coordinates c) {
-        return new Coordinates(c.x, ScreenMaster.getDungeonGrid().getRows() - 1 - c.getY());
+        return new Coordinates(c.x, ScreenMaster.getDungeonGrid().getFullRows() - 1 - c.getY());
     }
 
     public static Vector2 getVectorForCoordinate(Coordinates sourceCoordinates,
@@ -71,7 +71,7 @@ public class GridMaster {
 
 //        InputController controller = DungeonScreen.getInstance().getController();
         float x = sourceCoordinates.getX() * CELL_W;
-        float y = (gridPanel.getRows()
+        float y = (gridPanel.getFullRows()
                 - (gdxY ? sourceCoordinates.getY() + 1 : sourceCoordinates.getY())) * CELL_H;
 
         if (camera) {

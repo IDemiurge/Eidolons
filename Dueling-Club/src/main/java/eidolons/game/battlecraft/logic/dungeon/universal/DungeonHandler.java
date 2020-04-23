@@ -4,11 +4,13 @@ import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.TransitHandler;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.PlaceholderResolver;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.battlecraft.logic.dungeon.module.ModuleLoader;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.game.DC_Game;
 
@@ -115,6 +117,14 @@ public class DungeonHandler<E extends DungeonWrapper> {
 
     public Spawner<E> getSpawner() {
         return master.getSpawner();
+    }
+
+    public ModuleLoader getModuleLoader() {
+        return master.getModuleLoader();
+    }
+
+    public TransitHandler getTransitHandler() {
+        return master.getTransitHandler();
     }
 
     public E getDungeon() {

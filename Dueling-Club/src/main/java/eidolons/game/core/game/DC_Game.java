@@ -276,8 +276,10 @@ public class DC_Game extends GenericGame {
         inventoryTransactionManager = new InventoryTransactionManager(this);
         inventoryManager = new DC_InventoryManager();
         battleMaster.init();
+        if (AI_ON) {
+            aiManager = new AI_Manager(this);
+        }
         dungeonMaster.init();
-        getDungeonMaster().getModuleLoader().loadInitial();
         setOffline(true);
 
         battleFieldManager = new DC_BattleFieldManager(this, getModule().getId(),
@@ -286,11 +288,13 @@ public class DC_Game extends GenericGame {
         droppedItemManager = new DroppedItemManager(this);
         droppedItemManager.init();
 
+
         if (AI_ON) {
-            aiManager = new AI_Manager(this);
             aiManager.init();
             dungeonMaster.getExplorationMaster().getAiMaster().getExploreAiManager().initialize();
         }
+
+        getDungeonMaster().getModuleLoader().loadInitial();
         setBattleInit(true);
     }
 

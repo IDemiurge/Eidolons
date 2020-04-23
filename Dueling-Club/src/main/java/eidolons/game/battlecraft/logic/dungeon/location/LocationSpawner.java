@@ -68,7 +68,7 @@ public class LocationSpawner extends Spawner<Location> {
                 //what else should be done to *spawn*?
             }
         } else {
-            super.spawn(data, player, mode);
+           return  super.spawn(data, player, mode);
         }
 
 

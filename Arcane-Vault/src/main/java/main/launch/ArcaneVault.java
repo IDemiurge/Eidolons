@@ -308,9 +308,9 @@ public class ArcaneVault {
         // MacroEngine.init();
         // } else
 
-        XmlCleaner.setCleanReadTypes(
-                DC_TYPE.ENCOUNTERS
-        );
+//        XmlCleaner.setCleanReadTypes(
+//                DC_TYPE.ENCOUNTERS
+//        );
         getContentValsManager().init();
         AV_DataManager.init();
 

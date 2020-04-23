@@ -222,7 +222,7 @@ public class RngUnitProvider {
                  chain(MURKBORN_DEFILER, 11)
                  : map.
                  chain(MISTBORN_GARGANTUAN, 5);
-            case HUMANS_PIRATES:
+            case PIRATES:
 
                 if (elite_boss_regular == null)
                     return map.
@@ -318,7 +318,7 @@ public class RngUnitProvider {
                  : map.
                  chain(DEFENDER_OF_LIGHT, 2).
                  chain(SILVERLANCE_COMMANDER, 5);
-            case HUMANS_BANDITS:
+            case BANDITS:
                 if (elite_boss_regular == null)
                     return map.
                             chain(THIEF, 10).
@@ -819,7 +819,7 @@ public class RngUnitProvider {
                  :
                  map
                   .chain(UNIT_GROUP.Ravenguard, 15)
-                  .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
+                  .chain(UNIT_GROUP.BANDITS, 10)
                   .chain(UNIT_GROUP.HUMANS, 6)
                  ;
 
@@ -866,8 +866,8 @@ public class RngUnitProvider {
             case Grimy:
                 return surface ?
                  map
-                  .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
-                  .chain(UNIT_GROUP.HUMANS_PIRATES, 6)
+                  .chain(UNIT_GROUP.BANDITS, 10)
+                  .chain(UNIT_GROUP.PIRATES, 6)
                   .chain(UNIT_GROUP.PRISONERS, 5)
                   .chain(UNIT_GROUP.MUTANTS, 5)
 
@@ -877,14 +877,14 @@ public class RngUnitProvider {
                   .chain(UNIT_GROUP.DUNGEON, 10)
                   .chain(UNIT_GROUP.MUTANTS, 6)
 //                  .chain(UNIT_GROUP.PALE_ORCS, 6)
-                  .chain(UNIT_GROUP.HUMANS_BANDITS, 6)
+                  .chain(UNIT_GROUP.BANDITS, 6)
                   .chain(UNIT_GROUP.CRITTERS_SPIDERS, 6)
                  ;
             case Pagan:
                 return surface ?
                  map
                   //                  .chain(UNIT_GROUP.NORTH, 12)
-                  .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
+                  .chain(UNIT_GROUP.BANDITS, 10)
                   .chain(UNIT_GROUP.DWARVES, 12)
                  //                  .chain(UNIT_GROUP.ANIMALS, 5)
                  //                  .chain(UNIT_GROUP.HUMANS_BARBARIANS, 3)
@@ -893,7 +893,7 @@ public class RngUnitProvider {
                  map
                   .chain(UNIT_GROUP.DWARVES, 15)
                   .chain(UNIT_GROUP.DUNGEON, 5)
-                  .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
+                  .chain(UNIT_GROUP.BANDITS, 10)
                  //                  .chain(UNIT_GROUP.ELEMENTALS, 6)
                  //                  .chain(UNIT_GROUP.UNDEAD_WRAITH, 6)
                  //                  .chain(UNIT_GROUP.PALE_ORCS, 5)
@@ -901,8 +901,8 @@ public class RngUnitProvider {
             case Stony:
                 return surface ?
                  map
-                  .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
-                  .chain(UNIT_GROUP.HUMANS_PIRATES, 6)
+                  .chain(UNIT_GROUP.BANDITS, 10)
+                  .chain(UNIT_GROUP.PIRATES, 6)
                   .chain(UNIT_GROUP.PRISONERS, 5)
                   .chain(UNIT_GROUP.ANIMALS, 5)
                   .chain(UNIT_GROUP.MUTANTS, 5)
@@ -968,7 +968,7 @@ public class RngUnitProvider {
         }
         return  map
          .chain(UNIT_GROUP.Ravenguard, 10)
-         .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
+         .chain(UNIT_GROUP.BANDITS, 10)
          .chain(UNIT_GROUP.PRISONERS, 10)
          .chain(UNIT_GROUP.MUTANTS, 10)
          ;

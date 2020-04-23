@@ -5,16 +5,17 @@ import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.logic.battle.encounter.Encounter;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.content.enums.EncounterEnums;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.MapBuilder;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AiGroupHandler extends AiHandler {
     protected List<GroupAI> groups;
-    private Map<Integer, AiData> encounterAiMap;
+    private Map<Integer, AiData> encounterAiMap = new HashMap<>();
 
 
     public AiGroupHandler(AiMaster master) {
@@ -23,6 +24,9 @@ public class AiGroupHandler extends AiHandler {
 
     public GroupAI createEncounterGroup(Encounter encounter, AiData data) {
         GroupAI group = new GroupAI(encounter.getLeader());
+        if (data == null) {
+            data = new AiData(true, EncounterEnums.UNIT_GROUP_TYPE.CROWD, null );
+        }
         EncounterEnums.UNIT_GROUP_TYPE type = data.getType();
         group.setType(type);
         if (data.getArg() == null) {
@@ -53,7 +57,7 @@ public class AiGroupHandler extends AiHandler {
     }
 
     public void initEncounterGroups(String textContent) {
-
+        initAiData(textContent, false);
     }
 
     public Map<Integer, AiData> getEncounterAiMap() {
@@ -64,13 +68,12 @@ public class AiGroupHandler extends AiHandler {
         if (custom){
             //TODO it's reverse - it's dataUnit=[ids]!
         }
-        encounterAiMap = new LinkedHashMap<>();
-        for (String sub : ContainerUtils.openContainer(nodeContents)) {
-            String[] split = sub.split("=");
-            Integer id = NumberUtils.getInteger(split[0]);
-            AiData data = new AiData(split[1]);
-            encounterAiMap.put(id, data);
-        }
+        encounterAiMap =
+                new MapBuilder<>("=", StringMaster.AND_SEPARATOR,
+                        s -> NumberUtils.getInteger(s),
+                        s -> new AiData(s)
+                )
+                .build(nodeContents);
     }
 
     public AiData getAiData(Integer origId) {

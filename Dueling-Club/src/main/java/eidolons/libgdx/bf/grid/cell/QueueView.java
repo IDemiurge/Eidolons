@@ -52,7 +52,7 @@ public class QueueView extends UnitView {
     }
 
     @Override
-    protected TextureRegion getDefaultTexture() {
+    public TextureRegion getDefaultTexture() {
         return TextureCache.getOrCreateR(OUTLINE_TYPE.UNKNOWN.getImagePath());
     }
 
@@ -182,11 +182,11 @@ public class QueueView extends UnitView {
         if (getUserObject().isWater()) {
             return;
         }
-        setOutline(TextureCache.getSizedRegion(
-                AtbPanel.imageSize,
-                OUTLINE_TYPE.UNKNOWN.getImagePath()));
+        setOutline(getDefaultTextureSized());
         setPortraitTexture(getOutline());
     }
+
+
 
     protected boolean isHpBarVisible() {
         return true;
@@ -250,6 +250,15 @@ public class QueueView extends UnitView {
 
     public void setInitiativeLabelText(String text) {
         initiativeLabel.setText(text);
+    }
+
+    public TextureRegion getDefaultTextureSized() {
+        if (defaultTexture == null) {
+            defaultTexture = TextureCache.getSizedRegion(
+                    AtbPanel.imageSize,
+                    OUTLINE_TYPE.UNKNOWN.getImagePath());
+        }
+        return defaultTexture;
     }
 
 }

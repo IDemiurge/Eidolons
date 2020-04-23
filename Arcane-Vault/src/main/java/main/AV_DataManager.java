@@ -2,7 +2,9 @@ package main;
 
 import eidolons.content.PROPS;
 import eidolons.content.ValuePageManager;
-import main.content.*;
+import main.content.ContentValsManager;
+import main.content.DC_TYPE;
+import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
@@ -11,6 +13,11 @@ import java.util.*;
 
 public class AV_DataManager {
 
+    private static final VALUE[] COPY_VALS_ENCOUNTERS = {
+            PROPS.PRESET_GROUP,
+            PROPS.EXTENDED_PRESET_GROUP,
+            PROPS.SHRUNK_PRESET_GROUP,
+    };
     static VALUE[] IGNORED_FROM_ALL_VALUES = {G_PROPS.TYPE,
             PROPS.FACING_DIRECTION, PROPS.VISIBILITY_STATUS,
             PROPS.DETECTION_STATUS, G_PROPS.STATUS, G_PROPS.MODE,};
@@ -26,6 +33,7 @@ public class AV_DataManager {
             {G_PROPS.ASPECT, G_PROPS.DEITY, G_PROPS.LORE,}, // SKILLS
     };
     private Map<ObjType, Stack<ObjType>> stackMap = new HashMap<>();
+    private static ObjType copiedType;
 
     public static void init() {
         Map<String, List<VALUE>> IGNORE_MAP = new HashMap<>();
@@ -52,6 +60,33 @@ public class AV_DataManager {
             return ContentValsManager.getArcaneVaultValueNames(key);
         }
 
+    }
+
+    public static void paste(ObjType selectedType) {
+        if (copiedType == null) {
+            return;
+        }
+        if (copiedType.getOBJ_TYPE_ENUM() != selectedType.getOBJ_TYPE_ENUM()) {
+            copiedType = null;
+            return;
+        }
+        VALUE[] values_to_copy = new VALUE[0];
+        if (copiedType.getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
+            switch (((DC_TYPE) copiedType.getOBJ_TYPE_ENUM())) {
+                case ENCOUNTERS:
+                    values_to_copy = COPY_VALS_ENCOUNTERS;
+            }
+        }
+        if (values_to_copy == null) {
+            return;
+        }
+        for (VALUE value : values_to_copy) {
+            selectedType.setValue(value, copiedType.getValue(value));
+        }
+    }
+
+    public static void copy(ObjType selectedType) {
+        copiedType = selectedType;
     }
 
     public void addType(ObjType type) {

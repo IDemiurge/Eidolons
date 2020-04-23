@@ -44,6 +44,7 @@ import main.entity.type.BuffType;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.core.game.GameManager;
+import main.game.core.state.GameState;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -177,6 +178,7 @@ public class DC_GameManager extends GameManager {
             resetWallMap();
             return;
         }
+        GameState.setResetDone(false);
         getGameObjMaster().clearCaches();
         FutureBuilder.clearCaches();
         if (!isResetDisabled())
@@ -188,6 +190,7 @@ public class DC_GameManager extends GameManager {
         VisionManager.refresh();
 
         updateGraphics();
+        GameState.setResetDone(true);
     }
 
     protected boolean isResetDisabled() {

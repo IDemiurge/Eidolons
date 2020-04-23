@@ -20,6 +20,7 @@ import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.MapMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,7 +38,8 @@ public class LevelBlock extends LevelStruct<LevelBlock, Object> {
     private Map<List<ObjAtCoordinate>, UNIT_GROUP_TYPE> unitGroups;
     private boolean template;
     private LevelZone zone;
-    private int zoneIndex;
+    private int id;
+    private static Integer ID = 0;
 
     public LevelBlock(Coordinates coordinates, LevelZone zone, ROOM_TYPE roomType, int width, int height, TileMap tileMap) {
         this.roomType = roomType;
@@ -49,11 +51,20 @@ public class LevelBlock extends LevelStruct<LevelBlock, Object> {
                         tileMap.getMap()));
         this.origin = coordinates;
         this.zone = zone;
+        id = ID++;
 
     }
 
     @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
     public Collection  getChildren() {
+        if (!CoreEngine.isLevelEditor()) {
+            return new ArrayList<>();
+        }
             LinkedHashSet<LayeredData> objs = DC_Game.game.getBfObjects().stream().filter(
                     obj -> isWithinBlock(obj) && obj.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS).map(
                     obj -> new ObjNode(obj)).collect(Collectors.toCollection(LinkedHashSet::new));
@@ -161,10 +172,6 @@ public class LevelBlock extends LevelStruct<LevelBlock, Object> {
     }
 
     public LevelZone getZone() {
-        if (zone == null) {
-            zone = DC_Game.game.getMetaMaster().getDungeonMaster().
-                    getDungeonLevel().getZoneById(getZoneIndex());
-        }
         return zone;
     }
 
@@ -175,10 +182,6 @@ public class LevelBlock extends LevelStruct<LevelBlock, Object> {
         return boundCells;
     }
 
-
-    public void offsetCoordinates() {
-        offsetCoordinates(getOrigin());
-    }
 
     public void offsetCoordinates(Coordinates offset) {
         coordinatesSet.forEach(c -> c.offset(offset));
@@ -239,14 +242,6 @@ public class LevelBlock extends LevelStruct<LevelBlock, Object> {
 
     public BlockData getData() {
         return (BlockData) data;
-    }
-
-    public void setZoneIndex(int zoneIndex) {
-        this.zoneIndex = zoneIndex;
-    }
-
-    public int getZoneIndex() {
-        return zoneIndex;
     }
 
     public void setModel(RoomModel blockTemplate) {

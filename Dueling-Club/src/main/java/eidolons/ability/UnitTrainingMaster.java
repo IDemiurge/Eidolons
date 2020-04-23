@@ -27,6 +27,8 @@ public class UnitTrainingMaster {
     }
 
     public static void train(Unit unit) {
+        if (CoreEngine.TEST_LAUNCH)
+            return;
         if (CoreEngine.isFullFastMode())
             return;
         if (CoreEngine.isFastMode()) {

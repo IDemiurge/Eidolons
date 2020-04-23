@@ -1,24 +1,25 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.game.bf.BattleFieldManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
+import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 
 public class ModuleLoader extends DungeonHandler<Location> {
 
     private Module loading;
     private Module last;
 
-    public ModuleLoader(DungeonMaster  master) {
-        super(master);
-    }
 
     /*
     dispose of textures/...
@@ -38,36 +39,52 @@ public class ModuleLoader extends DungeonHandler<Location> {
     step out
     init vfx
      */
-    public void loadModule(Module module){
+    public ModuleLoader(DungeonMaster  master) {
+        super(master);
+        GuiEventManager.bind(GuiEventType.GRID_RESET, p -> {
+            loadGdxGrid((Module) p.get());
+        });
+    }
+
+    public void loadGdxGrid(Module module) {
+        ScreenMaster.getScreen().moduleEntered(module,  getObjects(module));
+    }
+
+    private DequeImpl<BattleFieldObject> getObjects(Module module) {
+        return null;
+    }
+
+    public void loadModuleFull(Module module){
         last = getMetaMaster().getModuleMaster()
                 .getCurrent();
         loading = module;
-        initLogicalGrid();
-
+        initLogicalGrid(module);
 //        freeResources();
 //        initTransitFx();
 //        showLoadScreen();
 //        initMusic();
-
-        spawnEncounters();
 //        loadAssets(module);
-        loadGrid(module);
+        GuiEventManager.trigger(GuiEventType.GRID_RESET, module);
     }
 
     public void loadInitial() {
-        loadModule(getModule());
+        initLogicalGrid(getModule());
     }
-    private void initLogicalGrid() {
-        game.initGrid(loading);
-        BattleFieldManager.entered(loading.getId());
+    private void initLogicalGrid(Module module) {
+        game.initGrid(module);
+        BattleFieldManager.entered(module.getId() );
+        if (!CoreEngine.isLevelEditor()) {
+            spawnEncounters(module);
+        }
+        //TODO
 //        PositionMaster.initDistancesCache(loading.getId(),
 //                getModule().getEffectiveWidth(),
 //                getModule().getEffectiveHeight());
     }
 
-    private void spawnEncounters() {
+    private void spawnEncounters(Module module) {
         getBattleMaster().getEncounterSpawner().spawnEncounters(
-                loading.getEncounters());
+                module.getEncounters());
     }
 
     private void initMusic() {
@@ -75,21 +92,6 @@ public class ModuleLoader extends DungeonHandler<Location> {
         GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, template);
     }
 
-    private void loadGrid(Module module) {
-        //cache the prev. grid?
-        //presently, LE uses same grid. Is it the easier way?
-        //performance..
-
-        //use other pipelines - spawner, ...
-
-        GuiEventManager.trigger(GuiEventType.GRID_RESET, module);
-
-
-//cannot do afterLoad()!
-
-//        BFDataCreatedEvent data = new BFDataCreatedEvent(w, h, objects);
-//        GuiEventManager.trigger(GuiEventType.CREATE_UNITS_MODEL, )
-    }
 
     private void loadAssets(Module module) {
         String descriptors = module.getData().getValue(LevelStructure.MODULE_VALUE.assets);

@@ -17,6 +17,7 @@ import eidolons.libgdx.anims.sprite.FadeSprite;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.cell.OverlayView;
+import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
@@ -284,10 +285,9 @@ public class LightEmitter extends SuperActor {
     }
 
     protected boolean isIgnored() {
-        if (withinCamera != null)
+        if (!InputController.cameraMoved )
             return !withinCamera;
         withinCamera = getController().isWithinCamera(this);
-        getController().addCachedPositionActor(this);
         return !withinCamera;
     }
 

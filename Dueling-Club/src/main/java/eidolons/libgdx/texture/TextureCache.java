@@ -25,6 +25,8 @@ import main.system.images.ImageManager;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
@@ -46,6 +48,7 @@ public class TextureCache {
     private static Map<String, TextureRegion> regionCache = new HashMap<>(300);
     private static Map<TextureRegion, TextureRegionDrawable> drawableMap = new HashMap<>(300);
     private static boolean returnEmptyOnFail = true;
+    private static List<String> missingTextures = new LinkedList<>();
 
     private Map<String, Texture> cache;
     private Map<Texture, Texture> greyscaleCache;
@@ -62,6 +65,22 @@ public class TextureCache {
             return atlas.findRegion(light);
         }
         return new TextureRegion(getMissingTexture());
+    }
+
+    public static boolean isCached(String s) {
+        if (missingTextures.contains(s)) {
+            return false;
+        }
+        Texture texture = getInstance().cache.get(s);
+        if (texture != null) {
+            return true;
+        }
+        TextureRegion textureRegion = getOrCreateR(s);
+        if (isEmptyTexture(textureRegion)) {
+            missingTextures.add(s);
+            return false;
+        }
+        return true;
     }
 
     public void loadAtlases() {
@@ -454,6 +473,9 @@ public class TextureCache {
     private String getPathForCache(String path) {
         path = path
                 .toLowerCase();
+        if (path.startsWith("img")) {
+            path = path.replaceFirst("img", "");
+        }
         if (!path.startsWith("/")) {
             path = "/" + path;
         }

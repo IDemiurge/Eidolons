@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.battle.encounter;
 
+import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.generic.AiData;
 import eidolons.game.battlecraft.logic.battle.mission.MissionBattle;
@@ -14,6 +15,8 @@ import main.game.bf.Coordinates;
 import java.util.List;
 import java.util.Map;
 
+import static main.system.auxiliary.log.LogMaster.log;
+
 
 public class EncounterSpawner extends BattleHandler<MissionBattle> {
 
@@ -21,25 +24,35 @@ public class EncounterSpawner extends BattleHandler<MissionBattle> {
         ENGAGED, ALERT, IDLE, REGROUPING
     }
 
-    public EncounterSpawner(BattleMaster  master) {
+    public EncounterSpawner(BattleMaster master) {
         super(master);
     }
 
     public void spawnEncounters(List<Encounter> encounters) {
-        Map<Integer, String> dataMap = getGame().getMetaMaster().getDungeonMaster().getDataMap(DataMap.encounter);
+        Map<Integer, String> dataMap = getGame().getMetaMaster().getDungeonMaster().
+                getDataMap(DataMap.encounters);
         for (Encounter encounter : encounters) {
-            EncounterData data =
+            EncounterData data = dataMap == null ? new EncounterData(encounter) :
                     new EncounterData(dataMap.get(encounter.getOrigId()));
-            float adjustCoef = data.getFloatValue(EncounterData.ENCOUNTER_VALUE.adjust_coef);
-            int targetPower;
-            spawnEncounter(encounter, encounter.getCoordinates());
+            spawnEncounter(data, encounter, encounter.getCoordinates());
             //some would be concealed after spawn - ambush.
         }
     }
 
 
-    public void spawnEncounter(Encounter encounter, Coordinates coordinates ) {
-        new EncounterAdjuster(master).adjustEncounter(encounter, null );
+    public void spawnEncounter(EncounterData data, Encounter encounter, Coordinates coordinates) {
+        log(1, "Spawning " + encounter.getName() +
+                " at " + coordinates);
+        float adjustCoef = data.getFloatValue(EncounterData.ENCOUNTER_VALUE.adjust_coef);
+        if (adjustCoef == 0) {
+            adjustCoef = new Float(encounter.getType().getIntParam(PARAMS.ADJUST_COEF));
+        }
+        adjustCoef /= 100;
+
+        int targetPower = data.getIntValue(EncounterData.ENCOUNTER_VALUE.target_power);
+
+
+        new EncounterAdjuster(master).adjustEncounter(encounter, targetPower, adjustCoef);
 
         DC_Player owner = getGame().getPlayer(false);
 
@@ -48,12 +61,14 @@ public class EncounterSpawner extends BattleHandler<MissionBattle> {
 
         encounter.setUnits(units);
         //TODO leader by type
-
-        AiData data = getGame().getAiManager().getGroupHandler().getAiData(encounter.getOrigId());
+        AiData aiData = getGame().getAiManager().getGroupHandler().getAiData(encounter.getOrigId());
+        log(1, "AiData= " + aiData);
         encounter.setSpawned(true);
-        encounter.setAiData(data);
-        encounter.setGroupAI(getGame().getAiManager().getGroupHandler().createEncounterGroup(encounter, data));
+        encounter.setAiData(aiData);
+        encounter.setGroupAI(getGame().getAiManager().getGroupHandler().createEncounterGroup(encounter, aiData));
 
+        log(1, "Spawned " + encounter.getName() +
+                " with " + units);
     }
 
 

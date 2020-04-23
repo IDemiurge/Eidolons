@@ -322,8 +322,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
                     break;
                 }
-                if (checkNextLevel())
-                    if (confirmExit()) {
+                    if (checkNextFloor()) {
                         game.getBattleMaster().getOutcomeManager().next();
                         game.getVisionMaster().refresh();
                         break;
@@ -339,16 +338,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return true;
     }
 
-    private boolean confirmExit() {
-        if (CoreEngine.isIggDemo()){
-            return true;
-        }
-        EUtils.onConfirm("Leave this location? " +
-                        "Don't forget to check your achievements from the main menu!", () ->
-                        WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, true),
-                () ->
-                        WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, false));
-        return (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM);
+    private boolean checkNextFloor() {
+        return getGame().getDungeonMaster().getTransitHandler().checkNextFloor();
     }
 
     @Override

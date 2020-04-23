@@ -50,7 +50,7 @@ public abstract class DataEditDialog<S extends Enum<S> , T extends DataUnit<S>> 
     }
 
     protected Object formatFilePath(DataTable.DataPair item, Object value) {
-        String path = FileManager.formatPath(value.toString(), true);
+        String path = FileManager.formatPath(value.toString(), true, true);
         return PathUtils.cropResourcePath(path);
     }
 

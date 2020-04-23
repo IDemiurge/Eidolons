@@ -11,9 +11,7 @@ import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
@@ -27,6 +25,7 @@ public class Location extends DungeonWrapper {
     private String entranceData;
     private String exitData;
     private Map<Coordinates, CellScriptData> textDataMap = new HashMap<>();
+    private Set<Entrance> transits = new LinkedHashSet<>();
 
     public Location(DungeonMaster master, Dungeon dungeon) {
         super(dungeon, master);
@@ -133,5 +132,13 @@ public class Location extends DungeonWrapper {
 
     public void setTextDataMap(Map<Coordinates, CellScriptData> textDataMap) {
         this.textDataMap = textDataMap;
+    }
+
+    public Set<Entrance> getTransits() {
+        return transits;
+    }
+
+    public void addTransit(Entrance e) {
+        transits.add(e);
     }
 }
