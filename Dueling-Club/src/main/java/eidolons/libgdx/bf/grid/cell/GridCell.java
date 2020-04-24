@@ -22,9 +22,9 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
-import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
@@ -51,7 +51,7 @@ public class GridCell extends Group implements Borderable {
     protected Label cordsText;
     protected Label infoText;
 
-    SpriteX overlay;
+    FadeImageContainer overlay;
 
     // some creatures can walk there?
 
@@ -298,10 +298,6 @@ public class GridCell extends Group implements Borderable {
         ActionMaster.addRotateByAction(overlayTexture, overlayTexture.getRotation(), overlayRotation);
     }
 
-    public void setOverlayAnimation(String path) {
-        this.overlay.setSprite(path);
-    }
-
     public void setOverlayTexture(TextureRegion overlay) {
         if (overlay == null) {
             ActionMaster.addFadeOutAction(overlayTexture, 2);
@@ -317,9 +313,6 @@ public class GridCell extends Group implements Borderable {
 //        this.overlay = overlay;
     }
 
-    public SpriteX getOverlay() {
-        return overlay;
-    }
 
     public Label getInfoText() {
         return infoText;

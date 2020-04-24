@@ -84,9 +84,9 @@ public class LE_TransitHandler extends LE_Handler {
             }
             BattleFieldObject entrance = getIdManager().getObjectById(id);
             BattleFieldObject pair = getIdManager().getObjectById(pairId);
-            boolean oneWay = false; //TODO
+            boolean oneWay = pair==null; //TODO
             if (oneWay) {
-                builder.append(id).append("->").append(pair.getCoordinates()).append(";");
+                builder.append(id).append("->").append(entrance.getCoordinates()).append(";");
             } else {
                 builder.append(id).append("->").append(pair.getCoordinates()).append(";");
                 builder.append(pairId).append("->").append(entrance.getCoordinates()).append(";");

@@ -24,10 +24,13 @@ import main.game.bf.directions.DIRECTION;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 import org.w3c.dom.Node;
 
 import java.util.*;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * parses data strings for various purposes:
@@ -96,14 +99,14 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
 
     public Map<Integer, BattleFieldObject> processObjects(
             Module module, Map<Integer, ObjType> idMap,
-            Map<Integer, DC_Player> ownerMap, Node subNode) {
+            Map<Integer, DC_Player> ownerMap, String data) {
         //TODO   create player=> ids map and make multiple maps here!
 
         Map<Integer, BattleFieldObject> objIdMap = new LinkedHashMap<>();
         List<Encounter> encounters = new ArrayList<>();
 
         for (String substring : ContainerUtils.openContainer(
-                subNode.getTextContent())) {
+                data)) {
             Coordinates c = Coordinates.get(true, substring.split("=")[0]);
             List<String> ids;
             try {
@@ -143,8 +146,12 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
     public void processBorderObjects(
             Module module, Node subNode) {
 
-        for (String substring : ContainerUtils.openContainer(
-                subNode.getTextContent())) {
+        List<String> items = ContainerUtils.openContainer(
+                subNode.getTextContent());
+
+        log(LOG_CHANNEL.BUILDING,module.getName()+" has " + items.size() +
+                " border objects...");
+        for (String substring : items) {
             Coordinates c = Coordinates.get(true, substring);
             ObjType type = getBorderType();
             DC_Obj value = initObject(module, c, type, null, DC_Game.game);
@@ -153,6 +160,8 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
                 ((BattleFieldObject) value).setModuleBorder(true);
             }
         }
+        log(LOG_CHANNEL.BUILDING,module.getName()+": " + items.size() +
+                " border objects done ");
     }
 
     public static Coordinates getCoordinatesFromObjString(String sub) {

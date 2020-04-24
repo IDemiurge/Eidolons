@@ -22,18 +22,15 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     PARTY_MISSION(null, false, "party"),
     PARTY_MAIN_HERO(null, false, "party"),
 
-    SCENARIO_TYPE(null, false, "scenarios"), DUNGEON_STYLE(null, false, "scenarios"), SCENARIO_MISSIONS(null, true, "scenarios"),
+    SCENARIO_TYPE(null, false, "scenarios"),
+    DUNGEON_STYLE(null, false, "scenarios"),
+    SCENARIO_MISSIONS(null, true, "scenarios"),
     SCENARIO_PATHS(null, true, "scenarios"),
-    SCENARIO_STARTING_PLACE(null, false, "scenarios"),
-    SCENARIO_INTRO_DIALOGUES(null, true, "scenarios"),
-    SCENARIO_INTRO_DATA(null, false, "scenarios"),
     SCENARIO_PARTY(null, false, "scenarios"),
     SCENARIO_MAIN_HERO(null, false, "scenarios"),
     DIFFICULTY(null, false, "scenarios", "missions", "chars", "dungeons"),
 
 
-    PLACE_SHOPS(null, true, "places"),
-    PLACE_DUNGEON(null, false, "places"),
     PLACE_COORDINATES(null, false, "places"),
 
     MISSION_PLACE(null, false, "missions"),
@@ -57,9 +54,9 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     // TODO remove useless props... (just disabled for now)
     COLOR_THEME(null, false, "bf obj", "dungeons", "route", "place"),
-    ALT_COLOR_THEME(null, false, "dungeons"    ),
+    ALT_COLOR_THEME(null, false, "dungeons"),
 
-    SUBDUNGEON_TYPE(null, false , "dungeons"    ),
+    SUBDUNGEON_TYPE(null, false, "dungeons"),
 
     MASTERY_GROUPS_MAGIC(null, true, "units", "chars"),
     MASTERY_GROUPS_WEAPONS(null, true, "units", "chars"),
@@ -72,7 +69,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     SPELL_UPGRADES(null, true, "spells", "chars"),
     SPELL_UPGRADE_GROUPS(null, true, "spells", "skills", "classes", "units", "chars"),
 
-    SPELL_UPGRADES_PLAN(null, true, "units", "chars"),
     ACTION_PRIORITY_MODS(null, true, "units", "chars"),
     ACTION_PRIORITY_BONUSES(null, true, "units", "chars"),
 
@@ -131,10 +127,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     CONTAINER_GROUP_FILTER(null, false, "bf obj"),
     CONTAINER_GROUP_SINGLE(null, false, "bf obj"),
     DIMENSION(null, false, "bf obj", "units", "chars"),
-    PALETTE(null, false, "bf obj", "units", "chars"),
-    // IMMUNE(null, true, "units", "chars", "armor"),
-    // RESISTANT(null, true, "units", "chars", "armor"),
-    // VULNERABLE(null, true, "units", "chars", "armor"),
 
     SKILLS("Skills", true, "chars", "units"),
     SKILLS_TIER_1("Skills", true, "chars", "units"),
@@ -247,7 +239,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     AI_BEHAVIOR_MODE("encounters", null),
     PRE_BATTLE_EVENT("encounters", null),
     AFTER_BATTLE_EVENT("encounters", null),
-
 
 
     DROPPED_ITEMS(null, true, "terrain"),
@@ -385,7 +376,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ANIM_SOUND_MAIN("", true, "spells", "actions"),
     ANIM_SOUND_IMPACT("", true, "spells", "actions"),
     ANIM_SOUND_AFTEREFFECT("", true, "spells", "actions"),
-    
+
     ANIM_MODS_VFX("", true, "spells", "actions"),
 
     SPRITE_PATH("weapons", null), UNLOCKED_MASTERIES(null, true, "chars", "units"),
@@ -411,8 +402,8 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     OVERLAY_SPRITES(null, false, "units", "chars", "bf obj"),
     UNDERLAY_SPRITES(null, false, "units", "chars", "bf obj"),
     CUSTOM_OBJECT(null, false, "units", "chars", "bf obj"),
-    PLACEHOLDER_DATA(null, false, "units",   "bf obj"),
-    PLACEHOLDER_SYMBOL(null, false, "units",   "bf obj"),
+    PLACEHOLDER_DATA(null, false, "units", "bf obj"),
+    PLACEHOLDER_SYMBOL(null, false, "units", "bf obj"),
     ;
 
     static {

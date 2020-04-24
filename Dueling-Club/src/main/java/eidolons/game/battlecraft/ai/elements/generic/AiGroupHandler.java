@@ -9,12 +9,13 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapBuilder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AiGroupHandler extends AiHandler {
-    protected List<GroupAI> groups;
+    protected List<GroupAI> groups=    new ArrayList<>() ;
     private Map<Integer, AiData> encounterAiMap = new HashMap<>();
 
 

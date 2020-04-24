@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
-import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -77,10 +76,13 @@ public class ModuleMaster extends DungeonHandler<Location> {
 
     public Module getModule(Coordinates c) {
         for (Module module : modules) {
-            if (CoordinatesMaster.isWithinBounds(c, module.getX(), module.getX2(),
-                    module.getY(), module.getY2())) {
+            if (module.getCoordinatesSet().contains(c)) {
                 return module;
             }
+//            if (CoordinatesMaster.isWithinBounds(c, module.getX(), module.getX2(),
+//                    module.getY(), module.getY2())) {
+//                return module;
+//            }
         }
         return null;
     }

@@ -58,8 +58,12 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
             for (int i = 0; i < this.module.getEffectiveWidth(true); i++) {
                 for (int j = 0; j < this.module.getEffectiveHeight(true); j++) {
                     Coordinates o = Coordinates.get(i, j);
-                    cells[i][j].setVOID(this.module.getVoidCells().contains(o)
-                            || !inner.contains(o));
+                    if (!inner.contains(o)) {
+                        cells[i][j].setVOID(true);
+                    } else
+                    if (this.module.getVoidCells().contains(o)) {
+                        cells[i][j].setVOID(true);
+                    }
                 }
             }
             modules.add(module);

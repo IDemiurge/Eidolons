@@ -96,6 +96,9 @@ public class LE_DataHandler extends LE_Handler {
     }
 
     private void doPresave() {
+        if (!isResizingSupported()){
+            return ;
+        }
         boolean changed = false;
         for (Module module : getModuleHandler().getModules()) {
             ModuleData data = (ModuleData) new ModuleData(module).setData(module.getData().getData());
@@ -113,6 +116,10 @@ public class LE_DataHandler extends LE_Handler {
                 getFloor().getWrapper().setHeight(ModuleGridMapper.height);
             }
         }
+    }
+
+    private boolean isResizingSupported() {
+        return false;
     }
 
     private boolean recalcModuleParams(ModuleData data, boolean standalone) {

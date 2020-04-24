@@ -74,7 +74,14 @@ public class AV_DataManager {
         if (copiedType.getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
             switch (((DC_TYPE) copiedType.getOBJ_TYPE_ENUM())) {
                 case ENCOUNTERS:
-                    values_to_copy = COPY_VALS_ENCOUNTERS;
+                    //TODO alt
+                    values_to_copy = new VALUE[]{
+                            PROPS.FILLER_TYPES,
+                            PROPS.REINFORCEMENT_TYPE,
+                            PROPS.PRE_BATTLE_EVENT,
+                            PROPS.AFTER_BATTLE_EVENT,
+                            PROPS.LOOT_TYPE,
+                    };
             }
         }
         if (values_to_copy == null) {

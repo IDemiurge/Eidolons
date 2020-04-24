@@ -468,6 +468,7 @@ public class ModelManager {
                     ObjType objType = DataManager.getType(substring, DC_TYPE.UNITS);
                     if (objType != null) {
                         type.setImage(objType.getImagePath());
+                        break;
                         //104?
                     }
                 }

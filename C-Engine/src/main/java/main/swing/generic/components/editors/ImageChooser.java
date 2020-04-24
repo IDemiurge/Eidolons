@@ -2,7 +2,7 @@ package main.swing.generic.components.editors;
 
 import main.content.DC_TYPE;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.StringMaster;
+import main.system.PathUtils;
 import main.system.images.ImageManager;
 
 import javax.swing.*;
@@ -27,9 +27,7 @@ public class ImageChooser extends FileChooser {
 
     @Override
     protected String cropPrefix(String selected) {
-        return StringMaster.replaceFirst(selected,
-         PathFinder.getImagePath()
-         , "");
+        return PathUtils.cropImagePath(selected);
     }
 
     @Override

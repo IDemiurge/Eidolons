@@ -23,11 +23,6 @@ public class LE_DialogHandler extends LE_Handler {
         return LE_Screen.getInstance().getGuiStage();
     }
 
-    public void newModule(){
-        Module module = new Module();
-        ModuleData data = getDefaultModuleData(module);
-//        return getGuiStage().getModuleDialog().addModule(data);
-    }
 
     private ModuleData getDefaultModuleData(Module module) {
         return (ModuleData) new ModuleData(module).setData("width:45;height:45;");

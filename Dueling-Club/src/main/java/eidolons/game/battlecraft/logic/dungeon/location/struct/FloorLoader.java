@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -87,13 +86,11 @@ public class FloorLoader extends DungeonHandler<Location> {
                 getObjInitializer().processBorderObjects(module, node);
                 break;
             case OBJ_NODE_NEW:
-                Map<Integer, BattleFieldObject> objectMap =
-                        getObjInitializer().processObjects(module,
-                                module.getIdTypeMap(),
-                                new HashMap<>(), node);
+                module.setObjectsData(node.getTextContent());
+                if (module.isInitialModule()) {
+                    module.initObjects();
+                }
 
-                log(LOG_CHANNEL.BUILDING, "Objects created: " + objectMap.size());
-                module.getObjIdMap().putAll(objectMap);
                 break;
             case COORDINATES_VOID:
                 for (String substring : ContainerUtils.openContainer(node.getTextContent())) {
@@ -192,7 +189,7 @@ public class FloorLoader extends DungeonHandler<Location> {
     }
 
     protected void processTransitPair(Integer id, Coordinates c, Location location) {
-        Entrance e = (Entrance) master.getObjByOriginalModuleId (id);
+        Entrance e = (Entrance) master.getObjByOriginalModuleId(id);
         e.setTargetCoordinates(c);
 
         Module module = getMetaMaster().getModuleMaster().getModule(c);
@@ -217,8 +214,7 @@ public class FloorLoader extends DungeonHandler<Location> {
             ObjType type = DataManager.getType(typeName, DC_TYPE.BF_OBJ);
             if (type == null) {
                 type = DataManager.getType(typeName, DC_TYPE.ENCOUNTERS);
-            } else
-            if (type == null) {
+            } else if (type == null) {
                 type = DataManager.getType(typeName, DC_TYPE.UNITS);
             }
             String ids = content.split("=")[1];

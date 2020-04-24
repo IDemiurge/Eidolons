@@ -206,8 +206,12 @@ public class PathUtils {
         return path;
     }
 
+    public static String cropImagePath(String path) {
+        return FileManager.formatPath( path.toLowerCase(), true, true)
+                .replace(PathFinder.getImagePath().toLowerCase(), "");
+    }
     public static String cropResourcePath(String path) {
-            return FileManager.formatPath( path.toLowerCase(), true)
-                    .replace(PathFinder.getResPath().toLowerCase(), "");
+        return FileManager.formatPath( path.toLowerCase(), true, true)
+                .replace(PathFinder.getResPath().toLowerCase(), "");
     }
 }

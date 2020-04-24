@@ -89,6 +89,12 @@ none, low, normal, high, always
         gold, artifact, treasure, arcane, items, random, junk, none
     }
 
+    public enum PRE_BATTLE_EVENT {
+        taunt, what, fear, wrath, reason, righteous_defense, none
+    }
+    public enum AFTER_BATTLE_EVENT {
+        no, mercy, curse_you, illbeback, none
+    }
     public enum GROWTH_PRIORITIES {
         GROUP, LEVEL, FILL, EXTEND
     }

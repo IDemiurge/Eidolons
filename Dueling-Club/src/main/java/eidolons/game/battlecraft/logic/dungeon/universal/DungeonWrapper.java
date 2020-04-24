@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
-import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.entity.EntityWrapper;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -43,10 +42,6 @@ public class DungeonWrapper  extends LevelStruct<Module, Module> implements Enti
 
     public String getMapBackground() {
         return dungeon.getMapBackground();
-    }
-
-    public DUNGEON_TYPE getDungeonType() {
-        return dungeon.getDungeonType();
     }
 
     public boolean isBoss() {

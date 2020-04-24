@@ -18,14 +18,6 @@ public class IGG_Launcher {
     public static boolean INTRO_RUNNING = false;
     private static String splitter = ";";
 
-    public static void startIntro() {
-
-    }
-
-    public static void startBriefing(int missionIndex) {
-
-    }
-
     public static void start(Runnable onDone) {
         new Thread(() -> {
             CoreEngine.setIggDemoRunning(true);
@@ -61,19 +53,6 @@ public class IGG_Launcher {
     public static boolean introBriefing() {
          DescriptionTooltips.init();
         String txtData = DescriptionTooltips.getTipMap().get("intro slides");
-                //TODO EA hack
-//                "We were six in the end, when we met the faceless fiend. " +
-//                        "We were only two when it was over.;\n" +
-//
-//                        "Yet it was enough. I did not have the will to do what was necessary. I let Selene live, and she betrayed me for it. " +
-//                        "Now Apholon is gone, and with it my chance to change my fate.;" +
-//
-//                        "No matter what I do, the Prophecy haunts me, ensnares me in its web. I do not wish to be any world’s savior, least of all this one’s.; \n" +
-//
-//                        "Yet I obtained the sacred ash, the final piece of the puzzle I worked so hard on all these years.;" +
-//
-//                        "Now I know how the Sorcerer King raised his army, became more than a mere necromancer, but a god who could bring back the fallen, time and again, " +
-//                        "ad infinitum, while his minions brought him new souls to consume. \n;";
 
         String imgData =
                 IGG_Images.BRIEF_ART.EIDOLONS_CENTER.getPath() + ";"

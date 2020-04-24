@@ -55,6 +55,8 @@ public class TransitHandler extends DungeonHandler {
     private void transit(Entrance transit) {
         Eidolons.getMainHero().setCoordinates(transit.getTargetCoordinates());
         getModuleLoader().loadModuleFull(transit.getTargetModule());
+        WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.GUI_READY);
         GuiEventManager.trigger(GuiEventType.UNIT_MOVED, Eidolons.getMainHero());
+        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, Eidolons.getMainHero().getCoordinates());
     }
 }

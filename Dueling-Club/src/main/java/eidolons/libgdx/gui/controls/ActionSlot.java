@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 
 /**
  * Created by JustMe on 11/13/2018.
+ * TODO to replace the old item comps
  */
 public class ActionSlot extends HqSlotActor<DC_ActiveObj> {
 

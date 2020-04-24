@@ -177,7 +177,7 @@ public class AI_Manager extends AiMaster {
     }
 
     public List<GroupAI> getGroups() {
-        return getAutoGroupHandler().getGroups();
+        return getGroupHandler().getGroups();
     }
 
 

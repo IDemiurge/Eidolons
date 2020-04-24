@@ -2,10 +2,9 @@ package eidolons.game.battlecraft.rules.action;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.core.game.DC_Game;
-import eidolons.macro.global.rules.TurnRule;
-import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class PerceptionRule extends TurnRule implements ActionRule {
+public class PerceptionRule   implements ActionRule {
 
     public void newTurn() {
         // TODO additional round of 'sniffing'

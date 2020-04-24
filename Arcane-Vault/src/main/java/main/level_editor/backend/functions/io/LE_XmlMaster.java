@@ -19,12 +19,15 @@ import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 public class LE_XmlMaster extends LE_Handler {
 
@@ -40,6 +43,7 @@ public class LE_XmlMaster extends LE_Handler {
     public String toXml(Location floor, Module standalone) {
         return toXml(floor, standalone, null);
     }
+
     public String toXml(Location floor, Module standalone, Transform transform) {
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
 
@@ -96,9 +100,14 @@ public class LE_XmlMaster extends LE_Handler {
 
     private Function<Integer, Boolean> getIdFilter(Module standalone) {
         return id ->
-                standalone == null || standalone.getCoordinatesSet().
-                        contains(LevelEditor.getManager().getIdManager().getObjectById(id).
-                                getCoordinates());
+        {
+            BattleFieldObject object = LevelEditor.getManager().getIdManager().getObjectById(id);
+            if (object == null) {
+                return false;
+            }
+            return standalone == null || standalone.getCoordinatesSet().
+                    contains(object.getCoordinates());
+        };
     }
 
     private String buildBorderMap(Module module) {
@@ -112,6 +121,7 @@ public class LE_XmlMaster extends LE_Handler {
     private String buildCoordinateMap(Module module, boolean borders) {
         StringBuilder builder = new StringBuilder();
         Map<Integer, BattleFieldObject> map = LevelEditor.getGame().getSimIdManager().getObjMap();
+        int i = 0;
         for (Coordinates c : module.initCoordinateSet(false)) {
             Set<BattleFieldObject> set = LevelEditor.getGame().getObjectsOnCoordinate(c);
             if (!borders)
@@ -128,6 +138,7 @@ public class LE_XmlMaster extends LE_Handler {
             builder.append(c);
             if (borders) {
                 builder.append(";");
+                i++;
                 continue; //just the coordinate
             }
             builder.append("=");
@@ -137,11 +148,15 @@ public class LE_XmlMaster extends LE_Handler {
                 if (id == null) {
                     continue;
                 }
+                i++;
                 builder.append(id);
             }
             builder.append(";");
 
         }
+        log(LOG_CHANNEL.SAVE, module.getName() + " has " + i +
+                (borders ? "border objects"
+                        : "objects"));
         return XML_Converter.wrap(
                 borders
                         ? FloorLoader.BORDERS
@@ -150,7 +165,7 @@ public class LE_XmlMaster extends LE_Handler {
     }
 
     //TODO DC_TYPE ?
-    private String buildIdMap(Module standalone) {
+    private String buildIdMap(Module module) {
         StringBuilder builder = new StringBuilder();
         Map<Integer, BattleFieldObject> map = LevelEditor.getGame().getSimIdManager().getObjMap();
 
@@ -158,8 +173,8 @@ public class LE_XmlMaster extends LE_Handler {
         for (Integer integer : map.keySet()) {
             try {
                 BattleFieldObject object = map.get(integer);
-                if (standalone != null) {
-                    if (!standalone.getCoordinatesSet().contains(object.getCoordinates())) {
+                if (module != null) {
+                    if (!module.getCoordinatesSet().contains(object.getCoordinates())) {
                         continue;
                     }
                 }
@@ -191,7 +206,7 @@ public class LE_XmlMaster extends LE_Handler {
         xmlBuilder.appendNode(new ModuleData(module).toString(),
                 FloorLoader.DATA);
 
-         xmlBuilder.append("\n").append(buildIdMap(module));
+        xmlBuilder.append("\n").append(buildIdMap(module));
         String meta = getMetaXml(module);
         xmlBuilder.append("\n").append(meta);
 

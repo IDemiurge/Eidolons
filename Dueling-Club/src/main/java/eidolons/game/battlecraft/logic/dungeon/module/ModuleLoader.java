@@ -15,6 +15,9 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public class ModuleLoader extends DungeonHandler<Location> {
 
     private Module loading;
@@ -51,7 +54,9 @@ public class ModuleLoader extends DungeonHandler<Location> {
     }
 
     private DequeImpl<BattleFieldObject> getObjects(Module module) {
-        return null;
+        module.initObjects();
+        Set<BattleFieldObject> set = game.getBfObjects().stream().filter(obj -> module.getCoordinatesSet().contains(obj.getCoordinates())).collect(Collectors.toSet());
+        return new DequeImpl<>(set);
     }
 
     public void loadModuleFull(Module module){

@@ -86,7 +86,7 @@ public class LE_UnitView extends GridUnitView {
     }
 
     @Override
-    protected TextureRegion getDefaultTexture() {
+    public TextureRegion getDefaultTexture() {
         return originalTexture;
     }
 

@@ -182,11 +182,9 @@ public class UnitLibrary {
                 }
             }
             if (reason.contains(PARAMS.XP.getName())) {
-                if (unit.checkParam(PARAMS.XP, type.getIntParam(PARAMS.XP_COST) + "*100/"
-                 + xpPercentageToSpend)) // TODO discount
-                {
-                    return true;
-                }
+                // TODO discount
+                return unit.checkParam(PARAMS.XP, type.getIntParam(PARAMS.XP_COST) + "*100/"
+                        + xpPercentageToSpend);
             }
         }
         return false;
@@ -255,8 +253,6 @@ public class UnitLibrary {
                 return PROPS.SPELLBOOK;
             case NEW:
                 return PROPS.SPELL_PLAN;
-            case UPGRADE:
-                return PROPS.SPELL_UPGRADES_PLAN;
         }
         return null;
     }

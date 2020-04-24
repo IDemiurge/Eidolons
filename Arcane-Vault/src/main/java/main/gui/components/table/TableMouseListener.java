@@ -121,6 +121,8 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             PROPS.UNIT_GROUP_TYPE.name(),
             PROPS.AI_BEHAVIOR_MODE.name(),
             PROPS.LOOT_TYPE.name(),
+            PROPS.AFTER_BATTLE_EVENT.name(),
+            PROPS.PRE_BATTLE_EVENT.name(),
             PROPS.DUNGEON_STYLE.name(),
             MACRO_PROPS.QUEST_GROUP.name(), MACRO_PROPS.QUEST_TYPE.name(),
             MACRO_PROPS.QUEST_REWARD_TYPE.name(),
@@ -142,8 +144,8 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             G_PROPS.WORKSPACE_GROUP.name(), G_PROPS.BF_OBJECT_TYPE.name(),
             G_PROPS.BF_OBJECT_GROUP.name(), G_PROPS.BF_OBJECT_CLASS.name(), PROPS.AI_TYPE.name(),
             PROPS.AI_LOGIC.name(), G_PROPS.BACKGROUND.name(), PROPS.EFFECTS_WRAP.name(),
-            G_PROPS.DUNGEON_GROUP.name(), G_PROPS.DUNGEON_TYPE.name(),
-            G_PROPS.DUNGEON_LEVEL.name(), G_PROPS.ENCOUNTER_TYPE.name(),
+            G_PROPS.DUNGEON_GROUP.name(),
+             G_PROPS.ENCOUNTER_TYPE.name(),
             G_PROPS.ENCOUNTER_GROUP.name(), G_PROPS.KEYS.name(), G_PROPS.ABILITY_GROUP.name(),
             G_PROPS.ABILITY_TYPE.name(), G_PROPS.ITEM_MATERIAL_GROUP.name(),
             G_PROPS.ITEM_TYPE.name(), G_PROPS.ITEM_GROUP.name(), G_PROPS.ARMOR_TYPE.name(),
@@ -160,12 +162,12 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             PROPS.BF_OBJECT_SIZE.name(), PROPS.OBJECT_ARMOR_TYPE.name(), PROPS.DIMENSION.name()};
     public static final String[] MULTIPLE_ENUM_LIST_IDS = {
             PROPS.PARAMETER_BONUSES.getName(),
-            PROPS.PALETTE.name(), PROPS.ATTRIBUTE_BONUSES.getName(), PROPS.DUNGEON_TAGS.name(),
+             PROPS.ATTRIBUTE_BONUSES.getName(), PROPS.DUNGEON_TAGS.name(),
             PROPS.MASTERY_GROUPS_MAGIC.name(), PROPS.MASTERY_GROUPS_WEAPONS.name(),
             PROPS.MASTERY_GROUPS_MISC.name(), G_PROPS.SPELL_UPGRADE_GROUPS.name(),
             PROPS.JEWELRY_ITEM_TRAIT_REPERTOIRE.name(),
             PROPS.JEWELRY_PASSIVE_ENCHANTMENT_REPERTOIRE.name(), G_PROPS.BF_OBJECT_TAGS.name(),
-            G_PROPS.ARCADE_ROUTE.name(), PROPS.ROLL_TYPES_TO_DISPEL_EACH_TURN.name(),
+            PROPS.ROLL_TYPES_TO_DISPEL_EACH_TURN.name(),
             PROPS.ROLL_TYPES_TO_SAVE.name(), PROPS.QUALITY_LEVEL_RANGE.name(),
             PROPS.ALLOWED_MATERIAL.name(), PROPS.MASTERY_PROGRESSION.name(),
             G_PROPS.VARIABLE_TYPES.name(), PROPS.ATTRIBUTE_PROGRESSION.name(),
@@ -180,6 +182,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 
     public static final Object[][] MULTI_TYPE_PAIRS = {
             {PROPS.SHRUNK_PRESET_GROUP.getName(), DC_TYPE.UNITS},
+            {PROPS.FILLER_TYPES.getName(), DC_TYPE.UNITS},
             {PROPS.PRESET_GROUP.getName(), DC_TYPE.UNITS},
             {PROPS.EXTENDED_PRESET_GROUP.getName(), DC_TYPE.UNITS},
             {PROPS.REINFORCEMENT_CUSTOM.getName(), DC_TYPE.ENCOUNTERS},

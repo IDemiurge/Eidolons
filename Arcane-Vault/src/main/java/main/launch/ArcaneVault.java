@@ -8,7 +8,6 @@ import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.content.ContentGenerator;
 import eidolons.system.content.PlaceholderGenerator;
-import eidolons.system.content.UtilUnitGrouper;
 import eidolons.system.file.ResourceMaster;
 import eidolons.system.utils.JsonToType;
 import eidolons.system.utils.XmlCleaner;
@@ -220,15 +219,10 @@ public class ArcaneVault {
 //            String input = DialogMaster.inputText("Input 'json' (baseType = name:val;... || baseType2 = ...)");
             String base = DialogMaster.inputText("base Type name");
 //            JsonToType.convert(input, DC_TYPE.ENCOUNTERS);
-            if (base != null) {
+            if (!StringMaster.isEmpty(base)) {
                 JsonToType.convertAlt(base, FileManager.readFile
                         (PathFinder.getTYPES_PATH() + "sources/encounters.txt"), DC_TYPE.ENCOUNTERS);
             }
-        }
-        try {
-            UtilUnitGrouper.groupUnits();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
         }
 
         if (macroMode) {

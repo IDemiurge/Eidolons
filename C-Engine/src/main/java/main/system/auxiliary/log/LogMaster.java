@@ -113,6 +113,10 @@ public class LogMaster {
     public static final int BUILDING = -38;
     public static final boolean BUILDING_ON = true;
 
+    public static final String SAVE_PREFIX = "SAVE: ";
+    public static final int SAVE = -39;
+    public static final boolean SAVE_ON = true;
+
     public static final LOG_CHANNEL[] specialLogChannels = {
 
     };

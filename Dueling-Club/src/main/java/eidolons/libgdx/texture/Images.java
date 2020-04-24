@@ -45,6 +45,7 @@ public class Images {
 
 
 
+    public static final String LOGO_EDITOR_64 = "ui/main/editor.png";
 
     public static final String LOGO32 = "ui/main/logo32.png";
     public static final String LOGO64 = "ui/main/logo64.png";

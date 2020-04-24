@@ -169,6 +169,7 @@ public class DC_ConditionMaster extends ConditionMaster {
                 break;
 
             // boolean var for NOT
+            case NON_VOID:
             case FREE_CELL:
                 condition = getFreeCellCondition(KEYS.SOURCE.toString(), variables[0].toString());
                 break;

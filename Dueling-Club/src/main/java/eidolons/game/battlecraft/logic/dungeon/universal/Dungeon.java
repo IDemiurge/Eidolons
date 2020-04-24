@@ -66,14 +66,6 @@ public class Dungeon extends LightweightEntity {
         return type.getProperty(PROPS.MAP_BACKGROUND);
     }
 
-    public DUNGEON_TYPE getDungeonType() {
-        if (dungeonType == null) {
-            dungeonType = new EnumMaster<DUNGEON_TYPE>().retrieveEnumConst(DUNGEON_TYPE.class,
-                    getProperty(G_PROPS.DUNGEON_TYPE));
-        }
-        return dungeonType;
-    }
-
     public LOCATION_TYPE getDungeonSubtype() {
         if (dungeonSubtype == null) {
             dungeonSubtype = new EnumMaster<LOCATION_TYPE>().retrieveEnumConst(LOCATION_TYPE.class,
@@ -83,7 +75,7 @@ public class Dungeon extends LightweightEntity {
     }
 
     public boolean isBoss() {
-        return getDungeonType() == DUNGEON_TYPE.BOSS;
+        return false;
     }
 
     public Integer getCellsX() {

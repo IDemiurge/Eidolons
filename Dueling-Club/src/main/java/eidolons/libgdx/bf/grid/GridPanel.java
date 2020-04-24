@@ -113,6 +113,15 @@ public abstract class GridPanel extends Group {
             container = new GridSubParts();
             containerMap.put(module, container);
         }
+        if (viewMap != null)
+            for (BaseView value : viewMap.values()) {
+                if (value.isWithinCameraCheck()) {
+                    value.fadeOut();
+                } else {
+                    value.remove();
+                }
+            }
+
         viewMap = container.viewMap;
         customOverlayingObjectsUnder = container.customOverlayingObjects;
         customOverlayingObjectsTop = container.customOverlayingObjectsTop;
@@ -312,7 +321,7 @@ public abstract class GridPanel extends Group {
     }
 
     public int getGdxY(int y) {
-        return full_rows -1 - y ;
+        return full_rows - 1 - y;
     }
 
     protected void setVisible(BattleFieldObject sub, boolean visible) {
@@ -1009,7 +1018,25 @@ public abstract class GridPanel extends Group {
     public int getFullCols() {
         return full_cols;
     }
+
     public int getFullRows() {
         return full_rows;
+    }
+
+    public void resetCell(Coordinates c) {
+        GridCellContainer cellContainer = cells[c.x][getGdxY(c.y)];
+
+        cellContainer.fadeOutOverlay();
+
+    }
+    public void showMoveGhostOnCell(Unit unit) {
+        Coordinates c = unit.getCoordinates();
+        GridCellContainer cellContainer = cells[c.x][getGdxY(c.y)];
+        TextureRegion texture = null;
+        if (getUnitView(unit).getPortrait().getContent().getDrawable() instanceof TextureRegionDrawable) {
+            texture =   ((TextureRegionDrawable) getUnitView(unit).getPortrait().getContent().getDrawable()).getRegion();
+        }
+        cellContainer.fadeInOverlay(texture);
+
     }
 }

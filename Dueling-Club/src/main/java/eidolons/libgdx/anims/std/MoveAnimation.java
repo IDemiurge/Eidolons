@@ -142,6 +142,9 @@ public class MoveAnimation extends ActionAnim {
         action.setTarget(actor);
 
 
+        ScreenMaster.getDungeonGrid().showMoveGhostOnCell(unit);
+        ScreenMaster.getDungeonGrid().resetCell(unit.getBufferedCoordinates());
+//        GuiEventManager.trigger(GuiEventType.CELL_SHOW_MOVE_GHOST, unit);
     }
 
     @Override
@@ -210,6 +213,8 @@ public class MoveAnimation extends ActionAnim {
     public void finished() {
         super.finished();
         ScreenMaster.getDungeonGrid().unitViewMoved((BaseView) getActor());
+
+
     }
 
     @Override

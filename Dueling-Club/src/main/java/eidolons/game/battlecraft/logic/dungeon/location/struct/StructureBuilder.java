@@ -43,7 +43,7 @@ public class StructureBuilder extends DungeonHandler<Location> {
     }
 
     public Module createModule(Node node, Location location) {
-        Module module = new Module();
+        Module module = new Module(game);
 //    TODO explicit order!    XmlNodeMaster.findNode()
         for (Node sub : XmlNodeMaster.getNodeList(node)) {
             if (sub.getNodeName().equalsIgnoreCase(FloorLoader.DATA)) {

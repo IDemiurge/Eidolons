@@ -11,11 +11,15 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.util.*;
 
+import static main.system.auxiliary.log.LogMaster.log;
+
 public class Module extends LevelStruct<LevelZone, LevelZone> {
 
+    DC_Game game;
     private List<LevelZone> zones;
     private List<Encounter> encounters;
     private int id;
@@ -24,6 +28,7 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
 
     private Map<Integer, BattleFieldObject> objIdMap = new LinkedHashMap<>();
     private Map<Integer, ObjType> idTypeMap = new LinkedHashMap<>();
+    private String objectsData;
 
     public Module(Coordinates origin, int width, int height, String name) {
         this.origin = origin;
@@ -33,8 +38,8 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
         id = ID++;
     }
 
-    public Module() {
-        super();
+    public Module(DC_Game game) {
+        this.game = game;
     }
 
     @Override
@@ -115,7 +120,7 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     public String toString() {
         return name +
                 " - Module with " +
-                (zones==null ? "no": zones.size()) +
+                (zones == null ? "no" : zones.size()) +
                 " zones" + ", Data: " + getData();
     }
 
@@ -124,8 +129,8 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
             return getHeight();
         }
         return getHeight() +
-                (buffer ? getData().getIntValue(LevelStructure.MODULE_VALUE.height_buffer)*2 : 0) +
-                getData().getIntValue(LevelStructure.MODULE_VALUE.border_width)*2;
+                (buffer ? getData().getIntValue(LevelStructure.MODULE_VALUE.height_buffer) * 2 : 0) +
+                getData().getIntValue(LevelStructure.MODULE_VALUE.border_width) * 2;
     }
 
     public int getEffectiveHeight() {
@@ -141,8 +146,8 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
             return getWidth();
         }
         return getWidth() +
-                (buffer ? getData().getIntValue(LevelStructure.MODULE_VALUE.width_buffer)*2 : 0) +
-                getData().getIntValue(LevelStructure.MODULE_VALUE.border_width)*2;
+                (buffer ? getData().getIntValue(LevelStructure.MODULE_VALUE.width_buffer) * 2 : 0) +
+                getData().getIntValue(LevelStructure.MODULE_VALUE.border_width) * 2;
     }
 
     public void setEncounters(List<Encounter> encounters) {
@@ -167,5 +172,27 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
 
     public Map<Integer, ObjType> getIdTypeMap() {
         return idTypeMap;
+    }
+
+    public boolean isInitialModule() {
+        return getId() == 0;
+    }
+
+    public void initObjects() {
+        Map<Integer, BattleFieldObject> objectMap =
+                game.getDungeonMaster().getObjInitializer().processObjects(this,
+                        getIdTypeMap(),
+                        new HashMap<>(), getObjectsData());
+
+        log(LOG_CHANNEL.BUILDING, "Objects created: " + objectMap.size());
+        getObjIdMap().putAll(objectMap);
+    }
+
+    public void setObjectsData(String objectsData) {
+        this.objectsData = objectsData;
+    }
+
+    public String getObjectsData() {
+        return objectsData;
     }
 }
