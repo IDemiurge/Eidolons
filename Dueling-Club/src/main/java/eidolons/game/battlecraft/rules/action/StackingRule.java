@@ -7,14 +7,13 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.round.WaterRule;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.objects.Door;
+import eidolons.game.netherflame.igg.pale.PaleAspect;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
@@ -68,7 +67,7 @@ public class StackingRule implements ActionRule {
         if (unit instanceof Entrance)
             return true;
 
-        return instance.canBeMovedOnto(maxSpaceTakenPercentage, unit, c, 0, otherUnits);
+        return instance.canBeMovedOnto(maxSpaceTakenPercentage, unit, c,  otherUnits);
     }
 
     public static void actionMissed(DC_ActiveObj action) {
@@ -103,15 +102,15 @@ public class StackingRule implements ActionRule {
     }
 
     public boolean canBeMovedOnto(Entity unit, Coordinates c) {
-        return canBeMovedOnto(unit, c, null, null);
+        return canBeMovedOnto(unit, c,   null);
     }
 
-    public boolean canBeMovedOnto(Entity unit, Coordinates c, Integer z,
+    public boolean canBeMovedOnto(Entity unit, Coordinates c,
                                   List<? extends Entity> otherUnits) {
-        return canBeMovedOnto(100, unit, c, z, otherUnits);
+        return canBeMovedOnto(100, unit, c,   otherUnits);
     }
 
-    private boolean canBeMovedOnto(Integer maxSpaceTakenPercentage, Entity unit, Coordinates c, Integer z,
+    private boolean canBeMovedOnto(Integer maxSpaceTakenPercentage, Entity unit, Coordinates c ,
                                    List<? extends Entity> otherUnits) {
         HashMap<Coordinates, Boolean> bools = cache.get(unit);
         boolean result = false;
@@ -128,7 +127,7 @@ public class StackingRule implements ActionRule {
 
         //getVar all units on the cell
         DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
-        for (BattleFieldObject u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
+        for (BattleFieldObject u : game.getObjectsOnCoordinate(  c, false, false, false)) {
             if (!units.contains(u)) {
                 if (u.isDead())
                     continue;
@@ -183,13 +182,6 @@ public class StackingRule implements ActionRule {
         if (cell.isVOID()) {
             if (!unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.VOIDWALKER.getName())) {
                 return false;
-            }
-        }
-
-        if (z == null) {
-            if (unit instanceof Unit) {
-                Unit heroObj = (Unit) unit;
-                z = heroObj.getZ();
             }
         }
 

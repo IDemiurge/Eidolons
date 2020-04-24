@@ -1,6 +1,5 @@
 package eidolons.libgdx.bf.grid.comment;
 
-import eidolons.libgdx.bf.datasource.SpriteData;
 import main.system.data.DataUnit;
 
 import java.util.regex.Pattern;

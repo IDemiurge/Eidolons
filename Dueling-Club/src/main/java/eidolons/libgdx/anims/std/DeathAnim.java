@@ -13,8 +13,9 @@ import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.bf.grid.cell.BaseView;
+import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.Ref.KEYS;
 import main.game.bf.Coordinates;
@@ -25,7 +26,7 @@ import main.system.GuiEventType;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static main.system.GuiEventType.DESTROY_UNIT_MODEL;
@@ -81,7 +82,7 @@ public class DeathAnim extends ActionAnim {
 
     @Override
     public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnFinish() {
-        return Arrays.asList(new ImmutablePair<>(DESTROY_UNIT_MODEL, new EventCallbackParam(unit)));
+        return Collections.singletonList(new ImmutablePair<>(DESTROY_UNIT_MODEL, new EventCallbackParam(unit)));
     }
 
     @Override
@@ -123,7 +124,7 @@ public class DeathAnim extends ActionAnim {
 
     @Override
     public Actor getActor() {
-        BaseView actor = DungeonScreen.getInstance().getGridPanel().getViewMap()
+        BaseView actor = ScreenMaster.getDungeonGrid().getViewMap()
          .get(unit);
         if (actor != null)
             return actor;

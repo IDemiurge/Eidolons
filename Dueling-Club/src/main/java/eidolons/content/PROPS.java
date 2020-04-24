@@ -1,6 +1,9 @@
 package eidolons.content;
 
-import main.content.*;
+import main.content.C_OBJ_TYPE;
+import main.content.ContentValsManager;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.properties.PROPERTY;
@@ -19,18 +22,15 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     PARTY_MISSION(null, false, "party"),
     PARTY_MAIN_HERO(null, false, "party"),
 
-    SCENARIO_TYPE(null, false, "scenarios"), DUNGEON_STYLE(null, false, "scenarios"), SCENARIO_MISSIONS(null, true, "scenarios"),
+    SCENARIO_TYPE(null, false, "scenarios"),
+    DUNGEON_STYLE(null, false, "scenarios"),
+    SCENARIO_MISSIONS(null, true, "scenarios"),
     SCENARIO_PATHS(null, true, "scenarios"),
-    SCENARIO_STARTING_PLACE(null, false, "scenarios"),
-    SCENARIO_INTRO_DIALOGUES(null, true, "scenarios"),
-    SCENARIO_INTRO_DATA(null, false, "scenarios"),
     SCENARIO_PARTY(null, false, "scenarios"),
     SCENARIO_MAIN_HERO(null, false, "scenarios"),
     DIFFICULTY(null, false, "scenarios", "missions", "chars", "dungeons"),
 
 
-    PLACE_SHOPS(null, true, "places"),
-    PLACE_DUNGEON(null, false, "places"),
     PLACE_COORDINATES(null, false, "places"),
 
     MISSION_PLACE(null, false, "missions"),
@@ -39,7 +39,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     MISSION_LOADING_SCREEN(null, false, "missions"),
     MISSION_FILE_PATH(null, false, "missions"),
     MISSION_SCRIPTS(null, true, "missions"),
-
 
     LAST_ARCADE(null, false, "meta"), // "meta data" obj_type?
     MEMBERS(null, true, "party"),
@@ -52,77 +51,12 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ARCADE_STATUS(null, false, "party"),
     DUNGEON_TAGS(null, true, "dungeons"),
     MAP_BACKGROUND(null, false, "dungeons", "area", "route", "place"),
-    COORDINATE_POINTS("", true, "dungeons"),
-    NAMED_COORDINATE_POINTS("", true, "dungeons"),
-    ENCOUNTER_INFO("", true, "dungeons"),
-    ENCOUNTER_SETS(null, true, "dungeons", "encounters"),
-    ENCOUNTERS(null, true, "dungeons"),
-    ALT_ENCOUNTERS(null, true, "dungeons"),
 
     // TODO remove useless props... (just disabled for now)
-    DUNGEON_MAP_TEMPLATE(null, false//, "area", "dungeons", "route", "place"
-    ),
-    DUNGEON_MAP_MODIFIER(null, false//, "dungeons", "route", "place"
-    ),
-    MAP_OBJECTS(null, true//, "dungeons","route", "place"
-    ),
-    MAP_PRESET_OBJECTS(null, true//, "dungeons"
-    ),
     COLOR_THEME(null, false, "bf obj", "dungeons", "route", "place"),
-    ALT_COLOR_THEME(null, false//, "dungeons"
-    ),
-    LOOT_GROUPS(null, true//, "dungeons"
-    ),
-    // THEMED BACKGROUND?
-    PARTY_SPAWN_COORDINATES(null, false//, "dungeons"
-    ),
-    ENEMY_SPAWN_COORDINATES(null, false//, "dungeons"
-    ),
-    DUNGEON_PLAN(null, false//, "dungeons"
-    ),
+    ALT_COLOR_THEME(null, false, "dungeons"),
 
-    SUBLEVELS(null, true//, "dungeons"
-    ),
-    FILLER_TYPE(null, false//, "dungeons"
-    ),
-    ARCADE_LOOT_TYPE(null, true//, "dungeons"
-    ),
-    SUBDUNGEON_TYPE(null, false//, "dungeons"
-    ),
-    SPAWNING_DELAYS(null, true//, "dungeons"
-    ),
-
-    POWER_ENCOUNTERS(null, true//, "dungeons"
-    ),
-
-    REGULAR_ENCOUNTERS(null, true//, "dungeons"
-    ),
-    ELITE_ENCOUNTERS(null, true//, "dungeons"
-    ),
-    BOSS_ENCOUNTERS(null, true//, "dungeons"
-    ),
-    ENTRANCE_COORDINATES(null, true//, "dungeons"
-    ),
-    ENCOUNTER_GROUPS(null, true//, "dungeons", "route", "place", "area"
-    ),
-
-    ENCOUNTER_SPAWN_POINTS(null, true//, "dungeons"
-    ),
-    ENCOUNTER_BOSS_SPAWN_POINTS(null, true//, "dungeons"
-    ),
-
-    ALT_POWER_ENCOUNTERS(null, true//, "dungeons"
-    ),
-    ALT_SPAWNING_DELAYS(null, true//, "dungeons"
-    ),
-    ALT_ARCADE_LOOT_TYPE(null, true//, "dungeons"
-    ),
-    DUNGEON_TEMPLATES(null, true//, "dungeons"
-    ),
-    DUNGEON_TEMPLATE_TYPE(null, false//, "dungeons"
-    ),
-    ADDITIONAL_ROOM_TYPES(null, true//, "dungeons"
-    ),
+    SUBDUNGEON_TYPE(null, false, "dungeons"),
 
     MASTERY_GROUPS_MAGIC(null, true, "units", "chars"),
     MASTERY_GROUPS_WEAPONS(null, true, "units", "chars"),
@@ -135,7 +69,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     SPELL_UPGRADES(null, true, "spells", "chars"),
     SPELL_UPGRADE_GROUPS(null, true, "spells", "skills", "classes", "units", "chars"),
 
-    SPELL_UPGRADES_PLAN(null, true, "units", "chars"),
     ACTION_PRIORITY_MODS(null, true, "units", "chars"),
     ACTION_PRIORITY_BONUSES(null, true, "units", "chars"),
 
@@ -194,10 +127,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     CONTAINER_GROUP_FILTER(null, false, "bf obj"),
     CONTAINER_GROUP_SINGLE(null, false, "bf obj"),
     DIMENSION(null, false, "bf obj", "units", "chars"),
-    PALETTE(null, false, "bf obj", "units", "chars"),
-    // IMMUNE(null, true, "units", "chars", "armor"),
-    // RESISTANT(null, true, "units", "chars", "armor"),
-    // VULNERABLE(null, true, "units", "chars", "armor"),
 
     SKILLS("Skills", true, "chars", "units"),
     SKILLS_TIER_1("Skills", true, "chars", "units"),
@@ -254,9 +183,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     SPECIAL_ACTION_MODES(null, true, "units", "chars", "skills", "classes"),
     ACTION_MODES(null, true, "actions"),
-    PARTY_UNITS("chars", null),
     FACTION("chars", null),
-    HIRED_MERCENARIES("chars", null),
 
     DEFAULT_ATTACK_ACTION(null, false, "weapons"),
     DEFAULT_COUNTER_ATTACK_ACTION(null, false, "weapons"),
@@ -277,9 +204,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     SECOND_FAVORED_ASPECT("deities", "Second Favored Aspect"),
     THIRD_FAVORED_ASPECT("deities", "Third Favored Aspect"),
 
-    PRIME_MISSION("deities", null),
-    SECONDARY_MISSION("deities", null),
-    WORLDS("deities", null), // TODO: WORLD enum with pics, music and specials
     BUFF_NAME(null, true, "spells", "actions", "items"),
     RESISTANCE_TYPE("spells", "Resistance type"),
     TARGETING_MODIFIERS(null, true, "spells", "actions", "items"),
@@ -293,31 +217,30 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ON_ACTIVATE("", true, "spells", "actions"),
     ON_KILL("", true, "spells", "actions", "units", "chars", "weapons"),
     WEAPON_ATTACKS("", true, "weapons"),
-    FILLER_TYPES("encounters", null), // adjust for difficulty if
-    // cannot add
-    // GROUP
-    UNIT_TYPES(null, true, "encounters"), // POOL
-    FLAG_COLOR(null, true, "factions"),
-    UNIT_POOL(null, true, "factions"),
-    HERO_BACKGROUNDS(null, true, "factions"),
-    FACTION_DUNGEONS(null, true, "factions"),
-    HEADQUARTER_DUNGEON(null, true, "factions"),
-    ALLY_FACTIONS(null, true, "factions"),
-    GROWTH_PRIORITIES(null, true, "encounters"), // POOL
-
-    EXTENDED_PRESET_GROUP(null, true, "encounters"),
-    SHRUNK_PRESET_GROUP(null, true, "encounters"),
-    PRESET_GROUP("PRESET_GROUP", true, "encounters"),
-    SPAWNING_SIDE(null, false, "encounters"),
-    // for
     ENCHANTMENT(null, true, "jewelry", "weapons", "armor"),
-
-    BOSS_TYPE("encounters", null),
     JEWELRY_PASSIVE_ENCHANTMENT("jewelry", null),
     MAGICAL_ITEM_LEVEL("jewelry", null),
     MAGICAL_ITEM_TRAIT("jewelry", null),
 
-    DEAD_UNITS(null, true, "terrain"),
+
+    FILLER_TYPES("encounters", null),
+    GROWTH_PRIORITIES(null, true, "encounters"),
+    EXTENDED_PRESET_GROUP(null, true, "encounters"),
+    PRESET_GROUP("PRESET_GROUP", true, "encounters"),
+    SHRUNK_PRESET_GROUP(null, true, "encounters"),
+
+    REINFORCEMENT_TYPE("encounters", null),
+    REINFORCEMENT_CUSTOM("encounters", null),
+    REINFORCEMENT_CHANCE("encounters", null),
+    REINFORCEMENT_STRENGTH("encounters", null),
+
+    UNIT_GROUP_TYPE("encounters", null),
+    LOOT_TYPE("encounters", null),
+    AI_BEHAVIOR_MODE("encounters", null),
+    PRE_BATTLE_EVENT("encounters", null),
+    AFTER_BATTLE_EVENT("encounters", null),
+
+
     DROPPED_ITEMS(null, true, "terrain"),
     BASE_CLASSES_ONE(null, true, "classes"),
     BASE_CLASSES_TWO(null, true, "classes"),
@@ -335,17 +258,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     PARAMETER_BONUSES(null, true, "skills", "classes", "perks"),
     ATTRIBUTE_BONUSES(null, true, "skills", "classes", "perks"),
     APPLY_REQS(null, true, "skills", "classes"),
-
-//    AUTO_TEST_TYPE(null, true, "skills", "actions", "spells", "abils", "classes"),
-//    AUTO_TEST_GROUP(null, true, "skills", "actions", "spells", "abils", "classes"),
-//    AUTO_TEST_RULE_FLAGS(null, true, "skills", "actions", "spells", "abils", "classes"),
-//    AUTO_TEST_ASSERTIONS(null, true, "skills", "actions", "spells", "abils", "classes"),
-//    AUTO_TEST_MEASUREMENTS(null, true, "skills", "actions", "spells", "abils", "classes"),
-//    AUTO_TEST_PREFS(null, true, "skills", "actions", "spells", "abils", "classes"),
-//    AUTO_TEST_CONSTRAINTS(null, true, "skills", "actions", "spells", "abils", "classes"),
-//
-//    AUTO_TEST_WEAPON(null, false, "skills", "actions", "classes"),
-//    AUTO_TEST_OFFHAND_WEAPON(null, false, "skills", "actions", "classes"),
 
     ARCADE_LEVELS(null, true, "arcades"),
     ARCADE_ENEMY_GROUPS(null, true, "arcades"),
@@ -464,7 +376,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ANIM_SOUND_MAIN("", true, "spells", "actions"),
     ANIM_SOUND_IMPACT("", true, "spells", "actions"),
     ANIM_SOUND_AFTEREFFECT("", true, "spells", "actions"),
-    
+
     ANIM_MODS_VFX("", true, "spells", "actions"),
 
     SPRITE_PATH("weapons", null), UNLOCKED_MASTERIES(null, true, "chars", "units"),
@@ -483,7 +395,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     COATING_MOD(null, false, "chars", "units", "skills"),
     KEY_DOOR_PAIRS(null, false, "dungeons"),
-    DUNGEON_MAIN_ENTRANCES (null, false, "dungeons"),
     LORD_SOULS(null, true, "lord"),
 
     EIDOLON_ASPECTS(null, true, "chars", "units"),
@@ -491,7 +402,9 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     OVERLAY_SPRITES(null, false, "units", "chars", "bf obj"),
     UNDERLAY_SPRITES(null, false, "units", "chars", "bf obj"),
     CUSTOM_OBJECT(null, false, "units", "chars", "bf obj"),
-;
+    PLACEHOLDER_DATA(null, false, "units", "bf obj"),
+    PLACEHOLDER_SYMBOL(null, false, "units", "bf obj"),
+    ;
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);
@@ -501,7 +414,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
         HINTS.setDynamic(true);
         LAST_SEEN.setDynamic(true);
-        DEAD_UNITS.setDynamic(true);
         UPKEEP_FAIL_ACTION.setDynamic(true);
         DROPPED_ITEMS.setDynamic(true);
         // QUICK_ITEMS.setDynamic(true);
@@ -510,7 +422,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
         // VERBATIM_SPELLS.setDynamic(true);
         // MEMORIZED_SPELLS.setDynamic(true);
         DIVINED_SPELLS.setDynamic(true);
-        SPAWNING_SIDE.setDynamic(true);
         // KNOWN_SPELLS.setDynamic(true);
         // LEARNED_SPELLS.setDynamic(true);
 
@@ -531,8 +442,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
         SPELLBOOK.setLowPriority(true);
         VERBATIM_SPELLS.setLowPriority(true);
         MEMORIZED_SPELLS.setLowPriority(true);
-        PARTY_UNITS.setLowPriority(true);
-        HIRED_MERCENARIES.setLowPriority(true);
         PREPARED_SPELLS.setLowPriority(true);
 
         ON_BEING_HIT.setLowPriority(true);
@@ -550,7 +459,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     boolean writeToType;
     INPUT_REQ inputReq;
-    private Metainfo metainfo;
     private String name;
     private String descr;
     private String entityType;
@@ -565,6 +473,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     private String fullName;
     private String shortName;
     private Map<OBJ_TYPE, Object> defaultValuesMap;
+    private String iconPath;
 
     PROPS(String shortName, boolean container, C_OBJ_TYPE entityType) {
         this(shortName, container, Arrays.stream(entityType.getTypes())
@@ -713,10 +622,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
         return entityTypes;
     }
 
-    @Override
-    public Metainfo getMetainfo() {
-        return metainfo;
-    }
 
     @Override
     public boolean isContainer() {
@@ -803,4 +708,13 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     }
 
+    @Override
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    @Override
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
+    }
 }

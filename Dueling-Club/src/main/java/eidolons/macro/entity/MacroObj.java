@@ -13,8 +13,6 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
 
-import java.util.Set;
-
 public class MacroObj extends Obj {
 
     protected int x;

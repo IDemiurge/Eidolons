@@ -20,7 +20,6 @@ import main.ability.effects.Effects;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;

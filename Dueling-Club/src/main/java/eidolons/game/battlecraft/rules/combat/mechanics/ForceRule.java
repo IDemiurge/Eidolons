@@ -23,7 +23,6 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.Effects;
 import main.content.enums.GenericEnums;
-import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.SpellEnums.RESISTANCE_TYPE;
 import main.content.enums.entity.UnitEnums;
@@ -119,36 +118,36 @@ public class ForceRule {
             return;
         if (action.isCounterMode())
             return;
-        BattleFieldObject target = (Unit) action.getRef().getTargetObj();
+        Unit target = (Unit) action.getRef().getTargetObj();
         BattleFieldObject source = (BattleFieldObject) action.getRef().getSourceObj();
         Boolean result = null;
         //TODO DEXTERITY ROLL TO AVOID ALL? ROLL MASS
         if (target instanceof Unit) {
-            if (((Unit) target).getChecker().checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)
+            if (target.getChecker().checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)
                     ||
-                    (((Unit) target).getChecker().checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL))) {
+                    (target.getChecker().checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL))) {
                 return;
             }
         }
 
         if (target.getIntParam(PARAMS.TOTAL_WEIGHT) < getMinWeightKnock(action)) {
-            result = RollMaster.rollForceKnockdown((Unit) target, action, force);
+            result = RollMaster.rollForceKnockdown(target, action, force);
             if (Bools.isFalse(result)) {
                 result = null; //ALWAYS INTERRUPT AT LEAST
             }
         } else if (target.getIntParam(PARAMS.TOTAL_WEIGHT) > getMaxWeightKnock(action)) {
             result = false;
         } else {
-            result = RollMaster.rollForceKnockdown((Unit) target, action, force);
+            result = RollMaster.rollForceKnockdown(target, action, force);
         }
         if (isTestMode()) {
             result = true;
         }
 
         if (result == null) {
-            InterruptRule.interrupt((Unit) target);
+            InterruptRule.interrupt(target);
         } else if (result) {
-            KnockdownRule.knockdown((Unit) target);
+            KnockdownRule.knockdown(target);
         }
 
     applyPush(force, action, source, target);

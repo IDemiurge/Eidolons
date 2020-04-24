@@ -18,10 +18,10 @@ public class JUnitCounterRules extends JUnitSingleUnit {
     @Test
     public void test() {
         testRules(true, game.getRules().getTimedRules().keySet()
-         .toArray(new DamageCounterRule[game.getRules().getTimedRules().size()]));
+         .toArray(new DamageCounterRule[0]));
 
         testRules(false, game.getRules().getTimedRules().keySet()
-         .toArray(new DamageCounterRule[game.getRules().getTimedRules().size()]));
+         .toArray(new DamageCounterRule[0]));
 
     }
 
@@ -50,16 +50,11 @@ public class JUnitCounterRules extends JUnitSingleUnit {
         PARAMS p = PARAMS.C_ENDURANCE;
         switch (rule.getCounter()) {
             case Bleeding:
-                break;
-            case Blaze:
-                break;
-            case Poison:
-                break;
-            case Disease:
-                break;
-            case Lava:
-                break;
             case Suffocation:
+            case Lava:
+            case Disease:
+            case Poison:
+            case Blaze:
                 break;
         }
         Integer n = unit.getIntParam(p);

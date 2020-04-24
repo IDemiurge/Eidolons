@@ -21,7 +21,7 @@ public class TextGenerator {
         List<List<VALUE>> pages = ValuePageManager.getValuesForHCInfoPages(e
          .getOBJ_TYPE_ENUM());
 
-        String string = PREFIX;
+        StringBuilder stringBuilder = new StringBuilder(PREFIX);
         for (List<VALUE> list : pages) {
             boolean prop = false;
             for (VALUE v : list) {
@@ -33,7 +33,7 @@ public class TextGenerator {
                     amount = TextParser.parse(amount, e.getRef());
                     int n = new Formula(amount).getInt(e.getRef());
                     if (n != 0) {
-                        string += n + " " + v.getName() + ", ";
+                        stringBuilder.append(n).append(" ").append(v.getName()).append(", ");
                     }
                 } else {
                     prop = true;
@@ -41,9 +41,10 @@ public class TextGenerator {
                 }
             }
             if (!prop && !list.equals(pages.get(pages.size() - 1))) {
-                string += StringMaster.NEW_LINE;
+                stringBuilder.append(StringMaster.NEW_LINE);
             }
         }
+        String string = stringBuilder.toString();
         // StringMaster.replaceLast(" ," "and
         string.substring(0, string.length() - 2);
         return string;

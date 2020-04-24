@@ -4,7 +4,6 @@ import eidolons.entity.handlers.bf.BfObjInitializer;
 import eidolons.entity.handlers.bf.structure.StructureMaster;
 import eidolons.entity.handlers.bf.structure.StructureResetter;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.rules.round.WaterRule;
 import eidolons.game.core.game.DC_Game;
 import main.content.enums.entity.BfObjEnums;

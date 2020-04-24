@@ -15,9 +15,10 @@ import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.entity.obj.Obj;
 import main.game.core.game.Game;
+import main.game.core.state.GameState;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.*;
@@ -32,6 +33,7 @@ public class Filter<T extends Entity> extends ReferredElement {
     private Collection<Integer> dynamicExceptions;
     private HashSet<Obj> filteredSet;
     private Map<Integer, Condition> conditionDebugCache = new XLinkedMap<>();
+    private Set<T> cached;
 
     public Filter() {
     }
@@ -139,6 +141,10 @@ public class Filter<T extends Entity> extends ReferredElement {
             }
             return (Set<T>) new HashSet<>(set);
         }
+        if (GameState.isResetDone())
+        if (cached!=null) {
+            return cached;
+        }
         Collection<Obj> pool = getFilteredObjectPool();
         Set<T> filteredSet = (Set<T>) new HashSet<>(pool);
         ArrayList<Obj> list = new ArrayList<>(pool);
@@ -149,6 +155,7 @@ public class Filter<T extends Entity> extends ReferredElement {
                 }
             }
         }
+        cached = filteredSet;
         return filteredSet;
         // TODO sort out; use cache
     }

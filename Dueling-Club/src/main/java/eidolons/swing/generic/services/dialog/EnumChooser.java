@@ -1,7 +1,5 @@
 package eidolons.swing.generic.services.dialog;
 
-import main.game.bf.directions.FACING_DIRECTION;
-
 public class EnumChooser  {
 
     public <T> T  choose(Class<T> clazz) {

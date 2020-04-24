@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.EmitterPools;
-import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.system.PathUtils;
@@ -69,11 +68,12 @@ public class EmitterPresetMaster {
             suffix = "";
         } else {
             String buffer = suffix;
-            suffix = " ";
+            StringBuilder suffixBuilder = new StringBuilder(" ");
             for (String substring : ContainerUtils.open(buffer, value_separator)) {
-                suffix += StringMaster.cropFormat(
-                        PathUtils.getLastPathSegment(substring)) + " ";
+                suffixBuilder.append(StringMaster.cropFormat(
+                        PathUtils.getLastPathSegment(substring))).append(" ");
             }
+            suffix = suffixBuilder.toString();
         }
         String newName = (name != null) ? name :
                 FileManager.getUniqueVersion(FileManager.getFile(PathFinder.getVfxPath() + prefix +
@@ -288,7 +288,7 @@ public class EmitterPresetMaster {
         String text = getGroupText(data, group);
         List<Pair<String, String>> entryList = getGroupEntries(text);
         for (Pair<String, String> p : entryList) {
-            if (lowHighMinMax.contains(p.getKey().toString())) {
+            if (lowHighMinMax.contains(p.getKey())) {
                 double newValue = NumberUtils.getDouble(p.getValue()) + offset;
                 text = text.replace(p.getKey() + value_separator + p.getValue(),
                         p.getKey() + value_separator + String.valueOf(

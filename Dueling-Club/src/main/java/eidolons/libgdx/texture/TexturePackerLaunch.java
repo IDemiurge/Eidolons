@@ -3,7 +3,6 @@ package eidolons.libgdx.texture;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.editors.lists.ListChooser;

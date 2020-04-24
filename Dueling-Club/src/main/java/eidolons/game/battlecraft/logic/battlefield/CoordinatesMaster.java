@@ -164,9 +164,7 @@ public class CoordinatesMaster {
         int y1 = getMinY(coordinates);
         int y2 = getMaxY(coordinates);
         List<Coordinates> exceptions = new ArrayList<>();
-        for (Coordinates c : getCoordinatesWithin(x1, x2, y1, y2)) {
-            exceptions.add(c);
-        }
+        exceptions.addAll(getCoordinatesWithin(x1, x2, y1, y2));
         return getBoundsString(x1, x2, y1, y2) + " " + exceptions.toString();
     }
 
@@ -504,6 +502,12 @@ public class CoordinatesMaster {
 
     public static List<Coordinates> getCoordinatesBetween(Coordinates c, Coordinates c2) {
         List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(
+                Math.min(c.x, c2.x) , Math.max(c.x, c2.x), Math.min(c.y, c2.y) , Math.max(
+                        c.y, c2.y));
+        return coordinates;
+    }
+        public static List<Coordinates> getCoordinatesBetweenWithOffset(Coordinates c, Coordinates c2) {
+        List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(
          Math.min(c.x, c2.x) - 1, Math.max(c.x, c2.x), Math.min(c.y, c2.y) - 1, Math.max(
           c.y, c2.y));
         return coordinates;
@@ -534,6 +538,20 @@ public class CoordinatesMaster {
     public static Coordinates getClosestTo(Coordinates coordinates, List<Coordinates> collect) {
         return collect.stream().sorted(new SortMaster<Coordinates>().getSorterByExpression_(
          c -> (int) -(100 * c.dist(coordinates)))).collect(Collectors.toList()).get(0);
+    }
+
+    public static Set<Coordinates> getMissingCoordinatesFromRect(Coordinates c, int w, int h,
+                                                                 Set<Coordinates> coordinates) {
+      Set <Coordinates> missing = new LinkedHashSet<>();
+        for (int i = c.x; i < c.x+w; i++) {
+            for (int j = c.y; j < c.y+h; j++) {
+                Coordinates c1;
+                if (!coordinates.contains(c1=Coordinates.get(i , j ))) {
+                    missing.add(c1);
+                }
+            }
+        }
+        return missing;
     }
 
     public boolean isOnEdge(Coordinates c, int border) {

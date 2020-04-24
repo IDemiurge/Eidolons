@@ -1,16 +1,14 @@
 package eidolons.libgdx.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.igg.hero.IggHeroSelectionPanel;
+import eidolons.game.netherflame.igg.hero.IggHeroSelectionPanel;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.difficulty.DifficultySelectionPanel;
 import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
@@ -50,7 +48,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
 
         if (isLoadingWithVideo())
             initVideo();
-        underText = new Label(LoadingStage.getBottonText(), StyleHolder.getHqLabelStyle(20));
+        underText = new Label(LoadingStage.getBottomText(), StyleHolder.getHqLabelStyle(20));
         getOverlayStage().addActor(underText);
         underText.setPosition(GdxMaster.centerWidth(underText), 0);
 
@@ -119,7 +117,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
             GuiEventManager.trigger(SHOW_SELECTION_PANEL, DIFFICULTY_PANEL_ARG);
         });
         GuiEventManager.bind(true, GuiEventType.SHOW_QUEST_SELECTION, p -> {
-            GuiEventManager.trigger(SHOW_SELECTION_PANEL, QUEST_PANEL_ARG, p.get());
+            GuiEventManager.triggerWithParams(SHOW_SELECTION_PANEL, QUEST_PANEL_ARG, p.get());
         });
         GuiEventManager.bind(true, GuiEventType.SHOW_MANUAL_PANEL, p -> {
             if (manualPanel != null) {

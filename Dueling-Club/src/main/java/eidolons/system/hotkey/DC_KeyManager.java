@@ -11,14 +11,11 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.libgdx.anims.controls.AnimController;
-import eidolons.libgdx.anims.controls.EmitterController;
 import eidolons.system.controls.Controller;
 import eidolons.system.controls.Controller.CONTROLLER;
 import eidolons.system.controls.GlobalController;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
-import eidolons.test.debug.DebugController;
-import eidolons.test.debug.DebugMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -58,15 +55,19 @@ public class DC_KeyManager
     private ACTION_TYPE action_group = ActionEnums.ACTION_TYPE.STANDARD;
     private Controller controller;
 
+    public DC_KeyManager() {
+
+    }
     public DC_KeyManager(DC_GameManager mngr) {
         this.mngr = mngr;
         stdActionKeyMap = new ConcurrentHashMap<>();
         stdModeKeyMap = new ConcurrentHashMap<>();
         addMoveActionKeyMap = new ConcurrentHashMap<>();
         controller = getControllerInstance(DEFAULT_CONTROLLER);
-        if (EmitterController.overrideKeys) {
-            controller = EmitterController.getInstance();
+        if (controller == null) {
+            controller = new GlobalController();
         }
+
     }
 
     public void initHotkeysForUnit() {
@@ -150,22 +151,10 @@ public class DC_KeyManager
     }
 
     private boolean checkFunctionHelper(KeyEvent e) {
-
-        if (e.getKeyChar() != DebugMaster.FUNCTION_HOTKEY_CHAR) {
-            return false;
-        }
-
-        mngr.getGame().getDebugMaster().promptFunctionToExecute();
         return true;
     }
 
     private boolean checkDebugMaster(KeyEvent e) {
-        // if (GlobalKeys.isGlobalKeysOn())
-        // return false;
-        if (e.getKeyChar() != DebugMaster.HOTKEY_CHAR) {
-            return false;
-        }
-        mngr.getGame().getDebugMaster().showDebugWindow();
         return true;
     }
 
@@ -217,14 +206,8 @@ public class DC_KeyManager
             case ANIM:
                 return AnimController.getInstance();
 
-            case DEBUG:
-                return DebugController.getInstance();
-
             case RULES:
                 return RuleKeeper.getInstance();
-
-            case EMITTER:
-                return EmitterController.getInstance();
 
         }
         return null;
@@ -454,12 +437,17 @@ public class DC_KeyManager
     private Character getKeyTyped(int keyCode) {
         switch (keyCode) {
             case Input.Keys.NUMPAD_8:
+
+            case Input.Keys.UP:
                 return 'w';
             case Input.Keys.NUMPAD_4:
+            case Input.Keys.LEFT:
                 return 'a';
             case Input.Keys.NUMPAD_6:
+            case Input.Keys.RIGHT:
                 return 'd';
             case Input.Keys.NUMPAD_2:
+            case Input.Keys.DOWN:
                 return 's';
 
             case Input.Keys.NUMPAD_7:
@@ -468,15 +456,6 @@ public class DC_KeyManager
                 return 'e';
             case Input.Keys.NUMPAD_0:
                 return ' ';
-
-            case Input.Keys.UP:
-                return 'w';
-            case Input.Keys.LEFT:
-                return 'a';
-            case Input.Keys.RIGHT:
-                return 'd';
-            case Input.Keys.DOWN:
-                return 's';
 
         }
         return null;

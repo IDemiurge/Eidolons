@@ -54,11 +54,11 @@ public class Requirements implements Condition {
     }
 
     public String getInfoStrings() {
-        String string = "";
+        StringBuilder string = new StringBuilder();
         for (String req : reqMap.keySet()) {
-            string += req + ", ";
+            string.append(req).append(", ");
         }
-        return StringMaster.cropLast(string, 2);
+        return StringMaster.cropLast(string.toString(), 2);
     }
 
     public void addAll(Requirements req) {

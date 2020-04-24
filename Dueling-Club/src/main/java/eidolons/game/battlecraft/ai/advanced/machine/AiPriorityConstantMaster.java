@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.ai.advanced.machine;
 
-import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import main.content.values.parameters.PARAMETER;
@@ -18,6 +17,7 @@ public class AiPriorityConstantMaster extends AiHandler {
 
     };
     private HashMap<String, AiConst> aiConstMap;
+    Map<AiConstant, Float> map;
 
     public AiPriorityConstantMaster(AiMaster master) {
         super(master);
@@ -37,7 +37,7 @@ public class AiPriorityConstantMaster extends AiHandler {
     }
 
     public float getConstValue(AiConst aiConst) {
-        return getProfile().getMap().get(aiConst);
+        return map.get(aiConst);
     }
 
     public AiConst getConstForParam(PARAMETER param) {
@@ -50,23 +50,13 @@ public class AiPriorityConstantMaster extends AiHandler {
 //        return AiConst.valueOf(s.toUpperCase());
     }
 
-    public float[] convertParameters(Map<AiConst, Float> map) {
-
-        return new float[0];
-    }
-
     public void initMap() {
         aiConstMap = new HashMap<>();
+        map = new HashMap<>();
         for (AiConst sub : AiConst.values()) {
             aiConstMap.put(sub.name(), sub);
+            map.put(sub , sub.getDefValue());
         }
-    }
-
-    public void generate() {
-        for (PARAMS sub : PARAMS.values()) {
-
-        }
-
     }
 
     public interface AiConstant {

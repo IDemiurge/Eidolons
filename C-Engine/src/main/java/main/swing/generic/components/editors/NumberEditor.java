@@ -1,12 +1,13 @@
 package main.swing.generic.components.editors;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
 
 public class NumberEditor implements EDITOR {
     JSpinner spinner = new JSpinner();
 
     @Override
-    public void launch(JTable table, int row, int column, String prevValue) {
+    public void launch(JTable table, int row, int column, String prevValue, MouseEvent e) {
         String valueName = table.getValueAt(row, 0).toString();
         String newVal = launch(valueName, prevValue);
         table.setValueAt(newVal, row, 1);

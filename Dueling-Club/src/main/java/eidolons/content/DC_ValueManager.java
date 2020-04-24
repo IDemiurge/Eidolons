@@ -77,7 +77,7 @@ public class DC_ValueManager implements ValueManager {
                 }
             }
         }
-        return params.toArray(new PARAMETER[params.size()]);
+        return params.toArray(new PARAMETER[0]);
 
     }
 

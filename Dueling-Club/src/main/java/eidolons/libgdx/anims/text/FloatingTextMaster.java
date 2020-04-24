@@ -21,11 +21,11 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.Animation;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.CompositeAnim;
+import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.bf.grid.cell.BaseView;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.system.config.ConfigKeys;
 import eidolons.system.config.ConfigMaster;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
@@ -91,14 +91,15 @@ public class FloatingTextMaster {
             case ATTACK_DODGED:
             case ATTACK_BLOCKED:
             case ATTACK_PARRIED:
+            case LEVEL_UP:
+
+            case GOLD:
                 return GdxColorMaster.YELLOW;
             case ATTACK_MISSED:
                 return GdxColorMaster.PALE_GREEN;
             case ATTACK_OF_OPPORTUNITY:
-                break;
-            case COUNTER_ATTACK:
-                break;
             case ATTACK_INSTANT:
+            case COUNTER_ATTACK:
                 break;
 
 
@@ -107,13 +108,8 @@ public class FloatingTextMaster {
                 return (pair.getValue() > 0)
                         ? GdxColorMaster.PALE_GOLD
                         : GdxColorMaster.RED;
-
-            case GOLD:
-                return GdxColorMaster.YELLOW;
             case XP:
                 return GdxColorMaster.LILAC;
-            case LEVEL_UP:
-                return GdxColorMaster.YELLOW;
 
         }
         return Color.RED;
@@ -144,10 +140,10 @@ public class FloatingTextMaster {
                 return ImageManager.getDamageTypeImagePath(
                         String.valueOf(((Damage) arg).getDmgType().getName()), true);
             case ATTACK_CRITICAL:
-                break;
-            case ATTACK_SNEAK:
-                break;
+            case MODE:
+            case STATUS:
             case ATTACK_DODGED:
+            case ATTACK_SNEAK:
                 break;
             case COSTS:
                 Cost cost = (Cost) arg;
@@ -155,10 +151,6 @@ public class FloatingTextMaster {
                 return ImageManager.getValueIconPath(cost.getPayment().getParamToPay());
                 }
                  return ImageManager.getValueIconPath(cost.getCostParam() );
-            case STATUS:
-                break;
-            case MODE:
-                break;
         }
         return null;
     }
@@ -365,7 +357,8 @@ public class FloatingTextMaster {
                 return
                         StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 26);
             case REQUIREMENT:
-                break;
+            case ATTACK_SNEAK:
+            case ATTACK_CRITICAL:
             case CANNOT_ACTIVATE:
                 break;
             case HIT:
@@ -377,10 +370,6 @@ public class FloatingTextMaster {
                 size = 18;
                 size = Math.max(14, Math.min(23, size + ((Damage) arg).getAmount() / 21));
                 return StyleHolder.getSizedLabelStyle(StyleHolder.DEFAULT_FONT, size);
-            case ATTACK_CRITICAL:
-                break;
-            case ATTACK_SNEAK:
-                break;
         }
         return StyleHolder.getSizedLabelStyle(
                 StyleHolder.DEFAULT_FONT_FLOAT_TEXT, StyleHolder.DEFAULT_FONT_SIZE_FLOAT_TEXT);
@@ -472,7 +461,7 @@ public class FloatingTextMaster {
     }
 
     public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity) {
-        if (DungeonScreen.getInstance().getGridPanel() == null) {
+        if (ScreenMaster.getDungeonGrid() == null) {
             main.system.auxiliary.log.LogMaster.dev("Cannot do float text w/o grid: " + arg);
             return;
         }
@@ -577,7 +566,7 @@ public class FloatingTextMaster {
         if (obj == null)
             obj = active.getRef().getSourceObj();
         if (obj != null) {
-            BaseView view = DungeonScreen.getInstance().getGridPanel().getViewMap().get(obj);
+            BaseView view = ScreenMaster.getDungeonGrid().getViewMap().get(obj);
             if (view != null) {
                 Vector2 v = view.localToStageCoordinates(new Vector2(view.getX(), view.getY()));
                 text.setPosition(v.x, v.y);

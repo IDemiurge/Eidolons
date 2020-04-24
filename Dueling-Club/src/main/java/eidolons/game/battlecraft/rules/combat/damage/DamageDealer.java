@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.rules.combat.damage;
 
-import eidolons.ability.effects.containers.customtarget.ZoneEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_HeroSlotItem;
@@ -13,11 +12,10 @@ import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.game.core.game.DC_GameManager;
-import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
@@ -178,9 +176,7 @@ public class DamageDealer {
 
     private static boolean isLogged(BattleFieldObject attacker, BattleFieldObject targetObj, ActiveObj active) {
         if (EffectFinder.getFirstEffectOfClass((DC_ActiveObj) active, SpecialTargetingEffect.class) != null) {
-            if (targetObj instanceof Structure) {
-                return false;
-            }
+            return !(targetObj instanceof Structure);
         }
         return true;
     }
@@ -472,7 +468,7 @@ public class DamageDealer {
 
         if (!CoreEngine.isGraphicsOff())
             if (HpBar.isResetOnLogicThread())
-                DungeonScreen.getInstance().getGridPanel().getGridManager().
+                ScreenMaster.getDungeonGrid().getGridManager().
                         checkHpBarReset(attacked);
 
         return damageDealt;

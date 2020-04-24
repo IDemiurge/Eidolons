@@ -17,9 +17,10 @@ import com.badlogic.gdx.utils.Logger;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Eidolons;
+import eidolons.game.netherflame.igg.IGG_Demo;
+import eidolons.game.netherflame.igg.IGG_Images;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
@@ -30,8 +31,8 @@ import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.launch.GpuTester;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.particles.EmitterPools;
-import eidolons.libgdx.particles.util.EmitterMaster;
 import eidolons.libgdx.particles.ParticleEffectX;
+import eidolons.libgdx.particles.util.EmitterMaster;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
@@ -222,15 +223,31 @@ public class Assets {
         return preload(objects, true, true, false, true);
     }
 
-    public static boolean preload(DequeImpl<BattleFieldObject> objects,
-                                  boolean full, boolean ui, boolean her0es, boolean emitters) {
+    public static boolean preloadModule(Module module) {
+/*
+
+ */
+
+        return false;
+    }
+        public static boolean preload(DequeImpl<BattleFieldObject> objects,
+        boolean full, boolean ui, boolean her0es, boolean emitters) {
         boolean result = preloadObjects(objects, full);
         her0es = EidolonsGame.FOOTAGE;
 
+        if (isOptimizationTest()){
+//            loadSprite("", false, true);
+            return false;
+        }
+        if (!CoreEngine.isIDE()) {
         Chronos.mark("preload Audio");
-        preloadAudio(full);
+        try {
+            preloadAudio(full);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         Chronos.logTimeElapsedForMark("preload Audio");
-
+        }
         if (!CoreEngine.isVfxOff()) {
             if (emitters) {
                 Chronos.mark("preload Emitters");
@@ -258,6 +275,10 @@ public class Assets {
         return result;
     }
 
+    private static boolean isOptimizationTest() {
+        return true;
+    }
+
     private static boolean preloadObjects(DequeImpl<BattleFieldObject> objects, boolean full) {
         Chronos.mark("preloadObjects");
         boolean result = false;
@@ -272,7 +293,6 @@ public class Assets {
                     } catch (Exception e) {
                         main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ERROR_CRITICAL, "FAILED TO CONSTRUCT ANIMS FOR " + sub);
                         main.system.ExceptionMaster.printStackTrace(e);
-                        continue;
                     }
             }
             result = true;
@@ -328,10 +348,8 @@ public class Assets {
                 MusicMaster.getInstance().getMusic(MusicMaster.AMBIENCE.EVIL.getPath(), true);
                 break;
             case PUZZLES:
-                break;
-            case COMMON:
-                break;
             case DIALOGUE:
+            case COMMON:
                 break;
         }
 
@@ -470,7 +488,7 @@ public class Assets {
 
         DIALOGUE(ContainerUtils.construct(";", Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE,
                 Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE, Sprites.ACID_BLADE)),
-        ;
+        DEFAULT("");
 
         GAME_SCOPE(String assets) {
             this.assets = assets;
@@ -483,12 +501,9 @@ public class Assets {
         ShadeLightCell.getShadowMapAtlas();
 //        if (CoreEngine.isSuperLite())
         {
-            if (EidolonsGame.FOOTAGE) {
-                return;
-            }
             if (isScopeLoadingMode()) {
-                if (!EidolonsGame.PUZZLES)
-                    preloadScope(GAME_SCOPE.COMMON, full);
+//                if (!EidolonsGame.PUZZLES)
+//                    preloadScope(GAME_SCOPE.COMMON, full);
                 preloadScope(getScope(), full);
                 return;
             }
@@ -547,8 +562,6 @@ public class Assets {
             if (EidolonsGame.DUEL_TEST) {
                 loadSprite(FULLSCREEN_ANIM.WAVE.getSpritePath(), full, ktx);
                 loadSprite(FULLSCREEN_ANIM.BLOOD.getSpritePath(), full, ktx);
-            } else if (EidolonsGame.TRANSIT_TEST) {
-                loadSprite(FULLSCREEN_ANIM.HELLFIRE.getSpritePath(), full, ktx);
             } else {
                 loadSprite(Sprites.PORTAL_OPEN, full, ktx);
                 loadSprite(Sprites.PORTAL, full, ktx);
@@ -591,7 +604,7 @@ public class Assets {
         if (EidolonsGame.PUZZLES) {
             return GAME_SCOPE.PUZZLES;
         }
-        return GAME_SCOPE.INTRO;
+        return GAME_SCOPE.DEFAULT;
     }
 
     private static boolean isScopeLoadingMode() {
@@ -606,10 +619,7 @@ public class Assets {
         if (CoreEngine.isIDE()) {
             return false;
         }
-        if (CoreEngine.isYouTube()) {
-            return true;
-        }
-        return false;
+        return CoreEngine.isYouTube();
     }
 
     public static boolean checkSprite(String path) {
@@ -631,10 +641,7 @@ public class Assets {
                 if (path.contains("blood")) {
                     return true;
                 }
-                if (OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.LARGE_SPRITES_OFF)) {
-                    return false;
-                }
-                return true;
+                return !OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.LARGE_SPRITES_OFF);
             case "bf":
             case "cells":
                 return !OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.GRID_SPRITES_OFF);
@@ -670,10 +677,7 @@ public class Assets {
         if (sub == Eidolons.getMainHero()) {
             return true;
         }
-        if (Eidolons.getMainHero().getCoordinates().dst(sub.getCoordinates()) > (full ? 30 : 10)) {
-            return false;
-        }
-        return true;
+        return Eidolons.getMainHero().getCoordinates().dst(sub.getCoordinates()) <= (full ? 30 : 10);
     }
 
 

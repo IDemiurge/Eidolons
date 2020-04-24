@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.*;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
@@ -27,7 +29,7 @@ import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
@@ -236,7 +238,7 @@ public class HitAnim extends ActionAnim {
         if (Bools.isTrue(d.growY)) {
             dy = -dy;
         }
-        //DungeonScreen.getInstance().getGridPanel().detachUnitView()
+        //ScreenMaster.getDungeonGrid().detachUnitView()
         originalActorX = getActor().getX();
         originalActorY = getActor().getY();
         float x = originalActorX;
@@ -288,7 +290,7 @@ public class HitAnim extends ActionAnim {
 
     @Override
     public Actor getActor() {
-        return DungeonScreen.getInstance().getGridPanel().getViewMap()
+        return ScreenMaster.getDungeonGrid().getViewMap()
                 .get(getRef().getTargetObj());
     }
 
@@ -345,7 +347,7 @@ public class HitAnim extends ActionAnim {
         //        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
         //         MoveEffect.class)))
         //            BattleFieldObject = (BattleFieldObject) getRef().getTargetObj();
-        //        BaseView actor = DungeonScreen.getInstance().getGridPanel().getViewMap()
+        //        BaseView actor = ScreenMaster.getDungeonGrid().getViewMap()
         //         .getVar(BattleFieldObject);
         //        return actor;
         return getActor();
@@ -372,18 +374,15 @@ public class HitAnim extends ActionAnim {
                 break;
 
             case SPARKS:
+            case STONE:
+            case AETHER:
+            case BONE:
                 break;
             case DUST:
                 if (targetObj.getChecker().checkClassification(CLASSIFICATIONS.WRAITH)) {
                     return GdxColorMaster.DARK_STEEL;
                 }
 
-                break;
-            case BONE:
-                break;
-            case AETHER:
-                break;
-            case STONE:
                 break;
         }
         return new Color(1, 1, 1, 1);

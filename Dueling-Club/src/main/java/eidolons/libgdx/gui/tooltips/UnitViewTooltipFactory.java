@@ -10,13 +10,13 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
-import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
-import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.bf.grid.UnitView;
+import eidolons.game.netherflame.igg.death.ShadowMaster;
+import eidolons.libgdx.bf.grid.cell.BaseView;
+import eidolons.libgdx.bf.grid.cell.UnitView;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
@@ -32,12 +32,11 @@ import main.entity.Ref.KEYS;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.entity.CounterMaster;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -60,7 +59,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             main.system.ExceptionMaster.printStackTrace(e);
         }
         return () ->
-                new ArrayList<>(Arrays.asList(new ValueContainer("Error", "")));
+                new ArrayList<>(Collections.singletonList(new ValueContainer("Error", "")));
     }
 
     @Override

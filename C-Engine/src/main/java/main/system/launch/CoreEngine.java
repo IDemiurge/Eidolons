@@ -27,17 +27,16 @@ import java.util.List;
 public class CoreEngine {
 
 
-
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
     public static final String VERSION = "1.0.0";
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Backer;
     public static final String VERSION_NAME = "Backer Demo (Basic Version)"; //StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean DEV_MODE = true;
+    public static   boolean TEST_LAUNCH ;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean swingOn = true;
     public static boolean animationTestMode;
     private static CoreEngine engineObject;
-    private static boolean TEST_MODE = true;
     private static SoundMaster sm;
     private static boolean arcaneVault;
     private static boolean concurrentLaunch;
@@ -45,7 +44,6 @@ public class CoreEngine {
     private static boolean levelEditor;
     private static String selectivelyReadTypes;
     private static String exceptionTypes;
-    private static boolean enumCachingOn = true;
     private static boolean writingLogFilesOn;
     private static boolean arcaneTower = false;
     private static boolean graphicTestMode = false;
@@ -70,9 +68,7 @@ public class CoreEngine {
     private static float memoryLevel;
     private static boolean fullFastMode;
     private static Boolean windows;
-    private static long HEAP_SIZE;
     private static long TOTAL_MEMORY;
-    private static int CPU_NUMBER;
     private static boolean me;
     private static boolean cinematicMode;
     private static boolean mapPreview;
@@ -101,10 +97,11 @@ public class CoreEngine {
     private static boolean weakGpu;
     private static boolean youTube;
     private static boolean fraps;
+    private static boolean reflectionMapDisabled;
 
     public static void setWeakGpu(boolean weakGpu) {
         CoreEngine.weakGpu = weakGpu;
-        LogMaster.important("Setting Weak GPU to " +weakGpu);
+        LogMaster.important("Setting Weak GPU to " + weakGpu);
     }
 
     public static boolean getWeakGpu() {
@@ -143,15 +140,17 @@ public class CoreEngine {
         System.out.println("Core Engine Init... ");
 
 
+        long HEAP_SIZE;
         System.out.println("Heap size:  " +
                 (HEAP_SIZE = Runtime.getRuntime().maxMemory()));
+        int CPU_NUMBER;
         System.out.println("CPU's available:  " +
                 (CPU_NUMBER = Runtime.getRuntime().availableProcessors()));
 //        System.out.println("Total Memory:  " +
 //         (TOTAL_MEMORY =
 //          Runtime.getRuntime().totalMemory()));
 
-        if (System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\JustM")) {
+        if (System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\Alexa")) {
             me = true;
         }
 
@@ -238,6 +237,7 @@ public class CoreEngine {
 
         DC_TYPE TYPE = new EnumMaster<DC_TYPE>().retrieveEnumConst(DC_TYPE.class, name);
 
+        boolean TEST_MODE = true;
         if (isMenuScope() && !arcaneVault && !TEST_MODE) {
             if (TYPE == DC_TYPE.CHARS) {
                 return true;
@@ -285,6 +285,7 @@ public class CoreEngine {
     }
 
     public static boolean isEnumCachingOn() {
+        boolean enumCachingOn = true;
         return enumCachingOn;
     }
 
@@ -382,15 +383,22 @@ public class CoreEngine {
         //         }
 
         Chronos.logTimeElapsedForMark("TYPES INIT");
-        try {
-            Chronos.mark("MAPPER INIT");
-            Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
-                    classFolders);
-            Chronos.logTimeElapsedForMark("MAPPER INIT");
-        } catch (ClassNotFoundException | SecurityException | IOException e) {
-            ExceptionMaster.printStackTrace(e);
-        }
+        if (isCompileReflectionMap())
+            try {
+                Chronos.mark("MAPPER INIT");
+                Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
+                        classFolders);
+                Chronos.logTimeElapsedForMark("MAPPER INIT");
+            } catch (ClassNotFoundException | SecurityException | IOException e) {
+                ExceptionMaster.printStackTrace(e);
+            }
 
+    }
+
+    private static boolean isCompileReflectionMap() {
+        if (reflectionMapDisabled)
+            return false;
+        return !isLevelEditor();
     }
 
     public static boolean isItemGenerationOff() {
@@ -407,6 +415,10 @@ public class CoreEngine {
 
     public static CoreEngine getEngineObject() {
         return engineObject;
+    }
+
+    public static void setReflectionMapDisabled(boolean reflectionMapDisabled) {
+        CoreEngine.reflectionMapDisabled = reflectionMapDisabled;
     }
 
     public static void setEngineObject(CoreEngine engineObject) {
@@ -539,8 +551,8 @@ public class CoreEngine {
     }
 
     public static boolean isWindows() {
-        if (windows==null) {
-            windows= System.getProperty("os.name").startsWith("Windows");
+        if (windows == null) {
+            windows = System.getProperty("os.name").startsWith("Windows");
         }
         return windows;
     }
@@ -603,10 +615,6 @@ public class CoreEngine {
 
     public static void setToolIsRunning(boolean toolIsRunning) {
         CoreEngine.toolIsRunning = toolIsRunning;
-    }
-
-    public static boolean getToolIsRunning() {
-        return toolIsRunning;
     }
 
     public static boolean isActiveTestMode() {
@@ -758,6 +766,7 @@ public class CoreEngine {
     public static boolean isVfxOff() {
         return vfxOff || isSuperLite();
     }
+
     public static void setVfxOff(boolean vfxOff) {
         CoreEngine.vfxOff = vfxOff;
     }

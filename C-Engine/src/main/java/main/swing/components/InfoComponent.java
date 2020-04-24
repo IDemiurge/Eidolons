@@ -13,28 +13,22 @@ import java.awt.*;
 public class InfoComponent extends JLabel implements Refreshable {
     private static final int FACTOR = 5;
     String textureImage;
-    private SmartTextManager smartRenderManager;
     private Obj obj;
     private VALUE value;
-    private int compWidth;
-    private int compHeight;
     private float size;
-    private Font font;
 
     public InfoComponent(VALUE value, Obj obj, int compWidth, int compHeight,
                          float size) {
         this.size = size;
         this.obj = obj;
         this.value = value;
-        this.compWidth = compWidth;
-        this.compHeight = compHeight;
-        this.smartRenderManager = new SmartTextManager();
+        SmartTextManager smartRenderManager = new SmartTextManager();
 
         init();
     }
 
     private void init() {
-        font = FontMaster.getFont(FONT.MAIN, size, Font.PLAIN);
+        Font font = FontMaster.getFont(FONT.MAIN, size, Font.PLAIN);
         setFont(font);
         refresh();
     }

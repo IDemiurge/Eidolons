@@ -1,11 +1,15 @@
 package main.system.auxiliary.log;
 
+import lombok.extern.slf4j.Slf4j;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.launch.CoreEngine;
 import org.apache.log4j.Priority;
 
+import java.util.logging.Level;
+
+@Slf4j
 public class LogMaster {
     public static final int PRIORITY_VERBOSE = -1;
     public static final int PRIORITY_INFO = 0;
@@ -21,7 +25,7 @@ public class LogMaster {
     public static final String PREFIX_ERROR = "ERROR: ";
 
     private static int PRIORITY_LEVEL_LOGGED =
-    CoreEngine.isIDE() ? 1 : CoreEngine.isExe() ? 1 : 0;
+            CoreEngine.isIDE() ? 1 : CoreEngine.isExe() ? 1 : 0;
     public static final int CORE_DEBUG = -1;
     public static final String CORE_DEBUG_PREFIX = "CORE: ";
     public static final int CORE_DEBUG_1 = -100;
@@ -99,11 +103,19 @@ public class LogMaster {
 
     public static final String VFX_DEBUG_PREFIX = "VFX: ";
     public static final int VFX_DEBUG = -36;
-    public static final boolean VFX_DEBUG_ON= false;
+    public static final boolean VFX_DEBUG_ON = false;
 
     public static final String PUZZLE_DEBUG_PREFIX = "PUZZLE: ";
     public static final int PUZZLE_DEBUG = -37;
-    public static final boolean PUZZLE_DEBUG_ON= true;
+    public static final boolean PUZZLE_DEBUG_ON = true;
+
+    public static final String BUILDING_PREFIX = "BUILDING: ";
+    public static final int BUILDING = -38;
+    public static final boolean BUILDING_ON = true;
+
+    public static final String SAVE_PREFIX = "SAVE: ";
+    public static final int SAVE = -39;
+    public static final boolean SAVE_ON = true;
 
     public static final LOG_CHANNEL[] specialLogChannels = {
 
@@ -151,11 +163,14 @@ public class LogMaster {
 
     static String shout = "\n******************\n";
 
+    static {
+        java.util.logging.Logger.getGlobal().setLevel(Level.ALL);
+    }
+
     public static void log(String s) {
         if (off) {
             return;
         }
-
 
         if (APPEND_TIME) {
             s = TimeMaster.getFormattedTime() + " - " + s;
@@ -164,6 +179,7 @@ public class LogMaster {
             FileLogManager.stream(FileLogManager.LOG_OUTPUT.FULL, s);
         }
         if (isConsoleLogging()) {
+//            log.debug(s);
             System.out.println(s);
         } else {
             logToFile(s);
@@ -175,7 +191,7 @@ public class LogMaster {
     }
 
     private static boolean isConsoleLogging() {
-        return  !CoreEngine.isExe();
+        return !CoreEngine.isExe();
     }
 
     //TODO do these categories!
@@ -185,7 +201,7 @@ public class LogMaster {
 
     public static void log(LOG_CHANNEL c, String s) {
         if (c.isOn()) {
-                log(c.getPrefix() + s);
+            log(c.getPrefix() + s);
         }
     }
 
@@ -356,8 +372,6 @@ public class LogMaster {
     }
 
 
-
-
     /**
      * @return the off
      */
@@ -386,6 +400,7 @@ public class LogMaster {
     public static void verbose(String string) {
         log(PRIORITY_VERBOSE, PREFIX_VERBOSE + string);
     }
+
     public static void info(String string) {
         log(PRIORITY_INFO, PREFIX_INFO + string);
     }
@@ -399,9 +414,10 @@ public class LogMaster {
             log(PRIORITY_IMPORTANT, PREFIX_DEV + string);
         }
     }
+
     public static void important(String string) {
         log(PRIORITY_IMPORTANT, PREFIX_IMPORTANT + string);
-        if (!CoreEngine.isIDE()){
+        if (!CoreEngine.isIDE()) {
             FileLogManager.streamMain(string);
         }
     }

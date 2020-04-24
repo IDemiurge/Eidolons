@@ -54,14 +54,13 @@ public abstract class G_PagePanel<E> extends G_Panel {
     private boolean dirty = true;
     private MouseListener pageMouseListener;
     private PageWheelListener pageWheelListener;
-    private PageKeyListener pageKeyListener;
 
     public G_PagePanel(int pageSize, boolean vertical, int version) {
         this.pageSize = pageSize;
         this.vertical = vertical;
         this.version = version;
         pageWheelListener = new PageWheelListener(this);
-        pageKeyListener = new PageKeyListener(this);
+        PageKeyListener pageKeyListener = new PageKeyListener(this);
         // refresh();
     }
 

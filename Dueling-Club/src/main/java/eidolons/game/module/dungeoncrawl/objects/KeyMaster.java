@@ -10,9 +10,7 @@ import eidolons.game.core.EUtils;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.launch.CoreEngine;
 
@@ -28,6 +26,7 @@ public class KeyMaster {
         if (map != null) {
             return map;
         }
+        //TODO dc init fix
         String data = dungeon.getProperty(PROPS.KEY_DOOR_PAIRS);
         map = MapMaster.createStringMap(data);
         return map;
@@ -37,10 +36,7 @@ public class KeyMaster {
         String typeName = door.getName();
         Map<String, String> map = getPairMap(door.getGame().getDungeon());
         String type = map.get(typeName);
-        if (type == null) {
-            return false;
-        }
-        return true;
+        return type != null;
     }
 
     public static boolean hasKey(Unit unit, Door door) {

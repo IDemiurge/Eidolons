@@ -42,6 +42,7 @@ public class VisionMaster implements GenericVisionManager {
     private VisionController visionController;
     private BattleFieldObject[] visible;
     private BattleFieldObject[] invisible;
+    private boolean visionDebugMode;
 
     public VisionMaster(DC_Game game) {
         this.game = game;
@@ -57,6 +58,10 @@ public class VisionMaster implements GenericVisionManager {
 
     }
 
+    @Override
+    public boolean isVisionTest() {
+        return true;
+    }
     public static boolean isNewVision() {
         return true;
     }
@@ -83,7 +88,7 @@ public class VisionMaster implements GenericVisionManager {
 
         if (ExplorationMaster.isExplorationOn() &&
                 getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
-            main.system.auxiliary.log.LogMaster.verbose("Vision reset skipped by period; time left: " +
+            LogMaster.verbose("Vision reset skipped by period; time left: " +
                     getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().getVisibilityResetTimer());
         } else {
             getGame().getRules().getIlluminationRule().resetIllumination();
@@ -163,8 +168,8 @@ public class VisionMaster implements GenericVisionManager {
         }
 //        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
         if (LOG_CHANNEL.VISIBILITY_DEBUG.isOn()) {
-            main.system.auxiliary.log.LogMaster.log(1, ">>>>>> visibleList  = " + visibleList);
-            main.system.auxiliary.log.LogMaster.log(1, ">>>>>> invisibleList  = " + invisibleList);
+            LogMaster.log(1, ">>>>>> visibleList  = " + visibleList);
+            LogMaster.log(1, ">>>>>> invisibleList  = " + invisibleList);
             String string = "";
             for (BattleFieldObject sub : visibleList) {
                 string += sub + ": \n";
@@ -178,8 +183,8 @@ public class VisionMaster implements GenericVisionManager {
                     "" + string);
 
         }
-        visible = visibleList.toArray(new BattleFieldObject[visibleList.size()]);
-        invisible = invisibleList.toArray(new BattleFieldObject[invisibleList.size()]);
+        visible = visibleList.toArray(new BattleFieldObject[0]);
+        invisible = invisibleList.toArray(new BattleFieldObject[0]);
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_OFF, invisibleList);
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, visibleList);
     }
@@ -213,6 +218,7 @@ public class VisionMaster implements GenericVisionManager {
         DC_Obj obj = (DC_Obj) obj1;
         return obj.getPlayerVisionStatus() == PLAYER_VISION.INVISIBLE;
     }
+
 
     public boolean checkInvisible(DC_Obj obj, boolean active) {
         return obj.getPlayerVisionStatus(active) == PLAYER_VISION.INVISIBLE;
@@ -311,5 +317,13 @@ public class VisionMaster implements GenericVisionManager {
         unit.setVisibilityFrozen(true);
         refresh();
 
+    }
+
+    public boolean isVisionDebugMode() {
+        return visionDebugMode;
+    }
+
+    public void setVisionDebugMode(boolean visionDebugMode) {
+        this.visionDebugMode = visionDebugMode;
     }
 }

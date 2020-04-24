@@ -3,7 +3,7 @@ package eidolons.libgdx.gui.panels.dc.unitinfo.tooltips;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.tooltips.Tooltip;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import main.entity.Entity;
 
 import java.util.List;

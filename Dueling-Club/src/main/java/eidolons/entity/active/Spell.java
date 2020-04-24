@@ -71,13 +71,12 @@ public class Spell extends DC_ActiveObj {
             return super.getDamageType();
         switch (getAspect()) {
             case NEUTRAL:
+            case LIFE:
                 break;
             case ARCANUM:
                 if (RandomWizard.random())
                     return GenericEnums.DAMAGE_TYPE.MAGICAL;
                 return GenericEnums.DAMAGE_TYPE.ARCANE;
-            case LIFE:
-                break;
             case DARKNESS:
                 if (getSpellGroup() == SPELL_GROUP.PSYCHIC) {
                     return GenericEnums.DAMAGE_TYPE.PSIONIC;

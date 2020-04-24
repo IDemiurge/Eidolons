@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.tutorial;
 
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
-import eidolons.game.battlecraft.logic.meta.igg.event.TIP;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
+import eidolons.game.netherflame.igg.IGG_Demo;
+import eidolons.game.netherflame.igg.event.TIP;
+import eidolons.game.netherflame.igg.event.TipMessageMaster;
 
 import java.util.ArrayList;
 import java.util.List;

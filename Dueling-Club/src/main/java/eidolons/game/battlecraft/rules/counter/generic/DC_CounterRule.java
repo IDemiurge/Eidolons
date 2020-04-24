@@ -18,7 +18,6 @@ import main.content.enums.entity.UnitEnums.STATUS;
 import main.data.filesys.PathFinder;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.entity.Ref;
-import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.text.LogManager;
 
 import java.util.HashMap;

@@ -7,10 +7,10 @@ import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.ListItem;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
-import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.utilities.workspace.Workspace;
 
@@ -107,7 +107,10 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
                     treeCellRendererComponent.setForeground(c2);
                 }
             }
-            size = Math.min(getMaxTreeIconSize(), img.getWidth(null));
+            if (img == null) {
+                size = 32;
+            } else
+                size = Math.min(getMaxTreeIconSize(), img.getWidth(null));
             G_Panel comp = new G_Panel();
             ListItem<ObjType> item = new ListItem<>(type, selected, hasFocus, size);
 

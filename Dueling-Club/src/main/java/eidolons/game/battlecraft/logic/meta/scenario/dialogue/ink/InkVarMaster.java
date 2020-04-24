@@ -28,12 +28,9 @@ public class InkVarMaster {
         switch (var) {
 
             case TIME_OF_DAY:
-                break;
-            case TOWN_NAME:
-                break;
-            case REGION_NAME:
-                break;
             case PC_:
+            case REGION_NAME:
+            case TOWN_NAME:
                 break;
         }
         return "no value";

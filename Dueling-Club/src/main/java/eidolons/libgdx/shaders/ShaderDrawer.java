@@ -3,7 +3,8 @@ package eidolons.libgdx.shaders;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.game.core.Eidolons;
+import eidolons.libgdx.screens.ScreenMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,11 +19,21 @@ public class ShaderDrawer {
 
     public static void drawWithCustomShader(Actor actor, Batch batch,
                                             ShaderProgram shader) {
+
+        if (CoreEngine.TEST_LAUNCH) {
+            actor.draw(batch, ShaderDrawer.SUPER_DRAW);
+            return;
+        }
         drawWithCustomShader(actor, batch, shader, false);
     }
 
     public static void drawWithCustomShader(Actor actor, Batch batch,
                                             ShaderProgram shader, boolean nullMeansOriginal, boolean reset) {
+
+        if (CoreEngine.TEST_LAUNCH) {
+            actor.draw(batch, ShaderDrawer.SUPER_DRAW);
+            return;
+        }
         Runnable draw = getDrawRunnable(actor, batch);
         ShaderProgram originalShader = batch.getShader();
         if (originalShader != shader && !(shader == null && nullMeansOriginal))
@@ -37,6 +48,17 @@ public class ShaderDrawer {
     public static void drawWithCustomShader(Actor actor, Batch batch,
                                             ShaderProgram shader, boolean nullMeansOriginal
     ) {
+        if (CoreEngine.TEST_LAUNCH) {
+            actor.draw(batch, ShaderDrawer.SUPER_DRAW);
+            return;
+        }
+        if (CoreEngine.isIDE())
+            if (shader!=null && !shader.isCompiled())
+            {
+                drawWithCustomShader(actor, batch, null , false, true);
+                return;
+            }
+
         drawWithCustomShader(actor, batch, shader, nullMeansOriginal, true);
     }
 
@@ -47,7 +69,7 @@ public class ShaderDrawer {
                 if (batch.isDrawing())
                     actor.draw(batch, ShaderDrawer.SUPER_DRAW);
                 else
-                    actor.draw(Eidolons.getScreen().getBatch(), ShaderDrawer.SUPER_DRAW);
+                    actor.draw(ScreenMaster.getScreen().getBatch(), ShaderDrawer.SUPER_DRAW);
             };
             map.put(actor, runnable);
         }

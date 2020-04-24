@@ -399,14 +399,13 @@ public class SoundMaster {
 
         NEW__UNLOCK, NEW__TOWN_PORTAL_DONE, NEW__TOWN_PORTAL_START, NEW__DREAD, NEW__SHADOW_FALL, NEW__SHADOW_SUMMON, NEW__SHADOW_PRE_SUMMON;
         String path;
-        private boolean alt;
 
         STD_SOUNDS() {
             this(false);
         }
 
         STD_SOUNDS(boolean alt) {
-            this.alt = alt || toString().contains("__");
+            boolean alt1 = alt || toString().contains("__");
             path = STD_SOUND_PATH
                     + (alt ? toString() + ALT_FORMAT
                     : toString() + FORMAT).replace("__", "/").replace("_", " ");

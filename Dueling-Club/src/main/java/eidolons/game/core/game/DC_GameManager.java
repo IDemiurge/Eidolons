@@ -9,13 +9,13 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
-import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.master.*;
 import eidolons.game.core.state.DC_GameState;
 import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.netherflame.igg.death.ShadowMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
@@ -23,7 +23,8 @@ import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.bf.overlays.HpBar;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.PassiveAbilityObj;
 import main.ability.effects.Effect;
@@ -43,14 +44,13 @@ import main.entity.type.BuffType;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.core.game.GameManager;
+import main.game.core.state.GameState;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.Manager;
-import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -114,6 +114,10 @@ public class DC_GameManager extends GameManager {
 
     }
 
+    public void setObjCreator(ObjCreator objCreator) {
+        this.objCreator = objCreator;
+    }
+
     @Override
     public BuffObj createBuff(BuffType type, Obj active, Player player, Ref ref, Effect effect, int duration, Condition retainCondition) {
         return buffMaster.createBuff(type, active, player, ref, effect, duration, retainCondition);
@@ -147,7 +151,6 @@ public class DC_GameManager extends GameManager {
     public void objClicked(Obj obj) {
         if (isSelecting()) {
             checkSelectedObj(obj);
-            return;
         }
     }
 
@@ -175,9 +178,11 @@ public class DC_GameManager extends GameManager {
             resetWallMap();
             return;
         }
+        GameState.setResetDone(false);
         getGameObjMaster().clearCaches();
         FutureBuilder.clearCaches();
-        getStateManager().resetAllSynchronized();
+        if (!isResetDisabled())
+            getStateManager().resetAllSynchronized();
         checkForChanges(true);
 
         resetWallMap();
@@ -185,6 +190,11 @@ public class DC_GameManager extends GameManager {
         VisionManager.refresh();
 
         updateGraphics();
+        GameState.setResetDone(true);
+    }
+
+    protected boolean isResetDisabled() {
+        return false;
     }
 
     private void updateGraphics() {
@@ -489,7 +499,7 @@ public class DC_GameManager extends GameManager {
 
     public Unit getActiveObj() {
         Unit active = null;
-        ;
+
         if (game.isStarted()) {
             active = getGame().getLoop().getActiveUnit();
         }
@@ -507,17 +517,17 @@ public class DC_GameManager extends GameManager {
 
 
     @Override
-    public MicroObj createUnit(ObjType type, int x, int y, Player owner) {
-        return createUnit(type, x, y, owner, new Ref());
+    public BattleFieldObject createObject(ObjType type, int x, int y, Player owner) {
+        return (BattleFieldObject) createObject(type, x, y, owner, new Ref());
     }
 
     @Override
-    public MicroObj createUnit(ObjType type, Coordinates c, Player owner) {
-        return createUnit(type, c.x, c.y, owner);
+    public MicroObj createObject(ObjType type, Coordinates c, Player owner) {
+        return createObject(type, c.x, c.y, owner);
     }
 
     @Override
-    public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
+    public MicroObj createObject(ObjType type, int x, int y, Player owner, Ref ref) {
         return objCreator.createUnit(type, x, y, owner, ref);
     }
 
@@ -544,9 +554,6 @@ public class DC_GameManager extends GameManager {
     public boolean handleEvent(Event event) {
         if (!getGame().getMetaMaster().getEventHandler().handle(event)) {
             return false;
-        }
-        if (getGame().getDebugMaster() != null) {
-            event.getRef().setDebug(getGame().getDebugMaster().isDebugFunctionRunning());
         }
         if (event.getRef().getSourceObj() != null) {
             if (!AnimMaster.isAnimationOffFor(event.getRef().getSourceObj(), null))
@@ -579,7 +586,7 @@ public class DC_GameManager extends GameManager {
                             && GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())) {
 
                 try {
-                    DungeonScreen.getInstance().getGridPanel().getGridManager().
+                    ScreenMaster.getDungeonGrid().getGridManager().
                             checkHpBarReset(event.getRef().getSourceObj());
                 } catch (NullPointerException e) {
                 } catch (Exception e) {
@@ -655,10 +662,7 @@ public class DC_GameManager extends GameManager {
 
 
     public boolean checkAutoCameraCenter() {
-        if (AI_Manager.isRunning()) {
-            return false;
-        }
-        return true;
+        return !AI_Manager.isRunning();
     }
 
     public void setHighlightedObj(BattleFieldObject highlightedObj) {
@@ -667,5 +671,9 @@ public class DC_GameManager extends GameManager {
 
     public BattleFieldObject getHighlightedObj() {
         return highlightedObj;
+    }
+
+    public Coordinates getMainHeroCoordinates() {
+        return getMainHero().getCoordinates();
     }
 }

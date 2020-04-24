@@ -57,8 +57,8 @@ public class UnitShop {
                 return;
         }
         if (unit.getArmor() == null) {
-            if (!unit.getProperty(PROPS.ARMOR_REPERTOIRE).isEmpty())
-                return;
+            if (!unit.getProperty(PROPS.ARMOR_REPERTOIRE).isEmpty()) {
+            }
         }
     }
 
@@ -185,13 +185,14 @@ public class UnitShop {
     }
 
     private static void buyJewelry(PROPS property) {
-        String repertoire = ""; // TODO 1) sort types by plan and cost 2)
+        String repertoire; // TODO 1) sort types by plan and cost 2)
         // prioritize/preCheck amulet 3)
         // randomize
         String prop = unit.getProp(property.getName());
         // ++ attr jewelry ++ passive enchantment
         // quality level range?
 
+        StringBuilder repertoireBuilder = new StringBuilder();
         for (String trait : ContainerUtils.open(prop)) {
             // DataManager.getTypesSubGroup(OBJ_TYPES.JEWELRY, subgroup);
             ObjType type = DataManager.findType(VariableManager.removeVarPart(trait),
@@ -201,11 +202,11 @@ public class UnitShop {
             // could be resistance penetration... TODO preCheck doesn't contain
             // other trait
             {
-                repertoire += VariableManager.removeVarPart(type.getName())
-                        + VariableManager.getVarPart(trait) + ";";
+                repertoireBuilder.append(VariableManager.removeVarPart(type.getName())).append(VariableManager.getVarPart(trait)).append(";");
             }
 
         }
+        repertoire = repertoireBuilder.toString();
         if (!repertoire.isEmpty()) {
             while (true) {
                 try {
@@ -326,13 +327,12 @@ public class UnitShop {
 
                 return MATERIAL.MAN_BONE;
             case STONE:
+            case CRYSTAL:
 
                 return MATERIAL.ONYX;
             case NATURAL:
 
                 return MATERIAL.HUGE;
-            case CRYSTAL:
-                return MATERIAL.ONYX;
         }
         return null;
     }
@@ -496,7 +496,7 @@ public class UnitShop {
     private static void equip(Unit unit, DC_HeroItemObj item, ITEM_SLOT slot) {
         if (slot != null) {
             if (!unit.equip(item, slot)) {
-                LogMaster.log(1, unit.getName() + " failed to equip "
+                LogMaster.dev(unit.getName() + " failed to equip "
                         + item.getName());
             }
         } else {
@@ -537,7 +537,7 @@ public class UnitShop {
 
     private static DC_HeroItemObj buy(ObjType type, Unit unit) {
         unit.modifyParameter(PARAMS.GOLD, -type.getIntParam(PARAMS.GOLD_COST));
-        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>> " + unit + " buys " + type
+        main.system.auxiliary.log.LogMaster.dev(">>>>>>> " + unit + " buys " + type
                 + " gold remains: " +
                 unit.getIntParam(PARAMS.GOLD));
         return ItemFactory.createItemObj(type, unit.getOwner(), unit.getGame(), unit.getRef(),

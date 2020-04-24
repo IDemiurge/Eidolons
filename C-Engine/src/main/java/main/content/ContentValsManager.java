@@ -291,9 +291,9 @@ public class ContentValsManager {
         if (LOWER_CASE_CACHED)
             valueName = valueName.toLowerCase();
         PARAMETER param = paramCache.get(valueName);
-        if (param == G_PARAMS.EMPTY_PARAMETER) {
-            return null;
-        }
+//        if (param == G_PARAMS.EMPTY_PARAMETER) {
+//            return null;
+//        }
 
         if (param != null) {
             return param;
@@ -361,13 +361,11 @@ public class ContentValsManager {
         }
         valueName = valueName.replace("_", " ");
         valueName = valueName.replace(" ", "");
-        if (value == null) {
-            for (VALUE v : param ? params : props) {
-                if (StringMaster.compareByChar(valueName, v.toString().replace(" ", ""), false)) {
-                    value = v;
-                }
-                break;
+        for (VALUE v : param ? params : props) {
+            if (StringMaster.compareByChar(valueName, v.toString().replace(" ", ""), false)) {
+                value = v;
             }
+            break;
         }
         if (value == null) {
             for (VALUE p : param ? params : props) {
@@ -427,7 +425,7 @@ public class ContentValsManager {
         }
         if (!strict) {
             for (PROPERTY p : props) {
-                if (StringMaster.compare(valueName, p.toString(), strict)) {
+                if (StringMaster.compare(valueName, p.toString(), false)) {
                     return p;
                 }
             }
@@ -439,9 +437,7 @@ public class ContentValsManager {
         PROPERTY property = propCache.get(valueName);
 
         if (property != null) {
-            if (property != G_PROPS.EMPTY_VALUE) {
                 return property;
-            }
         }
         property = getPROP(valueName, true);
         if (property == null) {
@@ -455,13 +451,7 @@ public class ContentValsManager {
              + valueName + "!");
         }
 
-        if (property == null) {
-            property = G_PROPS.EMPTY_VALUE;
-        }
         propCache.put(valueName, property);
-        if (property == G_PROPS.EMPTY_VALUE) {
-            return null;
-        }
         return property;
     }
 
@@ -528,9 +518,7 @@ public class ContentValsManager {
 
     private static boolean checkExcluded(VALUE v) {
         if (excludedValueSet != null) {
-            if (excludedValueSet.contains(v)) {
-                return true;
-            }
+            return excludedValueSet.contains(v);
         }
         return false;
     }
@@ -542,12 +530,8 @@ public class ContentValsManager {
     public static List<VALUE> getValueList() {
         if (values == null) {
             values = new ArrayList<>();
-            for (PROPERTY p : getPropList()) {
-                values.add(p);
-            }
-            for (PARAMETER p : getParamList()) {
-                values.add(p);
-            }
+            values.addAll(getPropList());
+            values.addAll(getParamList());
         }
         return values;
     }

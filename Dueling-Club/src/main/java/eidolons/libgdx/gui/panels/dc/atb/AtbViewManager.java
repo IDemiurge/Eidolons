@@ -16,7 +16,7 @@ public class AtbViewManager {
 
     }
 
-    public class AtbTimedEvent{
+    public static class AtbTimedEvent{
 float timeLeft;
 boolean endOfRound;
 BattleFieldObject after;

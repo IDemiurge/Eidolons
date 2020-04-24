@@ -7,12 +7,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import main.content.enums.GenericEnums.BLENDING;
 import eidolons.libgdx.shaders.FluctuatingShader;
 import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.utils.ShaderBatch;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.BLENDING;
+import main.system.launch.CoreEngine;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -69,7 +70,7 @@ public class CustomSpriteBatch extends ShaderBatch {
         super.setColor(color);
     }
 
-    public class BlackSprite extends Sprite {
+    public static class BlackSprite extends Sprite {
         public BlackSprite() {
             setRegion(TextureCache.getOrCreateR("ui/white.png"));
         }
@@ -80,7 +81,7 @@ public class CustomSpriteBatch extends ShaderBatch {
     }
 
 
-        public class GradientSprite extends Sprite {
+        public static class GradientSprite extends Sprite {
 
         public GradientSprite(TextureRegion white) {
             setRegion(white);
@@ -149,6 +150,9 @@ public class CustomSpriteBatch extends ShaderBatch {
 
     @Override
     public void setShader(ShaderProgram shader) {
+        if (CoreEngine.TEST_LAUNCH) {
+            return;
+        }
         if (shader != getShader()) {
             bufferedShader = getShader();
         }
@@ -165,7 +169,7 @@ public class CustomSpriteBatch extends ShaderBatch {
     }
 
 
-    protected void shaderReset() {
+    public void shaderReset() {
         setShader(bufferedShader);
     }
 

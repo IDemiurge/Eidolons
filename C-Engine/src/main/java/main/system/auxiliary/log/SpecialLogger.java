@@ -25,7 +25,6 @@ public class SpecialLogger implements FileLogger {
 //    private StringBuilder visibilityLogBuilder = new StringBuilder();
 //    private StringBuilder inputLogBuilder = new StringBuilder();
     private String timeStamp;
-    private Thread thread;
     private Map<SPECIAL_LOG, StringBuilder> builderMap = new HashMap<>();
 
     private SpecialLogger() {
@@ -64,7 +63,7 @@ public class SpecialLogger implements FileLogger {
     public void startWritingThread() {
 
         timeStamp = TimeMaster.getTimeStamp();
-        thread = new Thread(() -> {
+        Thread thread = new Thread(() -> {
             WaitMaster.WAIT(WRITE_ALL_PERIOD);
             writeLogs();
         }, "log writing thread");
@@ -111,7 +110,7 @@ public class SpecialLogger implements FileLogger {
 
     public void appendSpecialLog(SPECIAL_LOG log, String string) {
         string = TimeMaster.getFormattedTime(true) + ": " + string;
-        getBuilder(log).append(string + "\n");
+        getBuilder(log).append(string).append("\n");
         main.system.auxiliary.log.LogMaster.log(1,log + ": " + string );
     }
 

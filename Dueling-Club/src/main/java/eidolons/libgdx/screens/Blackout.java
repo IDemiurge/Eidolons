@@ -90,7 +90,7 @@ public class Blackout {
         return false;
     }
 
-    public class BlackSprite extends Sprite {
+    public static class BlackSprite extends Sprite {
         public BlackSprite() {
             setRegion(TextureCache.getOrCreateR("ui/white.png"));
             setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

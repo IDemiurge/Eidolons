@@ -118,7 +118,6 @@ public enum MACRO_PARAMS implements PARAMETER {
     private String entityType;
     private String[] entityTypes;
     private String[] sentityTypes;
-    private int AV_ID;
     private int defaultValue;
     private boolean dynamic = false;
     private Metainfo metainfo;
@@ -161,7 +160,6 @@ public enum MACRO_PARAMS implements PARAMETER {
         this.entityType = entityType;
         this.dynamic = dynamic;
         this.defaultValue = defaultValue;
-        this.AV_ID = AV_ID;
     }
 
     @Override
@@ -175,11 +173,6 @@ public enum MACRO_PARAMS implements PARAMETER {
 
     public String[] getEntityTypes() {
         return entityTypes;
-    }
-
-    @Override
-    public Metainfo getMetainfo() {
-        return metainfo;
     }
 
     @Override

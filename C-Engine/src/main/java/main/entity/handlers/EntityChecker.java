@@ -3,7 +3,6 @@ package main.entity.handlers;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.STD_BOOLS;
-import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;

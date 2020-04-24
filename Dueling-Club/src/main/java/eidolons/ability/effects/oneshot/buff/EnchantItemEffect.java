@@ -4,7 +4,7 @@ import eidolons.ability.AddSpecialEffects;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.containers.EnergyCostEffect;
-import eidolons.ability.effects.special.media.SoundEffect;
+import eidolons.ability.ignored.special.media.SoundEffect;
 import eidolons.ability.targeting.TemplateSelectiveTargeting;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.Spell;

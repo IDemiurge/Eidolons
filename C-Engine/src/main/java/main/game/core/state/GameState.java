@@ -27,6 +27,7 @@ public abstract class GameState {
 
     protected static final int DEFAULT_ROUND = 0;
     protected static final int ROUND_NOT_SET = -1;
+    private static boolean resetDone;
     protected boolean dirty = false;
     protected boolean interrupted = false;
     protected Map<Integer, Obj> objMap = new ConcurrentMap<>();
@@ -45,6 +46,14 @@ public abstract class GameState {
     public GameState(Game game) {
         this.game = game;
         initTypeMaps();
+    }
+
+    public static boolean isResetDone() {
+        return resetDone;
+    }
+
+    public static void setResetDone(boolean resetDone) {
+        GameState.resetDone = resetDone;
     }
 
     protected void initTypeMaps() {

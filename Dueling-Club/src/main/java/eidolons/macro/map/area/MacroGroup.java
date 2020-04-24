@@ -1,7 +1,6 @@
 package eidolons.macro.map.area;
 
 import eidolons.content.PROPS;
-import eidolons.game.module.adventure.map.travel.old.TravelMasterOld;
 import eidolons.macro.map.MacroCoordinates;
 import eidolons.macro.map.Region;
 import main.content.C_OBJ_TYPE;
@@ -59,7 +58,7 @@ public class MacroGroup { // macro obj type?
         for (String s : types) { // PROPS.UNIT_TYPES - all possible types?
             ObjType type = DataManager.getType(s, C_OBJ_TYPE.UNITS_CHARS);
             if (type != null) {
-                travelSpeed += TravelMasterOld.getTravelSpeed(type);
+//                travelSpeed += TravelMasterOld.getTravelSpeed(type);
             } else {
                 size--;
             }

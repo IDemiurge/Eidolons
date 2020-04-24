@@ -6,12 +6,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeBitmapFontData;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.Menu;
+import com.kotcrab.vis.ui.widget.MenuItem;
+import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.stage.GuiStage;
@@ -21,7 +23,6 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.ColorManager;
-import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -68,6 +69,8 @@ public class StyleHolder {
     private static TextButtonStyle dialogueReplyStyle;
     private static LabelStyle defaultHiero;
     private static LabelStyle defaultInfoStyle;
+    private static TabbedPane.TabbedPaneStyle horTabStyle;
+    private static Menu.MenuStyle menuStyle;
 
     static {
         for (FONT font : FONT.values()) {
@@ -113,7 +116,7 @@ public class StyleHolder {
     }
 
     public static LabelStyle getDebugLabelStyle() {
-        return getSizedColoredLabelStyle(SMART_FONT_SIZE_COEF, FONT.MAIN, 15, GdxColorMaster.PALE_GOLD);
+        return getSizedColoredLabelStyle( FONT.MAIN, 18, GdxColorMaster.PALE_GOLD);
     }
 
     public static LabelStyle getSizedColoredLabelStyle(float adjustSizeCoef,
@@ -321,6 +324,11 @@ public class StyleHolder {
          20);
     }
 
+    public static TextButtonStyle getTextButtonStyle(TextButtonStyle style, STD_BUTTON btnStyle) {
+        style = new TextButtonStyle(style);
+        initBtnStyle(style, btnStyle);
+        return style;
+    }
     public static TextButtonStyle getTextButtonStyle(
      STD_BUTTON button, FONT FONT, Color color, int size) {
         Map<LabelStyle, TextButtonStyle> map = textButtonStyleMap.get(button);
@@ -336,25 +344,7 @@ public class StyleHolder {
             return style;
 
         style = new TextButtonStyle();
-        if (button != null) {
-            style.up = button.getTexture();
-            if (button.isVersioned()) {
-                style.down = button.getTextureDown();
-                style.over = button.getTextureOver();
-                style.disabled = button.getTextureDisabled();
-                style.checked = button.getTextureChecked();
-                style.checkedOver = button.getTextureCheckedOver();
-            } else {
-                style.down = button.getTexture();
-                style.over = button.getTexture();
-                style.disabled = button.getTexture();
-            }
-        }
-        if (button == STD_BUTTON.MENU) {
-            if (isHieroOn()) {
-                style.font = getHieroFontMagic();
-            }
-        }
+        initBtnStyle(style, button);
         if (style.font == null)
             style.font = getFont(FONT, color, size);
         style.fontColor = new Color(color);
@@ -381,6 +371,29 @@ public class StyleHolder {
 
         map.put(labelStyle, style);
         return style;
+    }
+
+    private static void initBtnStyle(TextButtonStyle style, STD_BUTTON button) {
+
+        if (button != null) {
+            style.up = button.getTexture();
+            if (button.isVersioned()) {
+                style.down = button.getTextureDown();
+                style.over = button.getTextureOver();
+                style.disabled = button.getTextureDisabled();
+                style.checked = button.getTextureChecked();
+                style.checkedOver = button.getTextureCheckedOver();
+            } else {
+                style.down = button.getTexture();
+                style.over = button.getTexture();
+                style.disabled = button.getTexture();
+            }
+        }
+        if (button == STD_BUTTON.MENU) {
+            if (isHieroOn()) {
+                style.font = getHieroFontMagic();
+            }
+        }
     }
 
     public static TextButtonStyle getTabStyle(TextButtonStyle style) {
@@ -486,4 +499,36 @@ public class StyleHolder {
     public static LabelStyle newStyle(LabelStyle  style) {
         return new LabelStyle(style);
     }
+
+    public static TabbedPane.TabbedPaneStyle getHorTabStyle() {
+        if (horTabStyle == null) {
+            horTabStyle = VisUI.getSkin().get(TabbedPane.TabbedPaneStyle.class);
+            horTabStyle.vertical = false;
+
+            horTabStyle.background = NinePatchFactory.getLightPanelFilledDrawable();
+        }
+        return horTabStyle;
+    }
+
+    public static Menu.MenuStyle getMenuStyle() {
+        if (menuStyle == null) {
+            menuStyle = new Menu.MenuStyle(VisUI.getSkin().get(Menu.MenuStyle.class));
+            TextButtonStyle s =getMenuBtnStyle();
+            menuStyle.openButtonStyle.font= s.font;
+//            =new VisTextButton.VisTextButtonStyle(
+//                    s.up,
+//                    s.down,
+//                    s.checked,
+//                    s.font
+//            );
+        }
+        return menuStyle;
+    }
+
+    public static MenuItem.MenuItemStyle getMenuBtnStyle() {
+        MenuItem.MenuItemStyle menuItemStyle = new MenuItem.MenuItemStyle(VisUI.getSkin().get(MenuItem.MenuItemStyle.class));
+        menuItemStyle.font = getButtonStyle(STD_BUTTON.MENU).font;
+        return  menuItemStyle;
+    }
+
 }

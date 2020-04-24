@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.system.text.Texts;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.data.DataUnit;
@@ -11,8 +10,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static main.system.auxiliary.log.LogMaster.important;
 
 public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
     public static final boolean TEST_MODE = false;

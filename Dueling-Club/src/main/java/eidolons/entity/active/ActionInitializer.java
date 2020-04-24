@@ -4,16 +4,13 @@ import eidolons.ability.ActionGenerator;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.battlecraft.rules.combat.attack.dual.DualAttackMaster;
 import eidolons.game.battlecraft.rules.mechanics.FleeRule;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
-import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.bf.boss.entity.BossActionMaster;
+import eidolons.game.netherflame.igg.death.ShadowMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
@@ -104,8 +101,7 @@ public class ActionInitializer extends DC_ActionManager {
                     if (activeObj.isTurn())
                         return false;
                 if (activeObj.isMove())
-                    if (EidolonsGame.MOVES_DISABLED)
-                    {
+                    if (EidolonsGame.MOVES_DISABLED) {
                         return false;
                     }
                 if (activeObj.isAttackAny())
@@ -125,7 +121,8 @@ public class ActionInitializer extends DC_ActionManager {
             }
         return true;
     }
-        public boolean isActionAvailable(DC_ActiveObj activeObj, boolean exploreMode) {
+
+    public boolean isActionAvailable(DC_ActiveObj activeObj, boolean exploreMode) {
 
         switch (activeObj.getName()) {
             case "Defend":
@@ -179,11 +176,13 @@ public class ActionInitializer extends DC_ActionManager {
 
         actives.removeIf(activeObj -> !isActionAvailable((DC_ActiveObj) activeObj, ExplorationMaster.isExplorationOn()));
 
+        StringBuilder activesPropBuilder = new StringBuilder(activesProp);
         for (ActiveObj a : actives) {
-            if (activesProp.contains(a.getName())) {
-                activesProp += a.getName() + ";";
+            if (activesPropBuilder.toString().contains(a.getName())) {
+                activesPropBuilder.append(a.getName()).append(";");
             }
         }
+        activesProp = activesPropBuilder.toString();
         unit.setProperty(ACTIVES, activesProp);
     }
 
@@ -210,14 +209,14 @@ public class ActionInitializer extends DC_ActionManager {
         actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Push.name(), unit));
         actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Pull.name(), unit));
 
+        actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, unit));
+
         if (UnitAnalyzer.checkOffhand(unit)) {
             actives.add(getOrCreateAction(OFFHAND_ATTACK, unit));
-
             addOffhandActions(unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK), unit);
             addOffhandActions(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK), unit);
         }
 
-        actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, unit));
         if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.DUAL_ATTACKS))
             if (UnitAnalyzer.checkDualWielding(unit)) {
                 actives.addAll(DualAttackMaster.getDualAttacks(unit));
@@ -268,11 +267,7 @@ public class ActionInitializer extends DC_ActionManager {
             }
         }
 
-        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.ENTER)) {
-            for (Entrance e : DungeonLevelMaster.getAvailableDungeonEntrances(unit)) {
-                actives.add(getEnterAction(unit, e));
-            }
-        }
+
 
 //        actives.add(getOrCreateAction(SEARCH_MODE, unit));
 
@@ -290,35 +285,19 @@ public class ActionInitializer extends DC_ActionManager {
         // }
     }
 
-    private DC_UnitAction getEnterAction(final Unit hero, final Entrance e) {
-        DC_UnitAction action = new DC_UnitAction(DataManager.getType(ENTER, DC_TYPE.ACTIONS),
-                hero.getOwner(), game, hero.getRef().getCopy()) {
-            public boolean resolve() {
-//                animate();
-                e.enter(hero, coordinates);
-                game.getManager().reset();
-                game.getManager().refresh(ownerObj.getOwner().isMe());
-                return true;
-            }
-        };
-        actionsCache.get(hero).put(ENTER, action);
-        return action;
-    }
-
     private void addOffhandActions(DequeImpl<DC_UnitAction> actives, Unit unit) {
-        if (!offhandInit) {
-            ActionGenerator.generateOffhandActions();
-            offhandInit = true;
-        }
-        if (actives != null)
-            for (ActiveObj attack : actives) {
-                ObjType offhand = (DataManager.getType(ActionGenerator.getOffhandActionName(attack
-                        .getName()), DC_TYPE.ACTIONS));
+        if (actives != null) {
+            ArrayList<ActiveObj> list = new ArrayList<>(actives);
+            for (ActiveObj attack : list) {
+
+                ObjType offhand = ActionGenerator.generateOffhandAction(attack.getType());
+
                 if (offhand == null) {
                     continue;
                 }
                 actives.add(getOrCreateAction(offhand.getName(), unit));
             }
+        }
 
     }
 
@@ -331,7 +310,7 @@ public class ActionInitializer extends DC_ActionManager {
         // TODO also add to Actives container!
 
         if (unit.isBoss()) {
-            actives.addAll(BossActionMaster.getStandardActions(unit));
+//            actives.addAll(BossMaster.getActionMaster(unit).getStandardActions(unit));
         } else
             for (ActionEnums.ACTION_TYPE type : ActionEnums.ACTION_TYPE.values()) {
                 // I could actually centralize all action-adding to HERE! Dual, INV

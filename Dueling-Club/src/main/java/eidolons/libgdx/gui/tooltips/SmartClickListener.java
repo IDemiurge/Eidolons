@@ -4,10 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.stage.ConfirmationPanel;
 
 /**

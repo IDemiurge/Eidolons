@@ -7,8 +7,9 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.GameScreen;
+import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -36,11 +37,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         super(game);
         master = game.getDungeonMaster().getExplorationMaster();
         macroTimeMaster = MacroTimeMaster.getInstance();
-        GuiEventManager.bind(GuiEventType.GAME_RESET,
-                d -> {
-                    resetRequired = true;
-                    signal();
-                });
     }
 
 
@@ -226,8 +222,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             return false;
         if (playerAction.getAction().getTargeting() instanceof SelectiveTargeting)
             if (playerAction.getContext().getTarget() != null)
-                if (!playerAction.getAction().canBeTargeted(playerAction.getContext().getTarget()))
-                    return false;
+                return playerAction.getAction().canBeTargeted(playerAction.getContext().getTarget());
         return true;
     }
 
@@ -242,7 +237,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
 
     protected boolean isMustWaitForAnim(ActionInput action) {
-        return DungeonScreen.getInstance().getGridPanel()
+        return ScreenMaster.getDungeonGrid()
                 .getViewMap().get(activeUnit).getActions().size > 0 || AnimMaster.getInstance().isDrawingPlayer();
     }
 
@@ -327,8 +322,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
                     break;
                 }
-                if (checkNextLevel())
-                    if (confirmExit()) {
+                    if (checkNextFloor()) {
                         game.getBattleMaster().getOutcomeManager().next();
                         game.getVisionMaster().refresh();
                         break;
@@ -344,16 +338,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return true;
     }
 
-    private boolean confirmExit() {
-        if (CoreEngine.isIggDemo()){
-            return true;
-        }
-        EUtils.onConfirm("Leave this location? " +
-                        "Don't forget to check your achievements from the main menu!", () ->
-                        WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, true),
-                () ->
-                        WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, false));
-        return (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM);
+    private boolean checkNextFloor() {
+        return getGame().getDungeonMaster().getTransitHandler().checkNextFloor();
     }
 
     @Override

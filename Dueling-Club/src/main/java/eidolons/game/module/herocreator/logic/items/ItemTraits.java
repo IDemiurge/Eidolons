@@ -30,7 +30,40 @@ public class ItemTraits {
     public static final String VAR = "$var";
 
 
-    public enum EIDOLON_ASPECT {
+    public enum EIDOLON_ESSENCE {
+        HATE(BLOOD, FLAME, LAVA),
+        FEAR(DARK, CHAOS, MIST),
+        AVARICE(EVIL, OCEAN, TECH),
+        REGRET(ASH, VENOM, VOID),
+        SORROW(NETHER, STONE, METAL),
+
+        JOY(SUN, LIGHT, WOOD),
+        EQUANIMITY(TWILIGHT, MOON, ICE),
+        LUST(WARPED, CHAOS),
+        DREAM(SAND, WIND),
+        PROVIDENCE(CRYSTAL, PURE, COSMOS),
+        ;
+/*
+Ghoul = 3hate+2avarice
+Demon Brute =
+Bandit =
+Dwarf =
+Ravenguard =
+
+Override - Manner of killing:
+> sneak
+> periodic
+> retaliation
+>
+
+Merging essences - like good old haradrim!
+
+Converting essences - random with loss
+ */
+        EIDOLON_ESSENCE(EIDOLON_ASPECT... aspects) {
+        }
+    }
+        public enum EIDOLON_ASPECT {
         /*
         kind of like the stuff I did for OLD EIDOLONS
         by principle?

@@ -1,7 +1,6 @@
 package eidolons.libgdx.stage;
 
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -10,26 +9,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageWindow;
-import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
-import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.*;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.GDX;
+import eidolons.game.netherflame.igg.event.TipMessageSource;
+import eidolons.game.netherflame.igg.event.TipMessageWindow;
+import eidolons.game.netherflame.igg.soul.EidolonLord;
+import eidolons.game.netherflame.igg.soul.panel.LordPanel;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.gui.HideButton;
-import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -37,20 +36,17 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
-import eidolons.libgdx.gui.panels.dc.logpanel.FullLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.ExtendableLogPanel;
+import eidolons.libgdx.gui.panels.dc.logpanel.FullLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.quest.QuestJournal;
 import eidolons.libgdx.gui.panels.quest.QuestProgressPanel;
-import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.screens.Blackout;
 import eidolons.libgdx.screens.map.town.navigation.PlaceNavigationPanel;
-import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
-import eidolons.libgdx.utils.TextInputPanel;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
 import main.content.enums.GenericEnums;
@@ -59,55 +55,40 @@ import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
-import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
 
-import static eidolons.game.core.Eidolons.getScreen;
+import static eidolons.libgdx.screens.ScreenMaster.getScreen;
 import static main.system.GuiEventType.SHOW_QUESTS_INFO;
 import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
 
 /**
  * Created by JustMe on 2/9/2018.
  */
-public class GuiStage extends StageX implements StageWithClosable {
+public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
-    protected final LabelX actionTooltip = new LabelX("", StyleHolder.getDefaultInfoStyle());
-    protected final LabelX infoTooltip = new LabelX("", StyleHolder.getDefaultInfoStyle());
     private final Blackout blackout;
     protected List<String> charsUp = new ArrayList<>();
     protected char lastTyped;
 
-    protected Closable displayedClosable;
 
     protected RadialMenu radial;
     protected ContainerPanel containerPanel;
-    protected OverlayTextPanel textPanel;
     protected GameMenu gameMenu;
     protected SmartButton menuButton;
 
-    protected ValueContainer locationLabel;
-    protected TextInputPanel tf;
-    protected ToolTipManager tooltips;
     protected HqPanel hqPanel;
     protected boolean blackoutIn;
-    protected SuperContainer actionTooltipContainer;
-    protected SuperContainer infoTooltipContainer;
     protected boolean blocked;
-    protected ConfirmationPanel confirmationPanel;
-    protected DragManager dragManager;
-    protected Entity draggedEntity;
 
     protected FullLogPanel fullLogPanel;
     protected QuestProgressPanel questProgressPanel;
     protected QuestJournal journal;
-    protected TipMessageWindow tipMessageWindow;
 
     protected ArrayList<Actor> townActors;
     protected boolean town;
@@ -167,6 +148,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         //        helpButton.setPosition(menuButton.getX() - helpButton.getWidth(),
         //         GdxMaster.getHeight() - helpButton.getHeight());
         //        addActor(helpButton);
+
         tipMessageWindow = new TipMessageWindow(null);
         addActor(dialogueContainer = new DialogueContainer());
         addActor(questProgressPanel = new QuestProgressPanel());
@@ -176,9 +158,8 @@ public class GuiStage extends StageX implements StageWithClosable {
         questProgressPanel.setPosition(GdxMaster.right(questProgressPanel),
                 GdxMaster.getHeight() - questProgressPanel.getHeight() - GdxMaster.adjustHeight(128));
 
-
-        ExtendableLogPanel log = new ExtendableLogPanel(true);
-        logPanel = log;// RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
+        logPanel = new ExtendableLogPanel(true);
+        // RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
         addActor(logPanel);
 //        logPanel.setOnClose(()->{
 //            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_OUT);
@@ -193,11 +174,13 @@ public class GuiStage extends StageX implements StageWithClosable {
         radial = new RadialMenu();
         addActor(radial);
 
-        containerPanel = new ContainerPanel();
-        addActor(containerPanel);
-        containerPanel.setPosition(GdxMaster.centerWidth(containerPanel),
-                GdxMaster.centerHeight(containerPanel));
-        containerPanel.setVisible(false);
+        if (!CoreEngine.TEST_LAUNCH) {
+            containerPanel = new ContainerPanel();
+            addActor(containerPanel);
+            containerPanel.setPosition(GdxMaster.centerWidth(containerPanel),
+                    GdxMaster.centerHeight(containerPanel));
+            containerPanel.setVisible(false);
+        }
         bindEvents();
 
         initGameMenu();
@@ -210,60 +193,31 @@ public class GuiStage extends StageX implements StageWithClosable {
             }
         });
         actionTooltipContainer.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.ATB_POS);
-        actionTooltipContainer.setAlphaFluctuationOn(true);
+        Fluctuating.setAlphaFluctuationOn(true);
 
-        addActor(hqPanel = new HqPanel());
-        hqPanel.setPosition(GdxMaster.centerWidth(hqPanel),
-                GdxMaster.centerHeight(hqPanel));
-        hqPanel.setVisible(false);
+        if (!CoreEngine.TEST_LAUNCH) {
+            addActor(hqPanel = new HqPanel());
+            hqPanel.setPosition(GdxMaster.centerWidth(hqPanel),
+                    GdxMaster.centerHeight(hqPanel));
+            hqPanel.setVisible(false);
+            if (LordPanel.ON) {
+                addActor(lordPanel = LordPanel.getInstance());
+                lordPanel.setPosition(GdxMaster.centerWidth(lordPanel),
+                        GdxMaster.centerHeight(lordPanel));
+                lordPanel.setVisible(false);
+            }
+            addActor(journal = new QuestJournal());
+            journal.setPosition(GdxMaster.centerWidth(journal),
+                    GdxMaster.centerHeight(journal));
+            journal.setVisible(false);
 
-        if (LordPanel.ON) {
-            addActor(lordPanel = LordPanel.getInstance());
-            lordPanel.setPosition(GdxMaster.centerWidth(lordPanel),
-                    GdxMaster.centerHeight(lordPanel));
-            lordPanel.setVisible(false);
         }
-
-        addActor(journal = new QuestJournal());
-        journal.setPosition(GdxMaster.centerWidth(journal),
-                GdxMaster.centerHeight(journal));
-        journal.setVisible(false);
-
         initTooltipsAndMisc();
 
         addActor(dragManager = DragManager.getInstance());
         dragManager.setGuiStage(this);
     }
 
-    protected void initTooltipsAndMisc() {
-
-        textPanel = new OverlayTextPanel();
-        addActor(textPanel);
-        textPanel.setPosition(GdxMaster.centerWidth(textPanel),
-                GdxMaster.centerHeight(textPanel));
-
-        addActor(tooltips = new ToolTipManager(this));
-
-        addActor(infoTooltipContainer = new SuperContainer(infoTooltip) {
-            @Override
-            public int getFluctuatingAlphaPeriod() {
-                return 0;
-            }
-
-            @Override
-            public void draw(Batch batch, float parentAlpha) {
-                if (parentAlpha == ShaderDrawer.SUPER_DRAW)
-                    super.draw(batch, 1);
-                else
-                    ShaderDrawer.drawWithCustomShader(this, batch, null, false, false);
-            }
-        });
-        infoTooltipContainer.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_MAP);
-        infoTooltipContainer.setAlphaFluctuationOn(true);
-
-        addActor(confirmationPanel = ConfirmationPanel.getInstance());
-
-    }
 
     protected void initGameMenu() {
         gameMenu = createGameMenu();
@@ -413,11 +367,6 @@ public class GuiStage extends StageX implements StageWithClosable {
         super.act(delta);
         resetZIndices();
 
-        if (hqPanel.isVisible()) {
-            if (!Eidolons.isFullscreen()) {
-                hqPanel.setX(-80);
-            }
-        }
     }
 
 
@@ -442,8 +391,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     public List<Actor> getActorsForTown() {
         if (townActors == null) {
             townActors =
-                    new ArrayList<>(Arrays.asList(new Actor[]{
-                            dragManager,
+                    new ArrayList<>(Arrays.asList(dragManager,
                             confirmationPanel,
                             hqPanel,
                             textPanel,
@@ -452,8 +400,7 @@ public class GuiStage extends StageX implements StageWithClosable {
                             getTooltips(),
                             actionTooltipContainer,
                             infoTooltipContainer,
-                            OptionsWindow.getInstance()
-                    }));
+                            OptionsWindow.getInstance()));
         }
         return townActors;
     }
@@ -506,22 +453,11 @@ public class GuiStage extends StageX implements StageWithClosable {
         if (!ancestors.contains(textPanel))
             if (!ancestors.contains(confirmationPanel))
                 if (!ancestors.contains(tipMessageWindow))
-                    if (!ancestors.contains(gameMenu))
-                        return true;
+                    return !ancestors.contains(gameMenu);
 
         return false;
     }
 
-    public Closable getDisplayedClosable() {
-        return displayedClosable;
-    }
-
-    @Override
-    public void setDisplayedClosable(Closable displayedClosable) {
-        this.displayedClosable = displayedClosable;
-        if (displayedClosable == null)
-            setDraggedEntity(null);
-    }
 
     protected void bindEvents() {
 
@@ -566,24 +502,6 @@ public class GuiStage extends StageX implements StageWithClosable {
             hqPanel.open();
             hqPanel.setUserObject(p.get());
         });
-        GuiEventManager.bind(GuiEventType.SHOW_INFO_TEXT, p -> {
-            if (p.get() == null) {
-                hideTooltip(infoTooltip, 1f);
-            } else {
-                String text = p.get().toString();
-                LABEL_STYLE style = null;
-                if (text.contains(EUtils.STYLE)) {
-                    String[] parts = text.split(EUtils.STYLE);
-                    style = new EnumMaster<LABEL_STYLE>().retrieveEnumConst(LABEL_STYLE.class, parts[0]);
-                    text = parts[1];
-                }
-
-                //                textToShow.add() queue!
-                infoTooltipContainer.setContents(infoTooltip);
-                hideTooltip(actionTooltip, 1f);
-                showTooltip(style, false, text, infoTooltip, 2f);
-            }
-        });
         GuiEventManager.bind(GuiEventType.TARGET_SELECTION, p -> {
             hideTooltip(actionTooltip, 0.5f);
         });
@@ -602,39 +520,6 @@ public class GuiStage extends StageX implements StageWithClosable {
                         , actionTooltip, 2f);
             }
             hideTooltip(infoTooltip, 1f);
-        });
-
-        GuiEventManager.bind(GuiEventType.HIDE_ALL_TEXT, p -> {
-            hideTooltip(infoTooltip, 1f);
-            hideTooltip(actionTooltip, 1f);
-            infoTooltip.setVisible(false);
-            actionTooltip.setVisible(false);
-        });
-        GuiEventManager.bind(GuiEventType.HIDE_ACTION_INFO_TEXT, p -> {
-            hideTooltip(actionTooltip, 1f);
-        });
-        GuiEventManager.bind(GuiEventType.HIDE_INFO_TEXT, p -> {
-            hideTooltip(infoTooltip, 1f);
-        });
-        GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
-            DC_ActiveObj active = (DC_ActiveObj) p.get();
-            if (ExplorationMaster.isExplorationOn()) {
-                return;
-            }
-
-            showTooltip(true, active.getOwnerUnit().getNameIfKnown()
-                    + " activates " + active.getName(), actionTooltip, 3f);
-            hideTooltip(infoTooltip, 1f);
-
-        });
-
-        GuiEventManager.bind(GuiEventType.CONFIRM, p -> {
-            Triple<String, Object, Runnable> triple = (Triple<String, Object, Runnable>) p.get();
-            if (triple.getMiddle() instanceof Runnable) {
-                confirm(triple.getLeft(), true, triple.getRight(), ((Runnable) triple.getMiddle()));
-            } else
-                confirm(triple.getLeft(), (Boolean) triple.getMiddle(), triple.getRight(), null);
-
         });
 
         GuiEventManager.bind(GuiEventType.TIP_MESSAGE, p -> {
@@ -666,53 +551,6 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     }
 
-    public void confirm(String text,
-                        boolean canCancel,
-                        Runnable onConfirm,
-                        Runnable onCancel) {
-        confirm(text, canCancel, onConfirm, onCancel, false);
-    }
-
-    public void confirm(String text,
-                        boolean canCancel,
-                        Runnable onConfirm,
-                        Runnable onCancel,
-                        boolean recursion) {
-        if (tipMessageWindow.isVisible()) {
-//                tipMessageWindow.getOnClose() TODO
-            tipMessageWindow.setOnClose(() -> {
-                confirm(text, canCancel, onConfirm, onCancel, true);
-            });
-            return;
-        }
-        if (!recursion)
-            if (confirmationPanel.isVisible()) {
-                confirmationPanel.setOnConfirm(
-                        () -> {
-                            confirmationPanel.getOnConfirm().run();
-                            confirm(text, canCancel, onConfirm, onCancel, true);
-                        }
-                );
-                confirmationPanel.setOnCancel(
-                        () -> {
-                            confirmationPanel.getOnCancel().run();
-                            confirm(text, canCancel, onConfirm, onCancel, true);
-                        }
-                );
-            }
-        confirmationPanel.setText(text);
-        confirmationPanel.setCanCancel(
-                canCancel);
-        confirmationPanel.setOnConfirm(onConfirm);
-        confirmationPanel.setOnCancel(onCancel);
-        confirmationPanel.open();
-
-    }
-
-    protected void showTooltip(String s, LabelX tooltip, float dur) {
-        showTooltip(false, s, tooltip, dur);
-    }
-
     public enum LABEL_STYLE {
         AVQ_SMALL(17, FontMaster.FONT.AVQ),
         AVQ_MED(20, FontMaster.FONT.AVQ),
@@ -740,61 +578,6 @@ public class GuiStage extends StageX implements StageWithClosable {
         }
     }
 
-    protected void showTooltip(boolean action, String s, LabelX tooltip, float dur) {
-        showTooltip(null, action, s, tooltip, dur);
-    }
-
-    protected void showTooltip(LABEL_STYLE style, boolean action, String s, LabelX tooltip, float dur) {
-
-        infoTooltip.setVisible(true);
-        actionTooltip.setVisible(true);
-
-        if (style != null) {
-            tooltip.setStyle(StyleHolder.getStyle(style));
-        } else {
-            tooltip.setStyle(StyleHolder.getDefaultInfoStyle());
-        }
-
-        tooltip.setText(s);
-        tooltip.getColor().a = 0;
-        tooltip.clearActions();
-        if (dur != 0) {
-            ActionMaster.addFadeInAndOutAction(tooltip, dur, true);
-        } else {
-            ActionMaster.addFadeInAction(tooltip, 0.85f);
-        }
-        tooltip.layout();
-        tooltip.pack();
-        SuperContainer container = (SuperContainer) tooltip.getParent();
-        if (container != null)
-            container.setFluctuateAlpha(false);
-        else
-            return;
-        tooltip.getParent().setPosition(
-                GdxMaster.centerWidthScreen(tooltip) - 20
-//                ((GdxMaster.getWidth() - fullLogPanel.getWidth() * 0.88f) - tooltip.getWidth()) / 2
-                , action ? GDX.size(175, 0.2f) : GDX.size(200, 0.2f));
-    }
-
-    protected void hideTooltip(LabelX tooltip, float dur) {
-        SuperContainer container = (SuperContainer) tooltip.getParent();
-        ActionMaster.addFadeOutAction(tooltip, dur, true);
-        if (container == null)
-            return;
-        //        tooltip.clearActions();
-        container.setFluctuateAlpha(false);
-
-    }
-
-
-    protected void showText(String s) {
-        if (s == null) {
-            textPanel.close();
-            return;
-        }
-        textPanel.setText(s);
-        textPanel.open();
-    }
 
     @Override
     public boolean keyUp(int keyCode) {
@@ -858,30 +641,24 @@ public class GuiStage extends StageX implements StageWithClosable {
         return super.keyTyped(character);
     }
 
-    public void textInput(TextInputListener textInputListener, String title, String text, String hint) {
-        if (tf == null)
-            tf = new TextInputPanel(title, text, hint, textInputListener);
-        tf.setPosition(GdxMaster.centerWidth(tf), GdxMaster.centerHeight(tf));
-        //textInputListener.input(text);
-        tf.setVisible(true);
-
-    }
-
 
     protected boolean handleKeyTyped(char character) {
         return DC_Game.game.getKeyManager().handleKeyTyped(0, character);
     }
 
     public void outsideClick() {
-        if (textPanel.isVisible()) {
-            textPanel.close();
-        }
-        if (containerPanel.isVisible()) {
-            containerPanel.close();
-        }
-        if (gameMenu.isVisible()) {
-            gameMenu.close();
-        }
+        if (textPanel != null)
+            if (textPanel.isVisible()) {
+                textPanel.close();
+            }
+        if (containerPanel != null)
+            if (containerPanel.isVisible()) {
+                containerPanel.close();
+            }
+        if (gameMenu != null)
+            if (gameMenu.isVisible()) {
+                gameMenu.close();
+            }
 
     }
 
@@ -899,10 +676,6 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     public GameMenu getGameMenu() {
         return gameMenu;
-    }
-
-    public ToolTipManager getTooltips() {
-        return tooltips;
     }
 
     public SmartButton getMenuButton() {

@@ -46,7 +46,7 @@ public abstract class InfoTable extends G_Panel {
 
                 boolean special = false;
                 PropertyComponent comp = new PropertyComponent(value, obj,
-                 special);
+                        false);
                 components.add(comp);
 
                 String pos = "sg comps, wrap, " + "pos 0 " + y

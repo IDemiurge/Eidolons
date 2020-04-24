@@ -11,12 +11,13 @@ import main.content.values.parameters.Param;
 import main.content.values.properties.Prop;
 import main.data.dialogue.SpeechData;
 import main.data.dialogue.Speeches;
-import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.elements.conditions.Conditions;
 import main.system.auxiliary.ClassFinder;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 import org.w3c.dom.Node;
 
 import java.io.IOException;
@@ -32,19 +33,19 @@ import java.util.*;
 public class Mapper {
 
     public static final Class<?>[] CONTAINER_CLASSES = {
-     Abilities.class, Effects.class,
-     Conditions.class,
-     Speeches.class, SpeechData.class,
+            Abilities.class, Effects.class,
+            Conditions.class,
+            Speeches.class, SpeechData.class,
     };
     public static final String ABILITIES = "Abilities";
     private final static String[] ignoredPaths = {""};
     private final static Class<?>[] IGNORED_CLASSES = {EffectImpl.class, Effect.class};
     private static final Class<?>[] SPECIAL_CLASSES =
-     {Abilities.class, PassiveAbility.class,
-      ActiveAbility.class, Param.class, Prop.class,
+            {Abilities.class, PassiveAbility.class,
+                    ActiveAbility.class, Param.class, Prop.class,
 //      Speeches.class, SpeechData.class, DataString.class,
 
-     };
+            };
     private static final String TEXT_NODE = "#text";
     private static final String ARG_LIST_SEPARATOR = ": ";
     static Map<String, Map<List<Argument>, AE_Item>> caches = new HashMap<>();
@@ -54,7 +55,6 @@ public class Mapper {
     private static Map<String, AE_Item> itemMap = new HashMap<>();
     private static Map<ARGS, AE_Item> primitiveItems = new HashMap<>();
     private static List<Argument> args;
-    private static List<String> classFolders;
 
     public static AE_Item getItem(String itemName, Class<?>[] parameterTypes) {
         return getItem(itemName, getArgList(parameterTypes));
@@ -120,7 +120,7 @@ public class Mapper {
             return getItem(e.getNodeName());
         }
 
-        return getItem(e.getNodeName(), getArgs(XML_Converter.getNodeList(e)));
+        return getItem(e.getNodeName(), getArgs(XmlNodeMaster.getNodeList(e)));
     }
 
     private static List<Argument> getArgList(Class<?>[] parameterTypes) {
@@ -202,10 +202,9 @@ public class Mapper {
     }
 
     public static void compileArgMap(List<Argument> args1, List<String> classFolders1)
-     throws ClassNotFoundException, SecurityException, IOException {
-        main.system.auxiliary.log.LogMaster.log(1,"Mapper: compile Arg Map for " + classFolders1);
+            throws ClassNotFoundException, SecurityException, IOException {
+        main.system.auxiliary.log.LogMaster.log(1, "Mapper: compile Arg Map for " + classFolders1);
         args = args1;
-        classFolders = classFolders1;
         for (Argument arg : args) {
             List<AE_Item> list = new ArrayList<>();
             map.put(arg, list);
@@ -215,7 +214,7 @@ public class Mapper {
         // compileContentConsts();
 
         ClassFinder.setIgnoredPaths(ignoredPaths);
-        for (String packageName : classFolders) {
+        for (String packageName : classFolders1) {
             for (Class<?> CLASS : ClassFinder.getClasses(packageName)) {
                 if (CLASS == null) {
                     LogMaster.log(1, "null class in " + packageName + "!");
@@ -223,7 +222,7 @@ public class Mapper {
                 }
                 if (!constructAE_Item(CLASS)) {
                     LogMaster.log(1, CLASS + " in " + "" + packageName
-                     + " failed to construct!");
+                            + " failed to construct!");
                 }
             }
         }
@@ -233,17 +232,17 @@ public class Mapper {
         }
 
         constructENUM_AE_Items(args);
-
-        sortLists();
+        if (CoreEngine.isArcaneVault())
+            sortLists();
         LogMaster.log(LogMaster.CORE_DEBUG, "ARG MAP: \n" + map);
         LogMaster.log(LogMaster.CORE_DEBUG, "ITEM MAP: \n" + itemMap);
     }
 
     private static void sortLists() {
         for (List<AE_Item> list : map.values()) {
-            LogMaster.log(0, list + "");
+//            LogMaster.log(0, list + "");
             Collections.sort(list);
-            LogMaster.log(0, list + "");
+//            LogMaster.log(0, list + "");
         }
     }
 
@@ -266,7 +265,7 @@ public class Mapper {
                 Argument mappedArg = translateToArg(CLASS);
 
                 boolean container = Arrays.asList(CONTAINER_CLASSES).contains(CLASS)
-                 || mappedArg.isContainer();
+                        || mappedArg.isContainer();
                 if (container) {
                     if (itemMap.containsKey(name)) {
                         continue;
@@ -295,7 +294,7 @@ public class Mapper {
                 }
 
                 mappedArg = translateToArg(CLASS
-                 // .getSuperclass()
+                        // .getSuperclass()
                 );
                 if (!(map.get(mappedArg).contains(name))) {
                     map.get(mappedArg).add(item);
@@ -304,7 +303,7 @@ public class Mapper {
             }
         } catch (Exception e) {
             LogMaster.log(1, CLASS.toString()
-             + " failed to construct into item map");
+                    + " failed to construct into item map");
             main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
@@ -358,7 +357,7 @@ public class Mapper {
                     break;
                 }
                 if (sc.equals(arg.getCoreClass())
-                 || Arrays.asList(sc.getInterfaces()).contains(arg.getCoreClass())) {
+                        || Arrays.asList(sc.getInterfaces()).contains(arg.getCoreClass())) {
                     return arg;
                 } else {
                     sc = sc.getSuperclass();
@@ -381,9 +380,6 @@ public class Mapper {
         }
 
         Class<?> CLASS = item.getConcreteClass();
-        if (CLASS == null) {
-            return null;
-        }
         return CLASS;
     }
 

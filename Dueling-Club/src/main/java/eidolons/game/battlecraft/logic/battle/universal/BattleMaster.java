@@ -1,12 +1,12 @@
 package eidolons.game.battlecraft.logic.battle.universal;
 
-import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor;
+import eidolons.game.battlecraft.logic.battle.encounter.EncounterAdjuster;
+import eidolons.game.battlecraft.logic.battle.encounter.EncounterSpawner;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
-import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.game.DC_Game;
 
@@ -21,8 +21,10 @@ public abstract class BattleMaster<E extends Battle> {
     protected BattleConstructor constructor;
     protected BattleOutcomeManager outcomeManager;
     protected PlayerManager playerManager;
-    ScriptManager scriptManager;
-    private DC_Game game;
+    protected ScriptManager scriptManager;
+    protected EncounterSpawner encounterSpawner;
+    protected EncounterAdjuster encounterAdjuster;
+    protected DC_Game game;
 
     public BattleMaster(DC_Game game) {
         this.game = game;
@@ -34,6 +36,9 @@ public abstract class BattleMaster<E extends Battle> {
         this.outcomeManager = createOutcomeManager();
         this.playerManager = createPlayerManager();
         scriptManager= createScriptManager();
+
+        encounterSpawner = new EncounterSpawner(this);
+        encounterAdjuster = new EncounterAdjuster(this);
     }
 
     protected abstract ScriptManager createScriptManager();
@@ -47,6 +52,21 @@ public abstract class BattleMaster<E extends Battle> {
     public void startGame() {
     }
 
+    public void combatStarted() {
+    //diff between petty engagements and encounter-battle 
+    
+        //maybe it's from the aggro master - apart from individual aggro, there might be more...
+        /*
+        if leader gets aggro - it's Encounter
+        
+        encounter aggro params! 
+        linked to their behavior perhaps 
+        
+        
+        
+        
+         */
+    }
 
     protected abstract E createBattle();
 
@@ -108,6 +128,14 @@ public abstract class BattleMaster<E extends Battle> {
 
     public DC_Game getGame() {
         return game;
+    }
+
+    public EncounterSpawner getEncounterSpawner() {
+        return encounterSpawner;
+    }
+
+    public EncounterAdjuster getEncounterAdjuster() {
+        return encounterAdjuster;
     }
 
     public ScriptManager getScriptManager() {

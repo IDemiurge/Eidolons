@@ -1,6 +1,5 @@
 package main.content.values.properties;
 
-import main.content.Metainfo;
 import main.content.OBJ_TYPE;
 
 public class Prop implements PROPERTY {
@@ -55,10 +54,6 @@ public class Prop implements PROPERTY {
 
     public String[] getEntityTypes() {
         return property.getEntityTypes();
-    }
-
-    public Metainfo getMetainfo() {
-        return property.getMetainfo();
     }
 
     public String getDefaultValue() {

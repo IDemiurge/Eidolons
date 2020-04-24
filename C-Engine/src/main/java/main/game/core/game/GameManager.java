@@ -198,17 +198,17 @@ public abstract class GameManager implements GenericGameManager {
     }
 
 
-    public MicroObj createUnit(ObjType type, int x, int y, Player owner) {
-        return createUnit(type, x, y, owner, new Ref());
+    public MicroObj createObject(ObjType type, int x, int y, Player owner) {
+        return createObject(type, x, y, owner, new Ref());
     }
 
-    public MicroObj createUnit(ObjType type, Coordinates c, Player owner) {
-        return createUnit(type, c.x, c.y, owner);
+    public MicroObj createObject(ObjType type, Coordinates c, Player owner) {
+        return createObject(type, c.x, c.y, owner);
     }
 
     public abstract MicroObj createSpell(ObjType type, MicroObj owner, Ref ref);
 
-    public abstract MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref);
+    public abstract MicroObj createObject(ObjType type, int x, int y, Player owner, Ref ref);
 
     public abstract MicroObj createSpell(ObjType type, Player player, Ref ref);
 

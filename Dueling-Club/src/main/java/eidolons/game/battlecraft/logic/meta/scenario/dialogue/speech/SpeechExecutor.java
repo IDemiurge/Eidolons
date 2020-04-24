@@ -15,6 +15,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.CinematicGridO
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObject;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SPEECH_ACTION;
@@ -22,11 +23,10 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueConta
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
+import eidolons.game.module.generator.model.AbstractCoordinates;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
-import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.SimpleAnim;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnimDataSource;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
@@ -34,26 +34,26 @@ import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.audio.SoundPlayer;
-import eidolons.libgdx.bf.GridMaster;
-import main.content.ContentValsManager;
-import main.content.enums.GenericEnums.BLENDING;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.datasource.SpriteData;
-import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.particles.ParticlesSprite.PARTICLES_SPRITE;
 import eidolons.libgdx.particles.spell.SpellVfxMaster;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.post.PostFxUpdater.POST_FX_TEMPLATE;
 import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.system.audio.DC_SoundMaster;
-import main.content.C_OBJ_TYPE;
-import main.content.DC_TYPE;
-import main.content.enums.GenericEnums;
-import main.content.enums.GenericEnums.SOUND_CUE;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.Soundscape.SOUNDSCAPE;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.Texts;
+import main.content.C_OBJ_TYPE;
+import main.content.ContentValsManager;
+import main.content.DC_TYPE;
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.BLENDING;
+import main.content.enums.GenericEnums.SOUND_CUE;
 import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
@@ -86,7 +86,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 
 import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SPEECH_ACTION.*;
-import static eidolons.libgdx.bf.GridMaster.*;
+import static eidolons.libgdx.bf.GridMaster.getCameraCenter;
+import static eidolons.libgdx.bf.GridMaster.getCenteredPos;
 import static main.system.auxiliary.log.LogMaster.important;
 
 public class SpeechExecutor {
@@ -235,6 +236,7 @@ public class SpeechExecutor {
 
 
             case REVEAL:
+            case SWITCH:
                 bool = true;
             case CONCEAL:
                 getUnit(value).setRevealed(bool);
@@ -261,9 +263,7 @@ public class SpeechExecutor {
             case ORDER:
                 unit = getUnit(value);
                 master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.ORDER,
-                        unit.getRef(), new Object[]{
-                                unit.getName(), vars.get(0)
-                        });
+                        unit.getRef(), unit.getName(), vars.get(0));
                 break;
             case MOVE:
                 unit = getUnit(value);
@@ -297,9 +297,7 @@ public class SpeechExecutor {
                     }
                 }
                 master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.ACTION,
-                        unit.getRef(), new Object[]{
-                                unit, value, arg
-                        });
+                        unit.getRef(), unit, value, arg);
                 break;
             case LAST_TUTORIAL:
                 if (!value.isEmpty()) {
@@ -360,7 +358,7 @@ public class SpeechExecutor {
                 break;
             case FILL:
                 c1 = getCoordinate(vars.get(1), true);
-                coordinatesList = CoordinatesMaster.getCoordinatesBetween(c, c1);
+                coordinatesList = CoordinatesMaster.getCoordinatesBetweenWithOffset(c, c1);
 
             case ADD:
             case BF_OBJ:
@@ -385,14 +383,14 @@ public class SpeechExecutor {
                         if (!RandomWizard.chance(chance)) {
                             continue;
                         }
-                        master.getGame().createUnit(bfType, coordinates,
+                        master.getGame().createObject(bfType, coordinates,
                                 speechAction == ADD ? master.getGame().getPlayer(false)
                                         : DC_Player.NEUTRAL);
                     }
                     break;
                 }
 
-                master.getGame().createUnit(bfType, c,
+                master.getGame().createObject(bfType, c,
                         speechAction == ADD ? master.getGame().getPlayer(false)
                                 : DC_Player.NEUTRAL);
                 break;
@@ -405,14 +403,10 @@ public class SpeechExecutor {
             case TURN:
                 unit = getUnit(vars.get(0));
                 master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.TURN_TO,
-                        unit.getRef(), new Object[]{
-                                unit.getName(), value
-                        });
+                        unit.getRef(), unit.getName(), value);
                 //TODO doing it twice because bug..
                 master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.TURN_TO,
-                        unit.getRef(), new Object[]{
-                                unit.getName(), value
-                        });
+                        unit.getRef(), unit.getName(), value);
                 break;
 
             case TRIGGER_REMOVE:
@@ -551,7 +545,7 @@ public class SpeechExecutor {
             case AMBI_VFX:
                 GenericEnums.VFX vfx = new EnumMaster<GenericEnums.VFX>().retrieveEnumConst(GenericEnums.VFX.class, value);
                 Vector2 vector = getCenteredPos(getCoordinate(vars.get(0)));
-                GuiEventManager.trigger(GuiEventType.ADD_AMBI_VFX, vfx, vector);
+                GuiEventManager.triggerWithParams(GuiEventType.ADD_AMBI_VFX, vfx, vector);
                 break;
             case VFX:
                 bool = true;
@@ -670,7 +664,6 @@ public class SpeechExecutor {
                                 new SpeechScript(d, master).execute());
                     } else {
                         SpeechScript subscript = new SpeechScript(d, master);
-                        ;
                         subscript.execute();
                         if (subscript.interrupted) {
                             return false;
@@ -685,7 +678,7 @@ public class SpeechExecutor {
                     main.system.auxiliary.log.LogMaster.dev("NO SUCH SCRIPT or function: " + value);
                 }
                 master.getBattleMaster().getScriptManager().execute(func, Eidolons.getMainHero().getRef(),
-                        vars.toArray(new String[vars.size()]));
+                        vars.toArray(new String[0]));
                 break;
 
 
@@ -737,7 +730,7 @@ public class SpeechExecutor {
                     GuiEventManager.trigger(
                             GuiEventType.STOP_LOOPING_TRACK, path);
                 } else {
-                    GuiEventManager.trigger(GuiEventType.ADD_LOOPING_TRACK, path, volume);
+                    GuiEventManager.triggerWithParams(GuiEventType.ADD_LOOPING_TRACK, path, volume);
                 }
                 break;
             case PARALLEL_MUSIC:
@@ -746,7 +739,7 @@ public class SpeechExecutor {
             case SOUNDSCAPE:
                 SOUNDSCAPE soundscape = new EnumMaster<SOUNDSCAPE>().retrieveEnumConst(SOUNDSCAPE.class, value);
                 Float vol = Float.valueOf(vars.get(0));
-                GuiEventManager.trigger(GuiEventType.SET_SOUNDSCAPE_VOLUME,
+                GuiEventManager.triggerWithParams(GuiEventType.SET_SOUNDSCAPE_VOLUME,
                         soundscape, vol);
                 break;
             case MUSIC:
@@ -878,7 +871,7 @@ public class SpeechExecutor {
                         alpha = Float.valueOf(vars.get(0));
                 }
                 PARTICLES_SPRITE type = new EnumMaster<PARTICLES_SPRITE>().retrieveEnumConst(PARTICLES_SPRITE.class, value);
-                GuiEventManager.trigger(GuiEventType.SET_PARTICLES_ALPHA, type, alpha);
+                GuiEventManager.triggerWithParams(GuiEventType.SET_PARTICLES_ALPHA, type, alpha);
                 break;
             case AUTOCAMERA:
                 handler.setAutoCamera(!value.equalsIgnoreCase("off"));
@@ -948,14 +941,14 @@ public class SpeechExecutor {
                 }
                 //wards and awakening!
                 if (speechAction == GRID_OBJ_ANIM) {
-                    GuiEventManager.trigger(GuiEventType.GRID_OBJ_ANIM, value, c, new GraphicData(vars.get(1)));
+                    GuiEventManager.triggerWithParams(GuiEventType.GRID_OBJ_ANIM, value, c, new GraphicData(vars.get(1)));
                 } else if (speechAction == REMOVE_GRID_OBJ) {
-                    GuiEventManager.trigger(GuiEventType.REMOVE_GRID_OBJ, value, c);
+                    GuiEventManager.triggerWithParams(GuiEventType.REMOVE_GRID_OBJ, value, c);
                 } else {
                     GridObject x;
                     obj = new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, value);
                     if (speechAction == LINKED_OBJ) {
-                        BaseView view = DungeonScreen.getInstance().getGridPanel().getViewMap().get(unit);
+                        BaseView view = ScreenMaster.getDungeonGrid().getViewMap().get(unit);
                         x = new LinkedGridObject(view, obj, c);
                         x.setUnder(under);
                         GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, x);
@@ -971,7 +964,7 @@ public class SpeechExecutor {
             case AREA:
                 c = getCoordinate(vars.get(0), true);
                 c1 = getCoordinate(vars.get(1), true);
-                for (Coordinates coordinates : CoordinatesMaster.getCoordinatesBetween(c, c1)) {
+                for (Coordinates coordinates : CoordinatesMaster.getCoordinatesBetweenWithOffset(c, c1)) {
                     for (BattleFieldObject object : Eidolons.getGame().getObjectsOnCoordinate(coordinates)) {
                         doUnit(object, value, vars);
                     }
@@ -1056,15 +1049,10 @@ public class SpeechExecutor {
                 if (vars.size() > 0) {
                     r = () -> Eidolons.onNonGdxThread(() -> execute(SCRIPT, vars.get(0)));
                 }
-                GuiEventManager.trigger(GuiEventType.PLAY_VIDEO, value, r);
+                GuiEventManager.triggerWithParams(GuiEventType.PLAY_VIDEO, value, r);
                 break;
             case BREAK_IF:
-                if (EidolonsGame.getAny(value)) {
-                    return false;
-                }
-                return true;
-            case SWITCH:
-                bool = true;
+                return !EidolonsGame.getAny(value);
             case CONFIRM:
                 if (!EUtils.waitConfirm(value)) {
                     return bool;
@@ -1075,10 +1063,7 @@ public class SpeechExecutor {
                 }
                 return !bool;
             case CONTINUE_IF:
-                if (!EidolonsGame.getAny(value)) {
-                    return false;
-                }
-                return true;
+                return EidolonsGame.getAny(value);
             case GLOBAL_CONTINUE_IF:
                 if (!EidolonsGame.getAny(value)) {
                     lastScript.interrupted = true;
@@ -1164,7 +1149,6 @@ public class SpeechExecutor {
                 ActionMaster.addAlphaAction(container, dur, alpha);
             } else
                 ActionMaster.addAlphaAction(ui_bg_both ? container.getCurrent() : container.getBgSprite(), dur, alpha);
-            return;
         }
     }
 
@@ -1305,7 +1289,7 @@ public class SpeechExecutor {
         BattleFieldObject unit = master.getGame().getAiManager().getScriptExecutor().findUnit(
                 Eidolons.getMainHero().getRef(), value);
         if (unit == null) {
-            DialogueActor actor = dialogueManager.getDialogueActorMaster().getActor(value);
+            DialogueActor actor = DialogueActorMaster.getActor(value);
             if (actor != null) {
                 if (actor.getLinkedUnit() == null) {
                     actor.setupLinkedUnit();

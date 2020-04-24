@@ -6,7 +6,6 @@ import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HtNode;
 import eidolons.libgdx.texture.Images;
 import main.content.enums.entity.SkillEnums.MASTERY;
-import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.EventType;

@@ -1,6 +1,6 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
-import eidolons.ability.effects.oneshot.dialog.TownPortalEffect;
+import eidolons.ability.ignored.dialog.TownPortalEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
@@ -9,10 +9,10 @@ import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster.INTERACTION;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
+import eidolons.game.netherflame.igg.event.TipMessageSource;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.audio.MusicMaster;
@@ -74,7 +74,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
             return INTERACTIVE_OBJ_TYPE.LIGHT_EMITTER;
         }
 
-        if (DataManager.getType(getConsumableItemName(type.getName()), DC_TYPE.ITEMS) != null) {
+        if (DataManager.isTypeName(getConsumableItemName(type.getName()), DC_TYPE.ITEMS)) {
             return INTERACTIVE_OBJ_TYPE.CONSUMABLE;
         }
         return INTERACTIVE_OBJ_TYPE.RUNE;
@@ -111,7 +111,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         ref.setID(KEYS.ITEM, obj.getId());
         boolean off = obj.isOff();
         if (off) {
-            if (isToggleOffForObj(obj)){
+            if (isToggleOffForObj(obj)) {
                 obj.setOff(false);
             }
             return;
@@ -126,6 +126,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
                 message(obj, unit);
                 break;
             case KEY:
+            case CONSUMABLE:
                 pickup(obj, unit);
                 break;
             case MAGE_CIRCLE:
@@ -141,18 +142,13 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
                 obj.kill(unit, false, false);
                 break;
             case MECHANISM:
-                break;
-            case BUTTON:
-                break;
             case LEVER:
-                break;
-            case CONSUMABLE:
-                pickup(obj, unit);
+            case BUTTON:
                 break;
 
         }
         obj.setUsed(true);
-        if (isToggleOffForObj(obj)){
+        if (isToggleOffForObj(obj)) {
             obj.setOff(true);
         }
     }
@@ -176,7 +172,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
             text = src.split("|")[1];
         }
 
-        MusicMaster.playMoment(RandomWizard.random()? MusicMaster.MUSIC_MOMENT.TOWN : MusicMaster.MUSIC_MOMENT.SAD);
+        MusicMaster.playMoment(RandomWizard.random() ? MusicMaster.MUSIC_MOMENT.TOWN : MusicMaster.MUSIC_MOMENT.SAD);
         GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, new TipMessageSource(
                 text, image, "Continue", false, () ->
         {

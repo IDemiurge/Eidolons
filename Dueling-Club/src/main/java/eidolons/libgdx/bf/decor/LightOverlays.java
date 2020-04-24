@@ -26,7 +26,7 @@ public class LightOverlays extends GroupX {
     boolean fullscreen;
     Map<Vector2, LightOverlay> map = new XLinkedMap<>();
 
-    private class LightOverlay {
+    private static class LightOverlay {
         SpriteX sprite;
         LIGHT_MAP_OVERLAY type;
         Vector2 acceleration;
@@ -40,7 +40,7 @@ public class LightOverlays extends GroupX {
     }
 
     public void reset(){
-        map.put(new Vector2(0, 0), new LightOverlay(LIGHT_MAP_OVERLAY.CLOUDS) );
+        map.put(new Vector2(0, 0), new LightOverlay(LIGHT_MAP_OVERLAY.CLOUDS));
 
     }
 

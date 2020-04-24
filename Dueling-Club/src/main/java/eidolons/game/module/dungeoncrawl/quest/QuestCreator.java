@@ -2,8 +2,8 @@ package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.content.PARAMS;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.generator.init.RngUnitProvider;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
+import eidolons.game.module.generator.init.RngUnitProvider;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import main.content.C_OBJ_TYPE;
@@ -61,7 +61,6 @@ public class QuestCreator extends QuestHandler {
             case HUNT:
                 return Math.max(1, Math.round(quest.getPowerCoef() * 5));
             case SPECIAL_ITEM:
-                break;
             case ESCAPE:
                 break;
         }

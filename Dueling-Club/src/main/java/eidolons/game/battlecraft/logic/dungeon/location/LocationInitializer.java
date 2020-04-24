@@ -4,8 +4,8 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.meta.igg.CustomLaunch;
 import eidolons.game.core.Eidolons;
+import eidolons.game.netherflame.igg.CustomLaunch;
 import eidolons.libgdx.launch.MainLauncher;
 import main.entity.type.ObjType;
 

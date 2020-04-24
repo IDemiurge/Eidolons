@@ -3,9 +3,9 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
+import eidolons.game.module.generator.model.AbstractCoordinates;
+import eidolons.game.netherflame.igg.pale.PaleAspect;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.gui.generic.GroupWithEmitters;
@@ -21,6 +21,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
 
 import java.io.File;
 import java.util.*;
@@ -67,10 +68,9 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         if (PaleAspect.ON) {
             return true;
         }
-        if (Eidolons.getMainHero().getCoordinates().dst_(c) > visionRange) {
-            return false;
-        }
-        return true;
+        if (CoreEngine.isLevelEditor())
+            return true;
+        return !(Eidolons.getGame().getManager().getMainHeroCoordinates().dst_(c) > visionRange);
     }
 
     public void setKey(String key) {
@@ -106,6 +106,7 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
     protected void init() {
         getColor().a = 0;
         createEmittersUnder();
+        if (isSpriteShown())
         try {
             sprite = new SpriteX(spritePath);
         } catch (Exception e) {
@@ -132,6 +133,10 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
 
         if (sprite != null)
             sprite.act(RandomWizard.getRandomFloatBetween(0, 4));
+    }
+
+    private boolean isSpriteShown() {
+        return !CoreEngine.isLevelEditor();
     }
 
     protected void createEmittersUnder() {

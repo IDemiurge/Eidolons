@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.rules;
 
-import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.entity.obj.attach.DynamicBuffRules;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;

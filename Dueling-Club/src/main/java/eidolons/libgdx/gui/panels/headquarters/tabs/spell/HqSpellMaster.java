@@ -7,7 +7,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.tabs.spell.SpellActor.SPELL_OVERLAY;
 import main.content.enums.entity.SpellEnums.SPELL_POOL;
 import main.elements.conditions.RequirementsManager;

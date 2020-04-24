@@ -2,11 +2,12 @@ package main.swing.generic.components.editors;
 
 import main.content.DC_TYPE;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.StringMaster;
+import main.system.PathUtils;
 import main.system.images.ImageManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -26,9 +27,7 @@ public class ImageChooser extends FileChooser {
 
     @Override
     protected String cropPrefix(String selected) {
-        return StringMaster.replaceFirst(selected,
-         PathFinder.getImagePath()
-         , "");
+        return PathUtils.cropImagePath(selected);
     }
 
     @Override
@@ -37,7 +36,7 @@ public class ImageChooser extends FileChooser {
     }
 
     @Override
-    public void launch(JTable table, int row, int column, String v) {
+    public void launch(JTable table, int row, int column, String v, MouseEvent e) {
         size = 64;
         if (table.getName() != null) {
             boolean big = table.getName().equals(DC_TYPE.CHARS.getName())
@@ -54,7 +53,7 @@ public class ImageChooser extends FileChooser {
         }
         addPreview();
 
-        super.launch(table, row, column, v);
+        super.launch(table, row, column, v, e);
     }
 
     private void addPreview() {
@@ -70,10 +69,9 @@ public class ImageChooser extends FileChooser {
         return super.launch(v, parent);
     }
 
-    public class FileChooserImagePreview extends JPanel implements PropertyChangeListener {
+    public static class FileChooserImagePreview extends JPanel implements PropertyChangeListener {
 
         private int width, height;
-        private ImageIcon icon;
         private Image image;
         private int size;
         private Color bg;
@@ -103,11 +101,8 @@ public class ImageChooser extends FileChooser {
                  * Make reasonably sure we have an image format that AWT can
 				 * handle so we don't try to draw something silly.
 				 */
-                if ((name != null) && name.toLowerCase().endsWith(".jpg")
-                 || name.toLowerCase().endsWith(".jpeg")
-                 || name.toLowerCase().endsWith(".gif")
-                 || name.toLowerCase().endsWith(".png")) {
-                    icon = new ImageIcon(name);
+                if (name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".jpeg") || name.toLowerCase().endsWith(".gif") || name.toLowerCase().endsWith(".png")) {
+                    ImageIcon icon = new ImageIcon(name);
                     image = icon.getImage();
                     scaleImage();
                     repaint();

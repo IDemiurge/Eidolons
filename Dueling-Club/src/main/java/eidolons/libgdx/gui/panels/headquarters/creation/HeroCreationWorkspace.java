@@ -85,7 +85,6 @@ public class HeroCreationWorkspace extends HqElement implements SelectableItemDi
                 eventType = GuiEventType.HC_DEITY_ASPECT_CHOSEN;
                 break;
             case SKILLSET:
-                break;
             case FINALIZE:
                 break;
         }

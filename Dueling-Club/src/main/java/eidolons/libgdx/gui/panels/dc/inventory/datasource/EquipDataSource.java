@@ -1,6 +1,5 @@
 package eidolons.libgdx.gui.panels.dc.inventory.datasource;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.gui.panels.dc.inventory.InvItemActor;
 
 import java.util.List;

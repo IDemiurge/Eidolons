@@ -1,35 +1,38 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
-import main.content.CONTENT_CONSTS.COLOR_THEME;
-import main.content.enums.DungeonEnums.DUNGEON_TYPE;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.entity.EntityWrapper;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.FACING_DIRECTION;
 
 /**
  * Created by JustMe on 5/10/2017.
  */
-public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dungeon> {
-    protected DungeonMaster<E> master;
+public class DungeonWrapper  extends LevelStruct<Module, Module> implements EntityWrapper<Dungeon> {
+    protected DungeonMaster master;
     protected Dungeon dungeon;
 
-
-    public DungeonWrapper(Dungeon entity, DungeonMaster<E> master) {
-        super(entity);
+    public DungeonWrapper(Dungeon entity, DungeonMaster master) {
         dungeon = entity;
         this.master = master;
+        dungeon.setWrapper(this);
     }
 
-    public Coordinates getPlayerSpawnCoordinates() {
-        String prop = getProperty(PROPS.ENTRANCE_COORDINATES);
-        if (prop.isEmpty()) {
-            return Coordinates.getMiddleCoordinate(main.game.bf.directions.FACING_DIRECTION.NONE);
-        }
-        return Coordinates.get(prop);
+    @Override
+    protected LevelStruct getParent() {
+        return null; //campaign?
+    }
+    @Override
+    public Dungeon getEntity() {
+        return dungeon;
     }
 
-    public DungeonMaster<E> getDungeonMaster() {
+    public Coordinates getDefaultPlayerSpawnCoordinates() {
+            return Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
+    }
+
+    public DungeonMaster getDungeonMaster() {
         return master;
     }
 
@@ -41,18 +44,6 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
         return dungeon.getMapBackground();
     }
 
-    public COLOR_THEME getColorTheme() {
-        return dungeon.getColorTheme();
-    }
-
-    public void setColorTheme(COLOR_THEME colorTheme) {
-        dungeon.setColorTheme(colorTheme);
-    }
-
-    public DUNGEON_TYPE getDungeonType() {
-        return dungeon.getDungeonType();
-    }
-
     public boolean isBoss() {
         return dungeon.isBoss();
     }
@@ -61,33 +52,10 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
         return dungeon.getCellsX();
     }
 
-    public Integer getWidth() {
-        return dungeon.getWidth();
-    }
-
     public Integer getCellsY() {
         return dungeon.getCellsY();
     }
 
-    public Integer getHeight() {
-        return dungeon.getHeight();
-    }
-
-    public int getZ() {
-        return dungeon.getZ();
-    }
-
-    public void setZ(int i) {
-        dungeon.setZ(i);
-    }
-
-    public DUNGEON_TEMPLATES getTemplate() {
-        return dungeon.getTemplate();
-    }
-
-    public void setTemplate(DUNGEON_TEMPLATES template) {
-        dungeon.setTemplate(template);
-    }
 
     public boolean isSurface() {
         return dungeon.isSurface();
@@ -112,5 +80,6 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
     public void setLevelFilePath(String levelFilePath) {
         dungeon.setLevelFilePath(levelFilePath);
     }
+
 
 }

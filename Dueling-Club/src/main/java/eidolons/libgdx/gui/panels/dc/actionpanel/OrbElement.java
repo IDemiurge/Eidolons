@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import eidolons.content.PARAMS;
-import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.SuperActor;
@@ -82,7 +81,7 @@ public class OrbElement extends SuperActor {
                 getOrbPath(param.getName()), " border"
         ));
 
-        if (texture == TextureCache.getEmptyTexture()) return;
+        if (texture == TextureCache.getMissingTexture()) return;
         lighting = new Image(texture);
         addActor(lighting);
         lighting.setPosition(-15, -15);

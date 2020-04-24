@@ -1,6 +1,8 @@
 package main.system;
 
+import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +24,13 @@ public class PathUtils {
         return PATH_SEPARATOR;
     }
 
+    public static String fixSlashes(String path) {
+        StringBuilder formatted = new StringBuilder();
+        for (String sub : splitPath(path)) {
+            formatted.append(StringMaster.replace(true, sub, "/", "")).append("/");
+        }
+        return formatted.toString();
+    }
     public static List<String> splitPath(String path) {
         if (path.isEmpty()) {
             return new ArrayList<>();
@@ -33,8 +42,7 @@ public class PathUtils {
         if (path.contains("/")) {
             path = path.replace("/", PATH_SEPARATOR);
         }
-        if (segments == null)
-            segments = Arrays.asList(path.split(Pattern.quote(PATH_SEPARATOR)));
+        segments = Arrays.asList(path.split(Pattern.quote(PATH_SEPARATOR)));
 
         segments = new ArrayList<>(segments);
         segments.removeIf(s -> s.isEmpty());
@@ -47,9 +55,9 @@ public class PathUtils {
     }
 
     public static String buildPath(String... strings) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (String s : strings) {
-            result += s + PATH_SEPARATOR;
+            result.append(s).append(PATH_SEPARATOR);
         }
         return result.substring(0, result.length() - 1);
     }
@@ -132,7 +140,7 @@ public class PathUtils {
                     continue;
                 }
             }
-            builder.append(sub + separator);
+            builder.append(sub).append(separator);
         }
         return builder.toString();
     }
@@ -198,4 +206,12 @@ public class PathUtils {
         return path;
     }
 
+    public static String cropImagePath(String path) {
+        return FileManager.formatPath( path.toLowerCase(), true, true)
+                .replace(PathFinder.getImagePath().toLowerCase(), "");
+    }
+    public static String cropResourcePath(String path) {
+        return FileManager.formatPath( path.toLowerCase(), true, true)
+                .replace(PathFinder.getResPath().toLowerCase(), "");
+    }
 }

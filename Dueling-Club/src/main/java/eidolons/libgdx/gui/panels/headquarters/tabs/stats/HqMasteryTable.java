@@ -54,6 +54,6 @@ public class HqMasteryTable extends HqStatTable {
         list = list.stream().map(p -> ContentValsManager.getMasteryFromScore(p)).
                 collect(Collectors.toList());
         ListMaster.fillWithNullElements(list, size);
-        return list.toArray(new PARAMS[list.size()]);
+        return list.toArray(new PARAMS[0]);
     }
 }

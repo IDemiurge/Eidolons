@@ -6,8 +6,6 @@ import main.system.auxiliary.StringMaster;
 
 import java.util.Map;
 
-import static javafx.scene.input.KeyCode.PROPS;
-
 /**
  * Created by JustMe on 5/11/2017.
  */
@@ -62,7 +60,7 @@ public class DataUnitFactory<E extends DataUnit> {
     public Map<String, String> deconstructDataString(String dataString) {
         Map<String, String> map = new XLinkedMap<>();
         for (String substring : ContainerUtils.openContainer(dataString)) {
-            String[] s = substring.split("=");
+            String[] s = substring.split(getPairSeparator(format));
             if (s.length<2){
                 continue;
             }

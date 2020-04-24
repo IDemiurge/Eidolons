@@ -4,7 +4,6 @@ import eidolons.ability.effects.common.ModifyPropertyEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.continuous.BehaviorModeEffect;
 import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;

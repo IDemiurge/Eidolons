@@ -29,7 +29,6 @@ import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.ActiveObj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventMaster;

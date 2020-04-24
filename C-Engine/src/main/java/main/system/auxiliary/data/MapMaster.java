@@ -12,6 +12,8 @@ import java.util.function.Function;
 
 public class MapMaster<E, T> {
 
+    public static final String DATA_MAP_SEPARATOR = "||";
+
     public static void addToIntegerMap(Map map, Object key, Integer n) {
         Integer i = (Integer) map.get(key);
         if (i == null) {
@@ -63,13 +65,12 @@ public class MapMaster<E, T> {
     }
 
     public static String getNetStringForMap(Map map) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
 
         for (Object e : map.keySet()) {
-            s += e.toString() + StringMaster.wrapInParenthesis(map.get(e).toString())
-                    + StringMaster.SEPARATOR;
+            s.append(e.toString()).append(StringMaster.wrapInParenthesis(map.get(e).toString())).append(StringMaster.SEPARATOR);
         }
-        return s;
+        return s.toString();
     }
 
     public static boolean isNotEmpty(Map map) {
@@ -126,6 +127,22 @@ public class MapMaster<E, T> {
         return map;
     }
 
+    public static Map<Integer, Map<String, String>> createDataMap(String textContent) {
+        Map<Integer, Map<String, String>> map = new LinkedHashMap<>();
+        for (String substring : ContainerUtils.openContainer(textContent, DATA_MAP_SEPARATOR)) {
+            Integer integer = Integer.valueOf(substring.split("=")[0]);
+            map.put(integer, toStringMap(substring.split("=")[1]));
+        }
+        return map;
+    }
+
+    public static Map<String, String> toStringMap(  String data) {
+        Map<String, String> map = new LinkedHashMap<>();
+        for (String substring : ContainerUtils.openContainer(data)) {
+            map.put( substring.split(":")[0], substring.split(":")[0]);
+        }
+        return map;
+    }
     public HashMap<E, T> cloneHashMap(Map<E, T> map) {
         HashMap<E, T> clone = new HashMap<E, T>();
         clone.putAll(map);

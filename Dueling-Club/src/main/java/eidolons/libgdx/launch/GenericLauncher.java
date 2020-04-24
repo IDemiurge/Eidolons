@@ -3,7 +3,6 @@ package eidolons.libgdx.launch;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -12,22 +11,23 @@ import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_MetaMaster;
-import eidolons.game.battlecraft.logic.meta.igg.story.brief.IggBriefScreenOld;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.netherflame.igg.IGG_MetaMaster;
+import eidolons.game.netherflame.igg.story.brief.IggBriefScreenOld;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveScreen;
 import eidolons.libgdx.launch.report.CrashManager;
 import eidolons.libgdx.screens.*;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.BlackoutOld;
+import eidolons.libgdx.screens.menu.AnimatedMenuScreen;
 import eidolons.libgdx.texture.Images;
-import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.utils.GdxTimeMaster;
 import eidolons.libgdx.video.VideoMaster;
 import eidolons.macro.AdventureInitializer;
@@ -57,7 +57,7 @@ import static main.system.GuiEventType.SWITCH_SCREEN;
 /**
  * Created by JustMe on 11/30/2017.
  */
-public class GenericLauncher extends Game {
+public abstract class GenericLauncher extends Game {
     public static final int FRAMERATE = 60;
     private static boolean firstInitDone;
     public GameScreen gameScreen;
@@ -73,6 +73,8 @@ public class GenericLauncher extends Game {
         GenericLauncher.firstInitDone = firstInitDone;
     }
 
+    public abstract String  getOptionsPath();
+
     @Override
     public void create() {
         instance = this;
@@ -83,7 +85,7 @@ public class GenericLauncher extends Game {
         GuiEventManager.bind(SCREEN_LOADED, this::onScreenLoadDone);
         OrthographicCamera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
-        Eidolons.setMainViewport(viewport);
+        ScreenMaster.setMainViewport(viewport);
         //        if (!CoreEngine.isInitializing() && !CoreEngine.isInitialized()) {
         //            engineInit();
         //        }
@@ -115,11 +117,11 @@ public class GenericLauncher extends Game {
         engineInit();
         if (CoreEngine.isGraphicsOff())
             return;
-        Eidolons.setApplication(new LwjglApplication(this,
+        ScreenMaster.setApplication(new LwjglApplication(this,
                 getConf()));
         OptionsMaster.applyGraphicsOptions();
+        //must always do real gdx operations on gdx thread!
         Eidolons.setLauncher(this);
-        Eidolons.setFullscreen(fullscreen);
     }
 
     protected void screenInit() {
@@ -135,10 +137,9 @@ public class GenericLauncher extends Game {
         } else {
             trySwitchScreen(new EventCallbackParam(data));
         }
-
     }
 
-    private boolean isFirstLoadingScreenShown() {
+    protected boolean isFirstLoadingScreenShown() {
         return false;
     }
 
@@ -195,8 +196,12 @@ public class GenericLauncher extends Game {
     }
 
     protected void initIcon(LwjglApplicationConfiguration conf) {
+
         try {
             conf.addIcon(PathFinder.getImagePath() + Images.LOGO32, FileType.Absolute);
+            if (CoreEngine.isLevelEditor()) {
+                conf.addIcon(PathFinder.getImagePath() + Images.LOGO_EDITOR_64, FileType.Absolute);
+            } else
             conf.addIcon(PathFinder.getImagePath() + Images.LOGO64, FileType.Absolute);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -221,7 +226,7 @@ public class GenericLauncher extends Game {
                         new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class,
                                 OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
                 if (resolution != null) {
-                    Dimension dimension = Eidolons.getResolutionDimensions(resolution, fullscreen);
+                    Dimension dimension = ScreenMaster.getResolutionDimensions(resolution, fullscreen);
                     Integer w = (int)
                             dimension.getWidth();
                     Integer h = (int)
@@ -244,8 +249,10 @@ public class GenericLauncher extends Game {
     }
 
     protected void engineInit() {
+        if (getOptionsPath() != null) {
+            OptionsMaster.setOptionsPath(getOptionsPath());
+        }
         DC_Engine.systemInit();
-        OptionsMaster.init();
     }
 
 
@@ -281,7 +288,6 @@ public class GenericLauncher extends Game {
     }
     @Override
     public void render() {
-
         if (!Assets.get().getManager().update()) {
             main.system.auxiliary.log.LogMaster.dev("Assets being loaded...");
         }
@@ -332,7 +338,7 @@ public class GenericLauncher extends Game {
     protected void switchScreen(Supplier<ScreenWithLoader> factory, ScreenData meta) {
         GdxMaster.setLoadingCursor();
         main.system.auxiliary.log.LogMaster.log(1, "switchScreen " + meta.getType());
-        Eidolons.screenSet(meta.getType());
+        ScreenMaster.screenSet(meta.getType());
         final Screen oldScreen = getScreen();
 
 //        oldScreen.getPostProcessing().end();
@@ -411,28 +417,25 @@ public class GenericLauncher extends Game {
     }
 
     protected void trySwitchScreen(EventCallbackParam param) {
-        if (CoreEngine.isIDE()) {
-            try {
-                screenSwitcher(param);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                screenSwitcher(new EventCallbackParam(new ScreenData(
-                        Eidolons.getPreviousScreenType(), "")));
-            }
-        } else {
-            screenSwitcher(param);
-        }
+//        if (CoreEngine.isIDE()) {
+//            try {
+//                screenSwitcher((ScreenData) param.get());
+//            } catch (Exception e) {
+//                main.system.ExceptionMaster.printStackTrace(e);
+//                screenSwitcher( new ScreenData(
+//                        Eidolons.getPreviousScreenType(), "") );
+//            }
+//        } else
+            screenSwitcher((ScreenData) param.get());
+
     }
 
-    protected void screenSwitcher(EventCallbackParam param) {
+    protected void screenSwitcher(ScreenData newMeta) {
         if (BlackoutOld.isOnNewScreen())
             GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
-        ScreenData newMeta = (ScreenData) param.get();
         if (newMeta != null) {
             switch (newMeta.getType()) {
-                case HEADQUARTERS:
-                    switchScreen(HeadquarterScreen::new, newMeta);
-                    break;
+
                 case WEAVE:
                     switchScreen(WeaveScreen::getInstance, newMeta);
                     break;
@@ -442,8 +445,6 @@ public class GenericLauncher extends Game {
                     Eidolons.setScope(SCOPE.BATTLE);
                     break;
                 case BRIEFING:
-                    switchScreen(() -> new IggBriefScreenOld(), newMeta);
-                    break;
                 case CINEMATIC:
                     switchScreen(() -> new IggBriefScreenOld(), newMeta);
                     break;
@@ -465,14 +466,10 @@ public class GenericLauncher extends Game {
         }
     }
 
-    private void initLoadingScreen() {
-
-        //   TODO  different kind of screen...
-    }
-
     private void onScreenLoadDone(EventCallbackParam param) {
-        if (getScreen() == null)
-            return;
+        if (getScreen() == null) {
+            //TODO
+            }
         else {
             ((ScreenWithLoader) getScreen()).loadDone(param);
         }

@@ -8,14 +8,11 @@ import main.entity.Ref.KEYS;
 
 public class InterruptEffect extends MicroEffect implements TriggeredEffect {
 
-    private String OBJ_REF;
-
     public InterruptEffect() {
 
     }
 
     public InterruptEffect(String OBJ_REF) {
-        this.OBJ_REF = OBJ_REF;
     }
 
     @Override

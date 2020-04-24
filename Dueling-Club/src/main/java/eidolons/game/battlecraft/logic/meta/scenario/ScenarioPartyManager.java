@@ -3,12 +3,12 @@ package eidolons.game.battlecraft.logic.meta.scenario;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
-import eidolons.game.battlecraft.logic.meta.igg.CustomLaunch;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.game.netherflame.igg.CustomLaunch;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -17,10 +17,8 @@ import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -145,7 +143,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         }
 
         getGame().getState().addObject(party);
-        getGame().getDataKeeper().addUnitData(new UnitData(party));
+        getGame().getDataKeeper().addUnitData(new UnitsData(party));
 
         party.setProperty(PROPS.PARTY_MISSION,
                 ContainerUtils.openContainer(getMetaGame().getScenario().

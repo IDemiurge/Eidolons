@@ -2,12 +2,9 @@ package eidolons.libgdx.launch;
 
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.meta.igg.CustomLaunch;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
-import eidolons.libgdx.bf.boss.anim.BossAnimator;
+import eidolons.game.netherflame.igg.CustomLaunch;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
-import eidolons.libgdx.texture.Sprites;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.test.TestMasterContent;
@@ -17,7 +14,6 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -76,6 +72,8 @@ public class MainLauncher extends GenericLauncher {
             if (args[0].contains("town")) {
                 EidolonsGame.TOWN = true;
             }
+            CoreEngine.TEST_LAUNCH = args[0].endsWith("test");
+            CoreEngine.setFastMode(CoreEngine.TEST_LAUNCH);
 
             if (args[0].contains("selectfootage")) {
                 CoreEngine.swingOn = true;
@@ -97,10 +95,11 @@ public class MainLauncher extends GenericLauncher {
                     EidolonsGame.SELECT_HERO = true;
                 }
             }
-            String[] parts = args[0].split(";");
-            if (!parts[0].isEmpty()) {
+            String[] parts = args[0].split("--");
+            if (parts.length>1) {
                 OptionsMaster.setOptionsMode(parts[0]);
                 LogMaster.important(" Options Mode set: " + parts[0]);
+                args[0] = parts[1];
             }
             EidolonsGame.BOSS_FIGHT = args[0].contains("BOSS");
             EidolonsGame.BRIDGE = args[0].contains("bridge");
@@ -110,7 +109,6 @@ public class MainLauncher extends GenericLauncher {
 
             EidolonsGame.DUEL = args[0].contains("duel");
             EidolonsGame.DUEL_TEST = args[0].contains("duel");
-            EidolonsGame.TRANSIT_TEST = args[0].contains("transit");
 
             if (EidolonsGame.DUEL_TEST) {
                 EidolonsGame.BRIDGE = true;
@@ -128,7 +126,6 @@ public class MainLauncher extends GenericLauncher {
             CoreEngine.setFastMode(args.length > 1);
             CoreEngine.setFullFastMode(args.length > 3);
         }
-        BossAnimator.setFastMode(args.length > 5);
         if (CoreEngine.isIDE()) {
             CoreEngine.setJarlike(!CoreEngine.isFastMode());
             if (CoreEngine.isFastMode())//|| CoreEngine.isActiveTestMode())
@@ -143,21 +140,6 @@ public class MainLauncher extends GenericLauncher {
 //                if (CoreEngine.uploadPackage == CoreEngine.UPLOAD_PACKAGE.Aphotic) {
 //                    args = "FULL;DEMO;0;0".split(";");
 //                }
-
-//        try {
-//            ProcessBuilder p = new ProcessBuilder(
-////                    PathFinder.getRootPath()
-//                    "C:\\transfer\\jars\\launch4j-3.11-win32\\launch4j"
-//                    +
-//                    "/launch4j.exe");
-//            Process as = p.start();
-//            OutputStream stream = as.getOutputStream();
-//            stream.write("TEST THIS".getBytes());
-//            stream.write("TEST THIS".getBytes());
-//            stream.flush();
-//        } catch (Exception e) {
-//            main.system.ExceptionMaster.printStackTrace(e);
-//        }
         String[] commands = args;
 //        if (commands.length == 1) {
 //            if (PathUtils.splitPath(commands[0]).size() > 1)
@@ -258,6 +240,11 @@ public class MainLauncher extends GenericLauncher {
             case "crawl/Ancient Ruins.xml":
             case "crawl/Ravenguard Dungeon.xml":
         }
+        return null;
+    }
+
+    @Override
+    public String getOptionsPath() {
         return null;
     }
 

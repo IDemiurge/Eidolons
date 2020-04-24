@@ -5,9 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.bf.grid.GridUnitView;
-import eidolons.libgdx.bf.grid.OverlayView;
+import eidolons.libgdx.bf.grid.cell.BaseView;
+import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.OverlayView;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

@@ -1,13 +1,6 @@
 package tests;
 
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.battle.test.TestMetaMaster;
-import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
-import eidolons.game.core.game.DC_Game;
-import eidolons.game.core.game.GameFactory.GAME_SUBCLASS;
-import eidolons.game.core.launch.TestLauncher;
-import eidolons.game.core.launch.TestLauncher.CODE;
-import eidolons.test.frontend.FAST_DC;
 
 /**
  * Created by JustMe on 4/7/2018.
@@ -42,24 +35,24 @@ public class MultiLauncher {
             afterEngineInit.run();
         }
 
-        TestLauncher launcher = new TestLauncher(GAME_SUBCLASS.TEST);
-        launcher.setFAST_MODE(false);
-        launcher.setSUPER_FAST_MODE(false);
-        launcher.PARTY_CODE = CODE.PRESET;
-        launcher.ENEMY_CODE = CODE.PRESET;
-        launcher.PLAYER_PARTY = playerParty;
-        launcher.ENEMY_PARTY = enemyParty;
-        launcher.setDungeon(dungeonPath);
-
-        FAST_DC.setLauncher(launcher);
-        DC_Game game = launcher.initDC_Game();
-        if (isTestMeta())
-            game.setMetaMaster(new TestMetaMaster());
-        else if (dungeonPath != null) {
-            game.setMetaMaster(new ScenarioMetaMaster(dungeonPath));
-        }
-
-        game.start(true);
+//     TODO
+//      TestLauncher launcher = new TestLauncher(GAME_SUBCLASS.TEST);
+//        launcher.setFAST_MODE(false);
+//        launcher.setSUPER_FAST_MODE(false);
+//        launcher.PARTY_CODE = CODE.PRESET;
+//        launcher.ENEMY_CODE = CODE.PRESET;
+//        launcher.PLAYER_PARTY = playerParty;
+//        launcher.ENEMY_PARTY = enemyParty;
+//        launcher.setDungeon(dungeonPath);
+//        FAST_DC.setLauncher(launcher);
+//        DC_Game game = launcher.initDC_Game();
+//        if (isTestMeta())
+//            game.setMetaMaster(new TestMetaMaster());
+//        else if (dungeonPath != null) {
+//            game.setMetaMaster(new ScenarioMetaMaster(dungeonPath));
+//        }
+//
+//        game.start(true);
     }
 
 

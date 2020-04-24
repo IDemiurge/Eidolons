@@ -4,6 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import main.content.values.properties.PROPERTY;
+import main.system.GuiEventType;
 
 /**
  * Created by JustMe on 7/3/2018.
@@ -23,14 +25,28 @@ public abstract class SelectionImageTable extends SelectionTable<SelectableImage
         return new SmartClickListener(item) {
             @Override
             protected void onTouchDown(InputEvent event, float x, float y) {
-               selectedItem=item;
-               selected(data);
+                selectedItem=item;
+                selected(data);
+                for (SelectableImageItem selectableImageItem : getActors()) {
+                    selectableImageItem.setSelected(false);
+                }
+                item.setSelected(true);
             }
         };
     }
     @Override
     protected SelectableImageItem[] initActorArray() {
         return new SelectableImageItem[size];
+    }
+
+    @Override
+    protected PROPERTY getProperty() {
+        return null;
+    }
+
+    @Override
+    protected GuiEventType getEvent() {
+        return null;
     }
 
 

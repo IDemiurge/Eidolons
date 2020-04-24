@@ -1,31 +1,21 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
-import eidolons.content.PARAMS;
-import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.macro.entity.town.Town;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
-import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
-import main.content.enums.entity.BfObjEnums.BF_OBJ_SUB_TYPES_HANGING;
 import main.content.enums.meta.QuestEnums.QUEST_GROUP;
 import main.content.enums.meta.QuestEnums.QUEST_TIME_LIMIT;
 import main.content.enums.meta.QuestEnums.QUEST_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
-import main.data.DataManager;
-import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.math.MathMaster;
-
-import java.util.ArrayList;
 
 /**
  * Created by JustMe on 10/5/2018.

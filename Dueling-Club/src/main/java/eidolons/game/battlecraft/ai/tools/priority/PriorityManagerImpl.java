@@ -167,19 +167,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 case SUMMONING:
                     setBasePriority(getSummonPriority(action));
                     break;
-                case AUTO_DAMAGE:
-                case ZONE_DAMAGE:
-                case AUTO_DEBUFF:
-                case AUTO_BUFF:
-                case SELF:
-                case BUFF:
-                case DEBUFF:
-                case RESTORE:
-                case DEBILITATE:
-                case CUSTOM_HOSTILE:
-                case CUSTOM_SUPPORT:
-                    setBasePriority(getSpellPriority(goal, action));
-                    break;
                 case STEALTH:
                     setBasePriority(getStealthPriority(action));
                     break;
@@ -1742,7 +1729,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         DC_Obj target = a.getTarget();
         switch (aep) {
             case COUNTER_MOD:
-                break;
+            case BEHAVIOR_MODE:
+            case MODE:
             case ATTACK:
                 break;
 
@@ -1755,10 +1743,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 return getParamModSpellPriority(a);
             case SUMMON:
                 return getSummonPriority(a);
-            case MODE:
-                break;
-            case BEHAVIOR_MODE:
-                break;
 
         }
         return 0;

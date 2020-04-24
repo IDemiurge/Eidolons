@@ -5,36 +5,31 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class Coordinates {
+public class Coordinates implements Serializable {
 
-    private static final int MAX_WIDTH = 200;
-    private static final int MAX_HEIGHT = 200;
-    static Coordinates[][] coordinates = new Coordinates[MAX_WIDTH][MAX_HEIGHT];
-    private static int h;
-    private static int w;
+
+    public static Coordinates[][] coordinates = new Coordinates[100][100];
+    public int x;
+    public int y;
+
+    protected Coordinates[] adjacent;
+    protected Coordinates[] adjacenctNoDiags;
+    protected Coordinates[] adjacenctDiagsOnly;
+    private boolean invalid = false;
+
     private static boolean flipX;
     private static boolean flipY;
     private static boolean rotate;
-    private static Map<Coordinates, Map<DIRECTION, Coordinates>> adjacenctDirectionMap = new HashMap<>();
-    private static Map<Coordinates, Set<Coordinates>> adjacenctMap = new HashMap<>();
-    private static Map<Coordinates, Set<Coordinates>> adjacenctMapNoDiags = new HashMap<>();
-    private static Map<Coordinates, Set<Coordinates>> adjacenctMapDiagsOnly = new HashMap<>();
-    public int x;
-    public int y;
-    protected int z = 0;
-    Coordinates[] adjacent;
-    Coordinates[] adjacenctNoDiags;
-    Coordinates[] adjacenctDiagsOnly;
-    private boolean invalid = false;
 
     public Coordinates() {
         this.x = 0;
@@ -78,13 +73,13 @@ public class Coordinates {
     }
 
     public static void resetCaches() {
-        adjacenctDirectionMap.clear();
-        adjacenctMap.clear();
-        adjacenctMapNoDiags.clear();
-        adjacenctMapDiagsOnly.clear();
-        w = GuiManager.getBF_CompDisplayedCellsX();
-        h = GuiManager.getBF_CompDisplayedCellsY();
-        coordinates = new Coordinates[MAX_WIDTH][MAX_HEIGHT]; //just in case... memory be damned
+//    TODO     adjacenctDirectionMap.clear();
+//        adjacenctMap.clear();
+//        adjacenctMapNoDiags.clear();
+//        adjacenctMapDiagsOnly.clear();
+//        int w = GuiManager.getBF_CompDisplayedCellsX();
+//        int h = GuiManager.getBF_CompDisplayedCellsY();
+//        coordinates = new Coordinates[MAX_WIDTH][MAX_HEIGHT]; //just in case... memory be damned
 
     }
 
@@ -93,15 +88,6 @@ public class Coordinates {
 
     }
 
-    public static Map<Coordinates, Map<DIRECTION, Coordinates>> getAdjacenctDirectionMap() {
-        return adjacenctDirectionMap;
-    }
-
-    public static Map<Coordinates, Set<Coordinates>> getAdjacenctMap(Boolean diags) {
-        if (diags != null)
-            return diags ? adjacenctMap : adjacenctMapNoDiags;
-        return adjacenctMapDiagsOnly;
-    }
 
     public static boolean withinBounds(int x, int y) {
         if (x < 0) {
@@ -158,6 +144,9 @@ public class Coordinates {
     }
 
     protected static boolean checkInvalid(Coordinates c) {
+        if (CoreEngine.isLevelEditor()) {
+            return false;
+        }
         if (c.x >= GuiManager.getCurrentLevelCellsX()) {
             c.x = GuiManager.getCurrentLevelCellsX() - 1;
             c.setInvalid(true);
@@ -187,10 +176,7 @@ public class Coordinates {
         if (y >= GuiManager.getCurrentLevelCellsY()) {
             return true;
         }
-        if (y < 0) {
-            return true;
-        }
-        return false;
+        return y < 0;
     }
 
     public static Coordinates get(String s) {
@@ -219,6 +205,10 @@ public class Coordinates {
         return c;
     }
 
+    public static void initCache(int w, int h) {
+        coordinates = new Coordinates[w][h];
+    }
+
     protected void checkInvalid() {
         Coordinates.checkInvalid(this);
     }
@@ -241,7 +231,7 @@ public class Coordinates {
         //        }
         if (arg0 instanceof Coordinates) {
             Coordinates c = (Coordinates) arg0;
-            return c.x == x && c.y == y && c.z == z;
+            return c.x == x && c.y == y;
         }
         return false;
     }
@@ -269,11 +259,11 @@ public class Coordinates {
     }
 
     public Coordinates invertY() {
-        return get(x, GuiManager.getBF_CompDisplayedCellsY() - 1 - y );
+        return get(x, GuiManager.getBF_CompDisplayedCellsY() - 1 - y);
     }
 
     public Coordinates invertX() {
-        return get(  GuiManager.getBF_CompDisplayedCellsX() - 1 - x,y  );
+        return get(GuiManager.getBF_CompDisplayedCellsX() - 1 - x, y);
     }
 
     public Coordinates invert() {
@@ -296,7 +286,7 @@ public class Coordinates {
     }
 
     public Coordinates getAdjacentCoordinate(boolean allowInvalid, DIRECTION direction) {
-        Map<DIRECTION, Coordinates> map = getAdjacenctDirectionMap().get(this);
+        Map<DIRECTION, Coordinates> map = BattleFieldManager.getInstance().getAdjacenctDirectionMap().get(this);
         Coordinates c = null;
         if (map == null) {
             map = new HashMap<>();
@@ -349,7 +339,7 @@ public class Coordinates {
             }
         c = create(allowInvalid, x1, y1);
         map.put(direction, c);
-        getAdjacenctDirectionMap().put(this, map);
+       BattleFieldManager.getInstance().getAdjacenctDirectionMap().put(this, map);
         return c;
     }
 
@@ -419,31 +409,28 @@ public class Coordinates {
 
     public Coordinates[] getAdjacent() {
         if (adjacent == null) {
-            adjacent = getAdjacentCoordinates().toArray(new Coordinates[
-                    getAdjacentCoordinates().size()]);
+            adjacent = getAdjacentCoordinates().toArray(new Coordinates[0]);
         }
         return adjacent;
     }
 
     public Coordinates[] getAdjacenctNoDiags() {
         if (adjacenctNoDiags == null) {
-            adjacenctNoDiags = getAdjacentCoordinates(false).toArray(new Coordinates[
-                    getAdjacentCoordinates(false).size()]);
+            adjacenctNoDiags = getAdjacentCoordinates(false).toArray(new Coordinates[0]);
         }
         return adjacenctNoDiags;
     }
 
     public Coordinates[] getAdjacenctDiagsOnly() {
         if (adjacenctDiagsOnly == null) {
-            adjacenctDiagsOnly = getAdjacentCoordinates(null).toArray(new Coordinates[
-                    getAdjacentCoordinates(null).size()]);
+            adjacenctDiagsOnly = getAdjacentCoordinates(null).toArray(new Coordinates[0]);
         }
         return adjacenctDiagsOnly;
     }
 
     public Set<Coordinates> getAdjacentCoordinates(Boolean diagonals_included_not_only) {
 
-        Set<Coordinates> set = getAdjacenctMap(diagonals_included_not_only).get(this);
+        Set<Coordinates> set = BattleFieldManager.getInstance().getAdjacenctMap(diagonals_included_not_only).get(this);
         if (set != null)
             return set;
         set = new HashSet<>();
@@ -456,7 +443,7 @@ public class Coordinates {
         } else {
             set.addAll(getAdjacentDiagonal());
         }
-        getAdjacenctMap(diagonals_included_not_only).put(this, set);
+        BattleFieldManager.getInstance().getAdjacenctMap(diagonals_included_not_only).put(this, set);
         return set;
 
     }
@@ -480,9 +467,7 @@ public class Coordinates {
                 }
             }
             if (Math.abs(coordinates.y - y) == 1) {
-                if (Math.abs(coordinates.x - x) <= 1) {
-                    return true;
-                }
+                return Math.abs(coordinates.x - x) <= 1;
             }
             return false;
         }
@@ -492,9 +477,7 @@ public class Coordinates {
             }
         }
         if (Math.abs(coordinates.y - y) == 1) {
-            if (Math.abs(coordinates.x - x) < 1) {
-                return true;
-            }
+            return Math.abs(coordinates.x - x) < 1;
         }
         return false;
     }
@@ -506,9 +489,7 @@ public class Coordinates {
             }
         }
         if (Math.abs(coordinates.y - y) == 1) {
-            if (Math.abs(coordinates.x - x) <= 1) {
-                return true;
-            }
+            return Math.abs(coordinates.x - x) <= 1;
         }
         return false;
     }
@@ -558,6 +539,10 @@ public class Coordinates {
         return this;
     }
 
+    public Coordinates getOffset(int x, int y) {
+        return get(Math.max(0, getX()  + x), Math.max(0, getY() + y));
+    }
+
     public Coordinates getOffset(Coordinates coordinates) {
         return get(getX() + coordinates.x, getY() + coordinates.y);
     }
@@ -592,4 +577,11 @@ public class Coordinates {
         return this;
     }
 
+    public void flipY(int h) {
+        setY(h-y);
+    }
+
+    public void flipX(int w) {
+        setX(w-x);
+    }
 }

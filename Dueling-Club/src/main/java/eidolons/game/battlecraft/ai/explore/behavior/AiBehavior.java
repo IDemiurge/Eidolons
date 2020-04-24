@@ -201,10 +201,7 @@ public abstract class AiBehavior {
     }
 
     protected boolean checkNeedsNewOrdersForTarget() {
-        if (target == null) {
-            return false;
-        }
-        return true;
+        return target != null;
     }
 
     protected void resetSinceLastAction() {
@@ -246,9 +243,7 @@ public abstract class AiBehavior {
     }
 
     protected boolean isCustomActionRequired() {
-        if (isFacingChangeRequired())
-            return true;
-        return false;
+        return isFacingChangeRequired();
     }
 
     protected boolean isFacingChangeRequired() {
@@ -335,10 +330,7 @@ public abstract class AiBehavior {
     }
 
     protected boolean checkNextActionCanBeMade(Action action) {
-        if (action == null) {
-            return false;
-        }
-        return true;
+        return action != null;
     }
 
     public ActionSequence getOrders() {
@@ -362,12 +354,8 @@ public abstract class AiBehavior {
     }
 
     protected boolean checkOrdersValid(Orders orders) {
-        if (orders == null) {
-            return false;
-        }
+        return orders != null;
         //if something changes... or
-
-        return true;
     }
 
     protected boolean isTargetCoordinateValid() {
@@ -497,11 +485,8 @@ public abstract class AiBehavior {
 
     protected boolean checkCanTeleport() {
         double dst = PositionMaster.getExactDistance(ai.getUnit(), Eidolons.getMainHero());
-        if (dst < Eidolons.getMainHero().
-         getMaxVisionDistanceTowards(ai.getUnit().getCoordinates())) {
-            return false;
-        }
-        return true;
+        return !(dst < Eidolons.getMainHero().
+                getMaxVisionDistanceTowards(ai.getUnit().getCoordinates()));
     }
 
     public boolean isTargetValid(Coordinates c, Coordinates from) {
@@ -512,7 +497,7 @@ public abstract class AiBehavior {
     }
 
     public boolean isPositionValid(Coordinates c) {
-        if (!block.getCoordinatesList().contains(c)) {
+        if (!block.getCoordinatesSet().contains(c)) {
             return false;
         }
         return c.dst_(preferredPosition) <= getDistanceForNearby();

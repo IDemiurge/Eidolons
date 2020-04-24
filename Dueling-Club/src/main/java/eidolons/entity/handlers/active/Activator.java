@@ -15,7 +15,6 @@ import eidolons.libgdx.bf.GridMaster;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.AiEnums;
 import main.content.mode.STD_MODES;
-import main.entity.Entity;
 import main.entity.Ref;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

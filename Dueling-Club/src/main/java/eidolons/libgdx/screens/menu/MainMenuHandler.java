@@ -1,9 +1,8 @@
 package eidolons.libgdx.screens.menu;
 
-import eidolons.content.PARAMS;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
 import eidolons.game.core.Eidolons;
+import eidolons.game.netherflame.igg.IGG_Launcher;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.macro.AdventureInitializer;
@@ -12,7 +11,6 @@ import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
-import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -21,7 +19,6 @@ import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.List;
@@ -111,7 +108,7 @@ public class MainMenuHandler {
     public Boolean handle(MAIN_MENU_ITEM item) {
         switch (item) {
             case DEMO:
-                EidolonsGame.IGG_DEMO=true;
+                EidolonsGame.DEMO=true;
                 IGG_Launcher.start(()-> startDemo());
                 return null ;
             case NEXT_SCENARIO:
@@ -125,7 +122,7 @@ public class MainMenuHandler {
                 return startMicro(getScenarioTypes(getScenarioGroup(true)),
                  true);
             case SELECT_SCENARIO:
-                EidolonsGame.EXTENDED_DEMO=true;
+//                EidolonsGame.EXTENDED_DEMO=true;
             case CUSTOM_LAUNCH:
                 return startMicro(getScenarioTypes(),
                  null);

@@ -9,14 +9,14 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
-import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
+import eidolons.game.module.generator.model.AbstractCoordinates;
+import eidolons.game.netherflame.igg.event.TipMessageMaster;
+import eidolons.game.netherflame.igg.pale.PaleAspect;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.data.DataManager;
@@ -58,7 +58,7 @@ public class PuzzleActions extends PuzzleElement {
 
         switch (punishment) {
             case battle:
-                break;
+            case death:
             case spell:
                 break;
             case teleport:
@@ -67,12 +67,10 @@ public class PuzzleActions extends PuzzleElement {
             case tip:
                 TipMessageMaster.tip(data);
                 break;
-            case death:
-                break;
             case animate_enemies:
                 for (BattleFieldObject object : getObjects(puzzle)) {
                     if (object.checkBool(GenericEnums.STD_BOOLS.LIVING_STATUE)) {
-                        Unit unit = (Unit) object.getGame().createUnit(DataManager.getType("Living " + object.getName(), DC_TYPE.UNITS),
+                        Unit unit = (Unit) object.getGame().createObject(DataManager.getType("Living " + object.getName(), DC_TYPE.UNITS),
                                 object.getCoordinates(), object.getGame().getPlayer(false));
                         object.kill();
                         unit.getAI().setEngaged(true);
@@ -94,7 +92,7 @@ public class PuzzleActions extends PuzzleElement {
 
     private static Set<BattleFieldObject> getObjects(Puzzle puzzle) {
         Set<BattleFieldObject> set = new LinkedHashSet<>();
-        for (Coordinates c : puzzle.getBlock().getCoordinatesList()) {
+        for (Coordinates c : puzzle.getBlock().getCoordinatesSet()) {
             set.addAll(Eidolons.getGame().getObjectsOnCoordinate(c));
         }
         return set;
@@ -102,9 +100,7 @@ public class PuzzleActions extends PuzzleElement {
     }
 
     private static boolean isPaleReturn(Puzzle puzzle, PuzzleResolution.PUZZLE_PUNISHMENT punishment) {
-        if (EidolonsGame.BRIDGE)
-            return false;
-        return true;
+        return !EidolonsGame.BRIDGE;
     }
 
     public static void resolution(PuzzleResolution.PUZZLE_RESOLUTION resolution, Puzzle puzzle, String s) {
@@ -117,7 +113,7 @@ public class PuzzleActions extends PuzzleElement {
                 break;
             case unseal_door:
                 LevelBlock block = puzzle.getBlock();
-                for (Coordinates c : block.getCoordinatesList()) {
+                for (Coordinates c : block.getCoordinatesSet()) {
                     for (BattleFieldObject object : Eidolons.getGame().getObjectsOnCoordinate(c)) {
                         if (object instanceof Door) {
 //                            ((Door) object).setState(DoorMaster.DOOR_STATE.OPEN);

@@ -13,7 +13,7 @@ import eidolons.game.battlecraft.rules.round.RoundRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbController;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -21,7 +21,6 @@ import main.content.ContentValsManager;
 import main.content.mode.MODE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
-import main.entity.obj.Obj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
@@ -396,11 +395,10 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
                 case STAMINA:
+                case ESSENCE:
                     return 1f;
                 case FOCUS:
                     return 1.5f;
-                case ESSENCE:
-                    return 1f;
             }
         }
         return 1f;
@@ -410,7 +408,6 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
                 case STAMINA:
-                    return 1f;
                 case ESSENCE:
                     return 1f;
             }

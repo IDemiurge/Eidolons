@@ -41,7 +41,6 @@ public class DataBackend {
     private   Map<OBJ_TYPE, Map<String, List<String>>> subGroupsMaps;
     private   Map<C_OBJ_TYPE, List<ObjType>> customObjTypeCache;
     private   Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps = new ConcurrentMap();
-    private   int log = 0;
     private   Map<OBJ_TYPE, Map<String, ObjType>> caches = new HashMap<>();
 
     public   void init() {
@@ -207,6 +206,7 @@ public class DataBackend {
             return type;
         }
 
+        int log = 0;
         if (!recursion) {
             LogMaster.log(log, "Type not found: " + TYPE
                     + ":" + typeName);
@@ -289,12 +289,12 @@ public class DataBackend {
         }
 
         i++;
-        String baseTypeName = "";
+        StringBuilder baseTypeName = new StringBuilder();
         for (int a = i; a <= parts.size() - 1; a++) {
-            baseTypeName += parts.get(a) + " ";
+            baseTypeName.append(parts.get(a)).append(" ");
         }
 
-        ObjType baseType = getBaseItemType(baseTypeName, obj_type);
+        ObjType baseType = getBaseItemType(baseTypeName.toString(), obj_type);
 
         // int j = 0;
         // if (baseType == null) {
@@ -511,7 +511,7 @@ public class DataBackend {
             return getTypeNames(TYPE);
         }
 
-        List<String> list = getTypesSubGroups().get(TYPE).get(subgroup);
+//        List<String> list = getTypesSubGroups().get(TYPE).get(subgroup);
         // if (list != null)
         // return list;
 
@@ -529,7 +529,8 @@ public class DataBackend {
         //        }
         // if (ListMaster.contains(groupsList, subgroup, true)
         // || isCustomGroup(subgroup)) {
-        list = new ArrayList<>();
+
+        List<String> list = new ArrayList<>();
 
         Map<String, Map<String, ObjType>> map = XML_Reader.getTypeMaps();
         Collection<ObjType> set = map.get(TYPE.toString()).values();
@@ -780,7 +781,11 @@ public class DataBackend {
     }
 
     public   void addType(ObjType type) {
-        addType(type.getName(), type.getOBJ_TYPE_ENUM(), type);
+        String name = type.getName();
+        if (name.isEmpty()) {
+            return;
+        }
+        addType(name, type.getOBJ_TYPE_ENUM(), type);
     }
 
     public   ObjType addType(String typeName, OBJ_TYPE TYPE) {
@@ -857,9 +862,7 @@ public class DataBackend {
             if (TYPE == DC_TYPE.DEITIES) {
                 return true;
             }
-            if (TYPE == DC_TYPE.CHARS) {
-                return true;
-            }
+            return TYPE == DC_TYPE.CHARS;
         }
 
         return false;
@@ -905,6 +908,9 @@ public class DataBackend {
     }
 
     public   ObjType getItem(QUALITY_LEVEL quality, MATERIAL material, ObjType type) {
+        if (CoreEngine.TEST_LAUNCH) {
+            return type;
+        }
         ObjType itemType = DataManager.getItemMaps().get(quality).get(material).get(type);
         if (itemType != null)
             return itemType;

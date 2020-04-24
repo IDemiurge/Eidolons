@@ -14,13 +14,11 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.SearchMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -217,7 +215,7 @@ public class Ref implements Cloneable, Serializable {
         if (game == null || values == null) {
             return "invalid ref!";
         }
-        String result = "REF values: \n";
+        StringBuilder result = new StringBuilder("REF values: \n");
         for (KEYS key : values.keySet()) {
             String value;
             Integer id = null;
@@ -231,15 +229,15 @@ public class Ref implements Cloneable, Serializable {
             if (id != null) {
                 Obj obj = game.getObjectById(id);
                 if (obj != null) {
-                    result += key + " = " + obj.getNameAndCoordinate();
+                    result.append(key).append(" = ").append(obj.getNameAndCoordinate());
                 } else {
-                    result += key + " = " + value;
+                    result.append(key).append(" = ").append(value);
                 }
-                result = result + ";" + "\n";
+                result.append(";").append("\n");
             }
         }
 
-        return result;
+        return result.toString();
 
     }
 
@@ -285,8 +283,8 @@ public class Ref implements Cloneable, Serializable {
 
     protected Ref checkForRefReplacement() {
         String s = getStr();
-        if (s.startsWith("{")) {
-            s = StringMaster.replaceFirst(s, "{", "");
+        while (s.startsWith("{")) {
+            s=s.substring(1 );
         }
         String prefix_ = s.split("_")[0];
         if (prefix_.isEmpty() || prefix_.equals(s))
@@ -294,7 +292,11 @@ public class Ref implements Cloneable, Serializable {
         prefix_ = prefix_.toUpperCase();
         if (prefix_.equals("EVENT")) {
             // setStr(getStr().replace(EVENT_PREFIX, "")); [OPTIMIZED]
-            setStr(StringMaster.cropFirstSegment(getStr(), "_").replace("}", ""));
+            String str = StringMaster.cropFirstSegment(getStr(), "_");
+            while (str.endsWith("}")) {
+                str=str.substring(0,str.length()-1);
+            }
+            setStr(str);
             return getEvent().getRef();
         }
 

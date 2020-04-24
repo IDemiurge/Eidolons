@@ -228,7 +228,7 @@ public abstract class Builder implements GameGUI {
     }
 
 
-    public class LayoutInfo {
+    public static class LayoutInfo {
 
         private String mig;
         private int x;

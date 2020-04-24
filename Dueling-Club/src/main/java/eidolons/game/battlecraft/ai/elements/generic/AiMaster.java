@@ -3,12 +3,10 @@ package eidolons.game.battlecraft.ai.elements.generic;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
+import eidolons.game.battlecraft.ai.advanced.behavior.BehaviorMasterOld;
 import eidolons.game.battlecraft.ai.advanced.companion.MetaGoalMaster;
 import eidolons.game.battlecraft.ai.advanced.machine.AiConst;
 import eidolons.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster;
-import eidolons.game.battlecraft.ai.advanced.machine.PriorityProfile;
-import eidolons.game.battlecraft.ai.advanced.machine.PriorityProfileManager;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequenceConstructor;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.PathSequenceConstructor;
@@ -26,7 +24,6 @@ import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
 import eidolons.game.battlecraft.ai.tools.prune.PruneMaster;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.bf.boss.logic.BossAi;
 import main.content.values.parameters.PARAMETER;
 
 import java.util.ArrayList;
@@ -53,18 +50,19 @@ public class AiMaster {
     protected CellPrioritizer cellPrioritizer;
     protected PathSequenceConstructor pathSequenceConstructor;
     protected TurnSequenceConstructor turnSequenceConstructor;
-    private SituationAnalyzer situationAnalyzer;
-    private ThreatAnalyzer threatAnalyzer;
-    private BehaviorMaster behaviorMaster;
-    private AtomicAi atomicAi;
-    private List<AiHandler> handlers = new ArrayList<>();
-    private AiScriptExecutor scriptExecutor;
-    private MetaGoalMaster metaGoalMaster;
-    private AiPriorityConstantMaster priorityConstantMaster;
-    private PriorityProfileManager priorityProfileManager;
-    private PriorityModifier priorityModifier;
-    private PathBuilderAtomic pathBuilderAtomic;
-    private BossAi bossAi;
+    protected SituationAnalyzer situationAnalyzer;
+    protected ThreatAnalyzer threatAnalyzer;
+    protected BehaviorMasterOld behaviorMaster;
+    protected AtomicAi atomicAi;
+    protected List<AiHandler> handlers = new ArrayList<>();
+    protected AiScriptExecutor scriptExecutor;
+    protected MetaGoalMaster metaGoalMaster;
+    protected AiPriorityConstantMaster priorityConstantMaster;
+    protected PriorityModifier priorityModifier;
+    protected PathBuilderAtomic pathBuilderAtomic;
+    private AiAutoGroupHandler autoGroupHandler;
+    private AiGroupHandler groupHandler;
+
     public AiMaster(DC_Game game) {
         this.game = game;
         this.actionSequenceConstructor = new ActionSequenceConstructor(this);
@@ -81,15 +79,15 @@ public class AiMaster {
         this.cellPrioritizer = new CellPrioritizer(this);
         this.pathSequenceConstructor = new PathSequenceConstructor(this);
         this.turnSequenceConstructor = new TurnSequenceConstructor(this);
-        this.behaviorMaster = new BehaviorMaster(this);
+        this.behaviorMaster = new BehaviorMasterOld(this);
         this.atomicAi = new AtomicAi(this);
         this.scriptExecutor = new AiScriptExecutor(this);
         this.metaGoalMaster = new MetaGoalMaster(this);
         this.priorityConstantMaster = new AiPriorityConstantMaster(this);
-        this.priorityProfileManager = new PriorityProfileManager(this);
         this.priorityModifier = new PriorityModifier(this);
         this.pathBuilderAtomic = new PathBuilderAtomic(this);
-
+        this.autoGroupHandler = new AiAutoGroupHandler(this);
+        this.groupHandler = new AiGroupHandler(this);
         executor = new AiExecutor(game);
 
     }
@@ -114,31 +112,17 @@ public class AiMaster {
         this.situationAnalyzer.initialize();
         this.metaGoalMaster.initialize();
         this.priorityConstantMaster.initialize();
-        this.priorityProfileManager.initialize();
         this.priorityModifier.initialize();
         this.pathBuilderAtomic.initialize();
 
     }
-    protected BossAi getBossAi(Unit unit) {
-        if (bossAi == null) {
-            bossAi = new BossAi(unit.getAI());
-        }
-        return bossAi;
-    }
+
     public PathBuilderAtomic getPathBuilderAtomic() {
         return pathBuilderAtomic;
     }
 
-    public PriorityProfile getProfile() {
-        return getPriorityProfileManager().getProfile();
-    }
-
     public AiPriorityConstantMaster getPriorityConstantMaster() {
         return priorityConstantMaster;
-    }
-
-    public PriorityProfileManager getPriorityProfileManager() {
-        return priorityProfileManager;
     }
 
     public PriorityModifier getPriorityModifier() {
@@ -149,7 +133,7 @@ public class AiMaster {
         return metaGoalMaster;
     }
 
-    public BehaviorMaster getBehaviorMaster() {
+    public BehaviorMasterOld getBehaviorMaster() {
         return behaviorMaster;
     }
 
@@ -271,4 +255,11 @@ public class AiMaster {
     }
 
 
+    public AiAutoGroupHandler getAutoGroupHandler() {
+        return autoGroupHandler;
+    }
+
+    public AiGroupHandler getGroupHandler() {
+        return groupHandler;
+    }
 }

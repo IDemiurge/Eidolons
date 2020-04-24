@@ -3,11 +3,9 @@ package eidolons.ability;
 import eidolons.content.PARAMS;
 import eidolons.content.ValuePages;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
-import eidolons.test.frontend.FAST_DC;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.system.launch.CoreEngine;
@@ -29,10 +27,7 @@ public class UnitTrainingMaster {
     }
 
     public static void train(Unit unit) {
-        if (EidolonsGame.BRIDGE) {
-            return;
-        }
-        if (FAST_DC.isRunning())
+        if (CoreEngine.TEST_LAUNCH)
             return;
         if (CoreEngine.isFullFastMode())
             return;

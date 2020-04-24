@@ -11,7 +11,6 @@ import eidolons.content.PROPS;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
@@ -142,8 +141,7 @@ public class DC_RequirementsManager implements RequirementsManager {
             switch ((DC_TYPE) TYPE) {
 
                 case ARMOR:
-                    req = generateItemRequirements(type, mode);
-                    break;
+                case WEAPONS:
                 case ITEMS:
                     req = generateItemRequirements(type, mode);
                     break;
@@ -155,13 +153,6 @@ public class DC_RequirementsManager implements RequirementsManager {
                     break;
                 case SPELLS:
                     req = generateSpellRequirements(type, mode);
-                    break;
-                case WEAPONS:
-                    req = generateItemRequirements(type, mode);
-                    break;
-                case UNITS:
-                    break;
-                case ACTIONS:
                     break;
                 default:
                     break;
@@ -223,12 +214,13 @@ public class DC_RequirementsManager implements RequirementsManager {
             if (StringMaster.isEmpty(subString)) {
                 continue;
             }
-            String t = "";
+            String t;
             Conditions c;
             if (StringMaster.contains(subString, StringMaster.OR)) {
                 // REFACTOR
                 List<String> parts = ContainerUtils.split(subString, StringMaster.OR, false);
                 c = new OrConditions();
+                StringBuilder tBuilder = new StringBuilder();
                 for (String part : parts) {
                     // String valRef = part
                     // .split(StringMaster.CONDITION_SEPARATOR)[0];
@@ -236,8 +228,9 @@ public class DC_RequirementsManager implements RequirementsManager {
                     // part.split(StringMaster.CONDITION_SEPARATOR)[1];
                     Condition condition = parseCondition(part);
                     c.add(condition);
-                    t += parseReasonString(part) + OR;
+                    tBuilder.append(parseReasonString(part)).append(OR);
                 }
+                t = tBuilder.toString();
                 t = t.substring(0, t.length() - OR.length());
             } else {
                 String valRef;
@@ -251,7 +244,7 @@ public class DC_RequirementsManager implements RequirementsManager {
                 } else if (!subString.contains(StringMaster.REQ_VALUE_SEPARATOR)) {
                     // TODO
                     valRef = subString.substring(0, subString.lastIndexOf(" "));
-                    value = subString.substring(subString.lastIndexOf(" "), subString.length())
+                    value = subString.substring(subString.lastIndexOf(" "))
                      .trim();
                 } else {
                     valRef = subString.split(StringMaster.REQ_VALUE_SEPARATOR)[0];
@@ -304,7 +297,7 @@ public class DC_RequirementsManager implements RequirementsManager {
         String value = s.split(separator)[1];
         if (separator.equals(" ")) {
             valRef = s.substring(0, s.lastIndexOf(" "));
-            value = s.substring(s.lastIndexOf(" "), s.length()).trim();
+            value = s.substring(s.lastIndexOf(" ")).trim();
         }
         return new String[]{valRef, value};
     }
@@ -360,7 +353,7 @@ public class DC_RequirementsManager implements RequirementsManager {
 
     private Condition getTotalCondition(String valRef, String value) {
         List<PARAMETER> params;
-        String str1 = "";
+        String str1;
         if (valRef.contains(StringMaster.VAR_SEPARATOR)) {
             params = new ArrayList<>();
             for (String s : ContainerUtils.open(valRef, StringMaster.VAR_SEPARATOR)) {
@@ -380,9 +373,11 @@ public class DC_RequirementsManager implements RequirementsManager {
             VALUE_GROUP template = DC_ValueManager.getValueGroup(valRef);
             params = new ListMaster<PARAMETER>().getList(template.getParams());
         }
+        StringBuilder str1Builder = new StringBuilder();
         for (PARAMETER p : params) {
-            str1 += StringMaster.getValueRef(KEYS.SOURCE, p) + "+";
+            str1Builder.append(StringMaster.getValueRef(KEYS.SOURCE, p)).append("+");
         }
+        str1 = str1Builder.toString();
         str1 = StringMaster.cropLast(str1, 1);
 
         return new NumericCondition(false, str1, value);

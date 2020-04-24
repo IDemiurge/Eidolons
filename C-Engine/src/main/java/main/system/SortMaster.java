@@ -12,8 +12,8 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.Collections;
@@ -215,7 +215,7 @@ public class SortMaster<T> {
         return null;
     }
 
-    protected static int compareAlphabetically(String id1, String id2) {
+    public static int compareAlphabetically(String id1, String id2) {
         return id1.compareTo(id2);
     }
 

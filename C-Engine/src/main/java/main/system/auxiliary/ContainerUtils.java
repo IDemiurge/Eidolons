@@ -4,7 +4,6 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.system.auxiliary.data.ListMaster;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -52,7 +51,7 @@ public class ContainerUtils {
             }
         }
         List<String> list = new ArrayList<>(Arrays
-         .asList(containerString.split(Pattern.quote(delimiter))));
+                .asList(containerString.split(Pattern.quote(delimiter))));
         list.removeIf(s -> StringMaster.isEmpty(s));
         return list;
     }
@@ -128,14 +127,18 @@ public class ContainerUtils {
 
         for (String str : list) {
             if (str != null)
-                builder.append(str + divider);
+                builder.append(str).append(divider);
         }
         String result = builder.toString();
         return (cropLastDivider) ? result.substring(0, result.lastIndexOf(divider)) : result;
     }
 
     public static String joinArray(String s, Object[] args) {
-        return joinStringList(ListMaster.toStringList(args)  , s, true);
+        return joinStringList(ListMaster.toStringList(args), s, true);
+    }
+
+    public static String join(String s, Collection c) {
+        return c.stream().map(Object::toString).collect(Collectors.joining(s)).toString();
     }
     public static String join(String s, String... parts) {
         return joinStringList(new ArrayList<>(Arrays.asList(parts)), s, true);
@@ -161,15 +164,18 @@ public class ContainerUtils {
         return constructStringContainer(Arrays.asList(parts), separator);
 
     }
+
     public static String constructStringContainer(List<?> list) {
         return constructStringContainer(list, getContainerSeparator());
     }
+
     public static String toStringContainer(Collection<?> list) {
         return toStringContainer(list, getContainerSeparator());
     }
-        public static String toStringContainer(Collection<?> list, String divider) {
-        return joinStringList(list.stream().map(obj-> obj.toString()).collect(Collectors.toList())
-       ,divider );
+
+    public static String toStringContainer(Collection<?> list, String divider) {
+        return joinStringList(list.stream().map(obj -> obj.toString()).collect(Collectors.toList())
+                , divider);
     }
 
     public static String constructStringContainer(List<?> list, String separator) {
@@ -180,7 +186,7 @@ public class ContainerUtils {
 
     ) {
         return joinStringList(ListMaster.toStringList(true, list.toArray()),
-         getContainerSeparator(), false);
+                getContainerSeparator(), false);
     }
 
     public static List<String> convertToStringList(Collection<?> values) {
@@ -240,23 +246,22 @@ public class ContainerUtils {
             container = container.substring(0, container.length() - 1);
         }
         return container.replace(getContainerSeparator(),
-         getFormattedContainerSeparator());
+                getFormattedContainerSeparator());
     }
 
     public static String getFormattedContainerSeparator() {
         return ", ";
     }
 
-        public static String build(String... strings) {
-
+    public static String build(Object... strings) {
         return build(false, strings);
     }
 
     public static String build(List<String> list) {
-        return build(list.toArray(new String[list.size()]));
+        return build(list.toArray(new String[0]));
     }
 
-    public static String build(boolean whitespaces, String... strings) {
+    public static String build(boolean whitespaces, Object... strings) {
         StringBuilder builder = new StringBuilder();
         Arrays.stream(strings).forEach(s -> {
             builder.append(s);

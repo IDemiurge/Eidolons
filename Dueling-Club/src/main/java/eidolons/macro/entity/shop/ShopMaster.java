@@ -60,6 +60,7 @@ public class ShopMaster {
         }
         switch (shop.getShopModifier()) {
             case DARK:
+            case WIZARDING:
                 gold = MathMaster.addFactor(gold, 25);
                 break;
             case DWARVEN:
@@ -67,9 +68,6 @@ public class ShopMaster {
                 break;
             case UNDERGROUND:
                 gold = MathMaster.addFactor(gold, -15);
-                break;
-            case WIZARDING:
-                gold = MathMaster.addFactor(gold, 25);
                 break;
             default:
                 break;

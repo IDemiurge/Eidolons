@@ -7,8 +7,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.particles.spell.SpellVfxMaster;
-import eidolons.system.content.ContentGenerator;
-import eidolons.test.frontend.FAST_DC;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -21,14 +19,12 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.entity.type.SpellType;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 import main.system.entity.FilterMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TestMasterContent {
     public static final String TEST_WEAPONS = "inferior iron long sword;"
@@ -163,11 +159,6 @@ public class TestMasterContent {
     }
 
     public static boolean checkHeroForTestSpell(ObjType type, String typeName, boolean last) {
-        if (FAST_DC.FAST_MODE) {
-            if (first) {
-                return true;
-            }
-        }
         try {
             return tryCheckHeroForTestSpell(type, typeName, last);
 
@@ -314,7 +305,6 @@ public class TestMasterContent {
                     type.addProperty(PROPS.MEMORIZED_SPELLS, s.getName(), true);
                 }
                 addTestActives(type, last);
-                return;
             }
         }
     }
@@ -336,7 +326,6 @@ public class TestMasterContent {
 //        addSpells(type, list);
 
         addSpells(type, "Shadow Fury;");
-        return;
     }
     public static void addANIM_TEST_Spells(Entity type) {
 
@@ -423,11 +412,11 @@ public class TestMasterContent {
         StringBuilder builder = new StringBuilder(DataManager.getTypes(DC_TYPE.SPELLS).size() * 10);
         if (SpellVfxMaster.TEST_MODE){
             for (String s :  ContainerUtils.openContainer(SpellVfxMaster.VFX_TEST_SPELLS)) {
-                builder.append(s+ ";");
+                builder.append(s).append(";");
             }
         } else
         for (ObjType s : DataManager.getTypes(DC_TYPE.SPELLS)) {
-            builder.append(s.getName() + ";");
+            builder.append(s.getName()).append(";");
         }
         type.addProperty(PROPS.VERBATIM_SPELLS, builder.toString(), true);
     }
@@ -574,12 +563,9 @@ public class TestMasterContent {
         if (getFIX_LIST().contains(name)) {
             return true;
         }
-        if (getTEST_LIST().contains(name)) {
-            return true;
-        }
+        return getTEST_LIST().contains(name);
         // new ListMaster<>().contains(list, item, strict)
         // testConfig.getTestList().contains(name);
-        return false;
     }
 
     private void initAutoTestList() {
@@ -620,7 +606,7 @@ public class TestMasterContent {
 
     }
 
-    public class TestCase {
+    public static class TestCase {
         String name;
         DC_TYPE type;
         boolean AI;

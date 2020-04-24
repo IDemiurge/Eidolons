@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.ReflectionMaster;
 

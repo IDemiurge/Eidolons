@@ -23,11 +23,7 @@ import main.entity.obj.Obj;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class TaskManager extends AiHandler {
 
@@ -50,6 +46,10 @@ public class TaskManager extends AiHandler {
                 switch (mode) {
 
                     case ANY_ITEM:
+                    case MULTI:
+
+                    case CORPSE:
+                    case MY_ITEM:
                         break;
                     case ANY_ARMOR:
                         if (target.getArmor() != null) {
@@ -57,6 +57,7 @@ public class TaskManager extends AiHandler {
                         }
                         return null;
                     case ANY_WEAPON:
+                    case ENEMY_WEAPON:
                         if (target.getMainWeapon() != null) {
                             return target.getMainWeapon().getId();
                         }
@@ -72,16 +73,6 @@ public class TaskManager extends AiHandler {
                         } else {
                             return null;
                         }
-                    case ENEMY_WEAPON:
-                        if (target.getMainWeapon() != null) {
-                            return target.getMainWeapon().getId();
-                        }
-                        if (target.getOffhandWeapon() != null) {
-                            return target.getOffhandWeapon().getId();
-                        }
-                        return null;
-                    case MY_ITEM:
-                        break;
                     case MY_WEAPON:
                         if (action.getOwnerUnit().getMainWeapon() != null) {
                             return action.getOwnerUnit().getMainWeapon().getId();
@@ -95,11 +86,6 @@ public class TaskManager extends AiHandler {
                             return action.getOwnerUnit().getArmor().getId();
                         }
                         return null;
-
-                    case CORPSE:
-                        break;
-                    case MULTI:
-                        break;
                 }
             }
         }
@@ -116,7 +102,7 @@ public class TaskManager extends AiHandler {
         if (ai.getCurrentOrder() != null)
             if (ai.getCurrentOrder().getArg() != null)
                 return new ArrayList<>(
-                        Arrays.asList(new Task(ai, goal, ai.getCurrentOrder().getArg())));
+                        Collections.singletonList(new Task(ai, goal, ai.getCurrentOrder().getArg())));
 
         List<Integer> ids = new ArrayList<>();
         List<? extends DC_Obj> targets = new ArrayList<>();
@@ -136,8 +122,6 @@ public class TaskManager extends AiHandler {
                 break;
             // SPEC MODE - KIND OF ON ALERT...
             case PATROL:
-                targets = Analyzer.getWanderCells(ai);
-                break;
             case WANDER: // RANDOM DESTINATION MOVEMENT, BLOCK SPECIAL MOVES
                 // limit max distance from original spawning position
                 // TODO sometimes in chosen direction
@@ -178,6 +162,13 @@ public class TaskManager extends AiHandler {
                 checkPrune(targets, goal, ai, action);
                 break;
             case CUSTOM_SUPPORT:
+
+            case AUTO_DAMAGE:
+            case AUTO_DEBUFF:
+            case AUTO_BUFF:
+                // list.add(new Task(ai, goal, null));
+            case RESTORE:
+            case BUFF:
                 targets = Analyzer.getAllies(ai);
                 checkPrune(targets, goal, ai, action);
                 break;
@@ -198,10 +189,7 @@ public class TaskManager extends AiHandler {
 //                    List<Set<BattleFieldObject>> objs = Analyzer.getCells(ai, true, true, false).stream().map(
 //                            c -> game.getObjectsOnCoordinate(c.getCoordinates())).collect(Collectors.toList());
                     for (DC_Cell cell : Analyzer.getCells(ai, true, false, false)) {
-                        for (BattleFieldObject a :
-                                game.getObjectsOnCoordinate(cell.getCoordinates())) {
-                            targets3.add(a);
-                        }
+                        targets3.addAll(game.getObjectsOnCoordinate(cell.getCoordinates()));
                     }
                 } else {
                     // if (forced)
@@ -211,16 +199,6 @@ public class TaskManager extends AiHandler {
                     targets = Analyzer.getVisibleEnemies(ai); // TODO detected!
                 }
 
-                checkPrune(targets, goal, ai, action);
-                break;
-
-            case AUTO_DAMAGE:
-            case AUTO_DEBUFF:
-            case AUTO_BUFF:
-                // list.add(new Task(ai, goal, null));
-            case RESTORE:
-            case BUFF:
-                targets = Analyzer.getAllies(ai);
                 checkPrune(targets, goal, ai, action);
                 break;
             case WAIT:

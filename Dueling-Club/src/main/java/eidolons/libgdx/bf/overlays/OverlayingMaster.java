@@ -3,10 +3,7 @@ package eidolons.libgdx.bf.overlays;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.libgdx.bf.grid.OverlayView;
-import eidolons.libgdx.texture.Sprites;
-import main.content.enums.entity.UnitEnums;
+import eidolons.libgdx.bf.grid.cell.OverlayView;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -53,11 +50,13 @@ public class OverlayingMaster {
                     clockwise = null;
                 break;
             case UP_RIGHT:
+            case DOWN_LEFT:
                 if (!facing.isVertical()) {
                     clockwise = false;
                 }
                 break;
             case UP_LEFT:
+            case DOWN_RIGHT:
                 if (facing.isVertical()) {
                     clockwise = false;
                 }
@@ -68,16 +67,6 @@ public class OverlayingMaster {
                     clockwise = !d.isGrowX();
                 } else
                     clockwise = null;
-                break;
-            case DOWN_RIGHT:
-                if (facing.isVertical()) {
-                    clockwise = false;
-                }
-                break;
-            case DOWN_LEFT:
-                if (!facing.isVertical()) {
-                    clockwise = false;
-                }
                 break;
 
             case LEFT:

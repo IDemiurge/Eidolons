@@ -12,7 +12,6 @@ import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import eidolons.libgdx.screens.map.MapScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

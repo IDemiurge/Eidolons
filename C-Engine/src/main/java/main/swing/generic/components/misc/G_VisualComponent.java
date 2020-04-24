@@ -8,18 +8,14 @@ import java.awt.*;
 public class G_VisualComponent extends G_Component {
 
     private Image img;
-    private int x = 0;
-    private int y = 0;
     private Dimension size;
     private boolean horizontalFlip;
     private int rotation;
 
     public G_VisualComponent(String imgPath) {
         this.img = ImageManager.getImage(imgPath);
-        if (size == null) {
-            size = new Dimension(img.getWidth(null), img.getHeight(null));
-            setPreferredSize(size);
-        }
+        size = new Dimension(img.getWidth(null), img.getHeight(null));
+        setPreferredSize(size);
         if (!isTransparent()) {
             setOpaque(true);
         }
@@ -33,6 +29,8 @@ public class G_VisualComponent extends G_Component {
     public void paint(Graphics g) {
         // if (!initialized) init();
         // super.paint(g);
+        int y = 0;
+        int x = 0;
         g.drawImage(img, x, y, null);
     }
 

@@ -144,7 +144,6 @@ public enum MACRO_PROPS implements PROPERTY {
     private String entityType;
     private boolean dynamic;
     private String defaultValue;
-    private int AV_ID;
 
     private boolean lowPriority = false;
     private String[] entityTypes;
@@ -180,7 +179,6 @@ public enum MACRO_PROPS implements PROPERTY {
         this.entityType = entityType;
         this.dynamic = dynamic;
         this.defaultValue = defaultValue;
-        this.AV_ID = AV_ID;
     }
 
     @Override

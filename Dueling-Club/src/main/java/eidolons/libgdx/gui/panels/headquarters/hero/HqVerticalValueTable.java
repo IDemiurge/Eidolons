@@ -3,7 +3,6 @@ package eidolons.libgdx.gui.panels.headquarters.hero;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.NumberUtils;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -44,14 +43,14 @@ public   class HqVerticalValueTable extends HqElement {
                 row();
                 continue;
             }
-            AbstractValueContainer container = new ValueContainer(value.getName() + ": ", "");
+            ValueContainer container = new ValueContainer(value.getName() + ": ", "");
 //            container.getActor().setSize(200, 50);
             if (isStretch()){
-                ((ValueContainer) container).setFixedMinSize(true);
-                ((ValueContainer) container).setWidth(getWidth());
+                container.setFixedMinSize(true);
+                container.setWidth(getWidth());
             }
-            ((ValueContainer) container).setHeight(getHeight()* MathMaster.getFloatWithDigitsAfterPeriod(1, 1f/values.length));
-            ((ValueContainer) container).setValueAlignment(getValueAlignment());
+            container.setHeight(getHeight()* MathMaster.getFloatWithDigitsAfterPeriod(1, 1f/values.length));
+            container.setValueAlignment(getValueAlignment());
             containers.add(container);
             add(container.getActor()).uniform().left().row(); //.left()
 

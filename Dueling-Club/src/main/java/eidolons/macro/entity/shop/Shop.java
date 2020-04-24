@@ -4,7 +4,6 @@ import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
-import eidolons.game.module.adventure.utils.SaveMasterOld;
 import eidolons.macro.MacroGame;
 import eidolons.macro.entity.town.Town;
 import eidolons.macro.entity.town.TownPlace;
@@ -13,10 +12,7 @@ import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
 import main.content.CONTENT_CONSTS2.SHOP_TYPE;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;
-import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
-import main.data.xml.XML_Formatter;
-import main.data.xml.XML_Writer;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
@@ -60,13 +56,6 @@ public class Shop extends TownPlace implements ShopInterface {
     @Override
     public String getSaveData() {
         String s = "";
-        for (PROPERTY p : getPropMap().keySet()) {
-            if (SaveMasterOld.isPropSaved(p, getOBJ_TYPE_ENUM())) {
-                s += XML_Writer.openXML(p.getName())
-                 + XML_Formatter.formatStringForXmlNodeName(getProperty(p))
-                 + XML_Writer.closeXML(p.getName());
-            }
-        }
         return s;
     }
 

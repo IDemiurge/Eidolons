@@ -172,13 +172,13 @@ public class StringMaster {
             return string == null;
         }
         if (string == null) {
-            return anotherString == null;
+            return false;
         }
         if (anotherString.isEmpty()) {
             return string.isEmpty();
         }
         if (string.isEmpty()) {
-            return anotherString.isEmpty();
+            return false;
         }
 
         if (anotherString.length() != string.length()) {
@@ -189,11 +189,11 @@ public class StringMaster {
             // string.replace("_", " ");
 
             if (anotherString.startsWith(" ")) {
-                anotherString = anotherString.substring(1, anotherString.length());
+                anotherString = anotherString.substring(1);
                 return compareByChar(string, anotherString, false);
             }
             if (string.startsWith(" ")) {
-                string = string.substring(1, string.length());
+                string = string.substring(1);
                 return compareByChar(string, anotherString, false);
             }
             if (anotherString.endsWith(" ")) {
@@ -207,8 +207,8 @@ public class StringMaster {
             }
             return false;
         }
-        char v1[] = string.toCharArray();
-        char v2[] = anotherString.toCharArray();
+        char[] v1 = string.toCharArray();
+        char[] v2 = anotherString.toCharArray();
         int n = v1.length;
 
         int i = -1;
@@ -334,11 +334,8 @@ public class StringMaster {
             {
                 return true;
             }
-            if (contains(string2, string)) {
-                return true;
-            }
+            return contains(string2, string);
         }
-        return false;
     }
 
     public static String removePlularEnding(String textContent) {
@@ -378,12 +375,11 @@ public class StringMaster {
         }
         String string = null;
 
-        // if (s.contains("_") || s.contains(" ")) {
-        if (s.contains(" ")) {
+        if (s.contains(" ")) {  // TODO pattern_space.matcher("").matches()
             StringBuilder builder = new StringBuilder(s.length() + 5);
             s = s.trim();
             for (String str : pattern_space.split(s)) {
-                builder.append(getWellFormattedString(str) + " ");
+                builder.append(getWellFormattedString(str)).append(" ");
             }
             string = builder.toString();
             string = string.substring(0, string.length() - 1);
@@ -392,24 +388,22 @@ public class StringMaster {
         if (s.contains("_")) {
             StringBuilder builder = new StringBuilder(s.length() + 5);
             for (String str : pattern_.split(s)) {
-                builder.append(getWellFormattedString(str) + " ");
+                builder.append(getWellFormattedString(str)).append(" ");
             }
             string = builder.toString();
             string = string.substring(0, string.length() - 1);
             return string;
         }
-        // } else {
+
+
         if (insertSpaceAfterCapitals) {
             StringBuilder builder = new StringBuilder(s.length() + 5);
-            string = "";
-            for (char c : s.toCharArray()) {
-                if (!string.isEmpty()) {
-                    if (Character.isUpperCase(c)) {
-                        builder.append(" ");
 
-                    }
+            for (char c : s.toCharArray()) {
+                if (Character.isUpperCase(c)){
+                    builder.append(" ");
                 }
-                builder.append(String.valueOf(c));
+                builder.append(c);
             }
             string = builder.toString();
         } else {
@@ -610,6 +604,15 @@ public class StringMaster {
             return "";
         }
         return str.substring(str.lastIndexOf("."));
+    }
+    public static String getValueTooltip(Entity obj , VALUE... vals) {
+        return ContainerUtils.join(NEW_LINE, Arrays.stream(vals).map(val -> getValueTip(obj, val))
+                .collect(Collectors.toList()));
+    }
+
+    private static String getValueTip(Entity obj, VALUE val) {
+        return new StringBuilder().append(val.getDisplayedName()).append(": ").
+                append(obj.getValue(val).replace(";", ", ")).toString();
     }
 
     public static String getValueRefs(KEYS objRef, VALUE... valRef) {
@@ -822,7 +825,7 @@ public class StringMaster {
             return string;
         }
         String prefix = string.substring(0, index);
-        String suffix = string.substring(index + regex.length(), string.length());
+        String suffix = string.substring(index + regex.length());
         return prefix + replacement + suffix;
     }
 
@@ -886,7 +889,7 @@ public class StringMaster {
         if (str1.length() < i) {
             return str1;
         }
-        return str1.substring(i, str1.length());
+        return str1.substring(i);
     }
 
     public static String cropLast(String str1, int i) {
@@ -1035,11 +1038,11 @@ public class StringMaster {
     }
 
     public static String getFirstConsonants(String name, int n) {
-        String string = "";
+        StringBuilder string = new StringBuilder();
         for (String sub : ContainerUtils.open(name, " ")) {
-            string += ("" + sub.charAt(0));
+            string.append(sub.charAt(0));
         }
-        return string.toUpperCase();
+        return string.toString().toUpperCase();
     }
 
     // public static String getTypeNameFormat(String generic) {
@@ -1049,11 +1052,11 @@ public class StringMaster {
     // }
 
     public static String getAbbreviation(String name) {
-        String string = "";
+        StringBuilder string = new StringBuilder();
         for (String sub : ContainerUtils.open(name, " ")) {
-            string += ("" + sub.charAt(0));
+            string.append(sub.charAt(0));
         }
-        return string.toUpperCase();
+        return string.toString().toUpperCase();
     }
 
     public static String formatMapKey(String name) {
@@ -1091,8 +1094,8 @@ public class StringMaster {
     }
 
 
-    public static String wrap(String wrap, String string) {
-        return wrap + string + wrap;
+    public static String wrap(String wrap, String enclosed) {
+        return wrap + enclosed + wrap;
     }
 
     public static String tryGetSplit(String text, String separator, int i) {
@@ -1169,7 +1172,7 @@ public class StringMaster {
         //       : "\n");
         List<String> list = Arrays.stream(data.trim().split(separator)).
                 filter(line -> !line.isEmpty()).collect(Collectors.toList());
-        return list.toArray(new String[list.size()]);
+        return list.toArray(new String[0]);
     }
 
     public static String trimNewlines(String s) {
@@ -1179,13 +1182,9 @@ public class StringMaster {
     }
 
     public static boolean containsWord(String name, String word) {
-        if (name.equalsIgnoreCase(word) ||
+        return name.equalsIgnoreCase(word) ||
                 name.contains(" " + word) ||
-                name.contains(word + " ")
-        ) {
-            return true;
-        }
-        return false;
+                name.contains(word + " ");
     }
 
     public static String indent(int i) {

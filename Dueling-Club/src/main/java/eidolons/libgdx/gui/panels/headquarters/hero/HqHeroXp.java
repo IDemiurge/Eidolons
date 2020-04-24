@@ -4,7 +4,6 @@ import com.badlogic.gdx.utils.Align;
 import eidolons.content.PARAMS;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.system.DC_Formulas;

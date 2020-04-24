@@ -696,7 +696,7 @@ public class HeroDataModel extends Unit {
 
     }
 
-    public class HeroOperation {
+    public static class HeroOperation {
         HERO_OPERATION operation;
         Object[] arg;
 

@@ -4,18 +4,17 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
-import eidolons.game.battlecraft.logic.meta.igg.event.TIP;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageSource;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.netherflame.igg.event.TIP;
+import eidolons.game.netherflame.igg.event.TipMessageMaster;
+import eidolons.game.netherflame.igg.event.TipMessageSource;
 import eidolons.system.audio.MusicMaster;
 import main.entity.Entity;
 import main.game.bf.Coordinates;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TrapMaster extends DungeonHandler {
 
@@ -47,7 +46,7 @@ public class TrapMaster extends DungeonHandler {
                             } catch (Exception e) {
                                 main.system.ExceptionMaster.printStackTrace(e);
                             }
-                            GuiEventManager.trigger(GuiEventType.GAME_RESET);
+//                            GuiEventManager.trigger(GuiEventType.GAME_RESET);
                             DC_Game.game.getMetaMaster().getDefeatHandler().isEnded(true, true);
                         });
 

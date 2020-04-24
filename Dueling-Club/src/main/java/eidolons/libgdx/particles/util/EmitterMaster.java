@@ -1,7 +1,6 @@
 package eidolons.libgdx.particles.util;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
@@ -24,11 +23,9 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.ImageChooser;
-import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.PathUtils;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
-import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 
@@ -182,6 +179,7 @@ public class EmitterMaster extends GdxUtil {
                 }
                 imagePath = imagePath.trim().toLowerCase();
                 try {
+                    StringBuilder imagesDataBuilder = new StringBuilder(imagesData);
                     for (String s : ContainerUtils.openContainer(imagePath, "\n")) {
                         s = s.trim();
                         if (s.isEmpty())
@@ -195,7 +193,7 @@ public class EmitterMaster extends GdxUtil {
                                     (imageName);
                             map.put(s, newPath);
                         }
-                        imagesData += imageName + "\n";
+                        imagesDataBuilder.append(imageName).append("\n");
                         if (writeImage) {
                             Texture texture = (new Texture(s));
                             if (texture.getWidth() > 1000) {
@@ -213,6 +211,7 @@ public class EmitterMaster extends GdxUtil {
                             }
                         }
                     }
+                    imagesData = imagesDataBuilder.toString();
                     Boolean p = new Boolean(EmitterPresetMaster.getInstance().getValueFromGroup(path, EMITTER_VALUE_GROUP.Options,
                             EMITTER_VALUE_GROUP.PremultipliedAlpha.name()));
                     Boolean additive = new Boolean(EmitterPresetMaster.getInstance().getValueFromGroup(path, EMITTER_VALUE_GROUP.Options,
@@ -246,7 +245,6 @@ public class EmitterMaster extends GdxUtil {
                 } catch (Exception e) {
                     printStackTrace(e);
                     broken.put(path, imagePath);
-                    continue;
                 }
             }
             if (pack) {

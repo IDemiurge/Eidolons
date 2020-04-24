@@ -1,6 +1,5 @@
 package eidolons.ability;
 
-import eidolons.ability.conditions.special.SpecialRequirements;
 import eidolons.ability.effects.attachment.AddTriggerEffect;
 import eidolons.ability.effects.containers.AbilityEffect;
 import eidolons.entity.obj.DC_Obj;
@@ -8,7 +7,6 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.ability.ActiveAbility;
 import main.ability.effects.Effect;
 import main.ability.effects.MicroEffect;
-import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.RefCondition;
 import main.elements.conditions.standard.CustomCondition;
@@ -95,8 +93,6 @@ public class AddSpecialEffects extends MicroEffect {
                 event = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
                 break;
             case SPELL_RESISTED:
-                event = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
-                break;
             case SPELL_RESIST:
                 event = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
                 break;

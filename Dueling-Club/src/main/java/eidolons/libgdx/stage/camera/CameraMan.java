@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.ActionMaster;

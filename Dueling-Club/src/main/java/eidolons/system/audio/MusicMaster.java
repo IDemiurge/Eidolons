@@ -25,18 +25,16 @@ import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
-import main.system.sound.SoundMaster.SOUNDS;
 import main.system.threading.WaitMaster;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 import static eidolons.system.audio.MusicMaster.MUSIC_TRACK.*;
-import static main.content.CONTENT_CONSTS.SOUNDSET.*;
 import static main.system.auxiliary.log.LogMaster.important;
 import static main.system.auxiliary.log.LogMaster.log;
 //a folder tree per music theme!
@@ -356,10 +354,7 @@ public class MusicMaster {
     }
 
     private boolean isTrackLooping(String path) {
-        if (path.toLowerCase().contains("loop")) {
-            return true;
-        }
-        return false;
+        return path.toLowerCase().contains("loop");
     }
 
     private boolean checkLoop() {
@@ -392,19 +387,6 @@ public class MusicMaster {
 
         if (shouldLoop != isTrackLooping(sub))
             return false;
-        if (EidolonsGame.BRIDGE) {
-            if (scope == MUSIC_SCOPE.MENU) {
-                if (tracksPlayedInScope == 0) {
-                    return fitTracks(track, 86, THE_END_OR_THE_BEGINNING);
-                }
-            }
-            if (scope == MUSIC_SCOPE.BATTLE) {
-                return fitTracks(track, 100,
-                        SUFFOCATION_LOOP);
-            } else {
-                return fitTracks(track, 100, LOOMING_SHADES, DUNGEONS_OF_DOOM);
-            }
-        }
         if (scope == MUSIC_SCOPE.BATTLE) {
             //intro vs alt intro vs no intro...
 
@@ -422,10 +404,7 @@ public class MusicMaster {
             }
 
             Boolean intro = null;
-            if (lastPlayed == BATTLE_LOOP) {
-                intro = false;
-            } else
-                intro = true;
+            intro = lastPlayed != BATTLE_LOOP;
 
             int coef = AggroMaster.getBattleDifficulty();
             if (coef > 50) {
@@ -454,11 +433,7 @@ public class MusicMaster {
                 return true;
             }
         }
-        if (RandomWizard.chance(c)) {
-            return false;
-        }
-
-        return true;
+        return !RandomWizard.chance(c);
     }
 
     private MUSIC_TRACK getTrackFromPath(String sub) {

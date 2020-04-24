@@ -35,15 +35,13 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
     private static DOOR_STATE getState(DOOR_ACTION sub) {
         switch (sub) {
             case OPEN:
+            case UNSEAL:
                 return DOOR_STATE.OPEN;
             case CLOSE:
+            case UNLOCK:
                 return DOOR_STATE.CLOSED;
             case LOCK:
                 return DOOR_STATE.LOCKED;
-            case UNLOCK:
-                return DOOR_STATE.CLOSED;
-            case UNSEAL:
-                return DOOR_STATE.OPEN;
         }
         return null;
     }
@@ -103,11 +101,9 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         switch (sub) {
             case OPEN:
 //            case LOCK: //TODO
-                if (door.getState() == DOOR_STATE.CLOSED)
-                    return true;
-                return false;
+                return door.getState() == DOOR_STATE.CLOSED;
             case CLOSE:
-                if (door.getGame().getObjectsOnCoordinate(null, door.getCoordinates(), true, true, false).size() > 1) {
+                if (door.getGame().getObjectsOnCoordinate(  door.getCoordinates(), true, true, false).size() > 1) {
                     return false;
                 }
                 return isOpen(door);
@@ -115,9 +111,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
                 return door.getState() == DOOR_STATE.LOCKED;
             case UNSEAL:
                 if (door.getState() == DOOR_STATE.SEALED){
-                    if (checkCanUnseal(unit, door)) {
-                        return true;
-                    }
+                    return checkCanUnseal(unit, door);
                 }
                 return false;
         }
@@ -175,8 +169,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
             return true;
         if (unit.getChecker().checkClassification(CLASSIFICATIONS.ANIMAL) ||
          unit.getChecker().checkClassification(CLASSIFICATIONS.INSECT)) {
-            if (unit.getIntParam(PARAMS.WEIGHT) < 50)
-                return false;
+            return unit.getIntParam(PARAMS.WEIGHT) >= 50;
         }
 
         return true;

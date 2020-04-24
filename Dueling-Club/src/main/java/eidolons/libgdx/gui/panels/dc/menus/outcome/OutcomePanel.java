@@ -265,9 +265,11 @@ public class OutcomePanel extends TablePanelX implements EventListener {
         stats += "\n Damage dealt:" + datasource.getDAMAGE_DEALT();
         stats += "\n Damage taken:" + datasource.getDAMAGE_TAKEN();
         Map<String, Integer> map = datasource.getHeroStats().getGeneralStats();
+        StringBuilder statsBuilder = new StringBuilder(stats);
         for (String s : map.keySet()) {
-            stats += "\n" + s + ": " + map.get(s);
+            statsBuilder.append("\n").append(s).append(": ").append(map.get(s));
         }
+        stats = statsBuilder.toString();
         //        for (String s : datasource.getHeroStats().getStatMap()) {
         //            stats+="\n" + s + ": " + datasource.getMainStats().getVar(s);
         //        }

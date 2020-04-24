@@ -2,7 +2,8 @@ package eidolons.libgdx.bf.mouse;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.GenericDungeonScreen;
 
 /**
  * Created by JustMe on 2/7/2018.
@@ -22,7 +23,7 @@ public class DungeonInputController extends InputController {
     }
 
     @Override
-    protected DungeonScreen getScreen() {
+    protected GenericDungeonScreen getScreen() {
         return DungeonScreen.getInstance();
     }
 

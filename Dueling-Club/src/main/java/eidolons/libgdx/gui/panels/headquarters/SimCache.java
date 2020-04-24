@@ -1,6 +1,5 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
-import eidolons.entity.item.DC_HeroItemObj;
 import main.entity.Entity;
 import main.system.auxiliary.data.MapMaster;
 

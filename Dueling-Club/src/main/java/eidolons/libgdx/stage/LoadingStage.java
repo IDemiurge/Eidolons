@@ -13,16 +13,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
-import eidolons.game.core.Eidolons;
+import eidolons.game.netherflame.igg.IGG_Launcher;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.particles.ambi.Ambience;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import eidolons.libgdx.particles.ambi.ParticleManager;
-import eidolons.libgdx.launch.ScenarioLauncher;
-import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.text.TipMaster;
 import main.content.enums.GenericEnums;
 import main.system.auxiliary.EnumMaster;
@@ -54,16 +54,14 @@ public class LoadingStage extends Stage {
         if (data.equals("Loading...")) {
             engineInit = true;
         }
-        underText = new Label(getBottonText(), StyleHolder.getHqLabelStyle(17));
+        underText = new Label(getBottomText(), StyleHolder.getHqLabelStyle(17));
 
         underText.addListener(TipMaster.getListener(underText));
         //TODO click to show next tip
         underText.setPosition(GdxMaster.centerWidth(underText), 0);
 
         final TextureRegion fullscreenTexture =
-                getOrCreateR(
-                        (engineInit) ? "main/art/MAIN_MENU.jpg"
-                                : "ui/main/moe loading screen.png");
+                getOrCreateR(getBackgroundImagePath());
         fullscreenImage = new Image(fullscreenTexture);
 
         float x = new Float(GdxMaster.getWidth())/1920;
@@ -71,6 +69,9 @@ public class LoadingStage extends Stage {
         float s = MathUtils.lerp(1, Math.max(x, y), 0.5f);
         fullscreenImage.setScale(s);
         addActor(fullscreenImage);
+        if (!CoreEngine.isCombatGame()){
+            fullscreenImage.setVisible(false);
+        }
 //        fullscreenImage.setPosition(GdxMaster.centerWidth(fullscreenImage),
 //         GdxMaster.centerHeight(fullscreenImage));
 
@@ -88,7 +89,12 @@ public class LoadingStage extends Stage {
         }
     }
 
-    public static String getBottonText() {
+    protected String getBackgroundImagePath() {
+        return                (engineInit) ? "main/art/MAIN_MENU.jpg"
+                        : "ui/main/moe loading screen.png";
+    }
+
+    public static String getBottomText() {
 //        return "Tip: " +
 //         TipMaster.getTip()
 //         + "(click to show next tip)";
@@ -163,7 +169,7 @@ public class LoadingStage extends Stage {
         if (IGG_Launcher.INTRO_RUNNING) {
             underText.setVisible(false);
         } else
-            underText.setVisible(!(Eidolons.getScreen() instanceof DungeonScreen));
+            underText.setVisible(!(ScreenMaster.getScreen() instanceof DungeonScreen));
 
     }
 

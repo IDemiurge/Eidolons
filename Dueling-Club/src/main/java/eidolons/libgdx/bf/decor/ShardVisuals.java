@@ -1,19 +1,21 @@
 package eidolons.libgdx.bf.decor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
+import eidolons.game.module.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.GridMaster;
-import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
-import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.grid.cell.GridCellContainer;
+import eidolons.libgdx.bf.grid.sub.GridElement;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -37,7 +39,7 @@ import java.util.*;
  * <p>
  * placement should be a bit smarter too
  */
-public class ShardVisuals extends GroupX {
+public class ShardVisuals extends GroupX  implements GridElement {
 
     private static final int LARGE_SHARD_CHANCE = 85;
     List<Shard> last = new ArrayList<>();
@@ -63,14 +65,14 @@ public class ShardVisuals extends GroupX {
         List<GenericEnums.VFX> list = new ArrayList<>(Arrays.asList(getEmittersForOverlay(overlay)));
         int n = 2;
         if (size != null)
-        switch (size) {
-            case SMALL:
-                n = 1;
-                break;
-            case LARGE:
-                n = 3;
-                break;
-        }
+            switch (size) {
+                case SMALL:
+                    n = 1;
+                    break;
+                case LARGE:
+                    n = 3;
+                    break;
+            }
         n = RandomWizard.getRandomInt(n);
         if (n < 0) {
             return new GenericEnums.VFX[0];
@@ -78,7 +80,7 @@ public class ShardVisuals extends GroupX {
         GenericEnums.VFX[] array = new GenericEnums.VFX[n];
         for (int i = 0; i < n; i++) {
             array[i] = list.remove(
-             RandomWizard.getRandomIndex(list));
+                    RandomWizard.getRandomIndex(list));
         }
         return array;
     }
@@ -86,68 +88,68 @@ public class ShardVisuals extends GroupX {
     private static GenericEnums.VFX[] getEmittersForOverlay(SHARD_OVERLAY overlay) {
         if (overlay == null) {
             overlay = new EnumMaster<SHARD_OVERLAY>().
-             getRandomEnumConst(SHARD_OVERLAY.class);
+                    getRandomEnumConst(SHARD_OVERLAY.class);
         }
         switch (overlay) {
             case MIST:
                 return new GenericEnums.VFX[]{
-                 GenericEnums.VFX.MIST_ARCANE,
-                 GenericEnums.VFX.DARK_MIST_LITE,
-                 GenericEnums.VFX.THUNDER_CLOUDS_CRACKS,
-                 GenericEnums.VFX.THUNDER_CLOUDS_CRACKS,
-                 //                 EMITTER_PRESET.MIST_TRUE2,
-                 GenericEnums.VFX.MIST_WHITE,
-                 GenericEnums.VFX.MIST_WIND,
-                 GenericEnums.VFX.MIST_BLACK,
-                 GenericEnums.VFX.MIST_WIND,
-                 GenericEnums.VFX.STARS,
-                 GenericEnums.VFX.ASH,
-                 GenericEnums.VFX.MOTHS_TIGHT2,
-                 GenericEnums.VFX.WISPS,
-                 GenericEnums.VFX.SNOW_TIGHT2,
-                 GenericEnums.VFX.SNOW,
-                 GenericEnums.VFX.MOTHS_TIGHT2,
-                 GenericEnums.VFX.STARS
+                        GenericEnums.VFX.MIST_ARCANE,
+                        GenericEnums.VFX.DARK_MIST_LITE,
+                        GenericEnums.VFX.THUNDER_CLOUDS_CRACKS,
+                        GenericEnums.VFX.THUNDER_CLOUDS_CRACKS,
+                        //                 EMITTER_PRESET.MIST_TRUE2,
+                        GenericEnums.VFX.MIST_WHITE,
+                        GenericEnums.VFX.MIST_WIND,
+                        GenericEnums.VFX.MIST_BLACK,
+                        GenericEnums.VFX.MIST_WIND,
+                        GenericEnums.VFX.STARS,
+                        GenericEnums.VFX.ASH,
+                        GenericEnums.VFX.MOTHS_TIGHT2,
+                        GenericEnums.VFX.WISPS,
+                        GenericEnums.VFX.SNOW_TIGHT2,
+                        GenericEnums.VFX.SNOW,
+                        GenericEnums.VFX.MOTHS_TIGHT2,
+                        GenericEnums.VFX.STARS
                 };
             case DARKNESS:
                 return new GenericEnums.VFX[]{
-                 GenericEnums.VFX.DARK_MIST,
-                 GenericEnums.VFX.MIST_ARCANE,
-                 GenericEnums.VFX.MIST_ARCANE,
-                 GenericEnums.VFX.MIST_ARCANE,
-                 GenericEnums.VFX.DARK_MIST_LITE,
-                 GenericEnums.VFX.MIST_BLACK,
-                 GenericEnums.VFX.CINDERS3,
-                 GenericEnums.VFX.ASH,
-                 GenericEnums.VFX.MIST_WHITE,
-                 GenericEnums.VFX.MIST_BLACK,
-                 GenericEnums.VFX.MIST_WIND,
-                 GenericEnums.VFX.STARS,
-                 GenericEnums.VFX.ASH,
-                 GenericEnums.VFX.MOTHS_TIGHT2,
-                 GenericEnums.VFX.WISPS,
-                 GenericEnums.VFX.SNOW_TIGHT2,
-                 GenericEnums.VFX.SNOW,
-                 GenericEnums.VFX.MOTHS_TIGHT2,
-                 GenericEnums.VFX.STARS
+                        GenericEnums.VFX.DARK_MIST,
+                        GenericEnums.VFX.MIST_ARCANE,
+                        GenericEnums.VFX.MIST_ARCANE,
+                        GenericEnums.VFX.MIST_ARCANE,
+                        GenericEnums.VFX.DARK_MIST_LITE,
+                        GenericEnums.VFX.MIST_BLACK,
+                        GenericEnums.VFX.CINDERS3,
+                        GenericEnums.VFX.ASH,
+                        GenericEnums.VFX.MIST_WHITE,
+                        GenericEnums.VFX.MIST_BLACK,
+                        GenericEnums.VFX.MIST_WIND,
+                        GenericEnums.VFX.STARS,
+                        GenericEnums.VFX.ASH,
+                        GenericEnums.VFX.MOTHS_TIGHT2,
+                        GenericEnums.VFX.WISPS,
+                        GenericEnums.VFX.SNOW_TIGHT2,
+                        GenericEnums.VFX.SNOW,
+                        GenericEnums.VFX.MOTHS_TIGHT2,
+                        GenericEnums.VFX.STARS
                 };
             case NETHER:
                 return new GenericEnums.VFX[]{
-                 GenericEnums.VFX.DARK_MIST,
-                 GenericEnums.VFX.DARK_MIST_LITE,
-                 GenericEnums.VFX.MIST_ARCANE,
-                 GenericEnums.VFX.MIST_ARCANE,
-                 GenericEnums.VFX.MIST_ARCANE,
-                 GenericEnums.VFX.MIST_BLACK,
-                 GenericEnums.VFX.CINDERS3,
-                 GenericEnums.VFX.WISPS,
-                 GenericEnums.VFX.STARS,
-                 GenericEnums.VFX.MIST_BLACK,
-                 GenericEnums.VFX.MIST_BLACK,
-                 GenericEnums.VFX.MIST_WHITE3,
-                 GenericEnums.VFX.MIST_WIND,
-                 GenericEnums.VFX.THUNDER_CLOUDS_CRACKS,
-                 GenericEnums.VFX.MIST_WIND
+                        GenericEnums.VFX.DARK_MIST,
+                        GenericEnums.VFX.DARK_MIST_LITE,
+                        GenericEnums.VFX.MIST_ARCANE,
+                        GenericEnums.VFX.MIST_ARCANE,
+                        GenericEnums.VFX.MIST_ARCANE,
+                        GenericEnums.VFX.MIST_BLACK,
+                        GenericEnums.VFX.CINDERS3,
+                        GenericEnums.VFX.WISPS,
+                        GenericEnums.VFX.STARS,
+                        GenericEnums.VFX.MIST_BLACK,
+                        GenericEnums.VFX.MIST_BLACK,
+                        GenericEnums.VFX.MIST_WHITE3,
+                        GenericEnums.VFX.MIST_WIND,
+                        GenericEnums.VFX.THUNDER_CLOUDS_CRACKS,
+                        GenericEnums.VFX.MIST_WIND
                 };
         }
         return new GenericEnums.VFX[0];
@@ -161,6 +163,10 @@ public class ShardVisuals extends GroupX {
         }
     }
 
+    @Override
+    public void setModule(Module module) {
+        init();
+    }
     public void init() {
         setSize(grid.getWidth(), grid.getHeight());
 
@@ -169,8 +175,8 @@ public class ShardVisuals extends GroupX {
 
                 if (x >= 0 && y >= 0)
                     if (x < grid.getCells().length &&
-                     y < grid.getCells()[0].length)
-                        if (grid.getCells()[x][y] != null)
+                            y < grid.getCells()[0].length)
+                        if (!grid.isVoid(x,y))
                             continue;
                 Object direction = null;
                 Integer degrees = getDirectionForShards(x, y);
@@ -189,7 +195,7 @@ public class ShardVisuals extends GroupX {
                 }
                 SHARD_TYPE type = SHARD_TYPE.ROCKS;
                 SHARD_OVERLAY overlay = new EnumMaster<SHARD_OVERLAY>().
-                 getRandomEnumConst(SHARD_OVERLAY.class);
+                        getRandomEnumConst(SHARD_OVERLAY.class);
                 if (!(direction instanceof DIRECTION)) {
                     overlay = null;
                 } else if (((DIRECTION) direction).isDiagonal())
@@ -198,19 +204,18 @@ public class ShardVisuals extends GroupX {
                 try {
                     Shard shard = new Shard(x, y, type, size, overlay, direction);
                     if (direction instanceof DIRECTION)
-                    if (y>=grid.getRows()) {
-                        if (x>=grid.getCols()) {
-                            shard.setUserObject(grid.getCell(x+1,y+1));
+                        if (y >= grid.getRows()) {
+                            if (x >= grid.getCols()) {
+                                shard.setUserObject(grid.getCell(x + 1, y + 1));
+                            } else
+                                shard.setUserObject(grid.getCell(x - 1, y + 1));
+                        } else if (x >= grid.getCols()) {
+                            if (y >= grid.getRows()) {
+                                shard.setUserObject(grid.getCell(x + 1, y + 1));
+                            } else
+                                shard.setUserObject(grid.getCell(x + 1, y - 1));
                         } else
-                        shard.setUserObject(grid.getCell(x-1,y+1));
-                    } else
-                    if (x>=grid.getCols()) {
-                        if (y>=grid.getRows()) {
-                            shard.setUserObject(grid.getCell(x+1,y+1));
-                        } else
-                        shard.setUserObject(grid.getCell(x+1,y-1));
-                    } else
-                        shard.setUserObject(grid.getCell(x+1,y+1));
+                            shard.setUserObject(grid.getCell(x + 1, y + 1));
                     addActor(shard);
                     float offsetX = -(shard.getWidth() / 2 - 64);
                     float offsetY = -(shard.getHeight() / 2 - 64);
@@ -236,39 +241,39 @@ public class ShardVisuals extends GroupX {
 
                     }
                     shard.setPosition(
-                     x * GridMaster.CELL_W + offsetX,
-                     y * GridMaster.CELL_H + offsetY);
+                            x * GridMaster.CELL_W + offsetX,
+                            y * GridMaster.CELL_H + offsetY);
                     last.add(shard);
 
 
                     GenericEnums.VFX[] presets = ShardVisuals.getEmitters(overlay, size);
                     if (isVfxOn())
-                    for (GenericEnums.VFX preset : presets) {
-                        EmitterActor actor = new EmitterActor(preset){
-                            @Override
-                            public void act(float delta) {
-                                if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(), 400, 400)) {
-                                    return;
+                        for (GenericEnums.VFX preset : presets) {
+                            EmitterActor actor = new EmitterActor(preset) {
+                                @Override
+                                public void act(float delta) {
+                                    if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(), 400, 400)) {
+                                        return;
+                                    }
+                                    super.act(delta);
                                 }
-                                super.act(delta);
-                            }
 
-                            @Override
-                            public void draw(Batch batch, float parentAlpha) {
-                                if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(), 400, 400)) {
-                                    return;
+                                @Override
+                                public void draw(Batch batch, float parentAlpha) {
+                                    if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(), 400, 400)) {
+                                        return;
+                                    }
+                                    super.draw(batch, parentAlpha);
                                 }
-                                super.draw(batch, parentAlpha);
-                            }
-                        };
-                        MapMaster.addToListMap(emittersMap, shard, actor);
-                        emitterLayer.addActor(actor);
-                        actor.setPosition(shard.getX() + shard.getWidth() / 2
-                         + 50 - RandomWizard.getRandomInt(100), shard.getY() + shard.getHeight() / 2
-                         + 50 - RandomWizard.getRandomInt(100));
-                        actor.start();
-                        actor.act(RandomWizard.getRandomFloat());
-                    }
+                            };
+                            MapMaster.addToListMap(emittersMap, shard, actor);
+                            emitterLayer.addActor(actor);
+                            actor.setPosition(shard.getX() + shard.getWidth() / 2
+                                    + 50 - RandomWizard.getRandomInt(100), shard.getY() + shard.getHeight() / 2
+                                    + 50 - RandomWizard.getRandomInt(100));
+                            actor.start();
+                            actor.act(RandomWizard.getRandomFloat());
+                        }
 
                     while (last.size() > 4) {
                         last.remove(0);
@@ -303,7 +308,7 @@ public class ShardVisuals extends GroupX {
         if (checkNormal(x, y, (DIRECTION) direction)) {
             return SHARD_SIZE.NORMAL;
         }
-        if (Eidolons.getGame().isBossFight()){
+        if (Eidolons.getGame().isBossFight()) {
             return null;
         }
         return SHARD_SIZE.SMALL;
@@ -328,15 +333,15 @@ public class ShardVisuals extends GroupX {
         Coordinates c = Coordinates.get(true, x, y);
 
         DIRECTION[] toCheck = {
-         direction.rotate90(true),
-         direction.rotate90(false),
-         direction.rotate180(),
-         direction.rotate90(true).rotate45(true),
-         direction.rotate90(false).rotate45(false)
+                direction.rotate90(true),
+                direction.rotate90(false),
+                direction.rotate180(),
+                direction.rotate90(true).rotate45(true),
+                direction.rotate90(false).rotate45(false)
         };
         DIRECTION[] toCheckPresent = {
-         direction.rotate45(true),
-         direction.rotate45(false)
+                direction.rotate45(true),
+                direction.rotate45(false)
         };
         for (DIRECTION d : toCheck) {
             Coordinates adj = c.getAdjacentCoordinate(d);
@@ -371,18 +376,14 @@ public class ShardVisuals extends GroupX {
         }
 
         // not adjacent to large? no more than 3 in line
-        if (RandomWizard.chance(LARGE_SHARD_CHANCE))
-            return true;
+        return RandomWizard.chance(LARGE_SHARD_CHANCE);
 
         //add to map so we know where large ones are
-        return false;
     }
 
     private boolean checkSize(Coordinates coordinates, SHARD_SIZE size) {
         if (map.get(coordinates) != null) {
-            if (map.get(coordinates).getSize() == size) {
-                return true;
-            }
+            return map.get(coordinates).getSize() == size;
         }
         return false;
     }
@@ -397,10 +398,8 @@ public class ShardVisuals extends GroupX {
             return null;
         if (adj.x >= grid.getCells().length || adj.y >= grid.getCells()[0].length)
             return null;
-        if (grid.getCells()[adj.x][adj.y] != null) {
-            return false;
-        }
-        return true;
+        return grid.isVoid(adj);
+//        return grid.getCells()[adj.x][adj.y] == null;
     }
 
     private Integer getDirectionForShards(int x, int y) {
@@ -411,12 +410,9 @@ public class ShardVisuals extends GroupX {
         for (DIRECTION d : DIRECTION.clockwise) {
             Coordinates cc = c.getAdjacentCoordinate(d);
 
-            GridCellContainer cell = null;
-            try {
-                cell = grid.getCells()[cc.x][cc.y];
-            } catch (Exception e) {
-            }
-            if (cell != null) {
+            GridCellContainer cell = grid.getCells()[cc.x][cc.y];
+
+            if (!cell.getUserObject().isVOID()) {
                 adj.add(d);
                 n++;
             } else {
@@ -472,6 +468,7 @@ public class ShardVisuals extends GroupX {
         return 12;
     }
 
+
     public enum SHARD_OVERLAY {
         MIST,
         DARKNESS,
@@ -487,7 +484,8 @@ public class ShardVisuals extends GroupX {
                 return "";
             }
         },
-        LARGE,;
+        LARGE,
+        ;
 
         public String toString() {
             return name() + " ";

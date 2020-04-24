@@ -23,11 +23,12 @@ public class ParamMap implements ValueMap {
 
     @Override
     public String get(VALUE valueName) {
-        if (map.get(valueName) == null) {
+        String value = map.get(valueName);
+        if (value == null) {
             return "";
         }
 
-        return map.get(valueName);
+        return value;
     }
 
     @Override

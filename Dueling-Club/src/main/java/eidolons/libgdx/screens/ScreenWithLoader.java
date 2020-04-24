@@ -18,7 +18,6 @@ import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.LoadingStage;
-import eidolons.system.audio.MusicMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.PostProcessingOptions;
 import eidolons.system.text.TipMaster;
@@ -51,22 +50,31 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     protected SpriteAnimation backgroundSprite;
 
-    FloatAction blackoutAction = new FloatAction();
+    protected FloatAction blackoutAction = new FloatAction();
     private float blackout;
     private boolean blackoutBack;
     private boolean whiteout;
 
     public ScreenWithLoader() {
-        waitingLabel = new Label("Press any key to Continue...",
-                StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 22));
-        waitingLabel.pack();
-        waitingLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
-                getWaitY());
-        tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
-
 
         initBlackout();
-        if (CoreEngine.isIggDemo()){
+        initPostProcessing();
+
+    }
+
+    public enum SCREEN_STATUS {
+        TO_PRELOAD,
+        PRELOADED,
+        AFTERLOADED,
+        DISPOSED,
+        CACHED,
+        WAITING,
+        LOADING,
+        ;
+    }
+
+    protected void initPostProcessing() {
+        if (CoreEngine.isIggDemo()) {
             return;
         }
         if (CoreEngine.isLiteLaunch() || !CoreEngine.isIDE())
@@ -83,7 +91,6 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             OptionsMaster.saveOptions();
         }
 
-
     }
 
     protected void initBlackout() {
@@ -93,6 +100,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     protected void preLoad() {
 
+        initLabels();
 
         if (data.getDialogViews().size() > 0) {
             introStage = new ChainedStage(viewPort, getBatch(), data.getDialogViews());
@@ -102,6 +110,15 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
                 }
             });
         }
+    }
+
+    protected void initLabels() {
+        waitingLabel = new Label("Press any key to Continue...",
+                StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 22));
+        waitingLabel.pack();
+        waitingLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
+                getWaitY());
+        tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
 
     }
 
@@ -177,12 +194,11 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected void done(EventCallbackParam param) {
-       if (isLoaded())
-       {
-           updateInputController();
-           main.system.auxiliary.log.LogMaster.dev(" FIX DOUBLE LOAD!!!! " );
-           return;
-       }
+        if (isLoaded()) {
+            updateInputController();
+            main.system.auxiliary.log.LogMaster.dev(" FIX DOUBLE LOAD!!!! " + toString() + param);
+            return;
+        }
         data.setParam(param);
         this.hideLoader();
         afterLoad();
@@ -329,7 +345,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
         //    TODO     tooltipLabel.draw(batch, 1f);
 
-        if (isWaitingForInput()) {
+        if (isWaitingForInputNow()) {
 
             float alpha = (timeWaited / 3) % 1;
             alpha = (alpha >= 0.5f) ? 1.5f - (alpha)
@@ -390,9 +406,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected boolean isTooltipsOn() {
-        if (loading)
-            return true;
-        return false;
+        return loading;
     }
 
 
@@ -414,7 +428,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         loading = true;
     }
 
-    public boolean isWaitingForInput() {
+    public boolean isWaitingForInputNow() {
         return waitingForInput;
     }
 
@@ -445,7 +459,12 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     public void setData(ScreenData data) {
         this.data = data;
         preLoad();
-        updateInputController();
+        try {
+            updateInputController();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+
     }
 
     public void setViewPort(ScreenViewport viewPort) {
@@ -454,7 +473,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected InputProcessor createInputController() {
-        if (isWaitingForInput())
+        if (isWaitingForInputNow())
             return getWaitForInputController(param);
         return introStage != null ?
                 GdxMaster.getMultiplexer(loadingStage, introStage) :

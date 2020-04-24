@@ -3,18 +3,14 @@ package eidolons.game.battlecraft.logic.battle.universal;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.BattleOptions.ARENA_GAME_OPTIONS;
-import eidolons.libgdx.gui.menu.selection.difficulty.DifficultySelectionPanel;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DIFFICULTY;
 import main.content.enums.entity.SkillEnums.ATTRIBUTE;
 import main.content.values.parameters.PARAMETER;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.launch.CoreEngine;
-import main.system.threading.WaitMaster;
 
 /**
  * Created by JustMe on 5/7/2017.

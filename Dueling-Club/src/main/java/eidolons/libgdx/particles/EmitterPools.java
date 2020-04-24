@@ -28,14 +28,14 @@ public class EmitterPools {
     }
 
     public static EmitterActor getDummy(String path) {
-        main.system.auxiliary.log.LogMaster.important("Replacing vfx with dummy: " +path);
+        main.system.auxiliary.log.LogMaster.info("Replacing vfx with dummy: " +path);
         return getEmitterActor(
                 PathFinder.getVfxAtlasPath()+
                 GenericEnums.VFX.DUMMY.path, true);
     }
 
     public static ParticleEffectX getDummyFx(String path) {
-        main.system.auxiliary.log.LogMaster.important("Replacing vfx with dummy: " +path);
+        main.system.auxiliary.log.LogMaster.info("Replacing vfx with dummy: " +path);
         return new DummyParticleEffectX(
                 PathFinder.getVfxAtlasPath()+
                         GenericEnums.VFX.DUMMY.path );
@@ -90,10 +90,7 @@ public class EmitterPools {
         if (path.contains("spell")){
             return true;
         }
-        if (path.contains("invert")){
-            return true;
-        }
-        return false;
+        return path.contains("invert");
     }
 
     public static ParticleEffectX getEffect(String path) {

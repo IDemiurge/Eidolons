@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
+import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 
 /**
@@ -23,18 +24,34 @@ public abstract class ValueTable<D, A extends Actor> extends TablePanelX {
     }
 
     public ValueTable(int wrap, int size, int space) {
+        this.space = space;
+        initSize(wrap, size);
+    }
+
+    protected void initSize(int wrap, int size) {
         this.wrap = wrap;
         this.size = size;
-        this.space = space;
+        if (isSquare()) {
+            this.wrap = (int) Math.round(Math.sqrt(size));
+        }
         columns = wrap;
         rows = size / wrap;
-        if (size % wrap > 0)
-            rows++;
-        if (getElementSize() != null) {
+//        if (size % wrap > 0)
+//            rows++;
+        if (getElementSize() != null && isTableFixedSize()) {
             setFixedSize(true);
-            setSize(columns * getElementSize().x, rows * getElementSize().y);
+            setSize(columns * (space + getElementSize().x), Math.max(1, rows) * getElementSize().y);
         }
     }
+
+    protected boolean isSquare() {
+        return false;
+    }
+
+    protected boolean isTableFixedSize() {
+        return true;
+    }
+
 
     protected Vector2 getElementSize() {
         return null;
@@ -60,7 +77,7 @@ public abstract class ValueTable<D, A extends Actor> extends TablePanelX {
 
     @Override
     public void updateAct(float delta) {
-        clear();
+        clearChildren();
         init();
     }
 
@@ -76,27 +93,42 @@ public abstract class ValueTable<D, A extends Actor> extends TablePanelX {
         data = initDataArray();
         size = data.length;
         actors = initActorArray();
+
+        initSize(wrap, data.length);
         if (wrap == 0) {
             new HorizontalFlowGroup(getSpace());
             //needs fixed size
         }
         int j = 0, i = 0;
-        int wrap =this.wrap+getDynamicWrap(i);
+        int wrap = this.wrap + getDynamicWrap(i);
+        if (getElementSize() != null) {
+            float h = getElementSize().y;
+            getContentTable().defaults().height(h).width(getElementSize().x);
+        }
         for (D sub : data) {
             if (i >= actors.length)
                 break;
-            Cell cell = addElement(actors[i] = createElement(sub)).top().space(getSpace());
+            Cell cell = getContentTable().addElement(actors[i] = createElement(sub)).top().space(getSpace());
             if (getElementSize() != null) {
-                cell.size(getElementSize().x,getElementSize().y);
+                cell.size(getElementSize(sub).x, getElementSize(sub).y);
             }
             j++;
             i++;
             if (j >= wrap) {
-                row();
+                getContentTable().row();
                 j = 0;
-                wrap =this.wrap+getDynamicWrap(i);
+                wrap = this.wrap + getDynamicWrap(i);
             }
         }
+    }
+
+    protected Vector2 getElementSize(D sub) {
+        return getElementSize();
+    }
+
+
+    protected TablePanel getContentTable() {
+        return this;
     }
 
     protected int getDynamicWrap(int i) {

@@ -175,6 +175,7 @@ public class GenericEnums {
         private int attributePercentage;
         private int masteryPercentage;
         private boolean enemySneakAttacksOn;
+        private int powerPercentage=100;
 
         DIFFICULTY(int attributePercentage, int masteryPercentage, boolean enemySneakAttacksOn) {
             this.attributePercentage = attributePercentage;
@@ -201,6 +202,14 @@ public class GenericEnums {
 
         public void setEnemySneakAttacksOn(boolean enemySneakAttacksOn) {
             this.enemySneakAttacksOn = enemySneakAttacksOn;
+        }
+
+        public int getPowerPercentage() {
+            return powerPercentage;
+        }
+
+        public void setPowerPercentage(int powerPercentage) {
+            this.powerPercentage = powerPercentage;
         }
     }
 
@@ -321,7 +330,7 @@ public class GenericEnums {
         BUCKLER_THROWER,
         LEFT_RIGHT_REACH,
         FAUX,
-        NO_GOLD, NAMED, BUFFING, OFF_DEFAULT, LIVING_STATUE, SWIMMING, INVISIBLE;
+        NO_GOLD, NAMED, BUFFING, OFF_DEFAULT, LIVING_STATUE, SWIMMING, INVISIBLE
 
         // TODO performance would be enhanced of course if I had real booleans
         // instead of a container to be checked.

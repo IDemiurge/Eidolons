@@ -71,7 +71,69 @@ public class EncounterEnums {
         CONTINUOUS, REGULAR, ELITE, BOSS
     }
 
+    //    PRE_BATTLE_EVENT("encounters", null),
+//    AFTER_BATTLE_EVENT(
+    public enum REINFORCEMENT_CHANCE {
+none, low, normal, high, always
+    }
+
+    public enum REINFORCEMENT_TYPE {
+        call_help, portal, patrol, ambush,
+    }
+
+    public enum REINFORCEMENT_STRENGTH {
+        low, normal, high
+    }
+
+    public enum LOOT_TYPE {
+        gold, artifact, treasure, arcane, items, random, junk, none
+    }
+
+    public enum PRE_BATTLE_EVENT {
+        taunt, what, fear, wrath, reason, righteous_defense, none
+    }
+    public enum AFTER_BATTLE_EVENT {
+        no, mercy, curse_you, illbeback, none
+    }
     public enum GROWTH_PRIORITIES {
         GROUP, LEVEL, FILL, EXTEND
+    }
+
+    /*
+        Guard Ai - stand still, only turn this way or that
+        > alerted - goes to investigate
+        ++ voice comments
+        ++ chance to Sleep
+        Idlers/Crowd - chaotic wandering within the Block
+        > alerted - hold still and enters Alert Mode
+        ++ periodic Rest
+        Patrol Ai - orderly traversal of the Block
+        > alerted - investigate
+        Stalker Ai - moves in stealth mode within the Zone, follows enemy until they enter combat, then add to the AggroGroup
+        > alerted -
+        Boss Ai - walks in small circles
+         */
+    public enum UNIT_GROUP_TYPE {
+        //this is gonna be used for fill probably too
+        GUARDS(0.05f),
+        PATROL(1f),
+        AMBUSH(0.15f),
+        CROWD(0.3f),
+        IDLERS(0.2f),
+        STALKER(1.25f),
+        BOSS(0.1f),
+        ;
+        //determines what? Except AI behavior -
+        // N preference, power level, placement,
+
+        private float speedMod = 0;
+
+        UNIT_GROUP_TYPE(float speedMod) {
+            this.speedMod = speedMod;
+        }
+
+        public float getSpeedMod() {
+            return speedMod;
+        }
     }
 }

@@ -46,7 +46,7 @@ public class GDX {
 
     public static String getCurrentResolutionString() {
 
-        String string = "_" + ((int) GdxMaster.getWidth()) + "x" + ((int) GdxMaster.getHeight());
+        String string = "_" + GdxMaster.getWidth() + "x" + GdxMaster.getHeight();
         RESOLUTION res = new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class, string);
         if (res == null) {
             main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ERROR_CRITICAL, "FAILED TO FIND RESOLUTION: " + string);

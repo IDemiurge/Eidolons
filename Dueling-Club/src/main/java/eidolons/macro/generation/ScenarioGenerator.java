@@ -2,7 +2,7 @@ package eidolons.macro.generation;
 
 import eidolons.content.PROPS;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
-import eidolons.game.module.dungeoncrawl.generator.LevelGenerator;
+import eidolons.game.module.generator.LevelGenerator;
 import eidolons.macro.map.Place;
 import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;
@@ -131,7 +131,6 @@ public class ScenarioGenerator {
                 if (level == null) {
                     main.system.auxiliary.log.LogMaster.log(1,"NO LEVEL CHOSEN! USING DEFAULT:  " + DEFAULT_LEVEL);
                     levelPaths+= DEFAULT_LEVEL+ ContainerUtils.getContainerSeparator();
-                    continue;
                 }
                 else {
                     main.system.auxiliary.log.LogMaster.log(1,"LEVEL CHOSEN:  " +level);
@@ -258,12 +257,6 @@ public class ScenarioGenerator {
 //            }
 //            else
                 switch (i%3) {
-                    case 0:
-                        list.add(
-                         isInvertedSize()
-                          ? SUBLEVEL_TYPE.BOSS
-                        : SUBLEVEL_TYPE.COMMON);
-                        break;
                     case 1:
                         list.add(SUBLEVEL_TYPE.PRE_BOSS);
                         break;

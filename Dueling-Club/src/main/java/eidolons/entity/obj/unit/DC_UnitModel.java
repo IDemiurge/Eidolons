@@ -14,7 +14,6 @@ import eidolons.entity.handlers.bf.unit.UnitResetter;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.logic.battlefield.vision.HintMaster;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -27,12 +26,10 @@ import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.UnitEnums.IMMUNITIES;
 import main.content.enums.rules.VisionEnums;
-import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.enums.rules.VisionEnums.VISION_MODE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.mode.MODE;
-import main.content.mode.ModeImpl;
 import main.content.mode.STD_MODES;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -145,6 +142,11 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
 
     public VISION_MODE getVisionMode() {
+        if (isMainHero()) {
+            if (game.getVisionMaster().isVisionTest()) {
+                return VISION_MODE.X_RAY_VISION;
+            }
+        }
         if (vision_mode == null) {
             String name = getProperty(PROPS.VISION_MODE);
             if (StringMaster.isEmpty(name)) {
@@ -313,9 +315,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
             setProperty(G_PROPS.MODE, StringMaster.getWellFormattedString(mode.toString()));
         }
         if (mode == null || STD_MODES.NORMAL.equals(mode)) {
-            GuiEventManager.trigger(SHOW_MODE_ICON, this, null);
+            GuiEventManager.triggerWithParams(SHOW_MODE_ICON, this, null);
         } else {
-            GuiEventManager.trigger(SHOW_MODE_ICON, this, mode.getImagePath());
+            GuiEventManager.triggerWithParams(SHOW_MODE_ICON, this, mode.getImagePath());
             EUtils.showInfoText(
                     StringMaster.getWellFormattedString(mode.getBuffName()) + "...");
         }

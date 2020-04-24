@@ -25,10 +25,8 @@ public class ArcadeEnums {
         // some deserters, gain gratitude of the
         // hardy townsfolk...
         ;
-        private LOOT_GROUP[] groups;
 
         ARCADE_LOOT_TYPE(LOOT_GROUP... groups) {
-            this.groups = groups;
         }
     }
 

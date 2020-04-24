@@ -8,8 +8,6 @@ import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 
 public class AbilityImpl extends ReferredElement implements Ability {

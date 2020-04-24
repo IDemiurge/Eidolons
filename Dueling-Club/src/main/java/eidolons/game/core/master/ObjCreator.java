@@ -5,10 +5,13 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.objects.*;
-import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
+import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
+import eidolons.game.module.dungeoncrawl.objects.Door;
+import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
+import eidolons.game.module.dungeoncrawl.objects.LockObj;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
-import eidolons.libgdx.bf.boss.entity.BossUnit;
+import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
@@ -16,7 +19,6 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.EntityCheckMaster;
 import main.entity.Ref;
-import main.entity.obj.MicroObj;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
@@ -40,7 +42,7 @@ public class ObjCreator extends Master {
     }
 
 
-    public MicroObj createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
+    public BattleFieldObject createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
         if (!CoreEngine.isArcaneVault()) {
             if (!CoreEngine.isLevelEditor()) {
                 if (!type.isGenerated() && DC_Engine.isUseCustomTypesAlways()) {
@@ -56,8 +58,7 @@ public class ObjCreator extends Master {
         BattleFieldObject obj = null;
 
         if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.ENTRANCE.toString())) {
-            //       TODO      obj = new Entrance(x, y, type, getGame().getDungeon(), null);
-            return null;
+            obj = new Entrance(x, y, type, game);
         } else if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
             obj = newStructure(type, x, y, owner, ref);
             game.getMaster().clearCache(obj.getCoordinates());
@@ -65,23 +66,14 @@ public class ObjCreator extends Master {
             if (EntityCheckMaster.isBoss(type)) {
                 obj = new BossUnit(type, x, y, owner, getGame(), ref);
             } else
-            obj = new Unit(type, x, y, owner, getGame(), ref);
-        }
-        if (CoreEngine.isLevelEditor()) {
-            return obj;
+                obj = new Unit(type, x, y, owner, getGame(), ref);
         }
         //if (WaitMaster.getCompleteOperations().contains(WAIT_OPERATIONS.DUNGEON_SCREEN_READY))
         GuiEventManager.trigger(GuiEventType.UNIT_CREATED, obj);
         game.getState().addObject(obj);
 
-        if (obj instanceof Unit)
-            game.getState().getManager().reset((Unit) obj);
-        else {
-            obj.toBase();
-            obj.resetObjects();
-            obj.afterEffects();
-        }
-        obj.setOriginalType(type.getType());
+        initObject(obj, type);
+
         if (getGame().getMetaMaster().isRngQuestsEnabled())
             for (Quest quest : game.getMetaMaster().getQuestMaster().getQuestsPool()) {
                 if (quest.getArg() instanceof ObjAtCoordinate) {
@@ -96,6 +88,39 @@ public class ObjCreator extends Master {
             }
 
         return obj;
+
+    }
+
+    protected void initObject(BattleFieldObject obj, ObjType type) {
+
+        if (!isUnitFullResetRequired(obj))
+            dummyReset(obj);
+        else if (obj instanceof Unit) {
+            game.getState().getManager().reset((Unit) obj);
+        } else {
+            obj.toBase();
+            obj.resetObjects();
+            obj.afterEffects();
+        }
+        obj.setOriginalType(type.getType());
+    }
+
+    private void dummyReset(BattleFieldObject obj) {
+        obj.resetPercentages();
+    }
+
+    protected boolean isUnitFullResetRequired(BattleFieldObject obj) {
+        if (CoreEngine.isLevelEditor()) {
+            return false;
+        }
+        if (obj.isPlayerCharacter()) {
+            return true;
+        }
+        if (!getGame().getMetaMaster().getModuleMaster().isWithinModule(obj.getCoordinates()))
+            return false;
+
+        //TODO check distance
+        return false;
 
     }
 
@@ -129,7 +154,7 @@ public class ObjCreator extends Master {
         if (group != null) {
             switch (group) {
                 case DUNGEON:
-                   break;
+                    break;
 
                 case KEY:
                 case HANGING:
@@ -140,7 +165,6 @@ public class ObjCreator extends Master {
                     return new LockObj(type, x, y, owner, getGame(), ref);
                 case TREASURE:
                 case CONTAINER:
-                    return new ContainerObj(type, x, y);
                 case GRAVES:
                 case REMAINS:
                 case INTERIOR:

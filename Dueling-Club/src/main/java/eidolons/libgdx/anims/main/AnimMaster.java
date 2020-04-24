@@ -13,17 +13,15 @@ import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import eidolons.libgdx.anims.*;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.std.sprite.CustomSpriteAnim;
-import eidolons.libgdx.bf.boss.anim.BossAnimator;
-import eidolons.libgdx.bf.boss.entity.BossUnit;
-import eidolons.libgdx.bf.boss.sprite.BossView;
-import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.bf.grid.cell.BaseView;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.GameplayOptions;
@@ -59,7 +57,6 @@ public class AnimMaster extends Group {
     private final AnimDrawMaster drawer;
     private final ActionAnimMaster actionMaster;
     private final BuffAnimMaster buffMaster;
-    private BossAnimator bossAnimator;
 
     //animations will use emitters, light, sprites, text and icons
     private AnimMaster() {
@@ -108,8 +105,7 @@ public class AnimMaster extends Group {
                 return true;
         if (sourceObj instanceof DC_Obj)
             if (!sourceObj.isMine())
-                if (!VisionManager.checkVisible((DC_Obj) sourceObj, false))
-                    return true;
+                return !VisionManager.checkVisible((DC_Obj) sourceObj, false);
 
         return false;
     }
@@ -215,7 +211,6 @@ public class AnimMaster extends Group {
 //                    } else
                         SpeechExecutor.run("wait input= ;");
 
-                    return;
                 }
 //                return;
             }
@@ -229,10 +224,7 @@ public class AnimMaster extends Group {
         if (action.getAction().getName().contains("Reload")) {
             return false;
         }
-        if (action.getAction().getName().equalsIgnoreCase("Wait")) {
-            return false;
-        }
-        return true;
+        return !action.getAction().getName().equalsIgnoreCase("Wait");
     }
 
 
@@ -303,11 +295,6 @@ public class AnimMaster extends Group {
     public void bindEvents() {
         DC_SoundMaster.bindEvents();
         floatTextLayer.bindEvents();
-        GuiEventManager.bind(GuiEventType.BOSS_VIEW_CREATED, p -> {
-            BossView b = (BossView) p.get();
-            bossAnimator = new BossAnimator(b, this  );
-
-        });
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
             if (!isOn()) {
                 return;
@@ -480,7 +467,7 @@ public class AnimMaster extends Group {
             CompositeAnim a = new CompositeAnim();
             a.add(
                     part
-                    , (Anim) e);
+                    , e);
             if (e.getDelay() == 0) {
                 root.getAttached().get(part).set(i, a);
             } else {
@@ -507,7 +494,4 @@ public class AnimMaster extends Group {
         drawer.addAttached(a);
     }
 
-    public BossAnimator getBossAnimator() {
-        return bossAnimator;
-    }
 }

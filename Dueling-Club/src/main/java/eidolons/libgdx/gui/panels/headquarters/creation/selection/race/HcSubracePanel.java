@@ -69,7 +69,7 @@ public class HcSubracePanel extends SelectionImageTable {
             filtered.add(item);
 
         }
-        return filtered.toArray(new SelectableItemData[filtered.size()]);
+        return filtered.toArray(new SelectableItemData[0]);
     }
 
     @Override

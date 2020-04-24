@@ -1,7 +1,6 @@
 package eidolons.libgdx.gui.controls.radial;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.EidolonsGame;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
@@ -21,7 +19,6 @@ import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.stage.Closable;
 import eidolons.libgdx.stage.StageWithClosable;
-import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.audio.SoundController;
 import eidolons.system.audio.SoundController.SOUND_EVENT;
@@ -34,10 +31,11 @@ import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import static main.system.GuiEventType.*;
+import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
+import static main.system.GuiEventType.UPDATE_GUI;
 
 public class RadialMenu extends Group implements Closable {
     protected RadialValueContainer currentNode;
@@ -51,7 +49,7 @@ public class RadialMenu extends Group implements Closable {
         final TextureRegion t = TextureCache.getOrCreateR(getCloseNodePath());
         closeButton = new RadialValueContainer(new TextureRegion(t), this::close);
         ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer("Close", "")));
+        tooltip.setUserObject(Collections.singletonList(new ValueContainer("Close", "")));
         closeButton.addListener(tooltip.getController());
         initBackground();
         bindEvents();
@@ -93,7 +91,7 @@ public class RadialMenu extends Group implements Closable {
 
     protected String getBackgroundSpritePath() {
 //        if (CoreEngine.isLiteLaunch()) {
-            return "";
+        return "";
 //        }
 //        return Sprites.RADIAL;
     }
@@ -128,12 +126,7 @@ public class RadialMenu extends Group implements Closable {
         if ((obj.get() instanceof DC_WeaponObj))
             return;
         DC_Obj dc_obj = (DC_Obj) obj.get();
-        if ((CoreEngine.isIDE() || CoreEngine.isDevEnabled())
-            && Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-            init(DebugRadialManager.getDebugNodes(dc_obj));
-        } else {
-            init(RadialManager.getOrCreateRadialMenu(dc_obj));
-        }
+        init(RadialManager.getOrCreateRadialMenu(dc_obj));
     }
 
     public void close() {

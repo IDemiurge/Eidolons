@@ -33,7 +33,6 @@ import javax.swing.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 public abstract class Game implements Serializable {
@@ -317,5 +316,9 @@ public abstract class Game implements Serializable {
 
     public void setCloningMode(boolean cloningMode) {
         this.cloningMode = cloningMode;
+    }
+
+    public void removed(Obj obj) {
+
     }
 }

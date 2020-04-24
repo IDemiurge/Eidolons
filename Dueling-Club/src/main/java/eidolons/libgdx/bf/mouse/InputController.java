@@ -10,7 +10,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
@@ -21,7 +20,8 @@ import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.badlogic.gdx.Input.Buttons.LEFT;
 import static com.badlogic.gdx.Input.Keys.ALT_LEFT;
@@ -48,10 +48,8 @@ public abstract class InputController implements InputProcessor {
     protected float yTouchPos;
     protected static float halfWidth;
     protected static float halfHeight;
-    protected Set<SuperActor> cachedPosActors = new HashSet<>();
     protected static boolean unlimitedZoom;
     protected static boolean dragOff;
-    protected float defaultZoom = 1;
     private Runnable onInput;
     private Runnable onInputGdx;
     private Runnable onPassInput;
@@ -59,6 +57,9 @@ public abstract class InputController implements InputProcessor {
     private DequeImpl<Runnable> onInputQueue =  (new DequeImpl<>());
     private DequeImpl<Runnable> onInputGdxQueue =  (new DequeImpl<>());
     private DequeImpl<Runnable> onPassInputQueue =  (new DequeImpl<>());
+    protected float defaultZoom;
+
+    public static boolean cameraMoved;
 
 
     public InputController(OrthographicCamera camera) {
@@ -84,6 +85,7 @@ public abstract class InputController implements InputProcessor {
     }
 
     protected void initZoom() {
+        defaultZoom= getDefaultZoom();
         defaultZoom = Math.min(getWidth() * getPreferredMinimumOfScreenToFitOnDisplay()
                 / GdxMaster.getWidth(), 1f);
         defaultZoom = Math.min(getHeight() * getPreferredMinimumOfScreenToFitOnDisplay()
@@ -99,6 +101,10 @@ public abstract class InputController implements InputProcessor {
         halfHeight = height / 2;
 
 
+    }
+
+    protected float getDefaultZoom() {
+        return 1;
     }
 
     protected float getPreferredMinimumOfScreenToFitOnDisplay() {
@@ -242,7 +248,7 @@ public abstract class InputController implements InputProcessor {
         charsUp.remove(str);
         lastTyped = c;
 
-        return true;
+        return false;
     }
 
     @Override
@@ -280,23 +286,21 @@ public abstract class InputController implements InputProcessor {
         if (isDragOff())
             return false;
         if (isBlocked())
-            return true;
+            return false;
         if (isManualCameraDisabled())
-            return true;
+            return false;
         if (mouseButtonPresed == LEFT) {
             tryPullCameraX(screenX);
             tryPullCameraY(screenY);
             cameraStop();
         }
 
-        return false;
+        return true;
     }
 
     private boolean isManualCameraDisabled() {
         if (!CoreEngine.isIDE())
-            if (Cinematics.ON) {
-                return true;
-            }
+            return Cinematics.ON;
         return false;
     }
 
@@ -307,8 +311,11 @@ public abstract class InputController implements InputProcessor {
     protected abstract GameScreen getScreen();
 
     protected void tryPullCameraY(int screenY) {
-        float diffY = (yTouchPos - screenY) * camera.zoom;
-        camera.position.y = MathMaster.getMinMax(
+        float diffY = (yTouchPos - screenY) * camera.zoom * getDragCoef();
+        if (isFreeDrag()){
+            camera.position.y =camera.position.y - diffY;
+        } else
+            camera.position.y = MathMaster.getMinMax(
                 camera.position.y - diffY,
                 halfHeight - getMargin(),
                 getHeight() - halfHeight + getMargin());
@@ -316,15 +323,26 @@ public abstract class InputController implements InputProcessor {
         cameraPosChanged();
     }
 
+    protected boolean isFreeDrag() {
+        return false;
+    }
+
     protected void tryPullCameraX(int screenX) {
         //TODO custom bounds
-        float diffX = (xTouchPos - screenX) * camera.zoom;
+        float diffX = (xTouchPos - screenX) * camera.zoom * getDragCoef();
+        if (isFreeDrag()){
+            camera.position.x =camera.position.x + diffX;
+        } else
         camera.position.x = MathMaster.getMinMax(
                 camera.position.x + diffX,//-getMargin(),
                 halfWidth - getMargin(),
                 getWidth() - halfWidth + getMargin());
         xTouchPos = screenX;
         cameraPosChanged();
+    }
+
+    protected float getDragCoef() {
+        return 1f;
     }
 
 
@@ -392,9 +410,10 @@ public abstract class InputController implements InputProcessor {
     }
 
     public void cameraPosChanged() {
-        for (SuperActor sub : cachedPosActors) {
-            sub.cameraMoved();
-        }
+        cameraMoved=true;
+//        for (SuperActor sub : cachedPosActors) {
+//            sub.cameraMoved();
+//        }
 
 //        cachedPosActors.clear(); not needed?
     }
@@ -442,10 +461,6 @@ public abstract class InputController implements InputProcessor {
 
     public float getYCamPos() {
         return camera.position.y;
-    }
-
-    public void addCachedPositionActor(SuperActor superActor) {
-        cachedPosActors.add(superActor);
     }
 
     public void onInput(Runnable runnable) {

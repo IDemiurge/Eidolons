@@ -6,6 +6,7 @@ import eidolons.swing.DC_GuiManager;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.DescriptionTooltips;
+import main.data.xml.XML_Reader;
 import main.system.auxiliary.log.Chronos;
 import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
@@ -19,6 +20,7 @@ public class DC_Engine extends CoreEngine {
     static {
         jarInit();
     }
+
     public static void analyzeUserSystem() {
 
     }
@@ -48,8 +50,14 @@ public class DC_Engine extends CoreEngine {
     }
 
     public static void systemInit() {
+        systemInit(true);
+    }
+
+    public static void systemInit(boolean initOptions) {
         CoreEngine.systemInit();
-        OptionsMaster.init();
+        if (initOptions) {
+            OptionsMaster.init();
+        }
         DC_GuiManager.init();
 //        TextMaster.init(locale);
     }
@@ -59,7 +67,8 @@ public class DC_Engine extends CoreEngine {
         new DC_ContentValsManager().init();
 
 //        CoreEngine.dataInit(!CoreEngine.isFastMode());
-        CoreEngine.dataInit(true );
+        CoreEngine.dataInit(true);
+        XML_Reader.setMacro(false); //fix this shit!
         //read save game?
         DC_ContentValsManager.initTypeDynamicValues();
         Chronos.logTimeElapsedForMark("DATA INIT");
@@ -69,7 +78,7 @@ public class DC_Engine extends CoreEngine {
     public static void gameInit() {
         ConditionMaster.setInstance(new DC_ConditionMaster());
         DC_ActionManager.init();
-        DescriptionTooltips.init();
+         DescriptionTooltips.init();
     }
 
     public static boolean isAtbMode() {

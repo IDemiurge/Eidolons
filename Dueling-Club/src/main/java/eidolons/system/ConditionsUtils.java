@@ -1,14 +1,11 @@
 package eidolons.system;
 
-import eidolons.ability.conditions.AreaCondition;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzleCondition;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.art.PortalSlotsCondition;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzleCondition;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.portal.PortalPuzzle;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.OrConditions;
@@ -41,14 +38,11 @@ public class ConditionsUtils {
                 return new PositionCondition(
                         Ref.KEYS.MATCH.toString(), puzzle.getExitCoordinates());
             case SHAPE:
-                break;
-            case PATH:
-                break;
-            case FIND_SECRET:
-                break;
-            case DISCOVER_PATTERN:
-                break;
-        }
+                case DISCOVER_PATTERN:
+                case FIND_SECRET:
+                case PATH:
+                    break;
+            }
         return condition;
     }
 
@@ -57,12 +51,9 @@ public class ConditionsUtils {
             switch (punishment) {
 
                 case battle:
-                    break;
-                case spell:
-                    break;
-                case teleport:
-                    break;
                 case death:
+                case teleport:
+                case spell:
                     break;
             }
 

@@ -10,20 +10,21 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battle.mission.MissionStatManager;
-import eidolons.game.battlecraft.logic.meta.igg.CustomLaunch;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Game;
-import eidolons.game.battlecraft.logic.meta.igg.soul.SoulforcePanel;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
+import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.netherflame.igg.CustomLaunch;
+import eidolons.game.netherflame.igg.IGG_Game;
+import eidolons.game.netherflame.igg.soul.SoulforcePanel;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
-import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel;
+import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.CombatInventory;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
@@ -33,7 +34,7 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.particles.ParticlesSprites;
 import eidolons.libgdx.screens.CustomSpriteBatch;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.PathUtils;
@@ -42,6 +43,8 @@ import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.List;
+
+import static eidolons.game.battlecraft.rules.RuleKeeper.RULE.SOULFORCE;
 
 /**
  * Created by JustMe on 3/31/2017.
@@ -99,9 +102,11 @@ public class BattleGuiStage extends GuiStage {
         outcomePanel.setVisible(false);
         addActor(fullscreenAnims = new FullscreenAnims());
 
+        if (RuleKeeper.isRuleOn(SOULFORCE)) {
         addActor(soulforcePanel = new SoulforcePanel());
         GdxMaster.center(soulforcePanel);
         soulforcePanel.setY(GdxMaster.getTopY(soulforcePanel));
+        }
 
         getBottomPanel().setX(GdxMaster.centerWidthScreen(getBottomPanel()));
 //        getBottomPanel().setX((GdxMaster.getWidth() - fullLogPanel.getWidth() - getBottomPanel().getWidth()) / 2 + 70);
@@ -160,11 +165,11 @@ public class BattleGuiStage extends GuiStage {
     public void outsideClick() {
         setDraggedEntity(null);
         super.outsideClick();
-        setScrollFocus(DungeonScreen.getInstance().getGridPanel());
+        setScrollFocus(ScreenMaster.getDungeonGrid());
 
         if (combatInventory.isVisible()) {
             //            combatInventory.close(ExplorationMaster.isExplorationOn());
-            InventoryDataSource dataSource = (InventoryDataSource) combatInventory.getUserObject();
+            InventoryDataSource dataSource = combatInventory.getUserObject();
             if (ExplorationMaster.isExplorationOn()) {
                 dataSource.getDoneHandler().run();
             } else

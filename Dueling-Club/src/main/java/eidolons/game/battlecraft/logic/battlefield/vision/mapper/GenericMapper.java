@@ -36,7 +36,7 @@ public class GenericMapper<O, T> {
         }
     }
     public void log(O unit) {
-        log(unit, map.get(unit).keySet().toArray(new DC_Obj[map.get(unit).size()]));
+        log(unit, map.get(unit).keySet().toArray(new DC_Obj[0]));
     }
 
     public void log(O unit, DC_Obj... objects) {

@@ -10,10 +10,11 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
-import main.content.CONTENT_CONSTS.COLOR_THEME;
+import main.content.CONTENT_CONSTS;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;
@@ -63,7 +64,7 @@ public class EmitterMap extends Group {
         if (colorHue != null)
             color = colorHue;
         else if (Eidolons.game instanceof DC_Game) {
-            COLOR_THEME colorTheme = Eidolons.game.getDungeon().getColorTheme();
+            CONTENT_CONSTS.COLOR_THEME colorTheme = Eidolons.game.getDungeon().getColorTheme();
             if (colorTheme != null)
                 color = GdxColorMaster.getColorForTheme(colorTheme);
         }
@@ -84,9 +85,9 @@ public class EmitterMap extends Group {
 
     public void init() {
         int x1 = 0;
-        int x2 = DungeonScreen.getInstance().getGridPanel().getRows();
+        int x2 = ScreenMaster.getDungeonGrid().getRows();
         int y1 = 0;
-        int y2 = DungeonScreen.getInstance().getGridPanel().getCols();
+        int y2 = ScreenMaster.getDungeonGrid().getCols();
         if (topLeft != null) {
             x1 = topLeft.x;
             y1 = topLeft.y;

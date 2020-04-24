@@ -2,10 +2,11 @@ package eidolons.game.battlecraft.logic.meta.scenario;
 
 import eidolons.game.battlecraft.logic.battle.mission.MissionBattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
-import eidolons.game.battlecraft.logic.meta.igg.death.IGG_DefeatHandler;
+import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.meta.universal.*;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.ScenarioGame;
+import eidolons.game.netherflame.igg.death.IGG_DefeatHandler;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
@@ -19,6 +20,11 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
     public ScenarioMetaMaster(String data) {
         super(data);
+    }
+
+    @Override
+    public ModuleMaster getModuleMaster() {
+        return getDungeonMaster().getModuleMaster();
     }
 
     @Override
@@ -70,7 +76,6 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
         Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(restart);
 //        ?  Eidolons.mainGame.getMetaMaster(). init();
         Eidolons.mainGame.getMetaMaster().getGame().getDungeonMaster().next();
-        Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
         Eidolons.mainGame.getMetaMaster().getGame().battleInit();
         Eidolons.mainGame.getMetaMaster().getGame().start(restart);
 

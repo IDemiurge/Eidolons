@@ -1,6 +1,5 @@
 package main.content.values.properties;
 
-import main.content.Metainfo;
 import main.content.OBJ_TYPE;
 import main.system.auxiliary.StringMaster;
 
@@ -66,7 +65,7 @@ public enum G_PROPS implements PROPERTY {
     DESCRIPTION("all", "Description"),
     LORE("all", "Lore"),
     // "chars"
-    RANK("Rank", "chars", "classes", "encounters"),
+    RANK("Rank", "chars", "classes"),
     RACE("Race", "chars", "units"),
 
     BACKGROUND("chars", "Background"),
@@ -111,26 +110,16 @@ public enum G_PROPS implements PROPERTY {
     // UPGRADE
     BASE_TYPE("", false, "spells", "abils", "chars", "units", "skills", "classes", "weapons", "armor", "items", "actions"),
 
-    CUSTOM_PROPS("all"),
-    CUSTOM_PARAMS("all"),
+    CUSTOM_PROPS(null ,true, "bf obj", "units", "chars", "spells", "abils", "actions"),
     ABILITY_GROUP("abils"),
-    ENCOUNTER_GROUP("encounters"),
-    ENCOUNTER_SUBGROUP("encounters"),
+    ENCOUNTER_GROUP("", false, "encounters", "units"),
+    ENCOUNTER_SUBGROUP("", false, "encounters", "units"),
     ENCOUNTER_TYPE("encounters"),
 
     DUNGEON_GROUP("dungeons"),
     DUNGEON_SUBFOLDER("dungeons"),
-    DUNGEON_TYPE("dungeons"),
-    DUNGEON_LEVEL("dungeons"),
-    ARCADE_REGION("", false, "party", "dungeons"),
-    ARCADE_ROUTE("dungeons"),
 
-    DUNGEONS_COMPLETED("party"),
-    DUNGEONS_PENDING("party"),
-    LAST_DUNGEON("party"),
-    DIFFICULTY("party"),
-
-    EMPTY_VALUE(""),
+    EMPTY_VALUE(""), //visual separator in AV
     JEWELRY_GROUP("jewelry"),
     JEWELRY_TYPE("jewelry"),
     GARMENT_TYPE("garment"),
@@ -149,7 +138,6 @@ public enum G_PROPS implements PROPERTY {
         STATUS.setDynamic(true);
         // STATUS.setDynamic(true);
         SPELL_POOL.setDynamic(true);
-        DYNAMIC_BOOLS.setDynamic(true);
         NAME.setHighPriority(true);
         IMAGE.setHighPriority(true);
         // ASPECT.setHighPriority(true);
@@ -170,7 +158,6 @@ public enum G_PROPS implements PROPERTY {
         STD_BOOLS.setLowPriority(true);
         BASE_TYPE.setLowPriority(true);
         CUSTOM_PROPS.setLowPriority(true);
-        CUSTOM_PARAMS.setLowPriority(true);
         TARGETING_MODE.setDefaultValue("SINGLE");
         // ITEMS.setLowPriority(true);
     }
@@ -189,6 +176,7 @@ public enum G_PROPS implements PROPERTY {
     private String shortName;
     private String fullName;
     private Map<OBJ_TYPE, Object> defaultValuesMap;
+    private String iconPath;
 
     G_PROPS(String shortName, boolean container, String... entityTypes) {
         this(entityTypes[0], shortName);
@@ -277,11 +265,6 @@ public enum G_PROPS implements PROPERTY {
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
-    }
-
-    @Override
-    public Metainfo getMetainfo() {
-        return null;
     }
 
     @Override
@@ -377,5 +360,15 @@ public enum G_PROPS implements PROPERTY {
 
     public void setWriteToType(boolean writeToType) {
         this.writeToType = writeToType;
+    }
+
+    @Override
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    @Override
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
     }
 }

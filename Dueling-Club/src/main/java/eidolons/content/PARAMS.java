@@ -24,14 +24,11 @@ public enum PARAMS implements PARAMETER {
     SLEIGHT_OF_HAND("chars","","",false,0),
     FORAGING("chars","","",false,0),
 
-    MAX_DEPTH(null, "", false, 3, "dungeons"),
-    MIN_DEPTH(null, "", false, 1, "dungeons"),
     POWER_MOD(true, null, "", false, 100, "dungeons", "encounters"),
     POWER_MINIMUM(null, "", false, 0, "dungeons", "encounters"),
     POWER_BASE(null, "", false, 0, "dungeons", "encounters"),
     POWER_MAXIMUM(null, "", false, 0, "dungeons", "encounters"),
-    SPAWNING_DELAY_MOD(true, null, "", false, 100, "dungeons", "encounters"),
-    SPAWNING_DELAY_BONUS(null, "", false, 0, "encounters"),
+
     FREE_MASTERIES(null, "", false, DC_MathManager.DEFAULT_FREE_MASTERY_COUNT, "chars"),
     GLORY("party"),
     MAX_HEROES(null, "", false, 0, "party", "arcades"),
@@ -722,6 +719,8 @@ public enum PARAMS implements PARAMETER {
     LUCK_MOD(true, null, "", false, 0, "skills", "armor", "jewelry", "weapons", "units", "chars", "perks"),
     LUCK_BONUS(null, "", false, 0, "skills", "armor", "jewelry", "weapons", "units", "chars", "perks"),
 
+
+    ADJUST_COEF("encounters"),
     GROUP_NUMBER("encounters"),
     MAX_GROUP_NUMBER("encounters"),
     MIN_GROUP_NUMBER("encounters"),
@@ -995,6 +994,7 @@ public enum PARAMS implements PARAMETER {
     private boolean mastery;
     private boolean highPriority;
     private String fullName;
+    private String iconPath;
     private Map<OBJ_TYPE, Object> defaultValuesMap;
     private boolean mod;
 
@@ -1102,6 +1102,16 @@ public enum PARAMS implements PARAMETER {
     // getOrCreate(base)
 
     @Override
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    @Override
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
@@ -1120,11 +1130,6 @@ public enum PARAMS implements PARAMETER {
 
     public String[] getEntityTypes() {
         return entityTypes;
-    }
-
-    @Override
-    public Metainfo getMetainfo() {
-        return metainfo;
     }
 
     @Override

@@ -237,8 +237,6 @@ public class TipMaster {
 
     public static String getText(COMBAT_TIPS tip) {
         switch (tip) {
-            case BF_OBJECTS:
-                return "";
             case PARAMETER_RULES:
                 return "Every dynamic parameter unit has might additional effect if it goes high or drops low, for instance Focus will affect Attack/Defense while Morale"
                  + " - Resistance, Initiative and Spirit";
@@ -252,10 +250,6 @@ public class TipMaster {
                  + " During the round, this value will decrease based on the greatest amount of "
                  + "Initiative spent by any unit. If it reaches zero, units only have 1 more free"
                  + " action to make, after which may be removed from Initiative Queue. ";
-            case UPKEEP:
-                return "";
-            case WOUNDS_AND_BLEEDING:
-                return "";
             default:
                 return "";
 
@@ -265,16 +259,6 @@ public class TipMaster {
 
     public static String getText(ADVANCED_COMBAT_TIPS tip) {
         switch (tip) {
-            case ALERT_MODE:
-                return "";
-            case SMART_ACTION_SEQUENCES:
-                return "";
-            case USE_INVENTORY:
-                return "";
-            case USING_TIME_RULE:
-                return "";
-            case WAIT_ACTION:
-                return "";
             default:
                 return "";
 
@@ -286,10 +270,6 @@ public class TipMaster {
         switch (tip) {
             case GRADUAL_SPELL_LEARNING:
                 return "High-Intelligence heroes may take advantage of gradual spell learning - Memorizing them first and learning En Verbatim the most essential ones as they accumulate Experience";
-            case ITEM_ENCHANTMENT:
-                return "";
-            case MULTICLASSING:
-                return "";
             case SPELL_UPGRADES:
                 return "Hero can Memorize only one version of a spell and will also have maximum of one learned En Verbatim (base version will be upgraded, after which other upgrades can only be Memorized)";
             default:
@@ -302,7 +282,6 @@ public class TipMaster {
     public static String getText(BASIC_HERO_TIPS tip) {
         switch (tip) {
             case ARMOR_ITEMS:
-                return "";
             case HERO_BACKGROUNDS:
                 return "";
             case PRINCIPLES:
@@ -334,13 +313,11 @@ public class TipMaster {
                 return "Heroes following a Deity may use Divination Mode to receive semi-random spells from their "
                  + "Deity's Favored Spell Schools, based on the number of actions spent, Charisma and Divination Mastery";
             case JEWELRY:
-                return "";
+            case WEIGHT:
             case QUICK_ITEMS:
                 return "";
             case SKILL_POINTS:
                 return "The number of Skills from each particular Mastery Group is limited by the number of Mastery Points you invested in this Mastery. Each Skill has its own Point Cost, proportional to the XP cost.";
-            case WEIGHT:
-                return "";
         }
         return null;
 
@@ -356,7 +333,7 @@ public class TipMaster {
         };
     }
 
-    public class Tip implements TIP {
+    public static class Tip implements TIP {
         public final TIP type;
         String text;
         int displayedTimes;

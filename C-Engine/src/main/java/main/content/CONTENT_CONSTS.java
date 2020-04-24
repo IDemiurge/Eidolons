@@ -147,7 +147,7 @@ public class CONTENT_CONSTS {
 
         CHAOS,
 
-        LIGHT, DWARF;;
+        LIGHT, DWARF;
 
         public String getName() {
             return name();
@@ -176,8 +176,9 @@ public class CONTENT_CONSTS {
         NOT_ITEM("Item slot;property;value", "Must not have an item in "
                 + VariableManager.getVarIndex(0), ITEM_SLOT.class, VariableManager.PROP_VAR_CLASS, VariableManager.PROP_VALUE_VAR_CLASS),
         FREE_CELL("Relative position of the cell", "The cell " + VariableManager.getVarIndex(0)
-                + " must be free ", UNIT_DIRECTION.class),
-
+                + " must be passable", UNIT_DIRECTION.class),
+        NON_VOID("Relative position of the cell", "The cell " + VariableManager.getVarIndex(0)
+                + " must be passable", UNIT_DIRECTION.class),
         FREE_CELL_RANGE("Relative position of the cell", "The cell "
                 + VariableManager.getVarIndex(1) + " spaces " + VariableManager.getVarIndex(0)
                 + " must be free ", UNIT_DIRECTION.class, VariableManager.NUMBER_VAR_CLASS),
@@ -188,7 +189,8 @@ public class CONTENT_CONSTS {
         REF_NOT_EMPTY("obj to preCheck;ref to preCheck",
                 VariableManager.getVarIndex(1) + " is missing!", String.class, KEYS.class),
         REF_EMPTY("obj to preCheck;ref to preCheck",
-                VariableManager.getVarIndex(1) + " is already there!", String.class, KEYS.class);
+                VariableManager.getVarIndex(1) + " is already there!", String.class, KEYS.class),
+       ;
 
         private String text;
         private Object[] vars;

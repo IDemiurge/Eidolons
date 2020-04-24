@@ -158,7 +158,7 @@ public class GdxImageMaster extends LwjglApplication {
                 return texture;
             }
         }
-        if (texture.equals(TextureCache.getEmptyTexture())) {
+        if (texture.equals(TextureCache.getMissingTexture())) {
             return null;
         }
         String newPath = getSizedImagePath(path, size);
@@ -214,7 +214,7 @@ public class GdxImageMaster extends LwjglApplication {
         if (!GdxMaster.isLwjglThread())
             return null;
         TextureRegion textureRegion = TextureCache.getOrCreateR(path);
-        if (textureRegion.getTexture() == TextureCache.getEmptyTexture())
+        if (textureRegion.getTexture() == TextureCache.getMissingTexture())
             return textureRegion;
 
         String newPath = getRoundedPath(path);
@@ -222,7 +222,7 @@ public class GdxImageMaster extends LwjglApplication {
         if (FileManager.isFile(newPath))
             roundedRegion = TextureCache.getOrCreateR(cropImagePath(newPath));
         if (roundedRegion != null)
-            if (roundedRegion.getTexture() != TextureCache.getEmptyTexture())
+            if (roundedRegion.getTexture() != TextureCache.getMissingTexture())
                 return roundedRegion;
 
         Pixmap rounded = roundTexture(textureRegion);

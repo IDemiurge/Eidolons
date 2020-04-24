@@ -1,7 +1,6 @@
 package eidolons.libgdx.gui.generic.btn;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -52,7 +51,7 @@ public class SmartButton extends TextButton implements EventListener {
     }
 
     public SmartButton(String text, TextButtonStyle style, Runnable runnable, STD_BUTTON btnStyle) {
-        super(text, style);
+        super(text, StyleHolder.getTextButtonStyle(style, btnStyle));
         this.runnable = runnable;
         addListener(this);
 //        getStyle(). TODO this won't affect  *** !
@@ -101,11 +100,6 @@ public class SmartButton extends TextButton implements EventListener {
         return true;
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-    }
-
     public boolean handleEvent(Event e) {
         if (!isIgnoreConfirmBlock())
             if (ConfirmationPanel.getInstance().isVisible())
@@ -149,6 +143,10 @@ public class SmartButton extends TextButton implements EventListener {
             DC_SoundMaster.playStandardSound(sound);
         }
         return true;
+    }
+
+    public Runnable getRunnable() {
+        return runnable;
     }
 
     protected BUTTON_SOUND_MAP getSoundMap() {

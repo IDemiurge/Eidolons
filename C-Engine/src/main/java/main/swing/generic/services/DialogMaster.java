@@ -136,8 +136,7 @@ public class DialogMaster {
     public static boolean confirm(String string) {
         int showConfirmDialog = JOptionPane.showConfirmDialog(null, string, "Confirm",
          JOptionPane.YES_NO_OPTION);
-        return showConfirmDialog == JOptionPane.YES_OPTION
-         || showConfirmDialog == JOptionPane.OK_OPTION;
+        return showConfirmDialog == JOptionPane.YES_OPTION;
     }
 
     public enum CONTROLS_SCHEME {

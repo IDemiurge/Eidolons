@@ -10,7 +10,6 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Assets;
-import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.system.graphics.GreyscaleUtils;
 import main.data.filesys.PathFinder;
@@ -22,11 +21,12 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
@@ -42,10 +42,13 @@ public class TextureCache {
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);
     private static boolean altTexturesOn = true;
-    private static Texture emptyTexture;
+    private static Texture missingTexture;
+    private static Texture empty;
+
     private static Map<String, TextureRegion> regionCache = new HashMap<>(300);
     private static Map<TextureRegion, TextureRegionDrawable> drawableMap = new HashMap<>(300);
     private static boolean returnEmptyOnFail = true;
+    private static List<String> missingTextures = new LinkedList<>();
 
     private Map<String, Texture> cache;
     private Map<Texture, Texture> greyscaleCache;
@@ -57,11 +60,27 @@ public class TextureCache {
     private boolean silent;
 
     public static TextureRegion fromAtlas(String atlasPath, String light) {
-    if ( Assets.get().getManager().isLoaded(atlasPath) ){
-        SmartTextureAtlas atlas = Assets.get().getManager().get(atlasPath);
-        return atlas.findRegion(light);
+        if (Assets.get().getManager().isLoaded(atlasPath)) {
+            SmartTextureAtlas atlas = Assets.get().getManager().get(atlasPath);
+            return atlas.findRegion(light);
+        }
+        return new TextureRegion(getMissingTexture());
     }
-        return new TextureRegion(getEmptyTexture());
+
+    public static boolean isCached(String s) {
+        if (missingTextures.contains(s)) {
+            return false;
+        }
+        Texture texture = getInstance().cache.get(s);
+        if (texture != null) {
+            return true;
+        }
+        TextureRegion textureRegion = getOrCreateR(s);
+        if (isEmptyTexture(textureRegion)) {
+            missingTextures.add(s);
+            return false;
+        }
+        return true;
     }
 
     public void loadAtlases() {
@@ -133,7 +152,7 @@ public class TextureCache {
 
     public static Texture getOrCreateNonEmpty(String path) {
         Texture texture = getOrCreate(path);
-        if (texture == emptyTexture)
+        if (texture == missingTexture)
             return null;
         return texture;
     }
@@ -161,11 +180,11 @@ public class TextureCache {
 
     public static TextureRegion getOrCreateRoundedRegion(String path, boolean write) {
         TextureRegion region = getOrCreateR(GdxImageMaster.getRoundedPathNew(path));
-        if (!region.getTexture().equals(emptyTexture)) {
+        if (!region.getTexture().equals(missingTexture)) {
             return region;
         }
         region = getOrCreateR(GdxImageMaster.getRoundedPath(path));
-        if (!region.getTexture().equals(emptyTexture)) {
+        if (!region.getTexture().equals(missingTexture)) {
             return region;
         }
         return GdxImageMaster.round(path, write);
@@ -177,9 +196,17 @@ public class TextureCache {
 
     public static TextureRegion getOrCreateR(String path, boolean overrideNoAtlas) {
 
+            if (path.contains(":")) {
+                try {
+                    return getOrCreateR(path.split("img")[1]);
+                } catch (Exception e) {
+                    main.system.auxiliary.log.LogMaster.log(1,"invalid  TEXTURE  path ! "  + path);
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            }
         if (path == null) {
             main.system.auxiliary.log.LogMaster.log(1, "EMPTY TEXTURE REGION REQUEST!");
-            return new TextureRegion(emptyTexture);
+            return new TextureRegion(missingTexture);
         }
 
         TextureRegion region = regionCache.get(path);
@@ -222,7 +249,7 @@ public class TextureCache {
         }
 
         region = new TextureRegion(getInstance()._getOrCreate(path));
-        if (region.getTexture() != emptyTexture)
+        if (region.getTexture() != missingTexture)
             regionCache.put(path, region);
         return region;
     }
@@ -265,17 +292,28 @@ public class TextureCache {
         TextureCache.altTexturesOn = altTexturesOn;
     }
 
-    public static Texture getEmptyTexture() {
-        if (emptyTexture == null)
-            emptyTexture = new Texture(getEmptyPath());
+    public static Texture getMissingTexture() {
+        if (missingTexture == null)
+            missingTexture = new Texture(getMissingPath());
 
-        return emptyTexture;
+        return missingTexture;
+    }
+    public static Texture getEmptyTexture() {
+        if (empty == null)
+            empty = new Texture(getMissingPath());
+
+        return empty;
     }
 
-    private static String getEmptyPath() {
+    public static String getMissingPath() {
         return
                 ImageManager.getImageFolderPath() +
                         Images.MISSING_TEXTURE;
+    }
+    public static String getEmptyPath() {
+        return
+                ImageManager.getImageFolderPath() +
+                        Images.REALLY_EMPTY_32;
     }
 
     public static Texture createTexture(String path) {
@@ -315,7 +353,7 @@ public class TextureCache {
     public static TextureRegion getOrCreateSizedRegion(int iconSize, String path) {
         Texture sized = GdxImageMaster.size(path, iconSize, true);
         if (sized == null)
-            return new TextureRegion(getEmptyTexture());
+            return new TextureRegion(getMissingTexture());
         return new TextureRegion(sized);
     }
 
@@ -360,14 +398,14 @@ public class TextureCache {
             t = getOrCreate(property);
         } catch (Exception e) {
         }
-        return t != emptyTexture;
+        return t != missingTexture;
     }
 
     public static boolean isEmptyTexture(Texture texture) {
         if (texture == null) {
             return true;
         }
-        return emptyTexture == texture;
+        return missingTexture == texture;
     }
 
     public static boolean isEmptyTexture(TextureRegion region) {
@@ -419,7 +457,7 @@ public class TextureCache {
     private Texture _getOrCreate(String path) {
         if (path == null) {
             main.system.auxiliary.log.LogMaster.log(1, "EMPTY TEXTURE REQUEST!");
-            return emptyTexture;
+            return missingTexture;
         }
         path = getPathForCache(path);
 
@@ -435,6 +473,9 @@ public class TextureCache {
     private String getPathForCache(String path) {
         path = path
                 .toLowerCase();
+        if (path.startsWith("img")) {
+            path = path.replaceFirst("img", "");
+        }
         if (!path.startsWith("/")) {
             path = "/" + path;
         }
@@ -483,12 +524,12 @@ public class TextureCache {
                     main.system.auxiliary.log.LogMaster.verbose("No texture for " + fullPath);
                 if (!isReturnEmptyOnFail())
                     return null;
-                if (!cache.containsKey(getEmptyPath())) {
+                if (!cache.containsKey(getMissingPath())) {
                     if (putIntoCache)
-                        cache.put(getEmptyPath(), getEmptyTexture());
-                    return getEmptyTexture();
+                        cache.put(getMissingPath(), getMissingTexture());
+                    return getMissingTexture();
                 }
-                return cache.get(getEmptyPath());
+                return cache.get(getMissingPath());
 
             }
         }

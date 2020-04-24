@@ -28,7 +28,6 @@ public class CaseAnim extends ActionAnim {
                 active.getRef().getTargetObj().getRef().getObj(KEYS.OFFHAND).getImagePath();
                 break;
             case DODGE:
-                break;
             case PARRY:
                 break;
         }

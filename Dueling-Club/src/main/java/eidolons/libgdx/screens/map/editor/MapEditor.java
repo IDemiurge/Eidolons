@@ -46,6 +46,11 @@ public class MapEditor extends GenericLauncher {
         else launch(null);
     }
 
+    @Override
+    public String getOptionsPath() {
+        return null;
+    }
+
     //    protected void screenInit() {
 //        //selection panel for campaign/scenario to edit!
 //        ScreenData data = new ScreenData(ScreenType.MAP, "Editor");

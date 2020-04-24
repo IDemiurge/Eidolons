@@ -71,7 +71,7 @@ public class EditorPalette extends TabbedPanel {
             TablePanel<Actor> table;
             if (TYPE == null)
                 continue;
-            List<String> list = DataManager.getTabsGroup(TYPE);
+            List<String> list = DataManager.getTabGroups(TYPE);
             if (list.isEmpty())
                 list.add("");
             for (String group : list) {

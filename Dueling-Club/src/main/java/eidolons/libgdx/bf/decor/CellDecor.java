@@ -1,7 +1,5 @@
 package eidolons.libgdx.bf.decor;
 
-import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -35,54 +33,30 @@ public class CellDecor {
             switch (object.getBfObjGroup()) {
 
                 case WALL:
-                    break;
-                case COLUMNS:
-                    break;
-                case RUINS:
-                    break;
-                case CONSTRUCT:
-                    break;
-                case GATEWAY:
-                    break;
-                case GRAVES:
-                    break;
-                case WINDOWS:
-                    break;
-                case MAGICAL:
-                    break;
-                case HANGING:
-                    break;
-                case INTERIOR:
-                    break;
-                case STATUES:
-                    break;
-                case LOCK:
-                    break;
-                case ENTRANCE:
-                    break;
-                case TRAP:
-                    break;
-                case DOOR:
-                    break;
-                case LIGHT_EMITTER:
-                    break;
-                case CONTAINER:
-                    break;
-                case TREASURE:
-                    break;
-                case DUNGEON:
-                    break;
-                case WATER:
-                    break;
-                case TREES:
-                    break;
-                case ROCKS:
-                    break;
-                case VEGETATION:
-                    break;
-                case REMAINS:
-                    break;
                 case CRYSTAL:
+                case REMAINS:
+                case VEGETATION:
+                case ROCKS:
+                case TREES:
+                case WATER:
+                case DUNGEON:
+                case TREASURE:
+                case CONTAINER:
+                case LIGHT_EMITTER:
+                case DOOR:
+                case TRAP:
+                case ENTRANCE:
+                case LOCK:
+                case STATUES:
+                case INTERIOR:
+                case HANGING:
+                case MAGICAL:
+                case WINDOWS:
+                case GRAVES:
+                case GATEWAY:
+                case CONSTRUCT:
+                case RUINS:
+                case COLUMNS:
                     break;
             }
         });

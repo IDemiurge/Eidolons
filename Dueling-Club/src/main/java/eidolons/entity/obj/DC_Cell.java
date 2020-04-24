@@ -5,11 +5,12 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.libgdx.bf.GridMaster;
 import main.content.CONTENT_CONSTS;
+import main.content.enums.DungeonEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.G_PARAMS;
+import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.Ref;
@@ -17,6 +18,7 @@ import main.entity.obj.Cell;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
+import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -29,7 +31,7 @@ public class DC_Cell extends DC_Obj implements Cell {
     private boolean playerHasSeen;
     private boolean VOID;
 
-    DungeonLevel.CELL_IMAGE cellType;
+    DungeonEnums.CELL_IMAGE cellType;
     int cellVariant;
     CONTENT_CONSTS.COLOR_THEME colorTheme;
 
@@ -37,10 +39,29 @@ public class DC_Cell extends DC_Obj implements Cell {
     float overlayRotation;
     private String overlayData;
 
+    public DC_Cell(boolean b, int i, int j, DC_Game game) {
+        this(i, j ,game);
+        setVOID(b);
+    }
+
+    @Override
+    protected void preInit(Game game, ObjType type, Player owner, Ref ref) {
+        this.game = game;
+        getId(); // new id if null
+        this.TYPE_ENUM = type.getOBJ_TYPE_ENUM();
+        this.type = (type); // no cloning by default
+        type.checkBuild();
+        this.owner = owner;
+        this.setOriginalOwner(owner);
+        getPropMap().put(G_PROPS.NAME , type.getName());
+        setOriginalName(type.getName());
+
+        master = initMaster();
+        setRef(ref); //create ref branch
+    }
 
     @Override
     public void setCoordinates(Coordinates coordinates) {
-        return;
     }
 
     @Override
@@ -53,9 +74,6 @@ public class DC_Cell extends DC_Obj implements Cell {
         this.x = i;
         this.y = j;
         this.coordinates = Coordinates.get(x, y);
-        if (dungeon != null) {
-            setZ(dungeon.getZ());
-        }
         addDynamicValues();
         setImage(dungeon.getCellImagePath(i, j));
         cellVariant=(dungeon.getCellVariant(i, j));
@@ -81,13 +99,13 @@ public class DC_Cell extends DC_Obj implements Cell {
         return EMPTY_CELL_TYPE;
     }
 
-    public void setCellType(DungeonLevel.CELL_IMAGE cellType) {
+    public void setCellType(DungeonEnums.CELL_IMAGE cellType) {
         this.cellType = cellType;
         resetCell();
     }
 
 
-    public DungeonLevel.CELL_IMAGE getCellType() {
+    public DungeonEnums.CELL_IMAGE getCellType() {
         return cellType;
     }
 
@@ -189,7 +207,7 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
     public void toBase() {
-        super.toBase();
+//        super.toBase();
         name = getProp("Name")
          + StringMaster.wrapInParenthesis(StringMaster
          .getWellFormattedString(getProperty(PROPS.VISIBILITY_STATUS)));

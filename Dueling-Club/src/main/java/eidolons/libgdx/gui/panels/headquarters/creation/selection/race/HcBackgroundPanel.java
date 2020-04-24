@@ -65,7 +65,7 @@ public class HcBackgroundPanel extends SelectionImageTable {
                 item.setBorderSelected(Images.WEAVE_LINK);
             }
         }
-        return filtered.toArray(new SelectableItemData[filtered.size()]);
+        return filtered.toArray(new SelectableItemData[0]);
     }
 
     @Override

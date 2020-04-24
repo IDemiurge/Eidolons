@@ -1,8 +1,8 @@
 package eidolons.game.core.state;
 
 import eidolons.entity.DC_IdManager;
-import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_QuickItemObj;
@@ -30,6 +30,7 @@ import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.ability.construct.ConstructionManager;
 import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.elements.triggers.Trigger;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -70,7 +71,7 @@ public class Loader {
     public static DC_Game loadNewGame(String savePath) {
         String data = FileManager.readFile(savePath);
         DC_Game game = GameFactory.createGame(GAME_SUBCLASS.TEST);
-        Node dungeonNode = XML_Converter.findNode(data, Saver.DUNGEON_NODE);
+        Node dungeonNode = XmlNodeMaster.findNode(data, Saver.DUNGEON_NODE);
         initDungeon(dungeonNode);
         game.init();
 //        initFlags(); dungeon is not set!
@@ -85,16 +86,16 @@ public class Loader {
         // master info
         // modes and switches?
 
-        List<Node> triggerNodes = XML_Converter.getNodeList(
-         XML_Converter.findNode(saveData, Saver.TRIGGERS_NODE));
+        List<Node> triggerNodes = XmlNodeMaster.getNodeList(
+         XmlNodeMaster.findNode(saveData, Saver.TRIGGERS_NODE));
         initTriggers(triggerNodes);
 
-        List<Node> effectNodes = XML_Converter.getNodeList(
-         XML_Converter.findNode(saveData, Saver.EFECTS_NODE));
+        List<Node> effectNodes = XmlNodeMaster.getNodeList(
+         XmlNodeMaster.findNode(saveData, Saver.EFECTS_NODE));
         initEffects(effectNodes);
 
-        List<String> objectNodes = XML_Converter.getNodeList(
-         XML_Converter.findNode(saveData, Saver.OBJ_NODE)).stream().map
+        List<String> objectNodes = XmlNodeMaster.getNodeList(
+         XmlNodeMaster.findNode(saveData, Saver.OBJ_NODE)).stream().map
          (node -> XML_Converter.getStringFromXML(node)).collect(Collectors.toList());
         List<Obj> objects = createObjects(objectNodes);
         initializeObjects(objects);
@@ -102,10 +103,10 @@ public class Loader {
 
     private static void initDungeon(Node dungeonNode) {
         String xml = XML_Converter.toString(dungeonNode);
-        String name = XML_Converter.findNode(
+        String name = XmlNodeMaster.findNode(
          xml, "Name")
          .getTextContent();
-        String path = XML_Converter.findNode(
+        String path = XmlNodeMaster.findNode(
          xml, "LevelFilePath")
          .getTextContent();
         DataUnitFactory factory = new DataUnitFactory(DungeonData.FORMAT);
@@ -152,7 +153,7 @@ public class Loader {
         for (String typesNode : objectNodes) {
             Document node = XML_Converter.getDoc(typesNode);
             DC_TYPE TYPE = DC_TYPE.getType(node.getNodeName());
-            for (Node subNode : XML_Converter.getNodeList(node)) {
+            for (Node subNode : XmlNodeMaster.getNodeList(node)) {
                 String sub = XML_Converter.getStringFromXML(subNode);
                 game.setIdManager(new DC_IdManager(game));
                 Map<PROPERTY, String> props = getPropsFromNode(sub);
@@ -160,7 +161,7 @@ public class Loader {
                 ObjType type = DataManager.getType(subNode.getNodeName(), TYPE);
                 //preset ID?! init containers by id... including buffs; but first create them
                 Ref ref = new Ref(game);
-                Node refNode = XML_Converter.findNode(sub, Saver.OBJ_NODE);
+                Node refNode = XmlNodeMaster.findNode(sub, Saver.OBJ_NODE);
                 if (refNode != null)
                     for (String substring : ContainerUtils.open(
                      refNode.getTextContent())) {
@@ -233,9 +234,9 @@ public class Loader {
     }
 
     private static Map<PARAMETER, String> getParamsFromNode(String sub) {
-        Node node = XML_Converter.findNode(sub, TypeBuilder.PROPS_NODE);
+        Node node = XmlNodeMaster.findNode(sub, TypeBuilder.PROPS_NODE);
         Map<PARAMETER, String> map = new XLinkedMap<>();
-        XML_Converter.getNodeList(node).forEach(subNode -> {
+        XmlNodeMaster.getNodeList(node).forEach(subNode -> {
             PARAMETER parameter = ContentValsManager.getPARAM(subNode.getNodeName());
             String value = subNode.getTextContent();
             map.put(parameter, value);
@@ -244,9 +245,9 @@ public class Loader {
     }
 
     private static Map<PROPERTY, String> getPropsFromNode(String sub) {
-        Node node = XML_Converter.findNode(sub, TypeBuilder.PROPS_NODE);
+        Node node = XmlNodeMaster.findNode(sub, TypeBuilder.PROPS_NODE);
         Map<PROPERTY, String> map = new XLinkedMap<>();
-        XML_Converter.getNodeList(node).forEach(subNode -> {
+        XmlNodeMaster.getNodeList(node).forEach(subNode -> {
             PROPERTY prop = ContentValsManager.getPROP(subNode.getNodeName());
             String value = subNode.getTextContent();
             map.put(prop, value);

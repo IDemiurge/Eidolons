@@ -6,7 +6,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.libgdx.bf.boss.entity.BossUnit;
+import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
@@ -70,7 +70,7 @@ public class FacingCondition extends ConditionImpl {
         if (getTemplate() != null) {
             Coordinates c = obj2.getCoordinates();
             if (obj2.isOverlaying()) if (obj2 instanceof BattleFieldObject) {
-                DIRECTION d = ((BattleFieldObject) obj2).getDirection();
+                DIRECTION d = obj2.getDirection();
                 if (d != null) {
                     c = c.getAdjacentCoordinate(d.rotate180(), 2);
                 }

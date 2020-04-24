@@ -15,7 +15,6 @@ public class ConditionalMultiTargeting extends SelectiveTargeting {
     private Formula nOfTargets;
     private boolean noDuplicates = true;
     private boolean ignoreGroupTargeting = true;
-    private boolean consecutive = true;
 
     public ConditionalMultiTargeting(
      Condition c) {
@@ -34,6 +33,7 @@ public class ConditionalMultiTargeting extends SelectiveTargeting {
 
     @Override
     public Conditions getConditions() {
+        boolean consecutive = true;
         if (consecutive) {
 //            conditions.add()
             selectedTargets.get(selectedTargets.size() - 1);

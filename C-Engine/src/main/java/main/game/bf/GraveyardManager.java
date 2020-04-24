@@ -13,7 +13,7 @@ import java.util.Set;
  * <portrait>
  * Destroy corpse if toughness or endurance reach -100%
  *
- * @param unit
+ *
  */
 public interface GraveyardManager {
     int GRAVE_ROWS = 4;
@@ -21,8 +21,6 @@ public interface GraveyardManager {
     String getRipString(Obj obj);
 
     void init();
-
-    ZCoordinates getZCoordinate(Coordinates c);
 
     Obj removeCorpse(Obj unit);
 

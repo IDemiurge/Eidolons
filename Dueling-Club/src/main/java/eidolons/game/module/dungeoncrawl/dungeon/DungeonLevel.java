@@ -1,29 +1,23 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.battlefield.vision.mapper.GenericMapper;
-import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
-import eidolons.game.module.dungeoncrawl.generator.LevelData;
-import eidolons.game.module.dungeoncrawl.generator.fill.RngFillMaster;
-import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner;
-import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
-import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
-import eidolons.game.module.dungeoncrawl.generator.test.LevelStats;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
-import eidolons.libgdx.texture.TextureCache;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.module.generator.GeneratorEnums.ROOM_CELL;
+import eidolons.game.module.generator.LevelData;
+import eidolons.game.module.generator.fill.RngFillMaster;
+import eidolons.game.module.generator.init.RngXmlMaster;
+import eidolons.game.module.generator.model.LevelModel;
+import eidolons.game.module.generator.test.LevelStats;
+import eidolons.game.module.generator.tilemap.TileMap;
+import eidolons.game.module.generator.tilemap.TileMapper;
 import main.content.CONTENT_CONSTS.FLIP;
-import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
-import main.content.values.properties.G_PROPS;
-import main.data.XLinkedMap;
+import main.content.enums.EncounterEnums;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
@@ -38,7 +32,6 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.*;
@@ -46,15 +39,13 @@ import java.util.*;
 /**
  * Created by JustMe on 7/20/2018.
  */
-public class DungeonLevel extends LevelLayer<LevelZone> {
-    public static final String NON_VOID_CELL = "Nonvoid Cell";
-    public static final String VOID_CELL = "Void Cell";
-    TileMap tileMap;
-    LevelModel model;
-    SUBLEVEL_TYPE sublevelType;
-    LOCATION_TYPE locationType;
-    List<ObjAtCoordinate> objects = new ArrayList<>();
-    Set<ObjAtCoordinate> units;
+public class DungeonLevel  {
+
+    private TileMap tileMap;
+    private LevelModel model;
+    private SUBLEVEL_TYPE sublevelType;
+    private LOCATION_TYPE locationType;
+    private List<ObjAtCoordinate> objects = new ArrayList<>();
     private String directionMapData;
     private int powerLevel;
     private Map<String, DIRECTION> directionMap;
@@ -69,16 +60,12 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     private LevelStats stats;
     private DUNGEON_STYLE mainStyle;
     private boolean surface;
-    private String entranceData;
-    private boolean pregen;
-    private Set<Coordinates> nonVoidCoordinates;
-    private Set<Coordinates> voidCoordinates;
-    private Map<List<ObjAtCoordinate>, RngMainSpawner.UNIT_GROUP_TYPE> unitGroups = new XLinkedMap<>();
-    private Collection<ObjAtCoordinate> unassignedUnits = new ArrayList<>();
 
     String name;
     private Map<Coordinates, FACING_DIRECTION> unitFacingMap;
-    private Map<Coordinates, CELL_IMAGE> cellTypeSpecialMap = new HashMap<>();
+    private Map<Coordinates, DungeonEnums.CELL_IMAGE> cellTypeSpecialMap = new HashMap<>();
+    private boolean pregen;
+    private String entranceData;
 
     public DungeonLevel(String name) {
         this(null, null, null);
@@ -111,23 +98,6 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         return toXml();
     }
 
-    public String getObjDataXml() {
-        collectUnits();
-//        for (LevelBlock block : getBlocks()) { already done?
-//            units.addAll(block.getUnits());
-//        }
-        String xml = "";
-        for (ObjAtCoordinate obj : units) {
-            xml += obj.getCoordinates() + "=" + obj.getType().getName() + ";";
-        }
-        for (ObjAtCoordinate obj : objects) {
-            xml += obj.getCoordinates() + "=" + obj.getType().getName() + ";";
-        }
-//objects.stream().map(d-> d.getCoordinates() + "=" +d.getType().getName()).
-        return XML_Converter.wrap(RngXmlMaster.OBJECTS_NODE, xml);
-    }
-
-    @Override
     public String toXml() {
         //TODO save original model map!
         model.rebuildCells();
@@ -160,11 +130,11 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
         String z = "";
 
-        for (LevelZone levelZone : getSubParts()) {
-            z += "\n" + levelZone.toXml();
-        }
+//        for (LevelZone levelZone : getSubParts()) {
+//            z += "\n" + levelZone.toXml();
+//        }
         xml += "\n" + XML_Converter.wrap(RngXmlMaster.ZONES_NODE, z);
-        xml += "\n" + XML_Converter.wrap(RngXmlMaster.LEVEL_DATA_NODE, getData().toString());
+        xml += "\n" + XML_Converter.wrap(RngXmlMaster.LEVEL_DATA_NODE, getLevelData().toString());
         xml += "\n" + XML_Converter.wrap(RngXmlMaster.DIRECTION_MAP_NODE, directionMapData == null ?
                 "" //TODO
                 : directionMapData);
@@ -197,13 +167,9 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
                 aiData);
     }
 
-    @Override
-    public List<LevelZone> getSubParts() {
-        return model.getZones();
-    }
-
+    @Deprecated
     public List<LevelZone> getZones() {
-        return getSubParts();
+        return null;
     }
 
     public TileMap getTileMap() {
@@ -237,35 +203,16 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public List<ObjAtCoordinate> getObjects() {
-        if (!ListMaster.isNotEmpty(objects)) {
-            objects = new ArrayList<>();
-            for (LevelBlock block : getBlocks()) {
-                objects.addAll(block.getObjects());
-            }
-        }
+//        if (!ListMaster.isNotEmpty(objects)) {
+//            objects = new ArrayList<>();
+//            for (LevelBlock block : getBlocks()) {
+//                objects.addAll(block.getObjects());
+//            }
+//        }
         return objects;
     }
-
-    public Set<ObjAtCoordinate> collectUnits() {
-        units = new LinkedHashSet<>();
-        for (LevelBlock block : getBlocks()) {
-            units.addAll(block.getUnits());
-        }
-        units.addAll(unassignedUnits);
-        return units;
-    }
-
+@Deprecated
     public LevelBlock getBlockForCoordinate(Coordinates coordinates) {
-        if (cache.containsKey(coordinates))
-            return cache.get(coordinates);
-        for (LevelZone zone : getSubParts()) {
-            for (LevelBlock block : zone.getSubParts()) {
-                if (block.getCoordinatesList().contains(coordinates)) {
-                    cache.put(coordinates, block);
-                    return block;
-                }
-            }
-        }
         return null;
     }
 
@@ -313,7 +260,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         this.dungeonType = dungeonType;
     }
 
-    public LevelData getData() {
+    public LevelData getLevelData() {
         return model.getData();
     }
 
@@ -323,38 +270,10 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     public List<LevelBlock> getBlocks() {
         List<LevelBlock> list = new ArrayList<>();
-        for (LevelZone zone : getSubParts()) {
-            list.addAll(zone.getSubParts());
-        }
+//        for (LevelZone zone : getSubParts()) {
+//            list.addAll(zone.getSubParts());
+//        }
         return list;
-    }
-
-    public boolean isVoid(int i, int j) {
-        if (CoreEngine.isIggDemo()) {
-            if (isVoidExplicit(i, j)) {
-                return true;
-            }
-            return false;
-        }
-        Coordinates c = Coordinates.get(i, j);
-        if (tileMap.getMap().get(c) != ROOM_CELL.VOID)
-            return false;
-        if (nonVoidCoordinates != null) {
-            if (nonVoidCoordinates.contains(c))
-                return false;
-        }
-        if (isVoidExplicit(i, j)) {
-            return true;
-        }
-        return getBlockForCoordinate(c) == null;
-    }
-
-    public boolean isVoidExplicit(int i, int j) {
-        if (voidCoordinates != null) {
-            if (voidCoordinates.contains(Coordinates.get(i, j)))
-                return true;
-        }
-        return false;
     }
 
     public String getExitType() {
@@ -431,6 +350,9 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         for (LevelBlock block : getBlocks()) {
             MapMaster.addToIntegerMap(map, block.getZone().getStyle(), 1);
         }
+        if (map.isEmpty()) {
+            return DUNGEON_STYLE.Somber;
+        }
         return mainStyle = map.firstKey();
         //        return new ArrayList<>(map.values()).getVar(0);
         //        return map.values().iterator().next();
@@ -445,173 +367,106 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         return surface;
     }
 
-    Map<LevelBlock, CELL_IMAGE> cellTypeMap = new HashMap();
+    Map<LevelBlock, DungeonEnums.CELL_IMAGE> cellTypeMap = new HashMap();
 
     public int getCellVariant(int i, int j) {
         return 0;
     }
 
-    public CELL_IMAGE getCellType(int i, int j) {
+    public DungeonEnums.CELL_IMAGE getCellType(int i, int j) {
 
         Coordinates c = new Coordinates(i, j);
-        CELL_IMAGE img = cellTypeSpecialMap.get(c);
+        DungeonEnums.CELL_IMAGE img = cellTypeSpecialMap.get(c);
         if (img != null) {
             return img;
         }
-        if (EidolonsGame.BRIDGE || EidolonsGame.BOSS_FIGHT) {
-            return CELL_IMAGE.octagonal;
-        }
-
 
         LevelBlock block = getBlockForCoordinate(c);
-        img = cellTypeMap.get(block);
+        if (block != null) {
+            img = block.getCellType();
+        }
+
         if (img == null) {
             DUNGEON_STYLE style = block == null ? getMainStyle() : block.getZone().getStyle();
             img = getCellImageType(style);
-            if (!TextureCache.isImage(StrPathBuilder.build(PathFinder.getCellImagesPath(), img + ".png"))) {
-                style = getMainStyle();
-                img = getCellImageType(style);
-            }
+//           TODO  if (!TextureCache.isImage(StrPathBuilder.build(PathFinder.getCellImagesPath(), img + ".png"))) {
+//                style = getMainStyle();
+//                img = getCellImageType(style);
+//            }
             cellTypeMap.put(block, img);
         }
         return img;
     }
 
     public String getCellImgPath(int i, int j) {
-        CELL_IMAGE img = getCellType(i, j);
+        DungeonEnums.CELL_IMAGE img = getCellType(i, j);
 //        CELL_IMAGE_SUFFIX suffix =
         return StrPathBuilder.build(PathFinder.getCellImagesPath(), img + ".png");
     }
 
-    public Map<Coordinates, CELL_IMAGE> getCellTypeSpecialMap() {
+    public Map<Coordinates, DungeonEnums.CELL_IMAGE> getCellTypeSpecialMap() {
         return cellTypeSpecialMap;
     }
 
-    private CELL_IMAGE getCellImageType(DUNGEON_STYLE style) {
+    private DungeonEnums.CELL_IMAGE getCellImageType(DUNGEON_STYLE style) {
         switch (style) {
             case Somber:
                 if (RandomWizard.chance(56))
-                    return CELL_IMAGE.star;
+                    return DungeonEnums.CELL_IMAGE.star;
                 if (RandomWizard.chance(66))
-                    return CELL_IMAGE.octagonal;
+                    return DungeonEnums.CELL_IMAGE.octagonal;
             case DWARF:
                 if (RandomWizard.chance(66))
-                    return CELL_IMAGE.diamond;
-                return CELL_IMAGE.octagonal;
+                    return DungeonEnums.CELL_IMAGE.diamond;
+                return DungeonEnums.CELL_IMAGE.octagonal;
             case SPIDER:
-                return CELL_IMAGE.natural;
+            case Stony:
+            case Pagan:
+                return DungeonEnums.CELL_IMAGE.natural;
             case ROGUE:
                 if (RandomWizard.chance(66))
-                    return CELL_IMAGE.tiles;
-                return CELL_IMAGE.cross;
+                    return DungeonEnums.CELL_IMAGE.tiles;
+                return DungeonEnums.CELL_IMAGE.cross;
 
             case Knightly:
             case Holy:
                 if (RandomWizard.chance(66)) {
-                    return CELL_IMAGE.cross;
+                    return DungeonEnums.CELL_IMAGE.cross;
                 }
-                return CELL_IMAGE.diamond;
-            case Stony:
-            case Pagan:
-                return CELL_IMAGE.natural;
+                return DungeonEnums.CELL_IMAGE.diamond;
             case DarkElegance:
             case PureEvil:
                 if (RandomWizard.chance(66))
-                    return CELL_IMAGE.octagonal;
+                    return DungeonEnums.CELL_IMAGE.octagonal;
             case Brimstone:
 //                if (RandomWizard.chance(66))
 //                    return CELL_IMAGE.circle;
             case Grimy:
                 if (RandomWizard.chance(66))
-                    return CELL_IMAGE.tiles;
+                    return DungeonEnums.CELL_IMAGE.tiles;
             case Cold:
             case Arcane:
                 if (RandomWizard.chance(66))
-                    return CELL_IMAGE.star;
+                    return DungeonEnums.CELL_IMAGE.star;
         }
-        return CELL_IMAGE.tiles;
+        return DungeonEnums.CELL_IMAGE.tiles;
     }
 
     public String getEntranceData() {
         return entranceData;
     }
 
-    public void setEntranceData(String entranceData) {
-        this.entranceData = entranceData;
-    }
-
     public boolean isPregen() {
         return pregen;
     }
 
-    public void setPregen(boolean pregen) {
-        this.pregen = pregen;
-    }
-
-    public void setNonVoidCoordinates(Set<Coordinates> nonVoidCoordinates) {
-        this.nonVoidCoordinates = nonVoidCoordinates;
-    }
-
-    public Set<Coordinates> getNonVoidCoordinates() {
-        if (nonVoidCoordinates == null) {
-            nonVoidCoordinates = new LinkedHashSet<>();
-        }
-        return nonVoidCoordinates;
-    }
-
-    public Set<Coordinates> getVoidCoordinates() {
-        if (voidCoordinates == null) {
-            voidCoordinates = new LinkedHashSet<>();
-        }
-        return voidCoordinates;
-    }
 
     public void addUnitGroup(LevelBlock levelBlock,
-                             List<ObjAtCoordinate> unitsAtCoordinates, RngMainSpawner.UNIT_GROUP_TYPE groupType) {
+                             List<ObjAtCoordinate> unitsAtCoordinates, EncounterEnums.UNIT_GROUP_TYPE groupType) {
 
-        unitGroups.put(unitsAtCoordinates, groupType);
         levelBlock.getUnitGroups().put(unitsAtCoordinates, groupType);
     }
 
-    public void addObj(ObjAtCoordinate obj) {
-        if (obj.getType().getName().equalsIgnoreCase(VOID_CELL)) {
-            getVoidCoordinates().add(obj.getCoordinates());
-            return;
-        }
-        if (obj.getType().getName().equalsIgnoreCase(NON_VOID_CELL)) {
-            getNonVoidCoordinates().add(obj.getCoordinates());
-            return;
-        }
-        if (obj.getType().getOBJ_TYPE_ENUM() == DC_TYPE.UNITS) {
-            addUnit(obj);
-        } else {
-            addStructure(obj);
-        }
-    }
-
-    private void addStructure(ObjAtCoordinate obj) {
-        getObjects().add(obj);
-        LevelBlock b = getBlockForCoordinate(obj.getCoordinates());
-        if (b != null)
-            b.getObjects().add(obj);
-    }
-
-    private void addUnit(ObjAtCoordinate obj) {
-        LevelBlock b = getBlockForCoordinate(obj.getCoordinates());
-        if (b != null)
-            b.getUnits().add(obj);
-        else {
-            getUnassignedUnits().add(obj);
-            LogMaster.log(1, "Added into Void  " + obj);
-        }
-    }
-
-    public Collection<ObjAtCoordinate> getUnassignedUnits() {
-        if (unassignedUnits == null) {
-            this.unassignedUnits = new LinkedHashSet<>();
-        }
-        return unassignedUnits;
-    }
 
     public String getLevelName() {
         return name;
@@ -624,7 +479,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     public void setUnitFacingMap(Map<Coordinates, FACING_DIRECTION> unitFacingMap) {
         this.unitFacingMap = unitFacingMap;
     }
-
+//TODO dc init fix
     public void initUnitFacingMap(Map<String, String> customDataMap) {
         Map<Coordinates, FACING_DIRECTION> map = new HashMap<>();
         for (String s : customDataMap.keySet()) {
@@ -634,11 +489,11 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public void initCellTypeMap(Map<String, String> customDataMap) {
-        Map<Coordinates, CELL_IMAGE> map = new HashMap<>();
+        Map<Coordinates, DungeonEnums.CELL_IMAGE> map = new HashMap<>();
         s:
         for (String s : customDataMap.keySet()) {
             for (String substring : ContainerUtils.openContainer(customDataMap.get(s))) {
-                CELL_IMAGE type = new EnumMaster<CELL_IMAGE>().retrieveEnumConst(CELL_IMAGE.class, substring);
+                DungeonEnums.CELL_IMAGE type = new EnumMaster<DungeonEnums.CELL_IMAGE>().retrieveEnumConst(DungeonEnums.CELL_IMAGE.class, substring);
                 if (type != null) {
                     map.put(new Coordinates(s), type);
                     continue s;
@@ -649,38 +504,18 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         cellTypeSpecialMap = (map);
     }
 
+    public LevelZone getZoneById(int index) {
 
-    public enum CELL_IMAGE {
-        tiles,
-        diamond,
-        circle("cr"),
-        star,
-        cross,
-        natural,
-        octagonal("oct"),
-        ;
-        String name;
-
-        CELL_IMAGE() {
-            name = name();
+        for (LevelZone zone : getZones()) {
+            if (zone.getIndex() == index) {
+                return zone;
+            }
         }
-
-        CELL_IMAGE(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
+        return null;
     }
 
-    public enum CELL_IMAGE_SUFFIX {
-        dark,
-        lite,
-        hl,
-        rough,
-
+@Deprecated
+    public Module[] getSubParts() {
+        return new Module[0];
     }
-
 }

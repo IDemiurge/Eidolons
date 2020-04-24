@@ -55,13 +55,13 @@ public class PatrolAi extends CyclicGroupBehavior {
         Coordinates last = (i == 0) ? origin :
          cycledArgs[i - 1].getCoordinates();
 
-        List<Coordinates> valid = block.getCoordinatesList().stream().filter(c ->
+        List<Coordinates> valid = block.getCoordinatesSet().stream().filter(c ->
          last.dst_(c) < getMaxDistance() &&
           last.dst_(c) > getMinDistance() &&
           isTargetValid(c, last)
         ).collect(Collectors.toList());
         if (valid.isEmpty()) {
-            valid = block.getCoordinatesList().stream().filter(c ->
+            valid = block.getCoordinatesSet().stream().filter(c ->
              isTargetValid(c, last)
             ).collect(Collectors.toList());
         }

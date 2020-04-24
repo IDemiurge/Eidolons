@@ -9,11 +9,14 @@ import main.swing.XLine;
 import main.system.auxiliary.secondary.Bools;
 import main.system.graphics.GuiManager;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class PositionMaster {
+public class PositionMaster   {
 
-    private static Double distances[][]  = new Double[50][50];
+    private static Double[][] distances = new Double[50][50];
+    private static Map<Integer, Double[][]> cache = new HashMap<>();
 
     public static Coordinates getMiddleCoordinate(FACING_DIRECTION side) {
         switch (side) {
@@ -82,7 +85,7 @@ public class PositionMaster {
     public static int getMaxStraightDistance(Coordinates coordinates, Coordinates cell) {
 
         int range = Math.max(Math.abs(getX_Diff(coordinates, cell)), Math.abs(getY_Diff(
-         coordinates, cell)));
+                coordinates, cell)));
         return range;
     }
 
@@ -103,7 +106,13 @@ public class PositionMaster {
             return 0;
         int x = getX_Diff(coordinates1, coordinates2);
         int y = getY_Diff(coordinates1, coordinates2);
-        Double result = distances[ x][ y] ;
+        if (x >= distances.length) {
+            return Math.sqrt(x * x + y * y);
+        }
+        if (y >= distances[0].length) {
+            return Math.sqrt(x * x + y * y);
+        }
+        Double result = distances[x][y];
         if (result != null)
             return result;
         if (x == 0) {
@@ -117,6 +126,7 @@ public class PositionMaster {
         distances[x][y] = result;
         return result;
     }
+
     public static double getExactDistanceNoCache(Coordinates coordinates1, Coordinates coordinates2) {
         int x = getX_Diff(coordinates1, coordinates2);
         int y = getY_Diff(coordinates1, coordinates2);
@@ -227,14 +237,14 @@ public class PositionMaster {
     }
 
     public static double getDistanceToLine(
-     int x,
-     int y,
-     int x1,
-     int y1,
-     int x2,
-     int y2) {
+            int x,
+            int y,
+            int x1,
+            int y1,
+            int x2,
+            int y2) {
         double result = Math.abs((y2 - y1) * x - (x2 - x1) * y - y2 * x1 + x2 * y1)
-         / Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
+                / Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
         return result;
     }
 
@@ -255,13 +265,9 @@ public class PositionMaster {
         }
         Boolean toTheLeftOr = isToTheLeftOr(obj1, obj2);
         if (toTheLeftOr == null) {
-            if (west_or_east != null) {
-                return false;
-            }
+            return west_or_east == null;
         } else if (toTheLeftOr) {
-            if (!Bools.isTrue(west_or_east)) {
-                return false;
-            }
+            return Bools.isTrue(west_or_east);
         }
 
         return true;
@@ -277,19 +283,27 @@ public class PositionMaster {
 
     }
 
-    public static void initDistancesCache( ) {
-        initDistancesCache(GuiManager.getBF_CompDisplayedCellsX(),
-         GuiManager.getBF_CompDisplayedCellsY());
+    public static void initDistancesCache() {
+        initDistancesCache(null, GuiManager.getBF_CompDisplayedCellsX(),
+                GuiManager.getBF_CompDisplayedCellsY());
     }
-        public static void initDistancesCache(int w, int h) {
-        distances = new Double[w][h] ;
+
+    public static void initDistancesCache(Integer id, int w, int h) {
+        if (id != null) {
+            distances = cache.get(id);
+        }
+        if (id==null || distances == null) {
+            distances = new Double[w][h];
+            cache.put(id, distances);
+        }
     }
 
     public static int getLogicalY(int y) {
-        return getY()- y - 1;
+        return getY() - y - 1;
     }
+
     public static int getOpenGlY(int y) {
-        return getY()- y - 1;
+        return getY() - y - 1;
     }
 
     public enum SHAPES {
@@ -298,7 +312,8 @@ public class PositionMaster {
                 return true;
             }
         },
-        STAR, CROSS,;
+        STAR, CROSS,
+        ;
 
         public boolean isRemoveBase() {
             return false;

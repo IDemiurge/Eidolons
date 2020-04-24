@@ -129,7 +129,7 @@ implements HqActor {
         List<Spell> list =    new ArrayList<>( getSpells()) ;
         Collections.sort(list, getSorter());
         ListMaster.fillWithNullElements(list, size);
-        return list.toArray(new Spell[list.size()]);
+        return list.toArray(new Spell[0]);
     }
 
     protected Comparator<Spell> getSorter() {

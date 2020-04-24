@@ -711,6 +711,8 @@ public class ItemGenerator implements GenericItemGenerator {
 
     public void init() {
         //        if (!basicMode)
+        if (CoreEngine.TEST_LAUNCH)
+            return;
         ContentGenerator.initMaterials();
         if (!isGenerationOn()) {
             return;
@@ -733,13 +735,13 @@ public class ItemGenerator implements GenericItemGenerator {
         }
         // baseGarmentTypes.addAll(DataManager.getBaseTypes(OBJ_TYPES.GARMENT));
 
-        DataManager.setBaseWeaponTypes(baseWeaponTypes.toArray(new ObjType[baseWeaponTypes.size()]));
+        DataManager.setBaseWeaponTypes(baseWeaponTypes.toArray(new ObjType[0]));
 
         if (!EidolonsGame.BRIDGE){
-        DataManager.setBaseGarmentTypes(baseGarmentTypes.toArray(new ObjType[baseGarmentTypes.size()]));
-        DataManager.setBaseArmorTypes(baseArmorTypes.toArray(new ObjType[baseArmorTypes.size()]));
-        DataManager.setBaseJewelryTypes(baseJewelryTypes.toArray(new ObjType[baseJewelryTypes.size()]));
-        DataManager.setBaseItemTypes(baseItemTypes.toArray(new ObjType[baseItemTypes.size()]));
+        DataManager.setBaseGarmentTypes(baseGarmentTypes.toArray(new ObjType[0]));
+        DataManager.setBaseArmorTypes(baseArmorTypes.toArray(new ObjType[0]));
+        DataManager.setBaseJewelryTypes(baseJewelryTypes.toArray(new ObjType[0]));
+        DataManager.setBaseItemTypes(baseItemTypes.toArray(new ObjType[0]));
         }
         //Arrays.
         List<ObjType> list = new ArrayList<>();
@@ -750,7 +752,7 @@ public class ItemGenerator implements GenericItemGenerator {
         list.addAll(baseJewelryTypes);
         list.addAll(baseItemTypes);
         }
-        DataManager.setBaseAllItemTypes(list.toArray(new ObjType[list.size()]));
+        DataManager.setBaseAllItemTypes(list.toArray(new ObjType[0]));
         //        defaultGenerator = new ItemGenerator(false);
         //        basicGenerator = new ItemGenerator(true);
         try {
@@ -800,6 +802,9 @@ public class ItemGenerator implements GenericItemGenerator {
         ObjType baseType = DataManager.getType(typeName, type, true);
         if (baseType == null)
             return null;
+        if (CoreEngine.TEST_LAUNCH) {
+            return baseType;
+        }
         return generateItem(weapon, quality, material, baseType);
 
     }

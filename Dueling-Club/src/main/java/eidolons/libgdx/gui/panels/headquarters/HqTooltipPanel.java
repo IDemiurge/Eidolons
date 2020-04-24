@@ -1,7 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -9,17 +8,11 @@ import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
-import eidolons.libgdx.gui.panels.ScrollPanel;
-import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import eidolons.libgdx.gui.panels.dc.logpanel.text.ScrollTextWrapper;
 import eidolons.libgdx.gui.tooltips.Tooltip;
-import eidolons.system.options.GameplayOptions;
-import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.RandomWizard;
 
 import java.util.Collection;
-import java.util.Collections;
 
 public class HqTooltipPanel extends TablePanelX {
 

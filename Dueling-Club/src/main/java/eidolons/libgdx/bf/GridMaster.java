@@ -4,17 +4,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.bf.grid.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.BaseView;
+import eidolons.libgdx.bf.grid.cell.GridCellContainer;
+import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.gui.CursorPosVector2;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
+import main.content.enums.DungeonEnums;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.graphics.GuiManager;
 
 /**
  * Created by JustMe on 1/29/2017.
@@ -56,11 +58,11 @@ public class GridMaster {
                                                  boolean center,
                                                  boolean camera) {
         return getVectorForCoordinate(sourceCoordinates, center, camera, false,
-                DungeonScreen.getInstance().getGridPanel());
+                ScreenMaster.getDungeonGrid());
     }
 
     public static Coordinates invertGdxY(Coordinates c) {
-        return new Coordinates(c.x, DungeonScreen.getInstance().getGridPanel().getRows() - 1 - c.getY());
+        return new Coordinates(c.x, ScreenMaster.getDungeonGrid().getFullRows() - 1 - c.getY());
     }
 
     public static Vector2 getVectorForCoordinate(Coordinates sourceCoordinates,
@@ -69,7 +71,7 @@ public class GridMaster {
 
 //        InputController controller = DungeonScreen.getInstance().getController();
         float x = sourceCoordinates.getX() * CELL_W;
-        float y = (gridPanel.getRows()
+        float y = (gridPanel.getFullRows()
                 - (gdxY ? sourceCoordinates.getY() + 1 : sourceCoordinates.getY())) * CELL_H;
 
         if (camera) {
@@ -87,9 +89,14 @@ public class GridMaster {
         return new Vector2(x, y);
     }
 
+    public static Coordinates getCenter() {
+        int x = Math.round((GuiManager.getCurrentLevelCellsX()  / 2));
+        int y = Math.round((GuiManager.getCurrentLevelCellsY() / 2));
+        return (Coordinates.get(x, y));
+    }
     public static Coordinates getCameraCenter() {
-        int x = Math.round((DungeonScreen.getInstance().getController().getXCamPos() ) / 128);
-        int y = Math.round((DungeonScreen.getInstance().getController().getYCamPos() ) / 128);
+        int x = Math.round((ScreenMaster.getScreen().getController().getXCamPos() ) / 128);
+        int y = Math.round((ScreenMaster.getScreen().getController().getYCamPos() ) / 128);
         return invertGdxY(Coordinates.get(x, y));
     }
     public static Vector2 getMouseCoordinates() {
@@ -168,7 +175,7 @@ public class GridMaster {
             }
         }
 
-        public static String getImagePath (DungeonLevel.CELL_IMAGE cellType,int cellVariant){
+        public static String getImagePath (DungeonEnums.CELL_IMAGE cellType, int cellVariant){
             String suffix = getCellImgSuffix(cellVariant);
 
             return StrPathBuilder.build(PathFinder.getCellImagesPath(), cellType + suffix + ".png");

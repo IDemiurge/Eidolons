@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;

@@ -1,7 +1,7 @@
 package main.system.auxiliary.data;
 
 import main.data.filesys.PathFinder;
-import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.system.PathUtils;
 import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster;
@@ -62,7 +62,7 @@ public class FileManager {
 //                }
                 return "";
             }
-            if (!file.getPath().contains(PathFinder.getRootPath()))
+            if (!PathUtils.fixSlashes(file.getPath()).toLowerCase().contains(PathFinder.getRootPath().toLowerCase()))
                 return readFile(FileManager.getFile(PathFinder.getRootPath() + file.getPath()),
                         lineSeparator);
             return "";
@@ -153,7 +153,7 @@ public class FileManager {
                     break;
                 }
                 if (entry.getName().equals("content.xml")) {
-                    String xmlString = "";
+                    StringBuilder xmlString = new StringBuilder();
                     while (true) {
 
                         byte[] array = new byte[3000000]; // big enough for
@@ -165,15 +165,15 @@ public class FileManager {
                         }
                         new Inflater().inflate(array);
                         String string = new String(array);
-                        xmlString += string.substring(0, n);
+                        xmlString.append(string, 0, n);
                     }
 
-                    Node node = XML_Converter.findAndBuildNode(xmlString, "office:text");
-                    String string = "";
-                    for (Node child : XML_Converter.getNodeList(node)) {
-                        string += child.getTextContent();
+                    Node node = XmlNodeMaster.findAndBuildNode(xmlString.toString(), "office:text");
+                    StringBuilder string = new StringBuilder();
+                    for (Node child : XmlNodeMaster.getNodeList(node)) {
+                        string.append(child.getTextContent());
                     }
-                    return string;
+                    return string.toString();
                 }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
@@ -252,8 +252,11 @@ public class FileManager {
 
     public static String formatPath(String path, boolean force, boolean removeLastSlash) {
         String v = formatPath(path, force);
-        return v.substring(0, v.length() - 1);
+        if (removeLastSlash)
+            return v.substring(0, v.length() - 1);
+        return v;
     }
+
 
     public static String formatPath(String path, boolean force) {
         StringBuilder formatted = new StringBuilder();
@@ -265,12 +268,12 @@ public class FileManager {
             index += PathFinder.getRootPath().length() - 1;
         }
         String afterClass = force ? path : path.substring(
-                index, path.length());
+                index);
 
         //fix slashes
         if (!afterClass.isEmpty()) {
             for (String sub : PathUtils.splitPath(afterClass)) {
-                formatted.append(StringMaster.replace(true, sub, "/", "") + "/");
+                formatted.append(StringMaster.replace(true, sub, "/", "")).append("/");
             }
         }
         if (force) {
@@ -569,7 +572,7 @@ public class FileManager {
         List<File> list = new ArrayList<>();
         for (File f : folder.listFiles()) {
             if (subDirectories) {
-                list.addAll(getFilesFromDirectory(f.getPath(), allowDirectories, subDirectories));
+                list.addAll(getFilesFromDirectory(f.getPath(), allowDirectories, true));
             }
             if (f.isDirectory()) {
                 if (!allowDirectories) {
@@ -650,5 +653,9 @@ public class FileManager {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+    }
+
+    public static String getFileName(String template) {
+        return StringMaster.cropFormat(getFile(template).getName());
     }
 }

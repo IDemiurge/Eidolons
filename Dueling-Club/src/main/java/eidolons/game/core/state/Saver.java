@@ -122,10 +122,7 @@ public class Saver {
     }
 
     private static String getDungeonNodeXml(DC_GameState state) {
-        return XML_Converter.wrap(DUNGEON_NODE,
-         state.getGame().getDungeonMaster().getDungeon().toXml());
-
-
+        return null;
     }
 
 }

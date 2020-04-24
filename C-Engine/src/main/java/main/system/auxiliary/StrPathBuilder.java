@@ -26,12 +26,12 @@ public class StrPathBuilder {
     }
 
     public static String build(List<String> list) {
-        return build(list.toArray(new String[list.size()]));
+        return build(list.toArray(new String[0]));
     }
 
     public StringBuilder append(String str) {
         if (str == null) return builder;
-        return builder.append(str + PathUtils.getPathSeparator());
+        return builder.append(str).append(PathUtils.getPathSeparator());
     }
 
     public String build_(Object... strings) {
@@ -47,7 +47,7 @@ public class StrPathBuilder {
             if (s.endsWith(PathUtils.getUniversalPathSeparator()))
                 builder.append(s);
             else
-                builder.append(s + PathUtils.getUniversalPathSeparator());
+                builder.append(s).append(PathUtils.getUniversalPathSeparator());
         }
         String result = builder.toString();
         if (cropLast)

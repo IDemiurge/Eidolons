@@ -55,7 +55,6 @@ public class DungeonXmlCleaner {
             }
             if (checkWall(substring)) {
                 list.add(substring);
-                continue;
             }
 
         }

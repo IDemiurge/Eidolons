@@ -19,7 +19,6 @@ public abstract class WrappedContainer<E> extends G_Panel {
     protected int wrapped;
     protected int estimatedFullSize;
     private Map<E, G_Panel> compMap = new HashMap<>();
-    private int wrap = 2;
 
     public WrappedContainer(boolean vertical) {
         this.vertical = vertical;
@@ -42,6 +41,7 @@ public abstract class WrappedContainer<E> extends G_Panel {
     }
 
     protected int getWrap() {
+        int wrap = 2;
         return wrap;
     }
 

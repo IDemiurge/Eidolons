@@ -36,8 +36,6 @@ public interface VALUE extends Serializable { //TODO test serializable is needed
 
     String[] getEntityTypes();
 
-    Metainfo getMetainfo();
-
     String getDefaultValue();
 
     boolean isLowPriority();
@@ -63,6 +61,14 @@ public interface VALUE extends Serializable { //TODO test serializable is needed
     Object getSpecialDefault(OBJ_TYPE type);
 
     INPUT_REQ getInputReq();
+
+    default void setIconPath(String path) {
+
+    }
+
+    default String getIconPath() {
+        return null ;
+    }
 
     enum INPUT_REQ {
         SINGLE_TYPE,

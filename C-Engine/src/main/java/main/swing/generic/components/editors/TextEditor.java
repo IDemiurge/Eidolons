@@ -4,6 +4,7 @@ import main.swing.generic.components.misc.G_Table;
 import main.system.graphics.FontMaster;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
 
 public class TextEditor implements EDITOR {
 
@@ -68,7 +69,7 @@ public class TextEditor implements EDITOR {
     public void launch(G_Table table, int row, int column, String value, boolean forced) {
         this.forced = forced;
         try {
-            launch(table, row, column, value);
+            launch(table, row, column, value,null );
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
@@ -78,7 +79,7 @@ public class TextEditor implements EDITOR {
     }
 
     @Override
-    public void launch(JTable table, int row, int column, String prevValue) {
+    public void launch(JTable table, int row, int column, String prevValue, MouseEvent mouseEvent) {
         String newVal = null;
         try {
             newVal = launch(prevValue);

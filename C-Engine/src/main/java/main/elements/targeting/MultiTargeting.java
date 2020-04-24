@@ -109,7 +109,7 @@ public class MultiTargeting extends TargetingImpl {
         }
         GroupImpl group = new GroupImpl(ref.getGame(), ids, ignoreGroupTargeting);
         ref.setGroup(group);
-        return result;
+        return true;
     }
 
     public synchronized boolean isIgnoreGroupTargeting() {

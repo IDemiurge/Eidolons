@@ -1,15 +1,11 @@
 package eidolons.libgdx.particles.util;
 
-import main.data.filesys.PathFinder;
 import main.system.PathUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.io.File;
 import java.util.List;
-
-import static eidolons.libgdx.GdxImageMaster.cropImagePath;
-import static main.system.auxiliary.data.FileManager.formatPath;
 
 public class VfxPresetFixer {
 

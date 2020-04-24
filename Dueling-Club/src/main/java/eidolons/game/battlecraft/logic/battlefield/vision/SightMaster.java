@@ -7,8 +7,8 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.netherflame.igg.death.ShadowMaster;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISION_MODE;
@@ -141,6 +141,12 @@ public class SightMaster {
     }
 
     private Boolean isBlocked(DC_Obj target, BattleFieldObject source) {
+        if (source.getVisionMode() == VISION_MODE.X_RAY_VISION)
+        {
+            master.getVisionController().getClearshotMapper().set(source, target, false);
+            return false;
+        }
+
         Boolean clearShot = master.getVisionController().getClearshotMapper().get(source,
                 target);
         if (clearShot != null) {
@@ -210,7 +216,7 @@ public class SightMaster {
         cache.remove(obj);
     }
 
-    private DequeImpl<Coordinates> getVisibleCoordinatesSecondary(BattleFieldObject source) {
+    protected DequeImpl<Coordinates> getVisibleCoordinatesSecondary(BattleFieldObject source) {
         return getVisibleCoordinates(source, true);
     }
 
@@ -223,14 +229,13 @@ public class SightMaster {
         switch (mode) {
             case INFRARED_VISION:
                 break; // see the heat
+            case X_RAY_VISION: //will ignore blocks
             case NORMAL_VISION:
                 return getVisibleCoordinatesNormalSight(source, extended);
             case TRUE_SIGHT:
                 break; // see all
             case WARP_SIGHT:
                 break; // see the living
-            case X_RAY_VISION:
-                break; // see right thru
         }
         return null;
     }
@@ -325,9 +330,10 @@ public class SightMaster {
                     return UNIT_VISION.IN_SIGHT;
                 }
             }
-            if (isBlocked(unit, activeUnit)) {
-                return UNIT_VISION.BLOCKED;
-            }
+            if (activeUnit.getVisionMode() != VISION_MODE.X_RAY_VISION)
+                if (isBlocked(unit, activeUnit)) {
+                    return UNIT_VISION.BLOCKED;
+                }
             return UNIT_VISION.BEYOND_SIGHT;
         } else {
             return (result) ? UNIT_VISION.IN_PLAIN_SIGHT : UNIT_VISION.IN_SIGHT;
@@ -355,6 +361,8 @@ public class SightMaster {
                 cacheSecondary.put(source, coordinates);
             }
             result = coordinates.contains(target.getCoordinates());
+//            main.system.auxiliary.log.LogMaster.log(1,result+" VISION SECTOR for "
+//                    +target.getNameAndCoordinate());
             if (result) {
 //                LogMaster.log(0, target + " is half-visible: " + coordinates);
                 return false;
@@ -375,7 +383,7 @@ public class SightMaster {
         resetUnitVision(observer, master.getGame().getStructures());
         resetUnitVision(observer, master.getGame().getUnits());
         //        master.getVisionController().getUnitVisionMapper().
-        Set<Obj> cells = isFastMode() ? master.getGame().getBattleFieldManager().
+        Set<DC_Cell> cells = isFastMode() ? master.getGame().getBattleFieldManager().
                 getCellsWithinRange(observer, observer.getMaxVisionDistance()
                 ) : master.getGame().getCells();
         resetUnitVision(observer, cells);
@@ -393,28 +401,28 @@ public class SightMaster {
                 master.getVisionController().getUnitVisionMapper().set(observer, unit, null);
                 continue;
             }
-            UNIT_VISION status = getUnitVisionStatusPrivate(unit, (Unit) observer);
+            UNIT_VISION status = getUnitVisionStatusPrivate(unit, observer);
             master.getVisionController().getUnitVisionMapper().set(observer, unit, status);
         }
     }
 
-    public void resetUnitVision(BattleFieldObject observer, DC_Obj unit) {
+    public void resetUnitVision(BattleFieldObject observer, DC_Obj object) {
         UNIT_VISION status = null;
 
         if (observer.isMine())
-            status = getUnitVisionStatusPrivate(unit, observer);
+            status = getUnitVisionStatusPrivate(object, observer);
         else {
             if (ExplorationMaster.isExplorationOn() &&
                     master.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
-                status = master.getVisionController().getUnitVisionMapper().get(observer, unit);
+                status = master.getVisionController().getUnitVisionMapper().get(observer, object);
             } else {
-//            status = master.getVisionController().getUnitVisionMapper().getVar(observer, unit);
+//            status = master.getVisionController().getUnitVisionMapper().getVar(observer, object);
                 if (status == null) {
                     //final hack
-                    status = getUnitVisionStatusPrivate(unit, observer);
+                    status = getUnitVisionStatusPrivate(object, observer);
                 }
             }
         }
-        unit.setUnitVisionStatus(status, observer);
+        object.setUnitVisionStatus(status, observer);
     }
 }

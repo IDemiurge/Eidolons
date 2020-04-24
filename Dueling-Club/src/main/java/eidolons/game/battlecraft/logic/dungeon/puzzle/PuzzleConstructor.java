@@ -7,10 +7,10 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution.PUZZLE_RE
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Veil;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
-import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.netherflame.igg.event.TipMessageMaster;
+import eidolons.game.netherflame.igg.pale.PaleAspect;
 import eidolons.system.ConditionsUtils;
 import main.content.enums.GenericEnums;
 import main.data.ability.construct.VariableManager;

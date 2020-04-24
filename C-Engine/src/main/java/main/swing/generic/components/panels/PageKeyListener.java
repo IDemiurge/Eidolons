@@ -9,10 +9,8 @@ import java.util.List;
 public class PageKeyListener implements KeyListener {
 
     List<Component> comps = new ArrayList<>();
-    private G_PagePanel<?> pagedListPanel;
 
     public PageKeyListener(G_PagePanel<?> pagedListPanel) {
-        this.pagedListPanel = pagedListPanel;
     }
 
     public List<Component> getComponents() {

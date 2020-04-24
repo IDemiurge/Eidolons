@@ -2,7 +2,6 @@ package eidolons.libgdx.gui.panels.dc.unitinfo.tooltips;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroSlotItem;
-import eidolons.entity.item.DC_WeaponObj;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import main.content.values.properties.G_PROPS;
 import org.apache.commons.lang3.StringUtils;

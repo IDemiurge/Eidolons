@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.cell;
 
-import eidolons.ability.conditions.AreaCondition;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.*;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.core.Eidolons;

@@ -161,9 +161,6 @@ public abstract class DataModel {
             }
             // if (!strict)
             realName = CounterMaster.findCounter(name, strict);
-            if (realName == null) {
-                return false;
-            }
             // else
             // return false;
         }
@@ -201,12 +198,7 @@ public abstract class DataModel {
         if (realName == null) {
             realName = CounterMaster.findCounter(name, strict);
         }
-        if (realName == null) {
-            return false;
-        }
-        if (realName != null) {
-            name = realName;
-        }
+        name = realName;
         // else if (!name.contains(StringMaster.COUNTER)) {
         // modifyCounter(name + StringMaster.COUNTER, modValue);
         // return;
@@ -590,25 +582,25 @@ public abstract class DataModel {
     }
 
     public String getValue(VALUE val, boolean base) {
-        String value = "";
+        StringBuilder value = new StringBuilder();
         if (val instanceof MultiParameter) {
             MultiParameter multiParameter = (MultiParameter) val;
             for (PARAMETER p : multiParameter.getParameters()) {
-                value += getParamRounded(p, base) + multiParameter.getSeparator();
+                value.append(getParamRounded(p, base)).append(multiParameter.getSeparator());
                 // % sign?
             }
-            value = StringMaster.cropLast(value, multiParameter.getSeparator().length());
+            value = new StringBuilder(StringMaster.cropLast(value.toString(), multiParameter.getSeparator().length()));
         } else if (val instanceof PARAMETER) {
-            value = getDoubleParam((PARAMETER) val, base);
+            value = new StringBuilder(getDoubleParam((PARAMETER) val, base));
         } else if (val instanceof PROPERTY) {
 
-            value = getProperty((PROPERTY) val);
+            value = new StringBuilder(getProperty((PROPERTY) val));
         }
         if (value == null) {
             LogMaster.log(LogMaster.VALUE_DEBUG, "Value not found: "
                     + val.getName());
         }
-        return value;
+        return value.toString();
     }
 
     public boolean modifyParameter(PARAMETER param, int amount, Integer minMax, boolean quietly,
@@ -1261,7 +1253,7 @@ public abstract class DataModel {
             if (!base) {
                 setParam((PARAMETER) valName, value);
             } else {
-                setParam((PARAMETER) valName, NumberUtils.getInteger(value), false, base);
+                setParam((PARAMETER) valName, NumberUtils.getInteger(value), false, true);
             }
         }
         setDirty(true);
@@ -1609,6 +1601,9 @@ public abstract class DataModel {
     }
 
     public String getOriginalName() {
+        if (originalName == null) {
+            originalName = getName();
+        }
         return originalName;
     }
 

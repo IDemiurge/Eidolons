@@ -7,13 +7,9 @@ import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
-import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
-import eidolons.system.options.GraphicsOptions;
-import eidolons.system.options.OptionsMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
@@ -151,11 +147,6 @@ public class SpriteAnimationFactory {
     }
 
 
-    public static SpriteAnimation createSpriteVariant(String name, BossAnimator.BossSpriteVariant variant) {
-        String path = StringMaster.getAppendedFile(name, " " + variant.toString());
-        return getSpriteAnimation(path);
-
-    }
 
     public static SpriteAnimation getSpriteAnimation(String path,
                                                      String name,

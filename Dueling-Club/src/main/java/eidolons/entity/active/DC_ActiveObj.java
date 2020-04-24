@@ -13,12 +13,10 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.math.ModMaster;
 import main.ability.Abilities;
 import main.ability.Interruptable;
-import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.enums.entity.ActionEnums.ACTION_TAGS;
@@ -513,7 +511,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             return null;
         }
         if (getOwnerUnit() instanceof Unit) {
-            return ((Unit) getOwnerUnit()).getActionMode(this);
+            return getOwnerUnit().getActionMode(this);
         }
         return null;
     }

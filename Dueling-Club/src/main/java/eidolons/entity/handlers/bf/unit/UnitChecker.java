@@ -6,9 +6,8 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.netherflame.igg.death.ShadowMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
@@ -164,10 +163,7 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (getEntity().isDead()) {
             return true;
         }
-        if (checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
-            return true;
-        }
-        return false; //checkPassive(UnitEnums.STANDARD_PASSIVES.TRANSPARENT);
+        return checkPassive(STANDARD_PASSIVES.IMMATERIAL);//checkPassive(UnitEnums.STANDARD_PASSIVES.TRANSPARENT);
     }
 
     public boolean isTall() {
@@ -225,16 +221,13 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (checkStatus(UnitEnums.STATUS.ASLEEP)) {
             return false;
         }
-        if (checkStatus(UnitEnums.STATUS.FROZEN)) {
-            return false;
-        }
+        return !checkStatus(STATUS.FROZEN);
         // TODO getMinimumAttackCost
         // if ( checkAlertCounter())
         // return false;
         // alternative cost
         // if (getIntParam(PARAMS.C_N_OF_COUNTERS) <= 0) {
         // }
-        return true;
     }
 
     public boolean isDisabled() {
@@ -267,8 +260,7 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (getEntity().isPlayerCharacter()) {
             if (ShadowMaster.isShadowAlive())
                 return true; //TODO igg demo hack
-            if (getEntity().getBuff("Unconscious") != null)
-                return true;
+            return getEntity().getBuff("Unconscious") != null;
         }
 
         return false;
@@ -312,11 +304,8 @@ public class UnitChecker extends EntityChecker<Unit> {
             return false;
         }
         // if (!attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
-        if (active.getOwnerUnit().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
-            return false;
-        }
+        return !active.getOwnerUnit().checkPassive(STANDARD_PASSIVES.NO_RETALIATION);
         // may still fail to activate any particular Attack Action!
-        return true;
     }
 
     public boolean canAct() {

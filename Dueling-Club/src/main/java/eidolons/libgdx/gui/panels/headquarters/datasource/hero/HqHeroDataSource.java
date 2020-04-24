@@ -11,7 +11,6 @@ import eidolons.libgdx.texture.Sprites;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
-import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 import org.apache.commons.lang3.tuple.Pair;
 

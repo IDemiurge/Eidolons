@@ -17,7 +17,6 @@ import main.system.launch.CoreEngine;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 
 public class BatchRenamer {
@@ -54,7 +53,6 @@ public class BatchRenamer {
                     new File(folder).getName() + frame + StringMaster.getFormat(file.getName());
             if (!file.renameTo(new File(
                     pathname))) {
-                continue;
             }
 
         }
@@ -120,7 +118,6 @@ public class BatchRenamer {
             if (!file.renameTo(newFile)) {
                 break;
             }
-            continue;
         }
     }
 
@@ -165,8 +162,7 @@ public class BatchRenamer {
                     if (!file.renameTo(newFile)) {
                         break;
                     }
-                    continue;
-//            Files.setAttribute()
+                    //            Files.setAttribute()
 
                 }
         }

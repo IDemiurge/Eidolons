@@ -4,7 +4,6 @@ import eidolons.entity.obj.unit.Unit;
 import org.junit.Ignore;
 import org.junit.Test;
 import res.JUnitResources;
-import tests.EidolonsTest;
 
 import static org.junit.Assert.assertTrue;
 

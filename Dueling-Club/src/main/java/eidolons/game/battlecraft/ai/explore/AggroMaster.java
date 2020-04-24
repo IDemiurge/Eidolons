@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static eidolons.game.battlecraft.logic.battlefield.vision.VisionRule.getPlayerUnseenMode;
-
 public class AggroMaster extends ExplorationHandler {
     public static final float AGGRO_RANGE = 2.5f;
     public static final float AGGRO_GROUP_RANGE = 1.5f;
@@ -35,11 +33,11 @@ public class AggroMaster extends ExplorationHandler {
     }
 
     public static List<Unit> getAggroGroup() {
-        if (EidolonsGame.BRIDGE)
-        if (!EidolonsGame.FIRST_BATTLE_STARTED ||
-                getPlayerUnseenMode()) {
-            return new ArrayList<>();
-        }
+//        if (EidolonsGame.BRIDGE)
+//        if (!EidolonsGame.FIRST_BATTLE_STARTED ||
+//                getPlayerUnseenMode()) {
+//            return new ArrayList<>();
+//        }
         //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
         List<Unit> list = new ArrayList<>();
         Set<Unit> heroes = DC_Game.game.getPlayer(true).collectControlledUnits_();
@@ -167,10 +165,7 @@ public class AggroMaster extends ExplorationHandler {
 //     TODO igg demo hack   if (unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)) {
 //            max = 1.35f * max;
 //        }
-        if (unit.getCoordinates().dst_(hero.getCoordinates()) >= max) {
-            return true;
-        }
-        return false;
+        return unit.getCoordinates().dst_(hero.getCoordinates()) >= max;
     }
 
     private static int getEngagementDuration(UnitAI ai) {

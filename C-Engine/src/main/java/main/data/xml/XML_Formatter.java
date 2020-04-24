@@ -5,12 +5,11 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.DataModel;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +31,7 @@ public class XML_Formatter {
     private static final String FIRST_CHAR = "FIRST_CHAR";
     protected static String replacedTextContent = "&";
     static String replaced = "~?[]><!@#$%^&*()-=//;+',\"`";
-    static CharsetEncoder asciiEncoder = Charset.forName("US-ASCII").newEncoder();
+    static CharsetEncoder asciiEncoder = StandardCharsets.US_ASCII.newEncoder();
     private static Map<String, String> xmlFormatReplacements = new HashMap<>();
     private static Map<String, String> cache = new HashMap<>();
 
@@ -57,40 +56,40 @@ public class XML_Formatter {
 
     public static String getStringFromCode(String key) {
         List<String> list = ContainerUtils.openContainer(key);
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (String o : list) {
             o = StringMaster.getSubStringBetween(o, ASCII_OPEN, ASCII_CLOSE);
             try {
                 // Character.toChars((int) StringMaster.getInteger(o)).
-                result += Character.toString((char) (int) NumberUtils.getInteger(o));
+                result.append((char) (int) NumberUtils.getInteger(o));
             } catch (Exception e) {
-                return result;
+                return result.toString();
             }
         }
-        return result;
+        return result.toString();
     }
 
     public static String replaceNonASCII(String text, String v) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (char c : text.toCharArray()) {
             if (!asciiEncoder.canEncode(c)) {
-                result += v;
+                result.append(v);
             } else {
-                result += c;
+                result.append(c);
             }
         }
-        return result;
+        return result.toString();
     }
         public static String encodeNonASCII(String v) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (char c : v.toCharArray()) {
             if (!asciiEncoder.canEncode(c)) {
-                result += getCodeFromChar(c + "");
+                result.append(getCodeFromChar(c + ""));
             } else {
-                result += c;
+                result.append(c);
             }
         }
-        return result;
+        return result.toString();
     }
 
     public static String formatDialogueLineContent(String string ) {
@@ -154,9 +153,11 @@ public class XML_Formatter {
     }
 
     public static String restoreXmlNodeName(String s) {
+        if (s.contains(ASCII_OPEN)) {
         for (String x : xmlFormatReplacements.keySet()) {
             String code = xmlFormatReplacements.get(x);
             s = s.replace(code, NumberUtils.getStringFromCode(code));
+        }
         }
         if (s.startsWith(FIRST_CHAR)) {
             s = s.substring(FIRST_CHAR.length());
@@ -182,9 +183,14 @@ public class XML_Formatter {
             s = FIRST_CHAR + s;
         }
         s = s.replace("\uFFFD", "-");
+
         for (String x : xmlFormatReplacements.keySet()) {
-            s = s.replace(x, xmlFormatReplacements.get(x));
-            s = s.replace(Pattern.quote(x), xmlFormatReplacements.get(x));
+            if (s.contains(x)   ) {
+                s = s.replace(x, xmlFormatReplacements.get(x));
+            } else
+            if (s.contains(Pattern.quote(x))   ) {
+                s = s.replace(Pattern.quote(x), xmlFormatReplacements.get(x));
+            }
         }
         name = encodeNonASCII(s.replace(" ", "_"));
         cache.put(s, name);

@@ -72,8 +72,6 @@ public class ModifyCounterEffect extends MicroEffect implements OneshotEffect, R
         boolean result = false;
         switch (modtype) {
             case MODIFY_BY_CONST:
-                result = ref.getTargetObj().modifyCounter(counterName, modValue);
-                break;
             case MODIFY_BY_PERCENT:
                 result = ref.getTargetObj().modifyCounter(counterName, modValue);
                 break;

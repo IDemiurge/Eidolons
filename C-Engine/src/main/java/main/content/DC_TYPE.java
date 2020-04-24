@@ -58,8 +58,9 @@ public enum DC_TYPE implements OBJ_TYPE {
     },
 
     DEITIES("deities", G_PROPS.GROUP, 14, G_PROPS.ASPECT),
-    ENCOUNTERS("encounters", G_PROPS.GROUP, 15, G_PROPS.ENCOUNTER_GROUP),
-    DUNGEONS("dungeons", G_PROPS.ARCADE_REGION, 16),
+//    ENCOUNTERS("encounters", G_PROPS.ENCOUNTER_GROUP, 15, G_PROPS.ENCOUNTER_SUBGROUP),
+    ENCOUNTERS("encounters", G_PROPS.ENCOUNTER_GROUP, 15, G_PROPS.ENCOUNTER_TYPE),
+    DUNGEONS("dungeons", G_PROPS.GROUP, 16),
     PARTY("party", G_PROPS.GROUP, 17),
     TERRAIN("terrain", G_PROPS.GROUP, 18, false),
     //    FACTIONS("factions", G_PROPS.FACTION_GROUP, 19),

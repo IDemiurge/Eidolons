@@ -5,6 +5,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.GenericEnums;
@@ -44,10 +45,13 @@ public class EUtils {
         return GdxMaster.getWidth() / 3 / FontMaster.getDefaultStringWidth("1");
     }
 
-    public static void info(String text, boolean wait, boolean onAnotherThread) {
+    public static boolean confirm(String text) {
+        return onConfirm(true, text, false, null, true);
+    }
+    public static void infoPopup(String text, boolean wait, boolean onAnotherThread) {
         onConfirm(wait, text, false, null, onAnotherThread);
     }
-    public static void info(String text) {
+    public static void infoPopup(String text) {
         onConfirm(text, false, null);
     }
 
@@ -103,11 +107,11 @@ public class EUtils {
     }
 
     public static void showVFX(GenericEnums.VFX preset, Vector2 v) {
-        GuiEventManager.trigger(GuiEventType.SHOW_VFX, preset, v);
+        GuiEventManager.triggerWithParams(GuiEventType.SHOW_VFX, preset, v);
     }
 
     public static void showVFX(GenericEnums.VFX preset, int x, int y) {
-        GuiEventManager.trigger(GuiEventType.SHOW_VFX, preset, new Vector2(x, y));
+        GuiEventManager.triggerWithParams(GuiEventType.SHOW_VFX, preset, new Vector2(x, y));
     }
 
     public static void switchScreen(ScreenData screenData) {
@@ -123,7 +127,7 @@ public class EUtils {
     }
 
     public static void switchBackScreen() {
-        SCREEN_TYPE type = Eidolons.getPreviousScreenType();
+        SCREEN_TYPE type = ScreenMaster.getPreviousScreenType();
         switchScreen(new ScreenData(type));
     }
 

@@ -8,9 +8,6 @@ import eidolons.game.module.herocreator.HeroManager;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.stage.GuiStage;
-import eidolons.system.DC_RequirementsManager;
-import main.content.enums.entity.SpellEnums;
-import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +66,6 @@ public class SpellbookContainer extends HqSpellContainer {
             if (HqSpellMaster.canLearn(spell)) {
                 EUtils.onConfirm("Learn " + spell + " for " + HeroManager.getCost(spell, Eidolons.getMainHero()) + " Experience Points?", true, () ->
                         HqDataMaster.operation(getUserObject(), HERO_OPERATION.SPELL_LEARNED, spell));
-                return;
             } else {
                 EUtils.showInfoTextStyled(GuiStage.LABEL_STYLE.AVQ_SMALL, "Cannot learn " + spell.getName() + ":\n " +
                         spell.getGame().getRequirementsManager().check(Eidolons.getMainHero(), spell));

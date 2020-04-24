@@ -1,8 +1,8 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
 import eidolons.ability.InventoryTransactionManager;
-import eidolons.content.DC_CONSTS.JEWELRY_ITEM_TRAIT;
 import eidolons.content.DC_CONSTS.ITEM_LEVEL;
+import eidolons.content.DC_CONSTS.JEWELRY_ITEM_TRAIT;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
@@ -10,7 +10,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster.CONTAINER_ACTION;
@@ -40,7 +39,6 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -94,8 +92,6 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public static boolean isGenerateItemsForUnits() {
-        if (EidolonsGame.BRIDGE)
-            return false;
         return !CoreEngine.isFullFastMode();
     }
 
@@ -503,7 +499,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     private String checkCustomGroupForContents(CONTAINER_CONTENTS c, boolean sub, DC_TYPE type, BattleFieldObject container) {
-        ; //use as filter?
+        //use as filter?
 
         return null;
     }
@@ -621,6 +617,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             totalCost += rarity.getGoldCost();
         }
         float randomization = (isRandomizationOn()) ? new Random().nextFloat() + 0.5f : 1;
+        StringBuilder contentsBuilder = new StringBuilder(contents);
         for (CONTAINER_CONTENT_VALUE rarity : itemValueList) {
             maxCost = Math.round(randomization * Math.min(totalCost, rarity.getGoldCost()));
             CONTAINER_CONTENTS c = wizard.getObjectByWeight(map);
@@ -642,11 +639,12 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                         + "; total : " + cost);
                 if (item == null)
                     continue;
-                contents += item.getName() + StringMaster.SEPARATOR;
+                contentsBuilder.append(item.getName()).append(StringMaster.SEPARATOR);
                 cost += item.getIntParam(PARAMS.GOLD_COST);
                 items++;
             }
         }
+        contents = contentsBuilder.toString();
         if (contents.isEmpty()) {
             main.system.auxiliary.log.LogMaster.verbose( ">> " + obj + " has NO contents!");
         } else
@@ -711,9 +709,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             if (obj.getCoordinates().dst(Eidolons.getMainHero().getCoordinates()) > 20) {
                 return false;
             }
-            if (obj.getProperty(G_PROPS.BF_OBJECT_GROUP).equalsIgnoreCase(BF_OBJECT_GROUP.TREASURE.toString())) {
-                return true;
-            }
+            return obj.getProperty(G_PROPS.BF_OBJECT_GROUP).equalsIgnoreCase(BF_OBJECT_GROUP.TREASURE.toString());
         }
 
         return false;
@@ -786,8 +782,9 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public static boolean isPregenerateItems(DC_Obj containerObj) {
-        return containerObj.getGame().getMetaMaster().isRngDungeon()
-                || CoreEngine.isSafeMode();
+        return false;
+//        return containerObj.getGame().getMetaMaster().isRngDungeon()
+//                || CoreEngine.isSafeMode();
     }
 
     public enum CONTAINER_ACTION implements DUNGEON_OBJ_ACTION {

@@ -1,7 +1,6 @@
 package eidolons.system.audio;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
-import main.content.CONTENT_CONSTS;
 import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
@@ -17,10 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import static eidolons.system.audio.Soundscape.SOUNDSCAPE_SOUND.*;
-import static main.content.CONTENT_CONSTS.SOUNDSET.*;
-import static main.content.CONTENT_CONSTS.SOUNDSET.cthulhu;
-import static main.system.sound.SoundMaster.SOUNDS.*;
-import static main.system.sound.SoundMaster.SOUNDS.DEATH;
 
 public class Soundscape {
 

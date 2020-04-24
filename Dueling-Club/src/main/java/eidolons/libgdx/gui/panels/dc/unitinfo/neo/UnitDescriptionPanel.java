@@ -3,7 +3,6 @@ package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.menu.selection.DescriptionPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
-import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
 /**

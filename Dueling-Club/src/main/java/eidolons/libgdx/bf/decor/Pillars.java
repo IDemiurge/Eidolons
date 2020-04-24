@@ -1,13 +1,12 @@
 package eidolons.libgdx.bf.decor;
 
-import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
+import eidolons.game.module.generator.model.AbstractCoordinates;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
-import main.game.bf.directions.DirectionMaster;
 
 import java.util.Map;
 
@@ -75,7 +74,7 @@ public class Pillars extends GroupX {
         DEFAULT,
     }
 
-    public class PillarSide extends GroupX {
+    public static class PillarSide extends GroupX {
         SpriteX lighting;
         SpriteX surface;
 

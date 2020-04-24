@@ -8,16 +8,13 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
-import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.combat.attack.SneakRule;
 import eidolons.game.battlecraft.rules.perk.RangeRule;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
-import eidolons.libgdx.gui.generic.VerticalValueContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.TextBuilder;
@@ -37,15 +34,11 @@ import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
-import main.system.math.PositionMaster;
 import main.system.text.TextWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -265,7 +258,7 @@ public class AttackTooltipFactory {
         ValueTooltip tooltip = new ValueTooltip();
         String descr = getDescriptionForBuff(obj);
 
-        tooltip.setUserObject(Arrays.asList(new ValueContainer(obj.getName()+ StringMaster.NEW_LINE+ descr)));
+        tooltip.setUserObject(Collections.singletonList(new ValueContainer(obj.getName() + StringMaster.NEW_LINE + descr)));
         tooltip.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
         return tooltip;
     }

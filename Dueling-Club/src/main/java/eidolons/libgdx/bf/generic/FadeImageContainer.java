@@ -3,9 +3,7 @@ package eidolons.libgdx.bf.generic;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.libgdx.texture.TextureCache;
-import main.content.enums.rules.VisionEnums;
 
 /**
  * Created by JustMe on 3/30/2018.

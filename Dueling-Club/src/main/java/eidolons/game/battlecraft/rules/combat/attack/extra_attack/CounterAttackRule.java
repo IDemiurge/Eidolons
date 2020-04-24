@@ -9,7 +9,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
 import main.game.logic.event.Event;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;

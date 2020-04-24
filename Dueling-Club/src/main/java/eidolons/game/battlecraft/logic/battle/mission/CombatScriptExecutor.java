@@ -12,12 +12,10 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battle.universal.ScriptManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.module.BridgeMaster;
-import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
-import eidolons.game.battlecraft.logic.meta.igg.event.TipMessageMaster;
-import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitGroupMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
@@ -28,9 +26,8 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
-import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import eidolons.libgdx.bf.GridMaster;
+import eidolons.game.netherflame.igg.event.TipMessageMaster;
+import eidolons.game.netherflame.igg.pale.PaleAspect;
 import eidolons.libgdx.bf.grid.GridManager;
 import eidolons.system.text.Texts;
 import main.content.DC_TYPE;
@@ -310,7 +307,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         }
         if (tip) {
             try {
-                doCustomTip(ref, new String[]{args[0]});
+                doCustomTip(ref, args[0]);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -511,13 +508,13 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
                 getCoordinatesListForUnits(unitString, player, units, ref);
         String data = "";
         data +=
-                DataUnitFactory.getKeyValueString(UnitData.FORMAT,
-                        PARTY_VALUE.COORDINATES, ContainerUtils.joinList(coordinates, DataUnitFactory.getContainerSeparator(UnitData.FORMAT)));
+                DataUnitFactory.getKeyValueString(UnitsData.FORMAT,
+                        PARTY_VALUE.COORDINATES, ContainerUtils.joinList(coordinates, DataUnitFactory.getContainerSeparator(UnitsData.FORMAT)));
         data +=
-                DataUnitFactory.getKeyValueString(UnitData.FORMAT,
-                        PARTY_VALUE.MEMBERS, ContainerUtils.joinStringList(units, DataUnitFactory.getContainerSeparator(UnitData.FORMAT)));
+                DataUnitFactory.getKeyValueString(UnitsData.FORMAT,
+                        PARTY_VALUE.UNITS, ContainerUtils.joinStringList(units, DataUnitFactory.getContainerSeparator(UnitsData.FORMAT)));
 
-        UnitData unitData = new UnitData(data);
+        UnitsData unitData = new UnitsData(data);
 
         SPAWN_MODE mode = SPAWN_MODE.SCRIPT;
 
@@ -526,11 +523,12 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         return true;
     }
 
+
     private List<Coordinates> getCoordinatesListForUnits(String arg, DC_Player player, List<String> units, Ref ref) {
         List<Coordinates> list = new ArrayList<>();
         Coordinates origin = getCoordinates(arg, ref);
         // formation as arg? ;)
-        list = getPositioner().getPartyCoordinates(origin, player.isMe(), units);
+        list = getPositioner().getCoordinates(origin, player.isMe(), units);
 
         return list;
     }
@@ -538,23 +536,11 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     private Coordinates getCoordinates(String arg, Ref ref) {
 //TODO have an arg for N of Units
         Coordinates origin = null;
-        if (arg.contains(ScriptSyntax.SPAWN_POINT) || NumberUtils.isInteger(arg)) {
-            arg = arg.replace(ScriptSyntax.SPAWN_POINT, "");
-            Integer i = NumberUtils.getInteger(arg) - 1;
-            List<String> spawnPoints = ContainerUtils.openContainer(
-                    getMaster().getDungeon().getProperty(PROPS.ENEMY_SPAWN_COORDINATES));
-            origin = Coordinates.get(spawnPoints.get(i));
-            origin = getMaster().getDungeon().getPoint(arg);
-//            getUnit(arg).getCoordinates()
-            //another units' coordinates
-            //closest point
-        } else {
             try {
                 origin = Coordinates.get(arg);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        }
         return origin;
     }
 
@@ -582,7 +568,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         ATOMIC,
         AGGRO,
         DIALOGUE, TIP, MESSAGE, QUEST, TIP_MSG, TIP_QUEST, DIALOGUE_TIP,
-        ESOTERICA, CINEMATIC;
+        ESOTERICA, CINEMATIC
     }
 
 }

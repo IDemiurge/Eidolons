@@ -2,13 +2,14 @@ package main.gui.components.controls;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitGroupMaster;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.screens.map.editor.MapEditor;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.DC_SoundMaster;
+import main.AV_DataManager;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -58,11 +59,12 @@ public class AV_ButtonPanel extends G_ButtonPanel {
      , WS_TOGGLE, "Save",
      // "Group", "Clone",
      "Add Tab", "Toggle",
+            "Copy","Paste",
      // CLEAN_UP,
-     "Edit",
-     "Defaults",
+//     "Edit",
+//     "Defaults",
 //     "Backup",
-     "Add WS", "Test"
+//     "Add WS", "Test"
 
     };
     protected boolean skillSelectionListeningThreadRunning;
@@ -117,6 +119,12 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 
     public void handleButtonClick(boolean alt, String command) {
         switch (command) {
+            case "Copy":
+                AV_DataManager.copy(ArcaneVault.getSelectedType());
+                break;
+            case "Paste":
+                AV_DataManager.paste(ArcaneVault.getSelectedType());
+                break;
             case DEFAULTS:
                 ModelManager.addDefaultValues(alt);
                 break;
@@ -185,10 +193,6 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 break;
             }
 
-            case "Group": {
-                UnitGroupMaster.createUnitGroup(null);
-                break;
-            }
             case "Edit": {
 //                if (ArcaneVault.getSelectedType() != null)
                 MapEditor.launch( );

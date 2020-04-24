@@ -10,12 +10,10 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster;
 import eidolons.libgdx.GdxImageMaster;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.file.ResourceMaster;
-import eidolons.system.text.NameMaster;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -45,7 +43,6 @@ import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
-import main.entity.Entity;
 import main.entity.EntityCheckMaster;
 import main.entity.type.ObjType;
 import main.system.PathUtils;
@@ -58,7 +55,6 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.images.ImageManager;
 
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -164,7 +160,6 @@ public class ContentGenerator {
                 return;
             }
         }
-        return;
 
     }
 
@@ -206,20 +201,19 @@ public class ContentGenerator {
     public static void main(String[] args) {
         DC_Engine.mainMenuInit();
         generateUnitGroupsEnumsTxt();
-        generateTypeEnumsTxt(true, new DC_TYPE[]{
-                DC_TYPE.UNITS, DC_TYPE.BF_OBJ
-        });
+        generateTypeEnumsTxt(true, DC_TYPE.UNITS, DC_TYPE.BF_OBJ);
 
     }
 
     public static void generateTypeEnumsTxt(boolean perGroup, DC_TYPE... TYPES) {
         for (DC_TYPE TYPE : TYPES) {
             //auto find src path?
-            String contents = "";
+            String contents;
             Map<String, List<ObjType>> map = new XLinkedMap<>();
             Map<String, List<ObjType>> subMap = new XLinkedMap<>();
+            StringBuilder contentsBuilder = new StringBuilder();
             for (ObjType type : DataManager.getTypes(TYPE)) {
-                contents += StringMaster.getEnumFormat(type.getName()) + ",\n";
+                contentsBuilder.append(StringMaster.getEnumFormat(type.getName())).append(",\n");
                 if (perGroup) {
                     MapMaster.addToListMap(subMap, type.getSubGroupingKey().toUpperCase(),
                             type);
@@ -227,14 +221,16 @@ public class ContentGenerator {
                             type);
                 }
             }
+            contents = contentsBuilder.toString();
             String text = "public enum " + TYPE.name().toUpperCase() + "_TYPES" +
                     " implements OBJ_TYPE_ENUM {\n" + contents + ";\n}";
             System.out.println(text);
             for (String group : map.keySet()) {
-                contents = "";
+                  contentsBuilder = new StringBuilder();
                 for (ObjType type : map.get(group)) {
-                    contents += StringMaster.getEnumFormat(type.getName()) + ",\n";
+                    contentsBuilder.append(StringMaster.getEnumFormat(type.getName())).append(",\n");
                 }
+                contents = contentsBuilder.toString();
                 text = "public enum  " + TYPE.name().toUpperCase() + "_TYPES_" +
                         StringMaster.toEnumFormat(group) +
                         " implements OBJ_TYPE_ENUM {\n" + contents + ";\n}";
@@ -242,10 +238,11 @@ public class ContentGenerator {
 
             }
             for (String group : subMap.keySet()) {
-                contents = "";
+                  contentsBuilder = new StringBuilder();
                 for (ObjType type : subMap.get(group)) {
-                    contents += StringMaster.getEnumFormat(type.getName()) + ",\n";
+                    contentsBuilder.append(StringMaster.getEnumFormat(type.getName())).append(",\n");
                 }
+                contents = contentsBuilder.toString();
                 text = "public enum  " + TYPE.name().toUpperCase() + "_SUB_TYPES_" +
                         StringMaster.toEnumFormat(group) +
                         " implements OBJ_TYPE_ENUM {\n" + contents + ";\n}";
@@ -482,8 +479,8 @@ public class ContentGenerator {
         for (ObjType type : DataManager.getTypesGroup(DC_TYPE.BF_OBJ, BF_OBJECT_GROUP.WALL.name())) {
 
             if (type.checkBool(STD_BOOLS.INDESTRUCTIBLE) ||
-                    type.checkBool(STD_BOOLS.FAUX))
-                continue;
+                    type.checkBool(STD_BOOLS.FAUX)) {
+            }
 //            ObjType newType = new ObjType(type.getName() + WallMap.v(true), type);
 //            newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INVULNERABLE.name());
 //            newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INDESTRUCTIBLE.name());
@@ -899,16 +896,13 @@ public class ContentGenerator {
                         WEAPON_ATTACKS.Heavy_Swing, WEAPON_ATTACKS.Chain_Thrust,
                         WEAPON_ATTACKS.Head_Smash));
             case HAMMERS:
+            case CLUBS:
                 return ContainerUtils
                         .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Heavy_Swing,
                                 WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Slam));
             case MACES:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
                         WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Heavy_Swing));
-            case CLUBS:
-                return ContainerUtils
-                        .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Heavy_Swing,
-                                WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Slam));
 
             case GREAT_SWORDS:
             case LONG_SWORDS:
@@ -1049,6 +1043,10 @@ public class ContentGenerator {
         switch (g) {
 
             case ARROWS:
+            case ORBS:
+            case WANDS:
+            case DAGGERS:
+            case CROSSBOWS:
                 return 10;
             case HAMMERS:
                 switch (size) {
@@ -1077,39 +1075,24 @@ public class ContentGenerator {
                         return 5;
                 }
             case BOLTS:
+            case SPEARS:
                 return 15;
             case BOWS:
+            case STAVES:
+            case SHORT_SWORDS:
+            case POLLAXES:
                 return 20;
             case CLUBS:
+            case SCYTHES:
+            case MACES:
+            case LONG_SWORDS:
                 return 30;
-            case CROSSBOWS:
-                return 10;
-            case DAGGERS:
-                return 10;
             case FLAILS:
                 return 25;
             case GREAT_SWORDS:
                 return 40;
-            case LONG_SWORDS:
-                return 30;
-            case MACES:
-                return 30;
-            case POLLAXES:
-                return 20;
-            case SCYTHES:
-                return 30;
             case SHIELDS:
                 return 50;
-            case SHORT_SWORDS:
-                return 20;
-            case SPEARS:
-                return 15;
-            case STAVES:
-                return 20;
-            case WANDS:
-                return 10;
-            case ORBS:
-                return 10;
 
         }
         return 25;

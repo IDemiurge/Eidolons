@@ -3,9 +3,9 @@ package tests.gdx;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.bf.grid.GridCellContainer;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.bf.grid.cell.BaseView;
+import eidolons.libgdx.bf.grid.cell.GridCellContainer;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
@@ -47,7 +47,7 @@ public class GdxUnitPosSizeTest extends LibgdxTest {
         player = DC_Game.game.getPlayer(true);
         for (Unit unit : DC_Game.game.getUnits()) {
             BaseView component =
-             DungeonScreen.getInstance().getGridPanel().getViewMap().get(unit);
+             ScreenMaster.getDungeonGrid().getViewMap().get(unit);
             container = (GridCellContainer) component.getParent();
 
             container.recalcUnitViewBounds();
@@ -90,7 +90,7 @@ public class GdxUnitPosSizeTest extends LibgdxTest {
     }
 
     private BattleFieldObject getUnit() {
-        return (BattleFieldObject) DC_Game.game.getManager().getObjCreator().createUnit(getType(),
+        return DC_Game.game.getManager().getObjCreator().createUnit(getType(),
          X, Y, player, new Ref());
     }
 

@@ -17,12 +17,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.security.SecureRandom;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TypeBuilder {
 
     public static final String PROPS_NODE = "props";
     public static final String PARAMS_NODE = "params";
     private static TypeInitializer typeInitializer;
+
+    public static final Set<OBJ_TYPE> typeBuildOverride = new HashSet<>();
 
     public static ObjType buildType(Node node, String typeType) {
         if (typeInitializer == null) {
@@ -32,7 +36,7 @@ public class TypeBuilder {
         ObjType type = null;
         if (objType != null) {
             type = getTypeInitializer().getNewType(objType);
-            if (isBuildTypeOnInit())
+            if (isBuildTypeOnInit(objType))
                 buildType(node, type);
             else {
                 type.setName(XML_Formatter.restoreXmlNodeName(node.getNodeName()));
@@ -45,20 +49,17 @@ public class TypeBuilder {
         return type;
     }
 
-    private static boolean isBuildTypeOnInit() {
-        return !CoreEngine.isCombatGame();
+    private static boolean isBuildTypeOnInit(OBJ_TYPE objType) {
+        if (CoreEngine.isArcaneVault()) {
+            return true;
+        }
+        return typeBuildOverride.contains(objType) ;
 //        return true;
     }
 
     public static ObjType buildType(Node node, ObjType type) {
 
         NodeList nl = node.getChildNodes();
-        if (node.getNodeName().equalsIgnoreCase("Condemn")){
-           return type;
-        }
-        if (node.getNodeName().equalsIgnoreCase("Great_Sword")){
-            return type;
-        }
         LogMaster.log(1, "building type: " + node.getNodeName());
         type.setInitialized(false);
         for (int i = 0; i < nl.getLength(); i++) {

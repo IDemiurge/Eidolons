@@ -93,21 +93,18 @@ public class CounterMasterAdvanced {
             switch (interaction) {
 
                 case TRANSFORM_UP:
-                    break;
+
+                case DELETE_SELF:
+                case GROW_SELF:
+                case CONVERT_FROM:
+                case DELETE_OTHER:
+                case GROW_OTHER:
+                case CONVERT_TO:
                 case TRANSFORM_DOWN:
                     break;
                 case GROW_BOTH:
                 case MUTUAL_DELETION:
                     initInteraction(counter, c, interaction, false);
-                    break;
-                case DELETE_OTHER:
-                case GROW_OTHER:
-                case CONVERT_TO:
-                    break;
-
-                case DELETE_SELF:
-                case GROW_SELF:
-                case CONVERT_FROM:
                     break;
             }
     }
@@ -157,16 +154,12 @@ public class CounterMasterAdvanced {
                 s.setDown(COUNTER.Encase);
                 break;
             case Bleeding:
-                break;
-            case Disease:
-                break;
-            case Poison:
-                break;
-            case Haze:
-                break;
-            case Magnetized:
-                break;
+            case Time_Warped:
             case Mutagenic:
+            case Magnetized:
+            case Haze:
+            case Poison:
+            case Disease:
                 break;
 
             case Rage:
@@ -178,16 +171,13 @@ public class CounterMasterAdvanced {
                 s.setUp(COUNTER.Void);
                 break;
             case Madness:
+            case Lust:
                 s.setDown(COUNTER.Madness);
                 s.setUp(COUNTER.Hatred);
                 break;
             case Despair:
                 s.setDown(COUNTER.Oblivion);
                 s.setUp(COUNTER.Madness);
-                break;
-            case Lust:
-                s.setDown(COUNTER.Madness);
-                s.setUp(COUNTER.Hatred);
                 break;
             case Hatred:
                 s.setDown(COUNTER.Lust);
@@ -217,8 +207,6 @@ public class CounterMasterAdvanced {
             case Encryption:
                 s.setDown(COUNTER.Aether);
                 s.setUp(COUNTER.Time_Warped);
-                break;
-            case Time_Warped:
                 break;
         }
     }

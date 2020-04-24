@@ -4,14 +4,12 @@ import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.macro.MacroGame;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.faction.FactionObj;
-import eidolons.macro.entity.library.Library;
 import eidolons.macro.entity.shop.Shop;
 import eidolons.macro.map.Place;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
@@ -29,11 +27,9 @@ import java.util.Set;
 
 public class Town extends Place {
 
-    Library library;
     Tavern tavern;
     Shop shop;
 
-    DequeImpl<Library> libraries = new DequeImpl<>();
     DequeImpl<Shop> shops = new DequeImpl<>();
     DequeImpl<Tavern> taverns = new DequeImpl<>();
     DequeImpl<TownPlace> townPlaces = new DequeImpl<>();
@@ -107,13 +103,6 @@ public class Town extends Place {
         return null;
     }
 
-    public Library getLibrary() {
-        return library;
-    }
-
-    public void setLibrary(Library library) {
-        this.library = library;
-    }
 
     public Tavern getTavern() {
         return tavern;
@@ -132,9 +121,6 @@ public class Town extends Place {
     }
 
 
-    public DequeImpl<Library> getLibraries() {
-        return libraries;
-    }
 
     public DequeImpl<Shop> getShops() {
         return shops;

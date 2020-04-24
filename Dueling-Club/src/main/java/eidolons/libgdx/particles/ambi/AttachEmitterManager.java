@@ -5,7 +5,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.bf.grid.cell.BaseView;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.system.GuiEventManager;
@@ -68,6 +68,7 @@ public class AttachEmitterManager {
                  chain(GenericEnums.VFX.CINDERS3, 4).
                  getRandomByWeight();
             case FIRE_MAGIC:
+            case BUFF:
                 break;
             case SMOKE:
                 return GenericEnums.VFX.SMOKE;
@@ -84,8 +85,6 @@ public class AttachEmitterManager {
                  chain(GenericEnums.VFX.MIST_WHITE3, 8).
                  chain(GenericEnums.VFX.MIST_ARCANE, 12).
                  getRandomByWeight();
-            case BUFF:
-                break;
         }
         return null;
     }

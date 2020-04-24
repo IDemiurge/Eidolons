@@ -241,7 +241,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         if (!isDrawTrailing()) {
             return 0;
         }
-        return (int) (getFrameNumber() - 1);
+        return getFrameNumber() - 1;
     }
 
     private boolean isDrawTrailing() {
@@ -305,13 +305,11 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             Boolean bool = data.getBooleanValue(spriteValue);
             switch (spriteValue) {
                 case color:
+                case backAndForth:
+                case playMode:
                     break;
                 case blending:
                     setBlending( new EnumMaster<BLENDING>().retrieveEnumConst(BLENDING.class, data.getValue(spriteValue)));
-                    break;
-                case playMode:
-                    break;
-                case backAndForth:
                     break;
                 case fps:
                     setFps(f);

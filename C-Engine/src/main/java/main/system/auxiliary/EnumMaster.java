@@ -160,9 +160,7 @@ public class EnumMaster<T> {
             return null;
         }
         List<Object> list = new ArrayList<>();
-        for (Object obj : enumClass.getEnumConstants()) {
-            list.add(obj);
-        }
+        list.addAll(Arrays.asList(enumClass.getEnumConstants()));
         return list;
     }
 

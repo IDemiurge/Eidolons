@@ -125,6 +125,7 @@ public class PartyHelper {
         String xml = XML_Writer.openXML(XML_ROOT);
         xml += XML_Writer.getTypeXML(party.getType(), new StringBuilder(XML_Writer.STR_CAPACITY));
         String names = "";
+        StringBuilder xmlBuilder = new StringBuilder(xml);
         for (Unit hero : party.getMembers()) {
             // durability persistence?
 
@@ -132,9 +133,10 @@ public class PartyHelper {
 
             eidolons.macro.global.persist.Saver.prepareType(type);
 
-            xml += XML_Writer.getTypeXML(type, new StringBuilder(XML_Writer.STR_CAPACITY));
+            xmlBuilder.append(XML_Writer.getTypeXML(type, new StringBuilder(XML_Writer.STR_CAPACITY)));
             names += hero.getName() + StringMaster.CONTAINER_SEPARATOR;
         }
+        xml = xmlBuilder.toString();
 
         xml += XML_Writer.closeXML(XML_ROOT);
         party.setProperty(PROPS.MEMBERS, names, true);

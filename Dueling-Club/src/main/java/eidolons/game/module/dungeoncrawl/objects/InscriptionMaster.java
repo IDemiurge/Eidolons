@@ -1,12 +1,8 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
-import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Demo;
 import eidolons.system.text.DescriptionTooltips;
 import main.data.filesys.PathFinder;
-import main.entity.Entity;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
@@ -40,11 +36,12 @@ public class InscriptionMaster {
     }
 
     private void initCustomData(BattleFieldObject obj) {
-        for (String substring : ContainerUtils.openContainer(obj.getGame().getDungeon().getProperty(PROPS.NAMED_COORDINATE_POINTS))) {
-            String key = substring.split("=")[0];
-            String value = substring.split("=")[1];
-            map.put(key, value);
-        }
+//       TODO   wtf for (String substring : ContainerUtils.openContainer(
+//                obj.getGame().getDungeon().getProperty(PROPS.COORDINATE_SCRIPTS))) {
+//            String key = substring.split("=")[0];
+//            String value = substring.split("=")[1];
+//            map.put(key, value);
+//        }
     }
 
     public static Map<String, String> getTextMap(String levelName) {

@@ -37,15 +37,16 @@ public class PartyEffect extends GroupObjModifyEffect {
     protected List<Obj> getObjectsToModify() {
         Party party = (Party) ref.getSourceObj().getRef()
          .getObj(KEYS.PARTY);
+        if (party == null) {
+            return new ArrayList<>();
+        }
         List<Unit> list = party.getMembers();
 
         initFilterConditions();
         FilterMaster.filter(list, conditions);
 
         List<Obj> objList = new ArrayList<>();
-        for (Unit j : list) {
-            objList.add(j);
-        }
+        objList.addAll(list);
         return objList;
     }
 

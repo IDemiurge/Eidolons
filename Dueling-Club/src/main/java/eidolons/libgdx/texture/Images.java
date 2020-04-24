@@ -1,12 +1,10 @@
 package eidolons.libgdx.texture;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.Deity;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Images;
+import eidolons.game.netherflame.igg.IGG_Images;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 4/17/2018.
@@ -47,6 +45,7 @@ public class Images {
 
 
 
+    public static final String LOGO_EDITOR_64 = "ui/main/editor.png";
 
     public static final String LOGO32 = "ui/main/logo32.png";
     public static final String LOGO64 = "ui/main/logo64.png";
@@ -152,6 +151,7 @@ public class Images {
     public static final String ROLL_ARROW = "ui/roll arrow.png";
     public static final String REALLY_EMPTY_32 ="ui/really empty 32.png" ;
     public static final String MISSING_TEXTURE = "ui/missing.png";
+    public static final String COLOR_EMBLEM = "ui/color emblem.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

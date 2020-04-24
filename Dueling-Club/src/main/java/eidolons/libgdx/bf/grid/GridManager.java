@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.bitfire.utils.ItemsManager;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.DummyUnit;
@@ -27,6 +26,9 @@ import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.bf.grid.cell.BaseView;
+import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.HpBarView;
 import eidolons.libgdx.bf.grid.comment.CommentData;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.bf.overlays.HpBarManager;
@@ -74,13 +76,13 @@ public class GridManager {
     public static GridManager instance;
 
     FACING_DIRECTION f = FACING_DIRECTION.NORTH;
-    GridPanel panel;
+    DC_GridPanel panel;
     private Integer waitCounter = 0;
     private Coordinates c;
     private List<Runnable> commentRunnables =    new ArrayList<>() ;
 
-    public GridManager(GridPanel panel) {
-        this.instance = this;
+    public GridManager(DC_GridPanel panel) {
+        instance = this;
         this.panel = panel;
         GuiEventManager.bind(INGAME_EVENT_TRIGGERED, onIngameEvent());
 
@@ -419,7 +421,7 @@ public class GridManager {
         }
         if (!uiStage) {
             if (OptionsMaster.getControlOptions().getBooleanValue(ControlOptions.CONTROL_OPTION.CENTER_CAMERA_ON_COMMENTS))
-                GuiEventManager.trigger(CAMERA_PAN_TO, seq ? v : at, true, 3f);
+                GuiEventManager.triggerWithParams(CAMERA_PAN_TO, seq ? v : at, true, 3f);
         }
 
 
@@ -577,7 +579,7 @@ public class GridManager {
                         unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
 //                    SoundController.getCustomEventSound(SOUND_EVENT.UNIT_TURNS, );
                         if (hero instanceof Unit)
-                            DC_SoundMaster.playTurnSound((Unit) hero);
+                            DC_SoundMaster.playTurnSound(hero);
                     }
                 }
                 caught = true;
@@ -660,7 +662,7 @@ public class GridManager {
                 if (active.getName().contains("1Projection")) {
                     sourceObj.setCoordinates(c);
                 }
-                panel.unitMoved((BattleFieldObject) sourceObj);
+                panel.unitMoved(sourceObj);
                 BaseView view = panel.getViewMap().get(sourceObj);
                 view.fadeIn();
             });

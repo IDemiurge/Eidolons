@@ -2,13 +2,14 @@ package main.launch;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.game.Simulation;
-import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.content.ContentGenerator;
+import eidolons.system.content.PlaceholderGenerator;
 import eidolons.system.file.ResourceMaster;
+import eidolons.system.utils.JsonToType;
 import eidolons.system.utils.XmlCleaner;
 import main.AV_DataManager;
 import main.content.ContentValsManager;
@@ -45,11 +46,13 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static main.system.auxiliary.log.LogMaster.log;
+
 public class ArcaneVault {
 
     public static final String ICON_PATH = "UI\\" + "Forge4" +
-     // "spellbook" +
-     ".png";
+            // "spellbook" +
+            ".png";
     public final static boolean SINGLE_TAB_MODE = true;
     public final static boolean PRESENTATION_MODE = false;
     public static final int AE_WIDTH = 500;
@@ -62,21 +65,21 @@ public class ArcaneVault {
     public static final int TABLE_HEIGHT = TREE_HEIGHT * 19 / 20;
     public final static boolean defaultTypesGenerateOn = false;
     public final static String presetTypes = "units;bf obj;chars;party;missions;scenarios;" +
-          "abils;spells;skills;"+
-     "weapons;armor;items;" +
+            "abils;spells;skills;" +
+            "weapons;armor;items;" +
             "buffs;" +
             "classes;" +
             "perks;" +
             "lord;" +
-     "actions;" + "";
+            "actions;" + "";
     private static final boolean ENABLE_ITEM_GENERATION = true;
     private static final String[] LAUNCH_OPTIONS = {"Last", "Selective", "Selective Custom",
-     "Full", "Battlecraft", "Arcane Tower",};
+            "Full", "Battlecraft", "Arcane Tower",};
     private static final String actions = "actions;spells;buffs;abils;";
     private static final String skills = "skills;classes;buffs;abils;perks;actions;spells;";
     private static final String units = "chars;units;deities;dungeons;factions;";
     private static final String microForMacro =
-     "party;scenarios;dungeons;factions;";
+            "party;scenarios;dungeons;factions;";
     private static final String items = "weapons;armor;actions;";
     public static boolean selectiveInit = true;
     public static boolean arcaneTower;
@@ -122,8 +125,9 @@ public class ArcaneVault {
         CoreEngine.setSwingOn(true);
         CoreEngine.setArcaneVault(true);
 
+
         if (args.length > 0) {
-            args= args[0].split(";");
+            args = args[0].split(";");
         }
         if (args.length > 0) {
 
@@ -155,7 +159,7 @@ public class ArcaneVault {
                 switch (LAUNCH_OPTIONS[init]) {
                     case "Battlecraft":
                         List<DC_TYPE> enumList = new EnumMaster<DC_TYPE>()
-                         .getEnumList(DC_TYPE.class);
+                                .getEnumList(DC_TYPE.class);
                         for (DC_TYPE sub : DC_TYPE.values()) {
                             if (sub.isNonBattlecraft() || sub.isOmitted()) {
                                 enumList.remove(sub);
@@ -184,7 +188,7 @@ public class ArcaneVault {
                         break;
                     case "Selective":
                         init = DialogMaster.optionChoice("Selective Templates", WORKSPACE_TEMPLATE
-                         .values());
+                                .values());
                         if (init == -1) {
                             return;
                         }
@@ -199,14 +203,28 @@ public class ArcaneVault {
             }
 
         }
+
+        CoreEngine.setReflectionMapDisabled(!types.contains("abils"));
+
+
         ItemGenerator.setGenerationOn(!ENABLE_ITEM_GENERATION);
         LogMaster.PERFORMANCE_DEBUG_ON = showTime;
 
+//TODO BANNER!
+        log(3, "Welcome to Arcane Vault! \nBrace yourself to face the darkest mysteries of Edalar...");
 
-        LogMaster
-         .log(3,
-          "Welcome to Arcane Vault! \nBrace yourself to face the darkest mysteries of Edalar...");
         initialize();
+
+        if (types.contains("encounters")) {
+//            String input = DialogMaster.inputText("Input 'json' (baseType = name:val;... || baseType2 = ...)");
+            String base = DialogMaster.inputText("base Type name");
+//            JsonToType.convert(input, DC_TYPE.ENCOUNTERS);
+            if (!StringMaster.isEmpty(base)) {
+                JsonToType.convertAlt(base, FileManager.readFile
+                        (PathFinder.getTYPES_PATH() + "sources/encounters.txt"), DC_TYPE.ENCOUNTERS);
+            }
+        }
+
         if (macroMode) {
             ContentGenerator.generatePlaces();
         }
@@ -224,13 +242,13 @@ public class ArcaneVault {
         ContentGenerator.updateImagePathsForJpg_Png();
 
 
-                mainBuilder = new MainBuilder();
+        mainBuilder = new MainBuilder();
         mainBuilder.setKeyListener(new AV_KeyListener(getGame()));
-        if (!isCustomLaunch()) {
-            if (XML_Reader.getTypeMaps().keySet().contains(MACRO_OBJ_TYPES.FACTIONS.getName())) {
-                UnitGroupMaster.modifyFactions();
-            }
-        }
+//        if (!isCustomLaunch()) {
+//            if (XML_Reader.getTypeMaps().containsKey(MACRO_OBJ_TYPES.FACTIONS.getName())) {
+//                UnitGroupMaster.modifyFactions();
+//            }
+//        }
         // ModelManager.generateFactions();
         showAndCreateGUI();
 
@@ -247,9 +265,9 @@ public class ArcaneVault {
 
     // "bf obj";
 
-	/*
+    /*
      * 2 threads - init and gui? then when will gui request data?
-	 */
+     */
 
     private static boolean isCustomLaunch() {
         return CUSTOM_LAUNCH;
@@ -285,9 +303,8 @@ public class ArcaneVault {
         // } else
 
 //        XmlCleaner.setCleanReadTypes(
-//                DC_TYPE.SKILLS,
-//                DC_TYPE.CHARS
-//                );
+//                DC_TYPE.ENCOUNTERS
+//        );
         getContentValsManager().init();
         AV_DataManager.init();
 
@@ -307,11 +324,14 @@ public class ArcaneVault {
             SimulationManager.init();
         }
 
-        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ)  )
+        if (DataManager.isTypesRead(DC_TYPE.BF_OBJ)) {
+            PlaceholderGenerator.generateForRoomCells();
+
             if (DataManager.isTypesRead(DC_TYPE.ITEMS))
                 ContentGenerator.generateKeyObjects();
+        }
 
-//        XmlCleaner.cleanTypesXml(DC_TYPE.SKILLS);
+        XmlCleaner.cleanTypesXml(DC_TYPE.ENCOUNTERS);
 //        ContentGenerator.afterRead();
 
         CharacterCreator.setAV(true);
@@ -509,7 +529,8 @@ public class ArcaneVault {
     }
 
     public enum WORKSPACE_TEMPLATE {
-        presetTypes, actions, skills, units, items,;
+        presetTypes, actions, skills, units, items,
+        ;
         String types;
 
         @Override

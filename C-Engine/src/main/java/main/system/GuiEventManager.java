@@ -54,11 +54,10 @@ public class GuiEventManager {
     }
 
     public static void trigger(final String type, Object... params) {
-        trigger(GuiEventManager.getEvent(type) ,params );
+        trigger(GuiEventManager.getEvent(type), params);
     }
-    public static void trigger(final EventType type, Object... params) {
-        if (CoreEngine.isGraphicsOff())
-            return;
+
+    public static void triggerWithParams(final EventType type, Object... params) {
         Object obj = null;
         if (params != null) {
             if (params.length == 1) {
@@ -67,7 +66,14 @@ public class GuiEventManager {
                 obj = new EventCallbackParam(Arrays.asList(params));
             }
         }
-//        checkSoundEvent(type, obj);
+        trigger(type, obj);
+    }
+
+    public static void trigger(final EventType type, Object obj) {
+
+        if (CoreEngine.isGraphicsOff())
+            return;
+
         GuiEventManagerImpl.trigger(type, obj);
     }
 
@@ -100,7 +106,8 @@ public class GuiEventManager {
 
         return false;
     }
-    public static EventType getEvent(String s ) {
+
+    public static EventType getEvent(String s) {
         return new EnumMaster<GuiEventType>().retrieveEnumConst(GuiEventType.class, s);
     }
 

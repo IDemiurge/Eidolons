@@ -11,11 +11,9 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
-import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbController;
 import eidolons.game.module.dungeoncrawl.objects.Door;
-import eidolons.libgdx.bf.grid.GridUnitView;
+import eidolons.game.netherflame.igg.death.ShadowMaster;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
 import main.ability.AbilityObj;
@@ -45,8 +43,6 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.game.core.game.Game;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
-import main.game.logic.event.Event;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
@@ -76,6 +72,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     private ObjType originalType;
     private boolean summoned;
     private boolean revealed;
+    private boolean moduleBorder;
 
     public BattleFieldObject(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -96,7 +93,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public void setPassives(List<AbilityObj> passives) {
         super.setPassives(passives);
         passivesReady=true;
-        activatePassives();
+//        activatePassives();
     }
 
     public boolean isWall() {
@@ -136,7 +133,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public String toString() {
         if (getGame().isDebugMode())
             return super.toString();
-        return getName();
+        return getNameAndCoordinate();
     }
 
     @Override
@@ -278,11 +275,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             //                return false;
             //            }
 
-            if (source_height < height)
             // if (!source.isFlying()) //add height TODO
-            {
-                return true;
-            }
+            return source_height < height;
 
         }
 
@@ -555,9 +549,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public boolean isValidMapStored(PARAMETER p) {
         if (p == PARAMS.ENDURANCE)
             return true;
-        if (p == PARAMS.TOUGHNESS)
-            return true;
-        return false;
+        return p == PARAMS.TOUGHNESS;
     }
 
     public int getMaxVisionDistance() {
@@ -727,4 +719,11 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         return checkBool(STD_BOOLS.IMPASSABLE);
     }
 
+    public boolean isModuleBorder() {
+        return moduleBorder;
+    }
+
+    public void setModuleBorder(boolean moduleBorder) {
+        this.moduleBorder = moduleBorder;
+    }
 }

@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.shaders.ShaderMaster;
@@ -90,6 +89,9 @@ public class SpriteX extends GroupX {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (sprite == null) {
+            return;
+        }
         if (shader != null)
         if (parentAlpha!= ShaderDrawer.SUPER_DRAW)
         {
@@ -99,9 +101,7 @@ public class SpriteX extends GroupX {
         }
 
         super.draw(batch, parentAlpha);
-        if (sprite == null) {
-            return;
-        }
+
         if (fps > 0) {
             sprite.setFps(fps);
         }

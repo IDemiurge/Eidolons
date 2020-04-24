@@ -86,10 +86,33 @@ public class DescriptionMaster {
     public static String getMasteryDescription(PARAMS param) {
         switch (param) {
             case WARCRY_MASTERY:
-                return "";
-            case TACTICS_MASTERY:
-                return "";
+            case UNARMED_MASTERY:
+            case TWO_HANDED_MASTERY:
+            case POLEARM_MASTERY:
+            case AXE_MASTERY:
+            case DUAL_WIELDING_MASTERY:
+            case STEALTH_MASTERY:
+            case ARMORER_MASTERY:
+
+            case DETECTION_MASTERY:
+            case SPELLCRAFT_MASTERY:
+            case WIZARDRY_MASTERY:
+            case DISCIPLINE_MASTERY:
+            case ATHLETICS_MASTERY:
+            case MOBILITY_MASTERY:
+
+            case SHIELD_MASTERY:
+            case SYLVAN_MASTERY:
+
+            case ELEMENTAL_MASTERY:
+
+            case AFFLICTION_MASTERY:
+            case DESTRUCTION_MASTERY:
+            case SAVAGE_MASTERY:
+            case NECROMANCY_MASTERY:
+            case WITCHERY_MASTERY:
             case LEADERSHIP_MASTERY:
+            case TACTICS_MASTERY:
                 return "";
             case MARKSMANSHIP_MASTERY:
                 return "Increases accuracy when handling ranged weapons, such as bows and crossbows";
@@ -97,8 +120,6 @@ public class DescriptionMaster {
                 return "Grants various bonuses for Usable items, such as potions, poisons. Also improves accuracy and damage when throwing weapons. Ideal for versatile trickster characters.";
             case SHADOW_MASTERY:
                 return "Concealment and considerable damage output (also indirect as in Shadow Blade or Shield) coupled summon spells and a variety of versatile spells such as Leap into Darkness";
-            case WITCHERY_MASTERY:
-                return "";
 
             case BENEDICTION_MASTERY:
                 return "The quiet grace and purity of the Light, a force most subtle, a love that is stronger than any hate. The Lies cannot ever hurt the Truth, Shadows may not slay the Sun, Darkness may cloud it, and still the sun is there. Likewise, there is courage and strength in every heart, one only needs to pierce the veil of doubt and fear. Faith often is the strongest shield and virtue the sharpest sword, and a restoration of body that comes from deep within...";
@@ -134,62 +155,18 @@ public class DescriptionMaster {
                  + "Matrices that require acute understanding of Aetherium Laws and a fair bit of brainpower to process the ever-changing influx of information,";
             case WARP_MASTERY:
                 return "Mercurial and devious ";
-            case NECROMANCY_MASTERY:
-                return "";
-            case SAVAGE_MASTERY:
-                return "";
-            case DESTRUCTION_MASTERY:
-                return "";
-
-            case AFFLICTION_MASTERY:
-                return "";
             case BLOOD_MAGIC_MASTERY:
                 return "Undoubtedly the closest to what one would call an Evil art, the Blood Magic permits the user to take a very physical kind of control over life, siphoning it from their victims or bloating them until they burst in a gory explosion, making them crave for blood with a fiendish lust or inflicting excruciating pain to suffocate the living or bring violent frenzy into the dead";
-
-            case ELEMENTAL_MASTERY:
-                return "";
-            case SYLVAN_MASTERY:
-                return "";
             case BLADE_MASTERY:
                 return "Blade Mastery increases your Attack when using swords and daggers, which are among the lightest and most versatile weapons, with best armor penetration and piercing/slashing damage output. Parry and Defense bonuses also come in handy. Synergy with Axes - bonus of 1 point for every 4 of Blade ";
             case BLUNT_MASTERY:
                 return "Don't stop swinging, that's the key!";
-
-            case SHIELD_MASTERY:
-                return "";
-            case MOBILITY_MASTERY:
-                return "";
-            case ATHLETICS_MASTERY:
-                return "";
             case MEDITATION_MASTERY:
                 return "Highly useful mastery for any spellcaster, priestly or secular, as it vastly increases the Essence capacity and restoration. Directly boosts the amount of Essence restored when using Meditation Mode. Additionally, it offers bonuses to Detection, Perception, Magic Resistances and Focus Retainment. Certain skills also provide ways to boost Spellpower considerably, while others grant the master ability to leave corporeal body or transform it. Has <a-combo> with Divination, Unarmed and Discipline masteries. Prerequisite for Godly classes, especially shamanic and druidic paths. Slightly increases your final Wisdom score (1% per point). ";
-            case DISCIPLINE_MASTERY:
-                return "";
-            case WIZARDRY_MASTERY:
-                return "";
-            case SPELLCRAFT_MASTERY:
-                return "";
             case DIVINATION_MASTERY:
                 return "Central Mastery for all Godly classes, Divination offers an alternative way of casting spells without learning or memorizing, receiving them instead directly from the shared consciousness of whatever Divine entity the unit is affiliated with. To receive spells, caster must use Divination mode (or any alternative version such as Prayer or Dreamsight). The maximum Spell Difficulty is determined by Charisma and Divination Mastery score, and its total is also increased by the number of Action Points the unit had left (as for most other modes, the effect is resolved if unit starts next round without having been interrupted)The Deitys favored spell schools will determine the pool from which spells (only Standard ones) are then drawn semi-randomly (each schools has a priority). If a spell is Divined that is already in the active spellbook, either as Verbatim or Divined, it will instead receive Favored buff (stacks) that reduces its costs and increases its effective spellpower by 25% each. ";
-
-            case DETECTION_MASTERY:
-                return "";
-            case ARMORER_MASTERY:
-                return "";
             case DEFENSE_MASTERY:
                 return "Offers a variety of defensive skills from parrying to dodging, as well as some useful counter-actions. Other skills include Vigilance, First Strike and Alert Mode upgrades. The Mastery score provides a moderate constant bonus to Defense score. As a Knightly Skill, it passes as a requirement for Squire classes, and as a Defensive one, can also be used to acquire certain Fighter classes. ";
-            case STEALTH_MASTERY:
-                return "";
-            case DUAL_WIELDING_MASTERY:
-                return "";
-            case AXE_MASTERY:
-                return "";
-            case POLEARM_MASTERY:
-                return "";
-            case TWO_HANDED_MASTERY:
-                return "";
-            case UNARMED_MASTERY:
-                return "";
         }
         return "";
     }
@@ -223,58 +200,32 @@ public class DescriptionMaster {
                 // good...
                 return "Provides: Unlocks: smithing skills, earth mastery  Prohibits: (integrity penalty)  Recommended for: Notable followers: Giants, Dwarves, Men of Ulduin";
             case ANNIHILATOR:
-                return "";
-            case ARACHNIA:
-                return "";
-            case CONSUMER_OF_WORLDS:
-                return "";
-            case CRIMSON_QUEEN:
-                return "";
-            case DARK_GODS:
-                return "";
-            case DEATH_GORGER:
-                return "";
-            case FAITHLESS:
-                return "";
-            case FEY_QUEEN:
-                return "";
-            case FIDE_ARCANUM:
-                return "";
-            case IRON_GOD:
-                return "";
-            case KEEPER_OF_TWILIGHT:
-                return "";
-            case LORD_OF_DECAY:
-                return "";
-            case LORD_OF_MAGIC:
-                return "";
-            case NIGHT_LORD:
-                return "";
-            case OLD_WAY:
-                return "";
-            case QUEEN_OF_LUST:
-                return "";
-            case REDEEMER:
-                return "";
-            case SKY_QUEEN:
-                return "";
-            case THREE_DIVINES:
-                return "";
-            case UNDERKING:
-                return "";
-            case VOID_LORD:
-                return "";
-            case WARMASTER:
-                return "";
-            case WILD_GOD:
-                return "";
-            case WITCH_KING:
-                return "";
-            case WORLD_SERPENT:
-                return "";
-            case WORLD_TREE:
-                return "";
             case WRAITH_GOD:
+            case WORLD_TREE:
+            case WORLD_SERPENT:
+            case WITCH_KING:
+            case WILD_GOD:
+            case WARMASTER:
+            case VOID_LORD:
+            case UNDERKING:
+            case THREE_DIVINES:
+            case SKY_QUEEN:
+            case REDEEMER:
+            case QUEEN_OF_LUST:
+            case OLD_WAY:
+            case NIGHT_LORD:
+            case LORD_OF_MAGIC:
+            case LORD_OF_DECAY:
+            case KEEPER_OF_TWILIGHT:
+            case IRON_GOD:
+            case FIDE_ARCANUM:
+            case FEY_QUEEN:
+            case FAITHLESS:
+            case DEATH_GORGER:
+            case DARK_GODS:
+            case CRIMSON_QUEEN:
+            case CONSUMER_OF_WORLDS:
+            case ARACHNIA:
                 return "";
             default:
                 break;
@@ -309,10 +260,6 @@ public class DescriptionMaster {
                 // you can recite x formulae and y quotes
                 // you know x authors
                 // you have read x books
-                break;
-            case SPELLPOWER:
-                break;
-            case STRENGTH:
                 break;
             case VITALITY:
                 // you can withstand of pressure ++ poison

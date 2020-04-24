@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
-import eidolons.game.module.adventure.utils.SaveMasterOld;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -56,24 +55,17 @@ public class EditorControlPanel extends HorizontalFlowGroup {
     public void handleFunction(MAP_EDITOR_FUNCTION function) {
         switch (function) {
             case ADD_ROUTE:
-                break;
-            case ADD_INNER:
-                break;
-            case OPTIONS:
-                break;
-            case VIEW:
-                break;
+            case REFRESH:
             case SCRIPTS:
+            case VIEW:
+            case OPTIONS:
+            case ADD_INNER:
                 break;
             case EDIT:
                 //type? create local type
                 break;
             case SAVE:
-                try {
-                    SaveMasterOld.saveTheWorld();
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
+                //save master worked?TODO
                 EditorMapView.getInstance().getEditorParticles().saveAll();
                 MapPointMaster.getInstance()
                         .save();
@@ -96,8 +88,6 @@ public class EditorControlPanel extends HorizontalFlowGroup {
 //                operationArgMap
 //                Stack<EDITOR_OPERATION> operationStack;
                 break;
-            case REFRESH:
-                break;
         }
     }
 
@@ -111,7 +101,6 @@ public class EditorControlPanel extends HorizontalFlowGroup {
                 EditorManager.added((MacroObj) arg, null, null);
                 break;
             case REMOVE_OBJ:
-                break;
             case CHANGE_OBJ:
                 break;
         }

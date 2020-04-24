@@ -128,9 +128,9 @@ public abstract class G_Component extends JPanel implements Refreshable
     }
 
     public String getComponentString() {
-        String string = "";
+        StringBuilder string = new StringBuilder();
         for (Component c : getComponents()) {
-            string += c.getName() + " at " + new PointX(c.getX(), c.getY());
+            string.append(c.getName()).append(" at ").append(new PointX(c.getX(), c.getY()));
 
         }
 

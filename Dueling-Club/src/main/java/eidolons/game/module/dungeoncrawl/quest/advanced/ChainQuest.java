@@ -1,13 +1,10 @@
 package eidolons.game.module.dungeoncrawl.quest.advanced;
 
-import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.meta.scenario.Objective;
 import eidolons.game.module.dungeoncrawl.quest.QuestReward;
 import eidolons.macro.entity.town.Town;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 
-import java.util.List;
 import java.util.Map;
 
 public class ChainQuest implements Quest{
@@ -103,7 +100,7 @@ public class ChainQuest implements Quest{
 
     }
 
-    private class Interim extends QuestReward {
+    private static class Interim extends QuestReward {
         public Interim(ObjType objType) {
             super(objType);
         }

@@ -1,7 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel.datasource;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.system.GuiEventManager;

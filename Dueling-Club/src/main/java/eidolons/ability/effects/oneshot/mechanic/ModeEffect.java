@@ -252,14 +252,16 @@ divination?
             string = "";
         }
         // "Custom Parameters" of old...
+        StringBuilder stringBuilder = new StringBuilder(string);
         for (String s : ContainerUtils.open(ref.getSourceObj().getProperty(
                 G_PROPS.CUSTOM_PROPS))) {
             if (StringMaster.contains(s, mode.getBuffName(), true, false)) {
                 if (StringMaster.contains(s, mod ? PARAM_MOD : PARAM_BONUS, true, false)) {
-                    string += VariableManager.removeVarPart(s) + ";";
+                    stringBuilder.append(VariableManager.removeVarPart(s)).append(";");
                 }
             }
         }
+        string = stringBuilder.toString();
         Map<PARAMETER, Integer> map = new RandomWizard<PARAMETER>().constructWeightMap(string,
                 PARAMETER.class);
         for (PARAMETER param : map.keySet()) {

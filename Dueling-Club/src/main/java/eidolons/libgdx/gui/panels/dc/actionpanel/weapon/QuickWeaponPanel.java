@@ -109,7 +109,6 @@ public class QuickWeaponPanel extends TablePanelX {
                 return;
             }
             if (source.equals(alt ? this.dataSourceAlt : this.dataSource)) {
-                return;
             } else {
                 if (alt) {
                     setDataSourceAlt(source);

@@ -182,7 +182,7 @@ public class DC_ContentValsManager extends ContentValsManager {
         list.addAll(Arrays.asList(ValuePages.MASTERIES));
         list.addAll(Arrays.asList(FEAT_MODIFYING_PARAMS));
 
-        FEAT_MODIFYING_PARAMS = list.toArray(new PARAMETER[list.size()]);
+        FEAT_MODIFYING_PARAMS = list.toArray(new PARAMETER[0]);
 
     }
 
@@ -201,7 +201,6 @@ public class DC_ContentValsManager extends ContentValsManager {
     public static void initTypeDynamicValues() {
         for (ObjType t : DataManager.getTypes(DC_TYPE.CHARS)) {
             if (!t.getGroup().equals(StringMaster.BACKGROUND)) {
-                continue;
             }
 
         }
@@ -358,7 +357,7 @@ public class DC_ContentValsManager extends ContentValsManager {
 
     public static PARAMETER[] getArmorModifyingParams() {
         return ARMOR_MODIFYING_PARAMS_FULL
-         .toArray(new PARAMETER[ARMOR_MODIFYING_PARAMS_FULL.size()]);
+         .toArray(new PARAMETER[0]);
     }
 
     public static PARAMETER[] getWeaponModifyingParams() {
@@ -435,9 +434,7 @@ public class DC_ContentValsManager extends ContentValsManager {
             return backgroundDynamicParams;
         }
         backgroundDynamicParams = new ArrayList<>();
-        for (PARAMETER v : ValuePages.PRINCIPLE_IDENTITIES) {
-            backgroundDynamicParams.add(v);
-        }
+        backgroundDynamicParams.addAll(Arrays.asList(ValuePages.PRINCIPLE_IDENTITIES));
         // TODO anything else?!
         backgroundDynamicParams.add(PARAMS.IDENTITY_POINTS_PER_LEVEL);
         return backgroundDynamicParams;
@@ -449,9 +446,7 @@ public class DC_ContentValsManager extends ContentValsManager {
         }
         backgroundValues = new ArrayList<>();
         for (VALUE[] list : ValuePages.BACKGROUND_VALUES) {
-            for (VALUE v : list) {
-                backgroundValues.add(v);
-            }
+            backgroundValues.addAll(Arrays.asList(list));
         }
         backgroundValues.remove(PARAMS.IDENTITY_POINTS_PER_LEVEL);
 
@@ -570,12 +565,8 @@ public class DC_ContentValsManager extends ContentValsManager {
                 return GenericEnums.DAMAGE_TYPE.SHADOW;
             case DEATH:
                 return GenericEnums.DAMAGE_TYPE.DEATH;
-            case LIFE:
-                break;
             case LIGHT:
                 return GenericEnums.DAMAGE_TYPE.HOLY;
-            case NEUTRAL:
-                break;
             default:
                 break;
 
@@ -721,24 +712,12 @@ public class DC_ContentValsManager extends ContentValsManager {
 
     private static String getBaseClassTypeName(CLASS_GROUP classGroup) {
         switch (classGroup) {
-            case ACOLYTE:
-                break;
-            case FIGHTER:
-                break;
-            case HERMIT:
-                break;
-            case MULTICLASS:
-                break;
-            case ROGUE:
-                break;
             case RANGER:
                 return "Scout";
             case SORCERER:
                 return "Apostate";
             case KNIGHT:
                 return "Squire";
-            case TRICKSTER:
-                break;
             case WIZARD:
                 return "Wizard Apprentice";
             default:
@@ -861,7 +840,6 @@ public class DC_ContentValsManager extends ContentValsManager {
                     // from base class? 1st and 2nd together
                     break;
                 case RANGER:
-                    return "Agility";
                 case ROGUE:
                     return "Agility";
                 case SORCERER:

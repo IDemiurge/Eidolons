@@ -10,7 +10,6 @@ import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.CONTENT_CONSTS2.ORDER_TYPE;
-import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
@@ -37,6 +36,7 @@ public class UnitAI {
     private List<DC_ActiveObj> usedActions;
     private List<MetaGoal> metaGoals;
     private boolean engagedOverride;
+    ENGAGEMENT_LEVEL engagementLevel;
 
     //    private CHARACTER_TYPE characterType;
 //    private INCLINATION_TYPE characterType;
@@ -111,16 +111,16 @@ public class UnitAI {
         if (unit.getAiType() == AI_TYPE.ARCHER) {
             return true;
         }
-        if (unit.getAiType() == AI_TYPE.CASTER) {
-            return true;
-        }
+        return unit.getAiType() == AI_TYPE.CASTER;
         // if (group.isAmbushing()) return true;
         // leader?
-        return false;
     }
 
-    private ENGAGEMENT_LEVEL getEngagementLevel() {
-        return getGroup().getEngagementLevel();
+    public ENGAGEMENT_LEVEL getEngagementLevel() {
+        if (engagementLevel == null) {
+           return getGroup().getEngagementLevel();
+        }
+        return engagementLevel;
     }
 
     public boolean isLeader() {
@@ -142,9 +142,7 @@ public class UnitAI {
                     getStandingOrders().get(0).getActive().setFree(true);
                 }
                 if (!force)
-                    if (!getStandingOrders().get(0).canBeTargeted()) {
-                        return false;
-                    }
+                    return getStandingOrders().get(0).canBeTargeted();
 
             }
             return true;
@@ -357,6 +355,10 @@ public class UnitAI {
 
     public boolean isEngagedOverride() {
         return engagedOverride;
+    }
+
+    public void setEngagementLevel(ENGAGEMENT_LEVEL engagementLevel) {
+        this.engagementLevel = engagementLevel;
     }
 
     public enum AI_BEHAVIOR_MODE {

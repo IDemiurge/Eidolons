@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.battlefield;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.core.game.DC_Game;
@@ -8,7 +9,6 @@ import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import main.content.DC_TYPE;
 import main.entity.Entity;
-import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldManager;
 import main.game.bf.Coordinates;
@@ -25,7 +25,7 @@ import java.util.*;
  * Supposed to provide all Grid-relevant data and methods for changing it
  * TODO extract gameManager into here!
  */
-public class DC_BattleFieldManager extends BattleFieldManager {
+public class DC_BattleFieldManager extends BattleFieldManager   {
 
     private DC_Game game;
     private Map<Coordinates, List<DIRECTION>> wallMap;
@@ -35,22 +35,16 @@ public class DC_BattleFieldManager extends BattleFieldManager {
     private boolean wallResetRequired = true;
     private Map<Coordinates, DOOR_STATE> doorMap = new HashMap<>();
 
+//    DroppedItemManager droppedItemManager;
+//    GraveyardManager graveyardManager;
+//    CoordinatesMaster coordinatesMaster;
 
-    public DC_BattleFieldManager(DC_Game game) {
-        super(game);
+    public DC_BattleFieldManager(DC_Game game, Integer id, int w, int h) {
+        super(game, id, w, h);
         this.game = game;
     }
 
 
-    public Coordinates pickCoordinate() {
-        Integer id = game.getManager().select(game.getCells(), new Ref(game));
-
-        if (id == null) {
-            return null;
-        }
-
-        return game.getObjectById(id).getCoordinates();
-    }
 
     @Override
     public boolean isCellVisiblyFree(Coordinates c) {
@@ -103,14 +97,11 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         Map<Coordinates, BattleFieldObject> wallObjects = new HashMap<>();
         for (Obj obj : game.getObjects(DC_TYPE.BF_OBJ)) {
             BattleFieldObject bfObj = (BattleFieldObject) obj;
-            if (bfObj.getZ() == game.getDungeon().getZ()) {
                 if (bfObj.isWall()) {
                     wallObjects.put(obj.getCoordinates(), bfObj);
                 }
                 if (bfObj instanceof Door) {
                     doorMap.put(obj.getCoordinates(), ((Door) bfObj).getState());
-
-                }
             }
         }
         if (wallMap == null) {
@@ -225,9 +216,10 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         return diagonalJoints;
     }
 
-    public Set<Obj> getCellsWithinRange(BattleFieldObject observer, int i) {
-        HashSet<Obj> set = new HashSet<>(game.getCells());
+    public Set<DC_Cell> getCellsWithinRange(BattleFieldObject observer, int i) {
+        HashSet<DC_Cell> set = new HashSet<>(game.getCells());
         set.removeIf(cell -> PositionMaster.getDistance(observer, cell) > i);
         return set;
     }
+
 }

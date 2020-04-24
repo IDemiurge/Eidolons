@@ -1,12 +1,10 @@
 package eidolons.libgdx.screens.map.town.navigation.data;
 
-import eidolons.game.module.adventure.entity.npc.NPC;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.map.Place;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
-import main.entity.type.ObjType;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 
@@ -133,8 +131,8 @@ public class NavMapParser {
         switch (prefix) {
             case DUNGEON:
 
-            case NPC:
-                return new NPC(new ObjType(name, MACRO_OBJ_TYPES.NPC));
+//            case NPC:
+//                return new NPC(new ObjType(name, MACRO_OBJ_TYPES.NPC));
         }
         //non-map places?
         return new Place(game, DataManager.getType(name, MACRO_OBJ_TYPES.PLACE), new MacroRef());

@@ -4,11 +4,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
-import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
-import eidolons.game.battlecraft.logic.meta.igg.pale.PaleAspect;
-import eidolons.game.battlecraft.logic.meta.igg.soul.EidolonLord;
-import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.EUtils;
@@ -16,21 +11,26 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.netherflame.igg.IGG_Launcher;
+import eidolons.game.netherflame.igg.death.ShadowMaster;
+import eidolons.game.netherflame.igg.pale.PaleAspect;
+import eidolons.game.netherflame.igg.soul.EidolonLord;
+import eidolons.game.netherflame.igg.soul.panel.LordPanel;
 import eidolons.libgdx.anims.ActionMaster;
-import eidolons.libgdx.bf.grid.GenericGridView;
-import eidolons.libgdx.bf.grid.GridCellContainer;
-import eidolons.libgdx.bf.grid.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.GenericGridView;
+import eidolons.libgdx.bf.grid.cell.GridCellContainer;
+import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.GuiStage;
-import eidolons.libgdx.video.VideoMaster;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
@@ -119,10 +119,8 @@ public class GlobalController implements Controller {
                 EUtils.showInfoText("... Tutorial " + (bool ? "on" : "off"));
                 break;
             case Keys.F2:
-                if (EidolonsGame.BRIDGE) {
-                    if (CoreEngine.isIDE()) {
-                        EidolonLord.lord.soulforceLost(50);
-                    }
+                if (CoreEngine.isIDE()) {
+                    EidolonLord.lord.soulforceLost(50);
                     return false;
                 }
                 if (CoreEngine.isIDE())
@@ -166,10 +164,7 @@ public class GlobalController implements Controller {
     }
 
     private boolean isDisabled() {
-        if (DialogueManager.isRunning()) {
-            return true;
-        }
-        return false;
+        return DialogueManager.isRunning();
     }
 
     private boolean doTest(int keyCode) {
@@ -178,7 +173,7 @@ public class GlobalController implements Controller {
                 GuiEventManager.trigger(GuiEventType.DISPOSE_SCOPE, "DIALOGUE");
                 break;
             case Keys.END:
-                GuiEventManager.trigger(GuiEventType.LOG_DIAGNOSTICS);
+//                GuiEventManager.trigger(GuiEventType.LOG_DIAGNOSTICS);
                 break;
             case Keys.F9:
                 Eidolons.onNonGdxThread(() -> {
@@ -200,7 +195,6 @@ public class GlobalController implements Controller {
                     EidolonLord.lord.soulforceGained(110);
                 }
                 PaleAspect.togglePale();
-                EidolonsGame.BRIDGE = !EidolonsGame.BRIDGE;
                 return true;
             case Keys.F6:
                 if (EidolonsGame.DUEL) {
@@ -260,11 +254,11 @@ public class GlobalController implements Controller {
             ConfirmationPanel.getInstance().ok();
             return true;
         }
-        if (Eidolons.getScreen().getController() != null)
-        if (Eidolons.getScreen().getController().space()) {
-            main.system.auxiliary.log.LogMaster.dev("  *******SPACE CONSUMED ");
-            return true;
-        }
+        if (ScreenMaster.getScreen().getController() != null)
+            if (ScreenMaster.getScreen().getController().space()) {
+                main.system.auxiliary.log.LogMaster.dev("  *******SPACE CONSUMED ");
+                return true;
+            }
         if (Cinematics.ON) {
             return false;
         }
@@ -272,9 +266,9 @@ public class GlobalController implements Controller {
             return false;
         if (DungeonScreen.getInstance() == null)
             return false;
-        if (DungeonScreen.getInstance().isWaitingForInput())
+        if (DungeonScreen.getInstance().isWaitingForInputNow())
             return true;
-        if (Eidolons.getScreen().getGuiStage().getDisplayedClosable()
+        if (ScreenMaster.getScreen().getGuiStage().getDisplayedClosable()
                 instanceof Blocking)
             return false;
         Eidolons.game.getLoop().togglePaused();
@@ -301,7 +295,7 @@ public class GlobalController implements Controller {
             return true;
         }
         try {
-            if (Eidolons.getScreen().getController().enter())
+            if (ScreenMaster.getScreen().getController().enter())
                 return true;
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -317,7 +311,7 @@ public class GlobalController implements Controller {
 
     private boolean tab() {
         List<GenericGridView> list = new ArrayList<>();
-        GridUnitView hovered = DungeonScreen.getInstance().getGridPanel().getHoverObj();
+        GridUnitView hovered = ScreenMaster.getDungeonGrid().getHoverObj();
         GridCellContainer cell = null;
         if (hovered != null) {
             cell = (GridCellContainer) hovered.getParent();
@@ -325,7 +319,7 @@ public class GlobalController implements Controller {
         }
         if (list.size() <= 1) {
             GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
-            if (Eidolons.getScreen().getController().inputPass()) {
+            if (ScreenMaster.getScreen().getController().inputPass()) {
 
             }
             return true;
@@ -355,15 +349,15 @@ public class GlobalController implements Controller {
     private boolean escape() {
 //        if (!CoreEngine.isIDE())
 
-            if (Cinematics.ON) {
-                if (DungeonScreen.getInstance().getGuiStage().isDialogueMode()) {
-                    doScript("skip=:;");
+        if (Cinematics.ON) {
+            if (DungeonScreen.getInstance().getGuiStage().isDialogueMode()) {
+                doScript("skip=:;");
 //                    DungeonScreen.getInstance().getGuiStage().dialogueDone();
-                    FileLogManager.streamMain("Dialogue escaped");
-                    return true;
-                }
-                return false;
+                FileLogManager.streamMain("Dialogue escaped");
+                return true;
             }
+            return false;
+        }
 
         DungeonScreen.getInstance().cameraStop(true);
 
@@ -380,30 +374,33 @@ public class GlobalController implements Controller {
         }
 
         if (DC_Game.game.getManager().isSelecting()
-            //         DungeonScreen.getInstance().getGridPanel().isSelecting()
+            //         ScreenMaster.getDungeonGrid().isSelecting()
         ) {
-            DungeonScreen.getInstance().getGridPanel().clearSelection();
+            ScreenMaster.getDungeonGrid().clearSelection();
             return true;
         }
-        GuiStage guiStage = Eidolons.getScreen().getGuiStage();
-        if (guiStage.getDraggedEntity() != null) {
-            guiStage.setDraggedEntity(null);
-            return true;
-        }
-        if (OptionsWindow.getInstance().isVisible()) {
-            OptionsWindow.getInstance().forceClose();
-            return true;
-        }
-        if (guiStage.closeDisplayed())
-            return true;
-        if (Eidolons.getScreen().getController().escape())
-            return true;
+        if (ScreenMaster.getScreen().getGuiStage() instanceof GuiStage) {
+            GuiStage guiStage = (GuiStage) ScreenMaster.getScreen().getGuiStage();
+            if (guiStage.getDraggedEntity() != null) {
+                guiStage.setDraggedEntity(null);
+                return true;
+            }
+            if (OptionsWindow.getInstance().isVisible()) {
+                OptionsWindow.getInstance().forceClose();
+                return true;
+            }
+            if (guiStage.closeDisplayed())
+                return true;
+            if (ScreenMaster.getScreen().getController().escape())
+                return true;
 
 //        if (){
-        GuiEventManager.trigger(GuiEventType.CLEAR_COMMENTS);
-        guiStage.getTooltips().getStackMaster().stackOff();
-        guiStage.getGameMenu().open();
-        return true;
+            GuiEventManager.trigger(GuiEventType.CLEAR_COMMENTS);
+            guiStage.getTooltips().getStackMaster().stackOff();
+            guiStage.getGameMenu().open();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -426,22 +423,8 @@ public class GlobalController implements Controller {
                             new InventoryDataSource(DC_Game.game.getLoop().getActiveUnit()));
                 }
                 break;
-//            case ' ':  now in space()
-//                if (DungeonScreen.getInstance().isBlocked())
-//                    return false;
-//                if (DungeonScreen.getInstance() == null)
-//                    return false;
-//                if (DungeonScreen.getInstance().isWaitingForInput())
-//                    return true;
-//                if (Eidolons.getScreen().getGuiStage().getDisplayedClosable()
-//                        instanceof Blocking)
-//                    return false;
-//                Eidolons.game.getLoop().togglePaused();
-            //                Eidolons.game.getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.PAUSE);
+//            case 'D':
 //                return true;
-            case 'D':
-                Eidolons.game.getDebugMaster().showDebugWindow();
-                return true;
             case 'W': //TODO custom hotkeys
                 Eidolons.game.getDungeonMaster().getExplorationMaster().getTimeMaster()
                         .playerWaits();

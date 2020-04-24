@@ -3,10 +3,7 @@ package eidolons.system.test;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.bf.grid.GridCellContainer;
-import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.bf.grid.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 
@@ -66,9 +63,11 @@ public class Debugger {
         String msg = "Current Thread: " + Thread.currentThread().getName();
         msg += "\n" + count +
                 " threads: ";
+        StringBuilder msgBuilder = new StringBuilder(msg);
         for (Thread sub : array) {
-            msg += sub.getName() + "\n";
+            msgBuilder.append(sub.getName()).append("\n");
         }
+        msg = msgBuilder.toString();
         return msg;
     }
 

@@ -27,7 +27,6 @@ public class Construct {
     private boolean ENUM;
     private Class CLASS;
     private Argument arg;
-    private boolean genericPrimitive;
     private String xml;
 
     public Construct(String className, List<Construct> constructs, String xml) {
@@ -67,7 +66,6 @@ public class Construct {
     }
 
     public Construct(String text, boolean genericPrimitive) {
-        this.genericPrimitive = genericPrimitive;
         this.content = text;
     }
 

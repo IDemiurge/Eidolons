@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_HeroSlotItem;
-import eidolons.game.battlecraft.logic.meta.igg.soul.eidola.EidolonImbuer;
 import eidolons.game.core.Eidolons;
+import eidolons.game.netherflame.igg.soul.eidola.EidolonImbuer;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -106,13 +106,12 @@ public class InvItemActor extends ItemActor {
         if (model != null) {
             switch (model.getOBJ_TYPE_ENUM()) {
                 case JEWELRY:
+                case ITEMS:
                     return new FadeImageContainer(Images.ITEM_BACKGROUND_GOLD);
                 case WEAPONS:
                     return new FadeImageContainer(Images.ITEM_BACKGROUND_STEEL);
                 case ARMOR:
                     return new FadeImageContainer(Images.ITEM_BACKGROUND_STONE);
-                case ITEMS:
-                    return new FadeImageContainer(Images.ITEM_BACKGROUND_GOLD);
             }
         }
         return new FadeImageContainer(Images.ITEM_BACKGROUND);
@@ -261,7 +260,6 @@ public class InvItemActor extends ItemActor {
             goldGroup.setVisible(cellType == CELL_TYPE.CONTAINER || cellType == CELL_TYPE.INVENTORY
              || cellType == CELL_TYPE.STASH);
         } else {
-            return;
         }
     }
 

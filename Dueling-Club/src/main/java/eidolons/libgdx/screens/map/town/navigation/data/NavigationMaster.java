@@ -1,6 +1,5 @@
 package eidolons.libgdx.screens.map.town.navigation.data;
 
-import eidolons.game.module.adventure.entity.npc.NPC;
 import eidolons.macro.entity.town.TownPlace;
 import eidolons.macro.map.Place;
 
@@ -30,10 +29,10 @@ public class NavigationMaster {
             navigable = new NavigableTownPlace(
              ((TownPlace) obj));
         }
-        if (obj instanceof NPC){
-            navigable = new NavigableNPC(
-             ((NPC) obj));
-        }
+//        if (obj instanceof NPC){
+//            navigable = new NavigableNPC(
+//             ((NPC) obj));
+//        }
         if (obj instanceof Place){
             navigable = new NavigableDungeon(((Place) obj));
         }

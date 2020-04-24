@@ -1,11 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
 import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.system.text.DescriptionTooltips;
-import eidolons.system.text.TextMaster;
-import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
@@ -20,17 +16,18 @@ public class BridgeMaster {
     }
 
     public static String processMetaData(String metaData) {
-        String output = "";
+        StringBuilder outputBuilder = new StringBuilder();
         for (String substring : ContainerUtils.openContainer(metaData)) {
             SCRIPT preset = new EnumMaster<SCRIPT>().retrieveEnumConst(SCRIPT.class, substring);
             if (preset == null) {
-                output += substring + ";";
+                outputBuilder.append(substring).append(";");
             } else
             {
 //                DescriptionTooltips.getTutorialMap().getVar(preset)
-                output += preset.text + ";";
+                outputBuilder.append(preset.text).append(";");
             }
         }
+        String output = outputBuilder.toString();
         if (output.isEmpty()) {
             return "";
         }

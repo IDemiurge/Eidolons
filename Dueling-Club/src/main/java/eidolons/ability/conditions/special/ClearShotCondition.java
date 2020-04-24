@@ -11,7 +11,6 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
-import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.math.PositionMaster;
@@ -140,7 +139,7 @@ public class ClearShotCondition extends MicroCondition {
 
         if (target.isOverlaying()) {
             if (target instanceof DC_Obj) {
-                if (!isOverlayingWithinSightAngle((DC_Obj) target, source))
+                if (!isOverlayingWithinSightAngle(target, source))
                     return false;
 
             }

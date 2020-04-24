@@ -1,0 +1,276 @@
+package main.level_editor.gui.tree;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.kotcrab.vis.ui.VisUI;
+import eidolons.game.battlecraft.ai.elements.generic.AiData;
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjNode;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
+import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.stage.camera.CameraMan;
+import eidolons.libgdx.texture.Images;
+import eidolons.libgdx.texture.TextureCache;
+import main.content.DC_TYPE;
+import main.data.tree.LayeredData;
+import main.data.tree.StructNode;
+import main.game.bf.Coordinates;
+import main.level_editor.LevelEditor;
+import main.level_editor.backend.struct.boss.BossDungeon;
+import main.level_editor.backend.struct.campaign.Campaign;
+import main.level_editor.gui.components.TreeX;
+import main.level_editor.gui.stage.LE_GuiStage;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.graphics.FontMaster;
+import main.system.threading.WaitMaster;
+
+public class LE_TreeView extends TreeX<StructNode> {
+
+    private Object lastSelected;
+    private Object lastSelectedParent;
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
+
+    @Override
+    protected void rightClick(StructNode node) {
+
+        if (node.getData() instanceof LevelBlock) {
+            BlockData data = ((LevelBlock) node.getData()) .getData();
+            if (getStage() instanceof LE_GuiStage) {
+                ((LE_GuiStage) getStage()).getBlockEditor().edit(data);
+            }
+        }
+        if (node.getData() instanceof LevelZone) {
+            ZoneData data = ((LevelZone) node.getData() ).getData();
+            if (getStage() instanceof LE_GuiStage) {
+                ((LE_GuiStage) getStage()).getZoneEditor().edit(data);
+            }
+        }
+        if (node.getData() instanceof  Module) {
+            ModuleData data = ( (Module) node.getData()) .getData();
+            if (getStage() instanceof LE_GuiStage) {
+                ((LE_GuiStage) getStage()).getModuleDialog().edit(data);
+            }
+        }
+
+        if (node.getData() instanceof Location) {
+            FloorData data = (FloorData) ((Location) node.getData()).getData();
+            if (getStage() instanceof LE_GuiStage) {
+                ((LE_GuiStage) getStage()).getFloorDialog().edit(data);
+            }
+        }
+    }
+
+    @Override
+    protected void doubleClick(StructNode node) {
+        Coordinates c = null;
+        if (node.getData() instanceof ObjNode) {
+            c = ((ObjNode) node.getData()).getObj().getCoordinates();
+            LevelEditor.getManager().getSelectionHandler().
+                    select(((ObjNode) node.getData()).getObj());
+        } else {
+            if (node.getData() instanceof LevelBlock) {
+                c = CoordinatesMaster.getCenterCoordinate(((LevelBlock) node.getData()) .getCoordinatesSet());
+            } else if (node.getData() instanceof LevelZone) {
+                c = CoordinatesMaster.getCenterCoordinate(
+                        ((LevelZone) node.getData()).getChildren().iterator().next()
+                                .getCoordinatesSet());
+            }
+            if (node.getData() instanceof  Module) {
+                Module m = (Module) node.getData();
+                c = m.getOrigin().getOffset(m.getEffectiveWidth() / 2, m.getEffectiveHeight() / 2);
+            }
+            //center coordinate
+
+        }
+        Vector2 v = GridMaster.getCenteredPos(c);
+        CameraMan.MotionData data = new CameraMan.MotionData(v, 0.5f, null);
+        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, data);
+//        data =  new CameraMan.MotionData(z, 0.5f, null);
+//        GuiEventManager.trigger(GuiEventType.CAMERA_ZOOM, data);
+    }
+
+    @Override
+    protected void click(int tapCount, InputEvent event, Node n, StructNode node) {
+        super.click(tapCount, event, n, node);
+        lastSelected = node.getData();
+        if (lastSelected instanceof StructNode) {
+            lastSelected = ((StructNode) lastSelected).getData() ;
+        }
+        if (n.getParent() != null) {
+            lastSelectedParent = n.getParent().getObject();
+            if (lastSelectedParent instanceof StructNode) {
+                lastSelectedParent = ((StructNode) lastSelectedParent).getData() ;
+            }
+        }
+    }
+
+    public void reselect() {
+        if (!forceSelect(lastSelected)) {
+            forceSelect(lastSelectedParent);
+        }
+    }
+
+    @Override
+    public void select(Object o) {
+        forceSelect(o);
+    }
+
+    private boolean forceSelect(Object lastSelected) {
+        for (Node node : nodes) {
+            try {
+                if (node.getObject() instanceof StructNode) {
+                    if (((StructNode) node.getObject()).getData()  == lastSelected) {
+                        click(1, null, node, (StructNode) node.getObject());
+                        node.expandTo();
+                        return true;
+                    }
+                }
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected void selected(StructNode node, Node n) {
+        if (node.getData() instanceof ObjNode) {
+            if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+                    Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
+                LevelEditor.getManager().getSelectionHandler().addToSelected(
+                        ((ObjNode) node.getData()).getObj());
+            } else {
+                LevelEditor.getManager().getSelectionHandler().select(((ObjNode) node.getData()).getObj());
+            }
+        } else if (node.getData() instanceof LevelBlock) {
+            LevelBlock block = ((LevelBlock) node.getData());
+            LevelEditor.getModel().setBlock(block);
+            LevelEditor.getModel().setZone(block.getZone());
+            WaitMaster.receiveInput(LevelEditor.SELECTION_EVENT, true);
+        } else if (node.getData() instanceof LevelZone) {
+            LevelEditor.getModel().setZone(((LevelZone) node.getData()) );
+            //camera!
+        } else if (node.getData() instanceof  Module) {
+            LevelEditor.getModel().setModule((Module) node.getData());
+        } else if (node.getData() instanceof Layer) {
+            //select all?
+
+
+            // if on > select
+            // if off > preview
+            //
+        }
+    }
+
+    @Override
+    protected Actor createNodeComp(StructNode node) {
+
+        Label.LabelStyle style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 16);
+        TextureRegion texture = null;
+        if (node == null) {
+            return new Label("NULL", VisUI.getSkin());
+        }
+        if (node.getData() == null) {
+            return new Label("NULL", VisUI.getSkin());
+        }
+        String name = node.getData().toString();
+        String val = null;
+        float w = 64;
+        float h = 64;
+
+        Color c = null;
+        if (node.getData() instanceof Campaign) {
+            Campaign campaign = ((Campaign) node.getData());
+            style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 16);
+            texture = TextureCache.getOrCreateR(campaign.getImagePath());
+        }
+        if (node.getData() instanceof BossDungeon) {
+            BossDungeon dungeon = ((BossDungeon) node.getData());
+        }
+
+
+        if (node.getData() instanceof Location) {
+            style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 21);
+            Location floor = ((Location) node.getData());
+            texture = TextureCache.getOrCreateR(floor.getDungeon().getImagePath());
+        }
+        if (node.getData() instanceof  Module) {
+            style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 21);
+            Module module = (Module) node.getData();
+            name = "--- " + module.toString();
+            texture = TextureCache.getOrCreateR(Images.ITEM_BACKGROUND_STONE);
+        }
+        if (node.getData() instanceof LevelZone) {
+            style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 19);
+            LevelZone zone = (LevelZone) node.getData();
+            name = "-- " + "Zone " + zone.getName() + ", Data: " + zone.getData();
+//            val = zone.getSubParts().size();
+//            zone.getTemplateGroup();
+//            zone.getStyle();
+        }
+        if (node.getData() instanceof LevelBlock) {
+            LevelBlock block = (LevelBlock) node.getData();
+            name = "-- " +
+                    //(block.isTemplate() ? "Template " : "Custom ") +
+                    block.getRoomType() +
+                    " at " + block.getOrigin() + " with Cells [" +
+                    block.getCoordinatesSet().size() +
+                    "]" + ", Data: " + block.getData();
+            c = LevelEditor.getCurrent().getManager().getStructureManager().getColorForBlock(block);
+
+            //img per room type
+//            texture = TextureCache.getOrCreateR(Images.ITEM_BACKGROUND_STONE);
+            w = 32;
+            h = 32;
+            texture = TextureCache.getOrCreateR(Images.COLOR_EMBLEM);
+        }
+        if (node.getData() instanceof ObjNode) { // or id?
+            ObjNode dcObj = ((ObjNode) node.getData());
+            texture = TextureCache.getOrCreateR(dcObj.getObj().getImagePath());
+            if (dcObj.getObj().getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
+                name = "[Encounter]" + name;
+                //get ai info!
+            }
+            AiData ai = LevelEditor.getManager().getAiHandler().getAiForEncounter(dcObj.getObj());
+        }
+
+        ValueContainer actor = new ValueContainer(style, texture, name, val);
+        if (c != null) {
+            actor.getImageContainer().getActor().setColor(c);
+        }
+
+        if (actor.getImageContainer().getActor() != null) {
+            actor.getImageContainer().size(w, h);
+            actor.getImageContainer().getActor().setSize(w, h);
+        }
+        return (actor);
+    }
+
+    public String toString(LayeredData data) {
+        switch (data.getClass().getSimpleName()) {
+
+        }
+        return super.toString();
+    }
+}

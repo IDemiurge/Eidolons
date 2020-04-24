@@ -15,7 +15,6 @@ public class G_TablePanel extends G_Panel {
     public static final String VALUE = "Value";
     private G_Table table;
     private String[] emptyNames = {" ", "  "};
-    private String[] AVNames = {NAME, VALUE};
     private String[] names;
 
     public G_TablePanel(Vector<?> data, boolean b) {
@@ -25,6 +24,7 @@ public class G_TablePanel extends G_Panel {
 
     public G_TablePanel(Vector<?> data, boolean b, String sizeInfo) {
         if (b) {
+            String[] AVNames = {NAME, VALUE};
             names = AVNames;
         } else {
             names = emptyNames;

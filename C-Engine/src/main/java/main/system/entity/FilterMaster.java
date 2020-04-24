@@ -158,9 +158,7 @@ public class FilterMaster {
         filter(objList, conditions);
         List<Integer> idList = new ListMaster<>().convertToIdList(objList);
         list.clear();
-        for (Integer id : idList) {
-            list.add(id);
-        }
+        list.addAll(idList);
 
     }
 

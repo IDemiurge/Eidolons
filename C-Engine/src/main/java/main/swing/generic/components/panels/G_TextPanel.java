@@ -8,11 +8,8 @@ import java.awt.*;
 
 public class G_TextPanel extends G_Panel {
 
-    // JTextArea textArea; CUSTOM TEXT RENDERING!
-    private Dimension d;
-
     public G_TextPanel(Dimension d) {
-        this.d = d;
+        // JTextArea textArea; CUSTOM TEXT RENDERING!
 
     }
 

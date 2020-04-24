@@ -10,7 +10,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -18,23 +17,24 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
-import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.bf.grid.GridUnitView;
-import eidolons.libgdx.bf.grid.LastSeenView;
+import eidolons.libgdx.bf.grid.cell.BaseView;
+import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.LastSeenView;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.controls.StackViewMaster;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.HqTooltipPanel;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.ConfirmationPanel;
+import eidolons.libgdx.stage.GenericGuiStage;
 import eidolons.libgdx.stage.GuiStage;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.threading.WaitMaster;
 
@@ -44,7 +44,7 @@ public class ToolTipManager extends TablePanel {
 
     private static final float DEFAULT_WAIT_TIME = 1.0f;
     private static final float TOOLTIP_HIDE_DISTANCE = 80;
-    private final GuiStage guiStage;
+    private final GenericGuiStage guiStage;
     private float tooltipTimer;
     private Tooltip tooltip;
     private Cell actorCell;
@@ -67,7 +67,7 @@ public class ToolTipManager extends TablePanel {
         ToolTipManager.presetTooltipPos = presetTooltipPos;
     }
 
-    public ToolTipManager(GuiStage battleGuiStage) {
+    public ToolTipManager(GenericGuiStage battleGuiStage) {
         guiStage = battleGuiStage;
         GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
             Object object = event.get();
@@ -82,8 +82,8 @@ public class ToolTipManager extends TablePanel {
             }
             BaseView object = (BaseView) event.get();
             hovered(object);
-            if (object instanceof LastSeenView)
-                return;
+            if (object instanceof LastSeenView) {
+            }
         });
 
         GuiEventManager.bind(SCALE_UP_VIEW, (event) -> {
@@ -186,6 +186,7 @@ public class ToolTipManager extends TablePanel {
             if (tooltip instanceof UnitViewTooltip)
                 return;
         }
+        if (DungeonScreen.getInstance() != null)
         if (DungeonScreen.getInstance().getGridPanel() != null)
         if (DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().size()>0) {
             return;
@@ -435,7 +436,9 @@ public class ToolTipManager extends TablePanel {
         if (entity instanceof DC_UnitAction) {
             AnimMaster3d.hoverOff((DC_UnitAction) entity);
         }
-        guiStage.getRadial().hoverOff(entity);
+        if (guiStage instanceof GuiStage) {
+            ((GuiStage) guiStage).getRadial().hoverOff(entity);
+        }
     }
 
     public void entityHover(Entity entity) {
@@ -448,7 +451,9 @@ public class ToolTipManager extends TablePanel {
             return;
         }
 
-        guiStage.getRadial().hover(entity);
+        if (guiStage instanceof GuiStage) {
+            ((GuiStage) guiStage).getRadial().hover(entity);
+        }
         //differentiate radial from bottom panel? no matter really ... sync :)
         //        guiStage.getBottomPanel().getSpellPanel().getCellsSet();
 
@@ -468,7 +473,7 @@ public class ToolTipManager extends TablePanel {
         stackMaster.checkShowStack(object);
 
 
-        DungeonScreen.getInstance().getGridPanel().setUpdateRequired(true);
+        ScreenMaster.getDungeonGrid().setUpdateRequired(true);
 
     }
 
@@ -538,7 +543,7 @@ public class ToolTipManager extends TablePanel {
         hoverOff = true;
         object.setHovered(false);
         stackMaster.checkStackOff(object);
-        DungeonScreen.getInstance().getGridPanel().setUpdateRequired(true);
+        ScreenMaster.getDungeonGrid().setUpdateRequired(true);
 
     }
 

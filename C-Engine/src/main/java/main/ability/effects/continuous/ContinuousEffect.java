@@ -32,9 +32,6 @@ public class ContinuousEffect extends MicroEffect {
 
         if ((effect instanceof Effects)) {
             for (Effect e : ((Effects) effect)) {
-                if (effect instanceof OneshotEffect) {
-                    throw new RuntimeException("OneshotEffect cannot be made Continuous!");
-                }
                 if (!(e instanceof ContinuousEffect) && !(e instanceof AttachmentEffect)) {
                     {
                         ((Effects) effect).remove(e);

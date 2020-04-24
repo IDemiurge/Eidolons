@@ -2,21 +2,18 @@ package eidolons.game.battlecraft.logic.battle.universal;
 
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.PlayerAI;
-import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.core.game.DC_Game;
 import eidolons.macro.entity.faction.Faction;
-import main.content.enums.system.AiEnums;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
 import main.system.data.PlayerData.ALLEGIENCE;
-import main.system.graphics.ColorManager;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,9 +27,8 @@ public class DC_Player extends Player {
 
     protected ALLEGIENCE allegiance;
     private Map<DC_Obj, Coordinates> detectionCache = new HashMap<>();
-    private PlayerAI playerAI;
     private String partyDataString;
-    private UnitData unitData;
+    private UnitsData unitData;
     private Faction faction;
     private FLAG_COLOR flagColorAlt;
 
@@ -58,8 +54,6 @@ public class DC_Player extends Player {
 
     @Override
     public boolean isAi() {
-        if (AiTrainingRunner.running)
-            return true;
         return super.isAi();
     }
 
@@ -88,12 +82,12 @@ public class DC_Player extends Player {
 
     public Set<Unit>  collectControlledUnits_() {
         return getGame().getUnits().stream().filter(unit -> unit.isOwnedBy(this))
-         .collect(Collectors.toSet());
+         .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public Set<Obj> collectControlledUnits() {
         return getGame().getUnits().stream().
-         filter(unit -> unit.isOwnedBy(this)).collect(Collectors.toSet());
+         filter(unit -> unit.isOwnedBy(this)).collect(Collectors.toCollection(LinkedHashSet::new));
 //        Set<Obj> units = new LinkedHashSet<>();
 //        for (Unit unit : (getGame().getUnits())) {
 //            if (unit.getOwner() == this) {
@@ -107,26 +101,11 @@ public class DC_Player extends Player {
         return detectionCache;
     }
 
-    public PlayerAI getAI() {
-        return getPlayerAI();
-    }
-
-    public PlayerAI getPlayerAI() {
-        if (playerAI == null) {
-            playerAI = new PlayerAI(AiEnums.PLAYER_AI_TYPE.NORMAL);
-        }
-        return playerAI;
-    }
-
-    public void setPlayerAI(PlayerAI playerAI) {
-        this.playerAI = playerAI;
-    }
-
-    public UnitData getUnitData() {
+    public UnitsData getUnitData() {
         return unitData;
     }
 
-    public void setUnitData(UnitData unitData) {
+    public void setUnitData(UnitsData unitData) {
         this.unitData = unitData;
     }
 

@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.rules;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.netherflame.NF_Game;
 import eidolons.system.controls.Controller;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -84,6 +85,8 @@ public class RuleKeeper implements Controller {
                         return true;
                 }
                 break;
+            case EIDOLON:
+                return Eidolons.getGame() instanceof NF_Game;
         }
         return false;
     }
@@ -177,6 +180,7 @@ public class RuleKeeper implements Controller {
         switch (getScope()) {
 
             case TEST:
+            case ADVANCED:
                 break;
             case BASIC:
                 switch (feature) {
@@ -198,8 +202,6 @@ public class RuleKeeper implements Controller {
 //                    case DUAL_ATTACKS:
                         return false;
                 }
-                break;
-            case ADVANCED:
                 break;
         }
 
@@ -251,8 +253,6 @@ public class RuleKeeper implements Controller {
 
     public static String getRuleLogText(COMBAT_RULES rule, int level) {
         switch (rule) {
-            case BLEEDING:
-                break;
             case FOCUS:
                 if (level == 2) {
                     return "'s focus is razorsharp!";
@@ -273,8 +273,6 @@ public class RuleKeeper implements Controller {
                 if (level == 0) {
                     return " panics!";
                 }
-            case MORALE_KILL:
-                break;
             case STAMINA:
                 if (level == 2) {
                     return " is full of energy!";
@@ -383,6 +381,7 @@ public class RuleKeeper implements Controller {
     }
 
     public enum RULE {
+        SOULFORCE(RULE_SCOPE.EIDOLON),
         FORCE(RULE_SCOPE.BASIC),
         CHANNELING(RULE_SCOPE.TEST),
         ATTACK_OF_OPPORTUNITY(RULE_SCOPE.BASIC),
@@ -439,7 +438,7 @@ public class RuleKeeper implements Controller {
     }
 
     public enum RULE_SCOPE {
-        TEST, BASIC, FULL, ADVANCED,
+        TEST, BASIC, FULL, ADVANCED, EIDOLON,
     }
 
     public enum SPELLCASTING_RULES {

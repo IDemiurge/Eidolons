@@ -12,7 +12,6 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Animation;
@@ -26,7 +25,6 @@ import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TexturePackerLaunch;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
-import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.entity.ItemEnums.ARMOR_TYPE;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
@@ -332,7 +330,6 @@ public class AnimMaster3d {
     private static boolean isAssymetric(String activeWeapon) {
         switch (activeWeapon) {
             case "Fist":
-                return true;
             case "Armored Fist":
                 return true;
 

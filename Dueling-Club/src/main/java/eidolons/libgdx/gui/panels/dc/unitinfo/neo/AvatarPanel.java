@@ -1,12 +1,7 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import eidolons.libgdx.TiledNinePatchGenerator;
-import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
-import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.TablePanelX;

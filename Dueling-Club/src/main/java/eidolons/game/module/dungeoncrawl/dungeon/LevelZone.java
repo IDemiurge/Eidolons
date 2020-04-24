@@ -1,49 +1,46 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
-import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
-import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
-import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
-import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
-import eidolons.game.module.dungeoncrawl.generator.pregeneration.Pregenerator;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.module.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
+import eidolons.game.module.generator.GeneratorEnums.ZONE_TYPE;
+import eidolons.game.module.generator.graph.LevelGraphNode;
+import eidolons.game.module.generator.pregeneration.Pregenerator;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
-import eidolons.system.audio.MusicMaster.AMBIENCE;
-import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.entity.UnitEnums.UNIT_GROUP;
-import main.data.xml.XML_Converter;
+import main.game.bf.Coordinates;
 import main.system.datatypes.WeightMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by JustMe on 7/20/2018.
  */
-public class LevelZone extends LevelLayer<LevelBlock> {
+public class LevelZone extends LevelStruct<LevelBlock, LevelBlock> {
 
     int id;
     List<LevelGraphNode> nodes = new ArrayList<>();
-    private ZONE_TYPE type;
+    private ZONE_TYPE type; //TODO   into zoneData "RNG PROPS"!!!
     private ROOM_TEMPLATE_GROUP templateGroup;
-    private DUNGEON_STYLE style;
     private WeightMap<UNIT_GROUP> unitGroupWeightMap;
     private int nodeCount;
+    private Module module;
 
-    public LevelZone(DUNGEON_STYLE style, AMBIENCE ambience,
-                     COLOR_THEME colorTheme, int globalIllumination, int id) {
-        super(null, ambience, colorTheme, globalIllumination);
-        this.style = style;
-        this.id = id;
-    }
 
-    public void addBlock(LevelBlock block) {
-        getSubParts().add(block);
-    }
     public LevelZone(ZONE_TYPE type, ROOM_TEMPLATE_GROUP templateGroup, DUNGEON_STYLE style, int id) {
         this.type = type;
         this.templateGroup = templateGroup;
-        this.style = style;
+        setStyle(style);
         this.id = id;
 
+    }
+
+    @Override
+    public Set<Coordinates> getCoordinatesSet() {
+
+        return super.getCoordinatesSet();
     }
 
     public LevelZone(int id) {
@@ -51,30 +48,20 @@ public class LevelZone extends LevelLayer<LevelBlock> {
     }
 
     @Override
-    public String toString() {
-        return "Zone #" + id + ":" +
-         type +
-         " with style " + style + ", " +
-         getSubParts().size() +
-         "blocks";
+    protected Module getParent() {
+        return getModule();
     }
 
+    public void addBlock(LevelBlock block) {
+        getSubParts().add(block);
+    }
     @Override
-    public String toXml() {
-        String xml = "";
-        //props
-        int n = 0;
-        for (LevelBlock block : getSubParts()) {
-            xml += XML_Converter.wrap("Block" + n++, block.toXml());
-        }
-        xml = XML_Converter.wrap("Blocks", xml);
-        String values = "";
-        values += XML_Converter.wrap(RngXmlMaster.ZONE_STYLE_NODE, style.name());
-        values += XML_Converter.wrap(RngXmlMaster.ZONE_TYPE_NODE, type.name());
-        values += XML_Converter.wrap(RngXmlMaster.ZONE_TEMPLATE_GROUP_NODE, templateGroup.name());
-        xml += XML_Converter.wrap(RngXmlMaster.VALUES_NODE, values);
-        xml = XML_Converter.wrap("Zone_" + id, xml);
-        return xml;
+    public String toString() {
+        return "Zone #" + id + ":" +
+                type +
+                " with style " + getStyle() + ", " +
+                getSubParts().size() +
+                "blocks";
     }
 
     public ZONE_TYPE getType() {
@@ -91,14 +78,6 @@ public class LevelZone extends LevelLayer<LevelBlock> {
 
     public void setTemplateGroup(ROOM_TEMPLATE_GROUP templateGroup) {
         this.templateGroup = templateGroup;
-    }
-
-    public DUNGEON_STYLE getStyle() {
-        return style;
-    }
-
-    public void setStyle(DUNGEON_STYLE style) {
-        this.style = style;
     }
 
     public int getIndex() {
@@ -124,5 +103,21 @@ public class LevelZone extends LevelLayer<LevelBlock> {
 
     public int getNodeCount() {
         return nodeCount;
+    }
+
+    public void setData(ZoneData data) {
+        this.data = data;
+    }
+
+    public ZoneData getData() {
+        return (ZoneData) super.getData();
+    }
+
+    public Module getModule() {
+        return module;
+    }
+
+    public void setModule(Module module) {
+        this.module = module;
     }
 }

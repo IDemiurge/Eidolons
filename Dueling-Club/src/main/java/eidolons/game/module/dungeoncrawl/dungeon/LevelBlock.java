@@ -1,39 +1,45 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
-import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
-import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
-import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
-import main.content.enums.DungeonEnums.DUNGEON_STYLE;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjNode;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjsNode;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.generator.GeneratorEnums.ROOM_CELL;
+import eidolons.game.module.generator.init.RngXmlMaster;
+import eidolons.game.module.generator.model.RoomModel;
+import eidolons.game.module.generator.tilemap.TileMap;
+import eidolons.game.module.generator.tilemap.TileMapper;
+import main.content.DC_TYPE;
+import main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
 import main.data.XLinkedMap;
+import main.data.tree.LayeredData;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 7/20/2018.
  */
-public class LevelBlock extends LevelLayer<LevelBlock> {
-    Coordinates coordinates;
+public class LevelBlock extends LevelStruct<LevelBlock, Object> {
+
     private ROOM_TYPE roomType;
-    private int width;
-    private int height;
-    private List<ObjAtCoordinate> units = new ArrayList<>();
-    private List<ObjAtCoordinate> objects = new ArrayList<>();
-    private Set<Coordinates> coordinatesList;
+    private RoomModel model;
     private TileMap tileMap;
     private TileMap originalTileMap;
-    private LevelZone zone;
     private Map<Coordinates, Coordinates> boundCells;
-    private boolean customCoordinateList;
     private Map<List<ObjAtCoordinate>, UNIT_GROUP_TYPE> unitGroups;
-    private Coordinates centerCoordinate;
+    private boolean template;
+    private LevelZone zone;
+    private int id;
+    private static Integer ID = 0;
 
     public LevelBlock(Coordinates coordinates, LevelZone zone, ROOM_TYPE roomType, int width, int height, TileMap tileMap) {
         this.roomType = roomType;
@@ -41,21 +47,48 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         this.height = height;
         this.tileMap = tileMap;
         this.originalTileMap = new TileMap(
-         new MapMaster<Coordinates, ROOM_CELL>().cloneHashMap(
-         tileMap.getMap()));
-        this.coordinates = coordinates;
+                new MapMaster<Coordinates, ROOM_CELL>().cloneHashMap(
+                        tileMap.getMap()));
+        this.origin = coordinates;
         this.zone = zone;
-        if (RandomWizard.chance(75)) {
-            setColorTheme(zone.getColorTheme());
-            setAltColorTheme(zone.getAltColorTheme());
-        } else {
-            setColorTheme(zone.getAltColorTheme());
-            setAltColorTheme(zone.getColorTheme());
-        }
+        id = ID++;
+
     }
 
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public Collection  getChildren() {
+        if (!CoreEngine.isLevelEditor()) {
+            return new ArrayList<>();
+        }
+            LinkedHashSet<LayeredData> objs = DC_Game.game.getBfObjects().stream().filter(
+                    obj -> isWithinBlock(obj) && obj.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS).map(
+                    obj -> new ObjNode(obj)).collect(Collectors.toCollection(LinkedHashSet::new));
+            objs.add(new ObjsNode(this));
+            return objs;
+    }
+    private boolean isWithinBlock(BattleFieldObject obj) {
+        return  getCoordinatesSet().contains(obj.getCoordinates());
+    }
     public LevelBlock(LevelZone zone) {
         this.zone = zone;
+    }
+
+    public LevelBlock(RoomModel blockTemplate, LevelZone zone) {
+        this(zone);
+        unitGroups = new LinkedHashMap<>();
+        template = true;
+        this.model = blockTemplate;
+        setTileMap(TileMapper.createTileMap(blockTemplate.getCells()));
+    }
+
+    @Override
+    protected LevelStruct getParent() {
+        return zone;
     }
 
     public ROOM_TYPE getRoomType() {
@@ -68,27 +101,22 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
 
     @Override
     public String toString() {
+        if (tileMap == null) {
+            return getRoomType() + " block of " + zone;
+        }
         return getRoomType() + " block of " + zone
-         + "\n" + tileMap.toString();
+                + "\n" + tileMap.toString();
     }
+
 
     @Override
     public String toXml() {
         String xml = "";
-        xml += XML_Converter.wrap(RngXmlMaster.BLOCK_ROOM_TYPE_NODE, roomType.name());
-
-//     TODO    if (isCustomCoordinateList())
-            xml += XML_Converter.wrap(RngXmlMaster.COORDINATES_NODE, ContainerUtils.
-             toStringContainer(getCoordinatesList(), RngXmlMaster.SEPARATOR));
-
-        xml += XML_Converter.wrap(RngXmlMaster.UNITS_NODE, ContainerUtils.
-         toStringContainer(units, RngXmlMaster.SEPARATOR));
-        xml += XML_Converter.wrap(RngXmlMaster.OBJECTS_NODE, ContainerUtils.
-         toStringContainer(objects, RngXmlMaster.SEPARATOR));
-
-
-        xml += XML_Converter.wrap(RngXmlMaster.COLOR_THEME, colorTheme.toString());
-        xml += XML_Converter.wrap(RngXmlMaster.COLOR_THEME_ALT, altColorTheme.toString());
+        if (roomType != null) {
+            xml += XML_Converter.wrap(RngXmlMaster.BLOCK_ROOM_TYPE_NODE, roomType.name());
+        }
+        xml += XML_Converter.wrap(RngXmlMaster.COORDINATES_NODE, ContainerUtils.
+                toStringContainer(getCoordinatesSet(), RngXmlMaster.SEPARATOR));
         return xml;
     }
 
@@ -100,32 +128,32 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         return height;
     }
 
+    @Deprecated
     public List<ObjAtCoordinate> getUnits() {
-        return units;
+        return new ArrayList<>();
     }
 
+    @Deprecated
     public List<ObjAtCoordinate> getObjects() {
-        return objects;
+        return new ArrayList<>();
     }
 
-    public Set<Coordinates> getCoordinatesList() {
-        if (coordinatesList == null)
-            coordinatesList = new LinkedHashSet<>(
-             tileMap.getMap().keySet()
-//              .stream().map(c ->
-//              c.getOffset(getCoordinates())).collect(Collectors.toSet())
-            );
-        return coordinatesList;
+    public Set<Coordinates> getCoordinatesSet() {
+        if (coordinatesSet == null) {
+            coordinatesSet = new LinkedHashSet<>();
+            for (int x = 0; x < getWidth(); x++) {
+                for (int y = 0; y < getHeight(); y++) {
+                    coordinatesSet.add( Coordinates.get(x, y).getOffset(getOrigin()));
+                }
+            }
+        }
+        return coordinatesSet;
     }
 
-    public void setCoordinatesList(List<Coordinates> coordinatesList) {
+    public void setCoordinates(Collection<Coordinates> coordinatesList) {
         coordinatesList.removeIf(c -> c == null);
-        this.coordinatesList = new LinkedHashSet<>(coordinatesList);
+        this.coordinatesSet = new LinkedHashSet<>(coordinatesList);
 
-    }
-
-    public DUNGEON_STYLE getStyle() {
-        return zone.getStyle();
     }
 
     public TileMap getTileMap() {
@@ -136,8 +164,11 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         this.tileMap = tileMap;
     }
 
-    public Coordinates getCoordinates() {
-        return coordinates;
+    public Coordinates getOrigin() {
+        if (origin == null) {
+            return Coordinates.get(0, 0);
+        }
+        return origin;
     }
 
     public LevelZone getZone() {
@@ -152,12 +183,8 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     }
 
 
-    public void offsetCoordinates() {
-        offsetCoordinates(getCoordinates());
-    }
-
     public void offsetCoordinates(Coordinates offset) {
-        coordinatesList.forEach(c -> c.offset(offset));
+        coordinatesSet.forEach(c -> c.offset(offset));
     }
 
     public void setWidth(int width) {
@@ -168,24 +195,16 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         this.height = height;
     }
 
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
+    public void setOrigin(Coordinates coordinates) {
+        this.origin = coordinates;
     }
 
     public int getSquare() {
-        return getWidth() *  getHeight();
+        return getWidth() * getHeight();
     }
 
     public TileMap getOriginalTileMap() {
         return originalTileMap;
-    }
-
-    public boolean isCustomCoordinateList() {
-        return customCoordinateList;
-    }
-
-    public void setCustomCoordinateList(boolean customCoordinateList) {
-        this.customCoordinateList = customCoordinateList;
     }
 
     public Map<List<ObjAtCoordinate>, UNIT_GROUP_TYPE> getUnitGroups() {
@@ -195,15 +214,41 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         return unitGroups;
     }
 
-
     public Coordinates getCenterCoordinate() {
-        if (centerCoordinate == null) {
-        centerCoordinate = coordinates.getOffsetByX(getWidth() / 2).getOffsetByY(getHeight() / 2);
-    }
-        return centerCoordinate;
+        return origin.getOffsetByX(getWidth() / 2).getOffsetByY(getHeight() / 2);
     }
 
     public void setZone(LevelZone zone) {
         this.zone = zone;
+    }
+
+    public boolean isTemplate() {
+        return template;
+    }
+
+    public void setTemplate(boolean template) {
+        this.template = template;
+    }
+
+    public RoomModel getModel() {
+        return model;
+    }
+
+
+
+    public void setData(BlockData data) {
+        this.data = data;
+    }
+
+    public BlockData getData() {
+        return (BlockData) data;
+    }
+
+    public void setModel(RoomModel blockTemplate) {
+        model = blockTemplate;
+        if (model != null) {
+            setWidth(model.getWidth());
+            setHeight(model.getHeight());
+        }
     }
 }

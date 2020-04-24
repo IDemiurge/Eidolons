@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.battle.mission;
 
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
-import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.game.DC_Game;
 

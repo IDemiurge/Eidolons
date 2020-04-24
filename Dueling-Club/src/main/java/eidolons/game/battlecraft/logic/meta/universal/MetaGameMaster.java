@@ -6,9 +6,6 @@ import eidolons.game.Simulation;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.meta.igg.death.ShadowMaster;
-import eidolons.game.battlecraft.logic.meta.igg.event.GameEventHandler;
-import eidolons.game.battlecraft.logic.meta.igg.event.IGG_EventHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
@@ -19,6 +16,9 @@ import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
+import eidolons.game.netherflame.igg.death.ShadowMaster;
+import eidolons.game.netherflame.igg.event.GameEventHandler;
+import eidolons.game.netherflame.igg.event.IGG_EventHandler;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.macro.AdventureInitializer;
 import eidolons.macro.global.persist.Loader;
@@ -56,7 +56,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected LootMaster<E> lootMaster;
 
     protected GameEventHandler eventHandler;
-    protected ModuleMaster moduleMaster;
 
     ShadowMaster shadowMaster = new ShadowMaster(this);
 
@@ -83,19 +82,19 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected abstract MetaInitializer<E> createMetaInitializer();
 
     public void initHandlers() {
-        moduleMaster = new ModuleMaster(this);
-        eventHandler = new IGG_EventHandler(this);
-        defeatHandler = createDefeatHandler();
         partyManager = createPartyManager();
-        lootMaster = createLootMaster();
         initializer = createMetaInitializer();
         metaDataManager = createMetaDataManager();
 
-
-        townMaster = createTownMaster();
-        dialogueManager = new DialogueManager(this);
-        if (dialogueManager.isPreloadDialogues()) {
-            getDialogueFactory().init(this);
+        if (CoreEngine.isCombatGame()) {
+            lootMaster = createLootMaster();
+            eventHandler = new IGG_EventHandler(this);
+            defeatHandler = createDefeatHandler();
+            townMaster = createTownMaster();
+            dialogueManager = new DialogueManager(this);
+            if (dialogueManager.isPreloadDialogues()) {
+                getDialogueFactory().init(this);
+            }
         }
     }
 
@@ -157,9 +156,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         if (CoreEngine.isMacro()) {
             return false;
         }
-        if (!game.getMetaMaster().isRngDungeon() && CoreEngine.isSafeMode())
-            return false;
-        return true;
+        return game.getMetaMaster().isRngDungeon() || !CoreEngine.isSafeMode();
     }
 
     public boolean isRngQuestsEnabled() {
@@ -170,10 +167,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             return false;
         if (!isRngDungeon())
             return false;
-        if (CoreEngine.isMacro()) {
-            return false;
-        }
-        return true;
+        return !CoreEngine.isMacro();
     }
 
     public void preStart() {
@@ -275,10 +269,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
                 if (type.checkProperty(PROPS.SCENARIO_TYPE, "Custom")) {
                     return false;
                 }
-                if (type.checkProperty(PROPS.SCENARIO_TYPE, "Boss")) {
-                    return false;
-                }
-                return true;
+                return !type.checkProperty(PROPS.SCENARIO_TYPE, "Boss");
             }
 
             return
@@ -290,10 +281,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             if (type.getName().toLowerCase().contains("boss")) {
                 return false;
             }
-            if (type.getGroup().equalsIgnoreCase("Tutorial")) {
-                return false;
-            }
-            return true;
+            return !type.getGroup().equalsIgnoreCase("Tutorial");
         }
         //        getMetaGame().isRestarted()
         return false;
@@ -304,14 +292,12 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             StringBuilder info = new StringBuilder(200);
             DungeonLevel level = getDungeonMaster().getDungeonLevel();
             info.append("Randomly generated ");
-            info.append(getWellFormattedString(level.getLocationType().toString()) +
-                    " " + wrapInParenthesis(getWellFormattedString(level.getSublevelType().toString())) + "\n");
+            info.append(getWellFormattedString(level.getLocationType().toString())).append(" ").append(wrapInParenthesis(getWellFormattedString(level.getSublevelType().toString()))).append("\n");
 
             LevelBlock block = level.getBlockForCoordinate(Eidolons.getMainHero().getCoordinates());
             LevelZone zone = block.getZone();
 
-            info.append(getWellFormattedString(block.getRoomType().toString())
-                    + " " + wrapInParenthesis(getWellFormattedString(zone.getStyle().toString())) + "\n");
+            info.append(getWellFormattedString(block.getRoomType().toString())).append(" ").append(wrapInParenthesis(getWellFormattedString(zone.getStyle().toString()))).append("\n");
 
             // objective?
             // units left?
@@ -355,6 +341,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public ModuleMaster getModuleMaster() {
-        return moduleMaster;
+        return null;
     }
 }

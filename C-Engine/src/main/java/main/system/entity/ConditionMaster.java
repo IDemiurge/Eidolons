@@ -491,11 +491,11 @@ public class ConditionMaster {
 
     public static Condition getWorkspaceCondition(boolean negative,
                                                   WORKSPACE_GROUP... filterWorkspaceGroup) {
-        String value = "";
+        StringBuilder value = new StringBuilder();
         for (WORKSPACE_GROUP ws : filterWorkspaceGroup) {
-            value += ws.toString();
+            value.append(ws.toString());
         }
-        return getPropCondition(KEYS.MATCH.toString(), G_PROPS.WORKSPACE_GROUP, value);
+        return getPropCondition(KEYS.MATCH.toString(), G_PROPS.WORKSPACE_GROUP, value.toString());
     }
 
     public static List<Condition> removeConditionsOfClass(Conditions conditions, Class<?> clazz) {

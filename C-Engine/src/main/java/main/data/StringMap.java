@@ -1,7 +1,6 @@
 package main.data;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class StringMap<T> extends HashMap<String, T> {
 

@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
-import eidolons.game.battlecraft.logic.meta.igg.CustomLaunch;
 import eidolons.game.core.Eidolons;
+import eidolons.game.netherflame.igg.CustomLaunch;
 import eidolons.libgdx.launch.MainLauncher;
 import main.content.DC_TYPE;
 import main.content.enums.system.MetaEnums;

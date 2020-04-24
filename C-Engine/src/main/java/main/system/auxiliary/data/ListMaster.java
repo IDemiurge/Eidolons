@@ -1,6 +1,5 @@
 package main.system.auxiliary.data;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import main.data.DataManager;
 import main.data.XLinkedMap;
@@ -35,7 +34,24 @@ public class ListMaster<E> {
         }
         return list;
     }
-
+    public <E> List<List<E>> generatePerm(List<E> original) {
+        if (original.isEmpty()) {
+            List<List<E>> result = new ArrayList<>();
+            result.add(new ArrayList<>());
+            return result;
+        }
+        E firstElement = original.remove(0);
+        List<List<E>> returnValue = new ArrayList<>();
+        List<List<E>> permutations = generatePerm(original);
+        for (List<E> smallerPermutated : permutations) {
+            for (int index=0; index <= smallerPermutated.size(); index++) {
+                List<E> temp = new ArrayList<>(smallerPermutated);
+                temp.add(index, firstElement);
+                returnValue.add(temp);
+            }
+        }
+        return returnValue;
+    }
 
     public   List<E> asList(E... values) {
         List<E> list = new ArrayList<>();
@@ -99,10 +115,7 @@ public class ListMaster<E> {
         if (a == null) {
             return false;
         }
-        if (a.size==0) {
-            return false;
-        }
-        return true;
+        return a.size != 0;
     }
     public static boolean isNotEmpty(Collection list) {
         if (list == null) {
@@ -275,6 +288,15 @@ public class ListMaster<E> {
         list.addAll(inv_list);
     }
 
+    public Set<E> toSet(E... values) {
+        Set<E> set = new LinkedHashSet<>();
+        for (E v : values) {
+            if (v != null) {
+                set.add(v);
+            }
+        }
+        return set;
+    }
     public List<E> toList_(E... values) {
         List<E> list = new ArrayList<>();
         for (E v : values) {
@@ -312,9 +334,7 @@ public class ListMaster<E> {
             return list;
         }
         for (List<E> sublist : nestedList) {
-            for (E e : sublist) {
-                list.add(e);
-            }
+            list.addAll(sublist);
         }
         return list;
     }
@@ -446,9 +466,7 @@ public class ListMaster<E> {
 
         List<E> clone = new ArrayList<>();
 
-        for (E e : list) {
-            clone.add(e);
-        }
+        clone.addAll(list);
 
         return clone;
     }
@@ -592,11 +610,8 @@ public class ListMaster<E> {
     public List<E> toObjList(List<E> tasks, List<ObjType> list) {
         List<E> filtered = new ArrayList<>();
         for (ObjType sub : list) {
-            for (E task : tasks)
-//				if (task.getType() == generic) {
-            {
-                filtered.add(task);
-            }
+            //				if (task.getType() == generic) {
+            filtered.addAll(tasks);
             break;
         }
 //		}

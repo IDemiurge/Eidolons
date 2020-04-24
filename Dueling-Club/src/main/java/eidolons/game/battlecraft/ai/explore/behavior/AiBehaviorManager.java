@@ -12,7 +12,8 @@ import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
+import main.content.enums.EncounterEnums;
+import main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.game.logic.action.context.Context;
@@ -32,7 +33,7 @@ public class AiBehaviorManager extends AiHandler {
             AI_BEHAVIOR_MODE.GUARD;
     public static final boolean TEST_MODE = TESTED != null;
     private static UNIT_GROUP_TYPE TESTED_GROUP = !CoreEngine.isFullFastMode() ? null :
-            UNIT_GROUP_TYPE.GUARDS;
+            EncounterEnums.UNIT_GROUP_TYPE.GUARDS;
     Set<UnitExploreAI> aiSet = new LinkedHashSet<>();
     private DequeImpl<ActionInput> aiActionQueue = new DequeImpl<>();
     private Integer maxActiveCount = null;
@@ -63,7 +64,7 @@ public class AiBehaviorManager extends AiHandler {
         //            units = units.stream().filter(unit -> unit.isAiControlled()).
         //             sorted(
         //             SortMaster.getObjSorterByExpression(obj -> obj.getCoordinates().
-        //              dst(Eidolons.getMainHero().getCoordinates()))).collect(Collectors.toSet()) ;
+        //              dst(Eidolons.getMainHero().getCoordinates()))).collect(Collectors.toCollection(LinkedHashSet::new)) ;
         //            for (Unit unit : new HashSet<>(units)) {
         //                units.addAll(unit.getAI().getGroup().getMembers());
         //            }
@@ -134,7 +135,6 @@ public class AiBehaviorManager extends AiHandler {
                     return true;
                 } else {
                     behavior.queueNextAction();
-                    continue;
                 }
             }
         }
@@ -143,9 +143,7 @@ public class AiBehaviorManager extends AiHandler {
     }
 
     private boolean isUpdated(UnitExploreAI ai, AiBehavior behavior) {
-        if (ai.isBehaviorOff())
-            return false;
-        return true;
+        return !ai.isBehaviorOff();
     }
 
     public DequeImpl<ActionInput> getAiActionQueue() {
@@ -207,9 +205,9 @@ public class AiBehaviorManager extends AiHandler {
         UNIT_GROUP_TYPE t = null;
 
         if (EidolonsGame.BOSS_FIGHT || EidolonsGame.TUTORIAL_MISSION)
-            t = UNIT_GROUP_TYPE.GUARDS;
+            t = EncounterEnums.UNIT_GROUP_TYPE.GUARDS;
         else if (ai.getGroupAI() == null || ai.getGroupAI().getMembers().size() == 1) {
-            t = UNIT_GROUP_TYPE.IDLERS;
+            t = EncounterEnums.UNIT_GROUP_TYPE.IDLERS;
         } else {
             t = ai.getGroupAI().getType();
         }

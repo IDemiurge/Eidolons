@@ -5,9 +5,10 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.game.battlecraft.logic.meta.igg.soul.panel.LordPanel;
 import eidolons.game.core.Eidolons;
+import eidolons.game.netherflame.igg.soul.panel.LordPanel;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
 
@@ -62,6 +63,6 @@ public class BattleClickListener extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y) {
         super.clicked(event, x, y);
-        Eidolons.getScreen().getController().mouseInput();
+        ScreenMaster.getScreen().getController().mouseInput();
     }
 }

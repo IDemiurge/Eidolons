@@ -63,7 +63,7 @@ public abstract class MathMaster {
     }
 
     public static Double getFractionValueCentimalDouble(Double amount, Double c_percentage) {
-        return new Double(amount) * new Double(c_percentage) / 100;
+        return amount * c_percentage / 100;
     }
 
     public static int getFractionValue(int base_value, int c_percentage) {

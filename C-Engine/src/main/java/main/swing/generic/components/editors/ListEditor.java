@@ -4,6 +4,8 @@ import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.xml.XML_Reader;
 import main.elements.Filter;
@@ -21,9 +23,11 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.Err;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class ListEditor implements EDITOR {
 
@@ -45,6 +49,7 @@ public class ListEditor implements EDITOR {
     private boolean listDataSet;
     private String filterSubgroup;
     private String filterGroup;
+    private MouseEvent mouseEvent;
 
     public ListEditor(boolean ENUM, OBJ_TYPE TYPE) {
         this(SELECTION_MODE.MULTIPLE, ENUM, TYPE);
@@ -76,8 +81,8 @@ public class ListEditor implements EDITOR {
     }
 
     @Override
-    public void launch(JTable table, int row, int column, String value) {
-
+    public void launch(JTable table, int row, int column, String value, MouseEvent e) {
+        this.mouseEvent = e;
         String name = (String) table.getValueAt(row, 0);
         String newValue = launch(value, name);
         if (newValue != null) {
@@ -88,7 +93,7 @@ public class ListEditor implements EDITOR {
 
     @Override
     public String launch(String value, String name) {
-        if (listData == null && !listDataSet) {
+        if (getFilter()!=null || (listData == null && !listDataSet)) {
             if (res_name != null) {
                 listData = FileManager.getFileNames(FileManager.getFilesFromDirectory(res_name, false));
                 // StringMaster.formatResList(listData);
@@ -143,11 +148,16 @@ public class ListEditor implements EDITOR {
                 if (getConditions() != null) {
                     Ref ref = new Ref(Game.game, getEntity().getId());
                     listData = DataManager.toStringList(new Filter<ObjType>(ref,
-                     getConditions()).filter(DataManager.toTypeList(listData, TYPE)));
+                            getConditions()).filter(DataManager.toTypeList(listData, TYPE)));
+                }
+                if (getFilter() != null) {
+                    listData = new ArrayList<>(listData);
+                    listData.removeIf(s -> !getFilter().test(s));
                 }
             }
         }
         ListChooser listChooser;
+
 
         if (mode == SELECTION_MODE.SINGLE) {
             listChooser = new ListChooser(listData, ENUM, TYPE);
@@ -157,7 +167,7 @@ public class ListEditor implements EDITOR {
             secondListData = new ArrayList<>();
             if (value != null) {
                 if (!value.equals(ContentValsManager.getDefaultEmptyValue())) {
-                    secondListData = ListMaster.toList(value.toString(), ENUM);
+                    secondListData = ListMaster.toList(value, ENUM);
                 }
             }
 
@@ -173,6 +183,51 @@ public class ListEditor implements EDITOR {
         listChooser.setVarClass(getVarTypesClass());
         String newValue = listChooser.getString();
         return newValue;
+    }
+
+    private Predicate<String> getFilter() {
+        if (mouseEvent != null) {
+            if (mouseEvent.isShiftDown()) {
+//                listData=    new ArrayList<>() ;
+//                return null;
+                return s->true;
+            }
+        }
+        if (BASE_TYPE instanceof DC_TYPE) {
+            switch (((DC_TYPE) BASE_TYPE)) {
+                case ENCOUNTERS:
+                    if (TYPE == DC_TYPE.UNITS) {
+                        return getEncounterUnitFilter(entity);
+                    }
+                    break;
+            }
+        }
+
+        return null;
+    }
+
+    private Predicate<String> getEncounterUnitFilter(Entity encounter) {
+        return (name) -> {
+            ObjType type = DataManager.getType(name, DC_TYPE.UNITS);
+
+            PROPERTY[] property = {
+                    G_PROPS.ENCOUNTER_GROUP,
+                    G_PROPS.UNIT_GROUP,
+                    G_PROPS.ENCOUNTER_SUBGROUP,
+                    G_PROPS.GROUP,
+            };
+            for (PROPERTY property1 : property) {
+                for (PROPERTY property2 : property) {
+                    if (type.getProperty(property1).equalsIgnoreCase(encounter.getProperty(property2))) {
+                        if (!type.getProperty(property1).isEmpty()) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        };
     }
 
     public void setFilterSubgroup(String string) {

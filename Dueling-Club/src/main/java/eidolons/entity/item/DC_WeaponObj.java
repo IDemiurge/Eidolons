@@ -95,12 +95,8 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     public void modified(ModifyValueEffect modifyValueEffect) {
         super.modified(modifyValueEffect);
         switch (modifyValueEffect.getMod_type()) {
-            case MODIFY_BY_CONST:
-                break;
             case MODIFY_BY_PERCENT:
                 int mod = 2;
-                break;
-            case SET:
                 break;
             default:
                 break;

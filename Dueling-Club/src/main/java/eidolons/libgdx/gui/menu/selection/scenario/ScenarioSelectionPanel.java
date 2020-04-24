@@ -1,13 +1,10 @@
 package eidolons.libgdx.gui.menu.selection.scenario;
 
-import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.meta.igg.CustomLaunch;
-import eidolons.game.battlecraft.logic.meta.igg.IGG_Launcher;
+import eidolons.game.netherflame.igg.IGG_Launcher;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
-import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
 import main.content.DC_TYPE;
@@ -42,7 +39,6 @@ public class ScenarioSelectionPanel extends SelectionPanel {
     @Override
     public void init() {
         super.init();
-        tryDone();
     }
 
     protected String getDoneText() {
@@ -61,7 +57,7 @@ public class ScenarioSelectionPanel extends SelectionPanel {
         }
 
         scenarioChosen(DataManager.getType(selection.toString(), DC_TYPE.SCENARIOS));
-
+        listPanel.deselect();
     }
 
     protected void scenarioChosen(ObjType type) {

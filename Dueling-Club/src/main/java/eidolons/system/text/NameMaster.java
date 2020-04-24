@@ -201,84 +201,84 @@ public class NameMaster {
 
     public static String getNamesForGroup(String nameGroup, Boolean female_male_second) {
 
-        if (nameGroup.toString().equalsIgnoreCase("Raven")) {
+        if (nameGroup.equalsIgnoreCase("Raven")) {
             if (female_male_second == null) {
                 return ravenNamesSecond;
             } else {
                 return !female_male_second ? ravenNames : ravenNamesFemale;
             }
         }
-        if (nameGroup.toString().equalsIgnoreCase("Griff")) {
+        if (nameGroup.equalsIgnoreCase("Griff")) {
             if (female_male_second == null) {
                 return griffNamesSecond;
             } else {
                 return !female_male_second ? griffNames : griffNamesFemale;
             }
         }
-        if (nameGroup.toString().equalsIgnoreCase("Eagle")) {
+        if (nameGroup.equalsIgnoreCase("Eagle")) {
             if (female_male_second == null) {
                 return eagleNamesSecond;
             } else {
                 return !female_male_second ? eagleNames : eagleNamesFemale;
             }
         }
-        if (nameGroup.toString().equalsIgnoreCase("Easterling")) {
+        if (nameGroup.equalsIgnoreCase("Easterling")) {
             if (female_male_second == null) {
                 return easterlingNamesSecond;
             } else {
                 return !female_male_second ? easterlingNames : easterlingNamesFemale;
             }
         }
-        if (nameGroup.toString().equalsIgnoreCase("King")) {
+        if (nameGroup.equalsIgnoreCase("King")) {
             if (female_male_second == null) {
                 return kingNamesSecond;
             } else {
                 return !female_male_second ? kingNames : kingNamesFemale;
             }
         }
-        if (nameGroup.toString().equalsIgnoreCase("Wolf")) {
+        if (nameGroup.equalsIgnoreCase("Wolf")) {
             if (female_male_second == null) {
                 return wolfNamesSecond;
             } else {
                 return !female_male_second ? wolfNames : wolfNamesFemale;
             }
         }
-        if (nameGroup.toString().equalsIgnoreCase("Dwarven")) {
+        if (nameGroup.equalsIgnoreCase("Dwarven")) {
             if (female_male_second == null) {
                 return dwarvenNamesSecond;
             } else {
                 return !female_male_second ? dwarvenNames : dwarvenNamesFemale;
             }
         }
-        if (nameGroup.toString().equalsIgnoreCase("Elven")) {
+        if (nameGroup.equalsIgnoreCase("Elven")) {
             if (female_male_second == null) {
                 return elvenNamesSecond;
             } else {
                 return !female_male_second ? elvenNames : elvenNamesFemale;
             }
         }
-        if (nameGroup.toString().equalsIgnoreCase("Ulduin")) {
+        if (nameGroup.equalsIgnoreCase("Ulduin")) {
             if (female_male_second == null) {
                 return ulduinNamesSecond;
             } else {
                 return !female_male_second ? ulduinNames : ulduinNamesFemale;
             }
         }
-        if (nameGroup.toString().equalsIgnoreCase("Pirate")) {
+        if (nameGroup.equalsIgnoreCase("Pirate")) {
             if (female_male_second == null) {
                 return pirateNamesSecond;
             } else {
                 return !female_male_second ? pirateNames : pirateNamesFemale;
             }
         }
-        if (nameGroup.toString().equalsIgnoreCase("Knight")) {
+        if (nameGroup.equalsIgnoreCase("Knight")) {
             if (female_male_second == null) {
                 return knightNamesSecond;
             } else {
                 return !female_male_second ? knightNames : kingNamesFemale;
             }
         }
-        if (nameGroup.toString().equalsIgnoreCase("Demon")) {
+        if (nameGroup.equalsIgnoreCase("Demon")) {
             if (female_male_second == null) {
                 return demonNamesSecond;
             } else {
@@ -348,11 +348,10 @@ public class NameMaster {
             case DEMON:
                 return generateName(hero, "Demon");
             case DWARF:
+            case GOBLINOID:
                 return generateName(hero, "Dwarven");
             case ELF:
                 return generateName(hero, "Elven");
-            case GOBLINOID:
-                return generateName(hero, "Dwarven");
             case VAMPIRE:
                 return generateName(hero, ravenNameGroups);
         }

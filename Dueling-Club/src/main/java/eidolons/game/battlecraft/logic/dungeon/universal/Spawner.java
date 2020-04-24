@@ -1,21 +1,13 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.ability.UnitTrainingMaster;
-import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
-import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
-import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
-import eidolons.game.core.game.DC_Game.GAME_MODES;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
 import eidolons.game.core.launch.LaunchDataKeeper;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
-import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
-import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.test.TestMasterContent;
 import main.content.C_OBJ_TYPE;
 import main.data.DataManager;
@@ -25,12 +17,9 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.secondary.Bools;
+import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
-import main.system.sound.SoundMaster.SOUNDS;
 import main.system.util.Refactor;
 
 import java.util.ArrayList;
@@ -61,7 +50,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
             if (player.isNeutral()) {
                 continue;
             }
-            UnitData data = player.getUnitData();
+            UnitsData data = player.getUnitData();
             if (data == null)
                 data = generateData("", player, null);
             spawn(data, player, getSpawnMode(player, true));
@@ -77,10 +66,10 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         unitsList.addAll(game.getUnits());
         getFacingAdjuster().adjustFacing(unitsList);
 
-        final Integer cellsX = game.getDungeon().getCellsX();
-        final Integer cellsY = game.getDungeon().getCellsY();
+        final Integer cellsX = GuiManager.getCurrentLevelCellsX();
+        final Integer cellsY = GuiManager.getCurrentLevelCellsY();
         GuiEventManager.trigger(SCREEN_LOADED,
-         new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
+                new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
 
         //WaitMaster.waitForInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
     }
@@ -91,19 +80,25 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         return SPAWN_MODE.UNIT_GROUP;
     }
 
-    public UnitData generateData(String dataString, DC_Player player,
-                                 Coordinates spawnAt) {
+    public UnitsData generateData(String dataString, DC_Player player,
+                                  Coordinates spawnAt) {
         return LaunchDataKeeper.generateData(dataString,
-         player,
-         spawnAt, getPositioner());
+                player,
+                spawnAt, getPositioner());
     }
 
-    public List<Unit> spawn(UnitData data, DC_Player owner, SPAWN_MODE mode) {
+    public List<Unit> spawn(Coordinates coordinates, List<ObjType> types, DC_Player owner, SPAWN_MODE mode) {
+        UnitsData data = new UnitsData(getPositioner().getGroupCoordinates(coordinates, owner, types),
+                types);
+        return spawn(data, owner, mode);
+    }
+
+    public List<Unit> spawn(UnitsData data, DC_Player owner, SPAWN_MODE mode) {
         List<Unit> units = new ArrayList<>();
         int i = 0;
         if (owner == null)
             owner = getPlayerManager().getPlayer(data.getContainerValue(PARTY_VALUE.PLAYER_NAME, i));
-        List<String> types = data.getContainerValues(PARTY_VALUE.MEMBERS);
+        List<String> types = data.getContainerValues(PARTY_VALUE.UNITS);
         if (types.isEmpty())
             return new ArrayList<>();
         List<String> coordinates = data.getContainerValues(PARTY_VALUE.COORDINATES);
@@ -116,7 +111,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
             String facing = data.getContainerValue(PARTY_VALUE.FACING, i);
             String c = coordinates.get(i);
 
-            String type = data.getContainerValue(PARTY_VALUE.MEMBERS, i);
+            String type = data.getContainerValue(PARTY_VALUE.UNITS, i);
             String level = data.getContainerValue(PARTY_VALUE.LEVEL, i);
             if (!owner.isMe())
                 if (owner.isAi())
@@ -142,14 +137,14 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     public Unit spawnUnit(String typeName, String coordinates, DC_Player owner,
                           String facing, String level) {
-        if (coordinates == null) {
-//          TODO  getPositioner().getcoo
-        }
         Coordinates c = Coordinates.get(coordinates);
-        FACING_DIRECTION facing_direction = facing == null
-         ? getFacingAdjuster().getFacingForEnemy(c)
-         : FacingMaster.getFacing(facing);
-        ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.UNITS_CHARS);
+        return spawnUnit(DataManager.getType(typeName, C_OBJ_TYPE.UNITS_CHARS),
+                c, owner, facing, level);
+    }
+
+    public Unit spawnUnit(ObjType type, Coordinates c, DC_Player owner,
+                          String facing, String level) {
+
         //TODO chars or units?!
         if (level != null) {
             int levelUps = NumberUtils.getInteger(level);
@@ -159,96 +154,23 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         }
 
         Unit unit = (Unit) game.getManager().getObjCreator().createUnit(type, c.x, c.y, owner, new Ref(game));
-        unit.setFacing(facing_direction);
+
         if (!unit.isHero())
             UnitTrainingMaster.train(unit);
         if (unit.isMine())
             TestMasterContent.addTestItems(unit.getType(), false);
+
+        try {
+            FACING_DIRECTION facing_direction = facing == null
+                    ? getFacingAdjuster().getFacingForUnit(c, type.getName())
+                    : FacingMaster.getFacing(facing);
+            unit.setFacing(facing_direction);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            unit.setFacing(FACING_DIRECTION.NORTH);
+        }
+
         return unit;
-    }
-
-    public void spawnCustomParty(Coordinates origin, Boolean me, ObjType party) {
-        // from entrances, from sides, by default, by event, by test - useful!
-        // positioner.getCoordinatesForUnitGroup(presetGroupTypes, wave);
-        List<String> partyTypes = ContainerUtils.openContainer(party.getProperty(PROPS.MEMBERS));
-        List<Coordinates> c = getPositioner().getPartyCoordinates(origin, me, partyTypes);
-        String partyData = DC_ObjInitializer.getObj_CoordinateString(partyTypes, c);
-        spawnCustomParty(me, partyData);
-    }
-
-
-    public void spawnCustomParty(boolean me) {
-        spawnCustomParty(me, null);
-    }
-
-
-    public void spawnCustomParty(boolean me, String partyData) {
-
-        DC_Player player = game.getPlayer(me);
-        if (Bools.isTrue(me)) {
-            Party party = PartyHelper.getParty();
-            if (party != null) {
-                DC_SoundMaster.playEffectSound(SOUNDS.READY, party.getLeader());
-                spawnPlayerParty(party, partyData);
-                return;
-            }
-
-        }
-        if (!partyData.contains(DC_ObjInitializer.COORDINATES_OBJ_SEPARATOR)) {
-            partyData = DC_ObjInitializer.convertVarStringToObjCoordinates(partyData);
-        }
-        UnitData data = generateData(partyData, player, null);
-        spawn(data, player, SPAWN_MODE.PARTY);
-//        List<MicroObj> list = DC_ObjInitializer.processUnitDataString(player, partyData, game);
-//        if (!ListMaster.isNotEmpty(list)) {
-//            return;
-//        }
-
-
-    }
-
-
-    private void spawnPlayerParty(Party party, String partyData) {
-
-        DC_ObjInitializer.initializePartyPositions(partyData, party.getMembers());
-        int i = 0;
-        getPositioner().setMaxSpacePercentageTaken(MAX_SPACE_PERC_PARTY);
-        Boolean last = null;
-        for (Unit hero : party.getMembers()) {
-
-            if (party.getPartyCoordinates() == null) {
-                if (
-                 getGame().getGameMode() == GAME_MODES.ARENA ||
-                  getGame().getGameMode() == GAME_MODES.ARENA_ARCADE) {
-                    hero.setFacing(FacingMaster.getPresetFacing(true));
-                }
-//                else
-//                    hero.setFacing(getPositioner().getPartyMemberFacing(hero.getCoordinates()));
-            }
-
-            hero.setOriginalOwner(game.getPlayer(true));
-            i++;
-            if (i == party.getMembers().size()) {
-                last = true;
-            }
-            if (game.isDebugMode()) {
-                TestMasterContent.addTestItems(hero.getType(), last);
-            }
-            last = false;
-
-            hero.setSpells(null);
-            hero.initSpells(false);
-            hero.fullReset(game);
-
-        }
-//        game.getPlayer(true).setEmblem(party.getLeader().getEmblem().getImage());
-    }
-
-    //TODO
-    public void spawnWave(String typeName, DC_Player player, Coordinates coordinate) {
-    }
-
-    public void addDungeonEncounter(Dungeon c_dungeon, MapBlock block, Coordinates c, ObjType type) {
     }
 
     protected List<Unit> spawnUnitGroup(boolean me, String filePath) {
@@ -283,9 +205,10 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         }
         spawnCoordinates = (me) ? getPositioner().getPlayerSpawnCoordinates() : getPositioner()
-         .getEnemySpawningCoordinates();
+                .getEnemySpawningCoordinates();
         offset_coordinate = spawnCoordinates.getOffsetByX(offsetX).getOffsetByY(offsetY);
-        List<MicroObj> units = DC_ObjInitializer.createUnits(game.getPlayer(me), data, offset_coordinate);
+        List<MicroObj> units = null;
+//      TODO   DC_ObjInitializer.createUnits(game.getPlayer(me), data, offset_coordinate);
 
 
         List<Unit> list = new ArrayList<>();

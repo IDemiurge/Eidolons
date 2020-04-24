@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.dungeon.test.TestSpawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.core.game.DC_Game;
@@ -13,8 +12,8 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.game.bf.directions.DirectionMaster;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
@@ -27,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 5/7/2017.
@@ -52,7 +52,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     public static Coordinates adjustCoordinate(Entity entity,
                                                Coordinates c, FACING_DIRECTION facing
-     , Predicate<Coordinates> filterPredicate
+            , Predicate<Coordinates> filterPredicate
     ) {
         if (c == null) {
             return null;
@@ -82,13 +82,13 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         // blocked
         while (!loop.continues() &&
 
-         !DC_Game.game.getBattleFieldManager().canMoveOnto(entity, c)
+                !DC_Game.game.getBattleFieldManager().canMoveOnto(entity, c)
 
-         // (DC_Game.game.getBattleField().getGrid().isCoordinateObstructed(coordinate)
-         || coordinate == null) {
+                // (DC_Game.game.getBattleField().getGrid().isCoordinateObstructed(coordinate)
+                || coordinate == null) {
 
             Coordinates adjacentCoordinate = c
-             .getAdjacentCoordinate(getRandomSpawnAdjustDirection());
+                    .getAdjacentCoordinate(getRandomSpawnAdjustDirection());
             coordinate = adjustCoordinate(adjacentCoordinate, facing);
         }
         if (coordinate.isInvalid()) {
@@ -101,7 +101,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         return true;
     }
 
-    public Map<Unit, Coordinates> getPartyCoordinates(List<Unit> members) {
+    public Map<Unit, Coordinates> getCoordinates(List<Unit> members) {
         List<String> list = new ArrayList<>();
         for (Unit h : members) {
             list.add(h.getName());
@@ -112,43 +112,48 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
     }
 
     public List<Coordinates> getPlayerPartyCoordinates(List<String> partyTypes) {
-        return getPartyCoordinates(getDungeon().getPlayerSpawnCoordinates(), true, partyTypes);
+        return getCoordinates(getDungeon().getDefaultPlayerSpawnCoordinates(), true, partyTypes);
     }
 
     public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MODE mode) {
         return
-         ContainerUtils.convertToStringList(
-          getPartyCoordinates(null, owner.isMe(), types));
+                ContainerUtils.convertToStringList(
+                        getCoordinates(null, owner.isMe(), types));
     }
 
 
-    public List<Coordinates> getPartyCoordinates(Coordinates origin, Boolean me,
-                                                 List<String> partyTypes) {
+    public List<Coordinates> getCoordinates(Coordinates origin, Boolean me,
+                                            List<String> partyTypes) {
+        return getGroupCoordinates(origin, me == null ? DC_Player.NEUTRAL : game.getPlayer(me), partyTypes.stream().map(type ->
+                DataManager.getType(type, C_OBJ_TYPE.UNITS_CHARS)).collect(Collectors.toList()));
+    }
 
+    public List<Coordinates> getGroupCoordinates(Coordinates origin, DC_Player owner,
+                                                 List<ObjType> partyTypes) {
+        Boolean me = owner.isMe();
         List<Coordinates> list = new ArrayList<>();
-        if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor()) {
-            origin = Coordinates.get(PositionMaster.getMiddleIndex(false), PositionMaster
-             .getMiddleIndex(true));
-        } else {
-            if (me != null) {
-                if (me) {
-                    if (origin == null)
+        if (origin == null)
+            if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor()) {
+                origin = Coordinates.get(PositionMaster.getMiddleIndex(false), PositionMaster
+                        .getMiddleIndex(true));
+            } else {
+                if (me != null) {
+                    if (me) {
                         origin = getPlayerSpawnCoordinates();
-                } else {
+                    } else {
 
-                    origin = getEnemySpawningCoordinates();
-                    if (origin == null) {
-                        origin = getEnemyTestPartyCoordinates();
+                        origin = getEnemySpawningCoordinates();
+                        if (origin == null) {
+                            origin = getEnemyTestPartyCoordinates();
+                        }
                     }
                 }
             }
-        }
 
         unitCache = new HashMap<>(partyTypes.size(), 1f);
-        for (String type : partyTypes) {
-            ObjType objType = DataManager.getType(type, C_OBJ_TYPE.UNITS_CHARS);
-            Coordinates c = getFirstLayerCenterCoordinate(origin, objType, false);
-            MapMaster.addToListMap(unitCache, c, objType);
+        for (ObjType type : partyTypes) {
+            Coordinates c = getFirstLayerCenterCoordinate(origin, type, false);
+            MapMaster.addToListMap(unitCache, c, type);
             list.add(c);
         }
         unitCache.clear();
@@ -171,7 +176,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         Coordinates playerC = getPlayerSpawnCoordinates();
         if (true) //TODO sometimes not?
             return Coordinates.get(playerC.x, playerC.y - (
-             TestSpawner.isPlayerUnitGroupMode() ? 1 : 3));
+                    3));
         if (playerC == null) {
             playerC = getPlayerSpawnCoordinates();// Coordinates.getMiddleCoordinate(ArenaPositioner.DEFAULT_PLAYER_SIDE);
         }
@@ -214,8 +219,8 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         Coordinates adjacentCoordinate = c.getAdjacentCoordinate(spawnSide);
         if (checkCanPlaceUnitOnCoordinate(adjacentCoordinate, objType)) {
             getFacingAdjuster().unitPlaced(adjacentCoordinate,
-             FacingMaster.getFacingFromDirection(
-              DIRECTION.LEFT, false, false));
+                    FacingMaster.getFacingFromDirection(
+                            DIRECTION.LEFT, false, false));
             return adjacentCoordinate;
         }
         DIRECTION direction = spawnSide;
@@ -227,7 +232,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
             nextCoordinate = c.getAdjacentCoordinate(direction);
             if (checkCanPlaceUnitOnCoordinate(nextCoordinate, objType)) {
                 getFacingAdjuster().unitPlaced(nextCoordinate, FacingMaster.getFacingFromDirection(direction, true,
-                 true));
+                        true));
                 return nextCoordinate;
             }
             if (direction == spawnSide) {
@@ -237,7 +242,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         direction = DirectionMaster.rotate45(spawnSide, false);
         // diagonal
         nextCoordinate = adjustCoordinate(nextCoordinate, FacingMaster
-         .getFacingFromDirection(direction));
+                .getFacingFromDirection(direction));
         return nextCoordinate;
     }
 

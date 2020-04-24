@@ -15,7 +15,6 @@ import main.entity.obj.Obj;
 import main.game.core.game.Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -122,8 +121,8 @@ public abstract class LogManager {
         }
 
         LogEntryNode entry = logLater ? new LogEntryNode(currentNode, type, getDisplayedLines()
-                .size() + 1, logLater) : new LogEntryNode(currentNode, type, getDisplayedLines()
-                .size() + 1, logLater, argArray);
+                .size() + 1, true) : new LogEntryNode(currentNode, type, getDisplayedLines()
+                .size() + 1, false, argArray);
         // TODO why +1? could lineIndex be the reason why first/last position
         // isn't filled?
 //        entry.addLinkedAnimations(getPendingAnimsToLink().remove(type));

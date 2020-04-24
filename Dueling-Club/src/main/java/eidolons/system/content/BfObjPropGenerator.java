@@ -69,8 +69,6 @@ public class BfObjPropGenerator {
                 type = BfObjEnums.BF_OBJECT_TYPE.SPECIAL;
                 break;
             case "MAGICAL":
-                type = BfObjEnums.BF_OBJECT_TYPE.PROP;
-                break;
             case "PROP":
                 type = BfObjEnums.BF_OBJECT_TYPE.PROP;
                 break;
@@ -263,12 +261,6 @@ public class BfObjPropGenerator {
                         size = BfObjEnums.BF_OBJECT_SIZE.MEDIUM;
                     }
                     break;
-                case DUNGEON:
-                    break;
-                case ENTRANCE:
-                    break;
-                case GATEWAY:
-                    break;
                 case GRAVES:
                     if (qualities.isEmpty()) {
                         qualities.add(BfObjEnums.BF_OBJ_QUALITY.TOUGH);
@@ -287,19 +279,11 @@ public class BfObjPropGenerator {
                         size = BfObjEnums.BF_OBJECT_SIZE.MEDIUM;
                     }
                     break;
-                case HANGING:
-                    break;
-                case INTERIOR:
-                    break;
-                case LIGHT_EMITTER:
-                    break;
                 case MAGICAL:
                     if (qualities.isEmpty()) {
                         qualities.add(BfObjEnums.BF_OBJ_QUALITY.BRITTLE_II);
                         qualities.add(BfObjEnums.BF_OBJ_QUALITY.RESISTANT_II);
                     }
-                    break;
-                case REMAINS:
                     break;
                 case ROCKS:
                     if (dimension == null) {
@@ -327,15 +311,11 @@ public class BfObjPropGenerator {
                         qualities.add(BfObjEnums.BF_OBJ_QUALITY.RESISTANT);
                     }
                     break;
-                case TRAP:
-                    break;
                 case TREES:
                     if (qualities.isEmpty()) {
                         qualities.add(BfObjEnums.BF_OBJ_QUALITY.TOUGH);
                         qualities.add(BfObjEnums.BF_OBJ_QUALITY.DURABLE_II);
                     }
-                    break;
-                case VEGETATION:
                     break;
                 case WALL:
                     if (qualities.isEmpty()) {
@@ -348,8 +328,6 @@ public class BfObjPropGenerator {
                     break;
                 case WATER:
                     qualities.add(BfObjEnums.BF_OBJ_QUALITY.WATER);
-                    break;
-                case WINDOWS:
                     break;
                 default:
                     break;

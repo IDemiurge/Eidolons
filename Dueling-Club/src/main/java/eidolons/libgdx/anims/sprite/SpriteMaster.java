@@ -3,7 +3,6 @@ package eidolons.libgdx.anims.sprite;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.libgdx.bf.boss.anim.BossAnimator;
 import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums;
@@ -165,9 +164,7 @@ public class SpriteMaster {
             if (obj.isLightEmitter()) {
                 return Sprites.FIRE_LIGHT;
             }
-            if (obj.isBoss()) {
-                spritePath = BossAnimator.getSpritePath(obj);
-            } else {
+              {
                 switch (obj.getName()) {
                     case "Dream Siphon":
                         return StringMaster.getStringXTimes(4, Sprites.WHITE_TENTACLE + ";");
@@ -222,18 +219,16 @@ public class SpriteMaster {
     private static GenericEnums.BLENDING getBlending(BfObjEnums.SPRITES sprite, boolean over, BattleFieldObject obj) {
         switch (obj.getName()) {
             case "Adeptus Carnifex":
-//            case "Netherbound Horror":
-                return GenericEnums.BLENDING.INVERT_SCREEN;
-            case "Hollow Adept":
-                return GenericEnums.BLENDING.SCREEN;
             case "Black Wing":
 //            case "Mistborn Horror":
             case "Dream Siphon":
+                //            case "Netherbound Horror":
                 return GenericEnums.BLENDING.INVERT_SCREEN;
+            case "Hollow Adept":
+                return GenericEnums.BLENDING.SCREEN;
         }
         switch (sprite) {
             case FIRE_LIGHT:
-            return GenericEnums.BLENDING.SCREEN;
             case VEIL:
             case FLOAT_WISP:
             case WHITE_TENTACLE:

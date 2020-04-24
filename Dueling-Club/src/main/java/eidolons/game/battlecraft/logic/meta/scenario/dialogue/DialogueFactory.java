@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechBuilder;
@@ -8,7 +7,6 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.system.text.TextMaster;
 import main.data.filesys.PathFinder;
-import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StrPathBuilder;
@@ -62,7 +60,7 @@ public class DialogueFactory {
 
     public void init(MetaGameMaster master) {
         this.master = master;
-        if (CoreEngine.isCombatGame() && EidolonsGame.IGG_DEMO) {
+        if (CoreEngine.isCombatGame() ) {
             String pathRoot = getFileRootPath();
 //             PathFinder.getRootPath() +   PathFinder.getScenariosPath() +p +StringMaster.getPathSeparator()+
 //                 TextMaster.getLocale();
@@ -83,11 +81,12 @@ public class DialogueFactory {
         if (master.isRngDungeon()) {
             return getCommonDialoguePath();
         }
-        return
-                PathUtils.buildPath(
-                        master.getMetaDataManager().getDataPath()
-                        , TextMaster.getLocale(),
-                        PathUtils.getPathSeparator());
+//   TODO      return
+//                PathUtils.buildPath(
+//                        master.getMetaDataManager().getDataPath()
+//                        , TextMaster.getLocale(),
+//                        PathUtils.getPathSeparator());
+        return null;
     }
 
     protected String getCommonDialoguePath() {
@@ -135,7 +134,7 @@ public class DialogueFactory {
         return dialogue;
     }
 
-    public class DialogueData extends DataUnit<DIALOGUE_META_DATA> {
+    public static class DialogueData extends DataUnit<DIALOGUE_META_DATA> {
 
         public DialogueData(String metaData) {
             super(metaData);

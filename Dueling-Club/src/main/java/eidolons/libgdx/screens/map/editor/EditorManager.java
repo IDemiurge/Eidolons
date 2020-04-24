@@ -155,7 +155,6 @@ public class EditorManager {
             EditorMapView.getInstance().getObjectStage().removeLast();
         switch (mode) {
             case CLEAR:
-                break;
             case TRACE:
                 break;
             case ADD:

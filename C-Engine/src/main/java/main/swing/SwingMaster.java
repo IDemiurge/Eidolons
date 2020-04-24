@@ -93,9 +93,7 @@ public class SwingMaster {
 
     public static boolean isSizeGreaterThan(Dimension size, Dimension than) {
         if (size != null) {
-            if (size.width > than.width && size.height > than.height) {
-                return true;
-            }
+            return size.width > than.width && size.height > than.height;
         }
         return false;
     }

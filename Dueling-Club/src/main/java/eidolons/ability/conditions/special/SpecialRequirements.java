@@ -25,18 +25,6 @@ public class SpecialRequirements extends ConditionImpl {
         Coordinates c;
         DC_UnitModel unit;
         switch (template) {
-            case FREE_CELL:
-                break;
-            case FREE_CELL_RANGE:
-                break;
-            case HAS_ITEM:
-                break;
-            case ITEM:
-                break;
-            case NOT_FREE_CELL:
-                break;
-            case NOT_ITEM:
-                break;
             default:
                 break;
 

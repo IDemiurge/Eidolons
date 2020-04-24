@@ -8,6 +8,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.data.ability.Mapper;
 import main.data.xml.XML_Converter;
+import main.data.xml.XmlNodeMaster;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Entity;
@@ -60,13 +61,13 @@ public class AbilityConstructor {
     @SuppressWarnings("rawtypes")
     public static Abilities constructAbilities(Node node) {
         Abilities abilities = new Abilities();
-        List<Node> nodeList = XML_Converter.getNodeList(node);
+        List<Node> nodeList = XmlNodeMaster.getNodeList(node);
         if (nodeList.isEmpty())
             return abilities;
         Node unwrappedNode = nodeList.get(0);
         while (nodeList.size() < 2 //?!
          && unwrappedNode.getNodeName().equals(Mapper.ABILITIES)) {
-            nodeList = XML_Converter.getNodeList(unwrappedNode);
+            nodeList = XmlNodeMaster.getNodeList(unwrappedNode);
             if (nodeList.isEmpty())
                 return abilities;
             unwrappedNode = nodeList.get(0);
@@ -100,7 +101,7 @@ public class AbilityConstructor {
 
         Effect effects = null;
         Targeting targeting = null;
-        for (Node NODE : XML_Converter.getNodeList(node)) {
+        for (Node NODE : XmlNodeMaster.getNodeList(node)) {
             if (NODE.getNodeName().equals(EFFECTS) || NODE.getNodeName().contains(EFFECTS)) {
                 effects = constructEffects(NODE);
 
@@ -222,9 +223,7 @@ public class AbilityConstructor {
         for (String s : removeList) {
             list.remove(s);
         }
-        for (String s : addList) {
-            list.add(s);
-        }
+        list.addAll(addList);
         if (list.isEmpty())
             entity.removeProperty(property);
         else entity.setProperty(property, ContainerUtils.constructContainer(list));
@@ -235,7 +234,7 @@ public class AbilityConstructor {
         List<ActiveObj> abilities;
         boolean action = !(entity instanceof BfObj);
         if (action) {
-            abilities = getAbilitiesList(G_PROPS.ACTIVES, entity, false);
+            abilities = getAbilitiesList(G_PROPS.ACTIVES, entity);
             if (abilities != null) {
                 entity.setActives(abilities);
             }
@@ -295,7 +294,7 @@ public class AbilityConstructor {
         return (AbilityObj) newAbility(passive, entity, true);
     }
 
-    private static List<ActiveObj> getAbilitiesList(G_PROPS prop, Entity entity, boolean passive) {
+    private static List<ActiveObj> getAbilitiesList(G_PROPS prop, Entity entity) {
         if (entity.getProperty(prop) == "") {
             return null;
         }
@@ -304,7 +303,7 @@ public class AbilityConstructor {
         for (String abilTypeName : ContainerUtils.open(entity.getProperty(prop))) {
             if (abilTypeName.isEmpty()) continue;
             ActiveObj ability;
-            ability = newAbility(abilTypeName, entity, passive);
+            ability = newAbility(abilTypeName, entity, false);
             if (ability != null) {
                 list.add(ability);
             }

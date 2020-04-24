@@ -1,7 +1,6 @@
 package eidolons.system.text;
 
 import main.data.StringMap;
-import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;

@@ -1,6 +1,5 @@
 package main.content.values.parameters;
 
-import main.content.Metainfo;
 import main.content.OBJ_TYPE;
 import main.system.auxiliary.StringMaster;
 
@@ -38,6 +37,7 @@ public enum G_PARAMS implements PARAMETER {
     private boolean highPriority;
     private String description;
     private Map<OBJ_TYPE, Object> defaultValuesMap;
+    private String iconPath;
 
     G_PARAMS(String description, boolean dynamic, String... s) {
         this.setName(StringMaster.getWellFormattedString(name()));
@@ -129,11 +129,6 @@ public enum G_PARAMS implements PARAMETER {
         this.name = name;
     }
 
-    @Override
-    public Metainfo getMetainfo() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     public boolean isLowPriority() {
         return lowPriority;
@@ -193,5 +188,15 @@ public enum G_PARAMS implements PARAMETER {
     public boolean isMod() {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    @Override
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    @Override
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
     }
 }

@@ -4,7 +4,6 @@ import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster.OPTIONS_GROUP;
-import eidolons.system.options.SoundOptions.SOUND_OPTION;
 import eidolons.system.options.SystemOptions.SYSTEM_OPTION;
 import main.system.launch.CoreEngine;
 

@@ -9,9 +9,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer.BUFF_RULE;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer.BUFF_RULE_STATUS;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.PostProcessingOptions.POST_PROCESSING_OPTIONS;
 import main.system.GuiEventManager;
@@ -130,10 +128,9 @@ public class PostFxUpdater {
     private void applyTemplate(POST_FX_TEMPLATE template) {
         switch (template) {
             case DIZZY:
-                break;
-            case FATIGUE:
-                break;
+            case INSPIRED:
             case ENERGIZED:
+            case FATIGUE:
                 break;
             case FEAR:
                 //dunno why but it looks dope
@@ -142,9 +139,8 @@ public class PostFxUpdater {
                 apply(POST_FX_FACTOR.LENS, 0.0f);
                 apply(POST_FX_FACTOR.BLUR, 0.0f);
                 break;
-            case INSPIRED:
-                break;
             case MAZE:
+            case PALE_ASPECT:
                 apply(POST_FX_FACTOR.FADE_COLOR, 0.8f);
                 apply(POST_FX_FACTOR.BLUR, 0.1f);
                 break;
@@ -152,10 +148,6 @@ public class PostFxUpdater {
 //                apply(POST_FX_FACTOR.BLOOM, 0.1f);
 //                apply(POST_FX_FACTOR.FADE_COLOR, 0.8f);
 //                apply(POST_FX_FACTOR.BLUR, 0.1f);
-                break;
-            case PALE_ASPECT:
-                apply(POST_FX_FACTOR.FADE_COLOR, 0.8f);
-                apply(POST_FX_FACTOR.BLUR, 0.1f);
                 break;
             case UNCONSCIOUS:
                 if (shadowFxOff == true) {
@@ -257,26 +249,16 @@ public class PostFxUpdater {
                     apply(LOW, LOW, LOW, LOW);
                     break;
                 case STA:
-                    break;
-                case STA2:
-                    break;
-                case STA3:
-                    break;
-                case FOC:
-                    break;
-                case FOC2:
-                    break;
-                case FOC3:
-                    break;
-                case MOR:
-                    break;
-                case MOR2:
-                    break;
-                case MOR3:
-                    break;
-                case WOU:
-                    break;
                 case WOU2:
+                case WOU:
+                case MOR3:
+                case MOR2:
+                case MOR:
+                case FOC3:
+                case FOC2:
+                case FOC:
+                case STA3:
+                case STA2:
                     break;
             }
     }

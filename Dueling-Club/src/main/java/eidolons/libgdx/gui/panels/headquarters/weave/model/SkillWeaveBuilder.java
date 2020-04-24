@@ -60,7 +60,7 @@ public class SkillWeaveBuilder extends WeaveModelBuilder {
         List<String> list = Arrays.stream(SKILL_GROUP.values()).filter(group -> checkFilter(group)).map
          (group -> StringMaster.getWellFormattedString(group.name())).
          collect(Collectors.toList());
-        return list.toArray(new String[list.size()]);
+        return list.toArray(new String[0]);
     }
 
     private boolean checkFilter(SKILL_GROUP group) {

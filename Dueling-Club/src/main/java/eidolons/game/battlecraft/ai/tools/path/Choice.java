@@ -63,7 +63,7 @@ public class Choice {
 
                 }
             }
-            turns = list.toArray(new Boolean[list.size()]);
+            turns = list.toArray(new Boolean[0]);
             return turns;
         } catch (Exception e) {
 

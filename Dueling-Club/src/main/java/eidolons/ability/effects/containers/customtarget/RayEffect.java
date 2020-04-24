@@ -1,15 +1,12 @@
 package eidolons.ability.effects.containers.customtarget;
 
-import eidolons.system.DC_ConditionMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
-import main.content.enums.GenericEnums;
 import main.data.DataManager;
 import main.elements.conditions.Conditions;
 import main.elements.targeting.AutoTargeting;
 import main.entity.Ref.KEYS;
 import main.system.entity.ConditionMaster;
-import main.system.math.PositionMaster;
 
 public class RayEffect extends SpecialTargetingEffect {
     private String distance;

@@ -38,15 +38,11 @@ public class StaminaBuffRule extends DC_BuffRule {
 //        , new ModeEffect(STD_MODES.RESTING)
                 );
             }
-            case 1: {
-                return new ModifyValueEffect(PARAMS.N_OF_ACTIONS, MOD.MODIFY_BY_PERCENT,
-                 getEffectFormula());
-            }// ++ Endurance regen?
+            case 1:
             case 2: {
                 return new ModifyValueEffect(PARAMS.N_OF_ACTIONS, MOD.MODIFY_BY_PERCENT,
                  getEffectFormula());
-
-            }
+            }// ++ Endurance regen?
         }
 
         return null;

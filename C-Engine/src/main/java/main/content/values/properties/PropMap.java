@@ -32,10 +32,11 @@ public class PropMap implements ValueMap {
         if (valueName == null) {
             return "";
         }
-        if (map.get(valueName) == null) {
+        String value = map.get(valueName);
+        if (value == null) {
             return "";
         }
-        return map.get(valueName);
+        return value ;
     }
 
     @Override

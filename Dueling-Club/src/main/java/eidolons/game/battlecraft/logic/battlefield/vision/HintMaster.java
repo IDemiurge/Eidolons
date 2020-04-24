@@ -94,8 +94,6 @@ public class HintMaster {
                     list.add(OUTLINE_HINT.ABHORRENT);
                     break;
                 case HUMAN:
-                    list.add(OUTLINE_HINT.HUMAN_LIKE);
-                    break;
                 case HUMANLIKE:
                     list.add(OUTLINE_HINT.HUMAN_LIKE);
                     break;
@@ -113,10 +111,8 @@ public class HintMaster {
                     list.add(OUTLINE_HINT.HUMANOID);
                     break;
                 case MULTIPLE:
-                    break;
-                case QUADRUPED:
-                    break;
                 case STRUCTURE:
+                case QUADRUPED:
                     break;
 
             }
@@ -166,9 +162,11 @@ public class HintMaster {
         hintString = "";
         Set<OUTLINE_HINT> hints =
          getHints(unit, img);
+        StringBuilder hintStringBuilder = new StringBuilder(hintString);
         for (OUTLINE_HINT hint : hints) {
-            hintString += StringMaster.getWellFormattedString(hint.toString()) + " ";
+            hintStringBuilder.append(StringMaster.getWellFormattedString(hint.toString())).append(" ");
         }
+        hintString = hintStringBuilder.toString();
         map.put(img, hintString);
         return hintString;
     }

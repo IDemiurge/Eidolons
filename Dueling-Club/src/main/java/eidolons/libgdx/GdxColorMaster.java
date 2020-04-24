@@ -2,7 +2,6 @@ package eidolons.libgdx;
 
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
-import eidolons.game.EidolonsGame;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.HeroEnums.CLASS_GROUP;
@@ -237,20 +236,13 @@ public class GdxColorMaster {
     public static Color getColorForSkillGroup(SKILL_GROUP arg) {
         switch (arg) {
             case SPELLCASTING:
-                break;
-            case PRIME_ARTS:
-                break;
-            case ARCANE_ARTS:
-                break;
-            case LIFE_ARTS:
-                break;
-            case DARK_ARTS:
-                break;
-            case CHAOS_ARTS:
-                break;
-            case HOLY_ARTS:
-                break;
             case DEATH_ARTS:
+            case HOLY_ARTS:
+            case CHAOS_ARTS:
+            case DARK_ARTS:
+            case LIFE_ARTS:
+            case ARCANE_ARTS:
+            case PRIME_ARTS:
                 break;
         }
         return Color.WHITE;
@@ -259,6 +251,7 @@ public class GdxColorMaster {
     public static Color getColorForClassGroup(CLASS_GROUP arg) {
         switch (arg) {
             case SORCERER:
+            case MULTICLASS:
                 return LILAC;
             case WIZARD:
                 return Color.BLUE;
@@ -276,8 +269,6 @@ public class GdxColorMaster {
                 return Color.YELLOW;
             case RANGER:
                 return Color.GREEN;
-            case MULTICLASS:
-                return LILAC;
         }
 
         return Color.WHITE;

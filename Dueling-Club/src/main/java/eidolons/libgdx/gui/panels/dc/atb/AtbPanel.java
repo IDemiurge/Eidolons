@@ -28,8 +28,8 @@ import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
-import eidolons.libgdx.bf.grid.GridUnitView;
-import eidolons.libgdx.bf.grid.QueueView;
+import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.QueueView;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.gui.HideButton;
 import eidolons.libgdx.gui.generic.GearCluster;
@@ -39,7 +39,7 @@ import eidolons.libgdx.gui.panels.dc.SpeedControlPanel;
 import eidolons.libgdx.gui.panels.dc.clock.ClockActor;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.screens.CustomSpriteBatch;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
@@ -175,13 +175,13 @@ public class AtbPanel extends GroupX {
                 if (view != null)
                     view.setZIndex(Integer.MAX_VALUE - 1);
             }
-            DungeonScreen.getInstance().getGridPanel().resetZIndices();
+            ScreenMaster.getDungeonGrid().resetZIndices();
         });
         GuiEventManager.bind(GuiEventType.GRID_OBJ_HOVER_OFF, obj -> {
             if (!isRealTime()) {
                 resetZIndices();
             }
-            DungeonScreen.getInstance().getGridPanel().resetZIndices();
+            ScreenMaster.getDungeonGrid().resetZIndices();
 
         });
         GuiEventManager.bind(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, obj -> {
@@ -266,7 +266,7 @@ public class AtbPanel extends GroupX {
                 if (list.size() <= i) {
                     break;
                 }
-            QueueView actor = (QueueView) sub.getActor();
+            QueueView actor = sub.getActor();
             String text = (list == null ? sub.initiative : list.get(i++)) + "";
             if (actor == null) {
                 continue;
@@ -345,7 +345,7 @@ public class AtbPanel extends GroupX {
     private void cleanUp() {
         Map<Integer, QueueView> views = new XLinkedMap<>();
         DC_Game.game.getTurnManager().getDisplayedUnitQueue().stream().forEach(unit -> {
-            Object o = DungeonScreen.getInstance().getGridPanel().getViewMap().get(unit);
+            Object o = ScreenMaster.getDungeonGrid().getViewMap().get(unit);
             if (o instanceof GridUnitView) {
                 GridUnitView view = ((GridUnitView) o);
                 views.put(view.getCurId(), view.getInitiativeQueueUnitView());
@@ -667,7 +667,7 @@ public class AtbPanel extends GroupX {
         }
     }
 
-    private class QueueViewContainer extends Container<QueueView> {
+    private static class QueueViewContainer extends Container<QueueView> {
         public int initiative;
         public int precalcInitiative;
         public float queuePriority;

@@ -107,15 +107,7 @@ public class DC_ImageMaster {
 
         for (VISUAL_EFFECTS effect : effects) {
             switch (effect) {
-                case DARKEN:
 
-                    break;
-                case FLARE_BLUE:
-                    break;
-                case FLARE_RED:
-                    break;
-                case GRAYSCALE:
-                    break;
                 default:
                     break;
 

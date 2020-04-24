@@ -18,7 +18,7 @@ import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.UiMaster;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.generic.ValueContainer;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.texture.Images;

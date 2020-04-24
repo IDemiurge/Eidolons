@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.battle.universal;
 
-import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
+import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -118,7 +117,7 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
     }
 
     protected void initUnitData(DC_Player player, int i) {
-        UnitData[] unitData = getMaster().getGame().getDataKeeper().getUnitData();
+        UnitsData[] unitData = getMaster().getGame().getDataKeeper().getUnitData();
         if (unitData != null)
             if (unitData.length > i) {
                 player.setUnitData(unitData[i]);

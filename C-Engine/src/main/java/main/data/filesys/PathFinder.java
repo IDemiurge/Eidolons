@@ -17,9 +17,8 @@ public class PathFinder {
     public static final String OPTIONS_PATH = HOME + "/Eidolons/";
     private static final String RES_FOLDER_NAME = "resources";
     public static String MICRO_MODULE_NAME = "duel-club";
-    private static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + PathUtils.getPathSeparator() +
-     "templates";
-    private static String MACRO_MODULE_NAME = "macro";
+    private static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + "/" +
+            "templates";
     private static String XML_PATH;
     private static String ROOT_PATH;
     private static String IMG_PATH;
@@ -37,18 +36,17 @@ public class PathFinder {
         ClassLoader classLoader = PathFinder.class.getClassLoader();
         if (classLoader.getResource("") != null) {
             File temp = new File(classLoader.getResource("").getFile());
-            ROOT_PATH = new File(temp.getParentFile().toURI()) + File.separator;
-            XML_PATH = new File(temp.getParentFile() + File.separator + "xml") + File.separator;
+            ROOT_PATH=PathUtils.fixSlashes(new File(temp.getParentFile().toURI()).getPath());
+            XML_PATH = ROOT_PATH + "xml/";
             System.out.println("Root path: " + ROOT_PATH);
         } else {
             //FOR JARS
             CoreEngine.setJar(true);
 
-
             URI uri = null;
             try {
                 uri =
-                 new CoreEngine().getClass().getProtectionDomain().getCodeSource().getLocation().toURI();
+                        new CoreEngine().getClass().getProtectionDomain().getCodeSource().getLocation().toURI();
             } catch (URISyntaxException e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -61,25 +59,27 @@ public class PathFinder {
 
             System.out.println("jarName: " + jarName);
             String path =
-             new File(uri.toString().replace(jarName + PathUtils.getPathSeparator(), "")).getAbsolutePath();
+                    new File(uri.toString().replace(jarName + "/", "")).getAbsolutePath();
             path = path.split("file:")[0];
             System.out.println("Root path for Jar: " + path);
 
-            ROOT_PATH = path + File.separator;
-            XML_PATH = path + File.separator + "xml" + File.separator;
+            ROOT_PATH=PathUtils.fixSlashes(path);
+            XML_PATH = ROOT_PATH + "xml/";
 
         }
 
-        RES_PATH = RES_FOLDER_NAME + File.separator;
-        IMG_PATH = ROOT_PATH + RES_PATH + "img" + PathUtils.getPathSeparator();
+        RES_PATH = RES_FOLDER_NAME + "/";
 
-        SND_PATH = ROOT_PATH + RES_PATH + "sound" + PathUtils.getPathSeparator();
+        IMG_PATH = ROOT_PATH + RES_PATH + "img/";
 
-        FONT_PATH = ROOT_PATH + RES_PATH + "fonts" + PathUtils.getPathSeparator();
+        SND_PATH = ROOT_PATH + RES_PATH + "sound/";
 
-        MACRO_TYPES_PATH = XML_PATH + MACRO_MODULE_NAME + PathUtils.getPathSeparator() + "types" + PathUtils.getPathSeparator();
+        FONT_PATH = ROOT_PATH + RES_PATH + "fonts/";
 
-        TYPES_PATH = XML_PATH + MICRO_MODULE_NAME + PathUtils.getPathSeparator() + "types" + PathUtils.getPathSeparator();
+        String MACRO_MODULE_NAME = "macro";
+        MACRO_TYPES_PATH = XML_PATH + MACRO_MODULE_NAME + "/types/";
+
+        TYPES_PATH = XML_PATH + MICRO_MODULE_NAME + "/types/";
 
     }
 
@@ -99,51 +99,61 @@ public class PathFinder {
 
     public static String getDungeonFolder() {
         init();
-        return XML_PATH + PathUtils.getPathSeparator() + "dungeons" + PathUtils.getPathSeparator();
+        return XML_PATH + "/dungeons/";
     }
 
     public static String getDungeonMissionFolder() {
         init();
-        return XML_PATH + PathUtils.getPathSeparator() + "dungeons/missions" + PathUtils.getPathSeparator();
+        return XML_PATH + "/dungeons/missions/";
     }
 
     public static String getSkirmishBattlefieldFolder() {
         init();
-        return getDungeonLevelFolder() + PathUtils.getPathSeparator() + "skirmish/battlefields" + PathUtils.getPathSeparator();
+        return getDungeonLevelFolder() + "/skirmish/battlefields/";
     }
 
     public static String getDungeonLevelFolder() {
         init();
-        return XML_PATH + "dungeons/levels/"  ;
+        return XML_PATH + "dungeons/levels/";
+    }
+    public static String getModuleTemplatesPath() {
+        return XML_PATH + "dungeons/levels/templates/modules/";
     }
 
+    public static String getFloorTemplatesPath() {
+        return XML_PATH + "dungeons/levels/templates/floors/";
+    }
+    public static String getModulesPath() {
+        return XML_PATH + "dungeons/levels/modules/";
+    }
     public static String getTextPath() {
         init();
-        return RES_PATH + PathUtils.getPathSeparator() + "text" + PathUtils.getPathSeparator();
+        return RES_PATH + "/text/";
     }
+
     public static String getTextPathLocale() {
         init();
         return getTextPath() + "english/";
     }
 
     public static String getSavesPath() {
-        return getXML_PATH() + PathUtils.getPathSeparator() + "saves" + PathUtils.getPathSeparator();
+        return getXML_PATH() + "/saves/";
     }
 
     public static String getScenariosPath() {
         init();
-        return RES_PATH + PathUtils.getPathSeparator() + "text/scenario" + PathUtils.getPathSeparator();
+        return RES_PATH + "/text/scenario/";
     }
 
     public static String getLogPath() {
         init();
-        return "logs" + PathUtils.getPathSeparator()+CoreEngine.VERSION+"/"
-                + TimeMaster.getDateString()+ PathUtils.getPathSeparator();
+        return "logs/" + CoreEngine.VERSION + "/"
+                + TimeMaster.getDateString() + "/";
     }
 
     public static String getUnitGroupPath() {
         init();
-        return XML_PATH + PathUtils.getPathSeparator() + "groups" + PathUtils.getPathSeparator();
+        return XML_PATH + "/groups/";
     }
 
     public static String getImagePath() {
@@ -155,9 +165,10 @@ public class PathFinder {
         init();
         return SND_PATH;
     }
+
     public static String getSoundsetsPath() {
         init();
-        return SND_PATH+"soundsets/";
+        return SND_PATH + "soundsets/";
     }
 
     public static String getFontPath() {
@@ -192,7 +203,7 @@ public class PathFinder {
 
     public static String getResPath() {
         init();
-        return ROOT_PATH + PathUtils.getPathSeparator() + RES_FOLDER_NAME + PathUtils.getPathSeparator();
+        return ROOT_PATH + RES_FOLDER_NAME + "/";
     }
 
     public static String getMACRO_TYPES_PATH() {
@@ -202,12 +213,16 @@ public class PathFinder {
 
     public static String getPrefsPath() {
         init();
-        return ROOT_PATH + getTextPath() + "prefs" + PathUtils.getPathSeparator();
+        return ROOT_PATH + getTextPath() + "prefs/";
     }
 
     public static String getWorkspacePath() {
         init();
-        return XML_PATH + PathUtils.getPathSeparator() + "workspaces" + PathUtils.getPathSeparator();
+        return XML_PATH + "/workspaces/";
+    }
+    public static String getEditorWorkspacePath() {
+        init();
+        return getLevelEditorPath() + "/workspaces/palettes/";
     }
 
     public static String getXML_PATH() {
@@ -217,17 +232,17 @@ public class PathFinder {
 
     public static String getMapBlockFolderPath() {
         init();
-        return getLevelEditorPath() + "blocks" + PathUtils.getPathSeparator();
+        return getLevelEditorPath() + "blocks/";
     }
 
     public static String getLevelEditorPath() {
         init();
-        return XML_PATH + "Level Editor" + PathUtils.getPathSeparator();
+        return XML_PATH + "Level Editor/";
     }
 
     public static String getSpellUpgradeGlyphsFolder() {
         init();
-        return getImagePath() + "ui/glyphs" + PathUtils.getPathSeparator();
+        return getImagePath() + "ui/glyphs/";
     }
 
     public static boolean isFullPath(String path) {
@@ -237,16 +252,17 @@ public class PathFinder {
 
     public static String getVfxPath() {
         init();
-        return getImagePath() + "vfx" + PathUtils.getPathSeparator();
+        return getImagePath() + "vfx/";
     }
+
     public static String getVfxAtlasPath() {
         init();
-        return getImagePath() + "vfx/atlas/"  ;
+        return getImagePath() + "vfx/atlas/";
     }
 
     public static String getSpellVfxPath() {
         init();
-        return getImagePath() + "vfx/spell" + PathUtils.getPathSeparator();
+        return getImagePath() + "vfx/spell/";
     }
 
     public static String getParticlePresetPath() {
@@ -255,33 +271,36 @@ public class PathFinder {
 
     public static String getSpritesPathFull() {
         init();
-        return getImagePath() + PathUtils.getPathSeparator() +
-         "mini/sprites" + PathUtils.getPathSeparator();
+        return getImagePath() + "/" +
+                "mini/sprites/";
     }
 
     public static String getSpellSpritesPath() {
         init();
         return
-         "sprites/spells/";
+                "sprites/spells/";
     }
 
     public static String getUiSpritePath() {
         return getSpritesPath() + "ui/";
     }
+
     public static String getSpritesPath() {
-        init();
-        return "sprites" + PathUtils.getPathSeparator();
+        return "sprites/";
     }
 
+    public static String getBossSpritesPath() {
+        return "sprites/boss/";
+    }
 
     public static String getMusicPath() {
         init();
-        return getResPath() + "music" + PathUtils.getPathSeparator();
+        return getResPath() + "music/";
     }
 
     public static String getParticleImagePath() {
         init();
-        return getParticlePresetPath() + "images" + PathUtils.getPathSeparator();
+        return getParticlePresetPath() + "images/";
     }
 
     public static String removeSpecificPcPrefix(String imagePath) {
@@ -294,45 +313,45 @@ public class PathFinder {
     }
 
     public static String getEmblemsPath() {
-        return StrPathBuilder.build("ui","content", "emblems") + PathUtils.getPathSeparator();
+        return StrPathBuilder.build("ui", "content", "emblems") + "/";
     }
 
     public static String getEmblemAutoFindPath() {
-        return StrPathBuilder.build("ui", "content", "emblems", "auto") + PathUtils.getPathSeparator();
+        return StrPathBuilder.build("ui", "content", "emblems", "auto") + "/";
     }
 
     public static String getWeaponAnimPath() {
-        return StrPathBuilder.build(getSpritesPathMain(), "weapons3d") + PathUtils.getPathSeparator();
+        return StrPathBuilder.build(getSpritesPathMain(), "weapons3d") + "/";
     }
 
     public static String getPotionsAnimPath() {
-        return StrPathBuilder.build(getSpritesPathMain(), "potions") + PathUtils.getPathSeparator();
+        return StrPathBuilder.build(getSpritesPathMain(), "potions") + "/";
     }
 
     private static String getSpritesPathMain() {
         init();
         return
-         "sprites" + PathUtils.getPathSeparator();
+                "sprites/";
     }
 
     public static String getVideoPath() {
         return StrPathBuilder.build(getResPath(),
-         "video") + PathUtils.getPathSeparator();
+                "video") + "/";
     }
 
     public static String getMacroImgPath() {
         return StrPathBuilder.build(getImagePath(),
-         "global") + PathUtils.getPathSeparator();
+                "global") + "/";
     }
 
     public static String getMacroXmlPath() {
         return StrPathBuilder.build(getXML_PATH(),
-         "macro") + PathUtils.getPathSeparator();
+                "macro") + "/";
     }
 
     public static String getRouteImagePath() {
         return
-         StrPathBuilder.build(getMacroImgPath(), "routes") + PathUtils.getPathSeparator();
+                StrPathBuilder.build(getMacroImgPath(), "routes") + "/";
     }
 
     public static String getMacroPath() {
@@ -340,85 +359,86 @@ public class PathFinder {
     }
 
     public static String getMapLayersPath() {
-        return StrPathBuilder.build(getMacroPath(), "map", "layers") + PathUtils.getPathSeparator();
+        return StrPathBuilder.build(getMacroPath(), "map", "layers") + "/";
     }
 
     public static String getComponentsPath() {
         return StrPathBuilder.build(getUiPath(),
-         "components") + PathUtils.getPathSeparator();
+                "components") + "/";
 
     }
 
     public static String getUiPath() {
-        return "ui" + PathUtils.getPathSeparator();
+        return "ui/";
 
     }
 
 
     public static String getOutlinesPath() {
         return StrPathBuilder.build(
-         "ui","cells",  "outlines") + PathUtils.getPathSeparator();
+                "ui", "cells", "outlines") + "/";
     }
+
     public static String getShadeCellsPath() {
         return StrPathBuilder.build(
-         "ui","cells",  "outlines",  "shadows") + PathUtils.getPathSeparator();
+                "ui", "cells", "outlines", "shadows") + "/";
     }
 
     public static String getMacroUiPath() {
         return StrPathBuilder.build(
-         "ui", "macro") + PathUtils.getPathSeparator();
+                "ui", "macro") + "/";
 
     }
 
     public static String getUiContentPath() {
         return StrPathBuilder.build(
-         "ui", "content") + PathUtils.getPathSeparator();
+                "ui", "content") + "/";
     }
 
     public static String getSkinPath() {
         return StrPathBuilder.build(
-         getImagePath(),
-         "ui",
-         "components",
-         "skin",
-         "neutralizer-ui.json");
+                getImagePath(),
+                "ui",
+                "components",
+                "skin",
+                "neutralizer-ui.json");
     }
 
     public static String getPerkImagePath() {
         return StrPathBuilder.build(PathFinder.getUiPath(),
-         "value icons", "perks") + PathUtils.getPathSeparator();
+                "value icons", "perks") + "/";
     }
 
     public static String getWeaponIconPath() {
         return StrPathBuilder.build("main",
-         "item",
-         "weapon",
-         "icons");
+                "item",
+                "weapon",
+                "icons");
     }
 
     public static String getJewelryIconPath() {
         return StrPathBuilder.build("main",
-         "item",
-         "Jewelry",
-         "icons");
+                "item",
+                "Jewelry",
+                "icons");
     }
 
     public static String getArmorIconPath() {
         return StrPathBuilder.build("main",
-         "item",
-         "armor",
-         "icons");
+                "item",
+                "armor",
+                "icons");
     }
 
     public static String getSketchPath() {
-        return StrPathBuilder.build(getEmblemsPath(), "sketches") + PathUtils.getPathSeparator();
+        return StrPathBuilder.build(getEmblemsPath(), "sketches") + "/";
     }
 
     public static String getPortraitPath() {
         return StrPathBuilder.build(getImagePath(), "main",
-         "chars",
-         "std") +
-         PathUtils.getPathSeparator();
+                "chars",
+                "std") +
+                "/";
 
     }
 
@@ -428,44 +448,45 @@ public class PathFinder {
 
     public static String getRoomTemplatesFolder() {
         return StrPathBuilder.build(PathFinder.getXML_PATH(), "Level Editor",
-         "room templates") +
-         PathUtils.getPathSeparator();
+                "room templates") +
+                "/";
     }
 
     public static String getRandomLevelPath() {
         return StrPathBuilder.build(PathFinder.getDungeonLevelFolder(),
-         "generated") + PathUtils.getPathSeparator();
+                "generated") + "/";
     }
 
     public static String getMetaDataUnitPath() {
         return StrPathBuilder.build(PathFinder.getXML_PATH(),
-         "meta data.txt");
+                "meta data.txt");
     }
 
     public static String getHitSpritesPath() {
         if (spritesPath == null)
             spritesPath = StrPathBuilder.build(getSpritesPath(),
-             "hit");
+                    "hit");
         return spritesPath;
     }
 
     public static String getTargetingCursorPath() {
         return StrPathBuilder.build(getImagePath(), getUiPath(),
-         "cursor target.png");
+                "cursor target.png");
     }
 
     public static String getLoadingCursorPath() {
         return StrPathBuilder.build(getImagePath(), getUiPath(),
-         "cursor loading.png");
+                "cursor loading.png");
     }
 
     public static String getEmptyCursorPath() {
         return StrPathBuilder.build(getImagePath(), getUiPath(),
                 "cursor empty.png");
     }
+
     public static String getCursorPath() {
         return StrPathBuilder.build(getImagePath(), getUiPath(),
-         "cursor.png");
+                "cursor.png");
     }
 
     public static String getBordersPath() {
@@ -473,11 +494,11 @@ public class PathFinder {
     }
 
     public static String getShadersPath() {
-        return   "xml/shaders/";
+        return "xml/shaders/";
     }
 
     public static String getCampaignSavePath() {
-        return getSavesPath()+"campaign/";
+        return getSavesPath() + "campaign/";
     }
 
     public static String getCellImagesPath() {
@@ -488,7 +509,7 @@ public class PathFinder {
         return "main/art/";
     }
 
-//    public static String getDialoguesPath(String locale) {
+    //    public static String getDialoguesPath(String locale) {
 //        return getDialoguesPath(texmaster)
 //    }
     public static String getDialoguesPath(String locale) {
@@ -501,6 +522,7 @@ public class PathFinder {
     }
 
     public static String getSoundCuesPath() {
-        return  getSoundPath() + "moments/cues/";
+        return getSoundPath() + "moments/cues/";
     }
+
 }

@@ -133,14 +133,10 @@ public class MoonActor extends Group {
             case FAE:
                 return 0.5f;
             case TEMPEST:
-                break;
-            case HAVEN:
-                break;
-            case RIME:
-                break;
-            case FEL:
-                break;
             case SHADE:
+            case FEL:
+            case RIME:
+            case HAVEN:
                 break;
         }
         return 1;

@@ -59,10 +59,8 @@ public class MoveTask extends Task<SteeringBehavior<Vector2>> {
         if (result == null) throw new IllegalStateException("Invalid status 'null' returned by the execute method");
         switch (result) {
             case SUCCEEDED:
-                return;
-            case FAILED:
-                return;
             case RUNNING:
+            case FAILED:
                 return;
             default:
                 throw new IllegalStateException("Invalid status '" + result.name() + "' returned by the execute method");

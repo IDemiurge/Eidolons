@@ -9,10 +9,11 @@ import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.actions.MoveByActionLimited;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.grid.BaseView;
-import eidolons.libgdx.bf.grid.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.BaseView;
+import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.particles.spell.SpellVfx;
-import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
@@ -22,14 +23,13 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
-import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static main.system.auxiliary.log.LogMaster.*;
+import static main.system.auxiliary.log.LogMaster.ANIM_DEBUG;
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 1/14/2017.
@@ -123,14 +123,14 @@ public class MoveAnimation extends ActionAnim {
         if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
          MoveEffect.class)))
             unit = (Unit) getRef().getTargetObj();
-        GridUnitView actor = (GridUnitView) DungeonScreen.getInstance().getGridPanel().getViewMap()
+        GridUnitView actor = (GridUnitView) ScreenMaster.getDungeonGrid().getViewMap()
          .get(unit);
 
         if (actor.isStackView()) {
             DungeonScreen.getInstance().getGuiStage().getTooltips().getStackMaster().stackOff();
         }
 
-        if (!DungeonScreen.getInstance().getGridPanel().detachUnitView(unit)) {
+        if (!ScreenMaster.getDungeonGrid().detachUnitView(unit)) {
             return;
         }
 
@@ -142,6 +142,9 @@ public class MoveAnimation extends ActionAnim {
         action.setTarget(actor);
 
 
+        ScreenMaster.getDungeonGrid().showMoveGhostOnCell(unit);
+        ScreenMaster.getDungeonGrid().resetCell(unit.getBufferedCoordinates());
+//        GuiEventManager.trigger(GuiEventType.CELL_SHOW_MOVE_GHOST, unit);
     }
 
     @Override
@@ -209,7 +212,9 @@ public class MoveAnimation extends ActionAnim {
     @Override
     public void finished() {
         super.finished();
-        DungeonScreen.getInstance().getGridPanel().unitViewMoved((BaseView) getActor());
+        ScreenMaster.getDungeonGrid().unitViewMoved((BaseView) getActor());
+
+
     }
 
     @Override

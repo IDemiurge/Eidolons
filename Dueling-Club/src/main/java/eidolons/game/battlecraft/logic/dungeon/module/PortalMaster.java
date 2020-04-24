@@ -161,7 +161,7 @@ public class PortalMaster extends DungeonHandler {
         OBLIVION, LIGHT, DARK
     }
 
-    private class Portal extends GridObject {
+    private static class Portal extends GridObject {
         FACING_DIRECTION exitFacing;
         Coordinates coordinates;
         PORTAL_TYPE type;

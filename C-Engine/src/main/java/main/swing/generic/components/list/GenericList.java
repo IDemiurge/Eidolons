@@ -1,7 +1,6 @@
 package main.swing.generic.components.list;
 
 import main.swing.generic.components.Refreshable;
-import main.system.net.RefresherImpl;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
@@ -10,7 +9,6 @@ import java.util.Vector;
 public abstract class GenericList<E> extends JList<E> implements
  ListSelectionListener, ListCellRenderer<E>, Refreshable {
     protected Vector<E> list = new Vector<>();
-    protected RefresherImpl refresher;
 
     public GenericList() {
         setCellRenderer(this);

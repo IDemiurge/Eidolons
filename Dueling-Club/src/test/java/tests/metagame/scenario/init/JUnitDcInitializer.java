@@ -2,8 +2,6 @@ package tests.metagame.scenario.init;
 
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.core.launch.PresetLauncher.LAUNCH;
-import eidolons.test.frontend.FAST_DC;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
@@ -16,9 +14,6 @@ public class JUnitDcInitializer {
 
 
     public void launchFastDc() {
-        FAST_DC.main(new String[]{
-         LAUNCH.JUnit.name()
-        });
         game = Eidolons.game;
     }
 

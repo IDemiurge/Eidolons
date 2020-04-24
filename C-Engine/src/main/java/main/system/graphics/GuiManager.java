@@ -24,9 +24,6 @@ public class GuiManager {
     private static int battleFieldWidth;
     private static int battleFieldHeight;
     private static int smallObjSize;
-    // depends on font!
-    private static int infoNamesColumnMinWidth = 100;
-    private static int infoNamesColumnMaxWidth = 200;
     private static int battleFieldCellsX = 9;
     private static int battleFieldCellsY = 7;
     private static boolean fullscreen;
@@ -38,7 +35,6 @@ public class GuiManager {
     private static int currentLevelCellsY;
     private static int squareCellSize;
     private static int cellWidth;
-    private static int bfCellsVersion = 1;
     private static Dimension overlayingHugeObjSize;
     private static Dimension overlayingObjSize;
     private static boolean guiDebug;
@@ -73,19 +69,24 @@ public class GuiManager {
         setBattleFieldHeight(getBF_CompDisplayedCellsY() * cellHeight);
         setBattleFieldWidth(getBF_CompDisplayedCellsX() * cellHeight);
 
-        if (CoreEngine.isSwingOn())
-        try {
-            UIManager.setLookAndFeel("" + "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"
-             // "main.system.auxiliary.DarkNimbus"
-             // "com.jtattoo.plaf.noire.NoireLookAndFeel"
-            );
-
-            FontMaster.setUIFont();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+        if (CoreEngine.isSwingOn()) {
+            try {
+                UIManager.setLookAndFeel(
+                        "javax.swing.plaf.nimbus.NimbusLookAndFeel"
+                );
+            } catch (Exception e) {
+                try {
+                    UIManager.setLookAndFeel(
+                            "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"
+                    );
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        FontMaster.setUIFont();
         }
     }
-
 
 
     public static Dimension getPortraitSize() {
@@ -184,10 +185,13 @@ public class GuiManager {
     }
 
     public static int getInfoNamesColumnMinWidth() {
+        // depends on font!
+        int infoNamesColumnMinWidth = 100;
         return infoNamesColumnMinWidth;
     }
 
     public static int getInfoNamesColumnMaxWidth() {
+        int infoNamesColumnMaxWidth = 200;
         return infoNamesColumnMaxWidth;
     }
 
@@ -286,7 +290,7 @@ public class GuiManager {
 
     public static void setWindowToFullscreen(JFrame frame) {
         GraphicsDevice myDevice = GraphicsEnvironment.getLocalGraphicsEnvironment()
-         .getDefaultScreenDevice();
+                .getDefaultScreenDevice();
         try {
             myDevice.setFullScreenWindow(frame);
             setFullscreen(true);
@@ -330,7 +334,7 @@ public class GuiManager {
 
     public static Point getCenterPoint(Dimension size) {
         return new Point(MigMaster.getCenteredPosition(getScreenWidthInt(), size.width), MigMaster
-         .getCenteredPosition(getScreenHeightInt(), size.height));
+                .getCenteredPosition(getScreenHeightInt(), size.height));
     }
 
     public static int getCellNumber() {
@@ -358,6 +362,7 @@ public class GuiManager {
     }
 
     public static int getBfCellsVersion() {
+        int bfCellsVersion = 1;
         return bfCellsVersion;
     }
 
@@ -371,7 +376,8 @@ public class GuiManager {
     }
 
     public enum DISPLAY_MODE {
-        _1920x1200_, _1920x1080_, _1680x1050_,;
+        _1920x1200_, _1920x1080_, _1680x1050_,
+        ;
     }
 
 }

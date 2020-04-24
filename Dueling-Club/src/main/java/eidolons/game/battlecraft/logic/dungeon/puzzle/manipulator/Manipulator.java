@@ -3,20 +3,13 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
-import eidolons.game.core.Eidolons;
-import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.sprite.SpriteX;
-import eidolons.libgdx.bf.grid.GridUnitView;
-import eidolons.libgdx.bf.grid.UnitViewOptions;
-import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.texture.Sprites;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.logic.battle.player.Player;
 
 /**
  * rotating,

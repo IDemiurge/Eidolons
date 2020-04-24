@@ -1,6 +1,5 @@
 package eidolons.libgdx.bf;
 
-import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 

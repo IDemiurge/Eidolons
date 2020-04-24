@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.particles.EmitterActor;
-import eidolons.libgdx.screens.CustomSpriteBatch;
-import main.content.enums.GenericEnums;
 
 import java.util.Collection;
 

@@ -668,6 +668,10 @@ public class ImageManager {
         String imgPath = VALUE_ICONS_PATH;
         String name = value.getName().toLowerCase();
 
+        if (value.getIconPath()!=null) {
+            return value.getIconPath();
+        }
+
         boolean mastery = false;
         if (value instanceof MACRO_PARAMS) {
             imgPath = VALUE_ICONS_PATH + "macro" + separator;
@@ -695,7 +699,7 @@ public class ImageManager {
         String path = imgPath + name + ".png"; // free format
         if (!FileManager.isFile(getImageFolderPath() + path))
             path = imgPath + name + ".jpg";
-
+        value.setIconPath(path);
         return path;
 
     }
@@ -796,6 +800,9 @@ public class ImageManager {
     }
 
     public static boolean isImageFile(String name) {
+        if (StringMaster.isEmpty(name)) {
+            return false;
+        }
         String format = StringMaster.getFormat(name);
         for (String f : STD_FORMATS) {
             if (format.substring(1).equalsIgnoreCase(f)) {
@@ -809,8 +816,7 @@ public class ImageManager {
         if (!FileManager.isImageFile(imgPath))
             return false;
         if (!FileManager.isFile(imgPath))
-            if (!FileManager.isFile(getImageFolderPath() + imgPath))
-                return false;
+            return FileManager.isFile(getImageFolderPath() + imgPath);
         return true;
         //        Image image = getImage(imgPath);
         //        if (image == null) {

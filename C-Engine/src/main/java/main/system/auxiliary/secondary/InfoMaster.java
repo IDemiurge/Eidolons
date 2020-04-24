@@ -110,11 +110,11 @@ public class InfoMaster {
             return "";
         }
 
-        String string = "";
+        StringBuilder string = new StringBuilder();
         for (String s : ContainerUtils.open(value)) {
-            string += s + OR;
+            string.append(s).append(OR);
         }
-        string = string.substring(0, string.length() - OR.length());
+        string = new StringBuilder(string.substring(0, string.length() - OR.length()));
         return p.getName().replace("Or ", "").replace("Requirements ", "") + PARAM_REASON_STRING
          + string;
     }
@@ -126,13 +126,13 @@ public class InfoMaster {
     }
 
     public static String getOrReasonString(String value, VALUE... p) {
-        String string = "";
+        StringBuilder string = new StringBuilder();
         for (VALUE param : p) {
-            string += param.getName() + OR;
+            string.append(param.getName()).append(OR);
         }
-        string = string.substring(0, string.length() - OR.length());
-        string += PARAM_REASON_STRING + value;
-        return string;
+        string = new StringBuilder(string.substring(0, string.length() - OR.length()));
+        string.append(PARAM_REASON_STRING).append(value);
+        return string.toString();
     }
 
     public static String getSkillRankReqString(String mastery, Entity type, MASTERY_RANK rank) {
@@ -141,11 +141,11 @@ public class InfoMaster {
     }
 
     public static String getTotalReasonString(String amount, PARAMETER... parameters) {
-        String string = "";
+        StringBuilder string = new StringBuilder();
         for (PARAMETER p : parameters) {
-            string += p.getName() + ", ";
+            string.append(p.getName()).append(", ");
         }
-        string = StringMaster.cropLast(string, 2);
+        string = new StringBuilder(StringMaster.cropLast(string.toString(), 2));
 
         return "Total of " + string + " required: " + amount;
     }

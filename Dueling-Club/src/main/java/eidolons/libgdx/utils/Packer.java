@@ -108,8 +108,8 @@ public class Packer {
             //                continue;
             if (dir.isDirectory()) {
                 if (treeDepth < 1)
-                    data.append("\n" + StringMaster.getStringXTimes(10, "__") + "\n");
-                data.append(StringMaster.getStringXTimes(treeDepth, "--") + ">  " + dir.getName() + "\n");
+                    data.append("\n").append(StringMaster.getStringXTimes(10, "__")).append("\n");
+                data.append(StringMaster.getStringXTimes(treeDepth, "--")).append(">  ").append(dir.getName()).append("\n");
                 if (treeDepth < 2)
                     data.append("\n");
                 appendToTree(treeDepth + 1, data, dir.getPath());
@@ -243,7 +243,7 @@ ____________________
         //no dirs
         String src = PathFinder.getResPath();
         String dest = "resources/";
-        copyFromRoot(false, src, dest, filesToCopy.toArray(new File[filesToCopy.size()]), null);
+        copyFromRoot(false, src, dest, filesToCopy.toArray(new File[0]), null);
     }
 
     private int getDepth(String line) {
@@ -331,12 +331,8 @@ ____________________
         List<String> exceptions = new ArrayList<>();
 
         if (filteredAll != null)
-            for (String s : filteredAll) {
-                exceptions.add(s);
-            }
-        for (String s : customExceptions) {
-            exceptions.add(s);
-        }
+            exceptions.addAll(Arrays.asList(filteredAll));
+        exceptions.addAll(Arrays.asList(customExceptions));
         for (File folder : folders) {
             List<File> fileList = new ArrayList<>();
             if (folder.isFile()) {
