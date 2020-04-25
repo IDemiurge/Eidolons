@@ -500,13 +500,13 @@ public class CoordinatesMaster {
         return list;
     }
 
-    public static List<Coordinates> getCoordinatesBetween(Coordinates c, Coordinates c2) {
+    public static List<Coordinates> getCoordinatesBetweenInclusive(Coordinates c, Coordinates c2) {
         List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(
                 Math.min(c.x, c2.x) , Math.max(c.x, c2.x), Math.min(c.y, c2.y) , Math.max(
                         c.y, c2.y));
         return coordinates;
     }
-        public static List<Coordinates> getCoordinatesBetweenWithOffset(Coordinates c, Coordinates c2) {
+        public static List<Coordinates> getCoordinatesBetween(Coordinates c, Coordinates c2) {
         List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(
          Math.min(c.x, c2.x) - 1, Math.max(c.x, c2.x), Math.min(c.y, c2.y) - 1, Math.max(
           c.y, c2.y));

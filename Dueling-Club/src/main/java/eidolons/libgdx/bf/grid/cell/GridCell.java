@@ -4,19 +4,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import eidolons.content.PARAMS;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
@@ -26,6 +21,8 @@ import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
+import eidolons.libgdx.gui.NinePatchFactory;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
@@ -33,7 +30,6 @@ import eidolons.system.controls.GlobalController;
 import main.game.bf.Coordinates;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
-import main.system.auxiliary.ContainerUtils;
 
 import static main.system.GuiEventType.*;
 
@@ -48,7 +44,7 @@ public class GridCell extends Group implements Borderable {
     protected int gridX;
     protected int gridY;
     protected TextureRegion borderTexture;
-    protected Label cordsText;
+    protected Actor cordsText;
     protected Label infoText;
 
     FadeImageContainer overlay;
@@ -91,12 +87,17 @@ public class GridCell extends Group implements Borderable {
         setSize(GridMaster.CELL_W, GridMaster.CELL_H);
 
         cordsText = new Label(getGridX() + ":" + getGridY(),
-                StyleHolder.getDebugLabelStyle());
-        cordsText.setPosition(getWidth() / 2 - cordsText.getWidth() / 2,
-                getHeight() / 2 - cordsText.getHeight() / 2);
-        cordsText.setVisible(false);
-        addActor(cordsText);
+                StyleHolder.getDebugLabelStyleLarge());
+        TablePanelX<Actor> cordsTextTable = new TablePanelX<>(50,30);
+        cordsTextTable.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        cordsTextTable.add(cordsText).center();
+        addActor( cordsTextTable);
+        cordsTextTable.setTouchable(Touchable.disabled);
         cordsText.setTouchable(Touchable.disabled);
+        cordsTextTable.setPosition(getWidth() / 2 - cordsText.getWidth() / 2,
+                getHeight() / 2 - cordsText.getHeight() / 2);
+        cordsText = cordsTextTable;
+        cordsText.setVisible(false);
         addListener(
                 createListener());
 
@@ -214,16 +215,16 @@ public class GridCell extends Group implements Borderable {
 //        }
         super.act(delta);
         if (isCoordinatesShown()) {
-            DC_Cell cell = getUserObject();
-            cordsText.setText(
-                    ContainerUtils.build(getGridX(), ":", getGridY())
-                            + (GammaMaster.DEBUG_MODE ? //TODO into method
-                            "\n gamma=" + DC_Game.game.getVisionMaster().getGammaMaster().
-                                    getGammaForCell(getGridX(), getGridY())
-                                    + "\n illumination="
-                                    + cell.getIntParam(PARAMS.ILLUMINATION)
-                            : "")
-            );
+//            DC_Cell cell = getUserObject();
+//            cordsText.setText(
+//                    ContainerUtils.build(getGridX(), ":", getGridY())
+//                            + (GammaMaster.DEBUG_MODE ? //TODO into method
+//                            "\n gamma=" + DC_Game.game.getVisionMaster().getGammaMaster().
+//                                    getGammaForCell(getGridX(), getGridY())
+//                                    + "\n illumination="
+//                                    + cell.getIntParam(PARAMS.ILLUMINATION)
+//                            : "")
+//            );
             cordsText.setVisible(true);
         } else {
             if (cordsText.isVisible()) {
@@ -264,11 +265,11 @@ public class GridCell extends Group implements Borderable {
         border.setWidth(getHeight() - 8);
     }
 
-    protected int getGridX() {
+    public int getGridX() {
         return gridX;
     }
 
-    protected int getGridY() {
+    public int getGridY() {
         return gridY;
     }
 

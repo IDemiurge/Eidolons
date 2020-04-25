@@ -162,7 +162,7 @@ public class Filter<T extends Entity> extends ReferredElement {
 
     private boolean isDebug() {
         // TODO Auto-generated method stub
-        return true;
+        return false;
     }
 
     /**

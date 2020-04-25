@@ -14,7 +14,7 @@ public class AreaCondition extends DC_Condition {
     }
     public AreaCondition(Coordinates coordinates, int width, int height, boolean bottomToTop) {
         super();
-        this.coordinates = CoordinatesMaster.getCoordinatesBetweenWithOffset(coordinates,
+        this.coordinates = CoordinatesMaster.getCoordinatesBetween(coordinates,
                 new Coordinates(coordinates.x + width, coordinates.y + height * ((bottomToTop)? -1 : 1)));
 
     }

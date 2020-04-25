@@ -31,11 +31,11 @@ import java.util.stream.Collectors;
 /**
  * Created by JustMe on 5/7/2017.
  */
-public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
+public class Positioner<E extends DungeonWrapper> extends DungeonHandler  {
     protected Map<Coordinates, List<ObjType>> unitCache;
     private Integer maxSpacePercentageTaken = 100;
 
-    public Positioner(DungeonMaster<E> master) {
+    public Positioner(DungeonMaster  master) {
         super(master);
     }
 

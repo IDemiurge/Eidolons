@@ -3,6 +3,7 @@ package main.level_editor.backend.handlers.operation;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battle.encounter.EncounterData;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import main.content.DC_TYPE;
@@ -17,13 +18,16 @@ import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.brush.LE_BrushType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.math.PositionMaster;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 public class LE_ObjHandler extends LE_Handler {
 
     private static final String DEFAULT_TYPE = "Bone Wall";
+    private BattleFieldObject lastAdded;
 
     public LE_ObjHandler(LE_Manager manager) {
         super(manager);
@@ -91,7 +95,7 @@ public class LE_ObjHandler extends LE_Handler {
             Integer id = getIdManager().getId(bfObj);
             getEntityHandler().encounterAdded(id, new EncounterData(bfObj));
         }
-
+        lastAdded = bfObj;
         return bfObj;
         //TODO Player!!!
     }
@@ -154,5 +158,26 @@ public class LE_ObjHandler extends LE_Handler {
                 return DataManager.getType(getModel().getBlock().getWallType(), DC_TYPE.BF_OBJ);
             }
         return DataManager.getType(DEFAULT_TYPE, DC_TYPE.BF_OBJ);
+    }
+
+    public void addInLine(Coordinates c) {
+        if (lastAdded == null) {
+            return;
+        }
+        Coordinates c1 = lastAdded.getCoordinates();
+        if (PositionMaster.inLine(c1, c)) {
+            addMultiple(lastAdded.getType(), CoordinatesMaster.getCoordinatesBetweenInclusive(c1, c));
+        } else
+            if (PositionMaster.inLineDiagonally(c1, c)) {
+            //TODO
+        }
+    }
+
+    private void addMultiple(ObjType type, List<Coordinates> coordinates) {
+        operation(Operation.LE_OPERATION.FILL_START);
+        for (Coordinates c : coordinates) {
+            addObj(type, c.x,c.y);
+        }
+        operation(Operation.LE_OPERATION.FILL_END);
     }
 }

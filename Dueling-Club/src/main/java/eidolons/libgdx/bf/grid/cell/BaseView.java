@@ -13,6 +13,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.sprite.SpriteMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
+import eidolons.libgdx.bf.Hoverable;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
@@ -28,7 +29,7 @@ import java.util.List;
 
 import static main.system.GuiEventType.TARGET_SELECTION;
 
-public class BaseView extends SuperActor {
+public class BaseView extends SuperActor  implements Hoverable{
     protected TextureRegion originalTexture;
     protected TextureRegion originalTextureAlt;
     protected FadeImageContainer portrait;

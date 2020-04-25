@@ -28,7 +28,7 @@ import java.util.List;
 import static main.system.GuiEventType.SCREEN_LOADED;
 
 
-public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
+public class Spawner<E extends DungeonWrapper> extends DungeonHandler  {
     public static final Integer MAX_SPACE_PERC_CREEPS = 25; // 1 per cell only
     private static final Integer MAX_SPACE_PERC_PARTY = 0;
     //    public Spawner(String unitData, DC_Player player, SPAWN_MODE mode) {

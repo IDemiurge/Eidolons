@@ -21,7 +21,7 @@ public abstract class Tooltip<T extends Actor> extends TablePanelX<T> {
     protected boolean showing;
     protected ToolTipManager manager;
     protected Actor actor;
-    private boolean mouseHasMoved;
+    protected boolean mouseHasMoved;
 
     public Tooltip(Actor actor) {
         this.actor = actor;

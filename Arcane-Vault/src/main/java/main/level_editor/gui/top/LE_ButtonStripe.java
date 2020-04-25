@@ -1,6 +1,7 @@
 package main.level_editor.gui.top;
 
 import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -21,10 +22,10 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
         super(10);
         setHeight(80);
         setWidth(900);
-        addActor(undo = new SmartButton(ButtonStyled.STD_BUTTON.LE_UNDO, ()->
-                LevelEditor.getCurrent().getManager().getOperationHandler().undo()));
-        addActor(save = new SmartButton(ButtonStyled.STD_BUTTON.LE_REDO, ()->
-                LevelEditor.getCurrent().getManager().getDataHandler().saveFloor()));
+        addActor(undo = new SmartButton(ButtonStyled.STD_BUTTON.LE_UNDO, () ->
+                Eidolons.onGdxThread(() -> LevelEditor.getCurrent().getManager().getOperationHandler().undo())));
+        addActor(save = new SmartButton(ButtonStyled.STD_BUTTON.REPAIR, () ->
+                Eidolons.onGdxThread(() -> LevelEditor.getCurrent().getManager().getDataHandler().saveFloor())));
         addActor(new TablePanelX<>(40, getHeight()));
         addActor(controlPanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_CTRL, null));
         addActor(palettePanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_PALETTE, null));

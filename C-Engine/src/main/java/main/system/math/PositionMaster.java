@@ -283,9 +283,9 @@ public class PositionMaster   {
 
     }
 
-    public static void initDistancesCache() {
-        initDistancesCache(null, GuiManager.getBF_CompDisplayedCellsX(),
-                GuiManager.getBF_CompDisplayedCellsY());
+    public static void initDistancesCache(int w, int h) {
+        initDistancesCache(null, w,
+                h);
     }
 
     public static void initDistancesCache(Integer id, int w, int h) {

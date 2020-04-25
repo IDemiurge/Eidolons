@@ -15,7 +15,6 @@ import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
@@ -58,8 +57,8 @@ public class GammaMaster {
         return 45;
     }
 
-    public static void resetCaches() {
-        voidAlphaCache = new Float[GuiManager.getBattleFieldWidth()][GuiManager.getBattleFieldHeight()];
+    public static void resetCaches(int w, int h) {
+        voidAlphaCache = new Float[w][h];
     }
 
     public int getGamma(Unit source, DC_Obj target) {
@@ -78,7 +77,7 @@ public class GammaMaster {
         if (type == SHADE_CELL.BLACKOUT) {
             return getBlackoutAlpha(x, y);
         }
-        if (type == SHADE_CELL.HIGLIGHT) {
+        if (type == SHADE_CELL.HIGHLIGHT) {
             return getHiglightAlpha(x, y);
         }
         Unit unit = Eidolons.game.getManager().getMainHero();

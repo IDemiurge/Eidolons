@@ -3,6 +3,7 @@ package main.level_editor.gui.grid;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -28,6 +29,7 @@ public class LE_GridCell extends GridCellContainer {
 
     LabelX scriptsLabel;
     LabelX aiLabel;
+    public static LE_GridCell hoveredCell;
 
     public LE_GridCell(TextureRegion backTexture, int gridX, int gridY) {
         super(backTexture, gridX, gridY);
@@ -37,6 +39,19 @@ public class LE_GridCell extends GridCellContainer {
                 12, GdxColorMaster.CYAN)));
         scriptsLabel.setTouchable(Touchable.disabled);
         aiLabel.setTouchable(Touchable.disabled);
+
+        addListener(new LE_GridCellHighlighter(this).getController());
+    }
+
+    protected boolean isGraveyardOn() {
+        return false;
+    }
+    @Override
+    public void setHovered(boolean hovered) {
+        super.setHovered(hovered);
+        if (hovered){
+            hoveredCell = this;
+        }
     }
 
     @Override
@@ -93,6 +108,17 @@ public class LE_GridCell extends GridCellContainer {
     @Override
     protected EventListener createListener() {
         return new ClickListener(-1) {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                super.enter(event, x, y, pointer, fromActor);
+
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                super.exit(event, x, y, pointer, toActor);
+            }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 InputEvent e = new InputEvent();

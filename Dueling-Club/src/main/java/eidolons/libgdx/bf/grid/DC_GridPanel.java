@@ -260,7 +260,7 @@ public class DC_GridPanel extends GridPanel {
         Coordinates c = null;
         for (Coordinates coordinates : data.mazeWalls) {
             c = data.c.getOffset(coordinates.negativeY());
-            GridCellContainer container = cells[c.getX()][getGdxY(c.getY())];
+            GridCellContainer container = cells[c.getX()][ (c.getY())];
             if (container == null) {
                 main.system.auxiliary.log.LogMaster.warn("Void cell in maze puzzle!" + c);
                 continue;
@@ -403,7 +403,7 @@ public class DC_GridPanel extends GridPanel {
             for (DC_Obj obj1 : p.getLeft()) {
                 Borderable b = viewMap.get(obj1);
                 if (b == null) {
-                    b = cells[obj1.getX()][getGdxY(obj1.getY())];
+                    b = cells[obj1.getX()][ (obj1.getY())];
                 }
 
                 if (((Group) b).getUserObject() instanceof Unit) {
@@ -421,7 +421,7 @@ public class DC_GridPanel extends GridPanel {
 
         GuiEventManager.bind(removePrevious, UPDATE_GRAVEYARD, obj -> {
             final Coordinates coordinates = (Coordinates) obj.get();
-            cells[coordinates.getX()][getGdxY(coordinates.getY())].updateGraveyard();
+            cells[coordinates.getX()][ (coordinates.getY())].updateGraveyard();
         });
 
 

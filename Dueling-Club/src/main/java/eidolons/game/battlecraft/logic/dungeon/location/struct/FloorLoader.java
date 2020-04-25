@@ -26,7 +26,7 @@ import java.util.Map;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
-public class FloorLoader extends DungeonHandler<Location> {
+public class FloorLoader extends DungeonHandler {
     //nodes
     public static final String TRANSITS = "TRANSITS";
     public static final String OVERLAY_DIRECTIONS = "OVERLAY_DIRECTIONS";
@@ -142,8 +142,12 @@ public class FloorLoader extends DungeonHandler<Location> {
                 data.apply();
                 log(LOG_CHANNEL.BUILDING, "Location after data applies: " +
                         location);
-                if (location.getWidth() > 0 && location.getHeight() > 0) {
-                    getBuilder().initWidthAndHeight(location);
+                if (!master.isModuleSizeBased()) {
+                    if (!location.isInitialEdit()) {
+                        getBuilder().initLocationSize(location);
+                    }
+                } else {
+                    Coordinates.initCache(location.getWidth(), location.getHeight());
                 }
                 break;
             case MODULES:

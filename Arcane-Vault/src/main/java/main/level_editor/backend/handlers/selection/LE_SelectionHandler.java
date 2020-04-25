@@ -34,7 +34,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
         Coordinates c1 =
                 (Coordinates) WaitMaster.waitForInput(LE_MouseHandler.SELECTION_OPERATION);
         Coordinates c2 = selectCoordinate();
-        return new LinkedHashSet<>(CoordinatesMaster.getCoordinatesBetweenWithOffset(c1, c2));
+        return new LinkedHashSet<>(CoordinatesMaster.getCoordinatesBetween(c1, c2));
     }
 
     public LE_Selection getSelection() {
@@ -58,8 +58,13 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
 
     public void deselect() {
         getModelManager().modelChanged();
+        PaletteSelection paletteSelection = getModel().getPaletteSelection();
+        if (!getModel().getSelection().isEmpty()) {
+            getModel().setPaletteSelection(paletteSelection);
+        } else {
+            getModel().setPaletteSelection(new PaletteSelection());
+        }
         getModel().setSelection(new LE_Selection());
-        getModel().setPaletteSelection(new PaletteSelection());
         mode = SELECTION_MODE.NONE;
     }
 
@@ -128,12 +133,12 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
 
     public void addAreaToSelectedCoordinates(Coordinates c) {
         Coordinates origin = null;
-        if ( getSelection().getCoordinates().isEmpty()) {
+        if (getSelection().getCoordinates().isEmpty()) {
             origin = getSelectionHandler().getObject().getCoordinates();
         } else {
             origin = getSelection().getCoordinates().iterator().next();
         }
-        getSelection().getCoordinates().addAll(CoordinatesMaster.getCoordinatesBetweenWithOffset(c, origin));
+        getSelection().getCoordinates().addAll(CoordinatesMaster.getCoordinatesBetween(c, origin));
         selectionChanged();
         getModelManager().modelChanged();
     }

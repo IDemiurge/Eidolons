@@ -66,4 +66,7 @@ public class LE_Selection  implements Serializable {
         ids.add(id);
     }
 
+    public boolean isEmpty() {
+        return getCoordinates().isEmpty() && getIds().isEmpty();
+    }
 }

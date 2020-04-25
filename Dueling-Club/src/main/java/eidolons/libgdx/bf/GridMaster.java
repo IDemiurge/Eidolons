@@ -61,7 +61,10 @@ public class GridMaster {
                 ScreenMaster.getDungeonGrid());
     }
 
-    public static Coordinates invertGdxY(Coordinates c) {
+    public static float invertGdxY(float y) {
+        return ScreenMaster.getDungeonGrid().getHeight()-y;
+    }
+        public static Coordinates invertGdxY(Coordinates c) {
         return new Coordinates(c.x, ScreenMaster.getDungeonGrid().getFullRows() - 1 - c.getY());
     }
 
@@ -71,8 +74,7 @@ public class GridMaster {
 
 //        InputController controller = DungeonScreen.getInstance().getController();
         float x = sourceCoordinates.getX() * CELL_W;
-        float y = (gridPanel.getFullRows()
-                - (gdxY ? sourceCoordinates.getY() + 1 : sourceCoordinates.getY())) * CELL_H;
+        float y = (gridPanel.getGdxY_ForModule((gdxY ? sourceCoordinates.getY() + 1 : sourceCoordinates.getY()) )* CELL_H);
 
         if (camera) {
 //            x -= controller.getXCamPos();
@@ -160,7 +162,7 @@ public class GridMaster {
                                 if (view.getY() <= 128) {
                                     {
                                         GridPanel grid = ((GridPanel) view.getParent());
-                                        grid.getCells()[view.getUserObject().getX()][grid.getGdxY(view.getUserObject().getY())].addActor(view);
+                                        grid.getCells()[view.getUserObject().getX()][ (view.getUserObject().getY())].addActor(view);
 
                                         main.system.auxiliary.log.LogMaster.warn("Validation was required for " + view +
                                                 " - re-attached to gridcell!");

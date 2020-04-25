@@ -1,6 +1,8 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -23,28 +25,14 @@ import java.util.List;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> {
+public class DungeonBuilder  extends DungeonHandler  {
     public static final String DUNGEON_TYPE_NODE = "Dungeon_Type";
-    public static final String CUSTOM_PARAMS_NODE = "Custom Params";
-    public static final String CUSTOM_PROPS_NODE = "Custom Props";
-    public static final String DIRECTION_MAP_NODE = "Direction Map";
-    public static final int BASE_WIDTH = 15;
-    public static final int BASE_HEIGHT = 11;
-    protected static final String FLIP_MAP_NODE = "Flipping";
 
     public DungeonBuilder(DungeonMaster master) {
         super(master);
     }
 
-    public int getDefaultHeight() {
-        return BASE_HEIGHT;
-    }
-
-    public int getDefaultWidth() {
-        return BASE_WIDTH;
-    }
-
-    public E buildDungeon(String path) {
+    public Location buildDungeon(String path) {
         String data = FileManager.readFile(path);
 
         if (data.isEmpty()) {
@@ -63,32 +51,40 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
                         ? levelNode
                         : XmlNodeMaster.getChildByName(levelNode, "Floor");
         List<Node> nodeList = XmlNodeMaster.getNodeList(planNode);
-        E dungeonWrapper = buildDungeon(path, data, nodeList);
+        Location dungeonWrapper = buildDungeon(path, data, nodeList);
         master.setDungeonWrapper(dungeonWrapper);
         initLevel(nodeList);
         dungeonWrapper.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
 
-        initWidthAndHeight(dungeonWrapper);
+//        initWidthAndHeight(dungeonWrapper);
         return getDungeon();
     }
 
-    public void initWidthAndHeight(E dungeonWrapper) {
+    public void initModuleSize(Module module) {
+        initWidthAndHeight(module.getEffectiveWidth(true),
+                module.getEffectiveHeight(true));
+    }
+
+    public void initLocationSize(Location dungeonWrapper) {
         int w = dungeonWrapper.getWidth();
         int h = dungeonWrapper.getHeight();
+        initWidthAndHeight(w, h);
+        Coordinates.initCache(w, h);
+    }
+
+    protected void initWidthAndHeight(int w, int h) {
         GuiManager.setBattleFieldCellsX(w);
         GuiManager.setBattleFieldCellsY(h);
         GuiManager.setCurrentLevelCellsX(w);
         GuiManager.setCurrentLevelCellsY(h);
         //TODO clean up this shit!
 
-        PositionMaster.initDistancesCache();
+        PositionMaster.initDistancesCache(w, h);
         DirectionMaster.initCache(w, h);
-        Coordinates.initCache(w , h);
-        Coordinates.resetCaches();
-        GammaMaster.resetCaches();
+        GammaMaster.resetCaches(w, h);
     }
 
-    public E buildDungeon(String s, String path, List<Node> nodeList) {
+    public Location buildDungeon(String s, String path, List<Node> nodeList) {
         Node typeNode = XmlNodeMaster.getNodeByName(nodeList, DUNGEON_TYPE_NODE);
         ObjType type = null;
         if (typeNode == null) {
@@ -102,14 +98,13 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
         } else {
             type = TypeBuilder.buildType(typeNode, type); // custom base type
         }
-        E dungeon = getInitializer().createDungeon(type);
+        Location dungeon = getInitializer().createDungeon(type);
         // getDungeon().setName(name)
 
 
         return dungeon;
 
     }
-
 
 
     public void initLevel(List<Node> nodeList) {

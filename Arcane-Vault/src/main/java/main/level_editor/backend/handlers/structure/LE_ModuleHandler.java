@@ -149,10 +149,11 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
 
     @Override
     public void afterLoaded() {
-        for (Module module : getModules()) {
-            List<Coordinates> borderCoords = getBorderCoordinates(module, false);
-            getStructureHandler().resetWalls(getDungeonLevel(), borderCoords);
-        }
+//        for (Module module : getModules()) {
+//            List<Coordinates> borderCoords = getBorderCoordinates(module, false);
+//            getStructureHandler().resetWalls(getDungeonLevel(), borderCoords);
+//        }
+        getStructureHandler().reset(getDungeonLevel());
         resetBufferVoid();
     }
 
@@ -179,13 +180,13 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         corner = corner.getOffset(bufferW, bufferH);
         origin = origin.getOffset(bufferW, bufferH);
 
-        List<Coordinates> full = CoordinatesMaster.getCoordinatesBetween(origin, corner);
+        List<Coordinates> full = CoordinatesMaster.getCoordinatesBetweenInclusive(origin, corner);
         List<Coordinates> inner = buffer ?
-                CoordinatesMaster.getCoordinatesBetween(
+                CoordinatesMaster.getCoordinatesBetweenInclusive(
                         origin.getOffset(borderW - border, borderH - border),
                         corner.getOffset(-borderW + border, -borderH + border))
                 :
-                CoordinatesMaster.getCoordinatesBetween(
+                CoordinatesMaster.getCoordinatesBetweenInclusive(
                         origin.getOffset(borderW, borderH), corner.getOffset(-borderW, -borderH));
         full.removeIf(c -> inner.contains(c));
         return full;

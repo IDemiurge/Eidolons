@@ -31,6 +31,8 @@ import main.level_editor.gui.top.LE_ButtonStripe;
 import main.level_editor.gui.top.TopPanel;
 import main.level_editor.gui.tree.LE_TreeHolder;
 import main.system.ExceptionMaster;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.data.DataUnit;
 
@@ -92,6 +94,9 @@ public class LE_GuiStage extends GenericGuiStage {
         addActor(encounterEditor = new EncounterEditDialog());
         addActor(editTable = new DataTable(2, 50));
 
+        GuiEventManager.bind(GuiEventType.LE_GUI_TOGGLE , p-> {
+            toggleUiVisible();
+        });
     }
 
     private void initButtons() {

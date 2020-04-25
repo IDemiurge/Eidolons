@@ -4,7 +4,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.logic.battle.encounter.Encounter;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -40,7 +39,7 @@ import static main.system.auxiliary.log.LogMaster.log;
  * 2) Set party units' positions
  * 3) init direction/flip maps
  */
-public class DC_ObjInitializer extends DungeonHandler<Location> {
+public class DC_ObjInitializer extends DungeonHandler {
 
     public static final String OBJ_SEPARATOR = StringMaster.getAltSeparator();
     public static final String COORDINATES_OBJ_SEPARATOR = StringMaster.getAltPairSeparator();

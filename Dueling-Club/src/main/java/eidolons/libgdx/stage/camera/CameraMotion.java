@@ -7,8 +7,8 @@ import eidolons.libgdx.anims.actions.FloatActionLimited;
 
 public class CameraMotion {
 
-    private final FloatAction speedActionY;
-    private final FloatAction speedActionX;
+    private   FloatAction speedActionY;
+    private   FloatAction speedActionX;
     private final Vector2 dest;
     CameraMan cameraMan;
     private Interpolation interpolation;
@@ -34,6 +34,10 @@ public class CameraMotion {
         return action;
     }
 
+    public void reset(float duration) {
+        speedActionX =initAction(duration, dest, true);
+        speedActionY =initAction(duration, dest, false);
+    }
     public boolean act(float delta){
         speedActionX.act(delta);
         speedActionY.act(delta);
@@ -54,4 +58,13 @@ public class CameraMotion {
         lastCamY = cameraMan.getCam().position.y;
         return true;
     }
+
+    public FloatAction getSpeedActionY() {
+        return speedActionY;
+    }
+
+    public FloatAction getSpeedActionX() {
+        return speedActionX;
+    }
+
 }

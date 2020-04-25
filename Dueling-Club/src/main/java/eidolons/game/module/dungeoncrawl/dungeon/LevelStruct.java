@@ -91,7 +91,7 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         return coordinatesSet;
     }
 
-    public Set<Coordinates> initCoordinateSet(boolean levelEditor) {
+    public Set<Coordinates> initCoordinateSet(boolean buffer) {
         Set<Coordinates> coordinatesSet = new LinkedHashSet<>();
         for (T subPart : getSubParts()) {
             if (subPart instanceof LevelStruct) {
@@ -100,7 +100,7 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         }
         if (coordinatesSet.isEmpty()) {
             if (getOrigin() != null)
-                coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetween(
+                coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetweenInclusive(
                                 getOrigin(), getOrigin().getOffset(getEffectiveWidth(), getEffectiveHeight())));
         }
         return coordinatesSet;

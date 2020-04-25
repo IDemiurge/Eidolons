@@ -90,6 +90,11 @@ public class LE_BfGrid extends GridPanel {
     }
 
     @Override
+    protected boolean isVisibleByDefault(BattleFieldObject battleFieldObject) {
+        return true;
+    }
+
+    @Override
     protected void bindEvents() {
         super.bindEvents();
         GuiEventManager.bind(LE_SELECTION_CHANGED, obj -> {
@@ -141,7 +146,7 @@ public class LE_BfGrid extends GridPanel {
     private void updateCellLabel(List list, boolean aiOrScripts) {
         Coordinates c = (Coordinates) list.get(0);
         String data = (String) list.get(1);
-        GridCellContainer container = cells[c.x][getGdxY(c.y)];
+        GridCellContainer container = cells[c.x][ (c.y)];
         if (aiOrScripts) {
             ((LE_GridCell) container).getAiLabel().setText(data);
         } else {

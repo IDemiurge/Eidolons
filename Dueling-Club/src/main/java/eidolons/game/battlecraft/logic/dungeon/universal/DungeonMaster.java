@@ -40,7 +40,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     protected DC_Game game;
     protected E dungeonWrapper;
     protected DungeonInitializer<E> initializer;
-    protected DungeonBuilder<E> builder;
+    protected DungeonBuilder  builder;
     protected Positioner<E> positioner;
     protected Spawner<E> spawner;
     protected FacingAdjuster<E> facingAdjuster;
@@ -98,8 +98,8 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return null;
     }
 
-    protected DungeonBuilder<E> createBuilder() {
-        return new DungeonBuilder<E>(this);
+    protected DungeonBuilder  createBuilder() {
+        return new DungeonBuilder(this);
     }
 
     public void setExplorationMaster(ExplorationMaster explorationMaster) {
@@ -198,7 +198,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return facingAdjuster;
     }
 
-    public DungeonBuilder<E> getBuilder() {
+    public DungeonBuilder  getBuilder() {
         return builder;
     }
 
@@ -360,4 +360,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return transitHandler;
     }
 
+    public boolean isModuleSizeBased() {
+        return true;
+    }
 }

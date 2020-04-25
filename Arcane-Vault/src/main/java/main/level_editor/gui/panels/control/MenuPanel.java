@@ -26,7 +26,7 @@ public class MenuPanel extends MenuBar {
             if (value.subFuncs.length == 0) {
                 continue;
             }
-            Menu menu = new Menu(value.name(), style);
+            Menu menu = new Menu(StringMaster.getWellFormattedString(value.name()), style);
 
             addMenu(menu);
             for (LE_MenuHandler.FUNCTION_BUTTONS subFunc : value.subFuncs) {
@@ -120,7 +120,7 @@ public class MenuPanel extends MenuBar {
     }
 
     private MenuItem createMenuItem(LE_MenuHandler.FUNCTION_BUTTONS subFunc) {
-        MenuItem item = new MenuItem(subFunc.name());
+        MenuItem item = new MenuItem( StringMaster.getWellFormattedString(subFunc.name()));
         return item;
     }
 

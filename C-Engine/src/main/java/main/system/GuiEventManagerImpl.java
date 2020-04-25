@@ -132,7 +132,17 @@ public class GuiEventManagerImpl {
             List<EventCallbackParam> callbacks = onDemandMap.get(type);
             if (callbacks != null) {
                 onDemandMap.remove(type);
-                callbacks.forEach(c -> eventQueue.add(() -> event.call(c)));
+                for (EventCallbackParam callback : callbacks) {
+                    if (type.isMultiArgsInvocationSupported()  &&
+                    callback.get() instanceof Collection) {
+                        eventQueue.add(() -> {
+                            for (Object o : (Collection) callback.get()) {
+                                event.call(new EventCallbackParam(o));
+                            }
+                        });
+                    } else
+                     eventQueue.add(() -> event.call(callback));
+                }
             }
 //                main.system.auxiliary.log.LogMaster.log(1,
 //                 "onDemand triggered for " + type);

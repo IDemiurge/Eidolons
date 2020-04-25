@@ -37,7 +37,7 @@ public class EnumChooser extends ChooserDialog<Object, SmartButton> {
     }
     @Override
     protected Vector2 getElementSize() {
-        return new Vector2(120, 40);
+        return new Vector2(160, 70);
     }
 
     public <T extends Enum> T chooseEnum(Class<T> c) {

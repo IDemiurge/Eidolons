@@ -1,5 +1,7 @@
 package eidolons.libgdx.stage.camera;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
@@ -16,13 +18,14 @@ import eidolons.libgdx.utils.ActTimer;
 import eidolons.system.options.ControlOptions;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.secondary.Bools;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static main.system.GuiEventType.*;
 
@@ -40,10 +43,29 @@ public class CameraMan {
     OrthographicCamera cam;
 
     private FloatAction zoomAction;
-    private List<CameraMotion> motions = new ArrayList<>();
+    private Set<CameraMotion> motions = new LinkedHashSet<>();
     private ActTimer cameraTimer;
     private boolean mustFinish;
     private BattleFieldObject pendingPanTarget;
+
+    public static final int[] keys = {
+            Input.Keys.UP, Input.Keys.W
+            , Input.Keys.LEFT, Input.Keys.A
+            , Input.Keys.RIGHT, Input.Keys.D
+            , Input.Keys.DOWN, Input.Keys.S
+    };
+
+    public void defaultZoom() {
+        getCam().zoom = 1;
+    }
+
+    public void centerCam() {
+        screen.getController().centerCam();
+    }
+
+    public void maxZoom() {
+        screen.getController().maxZoom();
+    }
 
 
     public static class MotionData {
@@ -55,7 +77,7 @@ public class CameraMan {
         public Boolean exclusive = false;
 
         public MotionData(float zoom, float duration, Interpolation interpolation) {
-            this(  duration, interpolation, zoom);
+            this(duration, interpolation, zoom);
         }
 
         public MotionData(Vector2 dest, float duration, Interpolation interpolation) {
@@ -67,14 +89,14 @@ public class CameraMan {
         public MotionData(Object... params) {
             duration = 0;
             for (Object param : params) {
-            if (param instanceof List) {
-                List list = ((List) param);
-                for (Object o : list) {
-                    initParam(o);
+                if (param instanceof List) {
+                    List list = ((List) param);
+                    for (Object o : list) {
+                        initParam(o);
+                    }
+                } else {
+                    initParam(param);
                 }
-            } else {
-                initParam(param);
-            }
             }
         }
 
@@ -95,8 +117,8 @@ public class CameraMan {
                 interpolation = ((Interpolation) o);
             }
             if (o instanceof Float) {
-                if (duration==0) {
-                duration = (float) o;
+                if (duration == 0) {
+                    duration = (float) o;
                 } else zoom = (float) o;
             }
         }
@@ -125,11 +147,11 @@ public class CameraMan {
             if (p.get() instanceof Coordinates) {
                 v = GridMaster.getCenteredPos((Coordinates) p.get());
             } else {
-                v= (Vector2) p.get();
+                v = (Vector2) p.get();
             }
-            float x=getCam().position.x;
-            float y =getCam().position.y;
-            getCam().position.set(x+v.x , y+v.y, 0);
+            float x = getCam().position.x;
+            float y = getCam().position.y;
+            getCam().position.set(x + v.x, y + v.y, 0);
 
         });
         GuiEventManager.bind(GuiEventType.CAMERA_SET_TO, p -> {
@@ -145,7 +167,7 @@ public class CameraMan {
             if (param.get() instanceof MotionData) {
                 cameraPan((MotionData) param.get());
             } else
-            cameraPan(new MotionData(param.get()));
+                cameraPan(new MotionData(param.get()));
         });
         GuiEventManager.bind(CAMERA_PAN_TO_UNIT, param -> {
             if (param.get() instanceof MotionData) {
@@ -160,8 +182,8 @@ public class CameraMan {
             zoomAction = (FloatAction) ActionMaster.getAction(FloatAction.class);
             zoomAction.setStart(getCam().zoom);
             zoomAction.setEnd(data.zoom);
-            if (data.duration<=0) {
-                data.duration= Math.abs(cam.zoom - data.zoom)*15;
+            if (data.duration <= 0) {
+                data.duration = Math.abs(cam.zoom - data.zoom) * 15;
             }
             zoomAction.setDuration(data.duration);
             zoomAction.setInterpolation(data.interpolation);
@@ -186,6 +208,106 @@ public class CameraMan {
                 getCam().update();
             }
         }
+        if (isArrowMotionsOn()) {
+            for (int key : keys) {
+                if (Gdx.input.isKeyPressed(key)) {
+                    keyDown(key, delta);
+                }
+            }
+        }
+        if (isBorderMouseMotionsOn()) {
+            DIRECTION mouseBorder = screen.getController().getMouseBorder();
+            if (mouseBorder!=null ) {
+                switch (mouseBorder) {
+                    case UP:
+                        keyDown(Input.Keys.UP, delta*100);
+                        break;
+                    case DOWN:
+                        keyDown(Input.Keys.DOWN, delta*100);
+                        break;
+                    case LEFT:
+                        keyDown(Input.Keys.LEFT, delta*100);
+                        break;
+                    case RIGHT:
+                        keyDown(Input.Keys.RIGHT, delta*100);
+                        break;
+                }
+            }
+        }
+    }
+
+    private boolean isBorderMouseMotionsOn() {
+//        return !CoreEngine.isLevelEditor();//TODO options
+        return false;
+    }
+
+
+    private boolean isArrowMotionsOn() {
+        return CoreEngine.isLevelEditor();
+    }
+
+    Map<DIRECTION, CameraMotion> moveMap = new HashMap<>();
+
+    public void keyDown(int keyCode, float delta) {
+//        boolean alt = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) ||
+//                Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
+//        boolean ctrl = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+//                Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT);
+//        if (!ctrl && !alt)
+            switch (keyCode) {
+                case Input.Keys.UP:
+                case Input.Keys.W:
+                    move(DIRECTION.UP, delta);
+                    return;
+                case Input.Keys.LEFT:
+                case Input.Keys.A:
+                    move(DIRECTION.LEFT, delta);
+                    return;
+                case Input.Keys.RIGHT:
+                case Input.Keys.D:
+                    move(DIRECTION.RIGHT, delta);
+                    return;
+                case Input.Keys.DOWN:
+                case Input.Keys.S:
+                    move(DIRECTION.DOWN, delta);
+                    return;
+            }
+    }
+
+    public void move(DIRECTION direction, float delta) {
+
+        float xDiff = 0;
+        float yDiff = 0;
+        float step = 200 * cam.zoom* cam.zoom * delta;
+        switch (direction) {
+            case UP:
+                yDiff = step;
+                break;
+            case DOWN:
+                yDiff = -step;
+                break;
+            case LEFT:
+                xDiff = -step;
+                break;
+            case RIGHT:
+                xDiff = step;
+                break;
+        }
+        CameraMotion motion = moveMap.get(direction);
+        float x = 0;
+        float y = 0;
+        x = cam.position.x;
+        y = cam.position.y;
+        if (motion == null) {
+            moveMap.put(direction, motion = new CameraMotion(this, 0.1f, new Vector2(x, y), Interpolation.fade));
+        } else {
+            motion.reset(0.1f);
+        }
+        motion.getSpeedActionX().setStart(x );
+        motion.getSpeedActionY().setStart(y );
+        motion.getSpeedActionX().setEnd(x + xDiff);
+        motion.getSpeedActionY().setEnd(y + yDiff);
+        motions.add(motion);
     }
 
     private void doMotions(float delta) {
@@ -217,18 +339,16 @@ public class CameraMan {
     private void cameraPan(MotionData motionData) {
 //        if (motionData.exclusive)
         if (motions.isEmpty()) {
-            mustFinish=false;
+            mustFinish = false;
         }
-            if (!motions.isEmpty()) {
-                if (!mustFinish || motionData.exclusive)
-                {
-                    main.system.auxiliary.log.LogMaster.dev("cleared pan motions! " );
-                    motions.clear();
-                }
-                else {
-                    main.system.auxiliary.log.LogMaster.dev("mustFinish pan motions! " );
-                    return;
-                }
+        if (!motions.isEmpty()) {
+            if (!mustFinish || motionData.exclusive) {
+                main.system.auxiliary.log.LogMaster.dev("cleared pan motions! ");
+                motions.clear();
+            } else {
+                main.system.auxiliary.log.LogMaster.dev("mustFinish pan motions! ");
+                return;
+            }
 //                return;
         }
         cameraPan(motionData.dest, motionData.duration, motionData.interpolation, null);
@@ -241,18 +361,18 @@ public class CameraMan {
 
     protected void cameraPan(Vector2 destination, float duration, Interpolation interpolation, Boolean overrideCheck) {
         if (!Cinematics.ON)
-        if (isCameraPanningOff()) {
-            return;
-        }
+            if (isCameraPanningOff()) {
+                return;
+            }
         if (destination == null) {
             return;
         }
         if (Cinematics.ON) {
-            destination.y= destination.y-210;
+            destination.y = destination.y - 210;
         } else {
 //            destination.y= destination.y+100;
         }
-        main.system.auxiliary.log.LogMaster.dev("cameraPan to " +destination);
+        main.system.auxiliary.log.LogMaster.dev("cameraPan to " + destination);
         float dst = getCam().position.dst(destination.x, destination.y, 0f);// / getCameraDistanceFactor();
 
         if (overrideCheck == null)
@@ -294,29 +414,30 @@ public class CameraMan {
     }
 
     public void unitActive(BattleFieldObject hero) {
-        main.system.auxiliary.log.LogMaster.dev("Request pan camera to active unit" +hero);
-        if (pendingPanTarget==hero){
-            return ;
+        main.system.auxiliary.log.LogMaster.dev("Request pan camera to active unit" + hero);
+        if (pendingPanTarget == hero) {
+            return;
         }
         pendingPanTarget = hero;
         int time = 1500;
-        if (AnimMaster.getInstance().isDrawingPlayer()){
+        if (AnimMaster.getInstance().isDrawingPlayer()) {
             time = 2200;
         }
         if (hero.isPlayerCharacter()) {
             time = 1000;
         }
-        WaitMaster.doAfterWait(time, ()->{
-            if (hero.getGame().getManager().getActiveObj()==hero) {
+        WaitMaster.doAfterWait(time, () -> {
+            if (hero.getGame().getManager().getActiveObj() == hero) {
                 motions.clear();
                 centerCameraOn(hero);
-                pendingPanTarget=null;
+                pendingPanTarget = null;
 //                mustFinish=true;
-                main.system.auxiliary.log.LogMaster.dev("Panning camera to active unit" +hero);
+                main.system.auxiliary.log.LogMaster.dev("Panning camera to active unit" + hero);
 
             }
         });
     }
+
     public void centerCameraOn(BattleFieldObject hero) {
         centerCameraOn(hero, null);
     }
@@ -324,8 +445,8 @@ public class CameraMan {
     public void centerCameraOn(BattleFieldObject hero, Boolean force) {
         if (!isCenterAlways()) //TODO refactor this shit
             if (!Bools.isTrue(force))
-                    if (!hero.isMine())
-                        return;
+                if (!hero.isMine())
+                    return;
 
         Vector2 unitPosition = GridMaster.getCenteredPos(hero.getCoordinates());
         cameraPan(unitPosition, force);

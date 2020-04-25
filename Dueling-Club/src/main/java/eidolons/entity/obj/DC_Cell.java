@@ -24,6 +24,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.GuiManager;
+import main.system.launch.CoreEngine;
 
 public class DC_Cell extends DC_Obj implements Cell {
 
@@ -40,7 +41,7 @@ public class DC_Cell extends DC_Obj implements Cell {
     private String overlayData;
 
     public DC_Cell(boolean b, int i, int j, DC_Game game) {
-        this(i, j ,game);
+        this(i, j, game);
         setVOID(b);
     }
 
@@ -53,7 +54,7 @@ public class DC_Cell extends DC_Obj implements Cell {
         type.checkBuild();
         this.owner = owner;
         this.setOriginalOwner(owner);
-        getPropMap().put(G_PROPS.NAME , type.getName());
+        getPropMap().put(G_PROPS.NAME, type.getName());
         setOriginalName(type.getName());
 
         master = initMaster();
@@ -76,8 +77,8 @@ public class DC_Cell extends DC_Obj implements Cell {
         this.coordinates = Coordinates.get(x, y);
         addDynamicValues();
         setImage(dungeon.getCellImagePath(i, j));
-        cellVariant=(dungeon.getCellVariant(i, j));
-        cellType=(dungeon.getCellType(i, j));
+        cellVariant = (dungeon.getCellVariant(i, j));
+        cellType = (dungeon.getCellType(i, j));
     }
 
     public DC_Cell(int i, int j, DC_Game game, Ref ref, Dungeon dungeon) {
@@ -95,7 +96,7 @@ public class DC_Cell extends DC_Obj implements Cell {
     public static ObjType getEMPTY_CELL_TYPE() {
         if (EMPTY_CELL_TYPE == null)
             EMPTY_CELL_TYPE = DataManager.getType(StringMaster.STD_TYPE_NAMES.Cell.toString(),
-             "terrain");
+                    "terrain");
         return EMPTY_CELL_TYPE;
     }
 
@@ -135,7 +136,9 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     private void resetCell() {
         setImage(GridMaster.getImagePath(getCellType(), getCellVariant()));
-        GuiEventManager.trigger(GuiEventType.CELL_RESET, this);
+        if (!CoreEngine.isLevelEditor()) {
+            GuiEventManager.trigger(GuiEventType.CELL_RESET, this);
+        }
     }
 
     public void setCellVariant(int cellVariant) {
@@ -209,23 +212,23 @@ public class DC_Cell extends DC_Obj implements Cell {
     public void toBase() {
 //        super.toBase();
         name = getProp("Name")
-         + StringMaster.wrapInParenthesis(StringMaster
-         .getWellFormattedString(getProperty(PROPS.VISIBILITY_STATUS)));
+                + StringMaster.wrapInParenthesis(StringMaster
+                .getWellFormattedString(getProperty(PROPS.VISIBILITY_STATUS)));
     }
 
     public String getToolTip() {
         String text = "";
         if (getIntParam(PARAMS.LIGHT_EMISSION) != 0) {
             text += StringMaster.getWellFormattedString("LIGHT_EMISSION - ")
-             + getParam(PARAMS.LIGHT_EMISSION);
+                    + getParam(PARAMS.LIGHT_EMISSION);
         }
         if (getIntParam(PARAMS.ILLUMINATION) != 0) {
             text += StringMaster.getWellFormattedString(", ILLUMINATION - ")
-             + getParam(PARAMS.ILLUMINATION);
+                    + getParam(PARAMS.ILLUMINATION);
         }
         if (getIntParam(PARAMS.CONCEALMENT) != 0) {
             text += StringMaster.getWellFormattedString(", CONCEALMENT - ")
-             + getParam(PARAMS.CONCEALMENT);
+                    + getParam(PARAMS.CONCEALMENT);
         }
 
         if (!VisionManager.checkDetected(this)) {
@@ -234,7 +237,7 @@ public class DC_Cell extends DC_Obj implements Cell {
 
         if (getGame().getGraveyardManager().checkForCorpses(this)) {
             return getGame().getGraveyardManager().getRipString(this)
-             + StringMaster.wrapInParenthesis(text);
+                    + StringMaster.wrapInParenthesis(text);
 
         }
         return super.getToolTip() + StringMaster.wrapInParenthesis(text);

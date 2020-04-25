@@ -12,7 +12,7 @@ import org.w3c.dom.Node;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationBuilder extends DungeonBuilder<Location> {
+public class LocationBuilder extends DungeonBuilder {
 
     public static final String BLOCKS_NODE = StringMaster.getWellFormattedString(RngXmlMaster.BLOCKS_NODE);
     public static final String COORDINATES_NODE = StringMaster.getWellFormattedString(RngXmlMaster.COORDINATES_NODE);

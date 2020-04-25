@@ -20,6 +20,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjNode;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.GridMaster;
@@ -32,6 +33,7 @@ import main.data.tree.LayeredData;
 import main.data.tree.StructNode;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
+import main.level_editor.backend.handlers.model.EditorModel;
 import main.level_editor.backend.struct.boss.BossDungeon;
 import main.level_editor.backend.struct.campaign.Campaign;
 import main.level_editor.gui.components.TreeX;
@@ -163,23 +165,25 @@ public class LE_TreeView extends TreeX<StructNode> {
             } else {
                 LevelEditor.getManager().getSelectionHandler().select(((ObjNode) node.getData()).getObj());
             }
-        } else if (node.getData() instanceof LevelBlock) {
+        } else {
+            EditorModel model = LevelEditor.getModel();
+            if (node.getData() instanceof LevelStruct){
+                model.setLastSelectedStruct(((LevelStruct) node.getData()));
+            }
+        if (node.getData() instanceof LevelBlock) {
+
             LevelBlock block = ((LevelBlock) node.getData());
-            LevelEditor.getModel().setBlock(block);
-            LevelEditor.getModel().setZone(block.getZone());
+            model. setBlock(block);
+            model.setZone(block.getZone());
             WaitMaster.receiveInput(LevelEditor.SELECTION_EVENT, true);
         } else if (node.getData() instanceof LevelZone) {
-            LevelEditor.getModel().setZone(((LevelZone) node.getData()) );
+            model.setZone(((LevelZone) node.getData()));
             //camera!
-        } else if (node.getData() instanceof  Module) {
-            LevelEditor.getModel().setModule((Module) node.getData());
+        } else if (node.getData() instanceof Module) {
+            model.setModule((Module) node.getData());
         } else if (node.getData() instanceof Layer) {
             //select all?
-
-
-            // if on > select
-            // if off > preview
-            //
+        }
         }
     }
 

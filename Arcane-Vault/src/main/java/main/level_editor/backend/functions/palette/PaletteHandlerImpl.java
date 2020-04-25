@@ -57,7 +57,7 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
     @Override
     public void afterLoaded() {
         List<ObjType> types = DataManager.getTypesSubGroup(DC_TYPE.BF_OBJ, "Placeholder");
-        createPalette   (new LinkedHashSet<>( types), "Placeholders");
+        createPalette(new LinkedHashSet<>(types), "Placeholders");
 
     }
 
@@ -218,12 +218,18 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
     @Override
     public void areaToBlock() {
 
-        List<String> tiles = getModel().getSelection().getCoordinates().stream()
+        Set<Coordinates> coordinates = getModel().getSelection().getCoordinates();
+        if (coordinates.size() < 9) {
+            if (getModel().getBlock() != null) {
+                coordinates = getModel().getBlock().getCoordinatesSet();
+            } else return;
+        }
+        List<String> tiles = coordinates.stream()
                 .sorted(getCoordSorter())
                 .map(c -> getTileForCoordinate(c)).collect(Collectors.toList());
 
-        int w = CoordinatesMaster.getWidth(getModel().getSelection().getCoordinates());
-        int h = CoordinatesMaster.getHeight(getModel().getSelection().getCoordinates());
+        int w = CoordinatesMaster.getWidth(coordinates);
+        int h = CoordinatesMaster.getHeight(coordinates);
         String[][] tileMap = new String[w][h];
         int index = 0;
         for (int i = 0; i < w; i++) {
@@ -259,7 +265,7 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
     private Comparator<? super Coordinates> getCoordSorter() {
         return (Comparator<Coordinates>) (o1, o2) -> {
-            if (-o1.x * 1000 - o1.y < -o2.x* 1000  - o2.y) {
+            if (-o1.x * 1000 - o1.y < -o2.x * 1000 - o2.y) {
                 return 1;
             }
             return -1;
@@ -276,12 +282,12 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
             if (object.isWall()) {
                 return GeneratorEnums.ROOM_CELL.WALL.symbol;
             }
-        for (GeneratorEnums.ROOM_CELL value : GeneratorEnums.ROOM_CELL.values()) {
-            if (PlaceholderGenerator.getPlaceholderName(value).equalsIgnoreCase(object.getName())) {
-                return value.getSymbol();
+            for (GeneratorEnums.ROOM_CELL value : GeneratorEnums.ROOM_CELL.values()) {
+                if (PlaceholderGenerator.getPlaceholderName(value).equalsIgnoreCase(object.getName())) {
+                    return value.getSymbol();
+                }
             }
         }
-    }
         return "?";
     }
 
@@ -372,9 +378,9 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
     public ObjType getFiller(LE_BrushType brushType) {
         switch (brushType) {
             case wall:
-                return  DataManager.getType(WALL_PLACEHOLDER);
+                return DataManager.getType(WALL_PLACEHOLDER);
             case alt_wall:
-                return  DataManager.getType(ALT_WALL_PLACEHOLDER);
+                return DataManager.getType(ALT_WALL_PLACEHOLDER);
         }
         return null;
     }

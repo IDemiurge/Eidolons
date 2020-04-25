@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -18,7 +17,7 @@ import main.system.launch.CoreEngine;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ModuleLoader extends DungeonHandler<Location> {
+public class ModuleLoader extends DungeonHandler {
 
     private Module loading;
     private Module last;

@@ -21,6 +21,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.Hoverable;
 import eidolons.libgdx.bf.datasource.GridCellDataSource;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -33,7 +34,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GridCellContainer extends GridCell {
+public class GridCellContainer extends GridCell implements Hoverable {
     Map<GenericGridView, Integer> indexMap = new LinkedHashMap<>();
     ValueContainer info;
     private int nonBgUnitViewCount = 0;
@@ -74,15 +75,20 @@ public class GridCellContainer extends GridCell {
         info.padBottom(12);
         info.setVisible(false);
 
-        graveyard = new GraveyardView();
-        addActor(graveyard);
-        graveyard.setWidth(getWidth());
-        graveyard.setHeight(getHeight());
-
-        setUserObject(new GridCellDataSource(
-                Coordinates.get(getGridX(), getGridY())
-        ));
+        if (isGraveyardOn()) {
+            graveyard = new GraveyardView();
+            addActor(graveyard);
+            graveyard.setWidth(getWidth());
+            graveyard.setHeight(getHeight());
+        }
+//        setUserObject(new GridCellDataSource(
+//                Coordinates.get(getGridX(), getGridY())
+//        ));
         return this;
+    }
+
+    protected boolean isGraveyardOn() {
+        return true;
     }
 
     @Override
@@ -317,7 +323,9 @@ public class GridCellContainer extends GridCell {
             hovered.setZIndex(Integer.MAX_VALUE);
         if (getTopUnitView() != null)
             getTopUnitView().setZIndex(Integer.MAX_VALUE);
-        graveyard.setZIndex(Integer.MAX_VALUE);
+        if (graveyard != null) {
+            graveyard.setZIndex(Integer.MAX_VALUE);
+        }
         backImage.setZIndex(0);
     }
 
@@ -599,11 +607,11 @@ public class GridCellContainer extends GridCell {
                 }
 
                 protected float getFadeInDuration() {
-                    return  getFadeDuration();
+                    return getFadeDuration();
                 }
 
                 protected float getFadeOutDuration() {
-                    return  getFadeDuration();
+                    return getFadeDuration();
                 }
             });
             GdxMaster.center(overlay);

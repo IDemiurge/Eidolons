@@ -3,6 +3,7 @@ package main.level_editor.backend.handlers.model;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import main.data.tree.LayeredData;
 import main.data.tree.StructNode;
@@ -35,6 +36,7 @@ public class EditorModel {
     private Layer layer;
     private ObjType defaultWallType;
     private boolean brushMode;
+    private LevelStruct lastSelectedStruct;
 
     public EditorModel() {
         selection = new LE_Selection();
@@ -145,5 +147,13 @@ public class EditorModel {
 
     public void setBrushMode(boolean brushMode) {
         this.brushMode = brushMode;
+    }
+
+    public void setLastSelectedStruct(LevelStruct lastSelectedStruct) {
+        this.lastSelectedStruct = lastSelectedStruct;
+    }
+
+    public LevelStruct getLastSelectedStruct() {
+        return lastSelectedStruct;
     }
 }

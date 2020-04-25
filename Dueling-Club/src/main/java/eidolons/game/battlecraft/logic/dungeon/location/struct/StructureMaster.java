@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
-import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -12,7 +11,7 @@ import main.game.bf.Coordinates;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class StructureMaster extends DungeonHandler<Location> {
+public class StructureMaster extends DungeonHandler {
 
 
     public StructureMaster(DungeonMaster master) {

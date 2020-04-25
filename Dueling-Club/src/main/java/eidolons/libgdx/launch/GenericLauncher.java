@@ -162,7 +162,7 @@ public abstract class GenericLauncher extends Game {
 
     protected boolean isStopOnInactive() {
 //        return CoreEngine.isIDE() && !EidolonsGame.BOSS_FIGHT;//CoreEngine.isLiteLaunch();
-        return false;
+        return true;
     }
 
     public LwjglApplicationConfiguration getConf() {
@@ -198,11 +198,13 @@ public abstract class GenericLauncher extends Game {
     protected void initIcon(LwjglApplicationConfiguration conf) {
 
         try {
-            conf.addIcon(PathFinder.getImagePath() + Images.LOGO32, FileType.Absolute);
             if (CoreEngine.isLevelEditor()) {
+//                conf.addIcon(PathFinder.getImagePath() + Images.LOGO_EDITOR_32, FileType.Absolute);
                 conf.addIcon(PathFinder.getImagePath() + Images.LOGO_EDITOR_64, FileType.Absolute);
-            } else
-            conf.addIcon(PathFinder.getImagePath() + Images.LOGO64, FileType.Absolute);
+            } else {
+                conf.addIcon(PathFinder.getImagePath() + Images.LOGO32, FileType.Absolute);
+                conf.addIcon(PathFinder.getImagePath() + Images.LOGO64, FileType.Absolute);
+            }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

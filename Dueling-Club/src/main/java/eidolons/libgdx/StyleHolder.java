@@ -115,6 +115,9 @@ public class StyleHolder {
         return getSizedColoredLabelStyle(i, fontStyle, size, GdxColorMaster.PALE_GOLD);
     }
 
+    public static LabelStyle getDebugLabelStyleLarge() {
+        return getSizedColoredLabelStyle( FONT.MAIN, 28, GdxColorMaster.PALE_GOLD);
+    }
     public static LabelStyle getDebugLabelStyle() {
         return getSizedColoredLabelStyle( FONT.MAIN, 18, GdxColorMaster.PALE_GOLD);
     }

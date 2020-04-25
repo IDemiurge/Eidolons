@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -73,16 +74,20 @@ public class ValueTooltip extends Tooltip {
             el.setValueAlignment(getValueAlign());
             el.setNameAlignment(getNameAlign());
             if (el.getNameLabel()!=null )
-            if (el.getNameLabel().getStyle() == StyleHolder.getDefaultLabelStyle()) {
+            if (el.getNameLabel().getStyle() == getDefaultLabelStyle()) {
                 el.setNameStyle(StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
             }
             if (el.getValueLabel()!=null )
-            if (el.getValueLabel().getStyle() == StyleHolder.getDefaultLabelStyle()) {
+            if (el.getValueLabel().getStyle() == getDefaultLabelStyle()) {
                 el.setValueStyle(StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
             }
             addElement(el);
             row();
         });
+    }
+
+    protected Label.LabelStyle getDefaultLabelStyle() {
+        return StyleHolder.getDefaultLabelStyle();
     }
 
     @Override

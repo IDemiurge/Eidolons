@@ -8,7 +8,6 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
-import main.data.xml.XML_Formatter;
 import main.data.xml.XmlNodeMaster;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
@@ -21,7 +20,7 @@ import java.util.*;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
-public class StructureBuilder extends DungeonHandler<Location> {
+public class StructureBuilder extends DungeonHandler {
 
     private int ZONE_ID = 0;
     private int BLOCK_ID = 0;
@@ -53,7 +52,12 @@ public class StructureBuilder extends DungeonHandler<Location> {
                 data.apply();
                 log(LOG_CHANNEL.BUILDING, "Module after data applies: " +
                         module);
-
+                if (master.isModuleSizeBased())
+                    if (module.getId() == 0) {
+                        if (module.getWidth() > 0 && module.getHeight() > 0) {
+                            getBuilder().initModuleSize(module);
+                        }
+                    }
             } else if (sub.getNodeName().equalsIgnoreCase(FloorLoader.ZONES)) {
                 List<LevelZone> zones = createZones(module, sub, location);
                 module.setZones(zones);
@@ -93,9 +97,9 @@ public class StructureBuilder extends DungeonHandler<Location> {
         }
 
         ZoneData data = new ZoneData((zone));
+//        zone.setName(XML_Formatter.restoreXmlNodeName(zoneNode.getNodeName()));
         data.setData(dataString);
         zone.setData(data);
-        zone.setName(XML_Formatter.restoreXmlNodeName(zoneNode.getNodeName()));
         zone.setModule(module);
         log(LOG_CHANNEL.BUILDING, "Zone data: " + data);
         data.apply();
@@ -119,7 +123,7 @@ public class StructureBuilder extends DungeonHandler<Location> {
                 c = b.getOrigin();
             } else if (StringMaster.compareByChar(subNode.getNodeName(), FloorLoader.MISSING)) {
 
-                coordinates = CoordinatesMaster.getCoordinatesBetween(b.getOrigin(),
+                coordinates = CoordinatesMaster.getCoordinatesBetweenInclusive(b.getOrigin(),
                         Coordinates.get(c.x + b.getWidth(), c.y + b.getHeight()));
                 List<Coordinates> missing = CoordinatesMaster.getCoordinatesFromString(subNode.getTextContent());
                 coordinates.removeAll(missing);

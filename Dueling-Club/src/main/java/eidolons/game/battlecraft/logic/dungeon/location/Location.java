@@ -26,6 +26,7 @@ public class Location extends DungeonWrapper {
     private String exitData;
     private Map<Coordinates, CellScriptData> textDataMap = new HashMap<>();
     private Set<Entrance> transits = new LinkedHashSet<>();
+    private boolean initialEdit;
 
     public Location(DungeonMaster master, Dungeon dungeon) {
         super(dungeon, master);
@@ -140,5 +141,13 @@ public class Location extends DungeonWrapper {
 
     public void addTransit(Entrance e) {
         transits.add(e);
+    }
+
+    public void setInitialEdit(boolean initialEdit) {
+        this.initialEdit = initialEdit;
+    }
+
+    public boolean isInitialEdit() {
+        return initialEdit;
     }
 }

@@ -35,10 +35,9 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 public class LE_StructureHandler extends LE_Handler implements IStructureHandler {
 
@@ -130,17 +129,16 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         int y = 0;
         Set<Coordinates> coords = block.getCoordinatesSet();
         getOperationHandler().operation(Operation.LE_OPERATION.INSERT_START);
-       if (!addBlock(block))
-       {
-           getOperationHandler().operation(Operation.LE_OPERATION.INSERT_END);
-           return;
-       }
+        if (!addBlock(block)) {
+            getOperationHandler().operation(Operation.LE_OPERATION.INSERT_END);
+            return;
+        }
         for (String[] column : blockTemplate.getCells()) {
             for (String cell : column) {
                 if (TilesMaster.isIgnoredCell(cell)) {
                     continue;
                 }
-                Coordinates  c = Coordinates.get(x, y) .getOffset(at) ;
+                Coordinates c = Coordinates.get(x, y).getOffset(at);
                 processCell(c, cell);
                 y++;
             }
@@ -157,9 +155,9 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     }
 
     private boolean checkOverlap(RoomModel blockTemplate, Coordinates at) {
-        for (int i = 0; i <  blockTemplate.getWidth(); i++) {
-            for (int j = 0; j <   blockTemplate.getHeight(); j++) {
-                if (checkOverlap(Coordinates.get(at.x+i, at.y+j), blockTemplate.getCells()[i][j]))
+        for (int i = 0; i < blockTemplate.getWidth(); i++) {
+            for (int j = 0; j < blockTemplate.getHeight(); j++) {
+                if (checkOverlap(Coordinates.get(at.x + i, at.y + j), blockTemplate.getCells()[i][j]))
                     return true;
             }
         }
@@ -223,7 +221,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         Set<Coordinates> coordinates = getSelectionHandler().getSelection().getCoordinates();
         LevelBlock block = createBlock(zone, coordinates);
         if (addBlock(block))
-             updateTree();
+            updateTree();
 //        block.setName("Custom block");
 //        block.setOrigin(coordinates.iterator().next());
 //        block.setCoordinates(new ArrayList<>(coordinates));
@@ -231,12 +229,12 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
 
     private boolean addBlock(LevelBlock block) {
         if (block.getModel() != null) { //TODO not just for model!
-        boolean overlap = checkOverlap(block.getModel(), block.getOrigin());
-        if (overlap) {
-            if (!EUtils.waitConfirm("Allow overlap?")) {
-                return false;
+            boolean overlap = checkOverlap(block.getModel(), block.getOrigin());
+            if (overlap) {
+                if (!EUtils.waitConfirm("Allow overlap?")) {
+                    return false;
+                }
             }
-        }
         }
         LevelZone zone = block.getZone();
         Set<Coordinates> coordinates = block.getCoordinatesSet();
@@ -337,7 +335,8 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             getModel().getBlock().getCoordinatesSet().remove(c);
         }
     }
-@Override
+
+    @Override
     public void addCells() {
         Set<Coordinates> set = getModel().getBlock().getCoordinatesSet();
         for (Coordinates c : getSelectionHandler().getSelection().getCoordinates()) {
@@ -359,9 +358,9 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     }
 
     public Color getColorForBlock(LevelBlock block) {
-        int i =0;
+        int i = 0;
         for (LevelBlock subPart : block.getZone().getSubParts()) {
-            if (block==subPart) {
+            if (block == subPart) {
                 break;
             }
             i++;
@@ -422,7 +421,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
                     if (name
                             .equalsIgnoreCase(PaletteHandlerImpl.WALL_PLACEHOLDER)) {
                         obj.setImage(wallType.getImagePath());
-                       wallObjs.add(obj);
+                        wallObjs.add(obj);
                     }
                     if (name
                             .equalsIgnoreCase(PaletteHandlerImpl.ALT_WALL_PLACEHOLDER)) {
@@ -438,15 +437,20 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     private void resetCells(LevelStruct<LevelStruct, LevelStruct> layer) {
         DungeonEnums.CELL_IMAGE type = layer.getCellType();
         if (type != null) {
+            Set<DC_Cell> set = new LinkedHashSet<>();
             for (Coordinates coordinates : layer.getCoordinatesSet()) {
                 DC_Cell cell = getGame().getCellByCoordinate(coordinates);
                 if (cell != null) //TODO without buffer!
-                if (cell.getCellType() != type) {
-                    cell.setCellType(type);
-                }
+                    if (cell.getCellType() != type) {
+                        set.add(cell);
+                        cell.setCellType(type);
+                    }
             }
-            main.system.auxiliary.log.LogMaster.log(1, type + " cell type from " + layer.getName());
+            GuiEventManager.trigger(GuiEventType.CELL_RESET, set);
+            log(1, type + " cell type from " + layer.getName() +
+                    "; for cell: " +                    set.size());
         }
+
     }
 
 
@@ -463,7 +467,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         int h = CoordinatesMaster.getHeight(block.getCoordinatesSet());
         block.setWidth(w);
         block.setWidth(h);
-        block.setData(new BlockData(  (block)));
+        block.setData(new BlockData((block)));
         return block;
     }
 

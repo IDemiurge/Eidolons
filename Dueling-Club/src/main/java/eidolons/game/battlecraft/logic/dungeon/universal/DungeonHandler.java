@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.TransitHandler;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
@@ -19,12 +20,12 @@ import java.util.Set;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class DungeonHandler<E extends DungeonWrapper> {
+public class DungeonHandler {
 
     protected DC_Game game;
-    protected DungeonMaster<E> master;
+    protected DungeonMaster<Location> master;
 
-    public DungeonHandler(DungeonMaster<E> master) {
+    public DungeonHandler(DungeonMaster<Location> master) {
         this.master = master;
         this.game = master.getGame();
     }
@@ -59,7 +60,7 @@ public class DungeonHandler<E extends DungeonWrapper> {
         return master.getGame();
     }
 
-    public DungeonMaster<E> getMaster() {
+    public DungeonMaster<Location> getMaster() {
         return master;
     }
 
@@ -67,7 +68,7 @@ public class DungeonHandler<E extends DungeonWrapper> {
         return getGame().getMetaMaster();
     }
 
-    public DungeonInitializer<E> getInitializer() {
+    public DungeonInitializer<Location> getInitializer() {
         return master.getInitializer();
     }
 
@@ -75,11 +76,11 @@ public class DungeonHandler<E extends DungeonWrapper> {
         return master.getBuilder();
     }
 
-    public Positioner<E> getPositioner() {
+    public Positioner<Location> getPositioner() {
         return master.getPositioner();
     }
 
-    public FacingAdjuster<E> getFacingAdjuster() {
+    public FacingAdjuster<Location> getFacingAdjuster() {
         return master.getFacingAdjuster();
     }
 
@@ -115,7 +116,7 @@ public class DungeonHandler<E extends DungeonWrapper> {
         return master.getBattle();
     }
 
-    public Spawner<E> getSpawner() {
+    public Spawner<Location> getSpawner() {
         return master.getSpawner();
     }
 
@@ -127,7 +128,7 @@ public class DungeonHandler<E extends DungeonWrapper> {
         return master.getTransitHandler();
     }
 
-    public E getDungeon() {
+    public Location getDungeon() {
         return master.getDungeonWrapper();
     }
 }

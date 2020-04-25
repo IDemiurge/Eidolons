@@ -12,6 +12,8 @@ import java.awt.*;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
+import static main.system.auxiliary.log.LogMaster.log;
+
 public class LE_FloorLoader extends FloorLoader {
     public LE_FloorLoader(DungeonMaster<Location> master) {
         super(master);
@@ -46,7 +48,15 @@ public class LE_FloorLoader extends FloorLoader {
 
 
         LinkedHashMap<Point, Module> grid = new ModuleGridMapper().getOptimalGrid(modules);
-        getBuilder().initWidthAndHeight( location);
+
+        location.setInitialEdit(true);
+        int w = ModuleGridMapper.maxWidth;
+        int h = ModuleGridMapper.maxHeight;
+        location.setWidth(w);
+        location.setHeight(h);
+        log(1,location+ " w = " + w );
+        log(1,location+ " h = " + h );
+        getBuilder().initLocationSize( location);
         LevelEditor.getManager().getModuleHandler().setGrid(grid);
 
 

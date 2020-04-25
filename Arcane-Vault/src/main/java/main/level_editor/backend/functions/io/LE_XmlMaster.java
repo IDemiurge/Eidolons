@@ -122,7 +122,7 @@ public class LE_XmlMaster extends LE_Handler {
         StringBuilder builder = new StringBuilder();
         Map<Integer, BattleFieldObject> map = LevelEditor.getGame().getSimIdManager().getObjMap();
         int i = 0;
-        for (Coordinates c : module.initCoordinateSet(false)) {
+        for (Coordinates c : module.initCoordinateSet(true)) {
             Set<BattleFieldObject> set = LevelEditor.getGame().getObjectsOnCoordinate(c);
             if (!borders)
                 for (Entrance entrance : getTransitHandler().entrances) {

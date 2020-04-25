@@ -83,11 +83,6 @@ public class Coordinates implements Serializable {
 
     }
 
-    public static void clearCaches() {
-        resetCaches();
-
-    }
-
 
     public static boolean withinBounds(int x, int y) {
         if (x < 0) {
@@ -339,7 +334,7 @@ public class Coordinates implements Serializable {
             }
         c = create(allowInvalid, x1, y1);
         map.put(direction, c);
-       BattleFieldManager.getInstance().getAdjacenctDirectionMap().put(this, map);
+        BattleFieldManager.getInstance().getAdjacenctDirectionMap().put(this, map);
         return c;
     }
 
@@ -540,7 +535,12 @@ public class Coordinates implements Serializable {
     }
 
     public Coordinates getOffset(int x, int y) {
-        return get(Math.max(0, getX()  + x), Math.max(0, getY() + y));
+        try {
+            return get(Math.max(0, getX() + x), Math.max(0, getY() + y));
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return get(0,0);
     }
 
     public Coordinates getOffset(Coordinates coordinates) {
@@ -578,10 +578,10 @@ public class Coordinates implements Serializable {
     }
 
     public void flipY(int h) {
-        setY(h-y);
+        setY(h - y);
     }
 
     public void flipX(int w) {
-        setX(w-x);
+        setX(w - x);
     }
 }

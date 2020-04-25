@@ -20,14 +20,14 @@ import java.util.List;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public abstract class DungeonInitializer<E extends DungeonWrapper> extends DungeonHandler<E> {
+public abstract class DungeonInitializer<E extends DungeonWrapper> extends DungeonHandler {
 
     public static final String RANDOM_DUNGEON = "random";
     public static boolean RANDOM = false;
     protected String presetDungeonType;
     private String dungeonPath;
 
-    public DungeonInitializer(DungeonMaster<E> master) {
+    public DungeonInitializer(DungeonMaster master) {
         super(master);
     }
 

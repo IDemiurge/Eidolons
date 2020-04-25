@@ -110,10 +110,10 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
             if (img == null) {
                 size = 32;
             } else
-                size = Math.min(getMaxTreeIconSize(), img.getWidth(null));
+                size = Math.min(getMaxTreeIconSize(type.getOBJ_TYPE_ENUM()), img.getWidth(null));
             G_Panel comp = new G_Panel();
             ListItem<ObjType> item = new ListItem<>(type, selected, hasFocus, size);
-
+            item.setSize(size, size);
             comp.add(item, "id item, pos 0 0");
 
             JLabel lbl = new JLabel(typeName);
@@ -143,7 +143,13 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
 
     }
 
-    private int getMaxTreeIconSize() {
+    private int getMaxTreeIconSize(OBJ_TYPE obj_type_enum) {
+        if (obj_type_enum instanceof DC_TYPE) {
+            switch (((DC_TYPE) obj_type_enum)) {
+                case ENCOUNTERS:
+                    return 64;
+            }
+        }
         return GuiManager.getFullObjSize();
     }
 

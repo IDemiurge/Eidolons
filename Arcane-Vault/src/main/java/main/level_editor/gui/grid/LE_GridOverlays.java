@@ -1,5 +1,7 @@
 package main.level_editor.gui.grid;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
@@ -7,14 +9,16 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
-import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 
 import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.IN_PLAIN_SIGHT;
+import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.IN_SIGHT;
 
 public class LE_GridOverlays extends GridOverlaysManager {
     public LE_GridOverlays(GridPanel gridPanel) {
@@ -31,14 +35,16 @@ public class LE_GridOverlays extends GridOverlaysManager {
 
 
     }
+
     protected void drawOverlays(Batch batch) {
         for (int x = 0; x < cells.length; x++) {
-            for (int y = cells[x].length - 1; y >=0 ; y--) {
+            for (int y = cells[x].length - 1; y >= 0; y--) {
                 GridCellContainer cell = cells[x][y];
-                drawOverlaysForCell(cell, x, cells[x].length - 1 - y, batch);
+                drawOverlaysForCell(cell, x, y, batch);
             }
         }
     }
+
     @Override
     protected void drawOverlaysForCell(GridCellContainer container, int x, int y, Batch batch) {
         DC_Cell cell = Eidolons.getGame().getMaster().getCellByCoordinate(Coordinates.get(x, y));
@@ -46,29 +52,46 @@ public class LE_GridOverlays extends GridOverlaysManager {
         if (LevelEditor.getManager().getSelectionHandler().isSelected(cell)) {
             drawOverlay(container, IN_PLAIN_SIGHT, batch, cell, x, y);
         }
-        if (LevelEditor.getModel().getBlock() == null) {
+        if (LE_GridCell.hoveredCell != null)
+            if (container == LE_GridCell.hoveredCell) {
+                drawOverlay(container, IN_SIGHT, batch, cell, x, y);
+            } else {
+                boolean keyPressed = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
+                if (keyPressed) {
+                    if (LE_GridCell.hoveredCell.getGridX() == x
+                            || LE_GridCell.hoveredCell.getGridY() == y) {
+                        drawOverlay(container, IN_SIGHT, batch, cell, x, y);
+                    }
+                }
+            }
+        LevelStruct struct = LevelEditor.getModel().getLastSelectedStruct();
+        if (struct == null) {
             return;
         }
-        boolean block = LevelEditor.getModel().getBlock().getCoordinatesSet().contains(cell.getCoordinates());
+        if (struct.getCoordinatesSet().contains(cell.getCoordinates())) {
+            boolean block = struct instanceof LevelBlock;
+            if (block) {
+                Color c = LevelEditor.getCurrent().getManager().getStructureManager().
+                        getColorForBlock(LevelEditor.getModel().getBlock());
+                batch.setColor(new Color(c.r, c.g, c.b, 0.33f));
 
-        if (block) {
-            Color c = LevelEditor.getCurrent().getManager().getStructureManager().
-                    getColorForBlock(LevelEditor.getModel().getBlock());
-            batch.setColor(new Color(c.r, c.g, c.b, 0.33f));
+            }
             try {
-                drawOverlay(container, IN_PLAIN_SIGHT, batch, cell, x, y);
+                drawOverlay(container, block ? IN_PLAIN_SIGHT : IN_SIGHT, batch, cell, x, y);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-            batch.setColor(new Color(1, 1, 1, 1));
+            if (block)
+                batch.setColor(new Color(1, 1, 1, 1));
         }
 //        if (zone){
 //            drawOverlay(container, OVERLAY.IN_SIGHT, batch,cell, x, y);
 //        }
 
     }
-    protected void initOverlayColor(Batch batch, Obj obj, OVERLAY overlay) {
-        if (overlay==IN_PLAIN_SIGHT) {
+
+    protected void initOverlayColor(Batch batch, DC_Obj obj, OVERLAY overlay) {
+        if (overlay == IN_PLAIN_SIGHT) {
             return;
         }
         if (isOverlayAlphaOn(overlay)) {

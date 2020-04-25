@@ -51,6 +51,9 @@ public class LE_MouseHandler extends LE_Handler {
 
     private void clickedCell(CLICK_MODE mode, Coordinates c) {
         switch (mode) {
+            case SHIFT_R:
+                getObjHandler().addInLine(c);
+                break;
             case CTRL_SHIFT:
                 LevelStruct lowestStruct = getStructureMaster().findLowestStruct(c);
                 GuiEventManager.trigger(GuiEventType.LE_TREE_SELECT, lowestStruct);

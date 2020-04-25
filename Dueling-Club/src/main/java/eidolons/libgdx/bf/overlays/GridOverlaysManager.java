@@ -427,13 +427,14 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
 
     protected void drawOverlay(Actor parent, OVERLAY overlay, Batch batch, Vector2 v) {
         TextureRegion region = getRegion(overlay);
+        float y = v.y;
         if (region != null) {
-            batch.draw(region, v.x, v.y);
+            batch.draw(region, v.x, y);
         } else {
             Actor actor = getOverlayActor(parent, overlay);
             if (actor != null)
                 if (actor.isVisible()) {
-                    actor.setPosition(v.x, v.y);
+                    actor.setPosition(v.x, y);
                     actor.setScale(parent.getScaleX(), parent.getScaleY());
                     actor.draw(batch, 1);
                 }

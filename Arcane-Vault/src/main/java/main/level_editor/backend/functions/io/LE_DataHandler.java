@@ -2,6 +2,7 @@ package main.level_editor.backend.functions.io;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -58,8 +59,8 @@ public class LE_DataHandler extends LE_Handler {
     }
 
     public void backup() {
-        String path = getBackupPath(getFloor());
-        String contents = FileManager.readFile(getDefaultSavePath(getFloor()));
+        String path = getBackupPath(getFloorWrapper());
+        String contents = FileManager.readFile(getDefaultSavePath(getFloorWrapper()));
         FileManager.write(contents, path);
         EUtils.showInfoText("Backed up as " + PathUtils.getLastPathSegment(path));
     }
@@ -85,14 +86,14 @@ public class LE_DataHandler extends LE_Handler {
 
     public void saveFloor() {
         doPresave();
-        String path = getDefaultSavePath(getFloor());
+        String path = getDefaultSavePathFull(getFloorWrapper(), "crawl");
         saveAs(path);
         setDirty(false);
-        try {
-            saveModulesSeparately();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+//        try {
+//            saveModulesSeparately();
+//        } catch (Exception e) {
+//            main.system.ExceptionMaster.printStackTrace(e);
+//        }
     }
 
     private void doPresave() {
@@ -180,7 +181,7 @@ public class LE_DataHandler extends LE_Handler {
             String path = getStandalonePath(module);
             FileManager.write(contents, path);
             EUtils.showInfoText("Saved " +
-                    module +
+                    module.getName() +
                     " as " + PathUtils.getLastPathSegment(path));
         }
     }
@@ -195,19 +196,22 @@ public class LE_DataHandler extends LE_Handler {
         EUtils.showInfoText("Saved as " + PathUtils.getLastPathSegment(path));
     }
 
-    private String getBackupPath(Floor floor) {
-        return getDefaultSavePath(floor, "backup");
+    private String getBackupPath(Location location) {
+        return getDefaultSavePathFull(location, "backup");
     }
 
-    private String getDefaultSavePath(Floor floor, String prefix) {
-        String value = floor.getWrapper().getData().getValue(LevelStructure.FLOOR_VALUES.filepath);
-        if (!value.isEmpty()) {
-            return PathFinder.getDungeonLevelFolder() + prefix + "/" + value + ".xml";
+    public String getDefaultSavePath(Location location, String prefix) {
+        String value = location.getData().getValue(LevelStructure.FLOOR_VALUES.filepath);
+        if (value.isEmpty()) {
+            return prefix + "/" + location.getName() + ".xml";
         }
-        return PathFinder.getDungeonLevelFolder() + prefix + "/" + floor.getName() + ".xml";
+        return value;
+    }
+        public String getDefaultSavePathFull(Location location, String prefix ) {
+            return PathFinder.getDungeonLevelFolder() +getDefaultSavePath(location, prefix);
     }
 
-    private String getDefaultSavePath(Floor floor) {
+    public String getDefaultSavePath(Location floor) {
         String prefix = "";
         if (campaign == null) {
             if (LevelEditor.TEST_MODE) {

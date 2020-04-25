@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf.mouse;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,6 +16,7 @@ import eidolons.libgdx.screens.GameScreen;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
@@ -379,10 +381,10 @@ public abstract class InputController implements InputProcessor {
         return false;
     }
 
-    protected void zoom(int i) {
+    protected boolean zoom(int i) {
         if (!isUnlimitedZoom())
             if (!checkZoom(i))
-                return;
+                return false;
         if (!alt && !ctrl) {
             if (i == 1) {
 
@@ -399,6 +401,7 @@ public abstract class InputController implements InputProcessor {
 
         cameraZoomChanged();
         cameraPosChanged();
+        return true;
     }
 
     public void cameraZoomChanged() {
@@ -433,7 +436,16 @@ public abstract class InputController implements InputProcessor {
             return false;
         return !(newWidth > getWidth() - x + halfWidth + getMargin());
     }
+    public void centerCam() {
+        camera.position.x = width/2;
+        camera.position.y = height/2;
+        cameraPosChanged();
+    }
 
+    public void maxZoom() {
+        while(zoom(-1)){
+        }
+    }
     public boolean isWithinCamera(Actor actor) {
         return isWithinCamera(actor.getX() + actor.getWidth(), actor.getY() + actor.getHeight(), actor.getWidth(), actor.getHeight());
     }
@@ -527,5 +539,16 @@ public abstract class InputController implements InputProcessor {
 
     public boolean isStackInput() {
         return true;
+    }
+
+    public DIRECTION getMouseBorder() {
+        float mouseBorderBuffer=100*camera.zoom;
+        float min=camera.position.x - halfWidth*camera.zoom + mouseBorderBuffer;
+        if (Gdx.input.getX()<min)
+            return DIRECTION.LEFT;
+        float max=camera.position.x + halfWidth*camera.zoom - mouseBorderBuffer;
+        if (Gdx.input.getX()>=max)
+            return DIRECTION.RIGHT;
+        return null;
     }
 }

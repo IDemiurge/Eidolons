@@ -17,7 +17,6 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -152,7 +151,6 @@ public class ScenarioGenerator {
                 FileManager.write(stringData, path);
                 levelPaths += (path) + ContainerUtils.getContainerSeparator();
 
-                Coordinates.resetCaches();
             }
         }
         scenarioType.setProperty(PROPS.SCENARIO_PATHS, levelPaths);

@@ -268,7 +268,7 @@ public class ShadeLightCell extends SuperContainer {
                         ? GenericEnums.BLENDING.OVERLAY
                         : GenericEnums.BLENDING.MULTIPLY;
             case BLACKOUT:
-            case HIGLIGHT:
+            case HIGHLIGHT:
                 break;
         }
         if (mode != null)

@@ -78,6 +78,9 @@ public class LE_DungeonMaster extends LocationMaster {
         };
     }
 
+    public boolean isModuleSizeBased() {
+        return false;
+    }
     @Override
     public String getDefaultEntranceType() {
         return "Dark Portal";

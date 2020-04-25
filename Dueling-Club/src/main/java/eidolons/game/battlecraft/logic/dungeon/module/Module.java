@@ -38,6 +38,11 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
         id = ID++;
     }
 
+    @Override
+    public int getWidth() {
+        return super.getWidth();
+    }
+
     public Module(DC_Game game) {
         this.game = game;
     }
@@ -63,13 +68,13 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     public Set<Coordinates> initCoordinateSet(boolean buffer) {
         //TODO nullify this on reset!
         Set<Coordinates> coordinatesSet = new LinkedHashSet<>();
-        Coordinates c = buffer
-                ? getOrigin()
-                .getOffset(-getWidthBuffer(), -getHeightBuffer())
-                : getOrigin();
-        coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetween(
+        Coordinates c =
+//              buffer  ? getOrigin()
+//                .getOffset(-getWidthBuffer(), -getHeightBuffer()) :
+                getOrigin();
+        coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetweenInclusive(
                 c,
-                c.getOffset(getEffectiveWidth(buffer), getEffectiveHeight(buffer))));
+                c.getOffset(getEffectiveWidth(buffer)-1, getEffectiveHeight(buffer)-1)));
 
         return coordinatesSet;
     }

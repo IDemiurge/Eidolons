@@ -25,7 +25,6 @@ import eidolons.macro.global.persist.Loader;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
@@ -256,7 +255,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        Coordinates.clearCaches();
 
         FileLogManager.writeStatInfo(game.getBattleMaster().getStatManager().getStats().toString());
     }

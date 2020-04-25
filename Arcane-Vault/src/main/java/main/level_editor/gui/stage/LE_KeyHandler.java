@@ -8,6 +8,8 @@ import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.gui.screen.LE_Screen;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 public class LE_KeyHandler extends LE_Handler {
 
@@ -23,10 +25,10 @@ public class LE_KeyHandler extends LE_Handler {
                 Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
         boolean ctrl = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
                 Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT);
-
         switch (keyCode) {
             case Input.Keys.TAB:
                 globalController.keyDown(keyCode);
+                GuiEventManager.trigger(GuiEventType.LE_GUI_TOGGLE);
                 break;
             case Input.Keys.ALT_RIGHT:
                 getModel().getDisplayMode().toggleAll();
@@ -55,9 +57,11 @@ public class LE_KeyHandler extends LE_Handler {
             case Input.Keys.ENTER:
                 LE_Screen.getInstance().getGuiStage().getDialog().ok();
                 //approve dialogue?
+                break;
             case Input.Keys.SPACE:
-                getCameraHandler().centerOnSelection();
-                //camera?
+                getCameraHandler().cycleCameraMode();
+                break;
+            //camera?
         }
     }
 

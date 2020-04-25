@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -16,7 +15,7 @@ import main.game.bf.Coordinates;
 import main.system.datatypes.WeightMap;
 import main.system.launch.CoreEngine;
 
-public class PlaceholderResolver extends DungeonHandler<Location> {
+public class PlaceholderResolver extends DungeonHandler {
     public PlaceholderResolver(DungeonMaster master) {
         super(master);
     }
