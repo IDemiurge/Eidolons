@@ -346,4 +346,8 @@ public class Obj extends Entity {
     public void setAnnihilated(boolean annihilated) {
         this.annihilated = annihilated;
     }
+
+    public Object getModule() {
+        return null;
+    }
 }

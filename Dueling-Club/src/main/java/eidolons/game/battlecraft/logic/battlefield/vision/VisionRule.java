@@ -66,7 +66,7 @@ public class VisionRule {
 
 
     public void fullReset(Unit... observers) {
-        BattleFieldObject[][][] array = master.getGame().getMaster().getObjCells();
+        BattleFieldObject[][][] array = master.getGame().getObjMaster().getObjCells();
         Set<Unit> filteredObserver = new HashSet<>();
         for (Unit observer : observers) {
             if (isObserverResetRequired(observer))
@@ -78,9 +78,9 @@ public class VisionRule {
 
             for (int i = 0; i < array.length; i++) {
                 for (int j = 0; j < array[0].length; j++) {
-                    Set<BattleFieldObject> objects =
-                            master.getGame().getMaster().getObjectsOnCoordinate(
-                                    Coordinates.get(i, j), false);
+                    BattleFieldObject[] objects =
+                            master.getGame().getObjMaster().getObjects(
+                                    i , j, false);
 //                 master.getGame().getMaster().getObjects(i, j, true);
                     DC_Cell cell = master.getGame().getCellByCoordinate(Coordinates.get(i, j));
                     if (cell == null)

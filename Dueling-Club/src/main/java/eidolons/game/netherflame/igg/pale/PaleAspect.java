@@ -74,7 +74,7 @@ public class PaleAspect {
         GuiEventManager.trigger(GuiEventType.UNIT_CREATED, avatar);
         avatar.setPale(true);
         avatar.getGame().getPaleMaster().tryAddUnit(avatar);
-        avatar.getGame().getMaster().remove(avatar, true);
+        avatar.getGame().getObjMaster().remove(avatar, true);
         return avatar;
     }
 

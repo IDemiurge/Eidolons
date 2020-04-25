@@ -35,8 +35,10 @@ public class TransitHandler extends DungeonHandler {
         Coordinates c = getGame().getManager().getMainHeroCoordinates();
         if (master.getDungeonWrapper() instanceof Location) {
             Location location = (Location) getGame().getDungeonMaster().getDungeonWrapper();
-            if (location.getMainExit().getCoordinates().equals(c)) {
-                return true;
+            if (location.getMainExit() != null) {
+                if (location.getMainExit().getCoordinates().equals(c)) {
+                    return true;
+                }
             }
             //TODO support retreat?!
             for (Entrance transit : location.getTransits()) {

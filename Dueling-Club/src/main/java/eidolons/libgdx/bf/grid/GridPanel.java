@@ -1051,10 +1051,10 @@ public abstract class GridPanel extends Group {
     }
 
     public int getGdxY_ForModule(int y) {
-        return rows - y -1 ;
+        return rows - y  ;
     }
 
     public float getModuleY(int y) {
-        return y - (full_rows - rows)-1;
+        return y - (full_rows - rows)  ;
     }
 }

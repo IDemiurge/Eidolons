@@ -215,7 +215,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
                 final Boolean exit_continue_next = getEventType(actor);
                 if (exit_continue_next == null) {
                     if (!ExplorationMaster.isExplorationOn())
-                        Eidolons.getGame().getMaster().nextLevel();
+                        Eidolons.getGame().getObjMaster().nextLevel();
 
                     if (!Bools.isTrue(outcome))
                         Eidolons.restart();
@@ -282,10 +282,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
     }
 
     private Boolean getEventType(Actor actor) {
-        if (actor == continueButton.getActor().getLabel()) {
-            return false;
-        }
-        return true;
+        return actor != continueButton.getActor().getLabel();
     }
 
 }

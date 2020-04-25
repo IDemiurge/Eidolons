@@ -183,7 +183,7 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
         return getId() == 0;
     }
 
-    public void initObjects() {
+    public Map<Integer, BattleFieldObject> initObjects() {
         Map<Integer, BattleFieldObject> objectMap =
                 game.getDungeonMaster().getObjInitializer().processObjects(this,
                         getIdTypeMap(),
@@ -191,6 +191,7 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
 
         log(LOG_CHANNEL.BUILDING, "Objects created: " + objectMap.size());
         getObjIdMap().putAll(objectMap);
+        return         objectMap;
     }
 
     public void setObjectsData(String objectsData) {

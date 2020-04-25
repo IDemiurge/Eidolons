@@ -75,7 +75,7 @@ public class ModuleLoader extends DungeonHandler {
         initLogicalGrid(getModule());
     }
     private void initLogicalGrid(Module module) {
-        game.initGrid(module);
+        game.enterModule(module);
         BattleFieldManager.entered(module.getId() );
         if (!CoreEngine.isLevelEditor()) {
             spawnEncounters(module);

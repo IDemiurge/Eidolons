@@ -443,7 +443,7 @@ public abstract class InputController implements InputProcessor {
     }
 
     public void maxZoom() {
-        while(zoom(-1)){
+        while(zoom(1)){
         }
     }
     public boolean isWithinCamera(Actor actor) {

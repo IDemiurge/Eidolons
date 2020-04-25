@@ -21,7 +21,7 @@ public abstract class Master {
         this.game = game;
         this.gameManager = game.getManager();
         this.state = game.getState();
-        this.gameMaster = game.getMaster();
+        this.gameMaster = game.getObjMaster();
         this.stateManager = game.getStateManager();
     }
 

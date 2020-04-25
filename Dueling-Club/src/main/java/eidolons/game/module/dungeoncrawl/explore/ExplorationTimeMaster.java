@@ -208,6 +208,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     private void processTimedEffects() {
         guiDirtyFlag = false;
 
+        if (isResetIgnoreSetterOn())
         if (ignore_reset_delta> ignore_reset_period) {
             master.getGame().getVisionMaster().getVisionRule().resetIgnore();
             ignore_reset_delta=0;
@@ -239,6 +240,10 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
         GuiEventManager.trigger(ACTION_PANEL_UPDATE, //igg demo hack
                 new PanelActionsDataSource(Eidolons.getMainHero()));
+    }
+
+    private boolean isResetIgnoreSetterOn() {
+        return false;
     }
 
     private void checkParamBuffs() {

@@ -193,8 +193,8 @@ public class ShadowMap extends GroupX implements GridElement {
         float offsetY = (GridMaster.CELL_H - element.getHeight()) / 2;
 
         element.setPosition(x * GridMaster.CELL_W + offsetX,
-                grid.getModuleY(y)
-                 * GridMaster.CELL_H + offsetY);
+                (grid.getModuleY(y)-1)
+                        * GridMaster.CELL_H + offsetY);
 
         element.setColor(1, 1, 1, defaultAlpha);
         element.addListener(new EventListener() {

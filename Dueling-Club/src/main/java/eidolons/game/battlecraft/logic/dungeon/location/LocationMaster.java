@@ -22,10 +22,10 @@ public class LocationMaster extends DungeonMaster<Location> {
     public void init() {
         super.init();
         if (getDungeonWrapper().getMainEntrance() != null) {
-            getGame().getMaster().tryAddUnit(getDungeonWrapper().getMainEntrance());
+            getGame().getObjMaster().tryAddUnit(getDungeonWrapper().getMainEntrance());
         }
         if (getDungeonWrapper().getMainExit() != null) {
-            getGame().getMaster().tryAddUnit(getDungeonWrapper().getMainExit());
+            getGame().getObjMaster().tryAddUnit(getDungeonWrapper().getMainExit());
         }
     }
 

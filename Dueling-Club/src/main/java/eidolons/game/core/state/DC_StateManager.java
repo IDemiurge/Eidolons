@@ -564,7 +564,7 @@ public class DC_StateManager extends StateManager {
                 return;
             }
         }
-        getGame().getMaster().tryAddUnit(obj);
+        getGame().getObjMaster().tryAddUnit(obj);
 
     }
 

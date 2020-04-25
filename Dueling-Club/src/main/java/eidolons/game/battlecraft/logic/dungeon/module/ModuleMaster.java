@@ -1,9 +1,11 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.Eidolons;
+import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import org.w3c.dom.Node;
 
@@ -67,9 +69,8 @@ public class ModuleMaster extends DungeonHandler  {
     }
 
     public boolean isWithinModule(Coordinates c) {
-        return false;
-//        return CoordinatesMaster.isWithinBounds(c, current.getX(), current.getY(), current.getX() +
-//                current.getWidth(), current.getY() + current.getHeight());
+        return CoordinatesMaster.isWithinBounds(c, current.getX(), current.getY(), current.getX() +
+                current.getWidth(), current.getY() + current.getHeight());
 
     }
 
@@ -87,4 +88,7 @@ public class ModuleMaster extends DungeonHandler  {
         return current;
     }
 
+    public boolean isWithinModule(Obj obj) {
+        return obj.getModule() == current;
+    }
 }

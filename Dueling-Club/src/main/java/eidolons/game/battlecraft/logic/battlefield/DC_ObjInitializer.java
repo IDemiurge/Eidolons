@@ -92,7 +92,7 @@ public class DC_ObjInitializer extends DungeonHandler {
                 obj = game.createObject(type, c, owner);
 
         }
-
+        obj.setModule(module);
         return obj;
     }
 

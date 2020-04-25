@@ -68,6 +68,7 @@ import main.game.bf.GraveyardManager;
 import main.game.bf.directions.DIRECTION;
 import main.game.core.game.Game;
 import main.game.core.game.GenericGame;
+import main.game.core.state.GameState;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.system.ExceptionMaster;
@@ -182,7 +183,7 @@ public class DC_Game extends GenericGame {
     public void initMasters(boolean nextLevel) {
 
         setIdManager(new DC_IdManager(this));
-        master = new DC_GameObjMaster(this);
+        objMaster = new DC_GameObjMaster(this);
         paleMaster = new DC_GameObjMaster(this, true);
         manager = createGameManager();
         manager.init();
@@ -257,11 +258,23 @@ public class DC_Game extends GenericGame {
         return new LocationMaster(this);
     }
 
-    public void initGrid(Module module) {
+    Map<Module, GameState> stateMap = new HashMap<>();
+
+    public void enterModule(Module module) {
         if (grid == null) {
             grid = new DC_BattleFieldGrid(module);
         } else
             grid.setModule(module);
+
+        if (state != null) {
+            stateMap.put(module, state);
+        } else {
+            state = stateMap.get(module);
+            if (state == null) {
+                state = new DC_GameState(this);
+                stateMap.put(module, state);
+            }
+        }
     }
 
     public void battleInit() {
@@ -422,16 +435,6 @@ public class DC_Game extends GenericGame {
         return unit;
     }
 
-    public void destruct() {
-        state.getObjMaps().clear();
-        state.getObjects().clear();
-        state.getAttachments().clear();
-        state.getTriggers().clear();
-        state.getTypeMap().clear();
-        getUnits().clear();
-        getStructures().clear();
-        getCells().clear();
-    }
 
     @Override
     public void initObjTypes() {
@@ -456,13 +459,13 @@ public class DC_Game extends GenericGame {
     }
 
     public Obj getObjectVisibleByCoordinate(Coordinates c) {
-        return getMaster().getObjectVisibleByCoordinate(c);
+        return getObjMaster().getObjectVisibleByCoordinate(c);
     }
 
-    public DC_GameObjMaster getMaster() {
+    public DC_GameObjMaster getObjMaster() {
         if (PaleAspect.ON)
             return getPaleMaster();
-        return (DC_GameObjMaster) master;
+        return (DC_GameObjMaster) objMaster;
     }
 
     public DC_GameObjMaster getPaleMaster() {
@@ -470,31 +473,31 @@ public class DC_Game extends GenericGame {
     }
 
     public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded) {
-        return getMaster().getObjectByCoordinate(c, cellsIncluded);
+        return getObjMaster().getObjectByCoordinate(c, cellsIncluded);
     }
 
     public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded, boolean passableIncluded, boolean overlayingIncluded) {
-        return getMaster().getObjectByCoordinate(c, cellsIncluded, passableIncluded, overlayingIncluded);
+        return getObjMaster().getObjectByCoordinate(c, cellsIncluded, passableIncluded, overlayingIncluded);
     }
 
     public Set<BattleFieldObject> getOverlayingObjects(Coordinates c) {
-        return getMaster().getOverlayingObjects(c);
+        return getObjMaster().getOverlayingObjects(c);
     }
 
     public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c, Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
-        return getMaster().getObjectsOnCoordinate(c, overlayingIncluded, passableIncluded, cellsIncluded);
+        return getObjMaster().getObjectsOnCoordinate(c, overlayingIncluded, passableIncluded, cellsIncluded);
     }
 
     public Set<DC_Cell> getCellsForCoordinates(Set<Coordinates> coordinates) {
-        return getMaster().getCellsForCoordinates(coordinates);
+        return getObjMaster().getCellsForCoordinates(coordinates);
     }
 
     public Unit getUnitByCoordinate(Coordinates coordinates) {
-        return getMaster().getUnitByCoordinate(coordinates);
+        return getObjMaster().getUnitByCoordinate(coordinates);
     }
 
     public Collection<Unit> getUnitsForCoordinates(Coordinates... coordinates) {
-        return getMaster().getUnitsOnCoordinates(coordinates);
+        return getObjMaster().getUnitsOnCoordinates(coordinates);
     }
 
     @Override
@@ -511,20 +514,20 @@ public class DC_Game extends GenericGame {
         if (obj instanceof Unit) {
             removeUnit((Unit) obj);
         } else {
-            getMaster().removeStructure((Structure) obj);
+            getObjMaster().removeStructure((Structure) obj);
         }
     }
 
     public void removeUnit(Unit unit) {
-        getMaster().removeUnit(unit);
+        getObjMaster().removeUnit(unit);
     }
 
     public Set<DC_Cell> getCells() {
-        return getMaster().getCells();
+        return getObjMaster().getCells();
     }
 
     public Set<Unit> getUnits() {
-        return getMaster().getUnits();
+        return getObjMaster().getUnits();
     }
 
     @Override
@@ -602,7 +605,7 @@ public class DC_Game extends GenericGame {
 
     @Override
     public DC_Cell getCellByCoordinate(Coordinates coordinates) {
-        return getMaster().getCellByCoordinate(coordinates);
+        return getObjMaster().getCellByCoordinate(coordinates);
     }
 
     public DC_Player getPlayer(boolean me) {
@@ -714,15 +717,15 @@ public class DC_Game extends GenericGame {
     }
 
     public Set<Structure> getStructures() {
-        return getMaster().getStructures();
+        return getObjMaster().getStructures();
     }
 
     public DequeImpl<BattleFieldObject> getBfObjects() {
-        return getMaster().getBfObjects();
+        return getObjMaster().getBfObjects();
     }
 
     public Set<BattleFieldObject> getObjectsAt(Coordinates c) {
-        return getMaster().getObjectsOnCoordinate(c, false, true, false);
+        return getObjMaster().getObjectsOnCoordinate(c, false, true, false);
     }
 
     public DC_InventoryManager getInventoryManager() {
@@ -848,7 +851,7 @@ public class DC_Game extends GenericGame {
     }
 
     public void reinit(boolean restart) {
-        master = new DC_GameObjMaster(this);
+        objMaster = new DC_GameObjMaster(this);
         paleMaster = new DC_GameObjMaster(this, true);
         List<Obj> cachedObjects = new ArrayList<>();
         if (!restart)
@@ -941,5 +944,8 @@ public class DC_Game extends GenericGame {
 
     }
 
-
+    @Override
+    public boolean checkModule(Obj obj) {
+        return getMetaMaster().getModuleMaster().isWithinModule(obj );
+    }
 }

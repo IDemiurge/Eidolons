@@ -136,7 +136,8 @@ public class WallMap extends SuperActor {
             boolean diamond = false;
             boolean mesh = false;
 
-            Vector2 v = GridMaster.getVectorForCoordinate(coordinates, false, false);
+            Vector2 v = GridMaster.getVectorForCoordinate(coordinates, false, false, true ,
+                    ScreenMaster.getDungeonGrid());
             v.set(v.x, v.y - 128);
             boolean darken = false;// obj.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT;
             String suffix = darken ? "dark" : null;
@@ -283,7 +284,8 @@ public class WallMap extends SuperActor {
             int w = GridMaster.CELL_W;
             for (DIRECTION side : list) {
 
-                Vector2 v = GridMaster.getVectorForCoordinate(c, false, false);
+                Vector2 v = GridMaster.getVectorForCoordinate(c, false, false , true ,
+                        ScreenMaster.getDungeonGrid());
 
                 float x1 = v.x;
                 float y1 = v.y;
@@ -313,7 +315,8 @@ public class WallMap extends SuperActor {
     }
 
     private boolean checkCoordinateIgnored(Coordinates coordinates) {
-        Vector2 v = GridMaster.getVectorForCoordinate(coordinates, false, false);
+        Vector2 v = GridMaster.getVectorForCoordinate(coordinates, false, false, true ,
+                ScreenMaster.getDungeonGrid());
         v.set(v.x, v.y - 128);
         float offsetX = v.x;
         float offsetY = v.y;

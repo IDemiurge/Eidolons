@@ -26,7 +26,7 @@ public class ExplorationResetHandler extends ExplorationHandler {
     }
 
     public void resetAll() {
-        master.getGame().getMaster().clearCaches();
+        master.getGame().getObjMaster().clearCaches();
 
 //        master.getGame().getStateManager().checkTriggers();
 
@@ -67,10 +67,7 @@ public class ExplorationResetHandler extends ExplorationHandler {
                 unit.getCoordinates());
         //TODO visible?
         //stealth: when is *that* check made?
-        if (distance > enemy.getSightRangeTowards(unit)) {
-            return false;
-        }
-        return true;
+        return !(distance > enemy.getSightRangeTowards(unit));
     }
 
     public boolean isResetNotRequired() {

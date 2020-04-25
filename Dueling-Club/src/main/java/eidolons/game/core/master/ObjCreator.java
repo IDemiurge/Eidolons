@@ -61,7 +61,7 @@ public class ObjCreator extends Master {
             obj = new Entrance(x, y, type, game);
         } else if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
             obj = newStructure(type, x, y, owner, ref);
-            game.getMaster().clearCache(obj.getCoordinates());
+            game.getObjMaster().clearCache(obj.getCoordinates());
         } else {
             if (EntityCheckMaster.isBoss(type)) {
                 obj = new BossUnit(type, x, y, owner, getGame(), ref);
@@ -113,14 +113,11 @@ public class ObjCreator extends Master {
         if (CoreEngine.isLevelEditor()) {
             return false;
         }
-        if (obj.isPlayerCharacter()) {
-            return true;
-        }
-        if (!getGame().getMetaMaster().getModuleMaster().isWithinModule(obj.getCoordinates()))
-            return false;
+        return obj.isPlayerCharacter();
+//        if (!getGame().getMetaMaster().getModuleMaster().isWithinModule(obj.getCoordinates()))
+//            return false;
 
         //TODO check distance
-        return false;
 
     }
 

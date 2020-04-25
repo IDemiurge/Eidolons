@@ -109,7 +109,7 @@ public class CoordinateTargeting extends TargetingImpl {
         Set<BattleFieldObject> objects = new HashSet<>();
 
         if (!cellTargeting) {
-            objects = obj.getGame().getMaster().
+            objects = obj.getGame().getObjMaster().
                     getObjectsOnCoordinate(coordinate, true); //TODO EA hack - overlaying!
         }
         if (objects.size() == 0 || cellTargeting) {

@@ -41,6 +41,10 @@ public class Spell extends DC_ActiveObj {
         // DC_CostsFactory.copyCosts();
     }
 
+//    public enum CHANNELING_SOUND {
+//        ARCANE, ELDRITCH, DARK, CHAOS, HOLY, EVIL, SUMMON, BUFF, DAMAGE, MISC
+//    }
+
     @Override
     public EntityMaster initMaster() {
         return new SpellActiveMaster(this);
@@ -328,9 +332,5 @@ public class Spell extends DC_ActiveObj {
     }
 
 
-    public enum CHANNELING_SOUND {
-        ARCANE, ELDRITCH, DARK, CHAOS, HOLY, EVIL, SUMMON, BUFF, DAMAGE, MISC
-
-    }
 
 }

@@ -83,7 +83,7 @@ public class DC_GameManager extends GameManager {
         Manager.init(game, state, this);
 
         stateManager = new DC_StateManager(state);
-        gameObjMaster = game.getMaster();// new DC_GameMaster(game);
+        gameObjMaster = game.getObjMaster();// new DC_GameMaster(game);
         Eidolons.stateManager = getStateManager();
         Eidolons.gameMaster = getGameObjMaster();
         Eidolons.game = game;

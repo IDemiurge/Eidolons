@@ -1,5 +1,6 @@
 package main.level_editor.backend.sim.impl;
 
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -10,6 +11,7 @@ import main.level_editor.LevelEditor;
 
 import java.awt.*;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import static main.system.auxiliary.log.LogMaster.log;
@@ -17,6 +19,24 @@ import static main.system.auxiliary.log.LogMaster.log;
 public class LE_FloorLoader extends FloorLoader {
     public LE_FloorLoader(DungeonMaster<Location> master) {
         super(master);
+    }
+
+    @Override
+    protected boolean isModuleObjInitRequired(Module module) {
+        return true;
+    }
+
+    @Override
+    protected void initObjects(Module module) {
+        Map<Integer, BattleFieldObject> map = module.initObjects();
+        LevelEditor.getManager().getIdManager().addMap(map);
+
+    }
+
+    @Override
+    public void addMainEntrance(Location location, String text, boolean exit) {
+        Integer id = Integer.valueOf(text);
+        LevelEditor.getManager().getTransitHandler().addMain(id,       exit );
     }
 
     @Override

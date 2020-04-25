@@ -254,7 +254,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
             if (NumberUtils.isNumber(arg, false)) {
                 dst = NumberUtils.getFloat(arg);
             }
-            BattleFieldObject a = getGame().getMaster().getByName(arg, ref);
+            BattleFieldObject a = getGame().getObjMaster().getByName(arg, ref);
             if (a != null) {
                 AggroMaster.aggro((Unit) a, Eidolons.getMainHero());
                 hasAggro=true;
@@ -433,7 +433,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
             Boolean distance = true;
             Boolean ownership = null;
             try {
-                unit = (Unit) ((DC_Game) ref.getGame()).getMaster().getByName(name, ref,
+                unit = (Unit) ((DC_Game) ref.getGame()).getObjMaster().getByName(name, ref,
                         ownership, distance, power);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);

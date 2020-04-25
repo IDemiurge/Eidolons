@@ -289,7 +289,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
                                        Batch batch) {
 
         if (debug || sightInfoDisplayed) {
-            DC_Cell cell = Eidolons.getGame().getMaster().getCellByCoordinate(Coordinates.get(x, y));
+            DC_Cell cell = Eidolons.getGame().getObjMaster().getCellByCoordinate(Coordinates.get(x, y));
             if (debug) {
                 drawOverlay(container, INFO_TEXT, batch, cell, x, y);
             }
@@ -371,7 +371,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
         Rectangle rect = null;
         if (isTooltipRequired(overlay)) {
             if (obj == null) {
-                obj = Eidolons.getGame().getMaster().getCellByCoordinate(Coordinates.get(x, y));
+                obj = Eidolons.getGame().getObjMaster().getCellByCoordinate(Coordinates.get(x, y));
             }
             Map<Rectangle, Tooltip> map = tooltipMap.get(obj);
             if (map == null) {
@@ -394,7 +394,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
 
         if (isClickListenerRequired(overlay)) {
             if (obj == null) {
-                obj = Eidolons.getGame().getMaster().getCellByCoordinate(Coordinates.get(x, y));
+                obj = Eidolons.getGame().getObjMaster().getCellByCoordinate(Coordinates.get(x, y));
             }
             Map<OVERLAY, Rectangle> map2 = getOverlayMap(obj);
             rect = map2.get(overlay);

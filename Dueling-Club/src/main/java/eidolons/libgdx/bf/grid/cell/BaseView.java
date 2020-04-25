@@ -56,6 +56,13 @@ public class BaseView extends SuperActor  implements Hoverable{
 
     }
 
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        if (!touchable)
+            return this;
+        return super.hit(x, y, touchable);
+    }
+
     protected void initSprite(UnitViewOptions o) {
         if (isUseSpriteContainer(o.getObj())) {
             addActor(spritesContainersUnder = new GroupX() {

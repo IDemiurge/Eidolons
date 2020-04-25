@@ -10,10 +10,10 @@ import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 public class LE_TransitHandler extends LE_Handler {
@@ -21,12 +21,23 @@ public class LE_TransitHandler extends LE_Handler {
     private Map<Integer, Integer> moduleTransitMap = new LinkedHashMap<>(); //entrance obj to entrance obj
     private Integer unpaired;
     private Integer addingExitFor;
-    public List<Entrance> entrances = new ArrayList<>();
+    public Set<Entrance> entrances = new LinkedHashSet<>();
 
     public LE_TransitHandler(LE_Manager manager) {
         super(manager);
     }
 
+    public void addMain(Integer id, boolean exit) {
+        BattleFieldObject objectById = getIdManager().getObjectById(id);
+        if (objectById instanceof Entrance) {
+            if (exit) {
+                ((Entrance) objectById).setMainExit(true);
+            } else {
+                ((Entrance) objectById).setMainEntrance(true);
+            }
+            entrances.add((Entrance) objectById);
+        }
+    }
     public void addTransit(Integer id, Coordinates c ) {
         Obj objectByCoordinate = getGame().getObjectByCoordinate(c);
         if (objectByCoordinate instanceof Entrance) {

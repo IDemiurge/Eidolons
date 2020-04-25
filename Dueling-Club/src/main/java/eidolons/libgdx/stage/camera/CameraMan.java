@@ -455,7 +455,8 @@ public class CameraMan {
     }
 
     public static boolean isCameraAutoCenteringOn() {
-        return cameraAutoCenteringOn;
+//        return cameraAutoCenteringOn;
+        return false;
     }
 
     public static void setCameraAutoCenteringOn(boolean b) {

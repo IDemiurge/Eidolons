@@ -12,6 +12,7 @@ import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionController;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.*;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
@@ -51,7 +52,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class DC_Obj extends MicroObj {
-
+    Module module;
     protected Map<SPECIAL_EFFECTS_CASE, Effect> specialEffects;
     protected Map<DAMAGE_CASE, List<Damage>> bonusDamage;
     protected DAMAGE_TYPE dmg_type;
@@ -77,6 +78,7 @@ public abstract class DC_Obj extends MicroObj {
     private boolean visibilityOverride;
     private boolean resetIgnored;
     private boolean visibilityFrozen;
+
 
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -760,6 +762,15 @@ public abstract class DC_Obj extends MicroObj {
     }
     public boolean isResetIgnored() {
         return resetIgnored;
+    }
+
+    @Override
+    public Module getModule() {
+        return module;
+    }
+
+    public void setModule(Module module) {
+        this.module = module;
     }
 
     public void setResetIgnored(boolean resetIgnored) {

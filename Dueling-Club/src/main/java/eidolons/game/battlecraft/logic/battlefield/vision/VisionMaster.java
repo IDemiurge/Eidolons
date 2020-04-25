@@ -95,7 +95,7 @@ public class VisionMaster implements GenericVisionManager {
             getGame().getRules().getIlluminationRule().applyLightEmission();
         }
 
-        visionRule.fullReset(getGame().getMaster().getUnitsArray());
+        visionRule.fullReset(getGame().getObjMaster().getUnitsArray());
         getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().resetVisibilityResetTimer();
 
 

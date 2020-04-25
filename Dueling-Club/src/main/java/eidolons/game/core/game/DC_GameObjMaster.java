@@ -97,6 +97,19 @@ public class DC_GameObjMaster extends GameObjMaster {
         //TODO also remove if dead
     }
 
+    public BattleFieldObject[][][] getObjCells() {
+        return getGame().getGrid().getObjCells();
+    }
+
+
+    public BattleFieldObject[] getObjects(int x_, int y_) {
+        return  getObjects(x_, y_, true);
+    }
+
+    public BattleFieldObject[] getObjects(int x_, int y_, Boolean overlayingIncluded_Not_Only) {
+        return getGame().getGrid().getObjects(x_, y_, overlayingIncluded_Not_Only);
+    }
+
     public Set<BattleFieldObject> getObjectsOnCoordinate(  Coordinates c,
                                                          Boolean overlayingIncluded_Not_Only, boolean passableIncluded, boolean cellsIncluded) {
         // TODO auto adding cells won't work!
@@ -110,6 +123,7 @@ public class DC_GameObjMaster extends GameObjMaster {
 
         if (!isCacheForStructures() || set == null) {
             set = new HashSet<>();
+
             for (BattleFieldObject object : getGame().getStructures()) {
                 if (object.isPale() != paleAspect) {
                     continue;
@@ -426,18 +440,6 @@ public class DC_GameObjMaster extends GameObjMaster {
         // zoom?
     }
 
-    public BattleFieldObject[][][] getObjCells() {
-        return getGame().getGrid().getObjCells();
-    }
-
-
-    public BattleFieldObject[] getObjects(int x_, int y_) {
-        return getObjects(x_, y_, true);
-    }
-
-    public BattleFieldObject[] getObjects(int x_, int y_, Boolean overlayingIncluded_Not_Only) {
-        return getGame().getGrid().getObjects(x_, y_, overlayingIncluded_Not_Only);
-    }
 
     public Set<Structure> getWalls() {
         HashSet<Structure> list = new HashSet<>(getStructures());

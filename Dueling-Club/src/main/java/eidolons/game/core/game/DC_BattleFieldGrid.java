@@ -76,9 +76,16 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     }
 
     public BattleFieldObject[] getObjects(int x_, int y_, Boolean overlayingIncluded_Not_Only) {
-        BattleFieldObject[] array = getObjCells()[x_][y_];
+        BattleFieldObject[][][] objCells = getObjCells(overlayingIncluded_Not_Only);
+        if (objCells.length<= x_){
+            return new BattleFieldObject[0];
+        }
+        if (objCells[x_].length<= y_){
+            return new BattleFieldObject[0];
+        }
+        BattleFieldObject[] array = objCells[x_][y_];
         if (array == null) {
-            Set<BattleFieldObject> set = DC_Game.game.getMaster().getObjectsOnCoordinate(
+            Set<BattleFieldObject> set = DC_Game.game.getObjMaster().getObjectsOnCoordinate(
                     Coordinates.get(x_, y_), false);
 //            list.addAll(
 //            game.getMaster().getObjectsOnCoordinate(
@@ -158,8 +165,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 break;
             }
             Coordinates c = Coordinates.get(X, Y);
-            Set<BattleFieldObject> objects = game.getMaster().
-                    getObjectsOnCoordinate(c, false);
+            BattleFieldObject[] objects = getObjects(X, Y, false);
             for (BattleFieldObject obj : objects) {
                 if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
                     return false;
@@ -189,7 +195,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         }
         for (int i = min + 1; i < max; i++) {
             Coordinates c = (x_y) ? Coordinates.get(xy, i) : Coordinates.get(i, xy);
-            Set<BattleFieldObject> objects = game.getMaster().getObjectsOnCoordinate(c, false, false, false);
+            Set<BattleFieldObject> objects = game.getObjMaster().getObjectsOnCoordinate(c, false, false, false);
             for (BattleFieldObject obj : objects) {
                 if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
                     return false;

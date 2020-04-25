@@ -87,8 +87,8 @@ public class FloorLoader extends DungeonHandler {
                 break;
             case OBJ_NODE_NEW:
                 module.setObjectsData(node.getTextContent());
-                if (module.isInitialModule()) {
-                    module.initObjects();
+                if (isModuleObjInitRequired(module )) {
+                    initObjects(module);
                 }
 
                 break;
@@ -111,10 +111,10 @@ public class FloorLoader extends DungeonHandler {
                 processTransitsNode(node.getTextContent());
                 break;
             case MAIN_ENTRANCE:
-                location.setEntranceData(node.getTextContent());
+                addMainEntrance(location, node.getTextContent(), false);
                 break;
             case MAIN_EXIT:
-                location.setExitData(node.getTextContent());
+                addMainEntrance(location, node.getTextContent(), true);
                 break;
             case ID_MAP:
                 module.getIdTypeMap().putAll(processIdTypesMap(node.getTextContent()));
@@ -130,6 +130,14 @@ public class FloorLoader extends DungeonHandler {
                 break;
         }
 
+    }
+
+    protected void initObjects(Module module) {
+        module.initObjects();
+    }
+
+    protected boolean isModuleObjInitRequired(Module module) {
+        return module.isInitialModule();
     }
 
     public void processNode(Node node, Location location) {
@@ -189,6 +197,15 @@ public class FloorLoader extends DungeonHandler {
             Integer id = NumberUtils.getInteger(substring.split("->")[0]);
             Coordinates c = Coordinates.get(substring.split("->")[1]);
             processTransitPair(id, c, location);
+        }
+    }
+
+    public void addMainEntrance(Location location, String text,
+                                boolean exit) {
+        if (exit) {
+            location.setExitData(text);
+        } else {
+            location.setEntranceData(text);
         }
     }
 

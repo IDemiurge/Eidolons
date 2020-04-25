@@ -15,7 +15,10 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.math.PositionMaster;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class ClearShotCondition extends MicroCondition {
@@ -83,8 +86,7 @@ public class ClearShotCondition extends MicroCondition {
         if (d != null) {
             if ((Math.abs(d.getDegrees() - d1.getDegrees()) + 360) % 360 <= 90)
                 return true;
-            if (Math.abs(d.getDegrees() % 360 - d1.getDegrees() % 360) <= 90)
-                return true;
+            return Math.abs(d.getDegrees() % 360 - d1.getDegrees() % 360) <= 90;
         }
         return false;
     }
@@ -92,8 +94,8 @@ public class ClearShotCondition extends MicroCondition {
     private boolean isBlocking(DC_Obj source, DC_Obj target,
                                int x_, int y_) {
         for (DC_Obj obj :
-                target.getGame().getMaster().getObjectsOnCoordinate(
-                        Coordinates.get(x_, y_), false))
+                target.getGame().getObjMaster().getObjects (
+                         x_, y_ , false))
         //         target.getGame().getMaster().getObjects(x_, y_))
         {
             if (!obj.isTransparent()) {
@@ -395,7 +397,7 @@ public class ClearShotCondition extends MicroCondition {
     }
 
     //
-    public boolean checkClearShot(int dX, int dY, boolean obstructionArray[][]) {
+    public boolean checkClearShot(int dX, int dY, boolean[][] obstructionArray) {
 
         double slope = (double) dY / dX;
         double k = 0.5 - slope / 2;

@@ -194,7 +194,7 @@ public class DeathMaster extends Master {
         }
 
         if (killed instanceof Structure) {
-            game.getMaster().clearCache(killed.getCoordinates());
+            game.getObjMaster().clearCache(killed.getCoordinates());
         } else
         if (!killed.isMine())
         if (killer.isPlayerCharacter())

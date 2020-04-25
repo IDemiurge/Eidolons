@@ -30,6 +30,8 @@ public abstract class GameState {
     private static boolean resetDone;
     protected boolean dirty = false;
     protected boolean interrupted = false;
+
+
     protected Map<Integer, Obj> objMap = new ConcurrentMap<>();
     protected Map<OBJ_TYPE, Map<Integer, Obj>> objMaps = new ConcurrentMap<>();
     protected Map<Integer, ObjType> typeMap = new ConcurrentMap<>();
@@ -37,7 +39,8 @@ public abstract class GameState {
     protected DequeImpl<Trigger> triggers = new DequeImpl<>();
     protected DequeImpl<Effect> effects = new DequeImpl<>();
     protected DequeImpl<Attachment> attachments = new DequeImpl<>();
-    //TODO remove spaghetti! who aggregates whom?!
+
+
     protected StateManager manager;
     protected Game game;
     private int round = ROUND_NOT_SET;

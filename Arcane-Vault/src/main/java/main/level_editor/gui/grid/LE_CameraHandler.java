@@ -13,7 +13,7 @@ import main.system.GuiEventType;
 public class LE_CameraHandler extends LE_Handler {
 
 
-    private static final int MODES = 4;
+    private static final int MODES = 2;
     private int cameraMode = 0;
 
     public LE_CameraHandler(LE_Manager manager) {

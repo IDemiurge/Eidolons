@@ -172,7 +172,7 @@ public class GammaMaster {
                     //                        log(1, x + " " + y + " has " + alpha + " light alpha with " + sub);
                 }
         }
-        int units = 1 + master.getGame().getMaster().getUnitsOnCoordinates(new Coordinates(x, y)).size();
+        int units = 1 + master.getGame().getObjMaster().getUnitsOnCoordinates(new Coordinates(x, y)).size();
         alpha = alpha / units;
         return alpha;
     }

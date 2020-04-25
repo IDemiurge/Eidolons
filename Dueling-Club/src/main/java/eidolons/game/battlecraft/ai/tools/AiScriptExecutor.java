@@ -58,7 +58,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 Boolean power = null;// getPower(arg);
                 Boolean distance = true; // getDistance(arg);
                 Boolean ownership = false; // getOwnership(arg);
-                unit = getGame().getMaster().getByName(name, ref,
+                unit = getGame().getObjMaster().getByName(name, ref,
                         ownership, distance, power);
             }
         }

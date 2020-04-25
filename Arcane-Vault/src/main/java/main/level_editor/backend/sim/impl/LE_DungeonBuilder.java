@@ -51,6 +51,7 @@ public class LE_DungeonBuilder extends LocationBuilder {
                     map.putAll(module.getObjIdMap());
                 }
             }
+            getGame().setStarted(true);
             ((LE_GameSim) getGame()).setObjIdMap(
                     map);
         }

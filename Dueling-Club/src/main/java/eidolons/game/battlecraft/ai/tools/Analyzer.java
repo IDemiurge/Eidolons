@@ -3,8 +3,8 @@ package eidolons.game.battlecraft.ai.tools;
 import eidolons.ability.conditions.WaitingFilterCondition;
 import eidolons.ability.effects.oneshot.unit.RaiseEffect;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
@@ -156,9 +156,7 @@ public class Analyzer extends AiHandler {
 
     public static boolean hasQuickItems(Unit unit) {
         if (unit.getQuickItems() != null) {
-            if (!unit.getQuickItems().isEmpty()) {
-                return true;
-            }
+            return !unit.getQuickItems().isEmpty();
         }
         return false;
     }
@@ -228,9 +226,7 @@ public class Analyzer extends AiHandler {
         if (targetObj != null) {
             if (!targetObj.getOwner().equals(Player.NEUTRAL)) {
                 if (!targetObj.getOwner().equals(source.getOwner())) {
-                    if (!targetObj.getOBJ_TYPE_ENUM().equals(DC_TYPE.BF_OBJ)) {
-                        return true;
-                    }
+                    return !targetObj.getOBJ_TYPE_ENUM().equals(DC_TYPE.BF_OBJ);
                 }
             }
         }
@@ -262,7 +258,7 @@ public class Analyzer extends AiHandler {
                                        Collection<Coordinates> coordinatesToCheck) {
 
         List<Unit> list = new ArrayList<>();
-        for (Unit sub : unit.getGame().getMaster().getUnitsArray()) {
+        for (Unit sub : unit.getGame().getObjMaster().getUnitsArray()) {
             if (coordinatesToCheck == null) {
                 list.add(sub);
             } else
@@ -602,8 +598,7 @@ public class Analyzer extends AiHandler {
     public boolean isRanged(UnitAI ai) {
         if (ai.getType() == AI_TYPE.ARCHER) {
             if (ai.getUnit().getRangedWeapon() != null)
-                if (ai.getUnit().getRangedWeapon().getAmmo() != null)
-                    return true;
+                return ai.getUnit().getRangedWeapon().getAmmo() != null;
         }
         return false;
     }

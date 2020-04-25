@@ -207,6 +207,7 @@ public class LE_XmlMaster extends LE_Handler {
                 FloorLoader.DATA);
 
         xmlBuilder.append("\n").append(buildIdMap(module));
+        xmlBuilder.append("\n").append(buildCoordinateMap(module));
         String meta = getMetaXml(module);
         xmlBuilder.append("\n").append(meta);
 
@@ -216,7 +217,6 @@ public class LE_XmlMaster extends LE_Handler {
         }
         xmlBuilder.close("Zones").append("\n");
 
-        xmlBuilder.append("\n").append(buildCoordinateMap(module));
         xmlBuilder.append("\n").append(buildBorderMap(module));
 
         xmlBuilder.append("\n").open(FloorLoader.COORDINATES_VOID);

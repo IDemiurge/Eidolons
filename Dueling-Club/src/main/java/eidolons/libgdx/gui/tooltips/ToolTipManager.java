@@ -35,6 +35,7 @@ import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.threading.WaitMaster;
 
@@ -182,7 +183,7 @@ public class ToolTipManager extends TablePanel {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)!= CoreEngine.isLevelEditor()) {
             if (tooltip instanceof UnitViewTooltip)
                 return;
         }

@@ -129,7 +129,7 @@ public class SightMaster {
                                                    FACING_DIRECTION facing) {
         Collection<Coordinates> removeList = new ArrayList<>();
         for (Coordinates c : list) {
-            DC_Cell cell = master.getGame().getMaster().getCellByCoordinate(c);
+            DC_Cell cell = master.getGame().getObjMaster().getCellByCoordinate(c);
             if (cell == null)
                 continue;
             Boolean clearShot = !isBlocked(cell, source);

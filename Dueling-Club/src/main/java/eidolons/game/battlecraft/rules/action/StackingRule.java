@@ -127,7 +127,7 @@ public class StackingRule implements ActionRule {
 
         //getVar all units on the cell
         DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
-        for (BattleFieldObject u : game.getObjectsOnCoordinate(  c, false, false, false)) {
+        for (BattleFieldObject u : game.getObjMaster(). getObjects (  c.x, c.y, false )) {
             if (!units.contains(u)) {
                 if (u.isDead())
                     continue;

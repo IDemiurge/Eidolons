@@ -43,7 +43,7 @@ public class LE_GameSim extends ScenarioGame {
 
     @Override
     protected DC_KeyManager createKeyManager() {
-        return null ;
+        return null;
     }
 
     @Override
@@ -75,6 +75,9 @@ public class LE_GameSim extends ScenarioGame {
                     public BattleFieldObject createUnit(ObjType type, int x, int y, Player owner, Ref ref) {
                         BattleFieldObject obj = super.createUnit(type, x, y, owner, ref);
                         if (type.getName().equalsIgnoreCase(DUMMY)) {
+                            return obj;
+                        }
+                        if (!isStarted()) {
                             return obj;
                         }
                         Integer id = simIdManager.objectCreated(obj);
@@ -130,10 +133,6 @@ public class LE_GameSim extends ScenarioGame {
 //        return DataManager.getType(DUMMY, DC_TYPE.UNITS);
     }
 
-    @Override
-    public boolean isStarted() {
-        return true;
-    }
 
     @Override
     public void start(boolean first) {
