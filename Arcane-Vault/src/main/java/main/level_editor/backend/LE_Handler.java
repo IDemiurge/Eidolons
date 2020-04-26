@@ -82,7 +82,7 @@ public class LE_Handler {
     }
 
     protected LevelStruct getDungeonLevel() {
-        return getGame().getDungeonMaster().getDungeonWrapper();
+        return getGame().getDungeonMaster().getLocation();
     }
 
     public LE_DialogHandler getDialogHandler() {

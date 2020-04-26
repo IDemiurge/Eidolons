@@ -14,7 +14,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import eidolons.libgdx.bf.BFDataCreatedEvent;
+import eidolons.libgdx.bf.GridCreateData;
 import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.LoadingStage;
@@ -125,10 +125,10 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     public void loadDone(EventCallbackParam param) {
         this.param = param;
 
-        if (param.get() instanceof BFDataCreatedEvent)
+        if (param.get() instanceof GridCreateData)
             if (Assets.isOn()) {
                 Chronos.mark(ASSET_LOADING);
-                if (Assets.preloadMain(((BFDataCreatedEvent) param.get()).getObjects())) {
+                if (Assets.preloadMain(((GridCreateData) param.get()).getObjects())) {
                     setLoadingAtlases(true);
                     GdxMaster.setEmptyCursor();
                     return;

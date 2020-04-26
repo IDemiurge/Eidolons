@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.BFDataCreatedEvent;
+import eidolons.libgdx.bf.GridCreateData;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.bf.mouse.MapInputController;
@@ -92,7 +92,7 @@ public class MapScreen extends GameScreenWithTown {
     }
 
     @Override
-    protected GridPanel createGrid(BFDataCreatedEvent param) {
+    protected GridPanel createGrid(GridCreateData param) {
         return null;
     }
 

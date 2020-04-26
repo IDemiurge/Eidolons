@@ -80,7 +80,7 @@ public class QuestCreator extends QuestHandler {
                                            float powerRange, DungeonQuest quest,
                                            DUNGEON_STYLE style) {
         List<ObjType> pool = null;
-        boolean surface = Eidolons.getGame().getDungeonMaster().getDungeonLevel().isSurface();
+        boolean surface = Eidolons.getGame().getDungeonMaster().getLocation().isSurface();
         Loop loop = new Loop(30);
         while (loop.continues()) {
             try {

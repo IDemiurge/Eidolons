@@ -11,7 +11,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.BFDataCreatedEvent;
+import eidolons.libgdx.bf.GridCreateData;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
@@ -215,8 +215,8 @@ public class DungeonScreen extends GameScreenWithTown {
         return new BattleGuiStage(null, null);
     }
 
-    protected GridPanel createGrid(BFDataCreatedEvent param) {
-        return new DC_GridPanel(param.getCols(), param.getRows());
+    protected GridPanel createGrid(GridCreateData param) {
+        return new DC_GridPanel(param.getCols(), param.getRows(), param.getModuleWidth(), param.getModuleHeight());
     }
 
     public void renderMain(float delta) {

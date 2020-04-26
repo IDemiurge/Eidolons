@@ -12,7 +12,7 @@ import main.entity.type.ObjType;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class LocationInitializer extends DungeonInitializer<Location> {
+public class LocationInitializer extends DungeonInitializer {
     public LocationInitializer(DungeonMaster master) {
         super(master);
     }
@@ -36,7 +36,7 @@ public class LocationInitializer extends DungeonInitializer<Location> {
                         .getContainerValue(DUNGEON_VALUE.PATH, 0));
         }
         //or take mission directly?
-        return (Location) getBuilder().buildDungeon(getDungeonPath());
+        return getBuilder().buildDungeon(getDungeonPath());
     }
 
     @Override

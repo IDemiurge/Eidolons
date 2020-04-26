@@ -349,7 +349,14 @@ public abstract class InputController implements InputProcessor {
 
 
     protected float getMargin() {
-        return MARGIN;
+        return MARGIN ;
+    }
+
+    protected float getOffsetX() {
+        return 0;
+    }
+    protected float getOffsetY() {
+        return 0;
     }
 
     protected abstract float getWidth();

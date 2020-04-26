@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.meta.universal;
 
 import com.badlogic.gdx.Gdx;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -201,8 +200,8 @@ public class TownMaster extends MetaGameHandler {
             return;
         }
 
-        Entrance entrance = ((Location) master.getGame().getDungeonMaster().
-                getDungeonWrapper()).getMainEntrance();
+        Entrance entrance = master.getGame().getDungeonMaster().
+                getLocation().getMainEntrance();
         int dst = Eidolons.getMainHero().getCoordinates().dst(
                 entrance.getOriginalCoordinates());
         int n = 2 + dst / 8;

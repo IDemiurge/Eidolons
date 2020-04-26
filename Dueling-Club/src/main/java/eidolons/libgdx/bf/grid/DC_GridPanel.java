@@ -71,8 +71,8 @@ public class DC_GridPanel extends GridPanel {
     private boolean welcomeInfoShown;
 
 
-    public DC_GridPanel(int cols, int rows) {
-        super(cols, rows);
+    public DC_GridPanel(int paramCols, int paramRows, int cols, int rows) {
+        super(paramCols, paramRows, cols, rows);
     }
 
 

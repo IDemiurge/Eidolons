@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 /**
  * Created by JustMe on 5/7/2017.
  */
-public class Positioner<E extends DungeonWrapper> extends DungeonHandler  {
+public class Positioner  extends DungeonHandler  {
     protected Map<Coordinates, List<ObjType>> unitCache;
     private Integer maxSpacePercentageTaken = 100;
 

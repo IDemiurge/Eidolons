@@ -149,7 +149,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         initBlock(block, coords);
         block.setRoomType(blockTemplate.getType());
 
-        LevelStruct level = getGame().getDungeonMaster().getDungeonWrapper();
+        LevelStruct level = getGame().getDungeonMaster().getLocation();
         reset(level);
         updateTree();
     }

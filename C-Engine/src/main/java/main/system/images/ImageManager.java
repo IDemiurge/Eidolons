@@ -7,17 +7,13 @@ import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ASPECT;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.parameters.PARAMETER;
-import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.obj.Obj;
-import main.entity.type.ObjType;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.SwingMaster;
 import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
@@ -426,20 +422,12 @@ public class ImageManager {
 
     }
 
-    public static ImageIcon getEmptyCellIcon() {
-        return getEmptyCellIcon(GuiManager.getBfCellsVersion());
-    }
-
     public static ImageIcon getEmptyCellIcon(int version) {
         return getIcon(getEmptyCellPath(version));
     }
 
     public static String getEmptyCellPath(int version) {
         return "ui//cells//Empty Cell v" + version + ".png";
-    }
-
-    public static ImageIcon getHighlightedCellIcon() {
-        return getHighlightedCellIcon(GuiManager.getBfCellsVersion());
     }
 
     public static ImageIcon getUnknownIcon() {
@@ -451,50 +439,6 @@ public class ImageManager {
 
     public static String getEmptyEmblemPath() {
         return ("ui//emblems//auto//Knights.png");
-    }
-
-    // public static ImageIcon getHighlightedVersion(ImageIcon pic, HIGHLIGHT
-    // hl, boolean terrain) {
-    // hl.getBorder();
-    // if (terrain) {
-    // hl.getCellVariant();
-    // }
-    // Image IMG = pic.getImage();
-    // pic.setImage(IMG);
-    // return pic;
-    // }
-
-    public static ImageIcon getHighlightedCellIcon(int version) {
-        return getIcon("ui//cells//Highlight Green Cell v" + version + ".png");
-    }
-
-    public static ImageIcon getHiddenCellIcon() {
-        return getHiddenCellIcon(GuiManager.getBfCellsVersion());
-    }
-
-    public static ImageIcon getHiddenCellIcon(int version) {
-        return getIcon("ui//cells//Hidden Cell v" + version + ".png");
-    }
-
-    public static ImageIcon getUnknownCellIcon() {
-        return getUnknownCellIcon(GuiManager.getBfCellsVersion());
-    }
-
-    public static ImageIcon getUnknownCellIcon(int version) {
-        return getIcon("ui//cells//Unknown Cell v" + version + ".png");
-    }
-
-    public static String getEmptyCellIconNoBorder() {
-        return "ui//EMPTY_CELL_NO_BORDER" + ".png";
-    }
-
-    public static ImageIcon getEmptyCellBfObjBackgroundIcon() {
-        return getIcon("ui//EMPTY_CELL_BF_OBJ_BG" + ".png");
-
-    }
-
-    public static String getUnknownSmallItemIconPath() {
-        return "ui//unknown buff" + ".jpg";
     }
 
     public static JLabel getLabel(String img, int w, int h) {
@@ -516,14 +460,6 @@ public class ImageManager {
             LogMaster.log(1, DEFAULT_IMAGE_PATH);
         }
         return DEFAULT_IMG;
-    }
-
-    public static Image getDeadIcon() {
-        return getIcon(DEAD_ICON).getImage();
-    }
-
-    public static Image getDeadIconBig() {
-        return getImage("ui/Empty1.jpg");
     }
 
     public static Image getEmblem(String property) {
@@ -550,10 +486,6 @@ public class ImageManager {
             return new CustomImage(icon.imgPath, icon.getImage());
         }
         return null;
-    }
-
-    public static ImageIcon getHighlightedVersion(ImageIcon pic, HIGHLIGHT hl, boolean terrain) {
-        return new ImageIcon(applyBorder(pic.getImage(), hl.getBorder()));
     }
 
     public static String getThemedImagePath(String imagePath, COLOR_THEME colorTheme) {
@@ -619,13 +551,6 @@ public class ImageManager {
         return MAX_TYPE_ICON_SIZE;
     }
 
-    public static Image getPrincipleImage(PRINCIPLES principle) {
-        if (principle == null) {
-            return getImage(VALUE_ICONS_PATH + "Principles/principles.jpg");
-        }
-        return getImage(VALUE_ICONS_PATH + "Principles" + separator + principle.toString() + ".jpg");
-    }
-
     public static String getMasteryGroupPath(String title) {
         return VALUE_ICONS_PATH + "masteries/groups" + separator + title + ".png";
     }
@@ -653,17 +578,6 @@ public class ImageManager {
     }
 
 
-    //    public static String getValueIconPath(VALUE value) {
-    //        if (value == null) {
-    //            return "";
-    //        }
-    //        Image img = getValueIcon(value);
-    //        if (img == null) {
-    //            return "";
-    //        }
-    //        return ((CustomImage) img).getImgPath();
-    //
-    //    }
     public static String getValueIconPath(VALUE value) {
         String imgPath = VALUE_ICONS_PATH;
         String name = value.getName().toLowerCase();
@@ -766,27 +680,6 @@ public class ImageManager {
         return (VALUE_ICONS_PATH + "damage types" + separator + enumConstName + ".png");
     }
 
-    public static Image getModeImage(String mode, Boolean on_off, boolean blocked) {
-        Image image = getImage("ui/actions/modes" + separator + mode + ".png");
-        if (image == null) {
-            ObjType type = DataManager.getType(mode, DC_TYPE.ACTIONS);
-            if (type != null) {
-                image = type.getIcon().getImage();
-            }
-        }
-        if (image == null) {
-            return null;
-        }
-        if (blocked) {
-            image = applyBorder(image, BORDER.DARKENING_CIRCLE_50);
-        }
-        if (on_off) {
-            // image = applyBorder(image, BORDER.CIRCLE_GLOW_50);
-            image = applyBorder(image, BORDER.CIRCLE_BEVEL);
-        }
-        return image;
-    }
-
     public static Dimension getImgSize(Image img) {
         if (img == null) {
             return null; // new Dimension(0, 0)
@@ -794,10 +687,6 @@ public class ImageManager {
         return new Dimension(img.getWidth(null), img.getHeight(null));
     }
 
-    public static Image getFacingImage(FACING_DIRECTION facing) {
-        return new EnumMaster<STD_IMAGES>().retrieveEnumConst(STD_IMAGES.class, facing.name())
-                .getImage();
-    }
 
     public static boolean isImageFile(String name) {
         if (StringMaster.isEmpty(name)) {
@@ -828,25 +717,8 @@ public class ImageManager {
         //        return image.getHeight(null) >= 1;
     }
 
-    public static String getDefaultEmptyListIcon() {
-        return EMPTY_LIST_ITEM;
-    }
-
-    public static String getAltEmptyListIcon() {
-        return EMPTY_LIST_ITEM_ALT;
-    }
-
     public static String getEmptyListIconSmall() {
         return EMPTY_LIST_ITEM_SMALL;
-    }
-
-    public static ImageIcon getSizedVersion(String path, int size) {
-        return getSizedIcon(path, new Dimension(size, size));
-
-    }
-
-    public static Image getDefaultCursor() {
-        return getImage(DEFAULT_CURSOR);
     }
 
     public static List<String> getPortraitsForBackground(String property) {

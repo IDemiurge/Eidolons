@@ -166,7 +166,7 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
     private Coordinates getRespawnCoordinates(ObjType type) {
         if (EidolonsGame.BRIDGE) {
-            return getGame().getDungeonMaster().getDungeonLevel().getEntranceCoordinates();
+            return getGame().getDungeonMaster().getLocation().getMainEntrance().getCoordinates();
 //            return SoulforceMaster.getLastRespPoint();
         }
         if (EidolonsGame.BOSS_FIGHT || EidolonsGame.TUTORIAL_MISSION) {

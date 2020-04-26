@@ -19,7 +19,6 @@ import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.content.enums.EncounterEnums;
 import main.data.ability.construct.VariableManager;
-import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
@@ -29,7 +28,6 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.launch.CoreEngine;
@@ -359,97 +357,8 @@ public class DungeonLevel  {
     }
 
 
-    public void setMainStyle(DUNGEON_STYLE mainStyle) {
-        this.mainStyle = mainStyle;
-    }
-
     public boolean isSurface() {
         return surface;
-    }
-
-    Map<LevelBlock, DungeonEnums.CELL_IMAGE> cellTypeMap = new HashMap();
-
-    public int getCellVariant(int i, int j) {
-        return 0;
-    }
-
-    public DungeonEnums.CELL_IMAGE getCellType(int i, int j) {
-
-        Coordinates c = new Coordinates(i, j);
-        DungeonEnums.CELL_IMAGE img = cellTypeSpecialMap.get(c);
-        if (img != null) {
-            return img;
-        }
-
-        LevelBlock block = getBlockForCoordinate(c);
-        if (block != null) {
-            img = block.getCellType();
-        }
-
-        if (img == null) {
-            DUNGEON_STYLE style = block == null ? getMainStyle() : block.getZone().getStyle();
-            img = getCellImageType(style);
-//           TODO  if (!TextureCache.isImage(StrPathBuilder.build(PathFinder.getCellImagesPath(), img + ".png"))) {
-//                style = getMainStyle();
-//                img = getCellImageType(style);
-//            }
-            cellTypeMap.put(block, img);
-        }
-        return img;
-    }
-
-    public String getCellImgPath(int i, int j) {
-        DungeonEnums.CELL_IMAGE img = getCellType(i, j);
-//        CELL_IMAGE_SUFFIX suffix =
-        return StrPathBuilder.build(PathFinder.getCellImagesPath(), img + ".png");
-    }
-
-    public Map<Coordinates, DungeonEnums.CELL_IMAGE> getCellTypeSpecialMap() {
-        return cellTypeSpecialMap;
-    }
-
-    private DungeonEnums.CELL_IMAGE getCellImageType(DUNGEON_STYLE style) {
-        switch (style) {
-            case Somber:
-                if (RandomWizard.chance(56))
-                    return DungeonEnums.CELL_IMAGE.star;
-                if (RandomWizard.chance(66))
-                    return DungeonEnums.CELL_IMAGE.octagonal;
-            case DWARF:
-                if (RandomWizard.chance(66))
-                    return DungeonEnums.CELL_IMAGE.diamond;
-                return DungeonEnums.CELL_IMAGE.octagonal;
-            case SPIDER:
-            case Stony:
-            case Pagan:
-                return DungeonEnums.CELL_IMAGE.natural;
-            case ROGUE:
-                if (RandomWizard.chance(66))
-                    return DungeonEnums.CELL_IMAGE.tiles;
-                return DungeonEnums.CELL_IMAGE.cross;
-
-            case Knightly:
-            case Holy:
-                if (RandomWizard.chance(66)) {
-                    return DungeonEnums.CELL_IMAGE.cross;
-                }
-                return DungeonEnums.CELL_IMAGE.diamond;
-            case DarkElegance:
-            case PureEvil:
-                if (RandomWizard.chance(66))
-                    return DungeonEnums.CELL_IMAGE.octagonal;
-            case Brimstone:
-//                if (RandomWizard.chance(66))
-//                    return CELL_IMAGE.circle;
-            case Grimy:
-                if (RandomWizard.chance(66))
-                    return DungeonEnums.CELL_IMAGE.tiles;
-            case Cold:
-            case Arcane:
-                if (RandomWizard.chance(66))
-                    return DungeonEnums.CELL_IMAGE.star;
-        }
-        return DungeonEnums.CELL_IMAGE.tiles;
     }
 
     public String getEntranceData() {
@@ -466,7 +375,6 @@ public class DungeonLevel  {
 
         levelBlock.getUnitGroups().put(unitsAtCoordinates, groupType);
     }
-
 
     public String getLevelName() {
         return name;

@@ -326,7 +326,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             if (CoreEngine.isArcaneVault())// TODO prevent from piling up?
             {
                 if (item != null) {
-                    game.getState().removeObject(item.getId());
+                    game.getState().manager.removeObject(item.getId(), item.getOBJ_TYPE_ENUM());
                     return true;
                 }
             } else {

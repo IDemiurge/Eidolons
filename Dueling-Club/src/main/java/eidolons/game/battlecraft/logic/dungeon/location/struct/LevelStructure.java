@@ -192,7 +192,12 @@ public class LevelStructure {
         },
         filepath,
         floor_type,
-
+        location_type( EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return DungeonEnums.LOCATION_TYPE.class;
+            }
+        },
         //additional?
         lighting,
         fires_color,

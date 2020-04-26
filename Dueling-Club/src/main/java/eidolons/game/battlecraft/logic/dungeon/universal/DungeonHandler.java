@@ -23,9 +23,9 @@ import java.util.Set;
 public class DungeonHandler {
 
     protected DC_Game game;
-    protected DungeonMaster<Location> master;
+    protected DungeonMaster  master;
 
-    public DungeonHandler(DungeonMaster<Location> master) {
+    public DungeonHandler(DungeonMaster master) {
         this.master = master;
         this.game = master.getGame();
     }
@@ -60,7 +60,7 @@ public class DungeonHandler {
         return master.getGame();
     }
 
-    public DungeonMaster<Location> getMaster() {
+    public DungeonMaster getMaster() {
         return master;
     }
 
@@ -68,7 +68,7 @@ public class DungeonHandler {
         return getGame().getMetaMaster();
     }
 
-    public DungeonInitializer<Location> getInitializer() {
+    public DungeonInitializer getInitializer() {
         return master.getInitializer();
     }
 
@@ -76,11 +76,11 @@ public class DungeonHandler {
         return master.getBuilder();
     }
 
-    public Positioner<Location> getPositioner() {
+    public Positioner getPositioner() {
         return master.getPositioner();
     }
 
-    public FacingAdjuster<Location> getFacingAdjuster() {
+    public FacingAdjuster getFacingAdjuster() {
         return master.getFacingAdjuster();
     }
 
@@ -116,7 +116,7 @@ public class DungeonHandler {
         return master.getBattle();
     }
 
-    public Spawner<Location> getSpawner() {
+    public Spawner getSpawner() {
         return master.getSpawner();
     }
 
@@ -129,6 +129,6 @@ public class DungeonHandler {
     }
 
     public Location getDungeon() {
-        return master.getDungeonWrapper();
+        return master.getLocation();
     }
 }

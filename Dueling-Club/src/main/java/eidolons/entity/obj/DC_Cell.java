@@ -23,7 +23,6 @@ import main.game.logic.battle.player.Player;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
-import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
 
 public class DC_Cell extends DC_Obj implements Cell {
@@ -162,8 +161,8 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
     public DIRECTION getBorderSide() {
-        if (getX() + 1 == GuiManager.getCurrentLevelCellsX()) {
-            if (getY() + 1 == GuiManager.getCurrentLevelCellsY()) {
+        if (getX() + 1 == Coordinates.getFloorWidth()) {
+            if (getY() + 1 == Coordinates.getFloorHeight()) {
                 return DIRECTION.DOWN_RIGHT;
             }
             if (getY() == 0) {
@@ -171,11 +170,11 @@ public class DC_Cell extends DC_Obj implements Cell {
             }
             return DIRECTION.RIGHT;
         }
-        if (getY() + 1 == GuiManager.getCurrentLevelCellsY()) {
+        if (getY() + 1 == Coordinates.getFloorHeight()) {
             if (getX() == 0) {
                 return DIRECTION.DOWN_LEFT;
             }
-            if (getX() + 1 == GuiManager.getCurrentLevelCellsX()) {
+            if (getX() + 1 == Coordinates.getFloorWidth()) {
                 return DIRECTION.DOWN_RIGHT;
             }
             return DIRECTION.DOWN;
@@ -184,13 +183,13 @@ public class DC_Cell extends DC_Obj implements Cell {
             if (getX() == 0) {
                 return DIRECTION.UP_LEFT;
             }
-            if (getX() + 1 == GuiManager.getCurrentLevelCellsX()) {
+            if (getX() + 1 == Coordinates.getFloorWidth()) {
                 return DIRECTION.UP_RIGHT;
             }
             return DIRECTION.UP;
         }
         if (getX() == 0) {
-            if (getY() + 1 == GuiManager.getCurrentLevelCellsY()) {
+            if (getY() + 1 == Coordinates.getFloorHeight()) {
                 return DIRECTION.DOWN_LEFT;
             }
             if (getY() == 0) {

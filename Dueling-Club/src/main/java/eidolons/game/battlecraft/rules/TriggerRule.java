@@ -26,7 +26,7 @@ public abstract class TriggerRule {
         if (trigger == null) {
             initTrigger();
         }
-        game.getState().removeTrigger(getTrigger());
+        game.getState().manager.removeTrigger(getTrigger());
 
     }
 

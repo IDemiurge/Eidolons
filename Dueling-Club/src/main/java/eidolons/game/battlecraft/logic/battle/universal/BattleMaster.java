@@ -123,7 +123,7 @@ public abstract class BattleMaster<E extends Battle> {
     }
 
     public Dungeon getDungeon() {
-        return getDungeonMaster().getDungeonWrapper().getDungeon();
+        return getDungeonMaster().getLocation().getDungeon();
     }
 
     public DC_Game getGame() {

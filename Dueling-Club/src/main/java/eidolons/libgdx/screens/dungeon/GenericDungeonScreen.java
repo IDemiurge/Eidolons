@@ -15,7 +15,7 @@ import eidolons.game.netherflame.igg.IGG_Images;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.bf.BFDataCreatedEvent;
+import eidolons.libgdx.bf.GridCreateData;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.mouse.InputController;
@@ -58,7 +58,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
 
     protected abstract GenericGuiStage createGuiStage();
 
-    protected abstract GridPanel createGrid(BFDataCreatedEvent param);
+    protected abstract GridPanel createGrid(GridCreateData param);
 
     protected void bindEvents() {
         GuiEventManager.bind(GuiEventType.CAMERA_LAPSE_TO, p -> {
@@ -71,7 +71,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
         if (backTexture == null && backgroundSprite == null) {
             String path = null;
             try {
-                path = DC_Game.game.getDungeonMaster().getDungeonWrapper().getMapBackground();
+                path = DC_Game.game.getDungeonMaster().getLocation().getMapBackground();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -197,7 +197,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
     protected void afterLoad() {
         setCam((OrthographicCamera) viewPort.getCamera());
 
-        final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
+        final GridCreateData param = ((GridCreateData) data.getParams().get());
         gridPanel = createGrid(param);
         Module module = DC_Game.game.getModule();
         if (!CoreEngine.isLevelEditor())

@@ -3,15 +3,26 @@ package eidolons.libgdx.bf;
 import eidolons.entity.obj.BattleFieldObject;
 import main.system.datatypes.DequeImpl;
 
-public class BFDataCreatedEvent {
+public class GridCreateData {
     private final int cols;
     private final int rows;
     private final DequeImpl<BattleFieldObject> objects;
+    Integer moduleWidth , moduleHeight;
 
-    public BFDataCreatedEvent(int cols, int rows, DequeImpl<BattleFieldObject> objects) {
+    public GridCreateData(int cols, int rows, DequeImpl<BattleFieldObject> objects, Integer moduleWidth, Integer moduleHeight) {
         this.cols = cols;
         this.rows = rows;
         this.objects = objects;
+        this.moduleWidth = moduleWidth;
+        this.moduleHeight = moduleHeight;
+    }
+
+    public Integer getModuleWidth() {
+        return moduleWidth;
+    }
+
+    public Integer getModuleHeight() {
+        return moduleHeight;
     }
 
     public int getCols() {

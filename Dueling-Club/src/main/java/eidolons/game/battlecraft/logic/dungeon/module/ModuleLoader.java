@@ -4,6 +4,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.libgdx.screens.ScreenMaster;
@@ -69,6 +70,7 @@ public class ModuleLoader extends DungeonHandler {
 //        initMusic();
 //        loadAssets(module);
         GuiEventManager.trigger(GuiEventType.GRID_RESET, module);
+        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
     }
 
     public void loadInitial() {
@@ -76,6 +78,7 @@ public class ModuleLoader extends DungeonHandler {
     }
     private void initLogicalGrid(Module module) {
         game.enterModule(module);
+        game.getDungeonMaster().getBuilder().initModuleSize(module);
         BattleFieldManager.entered(module.getId() );
         if (!CoreEngine.isLevelEditor()) {
             spawnEncounters(module);

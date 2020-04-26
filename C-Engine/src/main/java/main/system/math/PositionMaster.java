@@ -7,7 +7,6 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.XLine;
 import main.system.auxiliary.secondary.Bools;
-import main.system.graphics.GuiManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,11 +38,11 @@ public class PositionMaster   {
     }
 
     public static int getX() {
-        return GuiManager.getCurrentLevelCellsX();
+        return Coordinates.getFloorWidth();
     }
 
     public static int getY() {
-        return GuiManager.getCurrentLevelCellsY();
+        return Coordinates.getFloorHeight();
     }
 
     public static boolean noObstaclesInLine(Coordinates c1, Coordinates c2, BattleFieldGrid grid,

@@ -5,6 +5,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.TransitHandler;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.LayerManager;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
@@ -23,9 +24,9 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import eidolons.libgdx.particles.ambi.ParticleManager;
+import main.game.bf.Coordinates;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
-import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
 
 import java.util.Map;
@@ -36,14 +37,14 @@ import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
 /*
  *
  */
-public abstract class DungeonMaster<E extends DungeonWrapper> {
+public abstract class DungeonMaster {
     protected DC_Game game;
-    protected E dungeonWrapper;
-    protected DungeonInitializer<E> initializer;
+    protected Location location;
+    protected DungeonInitializer initializer;
     protected DungeonBuilder  builder;
-    protected Positioner<E> positioner;
-    protected Spawner<E> spawner;
-    protected FacingAdjuster<E> facingAdjuster;
+    protected Positioner positioner;
+    protected Spawner spawner;
+    protected FacingAdjuster facingAdjuster;
     private ExplorationMaster explorationMaster;
     private DoorMaster doorMaster;
     private LockMaster lockMaster;
@@ -113,8 +114,8 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
             } catch (Exception e) {
                 ExceptionMaster.printStackTrace(e);
             }
-        ParticleManager.init(dungeonWrapper.getDungeon());
-        GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, dungeonWrapper.getMapBackground());
+        ParticleManager.init(location.getDungeon());
+        GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, location.getMapBackground());
         spawner.spawn();
     }
 
@@ -123,12 +124,12 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public void init() {
-        if (dungeonWrapper == null)
-            dungeonWrapper = initDungeon();
+        if (location == null)
+            location = initDungeon();
         //TODO remove this!
 
-        if (dungeonWrapper == null) {
-            dungeonWrapper = initDungeon();
+        if (location == null) {
+            location = initDungeon();
         }
         if (!CoreEngine.isCombatGame()) {
             return;
@@ -137,13 +138,13 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 //        getBattleMaster().getScriptManager().parseDungeonScripts(dungeonWrapper.getDungeon());
 //        trapMaster.initTraps(getDungeon());
 
-        GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
-        GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());
+        Coordinates.setFloorWidth(location.getWidth());
+        Coordinates.setFloorHeight(location.getHeight());
 
     }
 
-    public void setDungeonWrapper(E dungeonWrapper) {
-        this.dungeonWrapper = dungeonWrapper;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     protected void processMetaDataMap(Map<String, String> dataMap) {
@@ -165,22 +166,22 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         }
     }
 
-    protected E initDungeon() {
+    protected Location initDungeon() {
         try {
             return initializer.initDungeon();
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
         }
-        return dungeonWrapper;
+        return location;
     }
 
-    protected abstract FacingAdjuster<E> createFacingAdjuster();
+    protected abstract FacingAdjuster createFacingAdjuster();
 
-    protected abstract Positioner<E> createPositioner();
+    protected abstract Positioner createPositioner();
 
-    protected abstract Spawner<E> createSpawner();
+    protected abstract Spawner createSpawner();
 
-    protected abstract DungeonInitializer<E> createInitializer();
+    protected abstract DungeonInitializer createInitializer();
 
     public DC_Game getGame() {
         return game;
@@ -190,11 +191,11 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return structureMaster;
     }
 
-    public DungeonInitializer<E> getInitializer() {
+    public DungeonInitializer getInitializer() {
         return initializer;
     }
 
-    public FacingAdjuster<E> getFacingAdjuster() {
+    public FacingAdjuster getFacingAdjuster() {
         return facingAdjuster;
     }
 
@@ -202,16 +203,16 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return builder;
     }
 
-    public Positioner<E> getPositioner() {
+    public Positioner getPositioner() {
         return positioner;
     }
 
-    public Spawner<E> getSpawner() {
+    public Spawner getSpawner() {
         return spawner;
     }
 
-    public E getDungeonWrapper() {
-        return dungeonWrapper;
+    public Location getLocation() {
+        return location;
     }
 
 
@@ -248,7 +249,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public Dungeon getDungeon() {
-        return dungeonWrapper.getDungeon();
+        return location.getDungeon();
     }
 
     public ExplorationMaster getExplorationMaster() {
@@ -272,7 +273,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
     public DungeonLevel getDungeonLevel() {
         if (EidolonsGame.TOWN)
-            if (dungeonWrapper == null && dungeonLevel == null) {
+            if (location == null && dungeonLevel == null) {
 //            dungeonWrapper = initDungeon();
                 init();
             }
@@ -284,7 +285,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public void next() {
-        dungeonWrapper = null;
+        location = null;
     }
 
     public TrapMaster getTrapMaster() {
@@ -293,14 +294,6 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
 
     public PortalMaster getPortalMaster() {
         return portalMaster;
-    }
-
-    public String getDefaultEntranceType() {
-        return getDungeonLevel().getEntranceType();
-    }
-
-    public String getDefaultExitType() {
-        return getDungeonLevel().getExitType();
     }
 
     public LayerManager getLayerManager() {

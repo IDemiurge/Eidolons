@@ -61,11 +61,12 @@ import static main.system.GuiEventType.*;
 
 public abstract class GridPanel extends Group {
     protected final int square;
-    private final int full_rows;
-    private final int full_cols;
-    protected int cols;
-    protected int rows;
+    protected final int full_rows;
+    protected final int full_cols;
+    protected int moduleCols;
+    protected int moduleRows;
     protected int x1, x2, y1, y2;
+    private float offsetX, offsetY;
     protected GridUnitView hoverObj;
     protected static boolean showGridEmitters;
     protected boolean resetVisibleRequired;
@@ -76,7 +77,7 @@ public abstract class GridPanel extends Group {
     protected Pillars pillars;
 
     protected GridCellContainer[][] cells;
-    protected GridCellContainer[][] removedCells;
+//    protected GridCellContainer[][] removedCells;
     protected Map<BattleFieldObject, BaseView> viewMap;
     protected List<Manipulator> manipulators = new ArrayList<>();
     protected List<GridObject> gridObjects = new ArrayList<>();
@@ -92,10 +93,10 @@ public abstract class GridPanel extends Group {
     private Coordinates offset;
     private Map<Module, GridSubParts> containerMap = new HashMap<>();
 
-    public GridPanel(int cols, int rows) {
+    public GridPanel(int cols, int rows, int moduleCols, int moduleRows) {
         this.square = rows * cols;
-        this.cols = cols;
-        this.rows = rows;
+        this.moduleCols = moduleCols;
+        this.moduleRows = moduleRows;
         this.full_rows = rows;
         this.full_cols = cols;
         initFullGrid();
@@ -105,10 +106,13 @@ public abstract class GridPanel extends Group {
         offset = module.getOrigin();
         x1 = offset.x;
         y1 = offset.y;
-        cols = module.getEffectiveWidth();
-        rows = module.getEffectiveHeight();
-        x2 = cols + offset.x;
-        y2 = rows + offset.y;
+        offsetX = x1 * GridMaster.CELL_W;
+        offsetY = y1 * GridMaster.CELL_H;
+
+        moduleCols = module.getEffectiveWidth();
+        moduleRows = module.getEffectiveHeight();
+        x2 = moduleCols + offset.x;
+        y2 = moduleRows + offset.y;
         GridSubParts container = containerMap.get(module);
         if (container == null) {
             container = new GridSubParts();
@@ -119,7 +123,7 @@ public abstract class GridPanel extends Group {
                 if (value.isWithinCameraCheck()) {
                     value.fadeOut();
                 } else {
-                    value.remove();
+                    value.remove(); //TODO  st add back on return
                 }
             }
 
@@ -148,22 +152,41 @@ public abstract class GridPanel extends Group {
     }
 
     protected void initModuleGrid() {
-        for (int x = x1; x < x2; x++) {
-            for (int y = y1; y < y2; y++) {
+
+        for (int x = 0; x < cells.length; x++) {
+            for (int y = 0; y < cells[0].length; y++) {
                 DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(x,
                        y));
-                TextureRegion image = TextureCache.getOrCreateR(cell.getImagePath());
-                GridCellContainer gridCell=null ;
-                cells[x][y] = gridCell = createGridCell(image, x, y);
+                if  (y<y2 && y>=y1
+                    &&x<x2&&x>=x1 ) {
+                    if (cells[x][y] != null) {
+                        resetCellForModule(cells[x][y]);
+                        continue;
+                    }
+                    TextureRegion image = TextureCache.getOrCreateR(cell.getImagePath());
+                    GridCellContainer gridCell=null ;
+                    cells[x][y] = gridCell = createGridCell(image, x, y);
 
-                addActor(gridCell.init());
-                gridCell.setUserObject(cell);
+                    addActor(gridCell.init());
+                    gridCell.setUserObject(cell);
 
-                gridCell.setY(getGdxY_ForModule(y) * GridMaster.CELL_H);
-                gridCell.setX(x * GridMaster.CELL_W);
+                    gridCell.setY(getGdxY_ForModule(y) * GridMaster.CELL_H);
+                    gridCell.setX(x * GridMaster.CELL_W);
+                } else {
+                    //OR do it via distance from main hero?
+                    //compare pos of modules, choose axis and direction, increase delay
+                    //add fade in waves
+                    if (cells[x][y] != null)
+                        ActionMaster.addFadeOutAction(cells[x][y], 1.5f, true);
+                }
             }
         }
 
+    }
+
+    private void resetCellForModule(GridCellContainer container) {
+        ActionMaster.addFadeInAction(container, 1.5f);
+        addActor(container);
     }
 
 
@@ -174,15 +197,14 @@ public abstract class GridPanel extends Group {
 
     public GridPanel initFullGrid() {
         //entire dungeon?
-        cells = new GridCellContainer[cols][rows];
-        removedCells = new GridCellContainer[cols][rows];
-        setHeight(GridMaster.CELL_W * rows);
-        setWidth(GridMaster.CELL_H * cols);
+        cells = new GridCellContainer[full_cols][full_rows];
+        setHeight(GridMaster.CELL_W * full_rows);
+        setWidth(GridMaster.CELL_H * full_cols);
 
         addVoidDecorators(true);
 
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.SPRITE_CACHE_ON))
-            TextureManager.addCellsToCache(cols, rows);
+            TextureManager.addCellsToCache(moduleCols, moduleRows);
 
         addActor(new CellBorderManager());
         if (isShadowMapOn()) {
@@ -216,12 +238,12 @@ public abstract class GridPanel extends Group {
             if (isPillarsOn())
                 addActor(pillars = new Pillars(this));
         } else {
-
-            for (int x = 0; x < cols; x++) {
-                for (int y = 0; y < rows; y++) {
-                    checkAddBorder(x, y);
-                }
-            }
+//TODO for each module?
+//            for (int x = 0; x < full_cols; x++) {
+//                for (int y = 0; y < full_rows; y++) {
+//                    checkAddBorder(x, y);
+//                }
+//            }
         }
     }
 
@@ -300,7 +322,7 @@ public abstract class GridPanel extends Group {
 
     public void restoreVoid(int x, int y, boolean animated) {
         GridCellContainer cell =
-                removedCells[x][ (y)];
+                cells[x][ (y)];
 //        addActor(cell);
         if (animated) {
             ActionMaster.addFadeInAction(cell, 0.5f);
@@ -319,7 +341,7 @@ public abstract class GridPanel extends Group {
         } else
             cell.setVisible(false);
 
-        removedCells[x][ (y)] = cell;
+//        removedCells[x][ (y)] = cell;
         cell.getUserObject().setVOID(true);
     }
 
@@ -694,16 +716,16 @@ public abstract class GridPanel extends Group {
         return viewMap;
     }
 
-    public int getCols() {
-        return cols;
+    public int getModuleCols() {
+        return moduleCols;
     }
 
     public GridCellContainer[][] getCells() {
         return cells;
     }
 
-    public int getRows() {
-        return rows;
+    public int getModuleRows() {
+        return moduleRows;
     }
 
     public BattleFieldObject getObjectForView(BaseView source) {
@@ -962,11 +984,11 @@ public abstract class GridPanel extends Group {
     protected void checkAddBorder(int x, int y) {
         Boolean hor = null;
         Boolean vert = null;
-        if (x + 1 == cols)
+        if (x + 1 == full_cols)
             hor = true;
         if (x == 0)
             hor = false;
-        if (y + 1 == rows)
+        if (y + 1 == full_rows)
             vert = true;
         if (y == 0)
             vert = false;
@@ -1051,10 +1073,17 @@ public abstract class GridPanel extends Group {
     }
 
     public int getGdxY_ForModule(int y) {
-        return rows - y  ;
+        return moduleRows - y  ;
     }
 
     public float getModuleY(int y) {
-        return y - (full_rows - rows)  ;
+        return y - (full_rows - moduleRows)  ;
+    }
+
+    public float getOffsetX() {
+        return offsetX;
+    }
+    public float getOffsetY() {
+        return offsetY;
     }
 }

@@ -24,7 +24,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     private int w;
     private Module module;
     private Set<Coordinates> coordinates;
-    private LinkedHashSet<DC_Cell> cellsSet;
+    private Set<DC_Cell> cellsSet;
     DC_Cell[][] cells;
     private BattleFieldObject[][][] objCellsNoOverlaying;
     private BattleFieldObject[][][] objCellsOverlaying;
@@ -33,8 +33,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     public DC_BattleFieldGrid(Module module) {
         game = DC_Game.game;
-        this.w = this.game.getDungeonMaster().getDungeonWrapper().getWidth();
-        this.h = this.game.getDungeonMaster().getDungeonWrapper().getHeight();
+        this.w = this.game.getDungeonMaster().getLocation().getWidth();
+        this.h = this.game.getDungeonMaster().getLocation().getHeight();
         coordinates = new LinkedHashSet<>();
         cellsSet = new LinkedHashSet<>();
         cells = new DC_Cell[w][h];
@@ -280,7 +280,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         return coordinates;
     }
 
-    public LinkedHashSet<DC_Cell> getCellsSet() {
+    public Set<DC_Cell> getCellsSet() {
         return cellsSet;
     }
 

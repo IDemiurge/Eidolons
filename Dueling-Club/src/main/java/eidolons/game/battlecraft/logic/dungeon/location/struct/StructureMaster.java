@@ -101,4 +101,8 @@ public class StructureMaster extends DungeonHandler {
         }
         return null;
     }
+
+    public int getCellVariant(int i, int j) {
+        return 1;
+    }
 }

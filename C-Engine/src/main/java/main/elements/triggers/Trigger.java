@@ -173,7 +173,7 @@ public class Trigger {
     }
 
     public void remove() {
-        game.getState().removeTrigger(this);
+        game.getState().manager.removeTrigger(this);
     }
 
     public boolean isRemoveAfterTriggers(boolean result) {

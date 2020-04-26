@@ -78,7 +78,7 @@ public class AddTriggerEffect extends MultiEffect implements
 
     public void remove() {
         if (getTrigger() != null) {
-            ref.getGame().getState().removeTrigger(getTrigger());
+            ref.getGame().getState().manager.removeTrigger(getTrigger());
         }
 
     }

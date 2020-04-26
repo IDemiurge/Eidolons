@@ -59,7 +59,7 @@ public class LightEmitter extends SuperActor {
     private FadeImageContainer overlay;
     private LIGHT_RAY type;
     private float baseAlpha;
-    private Boolean withinCamera;
+    private boolean withinCamera;
     private boolean alphaChanging;
     private boolean off;
 

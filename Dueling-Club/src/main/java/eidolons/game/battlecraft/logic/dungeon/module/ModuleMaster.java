@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.Eidolons;
@@ -17,7 +16,7 @@ public class ModuleMaster extends DungeonHandler  {
     Module current;
     Set<Module> modules;
 
-    public ModuleMaster(DungeonMaster<Location> master) {
+    public ModuleMaster(DungeonMaster master) {
         super(master);
     }
 

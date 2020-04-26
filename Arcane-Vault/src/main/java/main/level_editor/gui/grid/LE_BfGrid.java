@@ -23,10 +23,12 @@ public class LE_BfGrid extends GridPanel {
 
     private final TextureRegion selectionBorder;
 
-    public LE_BfGrid(int cols, int rows) {
-        super(cols, rows);
+    public LE_BfGrid(int cols, int rows, int moduleCols, int moduleRows) {
+        super(cols, rows, moduleCols, moduleRows);
         selectionBorder = TextureCache.getOrCreateR(CellBorderManager.teamcolorPath);
+
     }
+
 
     @Override
     protected boolean isShadowMapOn() {
@@ -36,9 +38,6 @@ public class LE_BfGrid extends GridPanel {
     @Override
     protected void resetVisible() {
         super.resetVisible();
-        for (BattleFieldObject battleFieldObject : viewMap.keySet()) {
-            //check layers and modules
-        }
     }
 
     @Override
@@ -48,8 +47,8 @@ public class LE_BfGrid extends GridPanel {
 
     @Override
     public void setModule(Module module) {
-        x2 = cols ;
-        y2 = rows  ;
+        x2 = full_cols;
+        y2 = full_rows;
         GridSubParts container = new GridSubParts();
         viewMap = container.viewMap;
         customOverlayingObjectsUnder = container.customOverlayingObjects;

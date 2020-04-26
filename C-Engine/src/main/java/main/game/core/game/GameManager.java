@@ -4,6 +4,7 @@ import main.ability.Interruptable;
 import main.ability.PassiveAbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.EffectImpl;
+import main.content.DC_TYPE;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.elements.triggers.Trigger;
@@ -107,7 +108,7 @@ public abstract class GameManager implements GenericGameManager {
         }
         if (!buff.isPermanent())
             main.system.auxiliary.log.LogMaster.log(1, buff + " is removed");
-        getState().removeObject(buff.getId());
+        getState().manager.removeObject(buff.getId(), DC_TYPE.BUFFS);
         buff.getBasis().getBuffs().remove(buff);
         attachmentRemoved(buff, buff.getBasis());
         getState().getAttachmentsMap().get(buff.getBasis()).remove(buff);
@@ -120,7 +121,7 @@ public abstract class GameManager implements GenericGameManager {
     public void attachmentRemoved(Attachment attachment, Obj basis) {
         for (Effect e : attachment.getEffects()) {
             e.remove();
-            getState().removeEffect(e);
+            getState().manager.removeEffect(e );
             //TODO when addTrigger effect is removed, so is the trigger
         }
     }

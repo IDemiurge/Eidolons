@@ -20,6 +20,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.igg.CustomLaunch;
 import eidolons.game.netherflame.igg.IGG_Game;
 import eidolons.game.netherflame.igg.soul.SoulforcePanel;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
@@ -103,9 +104,9 @@ public class BattleGuiStage extends GuiStage {
         addActor(fullscreenAnims = new FullscreenAnims());
 
         if (RuleKeeper.isRuleOn(SOULFORCE)) {
-        addActor(soulforcePanel = new SoulforcePanel());
-        GdxMaster.center(soulforcePanel);
-        soulforcePanel.setY(GdxMaster.getTopY(soulforcePanel));
+            addActor(soulforcePanel = new SoulforcePanel());
+            GdxMaster.center(soulforcePanel);
+            soulforcePanel.setY(GdxMaster.getTopY(soulforcePanel));
         }
 
         getBottomPanel().setX(GdxMaster.centerWidthScreen(getBottomPanel()));
@@ -144,11 +145,13 @@ public class BattleGuiStage extends GuiStage {
         if (ancestors.contains(outcomePanel)) {
             return false;
         }
-        if (ancestors.contains(infoPanel)) {
-            return false;
-        }
-        if (ancestors.contains(infoPanel.outside)) {
-            return false;
+        if (infoPanel != null) {
+            if (ancestors.contains(infoPanel)) {
+                return false;
+            }
+            if (ancestors.contains(infoPanel.outside)) {
+                return false;
+            }
         }
         return super.checkContainsNoOverlaying(ancestors);
     }
@@ -158,7 +161,7 @@ public class BattleGuiStage extends GuiStage {
         if (CoreEngine.isActiveTestMode()) {
             return super.checkBlocked() || outcomePanel.isVisible();
         }
-        return super.checkBlocked() || outcomePanel.isVisible() || infoPanel.isVisible();
+        return super.checkBlocked() || outcomePanel.isVisible() || GDX.isVisible(infoPanel);
     }
 
     @Override

@@ -120,4 +120,11 @@ public class GDX {
         if (!VisUI.isLoaded())
             VisUI.load(GDX.file(PathFinder.getSkinPath()));
     }
+
+    public static boolean isVisible(Actor actor) {
+        if (actor == null) {
+            return false;
+        }
+        return actor.isVisible();
+    }
 }

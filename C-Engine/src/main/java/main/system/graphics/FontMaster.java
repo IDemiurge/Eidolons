@@ -241,18 +241,18 @@ public class FontMaster {
 
     public enum FONT {
         AVQ("/avqest.ttf"),
-        SC("/starcraft.ttf"),
+//        SC("/starcraft.ttf"),
         DARK("/dark.ttf"),
         NYALA("/nyala.ttf", true),
-        MONO("/SmallTypeWriting.ttf" ),
+//        MONO("/SmallTypeWriting.ttf" ),
         MONO_LARGE("/SmallTypeWritingMedium.ttf" ),
         RU("/philosopher-regular.ttf"),
         MAIN("/main.otf"),
         METAMORPH("/metamorphous-regular.ttf", true),
         MAGIC("/magicmedieval.ttf"),
-        MANORLY_("/manorly_.ttf"),
-        IMMORTAL("/IMMORTAL.ttf"),
-        FERTIGO("/fertigo_pro.otf"),
+//        MANORLY_("/manorly_.ttf"),
+//        IMMORTAL("/IMMORTAL.ttf"),
+//        FERTIGO("/fertigo_pro.otf"),
         CHANCERY("/BLKCHCRY.ttf"),
         SUPER_KNIGHT("/supernatural_knight.ttf");
         public Font font;

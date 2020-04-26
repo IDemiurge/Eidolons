@@ -41,7 +41,7 @@ public class Floor  {
     }
 
     public Location getWrapper() {
-        return game.getDungeonMaster().getDungeonWrapper();
+        return game.getDungeonMaster().getLocation();
     }
 
     public Module getDefaultModule() {

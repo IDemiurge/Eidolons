@@ -5,7 +5,6 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
-import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
@@ -19,6 +18,10 @@ public class Coordinates implements Serializable {
 
 
     public static Coordinates[][] coordinates = new Coordinates[100][100];
+    public static int moduleWidth = 9;
+    public static int moduleHeight = 7;
+    public static int floorWidth;
+    public static int floorHeight;
     public int x;
     public int y;
 
@@ -47,10 +50,10 @@ public class Coordinates implements Serializable {
             checkInvalid();
         }
         if (flipX) {
-            this.x = GuiManager.getCurrentLevelCellsX() - this.x;
+            this.x = getFloorWidth() - this.x;
         }
         if (flipY) {
-            this.y = GuiManager.getCurrentLevelCellsY() - this.y;
+            this.y = getFloorHeight() - this.y;
         }
         if (rotate) {
             int buffer = x;
@@ -88,13 +91,13 @@ public class Coordinates implements Serializable {
         if (x < 0) {
             return false;
         }
-        if (x >= GuiManager.getCurrentLevelCellsX()) {
+        if (x >= getFloorWidth()) {
             return false;
         }
         if (y < 0) {
             return false;
         }
-        return y < GuiManager.getCurrentLevelCellsY();
+        return y < getFloorHeight();
 
     }
 
@@ -142,16 +145,16 @@ public class Coordinates implements Serializable {
         if (CoreEngine.isLevelEditor()) {
             return false;
         }
-        if (c.x >= GuiManager.getCurrentLevelCellsX()) {
-            c.x = GuiManager.getCurrentLevelCellsX() - 1;
+        if (c.x >= getFloorWidth()) {
+            c.x = getFloorWidth() - 1;
             c.setInvalid(true);
         }
         if (c.x < 0) {
             c.x = 0;
             c.setInvalid(true);
         }
-        if (c.y >= GuiManager.getCurrentLevelCellsY()) {
-            c.y = GuiManager.getCurrentLevelCellsY() - 1;
+        if (c.y >= getFloorHeight()) {
+            c.y = getFloorHeight() - 1;
             c.setInvalid(true);
         }
         if (c.y < 0) {
@@ -162,13 +165,13 @@ public class Coordinates implements Serializable {
     }
 
     protected static boolean checkInvalid(int x, int y) {
-        if (x >= GuiManager.getCurrentLevelCellsX()) {
+        if (x >= getFloorWidth()) {
             return true;
         }
         if (x < 0) {
             return true;
         }
-        if (y >= GuiManager.getCurrentLevelCellsY()) {
+        if (y >= getFloorHeight()) {
             return true;
         }
         return y < 0;
@@ -202,6 +205,38 @@ public class Coordinates implements Serializable {
 
     public static void initCache(int w, int h) {
         coordinates = new Coordinates[w][h];
+    }
+
+    public static void setModuleHeight(int moduleHeight) {
+        Coordinates.moduleHeight = moduleHeight;
+    }
+
+    public static void setModuleWidth(int moduleWidth) {
+        Coordinates.moduleWidth = moduleWidth;
+    }
+
+    public static int getFloorWidth() {
+        return floorWidth;
+    }
+
+    public static void setFloorWidth(int floorWidth) {
+        Coordinates.floorWidth = floorWidth;
+    }
+
+    public static int getFloorHeight() {
+        return floorHeight;
+    }
+
+    public static int getModuleWidth() {
+        return moduleWidth;
+    }
+
+    public static int getModuleHeight() {
+        return moduleHeight;
+    }
+
+    public static void setFloorHeight(int floorHeight) {
+        Coordinates.floorHeight = floorHeight;
     }
 
     protected void checkInvalid() {
@@ -254,11 +289,11 @@ public class Coordinates implements Serializable {
     }
 
     public Coordinates invertY() {
-        return get(x, GuiManager.getBF_CompDisplayedCellsY() - 1 - y);
+        return get(x, floorHeight - 1 - y);
     }
 
     public Coordinates invertX() {
-        return get(GuiManager.getBF_CompDisplayedCellsX() - 1 - x, y);
+        return get(floorWidth - 1 - x, y);
     }
 
     public Coordinates invert() {

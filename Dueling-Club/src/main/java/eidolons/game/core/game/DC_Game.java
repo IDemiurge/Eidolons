@@ -666,7 +666,7 @@ public class DC_Game extends GenericGame {
 
     public Dungeon getDungeon() {
         try {
-            return getDungeonMaster().getDungeonWrapper().getDungeon();
+            return getDungeonMaster().getLocation().getDungeon();
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
         }

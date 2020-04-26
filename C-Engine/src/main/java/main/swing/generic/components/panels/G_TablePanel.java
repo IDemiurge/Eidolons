@@ -29,7 +29,7 @@ public class G_TablePanel extends G_Panel {
         } else {
             names = emptyNames;
         }
-        table = new G_Table(new DefaultTableModel((Vector<? extends Vector>) data, new Vector<>(
+        table = new G_Table(new DefaultTableModel(data, new Vector<>(
          Arrays.asList(names))) {
             public java.lang.Class<?> getColumnClass(int arg0) {
                 return String.class;
@@ -58,7 +58,7 @@ public class G_TablePanel extends G_Panel {
          .setMaxWidth(GuiManager.getInfoNamesColumnMaxWidth());
 
         table.getColumnModel().getColumn(1)
-         .setPreferredWidth(GuiManager.getSquareCellSize());
+         .setPreferredWidth(128);
         table.getColumnModel().getColumn(1)
          .setMaxWidth(GuiManager.getInfoNamesColumnMaxWidth());
         // table.getColumnModel().getColumn(1)

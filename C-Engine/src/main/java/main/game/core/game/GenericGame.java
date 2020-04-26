@@ -115,7 +115,7 @@ public abstract class GenericGame extends Game {
 
 
     public void remove(Obj obj) {
-        getState().removeObject(obj.getId());
+        state.manager.removeObject(obj.getId());
 
     }
 

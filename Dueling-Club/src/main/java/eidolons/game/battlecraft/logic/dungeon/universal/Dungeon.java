@@ -22,7 +22,6 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.*;
-import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 
 import java.util.Collection;
@@ -83,7 +82,7 @@ public class Dungeon extends LightweightEntity {
     }
 
     public Integer getWidth() {
-        return getGame().getDungeonMaster().getDungeonWrapper().getWidth();
+        return getGame().getDungeonMaster().getLocation().getWidth();
     }
 
     public Integer getCellsY() {
@@ -91,7 +90,7 @@ public class Dungeon extends LightweightEntity {
     }
 
     public Integer getHeight() {
-        return getGame().getDungeonMaster().getDungeonWrapper().getHeight();
+        return getGame().getDungeonMaster().getLocation().getHeight();
     }
 
 
@@ -193,12 +192,55 @@ public class Dungeon extends LightweightEntity {
 
 
     public int getCellVariant(int i, int j) {
-        return getGame().getDungeonMaster().getDungeonLevel().getCellVariant(i, j);
+        return getGame().getDungeonMaster().getStructureMaster().getCellVariant(i, j);
     }
     public DungeonEnums.CELL_IMAGE getCellType(int i, int j) {
-        return getGame().getDungeonMaster().getDungeonLevel().getCellType(i, j);
+        return  DungeonEnums.CELL_IMAGE.tiles;
     }
 
+    private DungeonEnums.CELL_IMAGE getCellImageType(DUNGEON_STYLE style) {
+        switch (style) {
+            case Somber:
+                if (RandomWizard.chance(56))
+                    return DungeonEnums.CELL_IMAGE.star;
+                if (RandomWizard.chance(66))
+                    return DungeonEnums.CELL_IMAGE.octagonal;
+            case DWARF:
+                if (RandomWizard.chance(66))
+                    return DungeonEnums.CELL_IMAGE.diamond;
+                return DungeonEnums.CELL_IMAGE.octagonal;
+            case SPIDER:
+            case Stony:
+            case Pagan:
+                return DungeonEnums.CELL_IMAGE.natural;
+            case ROGUE:
+                if (RandomWizard.chance(66))
+                    return DungeonEnums.CELL_IMAGE.tiles;
+                return DungeonEnums.CELL_IMAGE.cross;
+
+            case Knightly:
+            case Holy:
+                if (RandomWizard.chance(66)) {
+                    return DungeonEnums.CELL_IMAGE.cross;
+                }
+                return DungeonEnums.CELL_IMAGE.diamond;
+            case DarkElegance:
+            case PureEvil:
+                if (RandomWizard.chance(66))
+                    return DungeonEnums.CELL_IMAGE.octagonal;
+            case Brimstone:
+//                if (RandomWizard.chance(66))
+//                    return CELL_IMAGE.circle;
+            case Grimy:
+                if (RandomWizard.chance(66))
+                    return DungeonEnums.CELL_IMAGE.tiles;
+            case Cold:
+            case Arcane:
+                if (RandomWizard.chance(66))
+                    return DungeonEnums.CELL_IMAGE.star;
+        }
+        return DungeonEnums.CELL_IMAGE.tiles;
+    }
     public String getCellImagePath(int i, int j) {
         if (!getProperty(G_PROPS.DUNGEON_GROUP).isEmpty()) {
             DungeonEnums.DUNGEON_GROUP group = new EnumMaster<DungeonEnums.DUNGEON_GROUP>().retrieveEnumConst(DungeonEnums.DUNGEON_GROUP.class,
@@ -209,15 +251,7 @@ public class Dungeon extends LightweightEntity {
 
         }
         
-        if (getGame().getDungeonMaster().getDungeonLevel() == null) {
-            if (isSurface()) {
-
-            }
-        } else {
-            return getGame().getDungeonMaster().getDungeonLevel().getCellImgPath(i, j);
-
-        }
-        return ImageManager.getEmptyCellPath(GuiManager.getBfCellsVersion());
+        return ImageManager.getEmptyCellPath(1);
     }
 
     private String getCellImgForGroup(DungeonEnums.DUNGEON_GROUP group) {

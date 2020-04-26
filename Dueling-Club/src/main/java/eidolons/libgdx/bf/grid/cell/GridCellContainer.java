@@ -621,8 +621,16 @@ public class GridCellContainer extends GridCell implements Hoverable {
             }
             overlay.setContentsImmediately(new Image(texture));
         }
-        overlay.getColor().a = 0;
-        overlay.fadeIn();
+        if (getUnitViewsVisible().size()>=1){
+//            AlphaAction alphaAction = ActionMaster.getAlphaAction(overlay, 1, 0, false);
+//            AfterAction afterAction = new AfterAction();
+//            afterAction.   setAction(alphaAction);
+//            afterAction.setTarget(overlay);
+//            overlay.addAction(afterAction);
+        } else {
+            overlay.getColor().a = 0;
+            overlay.fadeIn();
+        }
     }
 
     public void fadeOutOverlay() {

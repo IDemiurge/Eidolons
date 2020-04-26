@@ -76,17 +76,24 @@ public class VisionRule {
             DequeImpl<Coordinates> coordinates =
                     master.getSightMaster().getVisibleCoordinatesSecondary(observer);
 
-            for (int i = 0; i < array.length; i++) {
-                for (int j = 0; j < array[0].length; j++) {
-                    BattleFieldObject[] objects =
-                            master.getGame().getObjMaster().getObjects(
-                                    i , j, false);
+            int offsetX= master.getGame().getModule().getX();
+            int offsetY= master.getGame().getModule().getY();
+
+            for (int i  = 0; i < array.length; i++) {
+                for (int j  = 0; j < array[0].length; j++) {
+                    BattleFieldObject[] objects = array[i][j];
+                    if (objects == null) {
+                    objects =     master.getGame().getObjMaster().getObjects(
+                                    i,j, false);
+                    }
+                    int x=i+offsetX;
+                    int y=j+offsetY;
 //                 master.getGame().getMaster().getObjects(i, j, true);
-                    DC_Cell cell = master.getGame().getCellByCoordinate(Coordinates.get(i, j));
+                    DC_Cell cell = master.getGame().getCellByCoordinate(Coordinates.get(x, y));
                     if (cell == null)
                         continue;
 
-                    if (coordinates==null || !coordinates.contains(Coordinates.get(i, j))) {
+                    if (coordinates==null || !coordinates.contains(Coordinates.get(x, y))) {
                         if (!isResetRequired(observer, cell))
                             continue;
                     }
@@ -97,7 +104,7 @@ public class VisionRule {
                     master.getSightMaster().resetUnitVision(observer, cell);
                     for (BattleFieldObject sub : objects) {
                         //check ignore?
-                        if (!coordinates.contains(Coordinates.get(i, j)))
+                        if (!coordinates.contains(Coordinates.get(x, y)))
                             if (!isObjResetRequired(observer, sub))
                                 continue;
                         resetVision(observer, sub);

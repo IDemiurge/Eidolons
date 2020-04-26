@@ -120,11 +120,13 @@ public class ShadowMap extends GroupX implements GridElement {
         rows = module.getEffectiveHeight();
         x2 = cols + module.getOrigin().x;
         y2 = rows + module.getOrigin().y;
+        //cache cells/emitters for modules?
         try {
             init();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+        offset(x1*128, y1*128);
     }
 
     private void init() {
@@ -133,20 +135,24 @@ public class ShadowMap extends GroupX implements GridElement {
 //                if (EidolonsGame.BOSS_FIGHT)
 //                    continue;
 //            }
-            getCells().put(type, new ShadeLightCell[grid.getCols()][grid.getRows()]);
-            emitters = new List[grid.getCols()][grid.getRows()];
+            getCells().put(type, new ShadeLightCell[grid.getModuleCols()][grid.getModuleRows()]);
+            emitters = new List[grid.getModuleCols()][grid.getModuleRows()];
 
-            for (int x = 0; x < grid.getCols(); x++) {
-                for (int y = 0; y < grid.getRows(); y++) {
+            for (int x = 0; x < grid.getModuleCols(); x++) {
+                for (int y = 0; y < grid.getModuleRows(); y++) {
                     if (grid.getCells()[x][y] == null) {
                         if (type != VOID)
                             continue;
                     } else if (type == VOID)
                         continue;
                     if (type != LIGHT_EMITTER) {
-                        ShadeLightCell cell = new ShadeLightCell(type);
-                        getCells(type)[x][y] = cell;
-                        addShadowMapElement(cell, x, y, type.defaultAlpha);
+                        if (getCells(type)[x][y] != null) {
+//TODO
+                        } else {
+                            ShadeLightCell cell = new ShadeLightCell(type);
+                            getCells(type)[x][y] = cell;
+                            addShadowMapElement(cell, x, y, type.defaultAlpha);
+                        }
                     } else {
 
                         if (emitters[x][y] == null) {
@@ -262,8 +268,8 @@ public class ShadowMap extends GroupX implements GridElement {
         if (!isOn())
             return;
         for (SHADE_CELL type : SHADE_CELL_VALUES) {
-            for (int x = 0; x < grid.getCols(); x++) {
-                for (int y = 0; y < grid.getRows(); y++) {
+            for (int x = 0; x < grid.getModuleCols(); x++) {
+                for (int y = 0; y < grid.getModuleRows(); y++) {
 //                    if (type == VOID) {
 //                        if (EidolonsGame.BOSS_FIGHT)
 //                            continue;

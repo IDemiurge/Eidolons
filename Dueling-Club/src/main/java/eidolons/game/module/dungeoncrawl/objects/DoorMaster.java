@@ -7,7 +7,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_ACTION;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
@@ -28,7 +27,7 @@ import java.util.List;
 
 public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
 
-    public <E extends DungeonWrapper> DoorMaster(DungeonMaster<E> dungeonMaster) {
+    public   DoorMaster(DungeonMaster dungeonMaster) {
         super(dungeonMaster);
     }
 

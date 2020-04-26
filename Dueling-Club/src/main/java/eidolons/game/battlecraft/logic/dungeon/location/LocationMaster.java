@@ -10,7 +10,7 @@ import main.system.launch.CoreEngine;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class LocationMaster extends DungeonMaster<Location> {
+public class LocationMaster extends DungeonMaster {
     protected ModuleMaster moduleMaster;
 
     public LocationMaster(DC_Game game) {
@@ -21,11 +21,11 @@ public class LocationMaster extends DungeonMaster<Location> {
     @Override
     public void init() {
         super.init();
-        if (getDungeonWrapper().getMainEntrance() != null) {
-            getGame().getObjMaster().tryAddUnit(getDungeonWrapper().getMainEntrance());
+        if (getLocation().getMainEntrance() != null) {
+            getGame().getObjMaster().tryAddUnit(getLocation().getMainEntrance());
         }
-        if (getDungeonWrapper().getMainExit() != null) {
-            getGame().getObjMaster().tryAddUnit(getDungeonWrapper().getMainExit());
+        if (getLocation().getMainExit() != null) {
+            getGame().getObjMaster().tryAddUnit(getLocation().getMainExit());
         }
     }
 
@@ -54,22 +54,22 @@ public class LocationMaster extends DungeonMaster<Location> {
     }
 
     @Override
-    protected FacingAdjuster<Location> createFacingAdjuster() {
+    protected FacingAdjuster createFacingAdjuster() {
         return new FacingAdjuster(this);
     }
 
     @Override
-    protected Positioner<Location> createPositioner() {
+    protected Positioner createPositioner() {
         return new LocationPositioner(this);
     }
 
     @Override
-    protected Spawner<Location> createSpawner() {
+    protected Spawner createSpawner() {
         return new LocationSpawner(this);
     }
 
     @Override
-    protected DungeonInitializer<Location> createInitializer() {
+    protected DungeonInitializer createInitializer() {
         return new LocationInitializer(this);
     }
 

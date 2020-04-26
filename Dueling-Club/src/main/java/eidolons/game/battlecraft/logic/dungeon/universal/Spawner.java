@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
 import eidolons.game.core.launch.LaunchDataKeeper;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
-import eidolons.libgdx.bf.BFDataCreatedEvent;
+import eidolons.libgdx.bf.GridCreateData;
 import eidolons.system.test.TestMasterContent;
 import main.content.C_OBJ_TYPE;
 import main.data.DataManager;
@@ -18,7 +18,6 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.auxiliary.NumberUtils;
-import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
 import main.system.util.Refactor;
 
@@ -28,18 +27,10 @@ import java.util.List;
 import static main.system.GuiEventType.SCREEN_LOADED;
 
 
-public class Spawner<E extends DungeonWrapper> extends DungeonHandler  {
-    public static final Integer MAX_SPACE_PERC_CREEPS = 25; // 1 per cell only
-    private static final Integer MAX_SPACE_PERC_PARTY = 0;
-    //    public Spawner(String unitData, DC_Player player, SPAWN_MODE mode) {
-    boolean coordinatesSet;
+public class Spawner  extends DungeonHandler  {
 
     public Spawner(DungeonMaster master) {
         super(master);
-    }
-
-    public static void setEnemyUnitGroupMode(boolean b) {
-
     }
 
     @Refactor
@@ -60,16 +51,19 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler  {
     }
 
     protected void spawnDone() {
-//       TODO selective??
-// getGame().getMetaMaster().getPartyManager().getParty().getMembers()
         List<Unit> unitsList = new ArrayList<>();
         unitsList.addAll(game.getUnits());
         getFacingAdjuster().adjustFacing(unitsList);
 
-        final Integer cellsX = GuiManager.getCurrentLevelCellsX();
-        final Integer cellsY = GuiManager.getCurrentLevelCellsY();
+        final Integer cellsX = Coordinates.getFloorWidth();
+        final Integer cellsY = Coordinates.getFloorHeight();
+        final Integer moduleHeight = Coordinates.getModuleHeight();
+        final Integer moduleWidth = Coordinates.getModuleWidth();
         GuiEventManager.trigger(SCREEN_LOADED,
-                new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
+                new GridCreateData(cellsX, cellsY, game.getBfObjects(),
+                        moduleWidth,
+                        moduleHeight
+                        ));
 
         //WaitMaster.waitForInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
     }

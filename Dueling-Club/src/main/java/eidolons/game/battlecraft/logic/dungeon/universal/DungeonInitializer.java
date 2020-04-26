@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import eidolons.game.core.Eidolons;
 import eidolons.game.netherflame.igg.CustomLaunch;
@@ -20,9 +21,8 @@ import java.util.List;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public abstract class DungeonInitializer<E extends DungeonWrapper> extends DungeonHandler {
+public abstract class DungeonInitializer extends DungeonHandler {
 
-    public static final String RANDOM_DUNGEON = "random";
     public static boolean RANDOM = false;
     protected String presetDungeonType;
     private String dungeonPath;
@@ -31,11 +31,9 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         super(master);
     }
 
-
     public static DungeonData generateDungeonData(String dataString) {
         String formatted = "";
-        DungeonData.
-         DUNGEON_VALUE value;
+        DungeonData.DUNGEON_VALUE value;
         if (dataString.contains(".xml")) {
             value = DUNGEON_VALUE.PATH;
         } else
@@ -46,17 +44,17 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         return new DungeonData(formatted);
     }
 
-    public E initDungeon() {
+    public Location initDungeon() {
         String data =
-         Eidolons.getGame().getMetaMaster().getMetaDataManager().getMissionPath();
+                Eidolons.getGame().getMetaMaster().getMetaDataManager().getMissionPath();
         if (data == null) {
-            if (MainLauncher.getCustomLaunch()!=null ){
+            if (MainLauncher.getCustomLaunch() != null) {
                 main.system.auxiliary.log.LogMaster.important("*******Custom Launch xml path: " +
                         MainLauncher.getCustomLaunch().getValue(CustomLaunch.CustomLaunchValue.xml_path));
-                data= MainLauncher.getCustomLaunch().getValue(CustomLaunch.CustomLaunchValue.xml_path);
+                data = MainLauncher.getCustomLaunch().getValue(CustomLaunch.CustomLaunchValue.xml_path);
             }
         }
-        if (data!=null )
+        if (data != null)
             setDungeonPath(data);
         else
             setDungeonPath(getGame().getDataKeeper().getDungeonData().getValue(DUNGEON_VALUE.PATH));
@@ -64,7 +62,7 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         setPresetDungeonType(getGame().getDataKeeper().getDungeonData().getValue(DUNGEON_VALUE.TYPE_NAME));
 
         if (getDungeonPath() != null) {
-            return (E) getBuilder().buildDungeon(getDungeonPath()
+            return getBuilder().buildDungeon(getDungeonPath()
             );
         }
 
@@ -75,7 +73,7 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         } else {
             if (RANDOM) {
                 type =
-                 pickRandomDungeon();
+                        pickRandomDungeon();
                 return createDungeon(type);
             } else if (type == null) {
                 return initDungeonLevelChoice();
@@ -85,7 +83,7 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         throw new RuntimeException();
     }
 
-    public abstract E createDungeon(ObjType type);
+    public abstract Location createDungeon(ObjType type);
 
 
     protected ObjType pickRandomDungeon() {
@@ -95,16 +93,16 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         if (list.isEmpty()) {
             list = DataManager.getTypes(DC_TYPE.DUNGEONS);
             FilterMaster.filterByProp(list, G_PROPS.WORKSPACE_GROUP.getName(),
-             MetaEnums.WORKSPACE_GROUP.FOCUS + "");
+                    MetaEnums.WORKSPACE_GROUP.FOCUS + "");
         }
         type = list.get(RandomWizard.getRandomIndex(list));
         return type;
     }
 
-    public E initDungeonLevelChoice() {
+    public Location initDungeonLevelChoice() {
 
         if (RANDOM) {
-            return (E) getBuilder().buildDungeon(getRandomDungeonPath());
+            return getBuilder().buildDungeon(getRandomDungeonPath());
         }
         List<ObjType> types = DataManager.getTypes(DC_TYPE.DUNGEONS);
         ObjType type = ListChooser.chooseType(types);
@@ -117,8 +115,8 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
 
     protected String getRandomDungeonPath() {
         return FileManager.getRandomFile(
-         FileManager.getFilesFromDirectory(PathFinder.getDungeonLevelFolder()
-          + getDungeonLevelSubfolder(), false)).getPath();
+                FileManager.getFilesFromDirectory(PathFinder.getDungeonLevelFolder()
+                        + getDungeonLevelSubfolder(), false)).getPath();
     }
 
     //TODO different for each Type?

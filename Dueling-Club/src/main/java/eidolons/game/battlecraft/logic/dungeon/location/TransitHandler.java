@@ -33,8 +33,8 @@ public class TransitHandler extends DungeonHandler {
 
     public boolean checkNextFloor() {
         Coordinates c = getGame().getManager().getMainHeroCoordinates();
-        if (master.getDungeonWrapper() instanceof Location) {
-            Location location = (Location) getGame().getDungeonMaster().getDungeonWrapper();
+        if (master.getLocation() instanceof Location) {
+            Location location = getGame().getDungeonMaster().getLocation();
             if (location.getMainExit() != null) {
                 if (location.getMainExit().getCoordinates().equals(c)) {
                     return true;

@@ -85,9 +85,9 @@ public class EmitterMap extends Group {
 
     public void init() {
         int x1 = 0;
-        int x2 = ScreenMaster.getDungeonGrid().getRows();
+        int x2 = ScreenMaster.getDungeonGrid().getModuleRows();
         int y1 = 0;
-        int y2 = ScreenMaster.getDungeonGrid().getCols();
+        int y2 = ScreenMaster.getDungeonGrid().getModuleCols();
         if (topLeft != null) {
             x1 = topLeft.x;
             y1 = topLeft.y;

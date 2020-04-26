@@ -16,15 +16,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.zip.Inflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class FileManager {
     private static List<String> missing = new ArrayList<>();
+    private static Map<String, Boolean> fileCheckMap = new HashMap<>();
+    private static Map<String, Boolean> directoryCheckMap = new HashMap<>();
+    private static Map<String, List<File>> folderCache = new HashMap<>();
 
     public static String readFile(String filePath) {
         File file = getFile(filePath, true, false);
@@ -185,7 +186,13 @@ public class FileManager {
     }
 
     public static boolean isFile(String file) {
-        return isFile(FileManager.getFile(file));
+        Boolean result = fileCheckMap.get(file);
+        if (result != null) {
+            return result;
+        }
+        result = isFile(FileManager.getFile(file));
+        fileCheckMap.put(file, result);
+        return result;
     }
 
     public static boolean isFile(File file) {
@@ -199,7 +206,13 @@ public class FileManager {
     }
 
     public static boolean isDirectory(String file) {
-        return isDirectory(FileManager.getFile(file));
+        Boolean result = directoryCheckMap.get(file);
+        if (result != null) {
+            return result;
+        }
+        result = isDirectory(FileManager.getFile(file));
+        directoryCheckMap.put(file, result);
+        return result;
     }
 
     public static boolean isDirectory(File file) {
@@ -560,15 +573,22 @@ public class FileManager {
 
     public static List<File> getFilesFromDirectory(String path, boolean allowDirectories,
                                                    boolean subDirectories) {
+        if (!isDirectory(path)) {
+            return new ArrayList<>();
+        }
+        List<File> result = folderCache.get(path);
+        if (result != null) {
+            return result;
+        }
         File folder = FileManager.getFile(path);
-        return getFilesFromDirectory(folder, allowDirectories, subDirectories);
+        result = getFilesFromDirectory(folder, allowDirectories, subDirectories);
+        folderCache.put(path, result);
+        return result;
     }
 
     public static List<File> getFilesFromDirectory(File folder, boolean allowDirectories,
                                                    boolean subDirectories) {
-        if (!folder.isDirectory()) {
-            return new ArrayList<>();
-        }
+
         List<File> list = new ArrayList<>();
         for (File f : folder.listFiles()) {
             if (subDirectories) {

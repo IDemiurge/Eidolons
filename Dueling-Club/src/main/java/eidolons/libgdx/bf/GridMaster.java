@@ -16,7 +16,6 @@ import main.content.enums.DungeonEnums;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.graphics.GuiManager;
 
 /**
  * Created by JustMe on 1/29/2017.
@@ -92,8 +91,8 @@ public class GridMaster {
     }
 
     public static Coordinates getCenter() {
-        int x = Math.round((GuiManager.getCurrentLevelCellsX()  / 2));
-        int y = Math.round((GuiManager.getCurrentLevelCellsY() / 2));
+        int x = Math.round((Coordinates.getFloorWidth()  / 2));
+        int y = Math.round((Coordinates.getFloorHeight() / 2));
         return (Coordinates.get(x, y));
     }
     public static Coordinates getCameraCenter() {

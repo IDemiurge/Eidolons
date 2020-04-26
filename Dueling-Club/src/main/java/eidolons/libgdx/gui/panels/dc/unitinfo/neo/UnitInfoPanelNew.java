@@ -24,7 +24,6 @@ import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.DungeonEnums;
 import main.content.values.properties.G_PROPS;
 import main.system.auxiliary.RandomWizard;
-import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 5/14/2018.
@@ -80,9 +79,8 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
     private ImageContainer black;
 
     public static boolean isNewUnitInfoPanelWIP() {
-        if (!CoreEngine.isActiveTestMode())
-            return false;
-        return CoreEngine.isIDE();
+            return true;
+//        return CoreEngine.isIDE();
     }
 
     @Override

@@ -32,7 +32,7 @@ public class QD_Transformer {
         for (QD_Floor fl : model.getDungeon().getFloors().values()) {
             String contents = constructXmlForFloor(fl);
             FileManager.write(contents, getFloorFilePath(fl));
-            location = master.getDungeonWrapper();
+            location = master.getLocation();
         }
         return getRootPath();
     }

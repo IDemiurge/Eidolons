@@ -1,5 +1,6 @@
 package main.gui.builders;
 
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -17,9 +18,7 @@ import main.swing.generic.components.Builder;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.components.G_TabbedPanel;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.CollectionsMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
@@ -401,11 +400,9 @@ public class TabBuilder extends Builder implements ChangeListener {
         }
 
         try {
-            String name = CollectionsMaster.getInvertedMap(tabmap).get(
+            String name = MapMaster.getInvertedMap(tabmap).get(
              getTabbedPane().getSelectedComponent());
-            if (name == null) {
-                return null; // workspace
-            }
+            // workspace
             return name;
         } catch (Exception ex) {
             main.system.ExceptionMaster.printStackTrace(ex);

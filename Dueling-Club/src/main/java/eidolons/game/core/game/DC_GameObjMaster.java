@@ -191,7 +191,7 @@ public class DC_GameObjMaster extends GameObjMaster {
 
     public void remove(Obj obj, boolean soft) {
         if (!soft)
-            game.getState().removeObject(obj.getId());
+            game.getState().manager.removeObject(obj.getId(), obj.getOBJ_TYPE_ENUM());
         obj.removed();
         game.removed(obj);
         if (obj instanceof Unit) {

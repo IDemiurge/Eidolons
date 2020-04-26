@@ -17,7 +17,7 @@ import java.util.Set;
 import static main.system.auxiliary.log.LogMaster.log;
 
 public class LE_FloorLoader extends FloorLoader {
-    public LE_FloorLoader(DungeonMaster<Location> master) {
+    public LE_FloorLoader(DungeonMaster master) {
         super(master);
     }
 

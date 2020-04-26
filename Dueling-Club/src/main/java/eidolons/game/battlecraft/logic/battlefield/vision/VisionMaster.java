@@ -60,7 +60,7 @@ public class VisionMaster implements GenericVisionManager {
 
     @Override
     public boolean isVisionTest() {
-        return true;
+        return false;
     }
     public static boolean isNewVision() {
         return true;

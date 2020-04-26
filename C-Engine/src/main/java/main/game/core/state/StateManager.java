@@ -158,7 +158,7 @@ public abstract class StateManager {
 
         OBJ_TYPE TYPE = obj.getOBJ_TYPE_ENUM();
         if (TYPE == null) {
-//            LogMaster.log(1, obj.getNameAndId() + " has no TYPE!");
+            LogMaster.log(1, obj.getNameAndId() + " has no TYPE!");
             return;
         }
         Map<Integer, Obj> map = state.getObjMaps().get(TYPE);
@@ -207,4 +207,31 @@ public abstract class StateManager {
     public abstract void checkRules(Event e);
 
     public abstract void clear();
+
+    public void removeTrigger(Trigger trigger ) {
+        LogMaster.log(LogMaster.TRIGGER_DEBUG, "Trigger removed: " + trigger);
+        state.triggers.remove(trigger);
+    }
+
+    public void removeEffect(Effect effect ) {
+        if (!state.effects.remove(effect)) {
+            LogMaster.log(LogMaster.EFFECT_DEBUG, "Effect could not be removed: " + effect);
+        } else {
+            LogMaster.log(LogMaster.EFFECT_DEBUG, "Effect removed: " + effect);
+        }
+
+        // setDirty(true);
+        // resetAll();
+    }
+
+    public void removeObject(Integer id , OBJ_TYPE TYPE) {
+        if (TYPE == null) {
+            state.objMaps.values().forEach(map -> map.remove(id));
+        }
+        state.objMaps.get(TYPE).remove(id);
+    }
+        public void removeObject(Integer id ) {
+        removeObject(id ,  null );
+//        state.removed(obj);
+    }
 }

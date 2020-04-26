@@ -33,7 +33,7 @@ public class FloorData extends StructureData<FLOOR_VALUES, Location> {
 
     @Override
     public LevelStruct getLevelStruct() {
-        return DC_Game.game.getDungeonMaster().getDungeonWrapper();
+        return DC_Game.game.getDungeonMaster().getLocation();
     }
 
     @Override

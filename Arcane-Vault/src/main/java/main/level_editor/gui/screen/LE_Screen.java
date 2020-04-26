@@ -5,7 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL30;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.BFDataCreatedEvent;
+import eidolons.libgdx.bf.GridCreateData;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.particles.EmitterPools;
@@ -89,8 +89,9 @@ public class LE_Screen extends GenericDungeonScreen {
     }
 
     @Override
-    protected GridPanel createGrid(BFDataCreatedEvent param) {
-        return new LE_BfGrid(param.getCols(), param.getRows());
+    protected GridPanel createGrid(GridCreateData param) {
+        return new LE_BfGrid(param.getCols(), param.getRows(), param.getModuleWidth(),
+                param.getModuleHeight());
     }
 
     @Override

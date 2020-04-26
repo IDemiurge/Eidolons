@@ -12,9 +12,6 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import eidolons.game.netherflame.igg.death.ShadowMaster;
 import eidolons.game.netherflame.igg.event.GameEventHandler;
@@ -30,9 +27,6 @@ import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
-
-import static main.system.auxiliary.StringMaster.getWellFormattedString;
-import static main.system.auxiliary.StringMaster.wrapInParenthesis;
 
 /**
  * Created by JustMe on 5/7/2017.
@@ -286,27 +280,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public String getDungeonInfo() {
-        if (getDungeonMaster().getDungeonLevel() != null) {
-            StringBuilder info = new StringBuilder(200);
-            DungeonLevel level = getDungeonMaster().getDungeonLevel();
-            info.append("Randomly generated ");
-            info.append(getWellFormattedString(level.getLocationType().toString())).append(" ").append(wrapInParenthesis(getWellFormattedString(level.getSublevelType().toString()))).append("\n");
-
-            LevelBlock block = level.getBlockForCoordinate(Eidolons.getMainHero().getCoordinates());
-            LevelZone zone = block.getZone();
-
-            info.append(getWellFormattedString(block.getRoomType().toString())).append(" ").append(wrapInParenthesis(getWellFormattedString(zone.getStyle().toString()))).append("\n");
-
-            // objective?
-            // units left?
-            // secrets uncovered?
-            //level of illumination, time of day,
-            return info.toString();
-        } else {
-            return getScenarioInfo();
-        }
-
-
+        return getScenarioInfo();
     }
 
     public DefeatHandler getDefeatHandler() {

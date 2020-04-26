@@ -18,7 +18,7 @@ import java.util.*;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class LocationSpawner extends Spawner<Location> {
+public class LocationSpawner extends Spawner {
     Map<Dungeon, Map<LevelBlock, Map<Coordinates, ObjType>>> specialEncounters = new HashMap<>();
     private boolean autoSpawnOn;
 

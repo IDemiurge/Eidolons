@@ -1,6 +1,5 @@
 package main.level_editor.backend.sim.impl;
 
-import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationSpawner;
@@ -65,8 +64,8 @@ public class LE_DungeonMaster extends LocationMaster {
     }
 
     @Override
-    protected FacingAdjuster<Location> createFacingAdjuster() {
-        return new FacingAdjuster<Location>(this) {
+    protected FacingAdjuster createFacingAdjuster() {
+        return new FacingAdjuster(this) {
             @Override
             public FACING_DIRECTION getFacingForUnit(Coordinates c, String typeName) {
                 return FACING_DIRECTION.SOUTH; //TODO

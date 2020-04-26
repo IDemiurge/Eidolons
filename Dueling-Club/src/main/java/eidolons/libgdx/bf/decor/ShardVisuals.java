@@ -170,8 +170,8 @@ public class ShardVisuals extends GroupX  implements GridElement {
     public void init() {
         setSize(grid.getWidth(), grid.getHeight());
 
-        for (int x = -1; x - 1 < grid.getCols(); x++) {
-            for (int y = -1; y - 1 < grid.getRows(); y++) {
+        for (int x = -1; x - 1 < grid.getModuleCols(); x++) {
+            for (int y = -1; y - 1 < grid.getModuleRows(); y++) {
 
                 if (x >= 0 && y >= 0)
                     if (x < grid.getCells().length &&
@@ -204,13 +204,13 @@ public class ShardVisuals extends GroupX  implements GridElement {
                 try {
                     Shard shard = new Shard(x, y, type, size, overlay, direction);
                     if (direction instanceof DIRECTION)
-                        if (y >= grid.getRows()) {
-                            if (x >= grid.getCols()) {
+                        if (y >= grid.getModuleRows()) {
+                            if (x >= grid.getModuleCols()) {
                                 shard.setUserObject(grid.getCell(x + 1, y + 1));
                             } else
                                 shard.setUserObject(grid.getCell(x - 1, y + 1));
-                        } else if (x >= grid.getCols()) {
-                            if (y >= grid.getRows()) {
+                        } else if (x >= grid.getModuleCols()) {
+                            if (y >= grid.getModuleRows()) {
                                 shard.setUserObject(grid.getCell(x + 1, y + 1));
                             } else
                                 shard.setUserObject(grid.getCell(x + 1, y - 1));

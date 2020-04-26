@@ -1,7 +1,9 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
+import main.content.enums.DungeonEnums;
 import main.entity.EntityWrapper;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -82,4 +84,8 @@ public class DungeonWrapper  extends LevelStruct<Module, Module> implements Enti
     }
 
 
+    public DungeonEnums.LOCATION_TYPE getLocationType() {
+        return (DungeonEnums.LOCATION_TYPE) getData().getEnum(LevelStructure.FLOOR_VALUES.location_type,
+                DungeonEnums.LOCATION_TYPE.class);
+    }
 }

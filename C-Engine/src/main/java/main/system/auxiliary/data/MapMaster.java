@@ -23,6 +23,16 @@ public class MapMaster<E, T> {
         }
     }
 
+    public static <V, K> Map<V, K> getInvertedMap(Map<K, V> map) {
+
+        Map<V, K> inv = new HashMap<>();
+
+        for (Entry<K, V> entry : map.entrySet()) {
+            inv.put(entry.getValue(), entry.getKey());
+        }
+
+        return inv;
+    }
     public static void addToFloatMap(Map map, Object key, Float n) {
         Float i = (Float) map.get(key);
         if (i == null) {

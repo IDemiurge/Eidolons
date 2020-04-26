@@ -14,7 +14,6 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
-import main.system.graphics.GuiManager;
 import main.system.launch.TypeBuilder;
 import main.system.math.PositionMaster;
 import org.w3c.dom.Document;
@@ -25,7 +24,7 @@ import java.util.List;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class DungeonBuilder  extends DungeonHandler  {
+public class DungeonBuilder extends DungeonHandler {
     public static final String DUNGEON_TYPE_NODE = "Dungeon_Type";
 
     public DungeonBuilder(DungeonMaster master) {
@@ -52,7 +51,7 @@ public class DungeonBuilder  extends DungeonHandler  {
                         : XmlNodeMaster.getChildByName(levelNode, "Floor");
         List<Node> nodeList = XmlNodeMaster.getNodeList(planNode);
         Location dungeonWrapper = buildDungeon(path, data, nodeList);
-        master.setDungeonWrapper(dungeonWrapper);
+        master.setLocation(dungeonWrapper);
         initLevel(nodeList);
         dungeonWrapper.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
 
@@ -61,22 +60,23 @@ public class DungeonBuilder  extends DungeonHandler  {
     }
 
     public void initModuleSize(Module module) {
-        initWidthAndHeight(module.getEffectiveWidth(true),
-                module.getEffectiveHeight(true));
+        int w = module.getEffectiveWidth(true);
+        int h = module.getEffectiveHeight(true);
+        initWidthAndHeight(w, h);
+        Coordinates.setModuleWidth(w);
+        Coordinates.setModuleHeight(h);
     }
 
     public void initLocationSize(Location dungeonWrapper) {
         int w = dungeonWrapper.getWidth();
         int h = dungeonWrapper.getHeight();
+        Coordinates.setFloorWidth(w);
+        Coordinates.setFloorHeight(h);
         initWidthAndHeight(w, h);
         Coordinates.initCache(w, h);
     }
 
     protected void initWidthAndHeight(int w, int h) {
-        GuiManager.setBattleFieldCellsX(w);
-        GuiManager.setBattleFieldCellsY(h);
-        GuiManager.setCurrentLevelCellsX(w);
-        GuiManager.setCurrentLevelCellsY(h);
         //TODO clean up this shit!
 
         PositionMaster.initDistancesCache(w, h);

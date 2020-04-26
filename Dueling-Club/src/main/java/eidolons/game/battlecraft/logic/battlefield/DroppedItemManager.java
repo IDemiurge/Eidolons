@@ -71,10 +71,7 @@ public class DroppedItemManager {
     }
 
     public static boolean canDropItem(DC_HeroItemObj item) {
-        if (item.getProperty(G_PROPS.ITEM_GROUP).equalsIgnoreCase("Keys")) {
-            return false;
-        }
-        return true;
+        return !item.getProperty(G_PROPS.ITEM_GROUP).equalsIgnoreCase("Keys");
     }
 
     private boolean checkLootDrops(DC_HeroItemObj item, Unit unit) {
@@ -88,8 +85,7 @@ public class DroppedItemManager {
         if (unit.isMine()) {
             //check if not original!
             if (item instanceof DC_HeroSlotItem)
-                if (item.getOriginalUnit() == unit)
-                    return false;
+                return item.getOriginalUnit() != unit;
             return true;
         }
         return
@@ -99,7 +95,7 @@ public class DroppedItemManager {
 
     private void destroyItem(DC_HeroItemObj item) {
         item.kill();
-        item.getGame().getState().removeObject(item.getId());
+        game.getStateManager().removeObject(item.getId(), item.getOBJ_TYPE_ENUM());
     }
 
     public boolean checkHasItems(Obj obj) {

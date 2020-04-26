@@ -32,8 +32,8 @@ public class Pillars extends GroupX {
     }
 
     private void init() {
-        for (int x = -1; x - 1 < grid.getCols(); x++) {
-            for (int y = -1; y - 1 < grid.getRows(); y++) {
+        for (int x = -1; x - 1 < grid.getModuleCols(); x++) {
+            for (int y = -1; y - 1 < grid.getModuleRows(); y++) {
 
                 if (x >= 0 && y >= 0)
                     if (x < grid.getCells().length &&
