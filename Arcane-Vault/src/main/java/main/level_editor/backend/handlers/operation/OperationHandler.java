@@ -63,7 +63,7 @@ public class OperationHandler extends LE_Handler {
                 c = (Coordinates) args[0];
                 boolean isVoid = manager.getGame().toggleVoid(c);
                 if (isVoid)
-                    for (BattleFieldObject bfObj : manager.getGame().getObjectsAt(c)) {
+                    for (BattleFieldObject bfObj : manager.getGame().getObjectsNoOverlaying(c)) {
                         operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
                     }
                 GuiEventManager.trigger(
@@ -76,7 +76,7 @@ public class OperationHandler extends LE_Handler {
                 for (Coordinates coordinates : collection) {
                     isVoid = manager.getGame().toggleVoid(coordinates);
                     if (isVoid)
-                        for (BattleFieldObject bfObj : manager.getGame().getObjectsAt(coordinates)) {
+                        for (BattleFieldObject bfObj : manager.getGame().getObjectsNoOverlaying(coordinates)) {
                             operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
                         }
                 }

@@ -9,111 +9,35 @@ import main.system.auxiliary.StrPathBuilder;
  */
 public class DungeonEnums {
 
-
     public enum DUNGEON_GROUP {
-        UNDERWORLD, ARCANE, UNDEAD, HUMAN, MISC
-    }
+        UNDERWORLD, ARCANE, UNDEAD, HUMAN, MISC,
 
-    public enum DUNGEON_MAP_MODIFIER {
-        CULTIST_HIDEOUT("Altar(2)", MAP_BACKGROUND.CAVE),
-        HALL("Marble Column(3);", MAP_BACKGROUND.DARK_CASTLE),
-        GRAVEYARD("Gravestone(4);"
-         // "Desecrated Grave(2);Fresh Grave(2);Gravestone(2);Statue(2);"
-         , MAP_BACKGROUND.CEMETERY),
-        RUINS("Ruined Structure(2);Ruined Column(2);Ruined Gateway(2)", MAP_BACKGROUND.RUINS),
-        DEEP_WOOD("Shrub(2);Ancient Oak(3);", MAP_BACKGROUND.RUINS),
-        ROCKY("Mossy Boulder(2);Sleek Rock(2);", MAP_BACKGROUND.SHEOTH),
-        CAVERN("Stalactite(2);Stalagmite(3);", MAP_BACKGROUND.CAVE),;
-        private String objects;
-        private MAP_BACKGROUND bg;
-        private String presetObjects;
-
-        DUNGEON_MAP_MODIFIER(String objects, MAP_BACKGROUND bg, String presetObjects) {
-            this.objects = objects;
-            this.bg = bg;
-            this.presetObjects = presetObjects;
-        }
-
-        DUNGEON_MAP_MODIFIER(String objects, MAP_BACKGROUND bg) {
-            this(objects, bg, null);
-        }
-
-        public String getObjects() {
-            return objects;
-        }
-
-        public String getBackground() {
-            return bg.getBackgroundFilePath();
-        }
-
-        public MAP_BACKGROUND getBg() {
-            return bg;
-        }
-
-        public String getPresetObjects() {
-            return presetObjects;
-        }
-    }
-
-    public enum DUNGEON_MAP_TEMPLATE {
-        COAST("Water(4);", MAP_BACKGROUND.PIRATE_BAY), // one side cut off water
-        // halfway thru?
-        PLAINS("Shrub(1);Mossy Boulder(2);Oak(2);", MAP_BACKGROUND.CAVE),
-        SWAMP("Fallen Tree(1);Sleek Rock(2);Dead Tree(3);", MAP_BACKGROUND.CAVE),
-
-        FOREST("Tree Sapling(2);Oak(2);Fallen Tree(1);Shrub(3);Mossy Boulder(1);Sleek Rock(1);", MAP_BACKGROUND.CAVE),
-        DEAD_FOREST("Fallen Tree(1);Shrub(2);Mossy Boulder(1);Sleek Rock(1);Dead Tree(4);", MAP_BACKGROUND.DARK_FOREST),
-        DARK_FOREST("Fallen Tree(1);Shrub(2);Mossy Boulder(1);Sleek Rock(1);Oak(2);Dead Tree(3);", MAP_BACKGROUND.DARK_FOREST),
-        CEMETARY("Gravestone(4);", MAP_BACKGROUND.CEMETERY),
-        CEMETARY_WOODS("Gravestone(2);Sleek Rock(1);Mossy Boulder(1);Dead Tree(2);", MAP_BACKGROUND.CEMETERY),
-        DUNGEON_HALL("Marble Column(4);", MAP_BACKGROUND.FORGOTTEN_CITY),
-
-        DUNGEON("Stalactite(3);Stalagmite(4);", MAP_BACKGROUND.CAVE),
-
-        HALL_MAGE("Marble Column(6);", MAP_BACKGROUND.FORGOTTEN_CITY),
-        HALL_DARK("Ruined Column(3);Ruined Gateway(2);Ruined Structure(2);", MAP_BACKGROUND.DARK_CASTLE),
-        CAMP("Fallen Tree(2);Barricade(3);", MAP_BACKGROUND.PIRATE_BAY),;
-        private String objects;
-        private MAP_BACKGROUND bg;
-
-        DUNGEON_MAP_TEMPLATE(String objects, MAP_BACKGROUND bg) {
-            this.objects = objects; // (x) - minimum x/2, max x.
-            this.bg = bg;
-        }
-
-        public String getObjects() {
-            return objects;
-        }
-
-        public String getBackground() {
-            return bg.getBackgroundFilePath();
-        }
-
-        public MAP_BACKGROUND getBg() {
-            return bg;
-        }
 
     }
 
+    public enum CELL_IMAGE {
+        tiles,
+        diamond,
+        circle("cr"),
+        star,
+        cross,
+        natural,
+        octagonal("oct"),
+        ;
+        String name;
 
-    public enum DUNGEON_POPULATION {
-        Cult,
-    }
+        CELL_IMAGE() {
+            name = name();
+        }
 
-    public enum DEMO_FILL_STYLE {
-        ROGUE,
-        DWARF,
-        SPIDER,
+        CELL_IMAGE(String name) {
+            this.name = name;
+        }
 
-        CAVE,
-        TELRAZI,
-        VAULT,
-
-        CRYPTS,
-        PRISON,
-        TOWER,
-
-        NIGHTMARE
+        @Override
+        public String toString() {
+            return name;
+        }
     }
     /**
      * Encapsulates Ambience, decor, illumination
@@ -156,8 +80,6 @@ public class DungeonEnums {
         CEMETERY(true), CAVE, CRYPT,
        DUNGEON,        TOWER(33), TEMPLE(50),
         CASTLE(75),
-
-
         HOUSE(true),
         GROVE(true),DEN, RUIN(66),
         CAMP(true),  BARROW,
@@ -220,8 +142,7 @@ public class DungeonEnums {
         }
     }
 
-    public enum
-    LOCATION_TYPE_GROUP {
+    public enum    LOCATION_TYPE_GROUP {
         SURFACE,
         WIDE,
         AVERAGE,
@@ -281,7 +202,7 @@ public class DungeonEnums {
         }
 
     }
-
+//brush?
     public enum MAP_FILL_TEMPLATE {
         FOREST("Tree Sapling(2);Oak(2);Shrub(3);", "Forest Crags(1);Mossy Rocks(1);Fallen Tree(1);Mossy Boulder(1);Sleek Rock(1);"),
         SWAMP("Dead Tree(3);Forest Crags(1);Mossy Rocks(1);Tree Sapling(1); Shrub(1);", "Forest Crags(1);Mossy Rocks(1);Fallen Tree(1);Mossy Boulder(1);Sleek Rock(1);"),
@@ -313,28 +234,4 @@ public class DungeonEnums {
         COMMON, PRE_BOSS, BOSS, SECRET, TRANSIT, FALSE_LEVEL
     }
 
-    public enum CELL_IMAGE {
-        tiles,
-        diamond,
-        circle("cr"),
-        star,
-        cross,
-        natural,
-        octagonal("oct"),
-        ;
-        String name;
-
-        CELL_IMAGE() {
-            name = name();
-        }
-
-        CELL_IMAGE(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
 }

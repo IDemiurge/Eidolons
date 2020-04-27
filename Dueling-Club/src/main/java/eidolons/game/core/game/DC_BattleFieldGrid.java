@@ -33,8 +33,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     public DC_BattleFieldGrid(Module module) {
         game = DC_Game.game;
-        this.w = this.game.getDungeonMaster().getLocation().getWidth();
-        this.h = this.game.getDungeonMaster().getLocation().getHeight();
+        this.w = this.game.getDungeonMaster().getFloorWrapper().getWidth();
+        this.h = this.game.getDungeonMaster().getFloorWrapper().getHeight();
         coordinates = new LinkedHashSet<>();
         cellsSet = new LinkedHashSet<>();
         cells = new DC_Cell[w][h];
@@ -86,7 +86,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         BattleFieldObject[] array = objCells[x_][y_];
         if (array == null) {
             Set<BattleFieldObject> set = DC_Game.game.getObjMaster().getObjectsOnCoordinate(
-                    Coordinates.get(x_, y_), false);
+                    Coordinates.get(x_, y_), overlayingIncluded_Not_Only);
 //            list.addAll(
 //            game.getMaster().getObjectsOnCoordinate(
 //             Coordinates.getVar(x_, y_), true));
@@ -195,7 +195,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         }
         for (int i = min + 1; i < max; i++) {
             Coordinates c = (x_y) ? Coordinates.get(xy, i) : Coordinates.get(i, xy);
-            Set<BattleFieldObject> objects = game.getObjMaster().getObjectsOnCoordinate(c, false, false, false);
+            Set<BattleFieldObject> objects = game.getObjMaster().getObjectsOnCoordinate(c, false );
             for (BattleFieldObject obj : objects) {
                 if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
                     return false;

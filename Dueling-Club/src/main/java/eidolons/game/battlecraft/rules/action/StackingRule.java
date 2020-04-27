@@ -75,9 +75,9 @@ public class StackingRule implements ActionRule {
             return;
         Ref ref = action.getRef();
         Obj target = ref.getTargetObj();
-        Set<BattleFieldObject> units = action.getGame().getObjectsAt(
+        Set<BattleFieldObject> units = action.getGame().getObjectsNoOverlaying(
          action.getOwnerUnit().getCoordinates());
-        units.addAll(action.getGame().getObjectsAt(
+        units.addAll(action.getGame().getObjectsNoOverlaying(
          target.getCoordinates()));
         units.remove(action.getOwnerUnit());
         units.remove(target);
@@ -173,7 +173,7 @@ public class StackingRule implements ActionRule {
         if (!game.isSimulation()) {
             cell = game.getCellByCoordinate(c);
         } else {
-            cell = new DC_Cell(c, game);
+            cell = new DC_Cell(c, game); //TODO this is a hack...
         }
         if (cell == null) {
             //TODO cell is utter void!

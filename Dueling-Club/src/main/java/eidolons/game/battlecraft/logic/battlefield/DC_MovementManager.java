@@ -225,7 +225,7 @@ public class DC_MovementManager implements MovementManager {
     }
 
     public boolean checkPushByMovement(BattleFieldObject obj, Coordinates c){
-        for (BattleFieldObject object : game.getObjectsOnCoordinate(c)) {
+        for (BattleFieldObject object : game.getObjectsOnCoordinateNoOverlaying(c)) {
             if (object instanceof Structure) {
                 if (PushableCondition.isPushable((Structure) object, (Unit) obj)) {
 //                    if (obj.getIntParam(PARAMS.WEIGHT)>=object.getIntParam(PARAMS.WEIGHT))

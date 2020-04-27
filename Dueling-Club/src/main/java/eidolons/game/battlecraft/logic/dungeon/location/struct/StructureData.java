@@ -5,9 +5,6 @@ import main.data.tree.LayeredData;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 public abstract class StructureData<T extends Enum<T>, S extends LayeredData> extends DataUnit<T> {
     protected S structure;
     protected LevelStruct levelStruct;
@@ -24,9 +21,9 @@ public abstract class StructureData<T extends Enum<T>, S extends LayeredData> ex
 
     @Override
     public String[] getRelevantValues() {
-        return Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
-                collect(Collectors.toList()).toArray(new String[0]);
+        return getValueConsts();
     }
+
 
     public S getStructure() {
         return structure;

@@ -19,7 +19,7 @@ public class PortalSlotsCondition extends DC_Condition {
         for (Coordinates coordinates : puzzle.getSlots().keySet()) {
             PortalPuzzle.POWER_SLOT slot = puzzle.getSlots().get(coordinates);
 
-            for (BattleFieldObject object : getGame().getObjectsOnCoordinate(coordinates)) {
+            for (BattleFieldObject object : getGame().getObjectsOnCoordinateNoOverlaying(coordinates)) {
                 if (!checkSlotFilled(slot, object))
                     return false;
             }

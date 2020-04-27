@@ -2,19 +2,21 @@
 
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
+import main.entity.type.ObjType;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.sim.LE_GameSim;
 
 import java.util.Set;
 
-public class Floor  {
+public class LE_Floor extends Floor {
     String name;
     LE_Manager manager;
     LE_GameSim game;
-//    BossDungeon bossDungeon;
 
-    public Floor(String name, LE_GameSim game ) {
-        this.name = name;
+    public LE_Floor(ObjType type, LE_GameSim game) {
+        super(type);
+        this.name = type.getName();
         this.game = game;
         manager =  new LE_Manager(this);
     }
@@ -41,7 +43,7 @@ public class Floor  {
     }
 
     public Location getWrapper() {
-        return game.getDungeonMaster().getLocation();
+        return game.getDungeonMaster().getFloorWrapper();
     }
 
     public Module getDefaultModule() {

@@ -31,12 +31,13 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     SCENARIO_TYPE(null, false, "scenarios"),
     SCENARIO_MISSIONS(null, true, "scenarios"),
     SCENARIO_PARTY(null, false, "scenarios"),
-    DIFFICULTY(null, false, "scenarios", "missions", "chars" ),
+    DIFFICULTY(null, false, "scenarios", "dungeons", "chars" ),
 
-    MISSION_BRIEFING_DATA(null, false, "missions"),
-    MISSION_LOADING_SCREEN(null, false, "missions"),
-    MISSION_FILE_PATH(null, false, "missions"),
-    MISSION_SCRIPTS(null, true, "missions"),
+    BRIEFING_DATA(null, false, "dungeons"),
+    LOADING_SCREEN(null, false, "dungeons"),
+    FLOOR_TEMPLATE_PATH(null, false, "dungeons"  ),
+    FLOOR_FILE_PATH(null, false, "dungeons"),
+    FLOOR_SCRIPTS(null, true, "dungeons"),
 
     DUNGEON_TAGS(null, true, "dungeons"),
     MAP_BACKGROUND(null, false, "dungeons", "area" ),

@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.ai.elements.generic.AiData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import main.content.DC_TYPE;
 import main.data.xml.XML_Converter;
+import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.system.GuiEventManager;
@@ -183,7 +184,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
         getModel().getDisplayMode().setShowMetaAi(!getModel().getDisplayMode().isShowMetaAi());
     }
 
-    public String getXml(Function<Integer, Boolean> idFilter) {
+    public String getXml(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
         StringBuilder builder = new StringBuilder();
         for (Integer id : encounterAiMap.keySet()) {
             builder.append(id).append("=");

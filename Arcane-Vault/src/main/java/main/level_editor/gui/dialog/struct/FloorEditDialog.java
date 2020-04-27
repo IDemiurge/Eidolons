@@ -38,7 +38,7 @@ public class FloorEditDialog extends DataEditDialog<LevelStructure.FLOOR_VALUES,
             case background:
                 return "resources/img/main/background";
             case floor_type:
-                return DC_TYPE.DUNGEONS;
+                return DC_TYPE.FLOORS;
             case vfx_template:
                 return GenericEnums.VFX.class;
             case ambience:

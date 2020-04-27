@@ -87,7 +87,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
     }
 
     public void createMissionTriggers() {
-        String scripts =  getMission().getFloor().getProperty(PROPS.MISSION_SCRIPTS);
+        String scripts =  getMission().getFloor().getProperty(PROPS.FLOOR_SCRIPTS);
         if (!scripts.isEmpty())
             scripts += ScriptSyntax.SCRIPTS_SEPARATOR;
         try {

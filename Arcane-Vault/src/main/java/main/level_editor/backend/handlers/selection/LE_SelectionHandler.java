@@ -124,7 +124,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
 
     public void areaSelected() {
         for (Coordinates c : getSelection().getCoordinates()) {
-            for (BattleFieldObject object : getGame().getObjectsAt(c)) {
+            for (BattleFieldObject object : getGame().getObjectsNoOverlaying(c)) {
                 getSelection().getIds().add(getIdManager().getId(object));
             }
         }

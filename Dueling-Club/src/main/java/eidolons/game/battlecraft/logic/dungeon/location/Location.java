@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
+import eidolons.game.battlecraft.logic.dungeon.universal.FloorWrapper;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
@@ -18,7 +18,7 @@ import static main.system.auxiliary.log.LogMaster.log;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class Location extends DungeonWrapper {
+public class Location extends FloorWrapper {
 
     private Entrance mainEntrance;
     private Entrance mainExit;
@@ -28,10 +28,10 @@ public class Location extends DungeonWrapper {
     private Set<Entrance> transits = new LinkedHashSet<>();
     private boolean initialEdit;
 
-    public Location(DungeonMaster master, Dungeon dungeon) {
-        super(dungeon, master);
+    public Location(DungeonMaster master, Floor floor) {
+        super(floor, master);
         this.master = master;
-        dungeon.setLocation(this);
+        floor.setLocation(this);
     }
 
     @Override

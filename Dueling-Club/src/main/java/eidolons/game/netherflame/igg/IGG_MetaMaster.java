@@ -42,9 +42,9 @@ public class IGG_MetaMaster extends MetaGameMaster<IGG_Meta> {
     public IGG_MetaMaster(String data) {
         super(data);
         ObjType scenario = DataManager.getType(data, DC_TYPE.SCENARIOS);
-        ObjType mission = DataManager.getType(data, DC_TYPE.MISSIONS);
+        ObjType mission = DataManager.getType(data, DC_TYPE.FLOORS);
         if (mission == null) {
-            mission = DataManager.getType(scenario.getProperty(PROPS.SCENARIO_MISSIONS), DC_TYPE.MISSIONS);
+            mission = DataManager.getType(scenario.getProperty(PROPS.SCENARIO_MISSIONS), DC_TYPE.FLOORS);
             if (mission != null) {
                 this.data = mission.getName();
             }

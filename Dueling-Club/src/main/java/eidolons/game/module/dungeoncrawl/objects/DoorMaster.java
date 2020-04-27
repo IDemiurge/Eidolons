@@ -102,7 +102,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
 //            case LOCK: //TODO
                 return door.getState() == DOOR_STATE.CLOSED;
             case CLOSE:
-                if (door.getGame().getObjectsOnCoordinate(  door.getCoordinates(), true, true, false).size() > 1) {
+                if (door.getGame().getObjectsOnCoordinate(  door.getCoordinates(), true ).size() > 1) {
                     return false;
                 }
                 return isOpen(door);

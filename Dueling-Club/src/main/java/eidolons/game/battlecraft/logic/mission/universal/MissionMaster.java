@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.mission.universal;
 
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
@@ -40,7 +40,7 @@ public abstract class MissionMaster<E extends DungeonSequence> {
         encounterAdjuster = new EncounterAdjuster(this);
     }
 
-    public Dungeon getFloor() {
+    public Floor getFloor() {
         return getMission().getFloor();
     }
 

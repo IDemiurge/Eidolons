@@ -39,7 +39,7 @@ public class IGG_Meta extends MetaGame {
         this.mission = new IGG_Mission(mission);
         missionIndex = mission.getMissionIndex();
         actIndex = mission.getAct();
-        setMissionType(DataManager.getType(mission.getMissionName(), DC_TYPE.MISSIONS));
+        setMissionType(DataManager.getType(mission.getMissionName(), DC_TYPE.FLOORS));
     }
 
     public int getMissionIndex() {

@@ -21,8 +21,7 @@ public class LE_KeyHandler extends LE_Handler {
 
     public void keyDown(int keyCode) {
 
-        boolean alt = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) ||
-                Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
+        boolean alt = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) ;
         boolean ctrl = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
                 Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT);
 

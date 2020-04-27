@@ -112,7 +112,7 @@ public class Positioner  extends DungeonHandler  {
     }
 
     public List<Coordinates> getPlayerPartyCoordinates(List<String> partyTypes) {
-        return getCoordinates(getDungeon().getDefaultPlayerSpawnCoordinates(), true, partyTypes);
+        return getCoordinates(getFloorWrapper().getDefaultPlayerSpawnCoordinates(), true, partyTypes);
     }
 
     public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MODE mode) {
@@ -184,10 +184,10 @@ public class Positioner  extends DungeonHandler  {
         while (Loop.loopContinues()) {
             int x = playerC.x + RandomWizard.getRandomIntBetween(-4, 4);
             int y = playerC.y + RandomWizard.getRandomIntBetween(-4, 4);
-            if (y >= getDungeon().getCellsY() - 1) {
+            if (y >= getFloorWrapper().getCellsY() - 1) {
                 continue;
             }
-            if (x >= getDungeon().getCellsX() - 1) {
+            if (x >= getFloorWrapper().getCellsX() - 1) {
                 continue;
             }
             if (y <= 0) {

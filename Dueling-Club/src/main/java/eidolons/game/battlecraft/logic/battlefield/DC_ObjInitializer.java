@@ -73,7 +73,7 @@ public class DC_ObjInitializer extends DungeonHandler {
         return item.split(COORDINATES_OBJ_SEPARATOR)[1];
     }
 
-    public DC_Obj initObject(Module module, Coordinates c, ObjType type, DC_Player owner, DC_Game game) {
+    public DC_Obj initObject(Module module, Coordinates c, ObjType type, DC_Player owner, DC_Game game, Integer id) {
         DC_Obj obj;
         if (owner == null) {
             if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
@@ -83,7 +83,9 @@ public class DC_ObjInitializer extends DungeonHandler {
             }
         }
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
-            obj = new Encounter(type, game, new Ref(), game.getPlayer(false), c);
+
+            obj =  createEncounter(type, c, id);
+
         } else {
             type = getPlaceholderResolver().resolve(module, type, c);
             if (type.getOBJ_TYPE_ENUM() == DC_TYPE.UNITS) {
@@ -94,6 +96,10 @@ public class DC_ObjInitializer extends DungeonHandler {
         }
         obj.setModule(module);
         return obj;
+    }
+
+    protected DC_Obj createEncounter(ObjType type, Coordinates c, Integer id) {
+     return    new Encounter(type, game, new Ref(), game.getPlayer(false), c);
     }
 
     public Map<Integer, BattleFieldObject> processObjects(
@@ -118,12 +124,12 @@ public class DC_ObjInitializer extends DungeonHandler {
                 Integer id = Integer.valueOf(idString);
                 ObjType type = idMap.get(id);
                 if (type == null) {
-                    LogMaster.log(1, "ERROR: Type not found - " + id);
+                    LogMaster.log(1, "ERROR: Type not found; id = " + id);
                     continue;
                 }
                 DC_Player owner = ownerMap.get(id);
 
-                DC_Obj obj = initObject(module, c, type, owner, DC_Game.game);
+                DC_Obj obj = initObject(module, c, type, owner, DC_Game.game, id);
 
                 if (obj instanceof BattleFieldObject) {
                     objIdMap.put(id, (BattleFieldObject) obj);
@@ -153,7 +159,7 @@ public class DC_ObjInitializer extends DungeonHandler {
         for (String substring : items) {
             Coordinates c = Coordinates.get(true, substring);
             ObjType type = getBorderType();
-            DC_Obj value = initObject(module, c, type, null, DC_Game.game);
+            DC_Obj value = initObject(module, c, type, null, DC_Game.game, null);
 
             if (value instanceof BattleFieldObject) {
                 ((BattleFieldObject) value).setModuleBorder(true);

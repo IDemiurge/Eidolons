@@ -204,10 +204,10 @@ public class QuestMaster extends MetaGameHandler {
             case HUNT:
                 break;
             case OBJECTS:
-                if (master.getGame().getDungeonMaster().getLocation()  == null) {
+                if (master.getGame().getDungeonMaster().getFloorWrapper()  == null) {
                     return false;
                 }
-                switch (master.getGame().getDungeonMaster().getLocation().getStyle()) {
+                switch (master.getGame().getDungeonMaster().getFloorWrapper().getStyle()) {
                     case Somber:
                     case Grimy:
                     case Pagan:
@@ -217,10 +217,10 @@ public class QuestMaster extends MetaGameHandler {
                 return false;
             case COMMON_ITEMS:
             case SPECIAL_ITEM:
-                if (master.getGame().getDungeonMaster().getLocation()  == null) {
+                if (master.getGame().getDungeonMaster().getFloorWrapper()  == null) {
                     return false;
                 }
-                switch (master.getGame().getDungeonMaster().getLocation().getStyle()) {
+                switch (master.getGame().getDungeonMaster().getFloorWrapper().getStyle()) {
                     case Somber:
                         return false;
                 }

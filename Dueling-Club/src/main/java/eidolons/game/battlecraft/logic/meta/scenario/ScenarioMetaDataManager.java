@@ -47,24 +47,9 @@ public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
                 getProperty(PROPS.SCENARIO_MISSIONS)));
         if (StringMaster.isEmpty(missionName)) {
             int missionIndex = (ScenarioLauncher.missionIndex);
-
             getMetaGame().setMissionIndex(missionIndex);
-
             setMissionName(ContainerUtils.openContainer(getMetaGame().getScenario().
                     getProperty(PROPS.SCENARIO_MISSIONS)).get(missionIndex));
-
-
-            if (getGame().getMetaMaster().isRngDungeon()) {
-                try {
-                    setMissionPath(ContainerUtils.openContainer(getMetaGame().getScenario().
-                            getProperty(PROPS.SCENARIO_MISSIONS)).get(missionIndex));
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-            }
-            else {
-//        TODO    missionName = getMissionName();  DataManager.getType(missionName, DC_TYPE.MISSIONS).getProperty(PROPS.MISSION_FILE_PATH);
-            }
         } else {
             getMetaGame().setMissionIndex(ContainerUtils.openContainer(getMetaGame().getScenario().
                     getProperty(PROPS.SCENARIO_MISSIONS)).indexOf(missionName));

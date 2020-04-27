@@ -3,7 +3,7 @@ package eidolons.libgdx.particles.ambi;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
@@ -31,7 +31,7 @@ public class ParticleManager extends GroupX {
     private static boolean ambienceOn = OptionsMaster.getGraphicsOptions().getBooleanValue(
             GRAPHIC_OPTION.AMBIENCE_VFX);
     private static boolean ambienceMoveOn;
-    private static Dungeon dungeon_;
+    private static Floor floor_;
     public boolean debugMode;
     List<EmitterMap> emitterMaps = new ArrayList<>();
     List<EmitterActor> dynamicVfx = new ArrayList<>();
@@ -54,7 +54,7 @@ public class ParticleManager extends GroupX {
                 }
             if (isAmbienceOn())
                 GuiEventManager.trigger(GuiEventType.INIT_AMBIENCE,
-                        new AmbienceDataSource(getTemplate(dungeon_), (DAY_TIME) p.get()));
+                        new AmbienceDataSource(getTemplate(floor_), (DAY_TIME) p.get()));
         });
 
         GuiEventManager.bind(GuiEventType.SHOW_CUSTOM_VFX, p -> {
@@ -129,9 +129,9 @@ public class ParticleManager extends GroupX {
     }
 
     @Deprecated
-    public static AMBIENCE_TEMPLATE getTemplate(Dungeon dungeon_) {
-        if (dungeon_.getDungeonSubtype() != null)
-            switch (dungeon_.getDungeonSubtype()) {
+    public static AMBIENCE_TEMPLATE getTemplate(Floor floor_) {
+        if (floor_.getDungeonSubtype() != null)
+            switch (floor_.getDungeonSubtype()) {
                 case CAVE:
                 case HIVE:
 
@@ -186,8 +186,8 @@ public class ParticleManager extends GroupX {
         ParticleManager.ambienceMoveOn = ambienceMoveOn;
     }
 
-    public static void init(Dungeon dungeon) {
-        dungeon_ = dungeon;
+    public static void init(Floor floor) {
+        floor_ = floor;
     }
 
     @Override

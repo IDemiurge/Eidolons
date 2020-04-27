@@ -36,7 +36,7 @@ import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
  */
 public abstract class DungeonMaster {
     protected DC_Game game;
-    protected Location location;
+    protected Location floorWrapper;
     protected DungeonInitializer initializer;
     protected DungeonBuilder  builder;
     protected Positioner positioner;
@@ -73,7 +73,7 @@ public abstract class DungeonMaster {
         facingAdjuster = createFacingAdjuster();
         builder = createBuilder();
         structureMaster = new StructureMaster(this);
-        objInitializer = new DC_ObjInitializer(this);
+        objInitializer = createObjInitializer();
         structureBuilder = new StructureBuilder(this);
         floorLoader = createFloorLoader();
         if (CoreEngine.isCombatGame()) {
@@ -88,6 +88,11 @@ public abstract class DungeonMaster {
         placeholderResolver = new PlaceholderResolver(this);
         transitHandler = new TransitHandler(this);
     }
+
+    protected DC_ObjInitializer createObjInitializer() {
+        return new DC_ObjInitializer(this);
+    }
+
     protected FloorLoader createFloorLoader() {
         return new FloorLoader(this);
     }
@@ -110,8 +115,8 @@ public abstract class DungeonMaster {
             } catch (Exception e) {
                 ExceptionMaster.printStackTrace(e);
             }
-        ParticleManager.init(location.getDungeon());
-        GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, location.getMapBackground());
+        ParticleManager.init(floorWrapper.getFloor());
+        GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, floorWrapper.getMapBackground());
         spawner.spawn();
     }
 
@@ -120,12 +125,12 @@ public abstract class DungeonMaster {
     }
 
     public void init() {
-        if (location == null)
-            location = initDungeon();
+        if (floorWrapper == null)
+            floorWrapper = initDungeon();
         //TODO remove this!
 
-        if (location == null) {
-            location = initDungeon();
+        if (floorWrapper == null) {
+            floorWrapper = initDungeon();
         }
         if (!CoreEngine.isCombatGame()) {
             return;
@@ -134,13 +139,13 @@ public abstract class DungeonMaster {
 //        getBattleMaster().getScriptManager().parseDungeonScripts(dungeonWrapper.getDungeon());
 //        trapMaster.initTraps(getDungeon());
 
-        Coordinates.setFloorWidth(location.getWidth());
-        Coordinates.setFloorHeight(location.getHeight());
+        Coordinates.setFloorWidth(floorWrapper.getWidth());
+        Coordinates.setFloorHeight(floorWrapper.getHeight());
 
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setFloorWrapper(Location floorWrapper) {
+        this.floorWrapper = floorWrapper;
     }
 
     protected void processCoordinateMap(String data, DataMap type) {
@@ -170,7 +175,7 @@ public abstract class DungeonMaster {
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
         }
-        return location;
+        return floorWrapper;
     }
 
     protected abstract FacingAdjuster createFacingAdjuster();
@@ -209,17 +214,17 @@ public abstract class DungeonMaster {
         return spawner;
     }
 
-    public Location getLocation() {
-        return location;
+    public Location getFloorWrapper() {
+        return floorWrapper;
     }
 
 
-    public MissionMaster getBattleMaster() {
+    public MissionMaster getMissionMaster() {
         return game.getMissionMaster();
     }
 
     public PlayerManager getPlayerManager() {
-        return getBattleMaster().getPlayerManager();
+        return getMissionMaster().getPlayerManager();
     }
 
     public PuzzleMaster getPuzzleMaster() {
@@ -227,27 +232,27 @@ public abstract class DungeonMaster {
     }
 
     public MissionOptionManager getOptionManager() {
-        return getBattleMaster().getOptionManager();
+        return getMissionMaster().getOptionManager();
     }
 
     public MissionStatManager getStatManager() {
-        return getBattleMaster().getStatManager();
+        return getMissionMaster().getStatManager();
     }
 
     public MissionConstructor getConstructor() {
-        return getBattleMaster().getConstructor();
+        return getMissionMaster().getConstructor();
     }
 
     public MissionOutcomeManager getOutcomeManager() {
-        return getBattleMaster().getOutcomeManager();
+        return getMissionMaster().getOutcomeManager();
     }
 
-    public DungeonSequence getBattle() {
-        return getBattleMaster().getMission();
+    public DungeonSequence getMission() {
+        return getMissionMaster().getMission();
     }
 
-    public Dungeon getDungeon() {
-        return location.getDungeon();
+    public Floor getDungeon() {
+        return floorWrapper.getFloor();
     }
 
     public ExplorationMaster getExplorationMaster() {
@@ -270,7 +275,7 @@ public abstract class DungeonMaster {
     }
 
     public void next() {
-        location = null;
+        floorWrapper = null;
     }
 
     public TrapMaster getTrapMaster() {

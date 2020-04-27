@@ -13,6 +13,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.WeightMap;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DataUnit<T extends Enum<T>> {
     public static final String TRUE = "TRUE";
@@ -87,6 +88,10 @@ public class DataUnit<T extends Enum<T>> {
         return relevantValues;
     }
 
+    protected String[] getValueConsts() {
+        return Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
+                collect(Collectors.toList()).toArray(new String[0]);
+    }
     public int getIntValue(T value) {
         return getIntValue(value.name());
     }

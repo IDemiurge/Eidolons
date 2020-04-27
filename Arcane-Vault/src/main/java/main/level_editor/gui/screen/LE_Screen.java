@@ -14,7 +14,7 @@ import eidolons.libgdx.screens.ScreenWithLoader;
 import eidolons.libgdx.screens.dungeon.GenericDungeonScreen;
 import eidolons.libgdx.stage.GenericGuiStage;
 import eidolons.libgdx.stage.StageX;
-import main.level_editor.backend.struct.level.Floor;
+import main.level_editor.backend.struct.level.LE_Floor;
 import main.level_editor.gui.grid.LE_BfGrid;
 import main.level_editor.gui.stage.LE_GuiStage;
 import main.system.threading.WaitMaster;
@@ -25,13 +25,13 @@ import java.util.function.Supplier;
 
 public class LE_Screen extends GenericDungeonScreen {
 
-    private static Map<Floor, Supplier<ScreenWithLoader>> cached = new HashMap();
+    private static Map<LE_Floor, Supplier<ScreenWithLoader>> cached = new HashMap();
     private static LE_Screen instance;
-    private Floor floor;
+    private LE_Floor floor;
     private LE_InputController processor;
     private InputMultiplexer multiplexer;
 
-    public static Supplier<ScreenWithLoader> getScreen(Floor parameter) {
+    public static Supplier<ScreenWithLoader> getScreen(LE_Floor parameter) {
         Supplier<ScreenWithLoader> supplier = cached.get(parameter);
         if (supplier != null) {
             return supplier;
@@ -50,7 +50,7 @@ public class LE_Screen extends GenericDungeonScreen {
     protected void preLoad() {
         instance = this;
         WaitMaster.unmarkAsComplete(WaitMaster.WAIT_OPERATIONS.GUI_READY);
-        floor = (Floor) data.getParameter();
+        floor = (LE_Floor) data.getParameter();
 
         gridStage = new StageX(viewPort, getBatch()){
             @Override

@@ -444,7 +444,7 @@ public class GameLoop {
                 return false;
         }
         Coordinates c = game.getPlayer(true).getHeroObj().getCoordinates();
-        Location location = game.getDungeonMaster().getLocation();
+        Location location = game.getDungeonMaster().getFloorWrapper();
 //        game.getDungeonMaster().getDungeonLevel().getExitCoordinates()
 //        IGG_XmlMaster.getEntrancesData()
 

@@ -11,7 +11,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
@@ -84,7 +84,7 @@ public class ShadowMap extends GroupX implements GridElement {
                             (PROPS.COLOR_THEME, true));
         }
         if (colorTheme == null) {
-            Dungeon obj = Eidolons.game.getDungeon();
+            Floor obj = Eidolons.game.getDungeon();
 //            colorTheme = obj.getColorTheme();
         }
 
@@ -160,7 +160,7 @@ public class ShadowMap extends GroupX implements GridElement {
                         }
                         Coordinates c = Coordinates.get(x, (y));
                         Set<BattleFieldObject> objects = DC_Game.game.getOverlayingObjects(c);
-                        objects.addAll(DC_Game.game.getObjectsAt(c));
+                        objects.addAll(DC_Game.game.getObjectsNoOverlaying(c));
                         if (objects.isEmpty()) {
                             continue;
                         }

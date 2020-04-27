@@ -2,8 +2,8 @@ package eidolons.game.core.state;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
@@ -260,8 +260,7 @@ public class StateCloner {
                 return new Party(e.getType(), ((Party) e).getLeader());
 
             case DEITIES:
-            case ARCADES:
-            case DUNGEONS:
+            case FLOORS:
             case ENCOUNTERS:
                 break;
         }

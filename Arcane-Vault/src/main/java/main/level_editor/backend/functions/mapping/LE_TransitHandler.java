@@ -83,7 +83,7 @@ public class LE_TransitHandler extends LE_Handler {
         }
     }
 
-    public String getXml(Function<Integer, Boolean> idFilter) {
+    public String getXml(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
         StringBuilder xmlBuilder = new StringBuilder();
         StringBuilder builder = new StringBuilder();
 

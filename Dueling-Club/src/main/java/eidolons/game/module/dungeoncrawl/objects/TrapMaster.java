@@ -1,9 +1,9 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.netherflame.igg.event.TIP;
 import eidolons.game.netherflame.igg.event.TipMessageMaster;
@@ -25,7 +25,7 @@ public class TrapMaster extends DungeonHandler {
     }
 
 
-    public Trap createTrap(Dungeon dungeon, String name, Coordinates coordinates) {
+    public Trap createTrap(Floor floor, String name, Coordinates coordinates) {
         return new Trap() {
             @Override
             public void trigger(Unit victim) {
@@ -61,7 +61,7 @@ public class TrapMaster extends DungeonHandler {
          */
     }
 
-    public void initTraps(Dungeon dungeon) {
+    public void initTraps(Floor floor) {
 //        for (String s : dungeon.getCustomDataMap().keySet()) {
 //            if (dungeon.getCustomDataMap().get(s).toLowerCase().contains("trap")) {
 //                Coordinates c = new Coordinates(s);

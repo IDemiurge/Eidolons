@@ -4,7 +4,7 @@ import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.Ref;
@@ -34,10 +34,10 @@ public class IlluminationMaster {
     }
 
     public Integer getLightEmissionModifier() {
-        Dungeon dungeon = master.getGame().getDungeon();
-        if (dungeon != null) {
-            if (dungeon.getIntParam(PARAMS.LIGHT_EMISSION_MODIFIER) != 0)
-                return dungeon.getIntParam(PARAMS.LIGHT_EMISSION_MODIFIER);
+        Floor floor = master.getGame().getDungeon();
+        if (floor != null) {
+            if (floor.getIntParam(PARAMS.LIGHT_EMISSION_MODIFIER) != 0)
+                return floor.getIntParam(PARAMS.LIGHT_EMISSION_MODIFIER);
         }
         return lightEmissionModifier;
     }
@@ -84,11 +84,11 @@ public class IlluminationMaster {
             illumination = 0;
         } else
             illumination = target.getIntParam(PARAMS.ILLUMINATION);
-        Dungeon dungeon = source.getGame().getDungeon();
+        Floor floor = source.getGame().getDungeon();
         illumination += target.getIntParam(PARAMS.LIGHT_EMISSION) / 2;
-        if (dungeon != null) {
-            illumination = Math.max(illumination, dungeon.getGlobalIllumination());
-            globalIllumination = dungeon.getGlobalIllumination() / 5;
+        if (floor != null) {
+            illumination = Math.max(illumination, floor.getGlobalIllumination());
+            globalIllumination = floor.getGlobalIllumination() / 5;
         }
 //universal
         illumination += globalIllumination;
@@ -122,9 +122,9 @@ public class IlluminationMaster {
     public Integer getConcealment(Unit source, DC_Obj target) {
         Integer concealment = target.getIntParam(PARAMS.CONCEALMENT);
         concealment += source.getIntParam(PARAMS.CONCEALMENT) / 2; // getOrCreate from
-        Dungeon dungeon = source.getGame().getDungeon();
-        if (dungeon != null) {
-            concealment += dungeon.getIntParam(PARAMS.GLOBAL_CONCEALMENT);
+        Floor floor = source.getGame().getDungeon();
+        if (floor != null) {
+            concealment += floor.getIntParam(PARAMS.GLOBAL_CONCEALMENT);
         }
 
         concealment += globalConcealment;

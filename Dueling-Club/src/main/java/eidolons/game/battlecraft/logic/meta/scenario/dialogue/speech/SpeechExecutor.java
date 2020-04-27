@@ -249,7 +249,7 @@ public class SpeechExecutor {
                         //use sightMaster for circle?
                         c = Coordinates.get(i, j);
                         if (c != null) {
-                            for (BattleFieldObject object : master.getGame().getObjectsOnCoordinate(c)) {
+                            for (BattleFieldObject object : master.getGame().getObjectsOnCoordinateNoOverlaying(c)) {
                                 object.setRevealed(true);
                             }
                         }
@@ -965,14 +965,14 @@ public class SpeechExecutor {
                 c = getCoordinate(vars.get(0), true);
                 c1 = getCoordinate(vars.get(1), true);
                 for (Coordinates coordinates : CoordinatesMaster.getCoordinatesBetween(c, c1)) {
-                    for (BattleFieldObject object : Eidolons.getGame().getObjectsOnCoordinate(coordinates)) {
+                    for (BattleFieldObject object : Eidolons.getGame().getObjectsOnCoordinateNoOverlaying(coordinates)) {
                         doUnit(object, value, vars);
                     }
                 }
                 break;
             case COORDINATE:
                 c = getCoordinate(vars.get(0));
-                for (BattleFieldObject object : Eidolons.getGame().getObjectsOnCoordinate(c)) {
+                for (BattleFieldObject object : Eidolons.getGame().getObjectsOnCoordinateNoOverlaying(c)) {
                     doUnit(object, value, vars);
                 }
                 break;

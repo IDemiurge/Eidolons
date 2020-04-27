@@ -5,12 +5,15 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.gui.utils.FileChooserX;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
+import main.content.DC_TYPE;
+import main.data.DataManager;
 import main.data.filesys.PathFinder;
+import main.entity.type.ObjType;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.sim.LE_MetaMaster;
 import main.level_editor.backend.struct.boss.BossDungeon;
 import main.level_editor.backend.struct.campaign.Campaign;
-import main.level_editor.backend.struct.level.Floor;
+import main.level_editor.backend.struct.level.LE_Floor;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -20,7 +23,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.sound.SoundMaster;
 
 public class FloorManager {
-    public static Floor current;
+    public static LE_Floor current;
     public static Campaign campaign;
     public static BossDungeon dungeon;
     /*
@@ -58,7 +61,12 @@ public class FloorManager {
         name = StringMaster.cropFormat(
                 PathUtils.getLastPathSegment(name));
 
-        Floor floor = new Floor(name, game);
+        ObjType type = DataManager.getType(name, DC_TYPE.FLOORS);
+        if (type == null) {
+            type = new ObjType(name,DC_TYPE.FLOORS );// use template?
+            //will we save this type with main xml?
+        }
+        LE_Floor floor = new LE_Floor(type, game);
         floorSelected(floor);
         game.initAndStart();
         floor.getManager().load();
@@ -66,7 +74,7 @@ public class FloorManager {
         floor.getManager().afterLoaded();
     }
 
-    public static void floorSelected(Floor floor) {
+    public static void floorSelected(LE_Floor floor) {
         current = floor;
         Eidolons.game = floor.getGame();
         DC_Game.game = floor.getGame();

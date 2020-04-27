@@ -2,8 +2,8 @@ package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
@@ -19,7 +19,7 @@ import java.util.*;
  * Created by JustMe on 5/8/2017.
  */
 public class LocationSpawner extends Spawner {
-    Map<Dungeon, Map<LevelBlock, Map<Coordinates, ObjType>>> specialEncounters = new HashMap<>();
+    Map<Floor, Map<LevelBlock, Map<Coordinates, ObjType>>> specialEncounters = new HashMap<>();
     private boolean autoSpawnOn;
 
     public LocationSpawner(DungeonMaster master) {

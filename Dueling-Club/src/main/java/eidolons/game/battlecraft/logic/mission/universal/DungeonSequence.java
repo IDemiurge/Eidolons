@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.mission.universal;
 
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.Scenario;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.data.filesys.PathFinder;
@@ -11,7 +11,7 @@ import java.util.Collection;
 
 public class DungeonSequence extends LevelStruct<Location, Location> {
     Scenario scenario;
-    Dungeon floor;
+    Floor floor;
 
     public DungeonSequence(Scenario scenario) {
         this.scenario = scenario;
@@ -27,11 +27,11 @@ public class DungeonSequence extends LevelStruct<Location, Location> {
         return super.getChildren();
     }
 
-    public Dungeon getFloor() {
+    public Floor getFloor() {
         return floor;
     }
 
-    public void setFloor(Dungeon floor) {
+    public void setFloor(Floor floor) {
         this.floor = floor;
     }
 

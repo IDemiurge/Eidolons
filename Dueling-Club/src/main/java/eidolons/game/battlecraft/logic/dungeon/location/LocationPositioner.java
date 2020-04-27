@@ -15,6 +15,6 @@ public class LocationPositioner extends Positioner  {
 
     @Override
     public Coordinates getPlayerSpawnCoordinates() {
-        return getDungeon().getDefaultPlayerSpawnCoordinates();
+        return getFloorWrapper().getDefaultPlayerSpawnCoordinates();
     }
 }

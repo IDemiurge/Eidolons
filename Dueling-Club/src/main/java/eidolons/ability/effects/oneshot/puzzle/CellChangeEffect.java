@@ -4,8 +4,6 @@ import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.obj.DC_Cell;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.DungeonEnums;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 public class CellChangeEffect extends DC_Effect {
     private DungeonEnums.CELL_IMAGE type;
@@ -30,13 +28,15 @@ public class CellChangeEffect extends DC_Effect {
     @Override
     public boolean applyThis() {
         if (getRef().getTargetObj() instanceof DC_Cell) {
+            DC_Cell cell = (DC_Cell) getRef().getTargetObj();
             if (type != null)
-                ((DC_Cell) getRef().getTargetObj()).setCellType(type);
+                cell.setCellType(type);
             if (variant != null)
-                ((DC_Cell) getRef().getTargetObj()).setCellVariant(variant);
+                cell.setCellVariant(variant);
             if (color != null)
-                ((DC_Cell) getRef().getTargetObj()).setColorTheme(color);
-            GuiEventManager.trigger(GuiEventType.CELL_RESET, getRef().getTargetObj());
+                cell.setColorTheme(color);
+
+            cell.resetCell(true);
             return true;
         }
         return false;

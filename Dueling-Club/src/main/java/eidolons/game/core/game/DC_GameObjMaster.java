@@ -62,33 +62,17 @@ public class DC_GameObjMaster extends GameObjMaster {
         return getObjectByCoordinate(  c, true);
     }
 
-    public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded) {
-        return getObjectByCoordinate(  c, cellsIncluded, true, false);
+    public Obj getObjectByCoordinate(Coordinates c, Boolean overlaying) {
+        Set<BattleFieldObject> objectsOnCoordinate = getObjectsOnCoordinate(c, overlaying);
+        if (objectsOnCoordinate.isEmpty()) {
+            return null;
+        }
+        return objectsOnCoordinate.iterator().next();
     }
 
 
-    public Obj getObjectByCoordinate( Coordinates c, boolean cellsIncluded,
-                                     boolean passableIncluded, Boolean overlayingIncluded) {
-        if (c == null) {
-            return null;
-        }
-        Set<BattleFieldObject> list = getObjectsOnCoordinate(  c, overlayingIncluded, passableIncluded, cellsIncluded);
-        if (list.isEmpty()) {
-            if (cellsIncluded) {
-                return getCellByCoordinate(c);
-            }
-            return null;
-        }
-        return list.iterator().next();
-    }
     public Set<BattleFieldObject> getOverlayingObjects(Coordinates c) {
-        return getObjectsOnCoordinate(  c, null, true, false);
-
-    }
-
-    public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c,
-                                                         Boolean overlayingIncluded) {
-        return getObjectsOnCoordinate(  c, overlayingIncluded, true, false);
+        return getObjectsOnCoordinate(  c, null );
     }
 
     public void clearCache(Coordinates c) {
@@ -111,13 +95,13 @@ public class DC_GameObjMaster extends GameObjMaster {
         return getGame().getGrid().getObjects(x_, y_, overlayingIncluded_Not_Only);
     }
 
-    public Set<BattleFieldObject> getObjectsOnCoordinate(  Coordinates c,
-                                                         Boolean overlayingIncluded_Not_Only, boolean passableIncluded, boolean cellsIncluded) {
-        // TODO auto adding cells won't work!
+    public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c,
+                                                         Boolean overlayingIncluded_Not_Only) {
+
         Set<BattleFieldObject> set = getCache(overlayingIncluded_Not_Only).get(c);
 
         if (set != null) {
-            if (!isCacheForStructures())
+            if (isCacheForStructures())
                 return set;
             set = new HashSet<>(set);
         }
@@ -130,7 +114,7 @@ public class DC_GameObjMaster extends GameObjMaster {
                     continue;
                 }
                 if (overlayingIncluded_Not_Only != null) {
-                    if (overlayingIncluded_Not_Only)
+                    if (!overlayingIncluded_Not_Only)
                         if (object.isOverlaying())
                             continue;
                 } else {

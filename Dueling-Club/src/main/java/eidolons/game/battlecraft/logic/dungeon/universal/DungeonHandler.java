@@ -92,7 +92,7 @@ public class DungeonHandler {
     }
 
     public MissionMaster getBattleMaster() {
-        return master.getBattleMaster();
+        return master.getMissionMaster();
     }
 
 
@@ -113,7 +113,7 @@ public class DungeonHandler {
     }
 
     public DungeonSequence getBattle() {
-        return master.getBattle();
+        return master.getMission();
     }
 
     public Spawner getSpawner() {
@@ -128,7 +128,7 @@ public class DungeonHandler {
         return master.getTransitHandler();
     }
 
-    public Location getDungeon() {
-        return master.getLocation();
+    public Location getFloorWrapper() {
+        return master.getFloorWrapper();
     }
 }

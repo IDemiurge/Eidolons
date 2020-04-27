@@ -51,12 +51,12 @@ public class DungeonBuilder extends DungeonHandler {
                         : XmlNodeMaster.getChildByName(levelNode, "Floor");
         List<Node> nodeList = XmlNodeMaster.getNodeList(planNode);
         Location dungeonWrapper = buildDungeon(path, data, nodeList);
-        master.setLocation(dungeonWrapper);
+        master.setFloorWrapper(dungeonWrapper);
         initLevel(nodeList);
         dungeonWrapper.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
 
 //        initWidthAndHeight(dungeonWrapper);
-        return getDungeon();
+        return getFloorWrapper();
     }
 
     public void initModuleSize(Module module) {
@@ -88,13 +88,13 @@ public class DungeonBuilder extends DungeonHandler {
         Node typeNode = XmlNodeMaster.getNodeByName(nodeList, DUNGEON_TYPE_NODE);
         ObjType type = null;
         if (typeNode == null) {
-            type = DataManager.getRandomType(DC_TYPE.DUNGEONS, null);
+            type = DataManager.getRandomType(DC_TYPE.FLOORS, null);
         } else if (StringMaster.compareByChar(typeNode.getNodeName(), (DUNGEON_TYPE_NODE))) {
             String name = typeNode.getTextContent();
             if (name.contains(NameMaster.VERSION)) {
                 name = name.split(NameMaster.VERSION)[0];
             }
-            type = DataManager.getType(name, DC_TYPE.DUNGEONS);
+            type = DataManager.getType(name, DC_TYPE.FLOORS);
         } else {
             type = TypeBuilder.buildType(typeNode, type); // custom base type
         }

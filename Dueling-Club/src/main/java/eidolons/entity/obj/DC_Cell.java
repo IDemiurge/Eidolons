@@ -3,10 +3,11 @@ package eidolons.entity.obj;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.GridMaster;
 import main.content.CONTENT_CONSTS;
+import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.G_PARAMS;
@@ -23,26 +24,20 @@ import main.game.logic.battle.player.Player;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
 
 public class DC_Cell extends DC_Obj implements Cell {
 
     private static ObjType EMPTY_CELL_TYPE;
+    private final Floor floor;
     private boolean playerHasSeen;
     private boolean VOID;
 
-    DungeonEnums.CELL_IMAGE cellType;
-    int cellVariant;
-    CONTENT_CONSTS.COLOR_THEME colorTheme;
+    private DungeonEnums.CELL_IMAGE cellType;
+    private int cellVariant;
+    private  CONTENT_CONSTS.COLOR_THEME colorTheme;
 
-    String overlayPath;
-    float overlayRotation;
+    private float overlayRotation;
     private String overlayData;
-
-    public DC_Cell(boolean b, int i, int j, DC_Game game) {
-        this(i, j, game);
-        setVOID(b);
-    }
 
     @Override
     protected void preInit(Game game, ObjType type, Player owner, Ref ref) {
@@ -60,28 +55,38 @@ public class DC_Cell extends DC_Obj implements Cell {
         setRef(ref); //create ref branch
     }
 
-    @Override
-    public void setCoordinates(Coordinates coordinates) {
-    }
 
-    @Override
-    public Coordinates getCoordinates() {
-        return super.getCoordinates();
-    }
-
-    public DC_Cell(ObjType t, int i, int j, DC_Game game, Ref ref, Dungeon dungeon) {
+    public DC_Cell(ObjType t, int i, int j, DC_Game game, Ref ref, Floor floor) {
         super(t, Player.NEUTRAL, game, ref);
         this.x = i;
         this.y = j;
+        this.floor = floor;
         this.coordinates = Coordinates.get(x, y);
         addDynamicValues();
-        setImage(dungeon.getCellImagePath(i, j));
-        cellVariant = (dungeon.getCellVariant(i, j));
-        cellType = (dungeon.getCellType(i, j));
+        resetCell(false);
     }
 
-    public DC_Cell(int i, int j, DC_Game game, Ref ref, Dungeon dungeon) {
-        this(getEMPTY_CELL_TYPE(), i, j, game, ref, dungeon);
+    public String getDefaultImgPath() {
+        return GridMaster.getImagePath(getCellType(), getCellVariant());
+    }
+
+    public void resetCell() {
+        resetCell(true);
+    }
+    public void resetCell(boolean gdx) {
+        cellVariant = (floor.getCellVariant(x, y));
+        cellType = (floor.getCellType(x, y));
+        setImage(getDefaultImgPath());
+        if (gdx){
+            GuiEventManager.trigger(GuiEventType.CELL_RESET, this);
+        }
+    }
+    public void setCellType(DungeonEnums.CELL_IMAGE cellType) {
+        this.cellType = cellType;
+    }
+
+    public DC_Cell(int i, int j, DC_Game game, Ref ref, Floor floor) {
+        this(getEMPTY_CELL_TYPE(), i, j, game, ref, floor);
     }
 
     public DC_Cell(int x, int y, DC_Game game) {
@@ -95,13 +100,13 @@ public class DC_Cell extends DC_Obj implements Cell {
     public static ObjType getEMPTY_CELL_TYPE() {
         if (EMPTY_CELL_TYPE == null)
             EMPTY_CELL_TYPE = DataManager.getType(StringMaster.STD_TYPE_NAMES.Cell.toString(),
-                    "terrain");
+                    DC_TYPE.TERRAIN);
         return EMPTY_CELL_TYPE;
     }
 
-    public void setCellType(DungeonEnums.CELL_IMAGE cellType) {
-        this.cellType = cellType;
-        resetCell();
+    @Override
+    public void setCoordinates(Coordinates coordinates) {
+        //do not remove
     }
 
 
@@ -111,14 +116,6 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     public int getCellVariant() {
         return cellVariant;
-    }
-
-    public String getOverlayPath() {
-        return overlayPath;
-    }
-
-    public void setOverlayPath(String overlayPath) {
-        this.overlayPath = overlayPath;
     }
 
     public float getOverlayRotation() {
@@ -133,12 +130,6 @@ public class DC_Cell extends DC_Obj implements Cell {
         return colorTheme;
     }
 
-    private void resetCell() {
-        setImage(GridMaster.getImagePath(getCellType(), getCellVariant()));
-        if (!CoreEngine.isLevelEditor()) {
-            GuiEventManager.trigger(GuiEventType.CELL_RESET, this);
-        }
-    }
 
     public void setCellVariant(int cellVariant) {
         this.cellVariant = cellVariant;
@@ -160,6 +151,7 @@ public class DC_Cell extends DC_Obj implements Cell {
         return super.toString() + " at " + getCoordinates();
     }
 
+    //could be useful for Pillars or such
     public DIRECTION getBorderSide() {
         if (getX() + 1 == Coordinates.getFloorWidth()) {
             if (getY() + 1 == Coordinates.getFloorHeight()) {

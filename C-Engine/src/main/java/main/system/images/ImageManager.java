@@ -422,14 +422,6 @@ public class ImageManager {
 
     }
 
-    public static ImageIcon getEmptyCellIcon(int version) {
-        return getIcon(getEmptyCellPath(version));
-    }
-
-    public static String getEmptyCellPath(int version) {
-        return "ui//cells//Empty Cell v" + version + ".png";
-    }
-
     public static ImageIcon getUnknownIcon() {
         return getIcon("ui/unknown.jpg");
     }
@@ -1096,7 +1088,7 @@ public class ImageManager {
                 case CHARS:
                     return getEmptyIcon(GuiManager.getObjSize());
                 case BF_OBJ:
-                case DUNGEONS:
+                case FLOORS:
                     return getEmptyIcon(GuiManager.getFullObjSize());
                 case BUFFS:
                     return getEmptyIcon(GuiManager.getTinyObjSize());

@@ -240,7 +240,7 @@ public class LightEmitter extends SuperActor {
         if (effect.getCache() != null)
             if (!effect.getCache().contains(c))
                 return false;
-        for (BattleFieldObject obj : DC_Game.game.getObjectsAt(c)) {
+        for (BattleFieldObject obj : DC_Game.game.getObjectsNoOverlaying(c)) {
             if (obj.isWall()) {
                 return false;
             }

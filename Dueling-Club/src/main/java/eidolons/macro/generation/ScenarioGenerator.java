@@ -57,8 +57,8 @@ public class ScenarioGenerator {
             }
 
             mission = PathUtils.removePreviousPathSegments(mission, PathFinder.getDungeonLevelFolder());
-            ObjType missionType = new ObjType("", DC_TYPE.MISSIONS);
-            missionType.setProperty(PROPS.MISSION_FILE_PATH, mission);
+            ObjType missionType = new ObjType("", DC_TYPE.FLOORS);
+            missionType.setProperty(PROPS.FLOOR_FILE_PATH, mission);
             DataManager.addType(missionType);
             missions += mission;
         }

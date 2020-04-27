@@ -1,5 +1,6 @@
 package main.level_editor.backend.sim.impl;
 
+import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationSpawner;
@@ -35,6 +36,11 @@ public class LE_DungeonMaster extends LocationMaster {
     @Override
     protected FloorLoader createFloorLoader() {
         return new LE_FloorLoader(this);
+    }
+
+    @Override
+    protected DC_ObjInitializer createObjInitializer() {
+        return new LE_ObjInitializer(this);
     }
 
     @Override
@@ -79,15 +85,6 @@ public class LE_DungeonMaster extends LocationMaster {
 
     public boolean isModuleSizeBased() {
         return false;
-    }
-    @Override
-    public String getDefaultEntranceType() {
-        return "Dark Portal";
-    }
-
-    @Override
-    public String getDefaultExitType() {
-        return "Dark Portal";
     }
 
     @Override

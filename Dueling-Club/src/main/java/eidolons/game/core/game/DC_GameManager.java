@@ -197,7 +197,7 @@ public class DC_GameManager extends GameManager {
         return false;
     }
 
-    private void updateGraphics() {
+    protected void updateGraphics() {
         //set dirty flag?
         GuiEventManager.trigger(UPDATE_GUI, null);
         //        GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);

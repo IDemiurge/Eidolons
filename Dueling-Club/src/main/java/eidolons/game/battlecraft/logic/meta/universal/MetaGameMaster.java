@@ -5,6 +5,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.Simulation;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
@@ -267,7 +268,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             return
                     type.getGroup().equalsIgnoreCase("Random");
         }
-        type = DataManager.getType(getData(), DC_TYPE.MISSIONS);
+        type = DataManager.getType(getData(), DC_TYPE.FLOORS);
 
         if (type != null) {
             if (type.getName().toLowerCase().contains("boss")) {
@@ -314,5 +315,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public ModuleMaster getModuleMaster() {
         return null;
+    }
+
+    public Floor getFloor() {
+        return getMissionMaster().getFloor();
     }
 }

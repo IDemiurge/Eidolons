@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.mission.encounter;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.mission.universal.MissionHandler;
 import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
@@ -306,11 +306,11 @@ public class EncounterAdjuster extends MissionHandler {
         }
         power = MathMaster.applyMod(power, mod);
 
-        Dungeon dungeon = master.getGame().getDungeonMaster().getDungeon();
-        if (dungeon != null) {
-            mod = dungeon.getIntParam(PARAMS.POWER_MOD);
+        Floor floor = master.getGame().getDungeonMaster().getDungeon();
+        if (floor != null) {
+            mod = floor.getIntParam(PARAMS.POWER_MOD);
             if (mod == 0) {
-                if (dungeon.isBoss())
+                if (floor.isBoss())
                     mod = DUNGEON_DEFAULT_BOSS_POWER_MOD;
                 else
                     mod = 100;

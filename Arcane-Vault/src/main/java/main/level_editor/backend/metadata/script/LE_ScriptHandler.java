@@ -20,19 +20,28 @@ public class LE_ScriptHandler extends LE_Handler {
     public void editScriptData(Coordinates c) {
 
         CellScriptData data = getFloorWrapper().getTextDataMap().get(c);
-        String prev = data.getData();
+        String prev = data == null ? "" : data.getData();
+        if (data == null) {
+            data = new CellScriptData("");
+        }
         editData(data);
         String text = data.getData();
-
-        if ( !text.equals(prev)) {
+        if (!text.equals(prev)) {
             getOperationHandler().execute(Operation.LE_OPERATION.CELL_SCRIPT_CHANGE, c, text, prev);
+        }
+        if (!text.isEmpty()) {
+            getFloorWrapper().getTextDataMap().put(c, data);
         }
     }
 
     @Override
-    public String getXml(Function<Integer, Boolean> idFilter) {
+    public String getXml(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
+
         XmlStringBuilder builder = new XmlStringBuilder();
         for (Coordinates coordinates : getFloorWrapper().getTextDataMap().keySet()) {
+            if (!coordinateFilter.apply(coordinates)) {
+                continue;
+            }
             CellScriptData scriptData = getFloorWrapper().getTextDataMap().get(coordinates);
             builder.append(coordinates.toString()).append("=").append(scriptData.getData());
         }

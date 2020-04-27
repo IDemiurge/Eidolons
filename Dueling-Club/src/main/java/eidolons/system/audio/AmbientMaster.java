@@ -61,12 +61,12 @@ public class AmbientMaster {
         DUNGEON_STYLE style;
         LOCATION_TYPE locationType;
             try {
-                locationType = hero.getGame().getDungeonMaster().getLocation()
+                locationType = hero.getGame().getDungeonMaster().getFloorWrapper()
                         .getLocationType();
                 style = hero.getGame().getDungeonMaster().getStructureMaster().
                         findLowestStruct(hero.getCoordinates()).getStyle();
             } catch (Exception e) {
-                style = hero.getGame().getDungeonMaster().getLocation().getStyle();
+                style = hero.getGame().getDungeonMaster().getFloorWrapper().getStyle();
 //            style = hero.getGame().getDungeon().getStyle();
                 locationType = hero.getGame().getDungeon().getDungeonSubtype();
             }

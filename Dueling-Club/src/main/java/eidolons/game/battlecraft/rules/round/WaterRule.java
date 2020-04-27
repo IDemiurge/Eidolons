@@ -38,7 +38,7 @@ public class WaterRule extends RoundRule implements ActionRule {
     public static boolean isBridged(BattleFieldObject waterObj) {
         boolean bridged = false;
         Integer girth = 0;
-        for (BattleFieldObject object : waterObj.getGame().getObjectsOnCoordinate(waterObj.getCoordinates())) {
+        for (BattleFieldObject object : waterObj.getGame().getObjectsOnCoordinateNoOverlaying(waterObj.getCoordinates())) {
             if (object==waterObj) {
                 continue;
             }
@@ -68,9 +68,7 @@ public class WaterRule extends RoundRule implements ActionRule {
                     obj.getName()+ " falls into " + waterObj.getName(), obj);
             return true;
         }
-        if (bridged) {
-            return true;
-        }
+        return bridged;
 //        if (canSwim(unit)) {
 //            if (isOnSwimmingDepth(unit)) {
 //                return true;
@@ -84,7 +82,6 @@ public class WaterRule extends RoundRule implements ActionRule {
 //                "Too deep to cross!"
 //                , obj);
 //        }
-        return false;
     }
 
     private static boolean isSwimming(Entity obj) {
@@ -193,7 +190,7 @@ public class WaterRule extends RoundRule implements ActionRule {
 
     @Override
     public boolean check(Unit unit) {
-        Set<BattleFieldObject> units = game.getObjectsOnCoordinate(unit.getCoordinates());
+        Set<BattleFieldObject> units = game.getObjectsOnCoordinateNoOverlaying(unit.getCoordinates());
 
         for (BattleFieldObject u : units) {
 //            if (isWater(u)) {

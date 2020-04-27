@@ -41,7 +41,7 @@ public class ContentMaster {
 
             case DEITIES:
 
-            case DUNGEONS:
+            case FLOORS:
 
             case SKILLS:
 
@@ -99,7 +99,7 @@ public class ContentMaster {
 
             case DEITIES:
 
-            case DUNGEONS:
+            case FLOORS:
 
             case SKILLS:
 

@@ -10,7 +10,7 @@ import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.ScreenWithLoader;
 import main.data.filesys.PathFinder;
-import main.level_editor.backend.struct.level.Floor;
+import main.level_editor.backend.struct.level.LE_Floor;
 import main.level_editor.gui.screen.LE_Screen;
 import main.level_editor.gui.screen.LE_WaitingScreen;
 
@@ -31,7 +31,7 @@ public class EditorApp extends GenericLauncher {
                 switchScreen(LE_WaitingScreen::getInstance, newMeta);
                 break;
             case EDITOR:
-                Supplier<ScreenWithLoader> fac = LE_Screen.getScreen((Floor) newMeta.getParameter());
+                Supplier<ScreenWithLoader> fac = LE_Screen.getScreen((LE_Floor) newMeta.getParameter());
 
                 fac.get().initLoadingStage(newMeta);
                 fac.get().setViewPort(viewport);

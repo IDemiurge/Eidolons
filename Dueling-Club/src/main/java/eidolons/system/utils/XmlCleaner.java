@@ -50,13 +50,12 @@ public class XmlCleaner {
                 return isRemoveBF_OBJ(type);
             case SKILLS:
                 return isRemoveSKILLS(type);
-            case DUNGEONS:
+            case FLOORS:
                 return isRemoveDUNGEONS(type);
             case PARTY:
                 return isRemovePARTY(type);
             case ENCOUNTERS:
                 return isRemoveEncounter(type);
-            case ARCADES:
             case PLACES:
             case DIALOGUE:
                 return true;

@@ -201,6 +201,7 @@ public abstract class GenericLauncher extends Game {
             if (CoreEngine.isLevelEditor()) {
 //                conf.addIcon(PathFinder.getImagePath() + Images.LOGO_EDITOR_32, FileType.Absolute);
                 conf.addIcon(PathFinder.getImagePath() + Images.LOGO_EDITOR_64, FileType.Absolute);
+                conf.addIcon(PathFinder.getImagePath() + Images.LOGO_EDITOR_32, FileType.Absolute);
             } else {
                 conf.addIcon(PathFinder.getImagePath() + Images.LOGO32, FileType.Absolute);
                 conf.addIcon(PathFinder.getImagePath() + Images.LOGO64, FileType.Absolute);

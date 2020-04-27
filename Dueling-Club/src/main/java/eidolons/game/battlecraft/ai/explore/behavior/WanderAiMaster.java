@@ -12,7 +12,7 @@ import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.task.Task;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
@@ -128,19 +128,19 @@ public class WanderAiMaster extends AiBehavior {
         if (group.getWanderDirection().isDiagonal()) {
             x_y_diag = null;
         }
-        Dungeon dungeon = group.getLeader().getGame().getDungeon();
+        Floor floor = group.getLeader().getGame().getDungeon();
         switch (type) {
             case SEARCH:
             case STALK: // keep the distance from the *target*, not origin...
         } // group.getLeader().getGame().getDungeon().getCellsX()
         if (x_y_diag == null) {
             return (int) Math
-             .round(Math.sqrt(dungeon.getSquare()) * getDistanceFactor(type, group));
+             .round(Math.sqrt(floor.getSquare()) * getDistanceFactor(type, group));
         }
         if (x_y_diag) {
-            return Math.round(dungeon.getCellsX() * getDistanceFactor(type, group));
+            return Math.round(floor.getCellsX() * getDistanceFactor(type, group));
         }
-        return Math.round(dungeon.getCellsY() * getDistanceFactor(type, group));
+        return Math.round(floor.getCellsY() * getDistanceFactor(type, group));
         // TODO maybe the block, the zone? Whole dungeon could be huge... or
         // small...
     }

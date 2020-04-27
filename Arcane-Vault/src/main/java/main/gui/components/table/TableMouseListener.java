@@ -48,8 +48,6 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             // PROPS.MAP_BACKGROUND.name(),
     };
     public static final String[] MULTI_RES_FILE_IDS = {
-            PROPS.ARCADE_LEVELS.name(),
-            PROPS.ARCADE_ENEMY_GROUPS.name(),
     };
     public static final String[] MULTI_RES_FILE_KEYS = {
             "XML\\dungeons\\levels\\battle\\",
@@ -209,8 +207,8 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
     };
     public static final OBJ_TYPE[] MULTI_TYPE_LIST = {
             MACRO_OBJ_TYPES.FACTIONS,
-            DC_TYPE.CHARS, DC_TYPE.DUNGEONS,
-            DC_TYPE.DUNGEONS, MACRO_OBJ_TYPES.FACTIONS, DC_TYPE.UNITS,
+            DC_TYPE.CHARS, DC_TYPE.FLOORS,
+            DC_TYPE.FLOORS, MACRO_OBJ_TYPES.FACTIONS, DC_TYPE.UNITS,
             MACRO_OBJ_TYPES.AREA,
             DC_TYPE.DEITIES,
             DC_TYPE.SPELLS,

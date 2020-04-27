@@ -116,7 +116,7 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
     private void createPaletteFromObjsOnCoordinates(Set<Coordinates> coordinatesSet) {
         Set<BattleFieldObject> set = new LinkedHashSet<>();
         for (Coordinates coordinates : coordinatesSet) {
-            set.addAll(getGame().getObjectsOnCoordinate(coordinates));
+            set.addAll(getGame().getObjectsOnCoordinateNoOverlaying(coordinates));
         }
 
         createPaletteFromObjs(set.stream().map(obj -> obj.getType()).collect(Collectors.toSet()));
@@ -273,7 +273,7 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
     }
 
     private String getTileForCoordinate(Coordinates c) {
-        Set<BattleFieldObject> objects = getGame().getObjectsOnCoordinate(c);
+        Set<BattleFieldObject> objects = getGame().getObjectsOnCoordinateNoOverlaying(c);
         if (objects.isEmpty()) {
             return GeneratorEnums.ROOM_CELL.FLOOR.symbol;
         }

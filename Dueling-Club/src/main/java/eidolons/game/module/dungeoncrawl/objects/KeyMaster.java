@@ -5,7 +5,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.EUtils;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.entity.Ref;
@@ -18,16 +18,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class KeyMaster {
-    private static Map<Dungeon, Map<String, String>> pairMaps = new HashMap<>();
+    private static Map<Floor, Map<String, String>> pairMaps = new HashMap<>();
     private static Map<Coordinates, String> customKeyMap = new HashMap<>();
 
-    private static Map<String, String> getPairMap(Dungeon dungeon) {
-        Map<String, String> map = pairMaps.get(dungeon);
+    private static Map<String, String> getPairMap(Floor floor) {
+        Map<String, String> map = pairMaps.get(floor);
         if (map != null) {
             return map;
         }
         //TODO dc init fix
-        String data = dungeon.getProperty(PROPS.KEY_DOOR_PAIRS);
+        String data = floor.getProperty(PROPS.KEY_DOOR_PAIRS);
         map = MapMaster.createStringMap(data);
         return map;
     }

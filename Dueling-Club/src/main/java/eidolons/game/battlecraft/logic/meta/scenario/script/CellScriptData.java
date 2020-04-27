@@ -5,22 +5,23 @@ import main.system.data.DataUnit;
 public class CellScriptData extends DataUnit<CellScriptData.CELL_SCRIPT_VALUE> {
     public CellScriptData(String text) {
         super(text);
-        relevantValues = new String[]{
-                "keys",
-                "portals",
-                "dialogue",
-                "traps",
-                "puzzles",
-        };
+    }
+
+    @Override
+    public String[] getRelevantValues() {
+        return getValueConsts();
     }
 
     public enum CELL_SCRIPT_VALUE {
-        cell_type,
+        script,
+        dialogue,
         keys,
         portals,
-        dialogue,
-        traps,
+
+        cell_type,
         puzzles,
-        facing, named_point, script,
+        facing,
+        named_point,
+//        traps,
     }
 }

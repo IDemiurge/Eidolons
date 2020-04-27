@@ -30,7 +30,7 @@ import main.level_editor.backend.metadata.object.LE_EntityHandler;
 import main.level_editor.backend.metadata.script.LE_ScriptHandler;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.sim.LE_IdManager;
-import main.level_editor.backend.struct.level.Floor;
+import main.level_editor.backend.struct.level.LE_Floor;
 import main.level_editor.gui.grid.LE_CameraHandler;
 import main.level_editor.gui.stage.LE_KeyHandler;
 import main.system.data.DataUnit;
@@ -61,11 +61,11 @@ public class LE_Handler {
     protected boolean isLoaded() {
         return manager.isLoaded();
     }
-    public String getDataMapString(Function<Integer, Boolean> idFilter) {
+    public String getDataMapString(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
         return "";
     }
 
-    public String getXml(Function<Integer, Boolean> idFilter) {
+    public String getXml(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
         return "";
     }
 
@@ -82,7 +82,7 @@ public class LE_Handler {
     }
 
     protected LevelStruct getDungeonLevel() {
-        return getGame().getDungeonMaster().getLocation();
+        return getGame().getDungeonMaster().getFloorWrapper();
     }
 
     public LE_DialogHandler getDialogHandler() {
@@ -153,7 +153,7 @@ public class LE_Handler {
         return manager.getFloor().getWrapper();
     }
 
-    public Floor getFloor() {
+    public LE_Floor getFloor() {
         return manager.getFloor() ;
     }
     public EditorModel getModel() {

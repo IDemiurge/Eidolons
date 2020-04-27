@@ -49,6 +49,10 @@ public class LE_GameSim extends ScenarioGame {
     @Override
     protected DC_GameManager createGameManager() {
         return new DC_GameManager(getState(), this) {
+
+            protected void updateGraphics() {
+
+            }
             @Override
             public Coordinates getMainHeroCoordinates() {
                 return null;

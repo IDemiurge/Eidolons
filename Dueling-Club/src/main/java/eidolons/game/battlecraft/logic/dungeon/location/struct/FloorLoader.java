@@ -235,8 +235,13 @@ public class FloorLoader extends DungeonHandler {
             ObjType type = DataManager.getType(typeName, DC_TYPE.BF_OBJ);
             if (type == null) {
                 type = DataManager.getType(typeName, DC_TYPE.ENCOUNTERS);
-            } else if (type == null) {
+            }
+                if (type == null) {
                 type = DataManager.getType(typeName, DC_TYPE.UNITS);
+            }
+                if (type == null) {
+                main.system.auxiliary.log.LogMaster.log(1,typeName+ " - NO SUCH TYPE FOR ID !" );
+                continue;
             }
             String ids = content.split("=")[1];
             for (String substring : ContainerUtils.openContainer(ids, ",")) {

@@ -46,7 +46,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
     public InscriptionMaster getInscriptionMaster() {
         if (inscriptionMaster == null) {
             inscriptionMaster = new InscriptionMaster(
-                    dungeonMaster.getLocation().getName());
+                    dungeonMaster.getFloorWrapper().getName());
         }
         return inscriptionMaster;
     }

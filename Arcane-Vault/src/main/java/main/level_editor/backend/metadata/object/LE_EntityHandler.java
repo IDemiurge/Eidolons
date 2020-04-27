@@ -12,6 +12,7 @@ import main.content.OBJ_TYPE;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlStringBuilder;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.system.auxiliary.data.MapMaster;
@@ -46,7 +47,7 @@ public class LE_EntityHandler extends LE_Handler {
     }
 
     @Override
-    public String getXml(Function<Integer, Boolean> idFilter) {
+    public String getXml(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
 
         String xml =
                 dataMap.keySet().stream().filter(id -> idFilter.apply(id)).
@@ -62,7 +63,7 @@ public class LE_EntityHandler extends LE_Handler {
     }
 
     @Override
-    public String getDataMapString(Function<Integer, Boolean> idFilter) {
+    public String getDataMapString(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
         XmlStringBuilder builder = new XmlStringBuilder();
         builder.append(getMapXml(idFilter, encounterDataMap, DataMap.encounters));
         builder.append(getMapXml(idFilter, dataMap, DataMap.custom_types));

@@ -61,7 +61,7 @@ public class LocationBuilder extends DungeonBuilder {
 
     @Refactor
     @Override
-    public Location getDungeon() {
+    public Location getFloorWrapper() {
         return location;
     }
 

@@ -23,7 +23,10 @@ import main.entity.obj.Obj;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class TaskManager extends AiHandler {
 
@@ -189,7 +192,7 @@ public class TaskManager extends AiHandler {
 //                    List<Set<BattleFieldObject>> objs = Analyzer.getCells(ai, true, true, false).stream().map(
 //                            c -> game.getObjectsOnCoordinate(c.getCoordinates())).collect(Collectors.toList());
                     for (DC_Cell cell : Analyzer.getCells(ai, true, false, false)) {
-                        targets3.addAll(game.getObjectsOnCoordinate(cell.getCoordinates()));
+                        targets3.addAll(game.getObjectsOnCoordinateNoOverlaying(cell.getCoordinates()));
                     }
                 } else {
                     // if (forced)

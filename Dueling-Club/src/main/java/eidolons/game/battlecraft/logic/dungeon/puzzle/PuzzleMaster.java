@@ -3,8 +3,8 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
@@ -37,8 +37,8 @@ public class PuzzleMaster {
         }
     }
 
-    public void initPuzzles(Dungeon dungeon) {
-        Map<String, String> map = dungeon.getCustomDataMap(CellScriptData.CELL_SCRIPT_VALUE.puzzles);
+    public void initPuzzles(Floor floor) {
+        Map<String, String> map = floor.getCustomDataMap(CellScriptData.CELL_SCRIPT_VALUE.puzzles);
         for (String coord : map.keySet()) {
             String s = map.get(coord);
             for (String substring : ContainerUtils.openContainer(s)) {

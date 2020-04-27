@@ -20,7 +20,7 @@ import main.level_editor.backend.metadata.options.LE_OptionsMaster;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.sim.LE_MetaMaster;
 import main.level_editor.backend.struct.campaign.Campaign;
-import main.level_editor.backend.struct.level.Floor;
+import main.level_editor.backend.struct.level.LE_Floor;
 import main.level_editor.gui.screen.LE_WaitingScreen;
 import main.system.launch.CoreEngine;
 import main.system.launch.TypeBuilder;
@@ -39,7 +39,7 @@ public class LevelEditor {
     public static void main(String[] args) {
         CoreEngine.setLevelEditor(true);
 
-        CoreEngine.setSelectivelyReadTypes("terrain;dungeons;bf obj;units;encounters;");
+        CoreEngine.setSelectivelyReadTypes("terrain;dungeons;bf obj;units;encounters;scenarios");
         TypeBuilder.typeBuildOverride.addAll( Arrays.asList(DC_TYPE.BF_OBJ, DC_TYPE.UNITS, DC_TYPE.ENCOUNTERS));
         Assets.setON(true);
 //        DC_Engine.systemInit(false);
@@ -67,7 +67,7 @@ public class LevelEditor {
         return windowStyle;
     }
 
-    public static Floor getCurrent() {
+    public static LE_Floor getCurrent() {
         return FloorManager.current;
     }
     public static LE_Manager getManager() {

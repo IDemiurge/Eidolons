@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic.mission.quest;
 
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.mission.universal.MissionConstructor;
 import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import main.content.DC_TYPE;
@@ -20,15 +20,15 @@ public class QuestMissionConstructor extends MissionConstructor<QuestMission> {
     @Override
     public void init() {
         String name = getMaster().getMetaMaster().getMetaDataManager(). getMissionName();
-        ObjType type = DataManager.getType(name, DC_TYPE.DUNGEONS);
+        ObjType type = DataManager.getType(name, DC_TYPE.FLOORS);
         if (type == null) {
-            type = new ObjType("Fake dungeon" , DC_TYPE.DUNGEONS);
+            type = new ObjType("Fake dungeon" , DC_TYPE.FLOORS);
         }
-        String levelPath = type.getProperty(PROPS.MISSION_FILE_PATH);
+        String levelPath = type.getProperty(PROPS.FLOOR_FILE_PATH);
         levelPath = "crawl\\utmar hold.xml";
         getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH,
          levelPath);
-        Dungeon mission = new Dungeon(type);
+        Floor mission = new Floor(type);
         mission.setLevelFilePath(levelPath);
         //, getMaster().getMetaMaster().getMetaGame().getScenario()
 

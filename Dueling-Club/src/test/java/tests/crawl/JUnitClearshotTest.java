@@ -103,7 +103,7 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
             if (cellsOrObjects)
                 list.addCast(game.getCellByCoordinate(c));
             else
-                list.addAllCast(game.getObjectsAt(c));
+                list.addAllCast(game.getObjectsNoOverlaying(c));
         }
 
         return list;
@@ -195,9 +195,7 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
     }
 
     protected boolean checkCoordinate(Coordinates c) {
-        if (game.getObjectByCoordinate(c) != null)
-            return false;
-        return true;
+        return game.getObjectByCoordinate(c) == null;
     }
 
 

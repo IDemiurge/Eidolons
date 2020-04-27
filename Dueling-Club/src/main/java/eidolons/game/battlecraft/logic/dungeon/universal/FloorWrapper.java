@@ -12,28 +12,31 @@ import main.game.bf.directions.FACING_DIRECTION;
 /**
  * Created by JustMe on 5/10/2017.
  */
-public class DungeonWrapper  extends LevelStruct<Module, Module> implements EntityWrapper<Dungeon> {
+public class FloorWrapper extends LevelStruct<Module, Module> implements EntityWrapper<Floor> {
     protected DungeonMaster master;
-    protected Dungeon dungeon;
+    protected Floor floor;
 
-    public DungeonWrapper(Dungeon entity, DungeonMaster master) {
-        dungeon = entity;
+    public FloorWrapper(Floor entity, DungeonMaster master) {
+        floor = entity;
         this.master = master;
     }
 
     @Override
     protected LevelStruct getParent() {
+        if (getGame().getMissionMaster() == null) {
+            return null;
+        }
         return getGame().getMissionMaster().getMission(); //campaign?
     }
 
     @Override
     public DC_Game getGame() {
-        return dungeon.getGame();
+        return floor.getGame();
     }
 
     @Override
-    public Dungeon getEntity() {
-        return dungeon;
+    public Floor getEntity() {
+        return floor;
     }
 
     public Coordinates getDefaultPlayerSpawnCoordinates() {
@@ -44,33 +47,33 @@ public class DungeonWrapper  extends LevelStruct<Module, Module> implements Enti
         return master;
     }
 
-    public Dungeon getDungeon() {
-        return dungeon;
+    public Floor getFloor() {
+        return floor;
     }
 
     public String getMapBackground() {
-        return dungeon.getMapBackground();
+        return floor.getMapBackground();
     }
 
     public boolean isBoss() {
-        return dungeon.isBoss();
+        return floor.isBoss();
     }
 
     public Integer getCellsX() {
-        return dungeon.getCellsX();
+        return floor.getCellsX();
     }
 
     public Integer getCellsY() {
-        return dungeon.getCellsY();
+        return floor.getCellsY();
     }
 
 
     public boolean isSurface() {
-        return dungeon.isSurface();
+        return floor.isSurface();
     }
 
     public int getSquare() {
-        return dungeon.getSquare();
+        return floor.getSquare();
     }
 
     public DungeonEnums.LOCATION_TYPE getLocationType() {
@@ -79,6 +82,6 @@ public class DungeonWrapper  extends LevelStruct<Module, Module> implements Enti
     }
 
     public void setLevelFilePath(String s) {
-        dungeon.setLevelFilePath(s);
+        floor.setLevelFilePath(s);
     }
 }

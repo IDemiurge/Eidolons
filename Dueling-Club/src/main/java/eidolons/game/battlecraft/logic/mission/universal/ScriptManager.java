@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.mission.universal;
 
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.*;
 import main.data.ability.construct.VariableManager;
 import main.elements.triggers.Trigger;
@@ -28,7 +28,7 @@ public abstract class ScriptManager<T extends DungeonSequence, E> extends Missio
         return "";
     }
 
-    public void parseDungeonScripts(Dungeon dungeon) {
+    public void parseDungeonScripts(Floor floor) {
         List<String> scriptList = new ArrayList<>();
         Map<String, String> map = master.getGame().getDungeon().getCustomDataMap(CellScriptData.CELL_SCRIPT_VALUE.script);
 

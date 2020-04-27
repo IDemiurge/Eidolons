@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.system.GuiEventManager;
@@ -21,19 +21,19 @@ public class FloorData extends StructureData<FLOOR_VALUES, Location> {
         //sink thru to DUNGEON?
         super.apply();
         getStructure().setData(this);
-        Dungeon dungeon = getStructure().getDungeon();
-        dungeon.setProperty(PROPS.MAP_BACKGROUND, getValue(FLOOR_VALUES.background), true);
+        Floor floor = getStructure().getFloor();
+        floor.setProperty(PROPS.MAP_BACKGROUND, getValue(FLOOR_VALUES.background), true);
         //why type??
-        dungeon.setName(getValue(FLOOR_VALUES.name));
+        floor.setName(getValue(FLOOR_VALUES.name));
         getStructure().setWidth(getIntValue(FLOOR_VALUES.width));
         getStructure().setHeight(getIntValue(FLOOR_VALUES.height));
 
-        GuiEventManager.trigger(GuiEventType.UPDATE_DUNGEON_BACKGROUND, dungeon.getMapBackground());
+        GuiEventManager.trigger(GuiEventType.UPDATE_DUNGEON_BACKGROUND, floor.getMapBackground());
     }
 
     @Override
     public LevelStruct getLevelStruct() {
-        return DC_Game.game.getDungeonMaster().getLocation();
+        return DC_Game.game.getDungeonMaster().getFloorWrapper();
     }
 
     @Override
@@ -44,8 +44,8 @@ public class FloorData extends StructureData<FLOOR_VALUES, Location> {
         //support manual resizing?
         setValue(FLOOR_VALUES.width, getStructure().getWidth());
         setValue(FLOOR_VALUES.height, getStructure().getHeight());
-        setValue(FLOOR_VALUES.name, getStructure().getDungeon().getName());
-        setValue(FLOOR_VALUES.background, getStructure().getDungeon().getMapBackground());
+        setValue(FLOOR_VALUES.name, getStructure().getFloor().getName());
+        setValue(FLOOR_VALUES.background, getStructure().getFloor().getMapBackground());
     }
 
     @Override

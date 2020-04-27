@@ -1,8 +1,10 @@
 package main.level_editor.backend.handlers.operation;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
+import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
 import eidolons.game.battlecraft.logic.mission.encounter.EncounterData;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
@@ -46,12 +48,12 @@ public class LE_ObjHandler extends LE_Handler {
 
     protected void remove(BattleFieldObject bfObj) {
         Integer id = getIdManager().getId(bfObj);
-        if ( bfObj instanceof Entrance) {
+        if (bfObj instanceof Entrance) {
             getTransitHandler().entranceRemoved((Entrance) bfObj);
         }
 
-        if (bfObj.getOBJ_TYPE_ENUM()== DC_TYPE.ENCOUNTERS) {
-           getEntityHandler().encounterRemoved(id );
+        if (bfObj.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
+            getEntityHandler().encounterRemoved(id);
         }
         if (bfObj.isOverlaying()) {
             getDirectionMap().remove(id);
@@ -87,23 +89,43 @@ public class LE_ObjHandler extends LE_Handler {
 
     protected BattleFieldObject addObj(ObjType objType, int gridX, int gridY) {
         BattleFieldObject bfObj = getGame().createObject(objType, gridX, gridY, DC_Player.NEUTRAL);
+        objAdded(bfObj);
+        return bfObj;
+        //TODO Player!!!
+    }
+
+    public DC_Obj createEncounter(ObjType type, Coordinates c, Integer id) {
+        BattleFieldObject bfObj = getGame().createObject(type, c.x, c.y, DC_Player.NEUTRAL);
+
+        Map<Integer, String> dataMap = getGame().getMetaMaster().getDungeonMaster().
+                getDataMap(DataMap.encounters);
+        if (dataMap != null) {
+            String s = dataMap.get(id);
+            if (dataMap == null) {
+                return bfObj;
+            }
+            getEntityHandler().encounterAdded(id, new EncounterData(s));
+        }
+        return bfObj;
+    }
+
+    private void objAdded(BattleFieldObject bfObj) {
         getAiHandler().objectAdded(bfObj);
 
         getTransitHandler().objAdded(bfObj);
 
-        if (objType.getOBJ_TYPE_ENUM()== DC_TYPE.ENCOUNTERS) {
+        if (bfObj.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
             Integer id = getIdManager().getId(bfObj);
+            //TODO get data!
             getEntityHandler().encounterAdded(id, new EncounterData(bfObj));
         }
         lastAdded = bfObj;
-        return bfObj;
-        //TODO Player!!!
     }
 
     public BattleFieldObject addOverlay(DIRECTION d, ObjType objType, int gridX, int gridY) {
         BattleFieldObject object = getGame().createObject(objType, gridX, gridY, DC_Player.NEUTRAL);
         object.setDirection(d);
-         getDirectionMap().put(getIdManager().getId(object), d);
+        getDirectionMap().put(getIdManager().getId(object), d);
         //TODO Player!!!
         return object;
     }
@@ -113,7 +135,7 @@ public class LE_ObjHandler extends LE_Handler {
     }
 
     public void clear(Coordinates coordinates) {
-        for (BattleFieldObject battleFieldObject : getGame().getObjectsAt(coordinates)) {
+        for (BattleFieldObject battleFieldObject : getGame().getObjectsNoOverlaying(coordinates)) {
             operation(Operation.LE_OPERATION.REMOVE_OBJ, battleFieldObject);
         }
     }
@@ -137,7 +159,7 @@ public class LE_ObjHandler extends LE_Handler {
 
 
     @Override
-    public String getXml(Function<Integer, Boolean> idFilter) {
+    public String getXml(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
         if (getDirectionMap() == null) {
             return "";
         }
@@ -167,8 +189,7 @@ public class LE_ObjHandler extends LE_Handler {
         Coordinates c1 = lastAdded.getCoordinates();
         if (PositionMaster.inLine(c1, c)) {
             addMultiple(lastAdded.getType(), CoordinatesMaster.getCoordinatesBetweenInclusive(c1, c));
-        } else
-            if (PositionMaster.inLineDiagonally(c1, c)) {
+        } else if (PositionMaster.inLineDiagonally(c1, c)) {
             //TODO
         }
     }
@@ -176,8 +197,9 @@ public class LE_ObjHandler extends LE_Handler {
     private void addMultiple(ObjType type, List<Coordinates> coordinates) {
         operation(Operation.LE_OPERATION.FILL_START);
         for (Coordinates c : coordinates) {
-            addObj(type, c.x,c.y);
+            addObj(type, c.x, c.y);
         }
         operation(Operation.LE_OPERATION.FILL_END);
     }
+
 }

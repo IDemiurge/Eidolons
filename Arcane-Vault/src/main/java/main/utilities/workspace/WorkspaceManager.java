@@ -3,7 +3,8 @@ package main.utilities.workspace;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import main.content.*;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
@@ -18,8 +19,8 @@ import main.swing.generic.components.G_Panel;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 
 import javax.swing.*;
 import java.io.File;
@@ -368,7 +369,7 @@ public class WorkspaceManager {
         SKILLS(DC_TYPE.SKILLS),
         CLASSES(DC_TYPE.CLASSES),
         UNITS(DC_TYPE.UNITS, DC_TYPE.CHARS),
-        DUNGEONS(DC_TYPE.DUNGEONS),
+        DUNGEONS(DC_TYPE.FLOORS),
         ENCOUNTERS(DC_TYPE.ENCOUNTERS),
 
         MISC;

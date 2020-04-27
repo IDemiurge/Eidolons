@@ -149,7 +149,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         initBlock(block, coords);
         block.setRoomType(blockTemplate.getType());
 
-        LevelStruct level = getGame().getDungeonMaster().getLocation();
+        LevelStruct level = getGame().getDungeonMaster().getFloorWrapper();
         reset(level);
         updateTree();
     }
@@ -167,7 +167,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     private boolean checkOverlap(Coordinates coordinates, String s) {
         GeneratorEnums.ROOM_CELL cell = GeneratorEnums.ROOM_CELL.getBySymbol(s);
         if (cell != GeneratorEnums.ROOM_CELL.FLOOR) {
-            return !getGame().getObjectsOnCoordinate(coordinates).isEmpty();
+            return !getGame().getObjectsOnCoordinateNoOverlaying(coordinates).isEmpty();
         }
         return false;
     }
@@ -275,7 +275,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     private void clearBlock(LevelBlock block) {
         getOperationHandler().operation(Operation.LE_OPERATION.CLEAR_START);
         for (Coordinates coordinates : block.getCoordinatesSet()) {
-            for (BattleFieldObject battleFieldObject : getGame().getObjectsAt(coordinates)) {
+            for (BattleFieldObject battleFieldObject : getGame().getObjectsNoOverlaying(coordinates)) {
                 getOperationHandler().operation(Operation.LE_OPERATION.REMOVE_OBJ, battleFieldObject);
             }
             //full clear - scripts, ..?
@@ -416,7 +416,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         Set<BattleFieldObject> wallObjs = new HashSet<>();
         if (wallType != null)
             for (Coordinates coordinates : coordinatesSet) {
-                for (BattleFieldObject obj : getGame().getObjectsOnCoordinate(coordinates)) {
+                for (BattleFieldObject obj : getGame().getObjectsOnCoordinateNoOverlaying(coordinates)) {
                     String name = obj.getType().getName().replace("Indestructible", "").trim();
                     if (name
                             .equalsIgnoreCase(PaletteHandlerImpl.WALL_PLACEHOLDER)) {
@@ -444,6 +444,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
                     if (cell.getCellType() != type) {
                         set.add(cell);
                         cell.setCellType(type);
+                        cell.resetCell(false);
                     }
             }
             GuiEventManager.trigger(GuiEventType.CELL_RESET, set);

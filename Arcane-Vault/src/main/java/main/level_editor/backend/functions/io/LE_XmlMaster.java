@@ -71,13 +71,14 @@ public class LE_XmlMaster extends LE_Handler {
         return XML_Converter.wrap("Floor", xmlBuilder.toString());
     }
 
-    public String getMetaXml(Module standalone) {
+    public String getMetaXml(Module module) {
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
-        Function<Integer, Boolean> idFilter = getIdFilter(standalone);
+        Function<Integer, Boolean> idFilter = getIdFilter(module);
+        Function<Coordinates, Boolean> coordinateFilter = getCoordinateFilter(module);
 
         xmlBuilder.append("\n").open(FloorLoader.DATA_MAPS);
         for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
-            String xml = handler.getDataMapString(idFilter);
+            String xml = handler.getDataMapString(idFilter, coordinateFilter);
             if (xml.isEmpty()) {
                 continue;
             }
@@ -89,13 +90,17 @@ public class LE_XmlMaster extends LE_Handler {
 //        xmlBuilder.close(FloorLoader.COORDINATE_DATA).append("\n");
 
         for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
-            String xml = handler.getXml(idFilter);
+            String xml = handler.getXml(idFilter, coordinateFilter);
             if (xml.isEmpty()) {
                 continue;
             }
             xmlBuilder.append(xml).append("\n");
         }
         return xmlBuilder.toString();
+    }
+
+    private Function<Coordinates, Boolean> getCoordinateFilter(Module module) {
+        return c-> module.getCoordinatesSet().contains(c);
     }
 
     private Function<Integer, Boolean> getIdFilter(Module standalone) {
@@ -123,7 +128,7 @@ public class LE_XmlMaster extends LE_Handler {
         Map<Integer, BattleFieldObject> map = LevelEditor.getGame().getSimIdManager().getObjMap();
         int i = 0;
         for (Coordinates c : module.initCoordinateSet(true)) {
-            Set<BattleFieldObject> set = LevelEditor.getGame().getObjectsOnCoordinate(c);
+            Set<BattleFieldObject> set = LevelEditor.getGame().getObjectsOnCoordinateAll(c);
             if (!borders)
                 for (Entrance entrance : getTransitHandler().entrances) {
                     if (entrance.getCoordinates().equals(c)) {
@@ -143,13 +148,12 @@ public class LE_XmlMaster extends LE_Handler {
             }
             builder.append("=");
             for (BattleFieldObject obj : set) {
-
                 Integer id = (Integer) MapMaster.getKeyForValue_(map, obj);
                 if (id == null) {
                     continue;
                 }
                 i++;
-                builder.append(id);
+                builder.append(id).append(",");
             }
             builder.append(";");
 

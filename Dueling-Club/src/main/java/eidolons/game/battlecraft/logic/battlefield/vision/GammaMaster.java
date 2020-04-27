@@ -263,9 +263,9 @@ public class GammaMaster {
         //tutorial info
 
         if (mainExitCoordingates == null) {
-            if (master.getGame().getDungeonMaster().getLocation() instanceof Location) {
+            if (master.getGame().getDungeonMaster().getFloorWrapper() instanceof Location) {
                 Entrance exit = master.getGame().getDungeonMaster().
-                        getLocation().getMainExit();
+                        getFloorWrapper().getMainExit();
                 if (exit == null) {
                     return 0;
                 }

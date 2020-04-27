@@ -201,7 +201,7 @@ public class TownMaster extends MetaGameHandler {
         }
 
         Entrance entrance = master.getGame().getDungeonMaster().
-                getLocation().getMainEntrance();
+                getFloorWrapper().getMainEntrance();
         int dst = Eidolons.getMainHero().getCoordinates().dst(
                 entrance.getOriginalCoordinates());
         int n = 2 + dst / 8;

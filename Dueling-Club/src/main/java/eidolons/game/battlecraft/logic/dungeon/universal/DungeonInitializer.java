@@ -9,7 +9,7 @@ import main.entity.type.ObjType;
  */
 public abstract class DungeonInitializer extends DungeonHandler {
 
-    private String dungeonPath;
+    protected String dungeonPath;
 
     public DungeonInitializer(DungeonMaster master) {
         super(master);

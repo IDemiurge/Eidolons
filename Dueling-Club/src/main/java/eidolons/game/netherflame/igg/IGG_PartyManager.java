@@ -166,14 +166,14 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
 
     private Coordinates getRespawnCoordinates(ObjType type) {
         if (EidolonsGame.BRIDGE) {
-            return getGame().getDungeonMaster().getLocation().getMainEntrance().getCoordinates();
+            return getGame().getDungeonMaster().getFloorWrapper().getMainEntrance().getCoordinates();
 //            return SoulforceMaster.getLastRespPoint();
         }
         if (EidolonsGame.BOSS_FIGHT || EidolonsGame.TUTORIAL_MISSION) {
             return Positioner.adjustCoordinate(type,
                     getParty().getLastHero().getCoordinates(), getParty().getLastHero().getFacing().flip());
         }
-        return getGame().getDungeonMaster().getLocation().getMainEntrance().getCoordinates();
+        return getGame().getDungeonMaster().getFloorWrapper().getMainEntrance().getCoordinates();
     }
 
 

@@ -50,7 +50,7 @@ public class LocationInitializer extends DungeonInitializer {
 
     @Override
     public Location createDungeon(ObjType type) {
-        return new Location(getMaster(), getMetaMaster().getMissionMaster().getFloor());
+        return new Location(getMaster(), getMetaMaster().getFloor());
     }
 
 }

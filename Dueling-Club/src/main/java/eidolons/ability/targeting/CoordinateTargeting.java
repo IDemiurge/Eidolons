@@ -10,6 +10,7 @@ import main.elements.targeting.TargetingImpl;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
+import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
@@ -98,8 +99,12 @@ public class CoordinateTargeting extends TargetingImpl {
         if (ref.getEffect() instanceof CustomTargetEffect) {//TODO EA hack - overlaying!
             if (((CustomTargetEffect) ref.getEffect()).getEffect() instanceof SummonEffect) {
                 try {
-                    ref.setTarget(obj.getGame().getObjectByCoordinate(  coordinate,
-                            false, false, true).getId());
+                    Obj object = obj.getGame().getObjectByCoordinate(coordinate,
+                            false);
+                    if (object == null) {
+                        object = obj.getGame().getCellByCoordinate(coordinate);
+                    }
+                    ref.setTarget(object.getId());
                     return true;
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);

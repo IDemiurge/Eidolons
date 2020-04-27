@@ -71,7 +71,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
         if (backTexture == null && backgroundSprite == null) {
             String path = null;
             try {
-                path = DC_Game.game.getDungeonMaster().getLocation().getMapBackground();
+                path = DC_Game.game.getDungeonMaster().getFloorWrapper().getMapBackground();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

@@ -217,7 +217,7 @@ public class LE_TreeView extends TreeX<StructNode> {
         if (node.getData() instanceof Location) {
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 21);
             Location floor = ((Location) node.getData());
-            texture = TextureCache.getOrCreateR(floor.getDungeon().getImagePath());
+            texture = TextureCache.getOrCreateR(floor.getFloor().getImagePath());
         }
         if (node.getData() instanceof  Module) {
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 21);

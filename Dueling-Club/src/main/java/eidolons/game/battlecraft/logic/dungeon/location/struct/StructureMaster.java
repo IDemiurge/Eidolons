@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
+import main.content.enums.DungeonEnums;
 import main.game.bf.Coordinates;
 
 import java.util.LinkedHashSet;
@@ -19,9 +20,12 @@ public class StructureMaster extends DungeonHandler {
     }
 
     public LevelStruct findLowestStruct(Coordinates c) {
-        LevelBlock block = findBlock(c);
+        LevelStruct block = findBlock(c);
         if (block == null) {
-            return findModule(c);
+            block= findModule(c);
+        }
+        if (block == null) {
+            return getFloorWrapper();
         }
         return block;
     }
@@ -103,6 +107,14 @@ public class StructureMaster extends DungeonHandler {
     }
 
     public int getCellVariant(int i, int j) {
-        return 1;
+        return 0;
+    }
+
+    public DungeonEnums.CELL_IMAGE getCellType(int i, int j) {
+        LevelStruct struct = findLowestStruct(Coordinates.get(i, j));
+        if (struct == null) {
+            return DungeonEnums.CELL_IMAGE.tiles;
+        }
+        return struct. getCellType();
     }
 }

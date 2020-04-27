@@ -25,7 +25,7 @@ import main.level_editor.backend.metadata.object.LE_EntityHandler;
 import main.level_editor.backend.metadata.script.LE_ScriptHandler;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.sim.LE_IdManager;
-import main.level_editor.backend.struct.level.Floor;
+import main.level_editor.backend.struct.level.LE_Floor;
 import main.level_editor.gui.grid.LE_CameraHandler;
 import main.level_editor.gui.stage.LE_KeyHandler;
 
@@ -46,7 +46,7 @@ public class LE_Manager {
     private final LE_ScriptHandler scriptHandler;
     private final LayerHandlerImpl layerHandler;
     private final LE_EntityHandler entityHandler;
-    private Floor floor;
+    private LE_Floor floor;
     private LE_SelectionHandler selectionHandler;
     private LE_ModelManager modelManager;
     private LE_DataHandler dataHandler;
@@ -62,7 +62,7 @@ public class LE_Manager {
     private LE_XmlMaster xmlMaster;
     private boolean loaded;
 
-    public LE_Manager(Floor floor) {
+    public LE_Manager(LE_Floor floor) {
         this.floor = floor;        
         
         game = floor.getGame();
@@ -159,7 +159,7 @@ public class LE_Manager {
         return dataHandler;
     }
 
-    public Floor getFloor() {
+    public LE_Floor getFloor() {
         return floor;
     }
 

@@ -18,7 +18,7 @@ import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.structure.FloorManager;
 import main.level_editor.backend.struct.campaign.Campaign;
-import main.level_editor.backend.struct.level.Floor;
+import main.level_editor.backend.struct.level.LE_Floor;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.PathUtils;
 import main.system.auxiliary.data.FileManager;
@@ -138,7 +138,7 @@ public class LE_DataHandler extends LE_Handler {
         int minY = CoordinatesMaster.getMinY(coordinatesSet);
 
         for (Coordinates coordinates : coordinatesSetToSearch) {
-            Set<BattleFieldObject> objects = DC_Game.game.getObjectsOnCoordinate(coordinates);
+            Set<BattleFieldObject> objects = DC_Game.game.getObjectsOnCoordinateNoOverlaying(coordinates);
             if (!objects.isEmpty()) {
                 for (BattleFieldObject object : objects) {
                     if (object.isModuleBorder()) {
@@ -238,7 +238,7 @@ public class LE_DataHandler extends LE_Handler {
 
     }
 
-    public void activateFloorTab(Floor floor) {
+    public void activateFloorTab(LE_Floor floor) {
 
     }
 

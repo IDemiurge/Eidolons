@@ -49,7 +49,7 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
 
     @Override
     protected LevelStruct getParent() {
-        return DC_Game.game.getDungeonMaster().getLocation();
+        return DC_Game.game.getDungeonMaster().getFloorWrapper();
     }
 
     public Module(ModuleData data) {

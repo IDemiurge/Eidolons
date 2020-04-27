@@ -21,11 +21,11 @@ public class LocationMaster extends DungeonMaster {
     @Override
     public void init() {
         super.init();
-        if (getLocation().getMainEntrance() != null) {
-            getGame().getObjMaster().tryAddUnit(getLocation().getMainEntrance());
+        if (getFloorWrapper().getMainEntrance() != null) {
+            getGame().getObjMaster().tryAddUnit(getFloorWrapper().getMainEntrance());
         }
-        if (getLocation().getMainExit() != null) {
-            getGame().getObjMaster().tryAddUnit(getLocation().getMainExit());
+        if (getFloorWrapper().getMainExit() != null) {
+            getGame().getObjMaster().tryAddUnit(getFloorWrapper().getMainExit());
         }
     }
 

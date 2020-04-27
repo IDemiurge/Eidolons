@@ -65,9 +65,9 @@ public class Structure extends BattleFieldObject {
     @Override
     public String getImagePath() {
         //     this is insanity...
-        if (getGame().getDungeonMaster().getLocation() != null) {
+        if (getGame().getDungeonMaster().getFloorWrapper() != null) {
             return ImageManager.getThemedImagePath(super.getImagePath(), getGame()
-                    .getDungeonMaster().getLocation().getColorTheme());
+                    .getDungeonMaster().getFloorWrapper().getColorTheme());
         }
         return super.getImagePath();
     }

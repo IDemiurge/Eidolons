@@ -21,8 +21,8 @@ import eidolons.game.battlecraft.logic.battlefield.DroppedItemManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGame;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
@@ -472,20 +472,26 @@ public class DC_Game extends GenericGame {
         return paleMaster;
     }
 
-    public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded) {
-        return getObjMaster().getObjectByCoordinate(c, cellsIncluded);
-    }
 
-    public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded, boolean passableIncluded, boolean overlayingIncluded) {
-        return getObjMaster().getObjectByCoordinate(c, cellsIncluded, passableIncluded, overlayingIncluded);
+    public Obj getObjectByCoordinate(Coordinates c, Boolean overlayingIncluded ) {
+        return getObjMaster().getObjectByCoordinate(c, overlayingIncluded );
     }
 
     public Set<BattleFieldObject> getOverlayingObjects(Coordinates c) {
         return getObjMaster().getOverlayingObjects(c);
     }
 
-    public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c, Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
-        return getObjMaster().getObjectsOnCoordinate(c, overlayingIncluded, passableIncluded, cellsIncluded);
+    public Set<BattleFieldObject> getObjectsNoOverlaying(Coordinates c) {
+        return getObjMaster().getObjectsOnCoordinate(c, false );
+    }
+    public Set<BattleFieldObject> getObjectsOnCoordinateNoOverlaying(Coordinates c) {
+        return getObjectsOnCoordinate(c, false );
+    }
+    public Set<BattleFieldObject> getObjectsOnCoordinateAll(Coordinates c  ) {
+        return getObjMaster().getObjectsOnCoordinate(c, true  );
+    }
+    public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c, Boolean overlayingIncluded  ) {
+        return getObjMaster().getObjectsOnCoordinate(c, overlayingIncluded );
     }
 
     public Set<DC_Cell> getCellsForCoordinates(Set<Coordinates> coordinates) {
@@ -664,9 +670,9 @@ public class DC_Game extends GenericGame {
     }
 
 
-    public Dungeon getDungeon() {
+    public Floor getDungeon() {
         try {
-            return getDungeonMaster().getLocation().getDungeon();
+            return getDungeonMaster().getFloorWrapper().getFloor();
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
         }
@@ -724,18 +730,11 @@ public class DC_Game extends GenericGame {
         return getObjMaster().getBfObjects();
     }
 
-    public Set<BattleFieldObject> getObjectsAt(Coordinates c) {
-        return getObjMaster().getObjectsOnCoordinate(c, false, true, false);
-    }
 
     public DC_InventoryManager getInventoryManager() {
         return inventoryManager;
     }
 
-    public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c) {
-        //        return getMaster().getObjectsOnCoordinate(c);
-        return getObjectsOnCoordinate(c, false, true, false);
-    }
 
     public Obj getObjectByCoordinate(Coordinates
                                              c) {
