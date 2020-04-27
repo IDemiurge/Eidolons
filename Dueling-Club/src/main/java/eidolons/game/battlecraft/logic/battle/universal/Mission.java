@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.battle.universal;
 
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStats;
 
-public class Battle {
+public class Mission {
     // subset of State?
     BattleOptions options;
     BattleStats stats;

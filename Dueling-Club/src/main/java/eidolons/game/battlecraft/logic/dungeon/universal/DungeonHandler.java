@@ -112,7 +112,7 @@ public class DungeonHandler {
         return master.getOutcomeManager();
     }
 
-    public Battle getBattle() {
+    public Mission getBattle() {
         return master.getBattle();
     }
 

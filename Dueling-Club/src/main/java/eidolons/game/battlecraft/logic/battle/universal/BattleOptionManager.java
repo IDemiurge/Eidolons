@@ -15,7 +15,7 @@ import main.system.launch.CoreEngine;
 /**
  * Created by JustMe on 5/7/2017.
  */
-public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
+public class BattleOptionManager<E extends Mission> extends BattleHandler<E> {
 
     public static   float CHEAT_MODIFIER = 1.0f;
     BattleOptions options;

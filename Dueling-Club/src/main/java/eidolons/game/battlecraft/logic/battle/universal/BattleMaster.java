@@ -13,7 +13,7 @@ import eidolons.game.core.game.DC_Game;
 /**
  * Created by JustMe on 5/7/2017.
  */
-public abstract class BattleMaster<E extends Battle> {
+public abstract class BattleMaster<E extends Mission> {
 
     protected E battle;
     protected BattleOptionManager optionManager;

@@ -248,4 +248,8 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
     public int getId() {
         return getData().getIntValue("id");
     }
+
+    public Coordinates getCenterCoordinate() {
+        return CoordinatesMaster.getCenterCoordinate(getCoordinatesSet());
+    }
 }

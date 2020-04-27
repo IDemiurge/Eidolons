@@ -173,7 +173,7 @@ public class IGG_PartyManager extends PartyManager<IGG_Meta> {
             return Positioner.adjustCoordinate(type,
                     getParty().getLastHero().getCoordinates(), getParty().getLastHero().getFacing().flip());
         }
-        return getGame().getDungeonMaster().getDungeonLevel().getEntranceCoordinates();
+        return getGame().getDungeonMaster().getLocation().getMainEntrance().getCoordinates();
     }
 
 

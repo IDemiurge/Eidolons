@@ -7,7 +7,7 @@ import eidolons.game.core.game.DC_Game;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class TestBattleMaster extends BattleMaster<TestBattle> {
+public class TestBattleMaster extends BattleMaster<TestMission> {
 
 
     public TestBattleMaster(DC_Game game) {
@@ -21,12 +21,12 @@ public class TestBattleMaster extends BattleMaster<TestBattle> {
 
 
     @Override
-    protected TestBattle createBattle() {
-        return new TestBattle();
+    protected TestMission createBattle() {
+        return new TestMission();
     }
 
     @Override
-    protected PlayerManager<TestBattle> createPlayerManager() {
+    protected PlayerManager<TestMission> createPlayerManager() {
         return new PlayerManager<>(this);
     }
 

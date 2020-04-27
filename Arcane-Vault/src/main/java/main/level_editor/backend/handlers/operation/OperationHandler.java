@@ -209,7 +209,7 @@ public class OperationHandler extends LE_Handler {
                 execute(Operation.LE_OPERATION.ADD_BLOCK, op.args);
                 break;
             case MODIFY_STRUCTURE:
-                return false;
+                return true;
             case MODEL_CHANGE:
                 getModelManager().back();
                 break;
@@ -235,7 +235,7 @@ public class OperationHandler extends LE_Handler {
         if (!redo)
             undone.push(op);
 
-        return true;
+        return false;
     }
 
 }

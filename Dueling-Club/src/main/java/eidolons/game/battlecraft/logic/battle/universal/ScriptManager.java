@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by JustMe on 6/2/2017.
  */
-public abstract class ScriptManager<T extends Battle, E> extends BattleHandler<T> implements ScriptExecutor<E> {
+public abstract class ScriptManager<T extends Mission, E> extends BattleHandler<T> implements ScriptExecutor<E> {
     private static final String DUNGEON_SCRIPT_SEPARATOR = "::";
     private Trigger lastTrigger;
 

@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
@@ -12,14 +11,12 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.PlaceholderResolver;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
-import eidolons.game.battlecraft.logic.dungeon.module.BridgeMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleLoader;
 import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
@@ -50,7 +47,6 @@ public abstract class DungeonMaster {
     private LockMaster lockMaster;
     private ContainerMaster containerMaster;
     private InteractiveObjMaster interactiveMaster;
-    private DungeonLevel dungeonLevel;
     private TrapMaster trapMaster;
     private PuzzleMaster puzzleMaster;
     private PortalMaster portalMaster;
@@ -147,23 +143,25 @@ public abstract class DungeonMaster {
         this.location = location;
     }
 
-    protected void processMetaDataMap(Map<String, String> dataMap) {
-        getDungeonLevel().initUnitFacingMap(dataMap);
-        getDungeonLevel().initCellTypeMap(dataMap);
+    protected void processCoordinateMap(String data, DataMap type) {
+        switch (type) {
 
-
-        for (String coordinate : dataMap.keySet()) {
-            String data = dataMap.get(coordinate);
-            data = BridgeMaster.processMetaData(data);
-
-            if (portalMaster.addPortal(coordinate, data)) {
-                continue;
-            }
-            if (KeyMaster.addCustomKey(coordinate, data)) {
-                continue;
-            }
-            //anything else?
         }
+//        getDungeonLevel().initUnitFacingMap(dataMap);
+//        getDungeonLevel().initCellTypeMap(dataMap);
+
+//    TODO     for (String coordinate : dataMap.keySet()) {
+//            String data = dataMap.get(coordinate);
+//            data = BridgeMaster.processMetaData(data);
+//
+//            if (portalMaster.addPortal(coordinate, data)) {
+//                continue;
+//            }
+//            if (KeyMaster.addCustomKey(coordinate, data)) {
+//                continue;
+//            }
+            //anything else?
+//        }
     }
 
     protected Location initDungeon() {
@@ -244,7 +242,7 @@ public abstract class DungeonMaster {
         return getBattleMaster().getOutcomeManager();
     }
 
-    public Battle getBattle() {
+    public Mission getBattle() {
         return getBattleMaster().getBattle();
     }
 
@@ -269,19 +267,6 @@ public abstract class DungeonMaster {
                 return interactiveMaster;
         }
         return null;
-    }
-
-    public DungeonLevel getDungeonLevel() {
-        if (EidolonsGame.TOWN)
-            if (location == null && dungeonLevel == null) {
-//            dungeonWrapper = initDungeon();
-                init();
-            }
-        return dungeonLevel;
-    }
-
-    public void setDungeonLevel(DungeonLevel dungeonLevel) {
-        this.dungeonLevel = dungeonLevel;
     }
 
     public void next() {

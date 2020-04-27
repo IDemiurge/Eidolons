@@ -72,22 +72,27 @@ public class LE_KeyHandler extends LE_Handler {
                 Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT);
         if (ctrl) {
             switch (character) {
-                case Input.Keys.SPACE:
+                case ' ':
                     LevelEditor.getCurrent().getManager().getEditHandler().edit();
                     break;
-                case Input.Keys.X:
+                case 'X':
+                case 'x':
                     LevelEditor.getCurrent().getManager().getModelManager().cut();
                     break;
-                case Input.Keys.Z:
+                case 'Z':
+                case 'z':
                     LevelEditor.getCurrent().getManager().getOperationHandler().undo();
                     break;
-                case Input.Keys.Y:
+                case 'Y':
+                case 'y':
                     LevelEditor.getCurrent().getManager().getOperationHandler().redo();
                     break;
-                case Input.Keys.C:
+                case 'C':
+                case 'c':
                     LevelEditor.getCurrent().getManager().getModelManager().copy();
                     break;
-                case Input.Keys.V:
+                case 'V':
+                case 'v':
                     LevelEditor.getCurrent().getManager().getModelManager().paste();
                     break;
 

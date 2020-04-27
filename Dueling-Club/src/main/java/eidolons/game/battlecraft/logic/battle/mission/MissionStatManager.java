@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by JustMe on 5/10/2017.
  */
-public class MissionStatManager extends BattleStatManager<MissionBattle> {
+public class MissionStatManager extends BattleStatManager<QuestMission> {
     public MissionStatManager(MissionBattleMaster missionBattleMaster) {
         super(missionBattleMaster);
     }

@@ -244,8 +244,8 @@ public class DC_GridPanel extends GridPanel {
             return false;
         }
 
-        if (DC_Game.game.getDungeonMaster().getDungeonLevel() == null) {
-            switch (DC_Game.game.getDungeonMaster().getDungeonLevel().getLocationType().getGroup()) {
+        if (DC_Game.game.getDungeonMaster().getLocation() == null) {
+            switch (DC_Game.game.getDungeonMaster().getLocation().getLocationType().getGroup()) {
                 case NATURAL:
                 case AVERAGE:
                 case SURFACE:

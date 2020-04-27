@@ -18,7 +18,7 @@ import main.system.auxiliary.secondary.Bools;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
+public class BattleOutcomeManager<E extends Mission> extends BattleHandler<E> {
     Boolean outcome;
     private Integer roundLimit = null;
     private Boolean timedOutcome = true;

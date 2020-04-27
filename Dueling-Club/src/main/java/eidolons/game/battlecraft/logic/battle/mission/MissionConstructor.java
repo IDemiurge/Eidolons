@@ -13,8 +13,8 @@ import main.system.auxiliary.StringMaster;
 /**
  * Created by JustMe on 5/7/2017.
  */
-public class MissionConstructor extends BattleConstructor<MissionBattle> {
-    public MissionConstructor(BattleMaster<MissionBattle> master) {
+public class MissionConstructor extends BattleConstructor<QuestMission> {
+    public MissionConstructor(BattleMaster<QuestMission> master) {
         super(master);
     }
 

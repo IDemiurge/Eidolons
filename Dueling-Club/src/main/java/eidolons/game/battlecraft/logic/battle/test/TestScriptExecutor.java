@@ -26,9 +26,9 @@ import main.system.auxiliary.data.FileManager;
 /**
  * Created by JustMe on 6/2/2017.
  */
-public class TestScriptExecutor extends ScriptManager<TestBattle, TEST_SCRIPT> {
+public class TestScriptExecutor extends ScriptManager<TestMission, TEST_SCRIPT> {
 
-    public TestScriptExecutor(BattleMaster<TestBattle> master) {
+    public TestScriptExecutor(BattleMaster<TestMission> master) {
         super(master);
     }
 

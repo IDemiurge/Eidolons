@@ -15,7 +15,7 @@ import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -43,7 +43,7 @@ public abstract class AiBehavior {
 
     protected BEHAVIOR_STATUS status;
     protected BEHAVIOR_METHOD method;
-    protected LevelBlock block;
+    protected LevelStruct block;
     protected Coordinates preferredPosition;
     protected DC_Obj target;
     protected float sinceLastAction;
@@ -63,11 +63,11 @@ public abstract class AiBehavior {
         this.group = ai.getGroupAI();
         origin = getCoordinates();
         speed = getDefaultSpeed();
-        block = master.getGame().getDungeonMaster().getDungeonLevel().getBlockForCoordinate(
+        block = master.getGame().getDungeonMaster().getStructureMaster().findLowestStruct(
          ai.getUnit().getCoordinates());
         if (block == null) {
             for (Coordinates c : ai.getUnit().getCoordinates().getAdjacent()) {
-                block = master.getGame().getDungeonMaster().getDungeonLevel().getBlockForCoordinate(
+                block = master.getGame().getDungeonMaster().getStructureMaster().findLowestStruct(
                  c);
                 if (block != null)
                     return;

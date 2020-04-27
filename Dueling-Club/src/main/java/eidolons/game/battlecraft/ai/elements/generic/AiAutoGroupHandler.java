@@ -5,9 +5,6 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
-import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.content.enums.EncounterEnums;
 import main.entity.type.ObjAtCoordinate;
@@ -57,24 +54,6 @@ public class AiAutoGroupHandler extends AiHandler{
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
                 getGroups().add(group);
-            }
-        }
-//        if (!CoreEngine.isIggDemo())
-        if (game.getDungeonMaster().getDungeonLevel().isPregen()) {
-            for (GroupAI group : getGroups()) {
-                Coordinates c=group.getBlock().getCenterCoordinate();
-                for (Unit member : group.getMembers()) {
-                    if (!DC_Game.game.getRules().getStackingRule().canBeMovedOnto(member, c)) {
-                        // TODO tactics?
-                        c = Positioner.adjustCoordinate(member, c, FacingMaster.getRandomFacing()); // direction
-                        // preference?
-                    }
-                    main.system.auxiliary.log.LogMaster.important( member+ " coordinate adjusted from " +
-                            member.getCoordinates() +
-                            " to " +c );
-                    member.setCoordinates(c);
-                }
-
             }
         }
     }

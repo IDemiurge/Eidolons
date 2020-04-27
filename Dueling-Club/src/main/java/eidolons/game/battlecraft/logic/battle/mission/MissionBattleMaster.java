@@ -8,7 +8,7 @@ import eidolons.game.core.game.DC_Game;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class MissionBattleMaster extends BattleMaster<MissionBattle> {
+public class MissionBattleMaster extends BattleMaster<QuestMission> {
 
 
     public MissionBattleMaster(DC_Game game) {
@@ -36,12 +36,12 @@ public class MissionBattleMaster extends BattleMaster<MissionBattle> {
 
 
     @Override
-    protected MissionBattle createBattle() {
-        return new MissionBattle(this);
+    protected QuestMission createBattle() {
+        return new QuestMission(this);
     }
 
     @Override
-    protected PlayerManager<MissionBattle> createPlayerManager() {
+    protected PlayerManager<QuestMission> createPlayerManager() {
         return new MissionPlayerManager(this);
     }
 

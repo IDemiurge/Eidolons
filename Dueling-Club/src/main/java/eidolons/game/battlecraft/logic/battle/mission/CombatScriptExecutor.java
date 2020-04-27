@@ -62,7 +62,7 @@ import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SCRIPT_FUNCTION> {
+public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCRIPT_FUNCTION> {
 
     List<Trigger> scriptTriggers = new ArrayList<>();
 

@@ -2,9 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.module.dungeoncrawl.dungeon.FauxDungeonLevel;
 import eidolons.game.module.generator.init.RngXmlMaster;
-import main.system.PathUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.util.Refactor;
 import org.w3c.dom.Node;
@@ -35,8 +33,6 @@ public class LocationBuilder extends DungeonBuilder {
     @Override
     public Location buildDungeon(String path) {
         location = super.buildDungeon(path);
-        FauxDungeonLevel level = createFauxDungeonLevel(path, location);
-        master.setDungeonLevel(level);
         try {
             location.initMainEntrance();
         } catch (Exception e) {
@@ -45,13 +41,6 @@ public class LocationBuilder extends DungeonBuilder {
         }
         return location;
     }
-
-    private FauxDungeonLevel createFauxDungeonLevel(String path, Location location) {
-        FauxDungeonLevel level = new FauxDungeonLevel(PathUtils.getLastPathSegment(path));
-        return level;
-    }
-
-
 
     @Override
     public Location buildDungeon(String path, String data, List<Node> nodeList) {

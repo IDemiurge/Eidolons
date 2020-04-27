@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PlayerManager<E extends Battle> extends BattleHandler<E> {
+public class PlayerManager<E extends Mission> extends BattleHandler<E> {
 
     private static final DC_Player DEFAULT_PLAYER = new DC_Player("Default Player", Color.red, true) ;
     public final FLAG_COLOR[] playerColors = {

@@ -229,9 +229,10 @@ public abstract class StateManager {
             state.objMaps.values().forEach(map -> map.remove(id));
         }
         state.objMaps.get(TYPE).remove(id);
+        state.objMap . remove(id);
     }
         public void removeObject(Integer id ) {
-        removeObject(id ,  null );
+            removeObject(id ,  null );
 //        state.removed(obj);
     }
 }

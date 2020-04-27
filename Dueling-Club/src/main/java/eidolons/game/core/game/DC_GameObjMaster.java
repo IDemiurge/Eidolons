@@ -15,6 +15,7 @@ import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -285,9 +286,8 @@ public class DC_GameObjMaster extends GameObjMaster {
         unitsArray = null;
     }
 
-    private boolean isCacheForStructures() {
-        return true;
-//        !CoreEngine.isLevelEditor();
+    protected boolean isCacheForStructures() {
+        return         !CoreEngine.isLevelEditor();
     }
 
 

@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.battle.encounter;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.generic.AiData;
-import eidolons.game.battlecraft.logic.battle.mission.MissionBattle;
+import eidolons.game.battlecraft.logic.battle.mission.QuestMission;
 import eidolons.game.battlecraft.logic.battle.universal.BattleHandler;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
@@ -18,7 +18,7 @@ import java.util.Map;
 import static main.system.auxiliary.log.LogMaster.log;
 
 
-public class EncounterSpawner extends BattleHandler<MissionBattle> {
+public class EncounterSpawner extends BattleHandler<QuestMission> {
 
     public enum ENCOUNTER_STATUS {
         ENGAGED, ALERT, IDLE, REGROUPING

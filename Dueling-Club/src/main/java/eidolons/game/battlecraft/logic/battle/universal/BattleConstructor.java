@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.battle.universal;
 /**
  * Created by JustMe on 5/7/2017.
  */
-public class BattleConstructor<E extends Battle> extends BattleHandler<E> {
+public class BattleConstructor<E extends Mission> extends BattleHandler<E> {
     //based on difficulty, adjusts unit data
 
     public BattleConstructor(BattleMaster<E> master) {

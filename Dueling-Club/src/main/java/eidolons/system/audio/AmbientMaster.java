@@ -54,8 +54,6 @@ public class AmbientMaster {
         Unit hero = Eidolons.getMainHero();
         if (hero == null)
             return DEFAULT_AMBIENCE;
-        if (hero.getGame().getDungeonMaster().getDungeonLevel() == null)
-            return DEFAULT_AMBIENCE;
 
         if (TownPanel.getActiveInstance() != null && Eidolons.getGame().getMetaMaster().getTownMaster().isInTown()) {
             return Eidolons.getGame().getMetaMaster().getTownMaster().getTown().getAmbience();
@@ -68,7 +66,7 @@ public class AmbientMaster {
                 style = hero.getGame().getDungeonMaster().getStructureMaster().
                         findLowestStruct(hero.getCoordinates()).getStyle();
             } catch (Exception e) {
-                style = hero.getGame().getDungeonMaster().getDungeonLevel().getMainStyle();
+                style = hero.getGame().getDungeonMaster().getLocation().getStyle();
 //            style = hero.getGame().getDungeon().getStyle();
                 locationType = hero.getGame().getDungeon().getDungeonSubtype();
             }

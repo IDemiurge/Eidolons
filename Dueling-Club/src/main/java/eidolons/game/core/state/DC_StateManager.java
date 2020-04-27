@@ -589,7 +589,10 @@ public class DC_StateManager extends StateManager {
             map.remove(id);
         }
         //        super.removeObject(id);
+    }
 
+    public void removeObject(Integer id , OBJ_TYPE TYPE) {
+        removeObject(id);
     }
 
     private void removeAttachedObjects(BattleFieldObject unit) {

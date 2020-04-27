@@ -1,7 +1,6 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.content.PARAMS;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.generator.LevelData;
@@ -12,7 +11,6 @@ import eidolons.game.module.generator.test.LevelStats;
 import eidolons.game.module.generator.tilemap.TileMap;
 import eidolons.game.module.generator.tilemap.TileMapper;
 import main.content.CONTENT_CONSTS.FLIP;
-import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
@@ -26,13 +24,14 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.launch.CoreEngine;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by JustMe on 7/20/2018.
@@ -49,7 +48,6 @@ public class DungeonLevel  {
     private Map<String, DIRECTION> directionMap;
     private Map<String, FLIP> flipMap;
     private ObjType dungeonType;
-    private Map<Coordinates, LevelBlock> cache = new HashMap<>();
     private String exitType;
     private String entranceType;
     private float rate;
@@ -61,7 +59,6 @@ public class DungeonLevel  {
 
     String name;
     private Map<Coordinates, FACING_DIRECTION> unitFacingMap;
-    private Map<Coordinates, DungeonEnums.CELL_IMAGE> cellTypeSpecialMap = new HashMap<>();
     private boolean pregen;
     private String entranceData;
 
@@ -341,22 +338,6 @@ public class DungeonLevel  {
         return RngFillMaster.BOUND_SUPPORTED;
     }
 
-    public DUNGEON_STYLE getMainStyle() {
-        if (mainStyle != null)
-            return mainStyle;
-        TreeMap<DUNGEON_STYLE, Integer> map = new TreeMap<>();
-        for (LevelBlock block : getBlocks()) {
-            MapMaster.addToIntegerMap(map, block.getZone().getStyle(), 1);
-        }
-        if (map.isEmpty()) {
-            return DUNGEON_STYLE.Somber;
-        }
-        return mainStyle = map.firstKey();
-        //        return new ArrayList<>(map.values()).getVar(0);
-        //        return map.values().iterator().next();
-    }
-
-
     public boolean isSurface() {
         return surface;
     }
@@ -375,53 +356,6 @@ public class DungeonLevel  {
 
         levelBlock.getUnitGroups().put(unitsAtCoordinates, groupType);
     }
-
-    public String getLevelName() {
-        return name;
-    }
-
-    public Map<Coordinates, FACING_DIRECTION> getUnitFacingMap() {
-        return unitFacingMap;
-    }
-
-    public void setUnitFacingMap(Map<Coordinates, FACING_DIRECTION> unitFacingMap) {
-        this.unitFacingMap = unitFacingMap;
-    }
-//TODO dc init fix
-    public void initUnitFacingMap(Map<String, String> customDataMap) {
-        Map<Coordinates, FACING_DIRECTION> map = new HashMap<>();
-        for (String s : customDataMap.keySet()) {
-            map.put(new Coordinates(s), FacingMaster.getFacing(customDataMap.get(s)));
-        }
-        setUnitFacingMap(map);
-    }
-
-    public void initCellTypeMap(Map<String, String> customDataMap) {
-        Map<Coordinates, DungeonEnums.CELL_IMAGE> map = new HashMap<>();
-        s:
-        for (String s : customDataMap.keySet()) {
-            for (String substring : ContainerUtils.openContainer(customDataMap.get(s))) {
-                DungeonEnums.CELL_IMAGE type = new EnumMaster<DungeonEnums.CELL_IMAGE>().retrieveEnumConst(DungeonEnums.CELL_IMAGE.class, substring);
-                if (type != null) {
-                    map.put(new Coordinates(s), type);
-                    continue s;
-                }
-
-            }
-        }
-        cellTypeSpecialMap = (map);
-    }
-
-    public LevelZone getZoneById(int index) {
-
-        for (LevelZone zone : getZones()) {
-            if (zone.getIndex() == index) {
-                return zone;
-            }
-        }
-        return null;
-    }
-
 @Deprecated
     public Module[] getSubParts() {
         return new Module[0];

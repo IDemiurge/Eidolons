@@ -10,7 +10,7 @@ import eidolons.game.core.game.DC_Game;
 /**
  * Created by JustMe on 5/7/2017.
  */
-public class BattleHandler<E extends Battle> {
+public class BattleHandler<E extends Mission> {
 
     protected DC_Game game;
     protected BattleMaster<E> master;

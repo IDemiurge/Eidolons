@@ -45,15 +45,7 @@ public class FacingAdjuster extends DungeonHandler  {
     }
 
     public FACING_DIRECTION getFacingForUnit(Coordinates c, String typeName) {
-       Map<Coordinates, FACING_DIRECTION> map=getUnitFacingMap();
-        if (map!=null) {
-            return map.get(c);
-        }
         return getFacingOptimal(c, false);
-    }
-
-    protected Map<Coordinates, FACING_DIRECTION> getUnitFacingMap() {
-        return getBattleMaster().getDungeonMaster().getDungeonLevel().getUnitFacingMap();
     }
 
     public FACING_DIRECTION getPartyMemberFacing(Unit unit) {
