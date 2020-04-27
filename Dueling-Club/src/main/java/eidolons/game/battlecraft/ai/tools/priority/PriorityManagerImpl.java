@@ -16,8 +16,8 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
@@ -41,7 +41,7 @@ import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.ai.tools.target.SpellAnalyzer;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
@@ -1309,9 +1309,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public boolean checkKillPrioritized(Obj targetObj, DC_ActiveObj action) {
-        if (targetObj.isNeutral()) {
-            return false;
-        }
+        return !targetObj.isNeutral();
         // preCheck if action deals exceeding damage?
         // if (PositionMaster.getDistance(targetObj, unit) > 1) {
         // if (Analyzer.getEnemies((DC_HeroObj) targetObj, false).size() > 0) {
@@ -1320,7 +1318,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         // return false;
         // }
         // }// preCheck if wounded
-        return true;
     }
 
     @Override

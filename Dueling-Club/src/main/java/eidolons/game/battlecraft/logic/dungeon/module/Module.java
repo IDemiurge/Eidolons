@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.battle.encounter.Encounter;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
+import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;

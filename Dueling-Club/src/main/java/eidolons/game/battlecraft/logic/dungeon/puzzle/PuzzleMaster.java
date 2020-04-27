@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzleConstructor
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.data.ability.construct.VariableManager;
@@ -37,8 +38,9 @@ public class PuzzleMaster {
     }
 
     public void initPuzzles(Dungeon dungeon) {
-        for (String coord : dungeon.getCustomDataMap().keySet()) {
-            String s = dungeon.getCustomDataMap().get(coord);
+        Map<String, String> map = dungeon.getCustomDataMap(CellScriptData.CELL_SCRIPT_VALUE.puzzles);
+        for (String coord : map.keySet()) {
+            String s = map.get(coord);
             for (String substring : ContainerUtils.openContainer(s)) {
                 if (substring.split("::")[0].trim().equalsIgnoreCase("puzzle")) {
                     try {
@@ -47,7 +49,7 @@ public class PuzzleMaster {
                         if (struct instanceof LevelBlock) {
                             LevelBlock block = ((LevelBlock) struct);
                         Puzzle puzzle =//PuzzleConstructor.
-                                createPuzzle(dungeon.getCustomDataMap(), block, substring.split("::")[1], c);
+                                createPuzzle(map, block, substring.split("::")[1], c);
                         puzzles.add(puzzle);
                         }
                     } catch (Exception e) {

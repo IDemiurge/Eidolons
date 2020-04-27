@@ -3,13 +3,13 @@ package eidolons.game.battlecraft.logic.meta.universal;
 import eidolons.content.PROPS;
 import eidolons.game.EidolonsGame;
 import eidolons.game.Simulation;
-import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory;
+import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
@@ -119,7 +119,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         if (partyManager.initPlayerParty() != null) {
             if (isTownEnabled()) {
                 getMetaDataManager().initData();
-                getBattleMaster().getConstructor().init();
+                getMissionMaster().getConstructor().init();
                 if (!getTownMaster().initTownPhase()) {
                     Eidolons.getMainGame().setAborted(true);
                     return game;
@@ -129,7 +129,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
                     Eidolons.getMainGame().setAborted(true);
                     return game;
                 }
-            if (!getBattleMaster().getOptionManager().chooseDifficulty(
+            if (!getMissionMaster().getOptionManager().chooseDifficulty(
                     getMetaGame().isDifficultyReset()))
                 Eidolons.getMainGame().setAborted(true);
         }
@@ -189,8 +189,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return dialogueManager;
     }
 
-    public BattleMaster getBattleMaster() {
-        return game.getBattleMaster();
+    public MissionMaster getMissionMaster() {
+        return game.getMissionMaster();
     }
 
     public DialogueFactory getDialogueFactory() {
@@ -250,7 +250,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
-        FileLogManager.writeStatInfo(game.getBattleMaster().getStatManager().getStats().toString());
+        FileLogManager.writeStatInfo(game.getMissionMaster().getStatManager().getStats().toString());
     }
 
 

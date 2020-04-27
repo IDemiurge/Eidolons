@@ -1,13 +1,13 @@
 package main.simulation;
 
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
+import eidolons.game.core.game.DC_Game;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
-import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.core.game.DC_Game;
 import main.launch.ArcaneVault;
 
 import java.util.Arrays;
@@ -96,7 +96,7 @@ public class SimulationManager {
     }
 
     private static DC_Game getGame() {
-        return (DC_Game) ArcaneVault.getGame();
+        return ArcaneVault.getGame();
     }
 
     public static void init() {

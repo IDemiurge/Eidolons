@@ -221,8 +221,8 @@ public class OptionsMaster {
                     break;
                 case GAME_DIFFICULTY:
                     if (Eidolons.game != null)
-                        if (Eidolons.game.getBattleMaster() != null)
-                            Eidolons.game.getBattleMaster().getOptionManager().difficultySet(value);
+                        if (Eidolons.game.getMissionMaster() != null)
+                            Eidolons.game.getMissionMaster().getOptionManager().difficultySet(value);
                     break;
             }
         }

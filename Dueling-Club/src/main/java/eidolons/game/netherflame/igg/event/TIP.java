@@ -1,8 +1,8 @@
 package eidolons.game.netherflame.igg.event;
 
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
+import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor;
 import eidolons.game.core.Eidolons;
 import eidolons.game.netherflame.igg.IGG_Demo;
 import eidolons.game.netherflame.igg.IGG_Images;
@@ -37,7 +37,7 @@ import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
     first_battle(false, IGG_Images.BRIEF_ART.SENTRIES.getPath(), ""){
         @Override
         public void run() {
-            Eidolons.getGame().getBattleMaster()
+            Eidolons.getGame().getMissionMaster()
                     .getScriptManager().execute(CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.AGGRO, null);
             EidolonsGame.FIRST_BATTLE_STARTED = true;
         }
@@ -48,7 +48,7 @@ import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
         sentries(false, IGG_Images.BRIEF_ART.SENTRIES.getPath(), ""){
             @Override
             public void run() {
-                Eidolons.getGame().getBattleMaster()
+                Eidolons.getGame().getMissionMaster()
                         .getScriptManager().execute(CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.AGGRO, null);
                 EidolonsGame.FIRST_BATTLE_STARTED = true;
             }

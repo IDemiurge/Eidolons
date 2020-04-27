@@ -319,11 +319,11 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             if (exited)
                 return false;
             if (result != null) {
-                if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
+                if (game.getMissionMaster().getOutcomeManager().checkOutcomeClear()) {
                     break;
                 }
                     if (checkNextFloor()) {
-                        game.getBattleMaster().getOutcomeManager().next();
+                        game.getMissionMaster().getOutcomeManager().next();
                         game.getVisionMaster().refresh();
                         break;
                     }

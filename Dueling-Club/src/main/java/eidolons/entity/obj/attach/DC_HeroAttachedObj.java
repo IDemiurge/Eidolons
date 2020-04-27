@@ -2,7 +2,7 @@ package eidolons.entity.obj.attach;
 
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import main.ability.AbilityObj;
 import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;

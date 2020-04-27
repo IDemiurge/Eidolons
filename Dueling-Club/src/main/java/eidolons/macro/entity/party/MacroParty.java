@@ -2,10 +2,10 @@ package eidolons.macro.entity.party;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.module.herocreator.logic.party.Party;
-import eidolons.macro.MacroGame;
 import eidolons.macro.AdventureInitializer;
+import eidolons.macro.MacroGame;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.MacroRef.MACRO_KEYS;
 import eidolons.macro.entity.MapObj;

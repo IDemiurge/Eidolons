@@ -2,11 +2,11 @@ package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.entity.type.ObjType;

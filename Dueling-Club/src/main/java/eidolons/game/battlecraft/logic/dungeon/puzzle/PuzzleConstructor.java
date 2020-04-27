@@ -128,7 +128,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         for (String substring : ContainerUtils.openContainer(text, ",")) {
             data.setValue(values[i++], substring);
         }
-        int coef = getDifficultyCoef(Eidolons.getGame().getBattleMaster().getOptionManager().getDifficulty());
+        int coef = getDifficultyCoef(Eidolons.getGame().getMissionMaster().getOptionManager().getDifficulty());
 //        if () TODO disable by option
 //            coef=100;
         data.setValue(PuzzleData.PUZZLE_VALUE.DIFFICULTY_COEF, coef);

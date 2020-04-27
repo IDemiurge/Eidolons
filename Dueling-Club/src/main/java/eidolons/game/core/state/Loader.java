@@ -12,9 +12,9 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.attach.DC_BuffObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.GameFactory;
 import eidolons.game.core.game.GameFactory.GAME_SUBCLASS;
@@ -170,7 +170,7 @@ public class Loader {
                          substring.split("=")[1]);
                     }
                 String ownerName = null;
-                DC_Player owner = game.getBattleMaster().getPlayerManager().
+                DC_Player owner = game.getMissionMaster().getPlayerManager().
                  getPlayer(ownerName); //property?
                 if (owner == null) {
                     owner = DC_Player.NEUTRAL;

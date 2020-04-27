@@ -126,7 +126,7 @@ public class ShadowMap extends GroupX implements GridElement {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        offset(x1*128, y1*128);
+        offset(x1*128, y1*128+128);
     }
 
     private void init() {

@@ -25,7 +25,8 @@ public class LE_KeyHandler extends LE_Handler {
                 Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
         boolean ctrl = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
                 Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT);
-        switch (keyCode) {
+
+        if (!alt && !ctrl) switch (keyCode) {
             case Input.Keys.TAB:
                 globalController.keyDown(keyCode);
                 GuiEventManager.trigger(GuiEventType.LE_GUI_TOGGLE);

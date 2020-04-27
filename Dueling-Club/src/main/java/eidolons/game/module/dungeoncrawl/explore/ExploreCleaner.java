@@ -5,7 +5,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
-import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
+import eidolons.game.battlecraft.logic.battlefield.vision.advanced.StealthRule;
 import eidolons.game.core.Eidolons;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.SpellEnums;

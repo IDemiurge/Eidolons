@@ -167,7 +167,7 @@ public class LootMaster<E extends MetaGame> extends MetaGameHandler<E> {
 
     private String generateLootData() {
         final StringBuilder builder = new StringBuilder();
-        getMaster().getBattleMaster().getStatManager().
+        getMaster().getMissionMaster().getStatManager().
          getStats().getSlainEnemyUnits().forEach(enemy -> {
             builder.append(getLootFromEnemy(enemy)).append(StringMaster.SEPARATOR);
             lootValue += evaluateLootValue(enemy);

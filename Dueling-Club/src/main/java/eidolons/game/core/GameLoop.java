@@ -186,7 +186,7 @@ public class GameLoop {
             result = makeAction();
             Chronos.logTimeElapsedForMark(activeUnit+"'s action");
             if (!aftermath)
-                if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
+                if (game.getMissionMaster().getOutcomeManager().checkOutcomeClear()) {
                     return false;
                 }
             if (result == null) {

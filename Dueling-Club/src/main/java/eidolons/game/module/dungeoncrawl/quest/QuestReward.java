@@ -156,7 +156,7 @@ public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
 //             TODO    glory = -glory;
             }
 
-        hero.getGame().getBattleMaster().getStatManager().addGlory(glory);
+        hero.getGame().getMissionMaster().getStatManager().addGlory(glory);
 
         if (!inTown)
             HeroLevelManager.addXp(hero, xp);

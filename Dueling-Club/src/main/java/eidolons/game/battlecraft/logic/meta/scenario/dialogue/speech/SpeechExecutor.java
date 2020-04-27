@@ -6,9 +6,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor;
-import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.CinematicGridObject;
@@ -20,7 +17,11 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SPEECH_ACTION;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor;
+import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.generator.model.AbstractCoordinates;
@@ -75,10 +76,7 @@ import main.system.threading.TimerTaskMaster;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -262,7 +260,7 @@ public class SpeechExecutor {
                 break;
             case ORDER:
                 unit = getUnit(value);
-                master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.ORDER,
+                master.getMissionMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.ORDER,
                         unit.getRef(), unit.getName(), vars.get(0));
                 break;
             case MOVE:
@@ -296,7 +294,7 @@ public class SpeechExecutor {
                         arg = getCoordinate(vars.get(1));
                     }
                 }
-                master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.ACTION,
+                master.getMissionMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.ACTION,
                         unit.getRef(), unit, value, arg);
                 break;
             case LAST_TUTORIAL:
@@ -366,8 +364,10 @@ public class SpeechExecutor {
             case NAMED_COORDINATES_ADD:
                 if (speechAction == NAMED_COORDINATES_ADD) {
                     coordinatesList = new ArrayList<>();
-                    for (String s : master.getGame().getDungeon().getCustomDataMap().keySet()) {
-                        if (master.getGame().getDungeon().getCustomDataMap().get(s).equalsIgnoreCase(value)) {
+                    Map<String, String> map = master.getGame().getDungeon().getCustomDataMap(
+                            CellScriptData.CELL_SCRIPT_VALUE.dialogue);
+                    for (String s : map.keySet()) {
+                        if (map.get(s).equalsIgnoreCase(value)) {
                             coordinatesList.add(Coordinates.get(s));
                         }
                     }
@@ -396,22 +396,22 @@ public class SpeechExecutor {
                 break;
 
             case TIP:
-                master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.TIP, new Ref(), value);
+                master.getMissionMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.TIP, new Ref(), value);
                 //TODO after?
                 break;
 
             case TURN:
                 unit = getUnit(vars.get(0));
-                master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.TURN_TO,
+                master.getMissionMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.TURN_TO,
                         unit.getRef(), unit.getName(), value);
                 //TODO doing it twice because bug..
-                master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.TURN_TO,
+                master.getMissionMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.TURN_TO,
                         unit.getRef(), unit.getName(), value);
                 break;
 
             case TRIGGER_REMOVE:
                 if (value.equalsIgnoreCase("last")) {
-                    master.getBattleMaster().getScriptManager().removeLast();
+                    master.getMissionMaster().getScriptManager().removeLast();
                 } else {
 //                    TODO master.getBattleMaster().getScriptManager().remove(vars.getVar(0));
                 }
@@ -435,7 +435,7 @@ public class SpeechExecutor {
                 GuiEventManager.trigger(GuiEventType.DISPOSE_SCOPE, value);
                 break;
             case TRIGGER:
-                master.getBattleMaster().getScriptManager().parseScripts(full);
+                master.getMissionMaster().getScriptManager().parseScripts(full);
                 break;
             case WAIT_FOR_NO_COMMENTS:
                 max = Integer.valueOf(value);
@@ -677,7 +677,7 @@ public class SpeechExecutor {
                 if (func == null) {
                     main.system.auxiliary.log.LogMaster.dev("NO SUCH SCRIPT or function: " + value);
                 }
-                master.getBattleMaster().getScriptManager().execute(func, Eidolons.getMainHero().getRef(),
+                master.getMissionMaster().getScriptManager().execute(func, Eidolons.getMainHero().getRef(),
                         vars.toArray(new String[0]));
                 break;
 
@@ -889,7 +889,7 @@ public class SpeechExecutor {
                 String finalValue = value;
                 WaitMaster.doAfterWait(getWaitTime(Integer.valueOf(vars.get(0)), vars),
                         () ->
-                                master.getBattleMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.DIALOGUE,
+                                master.getMissionMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.DIALOGUE,
                                         new Ref(), finalValue)
 //                                execute(SCRIPT, "dialogue=" + finalValue)
 

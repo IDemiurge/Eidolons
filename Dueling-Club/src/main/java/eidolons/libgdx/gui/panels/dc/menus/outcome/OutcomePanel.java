@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import eidolons.game.battlecraft.logic.battle.mission.MissionStatManager;
+import eidolons.game.battlecraft.logic.mission.quest.QuestMissionStatManager;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -232,7 +232,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
 
                 } else {
                     //TODO display stats!
-                    String stats = MissionStatManager.getGameStatsText();
+                    String stats = QuestMissionStatManager.getGameStatsText();
                     EUtils.onConfirm(stats +
                      "\n Exit to menu?", true, () ->
                      Eidolons.exitFromGame());

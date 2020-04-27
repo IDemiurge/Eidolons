@@ -1,7 +1,7 @@
 package eidolons.entity.item;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.panels.headquarters.datasource.GoldMaster;
 import main.content.DC_TYPE;

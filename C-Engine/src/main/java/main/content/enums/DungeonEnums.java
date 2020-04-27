@@ -1,6 +1,5 @@
 package main.content.enums;
 
-import main.content.enums.entity.OBJ_TYPE_ENUM;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
@@ -9,29 +8,10 @@ import main.system.auxiliary.StrPathBuilder;
  * Created by JustMe on 2/14/2017.
  */
 public class DungeonEnums {
-    public enum DUNGEONS_OBJ_TYPES implements OBJ_TYPE_ENUM {
-        CAVERN, RAVENWOOD,
-        RUINED_FORT, ARCANE_TOWER
-    }
 
-    public enum DUNGEON_CLASS {
-        CAVE,
-        DUNGEON,
-        BUILDING,
-        SURFACE,
-        FOREST,
-    }
-
-    public enum DUNGEON_DIFFICULTY {
-
-    }
 
     public enum DUNGEON_GROUP {
         UNDERWORLD, ARCANE, UNDEAD, HUMAN, MISC
-    }
-
-    public enum DUNGEON_LEVEL {
-        ONE, TWO, THREE, FOUR, FIVE
     }
 
     public enum DUNGEON_MAP_MODIFIER {
@@ -166,35 +146,11 @@ public class DungeonEnums {
         Arcane,
         Cold,
     }
-    public enum MODULE_STYLE {
-
-        sewer,
-        cavern,
-        ruins_dwarf,
-        ruins_elf,
-        ruins_human,
-
-    }
-
-    public enum DUNGEON_SUBFOLDER {
-        // ARCADE,
-        BATTLE,
-        DEMO,
-        CAMPAIGN,
-        CRAWL,
-        SKIRMISH,
-        SUBLEVELS,
-        TEST,
-    }
 
     public enum DUNGEON_TAGS {
         INTERIOR, UNDERGROUND, SURFACE, NIGHT, PERMA_DUSK,
     }
 
-    public enum DUNGEON_TYPE {
-
-        GLORY, TREASURE_HOARD, SUBLEVEL, BOSS, MAIN,
-    }
 
     public enum LOCATION_TYPE {
         CEMETERY(true), CAVE, CRYPT,

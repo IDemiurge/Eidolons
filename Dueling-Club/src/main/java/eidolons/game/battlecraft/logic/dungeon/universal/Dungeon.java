@@ -3,62 +3,50 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battlefield.vision.IlluminationMaster;
-import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.generator.level.ZoneCreator;
 import main.content.CONTENT_CONSTS;
-import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.DUNGEON_TAGS;
-import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.values.properties.G_PROPS;
-import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.LightweightEntity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.*;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
 public class Dungeon extends LightweightEntity {
-    private DUNGEON_TYPE dungeonType;
     private String levelFilePath;
     private LOCATION_TYPE dungeonSubtype;
-    private Map<String, String> customDataMap;
     private Collection<Coordinates> voidCells = new LinkedList<>();
-    private DungeonWrapper wrapper;
+    private Location location;
 
-    /*
-     * Encounters Levels Rewards Loot
-     * Atmo and background
-     */
-    public Dungeon(ObjType type) {
-        this(type, false);
-    }
-
-    public Dungeon(ObjType type, boolean sublevel) {
+    public Dungeon(ObjType type ) {
         super(type);
         setRef(new Ref());
     }
 
-    public Dungeon(String typeName, boolean sublevel) {
-        this(DataManager.getType(typeName, DC_TYPE.DUNGEONS), sublevel);
-    }
 
     public CONTENT_CONSTS.COLOR_THEME getColorTheme() {
-        return wrapper.getColorTheme();
+        return location.getColorTheme();
     }
     public CONTENT_CONSTS.COLOR_THEME getAltColorTheme() {
-        return wrapper.getAltColorTheme();
+        return location.getAltColorTheme();
     }
 
     public String getMapBackground() {
@@ -141,41 +129,10 @@ public class Dungeon extends LightweightEntity {
         return IlluminationMaster.DEFAULT_GLOBAL_ILLUMINATION_UNDERGROUND;
 
     }
-    @Deprecated
-    public Coordinates getPoint(Integer index) {
-        return getPoint("" + (index + 1));
-    }
-@Deprecated
-    public Coordinates getPoint(String arg) {
-        Coordinates c = null;
-        if (arg.contains(ScriptSyntax.SPAWN_POINT) || NumberUtils.isInteger(arg)) {
-            arg = arg.replace(ScriptSyntax.SPAWN_POINT, "");
-            Integer i = NumberUtils.getInteger(arg) - 1;
-//            List<String> spawnPoints = ContainerUtils.openContainer(
-//                    getProperty(PROPS.COORDINATE_POINTS));
-//            c = Coordinates.get(spawnPoints.get(i));
-        } else {
-            Map<String, String> map =getCustomDataMap();
-            String string = map.get(arg);
-            if (string == null) {
-                //find
-                Object key = new SearchMaster<>().findClosest(arg, map.keySet());
-                string = map.get(key);
-            }
-            return Coordinates.get(string);
-        }
-        return c;
-//        getProperty(PROPS.ENCOUNTER_SPAWN_POINTS)
-    }
 
     private boolean isDaytime() {
         return !isNight();
 //        return getGame().getState().getRound()/roundsPerCycle%2==0;
-    }
-
-    public boolean isRandomized() {
-        // TODO
-        return false;
     }
 
     public String getLevelFilePath() {
@@ -270,19 +227,17 @@ public class Dungeon extends LightweightEntity {
         return null;
     }
 
-@Deprecated
-    public Map<String, String> getCustomDataMap() {
-        if (customDataMap == null) {
-            return new LinkedHashMap<>();
-//      TODO       customDataMap= new DataUnitFactory(true).
-//                    deconstructDataString(getProperty(PROPS.COORDINATE_SCRIPTS));
-        }
-        return customDataMap;
+    public Map<String, String> getCustomDataMap(CellScriptData.CELL_SCRIPT_VALUE value) {
+        return new HashMap<>(); //TODO
+    }
+    public Map<Coordinates, CellScriptData> getCustomDataMap() {
+        return getLocation().getTextDataMap();
     }
 
     public Coordinates getCoordinateByName(String value) {
-        for (String s : getCustomDataMap().keySet()) {
-            if (getCustomDataMap().get(s).trim().equalsIgnoreCase(value)) {
+        Map<String, String> map = getCustomDataMap(CellScriptData.CELL_SCRIPT_VALUE.named_point);
+        for (String s : map.keySet()) {
+            if (map.get(s).trim().equalsIgnoreCase(value)) {
                 return Coordinates.get(s);
             }
         }
@@ -293,12 +248,12 @@ public class Dungeon extends LightweightEntity {
         return voidCells;
     }
 
-    public void setWrapper(DungeonWrapper wrapper) {
-        this.wrapper = wrapper;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
-    public DungeonWrapper getWrapper() {
-        return wrapper;
+    public Location getLocation() {
+        return location;
     }
 
 

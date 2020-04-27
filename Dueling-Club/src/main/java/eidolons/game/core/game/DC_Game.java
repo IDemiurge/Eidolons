@@ -15,9 +15,6 @@ import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.AI_Manager;
-import eidolons.game.battlecraft.logic.battle.test.TestBattleMaster;
-import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.DroppedItemManager;
@@ -29,6 +26,9 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGame;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.battlecraft.logic.mission.test.TestMissionMaster;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
+import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.battlecraft.rules.DC_Rules;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
@@ -99,7 +99,7 @@ public class DC_Game extends GenericGame {
 
     protected MetaGameMaster metaMaster;
     protected DungeonMaster dungeonMaster;
-    protected BattleMaster battleMaster;
+    protected MissionMaster missionMaster;
     protected CombatMaster combatMaster;
 
     protected InventoryTransactionManager inventoryTransactionManager;
@@ -219,7 +219,7 @@ public class DC_Game extends GenericGame {
             dungeonMaster.setExplorationMaster(master);
         if (!isCombatGame())
             return;
-        battleMaster = createBattleMaster();
+        missionMaster = createBattleMaster();
         musicMaster = MusicMaster.getInstance();
     }
 
@@ -246,8 +246,8 @@ public class DC_Game extends GenericGame {
         return new DC_KeyManager(getManager());
     }
 
-    protected BattleMaster createBattleMaster() {
-        return new TestBattleMaster(this);
+    protected MissionMaster createBattleMaster() {
+        return new TestMissionMaster(this);
     }
 
     protected boolean isLocation() {
@@ -288,7 +288,7 @@ public class DC_Game extends GenericGame {
         getRules().getIlluminationRule().clearCache();
         inventoryTransactionManager = new InventoryTransactionManager(this);
         inventoryManager = new DC_InventoryManager();
-        battleMaster.init();
+        missionMaster.init();
         if (AI_ON) {
             aiManager = new AI_Manager(this);
         }
@@ -322,7 +322,7 @@ public class DC_Game extends GenericGame {
 
         keyManager.init();
         getGraveyardManager().init();//TODO in init?
-        battleMaster.startGame();
+        missionMaster.startGame();
 
         if (getMetaMaster() != null)
             getMetaMaster().gameStarted();
@@ -609,7 +609,7 @@ public class DC_Game extends GenericGame {
     }
 
     public DC_Player getPlayer(boolean me) {
-        return getBattleMaster().getPlayerManager().getPlayer(me);
+        return getMissionMaster().getPlayerManager().getPlayer(me);
     }
 
     public Thread getGameLoopThread() {
@@ -754,8 +754,8 @@ public class DC_Game extends GenericGame {
         return keyManager;
     }
 
-    public BattleMaster getBattleMaster() {
-        return battleMaster;
+    public MissionMaster getMissionMaster() {
+        return missionMaster;
     }
 
     public MetaGameMaster getMetaMaster() {

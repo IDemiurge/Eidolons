@@ -9,8 +9,8 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.battle.mission.MissionStatManager;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
+import eidolons.game.battlecraft.logic.mission.quest.QuestMissionStatManager;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -185,7 +185,7 @@ public class BattleGuiStage extends GuiStage {
 
 
         GuiEventManager.bind(GuiEventType.SHOW_ACHIEVEMENTS, p -> {
-            String stats = MissionStatManager.getGameStatsText();
+            String stats = QuestMissionStatManager.getGameStatsText();
             EUtils.onConfirm(stats +
                     "\n Press the Assault!", false, null);
         });

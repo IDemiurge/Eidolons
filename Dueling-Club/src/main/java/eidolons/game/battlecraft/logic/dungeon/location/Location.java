@@ -31,6 +31,7 @@ public class Location extends DungeonWrapper {
     public Location(DungeonMaster master, Dungeon dungeon) {
         super(dungeon, master);
         this.master = master;
+        dungeon.setLocation(this);
     }
 
     @Override
@@ -78,7 +79,7 @@ public class Location extends DungeonWrapper {
 
     @Override
     public DC_Game getGame() {
-        return (DC_Game) super.getGame();
+        return super.getGame();
     }
 
     public Entrance getMainEntrance() {

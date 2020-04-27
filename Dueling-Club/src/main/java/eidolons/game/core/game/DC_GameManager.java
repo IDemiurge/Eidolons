@@ -479,7 +479,7 @@ public class DC_GameManager extends GameManager {
 
         getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.ROUND_ENDS, state.getRound());
         state.setRound(state.getRound() + 1); // TODO why not on start?
-        if (getGame().getBattleMaster().getOutcomeManager().checkTimedOutcome() != null) {
+        if (getGame().getMissionMaster().getOutcomeManager().checkTimedOutcome() != null) {
             getGame().getLogManager().doneLogEntryNode();
             return false;
         }
@@ -571,7 +571,7 @@ public class DC_GameManager extends GameManager {
         boolean result = super.handleEvent(event);
 
         try {
-            getGame().getBattleMaster().getStatManager().eventBeingHandled(event);
+            getGame().getMissionMaster().getStatManager().eventBeingHandled(event);
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
         }

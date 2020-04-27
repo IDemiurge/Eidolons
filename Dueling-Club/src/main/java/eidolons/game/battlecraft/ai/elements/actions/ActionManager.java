@@ -18,7 +18,7 @@ import eidolons.game.battlecraft.ai.tools.AiLogger;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
-import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
+import eidolons.game.battlecraft.logic.battlefield.vision.advanced.StealthRule;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.AiEnums;

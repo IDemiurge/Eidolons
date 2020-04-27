@@ -1,11 +1,11 @@
 package eidolons.game.core.launch;
 
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;

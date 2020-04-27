@@ -26,7 +26,7 @@ int heroIndex = 0;
 
         String snapshot = Debugger.getGameStateSnapshot();
         main.system.auxiliary.log.LogMaster.log(1,"Game snapshot bef "+snapshot );
-        game.getBattleMaster().getOutcomeManager().next();
+        game.getMissionMaster().getOutcomeManager().next();
         snapshot = Debugger.getGameStateSnapshot();
         main.system.auxiliary.log.LogMaster.log(1,"Game snapshot after "+snapshot );
 

@@ -14,7 +14,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.battlefield.vision.LastSeenMaster;
+import eidolons.game.battlecraft.logic.battlefield.vision.advanced.LastSeenMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObject;

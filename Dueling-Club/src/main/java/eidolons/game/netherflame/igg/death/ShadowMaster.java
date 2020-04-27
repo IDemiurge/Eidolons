@@ -146,7 +146,7 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
         if (Eidolons.getMainHero().isDead()) {
 //    dialogueFailed(event, true);
             main.system.auxiliary.log.LogMaster.log(1,"SHADOW: hero was dead when fall event happened! " );
-            getMaster().getBattleMaster().getOutcomeManager().defeat(false, true);
+            getMaster().getMissionMaster().getOutcomeManager().defeat(false, true);
         }
         if (ExplorationMaster.isExplorationOn() && !CoreEngine.isLiteLaunch()) {
             // if we just fell as the combat was being finished... from poison or so
@@ -204,7 +204,7 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
                 out();
                 restoreHero(event);
             } else
-                getMaster().getBattleMaster().getOutcomeManager().defeat(false, true);
+                getMaster().getMissionMaster().getOutcomeManager().defeat(false, true);
         });
     }
 

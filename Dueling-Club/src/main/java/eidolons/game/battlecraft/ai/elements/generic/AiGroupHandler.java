@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.ai.elements.generic;
 
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.logic.battle.encounter.Encounter;
+import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.content.enums.EncounterEnums;
 import main.system.auxiliary.NumberUtils;

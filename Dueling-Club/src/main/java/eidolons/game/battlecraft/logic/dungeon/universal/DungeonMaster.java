@@ -1,8 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.battle.universal.*;
-import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.TransitHandler;
@@ -16,6 +14,8 @@ import eidolons.game.battlecraft.logic.dungeon.module.ModuleLoader;
 import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
+import eidolons.game.battlecraft.logic.mission.universal.*;
+import eidolons.game.battlecraft.logic.mission.universal.stats.MissionStatManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.*;
@@ -214,8 +214,8 @@ public abstract class DungeonMaster {
     }
 
 
-    public BattleMaster getBattleMaster() {
-        return game.getBattleMaster();
+    public MissionMaster getBattleMaster() {
+        return game.getMissionMaster();
     }
 
     public PlayerManager getPlayerManager() {
@@ -226,24 +226,24 @@ public abstract class DungeonMaster {
         return puzzleMaster;
     }
 
-    public BattleOptionManager getOptionManager() {
+    public MissionOptionManager getOptionManager() {
         return getBattleMaster().getOptionManager();
     }
 
-    public BattleStatManager getStatManager() {
+    public MissionStatManager getStatManager() {
         return getBattleMaster().getStatManager();
     }
 
-    public BattleConstructor getConstructor() {
+    public MissionConstructor getConstructor() {
         return getBattleMaster().getConstructor();
     }
 
-    public BattleOutcomeManager getOutcomeManager() {
+    public MissionOutcomeManager getOutcomeManager() {
         return getBattleMaster().getOutcomeManager();
     }
 
-    public Mission getBattle() {
-        return getBattleMaster().getBattle();
+    public DungeonSequence getBattle() {
+        return getBattleMaster().getMission();
     }
 
     public Dungeon getDungeon() {

@@ -1,9 +1,9 @@
 package eidolons.game.netherflame.igg;
 
-import eidolons.game.battlecraft.logic.battle.mission.MissionBattleMaster;
-import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.mission.quest.QuestMissionMaster;
+import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.ScenarioGame;
 
@@ -16,8 +16,8 @@ public class IGG_Game extends DC_Game {
     }
 
     @Override
-    public MissionBattleMaster getBattleMaster() {
-        return (MissionBattleMaster) super.getBattleMaster();
+    public QuestMissionMaster getMissionMaster() {
+        return (QuestMissionMaster) super.getMissionMaster();
     }
 
     @Override
@@ -41,8 +41,8 @@ public class IGG_Game extends DC_Game {
     }
 
     @Override
-    protected BattleMaster createBattleMaster() {
-        return new MissionBattleMaster(this);
+    protected MissionMaster createBattleMaster() {
+        return new QuestMissionMaster(this);
     }
 
     @Override

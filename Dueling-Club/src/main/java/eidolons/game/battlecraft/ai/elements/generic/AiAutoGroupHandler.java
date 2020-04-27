@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.content.enums.EncounterEnums;
 import main.entity.type.ObjAtCoordinate;
@@ -144,7 +144,7 @@ public class AiAutoGroupHandler extends AiHandler{
         if (getGroups() == null)
             return;
 
-        for (Object sub : game.getBattleMaster().getPlayerManager().getPlayers()) {
+        for (Object sub : game.getMissionMaster().getPlayerManager().getPlayers()) {
             DC_Player player = (DC_Player) sub;
             if (player.isMe()) {
                 continue;

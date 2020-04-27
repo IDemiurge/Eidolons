@@ -2,11 +2,11 @@ package eidolons.game.battlecraft.logic.battlefield;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.battlecraft.logic.battle.encounter.Encounter;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.libgdx.bf.overlays.WallMap;

@@ -18,42 +18,31 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     // INSTEAD OF 'ACTIVES'!
     // AGE(null, "chars"),
     DIALOGUE_DATA(null, false, "dialogue"),
+
     PARTY_MISSIONS_NEXT(null, false, "party"),
     PARTY_MISSION(null, false, "party"),
     PARTY_MAIN_HERO(null, false, "party"),
+    MEMBERS(null, true, "party"),
+    LEADER(null, false, "party"),
+    STATS_SLAIN_ENEMIES(null, true, "party"),
+    STATS_FALLEN_HEROES(null, true, "party"),
+
 
     SCENARIO_TYPE(null, false, "scenarios"),
-    DUNGEON_STYLE(null, false, "scenarios"),
     SCENARIO_MISSIONS(null, true, "scenarios"),
-    SCENARIO_PATHS(null, true, "scenarios"),
     SCENARIO_PARTY(null, false, "scenarios"),
-    SCENARIO_MAIN_HERO(null, false, "scenarios"),
-    DIFFICULTY(null, false, "scenarios", "missions", "chars", "dungeons"),
+    DIFFICULTY(null, false, "scenarios", "missions", "chars" ),
 
-
-    PLACE_COORDINATES(null, false, "places"),
-
-    MISSION_PLACE(null, false, "missions"),
-    NEXT_MISSION(null, false, "missions"),
     MISSION_BRIEFING_DATA(null, false, "missions"),
     MISSION_LOADING_SCREEN(null, false, "missions"),
     MISSION_FILE_PATH(null, false, "missions"),
     MISSION_SCRIPTS(null, true, "missions"),
 
-    LAST_ARCADE(null, false, "meta"), // "meta data" obj_type?
-    MEMBERS(null, true, "party"),
-    LEADER(null, false, "party"),
-
-    PERKS(null, true, "deities", "chars"),
-
-    STATS_SLAIN_ENEMIES(null, true, "party"),
-    STATS_FALLEN_HEROES(null, true, "party"),
-    ARCADE_STATUS(null, false, "party"),
     DUNGEON_TAGS(null, true, "dungeons"),
-    MAP_BACKGROUND(null, false, "dungeons", "area", "route", "place"),
+    MAP_BACKGROUND(null, false, "dungeons", "area" ),
 
     // TODO remove useless props... (just disabled for now)
-    COLOR_THEME(null, false, "bf obj", "dungeons", "route", "place"),
+    COLOR_THEME(null, false, "bf obj", "dungeons" ),
     ALT_COLOR_THEME(null, false, "dungeons"),
 
     SUBDUNGEON_TYPE(null, false, "dungeons"),
@@ -259,9 +248,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ATTRIBUTE_BONUSES(null, true, "skills", "classes", "perks"),
     APPLY_REQS(null, true, "skills", "classes"),
 
-    ARCADE_LEVELS(null, true, "arcades"),
-    ARCADE_ENEMY_GROUPS(null, true, "arcades"),
-    ARCADE_FACTIONS(null, true, "arcades"),
 
     TERRAIN_TYPE(null, false, "terrain"),
 
@@ -386,12 +372,14 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     MASTERY_RANKS_4(null, true, "chars"),
     MASTERY_RANKS_5(null, true, "chars"),
 
+    PERKS(null, true, "deities", "chars"),
     CLASS_PERK_GROUP(null, false, "classes"),
     PERK_FOR_CLASSES(null, false, "perks"),
     PERK_PARAM(null, false, "perks"),
     KEY_TYPE(null, false, "bf obj"),
     ACTOR_TYPE(null, false, "actors"),
     ACTOR_UNIT_NAMES(null, true, "actors"),
+
 
     COATING_MOD(null, false, "chars", "units", "skills"),
     KEY_DOOR_PAIRS(null, false, "dungeons"),

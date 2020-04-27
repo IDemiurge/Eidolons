@@ -4,11 +4,11 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
+import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
@@ -137,7 +137,7 @@ public class PuzzleActions extends PuzzleElement {
             data = puzzle.getEntranceCoordinates().toString();
         }
         Coordinates c = puzzle.getAbsoluteCoordinate((new AbstractCoordinates(true, data)));
-        Eidolons.getGame().getBattleMaster().getScriptManager().execute(CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.REPOSITION,
+        Eidolons.getGame().getMissionMaster().getScriptManager().execute(CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.REPOSITION,
                 Ref.getSelfTargetingRefCopy(Eidolons.getMainHero()), c.toString());
     }
 }

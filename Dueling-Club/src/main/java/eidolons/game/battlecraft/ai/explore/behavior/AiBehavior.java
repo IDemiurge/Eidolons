@@ -43,7 +43,7 @@ public abstract class AiBehavior {
 
     protected BEHAVIOR_STATUS status;
     protected BEHAVIOR_METHOD method;
-    protected LevelStruct block;
+    protected LevelStruct<LevelStruct, LevelStruct> block;
     protected Coordinates preferredPosition;
     protected DC_Obj target;
     protected float sinceLastAction;

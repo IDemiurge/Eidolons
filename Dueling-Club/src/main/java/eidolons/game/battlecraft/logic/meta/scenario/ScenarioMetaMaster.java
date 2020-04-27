@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.logic.meta.scenario;
 
-import eidolons.game.battlecraft.logic.battle.mission.MissionBattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.meta.universal.*;
+import eidolons.game.battlecraft.logic.mission.quest.QuestMissionMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.netherflame.igg.death.IGG_DefeatHandler;
@@ -47,7 +47,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
         if (outcome != null)
             if (outcome) {
                 if (getMetaGame().isFinalLevel()) {
-                    getBattleMaster().getOutcomeManager().victory();
+                    getMissionMaster().getOutcomeManager().victory();
                     return;
                 }
 
@@ -119,8 +119,8 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
     }
 
     @Override
-    public MissionBattleMaster getBattleMaster() {
-        return (MissionBattleMaster) super.getBattleMaster();
+    public QuestMissionMaster getMissionMaster() {
+        return (QuestMissionMaster) super.getMissionMaster();
     }
 
     @Override

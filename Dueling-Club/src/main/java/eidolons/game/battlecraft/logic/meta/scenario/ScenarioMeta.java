@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.logic.meta.scenario;
 
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.battle.mission.Mission;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGame;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.battlecraft.logic.mission.quest.QuestMission;
 import main.system.auxiliary.ContainerUtils;
 import main.system.launch.CoreEngine;
 
@@ -23,17 +23,8 @@ public class ScenarioMeta extends MetaGame {
         this.scenario = scenario;
     }
 
-    /*
-    number of mission
-
-    save/load data
-
-
-     */
-
     @Override
     public ScenarioMetaMaster getMaster() {
-
         return (ScenarioMetaMaster) super.getMaster();
     }
 
@@ -42,8 +33,8 @@ public class ScenarioMeta extends MetaGame {
     }
 
 
-    public Mission getMission() {
-        return getMaster().getBattleMaster().getBattle().getMission();
+    public QuestMission getMission() {
+        return getMaster().getMissionMaster().getMission();
     }
 
     public int getMissionIndex() {
@@ -65,10 +56,7 @@ public class ScenarioMeta extends MetaGame {
         }
         if (getMissionIndex() == 0)
             return true;
-        if (isRestarted()) {
-            return true;
-        }
-        return false;
+        return isRestarted();
     }
 
     public void setMissions(List<String> missions) {

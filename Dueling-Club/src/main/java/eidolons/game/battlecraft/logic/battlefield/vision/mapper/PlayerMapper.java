@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.battlefield.vision.mapper;
 
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 
 /**
  * Created by JustMe on 4/1/2018.

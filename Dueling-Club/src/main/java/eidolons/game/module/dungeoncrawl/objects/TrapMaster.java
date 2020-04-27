@@ -62,13 +62,13 @@ public class TrapMaster extends DungeonHandler {
     }
 
     public void initTraps(Dungeon dungeon) {
-        for (String s : dungeon.getCustomDataMap().keySet()) {
-            if (dungeon.getCustomDataMap().get(s).toLowerCase().contains("trap")) {
-                Coordinates c = new Coordinates(s);
-                trapMap.put(c, createTrap(dungeon, dungeon.getCustomDataMap().get(s),
-                        c));
-            }
-        }
+//        for (String s : dungeon.getCustomDataMap().keySet()) {
+//            if (dungeon.getCustomDataMap().get(s).toLowerCase().contains("trap")) {
+//                Coordinates c = new Coordinates(s);
+//                trapMap.put(c, createTrap(dungeon, dungeon.getCustomDataMap().get(s),
+//                        c));
+//            }
+//        }
     }
 
     public void unitMoved(Unit unit) {

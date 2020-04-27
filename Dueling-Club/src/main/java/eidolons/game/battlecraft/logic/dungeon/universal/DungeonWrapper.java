@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.content.enums.DungeonEnums;
 import main.entity.EntityWrapper;
@@ -18,13 +19,18 @@ public class DungeonWrapper  extends LevelStruct<Module, Module> implements Enti
     public DungeonWrapper(Dungeon entity, DungeonMaster master) {
         dungeon = entity;
         this.master = master;
-        dungeon.setWrapper(this);
     }
 
     @Override
     protected LevelStruct getParent() {
-        return null; //campaign?
+        return getGame().getMissionMaster().getMission(); //campaign?
     }
+
+    @Override
+    public DC_Game getGame() {
+        return dungeon.getGame();
+    }
+
     @Override
     public Dungeon getEntity() {
         return dungeon;
@@ -67,25 +73,12 @@ public class DungeonWrapper  extends LevelStruct<Module, Module> implements Enti
         return dungeon.getSquare();
     }
 
-    public Integer getGlobalIllumination() {
-        return dungeon.getGlobalIllumination();
-    }
-
-    public boolean isRandomized() {
-        return dungeon.isRandomized();
-    }
-
-    public String getLevelFilePath() {
-        return dungeon.getLevelFilePath();
-    }
-
-    public void setLevelFilePath(String levelFilePath) {
-        dungeon.setLevelFilePath(levelFilePath);
-    }
-
-
     public DungeonEnums.LOCATION_TYPE getLocationType() {
         return (DungeonEnums.LOCATION_TYPE) getData().getEnum(LevelStructure.FLOOR_VALUES.location_type,
                 DungeonEnums.LOCATION_TYPE.class);
+    }
+
+    public void setLevelFilePath(String s) {
+        dungeon.setLevelFilePath(s);
     }
 }

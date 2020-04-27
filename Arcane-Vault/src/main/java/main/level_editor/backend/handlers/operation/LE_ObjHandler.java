@@ -1,10 +1,10 @@
 package main.level_editor.backend.handlers.operation;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.battle.encounter.EncounterData;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
+import eidolons.game.battlecraft.logic.mission.encounter.EncounterData;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import main.content.DC_TYPE;
 import main.data.DataManager;

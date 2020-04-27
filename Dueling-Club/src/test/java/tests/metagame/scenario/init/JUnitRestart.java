@@ -15,7 +15,7 @@ public class JUnitRestart extends EidolonsTest {
 
     @Test
     public void restart(){
-        game.getBattleMaster().getOutcomeManager().restart();
+        game.getMissionMaster().getOutcomeManager().restart();
        Boolean result =
         (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_LOOP_STARTED,10000 );
 

@@ -1,7 +1,7 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
 import eidolons.entity.obj.Structure;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import main.entity.Ref;

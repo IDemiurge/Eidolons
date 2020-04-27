@@ -275,7 +275,7 @@ public class DC_StateManager extends StateManager {
     }
 
     private void applyDifficulty(Unit unit) {
-        getGame().getBattleMaster().getOptionManager().applyDifficulty(unit);
+        getGame().getMissionMaster().getOptionManager().applyDifficulty(unit);
     }
 
 

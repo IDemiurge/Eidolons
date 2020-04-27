@@ -1,7 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import eidolons.game.battlecraft.logic.battle.universal.*;
-import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
@@ -13,6 +11,8 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleLoader;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.battlecraft.logic.mission.universal.*;
+import eidolons.game.battlecraft.logic.mission.universal.stats.MissionStatManager;
 import eidolons.game.core.game.DC_Game;
 
 import java.util.Set;
@@ -91,28 +91,28 @@ public class DungeonHandler {
         return master.getPlaceholderResolver();
     }
 
-    public BattleMaster getBattleMaster() {
+    public MissionMaster getBattleMaster() {
         return master.getBattleMaster();
     }
 
 
-    public BattleOptionManager getOptionManager() {
+    public MissionOptionManager getOptionManager() {
         return master.getOptionManager();
     }
 
-    public BattleStatManager getStatManager() {
+    public MissionStatManager getStatManager() {
         return master.getStatManager();
     }
 
-    public BattleConstructor getConstructor() {
+    public MissionConstructor getConstructor() {
         return master.getConstructor();
     }
 
-    public BattleOutcomeManager getOutcomeManager() {
+    public MissionOutcomeManager getOutcomeManager() {
         return master.getOutcomeManager();
     }
 
-    public Mission getBattle() {
+    public DungeonSequence getBattle() {
         return master.getBattle();
     }
 

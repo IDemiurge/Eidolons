@@ -7,8 +7,8 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.attach.DC_BuffObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.core.atb.AtbTurnManager;
@@ -125,7 +125,7 @@ public class DcHelper implements JUnitHelper {
                                     DC_TYPE TYPE) {
         ObjType type = DataManager.getType(name, TYPE);
         assertTrue(type != null);
-        return (BattleFieldObject) game.getManager().getObjCreator().createUnit(type, x, y,
+        return game.getManager().getObjCreator().createUnit(type, x, y,
          owner, new Ref(game));
     }
 

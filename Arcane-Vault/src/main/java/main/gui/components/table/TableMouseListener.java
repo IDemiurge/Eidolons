@@ -123,7 +123,6 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             PROPS.LOOT_TYPE.name(),
             PROPS.AFTER_BATTLE_EVENT.name(),
             PROPS.PRE_BATTLE_EVENT.name(),
-            PROPS.DUNGEON_STYLE.name(),
             MACRO_PROPS.QUEST_GROUP.name(), MACRO_PROPS.QUEST_TYPE.name(),
             MACRO_PROPS.QUEST_REWARD_TYPE.name(),
             MACRO_PROPS.QUEST_TIME_LIMIT.name(),

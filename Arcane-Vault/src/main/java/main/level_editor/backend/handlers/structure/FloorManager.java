@@ -54,7 +54,7 @@ public class FloorManager {
     public static void initFloor(LE_MetaMaster meta) {
         LE_GameSim game = meta.init();
 
-        String name = meta.getMetaDataManager().getMissionPath();
+        String name = meta.getMetaDataManager().getSoloDungeonPath();
         name = StringMaster.cropFormat(
                 PathUtils.getLastPathSegment(name));
 

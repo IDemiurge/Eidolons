@@ -21,8 +21,8 @@ import main.data.xml.XML_Reader;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
 import main.system.auxiliary.Loop;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -335,7 +335,7 @@ public class PartyHelper {
     }
 
     public static void writeLatestPartyType() {
-        MetaManager.setProperty(PROPS.LAST_ARCADE, getParty().getName());
+//        MetaManager.setProperty(PROPS.LAST_ARCADE, getParty().getName());
         MetaManager.saveMetaData();
     }
 

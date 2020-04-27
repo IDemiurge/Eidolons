@@ -482,7 +482,7 @@ public class AttackCalculator {
                 rangedMod = attacker.getIntParam(PARAMS.SNEAK_RANGED_MOD);
             }
             if (rangedMod != 0) {
-                if (action.getGame().getBattleMaster().getOptionManager().
+                if (action.getGame().getMissionMaster().getOptionManager().
                  getDifficulty().isEnemySneakAttacksOn()){
                     dmg_mod += initSneakMods(action, rangedMod);
                     dmg_mod += initSneakMods(weapon, rangedMod);

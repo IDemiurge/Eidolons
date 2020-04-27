@@ -185,7 +185,7 @@ public class Eidolons {
 
     public static void restart() {
         new Thread(() -> {
-            getGame().getMetaMaster().getBattleMaster().
+            getGame().getMetaMaster().getMissionMaster().
                     getOutcomeManager().restart();
         }, "restart thread").start();
     }

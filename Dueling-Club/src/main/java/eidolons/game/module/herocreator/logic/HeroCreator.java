@@ -1,7 +1,7 @@
 package eidolons.game.module.herocreator.logic;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.PlayerManager;
+import eidolons.game.battlecraft.logic.mission.universal.PlayerManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.macro.AdventureInitializer;

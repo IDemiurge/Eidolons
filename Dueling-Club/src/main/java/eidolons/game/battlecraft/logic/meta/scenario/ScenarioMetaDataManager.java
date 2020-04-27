@@ -18,7 +18,7 @@ public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
     }
 
     public String getDataPath() {
-        return getMaster().getBattleMaster().getMissionResourceFolderPath();
+        return getMaster().getMissionMaster().getMissionResourceFolderPath();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
             if (getGame().getMetaMaster().isRngDungeon()) {
                 try {
                     setMissionPath(ContainerUtils.openContainer(getMetaGame().getScenario().
-                            getProperty(PROPS.SCENARIO_PATHS)).get(missionIndex));
+                            getProperty(PROPS.SCENARIO_MISSIONS)).get(missionIndex));
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
