@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
+import eidolons.libgdx.bf.decor.CellDecor.CELL_PATTERN;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
@@ -27,6 +28,7 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
     protected Set<Coordinates> coordinatesSet;
     protected List<T> subParts = new ArrayList<>();
     protected StructureData data;
+    private Map<Coordinates, Integer> patternMap;
 
     public LevelStruct() {
     }
@@ -100,7 +102,7 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         }
         if (coordinatesSet.isEmpty()) {
             if (getOrigin() != null)
-                coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetweenInclusive(
+                coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetween(
                                 getOrigin(), getOrigin().getOffset(getEffectiveWidth(), getEffectiveHeight())));
         }
         return coordinatesSet;
@@ -186,6 +188,10 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         return new EnumMaster<COLOR_THEME>().retrieveEnumConst(COLOR_THEME.class,
                 getPropagatedValue("COLOR_THEME"));
     }
+    public CELL_PATTERN getCellPattern() {
+        return new EnumMaster<CELL_PATTERN>().retrieveEnumConst(CELL_PATTERN.class,
+                getPropagatedValue("CELL_PATTERN"));
+    }
 
     public COLOR_THEME getAltColorTheme() {
         return new EnumMaster<COLOR_THEME>().retrieveEnumConst(COLOR_THEME.class,
@@ -251,5 +257,13 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
 
     public Coordinates getCenterCoordinate() {
         return CoordinatesMaster.getCenterCoordinate(getCoordinatesSet());
+    }
+
+    public Map<Coordinates, Integer> getPatternMap() {
+        return patternMap;
+    }
+
+    public void setPatternMap(Map<Coordinates, Integer> patternMap) {
+        this.patternMap = patternMap;
     }
 }

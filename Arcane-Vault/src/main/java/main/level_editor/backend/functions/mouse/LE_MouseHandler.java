@@ -51,9 +51,14 @@ public class LE_MouseHandler extends LE_Handler {
 
     private void clickedCell(CLICK_MODE mode, Coordinates c) {
         switch (mode) {
+            case CTRL_R:
+                getEditHandler().getScriptHandler().editScriptData(c);
+                break;
+            case CTRL_SHIFT_R:
             case SHIFT_R:
                 getObjHandler().addInLine(c);
                 break;
+
             case CTRL_SHIFT:
                 LevelStruct lowestStruct = getStructureMaster().findLowestStruct(c);
                 GuiEventManager.trigger(GuiEventType.LE_TREE_SELECT, lowestStruct);
@@ -62,8 +67,7 @@ public class LE_MouseHandler extends LE_Handler {
                 manager.getScriptHandler().editScriptData(c);
                 break;
             case SHIFT:
-                getSelectionHandler().addAreaToSelectedCoordinates(c);
-                getSelectionHandler().areaSelected();
+                getSelectionHandler().addAreaToSelectedCoordinates(c, true);
                 //TODO add alternative w/o objs
                 break;
             case CTRL:
@@ -91,6 +95,10 @@ public class LE_MouseHandler extends LE_Handler {
                 operation(Operation.LE_OPERATION.VOID_TOGGLE, c);
                 break;
         }
+    }
+
+    public String getHelpInfo() {
+        return "Double Alt-Click: Select type to Palette";
     }
 
     public void handleObjectClick(InputEvent event, int tapCount, BattleFieldObject bfObj) {

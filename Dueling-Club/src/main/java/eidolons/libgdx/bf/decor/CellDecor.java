@@ -63,6 +63,18 @@ public class CellDecor {
 
     }
 
+    public enum CELL_PATTERN {
+        CROSS,
+        CROSS_DIAG,
+        CENTERPIECE,
+        CHESS,
+
+        GRID,
+        SPIRAL,
+        CONCENTRIC,
+        OUTER_BORDER,
+//        DIAMOND,
+    }
     public enum CELL_UNDERLAY{
         CRACKS,
         ROCKS,

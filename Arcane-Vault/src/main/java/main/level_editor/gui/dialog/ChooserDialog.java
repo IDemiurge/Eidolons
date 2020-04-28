@@ -41,7 +41,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
 
     @Override
     protected TablePanel getContentTable() {
-        if (isScrolled()){
+        if (isScrolled()) {
             return getScrolledTable();
         }
         return super.getContentTable();
@@ -54,7 +54,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
     @Override
     public void clearChildren() {
         super.clearChildren();
-        if (scroll!=null ){
+        if (scroll != null) {
             add(scroll);
         }
     }
@@ -68,9 +68,9 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
         }
         row();
 
-        addNormalSize(new ImageContainer(Images.SEPARATOR_ALT)).center().colspan(2).padBottom(10) ;
+        addNormalSize(new ImageContainer(Images.SEPARATOR_ALT)).center().colspan(2).padBottom(10);
         row();
-        addNormalSize(new SmartButton(ButtonStyled.STD_BUTTON.OK, () -> ok())).left() ;
+        addNormalSize(new SmartButton(ButtonStyled.STD_BUTTON.OK, () -> ok())).left();
         addNormalSize(new SmartButton(ButtonStyled.STD_BUTTON.CANCEL, () -> cancel())).right();
     }
 
@@ -80,6 +80,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
         chosen(null);
         close();
     }
+
     public void ok() {
         chosen(selected);
         close();
@@ -89,18 +90,16 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
         WaitMaster.receiveInput(SELECTION, selected);
     }
 
-    protected void close() {
-        fadeOut();
-    }
 
     public T choose(T[] from) {
-       return  choose(Arrays.asList(from));
+        return choose(Arrays.asList(from));
     }
+
     public T choose(Collection<T> from) {
         show();
         setUserObject(from);
         T res = (T) WaitMaster.waitForInput(SELECTION);
-        close();
+//        close(); via ok()
         return res;
     }
 
@@ -110,8 +109,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 selected = item;
-                if (isInstaOk())
-                {
+                if (isInstaOk()) {
                     ActionMaster.addScaleAction(actor, 0, 1f);
                     ok();
                 }
@@ -124,14 +122,19 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
     }
 
     protected void show() {
-        fadeIn();
+        if (getColor().a != 1)
+            fadeIn();
     }
 
+    protected void close() {
+//        if (getColor().a == 1)
+            fadeOut();
+    }
 
     public TablePanel getScrolledTable() {
         if (scrolledTable == null) {
             scrolledTable = new TablePanelX();
-            scroll = new ScrollPane ( scrolledTable);
+            scroll = new ScrollPane(scrolledTable);
             add(scroll);
         }
         return scrolledTable;

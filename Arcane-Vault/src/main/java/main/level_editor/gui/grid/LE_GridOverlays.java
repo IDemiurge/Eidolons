@@ -8,13 +8,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
-import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 
 import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.IN_PLAIN_SIGHT;
@@ -46,8 +44,13 @@ public class LE_GridOverlays extends GridOverlaysManager {
     }
 
     @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
+
+    @Override
     protected void drawOverlaysForCell(GridCellContainer container, int x, int y, Batch batch) {
-        DC_Cell cell = Eidolons.getGame().getObjMaster().getCellByCoordinate(Coordinates.get(x, y));
+        DC_Cell cell = container.getUserObject();
 
         if (LevelEditor.getManager().getSelectionHandler().isSelected(cell)) {
             drawOverlay(container, IN_PLAIN_SIGHT, batch, cell, x, y);
@@ -64,31 +67,44 @@ public class LE_GridOverlays extends GridOverlaysManager {
                     }
                 }
             }
-        LevelStruct struct = LevelEditor.getModel().getLastSelectedStruct();
-        if (struct == null) {
-            return;
+        if (LevelEditor.getModel().getDisplayMode().isShowAllColors()) {
+            for (LevelBlock block : LevelEditor.getGame().getMetaMaster().
+                    getDungeonMaster().getStructureMaster().getBlocks()) {
+                checkDrawForStruct(batch, container, cell, block);
+            }
+        } else {
+            LevelStruct struct = LevelEditor.getModel().getLastSelectedStruct();
+            if (struct == null) {
+                return;
+            }
+            checkDrawForStruct(batch, container, cell, struct);
         }
+
+
+    }
+
+    private void checkDrawForStruct(Batch batch, GridCellContainer container, DC_Cell cell, LevelStruct struct) {
         if (struct.getCoordinatesSet().contains(cell.getCoordinates())) {
             boolean block = struct instanceof LevelBlock;
             if (block) {
                 Color c = LevelEditor.getCurrent().getManager().getStructureManager().
-                        getColorForBlock(LevelEditor.getModel().getBlock());
+                        getColorForBlock((LevelBlock) struct);
                 batch.setColor(new Color(c.r, c.g, c.b, 0.33f));
 
             }
             try {
-                drawOverlay(container, block ? IN_PLAIN_SIGHT : IN_SIGHT, batch, cell, x, y);
+                drawOverlay(container, block ? IN_PLAIN_SIGHT : IN_SIGHT, batch, cell,
+                        cell.getX(), cell.getY());
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
             if (block)
                 batch.setColor(new Color(1, 1, 1, 1));
         }
+    }
 //        if (zone){
 //            drawOverlay(container, OVERLAY.IN_SIGHT, batch,cell, x, y);
-//        }
-
-    }
+//        }  }
 
     protected void initOverlayColor(Batch batch, DC_Obj obj, OVERLAY overlay) {
         if (overlay == IN_PLAIN_SIGHT) {

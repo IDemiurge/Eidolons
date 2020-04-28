@@ -29,16 +29,16 @@ public class LE_KeyHandler extends LE_Handler {
             case Input.Keys.TAB:
                 globalController.keyDown(keyCode);
                 GuiEventManager.trigger(GuiEventType.LE_GUI_TOGGLE);
-                break;
+                return ;
             case Input.Keys.ALT_RIGHT:
                 getModel().getDisplayMode().toggleAll();
-                break;
+                return ;
             case Input.Keys.CONTROL_RIGHT:
                 getModel().getDisplayMode().onAll();
-                break;
+                return ;
             case Input.Keys.SHIFT_RIGHT:
                 getModel().getDisplayMode().offAll();
-                break;
+                return ;
 
             case Input.Keys.FORWARD_DEL:
             case Input.Keys.DEL:
@@ -49,60 +49,83 @@ public class LE_KeyHandler extends LE_Handler {
                     }
                 }
                 getObjHandler().removeSelected();
-                break;
+                return ;
             case Input.Keys.ESCAPE:
                 //do we have a 'main menu'?
                 getSelectionHandler().deselect();
-                break;
+                return ;
             case Input.Keys.ENTER:
                 LE_Screen.getInstance().getGuiStage().getDialog().ok();
                 //approve dialogue?
-                break;
-            case Input.Keys.SPACE:
-                getCameraHandler().cycleCameraMode();
-                break;
+                return ;
             //camera?
+        }
+        if (alt) {
+            switch (keyCode) {
+                case Input.Keys.SPACE:
+                    getCameraHandler().cycleCameraMode();
+                    return ;
+            }
         }
     }
 
     public void keyTyped(char character) {
+
+        main.system.auxiliary.log.LogMaster.log(1,"keyTyped "+character );
+    }
+    public void keyUp(int keyCode) {
         boolean alt = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) ||
                 Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
         boolean ctrl = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
                 Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT);
+        if (alt) {
+            switch (keyCode) {
+                case Input.Keys.V :
+                    LevelEditor.getCurrent().getManager().getDataHandler().saveVersion();
+                    return ;
+                case Input.Keys.F:
+                    LevelEditor.getCurrent().getManager().getAdvFuncs().fill();
+                    return ;
+                case Input.Keys.S:
+                    LevelEditor.getCurrent().getManager().getDataHandler().saveFloor();
+                    return ;
+                case Input.Keys.M:
+                    LevelEditor.getCurrent().getManager().getDataHandler().saveModulesSeparately();
+                    return ;
+            }
+        }
         if (ctrl) {
-            switch (character) {
-                case ' ':
+            switch (keyCode) {
+                case Input.Keys.S:
+                    LevelEditor.getCurrent().getManager().getDataHandler().saveAs();
+                    return ;
+                case Input.Keys.SPACE:
                     LevelEditor.getCurrent().getManager().getEditHandler().edit();
-                    break;
-                case 'X':
-                case 'x':
+                    return ;
+                case Input.Keys.X:
                     LevelEditor.getCurrent().getManager().getModelManager().cut();
-                    break;
-                case 'Z':
-                case 'z':
+                    return ;
+                case Input.Keys.Z:
                     LevelEditor.getCurrent().getManager().getOperationHandler().undo();
-                    break;
-                case 'Y':
-                case 'y':
+                    return ;
+                case Input.Keys.Y:
                     LevelEditor.getCurrent().getManager().getOperationHandler().redo();
-                    break;
-                case 'C':
-                case 'c':
+                    return ;
+                case Input.Keys.C:
                     LevelEditor.getCurrent().getManager().getModelManager().copy();
-                    break;
-                case 'V':
-                case 'v':
+                    return ;
+                case Input.Keys.V:
                     LevelEditor.getCurrent().getManager().getModelManager().paste();
-                    break;
+                    return ;
 
             }
         } else {
-            switch (character) {
+            switch (keyCode) {
                 case Input.Keys.TAB:
-                    globalController.keyDown(character);
-                    break;
+                    globalController.keyDown(keyCode);
+                    return ;
             }
         }
     }
+
 }

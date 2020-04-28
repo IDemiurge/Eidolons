@@ -72,7 +72,7 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
 //              buffer  ? getOrigin()
 //                .getOffset(-getWidthBuffer(), -getHeightBuffer()) :
                 getOrigin();
-        coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetweenInclusive(
+        coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetween(
                 c,
                 c.getOffset(getEffectiveWidth(buffer)-1, getEffectiveHeight(buffer)-1)));
 

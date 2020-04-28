@@ -11,11 +11,11 @@ public class LE_DisplayMode  implements Serializable {
     boolean showMetaAi;
     boolean showScripts;
 
-    boolean showCoordinates = true;
+    boolean showCoordinates; //TODO use options?
     boolean showIllumination;
     boolean showSpace;
 
-    boolean useColors;
+    boolean showAllColors;
 
     public void toggleAll(){
         showCoordinates = !showCoordinates;
@@ -23,7 +23,7 @@ public class LE_DisplayMode  implements Serializable {
         showMetaAi = !showMetaAi;
         showIllumination = !showIllumination;
         showSpace = !showSpace;
-        useColors = !useColors;
+        showAllColors = !showAllColors;
         GuiEventManager.trigger(GuiEventType.LE_DISPLAY_MODE_UPDATE );
     }
     public void onAll(){
@@ -32,11 +32,11 @@ public class LE_DisplayMode  implements Serializable {
         showScripts = true ;
         showIllumination = true;
         showSpace = true;
-        useColors = true;
+        showAllColors = true;
         GuiEventManager.trigger(GuiEventType.LE_DISPLAY_MODE_UPDATE );
     }
     public void offAll(){
-        useColors = false;
+        showAllColors = false;
         showCoordinates = false;
         showScripts = false;
         showScripts = false;
@@ -93,12 +93,25 @@ public class LE_DisplayMode  implements Serializable {
         this.showSpace = showSpace;
     }
 
-    public boolean isUseColors() {
-        return useColors;
+
+    public boolean isShowAllColors() {
+        return showAllColors;
     }
 
-    public void setUseColors(boolean useColors) {
-        this.useColors = useColors;
+    public void setShowAllColors(boolean showAllColors) {
+        this.showAllColors = showAllColors;
         GuiEventManager.trigger(GuiEventType.LE_DISPLAY_MODE_UPDATE );
+    }
+    public void toggleCoordinates( ) {
+        this.showCoordinates = !showCoordinates;
+    }
+    public void toggleColors( ) {
+        this.showAllColors = !showAllColors;
+    }
+    public void toggleAi( ) {
+        this.showMetaAi = !showMetaAi;
+    }
+    public void toggleScripts( ) {
+        this.showScripts = !showScripts;
     }
 }

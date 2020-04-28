@@ -12,6 +12,7 @@ public class LE_Selection  implements Serializable {
     Set<Coordinates> coordinates=new LinkedHashSet<>();
     boolean meta;
     String layer;
+    private Coordinates lastCoordinates;
 
     public LE_Selection() {
 
@@ -68,5 +69,13 @@ public class LE_Selection  implements Serializable {
 
     public boolean isEmpty() {
         return getCoordinates().isEmpty() && getIds().isEmpty();
+    }
+
+    public Coordinates getLastCoordinates() {
+        return lastCoordinates;
+    }
+
+    public void setLastCoordinates(Coordinates lastCoordinates) {
+        this.lastCoordinates = lastCoordinates;
     }
 }

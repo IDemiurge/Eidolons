@@ -67,7 +67,7 @@ public class LE_GridCell extends GridCellContainer {
     public void displayModeUpdated() {
         for (Color color : colorOverlays.keySet()) {
             //check?
-            if (getDisplayMode().isUseColors())
+            if (getDisplayMode().isShowAllColors())
                 colorOverlays.get(color).fadeIn();
             else
                 colorOverlays.get(color).fadeOut();

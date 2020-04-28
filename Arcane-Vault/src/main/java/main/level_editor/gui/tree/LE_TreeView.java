@@ -217,30 +217,31 @@ public class LE_TreeView extends TreeX<StructNode> {
         if (node.getData() instanceof Location) {
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 21);
             Location floor = ((Location) node.getData());
-            texture = TextureCache.getOrCreateR(floor.getFloor().getImagePath());
+            texture = TextureCache.getSizedRegion(64, floor.getFloor().getImagePath());
+            name = "--- " + floor.getName() +" --- ";
         }
         if (node.getData() instanceof  Module) {
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 21);
             Module module = (Module) node.getData();
-            name = "--- " + module.toString();
+            name = "-- " + module.getName()  +" --";
             texture = TextureCache.getOrCreateR(Images.ITEM_BACKGROUND_STONE);
         }
         if (node.getData() instanceof LevelZone) {
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 19);
             LevelZone zone = (LevelZone) node.getData();
-            name = "-- " + "Zone " + zone.getName() + ", Data: " + zone.getData();
+            name = "- " + "[Zone] " + zone.getName()  +" -";
 //            val = zone.getSubParts().size();
 //            zone.getTemplateGroup();
 //            zone.getStyle();
         }
         if (node.getData() instanceof LevelBlock) {
             LevelBlock block = (LevelBlock) node.getData();
-            name = "-- " +
+            name = "- " +
                     //(block.isTemplate() ? "Template " : "Custom ") +
                     block.getRoomType() +
                     " at " + block.getOrigin() + " with Cells [" +
                     block.getCoordinatesSet().size() +
-                    "]" + ", Data: " + block.getData();
+                    "]" ;
             c = LevelEditor.getCurrent().getManager().getStructureManager().getColorForBlock(block);
 
             //img per room type

@@ -5,8 +5,9 @@ import com.google.inject.internal.util.ImmutableSet;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
@@ -22,6 +23,7 @@ import eidolons.libgdx.GdxColorMaster;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.data.DataManager;
+import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
@@ -61,10 +63,27 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             GdxColorMaster.GREEN,
     };
 
+    Map<String, BlockData> blockTemplates = new LinkedHashMap<>();
+    Map<String, ZoneData> zoneTemplates = new LinkedHashMap<>();
     private RoomTemplateMaster roomTemplateMaster;
 
     public LE_StructureHandler(LE_Manager manager) {
         super(manager);
+    }
+
+    @Override
+    public void afterLoaded() {
+        super.afterLoaded();
+//        FileManager.readFile()
+    }
+
+    public void saved(){
+//        FileManager.write(c, getTemplatesPath()+"zones.xml");
+//        FileManager.write(c, getTemplatesPath()+"zones.xml");
+    }
+
+    private String getTemplatesPath() {
+        return PathFinder.getLevelEditorPath()+"templates/struct/";
     }
 
     private LevelBlock getBlock() {
@@ -88,7 +107,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
                 = (ROOM_TEMPLATE_GROUP) LE_Screen.getInstance().getGuiStage().getEnumChooser()
                 .choose(templateMaster.getModels().keySet().toArray(new ROOM_TEMPLATE_GROUP[0]));
 
-        LocationBuilder.ROOM_TYPE type = LocationBuilder.ROOM_TYPE.THRONE_ROOM;
+        ROOM_TYPE type = ROOM_TYPE.THRONE_ROOM;
         //TODO choose
 
         Set<RoomModel> from = templateMaster.getModels().get(room_template_group);
@@ -173,6 +192,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     }
 
     public void updateTree() {
+        getGame().getDungeonMaster().getStructureMaster().modelChanged();
         getModel().setTreeModel(LevelEditor.getCurrent().getWrapper());
     }
 
@@ -215,16 +235,28 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         }
     }
 
+
     @Override
     public void addBlock() {
         LevelZone zone = getModel().getZone();
         Set<Coordinates> coordinates = getSelectionHandler().getSelection().getCoordinates();
         LevelBlock block = createBlock(zone, coordinates);
+        if (!blockTemplates.isEmpty() && EUtils.confirm("Use template?")) {
+            Object[] array = blockTemplates.keySet().toArray();
+            Object c = LE_Screen.getInstance().getGuiStage().getEnumChooser().choose(array);
+            BlockData template = blockTemplates.get(c);
+            block.setData(template);
+            template.apply();
+        } else {
+            ROOM_TYPE type = LE_Screen.getInstance().getGuiStage().getEnumChooser()
+                    .chooseEnum(ROOM_TYPE.class);
+            if (type == null) {
+                type = ROOM_TYPE.COMMON_ROOM;
+            }
+            block.setRoomType(type);
+        }
         if (addBlock(block))
             updateTree();
-//        block.setName("Custom block");
-//        block.setOrigin(coordinates.iterator().next());
-//        block.setCoordinates(new ArrayList<>(coordinates));
     }
 
     private boolean addBlock(LevelBlock block) {
@@ -449,7 +481,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             }
             GuiEventManager.trigger(GuiEventType.CELL_RESET, set);
             log(1, type + " cell type from " + layer.getName() +
-                    "; for cell: " +                    set.size());
+                    "; for cell: " + set.size());
         }
 
     }
@@ -467,7 +499,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         int w = CoordinatesMaster.getWidth(block.getCoordinatesSet());
         int h = CoordinatesMaster.getHeight(block.getCoordinatesSet());
         block.setWidth(w);
-        block.setWidth(h);
+        block.setHeight(h);
         block.setData(new BlockData((block)));
         return block;
     }

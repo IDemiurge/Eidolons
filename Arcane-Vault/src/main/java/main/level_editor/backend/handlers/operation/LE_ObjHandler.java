@@ -30,6 +30,7 @@ public class LE_ObjHandler extends LE_Handler {
 
     private static final String DEFAULT_TYPE = "Bone Wall";
     private BattleFieldObject lastAdded;
+    private ObjType defaultPaletteType;
 
     public LE_ObjHandler(LE_Manager manager) {
         super(manager);
@@ -78,9 +79,17 @@ public class LE_ObjHandler extends LE_Handler {
                     c);
             getStructureHandler().initWall(c);
 //            getCoordinatesForShape(PositionMaster.SHAPES.STAR)
-        } else
-            operation(Operation.LE_OPERATION.ADD_OBJ, getModel().getPaletteSelection().getObjType(),
+        } else {
+            ObjType objType = getModel().getPaletteSelection().getObjType();
+            if (objType == null) {
+                return;
+            }
+            if (objType.getOBJ_TYPE_ENUM() == null) {
+                return;
+            }
+            operation(Operation.LE_OPERATION.ADD_OBJ, objType,
                     c);
+        }
     }
 
     public BattleFieldObject addObjIgnoreWrap(ObjType objType, int gridX, int gridY) {
@@ -172,16 +181,6 @@ public class LE_ObjHandler extends LE_Handler {
     }
 
 
-    public ObjType getDefaultWallType() {
-//         getModel().getModule().getDefaultWallType();
-//        getGame().getDungeonMaster().getStructureMaster().findLowestStruct()
-        if (getModel() != null)
-            if (getModel().getBlock() != null) {
-                return DataManager.getType(getModel().getBlock().getWallType(), DC_TYPE.BF_OBJ);
-            }
-        return DataManager.getType(DEFAULT_TYPE, DC_TYPE.BF_OBJ);
-    }
-
     public void addInLine(Coordinates c) {
         if (lastAdded == null) {
             return;
@@ -197,9 +196,16 @@ public class LE_ObjHandler extends LE_Handler {
     private void addMultiple(ObjType type, List<Coordinates> coordinates) {
         operation(Operation.LE_OPERATION.FILL_START);
         for (Coordinates c : coordinates) {
-            addObj(type, c.x, c.y);
+            operation(Operation.LE_OPERATION.ADD_OBJ, type, c);
         }
         operation(Operation.LE_OPERATION.FILL_END);
+    }
+
+    public ObjType getDefaultPaletteType() {
+        if (defaultPaletteType == null) {
+            defaultPaletteType = DataManager.getType(DEFAULT_TYPE, DC_TYPE.BF_OBJ);
+        }
+        return defaultPaletteType;
     }
 
 }

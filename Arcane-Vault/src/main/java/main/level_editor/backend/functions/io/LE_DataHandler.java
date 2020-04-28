@@ -11,6 +11,8 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.netherflame.dungeons.model.assembly.ModuleGridMapper;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.utils.FileChooserX;
+import eidolons.libgdx.utils.GdxDialogMaster;
+import eidolons.system.text.NameMaster;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
@@ -76,7 +78,7 @@ public class LE_DataHandler extends LE_Handler {
     }
 
     private boolean isBackupAutosave() {
-        return false;
+        return true;
     }
 
     private boolean isAutosave() {
@@ -190,6 +192,20 @@ public class LE_DataHandler extends LE_Handler {
         return PathFinder.getModuleTemplatesPath() + " " + module.getName() + ".xml";
     }
 
+    public void saveVersion() {
+        String path = getDefaultSavePath(getFloorWrapper());
+        String name = FileManager.getFileNameAndFormat(path);
+        String newName = NameMaster.getUniqueVersionedFileName(name, path);
+        saveAs(PathFinder.getDungeonLevelFolder() +PathUtils.cropLastPathSegment(path) + "/" + newName);
+    }
+    public void saveAs( ) {
+        String path = GdxDialogMaster.inputText("Enter save path", getDefaultSavePath(getFloorWrapper()));
+        if (path == null) {
+            return;
+        }
+        saveAs(PathFinder.getDungeonLevelFolder() +path);
+
+    }
     public void saveAs(String path) {
         String contents = getXmlMaster().toXml(getFloorWrapper());
         FileManager.write(contents, path);
@@ -266,4 +282,5 @@ public class LE_DataHandler extends LE_Handler {
             GdxMaster.setWindowName(LevelEditor.getWindowName());
         }
     }
+
 }

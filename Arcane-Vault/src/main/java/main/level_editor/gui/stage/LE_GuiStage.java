@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.battlecraft.logic.mission.encounter.EncounterData;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
@@ -58,6 +59,7 @@ public class LE_GuiStage extends GenericGuiStage {
     private EncounterEditDialog encounterEditor;
     private AiEditDialog aiEditor;
     private boolean positionsAdjusted;
+    private CellDataEditor cellDataEditor;
 
 
     public LE_GuiStage(Viewport viewport, Batch batch) {
@@ -92,6 +94,7 @@ public class LE_GuiStage extends GenericGuiStage {
         addActor(zoneEditor = new ZoneEditDialog());
         addActor(aiEditor = new AiEditDialog());
         addActor(encounterEditor = new EncounterEditDialog());
+        addActor(cellDataEditor = new CellDataEditor());
         addActor(editTable = new DataTable(2, 50));
 
         GuiEventManager.bind(GuiEventType.LE_GUI_TOGGLE , p-> {
@@ -225,6 +228,15 @@ public class LE_GuiStage extends GenericGuiStage {
     }
 
     @Override
+    public boolean keyUp(int keyCode) {
+        boolean r = super.keyUp(keyCode);
+        Eidolons.onNonGdxThread(() -> {
+            LevelEditor.getManager().getKeyHandler().keyUp(keyCode);
+        });
+        return r;
+    }
+
+    @Override
     public boolean keyTyped(char character) {
         boolean r = super.keyTyped(character);
         Eidolons.onNonGdxThread(() -> {
@@ -290,6 +302,10 @@ public class LE_GuiStage extends GenericGuiStage {
         return palettePanel;
     }
 
+    public CellDataEditor getCellDataEditor() {
+        dialog = cellDataEditor;
+        return cellDataEditor;
+    }
     public FloorEditDialog getFloorDialog() {
         dialog = floorDialog;
         return floorDialog;
@@ -320,6 +336,11 @@ public class LE_GuiStage extends GenericGuiStage {
         if (dataUnit instanceof EncounterData) {
             return (DataEditDialog<S, T>) getEncounterEditor();
         }
+        if (dataUnit instanceof CellScriptData) {
+            return (DataEditDialog<S, T>) getCellDataEditor();
+        }
         return null;
     }
+
+
 }

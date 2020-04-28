@@ -27,27 +27,53 @@ public class LE_MenuHandler extends LE_Handler {
                 break;
             case clone:
                 //floor
+
+            case toggle_all:
+                getModel().getDisplayMode().toggleAll();
+                break;
+            case colors:
+                getModel().getDisplayMode().toggleColors();
+            case coordinates:
+                getModel().getDisplayMode().toggleCoordinates();
+                break;
+            case meta_info:
+                getModel().getDisplayMode().toggleScripts();
+                break;
+            case ai_info:
+                getModel().getDisplayMode().toggleAi();
+                break;
         }
     }
 
 
-    public enum FUNCTION_BUTTONS{
+    public enum FUNCTION_BUTTONS {
         add_dungeon,
         add_floor,
         add_module,
         edit_module, resize, swap_modules, remove_module,
         edit_floor, remove_floor,
-        open,
-        save_all,
-        clone,
-        toggle_all, all_off, all_on, show_map,
 
+        //////////////
+        open, save_all, clone,
         file(open, clone, save_all),
-        view(toggle_all, all_off, all_on, show_map),
-//        edit(),
+        //////////////
+        /*
+        showStacks;
+    boolean showMetaAi;
+    boolean showScripts;
+
+    boolean showCoordinates; //TODO use options?
+    boolean showIllumination;
+    boolean showSpace;
+
+    boolean showAllColors
+         */
+        toggle_all, colors, coordinates, meta_info, ai_info,
+        view(toggle_all, colors, coordinates, meta_info, ai_info),
+        //        edit(),
 //        layer(),
-        module(edit_module, resize, swap_modules, remove_module ),
-        floor( add_module, edit_floor, remove_floor),
+        module(edit_module, resize, swap_modules, remove_module),
+        floor(add_module, edit_floor, remove_floor),
 //        dungeon(true, edit_dungeon), TODO use string regex to add floors from folder
 //        campaign(),
 

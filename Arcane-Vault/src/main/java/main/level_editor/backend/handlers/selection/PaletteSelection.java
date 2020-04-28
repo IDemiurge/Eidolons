@@ -14,7 +14,7 @@ public class PaletteSelection implements Serializable {
     private RoomModel template;
 
     public PaletteSelection( ) {
-        this(LevelEditor.getManager().getObjHandler().getDefaultWallType());
+        this(LevelEditor.getManager().getObjHandler().getDefaultPaletteType());
     }
     public PaletteSelection(ObjType type) {
         this(type, false);

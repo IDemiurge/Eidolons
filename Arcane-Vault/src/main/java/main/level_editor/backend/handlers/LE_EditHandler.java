@@ -21,10 +21,11 @@ public class LE_EditHandler extends LE_Handler {
         super(manager);
     }
 
-    public void edit( ){
+    public void edit() {
         edit(getSelectionHandler().getObject());
     }
-        public void edit(BattleFieldObject object){
+
+    public void edit(BattleFieldObject object) {
         ObjType newType = new ObjType(object.getType());
         edit(newType);
         operation(Operation.LE_OPERATION.EDIT, object.getType());
@@ -39,8 +40,9 @@ public class LE_EditHandler extends LE_Handler {
     public <T extends Enum<T>> void editDataUnit(DataUnit<T> dataUnit) {
         LE_Screen.getInstance().getGuiStage().getEditDialog(dataUnit).edit(dataUnit);
     }
+
     public static DataTable.DataPair[] getDataPairs(Entity editEntity) {
-        DataTable.DataPair[] pairs=new DataTable.DataPair[0];
+        DataTable.DataPair[] pairs = new DataTable.DataPair[0];
         VALUE[] arrays = null;
         OBJ_TYPE TYPE = editEntity.getOBJ_TYPE_ENUM();
         if (TYPE instanceof DC_TYPE) {

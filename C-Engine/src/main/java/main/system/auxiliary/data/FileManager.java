@@ -675,6 +675,9 @@ public class FileManager {
         }
     }
 
+    public static String getFileNameAndFormat(String template) {
+        return  (getFile(template).getName());
+    }
     public static String getFileName(String template) {
         return StringMaster.cropFormat(getFile(template).getName());
     }

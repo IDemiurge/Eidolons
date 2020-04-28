@@ -356,7 +356,7 @@ public class SpeechExecutor {
                 break;
             case FILL:
                 c1 = getCoordinate(vars.get(1), true);
-                coordinatesList = CoordinatesMaster.getCoordinatesBetween(c, c1);
+                coordinatesList = CoordinatesMaster.getCoordinatesBetweenInclusive(c, c1);
 
             case ADD:
             case BF_OBJ:
@@ -964,7 +964,7 @@ public class SpeechExecutor {
             case AREA:
                 c = getCoordinate(vars.get(0), true);
                 c1 = getCoordinate(vars.get(1), true);
-                for (Coordinates coordinates : CoordinatesMaster.getCoordinatesBetween(c, c1)) {
+                for (Coordinates coordinates : CoordinatesMaster.getCoordinatesBetweenInclusive(c, c1)) {
                     for (BattleFieldObject object : Eidolons.getGame().getObjectsOnCoordinateNoOverlaying(coordinates)) {
                         doUnit(object, value, vars);
                     }

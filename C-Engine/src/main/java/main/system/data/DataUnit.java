@@ -85,6 +85,9 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     public String[] getRelevantValues() {
+        if (relevantValues == null) {
+            return getValueConsts();
+        }
         return relevantValues;
     }
 

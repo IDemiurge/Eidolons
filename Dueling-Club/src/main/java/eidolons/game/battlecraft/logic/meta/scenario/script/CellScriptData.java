@@ -8,6 +8,11 @@ public class CellScriptData extends DataUnit<CellScriptData.CELL_SCRIPT_VALUE> {
     }
 
     @Override
+    public Class<? extends CELL_SCRIPT_VALUE> getEnumClazz() {
+        return CELL_SCRIPT_VALUE.class;
+    }
+
+    @Override
     public String[] getRelevantValues() {
         return getValueConsts();
     }

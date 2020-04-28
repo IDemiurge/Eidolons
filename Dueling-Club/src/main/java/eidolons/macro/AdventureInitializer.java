@@ -37,7 +37,7 @@ public class AdventureInitializer {
         {
             load = true;
         }
-//    TODO     metaMaster = new AdventureMetaMaster(scenario, load);
+//         metaMaster = new AdventureMetaMaster(scenario, load);
         if (!CoreEngine.isMapEditor()) {
             metaMaster.init();
             if (metaMaster.getPartyManager().getParty() == null)

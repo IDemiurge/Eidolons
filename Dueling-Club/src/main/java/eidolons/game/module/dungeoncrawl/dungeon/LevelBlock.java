@@ -52,7 +52,6 @@ public class LevelBlock extends LevelStruct<LevelBlock, Object> {
         this.origin = coordinates;
         this.zone = zone;
         id = ID++;
-
     }
 
     @Override
@@ -102,7 +101,7 @@ public class LevelBlock extends LevelStruct<LevelBlock, Object> {
     @Override
     public String toString() {
         if (tileMap == null) {
-            return getRoomType() + " block of " + zone;
+            return getRoomType() + " block N" +id;
         }
         return getRoomType() + " block of " + zone
                 + "\n" + tileMap.toString();

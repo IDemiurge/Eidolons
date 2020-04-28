@@ -15,6 +15,7 @@ import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler {
@@ -34,7 +35,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
         Coordinates c1 =
                 (Coordinates) WaitMaster.waitForInput(LE_MouseHandler.SELECTION_OPERATION);
         Coordinates c2 = selectCoordinate();
-        return new LinkedHashSet<>(CoordinatesMaster.getCoordinatesBetween(c1, c2));
+        return new LinkedHashSet<>(CoordinatesMaster.getCoordinatesBetweenInclusive(c1, c2));
     }
 
     public LE_Selection getSelection() {
@@ -66,6 +67,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
         }
         getModel().setSelection(new LE_Selection());
         mode = SELECTION_MODE.NONE;
+        selectionChanged();
     }
 
     @Override
@@ -92,6 +94,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
     public void select(BattleFieldObject bfObj) {
         Integer id = getIdManager().getId(bfObj);
         getModel().getSelection().setSingleSelection(id);
+        getSelection().setLastCoordinates(bfObj.getCoordinates());
         selectionChanged();
     }
 
@@ -124,21 +127,30 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
 
     public void areaSelected() {
         for (Coordinates c : getSelection().getCoordinates()) {
-            for (BattleFieldObject object : getGame().getObjectsNoOverlaying(c)) {
+            for (BattleFieldObject object : getGame().getObjectsOnCoordinateAll(c)) {
                 getSelection().getIds().add(getIdManager().getId(object));
             }
         }
         getModelManager().modelChanged();
     }
 
-    public void addAreaToSelectedCoordinates(Coordinates c) {
-        Coordinates origin = null;
-        if (getSelection().getCoordinates().isEmpty()) {
+    public void addAreaToSelectedCoordinates(Coordinates c, boolean objects) {
+        Coordinates origin = getSelection().getLastCoordinates();
+        if (origin == null ) {
             origin = getSelectionHandler().getObject().getCoordinates();
-        } else {
-            origin = getSelection().getCoordinates().iterator().next();
         }
-        getSelection().getCoordinates().addAll(CoordinatesMaster.getCoordinatesBetween(c, origin));
+        getSelection().setLastCoordinates(c);
+        List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesBetweenInclusive(c, origin);
+        if (objects)
+        {
+            for (Coordinates c1 : coordinates) {
+                for (BattleFieldObject object : getGame().getObjectsOnCoordinateAll(c1)) {
+                    getSelection().getIds().add(getIdManager().getId(object));
+                }
+            }
+        }
+        getSelection().getCoordinates().addAll(coordinates);
+        //        getSelection().setCoordinates(new LinkedHashSet<>(CoordinatesMaster.getCoordinatesBetweenInclusive(c, origin)));
         selectionChanged();
         getModelManager().modelChanged();
     }
@@ -158,6 +170,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
     public void selectedCoordinate(Coordinates c) {
         getSelection().getCoordinates().clear();
         addSelectedCoordinate(c);
+        getSelection().setLastCoordinates(c);
     }
 
     public void addSelectedCoordinate(Coordinates c) {
