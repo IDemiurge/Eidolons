@@ -20,17 +20,16 @@ public class LE_ScriptHandler extends LE_Handler {
     public void editScriptData(Coordinates c) {
 
         CellScriptData data = getFloorWrapper().getTextDataMap().get(c);
-        String prev = data == null ? "" : data.getData();
+        CellScriptData prev = data == null
+                ? new CellScriptData("")
+                : new CellScriptData(data.getData()) ;
         if (data == null) {
             data = new CellScriptData("");
         }
         editData(data);
         String text = data.getData();
-        if (!text.equals(prev)) {
-            getOperationHandler().execute(Operation.LE_OPERATION.CELL_SCRIPT_CHANGE, c, text, prev);
-        }
-        if (!text.isEmpty()) {
-            getFloorWrapper().getTextDataMap().put(c, data);
+        if (!text.equals(prev.getData())) {
+            getOperationHandler().execute(Operation.LE_OPERATION.CELL_SCRIPT_CHANGE, c, data, prev);
         }
     }
 

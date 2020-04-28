@@ -13,9 +13,7 @@ import main.level_editor.backend.handlers.LE_MenuHandler;
 import main.level_editor.backend.handlers.ai.LE_AiHandler;
 import main.level_editor.backend.handlers.dialog.LE_DialogHandler;
 import main.level_editor.backend.handlers.model.LE_ModelManager;
-import main.level_editor.backend.handlers.operation.LE_ObjHandler;
-import main.level_editor.backend.handlers.operation.Operation;
-import main.level_editor.backend.handlers.operation.OperationHandler;
+import main.level_editor.backend.handlers.operation.*;
 import main.level_editor.backend.handlers.selection.LE_SelectionHandler;
 import main.level_editor.backend.handlers.structure.LE_MapHandler;
 import main.level_editor.backend.handlers.structure.LE_ModuleHandler;
@@ -61,6 +59,7 @@ public class LE_Manager {
     private LE_TransitHandler transitHandler;
     private LE_XmlMaster xmlMaster;
     private boolean loaded;
+    private IHandlerDelegate delegate;
 
     public LE_Manager(LE_Floor floor) {
         this.floor = floor;        
@@ -89,6 +88,7 @@ public class LE_Manager {
         handlers.add(  mapHandler = new LE_MapHandler(this));
         handlers.add(  transitHandler = new LE_TransitHandler(this));
         handlers.add(  advFuncs = new LE_AdvFuncs(this));
+        delegate = new LE_HandlerDelegate(this);
 //        layerHandler = new IRngHandler(this);
     }
 
@@ -221,5 +221,9 @@ public class LE_Manager {
 
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
+    }
+
+    public IHandlerDelegate getDelegate() {
+        return delegate;
     }
 }

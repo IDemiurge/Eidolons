@@ -5,12 +5,25 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ModuleData extends StructureData<MODULE_VALUE, Module> {
 
     public ModuleData(Module structure) {
         super(structure);
     }
 
+    @Override
+    public String[] getRelevantValues() {
+        List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
+                collect(Collectors.toList());
+        list.remove(MODULE_VALUE.assets.toString());
+        list.remove(MODULE_VALUE.id.toString());
+        list.remove(MODULE_VALUE.illumination.toString());
+        return list.toArray(new String[0]);
+    }
 
     protected void init() {
         if (getStructure() == null) {

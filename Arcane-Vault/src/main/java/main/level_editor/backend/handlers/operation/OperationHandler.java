@@ -2,8 +2,8 @@ package main.level_editor.backend.handlers.operation;
 
 import eidolons.content.data.EntityData;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -36,16 +36,22 @@ public class OperationHandler extends LE_Handler {
         switch (operation) {
             case CELL_SCRIPT_CHANGE:
                 c = (Coordinates) args[0];
-                String text = (String) args[1];
-                String layerName = (String) args[2];
-                if (layerName != null) {
-                    Layer layer = getLayerHandler().getLayer(layerName);
-                    layer.getScripts().put(c, text);
-                    //color, hidden, ...
+                CellScriptData scriptData = (CellScriptData) args[1];
+                if (scriptData.getData().isEmpty()) {
+                    getFloorWrapper().getTextDataMap().remove(c);
+                } else {
+                    getFloorWrapper().getTextDataMap().put(c, scriptData);
                 }
 
+//                String layerName = (String) args[2];
+//                if (layerName != null) {
+//                    Layer layer = getLayerHandler().getLayer(layerName);
+//                    layer.getScripts().put(c, scriptData);
+//                    //color, hidden, ...
+//                }
+
                 GuiEventManager.triggerWithParams(
-                        GuiEventType.LE_CELL_SCRIPTS_LABEL_UPDATE, c, text);
+                        GuiEventType.LE_CELL_SCRIPTS_LABEL_UPDATE, c, scriptData.getData());
                 break;
             case SELECTION:
                 break;
@@ -98,7 +104,7 @@ public class OperationHandler extends LE_Handler {
                 type = (ObjType) args[0];
                 c = (Coordinates) args[1];
                 BattleFieldObject unit = getObjHandler().addObj(type, c.x, c.y);
-                if (args[args.length-1]==new Boolean(false)) {
+                if (args[args.length - 1] == new Boolean(false)) {
                     args = new BattleFieldObject[]{unit};
                 } else {
                     args = new BattleFieldObject[]{unit};
@@ -192,6 +198,12 @@ public class OperationHandler extends LE_Handler {
 
         }
         switch (op.operation) {
+
+            case CELL_SCRIPT_CHANGE:
+                execute(Operation.LE_OPERATION.CELL_SCRIPT_CHANGE, op.args[0],
+                        op.args[2],
+                        op.args[1]);
+                break;
             case SAVE_DATA:
                 execute(Operation.LE_OPERATION.MODIFY_DATA, op.args);
                 break;

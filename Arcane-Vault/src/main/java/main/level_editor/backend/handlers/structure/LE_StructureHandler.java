@@ -7,6 +7,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.EUtils;
@@ -20,6 +21,8 @@ import eidolons.game.module.generator.model.RoomModel;
 import eidolons.game.module.generator.model.RoomTemplateMaster;
 import eidolons.game.module.generator.tilemap.TilesMaster;
 import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.utils.GdxDialogMaster;
+import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.data.DataManager;
@@ -35,6 +38,8 @@ import main.level_editor.gui.screen.LE_Screen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.MapBuilder;
 import main.system.threading.WaitMaster;
 
 import java.util.*;
@@ -55,7 +60,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
                     ROOM_TEMPLATE_GROUP.CEMETERY,
             };
     private static final Color[] BLOCK_COLORS = {
-            GdxColorMaster.PURPLE,
+            GdxColorMaster.LILAC,
             GdxColorMaster.CYAN,
             GdxColorMaster.BLUE,
             GdxColorMaster.RED,
@@ -73,21 +78,55 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
 
     @Override
     public void afterLoaded() {
-        super.afterLoaded();
-//        FileManager.readFile()
+        String content = FileManager.readFile(getTemplatesPath() + "blocks.xml");
+        blockTemplates =
+                new MapBuilder<>(":", StringMaster.AND_SEPARATOR, s -> s, s -> new BlockData(s)).build(content);
+
+        content = FileManager.readFile(getTemplatesPath() + "zones.xml");
+
+        zoneTemplates =
+                new MapBuilder<>(":", StringMaster.AND_SEPARATOR, s -> s, s -> new ZoneData(s)).build(content);
     }
 
-    public void saved(){
-//        FileManager.write(c, getTemplatesPath()+"zones.xml");
-//        FileManager.write(c, getTemplatesPath()+"zones.xml");
+    @Override
+    public void saved() {
+        StringBuilder builder = new StringBuilder();
+        for (String s : blockTemplates.keySet()) {
+            BlockData data = blockTemplates.get(s);
+            builder.append(s).append(":").append(data.toString()).append(StringMaster.AND_SEPARATOR);
+        }
+        FileManager.write(builder.toString(), getTemplatesPath() + "blocks.xml");
+        builder = new StringBuilder();
+
+        for (String s : zoneTemplates.keySet()) {
+            ZoneData data = zoneTemplates.get(s);
+            builder.append(s).append(":").append(data.toString()).append(StringMaster.AND_SEPARATOR);
+        }
+        FileManager.write(builder.toString(), getTemplatesPath() + "zones.xml");
     }
 
     private String getTemplatesPath() {
-        return PathFinder.getLevelEditorPath()+"templates/struct/";
+        return PathFinder.getLevelEditorPath() + "templates/struct/";
     }
 
     private LevelBlock getBlock() {
         return getModel().getBlock();
+    }
+
+    @Override
+    public void exportStruct() {
+        LevelStruct struct = getModel().getLastSelectedStruct();
+        String name = struct.getName();
+        name = GdxDialogMaster.inputText("Export with name...", name);
+        if (struct instanceof LevelBlock) {
+            name = NameMaster.getUniqueVersionedName(new ArrayList<>(blockTemplates.keySet()), name);
+            blockTemplates.put(name, ((LevelBlock) struct).getData());
+        }
+        if (struct instanceof LevelZone) {
+            name = NameMaster.getUniqueVersionedName(new ArrayList<>(zoneTemplates.keySet()), name);
+            zoneTemplates.put(name, (ZoneData) struct.getData());
+        }
+        saved();
     }
 
     public void addZone() {
@@ -95,6 +134,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         List<LevelZone> zones = getModel().getModule().getZones();
         LevelZone zone = new LevelZone(zones.size()); //or default per floor template
         zone.setModule(getModel().getModule());
+        //TODO templates
         zones.add(zone);
         getModel().setZone(zone);
         updateTree();
@@ -245,7 +285,11 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             Object[] array = blockTemplates.keySet().toArray();
             Object c = LE_Screen.getInstance().getGuiStage().getEnumChooser().choose(array);
             BlockData template = blockTemplates.get(c);
-            block.setData(template);
+            template.removeValue(LevelStructure.BLOCK_VALUE.width);
+            template.removeValue(LevelStructure.BLOCK_VALUE.height);
+            block.setData(new BlockData(block).setData(template.getData()));
+            block.setName(template.getValue("name"));
+
             template.apply();
         } else {
             ROOM_TYPE type = LE_Screen.getInstance().getGuiStage().getEnumChooser()

@@ -25,8 +25,8 @@ import static main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
 
 public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
-    Map<Integer, AiData> encounterAiMap= new LinkedHashMap<>();
-    Map<BattleFieldObject, AiData> customAiMap= new LinkedHashMap<>();
+    Map<Integer, AiData> encounterAiMap = new LinkedHashMap<>();
+    Map<BattleFieldObject, AiData> customAiMap = new LinkedHashMap<>();
 
     Stack<Map<Integer, AiData>> encounterAiStack = new Stack<>();
     Stack<Map<BattleFieldObject, AiData>> customAiStack = new Stack<>();
@@ -58,6 +58,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 //            putCustom(obj, ai);
 //        }
     }
+
     private void putEncounter(BattleFieldObject obj, AiData ai) {
         encounterAiStack.push(encounterAiMap);
         encounterAiMap = new HashMap<>(encounterAiMap);
@@ -75,7 +76,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
     public void undone() {
         if (!customAiStack.isEmpty()) {
-        customAiMap = customAiStack.pop();
+            customAiMap = customAiStack.pop();
         }
         if (!encounterAiStack.isEmpty()) {
             encounterAiMap = encounterAiStack.pop();
@@ -108,7 +109,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
             text += "+++";
         }
         text += ai.getType();
-        text += "[" +  id + "]";
+        text += "[" + id + "]";
         GuiEventManager.triggerWithParams(GuiEventType.LE_AI_DATA_UPDATE, obj, text);
     }
 
@@ -199,7 +200,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
                     builder.append(getIdManager().getId(object)).append(";");
                 }
             }
-            builder.append("=");
+            builder.append(":");
             builder.append(data.toString()).append(StringMaster.AND_SEPARATOR);
         }
         xml += XML_Converter.wrap(FloorLoader.CUSTOM_AI_GROUPS, builder.toString());
@@ -209,10 +210,9 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
     public void initEncounterGroups(String textContent) {
         encounterAiMap =
-                new MapBuilder<>("=", StringMaster.AND_SEPARATOR,
+                new MapBuilder<>(":", StringMaster.AND_SEPARATOR,
                         s -> NumberUtils.getInteger(s),
-                        s -> new AiData(s)
-                )
+                        s -> new AiData(s))
                         .build(textContent);
     }
 }

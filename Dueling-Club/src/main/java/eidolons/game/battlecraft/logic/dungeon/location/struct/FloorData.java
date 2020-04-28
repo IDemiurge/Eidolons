@@ -8,6 +8,10 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.FLOOR_VALUES;
 
 public class FloorData extends StructureData<FLOOR_VALUES, Location> {
@@ -16,6 +20,16 @@ public class FloorData extends StructureData<FLOOR_VALUES, Location> {
         super(structure);
     }
 
+    @Override
+    public String[] getRelevantValues() {
+        List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
+                collect(Collectors.toList());
+        list.remove(FLOOR_VALUES.height.toString());
+        list.remove(FLOOR_VALUES.width.toString());
+        list.remove(LevelStructure.FLOOR_VALUES.id.toString());
+        list.remove(LevelStructure.FLOOR_VALUES.illumination.toString());
+        return list.toArray(new String[0]);
+    }
     @Override
     public void apply() {
         //sink thru to DUNGEON?

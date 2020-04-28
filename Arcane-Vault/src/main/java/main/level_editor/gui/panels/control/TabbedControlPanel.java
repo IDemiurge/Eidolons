@@ -20,9 +20,11 @@ public class TabbedControlPanel extends TabbedPane implements TabbedPaneListener
     CtrlRngPanel rngPanel= new CtrlRngPanel();
     CtrlSelectionPanel selectionPanel= new CtrlSelectionPanel();
     CtrlPalettePanel palettePanel= new CtrlPalettePanel();
+    CtrlCustomPanel customPanel = new CtrlCustomPanel();
 
     LE_ControlPanel[] panels = {
 //            modulePanel,
+            customPanel,
             structurePanel,
             palettePanel,
             funcsPanel,

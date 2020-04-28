@@ -199,10 +199,10 @@ public class LevelStructure {
             }
         },
         //additional?
-        lighting,
-        fires_color,
-        default_pillar_type,
-        default_shard_type,
+//        lighting,
+//        fires_color,
+//        default_pillar_type,
+//        default_shard_type,
         //COMMON
 
         name(EDIT_VALUE_TYPE.text),
@@ -284,8 +284,8 @@ public class LevelStructure {
         width_buffer,
         height_buffer,
 
-        default_pillar_type,
-        default_shard_type,
+//        default_pillar_type,
+//        default_shard_type,
 
         background,
         tile_map, layer_data,

@@ -37,7 +37,7 @@ import main.system.data.DataUnit;
 
 import java.util.function.Function;
 
-public class LE_Handler {
+public abstract class LE_Handler {
 
     protected final LE_Manager manager;
 
@@ -188,4 +188,7 @@ public class LE_Handler {
         return manager.getMenuHandler();
     }
 
+    public void saved() {
+
+    }
 }

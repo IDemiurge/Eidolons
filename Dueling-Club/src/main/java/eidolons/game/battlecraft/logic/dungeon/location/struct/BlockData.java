@@ -13,6 +13,11 @@ public class BlockData extends StructureData<BLOCK_VALUE,  LevelBlock> {
         super(block);
     }
 
+    public BlockData(String s) {
+        super(null );
+        setData(s);
+    }
+
     @Override
     public BlockData setData(String data) {
         return (BlockData) super.setData(data);

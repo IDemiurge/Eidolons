@@ -12,7 +12,6 @@ public abstract class StructureData<T extends Enum<T>, S extends LayeredData> ex
     public StructureData(S structure) {
         this.structure = structure;
         init();
-
     }
 
     protected abstract void init();

@@ -3,6 +3,7 @@ package eidolons.game.module.dungeoncrawl.dungeon;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjNode;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjsNode;
 import eidolons.game.core.game.DC_Game;
@@ -96,6 +97,7 @@ public class LevelBlock extends LevelStruct<LevelBlock, Object> {
 
     public void setRoomType(ROOM_TYPE roomType) {
         this.roomType = roomType;
+        getData().setValue(LevelStructure.BLOCK_VALUE.room_type, roomType.toString());
     }
 
     @Override

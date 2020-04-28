@@ -210,6 +210,10 @@ public class LE_DataHandler extends LE_Handler {
         String contents = getXmlMaster().toXml(getFloorWrapper());
         FileManager.write(contents, path);
         EUtils.showInfoText("Saved as " + PathUtils.getLastPathSegment(path));
+
+        for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
+            handler.saved();
+        }
     }
 
     private String getBackupPath(Location location) {

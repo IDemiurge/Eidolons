@@ -122,8 +122,11 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
     }
 
     protected void show() {
-        if (getColor().a != 1)
+        if (getColor().a != 1) {
             fadeIn();
+        } else {
+            setVisible(true);
+        }
     }
 
     protected void close() {

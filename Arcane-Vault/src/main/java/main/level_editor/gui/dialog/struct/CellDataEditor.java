@@ -10,6 +10,13 @@ public class CellDataEditor extends DataEditDialog<CellScriptData.CELL_SCRIPT_VA
         super(CellScriptData.CELL_SCRIPT_VALUE.values().length);
     }
 
+
+    @Override
+    public void ok() {
+        chosen(selected);
+        close();
+    }
+
     @Override
     protected LevelStructure.EDIT_VALUE_TYPE getEditor(CellScriptData.CELL_SCRIPT_VALUE enumConst) {
         switch (enumConst) {
