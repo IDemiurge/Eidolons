@@ -10,6 +10,7 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
@@ -147,6 +148,15 @@ public class SortMaster<T> {
     public static void sortByExpression
      (boolean ascending, List<? extends Object> list, Function<Object, Integer> function) {
         Collections.sort(list, getSorterByExpression(ascending, function));
+    }
+
+    public static  Comparator<? super Coordinates> getGridCoordSorter() {
+        return (Comparator<Coordinates>) (o1, o2) -> {
+            if (-o1.x * 1000 - o1.y < -o2.x * 1000 - o2.y) {
+                return 1;
+            }
+            return -1;
+        };
     }
 
     public   void sortByExpression_

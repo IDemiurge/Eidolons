@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import com.google.inject.internal.util.ImmutableMap;
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -8,7 +9,6 @@ import eidolons.game.module.dungeoncrawl.dungeon.IStruct;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
-import eidolons.libgdx.bf.decor.CellDecor;
 import main.content.enums.DungeonEnums;
 import main.game.bf.Coordinates;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -153,7 +153,9 @@ public class StructMaster extends DungeonHandler {
     private Map<Coordinates, Integer> create(IStruct struct) {
 //TODO cell vs alt cell is better?
         Map<Coordinates, Integer> map = new LinkedHashMap<>();
-        Function<Coordinates, Integer> func = getFunc(struct.getCellPattern());
+        int width = CoordinatesMaster.getWidth(struct.getCoordinatesSet());
+        int height = CoordinatesMaster.getHeight(struct.getCoordinatesSet());
+        Function<Coordinates, Integer> func =CellMaster.getFunc(width, height , struct.getCellPattern());
 
         Set<Pair<Coordinates, Integer>> entries =
                 struct.getCoordinatesSet().stream().map(c -> new ImmutablePair<>(c, func.apply(c)))
@@ -162,43 +164,6 @@ public class StructMaster extends DungeonHandler {
             ImmutableMap.builder().put(entry.getKey(), entry.getValue());
         }
         return map;
-    }
-
-    private Function<Coordinates, Integer> getFunc(CellDecor.CELL_PATTERN cellPattern) {
-
-        switch (cellPattern) {
-            case CHESS:
-                /*
-                0 1 0
-                1 0 1
-                0 1 0
-                 */
-                return c -> {
-                    if (c.x % 2 != c.y % 2)
-                        return 1;
-                    return 0;
-                };
-            case GRID:
-                /*
-                0 1 0
-                1 1 1
-                0 1 0
-                 */
-                break;
-            case CROSS:
-                break;
-            case CROSS_DIAG:
-                break;
-            case CENTERPIECE:
-                break;
-            case SPIRAL:
-                break;
-            case CONCENTRIC:
-                break;
-            case OUTER_BORDER:
-                break;
-        }
-        return null;
     }
 
     private boolean isPatternsOn() {

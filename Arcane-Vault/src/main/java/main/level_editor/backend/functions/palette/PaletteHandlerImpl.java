@@ -228,7 +228,7 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
             else return;
         }
         List<String> tiles = coordinates.stream()
-                .sorted(getCoordSorter())
+                .sorted(SortMaster.getGridCoordSorter())
                 .map(c -> getTileForCoordinate(c)).collect(Collectors.toList());
 
         int w = CoordinatesMaster.getWidth(coordinates);
@@ -264,15 +264,6 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
         FileManager.write(contents.toString(), filePath);
         selectBlockPalette(ImmutableList.of(group, type));
         reload();
-    }
-
-    private Comparator<? super Coordinates> getCoordSorter() {
-        return (Comparator<Coordinates>) (o1, o2) -> {
-            if (-o1.x * 1000 - o1.y < -o2.x * 1000 - o2.y) {
-                return 1;
-            }
-            return -1;
-        };
     }
 
     private String getTileForCoordinate(Coordinates c) {
