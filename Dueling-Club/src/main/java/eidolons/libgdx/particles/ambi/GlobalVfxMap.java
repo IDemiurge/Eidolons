@@ -57,7 +57,7 @@ public class GlobalVfxMap extends GroupX {
         }
 
         for (LevelBlock block :    DC_Game.game.getDungeonMaster().
-                getStructureMaster().getCurrentBlocks()) {
+                getStructMaster().getCurrentBlocks()) {
             maps = cache.get(block);
             if (maps == null) {
                 maps = new ArrayList<>();

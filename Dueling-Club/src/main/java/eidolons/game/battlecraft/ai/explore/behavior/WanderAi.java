@@ -62,8 +62,7 @@ public class WanderAi extends AiGroupBehavior {
             return false;
         }
         if (!ai.isLeader())
-            if (isNearby())
-                return false;
+            return !isNearby();
         return true;
     }
     @Override
@@ -160,11 +159,11 @@ public class WanderAi extends AiGroupBehavior {
 
     protected int getMaxDistance() {
         if (block == null) {
-            block = master.getGame().getDungeonMaster().getStructureMaster().findLowestStruct(
+            block = master.getGame().getDungeonMaster().getStructMaster().findLowestStruct(
              ai.getUnit().getCoordinates());
             if (block == null) {
                 for (Coordinates c : ai.getUnit().getCoordinates().getAdjacent()) {
-                    block = master.getGame().getDungeonMaster().getStructureMaster().findLowestStruct(
+                    block = master.getGame().getDungeonMaster().getStructMaster().findLowestStruct(
                      c);
                     if (block != null)
                         break;

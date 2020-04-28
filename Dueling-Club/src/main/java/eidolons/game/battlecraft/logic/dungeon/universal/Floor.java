@@ -72,10 +72,10 @@ public class Floor extends LightweightEntity {
     }
 
     public int getCellVariant(int i, int j) {
-        return getGame().getDungeonMaster().getStructureMaster().getCellVariant(i, j);
+        return getGame().getDungeonMaster().getStructMaster().getCellVariant(i, j);
     }
     public DungeonEnums.CELL_IMAGE getCellType(int i, int j) {
-        return  getGame().getDungeonMaster().getStructureMaster().getCellType(i, j);
+        return  getGame().getDungeonMaster().getStructMaster().getCellType(i, j);
     }
 
     public Map<String, String> getCustomDataMap(CellScriptData.CELL_SCRIPT_VALUE value) {

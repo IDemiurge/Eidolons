@@ -7,8 +7,8 @@ import eidolons.game.battlecraft.logic.dungeon.location.TransitHandler;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.LayerManager;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.PlaceholderResolver;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.StructMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureBuilder;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleLoader;
 import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
@@ -51,7 +51,7 @@ public abstract class DungeonMaster {
     private PuzzleMaster puzzleMaster;
     private PortalMaster portalMaster;
     private LayerManager layerManager;
-    private StructureMaster structureMaster;
+    private StructMaster structMaster;
     private FloorLoader floorLoader;
 
     private Map<DataMap, Map<Integer, String>> dataMaps;
@@ -72,7 +72,7 @@ public abstract class DungeonMaster {
         positioner = createPositioner();
         facingAdjuster = createFacingAdjuster();
         builder = createBuilder();
-        structureMaster = new StructureMaster(this);
+        structMaster = new StructMaster(this);
         objInitializer = createObjInitializer();
         structureBuilder = new StructureBuilder(this);
         floorLoader = createFloorLoader();
@@ -190,8 +190,8 @@ public abstract class DungeonMaster {
         return game;
     }
 
-    public StructureMaster getStructureMaster() {
-        return structureMaster;
+    public StructMaster getStructMaster() {
+        return structMaster;
     }
 
     public DungeonInitializer getInitializer() {

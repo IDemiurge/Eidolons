@@ -4,6 +4,7 @@ import com.google.inject.internal.util.ImmutableList;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.model.RoomTemplateMaster;
@@ -217,12 +218,14 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
     @Override
     public void areaToBlock() {
-
+        BlockData data = null;
         Set<Coordinates> coordinates = getModel().getSelection().getCoordinates();
         if (coordinates.size() < 9) {
             if (getModel().getBlock() != null) {
+                data = getModel().getBlock().getData();
                 coordinates = getModel().getBlock().getCoordinatesSet();
-            } else return;
+            }
+            else return;
         }
         List<String> tiles = coordinates.stream()
                 .sorted(getCoordSorter())

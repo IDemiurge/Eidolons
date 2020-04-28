@@ -6,8 +6,8 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.TransitHandler;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.PlaceholderResolver;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.StructMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureBuilder;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleLoader;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
@@ -45,8 +45,8 @@ public class DungeonHandler {
         return master.getFloorLoader();
     }
 
-    public StructureMaster getStructureMaster() {
-        return master.getStructureMaster();
+    public StructMaster getStructureMaster() {
+        return master.getStructMaster();
     }
 
     public DC_ObjInitializer getObjInitializer() {

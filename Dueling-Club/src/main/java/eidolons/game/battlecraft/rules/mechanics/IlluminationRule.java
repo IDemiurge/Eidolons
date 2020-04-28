@@ -53,8 +53,8 @@ public class IlluminationRule {
 
     private boolean isOutsideBoundaries(Obj obj) {
         Coordinates c = obj.getCoordinates();
-        LevelStruct struct = DC_Game.game.getDungeonMaster().getStructureMaster().findLowestStruct(c);
-        LevelStruct struct2 = DC_Game.game.getDungeonMaster().getStructureMaster().findLowestStruct(Eidolons.getMainHero().getCoordinates());
+        LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().findLowestStruct(c);
+        LevelStruct struct2 = DC_Game.game.getDungeonMaster().getStructMaster().findLowestStruct(Eidolons.getMainHero().getCoordinates());
 
         if (struct != struct2) {
             return c.dst(Eidolons.getMainHero().getCoordinates()) > 10;

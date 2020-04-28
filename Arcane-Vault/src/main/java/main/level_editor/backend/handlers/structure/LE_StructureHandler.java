@@ -232,7 +232,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     }
 
     public void updateTree() {
-        getGame().getDungeonMaster().getStructureMaster().modelChanged();
+        getGame().getDungeonMaster().getStructMaster().modelChanged();
         getModel().setTreeModel(LevelEditor.getCurrent().getWrapper());
     }
 
@@ -301,6 +301,12 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         }
         if (addBlock(block))
             updateTree();
+
+        reset(block);
+    }
+
+    private void reset(LevelBlock block) {
+        reset(block.getData().getLevelStruct());
     }
 
     private boolean addBlock(LevelBlock block) {

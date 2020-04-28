@@ -45,7 +45,7 @@ public class PuzzleMaster {
                 if (substring.split("::")[0].trim().equalsIgnoreCase("puzzle")) {
                     try {
                         Coordinates c = Coordinates.get(coord);
-                        LevelStruct struct = master.getStructureMaster().findLowestStruct(c);
+                        LevelStruct struct = master.getStructMaster().findLowestStruct(c);
                         if (struct instanceof LevelBlock) {
                             LevelBlock block = ((LevelBlock) struct);
                         Puzzle puzzle =//PuzzleConstructor.

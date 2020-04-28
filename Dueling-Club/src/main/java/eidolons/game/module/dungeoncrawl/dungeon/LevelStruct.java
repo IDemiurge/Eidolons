@@ -20,7 +20,7 @@ import static main.content.enums.DungeonEnums.DUNGEON_STYLE;
 /**
  * Created by JustMe on 7/20/2018.
  */
-public abstract class LevelStruct<T, S> implements LayeredData<S> {
+public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
     protected String name;
     protected Coordinates origin;
     protected int width;
@@ -38,6 +38,7 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         return (Collection<S>) getSubParts();
     }
 
+    @Override
     public String getPropagatedValue(String valueName) {
         String value = "";
         if (getData() != null) value = getData().getValue(valueName);
@@ -50,24 +51,27 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         return value;
     }
 
+    @Override
     public String toXml() {
         return "";
     }
 
-    protected abstract LevelStruct getParent();
-
+    @Override
     public Coordinates getOrigin() {
         return origin;
     }
 
+    @Override
     public void setOrigin(Coordinates origin) {
         this.origin = origin;
     }
 
+    @Override
     public int getWidth() {
         return width;
     }
 
+    @Override
     public void setWidth(int width) {
         this.width = width;
         if (getData() != null) {
@@ -75,10 +79,12 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         }
     }
 
+    @Override
     public int getHeight() {
         return height;
     }
 
+    @Override
     public void setHeight(int height) {
         this.height = height;
         if (getData() != null) {
@@ -86,6 +92,7 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         }
     }
 
+    @Override
     public Set<Coordinates> getCoordinatesSet() {
         if (!ListMaster.isNotEmpty(coordinatesSet)) {
             coordinatesSet =   initCoordinateSet(true);
@@ -93,6 +100,7 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         return coordinatesSet;
     }
 
+    @Override
     public Set<Coordinates> initCoordinateSet(boolean buffer) {
         Set<Coordinates> coordinatesSet = new LinkedHashSet<>();
         for (T subPart : getSubParts()) {
@@ -108,14 +116,17 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         return coordinatesSet;
     }
 
-    protected int getEffectiveHeight() {
+    @Override
+    public int getEffectiveHeight() {
         return getHeight();
     }
 
-    protected int getEffectiveWidth() {
+    @Override
+    public int getEffectiveWidth() {
         return getWidth();
     }
 
+    @Override
     public void setCoordinatesSet(Set<Coordinates> coordinatesSet) {
         this.coordinatesSet = coordinatesSet;
     }
@@ -128,55 +139,67 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         return subParts;
     }
 
+    @Override
     public String getIllumination() {
         return getPropagatedValue("illumination");
     }
 
+    @Override
     public void setIllumination(int globalIllumination) {
         getData().setValue("illumination", "" + globalIllumination);
     }
 
 
+    @Override
     public String getWallType() {
         return getPropagatedValue("wall_type");
     }
 
+    @Override
     public void setWallType(String wallType) {
         getData().setValue("wall_type", wallType);
     }
 
+    @Override
     public String getWallTypeAlt() {
         return getPropagatedValue("alt_wall_type");
     }
 
+    @Override
     public void setWallTypeAlt(String wallType) {
         getData().setValue("alt_wall_type", wallType);
     }
 
 
+    @Override
     public DungeonEnums.CELL_IMAGE getCellType() {
         return new EnumMaster<DungeonEnums.CELL_IMAGE>().retrieveEnumConst(DungeonEnums.CELL_IMAGE.class,
                 getPropagatedValue("cell_type"));
     }
 
+    @Override
     public void setCellType(DungeonEnums.CELL_IMAGE cellType) {
         setValue("cell_type", cellType.toString());
     }
 
+    @Override
     public void setValue(String value, String string) {
         getData().setValue(value, string);
     }
 
+    @Override
     public DUNGEON_STYLE getStyle() {
         return new EnumMaster<DUNGEON_STYLE>().retrieveEnumConst(DUNGEON_STYLE.class,
                 getPropagatedValue("style"));
     }
 
+    @Override
     public AmbienceDataSource.AMBIENCE_TEMPLATE getVfx() {
         return new EnumMaster<AmbienceDataSource.AMBIENCE_TEMPLATE>().retrieveEnumConst(AmbienceDataSource.AMBIENCE_TEMPLATE.class,
                 getPropagatedValue("vfx_template"));
     }
 
+    @Override
     public AMBIENCE getAmbience() {
 //        zone.setStyle( new EnumMaster<DungeonEnums.DUNGEON_STYLE>().retrieveEnumConst(DungeonEnums.DUNGEON_STYLE.class,
 //                getValue(ZoneData.ZONE_VALUE.style)));
@@ -184,20 +207,24 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
                 getPropagatedValue("AMBIENCE"));
     }
 
+    @Override
     public COLOR_THEME getColorTheme() {
         return new EnumMaster<COLOR_THEME>().retrieveEnumConst(COLOR_THEME.class,
                 getPropagatedValue("COLOR_THEME"));
     }
+    @Override
     public CELL_PATTERN getCellPattern() {
         return new EnumMaster<CELL_PATTERN>().retrieveEnumConst(CELL_PATTERN.class,
                 getPropagatedValue("CELL_PATTERN"));
     }
 
+    @Override
     public COLOR_THEME getAltColorTheme() {
         return new EnumMaster<COLOR_THEME>().retrieveEnumConst(COLOR_THEME.class,
                 getPropagatedValue("ALT_COLOR_THEME"));
     }
 
+    @Override
     public String getName() {
         if (name == null) {
             name = getData().getValue("name");
@@ -205,22 +232,27 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         return name;
     }
 
+    @Override
     public int getX() {
         return origin.x;
     }
 
+    @Override
     public int getY() {
         return origin.y;
     }
 
+    @Override
     public int getX2() {
         return getX() + getWidth();
     }
 
+    @Override
     public int getY2() {
         return getY() + getHeight();
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
         if (getData() != null) {
@@ -228,6 +260,7 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         }
     }
 
+    @Override
     public StructureData getData() {
 //        if (data == null) {
 //            data = createData();
@@ -235,34 +268,42 @@ public abstract class LevelStruct<T, S> implements LayeredData<S> {
         return data;
     }
 
+    @Override
     public void setData(StructureData data) {
         this.data = data;
     }
 
+    @Override
     public void setStyle(DUNGEON_STYLE style) {
         getData().setValue("style", style.toString());
     }
 
+    @Override
     public void setAltColorTheme(COLOR_THEME c) {
         getData().setValue("alt_color_theme", c.toString());
     }
 
+    @Override
     public void setColorTheme(COLOR_THEME c) {
         getData().setValue("color_theme", c.toString());
     }
 
+    @Override
     public int getId() {
         return getData().getIntValue("id");
     }
 
+    @Override
     public Coordinates getCenterCoordinate() {
         return CoordinatesMaster.getCenterCoordinate(getCoordinatesSet());
     }
 
+    @Override
     public Map<Coordinates, Integer> getPatternMap() {
         return patternMap;
     }
 
+    @Override
     public void setPatternMap(Map<Coordinates, Integer> patternMap) {
         this.patternMap = patternMap;
     }

@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 /**
  * Created by JustMe on 7/20/2018.
  */
-public class LevelBlock extends LevelStruct<LevelBlock, Object> {
+public class LevelBlock extends LevelStruct<LevelBlock, LevelBlock> {
 
     private ROOM_TYPE roomType;
     private RoomModel model;

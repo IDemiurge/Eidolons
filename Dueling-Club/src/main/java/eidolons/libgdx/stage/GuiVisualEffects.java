@@ -55,7 +55,7 @@ public class GuiVisualEffects extends GroupX {
             //                getEmitterData((DAY_TIME) p.getVar());
             if (!isCustomEmitters())
                 return;
-            LevelStruct struct = DC_Game.game.getDungeonMaster().getStructureMaster().findLowestStruct(
+            LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().findLowestStruct(
              Eidolons.getMainHero().getCoordinates());
             initEmitters(AmbienceDataSource.getTemplate(struct.getStyle()), (DAY_TIME) p.get());
 

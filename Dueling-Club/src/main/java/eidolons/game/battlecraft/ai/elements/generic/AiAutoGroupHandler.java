@@ -32,7 +32,7 @@ public class AiAutoGroupHandler extends AiHandler{
 
     private void initGroups() {
         setGroups(new ArrayList<>());
-        for (LevelBlock block : game.getDungeonMaster().getStructureMaster().getBlocks()) {
+        for (LevelBlock block : game.getDungeonMaster().getStructMaster().getBlocks()) {
             for (List<ObjAtCoordinate> list : block.getUnitGroups().keySet()) {
                 GroupAI group = new GroupAI();
                 group.setType(block.getUnitGroups().get(list));

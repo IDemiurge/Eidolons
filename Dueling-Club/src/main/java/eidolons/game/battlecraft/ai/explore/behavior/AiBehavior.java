@@ -63,11 +63,11 @@ public abstract class AiBehavior {
         this.group = ai.getGroupAI();
         origin = getCoordinates();
         speed = getDefaultSpeed();
-        block = master.getGame().getDungeonMaster().getStructureMaster().findLowestStruct(
+        block = master.getGame().getDungeonMaster().getStructMaster().findLowestStruct(
          ai.getUnit().getCoordinates());
         if (block == null) {
             for (Coordinates c : ai.getUnit().getCoordinates().getAdjacent()) {
-                block = master.getGame().getDungeonMaster().getStructureMaster().findLowestStruct(
+                block = master.getGame().getDungeonMaster().getStructMaster().findLowestStruct(
                  c);
                 if (block != null)
                     return;

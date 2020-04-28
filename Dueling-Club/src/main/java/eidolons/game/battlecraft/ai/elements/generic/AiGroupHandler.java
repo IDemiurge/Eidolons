@@ -36,7 +36,7 @@ public class AiGroupHandler extends AiHandler {
             group.setArg(data.getArg());
         } //how to init it? }
 
-        LevelBlock block = getGame().getDungeonMaster().getStructureMaster().findBlockById(
+        LevelBlock block = getGame().getDungeonMaster().getStructMaster().findBlockById(
                 data.getIntValue(AiData.AI_VALUE.block_id));
 
         group.setBlock(block);

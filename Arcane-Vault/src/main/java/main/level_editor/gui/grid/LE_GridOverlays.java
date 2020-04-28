@@ -69,7 +69,7 @@ public class LE_GridOverlays extends GridOverlaysManager {
             }
         if (LevelEditor.getModel().getDisplayMode().isShowAllColors()) {
             for (LevelBlock block : LevelEditor.getGame().getMetaMaster().
-                    getDungeonMaster().getStructureMaster().getBlocks()) {
+                    getDungeonMaster().getStructMaster().getBlocks()) {
                 checkDrawForStruct(batch, container, cell, block);
             }
         } else {

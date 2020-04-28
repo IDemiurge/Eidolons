@@ -2,7 +2,7 @@ package main.level_editor.backend;
 
 
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.StructMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.game.bf.Coordinates;
@@ -69,8 +69,8 @@ public abstract class LE_Handler {
         return "";
     }
 
-    protected StructureMaster getStructureMaster() {
-        return getGame().getMetaMaster().getDungeonMaster().getStructureMaster();
+    protected StructMaster getStructureMaster() {
+        return getGame().getMetaMaster().getDungeonMaster().getStructMaster();
     }
 
     public LE_EntityHandler getEntityHandler() {
