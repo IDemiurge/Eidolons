@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.libgdx.bf.decor.CellDecor.CELL_PATTERN;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
@@ -244,12 +245,12 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
 
     @Override
     public int getX2() {
-        return getX() + getWidth();
+        return getX() + getEffectiveWidth();
     }
 
     @Override
     public int getY2() {
-        return getY() + getHeight();
+        return getY() + getEffectiveHeight();
     }
 
     @Override
@@ -306,5 +307,9 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
     @Override
     public void setPatternMap(Map<Coordinates, Integer> patternMap) {
         this.patternMap = patternMap;
+    }
+
+    public Module getModule() {
+        return null;
     }
 }

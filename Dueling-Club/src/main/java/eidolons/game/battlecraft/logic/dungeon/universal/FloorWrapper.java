@@ -22,7 +22,7 @@ public class FloorWrapper extends LevelStruct<Module, Module> implements EntityW
     }
 
     @Override
-    protected LevelStruct getParent() {
+    public LevelStruct getParent() {
         if (getGame().getMissionMaster() == null) {
             return null;
         }
@@ -81,6 +81,9 @@ public class FloorWrapper extends LevelStruct<Module, Module> implements EntityW
                 DungeonEnums.LOCATION_TYPE.class);
     }
 
+    public Module getModule() {
+        return getChildren().iterator().next();
+    }
     public void setLevelFilePath(String s) {
         floor.setLevelFilePath(s);
     }

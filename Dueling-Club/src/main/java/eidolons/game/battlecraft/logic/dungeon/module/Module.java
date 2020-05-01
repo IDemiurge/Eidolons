@@ -29,6 +29,8 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     private Map<Integer, BattleFieldObject> objIdMap = new LinkedHashMap<>();
     private Map<Integer, ObjType> idTypeMap = new LinkedHashMap<>();
     private String objectsData;
+    private String borderObjectsData;
+    private boolean firstInit;
 
     public Module(Coordinates origin, int width, int height, String name) {
         this.origin = origin;
@@ -48,7 +50,7 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     }
 
     @Override
-    protected LevelStruct getParent() {
+    public LevelStruct getParent() {
         return DC_Game.game.getDungeonMaster().getFloorWrapper();
     }
 
@@ -69,12 +71,15 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
         //TODO nullify this on reset!
         Set<Coordinates> coordinatesSet = new LinkedHashSet<>();
         Coordinates c =
-//              buffer  ? getOrigin()
-//                .getOffset(-getWidthBuffer(), -getHeightBuffer()) :
-                getOrigin();
+                buffer ? getOrigin()
+                        : getOrigin()
+                        .getOffset(getWidthBuffer(), getHeightBuffer());
+        Coordinates c1 = c.getOffset(getEffectiveWidth(false), getEffectiveHeight(false));
         coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetween(
                 c,
-                c.getOffset(getEffectiveWidth(buffer)-1, getEffectiveHeight(buffer)-1)));
+                buffer ? c1.getOffset(getWidthBuffer(), getHeightBuffer())
+                        : c1)
+        );
 
         return coordinatesSet;
     }
@@ -183,6 +188,10 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
         return getId() == 0;
     }
 
+    public void initBorderObjects() {
+        game.getDungeonMaster().getObjInitializer().processBorderObjects(this, borderObjectsData);
+    }
+
     public Map<Integer, BattleFieldObject> initObjects() {
         Map<Integer, BattleFieldObject> objectMap =
                 game.getDungeonMaster().getObjInitializer().processObjects(this,
@@ -191,7 +200,11 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
 
         log(LOG_CHANNEL.BUILDING, "Objects created: " + objectMap.size());
         getObjIdMap().putAll(objectMap);
-        return         objectMap;
+        return objectMap;
+    }
+
+    public Module getModule() {
+        return this;
     }
 
     public void setObjectsData(String objectsData) {
@@ -200,5 +213,21 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
 
     public String getObjectsData() {
         return objectsData;
+    }
+
+    public void setBorderObjectsData(String borderObjectsData) {
+        this.borderObjectsData = borderObjectsData;
+    }
+
+    public String getBorderObjectsData() {
+        return borderObjectsData;
+    }
+
+    public boolean isFirstInit() {
+        return firstInit;
+    }
+
+    public void setFirstInit(boolean firstInit) {
+        this.firstInit = firstInit;
     }
 }

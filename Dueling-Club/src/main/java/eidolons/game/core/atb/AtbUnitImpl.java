@@ -3,8 +3,8 @@ package eidolons.game.core.atb;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import main.system.GuiEventManager;
-import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.RandomWizard;
 import main.system.text.LogManager;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
@@ -36,7 +36,7 @@ public class AtbUnitImpl implements AtbUnit {
         if (preset!=0){
             mod = Math.min(1, preset);
         }
-        return  AtbController.TIME_TO_READY * (mod);
+        return  AtbController.ATB_TO_READY * (mod);
 //        return   (mod)
 //                * AtbController.TIME_LOGIC_MODIFIER / AtbController.TIME_TO_READY ;
 //        return  AtbController.TIME_TO_READY * (mod)
@@ -53,11 +53,11 @@ public class AtbUnitImpl implements AtbUnit {
     @Override
     public void setAtbReadiness(float i) {
 
-        if (i >  AtbController.TIME_TO_READY) {  //1.01f *
+        if (i >  AtbController.ATB_TO_READY) {  //1.01f *
             main.system.auxiliary.log.LogMaster.log(1, " Bad ATB status:" +
              getUnit().getName() + " has " +
              i + " readiness value");
-            i = AtbController.TIME_TO_READY;
+            i = AtbController.ATB_TO_READY;
         }
 
         double value = (i) * AtbController.TIME_LOGIC_MODIFIER;
@@ -93,7 +93,7 @@ public class AtbUnitImpl implements AtbUnit {
         if (timeTillTurn != i) {
             timeTillTurn = i;
 
-            if (i > AtbController.TIME_TO_READY || i < 0) {
+            if (i > AtbController.ATB_TO_READY || i < 0) {
                 main.system.auxiliary.log.LogMaster.log(1, " Bad setTimeTillTurn:" +
                  getUnit().getName() + " to " + i);
             } else {
@@ -108,7 +108,7 @@ public class AtbUnitImpl implements AtbUnit {
 
     @Override
     public int getDisplayedAtbReadiness() {
-        return Math.round(getAtbReadiness()/ AtbController.TIME_TO_READY * 100 );
+        return Math.round(getAtbReadiness()/ AtbController.ATB_TO_READY * 100 );
     }
 
 

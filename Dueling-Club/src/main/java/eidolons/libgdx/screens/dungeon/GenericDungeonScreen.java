@@ -65,6 +65,10 @@ public abstract class GenericDungeonScreen extends GameScreen {
             getCam().position.set(GridMaster.getCenteredPos((Coordinates) p.get()), 0);
 
         });
+        GuiEventManager.bind(GuiEventType.INITIAL_LOAD_DONE , p-> {
+            final GridCreateData param = ((GridCreateData) data.getParams().get());
+            createAndInitModuleGrid(param);
+        });
     }
 
     protected void checkGraphicsUpdates() {
@@ -86,6 +90,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
         if (path == null) {
             return;
         }
+        path = path.trim();
         if (!ImageManager.isImageFile(path)) {
             return;
         }
@@ -197,7 +202,11 @@ public abstract class GenericDungeonScreen extends GameScreen {
     protected void afterLoad() {
         setCam((OrthographicCamera) viewPort.getCamera());
 
-        final GridCreateData param = ((GridCreateData) data.getParams().get());
+//        final GridCreateData param = ((GridCreateData) data.getParams().get());
+//        createAndInitModuleGrid(param);
+    }
+
+    private void createAndInitModuleGrid(GridCreateData param) {
         gridPanel = createGrid(param);
         Module module = DC_Game.game.getModule();
         if (!CoreEngine.isLevelEditor())

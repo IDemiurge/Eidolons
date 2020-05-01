@@ -29,6 +29,7 @@ import main.level_editor.gui.panels.control.ControlPanelHolder;
 import main.level_editor.gui.panels.control.TabbedControlPanel;
 import main.level_editor.gui.panels.palette.HybridPalette;
 import main.level_editor.gui.top.LE_ButtonStripe;
+import main.level_editor.gui.top.LE_StatusBar;
 import main.level_editor.gui.top.TopPanel;
 import main.level_editor.gui.tree.LE_TreeHolder;
 import main.system.ExceptionMaster;
@@ -39,6 +40,7 @@ import main.system.data.DataUnit;
 
 public class LE_GuiStage extends GenericGuiStage {
 
+    public static boolean dialogActive;
     private TopPanel topPanel;
     private LE_ButtonStripe buttons;
     private ClosablePanel controlPanel;
@@ -60,7 +62,7 @@ public class LE_GuiStage extends GenericGuiStage {
     private AiEditDialog aiEditor;
     private boolean positionsAdjusted;
     private CellDataEditor cellDataEditor;
-
+    LE_StatusBar statusBar;
 
     public LE_GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -83,7 +85,6 @@ public class LE_GuiStage extends GenericGuiStage {
             addActor(topPanel);
             addActor((controlPanel));
         }
-
         //separate table?
 
         addActor(templateChooser = new BlockTemplateChooser());
@@ -97,6 +98,7 @@ public class LE_GuiStage extends GenericGuiStage {
         addActor(cellDataEditor = new CellDataEditor());
         addActor(editTable = new DataTable(2, 50));
 
+        addActor(statusBar=new LE_StatusBar());
         GuiEventManager.bind(GuiEventType.LE_GUI_TOGGLE , p-> {
             toggleUiVisible();
         });
@@ -120,11 +122,11 @@ public class LE_GuiStage extends GenericGuiStage {
             public void layout() {
                 super.layout();
                 buttons.setY(buttons.getY()-20);
-                buttons.setX(buttons.getX()+276);
-                topPanel.setX( 272);
+                buttons.setX(buttons.getX()+226);
+                topPanel.setX( 222);
                 topPanel.setY(topPanel.getY()+18);
-                controlPanel.setX(controlPanel.getX()-190);
-                controlPanel.setY(controlPanel.getY()-20);
+                controlPanel.setX(controlPanel.getX()-165);
+                controlPanel.setY(controlPanel.getY()-50);
             }
         }).maxHeight(120) ;
         upperTable.add(topPanel = new TopPanel()).left();
@@ -159,9 +161,14 @@ public class LE_GuiStage extends GenericGuiStage {
 
     @Override
     public void act(float delta) {
+        LE_GuiStage.dialogActive = false;
 //        if (treePanel.getUserObject() == null) {
 //           GuiEventManager.trigger(GuiEventType.LE_TREE_RESET, LevelEditor.getCurrent());
 //        }
+        statusBar.setY(20);
+        statusBar.setX(GdxMaster.getWidth()/2 -200);
+//        statusBar.setX(550);
+//        statusBar.setDebug(true);
         if (!isTableMode()) {
             topPanel.setY(Gdx.graphics.getHeight() - 50);
             topPanel.setX(200);

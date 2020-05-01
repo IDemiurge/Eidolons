@@ -6,7 +6,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechExecutor;
 import eidolons.game.core.ActionInput;
@@ -105,7 +105,7 @@ public class AnimMaster extends Group {
                 return true;
         if (sourceObj instanceof DC_Obj)
             if (!sourceObj.isMine())
-                return !VisionManager.checkVisible((DC_Obj) sourceObj, false);
+                return !VisionHelper.checkVisible((DC_Obj) sourceObj, false);
 
         return false;
     }

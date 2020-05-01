@@ -38,7 +38,9 @@ public class LE_ModelManager extends LE_Handler {
     private EditorModel createDefault() {
         EditorModel model = new EditorModel();
 //model.setCoordinateSelection(CoordinatesMaster.getCenterCoordinate(getModule().getCoordinates()));
-        model.setPaletteSelection(new PaletteSelection());
+        PaletteSelection.getInstance().setType(getObjHandler().getDefaultPaletteType());
+        PaletteSelection.getInstance().setOverlayingType(null);
+
         return model;
     }
 
@@ -50,15 +52,19 @@ public class LE_ModelManager extends LE_Handler {
         } else {
             origin = getSelectionHandler().selectCoordinate();
         }
-        operation(PASTE_START);
         //TODO all data - ai, script, layer props...
-        Coordinates offset = null;
         List<BattleFieldObject> sorted = new LinkedList<>();
         for (Integer id : copied.getIds()) {
             sorted.add(getGame().getSimIdManager().getObjectById(id));
         }
         sorted.sort(SortMaster.getSorterByExpression(obj -> -(((Obj) obj).getX() + ((Obj) obj).getY())));
 
+        copyTo(sorted, origin);
+    }
+
+    public void copyTo(List<BattleFieldObject> sorted, Coordinates origin) {
+        Coordinates offset = null;
+        operation(PASTE_START);
         for (BattleFieldObject obj : sorted) {
             ObjType type = obj.getType();
             Coordinates c = origin;
@@ -84,6 +90,10 @@ public class LE_ModelManager extends LE_Handler {
 
     }
 
+    public LE_Selection getCopied() {
+        return copied;
+    }
+
     public void cut() {
         copied = new LE_Selection(model.getSelection());
         getObjHandler().removeSelected();
@@ -92,7 +102,6 @@ public class LE_ModelManager extends LE_Handler {
 
     public void back() {
         model = modelStack.pop();
-        GuiEventManager.trigger(GuiEventType.LE_GUI_RESET);
     }
 
     public void toDefault() {
@@ -106,6 +115,8 @@ public class LE_ModelManager extends LE_Handler {
 
     public void paletteSelection(ObjType entity) {
         getModel().getPaletteSelection().setType(entity);
+
+        GuiEventManager.trigger(GuiEventType.LE_GUI_RESET, getModel());
     }
 
     public void modelChanged() {

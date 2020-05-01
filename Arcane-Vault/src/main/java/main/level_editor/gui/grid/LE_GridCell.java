@@ -121,6 +121,7 @@ public class LE_GridCell extends GridCellContainer {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                main.system.auxiliary.log.LogMaster.log(1,x+" " +y);
                 InputEvent e = new InputEvent();
                 e.setButton(event.getButton());
                 Eidolons.onNonGdxThread(() ->

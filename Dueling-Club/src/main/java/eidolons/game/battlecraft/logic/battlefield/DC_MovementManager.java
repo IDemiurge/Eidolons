@@ -4,7 +4,6 @@ import eidolons.ability.conditions.req.CellCondition;
 import eidolons.ability.conditions.shortcut.PushableCondition;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
-import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
@@ -18,7 +17,6 @@ import eidolons.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
-import eidolons.game.battlecraft.rules.mechanics.CollisionRule;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_Game;
@@ -266,20 +264,22 @@ public class DC_MovementManager implements MovementManager {
 
         Coordinates c = cell.getCoordinates();
         if (mod != MOVE_MODIFIER.TELEPORT) { // TODO UPDATE!
-            Unit moveObj = (Unit) getGrid().getObj(cell.getCoordinates());
-            if (moveObj != null) {
-                if (ref.getActive() instanceof DC_ActiveObj) {
-                    DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
-                    if (moveObj instanceof Unit) {
-                        Unit heroObj = moveObj;
-                        c = CollisionRule.collision(ref, activeObj, moveObj, heroObj,
-                         false, activeObj.getIntParam(PARAMS.FORCE));
-                        if (c == null) {// TODO UPDATE!
-                            return true; // displaced by Collision rule?
-                        }
-                    }
-                }
-            }
+//            if (RuleKeeper.isRuleOn(RuleKeeper.RULE.COLLISION)) {
+//            BattleFieldObject moveObj = (BattleFieldObject)game.getObjMaster().getObjectByCoordinate( cell.getCoordinates(), false);
+//            if (moveObj != null) {
+//                if (ref.getActive() instanceof DC_ActiveObj) {
+//                    DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
+//                    if (moveObj instanceof Unit) {
+//                        BattleFieldObject heroObj = moveObj;
+//                        c = CollisionRule.collision(ref, activeObj, moveObj, heroObj,
+//                         false, activeObj.getIntParam(PARAMS.FORCE));
+//                        if (c == null) {// TODO UPDATE!
+//                            return true; // displaced by Collision rule?
+//                        }
+//                    }
+//                }
+//            }
+//            }
         }
         if (obj.isDead()) {
             return false;
@@ -307,7 +307,7 @@ public class DC_MovementManager implements MovementManager {
                 return false;
             }
         }
-
+        cell.setObjectsModified(true);
         obj.setCoordinates(c);
 
 //        if (IGG_HACK_MOVE)

@@ -118,6 +118,13 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         LevelStruct struct = getModel().getLastSelectedStruct();
         String name = struct.getName();
         name = GdxDialogMaster.inputText("Export with name...", name);
+        if (struct instanceof Module) {
+            name = NameMaster.getUniqueVersionedName(new ArrayList<>(blockTemplates.keySet()), name);
+            String structName = struct.getName();
+            struct.setName(name);
+            getDataHandler().saveModule((Module)struct);
+            struct.setName(structName);
+        }
         if (struct instanceof LevelBlock) {
             name = NameMaster.getUniqueVersionedName(new ArrayList<>(blockTemplates.keySet()), name);
             blockTemplates.put(name, ((LevelBlock) struct).getData());
@@ -205,7 +212,8 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             x++;
         }
         getOperationHandler().operation(Operation.LE_OPERATION.INSERT_END);
-        initBlock(block, coords);
+        initBlockCoords(block, coords);
+        initNewBlock(block, true);
         block.setRoomType(blockTemplate.getType());
 
         LevelStruct level = getGame().getDungeonMaster().getFloorWrapper();
@@ -281,7 +289,15 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         LevelZone zone = getModel().getZone();
         Set<Coordinates> coordinates = getSelectionHandler().getSelection().getCoordinates();
         LevelBlock block = createBlock(zone, coordinates);
-        if (!blockTemplates.isEmpty() && EUtils.confirm("Use template?")) {
+        initNewBlock(block, false);
+        if (addBlock(block))
+            updateTree();
+
+        reset(block);
+    }
+
+    private void initNewBlock(LevelBlock block, boolean insert) {
+        if (!blockTemplates.isEmpty() && EUtils.waitConfirm("Use template?")) {
             Object[] array = blockTemplates.keySet().toArray();
             Object c = LE_Screen.getInstance().getGuiStage().getEnumChooser().choose(array);
             BlockData template = blockTemplates.get(c);
@@ -290,8 +306,10 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             block.setData(new BlockData(block).setData(template.getData()));
             block.setName(template.getValue("name"));
 
-            template.apply();
+            block.getData().apply();
         } else {
+            if (insert)
+                return ;
             ROOM_TYPE type = LE_Screen.getInstance().getGuiStage().getEnumChooser()
                     .chooseEnum(ROOM_TYPE.class);
             if (type == null) {
@@ -299,10 +317,6 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             }
             block.setRoomType(type);
         }
-        if (addBlock(block))
-            updateTree();
-
-        reset(block);
     }
 
     private void reset(LevelBlock block) {
@@ -539,11 +553,11 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
 
     private LevelBlock createBlock(LevelZone zone, Set<Coordinates> coordinates) {
         LevelBlock block = new LevelBlock(zone);
-        return initBlock(block, coordinates);
+        return initBlockCoords(block, coordinates);
 
     }
 
-    private LevelBlock initBlock(LevelBlock block, Set<Coordinates> coordinates) {
+    private LevelBlock initBlockCoords(LevelBlock block, Set<Coordinates> coordinates) {
         block.setCoordinates(coordinates);
         block.setOrigin(CoordinatesMaster.getUpperLeftCornerCoordinates(coordinates));
         int w = CoordinatesMaster.getWidth(block.getCoordinatesSet());

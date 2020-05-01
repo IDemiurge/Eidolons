@@ -3,8 +3,10 @@ package main.level_editor.backend.sim;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
+import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.core.master.ObjCreator;
@@ -30,6 +32,13 @@ public class LE_GameSim extends ScenarioGame {
 
      */
 
+    public void enterModule(Module module) {
+        grid = new DC_BattleFieldGrid(module);
+        for (Module module1 : getMetaMaster().getModuleMaster().getModules()) {
+            grid.setModule(module1);
+        }
+    }
+
     public LE_GameSim(LE_MetaMaster metaMaster) {
         super(metaMaster);
         simIdManager = new LE_IdManager();
@@ -53,6 +62,7 @@ public class LE_GameSim extends ScenarioGame {
             protected void updateGraphics() {
 
             }
+
             @Override
             public Coordinates getMainHeroCoordinates() {
                 return null;

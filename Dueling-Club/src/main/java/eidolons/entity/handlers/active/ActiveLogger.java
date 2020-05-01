@@ -2,7 +2,7 @@ package eidolons.entity.handlers.active;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -75,7 +75,7 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
 
         if (logAction) {
             game.getLogManager().log(">> " + string);
-        } else if (VisionManager.checkVisible(getOwnerObj(), false) && !getMaster().getChecker().isAttackAny()) {
+        } else if (VisionHelper.checkVisible(getOwnerObj(), false) && !getMaster().getChecker().isAttackAny()) {
             String text = " performs an action... ";
             game.getLogManager().log(">> " + getOwnerObj().getNameIfKnown() + text);
         }
@@ -111,12 +111,10 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
              );
         }
         if (!getEntity().getOwnerObj().isMine())
-            if (!getGame().isDebugMode() &&
-             getEntity().getOwnerObj().getPlayerVisionStatus(false) == PLAYER_VISION.CONCEALED
-             ||
-             getEntity().getOwnerObj().getPlayerVisionStatus(false) == PLAYER_VISION.INVISIBLE
-             )
-                return false;
+            return (getGame().isDebugMode() ||
+                    getEntity().getOwnerObj().getPlayerVisionStatus(false) != PLAYER_VISION.CONCEALED)
+                    &&
+                    getEntity().getOwnerObj().getPlayerVisionStatus(false) != PLAYER_VISION.INVISIBLE;
         return true;
     }
 

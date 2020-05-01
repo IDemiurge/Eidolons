@@ -8,7 +8,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.misc.ChargeRule;
@@ -173,7 +173,7 @@ public class GameLoop {
                 break;
             }
             if (!started) {
-                VisionManager.refresh();
+                VisionHelper.refresh();
                 started = true;
             }
             if (RuleKeeper.isRuleOn(RuleKeeper.RULE.INTENTS))

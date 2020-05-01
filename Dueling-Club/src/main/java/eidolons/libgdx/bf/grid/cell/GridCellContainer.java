@@ -606,6 +606,11 @@ public class GridCellContainer extends GridCell implements Hoverable {
                     return 1.0f * mod;
                 }
 
+                @Override
+                protected boolean isHideWhenFade() {
+                    return false;
+                }
+
                 protected float getFadeInDuration() {
                     return getFadeDuration();
                 }

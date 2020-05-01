@@ -3,12 +3,12 @@ package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 import eidolons.ability.conditions.VisibilityCondition;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.action.WatchRule;
@@ -169,7 +169,7 @@ public class AttackOfOpportunityRule {
 
         if (isOff()) {
             if (!stealthAoO) {
-                if (!VisionManager.checkVisible(unit)) {
+                if (!VisionHelper.checkVisible(unit)) {
                     if (!unit.checkBool(GenericEnums.STD_BOOLS.STEALTHY_AOOS)) {
                         return null;
                     }
@@ -471,9 +471,7 @@ if (isOff())
             return false;
         }
         if (attack.canBeTargeted(target.getId())) {
-            if (attack.canBeActivatedAsAttackOfOpportunity(true, target)) {
-                return true;
-            }
+            return attack.canBeActivatedAsAttackOfOpportunity(true, target);
         }
         return false;
     }

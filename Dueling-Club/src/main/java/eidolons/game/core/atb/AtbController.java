@@ -22,9 +22,9 @@ import java.util.Comparator;
 public class AtbController implements Comparator<Unit> {
     public static final int ATB_READINESS_PER_AP = 2000; //20% readiness per Action Point
     public static final float SECONDS_IN_ROUND = 12; //seconds; to sync with clock
-    public static final float TIME_TO_READY = 10;
+    public static final float ATB_TO_READY = 10;
     public static final Float TIME_LOGIC_MODIFIER = 1000f;
-    protected static final Float ATB_PER_INITIATIVE_MOD =0.2f ;
+    protected static final Float ATB_PER_INITIATIVE_PER_SEC =0.05f ;
     protected AtbTurnManager manager;
     protected Array<AtbUnit> unitsInAtb;
     protected float time = 0f; //passed in this round
@@ -86,7 +86,7 @@ public class AtbController implements Comparator<Unit> {
 //            manager.getGame().getManager().endRound();
 //            newRound();
         }
-        if (this.unitsInAtb.get(0).getAtbReadiness() >= TIME_TO_READY*0.99f) {
+        if (this.unitsInAtb.get(0).getAtbReadiness() >= ATB_TO_READY *0.99f) {
             return this.unitsInAtb.get(0);
         } else {
             return null; //this.step();
@@ -158,7 +158,7 @@ public class AtbController implements Comparator<Unit> {
     }
 
     protected float getAtbGainForUnit(Float time, AtbUnit unit) {
-        return time * unit.getInitiative() * ATB_PER_INITIATIVE_MOD;
+        return time * unit.getInitiative() * ATB_PER_INITIATIVE_PER_SEC;
     }
 
     protected void addTime(Float time) {
@@ -192,7 +192,7 @@ public class AtbController implements Comparator<Unit> {
     }
 
     protected float calculateTimeTillTurn(AtbUnit unit) {
-        float time = getAtbGainForUnit((TIME_TO_READY - unit.getAtbReadiness()) , unit);
+        float time = getAtbGainForUnit((ATB_TO_READY - unit.getAtbReadiness()) , unit);
         if (unit.isImmobilized()) {
             float duration = AtbMaster.getImmobilizingBuffsMaxDuration(unit.getUnit());
             if (duration == 0){

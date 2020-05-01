@@ -1,6 +1,5 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
-import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.generator.LevelData;
@@ -105,8 +104,6 @@ public class DungeonLevel  {
         String values = "";
         values += "\n" + XML_Converter.wrap(RngXmlMaster.LOCATION_TYPE_NODE, locationType.toString());
         values += "\n" + XML_Converter.wrap(RngXmlMaster.SUBLEVEL_TYPE_NODE, sublevelType.toString());
-        values += "\n" + XML_Converter.wrap(PARAMS.BF_HEIGHT.name(), tileMap.getHeight() + "");
-        values += "\n" + XML_Converter.wrap(PARAMS.BF_WIDTH.name(), tileMap.getWidth() + "");
         values = XML_Converter.wrap(RngXmlMaster.VALUES_NODE, values);
         xml += "\n" + values;
         //props

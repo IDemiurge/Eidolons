@@ -3,10 +3,19 @@ package main.level_editor.gui.dialog;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
+import main.system.threading.WaitMaster;
 
 import java.util.Collection;
 
 public class EnumChooser extends ChooserDialog<Object, SmartButton> {
+
+    public static final WaitMaster.WAIT_OPERATIONS OPERATION = WaitMaster.WAIT_OPERATIONS.
+            DIALOG_SELECTION_ENUM;
+
+    @Override
+    protected WaitMaster.WAIT_OPERATIONS getSelectionOperation() {
+        return OPERATION;
+    }
     private Object[] consts;
 
     public EnumChooser() {

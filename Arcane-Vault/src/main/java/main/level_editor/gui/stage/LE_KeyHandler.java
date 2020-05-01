@@ -42,6 +42,9 @@ public class LE_KeyHandler extends LE_Handler {
 
             case Input.Keys.FORWARD_DEL:
             case Input.Keys.DEL:
+                if (LE_GuiStage.dialogActive) {
+                    return;
+                }
                 if (getModel().getBlock() != null) {
                     if (EUtils.waitConfirm("Delete block " + getModel().getBlock() + "?")) {
                         getStructureHandler().removeBlock();
@@ -96,6 +99,12 @@ public class LE_KeyHandler extends LE_Handler {
         }
         if (ctrl) {
             switch (keyCode) {
+                case Input.Keys.Q:
+                    LevelEditor.getCurrent().getManager().getAdvFuncs().toggleVoid( );
+                    return ;
+                case Input.Keys.M:
+                    LevelEditor.getCurrent().getManager().getDataHandler().saveModule(getModel().getModule());
+                    return ;
                 case Input.Keys.S:
                     LevelEditor.getCurrent().getManager().getDataHandler().saveAs();
                     return ;

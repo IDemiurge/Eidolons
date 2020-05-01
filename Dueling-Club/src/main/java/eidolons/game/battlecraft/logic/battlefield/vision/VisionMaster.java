@@ -173,13 +173,13 @@ public class VisionMaster implements GenericVisionManager {
             LogMaster.log(1, ">>>>>> visibleList  = " + visibleList);
             LogMaster.log(1, ">>>>>> invisibleList  = " + invisibleList);
             String string = "";
-            for (BattleFieldObject sub : visibleList) {
-                string += sub + ": \n";
-                string += "getVisibilityLevelForPlayer= " + sub.getVisibilityLevelForPlayer() + "\n";
-                string += "getVisibilityLevel= " + sub.getVisibilityLevel() + "\n";
-                string += "getPlayerVisionStatus= " + sub.getPlayerVisionStatus(true) + "\n";
-                string += "getGamma= " + sub.getGamma() + "\n";
-            }
+//            for (BattleFieldObject sub : visibleList) {
+//                string += sub + ": \n";
+//                string += "getVisibilityLevelForPlayer= " + sub.getVisibilityLevelForPlayer() + "\n";
+//                string += "getVisibilityLevel= " + sub.getVisibilityLevel() + "\n";
+//                string += "getPlayerVisionStatus= " + sub.getPlayerVisionStatus(true) + "\n";
+//                string += "getGamma= " + sub.getGamma() + "\n";
+//            }
 
             LogMaster.log(1, "***********" +
                     "" + string);

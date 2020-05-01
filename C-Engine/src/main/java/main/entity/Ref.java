@@ -184,10 +184,17 @@ public class Ref implements Cloneable, Serializable {
         return getInteger(key);
     }
 
+    public void setID(KEYS key, Integer id) {
+        if (key == null) {
+            return;
+        }
+        setValue(key, String.valueOf(id));
+    }
+
     public void setID(String key, Integer id) {
 
         setStr(formatKeyString(key));
-        Ref ref = checkForRefReplacement();
+        Ref ref = checkForRefReplacement(); //TODO EA check
 
         if (id == null) {
             ((ref == null) ? this : ref).setValue(getKey(getStr()), null);
@@ -284,7 +291,7 @@ public class Ref implements Cloneable, Serializable {
     protected Ref checkForRefReplacement() {
         String s = getStr();
         while (s.startsWith("{")) {
-            s=s.substring(1 );
+            s = s.substring(1);
         }
         String prefix_ = s.split("_")[0];
         if (prefix_.isEmpty() || prefix_.equals(s))
@@ -294,7 +301,7 @@ public class Ref implements Cloneable, Serializable {
             // setStr(getStr().replace(EVENT_PREFIX, "")); [OPTIMIZED]
             String str = StringMaster.cropFirstSegment(getStr(), "_");
             while (str.endsWith("}")) {
-                str=str.substring(0,str.length()-1);
+                str = str.substring(0, str.length() - 1);
             }
             setStr(str);
             return getEvent().getRef();
@@ -321,7 +328,7 @@ public class Ref implements Cloneable, Serializable {
     }
 
     public Integer getAmount() {
-        Integer amount = getInteger(KEYS.AMOUNT.name());
+        Integer amount = getInteger(KEYS.AMOUNT.name(), false);
         if (amount == null) {
             return 0;
         }
@@ -337,10 +344,16 @@ public class Ref implements Cloneable, Serializable {
     }
 
     public Integer getInteger(String key) {
+        return getInteger(key, true);
+    }
+
+    public Integer getInteger(String key, boolean checkReplacements) {
         setStr(formatKeyString(key));
         // if (!getStr().equals(formatKeyString(key)))
         // throw new RuntimeException();
-        Ref ref = checkForRefReplacement();
+        Ref ref = this;
+        if (checkReplacements)
+            ref = checkForRefReplacement();
 
         String value = ((ref == null) ? this : ref).getValue(getStr());
         if (NumberUtils.isInteger(value)) {
@@ -501,12 +514,6 @@ public class Ref implements Cloneable, Serializable {
         }
     }
 
-    public void setID(KEYS key, Integer id) {
-        if (key == null) {
-            return;
-        }
-        setValue(key, String.valueOf(id));
-    }
 
     public Effect getEffect() {
         return effect;
@@ -517,7 +524,7 @@ public class Ref implements Cloneable, Serializable {
     }
 
     public Integer getId(KEYS key) {
-        return getInteger(key.name());
+        return getInteger(key.name(), key.replacement);
     }
 
     public boolean checkInterrupted() {
@@ -655,11 +662,11 @@ public class Ref implements Cloneable, Serializable {
         ARMOR,
         OFFHAND,
         SLOT_ITEM,
-        EVENT_SOURCE,
-        EVENT_AMOUNT,
-        EVENT_TARGET,
-        EVENT_MATCH,
-        EVENT_ABILITY,
+        EVENT_SOURCE(true),
+        EVENT_AMOUNT(true),
+        EVENT_TARGET(true),
+        EVENT_MATCH(true),
+        EVENT_ABILITY(true),
         // ++ EFFECT
         BUFF,
         SUMMONED,
@@ -668,7 +675,7 @@ public class Ref implements Cloneable, Serializable {
         CUSTOM_TARGET,
         ITEM,
         SKILL,
-        MATCH_SOURCE,
+        MATCH_SOURCE(true),
         PARTY,
         INFO,
         AMMO,
@@ -694,6 +701,15 @@ public class Ref implements Cloneable, Serializable {
         ENCOUNTER,
         FACTION,
         AREA, ATTACK_WEAPON, RESERVE_WEAPON, RESERVE_OFFHAND_WEAPON, HOSTILITY,
+        ;
+        public boolean replacement;
+
+        KEYS(boolean replacement) {
+            this.replacement = replacement;
+        }
+
+        KEYS() {
+        }
     }
 
 }

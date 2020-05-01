@@ -145,6 +145,12 @@ public class Coordinates implements Serializable {
         if (CoreEngine.isLevelEditor()) {
             return false;
         }
+        if ( getFloorWidth()==0) {
+            return false;
+        }
+        if (getFloorHeight()==0) {
+            return false;
+        }
         if (c.x >= getFloorWidth()) {
             c.x = getFloorWidth() - 1;
             c.setInvalid(true);

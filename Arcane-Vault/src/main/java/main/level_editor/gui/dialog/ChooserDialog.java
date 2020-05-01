@@ -14,6 +14,7 @@ import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import eidolons.libgdx.texture.Images;
+import main.level_editor.gui.stage.LE_GuiStage;
 import main.system.threading.WaitMaster;
 
 import java.util.Arrays;
@@ -130,6 +131,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
         } else {
             setVisible(true);
         }
+
     }
 
     protected void close() {
@@ -149,5 +151,6 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
     @Override
     public void act(float delta) {
         super.act(delta);
+        LE_GuiStage.dialogActive = true;
     }
 }

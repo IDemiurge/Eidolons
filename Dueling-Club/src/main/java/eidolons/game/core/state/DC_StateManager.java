@@ -7,7 +7,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
@@ -238,7 +238,7 @@ public class DC_StateManager extends StateManager {
 
     private void triggerOnResetGuiEvents() {
         GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE_MANY, objectsToReset.stream().filter(obj -> {
-            if (!VisionManager.checkVisible(obj))
+            if (!VisionHelper.checkVisible(obj))
                 return true;
             if ((obj).isWall())
                 return true;

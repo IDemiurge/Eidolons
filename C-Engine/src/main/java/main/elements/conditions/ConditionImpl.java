@@ -55,7 +55,8 @@ public abstract class ConditionImpl implements Condition {
 
     @Override
     public boolean preCheck(Ref ref) {
-        ref = ref.getCopy();
+        //TODO EA check
+//        ref = ref.getCopy();
         setGame(ref.getGame());
         boolean logged = false;
         if (!isLoggingBlocked()) {

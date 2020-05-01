@@ -55,7 +55,13 @@ public class LevelStructure {
                 return DungeonEnums.DUNGEON_STYLE.class;
             }
         },
-        cell_type(EDIT_VALUE_TYPE.enum_const) {
+         cell_type(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return DungeonEnums.CELL_IMAGE.class;
+            }
+        },
+        alt_cell_type(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
                 return DungeonEnums.CELL_IMAGE.class;
@@ -135,7 +141,13 @@ public class LevelStructure {
                 return DungeonEnums.DUNGEON_STYLE.class;
             }
         },
-        cell_type(EDIT_VALUE_TYPE.enum_const) {
+         cell_type(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return DungeonEnums.CELL_IMAGE.class;
+            }
+        },
+        alt_cell_type(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
                 return DungeonEnums.CELL_IMAGE.class;
@@ -228,12 +240,18 @@ public class LevelStructure {
                 return DungeonEnums.DUNGEON_STYLE.class;
             }
         },
-        cell_type(EDIT_VALUE_TYPE.enum_const) {
+         cell_type(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
                 return DungeonEnums.CELL_IMAGE.class;
             }
         },
+        alt_cell_type(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return DungeonEnums.CELL_IMAGE.class;
+            }
+        }, 
         color_theme(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
@@ -332,7 +350,13 @@ public class LevelStructure {
                 return DungeonEnums.DUNGEON_STYLE.class;
             }
         },
-        cell_type(EDIT_VALUE_TYPE.enum_const) {
+         cell_type(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return DungeonEnums.CELL_IMAGE.class;
+            }
+        },
+        alt_cell_type(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
                 return DungeonEnums.CELL_IMAGE.class;

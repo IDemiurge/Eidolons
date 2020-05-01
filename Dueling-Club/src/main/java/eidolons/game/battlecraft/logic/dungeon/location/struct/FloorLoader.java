@@ -83,7 +83,11 @@ public class FloorLoader extends DungeonHandler {
                 }
                 break;
             case BORDERS:
-                getObjInitializer().processBorderObjects(module, node);
+                if (isModuleObjInitRequired(module)) {
+                    getObjInitializer().processBorderObjects(module, node.getTextContent());
+                } else {
+                    module.setBorderObjectsData(node.getTextContent());
+                }
                 break;
             case OBJ_NODE_NEW:
                 module.setObjectsData(node.getTextContent());

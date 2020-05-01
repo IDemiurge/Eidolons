@@ -7,8 +7,10 @@ import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.operation.Operation;
+import main.level_editor.gui.dialog.struct.CellDataEditor;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.threading.WaitMaster;
 
 import java.util.function.Function;
 
@@ -27,6 +29,7 @@ public class LE_ScriptHandler extends LE_Handler {
             data = new CellScriptData("");
         }
         editData(data);
+        WaitMaster.waitForInputAnew(CellDataEditor.OPERATION);
         String text = data.getData();
         if (!text.equals(prev.getData())) {
             getOperationHandler().execute(Operation.LE_OPERATION.CELL_SCRIPT_CHANGE, c, data, prev);

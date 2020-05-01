@@ -9,7 +9,6 @@ import main.data.tree.LayeredData;
 import main.data.tree.StructNode;
 import main.data.tree.StructTreeBuilder;
 import main.entity.type.ObjType;
-import main.level_editor.LevelEditor;
 import main.level_editor.backend.brush.BrushShape;
 import main.level_editor.backend.brush.LE_Brush;
 import main.level_editor.backend.brush.LE_BrushType;
@@ -41,7 +40,6 @@ public class EditorModel {
     public EditorModel() {
         selection = new LE_Selection();
         displayMode = new LE_DisplayMode();
-        paletteSelection = new PaletteSelection(null);
         brush = new LE_Brush(BrushShape.single, LE_BrushType.none);
     }
 
@@ -104,11 +102,11 @@ public class EditorModel {
     }
 
     public PaletteSelection getPaletteSelection() {
-        return paletteSelection;
+        return PaletteSelection.getInstance();
     }
 
     public void setPaletteSelection(PaletteSelection paletteSelection) {
-        this.paletteSelection = paletteSelection;
+             this.paletteSelection = paletteSelection;
     }
 
     public LevelZone getZone() {
@@ -124,7 +122,8 @@ public class EditorModel {
 
     public Module getModule() {
         if (module == null) {
-            return LevelEditor.getCurrent().getDefaultModule();
+            return  getLastSelectedStruct().getModule();
+//            return LevelEditor.getCurrent().getDefaultModule();
         }
         return module;
     }

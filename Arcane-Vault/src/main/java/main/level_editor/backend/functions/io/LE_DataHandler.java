@@ -71,7 +71,7 @@ public class LE_DataHandler extends LE_Handler {
     public void autosave() {
 //        LE_OptionsMaster.getOptions_().getBooleanValue(AUTOSAVE)
         if (isBackupAutosave()) {
-            backup();
+            saveAs(getBackupPath(getFloorWrapper()));
         } else {
             saveFloor();
         }
@@ -87,7 +87,6 @@ public class LE_DataHandler extends LE_Handler {
 
 
     public void saveFloor() {
-        doPresave();
         String path = getDefaultSavePathFull(getFloorWrapper(), "crawl");
         saveAs(path);
         setDirty(false);
@@ -99,8 +98,8 @@ public class LE_DataHandler extends LE_Handler {
     }
 
     private void doPresave() {
-        if (!isResizingSupported()){
-            return ;
+        if (!isResizingSupported()) {
+            return;
         }
         boolean changed = false;
         for (Module module : getModuleHandler().getModules()) {
@@ -177,16 +176,21 @@ public class LE_DataHandler extends LE_Handler {
         return changed;
     }
 
+    public void saveModule(Module module) {
+        String contents = getXmlMaster().toXml(getFloorWrapper(), module);
+        String path = getStandalonePath(module);
+        FileManager.write(contents, path);
+        EUtils.showInfoText("Saved " +
+                module.getName() +
+                " as " + PathUtils.getLastPathSegment(path));
+    }
+
     public void saveModulesSeparately() {
         for (Module module : getModuleHandler().getModules()) {
-            String contents = getXmlMaster().toXml(getFloorWrapper(), module);
-            String path = getStandalonePath(module);
-            FileManager.write(contents, path);
-            EUtils.showInfoText("Saved " +
-                    module.getName() +
-                    " as " + PathUtils.getLastPathSegment(path));
+            saveModule(module);
         }
     }
+
 
     private String getStandalonePath(Module module) {
         return PathFinder.getModuleTemplatesPath() + " " + module.getName() + ".xml";
@@ -196,17 +200,20 @@ public class LE_DataHandler extends LE_Handler {
         String path = getDefaultSavePath(getFloorWrapper());
         String name = FileManager.getFileNameAndFormat(path);
         String newName = NameMaster.getUniqueVersionedFileName(name, path);
-        saveAs(PathFinder.getDungeonLevelFolder() +PathUtils.cropLastPathSegment(path) + "/" + newName);
+        saveAs(PathFinder.getDungeonLevelFolder() + PathUtils.cropLastPathSegment(path) + "/" + newName);
     }
-    public void saveAs( ) {
+
+    public void saveAs() {
         String path = GdxDialogMaster.inputText("Enter save path", getDefaultSavePath(getFloorWrapper()));
         if (path == null) {
             return;
         }
-        saveAs(PathFinder.getDungeonLevelFolder() +path);
+        saveAs(PathFinder.getDungeonLevelFolder() + path);
 
     }
+
     public void saveAs(String path) {
+        doPresave();
         String contents = getXmlMaster().toXml(getFloorWrapper());
         FileManager.write(contents, path);
         EUtils.showInfoText("Saved as " + PathUtils.getLastPathSegment(path));
@@ -227,8 +234,9 @@ public class LE_DataHandler extends LE_Handler {
         }
         return value;
     }
-        public String getDefaultSavePathFull(Location location, String prefix ) {
-            return PathFinder.getDungeonLevelFolder() +getDefaultSavePath(location, prefix);
+
+    public String getDefaultSavePathFull(Location location, String prefix) {
+        return PathFinder.getDungeonLevelFolder() + getDefaultSavePath(location, prefix);
     }
 
     public String getDefaultSavePath(Location floor) {

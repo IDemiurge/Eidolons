@@ -14,7 +14,7 @@ import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.core.Eidolons;
@@ -318,7 +318,7 @@ public class Analyzer extends AiHandler {
             }
             if (!unit.isScion())
                 if (vision_no_vision) {
-                    if (!VisionManager.checkVisible(unit, true)) {
+                    if (!VisionHelper.checkVisible(unit, true)) {
                         continue;
                     }
                 }

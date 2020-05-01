@@ -4,7 +4,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 
-public class VisionManager {
+public class VisionHelper {
 
     private static boolean visionHacked;
     private static boolean cinematicVision;
@@ -16,7 +16,7 @@ public class VisionManager {
     }
 
     public static void setVisionHacked(boolean visionHacked) {
-        VisionManager.visionHacked = visionHacked;
+        VisionHelper.visionHacked = visionHacked;
     }
 
     public static boolean checkVisible(DC_Obj obj) {
@@ -54,7 +54,7 @@ public class VisionManager {
     }
 
     public static void setCinematicVision(boolean cinematicVision) {
-        VisionManager.cinematicVision = cinematicVision;
+        VisionHelper.cinematicVision = cinematicVision;
     }
 
     public static boolean isCinematicVision() {

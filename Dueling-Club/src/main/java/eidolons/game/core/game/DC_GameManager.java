@@ -8,7 +8,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.master.*;
@@ -187,7 +187,7 @@ public class DC_GameManager extends GameManager {
 
         resetWallMap();
 
-        VisionManager.refresh();
+        VisionHelper.refresh();
 
         updateGraphics();
         GameState.setResetDone(true);

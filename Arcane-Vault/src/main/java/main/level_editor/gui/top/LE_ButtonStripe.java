@@ -38,7 +38,7 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
         container.add(
                 save = new SmartButton(ButtonStyled.STD_BUTTON.REPAIR, () ->
                 Eidolons.onGdxThread(() -> LevelEditor.getCurrent().getManager().getDataHandler().saveFloor()))).top();
-        addActor(new TablePanelX<>(40, getHeight()));
+//        addActor(new TablePanelX<>(40, getHeight()));
         addActor(controlPanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_CTRL, null));
         addActor(palettePanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_PALETTE, null));
         addActor(structurePanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_STRUCT, null));

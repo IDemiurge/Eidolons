@@ -29,6 +29,9 @@ public class LastSeenView extends GenericGridView {
 
     @Override
     public BattleFieldObject getUserObject() {
+        if (parentView == null) {
+            return null;
+        }
         return parentView.getUserObject();
     }
 
@@ -40,6 +43,9 @@ public class LastSeenView extends GenericGridView {
         return defaultTexture;
     }
 
+    protected boolean isResetOutlineOnHide() {
+        return false;
+    }
     @Override
     protected void setDefaultTexture() {
     }

@@ -5,7 +5,6 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.model.RoomTemplateMaster;
 import eidolons.game.module.generator.tilemap.TileMapper;
@@ -65,7 +64,7 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
     private void initWorkspaceTypeMap() {
         workspaceTypeMap = new LinkedHashMap<>();
         List<File> files = FileManager.getFilesFromDirectory(PathFinder.getEditorWorkspacePath(),
-                false);
+                false, false, false );
         for (File file : files) {
             String data = FileManager.readFile(file);
             List<ObjType> types = new ArrayList<>();
@@ -94,11 +93,10 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
     @Override
     public void fromBlock() {
-        if (getModel().getBlock() == null) {
-            return;
+        if (getModel().getBlock() != null) {
+            createPaletteFromObjsOnCoordinates(getModel().getBlock().getCoordinatesSet());
         }
-        LevelBlock block = getModel().getBlock();
-        createPaletteFromObjsOnCoordinates(block.getCoordinatesSet());
+        createPaletteFromObjsOnCoordinates(getSelectionHandler().getSelection().getCoordinates());
     }
 
     @Override
@@ -116,11 +114,14 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
     private void createPaletteFromObjsOnCoordinates(Set<Coordinates> coordinatesSet) {
         Set<BattleFieldObject> set = new LinkedHashSet<>();
+        coordinatesSet=
+                coordinatesSet.stream().sorted(        SortMaster.getGridCoordSorter()).collect(
+                        Collectors.toCollection(()->new LinkedHashSet<>()));
         for (Coordinates coordinates : coordinatesSet) {
-            set.addAll(getGame().getObjectsOnCoordinateNoOverlaying(coordinates));
+            set.addAll(getGame().getObjectsOnCoordinateAll(coordinates));
         }
 
-        createPaletteFromObjs(set.stream().map(obj -> obj.getType()).collect(Collectors.toSet()));
+        createPaletteFromObjs(set.stream().map(obj -> obj.getType()).collect(Collectors.toCollection(()->new LinkedHashSet<>())));
     }
 
     private void createPaletteFromObjs(Set<ObjType> set) {
@@ -187,7 +188,7 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
     private void appendTypes(Set<ObjType> set, DC_TYPE type, XmlStringBuilder xmlStringBuilder) {
         Set<String> objs =
                 set.stream().filter(obj -> obj.getType().getOBJ_TYPE_ENUM() == type)
-                        .sorted(getTypeSorter(type)).map(obj -> obj.getType().getName()).collect(Collectors.toSet());
+                        .sorted(getTypeSorter(type)).map(obj -> obj.getType().getName()).collect(Collectors.toCollection(()->new LinkedHashSet<>()));
         if (objs.isEmpty()) {
             return;
         }
@@ -224,8 +225,7 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
             if (getModel().getBlock() != null) {
                 data = getModel().getBlock().getData();
                 coordinates = getModel().getBlock().getCoordinatesSet();
-            }
-            else return;
+            } else return;
         }
         List<String> tiles = coordinates.stream()
                 .sorted(SortMaster.getGridCoordSorter())
@@ -332,7 +332,7 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
     private void modifyPalette(boolean negative) {
         Set<ObjType> collect = getSelectionHandler().getSelection().getIds().stream().map(id ->
-                getIdManager().getObjectById(id).getType()).collect(Collectors.toSet());
+                getIdManager().getObjectById(id).getType()).collect(Collectors.toCollection(()->new LinkedHashSet<>()));
         appendToPalette(getPaletteName(), collect, negative);
     }
 

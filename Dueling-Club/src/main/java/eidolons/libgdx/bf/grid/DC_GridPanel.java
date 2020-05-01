@@ -8,7 +8,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
@@ -373,7 +373,7 @@ public class DC_GridPanel extends GridPanel {
             resetVisible();
         });
         GuiEventManager.bind(removePrevious, UPDATE_GUI, obj -> {
-            if (!VisionManager.isVisionHacked())
+            if (!VisionHelper.isVisionHacked())
                 if (OutlineMaster.isAutoOutlinesOff())
                     if (OutlineMaster.isOutlinesOn()) {
                         updateOutlines();

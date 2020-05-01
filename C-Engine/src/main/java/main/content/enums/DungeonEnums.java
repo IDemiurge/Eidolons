@@ -22,6 +22,7 @@ public class DungeonEnums {
         star,
         cross,
         natural,
+        ornate,
         octagonal("oct"),
         ;
         String name;

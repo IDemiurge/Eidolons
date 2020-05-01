@@ -59,11 +59,9 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
 
     public void deselect() {
         getModelManager().modelChanged();
-        PaletteSelection paletteSelection = getModel().getPaletteSelection();
-        if (!getModel().getSelection().isEmpty()) {
-            getModel().setPaletteSelection(paletteSelection);
-        } else {
-            getModel().setPaletteSelection(new PaletteSelection());
+        if ( getModel().getSelection().isEmpty()) {
+            PaletteSelection.getInstance().setType(getObjHandler().getDefaultPaletteType());
+            PaletteSelection.getInstance().setOverlayingType(null);
         }
         getModel().setSelection(new LE_Selection());
         mode = SELECTION_MODE.NONE;

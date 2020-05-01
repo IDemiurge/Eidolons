@@ -3,7 +3,7 @@ package eidolons.ability.conditions.special;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.rules.VisionEnums;
@@ -92,7 +92,7 @@ public class SneakCondition extends MicroCondition {
 
             if (!action.isRanged()) {
                 if (attacker.getActivePlayerVisionStatus() == PLAYER_VISION.UNKNOWN
-                 || !VisionManager.checkVisible(attacker)) {
+                 || !VisionHelper.checkVisible(attacker)) {
                     return true;
                 } else { //TODO allow sneak in front for specialists
                     return FacingMaster.getSingleFacing(attacked, attacker) == UnitEnums.FACING_SINGLE.BEHIND;

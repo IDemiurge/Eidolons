@@ -15,6 +15,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,7 @@ public class ModuleLoader extends DungeonHandler {
     step out
     init vfx
      */
-    public ModuleLoader(DungeonMaster  master) {
+    public ModuleLoader(DungeonMaster master) {
         super(master);
         GuiEventManager.bind(GuiEventType.GRID_RESET, p -> {
             loadGdxGrid((Module) p.get());
@@ -50,16 +51,16 @@ public class ModuleLoader extends DungeonHandler {
     }
 
     public void loadGdxGrid(Module module) {
-        ScreenMaster.getScreen().moduleEntered(module,  getObjects(module));
+        ScreenMaster.getScreen().moduleEntered(module, getObjects(module));
     }
 
     private DequeImpl<BattleFieldObject> getObjects(Module module) {
-        module.initObjects();
-        Set<BattleFieldObject> set = game.getBfObjects().stream().filter(obj -> module.getCoordinatesSet().contains(obj.getCoordinates())).collect(Collectors.toSet());
+        Set<BattleFieldObject> set = game.getBfObjects().stream().filter(obj -> module.getCoordinatesSet().
+                contains(obj.getCoordinates())).collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
         return new DequeImpl<>(set);
     }
 
-    public void loadModuleFull(Module module){
+    public void loadModuleFull(Module module) {
         last = getMetaMaster().getModuleMaster()
                 .getCurrent();
         loading = module;
@@ -69,17 +70,29 @@ public class ModuleLoader extends DungeonHandler {
 //        showLoadScreen();
 //        initMusic();
 //        loadAssets(module);
+        adjustTransitHero(module);
+        if (module.isFirstInit()) {
+            module.initBorderObjects();
+            module.initObjects();
+        }
+        module.setFirstInit(false);
+
         GuiEventManager.trigger(GuiEventType.GRID_RESET, module);
         GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
+    }
+
+    private void adjustTransitHero(Module module) {
+        Eidolons.getMainHero().setModule(module);
     }
 
     public void loadInitial() {
         initLogicalGrid(getModule());
     }
+
     private void initLogicalGrid(Module module) {
         game.enterModule(module);
         game.getDungeonMaster().getBuilder().initModuleSize(module);
-        BattleFieldManager.entered(module.getId() );
+        BattleFieldManager.entered(module.getId());
         if (!CoreEngine.isLevelEditor()) {
             spawnEncounters(module);
         }
@@ -104,7 +117,7 @@ public class ModuleLoader extends DungeonHandler {
         String descriptors = module.getData().getValue(LevelStructure.MODULE_VALUE.assets);
         for (String path : ContainerUtils.openContainer(descriptors, ",")) {
 //            BfObjEnums.SPRITES.valueOf()
-            boolean ktx=false;
+            boolean ktx = false;
             Assets.loadSprite(path, false, ktx);
         }
     }

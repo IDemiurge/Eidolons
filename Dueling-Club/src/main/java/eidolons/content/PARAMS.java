@@ -24,10 +24,10 @@ public enum PARAMS implements PARAMETER {
     SLEIGHT_OF_HAND("chars","","",false,0),
     FORAGING("chars","","",false,0),
 
-    POWER_MOD(true, null, "", false, 100, "dungeons", "encounters"),
-    POWER_MINIMUM(null, "", false, 0, "dungeons", "encounters"),
-    POWER_BASE(null, "", false, 0, "dungeons", "encounters"),
-    POWER_MAXIMUM(null, "", false, 0, "dungeons", "encounters"),
+    POWER_MOD(true, null, "", false, 100,  "encounters"),
+    POWER_MINIMUM(null, "", false, 0,  "encounters"),
+    POWER_BASE(null, "", false, 0,  "encounters"),
+    POWER_MAXIMUM(null, "", false, 0,  "encounters"),
 
     FREE_MASTERIES(null, "", false, DC_MathManager.DEFAULT_FREE_MASTERY_COUNT, "chars"),
     GLORY("party"),
@@ -71,13 +71,6 @@ public enum PARAMS implements PARAMETER {
     // comradeship, competition, love between each 2 heroes?
     // affection, esteem, towards leader
 
-    DUNGEON_LEVEL("dungeons"),
-    GLORY_REWARD("dungeons"),
-    GOLD_REWARD("dungeons"),
-    XP_REWARD("dungeons"),
-    LOOT_VALUE("dungeons"),
-    BF_WIDTH("dungeons"),
-    BF_HEIGHT("dungeons"),
 
     STR_DMG_MODIFIER("Str dmg mod", "", false, 0, "actions", "weapons", "jewelry"), // HEAVY/MELEE
     AGI_DMG_MODIFIER("Agi dmg mod", "", false, 0, "actions", "weapons", "jewelry"), // LIGHT/RANGED
@@ -724,7 +717,7 @@ public enum PARAMS implements PARAMETER {
     GROUP_NUMBER("encounters"),
     MAX_GROUP_NUMBER("encounters"),
     MIN_GROUP_NUMBER("encounters"),
-    POWER_LEVEL(null, "", false, 0, "dungeons", "encounters"),
+    POWER_LEVEL(null, "", false, 0,  "encounters"),
     UNIT_NUMBER("encounters"),
     MAX_UNIT_PER_GROUP("encounters"),
 

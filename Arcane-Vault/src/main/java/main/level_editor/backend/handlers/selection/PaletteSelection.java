@@ -5,33 +5,27 @@ import eidolons.game.module.generator.model.RoomModel;
 import main.content.enums.GenericEnums;
 import main.entity.EntityCheckMaster;
 import main.entity.type.ObjType;
-import main.level_editor.LevelEditor;
 
 import java.io.Serializable;
 
 public class PaletteSelection implements Serializable {
 
     private RoomModel template;
+    private static PaletteSelection instance;
 
-    public PaletteSelection( ) {
-        this(LevelEditor.getManager().getObjHandler().getDefaultPaletteType());
-    }
-    public PaletteSelection(ObjType type) {
-        this(type, false);
+    public static PaletteSelection getInstance() {
+        if (instance == null) {
+            instance = new PaletteSelection();
+        }
+        return instance;
     }
 
-    public PaletteSelection(ObjType objType, boolean overlaying) {
-        this.overlaying = overlaying;
-        if (overlaying) {
-            objTypeOverlaying = objType;
-        } else
-            this.objType = objType;
+    private PaletteSelection() {
     }
 
     ObjType objType;
     ObjType objTypeOverlaying;
     GenericEnums.VFX vfx;
-    boolean overlaying;
 
     public ObjType getObjType() {
         return objType;
@@ -45,18 +39,14 @@ public class PaletteSelection implements Serializable {
         return vfx;
     }
 
-    public boolean isOverlaying() {
-        return overlaying;
-    }
 
     public void setType(ObjType objType) {
         if (EntityCheckMaster.isOverlaying(objType)) {
-                  setOverlayingType(objType);
-            EUtils.showInfoText("Palette overlaying type selected: " + objType);
-        } else
-        {
+            setOverlayingType(objType);
+            EUtils.showInfoText("Palette overlaying type selected: " + objType.getName());
+        } else {
             this.objType = objType;
-            EUtils.showInfoText("Palette type selected: " + objType);
+            EUtils.showInfoText("Palette type selected: " + objType.getName());
         }
     }
 

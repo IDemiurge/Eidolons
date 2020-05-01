@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.battlefield;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
@@ -52,7 +52,7 @@ public class DC_BattleFieldManager extends BattleFieldManager   {
             boolean free = false;
             // getBattlefield().getGrid().getObjCompMap().getOrCreate(c) == null;
             if (!free) {
-                free = !VisionManager.checkVisible((DC_Obj) obj, false);
+                free = !VisionHelper.checkVisible((DC_Obj) obj, false);
             }
             if (!free) {
                 return false;
@@ -81,12 +81,12 @@ public class DC_BattleFieldManager extends BattleFieldManager   {
     private void resetVisibleWallMap() {
         visibleWallMap = new MapMaster().cloneHashMap(wallMap);
         visibleWallMap.keySet().removeIf((sub) -> {
-            DC_Obj obj = (DC_Obj) game.getObjectByCoordinate(sub);
-            if (obj == null) {
-                return false;
-            } //TODO detected, actually
-//            return !VisionManager.checkVisible(obj, false);
-            return !VisionManager.getMaster().getDetectionMaster().checkKnownForPlayer(obj);
+            Boolean seen = VisionHelper.getMaster().getVisionController().getSeenMapper().
+                    get(game.getCellByCoordinate(sub));
+            if (seen == null) {
+                return true;
+            }
+            return !seen;
         });
         visibleDiagonalJoints = new MapMaster().cloneHashMap(diagonalJoints);
         visibleDiagonalJoints.keySet().removeIf((sub) -> !visibleWallMap.containsKey(sub));

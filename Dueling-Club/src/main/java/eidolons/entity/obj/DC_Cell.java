@@ -2,7 +2,7 @@ package eidolons.entity.obj;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.GridMaster;
@@ -38,6 +38,11 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     private float overlayRotation;
     private String overlayData;
+
+    BattleFieldObject[] overlayingObjects;
+    BattleFieldObject[] objects;
+    BattleFieldObject[] nonOverlaying;
+    private boolean objectsModified;
 
     @Override
     protected void preInit(Game game, ObjType type, Player owner, Ref ref) {
@@ -222,7 +227,7 @@ public class DC_Cell extends DC_Obj implements Cell {
                     + getParam(PARAMS.CONCEALMENT);
         }
 
-        if (!VisionManager.checkDetected(this)) {
+        if (!VisionHelper.checkDetected(this)) {
             return "?";
         }
 
@@ -299,5 +304,49 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     public void setOverlayData(String overlayData) {
         this.overlayData = overlayData;
+    }
+
+    public BattleFieldObject[] getObjects(Boolean overlayingIncluded_not_only) {
+        if (overlayingIncluded_not_only == null) {
+            return overlayingObjects;
+        }
+        return overlayingIncluded_not_only ? objects : nonOverlaying;
+    }
+
+    public void setObjects(BattleFieldObject[] objects,
+                                          Boolean overlayingIncluded_not_only) {
+        if (overlayingIncluded_not_only == null) {
+           setOverlayingObjects(objects);
+        } else
+        if (overlayingIncluded_not_only) {
+            setObjects(objects);
+        } else {
+            setNonOverlaying(objects);
+        }
+    }
+    public void setOverlayingObjects(BattleFieldObject[] overlayingObjects) {
+        this.overlayingObjects = overlayingObjects;
+    }
+
+    public void setObjects(BattleFieldObject[] objects) {
+        this.objects = objects;
+    }
+
+    public void setNonOverlaying(BattleFieldObject[] nonOverlaying) {
+        this.nonOverlaying = nonOverlaying;
+    }
+
+    public void resetObjectArrays() {
+        setObjects(null);
+        setOverlayingObjects(null);
+        setNonOverlaying(null);
+    }
+
+    public boolean isObjectsModified() {
+        return objectsModified;
+    }
+
+    public void setObjectsModified(boolean objectsModified) {
+        this.objectsModified = objectsModified;
     }
 }

@@ -63,7 +63,7 @@ public class ParamPriorityAnalyzer extends AiHandler {
             case C_ESSENCE:
                 return 4;
             case C_INITIATIVE:
-                return 2f * AtbController.TIME_TO_READY/ AtbController.TIME_LOGIC_MODIFIER;
+                return 2f * AtbController.ATB_TO_READY / AtbController.TIME_LOGIC_MODIFIER;
             case RESISTANCE:
                 return 4;
             case BASE_DAMAGE:

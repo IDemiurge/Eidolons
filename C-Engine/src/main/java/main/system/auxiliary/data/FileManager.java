@@ -572,13 +572,21 @@ public class FileManager {
     }
 
     public static List<File> getFilesFromDirectory(String path, boolean allowDirectories,
-                                                   boolean subDirectories) {
+                                                   boolean subDirectories ) {
+        return getFilesFromDirectory(path, allowDirectories, subDirectories, true);
+    }
+        public static List<File> getFilesFromDirectory(String path, boolean allowDirectories,
+        boolean subDirectories,
+        boolean cache) {
         if (!isDirectory(path)) {
             return new ArrayList<>();
         }
-        List<File> result = folderCache.get(path);
+        List<File> result = null ;
+        if (cache) {
+            result= folderCache.get(path);
         if (result != null) {
             return result;
+        }
         }
         File folder = FileManager.getFile(path);
         result = getFilesFromDirectory(folder, allowDirectories, subDirectories);

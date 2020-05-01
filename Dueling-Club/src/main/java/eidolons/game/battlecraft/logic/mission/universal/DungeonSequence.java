@@ -40,7 +40,7 @@ public class DungeonSequence extends LevelStruct<Location, Location> {
     }
 
     @Override
-    protected LevelStruct getParent() {
+    public LevelStruct getParent() {
         return null;
     }
 

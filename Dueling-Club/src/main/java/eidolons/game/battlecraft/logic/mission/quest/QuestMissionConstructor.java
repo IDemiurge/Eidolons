@@ -25,7 +25,7 @@ public class QuestMissionConstructor extends MissionConstructor<QuestMission> {
             type = new ObjType("Fake dungeon" , DC_TYPE.FLOORS);
         }
         String levelPath = type.getProperty(PROPS.FLOOR_FILE_PATH);
-        levelPath = "crawl\\utmar hold.xml";
+        levelPath = "crawl\\evarinath catacombs.xml";
         getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH,
          levelPath);
         Floor mission = new Floor(type);

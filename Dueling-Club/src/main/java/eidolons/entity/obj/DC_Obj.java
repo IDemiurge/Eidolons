@@ -9,7 +9,7 @@ import eidolons.entity.handlers.DC_ObjMaster;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionController;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.*;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
@@ -37,7 +37,6 @@ import main.entity.handlers.EntityMaster;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.core.game.Game;
@@ -52,32 +51,20 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class DC_Obj extends MicroObj {
+
     Module module;
+
     protected Map<SPECIAL_EFFECTS_CASE, Effect> specialEffects;
     protected Map<DAMAGE_CASE, List<Damage>> bonusDamage;
     protected DAMAGE_TYPE dmg_type;
-    //    protected UNIT_TO_PLAYER_VISION activeVisionStatus;
-//    protected UNIT_TO_UNIT_VISION activeUnitVisionStatus;
-//    protected boolean detected;
-//protected boolean detectedByPlayer;
-//    protected OUTLINE_TYPE outlineTypeForPlayer;
-//    protected VISIBILITY_LEVEL visibilityLevelForPlayer = VISIBILITY_LEVEL.UNSEEN;
-//    protected UNIT_TO_PLAYER_VISION playerVisionStatus = UNIT_TO_PLAYER_VISION.UNKNOWN;
-//    protected VISIBILITY_LEVEL visibilityLevel;
-//    protected OUTLINE_TYPE outlineType;
+
     protected Integer gamma;
-    //    protected PERCEPTION_STATUS_PLAYER playerPerceptionStatus;
-//    protected PERCEPTION_STATUS perceptionStatus;
-//    protected IDENTIFICATION_LEVEL identificationLevel;
-    protected DIRECTION blockingWallDirection;
-    protected boolean blockingDiagonalSide;
-    protected Coordinates blockingWallCoordinate;
-    protected boolean pale;
-    Coordinates blockingCoordinate;
     private VisionController visionController;
     private boolean visibilityOverride;
     private boolean resetIgnored;
     private boolean visibilityFrozen;
+
+    protected boolean pale;
 
 
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
@@ -166,7 +153,7 @@ public abstract class DC_Obj extends MicroObj {
     @Override
     public String getToolTip() {
 
-        if (!VisionManager.checkDetected(this)) {
+        if (!VisionHelper.checkDetected(this)) {
             return "?";
         }
         return super.getToolTip();
@@ -655,7 +642,7 @@ public abstract class DC_Obj extends MicroObj {
 //    }
     public boolean checkVisible() {
 
-        return VisionManager.checkVisible(this);
+        return VisionHelper.checkVisible(this);
     }
 
     public boolean isFlippedImage() {

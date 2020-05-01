@@ -112,7 +112,7 @@ public class SightMaster {
                 // side_penalty, false);
             }
         }
-        if (VisionManager.isCinematicVision()) {
+        if (VisionHelper.isCinematicVision()) {
             if (!extended)
                 list.addAll(getSpectrumCoordinates(range, 0, back_bonus, source, vision, facing.flip(), true));
         } else {
@@ -343,7 +343,7 @@ public class SightMaster {
 
 
     protected Boolean checkInSightSector(BattleFieldObject source, DC_Obj target) {
-        if (VisionManager.isVisionHacked() && source.isMine()) {
+        if (VisionHelper.isVisionHacked() && source.isMine()) {
             return true;
         }
         DequeImpl<Coordinates> coordinates = cache.get(source);

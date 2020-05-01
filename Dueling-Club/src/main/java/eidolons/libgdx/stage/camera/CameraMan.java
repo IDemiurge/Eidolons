@@ -389,6 +389,9 @@ public class CameraMan {
         if (duration == 0) {
             duration = 1 + dst / getPanSpeed();
         }
+        if (CoreEngine.TEST_LAUNCH) {
+            duration = 0.1f;
+        }
         motions.add(new CameraMotion(this, duration, destination, interpolation));
 
     }

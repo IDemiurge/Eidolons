@@ -696,7 +696,7 @@ public abstract class GridPanel extends Group {
     public void addOverlay(OverlayView view) {
         Vector2 v = GridMaster.getVectorForCoordinate(
                 view.getUserObject().getCoordinates(), false, false, this);
-        view.setPosition(v.x, v.y - GridMaster.CELL_H);
+        view.setPosition(v.x, v.y  );
         int width = (int) (GridMaster.CELL_W * view.getScale());
         int height = (int) (GridMaster.CELL_H * view.getScale());
         Dimension dimension = OverlayingMaster.getOffsetsForOverlaying(view.getDirection(), width, height, view);
@@ -766,6 +766,7 @@ public abstract class GridPanel extends Group {
 
         GuiEventManager.bind(removePrevious, CELL_SET_VOID, obj -> {
             Coordinates c = (Coordinates) obj.get();
+            main.system.auxiliary.log.LogMaster.log(1,"CELL_SET_VOID " +c );
             setVoid(c.x, c.y, true);
         });
         GuiEventManager.bind(removePrevious, CELLS_MASS_RESET_VOID, obj -> {

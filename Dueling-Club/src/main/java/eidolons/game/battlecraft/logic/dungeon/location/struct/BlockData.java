@@ -28,6 +28,9 @@ public class BlockData extends StructureData<BLOCK_VALUE,  LevelBlock> {
         if (block == null) {
             this.block = getStructure() ;
             levelStruct = block;
+            if (block == null) {
+                return;
+        }
             if (block.getData() != null) {
                 setData(block.getData().getData());
             }

@@ -2,6 +2,7 @@ package main.level_editor.backend.handlers.operation;
 
 import eidolons.content.data.EntityData;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
@@ -67,20 +68,22 @@ public class OperationHandler extends LE_Handler {
                 break;
             case VOID_TOGGLE:
                 c = (Coordinates) args[0];
-                boolean isVoid = manager.getGame().toggleVoid(c);
-                if (isVoid)
-                    for (BattleFieldObject bfObj : manager.getGame().getObjectsNoOverlaying(c)) {
+                DC_Cell cell = manager.getGame().getCellByCoordinate(c);
+                boolean isVoid =  cell.isVOID() ;
+                if (!isVoid)
+                    for (BattleFieldObject bfObj : manager.getGame().getObjectsOnCoordinateAll(c)) {
                         operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
                     }
                 GuiEventManager.trigger(
-                        isVoid ? GuiEventType.CELL_SET_VOID
+                        !isVoid ? GuiEventType.CELL_SET_VOID
                                 : GuiEventType.CELL_RESET_VOID, c);
                 break;
             case MASS_RESET_VOID:
             case MASS_SET_VOID:
                 Collection<Coordinates> collection = (Collection<Coordinates>) args[0];
                 for (Coordinates coordinates : collection) {
-                    isVoid = manager.getGame().toggleVoid(coordinates);
+                      cell = manager.getGame().getCellByCoordinate(coordinates);
+                    isVoid = !cell.isVOID()  ;
                     if (isVoid)
                         for (BattleFieldObject bfObj : manager.getGame().getObjectsNoOverlaying(coordinates)) {
                             operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
@@ -103,12 +106,30 @@ public class OperationHandler extends LE_Handler {
             case ADD_OBJ:
                 type = (ObjType) args[0];
                 c = (Coordinates) args[1];
+                if (type==null) {
+                    return null ;
+                }
+                if (!getGame().getObjectsOnCoordinateAll(c).isEmpty()) {
+                    Boolean overwrite = null;
+                    if (args.length>2) {
+                            overwrite = (Boolean) args[2];
+                    }
+                    if (overwrite != null) {
+                        if (overwrite) {
+                            for (BattleFieldObject object : getGame().getObjectsOnCoordinateAll(c)) {
+                                operation(Operation.LE_OPERATION.REMOVE_OBJ, object);
+                            }
+                        } else {
+                            return null;
+                        }
+                    }
+                }
                 BattleFieldObject unit = getObjHandler().addObj(type, c.x, c.y);
                 if (args[args.length - 1] == new Boolean(false)) {
                     args = new BattleFieldObject[]{unit};
                 } else {
                     args = new BattleFieldObject[]{unit};
-                    getStructureHandler().updateTree();
+//                    getStructureHandler().updateTree(); //too much hassle, leave it
                 }
                 break;
             case REMOVE_OVERLAY:
@@ -126,7 +147,6 @@ public class OperationHandler extends LE_Handler {
                 type = obj.getType();
                 c = obj.getCoordinates();
                 args = new Object[]{type, c, d};
-                getStructureHandler().updateTree();
                 break;
             case ADD_OVERLAY:
                 type = (ObjType) args[0];
@@ -164,9 +184,17 @@ public class OperationHandler extends LE_Handler {
     }
 
     public void operation(boolean redo, Operation.LE_OPERATION operation, Object... args) {
-        args = execute(operation, args);
-        operations.add(this.lastOperation = new Operation(operation, args));
-        main.system.auxiliary.log.LogMaster.log(1, "operation: " + operation + " args = " + ListMaster.toStringList(args));
+        Object[] newArgs = execute(operation, args);
+        if (newArgs == null) {
+            if (args.length>0)
+                main.system.auxiliary.log.LogMaster.log(1, "operation failed: "
+                        + operation + " newArgs = " + ListMaster.toStringList(newArgs));
+            return;
+        }
+
+        operations.add(this.lastOperation = new Operation(operation, newArgs));
+        main.system.auxiliary.log.LogMaster.log(1, "operation done: " + operation +
+                " args = " + ListMaster.toStringList(args));
         if (!redo)
             undone.clear();
     }

@@ -17,6 +17,7 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
 import main.system.math.MathMaster;
 import main.system.util.Refactor;
@@ -59,12 +60,14 @@ public class Spawner  extends DungeonHandler  {
         final Integer cellsY = Coordinates.getFloorHeight();
         final Integer moduleHeight = Coordinates.getModuleHeight();
         final Integer moduleWidth = Coordinates.getModuleWidth();
-        GuiEventManager.trigger(SCREEN_LOADED,
-                new GridCreateData(cellsX, cellsY, game.getBfObjects(),
-                        moduleWidth,
-                        moduleHeight
-                        ));
+        GridCreateData param = new GridCreateData(cellsX, cellsY, game.getBfObjects(),
+                moduleWidth,
+                moduleHeight
+        );
+        GuiEventManager.trigger(GuiEventType. INITIAL_LOAD_DONE, param);
 
+        GuiEventManager.trigger(SCREEN_LOADED,
+                param);
         //WaitMaster.waitForInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
     }
 

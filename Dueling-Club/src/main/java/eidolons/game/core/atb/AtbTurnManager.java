@@ -23,6 +23,7 @@ public class AtbTurnManager extends GenericTurnManager {
     public Float getTotalTime() {
         return atbController.getTotalTime();
     }
+
     @Override
     protected void sort(List<Unit> list) {
         list.sort(atbController);
@@ -48,16 +49,15 @@ public class AtbTurnManager extends GenericTurnManager {
     }
 
     protected Boolean chooseUnit() {
-        AtbUnit unit = atbController.step();
-        if (atbController.isNextTurn())
-        {
-            atbController.setNextTurn(false);
-            return null;
-        }
-        if (unit == null) {
-            setActiveUnit(null);
-            return false;
-        } else  {
+        //TODO EA check
+        while (true) {
+            AtbUnit unit = atbController.step();
+            if (atbController.isNextTurn()) {
+                atbController.setNextTurn(false);
+                return null;
+            }
+            if (unit == null)
+                continue;
             setActiveUnit(unit.getUnit());
             return game.getManager().activeSelect(getActiveUnit());
         }

@@ -1395,13 +1395,13 @@ public class Unit extends DC_UnitModel implements FacingEntity {
                         return;
                     }
                 }
-                if (getCoordinates().dst_(coordinates) >= 2) {
-                    if (game.isStarted())
-                        if (!originalCoordinates.equals(coordinates)) {
-                            LogMaster.log(1, "Teleport bug? ");
-//                            return;
-                        }
-                }
+//                if (getCoordinates().dst_(coordinates) >= 2) {
+//                    if (game.isStarted())
+//                        if (!originalCoordinates.equals(coordinates)) {
+//                            LogMaster.log(1, "Teleport bug? ");
+////                            return;
+//                        }
+//                }
             }
         super.setCoordinates(coordinates);
     }

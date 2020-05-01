@@ -8,7 +8,7 @@ import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
@@ -71,7 +71,7 @@ public class StealthRule implements ActionRule {
     }
 
     public boolean checkInvisible(DC_Player player, BattleFieldObject unit) {
-        if (VisionManager.isVisionHacked()) {
+        if (VisionHelper.isVisionHacked()) {
             if (!unit.isMine())
                 return false;
         }

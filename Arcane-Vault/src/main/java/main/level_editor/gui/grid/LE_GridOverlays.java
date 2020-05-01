@@ -13,7 +13,9 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
+import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
+import main.system.math.PositionMaster;
 
 import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.IN_PLAIN_SIGHT;
 import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.IN_SIGHT;
@@ -63,6 +65,13 @@ public class LE_GridOverlays extends GridOverlaysManager {
                 if (keyPressed) {
                     if (LE_GridCell.hoveredCell.getGridX() == x
                             || LE_GridCell.hoveredCell.getGridY() == y) {
+                        drawOverlay(container, IN_SIGHT, batch, cell, x, y);
+                    }
+                }
+                keyPressed = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT);
+                if (keyPressed) {
+                    if (PositionMaster.inLineDiagonally(cell.getCoordinates(),
+                            Coordinates.get(LE_GridCell.hoveredCell.getGridX(), LE_GridCell.hoveredCell.getGridY()))) {
                         drawOverlay(container, IN_SIGHT, batch, cell, x, y);
                     }
                 }

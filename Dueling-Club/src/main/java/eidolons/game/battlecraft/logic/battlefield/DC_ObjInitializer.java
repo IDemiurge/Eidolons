@@ -25,7 +25,6 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
-import org.w3c.dom.Node;
 
 import java.util.*;
 
@@ -149,10 +148,10 @@ public class DC_ObjInitializer extends DungeonHandler {
     }
 
     public void processBorderObjects(
-            Module module, Node subNode) {
+            Module module, String data) {
 
         List<String> items = ContainerUtils.openContainer(
-                subNode.getTextContent());
+                data );
 
         log(LOG_CHANNEL.BUILDING,module.getName()+" has " + items.size() +
                 " border objects...");

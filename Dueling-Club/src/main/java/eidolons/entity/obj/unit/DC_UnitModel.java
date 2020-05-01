@@ -70,6 +70,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     private DC_ActiveObj preferredCounterAttack;
     private DC_ActiveObj preferredAttackOfOpportunity;
     private DC_ActiveObj preferredAttackAction;
+    private Boolean unconscious;
 
     public DC_UnitModel(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -185,6 +186,8 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     @Override
     public void newRound() {
+        unconscious=null; //TODO can only change this state once per round!
+
         if (!new Event(STANDARD_EVENT_TYPE.UNIT_NEW_ROUND_BEING_STARTED, ref).fire()) {
             return;
         }
@@ -530,7 +533,10 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     }
 
     public boolean isUnconscious() {
-        return getChecker().isUnconscious();
+        if (unconscious != null) {
+            return unconscious;
+        }
+        return unconscious = getChecker().isUnconscious();
     }
 
     public boolean canAct() {

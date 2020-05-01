@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 public class UnitView extends BaseView implements HpBarView {
+    private static final float OUTLINE_RESET_PERIOD = 0.5f;
     protected static AtomicInteger lastId = new AtomicInteger(1);
     protected int curId;
     protected String name;
@@ -129,9 +130,19 @@ public class UnitView extends BaseView implements HpBarView {
     public void setVisible(boolean visible) {
         if (!visible)
             if (isVisible()) {
-                setDefaultTexture();
+                if (isResetOutlineOnHide())
+//                if (getUserObject().isResetOutlineOnHide())
+                    if (getUserObject() instanceof Unit) {
+                        if (!isMainHero())
+                            setPortraitTextureImmediately(TextureCache.getOrCreateR(
+                                    OUTLINE_TYPE.UNKNOWN.getImagePath()));
+                    }
             }
         super.setVisible(visible);
+    }
+
+    protected boolean isResetOutlineOnHide() {
+        return true;
     }
 
     @Override
@@ -190,7 +201,7 @@ public class UnitView extends BaseView implements HpBarView {
 
                     }
                 }
-                resetTimer = 0.2f;
+                resetTimer = OUTLINE_RESET_PERIOD;
             } else {
                 resetTimer = resetTimer - delta;
             }
@@ -244,6 +255,11 @@ public class UnitView extends BaseView implements HpBarView {
 
     public void setPortraitTexture(TextureRegion textureRegion) {
         getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
+    }
+
+    public void setPortraitTextureImmediately(TextureRegion textureRegion) {
+        getPortrait().setContentsImmediately(
+                new Image(textureRegion));
     }
 
     protected TextureRegion processPortraitTexture(TextureRegion texture, String path) {

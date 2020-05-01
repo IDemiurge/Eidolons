@@ -10,6 +10,7 @@ import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
+import eidolons.game.battlecraft.logic.battlefield.vision.mapper.SeenMapper;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.atb.AtbController;
 import eidolons.game.module.dungeoncrawl.objects.Door;
@@ -135,6 +136,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             return super.toString();
         return getNameAndCoordinate();
     }
+
 
     @Override
     public boolean kill(Entity killer, boolean leaveCorpse, Boolean quietly) {
@@ -351,7 +353,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             super.putParameter(param, value);
         } else if (param == PARAMS.C_INITIATIVE) {
             Integer val = NumberUtils.getInteger(value);
-            float max = AtbController.TIME_LOGIC_MODIFIER * AtbController.TIME_TO_READY;
+            float max = AtbController.TIME_LOGIC_MODIFIER * AtbController.ATB_TO_READY;
             val = MathMaster.getMinMax(val, 0, (int) max);
             super.putParameter(param, val + "");
         } else
@@ -725,5 +727,19 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     public void setModuleBorder(boolean moduleBorder) {
         this.moduleBorder = moduleBorder;
+    }
+
+
+    public String getVisionInfo() {
+            return "[" +
+                    "gamma=" + gamma +
+                    "; " + getVisibilityLevel() +
+                    "/" + getUnitVisionStatus() +
+                    "/" + getPlayerVisionStatus() +
+                    ']';
+    }
+
+    public SeenMapper getSeenMapper() {
+        return getVisionController().getSeenMapper();
     }
 }

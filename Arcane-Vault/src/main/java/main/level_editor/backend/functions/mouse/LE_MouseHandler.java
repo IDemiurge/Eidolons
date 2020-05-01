@@ -76,6 +76,9 @@ public class LE_MouseHandler extends LE_Handler {
             case NORMAL:
                 getSelectionHandler().selectedCoordinate(c);
                 break;
+            case ALT_CTRL_R:
+                getObjHandler().addFromSelection(c);
+                return;
             case RIGHT:
                 getObjHandler().addFromPalette(c);
                 return;
@@ -156,6 +159,9 @@ public class LE_MouseHandler extends LE_Handler {
                     }
                 }
                 operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
+                break;
+            case CTRL_SHIFT_R:
+                getEditHandler().getScriptHandler().editScriptData(bfObj.getCoordinates());
                 break;
             case CTRL_R:
                 if (bfObj instanceof Entrance) {

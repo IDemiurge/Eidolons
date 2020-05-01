@@ -141,7 +141,7 @@ public class StructMaster extends DungeonHandler {
 
                 Map<Coordinates, Integer> patternMap = struct.getPatternMap();
                 if (patternMap == null) {
-                    patternMap = create(struct);
+                    patternMap = createPatternMap(struct);
                     struct.setPatternMap(patternMap);
                 }
                 return patternMap.get(c);
@@ -150,7 +150,7 @@ public class StructMaster extends DungeonHandler {
         return 0;
     }
 
-    private Map<Coordinates, Integer> create(IStruct struct) {
+    private Map<Coordinates, Integer> createPatternMap(IStruct struct) {
 //TODO cell vs alt cell is better?
         Map<Coordinates, Integer> map = new LinkedHashMap<>();
         int width = CoordinatesMaster.getWidth(struct.getCoordinatesSet());

@@ -29,7 +29,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.math.PositionMaster;
 
 import java.util.*;
 
@@ -129,18 +128,14 @@ public class ShadowMap extends GroupX implements GridElement {
         offset(x1*128, y1*128); //TODO is that right?
     }
 
-    private void init() {
+        private void init() {
         for (SHADE_CELL type : SHADE_CELL_VALUES) {
-//            if (type == VOID) {
-//                if (EidolonsGame.BOSS_FIGHT)
-//                    continue;
-//            }
             getCells().put(type, new ShadeLightCell[grid.getModuleCols()][grid.getModuleRows()]);
             emitters = new List[grid.getModuleCols()][grid.getModuleRows()];
 
             for (int x = 0; x < grid.getModuleCols(); x++) {
                 for (int y = 0; y < grid.getModuleRows(); y++) {
-                    if (grid.getCells()[x][y] == null) {
+                    if (grid.getCells()[x1+x][y1+y].getUserObject().isVOID()) {
                         if (type != VOID)
                             continue;
                     } else if (type == VOID)
@@ -199,7 +194,7 @@ public class ShadowMap extends GroupX implements GridElement {
         float offsetY = (GridMaster.CELL_H - element.getHeight()) / 2;
 
         element.setPosition(x * GridMaster.CELL_W + offsetX,
-                (grid.getModuleY(y)-1)
+                grid.getGdxY_ForModule(y)
                         * GridMaster.CELL_H + offsetY);
 
         element.setColor(1, 1, 1, defaultAlpha);
@@ -286,7 +281,7 @@ public class ShadowMap extends GroupX implements GridElement {
                             }
                         }
                         float alpha = DC_Game.game.getVisionMaster().
-                                getGammaMaster().getAlphaForShadowMapCell(x, PositionMaster.getLogicalY(y), type);
+                                getGammaMaster().getAlphaForShadowMapCell(x , y , type);
                         if (Math.abs(cell.getBaseAlpha() - alpha) > 0.1f) {
                             cell.setBaseAlpha(alpha);
 
@@ -301,7 +296,7 @@ public class ShadowMap extends GroupX implements GridElement {
                             continue; //for void
                         for (LightEmitter lightEmitter : list) {
                             float alpha = DC_Game.game.getVisionMaster().
-                                    getGammaMaster().getLightEmitterAlpha(x, PositionMaster.getLogicalY(y));
+                                    getGammaMaster().getLightEmitterAlpha(x+x1,  (y)+y1);
                             if (Math.abs(lightEmitter.getBaseAlpha() - alpha) > 0.1f)
                                 lightEmitter.setBaseAlpha(alpha);
 

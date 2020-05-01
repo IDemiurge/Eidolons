@@ -41,7 +41,6 @@ public class DC_GameObjMaster extends GameObjMaster {
 
     boolean paleAspect;
     private Boolean unitFindSequential = true;
-
     public DC_GameObjMaster(DC_Game game, boolean paleAspect) {
         this(game);
         this.paleAspect = paleAspect;
@@ -59,7 +58,7 @@ public class DC_GameObjMaster extends GameObjMaster {
     }
 
     public Obj getObjectVisibleByCoordinate(Coordinates c) {
-        return getObjectByCoordinate(  c, true);
+        return getObjectByCoordinate(c, true);
     }
 
     public Obj getObjectByCoordinate(Coordinates c, Boolean overlaying) {
@@ -72,7 +71,7 @@ public class DC_GameObjMaster extends GameObjMaster {
 
 
     public Set<BattleFieldObject> getOverlayingObjects(Coordinates c) {
-        return getObjectsOnCoordinate(  c, null );
+        return getObjectsOnCoordinate(c, null);
     }
 
     public void clearCache(Coordinates c) {
@@ -82,13 +81,8 @@ public class DC_GameObjMaster extends GameObjMaster {
         //TODO also remove if dead
     }
 
-    public BattleFieldObject[][][] getObjCells() {
-        return getGame().getGrid().getObjCells();
-    }
-
-
     public BattleFieldObject[] getObjects(int x_, int y_) {
-        return  getObjects(x_, y_, true);
+        return getObjects(x_, y_, true);
     }
 
     public BattleFieldObject[] getObjects(int x_, int y_, Boolean overlayingIncluded_Not_Only) {
@@ -110,9 +104,9 @@ public class DC_GameObjMaster extends GameObjMaster {
             set = new HashSet<>();
 
             for (BattleFieldObject object : getGame().getStructures()) {
-                if (object.isPale() != paleAspect) {
-                    continue;
-                }
+//                if (object.isPale() != paleAspect) {
+//                    continue;
+//                }
                 if (overlayingIncluded_Not_Only != null) {
                     if (!overlayingIncluded_Not_Only)
                         if (object.isOverlaying())
@@ -253,6 +247,7 @@ public class DC_GameObjMaster extends GameObjMaster {
 
     public void removeStructure(Structure structure) {
         getStructures().remove(structure);
+        getGame().getGrid().getWallCache()[structure.getX()][structure.getY()] = null;
     }
 
     public void clearCaches() {
@@ -271,7 +266,7 @@ public class DC_GameObjMaster extends GameObjMaster {
     }
 
     protected boolean isCacheForStructures() {
-        return         !CoreEngine.isLevelEditor();
+        return !CoreEngine.isLevelEditor();
     }
 
 
@@ -280,7 +275,11 @@ public class DC_GameObjMaster extends GameObjMaster {
         getStructures().clear();
     }
 
-    public Set<DC_Cell> getCells() {
+    public DC_Cell[][] getCells() {
+        return (getGame().getGrid().getCells());
+    }
+
+    public Set<DC_Cell> getCellsSet() {
         return new LinkedHashSet<>(getGame().getGrid().getCellsSet());
     }
 
@@ -307,10 +306,9 @@ public class DC_GameObjMaster extends GameObjMaster {
 
     public void tryAddUnit(Obj obj) {
         if (obj instanceof Unit) {
-                getUnits().add((Unit) obj);
-        } else
-        if (obj instanceof Structure) {
-                getStructures().add((Structure) obj);
+            getUnits().add((Unit) obj);
+        } else if (obj instanceof Structure) {
+            getStructures().add((Structure) obj);
         }
     }
 
@@ -330,7 +328,7 @@ public class DC_GameObjMaster extends GameObjMaster {
             , Player owner, Obj source) {
         List<BattleFieldObject> matched = new XList<>();
         DequeImpl<BattleFieldObject> all = getBfObjects();
-        if (unit_struct_both!=null) {
+        if (unit_struct_both != null) {
             //TODO
         }
         for (BattleFieldObject unit : all) {
@@ -360,10 +358,10 @@ public class DC_GameObjMaster extends GameObjMaster {
             SortMaster.sortEntitiesByExpression(matched,
                     unit1 -> (powerSort ? 1 : -1) * unit1.getIntParam(PARAMS.POWER));
         }
-        if (matched.size()==2){
-            if (Math.abs( PositionMaster.getDistance(source,  matched.get(0))- PositionMaster.getDistance(source,  matched.get(1)))
-            <=1
-            ){
+        if (matched.size() == 2) {
+            if (Math.abs(PositionMaster.getDistance(source, matched.get(0)) - PositionMaster.getDistance(source, matched.get(1)))
+                    <= 1
+            ) {
                 return getUnitSequentially(matched);
             }
         }
@@ -436,4 +434,5 @@ public class DC_GameObjMaster extends GameObjMaster {
         list.addAll(getStructures());
         return list;
     }
+
 }

@@ -13,6 +13,7 @@ import eidolons.game.battlecraft.rules.round.WaterRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.objects.Door;
+import eidolons.game.module.dungeoncrawl.objects.DoorMaster;
 import eidolons.game.netherflame.igg.pale.PaleAspect;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
@@ -58,7 +59,7 @@ public class StackingRule implements ActionRule {
             boolean result = DC_Game.game.getOverlayingObjects(c).size() < MAX_OVERLAYING_ON_CELL;
             if (!result) {
                 LogMaster.log(1, c
-                 + "******* Cell already has max number of overlaying Objects!");
+                        + "******* Cell already has max number of overlaying Objects!");
             }
 
             return result;
@@ -67,7 +68,7 @@ public class StackingRule implements ActionRule {
         if (unit instanceof Entrance)
             return true;
 
-        return instance.canBeMovedOnto(maxSpaceTakenPercentage, unit, c,  otherUnits);
+        return instance.canBeMovedOnto(maxSpaceTakenPercentage, unit, c, otherUnits);
     }
 
     public static void actionMissed(DC_ActiveObj action) {
@@ -76,9 +77,9 @@ public class StackingRule implements ActionRule {
         Ref ref = action.getRef();
         Obj target = ref.getTargetObj();
         Set<BattleFieldObject> units = action.getGame().getObjectsNoOverlaying(
-         action.getOwnerUnit().getCoordinates());
+                action.getOwnerUnit().getCoordinates());
         units.addAll(action.getGame().getObjectsNoOverlaying(
-         target.getCoordinates()));
+                target.getCoordinates()));
         units.remove(action.getOwnerUnit());
         units.remove(target);
         if (units.isEmpty()) {
@@ -91,26 +92,26 @@ public class StackingRule implements ActionRule {
         BattleFieldObject randomTarget = new RandomWizard<BattleFieldObject>().getObjectByWeight(map);
         ref.setTarget(randomTarget.getId());
 
-        action.getGame().getLogManager().log(action.getName()+" has missed " +
+        action.getGame().getLogManager().log(action.getName() + " has missed " +
                 target.getNameIfKnown() +
                 " and hit " +
                 randomTarget +
-                        " instead!");
+                " instead!");
 
         action.activatedOn(ref);
 
     }
 
     public boolean canBeMovedOnto(Entity unit, Coordinates c) {
-        return canBeMovedOnto(unit, c,   null);
+        return canBeMovedOnto(unit, c, null);
     }
 
     public boolean canBeMovedOnto(Entity unit, Coordinates c,
                                   List<? extends Entity> otherUnits) {
-        return canBeMovedOnto(100, unit, c,   otherUnits);
+        return canBeMovedOnto(100, unit, c, otherUnits);
     }
 
-    private boolean canBeMovedOnto(Integer maxSpaceTakenPercentage, Entity unit, Coordinates c ,
+    private boolean canBeMovedOnto(Integer maxSpaceTakenPercentage, Entity unit, Coordinates c,
                                    List<? extends Entity> otherUnits) {
         HashMap<Coordinates, Boolean> bools = cache.get(unit);
         boolean result = false;
@@ -127,7 +128,7 @@ public class StackingRule implements ActionRule {
 
         //getVar all units on the cell
         DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
-        for (BattleFieldObject u : game.getObjMaster(). getObjects (  c.x, c.y, false )) {
+        for (BattleFieldObject u : game.getObjMaster().getObjects(c.x, c.y, false)) {
             if (!units.contains(u)) {
                 if (u.isDead())
                     continue;
@@ -143,19 +144,19 @@ public class StackingRule implements ActionRule {
                     }
                 if (!u.isAnnihilated())
                     //                    continue; TODO why was Type necessary?
-                    units.addCast(!u.isDead() ? u.getType() : u);
+                    units.addCast(u);
+//                    units.addCast(!u.isDead() ? u.getType() : u);
             }
         }
         if (!EidolonsGame.DUEL)
-        if (unit != null)
-        if (EntityCheckMaster.isImmaterial(  unit ))
-            return true;
+            if (unit != null)
+                if (EntityCheckMaster.isImmaterial(unit))
+                    return true;
         if (unit == null) {
             // unit = DataManager.getType(HeroCreator.BASE_HERO, DC_TYPE.CHARS);
             // instead, just empty type with 0 girth!
             unit = new ObjType();
-        } else
-        if (unit.getIntParam(PARAMS.GIRTH)==0) {
+        } else if (unit.getIntParam(PARAMS.GIRTH) == 0) {
             return true;
         }
         if (PaleAspect.ON) {
@@ -210,6 +211,12 @@ public class StackingRule implements ActionRule {
             if (EntityCheckMaster.isEntrance(u)) {
                 continue;
             }
+            if (u instanceof Door) {
+                if (((Door) u).getState() == DoorMaster.DOOR_STATE.OPEN) {
+                    girth += u.getIntParam(PARAMS.GIRTH) / 2;
+                    continue;
+                } else return false;
+            }
             if (u.isDead()) {
                 if (u instanceof Structure)
                     continue;
@@ -238,7 +245,7 @@ public class StackingRule implements ActionRule {
         }
         if (!result) {
             units.removeIf(u -> u.isDead());
-            if (units.size()==1) {
+            if (units.size() == 1) {
                 if (units.get(0) instanceof Door) {
                     return true;
                 }

@@ -3,14 +3,14 @@ package eidolons.libgdx.bf.overlays;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 
 /**
  * Created by JustMe on 5/18/2018.
  */
 public class HpBarManager {
     public static boolean isHpBarVisible(BattleFieldObject obj) {
-        if (VisionManager.isCinematicVision()){
+        if (VisionHelper.isCinematicVision()){
             return false;
         }
         if (obj instanceof Structure)
@@ -26,8 +26,7 @@ public class HpBarManager {
         if (obj.isDead())
             return false;
         if (!obj.isMine())
-            if (!obj.isDetectedByPlayer())
-                return false;
+            return obj.isDetectedByPlayer();
         return true;
     }
 

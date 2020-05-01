@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjNode;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjsNode;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.generator.init.RngXmlMaster;
@@ -87,7 +88,7 @@ public class LevelBlock extends LevelStruct<LevelBlock, LevelBlock> {
     }
 
     @Override
-    protected LevelStruct getParent() {
+    public LevelStruct getParent() {
         return zone;
     }
 
@@ -235,6 +236,9 @@ public class LevelBlock extends LevelStruct<LevelBlock, LevelBlock> {
         return model;
     }
 
+    public Module getModule() {
+        return getZone().getModule();
+    }
 
 
     public void setData(BlockData data) {

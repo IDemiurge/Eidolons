@@ -16,7 +16,6 @@ import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.math.MathMaster;
-import main.system.math.PositionMaster;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -93,7 +92,7 @@ public class GammaMaster {
         }
         float alpha = 0;
         DC_Cell cell = Eidolons.game.getCellByCoordinate(
-                Coordinates.get(x, y));
+                master.getGame().getGrid().getModuleCoordinates(x, y));
         if (cell == null) {
             if (type == SHADE_CELL.GAMMA_SHADOW)
                 return 1;
@@ -107,12 +106,12 @@ public class GammaMaster {
         switch (type) {
 
             case GAMMA_SHADOW:
-                if (VisionManager.isVisionHacked()) {
+                if (VisionHelper.isVisionHacked()) {
                     return 0;
                 }
                 if (gamma >= 1)
                     return 0;
-                if (gamma < 0)
+                if (gamma <= 0)
                     alpha = 1;
                 else {
                     alpha = 1 - gamma;
@@ -147,7 +146,7 @@ public class GammaMaster {
                         //               PARAMS.CONCEALMENT)*CONCEALMENT_ALPHA_FACTOR;
                         master.getIlluminationMaster().getConcealment(unit, cell) * CONCEALMENT_ALPHA_FACTOR;
                 if (alpha > 0)
-                    alpha += getAlphaForShadowMapCell(x, PositionMaster.getLogicalY(y), SHADE_CELL.LIGHT_EMITTER) / 3;
+                    alpha += getAlphaForShadowMapCell(x,  (y), SHADE_CELL.LIGHT_EMITTER) / 3;
                 break;
         }
 
@@ -222,26 +221,26 @@ public class GammaMaster {
         if (alpha != null)
             return alpha;
         alpha = 1f;
-        Coordinates c = Coordinates.get(x, y);
+        Coordinates c = master.getGame().getGrid().getModuleCoordinates(x, y);
         DC_Cell cell = null;
         //no guarantee, but high chance to find one of the closest non void cells
         loop:
         for (int i = 1; i < master.getGame().getDungeon().getWidth(); i++) {
             for (int j = 0; j < master.getGame().getDungeon().getHeight(); j++) {
                 cell = master.getGame().getGrid().getCell(x + i, y + i);
-                if (cell != null) {
+                if (!cell.isVOID()) {
                     break loop;
                 }
                 cell = master.getGame().getGrid().getCell(x - i, y + i);
-                if (cell != null) {
+                if (!cell.isVOID()) {
                     break loop;
                 }
                 cell = master.getGame().getGrid().getCell(x + i, y - i);
-                if (cell != null) {
+                if (!cell.isVOID()) {
                     break loop;
                 }
                 cell = master.getGame().getGrid().getCell(x - i, y - i);
-                if (cell != null) {
+                if (!cell.isVOID()) {
                     break loop;
                 }
             }

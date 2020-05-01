@@ -9,7 +9,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -300,7 +300,7 @@ public class RadialManager {
         }
         return target instanceof Unit && (
                 target.getOutlineTypeForPlayer() == null
-                        && VisionManager.checkKnown(target));
+                        && VisionHelper.checkKnown(target));
     }
 
     protected static RadialValueContainer configureShortcutActionNode(DC_Obj target, DC_ActiveObj activeObj) {

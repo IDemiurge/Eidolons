@@ -86,7 +86,9 @@ public class ObjCreator extends Master {
 
                 }
             }
-
+        if (getGame().getModule() != null) {
+            obj.setModule(getGame().getModule());
+        }
         return obj;
 
     }

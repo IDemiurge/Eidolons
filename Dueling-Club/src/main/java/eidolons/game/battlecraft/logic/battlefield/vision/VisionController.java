@@ -49,6 +49,7 @@ public class VisionController {
     WallObstructionMapper wallObstructionMapper;
     GammaMapper gammaMapper;
     LastSeenMapper lastSeenMapper;
+    SeenMapper seenMapper;
     List<GenericMapper> mappers;
     private StealthMapper stealthMapper;
     private DiagObstructMapper diagObstructMapper;
@@ -72,6 +73,11 @@ public class VisionController {
         mappers.add(playerVisionMapper = new PlayerVisionMapper());
         mappers.add(detectionMapper = new DetectionMapper());
         mappers.add(wallObstructionMapper = new WallObstructionMapper());
+        mappers.add(seenMapper = new SeenMapper());
+    }
+
+    public SeenMapper getSeenMapper() {
+        return seenMapper;
     }
 
     public LastSeenMapper getLastSeenMapper() {

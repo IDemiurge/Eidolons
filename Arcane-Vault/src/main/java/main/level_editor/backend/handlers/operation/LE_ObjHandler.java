@@ -28,7 +28,7 @@ import java.util.function.Function;
 
 public class LE_ObjHandler extends LE_Handler {
 
-    private static final String DEFAULT_TYPE = "Bone Wall";
+    private static final String DEFAULT_TYPE = "Wall Placeholder";
     private BattleFieldObject lastAdded;
     private ObjType defaultPaletteType;
 
@@ -71,6 +71,15 @@ public class LE_ObjHandler extends LE_Handler {
         addFromPalette(Coordinates.get(gridX, gridY));
     }
 
+    public void addFromSelection(Coordinates c) {
+        if (getSelectionHandler().getObject() == null) {
+//            getModelManager().getCopied();
+            return;
+        }
+        ObjType objType = getSelectionHandler().getObject().getType();
+        operation(Operation.LE_OPERATION.ADD_OBJ, objType,
+                c);
+    }
     public void addFromPalette(Coordinates c) {
         if (getModel().isBrushMode() && getModel().getBrush().getBrushType() != LE_BrushType.none) {
             ObjType type = getPaletteHandler().getFiller(
@@ -89,6 +98,9 @@ public class LE_ObjHandler extends LE_Handler {
             }
             operation(Operation.LE_OPERATION.ADD_OBJ, objType,
                     c);
+            if (objType.getName().contains("Placeholder")) {
+                getStructureHandler().initWall(c);
+            }
         }
     }
 
@@ -187,8 +199,18 @@ public class LE_ObjHandler extends LE_Handler {
         }
         Coordinates c1 = lastAdded.getCoordinates();
         if (PositionMaster.inLine(c1, c)) {
-            addMultiple(lastAdded.getType(), CoordinatesMaster.getCoordinatesBetweenInclusive(c1, c));
+            List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesBetweenInclusive(c1, c);
+            coordinates.remove(c1);
+            addMultiple(lastAdded.getType(), coordinates);
         } else if (PositionMaster.inLineDiagonally(c1, c)) {
+            List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesBetweenInclusive(c1, c);
+            coordinates.removeIf(coord -> {
+                if (PositionMaster.inLineDiagonally(c1, coord))
+                    return !PositionMaster.inLineDiagonally(c, coord);
+                return true;
+            });
+            coordinates.remove(c1);
+            addMultiple(lastAdded.getType(), coordinates);
             //TODO
         }
     }
@@ -208,4 +230,11 @@ public class LE_ObjHandler extends LE_Handler {
         return defaultPaletteType;
     }
 
+    public void copyTo(BattleFieldObject object, Coordinates c) {
+        if (object.isOverlaying()) {
+            operation(Operation.LE_OPERATION.ADD_OVERLAY, object.getType(), c);
+        } else {
+            operation(Operation.LE_OPERATION.ADD_OBJ, object.getType(), c);
+        }
+    }
 }

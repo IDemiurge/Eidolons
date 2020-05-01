@@ -332,7 +332,7 @@ public class DC_Game extends GenericGame {
             dungeonMaster.getExplorationMaster().init();
 
         }
-        visionMaster.refresh();
+//        visionMaster.refresh();
         getMetaMaster().getDialogueManager().introDialogue();
         DialogueManager.afterDialogue(() -> {
             fireEvent(new Event(Event.STANDARD_EVENT_TYPE.INTRO_FINISHED, new Ref()));
@@ -347,7 +347,7 @@ public class DC_Game extends GenericGame {
 
     public void startGameLoop() {
         startGameLoop(true);
-        getVisionMaster().refresh();
+//        getVisionMaster().refresh();
     }
 
 
@@ -529,7 +529,7 @@ public class DC_Game extends GenericGame {
     }
 
     public Set<DC_Cell> getCells() {
-        return getObjMaster().getCells();
+        return getObjMaster().getCellsSet();
     }
 
     public Set<Unit> getUnits() {
@@ -925,13 +925,6 @@ public class DC_Game extends GenericGame {
         this.bossFight = bossFight;
     }
 
-    public boolean toggleVoid(Coordinates c) {
-        DC_Cell cell = getCellByCoordinate(c);
-        boolean v;
-        cell.setVOID(v = !cell.isVOID());
-        //what about things on this cell?
-        return v;
-    }
 
 
     public enum GAME_MODES {

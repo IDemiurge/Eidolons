@@ -10,7 +10,6 @@ import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
 import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import eidolons.game.netherflame.igg.death.ShadowMaster;
 import eidolons.game.netherflame.igg.death.ShadowVisionMaster;
@@ -22,10 +21,8 @@ import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.obj.Obj;
-import main.game.bf.Coordinates;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.secondary.Bools;
-import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 import main.system.sound.SoundMaster;
@@ -66,48 +63,46 @@ public class VisionRule {
 
 
     public void fullReset(Unit... observers) {
-        BattleFieldObject[][][] array = master.getGame().getObjMaster().getObjCells();
+        DC_Cell[][] array = master.getGame().getObjMaster().getCells();
         Set<Unit> filteredObserver = new HashSet<>();
         for (Unit observer : observers) {
             if (isObserverResetRequired(observer))
                 filteredObserver.add(observer);
         }
         for (Unit observer : filteredObserver) {
-            DequeImpl<Coordinates> coordinates =
-                    master.getSightMaster().getVisibleCoordinatesSecondary(observer);
+//            DequeImpl<Coordinates> coordinates = new DequeImpl(master.getGame().getCoordinates());
+//                    master.getSightMaster().getVisibleCoordinatesSecondary(observer);
 
-            int offsetX= master.getGame().getModule().getX();
-            int offsetY= master.getGame().getModule().getY();
+            int offsetX = master.getGame().getModule().getX();
+            int offsetY = master.getGame().getModule().getY();
+            int x2 = master.getGame().getModule().getX2();
+            int y2 = master.getGame().getModule().getY2();
 
-            for (int i  = 0; i < array.length; i++) {
-                for (int j  = 0; j < array[0].length; j++) {
-                    BattleFieldObject[] objects = array[i][j];
+            for (int i = offsetX; i < x2; i++) {
+                for (int j = offsetY; j < y2; j++) {
+                    BattleFieldObject[] objects = master.getGame().getObjMaster().getObjects(
+                            i, j);
                     if (objects == null) {
-                    objects =     master.getGame().getObjMaster().getObjects(
-                                    i,j, false);
+                        objects = master.getGame().getObjMaster().getObjects(
+                                i, j, false);
                     }
-                    int x=i+offsetX;
-                    int y=j+offsetY;
-//                 master.getGame().getMaster().getObjects(i, j, true);
-                    DC_Cell cell = master.getGame().getCellByCoordinate(Coordinates.get(x, y));
-                    if (cell == null)
+                    DC_Cell cell = array[i][j];
+
+                    if (!isResetRequired(observer, cell))
                         continue;
 
-                    if (coordinates==null || !coordinates.contains(Coordinates.get(x, y))) {
-                        if (!isResetRequired(observer, cell))
-                            continue;
-                    }
                     if (isGammaResetRequired(observer, cell)) {
                         cell.setGamma(observer, master.getGammaMaster().getGamma(
                                 observer, cell));
                     }
                     master.getSightMaster().resetUnitVision(observer, cell);
+//                    log(LOG_CHANNEL.VISIBILITY_DEBUG, cell.getNameAndCoordinate()+
+//                            " - Vision reset: " + cell.getVisionInfo());
+
                     for (BattleFieldObject sub : objects) {
                         //check ignore?
-                        if (!coordinates.contains(Coordinates.get(x, y)))
-                            if (!isObjResetRequired(observer, sub))
-                                continue;
-                        resetVision(observer, sub);
+                        if (isObjResetRequired(observer, sub))
+                            resetVision(observer, sub);
 
                     }
                 }
@@ -130,7 +125,7 @@ public class VisionRule {
         controller.getVisibilityLevelMapper().set(observer, sub, visibility(observer, sub));
         controller.getOutlineMapper().set(observer, sub, outline(observer, sub));
         controller.getPlayerVisionMapper().set(observer.getOwner(), sub, playerVision(observer, sub));
-
+//        log(LOG_CHANNEL.VISIBILITY_DEBUG, sub.getNameAndCoordinate() + " - Vision reset: " + sub.getVisionInfo());
     }
 
     private boolean isObserverResetRequired(Unit observer) {
@@ -189,13 +184,13 @@ public class VisionRule {
         //is close enough
         //is hostile
 
-        if (observer.isPale() != cell.isPale())
-            return false;
+//        if (observer.isPale() != cell.isPale())
+//            return false;
 
-        if (ExplorationMaster.isExplorationOn())
-            if (cell.isResetIgnored()) {
-                return false;
-            }
+//        if (ExplorationMaster.isExplorationOn())
+//            if (cell.isResetIgnored()) {
+//                return false;
+//            }
         if (cell instanceof BossUnit) {
             return true;
         }
@@ -207,11 +202,13 @@ public class VisionRule {
             }
             if (PositionMaster.getExactDistance(observer, cell) >
                     1 + observer.getMaxVisionDistance() * dstCoef) {
-                if (master.getGame().getObjectByCoordinate(cell.getCoordinates()) instanceof Structure) {
-                    Structure o = ((Structure) master.getGame().getObjectByCoordinate(cell.getCoordinates()));
-                    if (o.isWall()) {
-                        return o.isPlayerDetected();
+                if (master.getGame().getGrid().isWallCoordinate(cell.getCoordinates())) {
+                    Boolean aBoolean = observer.getSeenMapper().get(cell);
+                    if (aBoolean == null) {
+                        return false;
                     }
+                    return aBoolean;
+
                 }
                 return false;
             }
@@ -347,13 +344,15 @@ public class VisionRule {
         if (Bools.isTrue(prev)) {
             return;
         }
+        controller.getSeenMapper().set(source.getOwner(),
+                object.getGame().getCellByCoordinate(object.getCoordinates()), true);
         controller.getDetectionMapper().set(source.getOwner(), object, true);
         if (isDetectionLogged(source, object)) {
             master.getGame().getLogManager().logReveal(source, object);
         }
         if (isDetectionSoundOn(source, object)) {
             if (source.getGame().isStarted())
-                if (!VisionManager.isCinematicVision())
+                if (!VisionHelper.isCinematicVision())
 //            if (!source.getGame().isFootageMode())
                     if (RandomWizard.chance(33)) {
                         DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.ALERT, source);

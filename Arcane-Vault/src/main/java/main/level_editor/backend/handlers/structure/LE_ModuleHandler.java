@@ -134,8 +134,12 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
                     case wall_and_chism:
                         break;
                 }
-                objType = DataManager.getType(objTypeName
-                        , DC_TYPE.BF_OBJ);
+                if (objTypeName != null) {
+                    objType = DataManager.getType(objTypeName
+                            , DC_TYPE.BF_OBJ);
+                } else
+                    //TODO add void
+                    continue;
             }
 
             log(LOG_CHANNEL.BUILDING, module.getName() + " borders being reset " + borderCoords.size());
@@ -221,14 +225,14 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
 
     @Override
     public void addModule() {
-        boolean tileMapVariant = EUtils.confirm("Tilemap template?");
+        boolean tileMapVariant = EUtils.waitConfirm("Tilemap template?");
         String template = null;
         boolean empty = false;
         if (tileMapVariant) {
             template = FileChooserX.chooseFile(PathFinder.getModuleTemplatesPath(),
                     "xml", LE_Screen.getInstance().getGuiStage());
         } else {
-            empty = EUtils.confirm("Empty module?");
+            empty = EUtils.waitConfirm("Empty module?");
             if (!empty) {
                 template = FileChooserX.chooseFile(PathFinder.getModulesPath(),
                         "xml", LE_Screen.getInstance().getGuiStage());
