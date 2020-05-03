@@ -28,9 +28,9 @@ import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.game.netherflame.igg.death.ShadowMaster;
 import eidolons.game.netherflame.igg.hero.ChainParty;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
-import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
+import eidolons.libgdx.gui.panels.dc.topleft.atb.INTENT_ICON;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.macro.entity.action.MacroActionManager.MACRO_MODES;
@@ -1832,15 +1832,15 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         this.actorLinked = actorLinked;
     }
 
-    public AtbPanel.INTENT_ICON getIntentIcon() {
+    public INTENT_ICON getIntentIcon() {
         if (getMode() != null && getMode() != STD_MODES.NORMAL) {
-            return AtbPanel.INTENT_ICON.getModeIcon(getMode());
+            return INTENT_ICON.getModeIcon(getMode());
         }
         if (isPlayerCharacter()) {
-            return AtbPanel.INTENT_ICON.WAIT;
+            return INTENT_ICON.WAIT;
         }
         if (isBoss()) {
-            return AtbPanel.INTENT_ICON.WHEEL;
+            return INTENT_ICON.WHEEL;
         }
 
         return null;

@@ -72,9 +72,6 @@ public class EntityCheckMaster {
     }
 
     public static boolean isBoss(ObjType type) {
-        if (type.getName().equalsIgnoreCase("steel golem")) {
-            return true;
-        }
         return type.checkProperty(G_PROPS.CLASSIFICATIONS, "Boss");
     }
 

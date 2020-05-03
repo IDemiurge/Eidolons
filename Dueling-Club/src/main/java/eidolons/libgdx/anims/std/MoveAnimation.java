@@ -141,10 +141,15 @@ public class MoveAnimation extends ActionAnim {
         actor.addAction(getAction());
         action.setTarget(actor);
 
-
-        ScreenMaster.getDungeonGrid().showMoveGhostOnCell(unit);
-        ScreenMaster.getDungeonGrid().resetCell(unit.getBufferedCoordinates());
+if (isGhostMoveOn()){
+    ScreenMaster.getDungeonGrid().showMoveGhostOnCell(unit);
+    ScreenMaster.getDungeonGrid().resetCell(unit.getBufferedCoordinates());
+}
 //        GuiEventManager.trigger(GuiEventType.CELL_SHOW_MOVE_GHOST, unit);
+    }
+
+    protected boolean isGhostMoveOn() {
+        return unit.isPlayerCharacter();
     }
 
     @Override

@@ -5,12 +5,14 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.GridSubParts;
+import eidolons.libgdx.bf.grid.GridViewAnimator;
 import eidolons.libgdx.bf.grid.cell.*;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
+import main.level_editor.backend.functions.advanced.LE_GridAnimTester;
 import main.level_editor.backend.handlers.selection.LE_Selection;
 import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
@@ -22,6 +24,7 @@ import static main.system.GuiEventType.*;
 public class LE_BfGrid extends GridPanel {
 
     private final TextureRegion selectionBorder;
+    GridViewAnimator gridViewAnimator = new LE_GridAnimTester(this);
 
     public LE_BfGrid(int cols, int rows, int moduleCols, int moduleRows) {
         super(cols, rows, moduleCols, moduleRows);

@@ -1,4 +1,4 @@
-package eidolons.libgdx.gui.panels.dc;
+package eidolons.libgdx.gui.panels.dc.topleft.atb;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -39,12 +39,12 @@ public class SpeedControlPanel extends TablePanelX {
         if (!VisUI.isLoaded()) {
             VisUI.load(PathFinder.getSkinPath());
         }
-//        addActor(
-                slider = new VisSlider(10, 150, 10, true);
-//        setSize(background.getWidth(), background.getHeight());
+        addActor(
+                slider = new VisSlider(10, 150, 10, true));
+        setSize(background.getWidth(), background.getHeight());
         GdxMaster.center(slider);
-//        slider.setValue(OptionsMaster.getGameplayOptions().
-//                getIntValue(GameplayOptions.GAMEPLAY_OPTION.GAME_SPEED));
+        slider.setValue(OptionsMaster.getGameplayOptions().
+                getIntValue(GameplayOptions.GAMEPLAY_OPTION.GAME_SPEED));
 
         slider.addListener(new ChangeListener() {
             @Override

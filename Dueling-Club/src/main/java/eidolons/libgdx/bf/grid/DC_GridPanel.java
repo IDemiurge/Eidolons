@@ -64,7 +64,6 @@ public class DC_GridPanel extends GridPanel {
 
     private List<GroupX> commentSprites = new ArrayList<>(5);
     private List<GroupX> activeCommentSprites = new ArrayList<>(3);
-    GridViewAnimator gridViewAnimator = new GridViewAnimator(this);
 
     private boolean updateRequired;
     private boolean firstUpdateDone;

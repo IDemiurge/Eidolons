@@ -110,7 +110,7 @@ public class SmartButton extends TextButton implements EventListener {
         InputEvent event = (InputEvent) e;
         STD_SOUNDS sound = null;
         if (event.getType() == Type.touchUp) {
-            if (event.getPointer() == -1 //programmatic
+            if (!isCheckClickArea() || event.getPointer() == -1 //programmatic
                     || GdxMaster.isWithin(event.getTarget(), new Vector2(event.getStageX(), event.getStageY()), true)) {
                 if (!isDisabled()) {
                     if (getSoundMap() != null)
@@ -142,6 +142,10 @@ public class SmartButton extends TextButton implements EventListener {
 
             DC_SoundMaster.playStandardSound(sound);
         }
+        return true;
+    }
+
+    protected boolean isCheckClickArea() {
         return true;
     }
 

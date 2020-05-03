@@ -11,7 +11,7 @@ public interface IHandlerDelegate extends ControlButtonHandler {
 
     void addZone();
     void fromBlock();
-    void fromAll();
+    void gridAnim();
     void areaToBlock();
     void mirror();
     void rotate();

@@ -56,6 +56,14 @@ public class ImageContainer extends SuperContainer {
     }
 
     @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        if (getContent() != null) {
+            getContent().setVisible(visible);
+        }
+    }
+
+    @Override
     public void removeAction(Action action) {
         getContent().removeAction(action);
     }

@@ -112,7 +112,8 @@ public class RadialMenu extends Group implements Closable {
         });
         GuiEventManager.bind(getOpenEvent(), obj -> {
             triggered(obj);
-
+            GuiEventManager.trigger(GuiEventType.GRID_SET_VIEW, obj);
+            GuiEventManager.trigger(GuiEventType.GRID_SCREEN);
         });
     }
 

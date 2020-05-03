@@ -459,49 +459,41 @@ public class GdxMaster {
         if (CoreEngine.isSuperLite()) {
             return;
         }
-
         int x = Gdx.input.getX();
         int y = Gdx.input.getY();
         Gdx.graphics.setCursor(cursor);
         Gdx.input.setCursorPosition(x, y);
     }
 
-    public static void setDefaultCursor() {
-        if (cursor == CURSOR.DEFAULT) {
+    private static void setCursorType(CURSOR cursor) {
+        if (GdxMaster.cursor == cursor) {
             return;
         }
-//        if (CoreEngine.isIDE()) {
-//            if (cursorSet)
-//                return;
-//            cursorSet = true;
-//        }
-        Pixmap pm = new Pixmap(GDX.file(PathFinder.getCursorPath()));
-        setCursor(Gdx.graphics.newCursor(pm, 0, 0));
-        cursor = CURSOR.DEFAULT;
+        Pixmap pm = new Pixmap(GDX.file(cursor.getFilePath()));
+        setCursor(Gdx.graphics.newCursor(pm, cursor.x , cursor.y));
+        GdxMaster.cursor = cursor;
+    }
+
+    public static void setDefaultCursor() {
+        setCursorType(CURSOR.DEFAULT);
     }
 
     public static void setLoadingCursor() {
         if (CoreEngine.isIDE()) {
             return;
         }
-        Pixmap pm = new Pixmap(GDX.file(PathFinder.getLoadingCursorPath()));
-        setCursor(Gdx.graphics.newCursor(pm, 32, 32));
-        cursor = CURSOR.LOADING;
+        setCursorType(CURSOR.LOADING);
     }
 
     public static void setEmptyCursor() {
         if (CoreEngine.isIDE()) {
             return;
         }
-        Pixmap pm = new Pixmap(GDX.file(PathFinder.getEmptyCursorPath()));
-        setCursor(Gdx.graphics.newCursor(pm, 32, 32));
-        cursor = CURSOR.EMPTY;
+        setCursorType(CURSOR.EMPTY);
     }
 
     public static void setTargetingCursor() {
-        Pixmap pm = new Pixmap(GDX.file(PathFinder.getTargetingCursorPath()));
-        setCursor(Gdx.graphics.newCursor(pm, 32, 32));
-        cursor = CURSOR.TARGETING;
+        setCursorType(CURSOR.TARGETING);
     }
 
     public static boolean isVisibleEffectively(Group a) {
@@ -575,12 +567,43 @@ public class GdxMaster {
     }
 
     public enum CURSOR {
-        DEFAULT,
-        TARGETING,
-        LOADING,
-        WAITING,
-        NO, EMPTY,
+        DEFAULT(PathFinder.getCursorPath()),
+        TARGETING(32, 32, PathFinder.getTargetingCursorPath()),
+        LOADING(PathFinder.getLoadingCursorPath()),
+        WAITING(PathFinder.getLoadingCursorPath()),
+        ATTACK(PathFinder.getAttackCursorPath()),
+        ATTACK_SNEAK(0, 64, PathFinder.getSneakAttackCursorPath()),
+        SPELL,
+        DOOR_OPEN,
+        LOOT,
+        INTERACT,
+        EXAMINE,
 
+        NO, EMPTY,
+        ;
+        int x, y;
+        private String filePath;
+
+        CURSOR(int x, int y, String filePath) {
+            this.x = x;
+            this.y = y;
+            this.filePath = filePath;
+        }
+
+        CURSOR(String filePath) {
+            this.filePath = filePath;
+        }
+
+        CURSOR() {
+        }
+
+        public String getFilePath() {
+            return filePath;
+        }
+
+        public void setFilePath(String filePath) {
+            this.filePath = filePath;
+        }
     }
     //    protected static void setAttackTargetingCursor() {
     //        Pixmap pm = new Pixmap(GDX.file(PathFinder.getTargetingCursorPath()));

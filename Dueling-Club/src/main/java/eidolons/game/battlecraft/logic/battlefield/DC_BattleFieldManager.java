@@ -95,6 +95,8 @@ public class DC_BattleFieldManager extends BattleFieldManager   {
     private void resetWalls() {
         doorMap.clear();
         Map<Coordinates, BattleFieldObject> wallObjects = new HashMap<>();
+//   TODO optimization
+//    game.getGrid().getWallCache()
         for (Obj obj : game.getObjects(DC_TYPE.BF_OBJ)) {
             BattleFieldObject bfObj = (BattleFieldObject) obj;
                 if (bfObj.isWall()) {

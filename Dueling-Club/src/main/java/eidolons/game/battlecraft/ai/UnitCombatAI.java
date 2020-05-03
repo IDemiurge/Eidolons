@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.ai.advanced.companion.CompanionMaster;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
-import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
+import eidolons.libgdx.gui.panels.dc.topleft.atb.INTENT_ICON;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -40,7 +40,7 @@ public class UnitCombatAI {
     private Map<ObjType, Integer> actionPriorityBonuses;
     private boolean ordered;
     private boolean free;
-    private AtbPanel.INTENT_ICON intentIcon;
+    private INTENT_ICON intentIcon;
     private ActionSequence lastSequence;
 
     public UnitCombatAI(Unit unit) {
@@ -157,11 +157,11 @@ public class UnitCombatAI {
         this.free = free;
     }
 
-    public AtbPanel.INTENT_ICON getIntentIcon() {
+    public INTENT_ICON getIntentIcon() {
         return intentIcon;
     }
 
-    public void setIntentIcon(AtbPanel.INTENT_ICON intentIcon) {
+    public void setIntentIcon(INTENT_ICON intentIcon) {
         this.intentIcon = intentIcon;
     }
 
@@ -173,11 +173,11 @@ public class UnitCombatAI {
         this.lastSequence = lastSequence;
     }
 
-    private AtbPanel.INTENT_ICON initIntent(Action currentAction) {
+    private INTENT_ICON initIntent(Action currentAction) {
         AiEnums.GOAL_TYPE type = currentAction.getTask().getType();
         if (type == null) {
             if (currentAction.getActive().isMove()) {
-                return AtbPanel.INTENT_ICON.ATTACK;
+                return INTENT_ICON.ATTACK;
             }
 //            if (currentAction.getActive().isTurn()) {
 //                return AtbPanel.INTENT_ICON.ATTACK;
@@ -186,7 +186,7 @@ public class UnitCombatAI {
         if (type != null)
             switch (type) {
                 case ATTACK:
-                    return AtbPanel.INTENT_ICON.ATTACK;
+                    return INTENT_ICON.ATTACK;
                 case BUFF:
                 case SELF:
                 case DEBUFF:
@@ -197,23 +197,23 @@ public class UnitCombatAI {
                 case CUSTOM_HOSTILE:
                 case CUSTOM_SUPPORT:
                 case ZONE_SPECIAL:
-                    return AtbPanel.INTENT_ICON.SPELL;
+                    return INTENT_ICON.SPELL;
                 case RETREAT:
                 case MOVE:
                 case APPROACH:
-                    return AtbPanel.INTENT_ICON.MOVE;
+                    return INTENT_ICON.MOVE;
                 case WAIT:
-                    return AtbPanel.INTENT_ICON.WAIT;
+                    return INTENT_ICON.WAIT;
                 case PREPARE:
-                    return AtbPanel.INTENT_ICON.PREPARE;
+                    return INTENT_ICON.PREPARE;
                 case DEFEND:
-                    return AtbPanel.INTENT_ICON.DEFEND;
+                    return INTENT_ICON.DEFEND;
                 case PROTECT:
                     break;
                 case SEARCH:
-                    return AtbPanel.INTENT_ICON.SEARCH;
+                    return INTENT_ICON.SEARCH;
             }
-        return AtbPanel.INTENT_ICON.UNKNOWN;
+        return INTENT_ICON.UNKNOWN;
     }
 
     public ActionSequence getLastSequence() {

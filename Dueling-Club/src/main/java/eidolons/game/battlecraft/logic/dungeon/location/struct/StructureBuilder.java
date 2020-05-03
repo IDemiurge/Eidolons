@@ -13,6 +13,7 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.launch.CoreEngine;
 import main.system.util.Refactor;
 import org.w3c.dom.Node;
 
@@ -43,6 +44,10 @@ public class StructureBuilder extends DungeonHandler {
 
     public Module createModule(Node node, Location location) {
         Module module = new Module(game);
+        if (CoreEngine.TEST_LAUNCH)
+        if (!getFloorLoader().isModuleObjInitRequired(module)) {
+            return module;
+        }
 //    TODO explicit order!    XmlNodeMaster.findNode()
         for (Node sub : XmlNodeMaster.getNodeList(node)) {
             if (sub.getNodeName().equalsIgnoreCase(FloorLoader.DATA)) {

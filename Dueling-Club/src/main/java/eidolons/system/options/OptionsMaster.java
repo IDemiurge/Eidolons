@@ -521,6 +521,61 @@ public class OptionsMaster {
         return instance;
     }
 
+    public static Options getOptionsByConst(OPTION option ) {
+        OPTIONS_GROUP group= getGroupForConst(option);
+        return  getOptions(group);
+    }
+
+        public static void setOption(OPTION option, Object value, boolean apply) {
+        OPTIONS_GROUP group= getGroupForConst(option);
+        Options options = getOptions(group);
+        options.setValue(option.toString(), value.toString());
+        if (apply){
+            applyOptions(group);
+        }
+
+    }
+
+    private static void applyOptions(OPTIONS_GROUP group) {
+        switch (group) {
+            case GRAPHICS:
+                applyGraphicsOptions();
+                break;
+            case GAMEPLAY:applyGameplayOptions();
+                break;
+            case CONTROLS:applyControlOptions();
+                break;
+            case SOUND:applySoundOptions(getSoundOptions());
+                break;
+            case ANIMATION:applyAnimOptions();
+                break;
+            case SYSTEM:applySystemOptions(getSystemOptions());
+                break;
+            case POST_PROCESSING:
+                break;
+        }
+    }
+
+    private static OPTIONS_GROUP getGroupForConst(OPTION option) {
+        switch (option.getClass().getSimpleName()) {
+            case "GAMEPLAY_OPTION":
+                return OPTIONS_GROUP.GAMEPLAY;
+            case "CONTROL_OPTION":
+                return OPTIONS_GROUP.CONTROLS;
+            case "ANIMATION_OPTION":
+                return OPTIONS_GROUP.ANIMATION;
+            case "SOUND_OPTION":
+                return OPTIONS_GROUP.SOUND;
+            case "GRAPHIC_OPTION":
+                return OPTIONS_GROUP.GRAPHICS;
+            case "SYSTEM_OPTION":
+                return OPTIONS_GROUP.SYSTEM;
+            case "POST_PROCESSING_OPTION":
+                return OPTIONS_GROUP.POST_PROCESSING;
+        }
+        return null;
+    }
+
     public void save() {
         StringBuilder content = new StringBuilder();
         content.append(XML_Converter.openXml("Options" + StringMaster.NEW_LINE));

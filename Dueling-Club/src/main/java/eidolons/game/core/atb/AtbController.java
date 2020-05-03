@@ -172,7 +172,7 @@ public class AtbController implements Comparator<Unit> {
 
     protected String getTimeString(float v) {
         return
-                NumberUtils.formatFloat(1, v) + " seconds";
+                NumberUtils.formatFloat(1, v) + " s. left";
     }
 
     protected void updateTurnOrder() {

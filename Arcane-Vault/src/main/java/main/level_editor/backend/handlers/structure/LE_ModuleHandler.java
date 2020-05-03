@@ -90,7 +90,7 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         LinkedHashSet<Coordinates> set = new LinkedHashSet<>();
         LinkedHashSet<Coordinates> full = new LinkedHashSet<>(getGame().getCoordinates());
         for (Module module : getModules()) {
-            set.addAll(module.initCoordinateSet(true));
+            set.addAll(module.initCoordinateSet(false));
             set.removeAll(module.getVoidCells());
         }
         full.removeAll(set);

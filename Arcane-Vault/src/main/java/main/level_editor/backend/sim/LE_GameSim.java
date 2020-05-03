@@ -152,11 +152,11 @@ public class LE_GameSim extends ScenarioGame {
     public void start(boolean first) {
         dungeonMaster.gameStarted();
 
-        try {
-            getManager().reset();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+//        try {
+//            getManager().reset();
+//        } catch (Exception e) {
+//            main.system.ExceptionMaster.printStackTrace(e);
+//        }
     }
 
     @Override

@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.stage.camera.CameraMan;
 import main.entity.obj.Obj;
+import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.system.GuiEventManager;
@@ -25,7 +26,7 @@ public class LE_CameraHandler extends LE_Handler {
 
     @Override
     public void afterLoaded() {
-        Module m = getModel().getModule();
+        Module m = LevelEditor.getCurrent().getDefaultModule();
         Gdx.app.postRunnable(() ->
                 centerModule(m)
         );

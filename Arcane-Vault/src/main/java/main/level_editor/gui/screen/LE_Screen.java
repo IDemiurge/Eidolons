@@ -105,6 +105,8 @@ public class LE_Screen extends GenericDungeonScreen {
     @Override
     protected void afterLoad() {
         super.afterLoad();
+        final GridCreateData param = ((GridCreateData) data.getParams().get());
+        createAndInitModuleGrid(param);
         particleManager = new ParticleManager();
         gridStage.addActor(particleManager);
 

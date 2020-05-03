@@ -598,7 +598,9 @@ public class GridCellContainer extends GridCell implements Hoverable {
 
     public void fadeInOverlay(TextureRegion texture) {
 //        setOverlayTexture(texture);
-
+        if (getUnitViewsVisible().size()>=1){
+            return;
+        }
         if (overlay == null) {
             addActor(overlay = new FadeImageContainer(new Image(texture)) {
                 public float getFadeDuration() {
@@ -626,16 +628,8 @@ public class GridCellContainer extends GridCell implements Hoverable {
             }
             overlay.setContentsImmediately(new Image(texture));
         }
-        if (getUnitViewsVisible().size()>=1){
-//            AlphaAction alphaAction = ActionMaster.getAlphaAction(overlay, 1, 0, false);
-//            AfterAction afterAction = new AfterAction();
-//            afterAction.   setAction(alphaAction);
-//            afterAction.setTarget(overlay);
-//            overlay.addAction(afterAction);
-        } else {
             overlay.getColor().a = 0;
             overlay.fadeIn();
-        }
     }
 
     public void fadeOutOverlay() {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
@@ -53,10 +54,15 @@ public class ButtonStyled extends ImageContainer {
          "components", "generic",
          "buttons" ,
          "back.png")),
+        UP(StrPathBuilder.build(PathFinder.getUiPath(),
+                "components", "generic",
+                "buttons" ,
+                "up.png")),
         NEXT(StrPathBuilder.build(PathFinder.getUiPath(),
          "components", "generic",
          "buttons" ,
          "forward.png")),
+
         MENU(StrPathBuilder.build(PathFinder.getUiPath(),
          "components", "generic",
          "buttons" ,
@@ -129,7 +135,7 @@ public class ButtonStyled extends ImageContainer {
         LE_STRUCT("ui/level_editor/anew/buttons/struct.png"),
         LE_BRUSH("ui/level_editor/anew/buttons/brush.png"),
         LE_VIEWS("ui/level_editor/anew/buttons/view.png"),
-       ;
+        ARROW(Images.ROLL_ARROW);
 
         String path;
         private Drawable texture;

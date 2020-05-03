@@ -85,6 +85,15 @@ public class DungeonScreen extends GameScreenWithTown {
         GdxMaster.setLoadingCursor();
     }
 
+    @Override
+    protected void preBindEvent() {
+        super.preBindEvent();
+
+        GuiEventManager.bind(GuiEventType.INITIAL_LOAD_DONE, p -> {
+            final GridCreateData param = ((GridCreateData) p.get());
+            createAndInitModuleGrid(param);
+        });
+    }
 
     @Override
     public void dispose() {
@@ -102,7 +111,7 @@ public class DungeonScreen extends GameScreenWithTown {
         Gdx.gl20.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 
         super.afterLoad();
-        controller=new DungeonInputController(getCamera());
+        controller = new DungeonInputController(getCamera());
         particleManager = new ParticleManager();
         gridStage.addActor(particleManager);
 

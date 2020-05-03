@@ -200,8 +200,8 @@ public class DC_Game extends GenericGame {
         conditionMaster = new DC_ConditionMaster();
         logManager = new DC_LogManager(this);
 
-//        if (isCombatGame())
-        rules = new DC_Rules(this);
+        if (!CoreEngine.isArcaneVault())
+             rules = new DC_Rules(this);
 
         if (!isCombatGame() && !CoreEngine.isDungeonTool() && !CoreEngine.isLevelEditor())
             return;

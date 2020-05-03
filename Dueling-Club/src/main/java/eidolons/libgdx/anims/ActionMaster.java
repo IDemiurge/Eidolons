@@ -12,6 +12,7 @@ import eidolons.libgdx.anims.actions.FadeInAction;
 import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.anims.actions.RotateByActionLimited;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.particles.EmitterActor;
@@ -438,6 +439,10 @@ public class ActionMaster {
         back.setInterpolation(action.getInterpolation());
         back.setDuration(action.getDuration());
         return back;
+    }
+
+    public static void screenOff(BaseView object) {
+
     }
 
 

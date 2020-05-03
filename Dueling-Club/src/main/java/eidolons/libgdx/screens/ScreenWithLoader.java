@@ -204,6 +204,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         afterLoad();
         GdxMaster.setDefaultCursor();
         triggerInitialEvents();
+        main.system.auxiliary.log.LogMaster.dev(toString() +" LOADed with " +  param);
     }
 
     protected void triggerInitialEvents() {

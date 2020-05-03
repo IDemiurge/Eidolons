@@ -77,25 +77,29 @@ public class Images {
     public static final String UNKNOWN_PERK = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "hq", "trees", "unknown perk.png");
     public static final String DIAMOND_OVERLAY = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "hq", "trees", "DIAMOND OVERLAY.png");
+     PathFinder.getComponentsPath(), "hq", "trees", "diamond overlay.png");
     public static final String DIAMOND_UNDERLAY = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "hq", "trees", "DIAMOND UNDERLAY.png");
+     PathFinder.getComponentsPath(), "hq", "trees", "diamond underlay.png");
 
     public static final String COLORLESS_BORDER = StrPathBuilder.build(
      PathFinder.getUiPath(), "components","generic",  "Borders", "neo", "colorless.png");
     public static final String TARGET_BORDER = StrPathBuilder.build(
-     PathFinder.getUiPath(), "components","generic", "Borders", "neo", "TARGET.png");
+            PathFinder.getUiPath(), "components","generic", "Borders", "neo", "target.png");
+    public static final String TARGET_BORDER_CIRCLE = StrPathBuilder.build(
+            PathFinder.getUiPath(), "components","generic", "Borders", "neo", "target rounded.png");
+    public static final String TARGET_BORDER_CIRCLE_96 = StrPathBuilder.build(
+            PathFinder.getUiPath(), "components","generic", "Borders", "neo", "target rounded 96.png");
     public static final String WEAVE_LINK = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "hq", "weave", "link.png");
     public static final String WEAVE_OVERLAY = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "hq", "weave", "OVERLAY.png");
+     PathFinder.getComponentsPath(), "hq", "weave", "overlay.png");
     public static final String WEAVE_UNDERLAY = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "hq", "weave", "UNDERLAY.png");
+     PathFinder.getComponentsPath(), "hq", "weave", "underlay.png");
     public static final String WEAVE_BACKGROUND = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "hq", "weave", "BACKGROUND.jpg");
+     PathFinder.getComponentsPath(), "hq", "weave", "background.jpg");
 
     public static final String HC_SCROLL_BACKGROUND = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "hq","hc", "HC_SCROLL_BACKGROUND.jpg");
+     PathFinder.getComponentsPath(), "hq","hc", "hc_scroll_background.jpg");
     public static final String PARTY_BACKGROUND_COLS = StrPathBuilder.build(
             PathFinder.getComponentsPath(), "generic/decor/columns.png");
 
@@ -105,6 +109,9 @@ public class Images {
 //            PathFinder.getComponentsPath(), "generic/decor/columns cropped.png");
     public static final String SEPARATOR_ALT = StrPathBuilder.build(
             PathFinder.getComponentsPath(), "generic/decor/SEPARATOR alt.png");
+
+    public static final String SEPARATOR_ALT_VERTICAL = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic/decor/SEPARATOR alt vertical.png");
     public static final String SEPARATOR = StrPathBuilder.build(
             PathFinder.getComponentsPath(), "generic","decor" ,"SEPARATOR.png");
     public static final String SEPARATOR_LARGE = StrPathBuilder.build(
@@ -154,6 +161,9 @@ public class Images {
     public static final String MISSING_TEXTURE = "ui/missing.png";
     public static final String COLOR_EMBLEM = "ui/color emblem.png";
     public static final String ZARK_TITLE = "ui/components/ninepatch/zark/title box.png";
+    public static final String ZARK_BOX_UPSIDE_DOWN = "ui/components/ninepatch/zark/zark box down.png";
+    public static final String INTENT_ICON_BG = "ui/components/dc/atb/intent bg.png";
+    public static final String TIME_BG = "ui/components/dc/atb/time bg.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

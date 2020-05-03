@@ -24,6 +24,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.Err;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 import main.system.text.TextParser;
 import org.w3c.dom.Node;
 
@@ -247,6 +248,9 @@ public class AbilityConstructor {
     }
 
     public static void constructPassives(Entity entity) {
+
+        if (CoreEngine.TEST_LAUNCH)
+            return ;
         Chronos.mark("construct passives for " + entity.getName());
         List<AbilityObj> passives = new ArrayList<>();
 

@@ -8,39 +8,30 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.mission.quest.QuestMissionStatManager;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.igg.CustomLaunch;
-import eidolons.game.netherflame.igg.IGG_Game;
 import eidolons.game.netherflame.igg.soul.SoulforcePanel;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel;
-import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.CombatInventory;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
+import eidolons.libgdx.gui.panels.dc.topleft.TopLeftPanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
-import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.particles.ParticlesSprites;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.PathUtils;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.List;
@@ -53,7 +44,7 @@ import static eidolons.game.battlecraft.rules.RuleKeeper.RULE.SOULFORCE;
 public class BattleGuiStage extends GuiStage {
 
     public static OrthographicCamera camera;
-    private final AtbPanel atbPanel;
+    private final TopLeftPanel topLeftPanel;
     private final ActionPanel bottomPanel;
     private final GuiVisualEffects guiVisualEffects;
     private final CombatInventory combatInventory;
@@ -83,9 +74,9 @@ public class BattleGuiStage extends GuiStage {
                         batch);
         addActor(guiVisualEffects = new GuiVisualEffects());
         addActor(particlesSprites = new ParticlesSprites());
-        atbPanel = new AtbPanel();
-        atbPanel.setPosition(0, GdxMaster.getHeight() - atbPanel.getHeight());
-        addActor(atbPanel);
+        topLeftPanel = new TopLeftPanel();
+//        atbPanel.setPosition(0, GdxMaster.getHeight() - atbPanel.getHeight());
+        addActor(topLeftPanel);
         bottomPanel = new ActionPanel(0, 0);
         addActor(bottomPanel);
 
@@ -197,45 +188,7 @@ public class BattleGuiStage extends GuiStage {
             Eidolons.getGame().getLoop().setPaused(true, false);
             infoPanel.setUserObject(HqDataMaster.getHeroDataSource(unit));
         });
-        GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {
-            CharSequence text = "";
-            CharSequence v = "";
-            if (Eidolons.getGame() instanceof ScenarioGame) {
-                try {
 
-                    if (EidolonsGame.FOOTAGE) {
-                        text = "Extended Demo";
-                        v =
-                                StringMaster.getWellFormattedString(PathUtils.getLastPathSegment(StringMaster.cropFormat(MainLauncher.getCustomLaunch().getValue(CustomLaunch.CustomLaunchValue.xml_path)))
-                                        + ", Level [" + (RandomWizard.getRandomIntBetween(1, 3)) + "/" +
-                                        3 + "]");
-                    } else {
-                        ScenarioMetaMaster m = ScenarioGame.getGame().getMetaMaster();
-                        text = m.getMetaGame().getScenario().getName();
-                        v = m.getMetaDataManager().getMissionName()
-                                + ", Level [" + (m.getMetaGame().getMissionIndex() + 1) + "/" +
-                                m.getMetaGame().getMissionNumber() + "]";
-                    }
-
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-            } else {
-
-                if (DC_Game.game instanceof IGG_Game) {
-//               TODO igg demo fix
-//                IGG_MetaMaster m = m = ScenarioGame.getGame().getMetaMaster();
-//                    text = m.getMetaGame().getScenario().getName();
-//                    v = m.getMetaDataManager().getMissionName()
-//                            + ", Level [" + (m.getMetaGame().getMissionIndex() + 1) + "/" +
-//                            m.getMetaGame().getMissionNumber() + "]";
-                }
-            }
-
-            locationLabel.setNameText(text);
-            locationLabel.setValueText(v);
-            locationLabel.pack();
-        });
         GuiEventManager.bind(GuiEventType.GAME_FINISHED, p -> {
             outcomePanel.setUserObject(new OutcomeDatasource((DC_Game) p.get()));
             outcomePanel.setVisible(true);
@@ -254,11 +207,6 @@ public class BattleGuiStage extends GuiStage {
 
     public void update() {
 
-        locationLabel.setPosition(25,
-                GdxMaster.getHeight() - locationLabel.getHeight() - atbPanel.getHeight() - 100);
-
-//        if (outcomePanel != null)
-//            outcomePanel.setZIndex(Integer.MAX_VALUE);
     }
 
     @Override
@@ -276,10 +224,6 @@ public class BattleGuiStage extends GuiStage {
         hideQuests.setPosition(questProgressPanel.getX()
                         + GdxMaster.adjustSizeBySquareRoot(100),
                 questProgressPanel.getY() - 10 + questProgressPanel.getHeight());
-    }
-
-    public AtbPanel getAtbPanel() {
-        return atbPanel;
     }
 
     public ActionPanel getBottomPanel() {

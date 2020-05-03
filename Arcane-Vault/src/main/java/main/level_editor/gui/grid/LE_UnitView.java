@@ -61,6 +61,10 @@ public class LE_UnitView extends GridUnitView {
         setTeamColor(GdxColorMaster.YELLOW);
     }
 
+    protected boolean isResetOutlineOnHide() {
+        return false;
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -78,6 +82,7 @@ public class LE_UnitView extends GridUnitView {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         setVisible(true);
+        batch.setColor(getColor());
         super.draw(batch, parentAlpha);
     }
 

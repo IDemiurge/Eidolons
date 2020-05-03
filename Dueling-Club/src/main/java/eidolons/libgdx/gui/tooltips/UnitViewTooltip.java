@@ -5,9 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.bf.grid.GridViewAnimator;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.bf.grid.cell.OverlayView;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -37,7 +39,13 @@ public class UnitViewTooltip extends ValueTooltip {
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
         setUpdateRequired(true);
         if (view.isHoverResponsive() || view instanceof OverlayView) //TODO quick fix to ignore bf obj
+        {
             GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, view);
+        }
+        if (view.getPortrait().getScreenOverlay() <= 0.01f) {
+            ScreenMaster.getDungeonGrid().getGridViewAnimator().animate(view,
+                    GridViewAnimator.VIEW_ANIM.screen);
+        }
         super.onMouseEnter(event, x, y, pointer, fromActor);
 
     }
@@ -71,15 +79,14 @@ public class UnitViewTooltip extends ValueTooltip {
                 return false;
         }
         if (toActor != null) {
-        Group anotherViewThere = GdxMaster.getFirstParentOfClass(toActor, GridUnitView.class);
-        if (anotherViewThere instanceof GridUnitView) {
-            if (view.getUserObject().getCoordinates().equals(((GridUnitView) anotherViewThere).getUserObject().getCoordinates()))
-            {
-                if (manager != null)
-                    manager.entityHoverOff(getEntity());
-                return false;
+            Group anotherViewThere = GdxMaster.getFirstParentOfClass(toActor, GridUnitView.class);
+            if (anotherViewThere instanceof GridUnitView) {
+                if (view.getUserObject().getCoordinates().equals(((GridUnitView) anotherViewThere).getUserObject().getCoordinates())) {
+                    if (manager != null)
+                        manager.entityHoverOff(getEntity());
+                    return false;
+                }
             }
-        }
 
         }
         return super.checkActorExitRemoves(toActor);

@@ -76,11 +76,15 @@ public class UnitView extends BaseView implements HpBarView {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         if (o.getObj() instanceof Unit) {
-            addActor(highlight = new FadeImageContainer(Images.COLORLESS_BORDER));
+            addActor(highlight = new FadeImageContainer(getActiveHighlightImgPath()));
             highlight.setVisible(false);
             GdxMaster.center(highlight);
             highlight.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_SPEAKER);
         }
+    }
+
+    public String getActiveHighlightImgPath() {
+        return Images.COLORLESS_BORDER;
     }
 
 

@@ -20,7 +20,6 @@ import main.entity.obj.HeroItem;
 import main.entity.obj.Obj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
@@ -228,20 +227,20 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             return EffectFinder.initParamModEffects(modString, ref).apply(ref);
         }
         if (param == null) {
-            this.param = ContentValsManager.getPARAM(sparam);
-            if (param == null) {
+            if (sparam.contains(StringMaster.AND_SEPARATOR)) {
+                params = game.getValueManager().getParamsFromContainer(sparam);
+            } else {
+                this.param = ContentValsManager.getPARAM(sparam);
                 if (param == null) {
-                    this.param = ContentValsManager.getMastery(sparam);
+                    if (param == null) {
+                        this.param = ContentValsManager.getMastery(sparam);
+                    }
                 }
-            }
-
-            if (param == null) {
-                if (ContainerUtils.openContainer(sparam, StringMaster.AND_SEPARATOR).size() > 1) {
-                    params = game.getValueManager().getParamsFromContainer(sparam);
-                } else {
+                if (param == null) {
                     params = game.getValueManager().getValueGroupParams(sparam);
                 }
             }
+
 
         }
         Obj obj = ref.getTargetObj();
@@ -452,9 +451,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             }
         }
         if (ref.getObj(KEYS.ABILITY) != null) {
-            if (ref.getObj(KEYS.ABILITY) instanceof PassiveAbilityObj) {
-                return true;
-            }
+            return ref.getObj(KEYS.ABILITY) instanceof PassiveAbilityObj;
         }
 
         return false;
@@ -467,10 +464,8 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
         if (ref.getActive() != null) {
             if (ref.getObj(KEYS.BUFF) != null || ref.getActive().getRef().getObj(KEYS.BUFF) != null) {
-                if (ref.getActive().equals(ref.getThisObj())
-                 || ref.getObj(KEYS.BUFF).equals(ref.getThisObj())) {
-                    return true; // only if (?) it is a matter of spell-buff
-                }
+                return ref.getActive().equals(ref.getThisObj())
+                        || ref.getObj(KEYS.BUFF).equals(ref.getThisObj()); // only if (?) it is a matter of spell-buff
             }
         }
         // and

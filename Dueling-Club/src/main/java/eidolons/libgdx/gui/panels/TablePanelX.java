@@ -18,6 +18,11 @@ public class TablePanelX<T extends Actor> extends TablePanel<T> {
         setSize(width, height);
     }
 
+    public TablePanelX(Actor actor) {
+        this(actor.getWidth(), actor.getHeight());
+        addActor(actor);
+    }
+
     protected void initResolutionScaling() {
         float coef = (float) Math.pow(GdxMaster.getFontSizeMod(), 0.3f);
         setScale(coef, coef);

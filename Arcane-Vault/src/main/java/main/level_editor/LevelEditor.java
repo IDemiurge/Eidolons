@@ -38,6 +38,7 @@ public class LevelEditor {
 
     public static void main(String[] args) {
         CoreEngine.setLevelEditor(true);
+        CoreEngine.TEST_LAUNCH = true;
 
         CoreEngine.setSelectivelyReadTypes("terrain;dungeons;bf obj;units;encounters;scenarios");
         TypeBuilder.typeBuildOverride.addAll( Arrays.asList(DC_TYPE.BF_OBJ, DC_TYPE.UNITS, DC_TYPE.ENCOUNTERS));

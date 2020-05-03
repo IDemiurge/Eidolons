@@ -27,6 +27,11 @@ public class GearCluster extends GroupX {
     float scale = 1;
     AutoFloatAction speedAction;
     private boolean clockwise;
+    static GEAR[] base_gears = {
+            GEAR.GEAR_1,
+            GEAR.GEAR_2,
+            GEAR.GEAR_3,
+    };
     static GEAR[] dark_gears = {
             GEAR.GEAR_1,
             GEAR.GEAR_6,
@@ -45,11 +50,12 @@ public class GearCluster extends GroupX {
     }
     public GearCluster(boolean allSmall, int gearCount, float scale, Boolean dark_light_both) {
         this. allSmall = allSmall;
-        if (dark_light_both == null) {
-            gearPool = new ArrayList<>(Arrays.asList(GEAR.values()));
-        } else {
-            gearPool = new ArrayList<>(Arrays.asList(dark_light_both? dark_gears : light_gears));
-        }
+        gearPool = new ArrayList<>(Arrays.asList(base_gears));
+//        if (dark_light_both == null) {
+//            gearPool = new ArrayList<>(Arrays.asList(GEAR.values()));
+//        } else {
+//            gearPool = new ArrayList<>(Arrays.asList(dark_light_both? dark_gears : light_gears));
+//        }
         Collections.shuffle(gearPool);
         while (gearPool.size() < gearCount) {
             gearPool.add(new EnumMaster<GEAR>().getRandomEnumConst(GEAR.class));
@@ -192,7 +198,7 @@ public class GearCluster extends GroupX {
     }
 
     public enum GEAR {
-        GEAR_1, GEAR_2,GEAR_3(85),GEAR_4(85),GEAR_5(125), GEAR_6(85), GEAR_7(125);
+        GEAR_1, GEAR_2(75),GEAR_3(85),GEAR_4(85),GEAR_5(125), GEAR_6(85), GEAR_7(125);
 
         private float speedBasis = 100;
 

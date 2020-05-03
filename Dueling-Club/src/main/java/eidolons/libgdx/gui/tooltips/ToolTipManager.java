@@ -17,9 +17,11 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
+import eidolons.libgdx.bf.Hoverable;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.bf.grid.cell.LastSeenView;
+import eidolons.libgdx.bf.grid.cell.QueueView;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.controls.StackViewMaster;
 import eidolons.libgdx.gui.panels.TablePanel;
@@ -35,6 +37,7 @@ import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
+import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.threading.WaitMaster;
@@ -59,6 +62,11 @@ public class ToolTipManager extends TablePanel {
     private static Vector2 presetTooltipPos;
     private static HqTooltipPanel tooltipPanel;
     private static boolean hoverOff;
+
+    private static final float HOVER_CHECK_PERIOD = 2.0f;
+    private float hoverCheck =0;
+    Hoverable hovered;
+    DequeImpl<BaseView> hoveredList=new DequeImpl<>();
 
     public static void setTooltipPanel(HqTooltipPanel tooltipPanel) {
         ToolTipManager.tooltipPanel = tooltipPanel;
@@ -183,15 +191,15 @@ public class ToolTipManager extends TablePanel {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)!= CoreEngine.isLevelEditor()) {
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) != CoreEngine.isLevelEditor()) {
             if (tooltip instanceof UnitViewTooltip)
                 return;
         }
         if (DungeonScreen.getInstance() != null)
-        if (DungeonScreen.getInstance().getGridPanel() != null)
-        if (DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().size()>0) {
-            return;
-        }
+            if (DungeonScreen.getInstance().getGridPanel() != null)
+                if (DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().size() > 0) {
+                    return;
+                }
         if (parentAlpha == ShaderDrawer.SUPER_DRAW ||
                 ConfirmationPanel.getInstance().isVisible())
             super.draw(batch, 1);
@@ -233,6 +241,14 @@ public class ToolTipManager extends TablePanel {
     public void act(float delta) {
         setVisible(!DialogueManager.isRunning());
         super.act(delta);
+        hoverCheck-=delta;
+        if (hoverCheck<=0)
+        {
+            hoverCheck = HOVER_CHECK_PERIOD;
+            resetHovered();
+        }
+
+
         stackMaster.act(delta);
         if (tooltip != null) {
             if (tooltip.getColor().a == 0) {
@@ -278,6 +294,14 @@ public class ToolTipManager extends TablePanel {
             return;
         }
         updatePosition();
+    }
+
+    private void resetHovered() {
+        for (BaseView hoverable : hoveredList) {
+            if (hoverable!=hovered) {
+                hoverOff(hoverable);
+            }
+        }
     }
 
 
@@ -467,14 +491,23 @@ public class ToolTipManager extends TablePanel {
                 return;
             }
         }
-        scaleUp(object);
-
         object.setHovered(true);
+        if (object instanceof QueueView) {
+            ((QueueView) object).hoverOn();
+        } else {
+            if (object instanceof GridUnitView) {
+                ((GridUnitView) object).getInitiativeQueueUnitView().hoverOn();
+            }
+            scaleUp(object);
+        }
+
         hoverOff = false;
         stackMaster.checkShowStack(object);
 
 
         ScreenMaster.getDungeonGrid().setUpdateRequired(true);
+        hoveredList.add(object);
+        hovered = object;
 
     }
 
@@ -499,16 +532,6 @@ public class ToolTipManager extends TablePanel {
         ActionMaster.
                 addScaleActionIfNoActions(object, scale, scale, 0.35f);
 
-        if (object instanceof GridUnitView) {
-//            if (scaleX == getDefaultScale(object))
-//                scaleX = getZoomScale(object);
-//            if (scaleY == getDefaultScale(object))
-//                scaleY = getZoomScale(object);
-            ActionMaster.
-                    addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
-                            , scaleQueue, scaleQueue, 0.35f);
-        }
-
     }
 
     private void hoverOff(BaseView object) {
@@ -521,30 +544,24 @@ public class ToolTipManager extends TablePanel {
             }
         }
         scaleDown(object);
-
+        ActionMaster.screenOff(object);
         float scaleX;
         float scaleY;
+        object.setHovered(false);
         if (object instanceof GridUnitView) {
             scaleX = object.getScaledWidth();
             scaleY = object.getScaledHeight();
             ActionMaster.
                     addScaleAction(object, scaleX, scaleY, 0.35f);
-            scaleX = getDefaultScale(object);
-            scaleY = getDefaultScale(object);
-            ActionMaster.
-                    addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
-                            , scaleX, scaleY, 0.35f);
-        } else {
-            scaleX = getDefaultScale(object);
-            scaleY = getDefaultScale(object);
-            ActionMaster.
-                    addScaleAction(object, scaleX, scaleY, 0.35f);
+            ((GridUnitView) object).getInitiativeQueueUnitView().hoverOff();
+        } else if (object instanceof QueueView) {
+            ((QueueView) object).hoverOff();
         }
 
         hoverOff = true;
-        object.setHovered(false);
         stackMaster.checkStackOff(object);
         ScreenMaster.getDungeonGrid().setUpdateRequired(true);
+        hoveredList.remove(object);
 
     }
 

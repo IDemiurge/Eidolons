@@ -81,5 +81,9 @@ public abstract class Options<E extends Enum<E>, T extends OPTION> extends DataU
         default boolean isDevOnly(){
             return false;
         }
+
+        default String getTooltip(){
+            return getName();
+        }
     }
 }

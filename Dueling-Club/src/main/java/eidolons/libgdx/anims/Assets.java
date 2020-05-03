@@ -27,7 +27,7 @@ import eidolons.libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.audio.SoundPlayer;
 import eidolons.libgdx.bf.light.ShadeLightCell;
-import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
+import eidolons.libgdx.gui.panels.dc.topleft.atb.INTENT_ICON;
 import eidolons.libgdx.launch.GpuTester;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.particles.EmitterPools;
@@ -573,7 +573,7 @@ public class Assets {
                 loadSprite(Sprites.ACID_BLADE, full, ktx);
                 loadSprite(Sprites.AX_FIRE, full, ktx);
                 if (!CoreEngine.isMyLiteLaunch()) {
-                    for (AtbPanel.INTENT_ICON value : AtbPanel.INTENT_ICON.values()) {
+                    for (INTENT_ICON value : INTENT_ICON.values()) {
                         loadSprite(value.getPath(), full, ktx);
                     }
 //                    loadSprite(FULLSCREEN_ANIM.HELLFIRE.getSpritePath(), full, ktx);

@@ -17,7 +17,6 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.screens.CustomSpriteBatch;
@@ -35,7 +34,6 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
     protected final LabelX actionTooltip = new LabelX("", StyleHolder.getDefaultInfoStyle());
     protected final LabelX infoTooltip = new LabelX("", StyleHolder.getDefaultInfoStyle());
     protected OverlayTextPanel textPanel;
-    protected ValueContainer locationLabel;
     protected TextInputPanel textInputPanel;
     protected ToolTipManager tooltips;
     protected SuperContainer actionTooltipContainer;

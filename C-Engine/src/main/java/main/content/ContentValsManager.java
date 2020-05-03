@@ -48,15 +48,15 @@ public class ContentValsManager {
     private static List<String> sprops;
     private static List<String> sparams;
     private static Map<String, List<String>> spropListsMap = new ConcurrentMap<>(
-     400, 0.75f);
+            400, 0.75f);
     private static Map<String, List<String>> sparamListsMap = new ConcurrentMap<>(
-     400, 0.75f);
+            400, 0.75f);
 
     private static Map<String, List<String>> spropListsMapAV = new ConcurrentMap<>();
     private static Map<String, List<String>> sparamListsMapAV = new ConcurrentMap<>();
 
     private static Map<String, List<PROPERTY>> propListsMap = new ConcurrentMap<>(
-     400, 0.75f);
+            400, 0.75f);
     private static Map<String, List<PARAMETER>> paramListsMap = new ConcurrentMap<>(400, 0.75f);
     private static Map<String, List<VALUE>> valueListsMap = new ConcurrentMap<>();
     private static Map<String, List<VALUE>> valueListsMapAV = new ConcurrentMap<>();
@@ -162,7 +162,7 @@ public class ContentValsManager {
 
     public static PARAMETER getBaseParameterFromCurrent(PARAMETER param) {
         PARAMETER baseParam = new MapMaster<PARAMETER, PARAMETER>().
-         getKeyForValue(currentCache, param);
+                getKeyForValue(currentCache, param);
         if (baseParam != null) {
             return baseParam;
         }
@@ -208,7 +208,7 @@ public class ContentValsManager {
 
     public static PARAMETER getMasteryFromScore(PARAMETER mastery) {
         PARAMETER param = getPARAM(mastery.getName()
-         .replace(StringMaster.SCORE, ""));
+                .replace(StringMaster.SCORE, ""));
         return param;
     }
 
@@ -306,11 +306,11 @@ public class ContentValsManager {
 
         if (param == null) {
             LogMaster.log(LogMaster.CORE_DEBUG, "PARAM NOT FOUND: "
-             + valueName + "!");
+                    + valueName + "!");
             param = G_PARAMS.EMPTY_PARAMETER;
-        }
+        } else
+            paramCache.put(valueName, param);
 
-        paramCache.put(valueName, param);
         if (param == G_PARAMS.EMPTY_PARAMETER) {
             return null;
         }
@@ -328,8 +328,8 @@ public class ContentValsManager {
                 return p;
             }
         }
-        if ( strict)
-            return null ;
+        if (strict)
+            return null;
         for (PARAMETER p : params) {
             if (StringMaster.compareByChar(valueName, p.toString(), false)) {
                 return p;
@@ -437,18 +437,16 @@ public class ContentValsManager {
         PROPERTY property = propCache.get(valueName);
 
         if (property != null) {
-                return property;
+            return property;
         }
         property = getPROP(valueName, true);
         if (property == null) {
             property = getPROP(valueName, false);
         }
 
-        if (property == null)
-
-        {
+        if (property == null) {
             LogMaster.log(LogMaster.CORE_DEBUG, "PROPERTY NOT FOUND: "
-             + valueName + "!");
+                    + valueName + "!");
         }
 
         propCache.put(valueName, property);
@@ -498,7 +496,7 @@ public class ContentValsManager {
                 PARAMETER param = findPARAM(valueName);
                 if (prop != null && param != null) {
                     v = StringMaster.compareSimilar(prop.toString(), valueName) >= StringMaster
-                     .compareSimilar(param.toString(), valueName) ? prop : param;
+                            .compareSimilar(param.toString(), valueName) ? prop : param;
                 } else if (prop != null) {
                     v = prop;
                 } else {
@@ -509,7 +507,7 @@ public class ContentValsManager {
             }
             if (v == null) {
                 LogMaster.log(LogMaster.CORE_DEBUG, "VALUE NOT FOUND: "
-                 + valueName);
+                        + valueName);
             }
 
         }
@@ -574,7 +572,7 @@ public class ContentValsManager {
 
     public static List<PARAMETER> getParamsForType(String entity, boolean dynamic) {
         List<PARAMETER> paramList = (dynamic) ? paramListsMap.get(entity) : paramListsMapAV
-         .get(entity);
+                .get(entity);
         if (paramList != null) {
             return paramList;
         }
@@ -599,7 +597,7 @@ public class ContentValsManager {
 
     public static List<String> getParamNames(String entity, boolean dynamic) {
         List<String> paramList = (dynamic) ? sparamListsMap.get(entity) : sparamListsMapAV
-         .get(entity);
+                .get(entity);
         if (paramList != null) {
             return paramList;
         }
@@ -697,7 +695,7 @@ public class ContentValsManager {
             return Collections.EMPTY_LIST;
         }
         List<String> valueNames = (av) ? getValueNamesMapAV().get(objType) : getValueNamesMap()
-         .get(objType);
+                .get(objType);
         if (valueNames != null) {
             return valueNames;
         }
@@ -1073,7 +1071,7 @@ public class ContentValsManager {
 
     public static String getCurrentOutOfTotal(PARAMETER value, Entity obj) {
         return obj.getValue(value) +
-         "/" + obj.getValue(getBaseParameterFromCurrent(value));
+                "/" + obj.getValue(getBaseParameterFromCurrent(value));
     }
 
     public static PARAMETER getDefaultAttribute(PARAMETER sub) {
@@ -1111,7 +1109,8 @@ public class ContentValsManager {
     }
 
     public enum AV_EDITOR_TYPES {
-        TYPE_LIST, ENUM_LIST, TEXT,;
+        TYPE_LIST, ENUM_LIST, TEXT,
+        ;
     }
 
 }

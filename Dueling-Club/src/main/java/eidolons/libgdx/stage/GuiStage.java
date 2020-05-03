@@ -24,7 +24,6 @@ import eidolons.game.netherflame.igg.soul.EidolonLord;
 import eidolons.game.netherflame.igg.soul.panel.LordPanel;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
@@ -32,7 +31,6 @@ import eidolons.libgdx.gui.HideButton;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
 import eidolons.libgdx.gui.generic.GroupX;
-import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
@@ -243,20 +241,6 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         menuButton.setPosition(GdxMaster.getWidth() - btnBg.getWidth(),
                 GdxMaster.getHeight() - btnBg.getHeight() + 16);
 
-
-        addActor(locationLabel = new ValueContainer("", "") {
-            @Override
-            protected boolean isVertical() {
-                return true;
-            }
-        });
-        locationLabel.setNameStyle(StyleHolder.getAVQLabelStyle(19));
-        locationLabel.setValueStyle(StyleHolder.getAVQLabelStyle(17));
-
-        locationLabel.padTop(12);
-        locationLabel.padBottom(12);
-        locationLabel.setPosition(0,
-                GdxMaster.getHeight() - locationLabel.getHeight());
     }
 
     protected GameMenu createGameMenu() {
@@ -360,10 +344,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
             }
         }
 
-        if (locationLabel != null) {
-            locationLabel.setPosition(0,
-                    GdxMaster.getHeight() - locationLabel.getHeight());
-        }
+
         super.act(delta);
         resetZIndices();
 

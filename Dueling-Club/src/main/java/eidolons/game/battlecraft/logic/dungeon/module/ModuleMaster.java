@@ -81,9 +81,6 @@ public class ModuleMaster extends DungeonHandler  {
     }
 
     public Module getCurrent() {
-        if (current == null) {
-            current = getInitialModule();
-        }
         return current;
     }
 

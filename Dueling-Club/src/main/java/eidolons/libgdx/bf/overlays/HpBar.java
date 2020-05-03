@@ -260,7 +260,7 @@ public class HpBar extends ValueBar {
             if (label2.isVisible()) {
                 label2.getWidth();
             }
-//            super.draw(batch, parentAlpha);
+            super.draw(batch, parentAlpha);
             if (dataSource instanceof BossUnit) {
                 ScissorMaster.drawInRectangle(this, batch, getX()-128, getY()-128,3* innerWidth *  MathMaster.minMax( fullLengthPerc, 0, 1)  * getScaleX(), height);
             } else

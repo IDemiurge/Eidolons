@@ -2,8 +2,6 @@ package eidolons.libgdx.bf.datasource;
 
 import main.system.data.DataUnit;
 
-import java.util.regex.Pattern;
-
 public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
     public GraphicData(String text) {
         super(text);
@@ -11,12 +9,14 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
 
     @Override
     protected String getSeparator() {
-        return Pattern.quote("|");
+//        if (dialogue) return Pattern.quote("|");
+        return super.getSeparator();
     }
 
     @Override
     protected String getPairSeparator() {
-        return Pattern.quote("::");
+//        return Pattern.quote("::");
+        return super.getPairSeparator();
     }
 
     @Override

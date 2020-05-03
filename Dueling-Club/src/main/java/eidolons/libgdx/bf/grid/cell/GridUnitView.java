@@ -18,7 +18,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
+import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.screens.CustomSpriteBatch;
@@ -38,7 +38,6 @@ public class GridUnitView extends GenericGridView {
     private float scaleResetTimer = scaleResetPeriod;
 
     OverlayView attachedObj;
-    private float screenOverlay;
 
     @Override
     protected boolean isIgnored() {
@@ -89,6 +88,14 @@ public class GridUnitView extends GenericGridView {
          */
 
 //        OverlayingMaster.getOffsetsForOverlaying()
+    }
+
+    @Override
+    public void setHovered(boolean hovered) {
+        super.setHovered(hovered);
+        if (getInitiativeQueueUnitView() != null) {
+            getInitiativeQueueUnitView().setHovered(hovered);
+        }
     }
 
     @Override
@@ -154,12 +161,9 @@ public class GridUnitView extends GenericGridView {
                 arrow.fadeOut();
             }
         }
-        if (!(screenOverlay > 0)) {
+        if (!(screenOverlay>0.01f)) {
             super.draw(batch, parentAlpha);
             return;
-        }
-        if ((screenOverlay > 0)) {
-            return; //TODO cut it
         }
         portrait.setZIndex(999999);
         if (spritesContainersUnder != null)
@@ -170,9 +174,8 @@ public class GridUnitView extends GenericGridView {
 
         ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN); //could do other blends too
 
-        float a = getColor().a; // hue?
+        float a = getColor().a;
         getColor().a = screenOverlay;
-        //setVisible(false); for all nonportrait
         super.draw(batch, parentAlpha);
 
         if (spritesContainersUnder != null)
@@ -182,14 +185,6 @@ public class GridUnitView extends GenericGridView {
         portrait.setZIndex(1);
         getColor().a = a;
         ((CustomSpriteBatch) batch).resetBlending();
-    }
-
-    public float getScreenOverlay() {
-        return screenOverlay;
-    }
-
-    public void setScreenOverlay(float screenOverlay) {
-        this.screenOverlay = screenOverlay;
     }
 
     @Override
@@ -236,7 +231,12 @@ public class GridUnitView extends GenericGridView {
     public void setBorder(TextureRegion texture) {
         super.setBorder(texture);
         if (initiativeQueueUnitView != null) {
-            initiativeQueueUnitView.setBorder(texture);
+            if (texture == null) {
+                initiativeQueueUnitView.highlightOff();
+            } else {
+                initiativeQueueUnitView.highlight();
+            }
+//            initiativeQueueUnitView.setBorder(texture);
         }
     }
 
@@ -352,23 +352,9 @@ public class GridUnitView extends GenericGridView {
         }
     }
 
-    @Override
-    protected void alphaFluctuation(float delta) {
-        super.alphaFluctuation(delta);
-//        if (highlight!=null )
-//        if (highlight.getColor().a>0) {
-//            alphaFluctuation(highlight, delta);
-//        }
-    }
 
-    @Override
-    public void highlight() {
-        super.highlight();
-//        screenOverlay=1;
-    }
-
-    @Override
-    public void highlightOff() {
-//        screenOverlay=0;
-    }
+//    @Override
+//    public void highlightOff() {
+////        screenOverlay=0;
+//    }
 }

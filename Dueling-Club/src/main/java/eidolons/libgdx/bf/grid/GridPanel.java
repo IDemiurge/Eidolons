@@ -50,7 +50,6 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import java.awt.*;
@@ -90,8 +89,9 @@ public abstract class GridPanel extends Group {
     protected GridManager manager;
     protected GridOverlaysManager overlayManager;
 
-    private Coordinates offset;
-    private Map<Module, GridSubParts> containerMap = new HashMap<>();
+    protected  Coordinates offset;
+    protected  Map<Module, GridSubParts> containerMap = new HashMap<>();
+    protected  GridViewAnimator gridViewAnimator = new GridViewAnimator(this);
 
     public GridPanel(int cols, int rows, int moduleCols, int moduleRows) {
         this.square = rows * cols;
@@ -485,9 +485,6 @@ public abstract class GridPanel extends Group {
                 if (gridCellContainer == null) {
                     main.system.auxiliary.log.LogMaster.log(1, "Grid cell is null at " +coordinates);
                     continue;
-                }
-                if (!CoreEngine.isLevelEditor()) {
-                main.system.auxiliary.log.LogMaster.log(1,coordinates+ " has views: " +views);
                 }
                 views.forEach(gridCellContainer::addActor);
             } catch (Exception e) {
@@ -1086,5 +1083,9 @@ public abstract class GridPanel extends Group {
     }
     public float getOffsetY() {
         return offsetY;
+    }
+
+    public GridViewAnimator getGridViewAnimator() {
+        return gridViewAnimator;
     }
 }
