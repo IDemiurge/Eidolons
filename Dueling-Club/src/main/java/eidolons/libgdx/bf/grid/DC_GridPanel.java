@@ -87,7 +87,7 @@ public class DC_GridPanel extends GridPanel {
         addActor(animMaster = AnimMaster.getInstance());
         animMaster.bindEvents();
         manager = new GridManager(this);
-        addActor(overlayManager = createOverlays());
+        addActor(overlayManager );
 
         return this;
     }

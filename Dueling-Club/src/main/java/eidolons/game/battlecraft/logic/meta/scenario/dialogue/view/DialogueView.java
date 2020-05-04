@@ -213,7 +213,7 @@ public class DialogueView extends TablePanelX implements Scene {
 
             if (next != null) {
                 if (!appendedMessage)
-                    Eidolons.onGdxThread(()-> scroll.append("", "", Images.SEPARATOR_ALT, false).center().setX(getWidth() / 2));
+                    Eidolons.onGdxThread(()-> scroll.append("", "", Images.SEPARATOR_NARROW, false).center().setX(getWidth() / 2));
 
                 boolean finalAppendedMessage = appendedMessage;
                 Eidolons.onGdxThread(()-> update(next, finalAppendedMessage));

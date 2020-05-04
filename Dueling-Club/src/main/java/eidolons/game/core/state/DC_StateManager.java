@@ -492,7 +492,7 @@ public class DC_StateManager extends StateManager {
         //        getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.NEW_ROUND, state.getRound());
 
 
-        getGame().getLogManager().addImageToLog(Images.SEPARATOR_ALT);
+        getGame().getLogManager().addImageToLog(Images.SEPARATOR_NARROW);
 
         game.getLogManager().log(
                 DC_LogManager.ALIGN_CENTER +

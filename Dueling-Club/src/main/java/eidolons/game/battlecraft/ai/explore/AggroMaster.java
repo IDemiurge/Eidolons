@@ -279,6 +279,8 @@ public class AggroMaster extends ExplorationHandler {
 
     public void checkStatusUpdate() {
         if (checkEngaged()) {
+//            master.getGame().getAiManager().g
+            master.getEngagementHandler().fireEvent();
             master.switchExplorationMode(false);
         } else {
             if (checkDanger()) {

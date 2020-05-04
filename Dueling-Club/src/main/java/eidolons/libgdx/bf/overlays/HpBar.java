@@ -264,15 +264,18 @@ public class HpBar extends ValueBar {
             if (dataSource instanceof BossUnit) {
                 ScissorMaster.drawInRectangle(this, batch, getX()-128, getY()-128,3* innerWidth *  MathMaster.minMax( fullLengthPerc, 0, 1)  * getScaleX(), height);
             } else
-                ScissorMaster.drawInRectangle(this, batch, getX(), getY(), innerWidth * MathMaster.minMax( fullLengthPerc, 0.03f, 1) * getScaleX(), height);
+                ScissorMaster.drawInRectangle(this, batch, getX(), getY()-getHeight()-1, innerWidth * MathMaster.minMax( fullLengthPerc, 0.03f, 1) * getScaleX(), height*2+3);
         } else {
             Color color = secondaryColor;
             TextureRegion region = secondaryBarRegion;
             float p = MathMaster.minMax(displayedSecondaryPerc, 0, 1);
-            drawBar(region, batch, p, color, false);
+            float y = getY()-getHeight()-1;
+            drawBar(region, batch, p, color, y, false);
+//            batch.flush();
             color = primaryColor;
             region = primaryBarRegion;
-            drawBar(region, batch, Math.min(p, displayedPrimaryPerc), color, true);
+            y = getY();
+            drawBar(region, batch, Math.min(p, displayedPrimaryPerc), color, y, true);
             batch.flush();
         }
 
@@ -287,8 +290,10 @@ public class HpBar extends ValueBar {
         if (teamColor == GdxColorMaster.NEUTRAL)
             teamColor = GdxColorMaster.RED;
         super.setTeamColor(teamColor);
-        secondaryColor = GdxColorMaster.darker(getTeamColor(), 0.55f);
-        primaryColor = GdxColorMaster.lighter(getTeamColor(), 0.55f);
+        secondaryColor = GdxColorMaster.ENDURANCE;
+//        GdxColorMaster.darker(getTeamColor(), 0.55f);
+        primaryColor =  GdxColorMaster.TOUGHNESS;
+//        GdxColorMaster.lighter(getTeamColor(), 0.55f);
         label2.setColor((getTeamColor()));
         label1.setColor(primaryColor);
     }

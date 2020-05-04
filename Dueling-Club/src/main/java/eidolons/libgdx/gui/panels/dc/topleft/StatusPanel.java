@@ -9,6 +9,8 @@ import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.graphics.FontMaster;
 
 public class StatusPanel extends TablePanelX {
@@ -22,10 +24,10 @@ public class StatusPanel extends TablePanelX {
         addActor(background = new Image(TextureCache.getOrCreateR(Images.ZARK_TITLE)));
         Label.LabelStyle style= StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 20);
         add(statusMain = new LabelX("", style));
-//        add(icon = new FadeImageContainer(Images.STATUS_EXPLORE)).row();
+        add(icon = new FadeImageContainer(Images.STATUS_EXPLORE)).row();
         add(statusAdditional = new LabelX("", style));
 
-//        GuiEventManager.bind(GuiEventType.PLAYER_STATUS_CHANGED , p-> updateStatus(p.get()));
+        GuiEventManager.bind(GuiEventType.PLAYER_STATUS_CHANGED , p-> updateStatus((PlayerStatus) p.get()));
     }
 
     private void updateStatus(PlayerStatus o) {

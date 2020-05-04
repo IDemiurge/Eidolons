@@ -1,5 +1,6 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
+import eidolons.game.battlecraft.ai.advanced.engagement.EngagementHandler;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.party.Party;
@@ -30,6 +31,7 @@ public class ExplorationMaster {
     private ExplorationActionHandler actionHandler;
     private AggroMaster aggroMaster;
     private boolean toggling;
+    private EngagementHandler engagementHandler;
 
     public ExplorationMaster(DC_Game game) {
         this.game = game;
@@ -41,6 +43,7 @@ public class ExplorationMaster {
         actionHandler = new ExplorationActionHandler(this);
         partyMaster = new ExplorePartyMaster(this);
         enemyPartyMaster = new ExploreEnemyPartyMaster(this);
+        engagementHandler =new EngagementHandler(this);
     }
 
     public void act(float delta) {
@@ -191,4 +194,9 @@ public class ExplorationMaster {
     public void setToggling(boolean toggling) {
         this.toggling = toggling;
     }
+
+    public EngagementHandler getEngagementHandler() {
+        return engagementHandler;
+    }
+
 }

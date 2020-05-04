@@ -37,6 +37,7 @@ import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.utilities.hotkeys.AV_KeyListener;
+import main.utilities.music.MuseCore;
 import main.utilities.workspace.WorkspaceManager;
 import net.miginfocom.swing.MigLayout;
 
@@ -124,7 +125,7 @@ public class ArcaneVault {
     public static void main(String[] args) {
         CoreEngine.setSwingOn(true);
         CoreEngine.setArcaneVault(true);
-
+        new MuseCore().init();
 
         if (args.length > 0) {
             args = args[0].split(";");

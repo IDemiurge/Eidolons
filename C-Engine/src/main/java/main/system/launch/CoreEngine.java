@@ -12,6 +12,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.secondary.DevHelper;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
@@ -32,7 +33,7 @@ public class CoreEngine {
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Backer;
     public static final String VERSION_NAME = "Backer Demo (Basic Version)"; //StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean DEV_MODE = true;
-    public static   boolean TEST_LAUNCH ;
+    public static boolean TEST_LAUNCH;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean swingOn = true;
     public static boolean animationTestMode;
@@ -136,6 +137,13 @@ public class CoreEngine {
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
+        if (CoreEngine.isIDE()) {
+            try {
+                DevHelper.initMusicKeys();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
         System.out.println("Eidolons " + VERSION);
         System.out.println("Core Engine Init... ");
 

@@ -64,7 +64,6 @@ public abstract class SuperActor extends Fluctuating implements
 
     public void setScreenOverlay(float screenOverlay) {
         this.screenOverlay = screenOverlay;
-        main.system.auxiliary.log.LogMaster.log(1,this + " screenOverlay = " +screenOverlay);
     }
 
     @Override

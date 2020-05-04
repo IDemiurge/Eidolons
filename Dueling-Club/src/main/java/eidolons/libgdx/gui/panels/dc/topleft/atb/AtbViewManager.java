@@ -17,6 +17,7 @@ public class AtbViewManager {
 
     public AtbViewManager(AtbPanel atbPanel) {
         this.atbPanel = atbPanel;
+        bindEvents();
     }
 
     public void updateTimedEvents(){

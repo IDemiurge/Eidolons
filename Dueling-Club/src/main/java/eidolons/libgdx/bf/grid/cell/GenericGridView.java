@@ -67,9 +67,14 @@ public class GenericGridView extends UnitView {
         }
 
     }
-
     protected void init(TextureRegion arrowTexture, int arrowRotation,
                         TextureRegion emblem) {
+        if (arrowTexture != null) {
+
+        }
+        setInitialized(true);
+    }
+    protected void init(TextureRegion arrowTexture, int arrowRotation ) {
 
         if (arrowTexture != null) {
             arrow = new NoHitGroup();
@@ -101,13 +106,10 @@ public class GenericGridView extends UnitView {
             this.arrowRotation = arrowRotation;
             updateRotation();
         }
+    }
 
-//        if (iconTexture != null) {
-//            icon = new Image(iconTexture);
-//            addActor(icon);
-//            icon.setPosition(0, getHeight() - icon.getImageHeight());
-//        }
-
+    protected void init(
+                        TextureRegion emblem) {
         if (emblem != null) {
             emblemLighting = new Image(
                     UnitViewOptions.UNIT_VIEW_ATLAS
@@ -124,7 +126,6 @@ public class GenericGridView extends UnitView {
             emblemImage.setSize(getEmblemSize(), getEmblemSize());
             emblemImage.setPosition(getWidth() - emblemImage.getWidth(), getHeight() - emblemImage.getHeight());
         }
-        setInitialized(true);
     }
 
     protected float getEmblemSize() {

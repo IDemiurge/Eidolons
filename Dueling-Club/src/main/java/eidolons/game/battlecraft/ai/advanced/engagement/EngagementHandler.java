@@ -66,6 +66,13 @@ public class EngagementHandler extends ExplorationHandler {
 
         }
     }
+
+    public void fireEvent() {
+        //TODO dummy
+        GuiEventManager.trigger(GuiEventType.PLAYER_STATUS_CHANGED,
+                new PlayerStatus(PlayerStatus.PLAYER_STATUS.EXPLORATION_DETECTED, 1));
+    }
+
     public void engagementChanged(UnitAI ai, AggroMaster.ENGAGEMENT_LEVEL level){
         switch (level) {
             case ALARMED:
@@ -111,4 +118,5 @@ public class EngagementHandler extends ExplorationHandler {
         }
         return level;
     }
+
 }

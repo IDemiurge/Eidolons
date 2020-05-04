@@ -29,7 +29,8 @@ public class CombatOptionsPanel extends TablePanelX {
 
     };
     public static final GameplayOptions.GAMEPLAY_OPTION[] OPTIONS={
-        GameplayOptions.GAMEPLAY_OPTION.INPUT_BETWEEN_TURNS,
+            GameplayOptions.GAMEPLAY_OPTION.INPUT_BETWEEN_TURNS,
+            GameplayOptions.GAMEPLAY_OPTION.SPACE_BETWEEN_TURNS,
     };
 
     public CombatOptionsPanel() {
@@ -44,10 +45,15 @@ public class CombatOptionsPanel extends TablePanelX {
                 list.add(devOption);
             }
         }
-        TablePanelX<Actor> table = new TablePanelX<>(300, 400+list.size()*40);
+        TablePanelX<Actor> table = new TablePanelX (200, 400+list.size()*40){
+            @Override
+            public float getPrefHeight() {
+                return 400+list.size()*40;
+            }
+        };
         table. setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
         table.defaults().height(40);
-        setSize(300, 400 + list.size() * 40);
+        setSize(200, 400 + list.size() * 40);
         //can we add same comps as in OptionWindow?
         addOptionBoxes(table, list);
 

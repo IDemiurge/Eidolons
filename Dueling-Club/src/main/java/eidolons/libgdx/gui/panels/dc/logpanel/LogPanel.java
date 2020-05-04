@@ -120,8 +120,8 @@ public class LogPanel extends ScrollTextWrapper {
     public void bind() {
         GuiEventManager.bind(getCallbackEvent(), p -> {
             Actor toAdd = null;
-            if (p.get() == Images.SEPARATOR_ALT) {
-                toAdd = new ImageContainer(Images.SEPARATOR_ALT);
+            if (p.get() == Images.SEPARATOR_NARROW) {
+                toAdd = new ImageContainer(Images.SEPARATOR_NARROW);
                 scrollPanel.addElement(toAdd).center();
                 return;
             } else if (p.get() == null) {

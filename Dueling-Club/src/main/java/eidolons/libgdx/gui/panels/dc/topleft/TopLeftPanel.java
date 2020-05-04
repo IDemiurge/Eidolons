@@ -1,8 +1,10 @@
 package eidolons.libgdx.gui.panels.dc.topleft;
 
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
+import eidolons.libgdx.texture.Images;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -13,13 +15,14 @@ public class TopLeftPanel extends GroupX {
     StatusPanel statusPanel;
     LevelInfoPanel levelInfoPanel;
     CombatOptionsPanel optionsPanel;
+    ImageContainer vertical;
 
     public TopLeftPanel() {
         setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         addActor(optionsPanel = new CombatOptionsPanel());
         addActor(atbPanel = new AtbPanel(clockPanel));
         addActor(clockPanel  );
-//        addActor(statusPanel = new StatusPanel());
+        addActor(statusPanel = new StatusPanel());
         addActor(levelInfoPanel = new LevelInfoPanel());
 
         GdxMaster.top(clockPanel);
@@ -28,18 +31,22 @@ public class TopLeftPanel extends GroupX {
         atbPanel.setX(30);
         atbPanel.setY(atbPanel.getY()-40);
 
-        levelInfoPanel.setPosition(15,
-                GdxMaster.getHeight() - levelInfoPanel.getHeight() - atbPanel.getHeight() - 150);
+        levelInfoPanel.setPosition(0,
+                GdxMaster.getHeight() - levelInfoPanel.getHeight() - atbPanel.getHeight() - 70);
         optionsPanel.setPosition(55,
                 levelInfoPanel.getY() - levelInfoPanel.getHeight()+  15);
+
+        addActor(vertical = new ImageContainer(Images.SEPARATOR_METAL_VERTICAL));
+
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-
-        optionsPanel.setPosition(99,
-                levelInfoPanel.getY() - levelInfoPanel.getHeight() -  15);
+        vertical.setX(39);
+        vertical.setY(optionsPanel.getY()-49);
+        optionsPanel.setPosition(21,
+                levelInfoPanel.getY() - levelInfoPanel.getHeight() +  15);
     }
 
     protected void bindEvents() {

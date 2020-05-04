@@ -68,7 +68,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
         }
         row();
 
-        addNormalSize(new ImageContainer(Images.SEPARATOR_ALT)).center().colspan(2).padBottom(10);
+        addNormalSize(new ImageContainer(Images.SEPARATOR_NARROW)).center().colspan(2).padBottom(10);
         row();
         addNormalSize(new SmartButton(ButtonStyled.STD_BUTTON.OK, () -> ok())).left();
         addNormalSize(new SmartButton(ButtonStyled.STD_BUTTON.CANCEL, () -> cancel())).right();

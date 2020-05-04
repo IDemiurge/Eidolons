@@ -87,7 +87,7 @@ public abstract class GridPanel extends Group {
     protected List<OverlayView> overlays = new ArrayList<>();
 
     protected GridManager manager;
-    protected GridOverlaysManager overlayManager;
+    protected GridOverlaysManager overlayManager ;
 
     protected  Coordinates offset;
     protected  Map<Module, GridSubParts> containerMap = new HashMap<>();
@@ -200,6 +200,7 @@ public abstract class GridPanel extends Group {
         cells = new GridCellContainer[full_cols][full_rows];
         setHeight(GridMaster.CELL_W * full_rows);
         setWidth(GridMaster.CELL_H * full_cols);
+        overlayManager = createOverlays();
 
         addVoidDecorators(true);
 

@@ -40,8 +40,8 @@ import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
  * Created by JustMe on 4/6/2018.
  */
 public class QueueView extends UnitView {
-    private static final float LINE_Y_INACTIVE = -20;
-    private static final float LINE_Y_ACTIVE = -45;
+    private static final float LINE_Y_INACTIVE = -40;
+    private static final float LINE_Y_ACTIVE = -75;
     private static final float VIEW_Y_INACTIVE = -30;
     private static final float VIEW_Y_ACTIVE = -14;
     private static final float PORTRAIT_Y_INACTIVE = -4;
@@ -57,7 +57,7 @@ public class QueueView extends UnitView {
 
     protected QueueView(UnitViewOptions o, int curId) {
         super(o, curId);
-        addActor(verticalLine = new ImageContainer(Images.SEPARATOR_ALT_VERTICAL));
+        addActor(verticalLine = new ImageContainer(Images.SEPARATOR_NARROW_VERTICAL));
         verticalLine.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.SUN);
         verticalLine.setColor(1, 1, 1, 0);
 //        getTeamColor()
@@ -136,11 +136,15 @@ public class QueueView extends UnitView {
         float y1 = 0;
         if (active) {
             y = VIEW_Y_ACTIVE;
-            y1 = LINE_Y_INACTIVE;
+            y1 = LINE_Y_ACTIVE;
         } else {
             y = VIEW_Y_INACTIVE;
-            y1 = LINE_Y_ACTIVE;
-            addFadeInAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
+            y1 = LINE_Y_INACTIVE;
+            if (on) {
+                addFadeInAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
+            } else {
+                addFadeOutAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
+            }
         }
         if (on) {
             y -= 20;

@@ -150,6 +150,7 @@ public class RollDecorator {
             };
             arrow.setRotation(direction.getDirection().getDegrees() + 90);
             arrow.setOrigin(arrow.getWidth() / 2, arrow.getHeight() / 2);
+            arrow.setTransform(true);
             return arrow;
         }
 
@@ -224,9 +225,11 @@ public class RollDecorator {
 
         private boolean isOpen() {
             switch (direction) {
-                case NORTH:
-                    return getY() < origY;
+//                case NORTH:
                 case SOUTH:
+                    return getY() < origY;
+//                case SOUTH:
+                case NORTH:
                     return getY() >= origY;
                 case WEST:
                     return getX() >= origX;

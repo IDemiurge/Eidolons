@@ -107,13 +107,18 @@ public class Images {
             PathFinder.getComponentsPath(), "generic/decor/columns.png");
 //    public static final String COLUMNS_CROPPED = StrPathBuilder.build(
 //            PathFinder.getComponentsPath(), "generic/decor/columns cropped.png");
-    public static final String SEPARATOR_ALT = StrPathBuilder.build(
-            PathFinder.getComponentsPath(), "generic/decor/SEPARATOR alt.png");
+public static final String SEPARATOR_NARROW = StrPathBuilder.build(
+        PathFinder.getComponentsPath(), "generic/decor/SEPARATOR alt.png");
 
-    public static final String SEPARATOR_ALT_VERTICAL = StrPathBuilder.build(
-            PathFinder.getComponentsPath(), "generic/decor/SEPARATOR alt vertical.png");
+    public static final String SEPARATOR_METAL = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic/decor/separator metal.png");
+    public static final String SEPARATOR_METAL_VERTICAL = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic/decor/separator metal vertical.png");
+
+    public static final String SEPARATOR_NARROW_VERTICAL = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic/decor/separator alt vertical.png");
     public static final String SEPARATOR = StrPathBuilder.build(
-            PathFinder.getComponentsPath(), "generic","decor" ,"SEPARATOR.png");
+            PathFinder.getComponentsPath(), "generic","decor" ,"separator.png");
     public static final String SEPARATOR_LARGE = StrPathBuilder.build(
             PathFinder.getComponentsPath(), "generic","decor" ,"horizontal slice white.png");
     public static final  String TINY_CHEST = "ui/components/tiny/chest.png";
@@ -164,6 +169,10 @@ public class Images {
     public static final String ZARK_BOX_UPSIDE_DOWN = "ui/components/ninepatch/zark/zark box down.png";
     public static final String INTENT_ICON_BG = "ui/components/dc/atb/intent bg.png";
     public static final String TIME_BG = "ui/components/dc/atb/time bg.png";
+    public static final String STATUS_EXPLORE ="ui/components/dc/status/status_explore.png";
+    public static final String STATUS_EXPLORE_DETECTED ="ui/components/dc/status/status_explore_detected.png";
+    public static final String STATUS_COMBAT ="ui/components/dc/status/status_combat.png";
+    public static final String STATUS_ALARM ="ui/components/dc/status/status_alarm.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

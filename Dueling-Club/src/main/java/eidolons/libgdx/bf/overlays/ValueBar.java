@@ -17,7 +17,8 @@ import main.system.graphics.FontMaster;
 
 public abstract class ValueBar extends SuperActor {
     protected final int innerWidth;
-    protected final Image barImage;
+    protected final Image barBg;
+    protected final Image barBg2;
     protected final Label label2;
     protected final Label label1;
     protected float fullLengthPerc = 1f;
@@ -46,9 +47,12 @@ public abstract class ValueBar extends SuperActor {
         secondaryBarRegion = TextureCache.getOrCreateR(getBarImagePath());
         barRegion = TextureCache.getOrCreateR(StrPathBuilder.build("ui", "components",
                 "dc", "unit", "hp bar empty.png"));
-        barImage = new Image(barRegion);
-        addActor(barImage);
+        barBg = new Image(barRegion);
+        addActor(barBg);
 
+        barBg2 = new Image(barRegion);
+        addActor(barBg2);
+        barBg2.setY(-barBg.getHeight() - 1);
         label2 = new Label("", StyleHolder.
                 getSizedLabelStyle(FontMaster.FONT.AVQ, getFontSize(false)));
         label1 = new Label("", StyleHolder.
@@ -63,7 +67,7 @@ public abstract class ValueBar extends SuperActor {
     }
 
     protected Integer getFontSize(boolean prime) {
-            return 18;
+        return 18;
     }
 
     @Override
@@ -87,7 +91,7 @@ public abstract class ValueBar extends SuperActor {
 //        main.system.auxiliary.log.LogMaster.log(1, this + ">>>  tries to reset " +
 //         dataSource + " previousPrimaryPerc=" + previousPrimaryPerc + " previousSecondaryPerc=" + previousSecondaryPerc + " primaryPerc=" + primaryPerc + " secondaryPerc=" + secondaryPerc);
 
-       setValues();
+        setValues();
 
 
         if (getPrimaryPerc().equals(lastOfferedPrimary) &&
@@ -157,7 +161,8 @@ public abstract class ValueBar extends SuperActor {
 
     protected abstract void resetLabel();
 
-    protected void drawBar(TextureRegion region, Batch batch, float perc, Color color, boolean reverse) {
+    protected void drawBar(TextureRegion region, Batch batch, float perc, Color color,
+                           float y, boolean reverse) {
         if (color == null) {
             return;
         }
@@ -170,7 +175,7 @@ public abstract class ValueBar extends SuperActor {
 //            x = x + region.getRegionWidth() * getScaleX() * (Math.min(1, fullLengthPerc) - Math.min(1, perc));
 //            x = x + region.getRegionWidth() * (  perc-1);
 //        }
-        batch.draw(region, x, getY(), getScaleX() * region.getRegionWidth(),
+        batch.draw(region, x, y, getScaleX() * region.getRegionWidth(),
                 getScaleY() * region.getRegionHeight());
     }
 

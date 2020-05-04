@@ -22,17 +22,17 @@ public class AtbPrecalculator {
     private AtbPrecalculator(AtbController controller) {
         this.controller = controller;
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED, p -> {
-            if ( ExplorationMaster.isExplorationOn())
+            if (ExplorationMaster.isExplorationOn())
                 return;
             Array<AtbUnit> units = this.controller.getUnits();
             int index = getIndexAfterAction((DC_ActiveObj) p.get());
             GuiEventManager.trigger(GuiEventType.
-             ATB_POS_PREVIEW, index);
+                    ATB_POS_PREVIEW, index);
             List<Integer> list = new ArrayList<>();
 
             for (AtbUnit sub : units) {
                 list.add(
-                 clone.getAtbUnit(sub.getUnit()).getDisplayedAtbReadiness());
+                        clone.getAtbUnit(sub.getUnit()).getDisplayedAtbReadiness());
             }
             GuiEventManager.trigger(GuiEventType.PREVIEW_ATB_READINESS, list);
         });
@@ -42,17 +42,17 @@ public class AtbPrecalculator {
         float cost = AtbMaster.getReadinessCost(action);
         clone = getClone();
         AtbUnit atbUnit = clone.getAtbUnit(action.getOwnerUnit());
-        if (atbUnit==null ){
+        if (atbUnit == null) {
             return 0;
         }
         atbUnit.setAtbReadiness(atbUnit.getAtbReadiness()
-         - cost/AtbController.TIME_LOGIC_MODIFIER);
+                - cost / AtbController.TIME_LOGIC_MODIFIER);
         clone.processAtbRelevantEvent();
         while (true) {
             clone.step();
             break;
         }
-        return clone.getUnits().indexOf(atbUnit,true);
+        return clone.getUnits().indexOf(atbUnit, true);
     }
 
     public AtbController getClone() {
