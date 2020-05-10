@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
  */
 public class Positioner  extends DungeonHandler  {
     protected Map<Coordinates, List<ObjType>> unitCache;
+    List<Coordinates> coordinatesUsed = new ArrayList<>();
     private Integer maxSpacePercentageTaken = 100;
 
     public Positioner(DungeonMaster  master) {
@@ -245,13 +246,22 @@ public class Positioner  extends DungeonHandler  {
                 .getFacingFromDirection(direction));
         return nextCoordinate;
     }
-
     private boolean checkCoordinateNotUsed(Coordinates c) {
 //        for (Map<Coordinates, ObjType> group : unitDungeonGroups.values()) {
 //            if (group.keySet().contains(c)) {
 //                return false;
 //            }
 //        }
+        if (isNoStacking()){
+            if (coordinatesUsed.contains(c)) {
+                return false;
+            }
+            coordinatesUsed.add(c);
+        }
+        return true;
+    }
+
+    private boolean isNoStacking() {
         return true;
     }
 

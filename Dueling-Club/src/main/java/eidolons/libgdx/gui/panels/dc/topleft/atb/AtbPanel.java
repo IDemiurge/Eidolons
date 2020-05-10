@@ -18,6 +18,7 @@ import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.topleft.ClockPanel;
 import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.XLinkedMap;
 import main.system.GuiEventManager;
@@ -34,7 +35,7 @@ public class AtbPanel extends GroupX {
     protected final int DST_BETWEEN_VIEWS = 12;
 
     protected final int maxSizeStacked = 3;
-    int viewsToShow=maxSizeStacked;
+    int viewsToShow = maxSizeStacked;
 
     AtbViewManager manager;
     protected QueueViewContainer[] queue;
@@ -42,7 +43,7 @@ public class AtbPanel extends GroupX {
     protected TablePanelX container;
 
     protected float queueOffsetY = 22;
-    protected float combatQueueOffsetY = -29;
+    protected float combatQueueOffsetY = -42; //depend on soulbar vis?
     protected boolean checkPositionsRequired;
     protected float maxMoveAnimDuration = 0;
     protected float timePassedSincePosCheck = Integer.MAX_VALUE;
@@ -53,6 +54,7 @@ public class AtbPanel extends GroupX {
     QueueStackPanel stackPanel;
     SmartButton stackButton; //rotate it?!
     boolean stacked;
+    private ImageContainer horizontal;
 
     public AtbPanel(ClockPanel clock) {
         this.clock = clock;
@@ -60,6 +62,7 @@ public class AtbPanel extends GroupX {
         init();
         bindEvents();
         resetZIndices();
+
     }
 
     public static float getSpeedFactor() {
@@ -88,6 +91,9 @@ public class AtbPanel extends GroupX {
         container.add(queueGroup);
         container.setBackground(new TextureRegionDrawable(TextureCache.getOrCreateR(StrPathBuilder.build("ui",
                 "components", "dc", "atb", "atb background black.png"))));
+        addActor(horizontal = new ImageContainer(Images.SEPARATOR_METAL));
+        horizontal.setY(13);
+        horizontal.setX(-125);
         resetPositions();
 
     }
@@ -303,13 +309,17 @@ public class AtbPanel extends GroupX {
     protected void toggleQueue(boolean visible) {
         cleanUp();
         rollComponent(container, visible);
+
+        float x = !visible ? -225 : -45;
+        float y = horizontal.getY();
+        ActionMaster.addMoveToAction(container, x, y, 1);
+
         checkPositionsRequired = true;
-//        rollComponent(speedControlPanel, visible);
     }
 
     protected void rollComponent(Actor container, boolean visible) {
         float x = container.getX();
-        float y = !visible ? container.getHeight()-combatQueueOffsetY : queueOffsetY;
+        float y = !visible ? container.getHeight() - combatQueueOffsetY : queueOffsetY;
         ActionMaster.addMoveToAction(container, x, y, 1);
         getGears().activeWork(0.5f, 1);
         if (visible)
@@ -322,7 +332,8 @@ public class AtbPanel extends GroupX {
     @Override
     public void act(float delta) {
 //        boolean altBg = EidolonsGame.isAltControlPanel();
-
+        container.setX(184);
+        horizontal.setY(25);
         super.act(delta);
         if (isRealTime()) {
             if (container.isVisible())

@@ -81,6 +81,11 @@ public class OptionsMaster {
     protected String optionsPath;
     protected String OPTIONS_MODE;
 
+    public static void init() {
+//    TODO    Gdx.app.getPreferences()
+        getInstance().initialize();
+    }
+
     protected static void applyAnimOptions(AnimationOptions animOptions) {
 
         for (Object sub : animOptions.getValues().keySet()) {
@@ -159,7 +164,7 @@ public class OptionsMaster {
                 //                    case DRAG_OFF:
                 //                        InputController.setDragOff(booleanValue);
                 //                        break;
-                case AUTO_CENTER_CAMERA_ON_HERO:
+                case CAMERA_ON_HERO:
                     CameraMan.setCameraAutoCenteringOn(booleanValue);
                     break;
                 case ALT_MODE_ON:
@@ -682,9 +687,6 @@ public class OptionsMaster {
         return false;
     }
 
-    public static void init() {
-        getInstance().initialize();
-    }
 
     public void initialize() {
         if (initialized)

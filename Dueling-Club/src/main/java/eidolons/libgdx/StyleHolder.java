@@ -71,6 +71,7 @@ public class StyleHolder {
     private static LabelStyle defaultInfoStyle;
     private static TabbedPane.TabbedPaneStyle horTabStyle;
     private static Menu.MenuStyle menuStyle;
+    private static LabelStyle hugeStyle;
 
     static {
         for (FONT font : FONT.values()) {
@@ -282,6 +283,9 @@ public class StyleHolder {
 
     }
 
+    public static BitmapFont getHugeHieroFont() {
+        return getHieroFont(FONT.HUGE, 46);
+    }
     public static LabelStyle getDefaultLabelStyle() {
         return getDefaultLabelStyle(DEFAULT_COLOR);
     }
@@ -493,6 +497,13 @@ public class StyleHolder {
             defaultInfoStyle = getHqLabelStyle(16);
         }
         return defaultInfoStyle;
+    }
+    public static LabelStyle getHugeStyle() {
+        if (hugeStyle == null) {
+            hugeStyle = getDefaultLabelStyle(Color.WHITE);
+            hugeStyle.font = getHugeHieroFont();
+        }
+        return hugeStyle;
     }
 
     public static LabelStyle getStyle(GuiStage.LABEL_STYLE style) {

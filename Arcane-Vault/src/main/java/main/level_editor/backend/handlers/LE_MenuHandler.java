@@ -21,6 +21,18 @@ public class LE_MenuHandler extends LE_Handler {
                 getDataHandler().openFloor();
                 //how to dispose safely?
                 break;
+            case save_version:
+                getDataHandler().saveVersion();
+                break;
+            case save_as:
+                getDataHandler().saveAs();
+                break;
+            case save_module:
+                getDataHandler().saveModule();
+                break;
+            case save_modules:
+                getDataHandler().saveModulesSeparately();
+                break;
             case save_all:
 //                LevelEditor.getCurrent()
                 getDataHandler().saveFloor();
@@ -55,7 +67,8 @@ public class LE_MenuHandler extends LE_Handler {
 
         //////////////
         open, save_all, clone,
-        file(open, clone, save_all),
+        save_version,  save_as, save_module, save_modules,
+        file(open, clone, save_all,  save_version,  save_as, save_module, save_modules),
         //////////////
         /*
         showStacks;

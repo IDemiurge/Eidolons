@@ -37,6 +37,10 @@ public class GroupX extends Group {
         }
     }
 
+    protected void addBg(Actor actor) {
+        addActor(actor);
+        setSize(actor.getWidth(), actor.getHeight());
+    }
     public boolean isAutoSize() {
         return autoSize;
     }

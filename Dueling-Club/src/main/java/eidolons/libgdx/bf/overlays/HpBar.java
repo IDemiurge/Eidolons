@@ -45,10 +45,9 @@ public class HpBar extends ValueBar {
     private boolean queue;
     BattleFieldObject dataSource;
     Float primaryDeathBarrier;
-    
-    private boolean primaryDeath;
-    private float offsetX;
-    private boolean keserim;
+
+//    private boolean primaryDeath;
+    private boolean enduranceGreater;
 
     public HpBar(BattleFieldObject dataSource) {
         this.dataSource = dataSource;
@@ -65,27 +64,21 @@ public class HpBar extends ValueBar {
 
             float realPerc = new Float(100 * dataSource.getIntParam(PARAMS.C_ENDURANCE) /
                     dataSource.getIntParam(PARAMS.ENDURANCE)) / 100f;
-            if (displayedSecondaryPerc != realPerc) {
+            {
                 displayedSecondaryPerc = realPerc;
             }
             displayedPrimaryPerc = getPrimaryPerc();
 
             realPerc = new Float(100 * dataSource.getIntParam(PARAMS.C_TOUGHNESS) /
                     dataSource.getIntParam(PARAMS.TOUGHNESS)) / 100f;
-            if (displayedPrimaryPerc != realPerc) {
+            {
                 displayedPrimaryPerc = realPerc;
             }
-            keserim=false;
-            if (EidolonsGame.BRIDGE)
-                if (dataSource.isPlayerCharacter()){
-                    if (!EidolonsGame.getVar("secondary")){
-                        keserim=true;
-//                    displayedPrimaryPerc=Math.min( displayedPrimaryPerc;
-                        displayedSecondaryPerc =displayedPrimaryPerc;
-//                setSecondaryPerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getSecondaryPerc()));
-                    }
-                }
+
             return;
+        }
+        if ( dataSource.getIntParam(PARAMS.C_ENDURANCE)> dataSource.getIntParam(PARAMS.C_TOUGHNESS)) {
+            enduranceGreater=true;
         }
         super.animateChange(smooth);
     }
@@ -99,14 +92,14 @@ public class HpBar extends ValueBar {
         text = "" + (dataSource.getIntParam(PARAMS.C_TOUGHNESS) //* displayedPrimaryPerc
         ) + "/" + dataSource.getLastValidParamValue(PARAMS.TOUGHNESS);
         label2.setText(text);
-        if (!EidolonsGame.BRIDGE||!dataSource.isPlayerCharacter() || EidolonsGame.getVar("secondary"))
+        if (!EidolonsGame.BRIDGE || !dataSource.isPlayerCharacter() || EidolonsGame.getVar("secondary"))
             fullLengthPerc = displayedSecondaryPerc;
         else {
             fullLengthPerc = displayedPrimaryPerc;
         }
         if (getPrimaryPerc() <= 0) {
             setPrimaryPerc(primaryDeathBarrier);
-            primaryDeath = true; //diff color?
+//            primaryDeath = true; TODO //diff color?
         }
 //        float offset = innerWidth * displayedPrimaryPerc / 2;
         label2.setPosition(0,
@@ -167,7 +160,7 @@ public class HpBar extends ValueBar {
             displayedPrimaryPerc =
                     primaryAction.getValue();
 
-            if (!EidolonsGame.BRIDGE||!dataSource.isPlayerCharacter() || EidolonsGame.getVar("secondary"))
+            if (!EidolonsGame.BRIDGE || !dataSource.isPlayerCharacter() || EidolonsGame.getVar("secondary"))
                 fullLengthPerc = displayedSecondaryPerc;
             else {
                 fullLengthPerc = displayedPrimaryPerc;
@@ -180,6 +173,7 @@ public class HpBar extends ValueBar {
         dirty = false;
 
     }
+
     @Override
     protected boolean isIgnored() {
         if (isDisplayedAlways())
@@ -198,10 +192,12 @@ public class HpBar extends ValueBar {
         }
         return false;
     }
+
     protected boolean isDisplayedAlways() {
         return HpBar.getHpAlwaysVisible() == true;
 
     }
+
     public void drawAt(Batch batch, float x, float y) {
         setPosition(x, y);
         resetLabel();
@@ -262,20 +258,24 @@ public class HpBar extends ValueBar {
             }
             super.draw(batch, parentAlpha);
             if (dataSource instanceof BossUnit) {
-                ScissorMaster.drawInRectangle(this, batch, getX()-128, getY()-128,3* innerWidth *  MathMaster.minMax( fullLengthPerc, 0, 1)  * getScaleX(), height);
+                ScissorMaster.drawInRectangle(this, batch, getX() - 128, getY() - 128, 3 * innerWidth * MathMaster.minMax(fullLengthPerc, 0, 1) * getScaleX(), height);
             } else
-                ScissorMaster.drawInRectangle(this, batch, getX(), getY()-getHeight()-1, innerWidth * MathMaster.minMax( fullLengthPerc, 0.03f, 1) * getScaleX(), height*2+3);
+                ScissorMaster.drawInRectangle(this, batch, getX(), getY() - getHeight(), innerWidth * MathMaster.minMax(fullLengthPerc, 0.03f, 1) * getScaleX(), height * 2 + 3);
         } else {
             Color color = secondaryColor;
             TextureRegion region = secondaryBarRegion;
             float p = MathMaster.minMax(displayedSecondaryPerc, 0, 1);
-            float y = getY()-getHeight()-1;
-            drawBar(region, batch, p, color, y, false);
-//            batch.flush();
+            float y = getY() - getHeight();
+            if (!queue || !enduranceGreater) {
+                drawBar(region, batch, p, color, y, false);
+            }
             color = primaryColor;
             region = primaryBarRegion;
-            y = getY();
-            drawBar(region, batch, Math.min(p, displayedPrimaryPerc), color, y, true);
+            if (!queue)
+                 y = getY();
+            if (!queue || enduranceGreater) {
+                drawBar(region, batch, Math.min(p, displayedPrimaryPerc), color, y, true);
+            }
             batch.flush();
         }
 
@@ -292,7 +292,7 @@ public class HpBar extends ValueBar {
         super.setTeamColor(teamColor);
         secondaryColor = GdxColorMaster.ENDURANCE;
 //        GdxColorMaster.darker(getTeamColor(), 0.55f);
-        primaryColor =  GdxColorMaster.TOUGHNESS;
+        primaryColor = GdxColorMaster.TOUGHNESS;
 //        GdxColorMaster.lighter(getTeamColor(), 0.55f);
         label2.setColor((getTeamColor()));
         label1.setColor(primaryColor);
@@ -312,6 +312,9 @@ public class HpBar extends ValueBar {
     public void setQueue(boolean queue) {
         this.queue = queue;
         labelsDisplayed = !queue;
+        if (queue){
+            barBg.setVisible(false);
+        }
     }
 
     @Override

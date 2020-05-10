@@ -253,7 +253,8 @@ public class FontMaster {
 //        MANORLY_("/manorly_.ttf"),
 //        IMMORTAL("/IMMORTAL.ttf"),
 //        FERTIGO("/fertigo_pro.otf"),
-        CHANCERY("/BLKCHCRY.ttf"),
+CHANCERY("/BLKCHCRY.ttf"),
+        HUGE("/HUGE.ttf", true),
         SUPER_KNIGHT("/supernatural_knight.ttf");
         public Font font;
         public String path;

@@ -143,7 +143,7 @@ public class MoveAnimation extends ActionAnim {
 
 if (isGhostMoveOn()){
     ScreenMaster.getDungeonGrid().showMoveGhostOnCell(unit);
-    ScreenMaster.getDungeonGrid().resetCell(unit.getBufferedCoordinates());
+    ScreenMaster.getDungeonGrid().resetCell(unit.getLastCoordinates());
 }
 //        GuiEventManager.trigger(GuiEventType.CELL_SHOW_MOVE_GHOST, unit);
     }

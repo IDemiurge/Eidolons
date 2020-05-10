@@ -19,6 +19,7 @@ public class TopLeftPanel extends GroupX {
 
     public TopLeftPanel() {
         setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
+        addActor(vertical = new ImageContainer(Images.SEPARATOR_METAL_VERTICAL));
         addActor(optionsPanel = new CombatOptionsPanel());
         addActor(atbPanel = new AtbPanel(clockPanel));
         addActor(clockPanel  );
@@ -36,17 +37,16 @@ public class TopLeftPanel extends GroupX {
         optionsPanel.setPosition(55,
                 levelInfoPanel.getY() - levelInfoPanel.getHeight()+  15);
 
-        addActor(vertical = new ImageContainer(Images.SEPARATOR_METAL_VERTICAL));
 
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        vertical.setX(39);
-        vertical.setY(optionsPanel.getY()-49);
-        optionsPanel.setPosition(21,
-                levelInfoPanel.getY() - levelInfoPanel.getHeight() +  15);
+        vertical.setX(92);
+        vertical.setY(optionsPanel.getY()-75);
+        optionsPanel.setPosition(1,
+                levelInfoPanel.getY()   -optionsPanel.getPrefHeight()+53);
     }
 
     protected void bindEvents() {

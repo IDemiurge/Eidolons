@@ -35,6 +35,7 @@ public class UnitView extends BaseView implements HpBarView {
     protected HpBar hpBar;
     protected Label mainHeroLabel;
     protected FadeImageContainer emblemImage;
+    protected Image emblemLighting;
     protected FadeImageContainer modeImage;
     protected TextureRegion outline;
     protected Supplier<TextureRegion> outlineSupplier;
@@ -162,31 +163,6 @@ public class UnitView extends BaseView implements HpBarView {
         return super.isTransformDisabled();
     }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-        updateVisible();
-        if (GdxMaster.isHpBarAttached() && !GridMaster.isHpBarsOnTop()) {
-            addActor(hpBar);
-        }
-        if (mainHeroLabel != null) {
-            if (!isActive()) {
-                mainHeroLabel.setVisible(false);
-                return;
-            }
-            mainHeroLabel.setVisible(true);
-            alphaFluctuation(mainHeroLabel, delta);
-        }
-        if (flickering)
-            if (alphaFluctuationOn)
-                alphaFluctuation(this, delta / 4); //TODO fix speed
-//                ActorMaster.addFadeInOrOutIfNoActions(this, 5);
-            else if (getColor().a == 0)
-                getColor().a = 1;
-
-        checkResetOutline(delta);
-
-    }
 
     protected void checkResetOutline(float delta) {
         if (!isMainHero())
@@ -243,19 +219,32 @@ public class UnitView extends BaseView implements HpBarView {
         return true;
     }
 
+    protected void initEmblem(
+            TextureRegion emblem) {
+        if (emblem != null) {
+            emblemLighting = new Image(
+                    UnitViewOptions.UNIT_VIEW_ATLAS
+                            ? TextureCache.fromAtlas(UnitView.getAtlasPath(), "light")
+                            : TextureCache.getOrCreateR(ImageManager.STD_IMAGES.LIGHT.getPath()));
+            emblemLighting.setSize(getEmblemSize() * 10 / 9, getEmblemSize() * 10 / 9);
+            emblemLighting.setPosition(getWidth() - emblemLighting.getWidth(), getHeight() - emblemLighting.getHeight());
+            if (getTeamColor() != null)
+                emblemLighting.setColor(getTeamColor());
+            addActor(emblemLighting);
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
-            super.draw(batch, 1);
-            return;
+            emblemImage = new FadeImageContainer(new Image(emblem));
+            addActor(emblemImage);
+            emblemImage.setSize(getEmblemSize(), getEmblemSize());
+            emblemImage.setPosition(getWidth() - emblemImage.getWidth(), getHeight() - emblemImage.getHeight());
         }
-        ShaderDrawer.drawWithCustomShader(this, batch,
-                greyedOut ?
-                        GrayscaleShader.getGrayscaleShader()
-//          GrayscaleShader.getGrayscaleShader()
-                        : null, true);
     }
+
+    protected float getEmblemSize() {
+        if (isMainHero())
+            return 36;
+        return 32;
+    }
+
 
     public void setPortraitTexture(TextureRegion textureRegion) {
         getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
@@ -385,5 +374,44 @@ public class UnitView extends BaseView implements HpBarView {
 
     public void setMainHero(boolean mainHero) {
         this.mainHero = mainHero;
+    }
+
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        updateVisible();
+        if (GdxMaster.isHpBarAttached() && !GridMaster.isHpBarsOnTop()) {
+            addActor(hpBar);
+        }
+        if (mainHeroLabel != null) {
+            if (!isActive()) {
+                mainHeroLabel.setVisible(false);
+                return;
+            }
+            mainHeroLabel.setVisible(true);
+            alphaFluctuation(mainHeroLabel, delta);
+        }
+        if (flickering)
+            if (alphaFluctuationOn)
+                alphaFluctuation(this, delta / 4); //TODO fix speed
+//                ActorMaster.addFadeInOrOutIfNoActions(this, 5);
+            else if (getColor().a == 0)
+                getColor().a = 1;
+
+        checkResetOutline(delta);
+
+    }
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
+            super.draw(batch, 1);
+            return;
+        }
+        ShaderDrawer.drawWithCustomShader(this, batch,
+                greyedOut ?
+                        GrayscaleShader.getGrayscaleShader()
+//          GrayscaleShader.getGrayscaleShader()
+                        : null, true);
     }
 }

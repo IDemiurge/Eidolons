@@ -47,6 +47,7 @@ public class QueueView extends UnitView {
     private static final float PORTRAIT_Y_INACTIVE = -4;
     private static final float PORTRAIT_Y_ACTIVE = 14;
     private final Image activeMarker;
+    private final Image emblemBg;
     protected int initiativeIntVal;
     protected Label initiativeLabel;
     protected ImageContainer atbBg;
@@ -64,29 +65,41 @@ public class QueueView extends UnitView {
         GdxMaster.center(verticalLine);
         addActor(activeMarker = new Image(ButtonStyled.STD_BUTTON.PULL.getTexture()));
         init(o.getClockValue());
+        addActor(emblemBg = new Image(TextureCache.getOrCreateR(Images.INTENT_ICON_BG)));
+        emblemBg.setPosition( (AtbPanel.imageSize-30)/2,  80);
+
+        initEmblem(o.getEmblem());
+        emblemImage.setPosition(emblemBg.getX(),emblemBg.getY());
         verticalLine.setZIndex(0);
+
+        emblemImage.setZIndex(9234);
+    }
+
+    @Override
+    protected float getEmblemSize() {
+        return 40;
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        verticalLine.setX(GdxMaster.centerWidth(verticalLine)+9);
+        emblemLighting.setVisible(false);
+        verticalLine.setX(GdxMaster.centerWidth(verticalLine)+5);
         highlight.setX(portrait.getX()-4);
         roundBorder.setY(portrait.getY());
         highlight.setY(portrait.getY()-3);
         if (!active){
-            hpBar.setY(portrait.getY()+1);
+            hpBar.setY(portrait.getY()+6);
         } else {
-            hpBar.setY(portrait.getY()-5);
+            hpBar.setY(portrait.getY()+1);
             highlight.setZIndex(999);
         }
         hpBar.setX(-13);
 
-        atbBg.setY(-24);
-        activeMarker.setY(-36);
+        atbBg.setY(-34);
+        activeMarker.setY(-45);
         activeMarker.setZIndex(6534);
         activeMarker.setX(GdxMaster.centerWidth(activeMarker)+4);
-
 
         initiativeLabel.setPosition(
                 atbBg.getX() +

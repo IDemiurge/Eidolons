@@ -76,7 +76,7 @@ public abstract class GridPanel extends Group {
     protected Pillars pillars;
 
     protected GridCellContainer[][] cells;
-//    protected GridCellContainer[][] removedCells;
+    //    protected GridCellContainer[][] removedCells;
     protected Map<BattleFieldObject, BaseView> viewMap;
     protected List<Manipulator> manipulators = new ArrayList<>();
     protected List<GridObject> gridObjects = new ArrayList<>();
@@ -87,11 +87,11 @@ public abstract class GridPanel extends Group {
     protected List<OverlayView> overlays = new ArrayList<>();
 
     protected GridManager manager;
-    protected GridOverlaysManager overlayManager ;
+    protected GridOverlaysManager overlayManager;
 
-    protected  Coordinates offset;
-    protected  Map<Module, GridSubParts> containerMap = new HashMap<>();
-    protected  GridViewAnimator gridViewAnimator = new GridViewAnimator(this);
+    protected Coordinates offset;
+    protected Map<Module, GridSubParts> containerMap = new HashMap<>();
+    protected GridViewAnimator gridViewAnimator = new GridViewAnimator(this);
 
     public GridPanel(int cols, int rows, int moduleCols, int moduleRows) {
         this.square = rows * cols;
@@ -156,17 +156,22 @@ public abstract class GridPanel extends Group {
         for (int x = 0; x < cells.length; x++) {
             for (int y = 0; y < cells[0].length; y++) {
                 DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(x,
-                       y));
-                if  (y<y2 && y>=y1
-                    &&x<x2&&x>=x1 ) {
+                        y));
+                if (y < y2 && y >= y1
+                        && x < x2 && x >= x1) {
                     if (cells[x][y] != null) {
                         resetCellForModule(cells[x][y]);
                         continue;
                     }
                     TextureRegion image = TextureCache.getOrCreateR(cell.getImagePath());
-                    GridCellContainer gridCell=null ;
+                    GridCellContainer gridCell = null;
                     cells[x][y] = gridCell = createGridCell(image, x, y);
-
+                    //setVoid(x, y, false);
+                    if (cell.isVOID()) {
+                        gridCell.setVisible(false);
+                    } else if (DC_Game.game.getMetaMaster().getModuleMaster().getAllVoidCells().contains(Coordinates.get(x, y))) {
+                        gridCell.setVisible(false);
+                    }
                     addActor(gridCell.init());
                     gridCell.setUserObject(cell);
 
@@ -235,7 +240,11 @@ public abstract class GridPanel extends Group {
     protected void addVoidDecorators(boolean hasVoid) {
         if (hasVoid) {
             if (isShardsOn())
-                addActor(shards = new ShardVisuals(this));
+                try {
+                    addActor(shards = new ShardVisuals(this));
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
             if (isPillarsOn())
                 addActor(pillars = new Pillars(this));
         } else {
@@ -323,7 +332,7 @@ public abstract class GridPanel extends Group {
 
     public void restoreVoid(int x, int y, boolean animated) {
         GridCellContainer cell =
-                cells[x][ (y)];
+                cells[x][(y)];
 //        addActor(cell);
         if (animated) {
             ActionMaster.addFadeInAction(cell, 0.5f);
@@ -335,12 +344,13 @@ public abstract class GridPanel extends Group {
     }
 
     public void setVoid(int x, int y, boolean animated) {
-        GridCellContainer cell = cells[x][ (y)];
+        GridCellContainer cell = cells[x][(y)];
 //        cell.remove();
         if (animated) {
             ActionMaster.addFadeOutAction(cell, 0.5f, false);
-        } else
+        } else {
             cell.setVisible(false);
+        }
 
 //        removedCells[x][ (y)] = cell;
         cell.getUserObject().setVOID(true);
@@ -446,7 +456,7 @@ public abstract class GridPanel extends Group {
     protected void createUnitsViews(DequeImpl<BattleFieldObject> units) {
 
         Map<Coordinates, List<BattleFieldObject>> map = new HashMap<>();
-        main.system.auxiliary.log.LogMaster.log(1," " +units);
+        main.system.auxiliary.log.LogMaster.log(1, " " + units);
         for (BattleFieldObject object : units) {
             Coordinates c = object.getCoordinates();
             if (c == null)
@@ -481,10 +491,10 @@ public abstract class GridPanel extends Group {
             }
             try {
                 final GridCellContainer gridCellContainer = cells[coordinates.getX()]
-                        [ (coordinates.getY())];
+                        [(coordinates.getY())];
 
                 if (gridCellContainer == null) {
-                    main.system.auxiliary.log.LogMaster.log(1, "Grid cell is null at " +coordinates);
+                    main.system.auxiliary.log.LogMaster.log(1, "Grid cell is null at " + coordinates);
                     continue;
                 }
                 views.forEach(gridCellContainer::addActor);
@@ -694,7 +704,7 @@ public abstract class GridPanel extends Group {
     public void addOverlay(OverlayView view) {
         Vector2 v = GridMaster.getVectorForCoordinate(
                 view.getUserObject().getCoordinates(), false, false, this);
-        view.setPosition(v.x, v.y  );
+        view.setPosition(v.x, v.y);
         int width = (int) (GridMaster.CELL_W * view.getScale());
         int height = (int) (GridMaster.CELL_H * view.getScale());
         Dimension dimension = OverlayingMaster.getOffsetsForOverlaying(view.getDirection(), width, height, view);
@@ -764,7 +774,7 @@ public abstract class GridPanel extends Group {
 
         GuiEventManager.bind(removePrevious, CELL_SET_VOID, obj -> {
             Coordinates c = (Coordinates) obj.get();
-            main.system.auxiliary.log.LogMaster.log(1,"CELL_SET_VOID " +c );
+            main.system.auxiliary.log.LogMaster.log(1, "CELL_SET_VOID " + c);
             setVoid(c.x, c.y, true);
         });
         GuiEventManager.bind(removePrevious, CELLS_MASS_RESET_VOID, obj -> {
@@ -844,7 +854,7 @@ public abstract class GridPanel extends Group {
             manipulators.add(manipulator);
             Coordinates c = manipulator.getCoordinates();
             manipulator.setPosition(c.x * 128,
-                    ( (c.y)));
+                    ((c.y)));
         });
         GuiEventManager.bind(removePrevious, INIT_CELL_OVERLAY, (obj) -> {
             DC_Cell cell = (DC_Cell) obj.get();
@@ -1058,30 +1068,33 @@ public abstract class GridPanel extends Group {
 
         cellContainer.fadeOutOverlay();
 
+        main.system.auxiliary.log.LogMaster.log(1, "fadeOutOverlay " + cellContainer);
     }
 
     public void showMoveGhostOnCell(Unit unit) {
         Coordinates c = unit.getCoordinates();
-        GridCellContainer cellContainer = cells[c.x][ (c.y)];
+        GridCellContainer cellContainer = cells[c.x][(c.y)];
         TextureRegion texture = null;
         if (getUnitView(unit).getPortrait().getContent().getDrawable() instanceof TextureRegionDrawable) {
             texture = ((TextureRegionDrawable) getUnitView(unit).getPortrait().getContent().getDrawable()).getRegion();
         }
         cellContainer.fadeInOverlay(texture);
 
+        main.system.auxiliary.log.LogMaster.log(1, "showMoveGhostOnCell " + cellContainer);
     }
 
     public int getGdxY_ForModule(int y) {
-        return moduleRows - y  ;
+        return moduleRows - y;
     }
 
     public float getModuleY(int y) {
-        return y - (full_rows - moduleRows)  ;
+        return y - (full_rows - moduleRows);
     }
 
     public float getOffsetX() {
         return offsetX;
     }
+
     public float getOffsetY() {
         return offsetY;
     }
@@ -1089,4 +1102,18 @@ public abstract class GridPanel extends Group {
     public GridViewAnimator getGridViewAnimator() {
         return gridViewAnimator;
     }
+
+    public GridCellContainer getGridCell(int x, int y) {
+        if (x >= cells.length) {
+            return null;
+        }
+        if (y >= cells[0].length) {
+            return null;
+        }
+        return cells[x][y];
+    }
+
+
 }
+
+

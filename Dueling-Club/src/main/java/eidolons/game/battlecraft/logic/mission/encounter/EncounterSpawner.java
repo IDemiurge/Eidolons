@@ -32,9 +32,13 @@ public class EncounterSpawner extends MissionHandler<QuestMission> {
         Map<Integer, String> dataMap = getGame().getMetaMaster().getDungeonMaster().
                 getDataMap(DataMap.encounters);
         for (Encounter encounter : encounters) {
-            EncounterData data = dataMap == null ? new EncounterData(encounter) :
-                    new EncounterData(dataMap.get(encounter.getOrigId()));
-            spawnEncounter(data, encounter, encounter.getCoordinates());
+            try {
+                EncounterData data = dataMap == null ? new EncounterData(encounter) :
+                        new EncounterData(dataMap.get(encounter.getOrigId()));
+                spawnEncounter(data, encounter, encounter.getCoordinates());
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
             //some would be concealed after spawn - ambush.
         }
     }

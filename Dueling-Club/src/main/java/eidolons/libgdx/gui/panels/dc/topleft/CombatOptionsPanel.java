@@ -10,8 +10,9 @@ import eidolons.libgdx.gui.RollDecorator;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.system.options.ControlOptions;
 import eidolons.system.options.GameplayOptions;
-import eidolons.system.options.Options;
+import eidolons.system.options.Options.OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.graphics.FontMaster;
@@ -23,47 +24,64 @@ import java.util.List;
 public class CombatOptionsPanel extends TablePanelX {
 //TODO control options too - e.g. inverts, wasd, clicks,...
 
-    public static final GameplayOptions.GAMEPLAY_OPTION[] DEV_OPTIONS={
+    public static final OPTION[] DEV_OPTIONS = {
             GameplayOptions.GAMEPLAY_OPTION.IMMORTALITY,
             GameplayOptions.GAMEPLAY_OPTION.MANUAL_CONTROL,
+            GameplayOptions.GAMEPLAY_OPTION.GHOST_MODE,
+            GameplayOptions.GAMEPLAY_OPTION.DEBUG_MODE,
+//            GameplayOptions.TESTING_OPTION.DEBUG_MODE,
+//            GameplayOptions.TESTING_OPTION.DEBUG_MODE,
+
 
     };
-    public static final GameplayOptions.GAMEPLAY_OPTION[] OPTIONS={
+    public static final OPTION[] OPTIONS = {
             GameplayOptions.GAMEPLAY_OPTION.INPUT_BETWEEN_TURNS,
-            GameplayOptions.GAMEPLAY_OPTION.SPACE_BETWEEN_TURNS,
+//            GameplayOptions.GAMEPLAY_OPTION.SPACE_BETWEEN_TURNS,
+            ControlOptions.CONTROL_OPTION.ALT_MODE_ON,
+            ControlOptions.CONTROL_OPTION.CAMERA_ON_ACTIVE,
+            ControlOptions.CONTROL_OPTION.AUTO_CAMERA_OFF,
+            ControlOptions.CONTROL_OPTION.CAMERA_ON_HERO,
     };
+    private final RollDecorator.RollableGroup decorated;
+
+    public void hide() {
+        if (!decorated.isOpen()) {
+            decorated.toggle(false);
+        }
+    }
 
     public CombatOptionsPanel() {
         GDX.loadVisUI();
-        List<Options.OPTION> list = new LinkedList<>();
-        for (GameplayOptions.GAMEPLAY_OPTION devOption : OPTIONS) {
+        List<OPTION> list = new LinkedList<>();
+        for (OPTION devOption : OPTIONS) {
             list.add(devOption);
         }
-        if (CoreEngine.isIDE()){
+        if (CoreEngine.TEST_LAUNCH) {
 //            if (CoreEngine.isLogicTest()){
-            for (GameplayOptions.GAMEPLAY_OPTION devOption : DEV_OPTIONS) {
+            for (OPTION devOption : DEV_OPTIONS) {
                 list.add(devOption);
             }
         }
-        TablePanelX<Actor> table = new TablePanelX (200, 400+list.size()*40){
+        final int height = 100 + list.size() * 40;
+        TablePanelX<Actor> table = new TablePanelX(200, height) {
             @Override
             public float getPrefHeight() {
-                return 400+list.size()*40;
+                return height;
             }
         };
-        table. setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+        table.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
         table.defaults().height(40);
-        setSize(200, 400 + list.size() * 40);
+        setSize(200, height);
         //can we add same comps as in OptionWindow?
         addOptionBoxes(table, list);
 
-        add(RollDecorator.decorate(table, FACING_DIRECTION.NORTH, true,
+        add(decorated = RollDecorator.decorate(table, FACING_DIRECTION.NORTH, true,
                 (ButtonStyled.STD_BUTTON.UP)));
 
     }
 
-    private void addOptionBoxes(TablePanelX<Actor> table, List<Options.OPTION> list) {
-        for (Options.OPTION option : list) {
+    private void addOptionBoxes(TablePanelX<Actor> table, List<OPTION> list) {
+        for (OPTION option : list) {
             table.add(new OptionCheckBox(option)).left().uniform().row();
         }
     }
@@ -74,15 +92,15 @@ public class CombatOptionsPanel extends TablePanelX {
     }
 
     public static class OptionCheckBox extends VisCheckBox {
-        private final Options.OPTION option;
+        private final OPTION option;
 
-        public OptionCheckBox(Options.OPTION option) {
+        public OptionCheckBox(OPTION option) {
             super(option.getName());
             this.option = option;
             addCheckListener();
             addListener(new ValueTooltip(option.getTooltip()).getController());
 
-            VisCheckBox.VisCheckBoxStyle style =  getStyle();
+            VisCheckBox.VisCheckBoxStyle style = getStyle();
             style.font = StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 17).font;
             setStyle(style);
         }
@@ -91,7 +109,7 @@ public class CombatOptionsPanel extends TablePanelX {
             addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    OptionsMaster.setOption(option , isChecked(), true);
+                    OptionsMaster.setOption(option, isChecked(), true);
                 }
             });
         }
@@ -100,9 +118,9 @@ public class CombatOptionsPanel extends TablePanelX {
         public void act(float delta) {
             super.act(delta);
             boolean value = OptionsMaster.getOptionsByConst(option).getBooleanValue((Enum) option);
-            if (isChecked() != value){
+            if (isChecked() != value) {
                 clearListeners();
-                OptionsMaster.setOption(option , isChecked(), true);
+                OptionsMaster.setOption(option, isChecked(), true);
                 addCheckListener();
             }
         }

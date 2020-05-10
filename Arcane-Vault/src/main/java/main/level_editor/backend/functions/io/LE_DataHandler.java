@@ -176,6 +176,10 @@ public class LE_DataHandler extends LE_Handler {
         return changed;
     }
 
+    public void saveModule() {
+        saveModule(getModel().getModule());
+    }
+
     public void saveModule(Module module) {
         String contents = getXmlMaster().toXml(getFloorWrapper(), module);
         String path = getStandalonePath(module);

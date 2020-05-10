@@ -28,11 +28,14 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
+import main.system.auxiliary.RandomWizard;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 public class GridCellContainer extends GridCell implements Hoverable {
     Map<GenericGridView, Integer> indexMap = new LinkedHashMap<>();
@@ -398,6 +401,12 @@ public class GridCellContainer extends GridCell implements Hoverable {
             recalcUnitViewBounds();
             dirty = false;
         }
+        if (getUnitViewCount()==0)
+        if (GdxMaster.isVisibleEffectively(overlay)) {
+            if (RandomWizard.chance(1)) {
+                log(1, this + " has overlay" + overlay.getColor());
+            }
+        }
     }
 
     private boolean isStaticZindex() {
@@ -598,7 +607,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
 
     public void fadeInOverlay(TextureRegion texture) {
 //        setOverlayTexture(texture);
-        if (getUnitViewsVisible().size()>=1){
+        if (getUnitViewsVisible().size() >= 1) {
             return;
         }
         if (overlay == null) {
@@ -628,13 +637,15 @@ public class GridCellContainer extends GridCell implements Hoverable {
             }
             overlay.setContentsImmediately(new Image(texture));
         }
-            overlay.getColor().a = 0;
-            overlay.fadeIn();
+        overlay.getColor().a = 0;
+        overlay.fadeIn();
+        log(1, "fadeIn overlay" + this);
     }
 
     public void fadeOutOverlay() {
 //        setOverlayTexture(null );
         overlay.fadeOut();
         ActionMaster.addRemoveAfter(overlay);
+        log(1, "fadeOut overlay" + overlay.getActions());
     }
 }

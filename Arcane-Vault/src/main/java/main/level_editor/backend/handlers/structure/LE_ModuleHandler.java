@@ -87,13 +87,8 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
     }
 
     public void resetBufferVoid() {
-        LinkedHashSet<Coordinates> set = new LinkedHashSet<>();
-        LinkedHashSet<Coordinates> full = new LinkedHashSet<>(getGame().getCoordinates());
-        for (Module module : getModules()) {
-            set.addAll(module.initCoordinateSet(false));
-            set.removeAll(module.getVoidCells());
-        }
-        full.removeAll(set);
+
+        Set<Coordinates> full = getGame().getMetaMaster().getModuleMaster().getAllVoidCells();
         log(LOG_CHANNEL.BUILDING, " Buffer void being reset " + full.size());
         getOperationHandler().execute(Operation.LE_OPERATION.MASS_SET_VOID, full);
     }

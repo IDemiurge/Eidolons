@@ -1,24 +1,19 @@
 package eidolons.libgdx.gui.panels.dc.topleft;
 
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.ScenarioGame;
-import eidolons.game.netherflame.igg.CustomLaunch;
 import eidolons.game.netherflame.igg.IGG_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.texture.Images;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.PathUtils;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 
 public class LevelInfoPanel extends TablePanelX {
     protected ValueContainer locationLabel;
@@ -47,12 +42,15 @@ public class LevelInfoPanel extends TablePanelX {
             CharSequence v = "";
             if (Eidolons.getGame() instanceof ScenarioGame) {
                 try {
-                    if (EidolonsGame.FOOTAGE) {
-                        text = "Extended Demo";
+                    if (CoreEngine.isIDE()) {
+                        text = "Castle Evarinath";
                         v =
-                                StringMaster.getWellFormattedString(PathUtils.getLastPathSegment(StringMaster.cropFormat(MainLauncher.getCustomLaunch().getValue(CustomLaunch.CustomLaunchValue.xml_path)))
-                                        + ", Level [" + (RandomWizard.getRandomIntBetween(1, 3)) + "/" +
-                                        3 + "]");
+//                                StringMaster.getWellFormattedString(PathUtils.getLastPathSegment
+//                                        (StringMaster.cropFormat(MainLauncher.getCustomLaunch().
+//                                                getValue(CustomLaunch.CustomLaunchValue.xml_path)))
+                                        " Floor [" + 2 + "/" +
+                                        4 + "]\n" +
+                                                "Crypts" ;
                     } else {
                         ScenarioMetaMaster m = ScenarioGame.getGame().getMetaMaster();
                         text = m.getMetaGame().getScenario().getName();

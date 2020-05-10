@@ -71,36 +71,48 @@ public class LE_XmlMaster extends LE_Handler {
         return XML_Converter.wrap("Floor", xmlBuilder.toString());
     }
 
-    public String getMetaXml(Module module) {
-        XmlStringBuilder xmlBuilder = new XmlStringBuilder();
+    private String getPreObjXml(Module module) {
         Function<Integer, Boolean> idFilter = getIdFilter(module);
         Function<Coordinates, Boolean> coordinateFilter = getCoordinateFilter(module);
+        return getHandlersXml(null , handler -> handler.getPreObjXml(idFilter, coordinateFilter));
+    }
 
-        xmlBuilder.append("\n").open(FloorLoader.DATA_MAPS);
+    public String getMetaXml(Module module) {
+        Function<Integer, Boolean> idFilter = getIdFilter(module);
+        Function<Coordinates, Boolean> coordinateFilter = getCoordinateFilter(module);
+        return getHandlersXml(null, handler -> handler.getXml(idFilter, coordinateFilter));
+    }
+
+    public String getDataMapsXml(Module module) {
+        Function<Integer, Boolean> idFilter = getIdFilter(module);
+        Function<Coordinates, Boolean> coordinateFilter = getCoordinateFilter(module);
+        return getHandlersXml(FloorLoader.DATA_MAPS, handler -> handler.getDataMapString(idFilter, coordinateFilter));
+    }
+
+    public String getHandlersXml(String nodeName,
+                                 Function<LE_Handler, String> xmlSupplier) {
+        XmlStringBuilder xmlBuilder = new XmlStringBuilder();
+        if (nodeName == null) {
+            xmlBuilder.append("\n");
+        } else
+            xmlBuilder.append("\n").open(nodeName);
         for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
-            String xml = handler.getDataMapString(idFilter, coordinateFilter);
+            String xml = xmlSupplier.apply(handler);
             if (xml.isEmpty()) {
                 continue;
             }
             xmlBuilder.append(xml).append("\n");
         }
-        xmlBuilder.close(FloorLoader.DATA_MAPS).append("\n");
+        if (nodeName == null) {
+            xmlBuilder.append("\n");
+        } else
+            xmlBuilder.close(nodeName).append("\n");
 
-//        xmlBuilder.append("\n").open(FloorLoader.COORDINATE_DATA);
-//        xmlBuilder.close(FloorLoader.COORDINATE_DATA).append("\n");
-
-        for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
-            String xml = handler.getXml(idFilter, coordinateFilter);
-            if (xml.isEmpty()) {
-                continue;
-            }
-            xmlBuilder.append(xml).append("\n");
-        }
         return xmlBuilder.toString();
     }
 
     private Function<Coordinates, Boolean> getCoordinateFilter(Module module) {
-        return c-> module.getCoordinatesSet().contains(c);
+        return c -> module.getCoordinatesSet().contains(c);
     }
 
     private Function<Integer, Boolean> getIdFilter(Module standalone) {
@@ -210,10 +222,14 @@ public class LE_XmlMaster extends LE_Handler {
         xmlBuilder.appendNode(new ModuleData(module).toString(),
                 FloorLoader.DATA);
 
+        xmlBuilder.append("\n").append(getPreObjXml(module));
         xmlBuilder.append("\n").append(buildIdMap(module));
         xmlBuilder.append("\n").append(buildCoordinateMap(module));
-        String meta = getMetaXml(module);
-        xmlBuilder.append("\n").append(meta);
+
+        String s = getDataMapsXml(module);
+        xmlBuilder.append("\n").append(s);
+        s = getMetaXml(module);
+        xmlBuilder.append("\n").append(s);
 
         xmlBuilder.append("\n").open("Zones");
         for (LevelZone zone : module.getZones()) {

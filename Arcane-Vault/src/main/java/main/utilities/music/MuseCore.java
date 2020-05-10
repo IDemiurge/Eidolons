@@ -9,11 +9,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MuseCore implements NativeKeyListener {
-    public void init(){
+    private static final int SHIFT = 1;
+    private static final int ALT =8;
+
+    public void init() {
         try {
             GlobalScreen.registerNativeHook();
-        }
-        catch (NativeHookException ex) {
+        } catch (NativeHookException ex) {
             System.err.println("There was a problem registering the native hook.");
             System.err.println(ex.getMessage());
 
@@ -31,19 +33,44 @@ public class MuseCore implements NativeKeyListener {
 
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
-        main.system.auxiliary.log.LogMaster.log(1," nativeKeyEvent.getModifiers()=" +
-                nativeKeyEvent.getModifiers() +
-                "\n nativeKeyTyped " +nativeKeyEvent.getKeyCode());
     }
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        main.system.auxiliary.log.LogMaster.log(1,"nativeKeyPressed " +nativeKeyEvent.getKeyCode());
+        switch (nativeKeyEvent.getModifiers()) {
+            case ALT:
+                if (nativeKeyEvent.getKeyCode() > 58) {
+                    if (nativeKeyEvent.getKeyCode() <= 61) {
+                        try {
+                            int index = nativeKeyEvent.getKeyCode() - 59;
+                            PlaylistHandler.playRandom(PlaylistHandler.PLAYLIST_TYPE.values()[index]);
+                        } catch (Exception e) {
+                            main.system.ExceptionMaster.printStackTrace(e);
+                        }
+                    }
+                }
+                break;
+            case SHIFT:
+                if (nativeKeyEvent.getKeyCode() > 58) {
+                    if (nativeKeyEvent.getKeyCode() < 70) {
+                        try {
+                            int index = nativeKeyEvent.getKeyCode() - 59;
+                            PlaylistHandler.playRandom(PlaylistHandler.PLAYLIST_TYPE.values()[index]);
+                        } catch (Exception e) {
+                            main.system.ExceptionMaster.printStackTrace(e);
+                        }
+                    }
+                }
+                break;
+//            default:
+//                main.system.auxiliary.log.LogMaster.log(1, " nativeKeyEvent.getModifiers()=" +
+//                        nativeKeyEvent.getModifiers());
+        }
+
     }
 
     @Override
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
-        main.system.auxiliary.log.LogMaster.log(1,"nativeKeyReleased " +nativeKeyEvent.getKeyCode());
 
     }
 }

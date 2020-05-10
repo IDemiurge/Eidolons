@@ -1,5 +1,6 @@
 package eidolons.game.core.state;
 
+import com.google.inject.internal.util.ImmutableList;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
@@ -491,6 +492,10 @@ public class DC_StateManager extends StateManager {
     public void newRound() {
         //        getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.NEW_ROUND, state.getRound());
 
+        if (!ExplorationMaster.isExplorationOn()) {
+            GuiEventManager.trigger(GuiEventType.SHOW_LARGE_TEXT,
+                    ImmutableList.of("Round "+getState().getRoundDisplayedNumber(), "WAR" , 3f));
+        }
 
         getGame().getLogManager().addImageToLog(Images.SEPARATOR_NARROW);
 

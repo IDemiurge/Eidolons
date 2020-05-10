@@ -178,9 +178,8 @@ public class LE_ObjHandler extends LE_Handler {
 
     }
 
-
     @Override
-    public String getXml(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
+    public String getPreObjXml(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
         if (getDirectionMap() == null) {
             return "";
         }

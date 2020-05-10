@@ -14,10 +14,10 @@ public class ControlOptions extends  Options<CONTROL_OPTION,CONTROL_OPTION> {
 
     public enum CONTROL_OPTION implements Options.OPTION {
         WASD_INDEPENDENT_FROM_FACING(false),
-        AUTO_CENTER_CAMERA_ON_HERO(false),
+        CAMERA_ON_HERO(false),
         CENTER_CAMERA_AFTER_TIME(5, 1, 10),
         CENTER_CAMERA_DISTANCE_MOD(100, 50, 200),
-        ALWAYS_CAMERA_CENTER_ON_ACTIVE(true),
+        CAMERA_ON_ACTIVE(true),
 
         //        NUMPAD_CONTROLS_ON(false),
         UNLIMITED_ZOOM(false),

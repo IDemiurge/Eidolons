@@ -17,6 +17,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.gui.generic.LargeText;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.screens.CustomSpriteBatch;
@@ -28,6 +29,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import org.apache.commons.lang3.tuple.Triple;
+
+import java.util.List;
 
 public class GenericGuiStage extends StageX  implements StageWithClosable{
 
@@ -45,6 +48,8 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
     protected Closable displayedClosable;
     private FileChooser fileChooser;
 
+    protected LargeText largeText;
+
     public GenericGuiStage(Viewport viewport, Batch batch) {
         super(viewport == null
                         ? new FillViewport(GdxMaster.getWidth(),
@@ -55,6 +60,10 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
                         : batch);
 
         initTooltipsAndMisc();
+        GuiEventManager.bind(GuiEventType.SHOW_LARGE_TEXT, p -> {
+            List list= (List) p.get();
+            largeText.show((String) list.get(0),(String)  list.get(1), (Float) list.get(2));
+        });
 
         GuiEventManager.bind(GuiEventType.SHOW_INFO_TEXT, p -> {
             if (p.get() == null) {
@@ -180,7 +189,10 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
         Fluctuating.setAlphaFluctuationOn(true);
 
         addActor(confirmationPanel = ConfirmationPanel.getInstance());
+        addActor(largeText = new LargeText());
 
+        largeText.setPosition(GdxMaster.centerWidth(largeText),
+                GdxMaster.centerHeight(largeText));
     }
 
     protected void showTooltip(String s, LabelX tooltip, float dur) {

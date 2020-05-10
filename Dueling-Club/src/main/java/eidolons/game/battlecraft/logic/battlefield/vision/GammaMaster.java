@@ -146,7 +146,7 @@ public class GammaMaster {
                         //               PARAMS.CONCEALMENT)*CONCEALMENT_ALPHA_FACTOR;
                         master.getIlluminationMaster().getConcealment(unit, cell) * CONCEALMENT_ALPHA_FACTOR;
                 if (alpha > 0)
-                    alpha += getAlphaForShadowMapCell(x,  (y), SHADE_CELL.LIGHT_EMITTER) / 3;
+                    alpha += getAlphaForShadowMapCell(x, (y), SHADE_CELL.LIGHT_EMITTER) / 3;
                 break;
         }
 
@@ -215,6 +215,8 @@ public class GammaMaster {
 
 
     private float getVoidAlpha(int x, int y) {
+        if (true)
+            return 0.7f;
         if (EidolonsGame.BOSS_FIGHT)
             return 0.6f;
         Float alpha = voidAlphaCache[x][y];
@@ -225,21 +227,21 @@ public class GammaMaster {
         DC_Cell cell = null;
         //no guarantee, but high chance to find one of the closest non void cells
         loop:
-        for (int i = 1; i < master.getGame().getDungeon().getWidth(); i++) {
-            for (int j = 0; j < master.getGame().getDungeon().getHeight(); j++) {
-                cell = master.getGame().getGrid().getCell(x + i, y + i);
+        for (int i = 0; i < master.getGame().getDungeon().getWidth()-c.x; i++) {
+            for (int j = 0; j < master.getGame().getDungeon().getHeight()-c.y; j++) {
+                cell = master.getGame().getGrid().getCell(c.x + i, c.y + j);
+                if (!cell.isVOID()) {
+                    break loop; //found closest non-void cell
+                }
+                cell = master.getGame().getGrid().getCell(c.x - i, c.y + j);
                 if (!cell.isVOID()) {
                     break loop;
                 }
-                cell = master.getGame().getGrid().getCell(x - i, y + i);
+                cell = master.getGame().getGrid().getCell(c.x + i, c.y - j);
                 if (!cell.isVOID()) {
                     break loop;
                 }
-                cell = master.getGame().getGrid().getCell(x + i, y - i);
-                if (!cell.isVOID()) {
-                    break loop;
-                }
-                cell = master.getGame().getGrid().getCell(x - i, y - i);
+                cell = master.getGame().getGrid().getCell(c.x - i, c.y - j);
                 if (!cell.isVOID()) {
                     break loop;
                 }

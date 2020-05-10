@@ -191,4 +191,8 @@ public abstract class LE_Handler {
     public void saved() {
 
     }
+
+    public String getPreObjXml(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
+        return "";
+    }
 }

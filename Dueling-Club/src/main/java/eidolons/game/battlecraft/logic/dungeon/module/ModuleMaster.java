@@ -8,6 +8,7 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import org.w3c.dom.Node;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class ModuleMaster extends DungeonHandler  {
@@ -15,6 +16,7 @@ public class ModuleMaster extends DungeonHandler  {
     Module base;
     Module current;
     Set<Module> modules;
+    private LinkedHashSet<Coordinates> full;
 
     public ModuleMaster(DungeonMaster master) {
         super(master);
@@ -86,5 +88,19 @@ public class ModuleMaster extends DungeonHandler  {
 
     public boolean isWithinModule(Obj obj) {
         return obj.getModule() == current;
+    }
+
+    public Set<Coordinates> getAllVoidCells() {
+        if (full != null) {
+            return full;
+        }
+        LinkedHashSet<Coordinates> set = new LinkedHashSet<>();
+          full = new LinkedHashSet<>(getGame().getCoordinates());
+        for (Module module : getModules()) {
+            set.addAll(module.initCoordinateSet(false));
+            set.removeAll(module.getVoidCells());
+        }
+        full.removeAll(set);
+        return full;
     }
 }

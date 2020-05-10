@@ -34,7 +34,7 @@ import static main.system.GuiEventType.*;
  */
 public class CameraMan {
     protected static boolean cameraAutoCenteringOn = OptionsMaster.getControlOptions().
-            getBooleanValue(ControlOptions.CONTROL_OPTION.AUTO_CENTER_CAMERA_ON_HERO);
+            getBooleanValue(ControlOptions.CONTROL_OPTION.CAMERA_ON_HERO);
 
     private boolean firstCenteringDone;
     private Boolean centerCameraAlways;
@@ -475,7 +475,7 @@ public class CameraMan {
 
     public Boolean isCenterAlways() {
         if (centerCameraAlways == null) {
-            centerCameraAlways = OptionsMaster.getControlOptions().getBooleanValue(ControlOptions.CONTROL_OPTION.ALWAYS_CAMERA_CENTER_ON_ACTIVE);
+            centerCameraAlways = OptionsMaster.getControlOptions().getBooleanValue(ControlOptions.CONTROL_OPTION.CAMERA_ON_ACTIVE);
         }
         return centerCameraAlways;
     }

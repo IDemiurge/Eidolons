@@ -230,6 +230,9 @@ public class DC_GridPanel extends GridPanel {
     }
 
     protected boolean isShardsOn() {
+        if (CoreEngine.TEST_LAUNCH) {
+            return false;
+        }
         if (EidolonsGame.FOOTAGE) {
             return true;
         }
@@ -239,19 +242,16 @@ public class DC_GridPanel extends GridPanel {
         if (EidolonsGame.BOSS_FIGHT) {
             return false;
         }
-        if (CoreEngine.isLiteLaunch()) {
-            return false;
-        }
+        return !CoreEngine.isLiteLaunch();
 
-        if (DC_Game.game.getDungeonMaster().getFloorWrapper() == null) {
-            switch (DC_Game.game.getDungeonMaster().getFloorWrapper().getLocationType().getGroup()) {
-                case NATURAL:
-                case AVERAGE:
-                case SURFACE:
-                    return true;
-            }
-        }
-        return false;
+//        if (DC_Game.game.getDungeonMaster().getFloorWrapper() != null) {
+//            switch (DC_Game.game.getDungeonMaster().getFloorWrapper().getLocationType().getGroup()) {
+//                case NATURAL:
+//                case AVERAGE:
+//                case SURFACE:
+//                    return true;
+//            }
+//        }
     }
 
 

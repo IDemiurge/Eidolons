@@ -19,7 +19,6 @@ import eidolons.libgdx.gui.generic.NoHitGroup;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.images.ImageManager.STD_IMAGES;
 
 /**
  * Created by JustMe on 4/6/2018.
@@ -28,7 +27,6 @@ import main.system.images.ImageManager.STD_IMAGES;
 public class GenericGridView extends UnitView {
     public static final int ARROW_ROTATION_OFFSET = 90;
     protected NoHitGroup arrow;
-    protected Image emblemLighting;
     protected Image icon;
     protected int arrowRotation;
     protected float alpha = 1f;
@@ -37,7 +35,7 @@ public class GenericGridView extends UnitView {
     public FadeImageContainer torch;
     private boolean stackView;
     private boolean invisible;
-    private Label infoText=new Label("", StyleHolder.getDebugLabelStyle());
+    private Label infoText = new Label("", StyleHolder.getDebugLabelStyle());
 
     public GenericGridView(BattleFieldObject obj, UnitViewOptions o) {
         super(o);
@@ -67,14 +65,19 @@ public class GenericGridView extends UnitView {
         }
 
     }
+
     protected void init(TextureRegion arrowTexture, int arrowRotation,
                         TextureRegion emblem) {
         if (arrowTexture != null) {
-
+            initArrow(arrowTexture, arrowRotation);
+        }
+        if (emblem != null) {
+            initEmblem(emblem);
         }
         setInitialized(true);
     }
-    protected void init(TextureRegion arrowTexture, int arrowRotation ) {
+
+    protected void initArrow(TextureRegion arrowTexture, int arrowRotation) {
 
         if (arrowTexture != null) {
             arrow = new NoHitGroup();
@@ -106,32 +109,6 @@ public class GenericGridView extends UnitView {
             this.arrowRotation = arrowRotation;
             updateRotation();
         }
-    }
-
-    protected void init(
-                        TextureRegion emblem) {
-        if (emblem != null) {
-            emblemLighting = new Image(
-                    UnitViewOptions.UNIT_VIEW_ATLAS
-                    ? TextureCache.fromAtlas(UnitView.getAtlasPath(), "light")
-                            : TextureCache.getOrCreateR(STD_IMAGES.LIGHT.getPath()));
-            emblemLighting.setSize(getEmblemSize() * 10 / 9, getEmblemSize() * 10 / 9);
-            emblemLighting.setPosition(getWidth() - emblemLighting.getWidth(), getHeight() - emblemLighting.getHeight());
-            if (getTeamColor() != null)
-                emblemLighting.setColor(getTeamColor());
-            addActor(emblemLighting);
-
-            emblemImage = new FadeImageContainer(new Image(emblem));
-            addActor(emblemImage);
-            emblemImage.setSize(getEmblemSize(), getEmblemSize());
-            emblemImage.setPosition(getWidth() - emblemImage.getWidth(), getHeight() - emblemImage.getHeight());
-        }
-    }
-
-    protected float getEmblemSize() {
-        if (isMainHero())
-            return 36;
-        return 32;
     }
 
     @Override
@@ -320,7 +297,7 @@ public class GenericGridView extends UnitView {
     @Override
     public void setHpBar(HpBar hpBar) {
         super.setHpBar(hpBar);
-        hpBar.setPosition(GdxMaster.centerWidth(hpBar)-32, -hpBar.getHeight() / 2);
+        hpBar.setPosition(GdxMaster.centerWidth(hpBar) - 32, -hpBar.getHeight() / 2);
     }
 
     @Override

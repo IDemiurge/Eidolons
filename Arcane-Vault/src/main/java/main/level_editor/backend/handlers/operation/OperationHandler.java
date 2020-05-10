@@ -69,7 +69,7 @@ public class OperationHandler extends LE_Handler {
             case VOID_TOGGLE:
                 c = (Coordinates) args[0];
                 DC_Cell cell = manager.getGame().getCellByCoordinate(c);
-                boolean isVoid =  cell.isVOID() ;
+                boolean isVoid = cell.isVOID();
                 if (!isVoid)
                     for (BattleFieldObject bfObj : manager.getGame().getObjectsOnCoordinateAll(c)) {
                         operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
@@ -82,8 +82,8 @@ public class OperationHandler extends LE_Handler {
             case MASS_SET_VOID:
                 Collection<Coordinates> collection = (Collection<Coordinates>) args[0];
                 for (Coordinates coordinates : collection) {
-                      cell = manager.getGame().getCellByCoordinate(coordinates);
-                    isVoid = !cell.isVOID()  ;
+                    cell = manager.getGame().getCellByCoordinate(coordinates);
+                    isVoid = !cell.isVOID();
                     if (isVoid)
                         for (BattleFieldObject bfObj : manager.getGame().getObjectsNoOverlaying(coordinates)) {
                             operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
@@ -106,23 +106,22 @@ public class OperationHandler extends LE_Handler {
             case ADD_OBJ:
                 type = (ObjType) args[0];
                 c = (Coordinates) args[1];
-                if (type==null) {
-                    return null ;
+                if (type == null) {
+                    return null;
                 }
                 if (!getGame().getObjectsOnCoordinateAll(c).isEmpty()) {
                     Boolean overwrite = null;
-                    if (args.length>2) {
-                            overwrite = (Boolean) args[2];
+                    if (args.length > 2) {
+                        overwrite = (Boolean) args[2];
                     }
                     if (overwrite != null) {
                         if (overwrite) {
                             for (BattleFieldObject object : getGame().getObjectsOnCoordinateAll(c)) {
                                 operation(Operation.LE_OPERATION.REMOVE_OBJ, object);
                             }
-                        } else {
-                            return null;
                         }
                     }
+                    return null;
                 }
                 BattleFieldObject unit = getObjHandler().addObj(type, c.x, c.y);
                 if (args[args.length - 1] == new Boolean(false)) {
@@ -186,7 +185,7 @@ public class OperationHandler extends LE_Handler {
     public void operation(boolean redo, Operation.LE_OPERATION operation, Object... args) {
         Object[] newArgs = execute(operation, args);
         if (newArgs == null) {
-            if (args.length>0)
+            if (args.length > 0)
                 main.system.auxiliary.log.LogMaster.log(1, "operation failed: "
                         + operation + " newArgs = " + ListMaster.toStringList(newArgs));
             return;

@@ -223,7 +223,7 @@ public class RollDecorator {
             this.rollIsLessWhenOpen = rollIsLessWhenOpen;
         }
 
-        private boolean isOpen() {
+        public boolean isOpen() {
             switch (direction) {
 //                case NORTH:
                 case SOUTH:

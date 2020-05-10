@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.ai.advanced.engagement;
 
+import com.google.inject.internal.util.ImmutableList;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
@@ -67,10 +68,19 @@ public class EngagementHandler extends ExplorationHandler {
         }
     }
 
-    public void fireEvent() {
+    public void fireEvent(boolean b) {
         //TODO dummy
         GuiEventManager.trigger(GuiEventType.PLAYER_STATUS_CHANGED,
-                new PlayerStatus(PlayerStatus.PLAYER_STATUS.EXPLORATION_DETECTED, 1));
+                new PlayerStatus(
+                        b?
+                                PlayerStatus.PLAYER_STATUS.COMBAT:
+                        PlayerStatus.PLAYER_STATUS.EXPLORATION_UNDETECTED, AggroMaster.getAggroGroup().size()));
+    }
+        public void newEncounter() {
+        GuiEventManager.trigger(GuiEventType.SHOW_LARGE_TEXT,
+                ImmutableList.of("Encounter", "The Dummies" , 3f));
+
+
     }
 
     public void engagementChanged(UnitAI ai, AggroMaster.ENGAGEMENT_LEVEL level){

@@ -155,9 +155,14 @@ public class GdxMaster {
     }
 
     public static float right(Actor actor) {
-        if (actor.getParent() != null && actor.getParent().getWidth() != 0)
-            return actor.getParent().getWidth() - actor.getWidth();
-        return GdxMaster.getWidth() - actor.getWidth();
+        if (actor.getParent() != null && actor.getParent().getWidth() != 0) {
+            float x = actor.getParent().getWidth() - actor.getWidth();
+            actor.setX(x);
+            return x;
+        }
+        float x = GdxMaster.getWidth() - actor.getWidth();
+        actor.setX(x);
+        return x;
     }
 
     public static float rightScreen(Actor actor) {
@@ -320,6 +325,9 @@ public class GdxMaster {
 
     public static void top(Actor actor) {
         actor.setY(getTopY(actor));
+    }
+    public static void top(Actor actor, float offset) {
+        actor.setY(getTopY(actor)+offset);
     }
 
     public static void center(Actor actor) {
@@ -501,6 +509,8 @@ public class GdxMaster {
             return false;
         }
         if (!a.isVisible())
+            return false;
+        if ( a.getParent()==null )
             return false;
         for (Group group : GdxMaster.getAncestors(a)) {
             if (group == null) {

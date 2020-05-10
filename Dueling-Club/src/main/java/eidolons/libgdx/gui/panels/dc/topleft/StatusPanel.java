@@ -3,17 +3,18 @@ package eidolons.libgdx.gui.panels.dc.topleft;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.game.battlecraft.ai.advanced.engagement.PlayerStatus;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.FontMaster;
 
-public class StatusPanel extends TablePanelX {
+public class StatusPanel extends GroupX {
 
     FadeImageContainer icon;
     LabelX statusMain;
@@ -21,19 +22,40 @@ public class StatusPanel extends TablePanelX {
     Image background;
 
     public StatusPanel() {
-        addActor(background = new Image(TextureCache.getOrCreateR(Images.ZARK_TITLE)));
-        Label.LabelStyle style= StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 20);
-        add(statusMain = new LabelX("", style));
-        add(icon = new FadeImageContainer(Images.STATUS_EXPLORE)).row();
-        add(statusAdditional = new LabelX("", style));
+        addBg(background = new Image(TextureCache.getOrCreateR(Images.ZARK_BOX)));
 
-        GuiEventManager.bind(GuiEventType.PLAYER_STATUS_CHANGED , p-> updateStatus((PlayerStatus) p.get()));
+        Label.LabelStyle style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 20);
+        addActor(statusMain = new LabelX("", style));
+        addActor(icon = new FadeImageContainer(Images.STATUS_EXPLORE));
+        style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 16);
+        addActor(statusAdditional = new LabelX("", style));
+
+        statusMain.setZigZagLines(true);
+        GuiEventManager.bind(GuiEventType.PLAYER_STATUS_CHANGED, p -> updateStatus((PlayerStatus) p.get()));
+
     }
+
 
     private void updateStatus(PlayerStatus o) {
         icon.setImage(o.getIconPath());
         statusMain.setText(o.getStatusText());
         statusAdditional.setText(o.getSubText());
 
+        statusMain.pack();
+        statusAdditional.pack();
+
+        statusMain.setX(20);
+        statusAdditional.setX(15);
+        GdxMaster.right(icon);
+        icon.setX(icon.getX()-8);
+//        GdxMaster.center(statusMain);
+        GdxMaster.top(statusMain, -30);
+        GdxMaster.top(icon, -42);
+        statusAdditional.setY(statusMain.getY() - statusAdditional.getHeight() - 2);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
     }
 }
