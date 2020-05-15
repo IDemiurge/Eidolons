@@ -7,12 +7,28 @@ import main.entity.type.ObjType;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.sim.LE_GameSim;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class LE_Floor extends Floor {
     String name;
     LE_Manager manager;
     LE_GameSim game;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        LE_Floor le_floor = (LE_Floor) o;
+        return Objects.equals(name, le_floor.name) &&
+                Objects.equals(game, le_floor.game);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, game);
+    }
 
     public LE_Floor(ObjType type, LE_GameSim game) {
         super(type);

@@ -22,13 +22,14 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.math.PositionMaster;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 public class LE_ObjHandler extends LE_Handler {
 
-    private static final String DEFAULT_TYPE = "Wall Placeholder";
+    private static final String DEFAULT_TYPE = "Wall Placeholder Indestructible";
     private BattleFieldObject lastAdded;
     private ObjType defaultPaletteType;
 
@@ -80,8 +81,20 @@ public class LE_ObjHandler extends LE_Handler {
         operation(Operation.LE_OPERATION.ADD_OBJ, objType,
                 c);
     }
+    private void addMultiple(List<Coordinates> coordinates) {
+        operation(Operation.LE_OPERATION.FILL_START);
+        for (Coordinates c : coordinates) {
+            addFromPalette(c);
+        }
+        operation(Operation.LE_OPERATION.FILL_END);
+    }
+
     public void addFromPalette(Coordinates c) {
         if (getModel().isBrushMode() && getModel().getBrush().getBrushType() != LE_BrushType.none) {
+            if (getModel().getBrush().getBrushType() ==  LE_BrushType.toggle_void) {
+                operation(Operation.LE_OPERATION.VOID_TOGGLE, c);
+                return;
+            }
             ObjType type = getPaletteHandler().getFiller(
                     getModel().getBrush().getBrushType());
             operation(Operation.LE_OPERATION.ADD_OBJ, type,
@@ -200,7 +213,8 @@ public class LE_ObjHandler extends LE_Handler {
         if (PositionMaster.inLine(c1, c)) {
             List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesBetweenInclusive(c1, c);
             coordinates.remove(c1);
-            addMultiple(lastAdded.getType(), coordinates);
+            Collections.reverse(coordinates);
+            addMultiple(  coordinates);
         } else if (PositionMaster.inLineDiagonally(c1, c)) {
             List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesBetweenInclusive(c1, c);
             coordinates.removeIf(coord -> {
@@ -209,17 +223,9 @@ public class LE_ObjHandler extends LE_Handler {
                 return true;
             });
             coordinates.remove(c1);
-            addMultiple(lastAdded.getType(), coordinates);
+            addMultiple(  coordinates);
             //TODO
         }
-    }
-
-    private void addMultiple(ObjType type, List<Coordinates> coordinates) {
-        operation(Operation.LE_OPERATION.FILL_START);
-        for (Coordinates c : coordinates) {
-            operation(Operation.LE_OPERATION.ADD_OBJ, type, c);
-        }
-        operation(Operation.LE_OPERATION.FILL_END);
     }
 
     public ObjType getDefaultPaletteType() {

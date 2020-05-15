@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
@@ -50,6 +51,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import java.awt.*;
@@ -167,13 +169,13 @@ public abstract class GridPanel extends Group {
                     GridCellContainer gridCell = null;
                     cells[x][y] = gridCell = createGridCell(image, x, y);
                     //setVoid(x, y, false);
-                    if (cell.isVOID()) {
-                        gridCell.setVisible(false);
-                    } else if (DC_Game.game.getMetaMaster().getModuleMaster().getAllVoidCells().contains(Coordinates.get(x, y))) {
-                        gridCell.setVisible(false);
-                    }
                     addActor(gridCell.init());
                     gridCell.setUserObject(cell);
+                    if (cell.isVOID()) {
+                        setVoid(x, y, false);
+                    } else if (DC_Game.game.getMetaMaster().getModuleMaster().getAllVoidCells().contains(Coordinates.get(x, y))) {
+                        setVoid(x, y, false);
+                    }
 
                     gridCell.setY(getGdxY_ForModule(y) * GridMaster.CELL_H);
                     gridCell.setX(x * GridMaster.CELL_W);
@@ -247,13 +249,6 @@ public abstract class GridPanel extends Group {
                 }
             if (isPillarsOn())
                 addActor(pillars = new Pillars(this));
-        } else {
-//TODO for each module?
-//            for (int x = 0; x < full_cols; x++) {
-//                for (int y = 0; y < full_rows; y++) {
-//                    checkAddBorder(x, y);
-//                }
-//            }
         }
     }
 
@@ -333,26 +328,13 @@ public abstract class GridPanel extends Group {
     public void restoreVoid(int x, int y, boolean animated) {
         GridCellContainer cell =
                 cells[x][(y)];
-//        addActor(cell);
-        if (animated) {
-            ActionMaster.addFadeInAction(cell, 0.5f);
-        } else {
-            cell.setVisible(true);
-        }
+        cell.setVoid(false, animated);
         cell.getUserObject().setVOID(false);
-//        resetDecorators();
     }
 
     public void setVoid(int x, int y, boolean animated) {
         GridCellContainer cell = cells[x][(y)];
-//        cell.remove();
-        if (animated) {
-            ActionMaster.addFadeOutAction(cell, 0.5f, false);
-        } else {
-            cell.setVisible(false);
-        }
-
-//        removedCells[x][ (y)] = cell;
+        cell.setVoid(true, animated);
         cell.getUserObject().setVOID(true);
     }
 
@@ -757,7 +739,7 @@ public abstract class GridPanel extends Group {
 
 
     protected void bindEvents() {
-        boolean removePrevious = true;
+        boolean removePrevious = !CoreEngine.isLevelEditor();
 
         GuiEventManager.bind(removePrevious, RESET_VIEW, obj -> {
             BattleFieldObject object = (BattleFieldObject) obj.get();
@@ -1008,11 +990,10 @@ public abstract class GridPanel extends Group {
         if (hor != null) {
             int i = hor ? 1 : -1;
             suffix = hor ? "right" : "left";
-            com.badlogic.gdx.scenes.scene2d.ui.Image image = new com.badlogic.gdx.scenes.scene2d.ui.Image(TextureCache.getOrCreateR(
+            Image image = new Image(TextureCache.getOrCreateR(
                     StrPathBuilder.build(
                             "ui", "cells", "bf", "gridBorder " +
-                                    suffix +
-                                    ".png")));
+                                    suffix + ".png")));
             addActor(image);
             image.setPosition(posX + i * GridMaster.CELL_W + (20 - 20 * i)//+40
                     , posY
@@ -1022,7 +1003,7 @@ public abstract class GridPanel extends Group {
         if (vert != null) {
             int i = vert ? 1 : -1;
             suffix = vert ? "up" : "down";
-            com.badlogic.gdx.scenes.scene2d.ui.Image image = new com.badlogic.gdx.scenes.scene2d.ui.Image(TextureCache.getOrCreateR(StrPathBuilder.build(
+            Image image = new Image(TextureCache.getOrCreateR(StrPathBuilder.build(
                     "ui", "cells", "bf", "gridBorder " +
                             suffix +
                             ".png")));
@@ -1035,7 +1016,7 @@ public abstract class GridPanel extends Group {
         if (hor != null)
             if (vert != null) {
                 int i = vert ? 1 : -1;
-                com.badlogic.gdx.scenes.scene2d.ui.Image image = new com.badlogic.gdx.scenes.scene2d.ui.Image(cornerRegion);
+                Image image = new Image(cornerRegion);
                 image.setPosition(posX + i * 40 + i * GridMaster.CELL_W + i * -77, posY
                         + i * 40 + i * GridMaster.CELL_H + i * -77);
 

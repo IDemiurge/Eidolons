@@ -39,7 +39,8 @@ public class LE_MenuHandler extends LE_Handler {
                 break;
             case clone:
                 //floor
-
+                FloorManager.cloneFloor();
+                break;
             case toggle_all:
                 getModel().getDisplayMode().toggleAll();
                 break;
@@ -67,8 +68,8 @@ public class LE_MenuHandler extends LE_Handler {
 
         //////////////
         open, save_all, clone,
-        save_version,  save_as, save_module, save_modules,
-        file(open, clone, save_all,  save_version,  save_as, save_module, save_modules),
+        save_version, save_as, save_module, save_modules,
+        file(open, clone, save_all, save_version, save_as, save_module, save_modules),
         //////////////
         /*
         showStacks;

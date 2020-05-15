@@ -74,7 +74,7 @@ public class LE_XmlMaster extends LE_Handler {
     private String getPreObjXml(Module module) {
         Function<Integer, Boolean> idFilter = getIdFilter(module);
         Function<Coordinates, Boolean> coordinateFilter = getCoordinateFilter(module);
-        return getHandlersXml(null , handler -> handler.getPreObjXml(idFilter, coordinateFilter));
+        return getHandlersXml(null, handler -> handler.getPreObjXml(idFilter, coordinateFilter));
     }
 
     public String getMetaXml(Module module) {
@@ -261,8 +261,11 @@ public class LE_XmlMaster extends LE_Handler {
                 FloorLoader.DATA);
         xmlBuilder.open("Blocks");
         for (LevelBlock block : zone.getSubParts()) {
-            xmlBuilder.appendNode(toXml(block), "Block");
-        }
+            try {
+                xmlBuilder.appendNode(toXml(block), "Block");
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }   }
         xmlBuilder.close("Blocks");
 
         return xmlBuilder.toString();

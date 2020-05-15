@@ -60,7 +60,9 @@ public class Spawner  extends DungeonHandler  {
         final Integer cellsY = Coordinates.getFloorHeight();
         final Integer moduleHeight = Coordinates.getModuleHeight();
         final Integer moduleWidth = Coordinates.getModuleWidth();
-        GridCreateData param = new GridCreateData(cellsX, cellsY, game.getBfObjects(),
+        GridCreateData param = new GridCreateData(
+                getMetaMaster().getData(),
+                cellsX, cellsY, game.getBfObjects(),
                 moduleWidth,
                 moduleHeight
         );

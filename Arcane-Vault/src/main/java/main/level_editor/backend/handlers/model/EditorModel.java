@@ -9,6 +9,7 @@ import main.data.tree.LayeredData;
 import main.data.tree.StructNode;
 import main.data.tree.StructTreeBuilder;
 import main.entity.type.ObjType;
+import main.level_editor.LevelEditor;
 import main.level_editor.backend.brush.BrushShape;
 import main.level_editor.backend.brush.LE_Brush;
 import main.level_editor.backend.brush.LE_BrushType;
@@ -52,7 +53,7 @@ public class EditorModel {
         selection = (LE_Selection) CloneMaster.deepCopy(model.getSelection());
         displayMode = (LE_DisplayMode) CloneMaster.deepCopy(model.getDisplayMode());
         paletteSelection = (PaletteSelection) CloneMaster.deepCopy(model.getPaletteSelection());
-        brush=model.getBrush();
+        brush = model.getBrush();
     }
 
     public StructNode getTreeModel() {
@@ -106,7 +107,7 @@ public class EditorModel {
     }
 
     public void setPaletteSelection(PaletteSelection paletteSelection) {
-             this.paletteSelection = paletteSelection;
+        this.paletteSelection = paletteSelection;
     }
 
     public LevelZone getZone() {
@@ -122,8 +123,10 @@ public class EditorModel {
 
     public Module getModule() {
         if (module == null) {
-            return  getLastSelectedStruct().getModule();
-//            return LevelEditor.getCurrent().getDefaultModule();
+            if (getLastSelectedStruct() == null) {
+                return LevelEditor.getCurrent().getDefaultModule();
+            }
+            return getLastSelectedStruct().getModule();
         }
         return module;
     }

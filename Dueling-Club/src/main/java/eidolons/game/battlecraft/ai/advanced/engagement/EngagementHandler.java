@@ -1,15 +1,14 @@
 package eidolons.game.battlecraft.ai.advanced.engagement;
 
-import com.google.inject.internal.util.ImmutableList;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
-import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.CONTENT_CONSTS2;
+import main.content.enums.rules.VisionEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -50,6 +49,8 @@ When do we decide about reinforcements?
 
  */
 public class EngagementHandler extends ExplorationHandler {
+    EngageMsgs msgs = new EngageMsgs();
+    EngageEvents events = new EngageEvents();
     public EngagementHandler(ExplorationMaster master) {
         super(master);
     }
@@ -62,41 +63,27 @@ public class EngagementHandler extends ExplorationHandler {
     public void timerEvent() {
         checkAggroEvents();
     }
+
     public void checkAggroEvents(){
         for (Unit unit : getGame().getUnits()) {
 
         }
     }
 
-    public void fireEvent(boolean b) {
-        //TODO dummy
-        GuiEventManager.trigger(GuiEventType.PLAYER_STATUS_CHANGED,
-                new PlayerStatus(
-                        b?
-                                PlayerStatus.PLAYER_STATUS.COMBAT:
-                        PlayerStatus.PLAYER_STATUS.EXPLORATION_UNDETECTED, AggroMaster.getAggroGroup().size()));
-    }
-        public void newEncounter() {
-        GuiEventManager.trigger(GuiEventType.SHOW_LARGE_TEXT,
-                ImmutableList.of("Encounter", "The Dummies" , 3f));
-
-
-    }
-
-    public void engagementChanged(UnitAI ai, AggroMaster.ENGAGEMENT_LEVEL level){
+    public void engagementChanged(UnitAI ai, VisionEnums.ENGAGEMENT_LEVEL level){
         switch (level) {
             case ALARMED:
                 //call out
-            case AGGRO:
+            case ENGAGED:
                 //check if group engages, otherwise
         }
         ai.setEngagementLevel(level);
 
-        String comment=getComment(ai.getGroupAI(), ai.getUnit(), level);
+        String comment= msgs.getComment(ai.getGroupAI(), ai.getUnit(), level);
         GuiEventManager.triggerWithParams(GuiEventType.SHOW_COMMENT_PORTRAIT, ai.getUnit(),  comment);
 //        GuiEventManager.trigger(GuiEventType.GRID_OBJ_ANIM, new AnimData());
 
-        String message= getMessage(ai.getUnit(), level);
+        String message=msgs.getMessage(ai.getUnit(), level);
         getGame().getLogManager().log(message);
         EUtils.showInfoText(message);
 
@@ -105,17 +92,10 @@ public class EngagementHandler extends ExplorationHandler {
         ai.setCurrentOrder(orders);
     }
 
-    private String getComment(GroupAI groupAI, Unit unit, AggroMaster.ENGAGEMENT_LEVEL level) {
-        return null;
-    }
 
-    private String getMessage(Unit unit, AggroMaster.ENGAGEMENT_LEVEL level) {
-        return null;
-    }
+    public VisionEnums.ENGAGEMENT_LEVEL getLevelForGroup(GroupAI groupAI){
 
-    public AggroMaster.ENGAGEMENT_LEVEL getLevelForGroup(GroupAI groupAI){
-
-        AggroMaster.ENGAGEMENT_LEVEL level= AggroMaster.ENGAGEMENT_LEVEL.UNSUSPECTING;
+        VisionEnums.ENGAGEMENT_LEVEL level= VisionEnums.ENGAGEMENT_LEVEL.UNSUSPECTING;
 
         Unit leader = groupAI.getLeader();
         leader.getAI().getEngagementDuration();
@@ -123,7 +103,7 @@ public class EngagementHandler extends ExplorationHandler {
 
         }
         switch (level) {
-            case AGGRO:
+            case ENGAGED:
 
         }
         return level;

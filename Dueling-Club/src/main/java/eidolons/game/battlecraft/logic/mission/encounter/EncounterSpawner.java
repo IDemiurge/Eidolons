@@ -28,7 +28,12 @@ public class EncounterSpawner extends MissionHandler<QuestMission> {
         super(master);
     }
 
-    public void spawnEncounters(List<Encounter> encounters) {
+    public void checkMergeEncounters(List<Encounter> encounters) {
+        /*
+
+         */
+    }
+        public void spawnEncounters(List<Encounter> encounters) {
         Map<Integer, String> dataMap = getGame().getMetaMaster().getDungeonMaster().
                 getDataMap(DataMap.encounters);
         for (Encounter encounter : encounters) {

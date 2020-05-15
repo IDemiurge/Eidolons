@@ -1,5 +1,9 @@
-package main.system;
+package eidolons.libgdx;
 
+import com.badlogic.gdx.Screen;
+import eidolons.libgdx.screens.GameScreen;
+import eidolons.libgdx.screens.ScreenMaster;
+import main.system.*;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.*;
@@ -10,7 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import static main.system.GuiEventType.*;
 
-public class GuiEventManagerImpl {
+public class GuiEventManagerImpl implements GenericGuiEventManager {
     private static final GuiEventType[] savedBindings = new GuiEventType[]{
             SWITCH_SCREEN,
             SCREEN_LOADED,
@@ -27,19 +31,38 @@ public class GuiEventManagerImpl {
     private Map<EventType, EventCallbackParam> onDemand = new ConcurrentHashMap<>();
     private Map<EventType, List<EventCallbackParam>> onDemandMap = new ConcurrentHashMap<>();
 
-    public static void cleanUp() {
+    public void cleanUp() {
         getInstance()._cleanUp();
     }
 
-    public static void bind(EventType type, final EventCallback event) {
-        getInstance().bind_(type, event);
+    public void bind(EventType type, final EventCallback event) {
+        if (type.isScreenCheck()) {
+            GameScreen screen = ScreenMaster.getScreen();
+            EventCallback checked = new EventCallback() {
+                @Override
+                public void call(EventCallbackParam obj) {
+                    if (ScreenMaster.getScreen() != getScreen()) {
+//                        main.system.auxiliary.log.LogMaster.log(1,type+"Screen check failed " +screen);
+                        return;
+                    }
+                    event.call(obj);
+                }
+
+                @Override
+                public Screen getScreen() {
+                    return screen;
+                }
+            };
+            getInstance().bind_(type, checked);
+        } else
+            getInstance().bind_(type, event);
     }
 
-    public static void removeBind(EventType type) {
+    public void removeBind(EventType type) {
         getInstance().removeBind_(type);
     }
 
-    public static void trigger(final EventType type, Object obj) {
+    public void trigger(final EventType type, Object obj) {
         EventCallbackParam eventCallback;
 
         if (obj instanceof EventCallbackParam) {
@@ -51,11 +74,11 @@ public class GuiEventManagerImpl {
         getInstance().trigger_(type, eventCallback);
     }
 
-    public static void processEvents() {
+    public void processEvents() {
         getInstance().processEvents_();
     }
 
-    public static GuiEventManagerImpl getInstance() {
+    public GuiEventManagerImpl getInstance() {
         if (instance == null) {
             if (!isInitialized) {
                 try {
@@ -102,18 +125,20 @@ public class GuiEventManagerImpl {
 
     public void bind_(EventType type, final EventCallback event) {
         if (event != null) {
+
             if (eventMap.containsKey(type)) {
-                final EventCallback old = eventMap.remove(type);
+                EventCallback old = eventMap.remove(type);
+
                 eventMap.put(type, (obj) -> {
                     old.call(obj);
                     event.call(obj);
                 });
             } else {
-               if (type.isMultiArgsInvocationSupported()){
+                if (type.isMultiArgsInvocationSupported()) {
                     eventMap.put(type, (obj) -> {
                         if (obj.get() instanceof Collection) {
                             Collection list = (Collection) obj.get();
-                            main.system.auxiliary.log.LogMaster.log(1,">>>>> MultiArgs Invocation with elements: " +list.size());
+                            main.system.auxiliary.log.LogMaster.log(1, ">>>>> MultiArgs Invocation with elements: " + list.size());
                             for (Object o : list) {
                                 event.call(new EventCallbackParam(o));
                             }
@@ -133,15 +158,15 @@ public class GuiEventManagerImpl {
             if (callbacks != null) {
                 onDemandMap.remove(type);
                 for (EventCallbackParam callback : callbacks) {
-                    if (type.isMultiArgsInvocationSupported()  &&
-                    callback.get() instanceof Collection) {
+                    if (type.isMultiArgsInvocationSupported() &&
+                            callback.get() instanceof Collection) {
                         eventQueue.add(() -> {
                             for (Object o : (Collection) callback.get()) {
                                 event.call(new EventCallbackParam(o));
                             }
                         });
                     } else
-                     eventQueue.add(() -> event.call(callback));
+                        eventQueue.add(() -> event.call(callback));
                 }
             }
 //                main.system.auxiliary.log.LogMaster.log(1,
@@ -196,7 +221,7 @@ public class GuiEventManagerImpl {
 
 //            list.forEach(Runnable::run); apparently we still need crutches
             for (int i = 0, listSize = list.size(); i < listSize; i++) {
-                run( list.get(i));
+                run(list.get(i));
 //                try {
 //                    list.get(i).run();
 //                } catch (Exception e) {

@@ -86,17 +86,16 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
         Set<Coordinates> toVoid = new LinkedHashSet<>();
         {
             for (Coordinates c : coordinates) {
+                Coordinates c1 = c.getOffset(getMirroredCoordinate(c.getOffset(-origin.x, -origin.y), d, w, h));
                 boolean VOID = getGame().getCellByCoordinate(c).isVOID();
                 if (VOID) {
-                    c = getMirroredCoordinate(c, d, w, h);
-                    toVoid.add(c);
+                    toVoid.add(c1);
                     continue;
                 }
                 Set<BattleFieldObject> objects = getGame().getObjectsOnCoordinateAll(c);
-                c =c.getOffset( getMirroredCoordinate(c.getOffset(-origin.x, -origin.y), d, w, h));
 //                c = c.getOffset(origin);
                 for (BattleFieldObject object : objects) {
-                    getObjHandler().copyTo(object, c);
+                    getObjHandler().copyTo(object, c1);
                 }
             }
         }
@@ -109,10 +108,10 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
         int offsetX = 0;
         int offsetY = 0;
         if (d.growX != null) {
-            offsetX = d.growX ? w - c.x : c.x - w;
+            offsetX = d.growX ? w - c.x : -c.x ;
         }
         if (d.growY != null) {
-            offsetY = d.growY ? h - c.y : c.y - h;
+            offsetY = d.growY ? h - c.y : -c.y ;
         }
         return Coordinates.get(true ,  offsetX,  offsetY);
     }

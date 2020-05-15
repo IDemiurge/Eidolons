@@ -87,6 +87,9 @@ public class ListMaster<E> {
     public static List<String> toStringList(boolean wellFormatted,
                                             Boolean preferEntityNameOrIfNameKnown, Object... values) {
         List<String> list = new ArrayList<>();
+        if (values == null) {
+            return list;
+        }
         for (Object v : values) {
             if (v != null) {
                 String string;

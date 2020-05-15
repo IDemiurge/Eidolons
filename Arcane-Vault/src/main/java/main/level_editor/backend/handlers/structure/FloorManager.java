@@ -1,5 +1,8 @@
 package main.level_editor.backend.handlers.structure;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.gui.utils.FileChooserX;
@@ -9,6 +12,8 @@ import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
+import main.level_editor.LevelEditor;
+import main.level_editor.backend.functions.io.LE_DataHandler;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.sim.LE_MetaMaster;
 import main.level_editor.backend.struct.boss.BossDungeon;
@@ -22,20 +27,32 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.sound.SoundMaster;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FloorManager {
     public static LE_Floor current;
     public static Campaign campaign;
     public static BossDungeon dungeon;
+    private static List<LE_Floor> floors = new ArrayList<>();
     /*
     TEMPLATE
     zones and blocks obviously
     with some bits being VAR
      */
 
-    public static void addFloor(){
-        String templatePath = FileChooserX.chooseFile(PathFinder.getDungeonLevelFolder(), "xml",
+    public static void newFloor() {
+        loadFloor(PathFinder.getDungeonLevelFolder()+ LE_DataHandler.PREFIX_TEMPLATE);
+    }
+    public static void addFloor() {
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+            newFloor();
+        } else 
+            loadFloor(PathFinder.getDungeonLevelFolder()+ LE_DataHandler.PREFIX_CRAWL);
+    }
+        public static void loadFloor(String path) {
+        String templatePath = FileChooserX.chooseFile(path, "xml",
                 LE_Screen.getInstance().getGuiStage());
-
         //from modules too
         if (StringMaster.isEmpty(templatePath)) {
             templatePath = getDefaultFloorTemplate();
@@ -44,8 +61,14 @@ public class FloorManager {
         newFloorSelected(templatePath, false);
     }
 
+    public static void cloneFloor() {
+        String path = current.getWrapper().getData().getValue(LevelStructure.FLOOR_VALUES.filepath);
+        newFloorSelected(path, false);
+        current.getManager().getDataHandler().saveVersion();
+//        current.getWrapper().getData().setValue( "");
+    }
 
-    public static void newFloorSelected(String name, boolean campaignMode ) {
+    public static void newFloorSelected(String name, boolean campaignMode) {
         String path = !campaignMode ? name : getRootPath() + name;
         if (campaignMode) {
 //            dungeon.getFloorPath(name);
@@ -54,6 +77,7 @@ public class FloorManager {
         LE_MetaMaster meta = new LE_MetaMaster(path);
         FloorManager.initFloor(meta);
     }
+
     public static void initFloor(LE_MetaMaster meta) {
         LE_GameSim game = meta.init();
 
@@ -63,7 +87,7 @@ public class FloorManager {
 
         ObjType type = DataManager.getType(name, DC_TYPE.FLOORS);
         if (type == null) {
-            type = new ObjType(name,DC_TYPE.FLOORS );// use template?
+            type = new ObjType(name, DC_TYPE.FLOORS);// use template?
             //will we save this type with main xml?
         }
         LE_Floor floor = new LE_Floor(type, game);
@@ -72,6 +96,8 @@ public class FloorManager {
         floor.getManager().load();
         meta.gameStarted();
         floor.getManager().afterLoaded();
+
+        floors.add(floor);
     }
 
     public static void floorSelected(LE_Floor floor) {
@@ -81,7 +107,9 @@ public class FloorManager {
         SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.CLICK_ACTIVATE);
         main.system.auxiliary.log.LogMaster.log(1, "floorSelected: " + floor.getName());
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(SCREEN_TYPE.EDITOR, floor));
+        GuiEventManager.trigger(GuiEventType.LE_FLOORS_TABS, floors);
     }
+
 
     private static String getDefaultFloorTemplate() {
         return null;
@@ -92,5 +120,30 @@ public class FloorManager {
                 campaign.getName(), dungeon.getName());
     }
 
+    public static List<LE_Floor> getFloors() {
+        return floors;
+    }
 
+    public static void removed(LE_Floor floor) {
+        floors.remove(floor);
+        LE_Screen.getCache().remove(floor);
+    }
+
+    public static void selectNextFloor() {
+        int i = floors.indexOf(LevelEditor.getCurrent());
+        i++;
+        if (i>=floors.size()) {
+            i=0;
+        }
+        floorSelected(floors.get(i));
+    }
+
+    public static void selectPreviousFloor() {
+        int i = floors.indexOf(LevelEditor.getCurrent());
+        i--;
+        if (i<0) {
+            i=floors.size()-1;
+        }
+        floorSelected(floors.get(i));
+    }
 }

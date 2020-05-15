@@ -1,16 +1,17 @@
 package eidolons.game.battlecraft.ai.advanced.engagement;
 
 import eidolons.libgdx.texture.Images;
+import main.content.enums.rules.VisionEnums;
 
 public class PlayerStatus {
     String iconPath;
     String statusText;
     String subText;
 
-    PLAYER_STATUS status;
+    VisionEnums.PLAYER_STATUS status;
     int arg;
 
-    public PlayerStatus(PLAYER_STATUS status, int arg) {
+    public PlayerStatus(VisionEnums.PLAYER_STATUS status, int arg) {
         this.status = status;
         this.arg = arg;
         init();
@@ -65,15 +66,6 @@ public class PlayerStatus {
                 statusText = "Combat\nStatus:\nDead";
                 break;
         }
-    }
-
-    public enum PLAYER_STATUS {
-        EXPLORATION_UNDETECTED,
-        EXPLORATION_DETECTED,
-        ALERTED,
-        COMBAT,
-        SHADOW,
-        DEAD //GHOST!
     }
 
     public String getIconPath() {

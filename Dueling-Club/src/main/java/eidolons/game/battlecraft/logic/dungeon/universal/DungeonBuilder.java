@@ -67,6 +67,7 @@ public class DungeonBuilder extends DungeonHandler {
         Coordinates.setModuleHeight(h);
     }
 
+
     public void initLocationSize(Location dungeonWrapper) {
         int w = dungeonWrapper.getWidth();
         int h = dungeonWrapper.getHeight();

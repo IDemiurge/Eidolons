@@ -8,8 +8,10 @@ public class GridCreateData {
     private final int rows;
     private final DequeImpl<BattleFieldObject> objects;
     Integer moduleWidth , moduleHeight;
+    String name;
 
-    public GridCreateData(int cols, int rows, DequeImpl<BattleFieldObject> objects, Integer moduleWidth, Integer moduleHeight) {
+    public GridCreateData(String name, int cols, int rows, DequeImpl<BattleFieldObject> objects, Integer moduleWidth, Integer moduleHeight) {
+        this.name = name;
         this.cols = cols;
         this.rows = rows;
         this.objects = objects;
@@ -35,5 +37,9 @@ public class GridCreateData {
 
     public DequeImpl<BattleFieldObject> getObjects() {
         return objects;
+    }
+
+    public String getName() {
+        return name;
     }
 }

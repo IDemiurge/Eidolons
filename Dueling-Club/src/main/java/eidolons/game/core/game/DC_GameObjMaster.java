@@ -5,6 +5,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
+import io.vertx.core.impl.ConcurrentHashSet;
 import main.data.XList;
 import main.entity.Ref;
 import main.entity.obj.Obj;
@@ -48,8 +49,8 @@ public class DC_GameObjMaster extends GameObjMaster {
 
     public DC_GameObjMaster(DC_Game game) {
         super(game);
-        structures = new HashSet<>();
-        units = new HashSet<>();
+        structures = new ConcurrentHashSet<>();
+        units = new ConcurrentHashSet<>();
     }
 
     @Override

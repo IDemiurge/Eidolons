@@ -2,9 +2,9 @@ package eidolons.game.battlecraft.rules.action;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.core.game.DC_Game;
+import main.content.enums.rules.VisionEnums;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
@@ -45,21 +45,21 @@ public class PerceptionRule   implements ActionRule {
         switch (status) {
             case KNOWN_TO_BE_SOMEWHERE:
                 source.getUnitAI().getGroup()
-                 .setEngagementLevel(ENGAGEMENT_LEVEL.ALARMED);
+                 .setEngagementLevel(VisionEnums.ENGAGEMENT_LEVEL.ALARMED);
                 break;
             case KNOWN_TO_BE_THERE:
                 source.getUnitAI().getGroup()
-                 .setEngagementLevel(ENGAGEMENT_LEVEL.AGGRO);
+                 .setEngagementLevel(VisionEnums.ENGAGEMENT_LEVEL.AGGRO);
                 source.getUnitAI().getGroup()
                  .addEnemyKnownCoordinates(target.getCoordinates());
                 break;
             case SUSPECTED_TO_BE_SOMEWHERE:
                 source.getUnitAI().getGroup()
-                 .setEngagementLevel(ENGAGEMENT_LEVEL.SUSPECTING);
+                 .setEngagementLevel(VisionEnums.ENGAGEMENT_LEVEL.SUSPECTING);
                 break;
             case SUSPECTED_TO_BE_THERE:
                 source.getUnitAI().getGroup()
-                 .setEngagementLevel(ENGAGEMENT_LEVEL.ALARMED);
+                 .setEngagementLevel(VisionEnums.ENGAGEMENT_LEVEL.ALARMED);
                 source.getUnitAI()
                  .getGroup()
                  .addEnemyKnownCoordinates(

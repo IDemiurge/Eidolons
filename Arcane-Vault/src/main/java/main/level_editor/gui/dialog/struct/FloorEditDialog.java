@@ -6,7 +6,10 @@ import eidolons.libgdx.GdxImageMaster;
 import eidolons.system.audio.MusicMaster;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
+import main.level_editor.LevelEditor;
+import main.level_editor.backend.functions.io.LE_DataHandler;
 import main.level_editor.gui.components.DataTable;
+import main.level_editor.gui.components.EditValueContainer;
 import main.system.auxiliary.data.FileManager;
 
 public class FloorEditDialog extends DataEditDialog<LevelStructure.FLOOR_VALUES, FloorData> {
@@ -28,6 +31,22 @@ public class FloorEditDialog extends DataEditDialog<LevelStructure.FLOOR_VALUES,
         }
         return null;
     }
+
+    @Override
+    protected void editItem(EditValueContainer actor, DataTable.DataPair item) {
+        String name = data.getValue("name");
+        super.editItem(actor, item);
+        if (!name.equalsIgnoreCase(data.getValue("name"))) {
+            data.setValue(LevelStructure.FLOOR_VALUES.filepath, LE_DataHandler.PREFIX_CRAWL + data.getValue("name") + ".xml");
+        }
+    }
+
+    @Override
+    public void ok() {
+        super.ok();
+        LevelEditor.getManager().getStructureManager().updateTree();
+    }
+
     protected Object formatFilePath(DataTable.DataPair item, Object value) {
         String path = FileManager.formatPath(value.toString(), true, true);
         return GdxImageMaster.cropImagePath(path);

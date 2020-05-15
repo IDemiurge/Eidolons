@@ -14,9 +14,13 @@ import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.battlecraft.logic.mission.encounter.EncounterData;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.gui.NinePatchFactory;
+import eidolons.libgdx.gui.generic.btn.ButtonStyled;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.GenericGuiStage;
 import main.level_editor.LevelEditor;
+import main.level_editor.backend.handlers.structure.FloorManager;
 import main.level_editor.gui.components.DataTable;
 import main.level_editor.gui.dialog.AiEditDialog;
 import main.level_editor.gui.dialog.BlockTemplateChooser;
@@ -31,6 +35,7 @@ import main.level_editor.gui.panels.palette.HybridPalette;
 import main.level_editor.gui.top.LE_ButtonStripe;
 import main.level_editor.gui.top.LE_StatusBar;
 import main.level_editor.gui.top.TopPanel;
+import main.level_editor.gui.tree.FloorTabs;
 import main.level_editor.gui.tree.LE_TreeHolder;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
@@ -41,6 +46,8 @@ import main.system.data.DataUnit;
 public class LE_GuiStage extends GenericGuiStage {
 
     public static boolean dialogActive;
+    private final SmartButton open;
+    private final TablePanelX<Actor> floorsTable;
     private TopPanel topPanel;
     private LE_ButtonStripe buttons;
     private ClosablePanel controlPanel;
@@ -63,6 +70,7 @@ public class LE_GuiStage extends GenericGuiStage {
     private boolean positionsAdjusted;
     private CellDataEditor cellDataEditor;
     LE_StatusBar statusBar;
+    FloorTabs tabs = new FloorTabs();
 
     public LE_GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -74,19 +82,23 @@ public class LE_GuiStage extends GenericGuiStage {
         controlPanel.add(toolHolder);
         controlTabs.switchTab(0);
 
+
         treePanel = new LE_TreeHolder();
         palettePanel = new HybridPalette();
         topPanel = new TopPanel();
         initButtons();
-        if (isTableMode()) {
-            initTable();
-        } else {
-            addActor(palettePanel);
-            addActor(topPanel);
-            addActor((controlPanel));
-        }
-        //separate table?
+        initTable();
 
+        open = new SmartButton(ButtonStyled.STD_BUTTON.UP, () -> Eidolons.onNonGdxThread(() -> FloorManager.addFloor()));
+
+        floorsTable = new TablePanelX<>(300, 40);
+//        floorsTable.add(open);
+        floorsTable.add(tabs.getTabsPane()).width(600).minWidth(300).padLeft(110);
+        floorsTable.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+        addActor(floorsTable);
+        GdxMaster.top(floorsTable);
+        floorsTable.setY(floorsTable.getY() - 63);
+        addActor(open);
         addActor(templateChooser = new BlockTemplateChooser());
         addActor(enumChooser = new EnumChooser());
         addActor(floorDialog = new FloorEditDialog());
@@ -98,8 +110,8 @@ public class LE_GuiStage extends GenericGuiStage {
         addActor(cellDataEditor = new CellDataEditor());
         addActor(editTable = new DataTable(2, 50));
 
-        addActor(statusBar=new LE_StatusBar());
-        GuiEventManager.bind(GuiEventType.LE_GUI_TOGGLE , p-> {
+        addActor(statusBar = new LE_StatusBar());
+        GuiEventManager.bind(GuiEventType.LE_GUI_TOGGLE, p -> {
             toggleUiVisible();
         });
     }
@@ -117,18 +129,19 @@ public class LE_GuiStage extends GenericGuiStage {
         addActor(innerTable = new TablePanelX());
 //        innerTable.padTop(30);
         TablePanelX upperTable;
-        innerTable.add(upperTable = new TablePanelX(){
+        innerTable.add(upperTable = new TablePanelX() {
             @Override
             public void layout() {
                 super.layout();
-                buttons.setY(buttons.getY()-20);
-                buttons.setX(buttons.getX()+226);
-                topPanel.setX( 222);
-                topPanel.setY(topPanel.getY()+18);
-                controlPanel.setX(controlPanel.getX()-165);
-                controlPanel.setY(controlPanel.getY()-50);
+                buttons.setY(buttons.getY() - 20);
+                buttons.setX(buttons.getX() + 226);
+                topPanel.setX(222);
+                topPanel.setY(topPanel.getY() + 14);
+                controlPanel.setX(controlPanel.getX() - 165);
+                controlPanel.setY(controlPanel.getY() - 50);
+                treePanel.setY(treePanel.getY() - 50);
             }
-        }).maxHeight(120) ;
+        }).maxHeight(120);
         upperTable.add(topPanel = new TopPanel()).left();
         upperTable.add(buttons).center();
 //        innerTable.row();
@@ -162,24 +175,18 @@ public class LE_GuiStage extends GenericGuiStage {
     @Override
     public void act(float delta) {
         LE_GuiStage.dialogActive = false;
+        GdxMaster.top(open);
+        open.setY(open.getY() - 50);
+        open.setX(1);
+        floorsTable.setX(35);
+
 //        if (treePanel.getUserObject() == null) {
 //           GuiEventManager.trigger(GuiEventType.LE_TREE_RESET, LevelEditor.getCurrent());
 //        }
         statusBar.setY(20);
-        statusBar.setX(GdxMaster.getWidth()/2 -200);
+        statusBar.setX(GdxMaster.getWidth() / 2 - 200);
 //        statusBar.setX(550);
 //        statusBar.setDebug(true);
-        if (!isTableMode()) {
-            topPanel.setY(Gdx.graphics.getHeight() - 50);
-            topPanel.setX(200);
-            GdxMaster.center(palettePanel);
-            palettePanel.setY(800);
-
-            controlPanel.setX(99);
-            controlPanel.setY(Gdx.graphics.getHeight() - controlPanel.getHeight() - 199);
-            treePanel.setX(Gdx.graphics.getWidth() - treePanel.getWidth());
-            treePanel.setY(Gdx.graphics.getHeight() - treePanel.getHeight());
-        }
         super.act(delta);
 
         if (dialog != null) {
@@ -276,10 +283,12 @@ public class LE_GuiStage extends GenericGuiStage {
         dialog = aiEditor;
         return aiEditor;
     }
+
     public EncounterEditDialog getEncounterEditor() {
         dialog = encounterEditor;
         return encounterEditor;
     }
+
     public ModuleDialog getModuleDialog() {
         dialog = moduleEditor;
         return moduleEditor;
@@ -313,6 +322,7 @@ public class LE_GuiStage extends GenericGuiStage {
         dialog = cellDataEditor;
         return cellDataEditor;
     }
+
     public FloorEditDialog getFloorDialog() {
         dialog = floorDialog;
         return floorDialog;
@@ -350,4 +360,7 @@ public class LE_GuiStage extends GenericGuiStage {
     }
 
 
+    public FloorTabs getFloorTabs() {
+        return tabs;
+    }
 }

@@ -9,7 +9,6 @@ import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.content.ContentGenerator;
 import eidolons.system.content.PlaceholderGenerator;
 import eidolons.system.file.ResourceMaster;
-import eidolons.system.utils.JsonToType;
 import eidolons.system.utils.XmlCleaner;
 import main.AV_DataManager;
 import main.content.ContentValsManager;
@@ -125,6 +124,7 @@ public class ArcaneVault {
     public static void main(String[] args) {
         CoreEngine.setSwingOn(true);
         CoreEngine.setArcaneVault(true);
+        CoreEngine.setGraphicsOff(true);
         new MuseCore().init();
 
         if (args.length > 0) {
@@ -216,15 +216,15 @@ public class ArcaneVault {
 
         initialize();
 
-        if (types.contains("encounters")) {
-//            String input = DialogMaster.inputText("Input 'json' (baseType = name:val;... || baseType2 = ...)");
-            String base = DialogMaster.inputText("base Type name");
-//            JsonToType.convert(input, DC_TYPE.ENCOUNTERS);
-            if (!StringMaster.isEmpty(base)) {
-                JsonToType.convertAlt(base, FileManager.readFile
-                        (PathFinder.getTYPES_PATH() + "sources/encounters.txt"), DC_TYPE.ENCOUNTERS);
-            }
-        }
+//        if (types.contains("encounters")) {
+////            String input = DialogMaster.inputText("Input 'json' (baseType = name:val;... || baseType2 = ...)");
+//            String base = DialogMaster.inputText("base Type name");
+////            JsonToType.convert(input, DC_TYPE.ENCOUNTERS);
+//            if (!StringMaster.isEmpty(base)) {
+//                JsonToType.convertAlt(base, FileManager.readFile
+//                        (PathFinder.getTYPES_PATH() + "sources/encounters.txt"), DC_TYPE.ENCOUNTERS);
+//            }
+//        }
 
         if (macroMode) {
             ContentGenerator.generatePlaces();

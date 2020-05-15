@@ -78,6 +78,18 @@ public class GridCell extends Group implements Borderable {
         return backTexture;
     }
 
+    public void setVoid(boolean VOID, boolean animated) {
+        if (animated) {
+            if (VOID) {
+                ActionMaster.addFadeOutAction(backImage, 0.5f, false);
+            } else {
+                ActionMaster.addFadeInAction(backImage, 0.5f);
+            }
+        } else {
+            backImage.setVisible(!VOID);
+        }
+    }
+
     public GridCell init() {
         backImage = new Image(backTexture);
         backImage.setFillParent(true);
@@ -88,10 +100,10 @@ public class GridCell extends Group implements Borderable {
 
         cordsText = new Label(getGridX() + ":" + getGridY(),
                 StyleHolder.getDebugLabelStyleLarge());
-        TablePanelX<Actor> cordsTextTable = new TablePanelX<>(50,30);
+        TablePanelX<Actor> cordsTextTable = new TablePanelX<>(50, 30);
         cordsTextTable.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
         cordsTextTable.add(cordsText).center();
-        addActor( cordsTextTable);
+        addActor(cordsTextTable);
         cordsTextTable.setTouchable(Touchable.disabled);
         cordsText.setTouchable(Touchable.disabled);
         cordsTextTable.setPosition(getWidth() / 2 - cordsText.getWidth() / 2,

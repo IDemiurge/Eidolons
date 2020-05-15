@@ -24,6 +24,12 @@ public class GuiEventManager {
         GuiEventManager.vertx = vertx;
     }
 
+   static GenericGuiEventManager manager;
+
+    public static void setManager(GenericGuiEventManager manager) {
+        GuiEventManager.manager = manager;
+    }
+
     public static void bind(EventType type, final EventCallback event) {
         bind(false, type, event);
     }
@@ -32,12 +38,12 @@ public class GuiEventManager {
         if (CoreEngine.isGraphicsOff())
             return;
         if (removePreviousBind)
-            GuiEventManagerImpl.removeBind(type);
-        GuiEventManagerImpl.bind(type, event);
+            manager.removeBind(type);
+        manager.bind(type, event);
     }
 
     public static void cleanUp() {
-        GuiEventManagerImpl.cleanUp();
+        manager.cleanUp();
 
     }
 
@@ -74,11 +80,11 @@ public class GuiEventManager {
         if (CoreEngine.isGraphicsOff())
             return;
 
-        GuiEventManagerImpl.trigger(type, obj);
+        manager.trigger(type, obj);
     }
 
     public static void processEvents() {
-        GuiEventManagerImpl.processEvents();
+        manager.processEvents();
     }
 
     public static boolean checkEventIsGuiHandled(Event event) {

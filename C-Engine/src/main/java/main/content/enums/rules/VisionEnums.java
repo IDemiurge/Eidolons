@@ -12,18 +12,6 @@ import java.awt.*;
  */
 public class VisionEnums {
 
-    public enum IDENTIFICATION_LEVEL {
-
-        SHAPE, // size and 'shape' (monster, humanoid, strange shape, animal,
-        // avian...)
-        TYPE, // classifications
-        GROUP, // lesser demon, ++ race
-        UNIT, DETAILED, // special for rangers? All value pages available... Can
-        // be a
-        // spell too!
-        ;
-    }
-
     public enum INFO_LEVEL {
         MINIMAL,
         BASIC,
@@ -141,30 +129,34 @@ public class VisionEnums {
         // what is the default? is this linked to Perception?
         // DETECTED vs KNOWN
         // IN_SIGHT vs BEYOND_SIGHT
-        private int illuminationBarrier;
 
         VISIBILITY_LEVEL() {
 
         }
-        // VISIBILITY_LEVEL(int illuminationBarrier) {
-        // this.setIlluminationBarrier(illuminationBarrier);
-        // }
-        //
-        // public int getIlluminationBarrier() {
-        // return illuminationBarrier;
-        // }
-        //
-        // public void setIlluminationBarrier(int illuminationBarrier) {
-        // this.illuminationBarrier = illuminationBarrier;
-        // }
     }
 
-    public enum VISIBILITY_STATUS {
-        CONCEALED_KNOWN, CONCEALED_UNKNOWN, INVISIBLE,
-
-    }
 
     public enum VISION_MODE {
         NORMAL_VISION, X_RAY_VISION, TRUE_SIGHT, WARP_SIGHT, INFRARED_VISION
+    }
+
+    public enum PLAYER_STATUS {
+        EXPLORATION_UNDETECTED,
+        EXPLORATION_DETECTED,
+        ALERTED,
+        COMBAT,
+        SHADOW,
+        DEAD //GHOST!
+    }
+
+    public enum ENGAGEMENT_LEVEL {
+
+        UNSUSPECTING, // will use its behavior and rest actions
+        SUSPECTING, // will not Rest or otherwise let down their guard
+        ALARMED // will search, ambush or stalk
+        ,
+        ENGAGED, // will engage and make combat-actions
+        STALKING, //has visual on hero while unseen and seeks to attack
+        AMBUSH, // ... remains still until can attack or close enough
     }
 }

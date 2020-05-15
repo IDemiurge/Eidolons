@@ -277,7 +277,7 @@ public class LevelStructure {
             }
         },
 
-        ;
+        module_grid;
         private EDIT_VALUE_TYPE type;
 
         FLOOR_VALUES() {
@@ -411,10 +411,21 @@ public class LevelStructure {
 
     public enum BORDER_TYPE {
         wall,
-        chism,
-        irregular,
-        wall_and_chism, wall_alt,
+        wall_alt,
+        wall_chism,
+        chism(true),
+        irregular(true), irregular_void(true), irregular_plain(true),
+        ;
         //obj type name for custom
+
+        BORDER_TYPE() {
+        }
+
+        BORDER_TYPE(boolean chance) {
+            this.chance = chance;
+        }
+
+        public boolean chance;
     }
 
     public enum QUEST_DUNGEON_VALUES {

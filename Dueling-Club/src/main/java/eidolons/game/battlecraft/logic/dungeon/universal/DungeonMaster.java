@@ -346,4 +346,8 @@ public abstract class DungeonMaster {
     public boolean isModuleSizeBased() {
         return true;
     }
+
+    public void reinit() {
+        getBuilder().initLocationSize(getFloorWrapper());
+    }
 }

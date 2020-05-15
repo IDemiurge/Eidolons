@@ -8,6 +8,7 @@ import eidolons.content.PROPS;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.content.*;
 import main.content.enums.GenericEnums;
+import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.SkillEnums.ATTRIBUTE;
 import main.content.enums.entity.SpellEnums.SPELL_GROUP;
@@ -96,8 +97,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
     };
     public static final String[] VAR_MULTI_ENUM_LIST_IDS = {
             PROPS.FILLER_TYPES.name(),
-            PROPS.OVERLAY_SPRITES.name(),
-            PROPS.UNDERLAY_SPRITES.name(),
+
             PROPS.CONTAINER_CONTENT_VALUE.name(),
             PROPS.CONTAINER_CONTENTS.name(),
             G_PROPS.PRINCIPLES.name(),
@@ -107,8 +107,17 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             PROPS.ROLL_TYPES_TO_DISPEL_EACH_TURN.getName(), PROPS.ROLL_TYPES_TO_SAVE.getName(),
 
     };
-    public static final Class<?>[] VAR_ENUM_CLASS_LIST = {SPECIAL_REQUIREMENTS.class
+    public static final Class<?>[] VAR_ENUM_CLASS_LIST = {
+            SPECIAL_REQUIREMENTS.class
 
+    };
+    public static final Object[][] VAR_MULTI_ENUM_PAIRS = {
+            { PROPS.OVERLAY_SPRITES.name(), BfObjEnums.SPRITES.class},
+            { PROPS.UNDERLAY_SPRITES.name(), BfObjEnums.SPRITES.class},
+            { PROPS.TEXTURES_OVERLAY.name(), BfObjEnums.TEXTURES.class},
+            { PROPS.TEXTURES_UNDERLAY.name(), BfObjEnums.TEXTURES.class},
+            { PROPS.CUSTOM_OBJECT.name(), BfObjEnums.CUSTOM_OBJECT.class},
+            { PROPS.VFX.name(), BfObjEnums.BF_VFX.class},
     };
     public static final String[] SINGLE_ENUM_LIST_IDS = {
 //     PROPS.CUSTOM_OBJECT.name(),
@@ -364,6 +373,14 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             }
             editorMap.put(id, listEditor);
             i++;
+        }
+
+        for (Object[] pair : VAR_MULTI_ENUM_PAIRS) {
+            ListEditor listEditor = new ListEditor(SELECTION_MODE.MULTIPLE, true);
+            Object o = pair[1];
+            listEditor.setEnumClass((Class<?>) o);
+                listEditor.setVarTypesClass((Class<?>) o);
+            editorMap.put(pair[0].toString(), listEditor);
         }
 
         i = 0;

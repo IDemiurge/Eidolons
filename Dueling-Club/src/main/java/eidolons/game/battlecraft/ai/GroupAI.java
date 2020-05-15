@@ -1,10 +1,11 @@
 package eidolons.game.battlecraft.ai;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.battlecraft.ai.explore.Patrol;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
+import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.ENGAGEMENT_LEVEL;
 import main.data.XStack;
 import main.entity.obj.MicroObj;
 import main.game.bf.Coordinates;
@@ -172,7 +173,7 @@ public class GroupAI {
 
     public ENGAGEMENT_LEVEL getEngagementLevel() {
         if (engagementLevel == null) {
-            engagementLevel = ENGAGEMENT_LEVEL.UNSUSPECTING;
+            engagementLevel = VisionEnums.ENGAGEMENT_LEVEL.UNSUSPECTING;
         }
         return engagementLevel;
     }

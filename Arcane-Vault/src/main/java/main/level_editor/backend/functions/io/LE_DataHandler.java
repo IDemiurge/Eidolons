@@ -10,7 +10,6 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.netherflame.dungeons.model.assembly.ModuleGridMapper;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.gui.utils.FileChooserX;
 import eidolons.libgdx.utils.GdxDialogMaster;
 import eidolons.system.text.NameMaster;
 import main.data.filesys.PathFinder;
@@ -21,8 +20,8 @@ import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.structure.FloorManager;
 import main.level_editor.backend.struct.campaign.Campaign;
 import main.level_editor.backend.struct.level.LE_Floor;
-import main.level_editor.gui.screen.LE_Screen;
 import main.system.PathUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.util.Calendar;
@@ -31,6 +30,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class LE_DataHandler extends LE_Handler {
+    public static final String PREFIX_CRAWL = "crawl/";
+    public static final String PREFIX_TEMPLATE = "templates/";
     private Campaign campaign;
     private Timer timer;
     private boolean dirty;
@@ -48,7 +49,11 @@ public class LE_DataHandler extends LE_Handler {
             public void run() {
                 if (isDirty())
                     if (isAutosave()) {
-                        autosave();
+                        try {
+                            autosave();
+                        } catch (Exception e) {
+                            main.system.ExceptionMaster.printStackTrace(e);
+                        }
                     }
             }
         };
@@ -89,7 +94,6 @@ public class LE_DataHandler extends LE_Handler {
     public void saveFloor() {
         String path = getDefaultSavePathFull(getFloorWrapper(), "crawl");
         saveAs(path);
-        setDirty(false);
 //        try {
 //            saveModulesSeparately();
 //        } catch (Exception e) {
@@ -204,7 +208,11 @@ public class LE_DataHandler extends LE_Handler {
         String path = getDefaultSavePath(getFloorWrapper());
         String name = FileManager.getFileNameAndFormat(path);
         String newName = NameMaster.getUniqueVersionedFileName(name, path);
-        saveAs(PathFinder.getDungeonLevelFolder() + PathUtils.cropLastPathSegment(path) + "/" + newName);
+        saveAs(PathUtils.cropLastPathSegment(path) + "/" + newName);
+
+        getFloorWrapper().setName(StringMaster.cropFormat(newName));
+//        getFloorWrapper().getData().apply();
+        getStructureHandler().updateTree();
     }
 
     public void saveAs() {
@@ -212,23 +220,29 @@ public class LE_DataHandler extends LE_Handler {
         if (path == null) {
             return;
         }
-        saveAs(PathFinder.getDungeonLevelFolder() + path);
+        saveAs(path);
 
+        boolean rename = EUtils.waitConfirm("Rename?");
+        if (rename) {
+            String name = StringMaster.getNameFromPath(path);
+            getFloorWrapper().setName(name);
+        }
     }
 
     public void saveAs(String path) {
         doPresave();
         String contents = getXmlMaster().toXml(getFloorWrapper());
-        FileManager.write(contents, path);
+        FileManager.write(contents, PathFinder.getDungeonLevelFolder() + path);
         EUtils.showInfoText("Saved as " + PathUtils.getLastPathSegment(path));
 
         for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
             handler.saved();
         }
+        setDirty(false);
     }
 
     private String getBackupPath(Location location) {
-        return getDefaultSavePathFull(location, "backup");
+        return "backup/" + getDefaultSavePath(location);
     }
 
     public String getDefaultSavePath(Location location, String prefix) {
@@ -240,7 +254,7 @@ public class LE_DataHandler extends LE_Handler {
     }
 
     public String getDefaultSavePathFull(Location location, String prefix) {
-        return PathFinder.getDungeonLevelFolder() + getDefaultSavePath(location, prefix);
+        return getDefaultSavePath(location, prefix);
     }
 
     public String getDefaultSavePath(Location floor) {
@@ -249,7 +263,7 @@ public class LE_DataHandler extends LE_Handler {
             if (LevelEditor.TEST_MODE) {
                 prefix = "test/";
             } else {
-                prefix = "crawl/";
+                prefix = PREFIX_CRAWL;
 //                prefix += floor.getGame().getDungeon().getGroup() + "/";
             }
         } else {
@@ -279,9 +293,6 @@ public class LE_DataHandler extends LE_Handler {
     }
 
     public void openFloor() {
-        String file = FileChooserX.chooseFile(PathFinder.getDungeonLevelFolder(),
-                "xml", LE_Screen.getInstance().getGuiStage());
-
         FloorManager.addFloor();
     }
 

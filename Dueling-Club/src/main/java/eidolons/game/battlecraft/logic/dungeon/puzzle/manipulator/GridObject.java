@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.generator.model.AbstractCoordinates;
-import eidolons.game.netherflame.igg.pale.PaleAspect;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.gui.generic.GroupWithEmitters;
@@ -58,16 +57,8 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
     protected abstract double getDefaultVisionRange();
 
     public boolean checkVisible() {
-//        if (CoreEngine.isIDE()) {
-//            if (CoreEngine.isLiteLaunch())
-//                return true;
+//        if (isClearshotRequired()) {
 //        }
-        if (isClearshotRequired()) {
-
-        }
-        if (PaleAspect.ON) {
-            return true;
-        }
         if (CoreEngine.isLevelEditor())
             return true;
         return !(Eidolons.getGame().getManager().getMainHeroCoordinates().dst_(c) > visionRange);
@@ -97,10 +88,7 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         }
         emitters.put(emitter, new Vector2(offsetX, offsetY));
         addActor(emitter);
-//        emitter.start();
-//        emitter.setZIndex(1);
         emitter.setPosition(getWidth() / 2 + offsetX, getHeight() / 2 + offsetY);
-
     }
 
     protected void init() {

@@ -19,6 +19,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.netherflame.igg.IGG_MetaMaster;
 import eidolons.game.netherflame.igg.story.brief.IggBriefScreenOld;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.GuiEventManagerImpl;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveScreen;
 import eidolons.libgdx.launch.report.CrashManager;
@@ -77,6 +78,7 @@ public abstract class GenericLauncher extends Game {
 
     @Override
     public void create() {
+        GuiEventManager.setManager(new GuiEventManagerImpl());
         instance = this;
         GdxMaster.setLoadingCursor();
         MusicMaster.preload(MUSIC_SCOPE.MENU);

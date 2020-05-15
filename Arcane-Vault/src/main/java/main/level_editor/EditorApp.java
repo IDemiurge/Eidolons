@@ -33,11 +33,16 @@ public class EditorApp extends GenericLauncher {
             case EDITOR:
                 Supplier<ScreenWithLoader> fac = LE_Screen.getScreen((LE_Floor) newMeta.getParameter());
 
-                fac.get().initLoadingStage(newMeta);
-                fac.get().setViewPort(viewport);
+                ScreenWithLoader screen = fac.get();
+                screen.initLoadingStage(newMeta);
+                screen.setViewPort(viewport);
                 ScreenMaster.screenSet(newMeta.getType());
-                fac.get().setData(newMeta);
-                setScreen(fac.get());
+                setScreen(screen);
+                screen.setData(newMeta);
+
+                screen.updateInputController();
+                Eidolons.onNonGdxThread(() -> Eidolons.game.getMetaMaster().getDungeonMaster().reinit());
+//                GuiEventManager.trigger(GuiEventType.LE_TREE_RESET, LevelEditor.getModel());
                 //                switchScreen(LE_Screen.getScreen((Floor) newMeta.getParameter()), newMeta);
                 break;
         }

@@ -3,13 +3,17 @@ package main.level_editor.backend.sim.impl;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.netherflame.dungeons.model.assembly.ModuleGridMapper;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.StringMaster;
 
 import java.awt.*;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -36,12 +40,12 @@ public class LE_FloorLoader extends FloorLoader {
     @Override
     public void addMainEntrance(Location location, String text, boolean exit) {
         Integer id = Integer.valueOf(text);
-        LevelEditor.getManager().getTransitHandler().addMain(id,       exit );
+        LevelEditor.getManager().getTransitHandler().addMain(id, exit);
     }
 
     @Override
-    protected void processTransitPair(Integer id, Coordinates c, Location location ) {
-        LevelEditor.getManager().getTransitHandler().addTransit(id,       c );
+    protected void processTransitPair(Integer id, Coordinates c, Location location) {
+        LevelEditor.getManager().getTransitHandler().addTransit(id, c);
     }
 
     @Override
@@ -67,18 +71,41 @@ public class LE_FloorLoader extends FloorLoader {
         }
 
 
-        LinkedHashMap<Point, Module> grid = new ModuleGridMapper().getOptimalGrid(modules);
+        LinkedHashMap<Point, Module> grid = null;
+        String s = location.getData().getValue(LevelStructure.FLOOR_VALUES.module_grid);
+        if (!s.isEmpty()) {
+            grid = gridFromString(s, modules);
+        }
 
-        location.setInitialEdit(true);
-        int w = ModuleGridMapper.maxWidth;
-        int h = ModuleGridMapper.maxHeight;
-        location.setWidth(w);
-        location.setHeight(h);
-        log(1,location+ " w = " + w );
-        log(1,location+ " h = " + h );
-        getBuilder().initLocationSize( location);
+        if (grid == null) {
+            grid = new ModuleGridMapper().getOptimalGrid(modules);
+
+            location.setInitialEdit(true);
+            int w = ModuleGridMapper.maxWidth;
+            int h = ModuleGridMapper.maxHeight;
+            location.setWidth(w);
+            location.setHeight(h);
+            log(1, location + " w = " + w);
+            log(1, location + " h = " + h);
+        } else {
+            int w =   location.getData().getIntValue(LevelStructure.FLOOR_VALUES.width);
+            int h =   location.getData().getIntValue(LevelStructure.FLOOR_VALUES.height);
+            location.setWidth(w);
+            location.setHeight(h);
+            log(1, location + " w = " + w);
+            log(1, location + " h = " + h);
+        }
+        getBuilder().initLocationSize(location);
         LevelEditor.getManager().getModuleHandler().setGrid(grid);
+    }
 
-
+    private LinkedHashMap<Point, Module> gridFromString(String s, Set<Module> modules) {
+        LinkedHashMap<Point, Module> map = new LinkedHashMap<>();
+        Iterator<Module> iterator = modules.iterator();
+        for (String substring : ContainerUtils.openContainer(s, StringMaster.AND_SEPARATOR)) {
+            Coordinates c = new Coordinates(substring);
+            map.put(new Point(c.x, c.y), iterator.next());
+        }
+        return map;
     }
 }

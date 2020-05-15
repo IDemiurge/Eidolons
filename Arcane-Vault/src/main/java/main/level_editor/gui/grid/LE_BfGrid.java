@@ -32,6 +32,10 @@ public class LE_BfGrid extends GridPanel {
 
     }
 
+    @Override
+    public void setVoid(int x, int y, boolean animated) {
+        super.setVoid(x, y, true); //can't have visible==false
+    }
 
     @Override
     protected boolean isShadowMapOn() {
@@ -64,6 +68,13 @@ public class LE_BfGrid extends GridPanel {
         //for others too?
 
         initModuleGrid();
+
+        //visual split
+//        for (int x = 0; x <  getWidth(); x++) {
+//            for (int y = 0; y < getHeight(); y++) {
+//                checkAddBorder(x, y);
+//            }
+//        }
     }
 
     @Override

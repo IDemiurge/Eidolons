@@ -128,7 +128,8 @@ public class WaitMaster {
         }
 
         Object result = waiter.startWaiting(maxTime == 0 ? null : (long) maxTime);
-        LogMaster.log(LogMaster.WAIT_DEBUG, "INPUT RETURNED: " + result);
+        LogMaster.log(LogMaster.WAIT_DEBUG, "INPUT RETURNED: " + result
+        +" for " + operation);
         waiters.remove(operation);
         return result;
     }

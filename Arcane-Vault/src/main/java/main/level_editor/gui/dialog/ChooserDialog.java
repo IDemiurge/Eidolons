@@ -76,7 +76,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
 
     protected abstract T1 createElement_(T datum);
 
-    protected void cancel() {
+    public void cancel() {
         chosen(null);
         close();
     }
@@ -151,6 +151,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
     @Override
     public void act(float delta) {
         super.act(delta);
-        LE_GuiStage.dialogActive = true;
+        if (isVisible())
+            LE_GuiStage.dialogActive = true;
     }
 }

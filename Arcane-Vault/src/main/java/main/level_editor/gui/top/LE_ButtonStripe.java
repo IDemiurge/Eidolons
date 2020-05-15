@@ -17,6 +17,7 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
     SmartButton brushes;
     SmartButton viewModes;
     SmartButton save;
+    SmartButton saveV;
 
     SmartButton undo;
 
@@ -31,13 +32,18 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
             public void layout() {
                 super.layout();
                 save.setY(save.getY()+20);
+//                saveV.setY(saveV.getY()+20);
             }
         };
         container.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
         addActor(container);
         container.add(
                 save = new SmartButton(ButtonStyled.STD_BUTTON.REPAIR, () ->
-                Eidolons.onGdxThread(() -> LevelEditor.getCurrent().getManager().getDataHandler().saveFloor()))).top();
+                        Eidolons.onNonGdxThread(() -> LevelEditor.getCurrent().getManager().getDataHandler().saveFloor()))).top();
+        container.add(
+                saveV = new SmartButton(ButtonStyled.STD_BUTTON.CHEST, () ->
+                        Eidolons.onGdxThread(() -> LevelEditor.getCurrent().getManager().
+                                getDataHandler().saveVersion()))).top();
 //        addActor(new TablePanelX<>(40, getHeight()));
         addActor(controlPanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_CTRL, null));
         addActor(palettePanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_PALETTE, null));
@@ -46,7 +52,6 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
         addActor(brushes = new SmartButton(ButtonStyled.STD_BUTTON.LE_BRUSH, ()->{
             boolean b = LevelEditor.getModel().isBrushMode();
             LevelEditor.getModel().setBrushMode(!b);
-            brushes.setChecked(b);
 //            if (getStage() instanceof LE_GuiStage) {
 //                ((LE_GuiStage) getStage()).toggleUiVisible();
 //            }
@@ -54,6 +59,13 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
         addActor(viewModes = new SmartButton(ButtonStyled.STD_BUTTON.LE_VIEWS, ()-> {
             LevelEditor.getModel().getDisplayMode().toggleAll();
         }));
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+        brushes.setChecked(LevelEditor.getModel().isBrushMode());
     }
 
     public SmartButton getControlPanel() {

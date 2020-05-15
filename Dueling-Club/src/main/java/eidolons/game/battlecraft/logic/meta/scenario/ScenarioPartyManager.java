@@ -8,7 +8,6 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.party.Party;
-import eidolons.game.netherflame.igg.CustomLaunch;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -155,39 +154,6 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     @Override
     protected String chooseHero(List<String> members) {
         //Sabina lvl 5;Keira Fawl lvl 5;Gnauri Viragost v4;Harlen Rolwain v2;Sir Gelrion;Gwynn lvl 5; Gorr Eddar lvl 5;Grimbart lvl 5;
-        if (MainLauncher.getCustomLaunch() != null) {
-            switch (MainLauncher.getCustomLaunch().getValue(CustomLaunch.CustomLaunchValue.xml_path)) {
-                case "ready/ship.xml":
-                case "ready/ravenguard sanctum.xml":
-                case "crawl/Guild Dungeon.xml":
-                    return
-                            "Sabina lvl 5";
-
-                case "ready/graveyard.xml":
-                    return "Sir Gelrion";
-                case "ready/wood.xml":
-                    return "Grimbart lvl 5;";
-
-                case "ready/mix.xml":
-                    return "Raina Ardren lvl 5";
-                case "ready/dark castle.xml":
-                    return "Gnauri Viragost v4";
-                case "ready/the fortress.xml":
-                    return "Keira Fawl lvl 5";
-
-                case "crawl/cavern.xml":
-                case "crawl/hell.xml":
-                case "crawl/Underdark.xml":
-                    return "Gwynn lvl 5";
-
-                case "crawl/Ancient Ruins.xml":
-                case "crawl/Ravenguard Dungeon.xml":
-                    return "Harlen Rolwain v2";
-
-                case "crawl/Dwarven Halls.xml":
-                    return "Gorr Eddar lvl 5";
-            }
-        }
         if (EidolonsGame.FOOTAGE) {
             if (MainLauncher.HERO_INDEX >= 0) {
                 return members.get(MainLauncher.HERO_INDEX);

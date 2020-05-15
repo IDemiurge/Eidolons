@@ -262,11 +262,11 @@ public abstract class SelectionPanel extends TablePanelX {
         }
         if (isAutoDoneEnabled())
             if (listPanel.getCurrentItem() == null) {
-                if (!MainLauncher.presetNumbers.isEmpty()) {
-                    listPanel.select(MainLauncher.presetNumbers.pop());
-                } else if (isRandom()) {
+                 if (isRandom()) {
                     listPanel.selectRandomItem();
-                } else
+                } else if (!MainLauncher.presetNumbers.isEmpty()) {
+                     listPanel.select(MainLauncher.presetNumbers.pop());
+                 } else
                     return;
             }
         done();
@@ -284,7 +284,7 @@ public abstract class SelectionPanel extends TablePanelX {
     }
 
     protected boolean isRandom() {
-        return true;
+        return false;
     }
 
     public void close() {

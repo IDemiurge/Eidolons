@@ -17,11 +17,13 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XmlNodeMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LOG_CHANNEL;
 
@@ -71,11 +73,17 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         int offsetY = 0;
         for (int i = 1; i <= p.x; i++) {
             Module relativeTo = moduleGrid.get(new Point(p.x - i, p.y));
+            if (relativeTo == null) {
+                continue;
+            }
             int w = relativeTo.getEffectiveWidth(true);
             offsetX += w;
         }
         for (int i = 1; i <= p.y; i++) {
             Module relativeTo = moduleGrid.get(new Point(p.x, p.y - i));
+            if (relativeTo == null) {
+                continue;
+            }
             int h = relativeTo.getEffectiveHeight(true);
             offsetY += h;
         }
@@ -100,8 +108,13 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
             getObjHandler().removeIgnoreWrap(borderObject);
         }
         borderObjects.clear();
+        Set<Coordinates> toVoid = new LinkedHashSet<>();
         for (Module module : getModules()) {
             List<Coordinates> borderCoords = getBorderCoordinates(module, false);
+            Coordinates down = CoordinatesMaster.getFarmostCoordinateInDirection(DIRECTION.DOWN, borderCoords);
+            Coordinates up = CoordinatesMaster.getFarmostCoordinateInDirection(DIRECTION.UP, borderCoords);
+            Coordinates right = CoordinatesMaster.getFarmostCoordinateInDirection(DIRECTION.RIGHT, borderCoords);
+            Coordinates left = CoordinatesMaster.getFarmostCoordinateInDirection(DIRECTION.LEFT, borderCoords);
 
             ObjType objType = null;
             BORDER_TYPE type = new EnumMaster<BORDER_TYPE>().retrieveEnumConst(BORDER_TYPE.class,
@@ -110,7 +123,7 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
                 objType = DataManager.getType(module.getData().getValue(MODULE_VALUE.border_type)
                         , DC_TYPE.BF_OBJ);
                 if (objType == null) {
-                    type = BORDER_TYPE.wall;
+                    type = BORDER_TYPE.chism;
                 }
             }
             if (objType == null) {
@@ -119,32 +132,67 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
                     case wall_alt:
                         objTypeName = PlaceholderGenerator.getPlaceholderName(GeneratorEnums.ROOM_CELL.ALT_WALL) + " Indestructible";
                         break;
-                    case wall:
+                    default:
                         objTypeName = PlaceholderGenerator.getPlaceholderName(GeneratorEnums.ROOM_CELL.WALL) + " Indestructible";
-                        break;
-                    case chism:
-                        break;
-                    case irregular:
-                        break;
-                    case wall_and_chism:
                         break;
                 }
                 if (objTypeName != null) {
-                    objType = DataManager.getType(objTypeName
-                            , DC_TYPE.BF_OBJ);
-                } else
-                    //TODO add void
-                    continue;
+                    objType = DataManager.getType(objTypeName, DC_TYPE.BF_OBJ);
+                }
             }
 
             log(LOG_CHANNEL.BUILDING, module.getName() + " borders being reset " + borderCoords.size());
+            int chance = 30;
             for (Coordinates borderCoord : borderCoords) {
+
+                if (type == BORDER_TYPE.wall_chism || type == BORDER_TYPE.chism) {
+                    //check NOT outer
+                    if (borderCoord.x != right.x &&
+                            borderCoord.x != left.x &&
+                            borderCoord.y != down.x &&
+                            borderCoord.y != up.x) {
+                        toVoid.add(borderCoord);
+                        continue;
+                    }
+                    if (type == BORDER_TYPE.chism) {
+                        //chance
+
+                    }
+                }
+                if (type.chance) {
+                    if (RandomWizard.chance(chance)) {
+
+                        if (type == BORDER_TYPE.irregular_void) {
+                            toVoid.add(borderCoord);
+                        } else
+                        if (type == BORDER_TYPE.irregular_plain || type == BORDER_TYPE.chism) {
+                            continue;
+                        } else
+                        if (RandomWizard.chance(chance)) {
+                            toVoid.add(borderCoord); //mixed
+                        }
+                        continue;
+                    }
+
+                    chance += 10;
+                    if (chance >= 100) {
+                        chance = 30;
+                    }
+                }
+
+                if (type == BORDER_TYPE.irregular_void) {
+                    continue;
+                }
                 BattleFieldObject obj = getObjHandler().addObjIgnoreWrap(objType, borderCoord.x, borderCoord.y);
                 obj.setModuleBorder(true);
                 borderObjects.add(obj);
                 //TODO set border flag to remove when resetting.. or put into a map
             }
+            if (!toVoid.isEmpty()) {
+                module.getVoidCells().addAll(toVoid);
+            }
         }
+
     }
 
     @Override
@@ -170,8 +218,8 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         int h = module.getHeight() + borderH * 2;
         int w = module.getWidth() + borderW * 2;
 
-        int bufferW = module.getWidthBuffer() - 1;
-        int bufferH = module.getHeightBuffer() - 1;
+        int bufferW = module.getWidthBuffer()  ;
+        int bufferH = module.getHeightBuffer()  ;
         if (buffer) {
             borderW += bufferW;
             borderH += bufferH;

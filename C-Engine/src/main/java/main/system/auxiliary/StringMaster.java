@@ -131,6 +131,12 @@ public class StringMaster {
     }
 
     public static boolean contains(String string, String string2, boolean ignoreCase, boolean strict) {
+        if (string.isEmpty()) {
+            return false;
+        }
+        if (string2.isEmpty()) {
+            return false;
+        }
         if (ignoreCase) {
             string = string.toUpperCase();
             string2 = string2.toUpperCase();
@@ -1205,6 +1211,10 @@ public class StringMaster {
             return "";
         }
         return typeName.substring(index, index2+1);
+    }
+
+    public static String getNameFromPath(String path) {
+        return cropFormat(PathUtils.getLastPathSegment(path));
     }
 
 

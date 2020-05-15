@@ -42,7 +42,8 @@ public class FontMaster {
 
     public static Font getFont(FONT f, float size, int style) {
         if (CoreEngine.isGraphicsOff())
-            return null;
+            if (!CoreEngine.isArcaneVault())
+                return null;
 
         if (style == 0) {
             style = Font.PLAIN;

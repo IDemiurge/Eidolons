@@ -24,6 +24,12 @@ public class HeroSelectionPanel extends SelectionPanel {
         this.dataSupplier = dataSupplier;
         init();
     }
+
+    @Override
+    protected boolean isRandom() {
+        return true;
+    }
+
     protected String getDoneText() {
         return "Ready";
     }

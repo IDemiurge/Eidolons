@@ -3,10 +3,12 @@ package main.level_editor.gui.stage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import eidolons.game.core.EUtils;
+import eidolons.libgdx.GdxMaster;
 import eidolons.system.controls.GlobalController;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
+import main.level_editor.backend.handlers.structure.FloorManager;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -55,7 +57,11 @@ public class LE_KeyHandler extends LE_Handler {
                 return ;
             case Input.Keys.ESCAPE:
                 //do we have a 'main menu'?
-                getSelectionHandler().deselect();
+                if (GdxMaster.isVisibleEffectively(LE_Screen.getInstance().getGuiStage().getDialog())
+                ) {
+                     LE_Screen.getInstance().getGuiStage().getDialog().cancel();
+                } else
+                    getSelectionHandler().deselect();
                 return ;
             case Input.Keys.ENTER:
                 LE_Screen.getInstance().getGuiStage().getDialog().ok();
@@ -99,6 +105,16 @@ public class LE_KeyHandler extends LE_Handler {
         }
         if (ctrl) {
             switch (keyCode) {
+                case Input.Keys.TAB:
+
+                    boolean shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||
+                            Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
+                    if (shift) {
+                        FloorManager.selectPreviousFloor();
+                    } else {
+                        FloorManager.selectNextFloor();
+                    }
+                    return ;
                 case Input.Keys.Q:
                     LevelEditor.getCurrent().getManager().getAdvFuncs().toggleVoid( );
                     return ;

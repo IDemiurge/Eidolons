@@ -123,8 +123,8 @@ public class AggroMaster extends ExplorationHandler {
                 set.add(unit);
             }
             if (!EidolonsGame.DUEL)
-            if (!unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit))
-                continue;
+                if (!unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit))
+                    continue;
             //TODO these units will instead 'surprise attack' you or stalk
 
             DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.THREAT, unit);
@@ -279,47 +279,11 @@ public class AggroMaster extends ExplorationHandler {
 
     public void checkStatusUpdate() {
         if (checkEngaged()) {
-//            master.getGame().getAiManager().g
-            master.getEngagementHandler().fireEvent(true);
-//  TODO           master.getEngagementHandler().newEncounter();
             master.switchExplorationMode(false);
         } else {
-            master.getEngagementHandler().fireEvent(false);
-            if (checkDanger()) {
-                //?
-            } else {
                 master.switchExplorationMode(true);
-            }
         }
 
-    }
-
-    private boolean checkDanger() {
-        //range? potential vision?
-        //        for (Unit unit : allies) {
-        //            if (master. getGame().getAiManager().getAnalyzer().getClosestEnemyDistance(unit)
-        //                > minDistance)
-        //                return true;
-        //        }
-        return false;
-
-    }
-
-    public enum CRAWL_STATUS {
-        EXPLORE,
-        DANGER, //rounds on? behaviors ?
-        ENGAGED,
-        TIME_RUN
-    }
-
-
-    public enum ENGAGEMENT_LEVEL {
-
-        UNSUSPECTING, // will use its behavior and rest actions
-        SUSPECTING, // will search, ambush or stalk
-        ALARMED // will not Rest or otherwise let down their guard
-        ,
-        AGGRO // will engage and make combat-actions
     }
 
 

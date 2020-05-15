@@ -275,6 +275,9 @@ public class PathFinder {
                 "mini/sprites/";
     }
 
+    public static String getTexturesPath() {
+        return getImagePath() +                 "main/textures/";
+    }
     public static String getSpellSpritesPath() {
         init();
         return

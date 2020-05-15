@@ -93,10 +93,10 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
     @Override
     public void fromBlock() {
-        if (getModel().getBlock() != null) {
-            createPaletteFromObjsOnCoordinates(getModel().getBlock().getCoordinatesSet());
-        }
-        createPaletteFromObjsOnCoordinates(getSelectionHandler().getSelection().getCoordinates());
+        if (getModel().getLastSelectedStruct() != null) {
+            createPaletteFromObjsOnCoordinates(getModel().getLastSelectedStruct().getCoordinatesSet());
+        } else
+            createPaletteFromObjsOnCoordinates(getSelectionHandler().getSelection().getCoordinates());
     }
 
     @Override

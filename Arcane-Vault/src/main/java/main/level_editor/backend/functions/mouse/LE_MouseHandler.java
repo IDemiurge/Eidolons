@@ -13,12 +13,15 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
+import main.level_editor.backend.brush.BrushShape;
 import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class LE_MouseHandler extends LE_Handler {
@@ -50,6 +53,11 @@ public class LE_MouseHandler extends LE_Handler {
     }
 
     private void clickedCell(CLICK_MODE mode, Coordinates c) {
+        if (allowBrushShape(mode)) {
+            if (getModel().getBrush().getShape() != null) {
+                Set<Coordinates> coords = getBrushShapeCoords(c, getModel().getBrush().getShape());
+            }
+        }
         switch (mode) {
             case CTRL_R:
                 getEditHandler().getScriptHandler().editScriptData(c);
@@ -100,6 +108,41 @@ public class LE_MouseHandler extends LE_Handler {
         }
     }
 
+    private boolean allowBrushShape(CLICK_MODE mode) {
+        switch (mode) {
+             case RIGHT:
+               return true;
+        }
+        return false;
+    }
+
+    private Set<Coordinates> getBrushShapeCoords(Coordinates c, BrushShape shape) {
+        Set<Coordinates> set = new LinkedHashSet<>();
+        set.add(c);
+//        CoordinatesMaster.getCoordinatesBetween()
+        switch (shape) {
+            case square_2:
+                set.add(c.getAdjacentCoordinate(DIRECTION.DOWN));
+                set.add(c.getAdjacentCoordinate(DIRECTION.RIGHT));
+                set.add(c.getAdjacentCoordinate(DIRECTION.DOWN_RIGHT));
+                break;
+            case cross:
+                set.add(c.getAdjacentCoordinate(DIRECTION.DOWN));
+                set.add(c.getAdjacentCoordinate(DIRECTION.DOWN, 2));
+                set.add(c.getAdjacentCoordinate(DIRECTION.DOWN_LEFT));
+                set.add(c.getAdjacentCoordinate(DIRECTION.DOWN_RIGHT));
+                break;
+            case diagonal_cross:
+                set.add(c.getAdjacentCoordinate(DIRECTION.DOWN, 2));
+                set.add(c.getAdjacentCoordinate(DIRECTION.RIGHT, 2));
+                set.add(c.getAdjacentCoordinate(DIRECTION.DOWN_RIGHT, 1));
+                set.add(c.getAdjacentCoordinate(DIRECTION.DOWN_RIGHT, 2));
+                break;
+        }
+
+        return set;
+    }
+
     public String getHelpInfo() {
         return "Double Alt-Click: Select type to Palette";
     }
@@ -125,7 +168,7 @@ public class LE_MouseHandler extends LE_Handler {
             copy-paste
              */
                     DIRECTION d = bfObj.getDirection().rotate45(true);
-                     bfObj.setDirection(d);
+                    bfObj.setDirection(d);
                     GuiEventManager.trigger(GuiEventType.MOVE_OVERLAYING, bfObj);
                 }
                 break;
@@ -150,15 +193,19 @@ public class LE_MouseHandler extends LE_Handler {
                         AtomicReference<DIRECTION> d = new AtomicReference<>(LE_Screen.getInstance().getGuiStage().getEnumChooser()
                                 .chooseEnum(DIRECTION.class));
                         if (d.get() == null) {
-                            EUtils.onConfirm("Random or center?", ()-> d.set(FacingMaster.getRandomFacing().getDirection()),
-                                    ()-> {});
+                            EUtils.onConfirm("Random or center?", () -> d.set(FacingMaster.getRandomFacing().getDirection()),
+                                    () -> {
+                                    });
                         }
                         operation(Operation.LE_OPERATION.ADD_OVERLAY, getModel().getPaletteSelection().getObjTypeOverlaying(),
                                 bfObj.getCoordinates(), d.get());
                         break;
                     }
                 }
-                operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
+                if (bfObj.isOverlaying()) {
+                    operation(Operation.LE_OPERATION.REMOVE_OVERLAY, bfObj);
+                } else
+                    operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
                 break;
             case CTRL_SHIFT_R:
                 getEditHandler().getScriptHandler().editScriptData(bfObj.getCoordinates());
