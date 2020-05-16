@@ -7,6 +7,7 @@ import eidolons.system.audio.MusicMaster;
 import main.content.CONTENT_CONSTS;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
+import main.content.enums.system.MetaEnums;
 
 public class LevelStructure {
     public enum EDIT_VALUE_TYPE {
@@ -216,7 +217,12 @@ public class LevelStructure {
 //        default_pillar_type,
 //        default_shard_type,
         //COMMON
-
+        readiness( EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return MetaEnums.FLOOR_STATUS.class;
+            }
+        },
         name(EDIT_VALUE_TYPE.text),
         origin(EDIT_VALUE_TYPE.none),
         width(EDIT_VALUE_TYPE.number),

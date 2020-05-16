@@ -164,7 +164,10 @@ public class MetaEnums {
 
     }
 
-    public enum WORKSPACE_GROUP {
+    public enum FLOOR_STATUS {
+        NEW, OUTLINE, TESTING, POLISH, PUBLIC,
+    }
+        public enum WORKSPACE_GROUP {
         FOCUS, FIX, TEST, IMPLEMENT, DESIGN, POLISH, COMPLETE, EXLCUDED, DEMO, IGG_TODO, IGG_TESTING, IGG_CONTENT, DEMO_READY
     }
 }

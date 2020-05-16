@@ -7,6 +7,10 @@ import main.system.auxiliary.StringMaster;
  */
 public class ActionEnums {
     public enum ACTION_TAGS {
+        STANDARD_ATTACK,
+        POWER_ATTACK,
+        QUICK_ATTACK,
+        SPECIAL_ATTACK,
         FIXED_COST, COMBAT_ONLY,
         FLYING,
         DUAL,

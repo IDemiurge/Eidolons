@@ -4,6 +4,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.advanced.engagement.EngagementHandler;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.HintMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
@@ -327,5 +328,9 @@ public class VisionMaster implements GenericVisionManager {
 
     public void setVisionDebugMode(boolean visionDebugMode) {
         this.visionDebugMode = visionDebugMode;
+    }
+
+    public EngagementHandler getEngagementHandler() {
+        return game.getDungeonMaster().getExplorationMaster().getEngagementHandler();
     }
 }

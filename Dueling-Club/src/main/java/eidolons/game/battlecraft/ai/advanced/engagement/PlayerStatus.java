@@ -8,17 +8,17 @@ public class PlayerStatus {
     String statusText;
     String subText;
 
-    VisionEnums.PLAYER_STATUS status;
+    VisionEnums.PLAYER_STATUS type;
     int arg;
 
     public PlayerStatus(VisionEnums.PLAYER_STATUS status, int arg) {
-        this.status = status;
+        this.type = status;
         this.arg = arg;
         init();
     }
 
     private void init() {
-        switch (status) {
+        switch (type) {
             case EXPLORATION_UNDETECTED:
             case EXPLORATION_DETECTED:
             case ALERTED:
@@ -34,7 +34,7 @@ public class PlayerStatus {
             case DEAD:
                 break;
         }
-        switch (status) {
+        switch (type) {
             case EXPLORATION_UNDETECTED:
                 iconPath= Images.STATUS_EXPLORE;
                 statusText = "Exploration\nStatus:\nUndetected";
@@ -78,5 +78,13 @@ public class PlayerStatus {
 
     public String getSubText() {
         return subText;
+    }
+
+    public VisionEnums.PLAYER_STATUS getType() {
+        return type;
+    }
+
+    public int getArg() {
+        return arg;
     }
 }

@@ -97,10 +97,8 @@ public class GridViewAnimator {
         return null;
     }
 
-
     public void animate(GridObject gridObj, GraphicData data) {
 //data.getType().switch
-
     }
 
     public void animate(BaseView view, VIEW_ANIM value ) {

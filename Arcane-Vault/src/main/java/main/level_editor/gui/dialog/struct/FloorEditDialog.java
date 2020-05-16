@@ -6,6 +6,7 @@ import eidolons.libgdx.GdxImageMaster;
 import eidolons.system.audio.MusicMaster;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
+import main.content.enums.system.MetaEnums;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.functions.io.LE_DataHandler;
 import main.level_editor.gui.components.DataTable;
@@ -37,8 +38,24 @@ public class FloorEditDialog extends DataEditDialog<LevelStructure.FLOOR_VALUES,
         String name = data.getValue("name");
         super.editItem(actor, item);
         if (!name.equalsIgnoreCase(data.getValue("name"))) {
-            data.setValue(LevelStructure.FLOOR_VALUES.filepath, LE_DataHandler.PREFIX_CRAWL + data.getValue("name") + ".xml");
+
+            if (isAppendStatus()) {
+                String readiness = data.getValue(LevelStructure.FLOOR_VALUES.readiness);
+                if ((readiness.isEmpty())) {
+                    readiness = MetaEnums.FLOOR_STATUS.NEW.name();
+                }
+                data.setValue(LevelStructure.FLOOR_VALUES.filepath,
+                        LE_DataHandler.PREFIX_CRAWL + data.getValue("name") + "[" +
+                                readiness + "]" + ".xml");
+                //TODO delete previous versions?
+            } else {
+                data.setValue(LevelStructure.FLOOR_VALUES.filepath, LE_DataHandler.PREFIX_CRAWL + data.getValue("name") + ".xml");
+            }
         }
+    }
+
+    private boolean isAppendStatus() {
+        return true;
     }
 
     @Override
@@ -51,6 +68,7 @@ public class FloorEditDialog extends DataEditDialog<LevelStructure.FLOOR_VALUES,
         String path = FileManager.formatPath(value.toString(), true, true);
         return GdxImageMaster.cropImagePath(path);
     }
+
     @Override
     protected Object getArg(LevelStructure.FLOOR_VALUES enumConst) {
         switch (enumConst) {

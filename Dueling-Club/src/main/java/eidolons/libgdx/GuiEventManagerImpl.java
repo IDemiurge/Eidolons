@@ -42,7 +42,7 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
                 @Override
                 public void call(EventCallbackParam obj) {
                     if (ScreenMaster.getScreen() != getScreen()) {
-//                        main.system.auxiliary.log.LogMaster.log(1,type+"Screen check failed " +screen);
+                        //                        main.system.auxiliary.log.LogMaster.log(1,type+"Screen check failed " +screen);
                         return;
                     }
                     event.call(obj);
@@ -56,6 +56,7 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
             getInstance().bind_(type, checked);
         } else
             getInstance().bind_(type, event);
+
     }
 
     public void removeBind(EventType type) {
@@ -104,11 +105,11 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
     }
 
     private void _cleanUp() {
-//        try {
-//            condition.await();
-//        } catch (InterruptedException e) {
-//            main.system.ExceptionMaster.printStackTrace(e);
-//        }
+        //        try {
+        //            condition.await();
+        //        } catch (InterruptedException e) {
+        //            main.system.ExceptionMaster.printStackTrace(e);
+        //        }
         Map<EventType, EventCallback> cache = new HashMap<>();
         for (EventType eventType : savedBindings) {
             EventCallback saved = eventMap.get(eventType);
@@ -130,61 +131,38 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
                 EventCallback old = eventMap.remove(type);
 
                 eventMap.put(type, (obj) -> {
-                    old.call(obj);
-                    event.call(obj);
+                    wrap(type, old).call(obj);
+                    wrap(type, event).call(obj);
                 });
             } else {
-                if (type.isMultiArgsInvocationSupported()) {
-                    eventMap.put(type, (obj) -> {
-                        if (obj.get() instanceof Collection) {
-                            Collection list = (Collection) obj.get();
-                            main.system.auxiliary.log.LogMaster.log(1, ">>>>> MultiArgs Invocation with elements: " + list.size());
-                            for (Object o : list) {
-                                event.call(new EventCallbackParam(o));
-                            }
-                        } else {
-                            event.call(obj);
-                        }
-                    });
-                } else {
-                    eventMap.put(type, event);
-                }
+                eventMap.put(type, wrap(type, event));
             }
-//            if (onDemand.containsKey(type)) {
-//                EventCallbackParam r = onDemand.remove(type);
-//                eventQueue.add(() -> event.call(r));
-//            }
             List<EventCallbackParam> callbacks = onDemandMap.get(type);
             if (callbacks != null) {
                 onDemandMap.remove(type);
                 for (EventCallbackParam callback : callbacks) {
-                    if (type.isMultiArgsInvocationSupported() &&
-                            callback.get() instanceof Collection) {
-                        eventQueue.add(() -> {
-                            for (Object o : (Collection) callback.get()) {
-                                event.call(new EventCallbackParam(o));
-                            }
-                        });
-                    } else
-                        eventQueue.add(() -> event.call(callback));
+                    eventQueue.add(()-> wrap(type, event).call(callback));
                 }
             }
-//                main.system.auxiliary.log.LogMaster.log(1,
-//                 "onDemand triggered for " + type);
-//                r.call(null);
-
-//                lock.lock();
-//                EventCallback r = onDemand.remove(type);
-//                try {
-//                    eventQueue.add(() -> r.call(event));
-//                } catch (Exception e) {
-//                    main.system.ExceptionMaster.printStackTrace(e);
-//                } finally {
-//                    lock.unlock();
-//                }
         } else {
             eventMap.remove(type);
         }
+    }
+
+    private EventCallback wrap(EventType type, EventCallback event) {
+        if (type.isMultiArgsInvocationSupported()) {
+            return (obj) -> {
+                if (obj.get() instanceof Collection) {
+                    Collection list = (Collection) obj.get();
+                    for (Object o : list) {
+                        event.call(new EventCallbackParam(o));
+                    }
+                } else {
+                    event.call(obj);
+                }
+            };
+        }
+        return event;
     }
 
     public void trigger_(final EventType type, final EventCallbackParam obj) {
@@ -200,11 +178,11 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
 
             }
         } else {
-//            if (obj instanceof OnDemandCallback) {
-//            onDemand.put(type, obj);
+            //            if (obj instanceof OnDemandCallback) {
+            //            onDemand.put(type, obj);
             if (isOnDemandCallback(type))
                 MapMaster.addToListMap(onDemandMap, type, obj);
-//            }
+            //            }
         }
     }
 
@@ -219,14 +197,14 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
             eventQueue = new ArrayList<>();
             lock.unlock();
 
-//            list.forEach(Runnable::run); apparently we still need crutches
+            //            list.forEach(Runnable::run); apparently we still need crutches
             for (int i = 0, listSize = list.size(); i < listSize; i++) {
                 run(list.get(i));
-//                try {
-//                    list.get(i).run();
-//                } catch (Exception e) {
-//                    ExceptionMaster.printStackTrace(e);
-//                }
+                //                try {
+                //                    list.get(i).run();
+                //                } catch (Exception e) {
+                //                    ExceptionMaster.printStackTrace(e);
+                //                }
             }
         }
     }

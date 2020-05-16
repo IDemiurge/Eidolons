@@ -45,11 +45,11 @@ public class PerceptionRule   implements ActionRule {
         switch (status) {
             case KNOWN_TO_BE_SOMEWHERE:
                 source.getUnitAI().getGroup()
-                 .setEngagementLevel(VisionEnums.ENGAGEMENT_LEVEL.ALARMED);
+                 .setEngagementLevel(VisionEnums.ENGAGEMENT_LEVEL.ALERTED);
                 break;
             case KNOWN_TO_BE_THERE:
                 source.getUnitAI().getGroup()
-                 .setEngagementLevel(VisionEnums.ENGAGEMENT_LEVEL.AGGRO);
+                 .setEngagementLevel(VisionEnums.ENGAGEMENT_LEVEL.ENGAGED);
                 source.getUnitAI().getGroup()
                  .addEnemyKnownCoordinates(target.getCoordinates());
                 break;
@@ -59,7 +59,7 @@ public class PerceptionRule   implements ActionRule {
                 break;
             case SUSPECTED_TO_BE_THERE:
                 source.getUnitAI().getGroup()
-                 .setEngagementLevel(VisionEnums.ENGAGEMENT_LEVEL.ALARMED);
+                 .setEngagementLevel(VisionEnums.ENGAGEMENT_LEVEL.ALERTED);
                 source.getUnitAI()
                  .getGroup()
                  .addEnemyKnownCoordinates(

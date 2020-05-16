@@ -87,7 +87,7 @@ public class DC_GridPanel extends GridPanel {
         addActor(animMaster = AnimMaster.getInstance());
         animMaster.bindEvents();
         manager = new GridManager(this);
-        addActor(overlayManager );
+        addActor(overlayManager);
 
         return this;
     }
@@ -259,7 +259,7 @@ public class DC_GridPanel extends GridPanel {
         Coordinates c = null;
         for (Coordinates coordinates : data.mazeWalls) {
             c = data.c.getOffset(coordinates.negativeY());
-            GridCellContainer container = cells[c.getX()][ (c.getY())];
+            GridCellContainer container = cells[c.getX()][(c.getY())];
             if (container == null) {
                 main.system.auxiliary.log.LogMaster.warn("Void cell in maze puzzle!" + c);
                 continue;
@@ -275,9 +275,7 @@ public class DC_GridPanel extends GridPanel {
     protected void bindEvents() {
         super.bindEvents();
 
-        boolean removePrevious = true;
-
-        GuiEventManager.bind(removePrevious, SHOW_MODE_ICON, obj -> {
+        GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
             List list = (List) obj.get();
             UnitView view = (UnitView) getViewMap().get(list.get(0));
             if (view == null) {
@@ -287,7 +285,7 @@ public class DC_GridPanel extends GridPanel {
             view.updateModeImage((String) list.get(1));
         });
         if (DC_Engine.isAtbMode()) {
-            GuiEventManager.bind(removePrevious, INITIATIVE_CHANGED, obj -> {
+            GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
                 Pair<Unit, Pair<Integer, Float>> p = (Pair<Unit, Pair<Integer, Float>>) obj.get();
                 GridUnitView uv = (GridUnitView) viewMap.get(p.getLeft());
                 if (uv == null) {
@@ -300,7 +298,7 @@ public class DC_GridPanel extends GridPanel {
                 }
             });
         } else
-            GuiEventManager.bind(removePrevious, INITIATIVE_CHANGED, obj -> {
+            GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
                 Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
                 GridUnitView uv = (GridUnitView) viewMap.get(p.getLeft());
                 if (uv == null) {
@@ -310,11 +308,11 @@ public class DC_GridPanel extends GridPanel {
                 if (uv != null)
                     uv.getInitiativeQueueUnitView().updateInitiative(p.getRight());
             });
-        GuiEventManager.bind(removePrevious, VALUE_MOD, p -> {
+        GuiEventManager.bind(VALUE_MOD, p -> {
             FloatingTextMaster.getInstance().
                     createAndShowParamModText(p.get());
         });
-        GuiEventManager.bind(removePrevious, ACTOR_SPEAKS, p -> {
+        GuiEventManager.bind(ACTOR_SPEAKS, p -> {
             if (p.get() == null) {
                 return;
             }
@@ -346,32 +344,38 @@ public class DC_GridPanel extends GridPanel {
 //                }
 //            }
         });
-        GuiEventManager.bind(removePrevious, GuiEventType.GRID_OBJ_ANIM, p -> {
+        GuiEventManager.bind(GuiEventType.GRID_OBJ_ANIM, p -> {
             List list = (List) p.get();
-            String key = (String) list.get(0);
-            Coordinates c = (Coordinates) list.get(1);
             GraphicData data = (GraphicData) list.get(2);
-            GridObject gridObj = findGridObj(key, c);
-            gridViewAnimator.animate(gridObj, data);
+            if (list.get(1) instanceof Coordinates) {
+                String key = (String) list.get(0);
+                Coordinates c = (Coordinates) list.get(1);
+                GridObject gridObj = findGridObj(key, c);
+                gridViewAnimator.animate(gridObj, data);
+            } else {
+                gridViewAnimator.animate(viewMap.get(list.get(1)),
+                        (GridViewAnimator.VIEW_ANIM) list.get(0), data);
+            }
+
         });
 
-        GuiEventManager.bind(removePrevious, HIDE_MAZE, p -> {
+        GuiEventManager.bind(HIDE_MAZE, p -> {
             initMaze(true, (MazePuzzle.MazeData) p.get());
         });
-        GuiEventManager.bind(removePrevious, SHOW_MAZE, p -> {
+        GuiEventManager.bind(SHOW_MAZE, p -> {
             initMaze(false, (MazePuzzle.MazeData) p.get());
         });
-        GuiEventManager.bind(removePrevious, INTERACTIVE_OBJ_RESET, (p) -> {
+        GuiEventManager.bind(INTERACTIVE_OBJ_RESET, (p) -> {
             InteractiveObj obj = (InteractiveObj) p.get();
             if (obj.isOff()) {
                 //TODO find and disble  light emitter
                 GuiEventManager.trigger(RESET_LIGHT_EMITTER, obj);
             }
         });
-        GuiEventManager.bind(removePrevious, GuiEventType.ANIMATION_QUEUE_FINISHED, (p) -> {
+        GuiEventManager.bind(GuiEventType.ANIMATION_QUEUE_FINISHED, (p) -> {
             resetVisible();
         });
-        GuiEventManager.bind(removePrevious, UPDATE_GUI, obj -> {
+        GuiEventManager.bind(UPDATE_GUI, obj -> {
             if (!VisionHelper.isVisionHacked())
                 if (OutlineMaster.isAutoOutlinesOff())
                     if (OutlineMaster.isOutlinesOn()) {
@@ -386,7 +390,7 @@ public class DC_GridPanel extends GridPanel {
 
         });
 
-        GuiEventManager.bind(removePrevious, SELECT_MULTI_OBJECTS, obj -> {
+        GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
             Pair<Set<DC_Obj>, TargetRunnable> p = (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
             if (p.getLeft().isEmpty()) {
                 FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.REQUIREMENT,
@@ -402,7 +406,7 @@ public class DC_GridPanel extends GridPanel {
             for (DC_Obj obj1 : p.getLeft()) {
                 Borderable b = viewMap.get(obj1);
                 if (b == null) {
-                    b = cells[obj1.getX()][ (obj1.getY())];
+                    b = cells[obj1.getX()][(obj1.getY())];
                 }
 
                 if (((Group) b).getUserObject() instanceof Unit) {
@@ -418,13 +422,13 @@ public class DC_GridPanel extends GridPanel {
             GuiEventManager.trigger(SHOW_TARGET_BORDERS, map);
         });
 
-        GuiEventManager.bind(removePrevious, UPDATE_GRAVEYARD, obj -> {
+        GuiEventManager.bind(UPDATE_GRAVEYARD, obj -> {
             final Coordinates coordinates = (Coordinates) obj.get();
-            cells[coordinates.getX()][ (coordinates.getY())].updateGraveyard();
+            cells[coordinates.getX()][(coordinates.getY())].updateGraveyard();
         });
 
 
-        GuiEventManager.bind(removePrevious, ACTIVE_UNIT_SELECTED, obj -> {
+        GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             BattleFieldObject hero = (BattleFieldObject) obj.get();
             DungeonScreen.getInstance().getCameraMan().unitActive(hero);
             //dc refactor
@@ -463,7 +467,7 @@ public class DC_GridPanel extends GridPanel {
                     welcomeInfoShown = true;
                 }
         });
-        GuiEventManager.bind(removePrevious, UPDATE_UNIT_ACT_STATE, obj -> {
+        GuiEventManager.bind(UPDATE_UNIT_ACT_STATE, obj -> {
             final Pair<Unit, Boolean> pair = (Pair<Unit, Boolean>) obj.get();
             final BaseView baseView = viewMap.get(pair.getLeft());
             if (baseView instanceof GridUnitView) {
@@ -472,11 +476,11 @@ public class DC_GridPanel extends GridPanel {
             }
         });
 
-        GuiEventManager.bind(removePrevious, GuiEventType.HP_BAR_UPDATE_MANY, p -> {
+        GuiEventManager.bind(GuiEventType.HP_BAR_UPDATE_MANY, p -> {
             List list = (List) p.get();
             list.forEach(o -> updateHpBar(o));
         });
-        GuiEventManager.bind(removePrevious, GuiEventType.HP_BAR_UPDATE, p -> {
+        GuiEventManager.bind(GuiEventType.HP_BAR_UPDATE, p -> {
             updateHpBar(p.get());
         });
 

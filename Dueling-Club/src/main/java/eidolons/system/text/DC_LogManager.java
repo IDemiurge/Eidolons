@@ -34,7 +34,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static main.content.enums.GenericEnums.*;
+import static main.content.enums.GenericEnums.DAMAGE_TYPE;
 
 public class DC_LogManager extends LogManager {
 
@@ -279,21 +279,6 @@ public class DC_LogManager extends LogManager {
     }
 
 
-    public void logHide(Unit source, BattleFieldObject object) {
-        LOGGING_DETAIL_LEVEL level = LOGGING_DETAIL_LEVEL.FULL;
-        if (source.isPlayerCharacter()) {
-            level = LOGGING_DETAIL_LEVEL.ESSENTIAL;
-        }
-        log(level, source + " loses sight of " + object.getName());
-    }
-
-    public void logReveal(Unit source, BattleFieldObject object) {
-        LOGGING_DETAIL_LEVEL level = LOGGING_DETAIL_LEVEL.FULL;
-        if (source.isPlayerCharacter()) {
-            level = LOGGING_DETAIL_LEVEL.ESSENTIAL;
-        }
-        log(level, source + " spots " + object.getName());
-    }
 
 
 }

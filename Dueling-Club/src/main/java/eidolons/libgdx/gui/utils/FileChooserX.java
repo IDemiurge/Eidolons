@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.stage.GenericGuiStage;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
@@ -56,6 +57,8 @@ public class FileChooserX {
             stage.addActor(fileChooser.fadeIn());
 
         }
+        fileChooser.setSize(GdxMaster.getWidth()*3/4, GdxMaster.getHeight()*3/5);
+        GdxMaster.center(fileChooser);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
         FileChooser finalFileChooser = fileChooser;
         fileChooser.setListener(new FileChooserAdapter() {

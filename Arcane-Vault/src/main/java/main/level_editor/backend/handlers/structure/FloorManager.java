@@ -47,7 +47,7 @@ public class FloorManager {
     public static void addFloor() {
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
             newFloor();
-        } else 
+        } else
             loadFloor(PathFinder.getDungeonLevelFolder()+ LE_DataHandler.PREFIX_CRAWL);
     }
         public static void loadFloor(String path) {

@@ -96,15 +96,14 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
 
 
     public enum MAIN_MENU_ITEM implements MenuItem<MAIN_MENU_ITEM> {
-        DEMO(false),
+        TEST(false),
         CONTINUE(true),
-        NEXT_SCENARIO(true),
+        CUSTOM_DUNGEON(false),
+        // STANDOFF(true), PART OF CD?
+        // SKIRMISH(true),
         RANDOM_SCENARIO(false),
         SELECT_SCENARIO(false),
-        CUSTOM_LAUNCH(false),
-        STANDOFF(true),
-        SKIRMISH(true),
-        PLAY( SELECT_SCENARIO, RANDOM_SCENARIO),//NEXT_SCENARIO, ),
+        PLAY( SELECT_SCENARIO, RANDOM_SCENARIO, CUSTOM_DUNGEON, TEST),//NEXT_SCENARIO, ),
         MAP_PREVIEW(),
         LOAD(true),
         OPTIONS,

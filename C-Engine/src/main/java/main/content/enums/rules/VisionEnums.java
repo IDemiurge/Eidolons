@@ -153,10 +153,10 @@ public class VisionEnums {
 
         UNSUSPECTING, // will use its behavior and rest actions
         SUSPECTING, // will not Rest or otherwise let down their guard
-        ALARMED // will search, ambush or stalk
+        ALERTED // will search, ambush or stalk
         ,
         ENGAGED, // will engage and make combat-actions
         STALKING, //has visual on hero while unseen and seeks to attack
-        AMBUSH, // ... remains still until can attack or close enough
+        AMBUSH, PRE_COMBAT, // ... remains still until can attack or close enough
     }
 }

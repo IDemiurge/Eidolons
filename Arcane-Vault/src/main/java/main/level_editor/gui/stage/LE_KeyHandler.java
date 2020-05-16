@@ -105,6 +105,11 @@ public class LE_KeyHandler extends LE_Handler {
         }
         if (ctrl) {
             switch (keyCode) {
+                case Input.Keys.R:
+
+                    LE_Screen.getInstance().getGuiStage().getPalettePanel().reload();
+                    GuiEventManager.trigger(GuiEventType.LE_PALETTE_RESELECT);
+                    break;
                 case Input.Keys.TAB:
 
                     boolean shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||

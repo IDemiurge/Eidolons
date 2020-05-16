@@ -33,6 +33,10 @@ public class ExplorationHandler {
     }
 
 
+    protected boolean isCombat() {
+        return master.isInCombat();
+    }
+
     public ExplorePartyMaster getPartyMaster() {
         return master.getPartyMaster();
     }

@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
 import eidolons.game.battlecraft.ai.advanced.engagement.EngagementHandler;
+import eidolons.game.battlecraft.ai.advanced.engagement.PlayerStatus;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.party.Party;
@@ -32,6 +33,7 @@ public class ExplorationMaster {
     private AggroMaster aggroMaster;
     private boolean toggling;
     private EngagementHandler engagementHandler;
+    private PlayerStatus playerStatus;
 
     public ExplorationMaster(DC_Game game) {
         this.game = game;
@@ -84,6 +86,9 @@ public class ExplorationMaster {
         return true;
     }
 
+    public  boolean isInCombat() {
+        return !explorationOn;
+    }
     public static boolean isExplorationOn() {
         return explorationOn;
     }
@@ -199,4 +204,11 @@ public class ExplorationMaster {
         return engagementHandler;
     }
 
+    public PlayerStatus getPlayerStatus() {
+        return playerStatus;
+    }
+
+    public void setPlayerStatus(PlayerStatus playerStatus) {
+        this.playerStatus = playerStatus;
+    }
 }

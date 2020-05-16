@@ -36,7 +36,7 @@ public class UnitAI {
     private List<DC_ActiveObj> usedActions;
     private List<MetaGoal> metaGoals;
     private boolean engagedOverride;
-    ENGAGEMENT_LEVEL engagementLevel;
+    ENGAGEMENT_LEVEL engagementLevel=ENGAGEMENT_LEVEL.UNSUSPECTING;
 
     //    private CHARACTER_TYPE characterType;
 //    private INCLINATION_TYPE characterType;
@@ -117,9 +117,9 @@ public class UnitAI {
     }
 
     public ENGAGEMENT_LEVEL getEngagementLevel() {
-        if (engagementLevel == null) {
-           return getGroup().getEngagementLevel();
-        }
+        // if (engagementLevel == null) {
+        //    return getGroup().getEngagementLevel();
+        // }
         return engagementLevel;
     }
 

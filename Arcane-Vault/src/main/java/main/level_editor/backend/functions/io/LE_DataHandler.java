@@ -310,4 +310,9 @@ public class LE_DataHandler extends LE_Handler {
         }
     }
 
+    public void saveAll() {
+        for (LE_Floor floor : FloorManager.getFloors()) {
+            saveFloor();
+        }
+    }
 }
