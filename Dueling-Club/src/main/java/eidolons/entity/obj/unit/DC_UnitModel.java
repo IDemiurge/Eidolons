@@ -230,8 +230,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         String action = getProperty(PROPS.DEFAULT_INSTANT_ATTACK_ACTION);
         if (!action.isEmpty()) {
             preferredInstantAttack = getAction(action);
-        }
         return preferredInstantAttack;
+        }
+        return getAttackOfType(ATTACK_TYPE.QUICK_ATTACK);
     }
 
     public void setPreferredInstantAttack(DC_ActiveObj preferredInstantAttack) {
@@ -243,10 +244,27 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         String action = getProperty(PROPS.DEFAULT_COUNTER_ATTACK_ACTION);
         if (!action.isEmpty()) {
             preferredCounterAttack = getAction(action);
+            return preferredCounterAttack;
         }
-        return preferredCounterAttack;
+        return getAttackOfType(ATTACK_TYPE.QUICK_ATTACK);
     }
 
+    private DC_ActiveObj getAttackOfType(ATTACK_TYPE quickAttack) {
+        for (DC_UnitAction subAction : getAttack().getSubActions()) {
+            if (subAction.getChecker().checkAttackType(quickAttack)) {
+                return subAction;
+            }
+        }
+        return null;
+    }
+
+    public enum ATTACK_TYPE{
+        STANDARD_ATTACK,
+        QUICK_ATTACK,
+        POWER_ATTACK,
+         SPECIAL_ATTACK,
+
+}
     public void setPreferredCounterAttack(DC_ActiveObj preferredCounterAttack) {
         this.preferredCounterAttack = preferredCounterAttack;
         setProperty(PROPS.DEFAULT_COUNTER_ATTACK_ACTION, preferredCounterAttack.getName());
@@ -256,8 +274,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         String action = getProperty(PROPS.DEFAULT_ATTACK_OF_OPPORTUNITY_ACTION);
         if (!action.isEmpty()) {
             preferredAttackOfOpportunity = getAction(action);
+            return preferredAttackOfOpportunity;
         }
-        return preferredAttackOfOpportunity;
+        return getAttackOfType(ATTACK_TYPE.QUICK_ATTACK);
     }
 
     public void setPreferredAttackOfOpportunity(DC_ActiveObj preferredAttackOfOpportunity) {

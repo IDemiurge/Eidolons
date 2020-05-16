@@ -105,7 +105,7 @@ public class MainMenuHandler {
     }
     public Boolean handle(MAIN_MENU_ITEM item) {
         switch (item) {
-            case TEST:
+            case TEST_MODE:
                 return startMicro(getScenarioTypes(getScenarioGroup(true)),
                         null );
             // case CAMPAIGN:

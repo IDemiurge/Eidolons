@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.ai.explore;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
+import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -32,9 +33,11 @@ public class AggroMaster extends ExplorationHandler {
 
     public void checkStatusUpdate() {
         if (checkEngaged()) {
-            master.switchExplorationMode(false);
+            if (!isCombat())
+                 master.event(new EngageEvent(EngageEvent.ENGAGE_EVENT.combat_start, AggroMaster.getAggroGroup().size()));
         } else {
-            master.switchExplorationMode(true);
+            if (isCombat())
+                master.event(new EngageEvent(EngageEvent.ENGAGE_EVENT.combat_end));
         }
     }
 

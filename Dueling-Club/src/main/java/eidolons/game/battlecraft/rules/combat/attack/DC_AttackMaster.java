@@ -139,7 +139,7 @@ public class DC_AttackMaster {
             result = attackNow(attack, ref, free, canCounter, onHit, onKill, offhand, counter);
             boolean countered = false;
             if (result == null) { // first strike
-                game.getLogManager().log(attack.getAttacker() + ": First Strike Counter-Attack!");
+                game.getLogManager().log(attack.getAttacked() + ": First Strike Counter-Attack!");
                 DC_ActiveObj action = counterRule.tryFindCounter(attack, false);
                 if (action != null) {
                     AttackEffect effect = EffectMaster.getAttackEffect(action);
@@ -157,7 +157,7 @@ public class DC_AttackMaster {
                             attack.getAttacked())));
                     game.getLogManager().log(LogMaster.LOG.GAME_INFO, attack.getAttacked().getNameIfKnown()
                             + " fails to counter-attack against " +
-                            action.getOwnerUnit());
+                            attack.getAttacker());
                     attackNow(attack, ref, free, false, onHit, onKill, offhand, counter);
                 }
                 result = true;
@@ -552,9 +552,7 @@ public class DC_AttackMaster {
             }
         }
         if (attack.isDodged()) {
-            if (!EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_DODGED, ref)) {
-                return true;
-            }
+            return !EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_DODGED, ref);
         }
 //         ATTACK_BLOCKED,
 //         ATTACK_MISSED,
@@ -564,11 +562,8 @@ public class DC_AttackMaster {
     private boolean checkEffectsInterrupt(BattleFieldObject target, Unit source,
                                           SPECIAL_EFFECTS_CASE case_type, Ref REF, boolean offhand) {
         source.applySpecialEffects(case_type, target, REF, offhand);
-        if (target.isDead()) {
-            return true;
-        }
+        return target.isDead();
         // if (attacker)
-        return false;
     }
 
     private boolean checkDeathEffects(Unit source, Unit target, Effect onKill, Ref ref,

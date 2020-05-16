@@ -13,6 +13,7 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
+import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
@@ -36,6 +37,8 @@ public class GdxImageMaster extends LwjglApplication {
 
     private static final String PATH = "gen/round/";
     private static Map<Texture, Pixmap> pixmaps = new HashMap<>();
+    private static Map<String, Texture> sizedViewCache= new HashMap<>();
+
 
     public GdxImageMaster() {
         super(new ApplicationAdapter() {
@@ -162,7 +165,12 @@ public class GdxImageMaster extends LwjglApplication {
             return null;
         }
         String newPath = getSizedImagePath(path, size);
-
+        if (height == AtbPanel.imageSize && width == AtbPanel.imageSize) {
+            texture = sizedViewCache.get(path);
+            if (texture != null) {
+                return texture;
+            }
+        }
         FileHandle handle = GDX.file(
                 PathFinder.getImagePath() +
                         newPath);
@@ -176,228 +184,231 @@ public class GdxImageMaster extends LwjglApplication {
                 0, 0, pixmap.getWidth(), pixmap.getHeight(),
                 0, 0, pixmap2.getWidth(), pixmap2.getHeight()
         );
-        if (write) {
-            writeImage(handle, pixmap2);
-            texture = new Texture(pixmap2);
-            if (!CoreEngine.isUtility()) {
-                pixmap.dispose();
-                pixmap2.dispose();
-            }
-            return texture;
-        } else {
-            return TextureCache.getInstance().createAndCacheTexture(path, pixmap2);
+        if (height == AtbPanel.imageSize && width == AtbPanel.imageSize) {
+            sizedViewCache.put(path, texture);
         }
-    }
+            if (write) {
+                writeImage(handle, pixmap2);
+                texture = new Texture(pixmap2);
+                if (!CoreEngine.isUtility()) {
+                    pixmap.dispose();
+                    pixmap2.dispose();
+                }
+                return texture;
+            } else {
+                return TextureCache.getInstance().createAndCacheTexture(path, pixmap2);
+            }
+        }
 
-    public static String getSizedImagePath(String path, int size) {
-        path = FileManager.formatPath(path);
-        return StringMaster.cropFormat(path) + " " + size + StringMaster.getFormat(path);
-    }
+        public static String getSizedImagePath (String path,int size){
+            path = FileManager.formatPath(path);
+            return StringMaster.cropFormat(path) + " " + size + StringMaster.getFormat(path);
+        }
 
-    public static void writeImage(FileHandle handle, Pixmap pixmap) {
-        PixmapIO.writePNG(handle, pixmap);
-    }
+        public static void writeImage (FileHandle handle, Pixmap pixmap){
+            PixmapIO.writePNG(handle, pixmap);
+        }
 
-    public static void writeImage(FileHandle handle, Texture texture) {
-        PixmapIO.writePNG(handle, getPixmap(texture));
-    }
+        public static void writeImage (FileHandle handle, Texture texture){
+            PixmapIO.writePNG(handle, getPixmap(texture));
+        }
 
-    public static void writeImage(FileHandle handle, TextureRegion region) {
-        PixmapIO.writePNG(handle, getPixMapFromRegion(region));
-    }
+        public static void writeImage (FileHandle handle, TextureRegion region){
+            PixmapIO.writePNG(handle, getPixMapFromRegion(region));
+        }
 
-    public static TextureRegion getSizeTemplate(String root) {
-        return null;
-    }
-
-    public static TextureRegion round(String path, boolean write) {
-        if (!GdxMaster.isLwjglThread())
+        public static TextureRegion getSizeTemplate (String root){
             return null;
-        TextureRegion textureRegion = TextureCache.getOrCreateR(path);
-        if (textureRegion.getTexture() == TextureCache.getMissingTexture())
-            return textureRegion;
-
-        String newPath = getRoundedPath(path);
-        TextureRegion roundedRegion = null;
-        if (FileManager.isFile(newPath))
-            roundedRegion = TextureCache.getOrCreateR(cropImagePath(newPath));
-        if (roundedRegion != null)
-            if (roundedRegion.getTexture() != TextureCache.getMissingTexture())
-                return roundedRegion;
-
-        Pixmap rounded = roundTexture(textureRegion);
-        FileHandle handle = GDX.file(
-                PathFinder.getImagePath() + newPath);
-        if (write) {
-            PixmapIO.writePNG(handle, rounded);
-        } else
-            return TextureCache.getInstance().createAndCacheRegion(path, rounded);
-
-        return TextureCache.getOrCreateR(newPath);
-    }
-
-    public static void roundTextures(String directory) {
-        CoreEngine.systemInit();
-        for (String filePath : FileManager.getFileNames(FileManager.
-                getFilesFromDirectory(PathFinder.getImagePath() + directory, false))) {
-            //            FileHandle handle=GDX.file(filePath);
-            round(directory + filePath, true);
-
         }
-    }
 
-    public static Pixmap roundTexture(TextureRegion textureRegion) {
-        Texture texture = textureRegion.getTexture();
-        if (!texture.getTextureData().isPrepared()) {
+        public static TextureRegion round (String path,boolean write){
+            if (!GdxMaster.isLwjglThread())
+                return null;
+            TextureRegion textureRegion = TextureCache.getOrCreateR(path);
+            if (textureRegion.getTexture() == TextureCache.getMissingTexture())
+                return textureRegion;
+
+            String newPath = getRoundedPath(path);
+            TextureRegion roundedRegion = null;
+            if (FileManager.isFile(PathFinder.getImagePath() + newPath))
+                roundedRegion = TextureCache.getOrCreateR(cropImagePath(newPath));
+            if (roundedRegion != null)
+                if (roundedRegion.getTexture() != TextureCache.getMissingTexture())
+                    return roundedRegion;
+
+            Pixmap rounded = roundTexture(textureRegion);
+            FileHandle handle = GDX.file(
+                    PathFinder.getImagePath() + newPath);
+            if (write) {
+                PixmapIO.writePNG(handle, rounded);
+            } else
+                return TextureCache.getInstance().createAndCacheRegion(path, rounded);
+
+            return TextureCache.getOrCreateR(newPath);
+        }
+
+        public static void roundTextures (String directory){
+            CoreEngine.systemInit();
+            for (String filePath : FileManager.getFileNames(FileManager.
+                    getFilesFromDirectory(PathFinder.getImagePath() + directory, false))) {
+                //            FileHandle handle=GDX.file(filePath);
+                round(directory + filePath, true);
+
+            }
+        }
+
+        public static Pixmap roundTexture (TextureRegion textureRegion){
+            Texture texture = textureRegion.getTexture();
+            if (!texture.getTextureData().isPrepared()) {
+                texture.getTextureData().prepare();
+            }
+            return roundPixmap(texture.getTextureData().consumePixmap());
+        }
+
+        public static Pixmap invert (Pixmap pixmap){
+            int width = pixmap.getWidth();
+            int height = pixmap.getHeight();
+            Pixmap inverted = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), Pixmap.Format.RGBA8888);
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    inverted.drawPixel(x, y, Color.rgba8888(Color.WHITE) - pixmap.getPixel(x, y));
+                }
+            }
+            Gdx.app.log("info", "pixmal rounded!");
+            return inverted;
+        }
+        public static Pixmap roundPixmap (Pixmap pixmap){
+            int width = pixmap.getWidth();
+            int height = pixmap.getHeight();
+            Pixmap round = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), Pixmap.Format.RGBA8888);
+            if (width != height) {
+                Gdx.app.log("error", "Cannot create round image if width != height");
+                round.dispose();
+                return pixmap;
+            }
+            double radius = width / 2.0;
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    //check if pixel is outside circle. Set pixel to transparent;
+                    double dist_x = (radius - x);
+                    double dist_y = radius - y;
+                    double dist = Math.sqrt((dist_x * dist_x) + (dist_y * dist_y));
+                    if (dist < radius) {
+                        round.drawPixel(x, y, pixmap.getPixel(x, y));
+                    } else
+                        round.drawPixel(x, y, 0);
+                }
+            }
+            Gdx.app.log("info", "pixmal rounded!");
+            return round;
+        }
+
+        public static String getRoundedPathNew (String path){
+            return "gen/radial icons/" + PathUtils.getLastPathSegment(path);
+        }
+
+        public static String getRoundedPath (String path){
+            path = FileManager.formatPath(path);
+            return StringMaster.cropFormat(path) + " rounded.png";
+        }
+
+        public static void drawTexture ( int x, int y, int dX, int dY,
+        Texture texture, int times, Pixmap pixmap){
+
             texture.getTextureData().prepare();
-        }
-        return roundPixmap(texture.getTextureData().consumePixmap());
-    }
-
-    public static Pixmap invert(Pixmap pixmap) {
-        int width = pixmap.getWidth();
-        int height = pixmap.getHeight();
-        Pixmap inverted = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), Pixmap.Format.RGBA8888);
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                inverted.drawPixel(x, y, Color.rgba8888(Color.WHITE)-pixmap.getPixel(x, y));
+            Pixmap pixmap2 = texture.getTextureData().consumePixmap();
+            for (int i = 0; i < times; i++) {
+                pixmap.drawPixmap(pixmap2, x, y);
+                x += texture.getWidth() * dX;
+                y += texture.getHeight() * dY;
             }
         }
-        Gdx.app.log("info", "pixmal rounded!");
-        return inverted;
-    }
-    public static Pixmap roundPixmap(Pixmap pixmap) {
-        int width = pixmap.getWidth();
-        int height = pixmap.getHeight();
-        Pixmap round = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), Pixmap.Format.RGBA8888);
-        if (width != height) {
-            Gdx.app.log("error", "Cannot create round image if width != height");
-            round.dispose();
-            return pixmap;
+
+        public static void drawTextureRegion ( int x, int y, Texture texture,
+        int width, int height, Pixmap pixmap){
+
+            drawTextureRegion(x, y, texture, width, height, pixmap, false);
         }
-        double radius = width / 2.0;
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                //check if pixel is outside circle. Set pixel to transparent;
-                double dist_x = (radius - x);
-                double dist_y = radius - y;
-                double dist = Math.sqrt((dist_x * dist_x) + (dist_y * dist_y));
-                if (dist < radius) {
-                    round.drawPixel(x, y, pixmap.getPixel(x, y));
-                } else
-                    round.drawPixel(x, y, 0);
+
+
+        public static void drawTextureRegion ( int x, int y, Texture texture,
+        int width, int height, Pixmap pixmap,boolean sourceOver){
+
+            if (!texture.getTextureData().isPrepared())
+                texture.getTextureData().prepare();
+            Pixmap pixmap2 = texture.getTextureData().consumePixmap();
+            if (sourceOver)
+                pixmap.setBlending(Blending.SourceOver);
+            //        else pixmap.setBlending(Blending.None);
+
+            pixmap.drawPixmap(pixmap2, x, y, 0, 0, width, height);
+        }
+
+        public static String appendImagePath (String s){
+            s = cropImagePath(s);
+            return PathFinder.getImagePath().toLowerCase() + "/" + s;
+        }
+
+        public static String cropImagePath (String s){
+            return s.toLowerCase()
+                    .replace(PathFinder.getImagePath().toLowerCase(), "");
+        }
+
+        public static String getAttackActionPath (DC_ActiveObj obj){
+            return getAttackActionPath(obj, obj.getActiveWeapon());
+        }
+
+        public static String getAttackActionPath (DC_ActiveObj obj, DC_WeaponObj weapon){
+            return (!obj.isStandardAttack() || obj.isThrow()) ? InventoryFactory.getWeaponIconPath(weapon)
+                    : getStandardAttackIcon(obj);
+            //            if (obj.isOffhand()){
+            //                Texture texture = GdxImageMaster.flip(path, true, false, true);
+            //                return new TextureRegion(texture);
+            //            }
+        }
+
+        private static String getStandardAttackIcon (DC_ActiveObj obj){
+            DC_WeaponObj weapon = obj.getActiveWeapon();
+            return getStandardAttackIcon(obj.getType(), weapon.getType());
+        }
+
+        private static String getStandardAttackIcon (String baseType, String weaponGroup,
+                ObjType action){
+            String path = StrPathBuilder.build("main", "actions", "standard attack",
+                    weaponGroup,
+                    baseType,
+                    action.getName().replace(DC_ActionManager.OFFHAND, "").replace(" ", "_") + ".png");
+            return path;
+        }
+
+        private static String getStandardAttackIcon (ObjType action, ObjType weapon){
+            String baseType = weapon.getProperty(G_PROPS.BASE_TYPE);
+            String weaponGroup = weapon.getProperty(G_PROPS.WEAPON_GROUP);
+            String path = getStandardAttackIcon(baseType, weaponGroup, action);
+
+
+            if (!ImageManager.isImage(path)) {
+                path = path.replace("_", "");
+                if (!ImageManager.isImage(path))
+                    path = findClosestIcon(action, weapon).replace("_", "");
             }
+            return path;
         }
-        Gdx.app.log("info", "pixmal rounded!");
-        return round;
-    }
-
-    public static String getRoundedPathNew(String path) {
-        return "gen/radial icons/" + PathUtils.getLastPathSegment(path);
-    }
-
-    public static String getRoundedPath(String path) {
-        path = FileManager.formatPath(path);
-        return StringMaster.cropFormat(path) + " rounded.png";
-    }
-
-    public static void drawTexture(int x, int y, int dX, int dY,
-                                   Texture texture, int times, Pixmap pixmap) {
-
-        texture.getTextureData().prepare();
-        Pixmap pixmap2 = texture.getTextureData().consumePixmap();
-        for (int i = 0; i < times; i++) {
-            pixmap.drawPixmap(pixmap2, x, y);
-            x += texture.getWidth() * dX;
-            y += texture.getHeight() * dY;
-        }
-    }
-
-    public static void drawTextureRegion(int x, int y, Texture texture,
-                                         int width, int height, Pixmap pixmap) {
-
-        drawTextureRegion(x, y, texture, width, height, pixmap, false);
-    }
 
 
-    public static void drawTextureRegion(int x, int y, Texture texture,
-                                         int width, int height, Pixmap pixmap, boolean sourceOver) {
-
-        if (!texture.getTextureData().isPrepared())
-            texture.getTextureData().prepare();
-        Pixmap pixmap2 = texture.getTextureData().consumePixmap();
-        if (sourceOver)
-            pixmap.setBlending(Blending.SourceOver);
-        //        else pixmap.setBlending(Blending.None);
-
-        pixmap.drawPixmap(pixmap2, x, y, 0, 0, width, height);
-    }
-
-    public static String appendImagePath(String s) {
-        s = cropImagePath(s);
-        return PathFinder.getImagePath().toLowerCase() + "/" + s;
-    }
-
-    public static String cropImagePath(String s) {
-        return s.toLowerCase()
-                .replace(PathFinder.getImagePath().toLowerCase(), "");
-    }
-
-    public static String getAttackActionPath(DC_ActiveObj obj) {
-        return getAttackActionPath(obj, obj.getActiveWeapon());
-    }
-
-    public static String getAttackActionPath(DC_ActiveObj obj, DC_WeaponObj weapon) {
-        return (!obj.isStandardAttack() || obj.isThrow()) ? InventoryFactory.getWeaponIconPath(weapon)
-                : getStandardAttackIcon(obj);
-        //            if (obj.isOffhand()){
-        //                Texture texture = GdxImageMaster.flip(path, true, false, true);
-        //                return new TextureRegion(texture);
-        //            }
-    }
-
-    private static String getStandardAttackIcon(DC_ActiveObj obj) {
-        DC_WeaponObj weapon = obj.getActiveWeapon();
-        return getStandardAttackIcon(obj.getType(), weapon.getType());
-    }
-
-    private static String getStandardAttackIcon(String baseType, String weaponGroup,
-                                                ObjType action) {
-        String path = StrPathBuilder.build("main", "actions", "standard attack",
-                weaponGroup,
-                baseType,
-                action.getName().replace(DC_ActionManager.OFFHAND, "").replace(" ", "_") + ".png");
-        return path;
-    }
-
-    private static String getStandardAttackIcon(ObjType action, ObjType weapon) {
-        String baseType = weapon.getProperty(G_PROPS.BASE_TYPE);
-        String weaponGroup = weapon.getProperty(G_PROPS.WEAPON_GROUP);
-        String path = getStandardAttackIcon(baseType, weaponGroup, action);
-
-
-        if (!ImageManager.isImage(path)) {
-            path = path.replace("_", "");
-            if (!ImageManager.isImage(path))
-                path = findClosestIcon(action, weapon).replace("_", "");
-        }
-        return path;
-    }
-
-
-    private static String findClosestIcon(ObjType action, ObjType weapon) {
-        String path = "";
-        String subgroup = weapon.getSubGroupingKey();
-        String baseType = "";
-        String weaponGroup = weapon.getProperty(G_PROPS.WEAPON_GROUP);
-        for (ObjType sub : DataManager.getTypesSubGroup(DC_TYPE.WEAPONS, subgroup)) {
-            baseType = sub.getName();
-            path = getStandardAttackIcon(baseType, weaponGroup, action);
-            if (ImageManager.isImage(path)) {
-                return path;
+        private static String findClosestIcon (ObjType action, ObjType weapon){
+            String path = "";
+            String subgroup = weapon.getSubGroupingKey();
+            String baseType = "";
+            String weaponGroup = weapon.getProperty(G_PROPS.WEAPON_GROUP);
+            for (ObjType sub : DataManager.getTypesSubGroup(DC_TYPE.WEAPONS, subgroup)) {
+                baseType = sub.getName();
+                path = getStandardAttackIcon(baseType, weaponGroup, action);
+                if (ImageManager.isImage(path)) {
+                    return path;
+                }
             }
+            return weapon.getImagePath();
         }
-        return weapon.getImagePath();
-    }
 
-}
+    }

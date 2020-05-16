@@ -143,10 +143,10 @@ public class GenericGridView extends UnitView {
     public void act(float delta) {
         if (!isVisible())
             return; //TODO make withinCamera()  work with actions
-        if (getY() < 0)
-            setY(0);
-        if (getX() < 0)
-            setX(0);
+        // if (getY() < 0) TODO this was a check before module grids... do we still need it?
+        //     setY(0);
+        // if (getX() < 0)
+        //     setX(0);
         if (emblemLighting != null)
             alphaFluctuation(emblemLighting, delta);
         super.act(delta);

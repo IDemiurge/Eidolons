@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.ai.advanced.engagement;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -62,7 +63,15 @@ public class EngagementHandler extends ExplorationHandler {
         events = new EngageEvents(master);
     }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        events.act(delta);
+    }
+
     public void detected(Unit source, BattleFieldObject object) {
+        if (object instanceof Structure)
+            return;
         events.detected(source, object);
         //precombat event
     }
@@ -84,7 +93,14 @@ public class EngagementHandler extends ExplorationHandler {
     }
 
     private ENGAGEMENT_LEVEL getLevel(Unit source) {
+        if (source.isMine()) {
+            // return playerEngagement;
+            return source.getAI().getEngagementLevel();
+        }
         return source.getAI().getEngagementLevel();
     }
 
+    public EngageEvents getEvents() {
+        return events;
+    }
 }

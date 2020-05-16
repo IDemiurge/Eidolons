@@ -81,6 +81,7 @@ public class CombatOptionsPanel extends TablePanelX {
     }
 
     private void addOptionBoxes(TablePanelX<Actor> table, List<OPTION> list) {
+        new OptionCheckBox(list.get(0)); //init style ...
         for (OPTION option : list) {
             table.add(new OptionCheckBox(option)).left().uniform().row();
         }

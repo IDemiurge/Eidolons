@@ -141,7 +141,7 @@ public class FloorLoader extends DungeonHandler {
     }
 
     protected boolean isModuleObjInitRequired(Module module) {
-        return module.isInitialModule();
+        return module.isStartModule();
     }
 
     public void processNode(Node node, Location location) {

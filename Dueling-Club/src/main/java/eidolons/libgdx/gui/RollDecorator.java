@@ -2,6 +2,8 @@ package eidolons.libgdx.gui;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
@@ -78,6 +80,15 @@ public class RollDecorator {
             addActor(table);
             table.setSize(getWidth(),
                     getHeight());
+            addListener(new ClickListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    if (getTapCount()>1) {
+                        toggle();
+                    }
+                    return super.touchDown(event, x, y, pointer, button);
+                }
+            });
         }
 
         @Override
@@ -164,10 +175,10 @@ public class RollDecorator {
 //            int toX = open ? 0 : (int) -contents.getWidth();
             if (rollIsLessWhenOpen)
                 switch (direction) {
-                    case SOUTH:
+                    case NORTH:
                         toY = open ? (int) origY + contents.getHeight() * rollPercentage : origY;
                         break;
-                    case NORTH:
+                    case SOUTH:
                         toY = open ? (int) origY - contents.getHeight() * rollPercentage : origY;
                         break;
                     case WEST:
@@ -181,11 +192,11 @@ public class RollDecorator {
                 }
             else
                 switch (direction) {
-                    case SOUTH:
+                    case NORTH:
                         toY = open ? (int) origY + contents.getHeight() : origY
                                 - (contents.getHeight() * (rollPercentage));
                         break;
-                    case NORTH:
+                    case SOUTH:
                         toY = open ? (int) origY - contents.getHeight() * rollPercentage : origY
                                 + (contents.getHeight() * (rollPercentage));
                         break;
@@ -225,11 +236,11 @@ public class RollDecorator {
 
         public boolean isOpen() {
             switch (direction) {
-//                case NORTH:
-                case SOUTH:
-                    return getY() < origY;
-//                case SOUTH:
-                case NORTH:
+               case NORTH:
+                // case SOUTH:
+                    return getY() <= origY;
+               case SOUTH:
+                // case NORTH:
                     return getY() >= origY;
                 case WEST:
                     return getX() >= origX;

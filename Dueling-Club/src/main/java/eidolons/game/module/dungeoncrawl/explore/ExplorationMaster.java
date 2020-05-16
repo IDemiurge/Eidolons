@@ -1,5 +1,6 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
+import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent;
 import eidolons.game.battlecraft.ai.advanced.engagement.EngagementHandler;
 import eidolons.game.battlecraft.ai.advanced.engagement.PlayerStatus;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
@@ -49,6 +50,7 @@ public class ExplorationMaster {
     }
 
     public void act(float delta) {
+        engagementHandler.act(delta);
         aiMaster.act(delta);
     }
     public static boolean isWaiting() {
@@ -210,5 +212,9 @@ public class ExplorationMaster {
 
     public void setPlayerStatus(PlayerStatus playerStatus) {
         this.playerStatus = playerStatus;
+    }
+
+    public void event(EngageEvent event) {
+        getEngagementHandler().getEvents().addEvent(event);
     }
 }

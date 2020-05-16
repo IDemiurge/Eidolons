@@ -218,6 +218,10 @@ public class GroupAI {
         this.block = block;
     }
 
+    public void setMembers(DequeImpl<Unit> members) {
+        this.members = members;
+    }
+
     public LevelBlock getBlock() {
         return block;
     }

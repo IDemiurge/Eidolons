@@ -31,6 +31,7 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     private String objectsData;
     private String borderObjectsData;
     private boolean firstInit;
+    private boolean startModule;
 
     public Module(Coordinates origin, int width, int height, String name) {
         this.origin = origin;
@@ -40,6 +41,12 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
         id = ID++;
     }
 
+    public void fauxInit() {
+        zones = new ArrayList<>();
+        encounters = new ArrayList<>();
+        origin = new Coordinates(0, 0);
+        data = new ModuleData(this);
+    }
     @Override
     public int getWidth() {
         return super.getWidth();
@@ -47,6 +54,7 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
 
     public Module(DC_Game game) {
         this.game = game;
+        id = ID++;
     }
 
     @Override
@@ -184,9 +192,6 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
         return idTypeMap;
     }
 
-    public boolean isInitialModule() {
-        return getId() == 0;
-    }
 
     public void initBorderObjects() {
         game.getDungeonMaster().getObjInitializer().processBorderObjects(this, borderObjectsData);
@@ -231,5 +236,12 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
         this.firstInit = firstInit;
     }
 
+    public boolean isStartModule() {
+        return startModule;
+    }
+
+    public void setStartModule(boolean startModule) {
+        this.startModule = startModule;
+    }
 
 }

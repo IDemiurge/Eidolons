@@ -283,7 +283,7 @@ public class LevelStructure {
             }
         },
 
-        module_grid;
+        module_grid, start_module;
         private EDIT_VALUE_TYPE type;
 
         FLOOR_VALUES() {

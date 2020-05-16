@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.ai.advanced.engagement;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent.ENGAGE_EVENT;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
@@ -10,41 +9,54 @@ import eidolons.libgdx.bf.grid.GridViewAnimator;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.ENGAGEMENT_LEVEL;
 import main.system.auxiliary.RandomWizard;
+import main.system.datatypes.DequeImpl;
 import main.system.sound.SoundMaster;
 import main.system.text.LogManager;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.Stack;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
 public class EngageEvents extends ExplorationHandler {
 
     private static final float TIMER_PERIOD = 0.25f;
-    Stack<EngageEvent> eventStack = new Stack<>();
+    DequeImpl<EngageEvent> eventQueue = new DequeImpl<>();
     EngageEventProcessor processor;
     Set<Unit> alertedEnemies = new LinkedHashSet<>();
-    Set<Unit> spottedEnemies = new LinkedHashSet<>();
+    Set<BattleFieldObject> spottedEnemies = new LinkedHashSet<>();
 
     public EngageEvents(ExplorationMaster master) {
         super(master);
-        processor = new EngageEventProcessor(getGame());
+        processor = new EngageEventProcessor(master);
+    }
+
+    @Override
+    public float getTimerPeriod() {
+        return TIMER_PERIOD;
+    }
+
+    @Override
+    protected void timerEvent() {
+        EngageEvent processed = null;
+        for (EngageEvent engageEvent : eventQueue) {
+            if (engageEvent.delay <= 0) {
+                processor.process(engageEvent);
+                processed = engageEvent;
+                timer = TIMER_PERIOD;
+                break;
+            }
+        }
+        if (processed != null) {
+            eventQueue.remove(processed);
+        }
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        timer -= delta;
-        for (EngageEvent engageEvent : eventStack) {
+        for (EngageEvent engageEvent : eventQueue) {
             engageEvent.delay -= delta;
-            if (timer <= 0) {
-                if (engageEvent.delay <= 0) {
-                    processor.process(engageEvent);
-                    eventStack.remove(engageEvent);
-                    timer = TIMER_PERIOD;
-                }
-            }
         }
     }
 
@@ -54,7 +66,7 @@ public class EngageEvents extends ExplorationHandler {
     }
 
     private void soundEvent(String path) {
-        addEvent(new EngageEvent(ENGAGE_EVENT.status_change, path));
+        addEvent(new EngageEvent(ENGAGE_EVENT.sound, path));
     }
 
     private boolean isDetectionSoundOn(Unit source, BattleFieldObject object) {
@@ -79,7 +91,7 @@ public class EngageEvents extends ExplorationHandler {
                 addEvent(ENGAGE_EVENT.popup, getAggroWarning(object));
                 return;
             }
-            spottedEnemies.add(source);
+            spottedEnemies.add(object);
             addEvent(ENGAGE_EVENT.status_change, VisionEnums.PLAYER_STATUS.ALERTED, spottedEnemies.size());
             addEvent(source, object, ENGAGE_EVENT.sound, SoundMaster.SOUNDS.ALERT);
             logEvent(LogManager.LOGGING_DETAIL_LEVEL.FULL, source.getName() + " is alerted by an outline!");
@@ -132,7 +144,9 @@ public class EngageEvents extends ExplorationHandler {
         if (source.isMine()) {
             processNow(new EngageEvent(source, object, GridViewAnimator.VIEW_ANIM.screen));
         } else {
-            addEvent(new EngageEvent(source, object, ENGAGE_EVENT.precombat));
+            // if (isPrecombat())
+            // addEvent(new EngageEvent(source, object, ENGAGE_EVENT.precombat));
+            addEvent(new EngageEvent(source, object, ENGAGE_EVENT.engagement_change, ENGAGEMENT_LEVEL.ENGAGED));
         }
         if (isDetectionLogged(source, object)) {
             logReveal(source, object);
@@ -144,21 +158,19 @@ public class EngageEvents extends ExplorationHandler {
 
     public void lostSight(Unit source, BattleFieldObject object) {
         if (!source.isMine()) {
-            return ; //TODO anything?
+            return; //TODO anything?
         }
         if (isCombat()) {
             //punishing retreat
-        }
-        else {
-            processNow(new EngageEvent(source, object, GridViewAnimator.VIEW_ANIM.screen));//flash before hiding
+        } else {
+            // processNow(new EngageEvent(source, object, GridViewAnimator.VIEW_ANIM.screen));//flash before hiding
         }
         if (isDetectionLogged(source, object))
             logHide(source, object);
     }
 
     private boolean isDetectionLogged(Unit source, BattleFieldObject object) {
-        if (object instanceof Structure)
-            return false;
+
 
         if (source != object)
             if (source.isMine())
@@ -183,7 +195,9 @@ public class EngageEvents extends ExplorationHandler {
     }
 
     private void logEvent(LogManager.LOGGING_DETAIL_LEVEL level, String s) {
-        addEvent(new EngageEvent(ENGAGE_EVENT.log, s, level));
+        EngageEvent event = new EngageEvent(ENGAGE_EVENT.log, level);
+        event.logMsg = s;
+        addEvent(event);
     }
 
     public void addEvent(Object... args) {
@@ -196,14 +210,14 @@ public class EngageEvents extends ExplorationHandler {
 
     public void addEvent(EngageEvent event) {
         event.delay = RandomWizard.getRandomFloatBetween(0.5f, 1f); //TODO specific
-        if (isLogged()){
+        if (isLogged()) {
             log(1, "Event added:" + event);
         }
-        eventStack.add(event);
+        eventQueue.add(event);
     }
 
     private void processNow(EngageEvent engageEvent) {
-        if (isLogged()){
+        if (isLogged()) {
             log(1, "Process immediately:" + engageEvent);
         }
         processor.process(engageEvent);

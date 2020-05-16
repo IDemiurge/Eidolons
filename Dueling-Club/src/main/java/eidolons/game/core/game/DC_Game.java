@@ -301,13 +301,11 @@ public class DC_Game extends GenericGame {
         droppedItemManager = new DroppedItemManager(this);
         droppedItemManager.init();
 
-
+        getDungeonMaster().getModuleLoader().loadInitial();
         if (AI_ON) {
             aiManager.init();
             dungeonMaster.getExplorationMaster().getAiMaster().getExploreAiManager().initialize();
         }
-
-        getDungeonMaster().getModuleLoader().loadInitial();
         setBattleInit(true);
     }
 

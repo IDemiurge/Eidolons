@@ -21,7 +21,7 @@ import java.util.Comparator;
  */
 public class AtbController implements Comparator<Unit> {
     public static final int ATB_READINESS_PER_AP = 2000; //20% readiness per Action Point
-    public static final float SECONDS_IN_ROUND = 12; //seconds; to sync with clock
+    public static final float SECONDS_IN_ROUND = 60; //seconds; to sync with clock
     public static final float ATB_TO_READY = 10;
     public static final Float TIME_LOGIC_MODIFIER = 1000f;
     protected static final Float ATB_PER_INITIATIVE_PER_SEC =0.05f ;

@@ -7,7 +7,6 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.igg.death.ShadowMaster;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
@@ -141,8 +140,7 @@ public class SightMaster {
     }
 
     private Boolean isBlocked(DC_Obj target, BattleFieldObject source) {
-        if (source.getVisionMode() == VISION_MODE.X_RAY_VISION)
-        {
+        if (source.getVisionMode() == VISION_MODE.X_RAY_VISION) {
             master.getVisionController().getClearshotMapper().set(source, target, false);
             return false;
         }
@@ -353,7 +351,7 @@ public class SightMaster {
         }
         Boolean result = coordinates.contains(target.getCoordinates());
         if (result) {
-//            LogMaster.log(0, target + " is visible: " + coordinates);
+            //            LogMaster.log(0, target + " is visible: " + coordinates);
         } else {
             coordinates = cacheSecondary.get(source);
             if (coordinates == null || coordinates.isEmpty()) {
@@ -361,10 +359,10 @@ public class SightMaster {
                 cacheSecondary.put(source, coordinates);
             }
             result = coordinates.contains(target.getCoordinates());
-//            main.system.auxiliary.log.LogMaster.log(1,result+" VISION SECTOR for "
-//                    +target.getNameAndCoordinate());
+            //            main.system.auxiliary.log.LogMaster.log(1,result+" VISION SECTOR for "
+            //                    +target.getNameAndCoordinate());
             if (result) {
-//                LogMaster.log(0, target + " is half-visible: " + coordinates);
+                //                LogMaster.log(0, target + " is half-visible: " + coordinates);
                 return false;
             } else {
                 return null;
@@ -407,22 +405,10 @@ public class SightMaster {
     }
 
     public void resetUnitVision(BattleFieldObject observer, DC_Obj object) {
-        UNIT_VISION status = null;
-
-        if (observer.isMine())
-            status = getUnitVisionStatusPrivate(object, observer);
-        else {
-            if (ExplorationMaster.isExplorationOn() &&
-                    master.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
-                status = master.getVisionController().getUnitVisionMapper().get(observer, object);
-            } else {
-//            status = master.getVisionController().getUnitVisionMapper().getVar(observer, object);
-                if (status == null) {
-                    //final hack
-                    status = getUnitVisionStatusPrivate(object, observer);
-                }
-            }
-        }
+        UNIT_VISION status = getUnitVisionStatusPrivate(object, observer);
+        // if (ExplorationMaster.isExplorationOn() && TODO into events!
+        //         master.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
+        //     status = master.getVisionController().getUnitVisionMapper().get(observer, object);
         object.setUnitVisionStatus(status, observer);
     }
 }

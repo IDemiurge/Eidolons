@@ -108,6 +108,7 @@ public class ShadowMap extends GroupX implements GridElement {
             return;
         super.act(delta);
 
+        setY( -(y1) *128);
         //TODO module fix - only act from x1 to x2
     }
 
@@ -125,7 +126,7 @@ public class ShadowMap extends GroupX implements GridElement {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        offset(x1*128, y1*128); //TODO is that right?
+        offset(x1*128, grid.getGdxY_ForModule(y1) *128); //TODO is that right?
     }
 
         private void init() {

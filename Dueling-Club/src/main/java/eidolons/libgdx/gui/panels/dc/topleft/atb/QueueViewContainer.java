@@ -35,10 +35,12 @@ class QueueViewContainer extends Container<QueueView> {
         mainHero = actor.isMainHero();
         if (actor == null) {
             return;
-        }
-        actor.addActor(intentIconBg = new Image(TextureCache.getOrCreateR(Images.INTENT_ICON_BG)));
+        } //TODO ensure this never happens twice!
+        actor.
+                addActor(intentIconBg = new Image(TextureCache.getOrCreateR(Images.INTENT_ICON_BG)));
         intentIconBg.setPosition( (AtbPanel.imageSize-30)/2,  80);
-        actor.addActor(intentIconSprite = new SpriteX());
+        actor.
+                addActor(intentIconSprite = new SpriteX());
 
         intentIconBg.setVisible(isIntentIconsOn());
 

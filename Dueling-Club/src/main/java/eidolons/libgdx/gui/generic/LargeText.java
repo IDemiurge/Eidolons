@@ -7,7 +7,7 @@ import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.texture.Images;
 
-public class LargeText extends GroupX {
+public class LargeText extends NoHitGroup {
 
     LabelX mainText;
     LabelX subText;

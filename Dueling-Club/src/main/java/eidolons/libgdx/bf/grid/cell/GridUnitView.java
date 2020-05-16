@@ -135,16 +135,12 @@ public class GridUnitView extends GenericGridView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//        if (isMainHero()) {
         if (getUserObject().isPlayerCharacter()) {
-//            if (getPortrait().getColor().a == 0) {
-//                getPortrait().fadeIn();
-//            }
+            //debug...
+            // main.system.auxiliary.log.LogMaster.log(1,getParent().getClass().getSimpleName()+ "; " + getActions()+"; "
+            //         +getColor().a + " " + getX() + ":"+getY());
             ((CustomSpriteBatch) batch).resetBlending();
             if (getUserObject().isHidden()) {
-//            if (EidolonsGame.DUEL) {
-//                setZIndex(853485348);
-//            }
                 return;
             }
         }

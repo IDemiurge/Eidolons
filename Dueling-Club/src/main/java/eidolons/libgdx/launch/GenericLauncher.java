@@ -164,7 +164,7 @@ public abstract class GenericLauncher extends Game {
 
     protected boolean isStopOnInactive() {
 //        return CoreEngine.isIDE() && !EidolonsGame.BOSS_FIGHT;//CoreEngine.isLiteLaunch();
-        return !CoreEngine.TEST_LAUNCH;
+        return CoreEngine.TEST_LAUNCH;
     }
 
     public LwjglApplicationConfiguration getConf() {

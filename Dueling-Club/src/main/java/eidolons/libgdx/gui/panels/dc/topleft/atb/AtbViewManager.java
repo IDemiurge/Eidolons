@@ -135,7 +135,15 @@ public class AtbViewManager {
         return pos * AtbPanel.imageSize + pos * atbPanel.DST_BETWEEN_VIEWS;
     }
 
-    protected QueueViewContainer getIfExists(int id) {
+    protected QueueViewContainer getIfExists(QueueView view) {
+        for (int i = 0; i < atbPanel.queue.length; i++) {
+            if (atbPanel.queue[i] != null && atbPanel.queue[i].getActor() == view) {
+                return atbPanel.queue[i];
+            }
+        }
+        return null;
+    }
+        protected QueueViewContainer getIfExists(int id) {
         for (int i = 0; i < atbPanel.queue.length; i++) {
             if (atbPanel.queue[i] != null && atbPanel.queue[i].id == id) {
                 return atbPanel.queue[i];

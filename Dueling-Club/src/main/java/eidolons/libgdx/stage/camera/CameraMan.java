@@ -429,6 +429,7 @@ public class CameraMan {
         if (hero.isPlayerCharacter()) {
             time = 1000;
         }
+        if (isCameraAutoCenteringOn())
         WaitMaster.doAfterWait(time, () -> {
             if (hero.getGame().getManager().getActiveObj() == hero) {
                 motions.clear();

@@ -28,6 +28,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
@@ -147,6 +148,9 @@ public class FullscreenAnims extends GroupX {
 
 
     private void initAnim(FullscreenAnimDataSource dataSource) {
+        if (!isOn()){
+            return;
+        }
         String path =
 //                FileManager.getRandomFilePathVariant(
 //                PathFinder.getImagePath()+
@@ -191,6 +195,10 @@ public class FullscreenAnims extends GroupX {
 //        }
 //        delayTimer = DELAY;
 //        showingTimer = getDuration() + delayTimer;
+    }
+
+    private boolean isOn() {
+        return !CoreEngine.TEST_LAUNCH;
     }
 
     @Override

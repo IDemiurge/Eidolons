@@ -3,11 +3,13 @@ package eidolons.game.battlecraft.logic.battlefield;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import main.content.DC_TYPE;
+import main.content.enums.rules.VisionEnums;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldManager;
@@ -79,15 +81,31 @@ public class DC_BattleFieldManager extends BattleFieldManager   {
 
 
     private void resetVisibleWallMap() {
-        visibleWallMap = new MapMaster().cloneHashMap(wallMap);
-        visibleWallMap.keySet().removeIf((sub) -> {
-            Boolean seen = VisionHelper.getMaster().getVisionController().getSeenMapper().
-                    get(game.getCellByCoordinate(sub));
-            if (seen == null) {
-                return true;
+        visibleWallMap = new LinkedHashMap<>();
+        for (Coordinates coordinates1 : wallMap.keySet()) {
+            Obj objectByCoordinate = game.getObjectByCoordinate(coordinates1);
+            if (objectByCoordinate != null) {
+                if (objectByCoordinate instanceof Structure) {
+                    if (((Structure) objectByCoordinate).getPlayerVisionStatus()
+                            != VisionEnums.PLAYER_VISION.INVISIBLE) {
+                        visibleWallMap.put(coordinates1, wallMap.get(coordinates1));
+                    }
+                }
             }
-            return !seen;
-        });
+        }
+        // visibleWallMap = new MapMaster().cloneHashMap(wallMap);
+        // visibleWallMap.keySet().removeIf((sub) -> {
+        //     Boolean seen = game.getCellByCoordinate(sub).isPlayerHasSeen();
+        //     // game.getGrid().getWallCache() IDEA: put walls into a static array to access easily
+        //     //try easy option for now
+        //     // VisionHelper.getMaster().getVisionController().
+        //     // VisionHelper.getMaster().getVisionController().getSeenMapper().
+        //     //         get(game.getCellByCoordinate(sub));
+        //     if (seen == null) {
+        //         return true;
+        //     }
+        //     return !seen;
+        // });
         visibleDiagonalJoints = new MapMaster().cloneHashMap(diagonalJoints);
         visibleDiagonalJoints.keySet().removeIf((sub) -> !visibleWallMap.containsKey(sub));
     }

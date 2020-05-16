@@ -20,12 +20,12 @@ import eidolons.libgdx.gui.panels.dc.topleft.ClockPanel;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
-import main.data.XLinkedMap;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AtbPanel extends GroupX {
     public final static int imageSize = 96;
@@ -184,8 +184,8 @@ public class AtbPanel extends GroupX {
     protected void removeView(int id) {
         for (int i = 0; i < queue.length; i++) {
             if (queue[i] != null && queue[i].id == id) {
-                ActionMaster.addFadeInAndOutAction(queue[i], 0.35f, true);
-//                queueGroup.removeActor(queue[i]);
+                // ActionMaster.addFadeInAndOutAction(queue[i], 0.35f, true);
+               queueGroup.removeActor(queue[i]);
                 queue[i] = null;
                 manager.sort();
                 break;
@@ -235,21 +235,20 @@ public class AtbPanel extends GroupX {
     }
 
     protected void cleanUp() {
-        Map<Integer, QueueView> views = new XLinkedMap<>();
+        List<QueueView> views = new ArrayList<>();
         DC_Game.game.getTurnManager().getDisplayedUnitQueue().stream().forEach(unit -> {
             Object o = ScreenMaster.getDungeonGrid().getViewMap().get(unit);
             if (o instanceof GridUnitView) {
                 GridUnitView view = ((GridUnitView) o);
-                views.put(view.getCurId(), view.getInitiativeQueueUnitView());
+                views.add( view.getInitiativeQueueUnitView());
             }
-
         });
 
         for (QueueViewContainer sub : queue) {
             if (sub == null)
                 continue;
-            if (!views.containsKey(sub.id)) {
-                QueueViewContainer view = manager.getIfExists(sub.id);
+            if (!views.contains (sub.getActor())) {
+                QueueViewContainer view = manager.getIfExists(sub.getActor());
                 if (view == null)
                     continue;
                 if (view.getActor() == null)

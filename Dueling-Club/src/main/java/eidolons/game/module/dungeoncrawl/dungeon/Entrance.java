@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.entity.obj.Structure;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
@@ -8,6 +9,7 @@ import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.system.launch.CoreEngine;
 
 //can be a door, a tunnel, a staircase, a portal... possibly trapped
 public class Entrance extends Structure { //ScenarioUnit
@@ -17,7 +19,7 @@ public class Entrance extends Structure { //ScenarioUnit
     private Module targetModule;
 
     public Entrance(int x, int y, ObjType type, DC_Game game) {
-        super(type, x, y, DC_Player.NEUTRAL, game,         new Ref());
+        super(type, x, y, DC_Player.NEUTRAL, game, new Ref());
     }
 
     @Override
@@ -36,6 +38,10 @@ public class Entrance extends Structure { //ScenarioUnit
 
     public void setMainEntrance(boolean mainEntrance) {
         this.mainEntrance = mainEntrance;
+        if (CoreEngine.isLevelEditor()) {
+            getGame().getDungeonMaster().getFloorWrapper().getData().setValue(LevelStructure.FLOOR_VALUES.start_module,
+                    getModule().getId());
+        }
     }
 
     public boolean isMainEntrance() {

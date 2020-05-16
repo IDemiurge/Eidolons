@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.ai.advanced.engagement;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.rules.VisionEnums.ENGAGEMENT_LEVEL;
@@ -17,10 +18,12 @@ import main.system.text.LogManager;
 import static main.system.auxiliary.log.LogMaster.log;
 
 public class EngageEventProcessor {
-    DC_Game game;
+    private DC_Game game;
+    private ExplorationMaster master;
 
-    public EngageEventProcessor(DC_Game game) {
-        this.game = game;
+    public EngageEventProcessor(ExplorationMaster master) {
+        this.game = master.getGame();
+        this.master = master ;
     }
 
     public void process(EngageEvent event) {
@@ -31,7 +34,7 @@ public class EngageEventProcessor {
         if (event.type != null)
         switch (event.type) {
             case engagement_change:
-                engagementChange((ENGAGEMENT_LEVEL) event.arg, event.source);
+                engagementChange( event.level, event.source);
                 break;
             case status_change:
                 statusChange(event.status, event.arg);
@@ -47,12 +50,14 @@ public class EngageEventProcessor {
                 event.source.getAI().getGroup().setEngagementLevel(ENGAGEMENT_LEVEL.PRE_COMBAT);
             case combat_start:
                 statusChange(PLAYER_STATUS.COMBAT, event.arg);
+                master.switchExplorationMode(false);
                 //++ events -                 largeText();
                 //      :: Text, music, camera, ui atb, pace!
                 //        GuiEventManager.trigger(GuiEventType.SHOW_LARGE_TEXT,
                 //                ImmutableList.of("Encounter", "The Dummies", 3f));
                 break;
             case combat_end:
+                master.switchExplorationMode(true);
                 break;
             case view_anim:
                 GuiEventManager.triggerWithParams(GuiEventType.GRID_OBJ_ANIM, event.arg, event.source, event.graphicData);

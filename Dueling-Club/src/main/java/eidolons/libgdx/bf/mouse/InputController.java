@@ -326,7 +326,7 @@ public abstract class InputController implements InputProcessor {
     }
 
     protected boolean isFreeDrag() {
-        return false;
+        return CoreEngine.TEST_LAUNCH;
     }
 
     protected void tryPullCameraX(int screenX) {
@@ -389,9 +389,9 @@ public abstract class InputController implements InputProcessor {
     }
 
     protected boolean zoom(int i) {
-        if (!isUnlimitedZoom())
-            if (!checkZoom(i))
-                return false;
+        // if (!isUnlimitedZoom())
+        //     if (!checkZoom(i))
+        //         return false;
         if (!alt && !ctrl) {
             if (i == 1) {
 

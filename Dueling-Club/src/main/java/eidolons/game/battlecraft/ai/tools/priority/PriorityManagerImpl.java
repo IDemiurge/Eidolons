@@ -1248,7 +1248,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     @Override
     public int getCounterPenalty(DC_ActiveObj active, Unit targetObj) {
         // TODO cache!
-        Active action = game.getActionManager().getCounterAttackAction(getUnit(), targetObj, active);
+        Active action = game.getActionManager().getCounterAttackAction( targetObj,getUnit(), active);
         if (action == null)
             return 0;
         return Math.round(-getDamagePriority(

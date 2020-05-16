@@ -8,6 +8,7 @@ import main.content.enums.EncounterEnums;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapBuilder;
+import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class AiGroupHandler extends AiHandler {
 
     public GroupAI createEncounterGroup(Encounter encounter, AiData data) {
         GroupAI group = new GroupAI(encounter.getLeader());
+        group.setMembers(new DequeImpl<>(encounter.getUnits()));
         if (data == null) {
             data = new AiData(true, EncounterEnums.UNIT_GROUP_TYPE.CROWD, null );
         }
@@ -45,7 +47,7 @@ public class AiGroupHandler extends AiHandler {
 //            behavior = getBehavior(type);
         }
         group.setBehavior(behavior);
-
+        groups.add(group);
         return group;
     }
 

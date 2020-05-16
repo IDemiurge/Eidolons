@@ -422,11 +422,15 @@ public class DC_KeyManager
     }
 
     public boolean handleKeyDown(int keyCode) {
-        controller.keyDown(keyCode);
-        if (globalController.keyDown(keyCode))
-            return true;
-
-        Character CHAR = getKeyTyped(keyCode);
+        if (controller != globalController) {
+            if (controller.keyDown(keyCode) || globalController.keyDown(keyCode))
+                return true;
+        } else {
+            if (controller.keyDown(keyCode)) {
+                return true;
+            }
+        }
+            Character CHAR = getKeyTyped(keyCode);
         if (CHAR != null) {
             return handleKeyTyped(0, CHAR);
         }

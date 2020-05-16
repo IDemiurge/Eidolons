@@ -70,10 +70,10 @@ import static main.system.GuiEventType.*;
 /**
  * Created by JustMe on 5/2/2018.
  */
-public class GridManager {
+public class GridRenderHelper {
     private static final String SEQUENTIAL = "=SEQ=";
     private static final String COMMENT_WAIT_KEY = "[COMMENT_WAIT]";
-    public static GridManager instance;
+    public static GridRenderHelper instance;
 
     FACING_DIRECTION f = FACING_DIRECTION.NORTH;
     DC_GridPanel panel;
@@ -81,7 +81,7 @@ public class GridManager {
     private Coordinates c;
     private List<Runnable> commentRunnables =    new ArrayList<>() ;
 
-    public GridManager(DC_GridPanel panel) {
+    public GridRenderHelper(DC_GridPanel panel) {
         instance = this;
         this.panel = panel;
         GuiEventManager.bind(INGAME_EVENT_TRIGGERED, onIngameEvent());

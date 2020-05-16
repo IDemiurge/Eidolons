@@ -71,7 +71,8 @@ public class GridMaster {
                                                  boolean center,
                                                  boolean camera, boolean gdxY, GridPanel gridPanel) {
 
-//        InputController controller = DungeonScreen.getInstance().getController();
+        //       TODO cache?
+        //        InputController controller = DungeonScreen.getInstance().getController();
         float x = sourceCoordinates.getX() * CELL_W;
         float y = (gridPanel.getGdxY_ForModule((gdxY ? sourceCoordinates.getY() - 1 : sourceCoordinates.getY()) )* CELL_H);
 

@@ -14,6 +14,7 @@ public interface TimedRule {
     Map<TimedRule, Map<BattleFieldObject, DamageRuleTimer>> cache = new HashMap<>();
 
     default void timePassed(float time, BattleFieldObject object) {
+        //TODO a core check if we even need to check!!!
         Map<BattleFieldObject, DamageRuleTimer> map = cache.get(this);
         if (map == null) {
             cache.put(this, map= new HashMap<>());

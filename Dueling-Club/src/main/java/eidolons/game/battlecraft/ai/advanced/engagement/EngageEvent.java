@@ -6,16 +6,18 @@ import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.grid.GridViewAnimator;
 import main.content.enums.rules.VisionEnums;
 import main.data.xml.XmlStringBuilder;
+import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 
 public class EngageEvent {
-    public static Integer ID =0;
+    public static Integer ID = 0;
     protected Object arg;
     protected int id;
     protected Unit source;
     protected BattleFieldObject target;
     protected ENGAGE_EVENT type;
+    protected VisionEnums.ENGAGEMENT_LEVEL level;
     protected Event.EVENT_TYPE event_type;
     protected String logMsg, soundPath, popupText;
     protected GraphicData graphicData;
@@ -36,7 +38,9 @@ public class EngageEvent {
     public EngageEvent(Object... args) {
         for (Object o : args) {
             //instance
-            if (o instanceof VisionEnums.PLAYER_STATUS) {
+            if (o instanceof VisionEnums.ENGAGEMENT_LEVEL) {
+                this.level = (VisionEnums.ENGAGEMENT_LEVEL) o;
+            } else if (o instanceof VisionEnums.PLAYER_STATUS) {
                 this.status = (VisionEnums.PLAYER_STATUS) o;
             } else if (o instanceof GridViewAnimator.VIEW_ANIM) {
                 this.anim = (GridViewAnimator.VIEW_ANIM) o;
@@ -75,12 +79,26 @@ public class EngageEvent {
 
     @Override
     public String toString() {
-        return new XmlStringBuilder2().append("EngageEvent:\n").append("arg=",arg).append(", id=",id).append(", source=",source).append(", target=",target).append(", type=",type).append(", event_type=",event_type).append(", logMsg='",logMsg).append(", soundPath='").append(soundPath).append(", popupText='",popupText).append(", graphicData=",graphicData).append(", c=",c).append(", anim=",anim).append(", status=",status).append(", delay=",delay).toString();
+        return new XmlStringBuilder2().append("Event-" + id +
+                ":" +
+                "\n").append(", source: ", source)
+                .append(", target: ", target).append(", type: ", type).append(", event_type: ", event_type).append("arg: ", arg)
+                .append(", status: ", status)
+                .append(", level: ", level)
+                .append(", logMsg: '", logMsg).append(", soundPath: " + soundPath).
+                        append(", popupText: ", popupText).append(", graphicData: ", graphicData).
+                        append(", c: ", c).append(", anim: ", anim).
+                        append(", delay: ", delay).toString();
     }
-    public class XmlStringBuilder2 extends XmlStringBuilder{
-        public XmlStringBuilder2 append(String s, Object o){
+
+    public class XmlStringBuilder2 extends XmlStringBuilder {
+        public XmlStringBuilder2 append(String s, Object o) {
             if (o == null) {
-            return this;
+                return this;
+            }
+            if (o instanceof Obj) {
+                super.append(s +
+                        ((Obj) o).getNameAndCoordinate());
             }
             super.append(s + o);
             return this;

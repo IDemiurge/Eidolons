@@ -183,7 +183,7 @@ public class AI_Manager extends AiMaster {
 
     public boolean isDefaultAiGroupForUnitOn() {
 //        return isRngDungeon()  ;
-        return false;
+        return true;
     }
     public Action getDefaultAction(Unit activeUnit) {
         return getAtomicAi().getAtomicWait(activeUnit);

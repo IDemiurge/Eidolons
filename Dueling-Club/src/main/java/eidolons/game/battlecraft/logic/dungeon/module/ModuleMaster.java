@@ -1,17 +1,14 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
-import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.core.Eidolons;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import org.w3c.dom.Node;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class ModuleMaster extends DungeonHandler  {
+public class ModuleMaster extends DungeonHandler {
 
     Module base;
     Module current;
@@ -29,31 +26,14 @@ public class ModuleMaster extends DungeonHandler  {
     public void setModules(Set<Module> modules) {
         this.modules = modules;
         if (!modules.isEmpty()) {
-            base = getInitialModule();
-            current = getInitialModule();
-        }
-    }
-
-    private Module getInitialModule() {
-        return getModules().iterator().next();
-    }
-
-    private Module getModuleByPosition() {
-        Coordinates c = Eidolons.getMainHero().getCoordinates();
-        for (Module module : modules) {
-            if (module.getCoordinatesSet().contains(c)) {
-                return module;
+            for (Module module : modules) {
+                if (module.isStartModule()) {
+                    base = module;
+                    break;
+                }
             }
+            current = base;
         }
-        return null;
-    }
-
-    public boolean isModuleInitOn() {
-        return true;
-    }
-
-    public boolean isZoneInitRequired(Node zoneNode) {
-        return zoneNode.getNodeName().equalsIgnoreCase(current.getName());
     }
 
     public Module getModule(Coordinates c) {
@@ -61,24 +41,11 @@ public class ModuleMaster extends DungeonHandler  {
             if (module.getCoordinatesSet().contains(c)) {
                 return module;
             }
-//            if (CoordinatesMaster.isWithinBounds(c, module.getX(), module.getX2(),
-//                    module.getY(), module.getY2())) {
-//                return module;
-//            }
         }
         return null;
     }
 
-    public boolean isWithinModule(Coordinates c) {
-        return CoordinatesMaster.isWithinBounds(c, current.getX(), current.getY(), current.getX() +
-                current.getWidth(), current.getY() + current.getHeight());
-
-    }
-
     public Module getBase() {
-        if (base == null) {
-            base = getInitialModule();
-        }
         return base;
     }
 
@@ -95,7 +62,7 @@ public class ModuleMaster extends DungeonHandler  {
             return full;
         }
         LinkedHashSet<Coordinates> set = new LinkedHashSet<>();
-          full = new LinkedHashSet<>(getGame().getCoordinates());
+        full = new LinkedHashSet<>(getGame().getCoordinates());
         for (Module module : getModules()) {
             set.addAll(module.initCoordinateSet(false));
             set.removeAll(module.getVoidCells());

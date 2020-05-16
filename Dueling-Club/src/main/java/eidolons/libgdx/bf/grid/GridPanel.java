@@ -88,7 +88,7 @@ public abstract class GridPanel extends Group {
     protected List<GroupWithEmitters> emitterGroups = new ArrayList<>(125);
     protected List<OverlayView> overlays = new ArrayList<>();
 
-    protected GridManager manager;
+    protected GridRenderHelper manager;
     protected GridOverlaysManager overlayManager;
 
     protected Coordinates offset;
@@ -728,7 +728,7 @@ public abstract class GridPanel extends Group {
         return customOverlayingObjects;
     }
 
-    public GridManager getGridManager() {
+    public GridRenderHelper getGridManager() {
         return manager;
 
     }

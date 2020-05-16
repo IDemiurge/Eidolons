@@ -20,6 +20,7 @@ import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
 import eidolons.game.netherflame.igg.death.ShadowMaster;
 import eidolons.game.netherflame.igg.pale.PaleAspect;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
@@ -86,7 +87,7 @@ public class DC_GridPanel extends GridPanel {
         super.initObjects(objects);
         addActor(animMaster = AnimMaster.getInstance());
         animMaster.bindEvents();
-        manager = new GridManager(this);
+        manager = new GridRenderHelper(this);
         addActor(overlayManager);
 
         return this;
@@ -514,6 +515,8 @@ public class DC_GridPanel extends GridPanel {
         float x = uv.getX() + gridCellContainer.getX();
         float y = uv.getY() + gridCellContainer.getY();
         gridCellContainer.removeActor(uv);
+        uv.clearActions();
+        ActionMaster.addFadeOutAction(uv, 0.5f, false);
         addActor(uv);
         uv.setPosition(x, y);
         if (heroObj.isPlayerCharacter())

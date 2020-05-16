@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
+import main.system.launch.CoreEngine;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,7 +61,7 @@ public class BaseSlotPanel extends TablePanel {
             super.setUpdateRequired(false);
         } else
         if (beforeReset <= 0) {
-            beforeReset = 6f;
+            beforeReset = getResetPeriod();
             super.setUpdateRequired(true);
         } else {
             super.setUpdateRequired(false);
@@ -88,6 +89,13 @@ public class BaseSlotPanel extends TablePanel {
                 setActivePage(mod);
             }
         }
+    }
+
+    private float getResetPeriod() {
+        if (CoreEngine.TEST_LAUNCH) {
+            return 20f;
+        }
+        return 7f;
     }
 
     protected void initContainer(List<ValueContainer> sources, String emptyImagePath) {

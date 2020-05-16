@@ -28,7 +28,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.game.netherflame.igg.event.TipMessageMaster;
 import eidolons.game.netherflame.igg.pale.PaleAspect;
-import eidolons.libgdx.bf.grid.GridManager;
+import eidolons.libgdx.bf.grid.GridRenderHelper;
 import eidolons.system.text.Texts;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -56,7 +56,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static eidolons.libgdx.bf.grid.GridManager.removeSequentialKey;
+import static eidolons.libgdx.bf.grid.GridRenderHelper.removeSequentialKey;
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
 
 /**
@@ -370,14 +370,14 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         }
 //        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, img, text, c);
 
-        GridManager.instance.comment_(img, text, c);
+        GridRenderHelper.instance.comment_(img, text, c);
         Eidolons.getGame().getLogManager().log(name + " :" + removeSequentialKey(text));
         return true;
     }
 
     public static boolean doComment(Unit unit, String key, Vector2 at) {
 //        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, unit, key, at);
-        GridManager.instance.comment_( unit, key, at);
+        GridRenderHelper.instance.comment_( unit, key, at);
         return true;
     }
 

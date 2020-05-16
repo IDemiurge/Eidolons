@@ -214,7 +214,7 @@ public class OptionsMaster {
                     }
                     break;
                 case GHOST_MODE:
-                    if (!CoreEngine.isFastMode())
+                    // if (!CoreEngine.isFastMode())
                         VisionRule.setPlayerUnseenMode(gameplayOptions.getBooleanValue(key));
                     break;
                 case RULES_SCOPE:

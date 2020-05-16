@@ -44,8 +44,13 @@ public class StructureBuilder extends DungeonHandler {
 
     public Module createModule(Node node, Location location) {
         Module module = new Module(game);
-        if (CoreEngine.TEST_LAUNCH)
+        if (module.getId()==
+        location.getData().getIntValue(LevelStructure.FLOOR_VALUES.start_module)) {
+            module.setStartModule(true);
+        }
+        if (CoreEngine.TEST_LAUNCH)  //else at least init some stuff
         if (!getFloorLoader().isModuleObjInitRequired(module)) {
+            module.fauxInit();
             return module;
         }
 //    TODO explicit order!    XmlNodeMaster.findNode()
@@ -57,8 +62,8 @@ public class StructureBuilder extends DungeonHandler {
                 data.apply();
                 log(LOG_CHANNEL.BUILDING, "Module after data applies: " +
                         module);
-                if (master.isModuleSizeBased())
-                    if (module.getId() == 0) {
+                if (master.isModuleSizeBased()) // kind of duplicates the ModuleLoader logic
+                    if (module.isStartModule()) {
                         if (module.getWidth() > 0 && module.getHeight() > 0) {
                             getBuilder().initModuleSize(module);
                         }

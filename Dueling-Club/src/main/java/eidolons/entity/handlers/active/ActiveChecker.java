@@ -6,6 +6,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
+import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
@@ -223,5 +224,9 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
     public boolean isUnarmed() {
         return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.UNARMED.toString());
+    }
+
+    public boolean checkAttackType(DC_UnitModel.ATTACK_TYPE type) {
+        return checkProperty(G_PROPS.ACTION_TAGS, type.toString());
     }
 }
