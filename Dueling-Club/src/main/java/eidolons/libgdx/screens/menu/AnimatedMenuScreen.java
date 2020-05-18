@@ -1,7 +1,7 @@
 package eidolons.libgdx.screens.menu;
 
 
-import eidolons.game.netherflame.igg.story.IggActChoicePanel;
+import eidolons.game.netherflame.main.story.IggActChoicePanel;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;

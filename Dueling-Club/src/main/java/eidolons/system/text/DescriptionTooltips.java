@@ -6,7 +6,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.module.herocreator.logic.AttributeMaster;
-import eidolons.game.netherflame.igg.event.TIP;
+import eidolons.game.netherflame.main.event.TIP;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
@@ -221,10 +221,10 @@ public class DescriptionTooltips {
             case C_STAMINA:
             case C_TOUGHNESS:
                 return ContentValsManager.getBaseParameterFromCurrent(params).getDisplayedName();
-            case N_OF_ACTIONS:
+            case INITIATIVE:
                 if (DC_Engine.isAtbMode()) return "Initiative";
                 break;
-            case C_INITIATIVE:
+            case C_ATB:
                 if (DC_Engine.isAtbMode()) return "Readiness";
                 break;
             case C_N_OF_COUNTERS:

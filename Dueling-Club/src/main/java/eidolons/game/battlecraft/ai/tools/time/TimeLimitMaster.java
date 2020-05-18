@@ -7,6 +7,7 @@ import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 public class TimeLimitMaster {
@@ -74,6 +75,9 @@ public class TimeLimitMaster {
     }
 
     public static boolean checkTimeLimit(METRIC metric, String string) {
+        if (CoreEngine.TEST_LAUNCH) {
+            return true;
+        }
         boolean result = Chronos.getTimeElapsedForMark(string) < TimeLimitMaster
          .getTimeLimitMetric(metric);
         if (!result) {
@@ -96,6 +100,9 @@ public class TimeLimitMaster {
     }
 
     public static boolean checkTimeLimitForAi(UnitAI ai) {
+        if (CoreEngine.TEST_LAUNCH) {
+            return true;
+        }
         if (getTimeLimitForAi(ai) > getMarkForAi(ai))
             return true;
         LogMaster.log(1, "*********** TIME ELAPSED FOR  "

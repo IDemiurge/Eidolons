@@ -2,7 +2,6 @@ package eidolons.ability;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.rules.round.FocusRule;
 import eidolons.game.core.Eidolons;
 import eidolons.system.DC_ConditionMaster;
@@ -14,8 +13,8 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
@@ -32,13 +31,6 @@ public class DC_CostsFactory {
     public static Costs getCostsForSpell(DC_ActiveObj spell, boolean isSpell) {
         List<Cost> costs = new ArrayList<>();
         Cost cost = null;
-
-        if (!DC_Engine.isAtbMode()) {
-            cost = getCost(spell, PARAMS.AP_COST, PARAMS.C_N_OF_ACTIONS);
-            if (cost != null) {
-                costs.add(cost);
-            }
-        }
 
         cost = getCost(spell, PARAMS.ENERGY_COST, PARAMS.C_ENERGY);
         if (cost != null) {

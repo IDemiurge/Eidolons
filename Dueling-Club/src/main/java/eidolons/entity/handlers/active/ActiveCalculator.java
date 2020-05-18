@@ -1,6 +1,5 @@
 package eidolons.entity.handlers.active;
 
-import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
@@ -17,16 +16,6 @@ public class ActiveCalculator extends EntityCalculator<DC_ActiveObj> {
         super(entity, entityMaster);
     }
 
-
-    public int calculateTimeCost() {
-        if (getEntity().getCosts().getCost(PARAMS.C_N_OF_ACTIONS) == null) {
-            return 0;
-        }
-        return getEntity().getCosts().getCost(PARAMS.C_N_OF_ACTIONS).getPayment()
-         .getAmountFormula().getInt(getRef())
-         * getEntity().getOwnerUnit().getIntParam(PARAMS.INITIATIVE_MODIFIER);
-
-    }
 
     public int getCritOrDodgeChance(DC_Obj target) {
         if (!getEntity().getChecker().isAttackGeneric())

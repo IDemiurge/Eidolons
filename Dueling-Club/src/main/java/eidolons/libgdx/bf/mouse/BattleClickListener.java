@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.igg.soul.panel.LordPanel;
+import eidolons.game.netherflame.main.soul.panel.LordPanel;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;

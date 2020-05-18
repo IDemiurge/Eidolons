@@ -95,10 +95,14 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         //        return hero;
     }
 
+    @Override
+    public ScenarioMeta getMetaGame() {
+        return super.getMetaGame();
+    }
 
     @Override
     public Party initPlayerParty() {
-        if (!getMaster().getMetaGame().isPartyRespawn()) {
+        if (!getMetaGame().isPartyRespawn()) {
             party = Eidolons.getParty();
             if (party != null)
                 return party;

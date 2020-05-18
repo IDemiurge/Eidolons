@@ -11,7 +11,7 @@ import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.DungeonCrawler;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
-import eidolons.game.netherflame.igg.soul.eidola.SoulMaster;
+import eidolons.game.netherflame.main.soul.eidola.SoulMaster;
 import main.ability.AbilityObj;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;

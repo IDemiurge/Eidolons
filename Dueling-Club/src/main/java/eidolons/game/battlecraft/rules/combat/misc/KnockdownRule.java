@@ -41,7 +41,7 @@ public class KnockdownRule {
     public static void knockdown(Unit target) {
         Effects e = new Effects();
         target.getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.KNOCKDOWN, target);
-        e.add(new ModifyValueEffect(PARAMS.C_N_OF_ACTIONS, MOD.MODIFY_BY_CONST, "-3"));
+        e.add(new ModifyValueEffect(PARAMS.C_ATB, MOD.MODIFY_BY_CONST, "-3"));
         e.add(new ModifyValueEffect(PARAMS.C_FOCUS, MOD.MODIFY_BY_CONST, "-15"));
         (e).apply(Ref.getSelfTargetingRefCopy(target));
 

@@ -216,7 +216,7 @@ public class ParamAnalyzer extends AiHandler {
              .getInt(unit.getRef()), unit.getIntParam(p));
             if (perc > 100) {
                 // not enough
-                if (p != PARAMS.C_N_OF_ACTIONS) {
+                if (p != PARAMS.C_ATB) {
                     // actions can be gained on next  round
                     return 0;
                 }
@@ -251,7 +251,7 @@ public class ParamAnalyzer extends AiHandler {
             }
             return 125; // actions
         }
-        if (p == PARAMS.C_N_OF_ACTIONS) {
+        if (p == PARAMS.C_ATB) {
             return 150;
         }
         if (p == PARAMS.C_ESSENCE)

@@ -47,13 +47,11 @@ import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import javax.swing.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static main.system.GuiEventType.INITIATIVE_CHANGED;
 import static main.system.GuiEventType.SHOW_MODE_ICON;
 
 public abstract class DC_UnitModel extends BattleFieldObject implements Rotatable {
@@ -198,28 +196,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     }
 
 
-    public void recalculateInitiative() {
-
-        final int before = getIntParam(PARAMS.C_INITIATIVE);
-        final int initiative = getCalculator().calculateInitiative(true);
-
-        setParam(PARAMS.C_INITIATIVE, initiative, true);
-
-        int baseInitiative = getCalculator().calculateInitiative(false);
-        setParam(PARAMS.INITIATIVE, baseInitiative, true);
-
-        resetPercentage(PARAMS.INITIATIVE);
-
-        final int after = getIntParam(PARAMS.C_INITIATIVE);
-
-        if (before - after != 0) {
-            GuiEventManager.trigger(
-                    INITIATIVE_CHANGED,
-                    new ImmutablePair<>(this, after)
-            );
-        }
-    }
-
 
     public DC_ActiveObj getPreferredInstantAttack() {
         String action = getProperty(PROPS.DEFAULT_INSTANT_ATTACK_ACTION);
@@ -244,13 +220,16 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return getAttackOfType(ActionEnums.ATTACK_TYPE.QUICK_ATTACK);
     }
 
-    public DC_ActiveObj getAttackOfType(ActionEnums.ATTACK_TYPE quickAttack) {
+    public DC_ActiveObj getAttackOfType(ActionEnums.ATTACK_TYPE type) {
         for (DC_UnitAction subAction : getAttack().getSubActions()) {
-            if (subAction.getChecker().checkAttackType(quickAttack)) {
+            if (subAction.getChecker().checkAttackType(type)) {
                 return subAction;
             }
         }
-        return null;
+        main.system.auxiliary.log.LogMaster.log(1,"No action of type " +
+               type +
+                " found for "+getName() );
+        return getAttack().getSubActions().get(0);
     }
 
     public void setPreferredCounterAttack(DC_ActiveObj preferredCounterAttack) {

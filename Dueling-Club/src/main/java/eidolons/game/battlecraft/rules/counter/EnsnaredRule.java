@@ -138,14 +138,14 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
          getNumberOfCounters(unit) + "*1.5", ref, " and breaks free!",
          "Entanglement")) {
             unit.setCounter(getCounterName(), 0);
-            unit.modifyParameter(PARAMS.C_N_OF_ACTIONS, -1);
+            unit.modifyParameter(PARAMS.C_ATB, -10); //TODO review
             return false;
         }
 
         if (RollMaster.roll(GenericEnums.ROLL_TYPES.QUICK_WIT, "-",
          getNumberOfCounters(unit) + "/2.5", ref,
          "@, unable to figure out how to cut free...", "Entanglement")) {
-            unit.modifyParameter(PARAMS.C_N_OF_ACTIONS, -1);
+            unit.modifyParameter(PARAMS.C_ATB, -10);
             return false;
         }
 

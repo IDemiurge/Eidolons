@@ -2,7 +2,6 @@ package eidolons.libgdx.gui.panels.dc.actionpanel.datasource;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import main.content.values.parameters.PARAMETER;
@@ -33,9 +32,7 @@ public class ActionCostSourceImpl implements ActionCostSource {
             final double param = activeObj.getParamDouble(cost);
             String text = String.format(Locale.US, "%.1f", param);
             if (cost == PARAMS.AP_COST) {
-                if (DC_Engine.isAtbMode()) {
                     text =   AtbMaster.getDisplayedReadinessCost(activeObj) + "%";
-                }
             }
             if (param > 0) {
                 final String iconPath = ImageManager.getValueIconPath(COSTS_ICON_PARAMS[i]);

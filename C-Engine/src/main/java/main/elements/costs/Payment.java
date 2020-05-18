@@ -3,7 +3,6 @@ package main.elements.costs;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
 import main.entity.obj.Obj;
-import main.system.auxiliary.RandomWizard;
 import main.system.math.Formula;
 
 import java.io.Serializable;
@@ -41,32 +40,9 @@ public class Payment implements Serializable {
         Number n = amountFormula.evaluate(ref);
         if (n instanceof Double) {
             this.ref = ref;
-            if (isRolledRounded()) {
-                Double D = (Double) n;
-                int chance = (int) (D * 100 + 0) % 100;
-                if (chance >= 50) {
-                    boolean up = RandomWizard.chance(chance);
-                    lastPaid = (int) Math.round((n.doubleValue()));
-                    if (!up) {
-                        try {
-                            ref.getGame().getLogManager()
-                             .logFastAction(payee, ref);
-                        } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
-                        }
-                        lastPaid--;
-                    }
-                    return payee.modifyParameter(valueToPay, -lastPaid);
-                }
-            }
-
         }
         lastPaid = amountFormula.getInt(ref);
         return payee.modifyParameter(valueToPay, -lastPaid);
-    }
-
-    private boolean isRolledRounded() {
-        return ref.getGame().getValueManager().isRolledRoundind(valueToPay);
     }
 
     public PARAMETER getParamToPay() {

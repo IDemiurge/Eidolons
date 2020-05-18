@@ -97,7 +97,7 @@ public class DC_CONSTS {
         CARRYING_CAPACITY(6, "", 15, 35, 80, 175, 400, "Bracer", PARAMS.CARRYING_CAPACITY),
 //        INITIATIVE_MODIFIER(15, "", 4, 8, 15, 25, 40, "Noble Ring", PARAMS.INITIATIVE_MODIFIER),
         N_OF_COUNTERS(4, "", 2, 4, 7, 14, 25, "Bone Ring", PARAMS.N_OF_COUNTERS),
-        N_OF_ACTIONS(15, "", 1, 2, 4, 9, 22, "Power Ring", PARAMS.N_OF_ACTIONS),
+        N_OF_ACTIONS(15, "", 1, 2, 4, 9, 22, "Power Ring", PARAMS.INITIATIVE),
         SIGHT_RANGE(24, "", 1, 2, 3, 4, 5, "Necklace", false, PARAMS.SIGHT_RANGE),
 //        CONCEALMENT(12, "", 5, 12, 25, 50, 110, "Possessed Ring", PARAMS.CONCEALMENT),
 

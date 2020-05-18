@@ -22,6 +22,4 @@ public interface TurnManager {
 
     DequeImpl<? extends Obj> getDisplayedUnitQueue();
 
-    int getTimeModifier();
-
 }

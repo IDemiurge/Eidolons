@@ -253,19 +253,6 @@ public class UnitDataSource implements
         return container;
     }
 
-    @Override
-    public ValueContainer getActionPoints() {
-        int c = unit.getIntParam(PARAMS.C_N_OF_ACTIONS);
-        int m = unit.getIntParam(PARAMS.N_OF_ACTIONS);
-        final String value = c + "/" + m;
-        VerticalValueContainer container = getValueContainer(PARAMS.N_OF_ACTIONS, value);
-
-        ValueTooltip toolTip = new ValueTooltip();
-        toolTip.setUserObject(Collections.singletonList(
-                new ValueContainer(PARAMS.N_OF_ACTIONS.getName(), value)));
-        container.addListener(toolTip.getController());
-        return container;
-    }
 
     public VerticalValueContainer getParamContainer(PARAMETER parameter) {
         final String string = unit.getStrParam(parameter);

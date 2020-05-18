@@ -6,8 +6,8 @@ import main.content.ValueManager;
 import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,11 +79,6 @@ public class DC_ValueManager implements ValueManager {
         }
         return params.toArray(new PARAMETER[0]);
 
-    }
-
-    @Override
-    public boolean isRolledRoundind(PARAMETER valueToPay) {
-        return valueToPay == PARAMS.C_N_OF_ACTIONS;
     }
 
     public ValueHelper getValueHelper() {

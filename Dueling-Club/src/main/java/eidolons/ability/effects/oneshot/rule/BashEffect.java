@@ -23,7 +23,7 @@ public class BashEffect extends DC_Effect implements OneshotEffect {
         int amount = formulaIni.getInt(ref) * mod / 100;
         if (mod != 0) {
             amount = -amount * mod / 100;
-            new ModifyValueEffect(PARAMS.C_INITIATIVE_BONUS, MOD.MODIFY_BY_CONST, "" + amount)
+            new ModifyValueEffect(PARAMS.C_ATB, MOD.MODIFY_BY_CONST, "" + amount)
              .apply(ref);
         }
 

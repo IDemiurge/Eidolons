@@ -169,10 +169,6 @@ public abstract class ValueBar extends SuperActor {
         batch.setColor(color);
         float x = getX() + offsetX;
 
-//      TODO   if (reverse && keserim) {
-//            x = x + region.getRegionWidth() * getScaleX() * (Math.min(1, fullLengthPerc) - Math.min(1, perc));
-//            x = x + region.getRegionWidth() * (  perc-1);
-//        }
         batch.draw(region, x, y, getScaleX() * region.getRegionWidth(),
                 getScaleY() * region.getRegionHeight());
     }

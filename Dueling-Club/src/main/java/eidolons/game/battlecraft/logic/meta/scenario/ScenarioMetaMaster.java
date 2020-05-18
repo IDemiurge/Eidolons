@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.logic.meta.universal.*;
 import eidolons.game.battlecraft.logic.mission.quest.QuestMissionMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.ScenarioGame;
-import eidolons.game.netherflame.igg.death.IGG_DefeatHandler;
+import eidolons.game.netherflame.main.death.NF_DefeatHandler;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
@@ -16,7 +16,7 @@ import main.system.GuiEventType;
 /**
  * Created by JustMe on 5/13/2017.
  */
-public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
+public class ScenarioMetaMaster<T extends ScenarioMeta> extends MetaGameMaster<T> {
 
     public ScenarioMetaMaster(String data) {
         super(data);
@@ -31,6 +31,11 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
     public void preStart() {
         getMetaDataManager().initData();
         super.preStart();
+    }
+
+    @Override
+    public ScenarioMeta getMetaGame() {
+        return (ScenarioMeta) super.getMetaGame();
     }
 
     @Override
@@ -90,7 +95,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
     @Override
     protected DefeatHandler createDefeatHandler() {
-        return new IGG_DefeatHandler(this);
+        return new NF_DefeatHandler(this);
     }
 
     @Override

@@ -129,9 +129,9 @@ public class HpBar extends ValueBar {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (!queue) {
+        // if (!queue) {
             barBg2.setVisible(!enduranceGreater);
-        }
+        // }
         if (!queue && Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
             if (!label2.isVisible()) {
                 label1.setVisible(true);
@@ -199,22 +199,17 @@ public class HpBar extends ValueBar {
         super.draw(batch, parentAlpha);
         float p = MathMaster.minMax(displayedSecondaryPerc, 0, 1);
         float y = getY();
-        if (!queue || displayedPrimaryPerc <= 0) { //unconscious
-            //ENDURANCE
-            ScissorMaster.drawInRectangle(this, batch, getX(),
-                    y,
-                    innerWidth * p,
-                    height, () ->
-                            drawBar(secondaryBarRegion, batch, secondaryColor, y));
-        }
-        if (!queue || displayedPrimaryPerc > 0) {
-            //TOUGHNESS
-            ScissorMaster.drawInRectangle(this, batch, getX(),
-                    y, innerWidth * Math.min(p, displayedPrimaryPerc),
-                    height, () ->
-                            drawBar(primaryBarRegion, batch, primaryColor, getY()));
-        }
-        // batch.flush();
+        //ENDURANCE
+        ScissorMaster.drawInRectangle(this, batch, getX(),
+                y,
+                innerWidth * p,
+                height, () ->
+                        drawBar(secondaryBarRegion, batch, secondaryColor, y));
+        //TOUGHNESS
+        ScissorMaster.drawInRectangle(this, batch, getX(),
+                y, innerWidth * Math.min(p, displayedPrimaryPerc),
+                height, () ->
+                        drawBar(primaryBarRegion, batch, primaryColor, getY()));
 
     }
 

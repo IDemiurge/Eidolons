@@ -30,6 +30,10 @@ public class RuleKeeper implements Controller {
         instance = this;
     }
 
+    public static boolean isCooldownOn() {
+        return false;
+    }
+
     public static void init() {
         try {
             scope = new EnumMaster<RULE_SCOPE>().retrieveEnumConst(RULE_SCOPE.class,
@@ -328,6 +332,7 @@ public class RuleKeeper implements Controller {
     public static void setInstance(RuleKeeper instance) {
         RuleKeeper.instance = instance;
     }
+
 
     @Override
     public boolean charTyped(char c) {

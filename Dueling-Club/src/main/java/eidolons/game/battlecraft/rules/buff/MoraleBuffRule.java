@@ -27,12 +27,12 @@ public class MoraleBuffRule extends DC_BuffRule {
     };
     public static final String[] formulas = {"1", "10", "100",};
 
-    public static final PARAMS[] PARAMETERS = {PARAMS.SPIRIT, PARAMS.RESISTANCE, PARAMS.N_OF_ACTIONS,};
+    public static final PARAMS[] PARAMETERS = {PARAMS.SPIRIT, PARAMS.RESISTANCE, PARAMS.INITIATIVE,};
 
 
     public static final String parameterString = PARAMS.SPIRIT.getName()
      + StringMaster.AND_SEPARATOR
-     + PARAMS.N_OF_ACTIONS.getName() + StringMaster.AND_SEPARATOR
+     + PARAMS.INITIATIVE.getName() + StringMaster.AND_SEPARATOR
      + PARAMS.RESISTANCE.getName();
 
     public static final String parameterStringPanic = PARAMS.SPIRIT.getName() +

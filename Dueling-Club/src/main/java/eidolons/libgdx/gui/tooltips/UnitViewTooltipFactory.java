@@ -14,7 +14,7 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
+import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.UnitView;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -33,6 +33,7 @@ import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.CounterMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
@@ -170,7 +171,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                             values.add(getValueContainer(object, PARAMS.C_MORALE, PARAMS.MORALE));
                             values.add(getValueContainer(object, PARAMS.C_ESSENCE, PARAMS.ESSENCE));
                         case BASIC:
-                            addParamStringToValues(object, values, PARAMS.N_OF_ACTIONS);
+                            addParamStringToValues(object, values, PARAMS.INITIATIVE);
 //                        .center()
                             addParamStringToValues(object, values, PARAMS.DAMAGE);
                             addParamStringToValues(object, values, PARAMS.ATTACK);
@@ -205,7 +206,9 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                 addPropStringToValues(object, values, G_PROPS.MODE);
                 addPropStringToValues(object, values, G_PROPS.STATUS);
             }
-
+            if (CoreEngine.TEST_LAUNCH) {
+                values.add(new ValueContainer("ID", object.getId()+""));
+            }
             if (object.getCustomParamMap() != null) {
                 object.getCustomParamMap().keySet().forEach(counter -> {
                     final String name = StringMaster.getWellFormattedString(counter);

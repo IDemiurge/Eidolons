@@ -543,11 +543,6 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void recalculateInitiative() {
-        getHero().recalculateInitiative();
-    }
-
-    @Override
     public boolean hasBludgeoning() {
         return getHero().hasBludgeoning();
     }
@@ -1035,10 +1030,6 @@ public class HeroWrapper extends HeroDataModel {
         getHero().setPassives(passives);
     }
 
-    @Override
-    public boolean isDone() {
-        return getHero().isDone();
-    }
 
     @Override
     public boolean isOutsideCombat() {
@@ -1135,10 +1126,6 @@ public class HeroWrapper extends HeroDataModel {
         return getHero().getGroup();
     }
 
-    @Override
-    public boolean isUnmoved() {
-        return getHero().isUnmoved();
-    }
 
     @Override
     public void afterBuffRuleEffects() {

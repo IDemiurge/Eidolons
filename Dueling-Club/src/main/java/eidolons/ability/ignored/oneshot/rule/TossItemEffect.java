@@ -86,7 +86,6 @@ public class TossItemEffect extends DC_Effect implements OneshotEffect {
 
         }
         // ref.getObj(KEYS.ITEM);
-        unit.modifyParameter(PARAMS.C_N_OF_ACTIONS, -1);
         return true;
     }
 

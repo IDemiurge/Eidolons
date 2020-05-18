@@ -13,7 +13,7 @@ public class UnconsciousFallEffect extends DC_Effect implements OneshotEffect {
 
     public UnconsciousFallEffect() {
         valueModEffect = new ModifyValueEffect(PARAMS.C_FOCUS, MOD.SET, "0");
-        valueModEffect2 = new ModifyValueEffect(PARAMS.C_INITIATIVE, MOD.SET, "" +
+        valueModEffect2 = new ModifyValueEffect(PARAMS.C_ATB, MOD.SET, "" +
                 UnconsciousRule.DEFAULT_ATB_FALL_TO);
     }
 

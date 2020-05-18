@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.igg.IGG_Images;
+import eidolons.game.netherflame.main.NF_Images;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -68,7 +68,7 @@ public class HqPanel extends TablePanel implements Blocking {
 
     SpriteAnimation bgSprite;
     Image bg = new Image(TextureCache.getOrCreateR(
-            IGG_Images.MAIN_ART.HALL3.getPath()
+            NF_Images.MAIN_ART.HALL3.getPath()
     )); //variants!
 
     @Override

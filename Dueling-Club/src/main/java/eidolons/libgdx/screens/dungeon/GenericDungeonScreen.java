@@ -11,7 +11,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.igg.IGG_Images;
+import eidolons.game.netherflame.main.NF_Images;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -107,7 +107,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
     }
 
     protected void initBackground() {
-        String path = IGG_Images.getBackground();
+        String path = NF_Images.getBackground();
         setBackground(path);
     }
 

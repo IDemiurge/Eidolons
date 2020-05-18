@@ -46,7 +46,7 @@ public class AtbUnitImpl implements AtbUnit {
     @Override
     public float getAtbReadiness() {
 
-        return NumberUtils.getFloat(unit.getParam(PARAMS.C_INITIATIVE))
+        return NumberUtils.getFloat(unit.getParam(PARAMS.C_ATB))
                 /AtbController.TIME_LOGIC_MODIFIER;
     }
 
@@ -67,9 +67,9 @@ public class AtbUnitImpl implements AtbUnit {
          getUnit().getName() + " has " +
           (getDisplayedAtbReadiness()) + "%" + " readiness");
 
-        if (unit.getIntParam(PARAMS.C_INITIATIVE) == value)
+        if (unit.getIntParam(PARAMS.C_ATB) == value)
             return;
-        unit.setParam(PARAMS.C_INITIATIVE, value + "");
+        unit.setParam(PARAMS.C_ATB, value + "");
         triggerQueueEvent();
     }
 
@@ -83,7 +83,7 @@ public class AtbUnitImpl implements AtbUnit {
 
     @Override
     public float getInitiative() {
-        return new Float(unit.getParamDouble(PARAMS.N_OF_ACTIONS));
+        return new Float(unit.getParamDouble(PARAMS.INITIATIVE));
     }
 
     @Override

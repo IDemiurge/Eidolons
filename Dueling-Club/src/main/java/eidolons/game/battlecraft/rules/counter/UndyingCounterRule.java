@@ -4,7 +4,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.TriggerRule;
 import eidolons.game.core.EUtils;
-import eidolons.game.netherflame.igg.soul.EidolonLord;
+import eidolons.game.netherflame.main.soul.EidolonLord;
 import main.content.enums.entity.UnitEnums;
 import main.game.logic.event.Event;
 import main.system.auxiliary.NumberUtils;

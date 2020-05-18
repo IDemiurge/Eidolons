@@ -27,7 +27,7 @@ public class MetaGameHandler<E extends MetaGame> {
     }
 
     public E getMetaGame() {
-        return master.getMetaGame();
+        return (E) master.getMetaGame();
     }
 
     public DC_Game getGame() {

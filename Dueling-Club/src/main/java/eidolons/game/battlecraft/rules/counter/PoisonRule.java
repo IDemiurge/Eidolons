@@ -53,11 +53,7 @@ public class PoisonRule extends DamageCounterRule implements TimedRule{
             specialRoundEffects.add(new ModifyValueEffect(PARAMS.C_STAMINA, MOD.MODIFY_BY_CONST,
              getNumberOfCounters(object) + " * " + WEAKEN_STAMINA_PER_COUNTER));
         }
-        if (object.getBuff(PARALYZING) != null) {
-            specialRoundEffects.add(new ModifyValueEffect(PARAMS.C_INITIATIVE_BONUS,
-             MOD.MODIFY_BY_CONST, getNumberOfCounters(object) + " * "
-             + PARALYZING_INITIATIVE_PER_COUNTER));
-        }
+        //TODO paralyzing poisan?!
         return specialRoundEffects;
     }
 

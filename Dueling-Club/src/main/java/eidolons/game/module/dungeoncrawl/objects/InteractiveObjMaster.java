@@ -12,7 +12,7 @@ import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster.INTERACTION;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
-import eidolons.game.netherflame.igg.event.TipMessageSource;
+import eidolons.game.netherflame.main.event.TipMessageSource;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.audio.MusicMaster;

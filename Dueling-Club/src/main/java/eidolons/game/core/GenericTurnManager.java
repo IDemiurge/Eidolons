@@ -139,14 +139,9 @@ public abstract class GenericTurnManager implements TurnManager {
         return true;
     }
 
-    @Override
-    public int getTimeModifier() {
-        return game.getRules().getTimeRule().getTimePercentageRemaining();
-    }
 
     public void newRound() {
 
-        game.getRules().getTimeRule().newRound();
         for (Unit sub : getGame().getUnits()) {
             if (getGame().getState().getRound() > 0)
                 if (sub.getAI().getEngagementDuration() > 0)

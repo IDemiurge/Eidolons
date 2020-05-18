@@ -2,7 +2,7 @@ package eidolons.system.controls;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import eidolons.ability.effects.oneshot.DealDamageEffect;
+import eidolons.content.PARAMS;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
@@ -11,11 +11,11 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.igg.IGG_Launcher;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
-import eidolons.game.netherflame.igg.pale.PaleAspect;
-import eidolons.game.netherflame.igg.soul.EidolonLord;
-import eidolons.game.netherflame.igg.soul.panel.LordPanel;
+import eidolons.game.netherflame.main.IntroLauncher;
+import eidolons.game.netherflame.main.death.ShadowMaster;
+import eidolons.game.netherflame.main.pale.PaleAspect;
+import eidolons.game.netherflame.main.soul.EidolonLord;
+import eidolons.game.netherflame.main.soul.panel.LordPanel;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.grid.cell.GenericGridView;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
@@ -35,8 +35,6 @@ import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
 import eidolons.system.test.TestDialogMaster;
-import main.content.enums.GenericEnums;
-import main.entity.Ref;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -45,7 +43,6 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
-import main.system.math.Formula;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
@@ -200,7 +197,7 @@ public class GlobalController implements Controller {
                 if (EidolonsGame.DUEL) {
                     return false;
                 }
-                new Thread(() -> IGG_Launcher.introBriefing(), " thread").start();
+                new Thread(() -> IntroLauncher.introBriefing(), " thread").start();
 
                 return true;
             case Keys.F7:
@@ -221,11 +218,12 @@ public class GlobalController implements Controller {
 //                WeaveMaster.openWeave();
                 return true;
             case Keys.F5:
-                new DealDamageEffect(new Formula("1000"), GenericEnums.DAMAGE_TYPE.PURE)
-                        .apply(Ref.getSelfTargetingRefCopy(Eidolons.getMainHero()));
+                Eidolons.getMainHero().setParam(PARAMS.C_TOUGHNESS, 1, true);
 
+                // new DealDamageEffect(new Formula("1000"), GenericEnums.DAMAGE_TYPE.PURE)
+                //         .apply(Ref.getSelfTargetingRefCopy(Eidolons.getMainHero()));
 //                Eidolons.getMainHero().setParam(PARAMS.C_TOUGHNESS, 0);
-                Eidolons.getMainHero().getGame().getManager().reset();
+//                 Eidolons.getMainHero().getGame().getManager().reset();
 //                WeaveMaster.openWeave();
                 return true;
             //            case Keys.F4: already implemented?

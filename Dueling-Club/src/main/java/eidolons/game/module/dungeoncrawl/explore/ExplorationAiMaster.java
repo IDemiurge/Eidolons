@@ -135,7 +135,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
             return false;
         }
         Double cost = ai.getStandingOrders().getCurrentAction().getActive().
-         getParamDouble(PARAMS.AP_COST) / ai.getUnit().getIntParam(PARAMS.N_OF_ACTIONS);
+         getParamDouble(PARAMS.AP_COST) / ai.getUnit().getIntParam(PARAMS.INITIATIVE);
         if (timePercentage >= cost) {
             ActionInput input = new ActionInput(
              ai.getStandingOrders().getCurrentAction().getActive(),

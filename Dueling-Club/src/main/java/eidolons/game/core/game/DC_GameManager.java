@@ -1,6 +1,5 @@
 package eidolons.game.core.game;
 
-import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
@@ -15,7 +14,7 @@ import eidolons.game.core.master.*;
 import eidolons.game.core.state.DC_GameState;
 import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
+import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
@@ -31,7 +30,6 @@ import main.ability.effects.Effect;
 import main.ability.effects.EffectImpl;
 import main.content.C_OBJ_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
-import main.content.enums.entity.UnitEnums;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
@@ -610,12 +608,6 @@ public class DC_GameManager extends GameManager {
             } else if (EventAnimCreator.isEventAnimated(event))
                 GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
         }
-    }
-
-    public void freezeUnit(Unit unit) {
-        unit.addStatus(UnitEnums.STATUS.IMMOBILE.toString());
-        unit.setParam(PARAMS.C_N_OF_ACTIONS, 0);
-
     }
 
     @Override

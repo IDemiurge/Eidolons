@@ -6,8 +6,8 @@ import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.atb.AtbMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -84,9 +84,7 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
             }
 
             Cost cp_cost = costs.getCost(PARAMS.C_N_OF_COUNTERS);
-            Formula ap_cost = DC_Engine.isAtbMode() ? new Formula(getParam(PARAMS.AP_COST))
-                    : costs.getCost(PARAMS.C_N_OF_ACTIONS)
-                    .getPayment().getAmountFormula();
+            Formula ap_cost =   new Formula(getParam(PARAMS.AP_COST)) ;
             boolean noCounterCost = cp_cost == null;
             if (!noCounterCost) {
                 noCounterCost = cp_cost.getPayment().getAmountFormula().toString().isEmpty()
@@ -106,17 +104,14 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
                     costs.getCosts().remove(cp_cost);
                 }
             }
-            if (!DC_Engine.isAtbMode())
-                if (getHandler().isAttackOfOpportunityMode()) { // TODO only if watched? better
-                    // here perhaps!
-                    cp_cost.addAltCost(new CostImpl(new Payment(PARAMS.C_N_OF_ACTIONS, ap_cost)));
-                }
 
             costs.addCost(
                     new CostImpl(new Payment(null, (int) AtbMaster.getReadinessCost(getEntity()))
-                            , PARAMS.INITIATIVE
+                            , PARAMS.ATB
                     ));
-            costs.removeCost(getHandler().isExtraAttackMode() ? PARAMS.C_N_OF_ACTIONS : PARAMS.C_N_OF_COUNTERS);
+            if (!getHandler().isExtraAttackMode())
+                costs.removeCost(PARAMS.C_N_OF_COUNTERS);
+            //TODO EA check
         }
         if (anim) {
 //          getAnimator().  addCostAnim();
@@ -215,7 +210,7 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
     }
 
     public void addDynamicValues() {
-        if (DC_Engine.isAtbMode())
+        if (RuleKeeper.isCooldownOn())
             return;
         Integer cooldown = getIntParam(PARAMS.COOLDOWN);
         if (cooldown < 0) {

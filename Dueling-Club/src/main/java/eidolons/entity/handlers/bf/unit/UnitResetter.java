@@ -19,7 +19,6 @@ import eidolons.game.battlecraft.rules.combat.damage.ResistMaster;
 import eidolons.game.battlecraft.rules.rpg.IntegrityRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.system.DC_Constants;
 import eidolons.system.DC_Formulas;
 import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;
@@ -168,10 +167,6 @@ public class UnitResetter extends EntityResetter<Unit> {
                         resetParam(PARAMS.C_ESSENCE);
                         resetParam(PARAMS.C_FOCUS);
                     }
-                    if (!getEntity().getOwner().isMe()) {
-                        setParam(PARAMS.INITIATIVE_MODIFIER, 1);
-                    }
-
 
                 }
             }
@@ -332,28 +327,6 @@ public class UnitResetter extends EntityResetter<Unit> {
             active.toBase();
         }
     }
-
-    public void resetActions() {
-        if (getChecker().checkPassive(UnitEnums.STANDARD_PASSIVES.AUTOMATA)) {
-            return;
-        }
-        if (getChecker().checkStatus(UnitEnums.STATUS.IMMOBILE)) {
-            setParam(PARAMS.C_N_OF_ACTIONS, 0);
-            return;
-        }
-        float carryOverFactor = DC_Constants.CARRY_OVER_FACTOR;
-        if (getIntParam(PARAMS.C_N_OF_ACTIONS) < 0) {
-            carryOverFactor = DC_Constants.CARRY_OVER_FACTOR_NEGATIVE;
-        }
-        if (getGame().getState().getRound() == 0)
-            carryOverFactor = 0;
-        int actions = (int) (getIntParam(PARAMS.N_OF_ACTIONS) + getIntParam(PARAMS.C_N_OF_ACTIONS)
-                * carryOverFactor);
-
-        setParam(PARAMS.C_N_OF_ACTIONS, actions);
-
-    }
-
 
     public void resetIntegrity() {
         IntegrityRule.resetIntegrity(getEntity());

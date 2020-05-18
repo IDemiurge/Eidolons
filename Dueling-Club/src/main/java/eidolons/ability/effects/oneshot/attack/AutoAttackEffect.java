@@ -5,8 +5,9 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.core.EUtils;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
+import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.ability.effects.OneshotEffect;
+import main.content.enums.entity.ActionEnums;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.system.auxiliary.RandomWizard;
@@ -57,6 +58,7 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
     }
 
     private DC_ActiveObj pickAttack() {
+        DC_ActiveObj attack = getActiveObj().getOwnerUnit().getAttackOfType(ActionEnums.ATTACK_TYPE.STANDARD_ATTACK);
         List<DC_ActiveObj> subActions = getActiveObj().getValidSubactions(ref, target);
         if (subActions.isEmpty()) {
             main.system.auxiliary.log.LogMaster.log(1, "Failing on our autoattack ... ");

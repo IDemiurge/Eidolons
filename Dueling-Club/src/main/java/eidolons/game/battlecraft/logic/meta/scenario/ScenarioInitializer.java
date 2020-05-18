@@ -35,8 +35,11 @@ public class ScenarioInitializer extends MetaInitializer<ScenarioMeta> {
         }
         //     TODO better solution needed
         //   getMaster().setRngDungeon(type.getGroup().equalsIgnoreCase("Random"));
-        return new ScenarioMeta(
-         new Scenario(type), master);
+        return createMeta(new Scenario(type));
+    }
+
+    protected ScenarioMeta createMeta(Scenario scenario) {
+        return new ScenarioMeta(scenario, master);
     }
 
     private boolean isReverseLevels() {

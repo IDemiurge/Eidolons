@@ -9,15 +9,13 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.igg.IGG_MetaMaster;
-import eidolons.game.netherflame.igg.story.brief.IggBriefScreenOld;
+import eidolons.game.netherflame.main.story.brief.IggBriefScreenOld;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.GuiEventManagerImpl;
 import eidolons.libgdx.anims.Assets;
@@ -415,10 +413,8 @@ public abstract class GenericLauncher extends Game {
     }
 
     private MetaGameMaster createMetaForScenario(ScreenData data) {
-        if (!EidolonsGame.BRIDGE) {
             return new ScenarioMetaMaster(data.getName());
-        }
-        return new IGG_MetaMaster(data.getName());
+        // return new NF_MetaMaster(data.getName());
     }
 
     protected void trySwitchScreen(EventCallbackParam param) {

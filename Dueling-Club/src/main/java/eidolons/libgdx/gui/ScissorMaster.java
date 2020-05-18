@@ -13,6 +13,8 @@ public class ScissorMaster {
 
     public static void drawInRectangle(Actor actor, Batch batch, float x, float y, float width, float height, Runnable drawRunnable) {
 
+        if (width<=0 || height<= 0)
+            return;
         Rectangle scissors = new Rectangle();
         Rectangle clipBounds = null;
         clipBounds = new Rectangle(x, y, width, height);
@@ -24,12 +26,11 @@ public class ScissorMaster {
             actor.draw(batch, ShaderDrawer.SUPER_DRAW);
         } else {
             drawRunnable.run();
-            batch.flush();
         }
+        batch.flush();
         try {
             ScissorStack.popScissors();
         } catch (Exception e) {
         }
-        batch.flush();
     }
 }

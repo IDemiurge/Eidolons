@@ -144,7 +144,7 @@ public class ModelManager {
                 TreeMaster.collapseTree(tb.getTree());
                 DefaultMutableTreeNode node = TreeMaster.findNode(tb.getTree(), type.getName());
                 if (node == null) {
-//                    tb.getTabbedPane().setSelectedIndex(prevIndex);
+                    //                    tb.getTabbedPane().setSelectedIndex(prevIndex);
                     return;
                 }
                 tb.getTree().setSelectionPath(new TreePath(node.getPath()));
@@ -388,9 +388,9 @@ public class ModelManager {
             }
 
             for (ObjType type : DataManager.getTypes(obj_type)) {
-//                if (C_OBJ_TYPE.ITEMS.equals(obj_type)) {
-//                    initRarity(type);
-//                }
+                //                if (C_OBJ_TYPE.ITEMS.equals(obj_type)) {
+                //                    initRarity(type);
+                //                }
                 if (obj_type == DC_TYPE.CHARS) {
                     if (!type.isInitialized()) {
                         Game.game.initType(type);
@@ -494,7 +494,7 @@ public class ModelManager {
                 || obj_type == DC_TYPE.CLASSES || obj_type == DC_TYPE.CHARS
                 || obj_type == DC_TYPE.UNITS) {
             for (ObjType type : DataManager.getTypes(obj_type)) {
-//                PrincipleMaster.processPrincipleValues(type);
+                //                PrincipleMaster.processPrincipleValues(type);
             }
         }
 
@@ -515,7 +515,7 @@ public class ModelManager {
                         t.setParam(resistance, 100);
                     //TODO freeze to ice?
                 }
-//                BfObjPropGenerator.generateBfObjStatProps(t);
+                //                BfObjPropGenerator.generateBfObjStatProps(t);
             }
         }
     }
@@ -785,10 +785,12 @@ public class ModelManager {
     }
 
     private static void removeType() {
-        if (ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM() == DC_TYPE.ABILS) {
-            AE_Manager.typeRemoved(ArcaneVault.getSelectedType());
+        for (ObjType selectedType : ArcaneVault.getSelectedTypes()) {
+            if (selectedType.getOBJ_TYPE_ENUM() == DC_TYPE.ABILS) {
+                AE_Manager.typeRemoved(ArcaneVault.getSelectedType());
+            }
+            ArcaneVault.getMainBuilder().getTreeBuilder().remove();
         }
-        ArcaneVault.getMainBuilder().getTreeBuilder().remove();
         ArcaneVault.setDirty(true);
 
         SoundMaster.playStandardSound(STD_SOUNDS.ERASE);

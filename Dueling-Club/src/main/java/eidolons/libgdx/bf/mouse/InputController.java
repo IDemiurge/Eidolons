@@ -38,7 +38,7 @@ public abstract class InputController implements InputProcessor {
             getIntValue(CONTROL_OPTION.ZOOM_STEP) / new Float(100);
     protected float zoomStep;
     protected OrthographicCamera camera;
-    protected boolean isLeftClick = false;
+    protected boolean isLeftPressed = false;
     protected boolean alt = false;
     protected boolean ctrl = false;
     protected char lastTyped;
@@ -261,7 +261,7 @@ public abstract class InputController implements InputProcessor {
         if (button == LEFT || button == 1) {
             xTouchPos = screenX;
             yTouchPos = screenY;
-            isLeftClick = true;
+            isLeftPressed = true;
         }
         mouseButtonPresed = button;
         outsideClick();
@@ -276,7 +276,7 @@ public abstract class InputController implements InputProcessor {
         mouseInput();
         if (isBlocked())
             return true;
-        isLeftClick = false;
+        isLeftPressed = false;
 
         return false;
     }
@@ -312,6 +312,10 @@ public abstract class InputController implements InputProcessor {
 
     protected abstract GameScreen getScreen();
 
+    public boolean isLeftPressed() {
+        return isLeftPressed;
+    }
+
     protected void tryPullCameraY(int screenY) {
         float diffY = (yTouchPos - screenY) * camera.zoom * getDragCoef();
         if (isFreeDrag()){
@@ -322,6 +326,8 @@ public abstract class InputController implements InputProcessor {
                 halfHeight - getMargin(),
                 getHeight() - halfHeight + getMargin());
         yTouchPos = screenY;
+
+        Gdx.input.setCursorPosition(Gdx.input.getX(), (int) yTouchPos);
         cameraPosChanged();
     }
 
@@ -340,6 +346,7 @@ public abstract class InputController implements InputProcessor {
                 halfWidth - getMargin(),
                 getWidth() - halfWidth + getMargin());
         xTouchPos = screenX;
+        Gdx.input.setCursorPosition((int) xTouchPos,Gdx.input.getY() );
         cameraPosChanged();
     }
 

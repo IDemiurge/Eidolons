@@ -45,8 +45,6 @@ public class DC_Formulas {
     public static final Formula DIVINATION_POOL_FORMULA = new Formula("4+"
      + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_CAP) + " /2+(2+"
      + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_MASTERY) + " /3)*"
-     + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.C_N_OF_ACTIONS)
-
     ).getAppendedByModifier(StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_POOL_MOD));
     public static final String UNIT_LEVEL_POWER_BONUS = "({AMOUNT}+1)*5+({AMOUNT})*({AMOUNT})";
     public static final Formula SUMMONED_UNIT_XP = new Formula(
@@ -403,4 +401,7 @@ public class DC_Formulas {
         return getFormulaArg(XP_COST_PER_SKILL_DIFFICULTY, xpCost);
     }
 
+    public static int getSoulforceForLordLevel(int lordLevel) {
+        return 100+25*lordLevel;
+    }
 }

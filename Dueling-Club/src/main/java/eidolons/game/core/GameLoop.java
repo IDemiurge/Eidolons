@@ -177,14 +177,14 @@ public class GameLoop {
                 started = true;
             }
             if (RuleKeeper.isRuleOn(RuleKeeper.RULE.INTENTS))
-            try {
-                getGame().getAiManager().getActionManager().initIntents();
-            } catch (Exception e) {
-                ExceptionMaster.printStackTrace(e);
-            }
-            Chronos.mark(activeUnit+"'s action");
+                try {
+                    getGame().getAiManager().getActionManager().initIntents();
+                } catch (Exception e) {
+                    ExceptionMaster.printStackTrace(e);
+                }
+            Chronos.mark(activeUnit + "'s action");
             result = makeAction();
-            Chronos.logTimeElapsedForMark(activeUnit+"'s action");
+            Chronos.logTimeElapsedForMark(activeUnit + "'s action");
             if (!aftermath)
                 if (game.getMissionMaster().getOutcomeManager().checkOutcomeClear()) {
                     return false;
@@ -211,7 +211,7 @@ public class GameLoop {
     protected Boolean makeAction() {
         if (exited)
             return true;
-//TODO refactor - extract
+        //TODO refactor - extract
         if (!game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.UNIT_TURN_READY, getActiveUnit().getRef()))) {
             return false;
         }
@@ -225,21 +225,21 @@ public class GameLoop {
             channeling = true;
         } else if (activeUnit.isAiControlled()) {
             //SHOWCASE SECURITY
-//            try {
+            //            try {
             action = (waitForAI());
             AI_Manager.setOff(false);
 
             waitForAnimations(action);
 
-//            } catch (Exception e) {
-//                AI_Manager.setOff(true);
-//                if (!aiFailNotified) {
-//                    main.system.auxiliary.log.LogMaster.log(1, ("AI failed!!!!"));
-//                    aiFailNotified = true;
-//                    return false;
-//                }
-//                main.system.ExceptionMaster.printStackTrace(e);
-//            }
+            //            } catch (Exception e) {
+            //                AI_Manager.setOff(true);
+            //                if (!aiFailNotified) {
+            //                    main.system.auxiliary.log.LogMaster.log(1, ("AI failed!!!!"));
+            //                    aiFailNotified = true;
+            //                    return false;
+            //                }
+            //                main.system.ExceptionMaster.printStackTrace(e);
+            //            }
         } else {
             action = (waitForPlayerInput());
         }
@@ -249,7 +249,7 @@ public class GameLoop {
         result =
                 activateAction(action);
 
-//        waitForAnimations(action);
+        //        waitForAnimations(action);
         if (exited)
             return true;
         waitForPause();
@@ -296,14 +296,11 @@ public class GameLoop {
     }
 
     protected Boolean checkEndRound(ActionInput input) {
-        int timeCost = input.getAction().getHandler().getTimeCost();
-        Boolean endTurn = getGame().getRules().getTimeRule().
-                actionComplete(input.getAction(), timeCost);
-        if (!endTurn) {
-            game.getManager().reset();
-            if (ChargeRule.checkRetainUnitTurn(input.getAction())) {
-                endTurn = null;
-            }
+        Boolean endTurn = false;
+
+        game.getManager().reset();
+        if (ChargeRule.checkRetainUnitTurn(input.getAction())) {
+            endTurn = null;
         }
 
         if (Bools.isTrue(endTurn)) {
@@ -372,11 +369,11 @@ public class GameLoop {
     }
 
     public void setPaused(boolean paused, boolean logged, boolean manual) {
-        if (!ExplorationMaster.isExplorationOn())
-        {
-            EUtils.showInfoText("Cannot pause in combat");
-            return;
-        }
+        // if (!ExplorationMaster.isExplorationOn())
+        // {
+        //     EUtils.showInfoText("Cannot pause in combat");
+        //     return;
+        // }
         if (!game.isStarted()) {
             return;
         }
@@ -445,8 +442,8 @@ public class GameLoop {
         }
         Coordinates c = game.getPlayer(true).getHeroObj().getCoordinates();
         Location location = game.getDungeonMaster().getFloorWrapper();
-//        game.getDungeonMaster().getDungeonLevel().getExitCoordinates()
-//        IGG_XmlMaster.getEntrancesData()
+        //        game.getDungeonMaster().getDungeonLevel().getExitCoordinates()
+        //        IGG_XmlMaster.getEntrancesData()
 
 
         if (location.getMainExit() != null)

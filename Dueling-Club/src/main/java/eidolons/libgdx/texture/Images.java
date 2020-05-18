@@ -1,7 +1,7 @@
 package eidolons.libgdx.texture;
 
 import eidolons.entity.Deity;
-import eidolons.game.netherflame.igg.IGG_Images;
+import eidolons.game.netherflame.main.NF_Images;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
@@ -156,7 +156,7 @@ public static final String SEPARATOR_NARROW = StrPathBuilder.build(
     public static final String GATEWAY_GLYPH = "sprites/bf/hanging/occult_circles.png";
     public static final String COLUMNS_AND_TREE_BG = "ui/components/lord/tab bg.png";
 
-    public static final String BG_EIDOLONS = IGG_Images.MAIN_ART.HALL2.getPath();
+    public static final String BG_EIDOLONS = NF_Images.MAIN_ART.HALL2.getPath();
     public static final String CIRCLE_BORDER = "ui/components/generic/borders/border circle.png";
     public static final String EMPTY_SKULL = "ui/empty1.jpg";
     public static final String DEMIURGE = "main/heroes/demiurge.jpg";

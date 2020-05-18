@@ -1,10 +1,10 @@
 package main.gui.builders;
 
-import main.ability.utilities.NodeMaster;
 import eidolons.game.Simulation;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
-import main.content.OBJ_TYPE;
+import main.ability.utilities.NodeMaster;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -243,11 +243,12 @@ public class TreeViewBuilder extends Builder {
         if (ArcaneVault.getMainBuilder().getSelectedNode() == null) {
             return;
         }
-        ArcaneVault.getMainBuilder().getSelectedNode().removeFromParent();
-        String selected = ArcaneVault.getMainBuilder().getSelectedTabName();
-        DataManager.removeType((String) ArcaneVault.getMainBuilder().getSelectedNode()
-                .getUserObject(), selected);
-
+        for (DefaultMutableTreeNode selectedNode : ArcaneVault.getMainBuilder().getSelectedNodes()) {
+            selectedNode.removeFromParent();
+            String selected = ArcaneVault.getMainBuilder().getSelectedTabName();
+            DataManager.removeType((String) selectedNode
+                    .getUserObject(), selected);
+        }
         refresh();
 
         int n = ArcaneVault.getMainBuilder().getTree().getRowCount();

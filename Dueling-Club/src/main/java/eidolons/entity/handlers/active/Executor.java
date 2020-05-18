@@ -23,7 +23,7 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
+import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.libgdx.anims.AnimContext;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
@@ -263,12 +263,10 @@ public class Executor extends ActiveHandler {
     }
 
     private void cancelled() {
-        timeCost = 0;
     }
 
     private void beingActivated() {
         fireEvent(STANDARD_EVENT_TYPE.ACTION_BEING_ACTIVATED, true);
-        timeCost = getCalculator().calculateTimeCost();
         if (getChecker().isCancellable()) {
 //            activated(ref); TODO ???
 //            if (!result) {
@@ -310,7 +308,6 @@ public class Executor extends ActiveHandler {
         fireEvent(STANDARD_EVENT_TYPE.ACTION_ACTIVATED, true);
         getAction().getOwnerObj().getRef().setID(KEYS.ACTIVE, getId());
         triggered = getRef().isTriggered();
-        getCalculator().calculateTimeCost();
         getInitializer().construct();
         getTargeter().initAutoTargeting();
         getMaster().getInitializer().initCosts(true);// for animation phase
@@ -580,11 +577,6 @@ public class Executor extends ActiveHandler {
     public void setAttackOfOpportunityMode(boolean attackOfOpportunityMode) {
         this.attackOfOpportunityMode = attackOfOpportunityMode;
     }
-
-    public int getTimeCost() {
-        return timeCost;
-    }
-
 
     public void setCancelled(Boolean cancelled) {
         this.cancelled = cancelled;

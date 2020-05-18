@@ -9,7 +9,7 @@ import com.kotcrab.vis.ui.widget.file.FileChooser;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.igg.event.TipMessageWindow;
+import eidolons.game.netherflame.main.event.TipMessageWindow;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;

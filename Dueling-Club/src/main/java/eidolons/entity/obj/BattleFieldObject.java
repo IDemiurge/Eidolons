@@ -12,9 +12,8 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.SeenMapper;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
-import eidolons.game.core.atb.AtbController;
 import eidolons.game.module.dungeoncrawl.objects.Door;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
+import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
 import main.ability.AbilityObj;
@@ -310,8 +309,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
         setParam(PARAMS.C_ENDURANCE, getIntParam(PARAMS.ENDURANCE), true);
         setParam(PARAMS.C_TOUGHNESS, getIntParam(PARAMS.TOUGHNESS), true);
-        if (!DC_Engine.isAtbMode())
-            setParam(PARAMS.C_N_OF_ACTIONS, getIntParam(PARAMS.N_OF_ACTIONS), true);
         setParam(PARAMS.C_N_OF_COUNTERS, getIntParam(PARAMS.N_OF_COUNTERS), true);
         setParam(PARAMS.C_ENERGY, "0", true);
 
@@ -332,32 +329,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
                 value = getParam(PARAMS.TOUGHNESS);
             }
         }
-        if (param == PARAMS.C_N_OF_ACTIONS) {
-            Integer prev = getIntParam(param);
-            int diff = NumberUtils.getInteger(value) - prev;
-            if (diff == 0)
-                return;
-            int mod = AtbController.ATB_READINESS_PER_AP * diff;
-            //            main.system.auxiliary.log.LogMaster.log
-            //             (1,this+"'s INITIATIVE modified by " +mod);
-            modifyParameter(PARAMS.C_INITIATIVE, mod);
-        } else if (param == PARAMS.INITIATIVE_MODIFIER) {
-            //            Integer prev = getIntParam(param);
-            //            int diff = StringMaster.getInteger(value) - prev;
-            //            modifyParameter(PARAMS.N_OF_ACTIONS, diff);
-        } else if (param == PARAMS.C_INITIATIVE_BONUS) {
-            Integer prev = getIntParam(param);
-            int diff = NumberUtils.getInteger(value) - prev;
-            modifyParameter(PARAMS.C_INITIATIVE, diff);
-        } else if (param == PARAMS.INITIATIVE_BONUS) {
-            super.putParameter(param, value);
-        } else if (param == PARAMS.C_INITIATIVE) {
-            Integer val = NumberUtils.getInteger(value);
-            float max = AtbController.TIME_LOGIC_MODIFIER * AtbController.ATB_TO_READY;
-            val = MathMaster.getMinMax(val, 0, (int) max);
-            super.putParameter(param, val + "");
-        } else
-            super.putParameter(param, value);
+        super.putParameter(param, value);
     }
 
     public void resetPercentages() {
@@ -366,7 +338,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     public void resetCurrentValues() {
         Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p -> {
-            if (p == PARAMS.N_OF_ACTIONS)
+            if (p == PARAMS.INITIATIVE)
                 if (DC_Engine.isAtbMode())
                     return;
             resetCurrentValue(p);
@@ -386,13 +358,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         } else {
             addProperty(G_PROPS.STANDARD_PASSIVES, abilName);
         }
-    }
-
-    public boolean isDone() {
-        if (isDead()) {
-            return true;
-        }
-        return getIntParam(PARAMS.C_N_OF_ACTIONS) <= 0;
     }
 
     public void regen() {
@@ -418,10 +383,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     }
 
-    public boolean isUnmoved() {
-        return getIntParam(PARAMS.C_N_OF_ACTIONS) >= getIntParam(PARAMS.N_OF_ACTIONS);
-
-    }
 
     public boolean isFull() {
         if (getIntParam(PARAMS.C_ENDURANCE) < getIntParam(PARAMS.ENDURANCE)) {

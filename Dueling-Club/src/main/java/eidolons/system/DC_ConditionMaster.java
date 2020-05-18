@@ -59,13 +59,6 @@ public class DC_ConditionMaster extends ConditionMaster {
             return getTargetingModConditions(TARGETING_MODIFIERS);
         }
 
-        // TARGETING_MODE TARGETING_MODE = new
-        // EnumMaster<TARGETING_MODE>().retrieveEnumConst(TARGETING_MODE.class,
-        // string) ;
-        // if (TARGETING_MODE!=null) TODO
-        // return ActivesConstructor.getSingleTargeting(obj)
-        // getTargetingModConditions(TARGETING_MODE);
-
         return null;
     }
 

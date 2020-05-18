@@ -122,15 +122,6 @@ public class EngagedRule implements ActionRule {
         }
         return topPriorityUnit;
     }
-    public boolean checkCanDisengage(Unit disengager) {
-        return disengager.getIntParam(PARAMS.C_N_OF_ACTIONS) >= 1 + getEngagers(disengager).size();
-        // getDisengageCost(disengager).canBePaid();
-        // new Costs(map) //preCheck provoke
-
-        // TODO ++ visuals - some little sword pointing...
-        // NESW on cells? for directional blocking
-    }
-
     public List<Unit> getEngagers(Unit engaged) {
         List<Unit> list = new ArrayList<>();
         for (Unit u : engaged.getGame().getUnits()) {

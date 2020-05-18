@@ -860,9 +860,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             ModifyValueEffect valueEffect = (ModifyValueEffect) e;
             for (String sparam : ContainerUtils.open(valueEffect.getParamString())) {
                 for (PARAMETER param : DC_ContentValsManager.getParams(sparam)) {
-                    //TODO apply generic fix!
-                    if (param == PARAMS.C_INITIATIVE_BONUS)
-                        param = PARAMS.C_INITIATIVE;
 
                     if (TextParser.checkHasValueRefs(valueEffect.getFormula().toString())) {
                         String parsed = TextParser.parse(valueEffect.getFormula().toString(),
@@ -1461,9 +1458,9 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
         }
 
-        int ap = action.getSource().getIntParam(PARAMS.C_N_OF_ACTIONS) - 1;
+        int ap = action.getSource().getIntParam(PARAMS.C_ATB) - 1;
         // differentiate between waiting on enemy and ally?
-        int base_priority = getConstInt(AiConst.WAIT_PRIORITY_FACTOR) * ap;
+        int base_priority = getConstInt(AiConst.WAIT_PRIORITY_FACTOR) * ap /50;
 
         int factor = (ally) ? 100 : 50;
 
@@ -1524,7 +1521,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 //        addMultiplier(base, "param percentage missing");
         // ++ Life factor?
         int timeModifier = 100 + getSituationAnalyzer().getTimeModifier()
-                - getUnit().getParamPercentage(PARAMS.N_OF_ACTIONS);
+                - getUnit().getParamPercentage(PARAMS.INITIATIVE);
         addMultiplier(timeModifier, "time");
         applyMultiplier(paramModifier, "param Modifier");
         applyMultiplier(dangerModifier, "danger factor");

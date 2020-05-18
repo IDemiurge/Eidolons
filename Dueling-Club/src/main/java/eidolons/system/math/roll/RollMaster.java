@@ -47,9 +47,9 @@ public class RollMaster {
     public static final String STD_DISARM_TRAP = "{source_trap_skill};{target_trap level}";
     //TODO
     public final static String STD_REACTION =
-     StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE_MODIFIER)
+     StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE )
       + ";" +
-      StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE_MODIFIER);
+      StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE );
 
     public static final String STD_FORCE =
      StringMaster.getValueRefs(KEYS.SOURCE, PARAMS.STRENGTH, PARAMS.WEIGHT)
@@ -460,11 +460,11 @@ public class RollMaster {
     }
 
     public static Boolean makeReactionRoll(Unit unit, DC_ActiveObj action, DC_ActiveObj attack) {
-        String fail = StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE_MODIFIER) + "/"
+        String fail = StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE) + "/"
          + (1 + action.getIntParam(PARAMS.AP_COST)) + "*"
          + getDexterousModifier(unit, action);
 
-        String success = StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE_MODIFIER) + "/"
+        String success = StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE) + "/"
          + (1 + attack.getIntParam(PARAMS.CP_COST)) + "*"
          + getVigilanceModifier(unit, action);
         String successTooltip = "to avoid Attack of Opportunity";

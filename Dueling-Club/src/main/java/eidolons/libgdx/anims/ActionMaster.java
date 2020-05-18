@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Predicate;
 import eidolons.libgdx.anims.actions.AutoFloatAction;
 import eidolons.libgdx.anims.actions.FadeInAction;
 import eidolons.libgdx.anims.actions.FadeOutAction;
@@ -42,6 +43,16 @@ public class ActionMaster {
         actor.addAction(aa);
     }
 
+    public static <T extends Actor> void addBlockingAction(T a, Predicate<T> o) {
+        Action action = new Action() {
+            @Override
+            public boolean act(float delta) {
+                return o.evaluate(a);
+            }
+        };
+        //TODO could of course do something like 'check if has block-action, skip'
+        addAction(a, action);
+    }
     public static Action getAction(Class<? extends Action> aClass) {
         ActionPool pool = poolMap.get(aClass);
         if (pool == null) {
@@ -446,7 +457,8 @@ public class ActionMaster {
     }
 
 
-//    public static boolean checkHasAction(BaseView view, Class<AlphaAction> alphaActionClass) {
+
+    //    public static boolean checkHasAction(BaseView view, Class<AlphaAction> alphaActionClass) {
 //        return false;
 //    }
 }

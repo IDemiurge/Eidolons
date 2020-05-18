@@ -3,8 +3,8 @@ package eidolons.game.battlecraft.ai.tools.priority;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
@@ -111,7 +111,7 @@ public class ThreatAnalyzer extends AiHandler {
         DC_ActiveObj subAttack = (DC_ActiveObj) FuncMaster.getGreatestEntity(
          attack.getSubActions(), atk ->
          {
-             if (enemy.getIntParam(PARAMS.C_N_OF_ACTIONS) >
+             if (enemy.getIntParam(PARAMS.C_ATB) >
               atk.getIntParam(PARAMS.AP_COST))
                  return atk.getIntParam(PARAMS.AP_COST);
              return 0;

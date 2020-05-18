@@ -54,7 +54,7 @@ public class BuffRulesTest extends JUnitPartyCreated {
      PARAMS.DEFENSE,
      PARAMS.DAMAGE,
      MoraleBuffRule.PARAMETERS[0],
-     PARAMS.N_OF_ACTIONS,
+     PARAMS.INITIATIVE,
      null,
     };
 

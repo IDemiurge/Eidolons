@@ -9,7 +9,6 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
-import eidolons.game.battlecraft.ai.tools.target.ReasonMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.ability.effects.Effect;
 import main.content.enums.entity.UnitEnums;
@@ -78,15 +77,6 @@ public class PathChoiceMaster {
             // will need to remove actions from list when used? preCheck CD
 
             for (DC_ActiveObj a : moveActions) {
-
-                if (!a.canBeActivated()) {
-                    if (firstStep) {
-                        if (!ReasonMaster.checkReasonCannotActivate(a, PARAMS.C_N_OF_ACTIONS
-                         .getName())) {
-                            continue; // exception for AP TODO
-                        }
-                    }
-                }
 
                 if (path.hasAction(a)) {
                     if (a.getIntParam(PARAMS.COOLDOWN) >= 0) {

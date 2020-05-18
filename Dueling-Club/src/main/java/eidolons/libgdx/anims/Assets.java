@@ -19,8 +19,8 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.igg.IGG_Demo;
-import eidolons.game.netherflame.igg.IGG_Images;
+import eidolons.game.netherflame.additional.IGG_Demo;
+import eidolons.game.netherflame.main.NF_Images;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
@@ -591,7 +591,7 @@ public class Assets {
 //        if (!CoreEngine.isLiteLaunch())
 //            loadSprite(Sprites.RADIAL, full, ktx);
 
-        loadSprite(IGG_Images.getBackground(IGG_Demo.IGG_MISSION.ACT_I_MISSION_I), full, ktx);
+        loadSprite(NF_Images.getBackground(IGG_Demo.IGG_MISSION.ACT_I_MISSION_I), full, ktx);
         //locks
         // blood
         //boss

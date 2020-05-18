@@ -1,6 +1,5 @@
 package eidolons.content;
 
-import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.system.DC_Formulas;
@@ -22,13 +21,13 @@ import java.util.Map;
 
 //Quantative properties of ..*what?*
 public enum PARAMS implements PARAMETER {
-    SLEIGHT_OF_HAND("chars","","",false,0),
-    FORAGING("chars","","",false,0),
+    SLEIGHT_OF_HAND("chars", "", "", false, 0),
+    FORAGING("chars", "", "", false, 0),
 
-    POWER_MOD(true, null, "", false, 100,  "encounters"),
-    POWER_MINIMUM(null, "", false, 0,  "encounters"),
-    POWER_BASE(null, "", false, 0,  "encounters"),
-    POWER_MAXIMUM(null, "", false, 0,  "encounters"),
+    POWER_MOD(true, null, "", false, 100, "encounters"),
+    POWER_MINIMUM(null, "", false, 0, "encounters"),
+    POWER_BASE(null, "", false, 0, "encounters"),
+    POWER_MAXIMUM(null, "", false, 0, "encounters"),
 
     FREE_MASTERIES(null, "", false, DC_MathManager.DEFAULT_FREE_MASTERY_COUNT, "chars"),
     GLORY("party"),
@@ -101,6 +100,8 @@ public enum PARAMS implements PARAMETER {
     C_CHARGES(null, "", true, 1, "items"),
     // UNIT/CHAR
 
+    INITIATIVE("Initiative", "", false, 0, "units", "chars", "perks", "bf obj", "skills"),
+
     TOUGHNESS(null, "", false, 0, "units", "chars", "perks", "bf obj"),
     C_TOUGHNESS(null, "", true, 0, "units", "chars", "perks", "bf obj"),
     ENDURANCE(null, "", false, 0, "units", "chars", "perks", "bf obj"),
@@ -114,35 +115,19 @@ public enum PARAMS implements PARAMETER {
     ESSENCE(null, "ESSENCE", false, 0, "units", "chars", "perks"),
     C_ESSENCE(null, "ESSENCE", true, 0, "units", "chars", "perks"),
     N_OF_COUNTERS("Extra Attacks", "", false, 0, "units", "chars", "perks", "skills"),
-    N_OF_ACTIONS("Initiative", "Maximum number of attacks unit can make per turn", false, 0, "units", "chars", "perks", "bf obj", "skills"){
-        @Override
-        public String getDisplayedName() {
-            if (DC_Engine.isAtbMode())
-                return "Initiative";
-            return "Action pts";
-        }
-    },
-    C_N_OF_ACTIONS(null, "", true, 0, "units", "chars", "perks", "bf obj"),
     C_N_OF_COUNTERS("Extra Attacks", "", true, 2, "units", "chars", "perks"),
 
-
-    INITIATIVE_MODIFIER("Initiative mod", "", false, 10, "units", "chars", "perks", "bf obj"),
-    INITIATIVE_BONUS("Initiative bonus", "", false, 5, "units", "chars", "perks", "bf obj"),
-    C_INITIATIVE_BONUS("Initiative", "", true, 0, "units", "chars", "perks", "bf obj"),
-    C_INITIATIVE_TRANSFER("Initiative", "", true, 0, "units", "chars", "perks", "bf obj"),
 
     ATB_START_MOD("ATB_START_PRESET", "", false, 0, "units", "chars", "perks", "bf obj"),
     ATB_START_PRESET("ATB_START_PRESET", "", false, 0, "units", "chars", "perks", "bf obj"),
 
-    C_INITIATIVE("Current Initiative", "", true, 0, "units", "chars", "perks", "bf obj"){
+    C_ATB("Current Readiness", "", true, 0, "units", "chars", "perks", "bf obj") {
         @Override
         public String getDisplayedName() {
-            if (DC_Engine.isAtbMode())
-                return "ATB";
-            return "Initiative";
+            return "Readiness";
         }
     },
-    INITIATIVE("Initiative", "", false, 0, "units", "chars", "perks", "bf obj"),
+    ATB("Initiative", "", false, 0, "units", "chars", "perks", "bf obj"),
     // INITIATIVE("Initiative", "", false, 30, "units", "chars", "perks", "bf obj"),
 
 
@@ -194,7 +179,7 @@ public enum PARAMS implements PARAMETER {
     ESSENCE_REGEN("Ess. Regen", "ESSENCE_REGEN", false, 0, "units", "chars", "perks"),
     FOCUS_REGEN(null, "FOCUS_REGEN", false, 0, "units", "chars", "perks"),
     STARTING_FOCUS("Start foc", "FOCUS", false, 0, "units", "chars", "perks"),
-    FOCUS_FATIGUE("Focus Fatigue", "Focus Fatigue", true, 0, "units", "chars" ),
+    FOCUS_FATIGUE("Focus Fatigue", "Focus Fatigue", true, 0, "units", "chars"),
     BASE_DAMAGE("Base Damage", "", false, 0, "units", "chars", "perks"),
     DAMAGE("Damage", "", false, 0, "units", "chars", "perks"),
     MIN_DAMAGE("Min Damage", "", false, 0, "units", "chars", "perks"),
@@ -464,14 +449,14 @@ public enum PARAMS implements PARAMETER {
     RANK_XP_MOD(true, "", "", false, 50, "skills", "classes"),
     RANK_SD_MOD(true, "", "", false, 25, "skills", "classes"),
     RANK_FORMULA_MOD(true, "", "", false, 25, "skills", "classes"),
-//    TREE_LINK_OFFSET_X("", "", false, 0, "skills", "classes"),
-//    TREE_LINK_OFFSET_Y("", "", false, 0, "skills", "classes"),
-//    TREE_NODE_OFFSET_X("", "", false, 0, "skills", "classes"),
-//    TREE_NODE_OFFSET_Y("", "", false, 0, "skills", "classes"),
+    //    TREE_LINK_OFFSET_X("", "", false, 0, "skills", "classes"),
+    //    TREE_LINK_OFFSET_Y("", "", false, 0, "skills", "classes"),
+    //    TREE_NODE_OFFSET_X("", "", false, 0, "skills", "classes"),
+    //    TREE_NODE_OFFSET_Y("", "", false, 0, "skills", "classes"),
     // SPELL
     AI_PRIORITY(null, "", false, 0, "spells", "actions"),
     CIRCLE("Circle", "", false, 1, "spells", "skills", "classes"),
-    FORMULA("Formula", "", false, 0, "actions", "spells", "skills", "classes", "items", "perks" ),
+    FORMULA("Formula", "", false, 0, "actions", "spells", "skills", "classes", "items", "perks"),
     // CHANNELING("spells", "CHANNELING", "", false, 0),
     // CHANNELING_ESS_COST("spells", "CHANNELING", "", false, 0),
     // CHANNELING_FOC_COST("spells", "CHANNELING", "", false, 0),
@@ -485,14 +470,14 @@ public enum PARAMS implements PARAMETER {
     DIVINATION_USE_LAST(null, "", false, 0, "chars"),
 
     SPELL_DIFFICULTY("spells", "Difficulty", "Difficulty", false, 10),
-    ENERGY_COST("Energy Cost", " Cost in Energy", false, 0,
+    ENERGY_COST("Energy Cost", " Cost in Energy", false, 0, "actions"),
 
-     "actions"),
-    AP_COST("Act.Pt. Cost", " Cost in AP", false, 1, "spells", "actions", "items"),
+    AP_COST("ATB Cost", " Cost in ATB", false, 1, "spells", "actions", "items"),
     ESS_COST("ESS Cost", " Cost in Essence", false, 0, "spells", "actions", "items"),
     FOC_COST("FOC Cost", " Cost in Focus", false, 0, "spells", "actions", "items"),
     STA_COST("STA Cost", " Cost in Stamina", false, 0, "spells", "actions", "items"),
     ENDURANCE_COST("END Cost", " Cost in Endurance", false, 0, "spells", "actions", "items"),
+    SF_COST("Soulforce Cost", " Cost in Soulforce", false, 0, "spells", "actions", "items"),
     CP_COST("CP Cost", "Cost in Counter Points", false, 0, "spells", "actions"),
 
     END_UPKEEP(null, " UPKEEP in Endurance", false, 0, "spells", "units", "items"),
@@ -501,9 +486,7 @@ public enum PARAMS implements PARAMETER {
     FOC_UPKEEP(null, " UPKEEP in Focus", false, 0, "spells", "units", "items"),
     STA_UPKEEP(null, " UPKEEP in Stamina", false, 0, "spells", "units", "items"),
 
-    FOC_REQ(
-
-     "Focus Req.", " Focus Requirement", false, 0, "spells", "actions", "items"),
+    FOC_REQ("Focus Req.", " Focus Requirement", false, 0, "spells", "actions", "items"),
     COOLDOWN_MOD(true, "Cooldown modifier", " Cooldown modifier", false, 0, "skills", "units", "chars", "perks"),
     // TODO into custom values with _MOVES, _SPELLS, _{SPELL_GROUP} or even
     // _{ACTION_NAME}
@@ -618,10 +601,10 @@ public enum PARAMS implements PARAMETER {
     // UNIT
     IMPACT_AREA(null, "", false, 0, "weapons", "spells", "actions"),
     RANGE("Range ", "Maximum distance", false, 1,
-     // "units",
-     "spells",
-     // "chars",
-     "actions", "weapons", "items"),
+            // "units",
+            "spells",
+            // "chars",
+            "actions", "weapons", "items"),
     AUTO_ATTACK_RANGE(null, "", false, 0, "actions"),
 
     CADENCE_FOCUS_BOOST(null, "", false, 0, "actions", "units", "chars", "perks"),
@@ -718,7 +701,7 @@ public enum PARAMS implements PARAMETER {
     GROUP_NUMBER("encounters"),
     MAX_GROUP_NUMBER("encounters"),
     MIN_GROUP_NUMBER("encounters"),
-    POWER_LEVEL(null, "", false, 0,  "encounters"),
+    POWER_LEVEL(null, "", false, 0, "encounters"),
     UNIT_NUMBER("encounters"),
     MAX_UNIT_PER_GROUP("encounters"),
 
@@ -799,19 +782,24 @@ public enum PARAMS implements PARAMETER {
     DISARM_TRAP(null, "", false, 0, "classes", "units", "chars", "perks", "skills"),
 
     AUTO_TEST_ID("", "", false, 0, "spells", "actions", "classes", "skills"),
-//    HT_CUSTOM_POS_X("", "", false, 0, "classes", "skills"),
-//    HT_CUSTOM_POS_Y("", "", false, 0, "classes", "skills"),
+    //    HT_CUSTOM_POS_X("", "", false, 0, "classes", "skills"),
+    //    HT_CUSTOM_POS_Y("", "", false, 0, "classes", "skills"),
     ANIM_FRAME_DURATION("", "", false, 0, "spells", "actions"),
     ANIM_SPEED("", "", false, 0, "spells", "actions"),
-    SOULFORCE(null, "", false, 0,"lord", "party"),
-    C_SOULFORCE(null, "", true, 0, "lord","party"),
-    BASE_SOULFORCE(null, "", false, 350, "lord","party"),
 
-    SELF_BUFF_MOD(null , "", false, 60, "chars", "units"),
-    DEBT_MOD(null , "", false,  0, "chars", "units"),
-    INTEREST_MOD(null , "", false,  0, "chars", "units"),
 
-    SUMMON_ATB(null , "", false,  0, "spells");
+    SOULFORCE(null, "", false, 100, "lord", "party"), //max
+    C_SOULFORCE(null, "", true, 0, "lord", "party"),
+    BASE_SOULFORCE(null, "", false, 25, "lord", "party"),
+/*
+could have other params - sf discounts,
+ */
+
+    SELF_BUFF_MOD(null, "", false, 60, "chars", "units"),
+    DEBT_MOD(null, "", false, 0, "chars", "units"),
+    INTEREST_MOD(null, "", false, 0, "chars", "units"),
+
+    SUMMON_ATB(null, "", false, 0, "spells");
 
     static {
         COUNTER_MOD.addSpecialDefault(DC_TYPE.ACTIONS, 75);
@@ -995,7 +983,7 @@ public enum PARAMS implements PARAMETER {
     PARAMS(String shortName, String descr, boolean dynamic, int defaultValue, C_OBJ_TYPE type,
            OBJ_TYPE... types) {
         this(type.getTypes()[0].getName(), shortName, descr, dynamic, defaultValue,
-         Integer.MAX_VALUE);
+                Integer.MAX_VALUE);
         String[] ENTITY_TYPES = new String[type.getTypes().length + types.length];
         int i = 0;
         for (OBJ_TYPE t : type.getTypes()) {
@@ -1109,10 +1097,12 @@ public enum PARAMS implements PARAMETER {
     public String getName() {
         return name;
     }
+
     @Override
     public String getDisplayedName() {
         return DescriptionTooltips.getDisplayedName(this);
     }
+
     @Override
     public String toString() {
         return getName();
@@ -1203,48 +1193,6 @@ public enum PARAMS implements PARAMETER {
         this.superLowPriority = superLowPriority;
     }
 
-    // DETECTION_PER_LEVEL.setUnitLevel(true);
-    // CONCEALMENT_PER_LEVEL.setUnitLevel(true);
-    // STEALTH_PER_LEVEL.setUnitLevel(true);
-    // SIGHT_RANGE_PER_LEVEL.setUnitLevel(true);
-    // N_OF_COUNTERS_PER_LEVEL.setUnitLevel(true);
-    // N_OF_ACTIONS_PER_LEVEL.setUnitLevel(true);
-    // INITIATIVE_MODIFIER_PER_LEVEL.setUnitLevel(true);
-    // INITIATIVE_BONUS_PER_LEVEL.setUnitLevel(true);
-    // DEFENSE_PENETRATION_PER_LEVEL.setUnitLevel(true);
-    // RESISTANCE_PENETRATION_PER_LEVEL.setUnitLevel(true);
-    // ARMOR_PENETRATION_PER_LEVEL.setUnitLevel(true);
-    // ESSENCE_PER_LEVEL.setUnitLevel(true);
-    // ESSENCE_REGEN_PER_LEVEL.setUnitLevel(true);
-    // STARTING_FOCUS_PER_LEVEL.setUnitLevel(true);
-    // FOCUS_REGEN_PER_LEVEL.setUnitLevel(true);
-    // STAMINA_PER_LEVEL.setUnitLevel(true);
-    // STAMINA_REGEN_PER_LEVEL.setUnitLevel(true);
-    // BASE_DAMAGE_PER_LEVEL.setUnitLevel(true);
-    // ARMOR_PER_LEVEL.setUnitLevel(true);
-    // SPELL_ARMOR_PER_LEVEL.setUnitLevel(true);
-    // RESISTANCE_PER_LEVEL.setUnitLevel(true);
-    // DEFENSE_PER_LEVEL.setUnitLevel(true);
-    // ATTACK_PER_LEVEL.setUnitLevel(true);
-    // TOUGHNESS_PER_LEVEL.setUnitLevel(true);
-    // ENDURANCE_PER_LEVEL.setUnitLevel(true);
-    // ENDURANCE_REGEN_PER_LEVEL.setUnitLevel(true);
-    // SPIRIT_PER_LEVEL.setUnitLevel(true);
-    //
-    // FIRE_RESISTANCE_PER_LEVEL.setUnitLevel(true);
-    // WATER_RESISTANCE_PER_LEVEL.setUnitLevel(true);
-    // AIR_RESISTANCE_PER_LEVEL.setUnitLevel(true);
-    // EARTH_RESISTANCE_PER_LEVEL.setUnitLevel(true);
-    // CHAOS_RESISTANCE_PER_LEVEL.setUnitLevel(true);
-    // HOLY_RESISTANCE_PER_LEVEL.setUnitLevel(true);
-    // SHADOW_RESISTANCE_PER_LEVEL.setUnitLevel(true);
-    // ARCANE_RESISTANCE_PER_LEVEL.setUnitLevel(true);
-    // POISON_RESISTANCE_PER_LEVEL.setUnitLevel(true);
-    // DEATH_RESISTANCE_PER_LEVEL.setUnitLevel(true);
-    // PSIONIC_RESISTANCE_PER_LEVEL.setUnitLevel(true);
-    // PIERCING_RESISTANCE_PER_LEVEL.setUnitLevel(true);
-    // BLUDGEONING_RESISTANCE_PER_LEVEL.setUnitLevel(true);
-    // SLASHING_RESISTANCE_PER_LEVEL.setUnitLevel(true);
 
     public String getShortName() {
         return shortName;

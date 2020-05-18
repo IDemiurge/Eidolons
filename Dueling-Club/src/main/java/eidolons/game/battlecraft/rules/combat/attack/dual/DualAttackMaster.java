@@ -32,6 +32,7 @@ import java.util.List;
 /**
  * Created by JustMe on 4/16/2017.
  */
+@Deprecated
 public class DualAttackMaster {
 
     public static List<DC_UnitAction> getDualAttacks(Unit unit) {
@@ -54,10 +55,7 @@ public class DualAttackMaster {
         if (offhand.checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.TWO_HANDS.toString())) {
             return false;
         }
-        if (main.checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.TWO_HANDS.toString())) {
-            return false;
-        }
-            return true;
+        return !main.checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.TWO_HANDS.toString());
     }
 
     private static boolean checkRangeCanMerge(DC_UnitAction main, DC_UnitAction offhand) {
@@ -152,10 +150,6 @@ public class DualAttackMaster {
     }
 
     private static Boolean getMinMaxOrAverage(PARAMS p) {
-        switch (p) {
-            case C_N_OF_ACTIONS:
-                return false;
-        }
         return null;
     }
 

@@ -22,7 +22,7 @@ public class InterruptRule {
     public static Effect getEffect() {
         return new Effects(
                 new InfoTextEffect(KEYS.SOURCE, " has been interrupted!", true),
-                new ModifyValueEffect(PARAMS.C_N_OF_ACTIONS, MOD.MODIFY_BY_PERCENT,
+                new ModifyValueEffect(PARAMS.C_ATB, MOD.MODIFY_BY_PERCENT,
          AP_FORMULA), new ModifyValueEffect(PARAMS.C_FOCUS, MOD.MODIFY_BY_PERCENT,
          FOC_FORMULA));
     }

@@ -30,11 +30,9 @@ public class ParamPriorityAnalyzer extends AiHandler {
             case FORTITUDE:
             case SPIRIT:
                 return 100;
-            case C_N_OF_ACTIONS:
-                return 50;
             case C_N_OF_COUNTERS:
                 return 120;
-            case N_OF_ACTIONS:
+            case INITIATIVE:
             case N_OF_COUNTERS:
                 return 150;
 
@@ -43,7 +41,6 @@ public class ParamPriorityAnalyzer extends AiHandler {
             case C_ENDURANCE:
             case ATTACK_MOD:
             case DEFENSE_MOD:
-            case C_INITIATIVE_BONUS:
                 return 2;
             case ENDURANCE:
             case ATTACK:
@@ -62,7 +59,7 @@ public class ParamPriorityAnalyzer extends AiHandler {
                 return 6;
             case C_ESSENCE:
                 return 4;
-            case C_INITIATIVE:
+            case C_ATB:
                 return 2f * AtbController.ATB_TO_READY / AtbController.TIME_LOGIC_MODIFIER;
             case RESISTANCE:
                 return 4;
@@ -165,12 +162,6 @@ public class ParamPriorityAnalyzer extends AiHandler {
                     }
                     return false;
 
-                case C_N_OF_ACTIONS:
-                    if (target instanceof Unit) {
-                        Unit heroObj = (Unit) target;
-                        return heroObj.isImmobilized();
-                    }
-                    return false;
                 case C_N_OF_COUNTERS:
                     if (target instanceof Unit) {
                         Unit heroObj = (Unit) target;

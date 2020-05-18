@@ -36,7 +36,6 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
 import java.util.Map;
@@ -62,7 +61,6 @@ public class ModeEffect extends MicroEffect implements OneshotEffect {
     private STANDARD_EVENT_TYPE REMOVE_EVENT = STANDARD_EVENT_TYPE.ROUND_ENDS;
     private ModifyPropertyEffect modPropEffect;
     private boolean reinit = true;
-    private int timeModifier;
 
     @AE_ConstrArgs(argNames = {"template", "name", "defenseMod", "disableCounter", "dispelOnHit",})
     public ModeEffect(STD_MODES template, String name, Integer defenseMod, Boolean disableCounter,
@@ -114,9 +112,6 @@ divination?
         if (reinit) {
             initBuffEffect();
         }
-        timeModifier = getGame().getTurnManager().getTimeModifier();
-        LogMaster.log(LogMaster.COMBAT_DEBUG,
-                getActiveObj() + "'s timeModifier= " + timeModifier);
         if (mode.isDispelOnHit()) {
             addDispelOnHitTrigger();
         }
@@ -340,8 +335,9 @@ divination?
         PARAMETER param = ContentValsManager.getPARAM(mode.getParameter());
         effect.setParam(param);
         effect.setMaxParam(ContentValsManager.getBaseParameterFromCurrent(param));
-        Formula appendedByModifier = new Formula(formula).getAppendedByModifier(timeModifier);
-        effect.setFormula(appendedByModifier);
+        // Formula appendedByModifier = new Formula(formula).
+        //         getAppendedByModifier(timeModifier);
+        effect.setFormula(new Formula(formula));
         addBuffEffect.addEffect(new DelayedEffect(effect, condition));
         // new DelayedEffect(effect, condition).apply(ref);
     }

@@ -85,10 +85,12 @@ public class FacingPanel extends TablePanel {
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
-        background.addActor(btnTurnClockwise = new SmartButton(ButtonStyled.STD_BUTTON.UP, ()-> turn(true)));
+        background.addActor(btnTurnClockwise =
+                new SmartButton(ButtonStyled.STD_BUTTON.UP, ()-> turn(true)));
+        btnTurnClockwise.setNoClickCheck(false);
         btnTurnClockwise.setFlipY(true);
         background.addActor(btnTurnAntiClockwise = new SmartButton(ButtonStyled.STD_BUTTON.UP, ()-> turn(false)));
-
+        btnTurnAntiClockwise.setNoClickCheck(false);
         float center = GdxMaster.centerWidth(btnTurnAntiClockwise);
         float top = background.getHeight() - btnTurnAntiClockwise.getHeight();
         btnTurnAntiClockwise.setPosition(center, top);

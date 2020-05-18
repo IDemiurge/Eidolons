@@ -2,9 +2,7 @@ package eidolons.libgdx.gui.panels.dc.topleft;
 
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.Eidolons;
-import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.ScenarioGame;
-import eidolons.game.netherflame.igg.IGG_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
@@ -63,14 +61,6 @@ public class LevelInfoPanel extends TablePanelX {
                 }
             } else {
 
-                if (DC_Game.game instanceof IGG_Game) {
-//               TODO igg demo fix
-//                IGG_MetaMaster m = m = ScenarioGame.getGame().getMetaMaster();
-//                    text = m.getMetaGame().getScenario().getName();
-//                    v = m.getMetaDataManager().getMissionName()
-//                            + ", Level [" + (m.getMetaGame().getMissionIndex() + 1) + "/" +
-//                            m.getMetaGame().getMissionNumber() + "]";
-                }
             }
 
             locationLabel.setNameText(text);

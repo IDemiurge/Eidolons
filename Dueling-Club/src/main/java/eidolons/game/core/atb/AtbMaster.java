@@ -38,7 +38,7 @@ public class AtbMaster {
         float initiativeCost = getReadinessCost(action);
         if (initiativeCost <= 0)
             return 0;
-        action.getOwnerUnit().modifyParameter(PARAMS.C_INITIATIVE,
+        action.getOwnerUnit().modifyParameter(PARAMS.C_ATB,
          -initiativeCost + "", 0, false);
 
         ((AtbTurnManager) action.getGame().getTurnManager()).getAtbController().processAtbRelevantEvent();
@@ -48,10 +48,10 @@ public class AtbMaster {
     }
 
     public static Integer getReadiness(Unit unit) {
-        return unit.getIntParam(PARAMS.C_INITIATIVE);
+        return unit.getIntParam(PARAMS.C_ATB);
     }
 
     public static int getDisplayedAtb(BattleFieldObject obj) {
-      return (int) (obj.getIntParam(PARAMS.C_INITIATIVE) / AtbController.TIME_LOGIC_MODIFIER);
+      return (int) (obj.getIntParam(PARAMS.C_ATB) / AtbController.TIME_LOGIC_MODIFIER);
     }
 }

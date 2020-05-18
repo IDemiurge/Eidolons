@@ -3,7 +3,7 @@ package eidolons.entity.obj.attach;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.igg.IGG_MetaMaster;
+import eidolons.game.netherflame.main.NF_MetaMaster;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
@@ -34,7 +34,7 @@ public class DynamicBuffRules {
             }
         }
         if (unit.isScion()) {
-            if (game.getMetaMaster() instanceof IGG_MetaMaster) {
+            if (game.getMetaMaster() instanceof NF_MetaMaster) {
                 int sfx = game.getMetaMaster().getShadowMaster().getTimeLeft();
                 addDynamicBuff("Shadow of Death", unit, ": " + sfx);
             }
@@ -132,7 +132,7 @@ public class DynamicBuffRules {
                 return ImageManager.getValueIconPath(PARAMS.MOBILITY_MASTERY);
             case NEW_TURN:
             case END_TURN:
-                return ImageManager.getValueIconPath(PARAMS.N_OF_ACTIONS);
+                return ImageManager.getValueIconPath(PARAMS.INITIATIVE);
         }
         return
                 "ui/content/value icons/effect cases" + VariableManager.removeVarPart(effectsCase.getName());

@@ -64,6 +64,7 @@ public class QueueView extends UnitView {
 //        getTeamColor()
         GdxMaster.center(verticalLine);
         addActor(activeMarker = new Image(ButtonStyled.STD_BUTTON.PULL.getTexture()));
+        activeMarker.getColor().a=0;
         init(o.getClockValue());
         addActor(emblemBg = new Image(TextureCache.getOrCreateR(Images.INTENT_ICON_BG)));
         emblemBg.setPosition( (AtbPanel.imageSize-30)/2,  80);
@@ -84,6 +85,8 @@ public class QueueView extends UnitView {
     public void act(float delta) {
         super.act(delta);
         emblemLighting.setVisible(false);
+        modeImage.setPosition(78, -20);
+        modeImage.setZIndex(654);
         verticalLine.setX(GdxMaster.centerWidth(verticalLine)+5);
         highlight.setX(portrait.getX()-4);
         roundBorder.setY(portrait.getY());
@@ -94,10 +97,11 @@ public class QueueView extends UnitView {
             hpBar.setY(portrait.getY()+1);
             highlight.setZIndex(999);
         }
-        hpBar.setX(-1);
+        hpBar.setY(-9);
+        hpBar.setX(-6);
 
-        atbBg.setY(-21);
-        activeMarker.setY(-35);
+        atbBg.setY(-24);
+        activeMarker.setY(-32);
         activeMarker.setZIndex(6534);
         activeMarker.setX(GdxMaster.centerWidth(activeMarker)+4);
 
@@ -176,6 +180,7 @@ public class QueueView extends UnitView {
         if (this.active==active) {
             return;
         }
+        // ActionMaster.addBlockingAction(this, ()-> queueMoving);
         this.active = active;
         //we would need a delay here? elsewise...
         if (active) {
@@ -291,15 +296,6 @@ public class QueueView extends UnitView {
     protected boolean isHpBarVisible() {
         return true;
     }
-
-    //    @Override
-    //    public void draw(Batch batch, float parentAlpha) {
-    //        if (parentAlpha== ShaderMaster.SUPER_DRAW)
-    //            super.draw(batch, 1);
-    //        else
-    //        ShaderMaster.drawWithCustomShader(this, batch,
-    //         greyedOut ? GrayscaleShader.getGrayscaleShader() : null, true);
-    //    }
 
     public void setPortraitTexture(TextureRegion textureRegion) {
         getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));

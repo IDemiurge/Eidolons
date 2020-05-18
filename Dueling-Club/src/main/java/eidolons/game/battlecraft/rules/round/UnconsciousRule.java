@@ -10,8 +10,9 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.action.ActionRule;
+import eidolons.game.core.atb.AtbController;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
+import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
@@ -39,7 +40,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     public static final Integer DEFAULT_TOUGHNESS_RECOVER = 50;
     public static final Integer DEFAULT_INITIATIVE_PENALTY = 50;
-    public static final int DEFAULT_ATB_FALL_TO = -100;
+    public static final int DEFAULT_ATB_FALL_TO = (int) (-10* AtbController.TIME_LOGIC_MODIFIER);
     public static final int DEFAULT_FOCUS_REQ_UNIT = 0;
     public static final int DEFAULT_FOCUS_REQ = 0;
 

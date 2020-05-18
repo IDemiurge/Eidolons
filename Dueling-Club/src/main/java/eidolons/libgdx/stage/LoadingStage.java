@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.game.EidolonsGame;
-import eidolons.game.netherflame.igg.IGG_Launcher;
+import eidolons.game.netherflame.main.IntroLauncher;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.launch.ScenarioLauncher;
@@ -166,7 +166,7 @@ public class LoadingStage extends Stage {
         for (Ambience sub : fogList) {
             sub.act(delta);
         }
-        if (IGG_Launcher.INTRO_RUNNING) {
+        if (IntroLauncher.INTRO_RUNNING) {
             underText.setVisible(false);
         } else
             underText.setVisible(!(ScreenMaster.getScreen() instanceof DungeonScreen));

@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.spell;
 
-import eidolons.game.netherflame.igg.event.TIP;
-import eidolons.game.netherflame.igg.event.TipMessageMaster;
+import eidolons.game.netherflame.main.event.TIP;
+import eidolons.game.netherflame.main.event.TipMessageMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;

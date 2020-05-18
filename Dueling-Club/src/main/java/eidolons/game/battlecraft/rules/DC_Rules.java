@@ -39,7 +39,6 @@ public class DC_Rules implements GameRules {
     private DequeImpl<ActionRule> actionRules = new DequeImpl<>();
     private DequeImpl<DC_RuleImpl> triggerRules = new DequeImpl<>();
 
-    private TimeRule timeRule;
     private WatchRule watchRule;
     private FocusRule focusRule;
     private MoraleRule moraleRule;
@@ -166,8 +165,6 @@ public class DC_Rules implements GameRules {
         counterRules.add(encaseRule);
         counterRules.add(greaseRule);
 
-
-        timeRule = new TimeRule(getGame());
         moraleBuffRule = new MoraleBuffRule(getGame());
         this.buffRules.add(moraleBuffRule);
         staminaRule = new StaminaBuffRule(getGame());
@@ -234,10 +231,6 @@ public class DC_Rules implements GameRules {
 
     public DequeImpl<ActionRule> getActionRules() {
         return actionRules;
-    }
-
-    public TimeRule getTimeRule() {
-        return timeRule;
     }
 
     public WatchRule getWatchRule() {

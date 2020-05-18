@@ -16,7 +16,7 @@ public class SummoningSicknessRule {
         if (active instanceof Spell) {
             if (((Spell) active).checkParam(PARAMS.SUMMON_ATB)){
             int i = ((Spell) active).getIntParam(PARAMS.SUMMON_ATB);
-            unit.setParam(PARAMS.C_INITIATIVE, i* 100);
+            unit.setParam(PARAMS.C_ATB, i* 100);
                 unit.setParam(PARAMS.ATB_START_PRESET, i, true, true);
             }
         }

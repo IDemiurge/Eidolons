@@ -42,7 +42,7 @@ import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
-import eidolons.game.netherflame.igg.pale.PaleAspect;
+import eidolons.game.netherflame.main.pale.PaleAspect;
 import eidolons.macro.entity.town.Town;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.DC_RequirementsManager;

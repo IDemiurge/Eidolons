@@ -139,9 +139,8 @@ public class GdxColorMaster {
                     return ESSENCE;
                 case C_TOUGHNESS:
                     return TOUGHNESS;
-                case C_INITIATIVE:
+                case C_ATB:
                 case C_ENERGY:
-                case C_N_OF_ACTIONS:
             }
         }
 

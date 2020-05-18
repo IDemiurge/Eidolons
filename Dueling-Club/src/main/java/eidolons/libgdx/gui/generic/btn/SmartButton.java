@@ -34,6 +34,7 @@ public class SmartButton extends TextButton implements EventListener {
     private Runnable disabledRunnable;
     private boolean flipY;
     private boolean flipX;
+    private boolean noClickCheck;
 
     public SmartButton(String text, TextButtonStyle style) {
         this(text, style, null, STD_BUTTON.MENU);
@@ -151,6 +152,9 @@ public class SmartButton extends TextButton implements EventListener {
     }
 
     protected boolean isCheckClickArea() {
+        if (noClickCheck) {
+            return false;
+        }
         return !flipX && !flipY;
     }
 
@@ -227,4 +231,9 @@ public class SmartButton extends TextButton implements EventListener {
         super.setBackground(new FlipDrawable(background, ()-> flipX, ()-> flipY));
 
     }
+
+    public void setNoClickCheck(boolean noClickCheck) {
+        this.noClickCheck = noClickCheck;
+    }
+
 }

@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
-import eidolons.game.netherflame.igg.IGG_Demo;
+import eidolons.game.netherflame.additional.IGG_Demo;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;

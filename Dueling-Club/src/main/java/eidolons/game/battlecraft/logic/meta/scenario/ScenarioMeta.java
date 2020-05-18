@@ -18,14 +18,14 @@ public class ScenarioMeta extends MetaGame {
     private List<String> missions;
     private int missionNumber;
 
-    public ScenarioMeta(Scenario scenario, MetaGameMaster<ScenarioMeta> master) {
+    public ScenarioMeta(Scenario scenario, MetaGameMaster master) {
         super(master);
         this.scenario = scenario;
     }
 
     @Override
-    public ScenarioMetaMaster getMaster() {
-        return (ScenarioMetaMaster) super.getMaster();
+    public MetaGameMaster getMaster() {
+        return   super.getMaster();
     }
 
     public Scenario getScenario() {
@@ -34,7 +34,7 @@ public class ScenarioMeta extends MetaGame {
 
 
     public QuestMission getMission() {
-        return getMaster().getMissionMaster().getMission();
+        return (QuestMission) getMaster().getMissionMaster().getMission();
     }
 
     public int getMissionIndex() {

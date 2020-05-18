@@ -14,9 +14,9 @@ import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
-import eidolons.game.netherflame.igg.event.GameEventHandler;
-import eidolons.game.netherflame.igg.event.IGG_EventHandler;
+import eidolons.game.netherflame.main.death.ShadowMaster;
+import eidolons.game.netherflame.main.event.GameEventHandler;
+import eidolons.game.netherflame.main.event.NF_EventHandler;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.macro.AdventureInitializer;
 import eidolons.macro.global.persist.Loader;
@@ -65,15 +65,15 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     protected abstract DC_Game createGame();
 
-    protected abstract PartyManager<E> createPartyManager();
+    protected abstract PartyManager createPartyManager();
 
-    protected abstract MetaDataManager<E> createMetaDataManager();
+    protected abstract MetaDataManager createMetaDataManager();
 
     public DialogueActorMaster getDialogueActorMaster() {
         return dialogueManager.getDialogueActorMaster();
     }
 
-    protected abstract MetaInitializer<E> createMetaInitializer();
+    protected abstract MetaInitializer createMetaInitializer();
 
     public void initHandlers() {
         partyManager = createPartyManager();
@@ -82,7 +82,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
         if (CoreEngine.isCombatGame()) {
             lootMaster = createLootMaster();
-            eventHandler = new IGG_EventHandler(this);
+            eventHandler = new NF_EventHandler(this);
             defeatHandler = createDefeatHandler();
             townMaster = createTownMaster();
             dialogueManager = new DialogueManager(this);
@@ -178,7 +178,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         //        getIntroFactory().init(this);
     }
 
-    public LootMaster<E> getLootMaster() {
+    public LootMaster getLootMaster() {
         return lootMaster;
     }
 
@@ -206,7 +206,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return data;
     }
 
-    public E getMetaGame() {
+    public MetaGame getMetaGame() {
         return metaGame;
     }
 
@@ -214,15 +214,15 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return game;
     }
 
-    public PartyManager<E> getPartyManager() {
+    public PartyManager getPartyManager() {
         return partyManager;
     }
 
-    public MetaInitializer<E> getInitializer() {
+    public MetaInitializer getInitializer() {
         return initializer;
     }
 
-    public MetaDataManager<E> getMetaDataManager() {
+    public MetaDataManager getMetaDataManager() {
         return metaDataManager;
     }
 

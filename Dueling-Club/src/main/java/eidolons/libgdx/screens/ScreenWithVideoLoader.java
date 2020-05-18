@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.netherflame.igg.hero.IggHeroSelectionPanel;
+import eidolons.game.netherflame.main.hero.IggHeroSelectionPanel;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;

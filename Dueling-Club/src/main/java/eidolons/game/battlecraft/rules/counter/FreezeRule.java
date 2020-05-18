@@ -55,7 +55,7 @@ public class FreezeRule extends DC_CounterRule {
          PARAMS.ENDURANCE_REGEN, MOD.MODIFY_BY_PERCENT,
          getCounterRef() + "*" + ENDURANCE_REGEN_PER_COUNTER),
 
-         new ModifyValueEffect(PARAMS.INITIATIVE_MODIFIER,
+         new ModifyValueEffect(PARAMS.INITIATIVE ,
           MOD.MODIFY_BY_CONST, getCounterRef() + "*"
           + INITIATIVE_PER_COUNTER));
         // if (checkIsFrozen(unit)) {
@@ -99,7 +99,7 @@ public class FreezeRule extends DC_CounterRule {
     }
 
     private boolean checkIsFrozen(BattleFieldObject unit) {
-        return unit.getIntParam(PARAMS.INITIATIVE_MODIFIER) <= NumberUtils
+        return unit.getIntParam(PARAMS.INITIATIVE ) <= NumberUtils
          .getInteger(INITIATIVE_PER_COUNTER)
          * -getNumberOfCounters(unit);
     }

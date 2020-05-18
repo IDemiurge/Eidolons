@@ -63,10 +63,6 @@ public class AtbTurnManager extends GenericTurnManager {
         }
     }
 
-    @Override
-    public int getTimeModifier() {
-        return game.getRules().getTimeRule().getTimePercentageRemaining();
-    }
 
     public void newRound() {
         atbController.newRound();

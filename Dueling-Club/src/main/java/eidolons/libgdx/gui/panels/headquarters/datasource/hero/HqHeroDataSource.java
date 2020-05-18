@@ -183,14 +183,6 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
         return unitDataSource.getCounterPoints();
     }
 
-    @Override
-    public ValueContainer getActionPoints() {
-        return unitDataSource.getActionPoints();
-    }
-
-    public VerticalValueContainer getParamContainer(PARAMETER parameter) {
-        return unitDataSource.getParamContainer(parameter);
-    }
 
     @Override
     public VerticalValueContainer getResistance() {
@@ -200,10 +192,6 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
     @Override
     public VerticalValueContainer getDefense() {
         return unitDataSource.getDefense();
-    }
-
-    public VerticalValueContainer getValueContainer(PARAMETER param, String string) {
-        return unitDataSource.getValueContainer(param, string);
     }
 
     @Override
@@ -321,11 +309,11 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
     }
 
     public List<VALUE> getStatsValueList(VALUE[][] paramsGeneral) {
-        return unitDataSource.getStatsValueList(paramsGeneral);
+        return UnitDataSource.getStatsValueList(paramsGeneral);
     }
 
     public List<VALUE> getStatsValues() {
-        return unitDataSource.getStatsValues();
+        return UnitDataSource.getStatsValues();
     }
 
 }

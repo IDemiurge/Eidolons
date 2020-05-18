@@ -134,7 +134,7 @@ public class Filter<T extends Entity> extends ReferredElement {
                 for (Condition c : getConditions()) {
                     if (!match(c, obj.getId())) {
                         if (conditionDebugCache != null)
-                            conditionDebugCache.put(obj , c);
+                            conditionDebugCache.put(obj, c);
                         continue loop;
                     }
                 }
@@ -143,17 +143,18 @@ public class Filter<T extends Entity> extends ReferredElement {
             return (Set<T>) new HashSet<>(set);
         }
         if (GameState.isResetDone())
-        if (cached!=null) {
-            return cached;
-        }
+            if (cached != null) {
+                return cached;
+            }
         Collection<Obj> pool = getFilteredObjectPool();
-        Set<T> filteredSet = (Set<T>) new HashSet<>(pool);
+        Set<T> filteredSet = new HashSet<>();
         ArrayList<Obj> list = new ArrayList<>(pool);
-        for (Condition c : getConditions()) {
-            for (Obj obj : list) {
-                if (!match(c, obj.getId())) {
-                    filteredSet.remove(obj);
+        loop: for (Obj obj : list) {
+            for (Condition c : getConditions()) {
+                if (match(c, obj.getId())) {
+                    continue loop;
                 }
+                filteredSet.add((T) obj);
             }
         }
         cached = filteredSet;
@@ -211,16 +212,16 @@ public class Filter<T extends Entity> extends ReferredElement {
             return getObjectPool();
         }
         if (TYPE != null) {
-            return game.getObjects(TYPE).stream().filter(obj->
-                 game.checkModule(   obj)).collect(Collectors.toSet());
+            return game.getObjects(TYPE).stream().filter(obj ->
+                    game.checkModule(obj)).collect(Collectors.toSet());
         }
 
         Set<Obj> filteredSet = new HashSet<>();
         for (OBJ_TYPE TYPE : TYPES) {
             filteredSet.addAll(game.getObjects(TYPE));
         }
-        return filteredSet.stream().filter(obj->
-                game.checkModule(   obj)).collect(Collectors.toSet());
+        return filteredSet.stream().filter(obj ->
+                game.checkModule(obj)).collect(Collectors.toSet());
     }
 
     private boolean matchTYPE(Obj obj) {

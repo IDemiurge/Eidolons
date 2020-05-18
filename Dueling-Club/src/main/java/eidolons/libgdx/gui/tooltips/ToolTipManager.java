@@ -79,6 +79,10 @@ public class ToolTipManager extends TablePanel {
     public ToolTipManager(GenericGuiStage battleGuiStage) {
         guiStage = battleGuiStage;
         GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
+            if (ScreenMaster.getScreen().getController().isLeftPressed()) {
+main.system.auxiliary.log.LogMaster.log(1,"SHOW_TOOLTIP blocked due to mouse pressed" );
+return ;
+            }
             Object object = event.get();
             requestedShow(object);
         });

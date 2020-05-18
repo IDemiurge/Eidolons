@@ -65,10 +65,10 @@ public class GuardRule {
     private static boolean checkDefenderTakesAttack(Attack attack, Unit guard) {
         Ref ref = Ref.getCopy(attack.getRef());
         ref.setTarget(guard.getId());
-        String success = StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE_MODIFIER)
+        String success = StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE )
          + "*(100+" + RollMaster.getVigilanceModifier(guard, attack.getAction()) +
          ")/100/3 ";
-        String fail = StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE_MODIFIER) +
+        String fail = StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE) +
          "*(100+" + RollMaster.getDexterousModifier(guard, attack.getAction()) +
          ")/100/" + attack.getAction().getIntParam(PARAMS.AP_COST);
         String log = " to defend " + attack.getAttackedUnit().getName() +

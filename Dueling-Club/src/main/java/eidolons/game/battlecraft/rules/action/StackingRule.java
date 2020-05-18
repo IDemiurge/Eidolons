@@ -14,7 +14,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster;
-import eidolons.game.netherflame.igg.pale.PaleAspect;
+import eidolons.game.netherflame.main.pale.PaleAspect;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;

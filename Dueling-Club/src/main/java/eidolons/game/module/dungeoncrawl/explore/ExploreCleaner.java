@@ -58,7 +58,6 @@ public class ExploreCleaner extends ExplorationHandler {
                     }
                 }
                 unit.setParam(PARAMS.FOCUS_FATIGUE, 0);
-                unit.resetDynamicParam(PARAMS.C_N_OF_ACTIONS);
                 removeMode(unit);
                 BuffObj buff = unit.getBuff(StealthRule.SPOTTED);
                 if (buff != null)

@@ -7,7 +7,7 @@ import com.bitfire.postprocessing.PostProcessorEffect;
 import com.bitfire.postprocessing.demo.PostProcessing;
 import com.bitfire.postprocessing.effects.*;
 import com.bitfire.postprocessing.effects.Bloom.Settings;
-import eidolons.game.netherflame.igg.IGG_Images;
+import eidolons.game.netherflame.main.NF_Images;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.screens.SCREEN_TYPE;
@@ -90,7 +90,7 @@ public class PostProcessController {
         addEffect(lens1 = new LensFlare(GdxMaster.getWidth(), GdxMaster.getHeight()), false);
 
         addEffect(lens2 = new LensFlare2(GdxMaster.getWidth(), GdxMaster.getHeight()), false);
-        lens2.setLensColorTexture(TextureCache.getOrCreate(IGG_Images.PROMO_ART.THE_HALL.getPath()));
+        lens2.setLensColorTexture(TextureCache.getOrCreate(NF_Images.PROMO_ART.THE_HALL.getPath()));
 //TODO this lens could be better....
 
 

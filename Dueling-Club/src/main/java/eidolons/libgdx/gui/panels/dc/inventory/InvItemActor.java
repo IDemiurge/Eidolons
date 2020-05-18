@@ -14,7 +14,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.igg.soul.eidola.EidolonImbuer;
+import eidolons.game.netherflame.main.soul.eidola.EidolonImbuer;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;

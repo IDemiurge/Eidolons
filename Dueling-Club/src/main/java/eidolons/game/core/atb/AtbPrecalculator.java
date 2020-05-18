@@ -95,7 +95,7 @@ public class AtbPrecalculator {
         @Override
         public float getAtbReadiness() {
             if (atbReadiness == null) {
-                atbReadiness = (float) unit.getIntParam(PARAMS.C_INITIATIVE);
+                atbReadiness = (float) unit.getIntParam(PARAMS.C_ATB);
             }
             return atbReadiness;
         }

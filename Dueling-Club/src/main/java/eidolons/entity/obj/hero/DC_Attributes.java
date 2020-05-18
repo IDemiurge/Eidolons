@@ -99,17 +99,15 @@ public class DC_Attributes {
 
                 Integer agi = hero.getIntParam(PARAMS.AGILITY);
 
-                hero.modifyParameter(PARAMS.INITIATIVE_MODIFIER, DC_Formulas
-                  .getInitModFromAgi(MathMaster.round(new Float((amount + 2 * agi) / 3))),
-                 modifierKey);
+                // hero.modifyParameter(PARAMS.INITIATIVE_MODIFIER, DC_Formulas
+                //   .getInitModFromAgi(MathMaster.round(new Float((amount + 2 * agi) / 3))),
+                //  modifierKey);
 
                 Float apBoost = new Float(amount + new Float(agi / 2));
                 int bonus = DC_Formulas.getActsFromDexAndHalfAgility(MathMaster
                         .round(apBoost));
-                hero.modifyParameter(PARAMS.N_OF_ACTIONS, bonus, modifierKey);
+                hero.modifyParameter(PARAMS.INITIATIVE, bonus, modifierKey);
 
-                hero.modifyParameter(PARAMS.INITIATIVE, bonus/2, modifierKey);
-                // NEW
 
                 // hero.modifyParameter(PARAMS.N_OF_ACTIONS, DC_Formulas
                 // .getActsFromDex(amount),

@@ -44,7 +44,7 @@ public class DC_ContentValsManager extends ContentValsManager {
      PARAMS.C_FOCUS,
     };
     public static final PARAMETER[] MAIN_PARAMETERS = {
-     PARAMS.ATTACK, PARAMS.DEFENSE, PARAMS.N_OF_ACTIONS, PARAMS.ARMOR, PARAMS.FORTITUDE, PARAMS.RESISTANCE, PARAMS.SPIRIT,
+     PARAMS.ATTACK, PARAMS.DEFENSE, PARAMS.INITIATIVE, PARAMS.ARMOR, PARAMS.FORTITUDE, PARAMS.RESISTANCE, PARAMS.SPIRIT,
               PARAMS.N_OF_COUNTERS,
     };
     public static final VALUE[] ATTRIBUTES = {PARAMS.STRENGTH, PARAMS.VITALITY, PARAMS.AGILITY,
@@ -62,7 +62,7 @@ public class DC_ContentValsManager extends ContentValsManager {
     public static final PARAMS[] COST_PARAMS = {PARAMS.ESS_COST, PARAMS.ENDURANCE_COST,
      PARAMS.FOC_COST, PARAMS.STA_COST, PARAMS.AP_COST,};
     public static final PARAMS[] PAY_PARAMS = {PARAMS.C_ESSENCE, PARAMS.C_ENDURANCE,
-     PARAMS.C_FOCUS, PARAMS.C_STAMINA, PARAMS.C_N_OF_ACTIONS,};
+     PARAMS.C_FOCUS, PARAMS.C_STAMINA ,};
     private final static PARAMETER[] ARMOR_MODIFYING_PARAMS = {PARAMS.NOISE, PARAMS.QUICK_SLOTS,
      PARAMS.ARMOR, PARAMS.DEFENSE, PARAMS.TOUGHNESS, PARAMS.ENDURANCE,
      PARAMS.SIDE_SIGHT_PENALTY, PARAMS.SIGHT_RANGE, PARAMS.STEALTH, PARAMS.DETECTION,
@@ -107,14 +107,12 @@ public class DC_ContentValsManager extends ContentValsManager {
     private static PARAMETER[] headerUnitParams = {PARAMS.BASE_DAMAGE, PARAMS.ARMOR,
      PARAMS.DEFENSE, PARAMS.ATTACK, PARAMS.C_MORALE, PARAMS.RESISTANCE, PARAMS.SPELL_ARMOR,
      PARAMS.SIGHT_RANGE,
-
     };
-    private static PARAMETER[] headerUnitParams2 = {PARAMS.C_N_OF_COUNTERS, PARAMS.C_N_OF_ACTIONS,
-     PARAMS.C_INITIATIVE, PARAMS.C_ENDURANCE,
+    private static PARAMETER[] headerUnitParams2 = {PARAMS.C_N_OF_COUNTERS ,
+     PARAMS.C_ATB, PARAMS.C_ENDURANCE,
      PARAMS.STEALTH, PARAMS.CONCEALMENT, PARAMS.DETECTION, PARAMS.BEHIND_SIGHT_BONUS,
      PARAMS.SIDE_SIGHT_PENALTY,
-     PARAMS.ENDURANCE_REGEN, PARAMS.C_CARRYING_WEIGHT, PARAMS.INITIATIVE_MODIFIER,
-     PARAMS.INITIATIVE_BONUS,
+     PARAMS.ENDURANCE_REGEN, PARAMS.C_CARRYING_WEIGHT,
     };
 
     // next page => Masteries
@@ -129,9 +127,6 @@ public class DC_ContentValsManager extends ContentValsManager {
      PARAMS.COOLDOWN_MOD, PARAMS.BLOCK_CHANCE, PARAMS.PARRY_CHANCE,
 
     }; // also
-    private static VALUE[] priorityValues = {
-
-     PARAMS.C_N_OF_ACTIONS, PARAMS.C_ENDURANCE, PARAMS.C_TOUGHNESS, PARAMS.LEVEL,};
     private static VALUE[] excludedValuesFromAll = {G_PARAMS.POS_X, G_PARAMS.POS_Y,
      G_PROPS.BF_OBJECT_TYPE, G_PROPS.IMAGE, G_PROPS.TYPE, G_PROPS.LORE, G_PROPS.DEITY,
      G_PROPS.DESCRIPTION, G_PROPS.GROUP, G_PROPS.SOUNDSET, PARAMS.QUANTITY};
@@ -142,7 +137,7 @@ public class DC_ContentValsManager extends ContentValsManager {
      {}, {}};
     private static String[] unknownValues = {G_PROPS.TYPE.name(), PROPS.VISIBILITY_STATUS.name(),
      PROPS.DETECTION_STATUS.name(), PROPS.FACING_DIRECTION.name(),
-     PARAMS.C_INITIATIVE.name(), PARAMS.C_N_OF_ACTIONS.name(),
+     PARAMS.C_ATB.name()  ,
     };
     private static List<VALUE> NO_SHOW_NAME_VALUES = new ArrayList<>();
 
@@ -633,9 +628,6 @@ public class DC_ContentValsManager extends ContentValsManager {
         if (param == PARAMS.ESS_UPKEEP) {
             return PARAMS.C_ESSENCE;
         }
-        if (param == PARAMS.AP_UPKEEP) {
-            return PARAMS.C_N_OF_ACTIONS;
-        }
         if (param == PARAMS.END_UPKEEP) {
             return PARAMS.C_ENDURANCE;
         }
@@ -651,9 +643,7 @@ public class DC_ContentValsManager extends ContentValsManager {
 
     public static boolean isParamFloatDisplayed(PARAMETER param) {
         if (param.isAttribute()) {
-            if (!param.getName().contains("Base")) {
-                return true;
-            }
+            return !param.getName().contains("Base");
         }
         return false;
     }
@@ -927,8 +917,6 @@ public class DC_ContentValsManager extends ContentValsManager {
 
     public static PARAMS getPayParameterForCost(PARAMS costParam) {
         switch (costParam) {
-            case AP_COST:
-                return PARAMS.C_N_OF_ACTIONS;
             case ESS_COST:
                 return PARAMS.C_ESSENCE;
             case STA_COST:

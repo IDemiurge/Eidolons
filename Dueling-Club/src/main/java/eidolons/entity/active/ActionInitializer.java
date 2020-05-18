@@ -10,7 +10,7 @@ import eidolons.game.battlecraft.rules.combat.attack.dual.DualAttackMaster;
 import eidolons.game.battlecraft.rules.mechanics.FleeRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
+import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
@@ -113,10 +113,10 @@ public class ActionInitializer extends DC_ActionManager {
                 if (!activeObj.isSpell()) {
                     return EidolonsGame.getActionSwitch(activeObj.getName());
                 }
-//                switch (activeObj.getName()) {
-//                    case "Wait":
-//                        return EidolonsGame.getActionSwitch(activeObj.getName());
-//                }
+                //                switch (activeObj.getName()) {
+                //                    case "Wait":
+                //                        return EidolonsGame.getActionSwitch(activeObj.getName());
+                //                }
 
             }
         return true;
@@ -205,7 +205,7 @@ public class ActionInitializer extends DC_ActionManager {
         actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Wait.name(), unit));
 
 
-//        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.PUSH))
+        //        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.PUSH))
         actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Push.name(), unit));
         actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Pull.name(), unit));
 
@@ -219,8 +219,11 @@ public class ActionInitializer extends DC_ActionManager {
 
         if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.DUAL_ATTACKS))
             if (UnitAnalyzer.checkDualWielding(unit)) {
-                actives.addAll(DualAttackMaster.getDualAttacks(unit));
-                // good idea! :) dual thrust, dual
+                try {
+                    actives.addAll(DualAttackMaster.getDualAttacks(unit));
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }   // good idea! :) dual thrust, dual
                 // stunning blow, many possibilities! :) but it will be tricky...
                 // TODO should add all dual actions
             }
@@ -268,10 +271,9 @@ public class ActionInitializer extends DC_ActionManager {
         }
 
 
+        //        actives.add(getOrCreateAction(SEARCH_MODE, unit));
 
-//        actives.add(getOrCreateAction(SEARCH_MODE, unit));
-
-//  TODO condition?      if (unit.isHero())
+        //  TODO condition?      if (unit.isHero())
 
         if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.GUARD_MODE))
             actives.add(getOrCreateAction(StringMaster.getWellFormattedString(
@@ -310,7 +312,7 @@ public class ActionInitializer extends DC_ActionManager {
         // TODO also add to Actives container!
 
         if (unit.isBoss()) {
-//            actives.addAll(BossMaster.getActionMaster(unit).getStandardActions(unit));
+            //            actives.addAll(BossMaster.getActionMaster(unit).getStandardActions(unit));
         } else
             for (ActionEnums.ACTION_TYPE type : ActionEnums.ACTION_TYPE.values()) {
                 // I could actually centralize all action-adding to HERE! Dual, INV

@@ -6,7 +6,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
+import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
@@ -177,13 +177,6 @@ public class UnitChecker extends EntityChecker<Unit> {
         return getEntity().getOBJ_TYPE_ENUM() == DC_TYPE.CHARS;
     }
 
-    public boolean isDone() {
-        return getEntity().isDone();
-    }
-
-    public boolean isUnmoved() {
-        return getEntity().isUnmoved();
-    }
 
     public boolean isFull() {
         return getEntity().isFull();
