@@ -1,12 +1,14 @@
 package eidolons.libgdx.gui.generic.btn;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -14,6 +16,7 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.controls.GlobalController;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
@@ -29,6 +32,8 @@ public class SmartButton extends TextButton implements EventListener {
     private boolean fixedSize;
     private boolean ignoreConfirmBlock;
     private Runnable disabledRunnable;
+    private boolean flipY;
+    private boolean flipX;
 
     public SmartButton(String text, TextButtonStyle style) {
         this(text, style, null, STD_BUTTON.MENU);
@@ -95,7 +100,7 @@ public class SmartButton extends TextButton implements EventListener {
         try {
             return handleEvent(event);
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
         return true;
     }
@@ -146,7 +151,7 @@ public class SmartButton extends TextButton implements EventListener {
     }
 
     protected boolean isCheckClickArea() {
-        return true;
+        return !flipX && !flipY;
     }
 
     public Runnable getRunnable() {
@@ -202,5 +207,24 @@ public class SmartButton extends TextButton implements EventListener {
     public SmartButton makeActive() {
         GlobalController.setActiveButton(this);
         return this;
+    }
+
+    public void setFlipY(boolean flipY) {
+        this.flipY = flipY;
+    }
+
+    public void setFlipX(boolean flipX) {
+        this.flipX = flipX;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+    }
+
+    @Override
+    public void setBackground(Drawable background) {
+        super.setBackground(new FlipDrawable(background, ()-> flipX, ()-> flipY));
+
     }
 }

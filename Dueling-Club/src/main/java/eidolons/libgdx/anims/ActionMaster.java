@@ -37,9 +37,9 @@ public class ActionMaster {
         }
         AfterAction aa = (AfterAction) getAction(AfterAction.class);
         aa.setAction(action);
-        actor.addAction(aa);
         action.setTarget(actor);
-        aa.setTarget(actor);
+        aa.setTarget(actor);// DO NOT CHANGE ORDER
+        actor.addAction(aa);
     }
 
     public static Action getAction(Class<? extends Action> aClass) {

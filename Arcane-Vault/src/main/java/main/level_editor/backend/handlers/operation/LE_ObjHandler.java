@@ -31,6 +31,7 @@ public class LE_ObjHandler extends LE_Handler {
 
     private static final String DEFAULT_TYPE = "Wall Placeholder Indestructible";
     private BattleFieldObject lastAdded;
+    private Coordinates lastCoordinates;
     private ObjType defaultPaletteType;
 
     public LE_ObjHandler(LE_Manager manager) {
@@ -93,6 +94,7 @@ public class LE_ObjHandler extends LE_Handler {
         if (getModel().isBrushMode() && getModel().getBrush().getBrushType() != LE_BrushType.none) {
             if (getModel().getBrush().getBrushType() ==  LE_BrushType.toggle_void) {
                 operation(Operation.LE_OPERATION.VOID_TOGGLE, c);
+                lastCoordinates = c;
                 return;
             }
             ObjType type = getPaletteHandler().getFiller(
@@ -154,6 +156,7 @@ public class LE_ObjHandler extends LE_Handler {
             getEntityHandler().encounterAdded(id, new EncounterData(bfObj));
         }
         lastAdded = bfObj;
+        lastCoordinates = bfObj.getCoordinates();
     }
 
     public BattleFieldObject addOverlay(DIRECTION d, ObjType objType, int gridX, int gridY) {
@@ -206,10 +209,10 @@ public class LE_ObjHandler extends LE_Handler {
 
 
     public void addInLine(Coordinates c) {
-        if (lastAdded == null) {
+        if (lastCoordinates == null) {
             return;
         }
-        Coordinates c1 = lastAdded.getCoordinates();
+        Coordinates c1 =lastCoordinates;
         if (PositionMaster.inLine(c1, c)) {
             List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesBetweenInclusive(c1, c);
             coordinates.remove(c1);

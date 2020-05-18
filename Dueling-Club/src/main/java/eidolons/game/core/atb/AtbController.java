@@ -24,7 +24,7 @@ public class AtbController implements Comparator<Unit> {
     public static final float SECONDS_IN_ROUND = 60; //seconds; to sync with clock
     public static final float ATB_TO_READY = 10;
     public static final Float TIME_LOGIC_MODIFIER = 1000f;
-    protected static final Float ATB_PER_INITIATIVE_PER_SEC =0.05f ;
+    protected static final Float ATB_PER_INITIATIVE_PER_SEC =0.1f ;
     protected AtbTurnManager manager;
     protected Array<AtbUnit> unitsInAtb;
     protected float time = 0f; //passed in this round

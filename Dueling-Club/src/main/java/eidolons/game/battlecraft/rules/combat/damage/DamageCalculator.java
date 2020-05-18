@@ -148,7 +148,7 @@ public class DamageCalculator {
 
     public static boolean isDead(BattleFieldObject unit) {
         if (unit instanceof Unit) {
-            return UnconsciousRule.checkUnitDies((Unit) unit, null, !unit.isDead());
+            return UnconsciousRule.checkUnitDies((Unit) unit );
         }
         if (0 >= unit.getIntParam(PARAMS.C_ENDURANCE)) {
             return true;
@@ -200,10 +200,8 @@ public class DamageCalculator {
              unconscious ?
               UnconsciousRule.checkFallsUnconscious((Unit) targetObj,
                targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage)
-              : UnconsciousRule.checkUnitDies(
-              targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage,
-              targetObj.getIntParam(PARAMS.C_ENDURANCE) - damage, (Unit) targetObj,
-              null, false);
+              : UnconsciousRule.checkUnitAnnihilated(
+              targetObj.getIntParam(PARAMS.C_ENDURANCE) - damage, (Unit) targetObj );
         }
         if (damage >= targetObj.getIntParam(PARAMS.C_TOUGHNESS)) {
             return true;

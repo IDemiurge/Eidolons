@@ -158,6 +158,12 @@ public class RuleKeeper implements Controller {
     }
 
     public static boolean isRuleOn(RULE rule) {
+        if (CoreEngine.TEST_LAUNCH){
+            switch (rule) {
+                case DURABILITY:
+                    return false;
+            }
+        }
         if (ExplorationMaster.isExplorationOn()) {
             if (!isRuleOnInExploreMode(rule))
                 return false;

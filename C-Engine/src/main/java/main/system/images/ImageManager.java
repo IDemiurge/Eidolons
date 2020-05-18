@@ -1138,7 +1138,7 @@ public class ImageManager {
         String path = StringMaster.cropFormat(x) + LARGE + format;
         if (isImage(path))
             return path;
-        return null;
+        return x;
 
     }
 

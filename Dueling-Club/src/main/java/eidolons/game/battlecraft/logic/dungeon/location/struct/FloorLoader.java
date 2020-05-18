@@ -163,6 +163,7 @@ public class FloorLoader extends DungeonHandler {
                 }
                 break;
             case MODULES:
+                Module.ID=0;
                 getStructureBuilder().build(node, location);
                 checkModuleRemap(false, location);
                 break;

@@ -615,9 +615,7 @@ public class DC_ActionManager implements ActionManager {
             }
         }
         if (bonus > 0) {
-            if (weapon.getWeaponSize() == ItemEnums.WEAPON_SIZE.MEDIUM) {
-                return true;
-            }
+            return weapon.getWeaponSize() == ItemEnums.WEAPON_SIZE.MEDIUM;
         }
         return false;
     }
@@ -647,12 +645,17 @@ public class DC_ActionManager implements ActionManager {
             return null;
         }
         List<DC_UnitAction> subActions = getOrCreateWeaponActions(unit.getWeapon(offhand));
-        subActions.addAll(getOrCreateWeaponActions(unit.getNaturalWeapon(offhand)));
+        if (isNaturalWeaponIncluded(unit))
+         subActions.addAll(getOrCreateWeaponActions(unit.getNaturalWeapon(offhand)));
         action.setSubActions(new ArrayList<>(subActions));
 //      ???  if (action.getSubActions().isEmpty()) {
 //            action.setSubActions(new ArrayList<>(subActions));
 //        }
         return subActions;
+    }
+
+    private boolean isNaturalWeaponIncluded(Unit unit) {
+        return false;
     }
 
     protected List<DC_UnitAction> getObjTypes(List<? extends ObjType> actionTypes,

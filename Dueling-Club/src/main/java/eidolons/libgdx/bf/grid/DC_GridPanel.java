@@ -444,7 +444,12 @@ public class DC_GridPanel extends GridPanel {
                 //                ((GridCellContainer) view.getParent()).popupUnitView((GridUnitView) view);
             }
 
-            viewMap.values().stream().forEach(v -> v.setActive(false));
+            viewMap.values().stream().forEach(
+                    v -> {
+                        if (v == view) {
+                            v.setActive(false);
+                        }
+                    });
             view.setActive(true);
             if (hero.isMine()) {
                 GuiEventManager.trigger(SHOW_TEAM_COLOR_BORDER, view);

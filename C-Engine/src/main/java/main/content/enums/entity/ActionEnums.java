@@ -65,4 +65,12 @@ public class ActionEnums {
     public enum STANDARD_ACTION_PASSIVES {
         AGILE, DEXTEROUS,
     }
+
+    public enum ATTACK_TYPE{
+        STANDARD_ATTACK,
+        QUICK_ATTACK,
+        POWER_ATTACK,
+         SPECIAL_ATTACK,
+
+}
 }

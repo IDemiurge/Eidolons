@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.logic.battlefield;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.Door;
@@ -18,28 +17,22 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.data.MapMaster;
 import main.system.math.PositionMaster;
 
 import java.util.*;
 
 /**
- * Supposed to provide all Grid-relevant data and methods for changing it
- * TODO extract gameManager into here!
+ * Supposed to provide all Grid-relevant data and methods for changing it TODO extract gameManager into here!
  */
-public class DC_BattleFieldManager extends BattleFieldManager   {
+public class DC_BattleFieldManager extends BattleFieldManager {
 
     private DC_Game game;
-    private Map<Coordinates, List<DIRECTION>> wallMap;
+    private Map<Coordinates, List<DIRECTION>> wallDirectionMap;
+    private List<BattleFieldObject> wallObjects;
     private Map<Coordinates, List<DIRECTION>> diagonalJoints;
-    private Map<Coordinates, List<DIRECTION>> visibleWallMap;
-    private Map<Coordinates, List<DIRECTION>> visibleDiagonalJoints;
-    private boolean wallResetRequired = true;
+    private Map<Coordinates, List<DIRECTION>> visibleWallMap= new LinkedHashMap<>();
+    private Map<Coordinates, List<DIRECTION>> visibleDiagonalJoints= new LinkedHashMap<>();
     private Map<Coordinates, DOOR_STATE> doorMap = new HashMap<>();
-
-//    DroppedItemManager droppedItemManager;
-//    GraveyardManager graveyardManager;
-//    CoordinatesMaster coordinatesMaster;
 
     public DC_BattleFieldManager(DC_Game game, Integer id, int w, int h) {
         super(game, id, w, h);
@@ -47,12 +40,10 @@ public class DC_BattleFieldManager extends BattleFieldManager   {
     }
 
 
-
     @Override
     public boolean isCellVisiblyFree(Coordinates c) {
         for (Obj obj : game.getUnitsForCoordinates(c)) {
             boolean free = false;
-            // getBattlefield().getGrid().getObjCompMap().getOrCreate(c) == null;
             if (!free) {
                 free = !VisionHelper.checkVisible((DC_Obj) obj, false);
             }
@@ -65,80 +56,60 @@ public class DC_BattleFieldManager extends BattleFieldManager   {
 
 
     public boolean canMoveOnto(Entity unit, Coordinates c) {
-        return game.getMovementManager().canMove( unit, c);
+        return game.getMovementManager().canMove(unit, c);
     }
 
 
     public void resetWallMap() {
-
-            resetWalls();
+        resetWalls();
         resetVisibleWallMap();
         GuiEventManager.trigger(GuiEventType.UPDATE_DOOR_MAP, this.doorMap);
         GuiEventManager.trigger(GuiEventType.UPDATE_WALL_MAP, this.visibleWallMap);
         GuiEventManager.trigger(GuiEventType.UPDATE_DIAGONAL_WALL_MAP, this.visibleDiagonalJoints);
-        wallResetRequired = true;
     }
 
 
     private void resetVisibleWallMap() {
-        visibleWallMap = new LinkedHashMap<>();
-        for (Coordinates coordinates1 : wallMap.keySet()) {
-            Obj objectByCoordinate = game.getObjectByCoordinate(coordinates1);
-            if (objectByCoordinate != null) {
-                if (objectByCoordinate instanceof Structure) {
-                    if (((Structure) objectByCoordinate).getPlayerVisionStatus()
+        visibleWallMap.clear();
+        visibleDiagonalJoints.clear();
+        for (BattleFieldObject wall : wallObjects) {
+                    if (wall.getPlayerVisionStatus()
                             != VisionEnums.PLAYER_VISION.INVISIBLE) {
-                        visibleWallMap.put(coordinates1, wallMap.get(coordinates1));
-                    }
-                }
+                        visibleWallMap.put(wall.getCoordinates(), wallDirectionMap.get(wall.getCoordinates()));
+                        visibleDiagonalJoints.put(wall.getCoordinates(), diagonalJoints.get(wall.getCoordinates()));
             }
         }
-        // visibleWallMap = new MapMaster().cloneHashMap(wallMap);
-        // visibleWallMap.keySet().removeIf((sub) -> {
-        //     Boolean seen = game.getCellByCoordinate(sub).isPlayerHasSeen();
-        //     // game.getGrid().getWallCache() IDEA: put walls into a static array to access easily
-        //     //try easy option for now
-        //     // VisionHelper.getMaster().getVisionController().
-        //     // VisionHelper.getMaster().getVisionController().getSeenMapper().
-        //     //         get(game.getCellByCoordinate(sub));
-        //     if (seen == null) {
-        //         return true;
-        //     }
-        //     return !seen;
-        // });
-        visibleDiagonalJoints = new MapMaster().cloneHashMap(diagonalJoints);
-        visibleDiagonalJoints.keySet().removeIf((sub) -> !visibleWallMap.containsKey(sub));
     }
 
     private void resetWalls() {
         doorMap.clear();
-        Map<Coordinates, BattleFieldObject> wallObjects = new HashMap<>();
-//   TODO optimization
-//    game.getGrid().getWallCache()
+        wallObjects = new ArrayList<>();
+        HashMap<Coordinates, BattleFieldObject> wallMap = new HashMap<>();
+        // game.getGrid().getWallCache()
         for (Obj obj : game.getObjects(DC_TYPE.BF_OBJ)) {
             BattleFieldObject bfObj = (BattleFieldObject) obj;
-                if (bfObj.isWall()) {
-                    wallObjects.put(obj.getCoordinates(), bfObj);
-                }
-                if (bfObj instanceof Door) {
-                    doorMap.put(obj.getCoordinates(), ((Door) bfObj).getState());
+            if (bfObj.isWall()) {
+                wallObjects.add(bfObj);
+                wallMap.put(bfObj.getCoordinates(), bfObj);
+            }
+            if (bfObj instanceof Door) {
+                doorMap.put(obj.getCoordinates(), ((Door) bfObj).getState());
             }
         }
-        if (wallMap == null) {
-            wallMap = new HashMap<>();
+        if (wallDirectionMap == null) {
+            wallDirectionMap = new HashMap<>();
         }
-        wallMap.clear();
-        ArrayList<Coordinates> coordinates = new ArrayList<>(wallObjects.keySet());
-        for (Coordinates coordinate : coordinates) {
-            BattleFieldObject wall = wallObjects.get(coordinate);
+        wallDirectionMap.clear();
+        for (BattleFieldObject wall : wallObjects) {
             if (wall.isDead()) {
                 continue;
             }
 
             List<DIRECTION> list = new ArrayList<>();
 
+            Coordinates coordinate = wall.getCoordinates();
             for (Coordinates c : coordinate.getAdjacent(false)) {
-                BattleFieldObject adjWall = wallObjects.get(c);
+                BattleFieldObject adjWall = wallMap.get(c);
                 if (adjWall != null) {
                     if (adjWall.isWall() && !adjWall.isDead()) {
                         DIRECTION side = DirectionMaster.getRelativeDirection(coordinate, c);
@@ -148,7 +119,7 @@ public class DC_BattleFieldManager extends BattleFieldManager   {
             }
             adjacent:
             for (Coordinates c : coordinate.getAdjacent(true)) {
-                BattleFieldObject adjWall = wallObjects.get(c);
+                BattleFieldObject adjWall = wallMap.get(c);
                 if (adjWall != null) {
                     if (adjWall.isWall() && !adjWall.isDead()) {
                         DIRECTION side = DirectionMaster.getRelativeDirection(coordinate, c);
@@ -174,7 +145,7 @@ public class DC_BattleFieldManager extends BattleFieldManager   {
             if (!list.isEmpty()) {
                 if (coordinate == null)
                     continue;
-                wallMap.put(coordinate, list);
+                wallDirectionMap.put(coordinate, list);
             }
         }
 
@@ -183,8 +154,8 @@ public class DC_BattleFieldManager extends BattleFieldManager   {
         }
         diagonalJoints.clear();
         loop:
-        for (Coordinates c : wallMap.keySet()) {
-            for (DIRECTION s : wallMap.get(c)) {
+        for (Coordinates c : wallDirectionMap.keySet()) {
+            for (DIRECTION s : wallDirectionMap.get(c)) {
                 if (s.isDiagonal()) {
                     // for (Coordinates c :
                     // o.getCoordinates().getAdjacentCoordinates(null)) {
@@ -215,14 +186,13 @@ public class DC_BattleFieldManager extends BattleFieldManager   {
                 }
             }
         }
-        wallResetRequired = false;
     }
 
     public Map<Coordinates, List<DIRECTION>> getWallMap() {
-        if (wallMap == null) {
+        if (wallDirectionMap == null) {
             resetWalls();
         }
-        return wallMap;
+        return wallDirectionMap;
     }
 
     public Map<Coordinates, DOOR_STATE> getDoorMap() {

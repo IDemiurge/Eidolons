@@ -22,7 +22,6 @@ import main.system.threading.WaitMaster;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class LE_MouseHandler extends LE_Handler {
     public static final WaitMaster.WAIT_OPERATIONS SELECTION_OPERATION = WaitMaster.WAIT_OPERATIONS.SELECT_BF_OBJ;
@@ -190,15 +189,17 @@ public class LE_MouseHandler extends LE_Handler {
                 if (getModel().getPaletteSelection().getObjTypeOverlaying() != null) {
                     if (bfObj instanceof Structure) {
 //                    event.getStageY()
-                        AtomicReference<DIRECTION> d = new AtomicReference<>(LE_Screen.getInstance().getGuiStage().getEnumChooser()
-                                .chooseEnum(DIRECTION.class));
-                        if (d.get() == null) {
-                            EUtils.onConfirm("Random or center?", () -> d.set(FacingMaster.getRandomFacing().getDirection()),
+                        DIRECTION d =  LE_Screen.getInstance().getGuiStage().getEnumChooser()
+                                .chooseEnum(DIRECTION.class);
+                        if (d == null) {
+                            EUtils.onConfirm("Random or center?", () ->
+                                            operation(Operation.LE_OPERATION.ADD_OVERLAY, getModel().getPaletteSelection().getObjTypeOverlaying(),
+                                                    bfObj.getCoordinates(), FacingMaster.getRandomFacing().getDirection()),
                                     () -> {
                                     });
-                        }
+                        } else
                         operation(Operation.LE_OPERATION.ADD_OVERLAY, getModel().getPaletteSelection().getObjTypeOverlaying(),
-                                bfObj.getCoordinates(), d.get());
+                                bfObj.getCoordinates(), d );
                         break;
                     }
                 }

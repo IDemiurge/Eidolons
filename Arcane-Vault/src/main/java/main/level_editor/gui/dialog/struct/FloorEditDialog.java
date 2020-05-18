@@ -42,7 +42,7 @@ public class FloorEditDialog extends DataEditDialog<LevelStructure.FLOOR_VALUES,
             if (isAppendStatus()) {
                 String readiness = data.getValue(LevelStructure.FLOOR_VALUES.readiness);
                 if ((readiness.isEmpty())) {
-                    readiness = MetaEnums.FLOOR_STATUS.NEW.name();
+                    readiness = MetaEnums.READINESS.NEW.name();
                 }
                 data.setValue(LevelStructure.FLOOR_VALUES.filepath,
                         LE_DataHandler.PREFIX_CRAWL + data.getValue("name") + "[" +

@@ -121,7 +121,7 @@ public class GridCell extends Group implements Borderable {
 
     protected EventListener createListener() {
 
-        return new BattleClickListener() {
+        return new BattleClickListener(-1) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);

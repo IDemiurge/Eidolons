@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
  */
 public class FadeOutAction extends AlphaAction {
     public FadeOutAction() {
+        setAlpha(0);
     }
 
     @Override

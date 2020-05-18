@@ -128,6 +128,7 @@ public class DC_GameManager extends GameManager {
     }
 
     public boolean activeSelect(final Obj obj) {
+        Unit unit = (Unit) obj;
         boolean result = true;
         for (ActionRule ar : getGame().getRules().getActionRules()) {
             try {
@@ -140,9 +141,12 @@ public class DC_GameManager extends GameManager {
         if (!result) {
             return false;
         }
+        if (unit.isUnconscious()) {
+            getGame().getRules().getUnconsciousRule().unitRecovers(unit);
+        }
         // DC_SoundMaster.playEffectSound(SOUNDS.WHAT, obj);
 
-        GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, getActiveObj());
+        // GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, getActiveObj()); loop does that
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTIVE_UNIT_SELECTED, getActiveObj());
         return true;
     }

@@ -4,20 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.rules.round.UnconsciousRule;
-import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.gui.ScissorMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
-import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
-import main.system.auxiliary.NumberUtils;
 import main.system.math.MathMaster;
 
 /**
@@ -25,8 +20,7 @@ import main.system.math.MathMaster;
  * <p>
  * What if Secondary% is less than primary?
  * <p>
- * 100/150
- * 50/300
+ * 100/150 50/300
  * <p>
  * #
  * <p>
@@ -34,10 +28,8 @@ import main.system.math.MathMaster;
  * <p>
  * >max
  * <p>
- * negative primary death visuals
- * > when primary is <=0, make the full length min() condition different?
- * suppose there is 20% secondary remaining, which == 150
- * and primary was 300 so -100 will be death also
+ * negative primary death visuals > when primary is <=0, make the full length min() condition different? suppose there
+ * is 20% secondary remaining, which == 150 and primary was 300 so -100 will be death also
  */
 public class HpBar extends ValueBar {
 
@@ -46,7 +38,7 @@ public class HpBar extends ValueBar {
     BattleFieldObject dataSource;
     Float primaryDeathBarrier;
 
-//    private boolean primaryDeath;
+    //    private boolean primaryDeath;
     private boolean enduranceGreater;
 
     public HpBar(BattleFieldObject dataSource) {
@@ -77,8 +69,8 @@ public class HpBar extends ValueBar {
 
             return;
         }
-        if ( dataSource.getIntParam(PARAMS.C_ENDURANCE)> dataSource.getIntParam(PARAMS.C_TOUGHNESS)) {
-            enduranceGreater=true;
+        if (dataSource.getIntParam(PARAMS.C_ENDURANCE) > dataSource.getIntParam(PARAMS.C_TOUGHNESS)) {
+            enduranceGreater = true;
         }
         super.animateChange(smooth);
     }
@@ -99,16 +91,16 @@ public class HpBar extends ValueBar {
         }
         if (getPrimaryPerc() <= 0) {
             setPrimaryPerc(primaryDeathBarrier);
-//            primaryDeath = true; TODO //diff color?
+            //            primaryDeath = true; TODO //diff color?
         }
-//        float offset = innerWidth * displayedPrimaryPerc / 2;
+        //        float offset = innerWidth * displayedPrimaryPerc / 2;
         label2.setPosition(0,
-//         offset - label2.getWidth() / 2,
+                //         offset - label2.getWidth() / 2,
                 height * 3 / 2);
         float offset = innerWidth * displayedSecondaryPerc / 2;
 
         label1.setPosition(offset,
-//         offset - label1.getWidth() / 2,
+                //         offset - label1.getWidth() / 2,
                 -height / 2);
         label1.setWidth(innerWidth);
         label2.setWidth(innerWidth);
@@ -125,12 +117,6 @@ public class HpBar extends ValueBar {
         setPrimaryPerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getPrimaryPerc()));//  primaryPerc % 0.01f;
         setSecondaryPerc(new Float(dataSource.getIntParam(PARAMS.C_ENDURANCE)) / (dataSource.getLastValidParamValue(PARAMS.ENDURANCE)));
         setSecondaryPerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getSecondaryPerc()));
-
-        primaryDeathBarrier = new Float(UnconsciousRule.DEFAULT_DEATH_BARRIER) / 100;
-        Integer mod = NumberUtils.getInteger(dataSource.getParam(PARAMS.TOUGHNESS_DEATH_BARRIER_MOD));
-        if (mod != 0) {
-            primaryDeathBarrier = primaryDeathBarrier * mod / 100;
-        }
     }
 
     public static Boolean getHpAlwaysVisible() {
@@ -143,6 +129,9 @@ public class HpBar extends ValueBar {
     @Override
     public void act(float delta) {
         super.act(delta);
+        if (!queue) {
+            barBg2.setVisible(!enduranceGreater);
+        }
         if (!queue && Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
             if (!label2.isVisible()) {
                 label1.setVisible(true);
@@ -167,9 +156,9 @@ public class HpBar extends ValueBar {
             }
         } else if (!dirty)
             return;
-//        if (dataSource.isBeingReset())
-//            return;
-//        resetLabel(); now in logic thread!
+        //        if (dataSource.isBeingReset())
+        //            return;
+        //        resetLabel(); now in logic thread!
         dirty = false;
 
     }
@@ -182,7 +171,7 @@ public class HpBar extends ValueBar {
             return true;
         if (fullLengthPerc == 0) {
             if (isAnimated()) {
-//                return true; TODO why?
+                //                return true; TODO why?
             }
             if (!dataSource.isPlayerCharacter() || EidolonsGame.getVar("endurance"))
                 fullLengthPerc = displayedSecondaryPerc;
@@ -198,90 +187,34 @@ public class HpBar extends ValueBar {
 
     }
 
-    public void drawAt(Batch batch, float x, float y) {
-        setPosition(x, y);
-        resetLabel();
-        draw(batch, 1f);
-    }
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//        if (isIgnored())
-//            return;
-//        if (label.isVisible()) {
-//            label.getWidth();
-//        }
-//        super.draw(batch, parentAlpha);
-////        batch.flush();
-//        if (fluctuatingAlpha != 1)
-//            batch.setColor(new Color(1, 1, 1, 1));
-//TODO ownership change? team colors reset...
-
-//        if (GridMaster.isHpBarsOnTop() && !queue)
-//        {
-//            Vector2 v = //localToStageCoordinates
-//             (new Vector2(getX(), getY()));
-//            clipBounds =   new Rectangle(v.x , v.y , innerWidth * fullLengthPerc, height);
-//        } else
-//        Rectangle scissors = new Rectangle();
-//        Rectangle clipBounds = null;
-//        clipBounds = new Rectangle(getX(), getY(), innerWidth * Math.min(1, fullLengthPerc)*getScaleX(), height);
-//        getStage().calculateScissors(clipBounds, scissors);
-//        ScissorStack.pushScissors(scissors);
-
-//        Color color = secondaryColor;
-//        TextureRegion region = secondaryBarRegion;
-//        drawBar(region, batch,Math.min(1,  displayedSecondaryPerc), color, false);
-//
-//        if (primaryDeath) {
-//            //setShader
-//        }
-//        color = primaryColor;
-//        region = primaryBarRegion;
-//        drawBar(region, batch,Math.min(displayedSecondaryPerc, displayedPrimaryPerc), color, true);
-
-//        batch.flush();
-//        try {
-//            ScissorStack.popScissors();
-//        } catch (Exception e) {
-//        }
-//        batch.flush();
-
-
-        if (parentAlpha != ShaderDrawer.SUPER_DRAW) {
-            if (isIgnored())
-                return;
-            if (fluctuatingAlpha != 1)
-                batch.setColor(new Color(1, 1, 1, 1));
-            if (label2.isVisible()) {
-                label2.getWidth();
-            }
-            super.draw(batch, parentAlpha);
-            if (dataSource instanceof BossUnit) {
-                ScissorMaster.drawInRectangle(this, batch, getX() - 128, getY() - 128, 3 * innerWidth * MathMaster.minMax(fullLengthPerc, 0, 1) * getScaleX(), height);
-            } else
-                ScissorMaster.drawInRectangle(this, batch, getX(), getY() - getHeight(), innerWidth * MathMaster.minMax(fullLengthPerc, 0.03f, 1) * getScaleX(), height * 2 + 3);
-        } else {
-            Color color = secondaryColor;
-            TextureRegion region = secondaryBarRegion;
-            float p = MathMaster.minMax(displayedSecondaryPerc, 0, 1);
-            float y = getY() - getHeight();
-            if (!queue || !enduranceGreater) {
-                drawBar(region, batch, p, color, y, false);
-            }
-            color = primaryColor;
-            region = primaryBarRegion;
-            if (!queue)
-                 y = getY();
-            if (!queue || enduranceGreater) {
-                drawBar(region, batch, Math.min(p, displayedPrimaryPerc), color, y, true);
-            }
-            batch.flush();
+        if (isIgnored())
+            return;
+        if (fluctuatingAlpha != 1)
+            batch.setColor(new Color(1, 1, 1, 1));
+        if (label2.isVisible()) {
+            label2.getWidth();
         }
-
-//        clipBounds =        new Rectangle(getX(), getY(), innerWidth * displayedPrimaryPerc, height);
-//        getStage().calculateScissors(clipBounds, scissors);
-//        ScissorStack.pushScissors(scissors);
+        super.draw(batch, parentAlpha);
+        float p = MathMaster.minMax(displayedSecondaryPerc, 0, 1);
+        float y = getY();
+        if (!queue || displayedPrimaryPerc <= 0) { //unconscious
+            //ENDURANCE
+            ScissorMaster.drawInRectangle(this, batch, getX(),
+                    y,
+                    innerWidth * p,
+                    height, () ->
+                            drawBar(secondaryBarRegion, batch, secondaryColor, y));
+        }
+        if (!queue || displayedPrimaryPerc > 0) {
+            //TOUGHNESS
+            ScissorMaster.drawInRectangle(this, batch, getX(),
+                    y, innerWidth * Math.min(p, displayedPrimaryPerc),
+                    height, () ->
+                            drawBar(primaryBarRegion, batch, primaryColor, getY()));
+        }
+        // batch.flush();
 
     }
 
@@ -291,9 +224,9 @@ public class HpBar extends ValueBar {
             teamColor = GdxColorMaster.RED;
         super.setTeamColor(teamColor);
         secondaryColor = GdxColorMaster.ENDURANCE;
-//        GdxColorMaster.darker(getTeamColor(), 0.55f);
+        //        GdxColorMaster.darker(getTeamColor(), 0.55f);
         primaryColor = GdxColorMaster.TOUGHNESS;
-//        GdxColorMaster.lighter(getTeamColor(), 0.55f);
+        //        GdxColorMaster.lighter(getTeamColor(), 0.55f);
         label2.setColor((getTeamColor()));
         label1.setColor(primaryColor);
     }
@@ -312,9 +245,6 @@ public class HpBar extends ValueBar {
     public void setQueue(boolean queue) {
         this.queue = queue;
         labelsDisplayed = !queue;
-        if (queue){
-            barBg.setVisible(false);
-        }
     }
 
     @Override
@@ -322,12 +252,7 @@ public class HpBar extends ValueBar {
         return
                 (queue ? "queue hp bar" : label2.getText() + " bar ") +
                         dataSource.getName();
-//        label.getText()+
-    }
-
-    @Override
-    public void setVisible(boolean visible) {
-        super.setVisible(visible);
+        //        label.getText()+
     }
 
     public boolean canHpBarBeVisible() {

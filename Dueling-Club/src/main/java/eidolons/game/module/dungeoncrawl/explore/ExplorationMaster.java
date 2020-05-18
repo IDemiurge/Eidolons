@@ -215,6 +215,10 @@ public class ExplorationMaster {
     }
 
     public void event(EngageEvent event) {
+        if (isInCombat()) {
+            getEngagementHandler().getEvents().processNow(event);
+            return;
+        }
         getEngagementHandler().getEvents().addEvent(event);
     }
 }

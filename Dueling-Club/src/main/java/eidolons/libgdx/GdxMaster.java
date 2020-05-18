@@ -464,16 +464,16 @@ public class GdxMaster {
     }
 
     private static void setCursor(Cursor cursor) {
-        if (CoreEngine.isSuperLite()) {
-            return;
-        }
+        // if (CoreEngine.isSuperLite()) {
+        //     return;
+        // }
         int x = Gdx.input.getX();
         int y = Gdx.input.getY();
         Gdx.graphics.setCursor(cursor);
         Gdx.input.setCursorPosition(x, y);
     }
 
-    private static void setCursorType(CURSOR cursor) {
+    public static void setCursorType(CURSOR cursor) {
         if (GdxMaster.cursor == cursor) {
             return;
         }
@@ -582,7 +582,7 @@ public class GdxMaster {
         LOADING(PathFinder.getLoadingCursorPath()),
         WAITING(PathFinder.getLoadingCursorPath()),
         ATTACK(PathFinder.getAttackCursorPath()),
-        ATTACK_SNEAK(0, 64, PathFinder.getSneakAttackCursorPath()),
+        ATTACK_SNEAK(2, 60, PathFinder.getSneakAttackCursorPath()),
         SPELL,
         DOOR_OPEN,
         LOOT,

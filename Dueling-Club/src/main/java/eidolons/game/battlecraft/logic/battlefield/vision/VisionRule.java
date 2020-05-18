@@ -283,7 +283,7 @@ public class VisionRule {
             //                case VAGUE_OUTLINE:
             //                    break;
         }
-//TODO why not do Hide?
+        //TODO why not do Hide?
         return PLAYER_VISION.INVISIBLE;
     }
 
@@ -347,7 +347,7 @@ public class VisionRule {
         if (Bools.isFalse(controller.getDetectionMapper()
                 .get(source.getOwner(), object)))
             return;
-        if (object.isWall()) {
+        if (object.isWall() || object.isLightEmitter()) {
             return;
         }
         master.getEngagementHandler().lostSight(source, object);

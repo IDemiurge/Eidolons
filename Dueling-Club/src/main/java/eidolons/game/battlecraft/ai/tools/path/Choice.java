@@ -4,6 +4,7 @@ import eidolons.ability.effects.oneshot.mechanic.ChangeFacingEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
+import eidolons.game.core.Eidolons;
 import main.ability.effects.Effect;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
@@ -20,6 +21,7 @@ public class Choice {
     private Coordinates prevCoordinates;
     private List<Action> actions;
     private Boolean[] turns;
+    int maxUnitsInStack;
 
     public Choice(Coordinates targetCoordinate, Action... actions) {
         this(targetCoordinate, null, actions);
@@ -29,15 +31,18 @@ public class Choice {
         this.coordinates = targetCoordinate;
         this.prevCoordinates = prevCoordinates;
         this.actions = new ArrayList<>(Arrays.asList(actions));
+
+        maxUnitsInStack=
+        Eidolons.getGame().getRules().getStackingRule().getStackFactor(coordinates,
+                Eidolons.getGame().getAiManager().getUnit(), false);
+
     }
 
     public boolean equals(Object obj) {
         if (obj instanceof Choice) {
             Choice choice = (Choice) obj;
             if (choice.getCoordinates().equals(getCoordinates())) {
-                if (choice.getActions().equals(getActions())) {
-                    return true;
-                }
+                return choice.getActions().equals(getActions());
             }
         }
         return false;

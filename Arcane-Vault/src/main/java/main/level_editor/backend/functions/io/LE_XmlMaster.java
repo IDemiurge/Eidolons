@@ -289,4 +289,8 @@ public class LE_XmlMaster extends LE_Handler {
 
         return xmlBuilder.toString();
     }
+
+    public String wrapSingleModule(Location floorWrapper, Module module, String contents) {
+        return null;
+    }
 }

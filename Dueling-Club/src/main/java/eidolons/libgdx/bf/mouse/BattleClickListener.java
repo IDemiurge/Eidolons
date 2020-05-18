@@ -19,6 +19,13 @@ public class BattleClickListener extends ClickListener {
 
     private static Boolean altDefault;
 
+    public BattleClickListener() {
+    }
+
+    public BattleClickListener(int button) {
+        super(button);
+    }
+
     public static Boolean getAltDefault() {
         if (altDefault==null )
             altDefault = OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.ALT_MODE_ON);

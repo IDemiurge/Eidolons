@@ -75,7 +75,10 @@ public class AtbUnitImpl implements AtbUnit {
 
     @Override
     public boolean isImmobilized() {
-        return !unit.canActNow();
+        if (getInitiative()<=0) {
+            return false;
+        }
+        return  unit.checkModeDisablesActions();
     }
 
     @Override

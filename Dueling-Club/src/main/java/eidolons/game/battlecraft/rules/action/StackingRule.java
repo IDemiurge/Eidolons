@@ -36,6 +36,7 @@ import java.util.Set;
 
 public class StackingRule implements ActionRule {
 
+    public static final int DEFAULT_SPACE_PER_CELL = 500;
     private static final int MAX_OVERLAYING_ON_CELL = 4;
     private static final Integer CORPSE_GIRTH_FACTOR = 3;
     private static StackingRule instance;
@@ -71,7 +72,26 @@ public class StackingRule implements ActionRule {
         return instance.canBeMovedOnto(maxSpaceTakenPercentage, unit, c, otherUnits);
     }
 
-    public static void actionMissed(DC_ActiveObj action) {
+    //apply on each reset?
+    public  void checkStackingPenalty(Unit unit) {
+        int stackFactor = getStackFactor(unit.getCoordinates(), unit, false);
+        //depends on girth?
+        int amount = stackFactor * 25;
+        unit.modifyParameter(PARAMS.AP_PENALTY, amount, null, true);
+        String descr =  "Packed too close to other objects, this unit spends " +
+               amount +                "% more ATB on non-move actions."                ;
+        game.getRules().getDynamicBuffRules().addDynamicBuff("Packed", unit, ""+stackFactor, descr);
+        // Effects effects = new Effects();
+        // effects.apply
+
+        stackFactor = getStackFactor(unit.getCoordinates(), unit, true);
+          amount = stackFactor * 50;
+        unit.modifyParameter(PARAMS.MOVE_AP_PENALTY, amount, null, true);
+          descr =  "Engaged in close quarters, this unit spends " +
+                amount +                "% more ATB on move actions."                ;
+        game.getRules().getDynamicBuffRules().addDynamicBuff("Close Quarters", unit, ""+stackFactor, descr);
+    }
+        public static void actionMissed(DC_ActiveObj action) {
         if (RuleKeeper.isRuleOn(RULE.MISSED_ATTACK_REDIRECTION))
             return;
         Ref ref = action.getRef();
@@ -277,4 +297,16 @@ public class StackingRule implements ActionRule {
         return true;
     }
 
+    public int getStackFactor(Coordinates coordinates, Unit unit, boolean engagement) {
+        int stackFactor=1;
+        for (BattleFieldObject object : game.getObjectsOnCoordinateNoOverlaying(coordinates)) {
+            if (object==unit) {
+                continue;
+            }
+            if (object.getOwner().isHostileTo(unit.getOwner()) == engagement) {
+                stackFactor+=object.getIntParam(PARAMS.GIRTH)/400 + 1;
+            }
+        }
+        return stackFactor;
+    }
 }

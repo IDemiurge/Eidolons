@@ -19,6 +19,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.Hoverable;
@@ -639,6 +640,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         }
         overlay.getColor().a = 0;
         overlay.fadeIn();
+        ActionMaster.addAfter(overlay, new FadeOutAction());
         log(1, "fadeIn overlay" + this);
     }
 

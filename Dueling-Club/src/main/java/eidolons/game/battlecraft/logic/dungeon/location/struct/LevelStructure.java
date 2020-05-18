@@ -220,7 +220,7 @@ public class LevelStructure {
         readiness( EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return MetaEnums.FLOOR_STATUS.class;
+                return MetaEnums.READINESS.class;
             }
         },
         name(EDIT_VALUE_TYPE.text),
@@ -302,6 +302,12 @@ public class LevelStructure {
 
     public enum MODULE_VALUE implements EditableValue { //enough to create a standalone floor
         id(EDIT_VALUE_TYPE.number),
+        readiness( EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return MetaEnums.READINESS.class;
+            }
+        },
         border_width,
         border_type,
 

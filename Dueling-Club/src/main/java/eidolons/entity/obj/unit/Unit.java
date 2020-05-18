@@ -1845,4 +1845,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
         return null;
     }
+
+    public void setUnconscious(boolean b) {
+        unconscious = b;
+    }
 }

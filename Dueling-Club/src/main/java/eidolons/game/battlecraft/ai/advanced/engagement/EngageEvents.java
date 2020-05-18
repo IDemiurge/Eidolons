@@ -216,7 +216,7 @@ public class EngageEvents extends ExplorationHandler {
         eventQueue.add(event);
     }
 
-    private void processNow(EngageEvent engageEvent) {
+    public void processNow(EngageEvent engageEvent) {
         if (isLogged()) {
             log(1, "Process immediately:" + engageEvent);
         }

@@ -164,7 +164,7 @@ public class MetaEnums {
 
     }
 
-    public enum FLOOR_STATUS {
+    public enum READINESS {
         NEW, OUTLINE, TESTING, POLISH, PUBLIC,
     }
         public enum WORKSPACE_GROUP {

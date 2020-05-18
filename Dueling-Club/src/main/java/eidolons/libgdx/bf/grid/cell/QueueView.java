@@ -94,10 +94,10 @@ public class QueueView extends UnitView {
             hpBar.setY(portrait.getY()+1);
             highlight.setZIndex(999);
         }
-        hpBar.setX(-13);
+        hpBar.setX(-1);
 
-        atbBg.setY(-34);
-        activeMarker.setY(-45);
+        atbBg.setY(-21);
+        activeMarker.setY(-35);
         activeMarker.setZIndex(6534);
         activeMarker.setX(GdxMaster.centerWidth(activeMarker)+4);
 
@@ -173,6 +173,9 @@ public class QueueView extends UnitView {
     }
 
     public void setActive(boolean active) {
+        if (this.active==active) {
+            return;
+        }
         this.active = active;
         //we would need a delay here? elsewise...
         if (active) {

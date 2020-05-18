@@ -169,12 +169,12 @@ public class ShadowMaster extends MetaGameHandler<IGG_Meta> {
         if (!shadowAlive)
             return;
         timeLeft -= event.getRef().getAmount();
-        if (timeLeft <= 0) {
-            outOfTime(event);
-            return;
-        }
-        String msg = "[!] Shadow: " + timeLeft + " seconds left to finish combat";
-        EUtils.showInfoText(true, msg);
+        // if (timeLeft <= 0) {
+        //     outOfTime(event);
+        //     return;
+        // }
+        // String msg = "[!] Shadow: " + timeLeft + " seconds left to finish combat";
+        // EUtils.showInfoText(true, msg);
     }
 
     public void annihilated(Event event) {

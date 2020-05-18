@@ -8,15 +8,24 @@ import eidolons.libgdx.shaders.ShaderDrawer;
 
 public class ScissorMaster {
     public static void drawInRectangle(Actor actor, Batch batch, float x, float y, float v, float height) {
+        drawInRectangle(actor, batch, x, y, v, height, null);
+    }
+
+    public static void drawInRectangle(Actor actor, Batch batch, float x, float y, float width, float height, Runnable drawRunnable) {
+
         Rectangle scissors = new Rectangle();
         Rectangle clipBounds = null;
-        clipBounds = new Rectangle(x, y , v, height);
+        clipBounds = new Rectangle(x, y, width, height);
 
         batch.flush();
-       actor.getStage().calculateScissors(clipBounds, scissors);
+        actor.getStage().calculateScissors(clipBounds, scissors);
         ScissorStack.pushScissors(scissors);
-
-        actor.draw(batch, ShaderDrawer.SUPER_DRAW);
+        if (drawRunnable == null) {
+            actor.draw(batch, ShaderDrawer.SUPER_DRAW);
+        } else {
+            drawRunnable.run();
+            batch.flush();
+        }
         try {
             ScissorStack.popScissors();
         } catch (Exception e) {

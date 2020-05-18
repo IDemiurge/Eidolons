@@ -149,7 +149,7 @@ public class DynamicBuffRules {
         return addDynamicBuff(name, unit, suffx, null);
     }
 
-    private BuffObj addDynamicBuff(String name, Unit unit, String variableSuffix, String description) {
+    public BuffObj addDynamicBuff(String name, Unit unit, String variableSuffix, String description) {
 
         BuffObj buff = new DC_BuffObj(name, unit, 0);
         if (description != null)

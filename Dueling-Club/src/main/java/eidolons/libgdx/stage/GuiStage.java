@@ -231,7 +231,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         menuButton.addActor(btnBg);
         this.menuButton = new SmartButton(STD_BUTTON.OPTIONS, () ->
                 gameMenu.toggle());
-
+        this.menuButton.setFlipX(true);
         this.menuButton.setPosition(-4, 13);
         menuButton.addActor(this.menuButton);
 
@@ -682,6 +682,8 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
             tooltips.setZIndex(Integer.MAX_VALUE);
         if (dragManager != null)
             dragManager.setZIndex(Integer.MAX_VALUE);
+        if (cursorDecorator != null)
+            cursorDecorator.setZIndex(Integer.MAX_VALUE);
     }
 
     public void setBlackoutIn(boolean blackoutIn) {

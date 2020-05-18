@@ -23,7 +23,7 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     private List<LevelZone> zones;
     private List<Encounter> encounters;
     private int id;
-    private static Integer ID = 0;
+    public static Integer ID = 0;
     private Set<Coordinates> voidCells = new LinkedHashSet<>();
 
     private Map<Integer, BattleFieldObject> objIdMap = new LinkedHashMap<>();

@@ -12,7 +12,6 @@ import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.handlers.bf.unit.UnitInitializer;
 import eidolons.entity.handlers.bf.unit.UnitResetter;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
@@ -22,6 +21,7 @@ import eidolons.system.text.ToolTipMaster;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.UnitEnums.IMMUNITIES;
@@ -65,12 +65,12 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     protected Deity deity;
     protected UnitAI unitAI;
-    private ImageIcon emblem;
-    private DC_ActiveObj preferredInstantAttack;
-    private DC_ActiveObj preferredCounterAttack;
-    private DC_ActiveObj preferredAttackOfOpportunity;
-    private DC_ActiveObj preferredAttackAction;
-    private Boolean unconscious;
+    protected ImageIcon emblem;
+    protected DC_ActiveObj preferredInstantAttack;
+    protected DC_ActiveObj preferredCounterAttack;
+    protected DC_ActiveObj preferredAttackOfOpportunity;
+    protected DC_ActiveObj preferredAttackAction;
+    protected Boolean unconscious;
 
     public DC_UnitModel(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -186,17 +186,12 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     @Override
     public void newRound() {
-        unconscious=null; //TODO can only change this state once per round!
 
         if (!new Event(STANDARD_EVENT_TYPE.UNIT_NEW_ROUND_BEING_STARTED, ref).fire()) {
             return;
         }
-        // setMode(STD_MODES.NORMAL); just don't.
-        if (game.getState().getRound() > -1) // ???
-            getResetter().regenerateToughness();
-        if (!DC_Engine.isAtbMode())
-            getResetter().resetActions();
-
+        // if (game.getState().getRound() > -1) // ???
+        //     getResetter().regenerateToughness();
         regen();
 
         new Event(STANDARD_EVENT_TYPE.UNIT_NEW_ROUND_STARTED, ref).fire();
@@ -232,7 +227,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
             preferredInstantAttack = getAction(action);
         return preferredInstantAttack;
         }
-        return getAttackOfType(ATTACK_TYPE.QUICK_ATTACK);
+        return getAttackOfType(ActionEnums.ATTACK_TYPE.QUICK_ATTACK);
     }
 
     public void setPreferredInstantAttack(DC_ActiveObj preferredInstantAttack) {
@@ -246,10 +241,10 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
             preferredCounterAttack = getAction(action);
             return preferredCounterAttack;
         }
-        return getAttackOfType(ATTACK_TYPE.QUICK_ATTACK);
+        return getAttackOfType(ActionEnums.ATTACK_TYPE.QUICK_ATTACK);
     }
 
-    private DC_ActiveObj getAttackOfType(ATTACK_TYPE quickAttack) {
+    public DC_ActiveObj getAttackOfType(ActionEnums.ATTACK_TYPE quickAttack) {
         for (DC_UnitAction subAction : getAttack().getSubActions()) {
             if (subAction.getChecker().checkAttackType(quickAttack)) {
                 return subAction;
@@ -258,13 +253,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         return null;
     }
 
-    public enum ATTACK_TYPE{
-        STANDARD_ATTACK,
-        QUICK_ATTACK,
-        POWER_ATTACK,
-         SPECIAL_ATTACK,
-
-}
     public void setPreferredCounterAttack(DC_ActiveObj preferredCounterAttack) {
         this.preferredCounterAttack = preferredCounterAttack;
         setProperty(PROPS.DEFAULT_COUNTER_ATTACK_ACTION, preferredCounterAttack.getName());
@@ -276,7 +264,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
             preferredAttackOfOpportunity = getAction(action);
             return preferredAttackOfOpportunity;
         }
-        return getAttackOfType(ATTACK_TYPE.QUICK_ATTACK);
+        return getAttackOfType(ActionEnums.ATTACK_TYPE.QUICK_ATTACK);
     }
 
     public void setPreferredAttackOfOpportunity(DC_ActiveObj preferredAttackOfOpportunity) {

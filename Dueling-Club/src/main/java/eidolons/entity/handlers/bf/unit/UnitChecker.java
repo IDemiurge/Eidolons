@@ -5,7 +5,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.netherflame.igg.death.ShadowMaster;
 import main.content.DC_TYPE;
@@ -309,13 +308,7 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean canAct() {
-        if (getEntity().getOwner() == Player.NEUTRAL) {
-            return false;
-        }
-        if (checkStatusPreventsActions()) {
-            return false;
-        }
-        return !isImmobilized();
+        return canActNow(); // TODO difference in Mode?
     }
 
     public boolean canActNow() {
@@ -329,11 +322,10 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (checkStatusPreventsActions()) {
             return false;
         }
+        if (isUnconscious()) {
+            return false;
+        }
 
-        if (!DC_Engine.isAtbMode())
-            if (getIntParam(PARAMS.C_N_OF_ACTIONS) <= 0) {
-                return false;
-            }
         return !isImmobilized();
 
     }
@@ -358,10 +350,7 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (checkStatus(UnitEnums.STATUS.ASLEEP)) {
             return true;
         }
-        if (checkStatus(UnitEnums.STATUS.FROZEN)) {
-            return true;
-        }
-        return isUnconscious();
+        return checkStatus(STATUS.FROZEN);
     }
 
     public boolean isIncapacitated() {

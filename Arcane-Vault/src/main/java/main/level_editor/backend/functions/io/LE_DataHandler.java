@@ -191,6 +191,14 @@ public class LE_DataHandler extends LE_Handler {
         EUtils.showInfoText("Saved " +
                 module.getName() +
                 " as " + PathUtils.getLastPathSegment(path));
+        if (isAutowrapSavedModules()){
+            contents= getXmlMaster().wrapSingleModule(getFloorWrapper(), module, contents);
+            FileManager.write(contents, path);
+        }
+    }
+
+    private boolean isAutowrapSavedModules() {
+        return true;
     }
 
     public void saveModulesSeparately() {
@@ -201,7 +209,13 @@ public class LE_DataHandler extends LE_Handler {
 
 
     private String getStandalonePath(Module module) {
-        return PathFinder.getModuleTemplatesPath() + " " + module.getName() + ".xml";
+        String value = module.getData().getValue(LevelStructure.MODULE_VALUE.readiness);
+        if (value.isEmpty()) {
+            value = "new";
+        }
+        value=value.toLowerCase();
+        return PathFinder.getModuleTemplatesPath() +  value +"/" +
+                module.getName() + ".xml";
     }
 
     public void saveVersion() {
@@ -312,7 +326,9 @@ public class LE_DataHandler extends LE_Handler {
 
     public void saveAll() {
         for (LE_Floor floor : FloorManager.getFloors()) {
+            FloorManager.setTempFloor(floor);
             saveFloor();
         }
+        FloorManager.resetTempFloor();
     }
 }

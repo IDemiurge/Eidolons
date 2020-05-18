@@ -161,13 +161,11 @@ public abstract class ValueBar extends SuperActor {
 
     protected abstract void resetLabel();
 
-    protected void drawBar(TextureRegion region, Batch batch, float perc, Color color,
-                           float y, boolean reverse) {
+    protected void drawBar(TextureRegion region, Batch batch, Color color,
+                           float y ) {
         if (color == null) {
             return;
         }
-        if (perc == 0)
-            return;
         batch.setColor(color);
         float x = getX() + offsetX;
 

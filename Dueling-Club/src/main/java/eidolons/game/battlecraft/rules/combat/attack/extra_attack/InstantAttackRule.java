@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
@@ -96,17 +97,22 @@ public class InstantAttackRule {
 
     public static Set<Unit> getPotentialInstantAttackers(DC_ActiveObj action) {
         Set<Unit> set = new HashSet<>();
-        for (Unit unit : action.getGame().getUnits()) {
-            if (!unit.isHostileTo(action.getOwner())) {
-                continue;
+        for (Coordinates adjacentCoordinate : action.getOwnerUnit().getCoordinates().getAdjacentCoordinates()) {
+            for (BattleFieldObject o : action.getGame().getObjectsOnCoordinateNoOverlaying(adjacentCoordinate)) {
+                if (o instanceof Unit) {
+                    Unit unit = (Unit) o;
+                    if (!unit.isHostileTo(action.getOwner())) {
+                        continue;
+                    }
+                    if (unit.isNeutral()) {
+                        continue;
+                    }
+                    if (!unit.canCounter()) {
+                        continue;
+                    }
+                    set.add(unit);
+                }
             }
-            if (unit.isNeutral()) {
-                continue;
-            }
-            if (!unit.canCounter()) {
-                continue;
-            }
-            set.add(unit);
         }
         return set;
 
@@ -220,7 +226,6 @@ public class InstantAttackRule {
         return unit.canCounter(); // checkAlertCounter - is that right?
     }
 
-    // 3 seconds to choose then automatic! :)
     public static DC_ActiveObj chooseInstantAttack(DC_ActiveObj action, Unit unit) {
         int distance = (PositionMaster.getDistance(DC_MovementManager
                 .getMovementDestinationCoordinate(action), unit.getCoordinates()));
@@ -231,7 +236,7 @@ public class InstantAttackRule {
         if (unit.getPreferredInstantAttack() != null) {
             return unit.getPreferredInstantAttack();
         }
-
+        //TODO when do we even do this? some custom logic!
         for (DC_ActiveObj attack : getInstantAttacks(unit)) {
             if (distance > getAutoAttackRange(attack)) {
                 continue;
@@ -255,7 +260,6 @@ public class InstantAttackRule {
         return null;
     }
 
-    // could be a spell?..
     public static List<DC_ActiveObj> getInstantAttacks(Unit unit) {
         List<DC_ActiveObj> list = new ArrayList<>();
         List<DC_UnitAction> attacks = new ArrayList<>(unit.getActionMap().get(
@@ -265,20 +269,10 @@ public class InstantAttackRule {
             attacks.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK));
         }
         for (DC_UnitAction attack : attacks) {
-
-            if (checkAttackCanBeInstant(attack))
-            // if (attack
-            // .checkProperty(G_PROPS.ACTION_TAGS,
-            // ACTION_TAGS.INSTANT_ATTACK.toString()))
-            {
+            if (checkAttackCanBeInstant(attack)) {
                 list.add(attack);
             }
         }
-        // for (DC_SpellObj s : unit.getSpells()) { haha
-        // if (s.isInstant())
-        // if (s.isMelee())
-        // list.add(s);
-        // }
 
         return list;
     }

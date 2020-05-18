@@ -226,12 +226,10 @@ public class UnitViewFactory {
 
                                 }
                     //TODO control options
-
                     if (event.getButton() == Buttons.LEFT) {
-                        if (isAlt() || isShift() || isControl()) {
                             DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
                             event.cancel();
-                        } else {
+                         {
                             if (DefaultActionHandler.leftClickActor(bfObj)) {
                             }
                         }

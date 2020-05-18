@@ -548,6 +548,8 @@ public class UnitResetter extends EntityResetter<Unit> {
 
     private void finalizeReset() {
         getGame().getRules().getDynamicBuffRules().checkBuffs(getEntity());
+        getGame().getRules().getStackingRule().checkStackingPenalty(getEntity());
+
     }
 
 }

@@ -4,20 +4,27 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.datasource.FullUnitDataSource;
+import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.gui.generic.btn.ButtonStyled;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.game.logic.action.context.Context;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.threading.WaitMaster;
 
 /**
  * Created by JustMe on 3/30/2018.
@@ -27,7 +34,7 @@ public class FacingPanel extends TablePanel {
     private static final String ROTATE_BACKGROUND = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "dc", "facing",
      "BACKGROUND.png");
-    boolean sneaking;
+    private final GearCluster gears;
     FadeImageContainer face;
     GroupX background;
     private FullUnitDataSource dataSource;
@@ -36,8 +43,10 @@ public class FacingPanel extends TablePanel {
 //     PathFinder.getComponentsPath(),  "dc", "facing",
 //     "FACE_BACKGROUND.png");
 //    private final ImageContainer faceBackground;
-//    private  GearCluster gearsClockwise;
-//    private  GearCluster gearsAntiClockwise;
+
+   private  SmartButton btnTurnClockwise;
+   private SmartButton btnTurnAntiClockwise;
+    boolean sneaking;
 
 
     public FacingPanel() {
@@ -48,6 +57,7 @@ public class FacingPanel extends TablePanel {
                 else
              setUserObject(new FullUnitDataSource((Unit) p.get()));
          });
+        addActor(gears = new GearCluster(0.65f));
         addActor(background = new GroupX());
         TextureRegion texture = TextureCache.getOrCreateR(ROTATE_BACKGROUND);
         background.addActor(new Image(texture));
@@ -60,7 +70,8 @@ public class FacingPanel extends TablePanel {
         addActor(face = new FadeImageContainer());
         face.setPosition(24, 8);
         face.setFadeDuration(getAnimationDuration()/1.5f);
-        addListener(new SmartClickListener(this){
+        //TODO into smartbutton
+        face.addListener(new SmartClickListener(this){
             @Override
             protected boolean isBattlefield() {
                 return true;
@@ -74,36 +85,34 @@ public class FacingPanel extends TablePanel {
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
-//        background.addActor(gearsClockwise = new GearCluster(0.35f));
-//        background. addActor(gearsAntiClockwise = new GearCluster(0.35f));
-//        gearsClockwise.addListener(getGearListener(true));
-//         addListener(new HoverListener((Boolean enter) -> {
-//            if (enter) {
-//                gearsClockwise.setZIndex(Integer.MAX_VALUE);
-//                gearsAntiClockwise.setZIndex(Integer.MAX_VALUE);
-//            } else {
-//                gearsClockwise.setZIndex(0);
-//                gearsAntiClockwise.setZIndex(0);
-//                ActorMaster.addScaleAction(gearsAntiClockwise, 0.5f, 0.5f);
-//            }
-//        }
-//         ));
+        background.addActor(btnTurnClockwise = new SmartButton(ButtonStyled.STD_BUTTON.UP, ()-> turn(true)));
+        btnTurnClockwise.setFlipY(true);
+        background.addActor(btnTurnAntiClockwise = new SmartButton(ButtonStyled.STD_BUTTON.UP, ()-> turn(false)));
+
+        float center = GdxMaster.centerWidth(btnTurnAntiClockwise);
+        float top = background.getHeight() - btnTurnAntiClockwise.getHeight();
+        btnTurnAntiClockwise.setPosition(center, top);
+        btnTurnClockwise.setPosition(center, -top/2);
+
+        btnTurnClockwise.setScale(0.5f);
+        btnTurnAntiClockwise.setScale(0.5f);
+    }
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        float center = GdxMaster.centerWidth(btnTurnAntiClockwise);
+        float top = background.getHeight() - btnTurnAntiClockwise.getHeight();
+        btnTurnAntiClockwise.setPosition(center, top -btnTurnAntiClockwise.getWidth()/2);
+        btnTurnClockwise.setPosition(center, -top/2 +btnTurnAntiClockwise.getWidth()/2);
     }
 
-//    private EventListener getGearListener(boolean clockwise) {
-//        return new ClickListener() {
-//            @Override
-//            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-////                GuiEventManager
-//                WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-//                 new ActionInput(dataSource.getTurnAction(clockwise),
-//                  new Context(dataSource.getEntity().getRef())));
-//                GearCluster gear = clockwise ? gearsClockwise : gearsAntiClockwise;
-//                gear.activeWork(0.25f, 0.5f);
-//                return super.touchDown(event, x, y, pointer, button);
-//            }
-//        };
-//    }
+    private void turn(boolean clockwise) {
+        WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.ACTION_INPUT,
+                new ActionInput(dataSource.getTurnAction(clockwise),
+                        new Context(dataSource.getEntity().getRef())));
+        gears.activeWork(0.25f, 0.5f);
+    }
+
 
     @Override
     public void updateAct(float delta) {
@@ -125,10 +134,6 @@ public class FacingPanel extends TablePanel {
         facing = dataSource.getFacing();
     }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-    }
 
     private float getAnimationDuration() {
         return 0.85f;

@@ -355,9 +355,19 @@ public class PathBuilder extends AiHandler {
         //        } catch (Exception e) {
         //            main.system.ExceptionMaster.printStackTrace(e);
         //        }
-        int size = path.getActions().size();
+
+        int stackFactor=0;
+        for (Choice choice : path.getChoices()) {
+            if (choice.maxUnitsInStack>1) {
+                stackFactor+=choice.maxUnitsInStack;
+            }
+        }
+
+        int size = path.getActions().size() + stackFactor;
         result = result
          * getParamAnalyzer().getActionNumberFactor(size) / 100;
+
+
         path.setPriority(result);
         return result;
     }

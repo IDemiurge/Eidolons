@@ -35,6 +35,7 @@ public class FloorManager {
     public static Campaign campaign;
     public static BossDungeon dungeon;
     private static List<LE_Floor> floors = new ArrayList<>();
+    private static LE_Floor cached;
     /*
     TEMPLATE
     zones and blocks obviously
@@ -42,15 +43,17 @@ public class FloorManager {
      */
 
     public static void newFloor() {
-        loadFloor(PathFinder.getDungeonLevelFolder()+ LE_DataHandler.PREFIX_TEMPLATE);
+        loadFloor(PathFinder.getDungeonLevelFolder() + LE_DataHandler.PREFIX_TEMPLATE);
     }
+
     public static void addFloor() {
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
             newFloor();
         } else
-            loadFloor(PathFinder.getDungeonLevelFolder()+ LE_DataHandler.PREFIX_CRAWL);
+            loadFloor(PathFinder.getDungeonLevelFolder() + LE_DataHandler.PREFIX_CRAWL);
     }
-        public static void loadFloor(String path) {
+
+    public static void loadFloor(String path) {
         String templatePath = FileChooserX.chooseFile(path, "xml",
                 LE_Screen.getInstance().getGuiStage());
         //from modules too
@@ -65,13 +68,13 @@ public class FloorManager {
         String path = current.getWrapper().getData().getValue(LevelStructure.FLOOR_VALUES.filepath);
         newFloorSelected(path, false);
         current.getManager().getDataHandler().saveVersion();
-//        current.getWrapper().getData().setValue( "");
+        //        current.getWrapper().getData().setValue( "");
     }
 
     public static void newFloorSelected(String name, boolean campaignMode) {
         String path = !campaignMode ? name : getRootPath() + name;
         if (campaignMode) {
-//            dungeon.getFloorPath(name);
+            //            dungeon.getFloorPath(name);
         } else {
         }
         LE_MetaMaster meta = new LE_MetaMaster(path);
@@ -132,8 +135,8 @@ public class FloorManager {
     public static void selectNextFloor() {
         int i = floors.indexOf(LevelEditor.getCurrent());
         i++;
-        if (i>=floors.size()) {
-            i=0;
+        if (i >= floors.size()) {
+            i = 0;
         }
         floorSelected(floors.get(i));
     }
@@ -141,9 +144,18 @@ public class FloorManager {
     public static void selectPreviousFloor() {
         int i = floors.indexOf(LevelEditor.getCurrent());
         i--;
-        if (i<0) {
-            i=floors.size()-1;
+        if (i < 0) {
+            i = floors.size() - 1;
         }
         floorSelected(floors.get(i));
+    }
+
+    public static void setTempFloor(LE_Floor floor) {
+        cached = current;
+        FloorManager.current = floor;
+    }
+
+    public static void resetTempFloor() {
+        current = cached;
     }
 }

@@ -10,7 +10,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
-import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
@@ -367,10 +366,7 @@ public class DamageDealer {
                 }
                 toughness_dmg = ref.getAmount(); // triggers may have changed the
                 // amount!
-                actual_t_damage = Math.min(
-                        attacked.getIntParam(PARAMS.C_TOUGHNESS)
-                                * (100 + UnconsciousRule.getDeathBarrier(attacked)) / 100
-                        , toughness_dmg);
+                actual_t_damage = toughness_dmg; //TODO
                 ref.setAmount(actual_t_damage);
                 // for cleave and other sensitive effects
 
@@ -420,7 +416,8 @@ public class DamageDealer {
         }
         boolean dead = DamageCalculator.isDead(attacked);
 
-        boolean annihilated = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkUnitAnnihilated((Unit) attacked);
+        boolean annihilated = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().
+                checkUnitAnnihilated((Unit) attacked);
         boolean unconscious = false;
 
         if (!dead) {

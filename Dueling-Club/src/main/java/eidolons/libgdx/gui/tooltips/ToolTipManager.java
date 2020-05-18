@@ -486,6 +486,8 @@ public class ToolTipManager extends TablePanel {
 
 
     private void hovered(BaseView object) {
+
+        CursorDecorator.getInstance(). hovered(object.getUserObject());
         if (object.getUserObject() instanceof Structure) {
             if (((Structure) object.getUserObject()).isLandscape()) {
                 return;
@@ -535,6 +537,7 @@ public class ToolTipManager extends TablePanel {
     }
 
     private void hoverOff(BaseView object) {
+        CursorDecorator.getInstance().hoverOff(object.getUserObject());
         if (object instanceof LastSeenView) {
             return;
         }
@@ -582,7 +585,7 @@ public class ToolTipManager extends TablePanel {
         //        if (object instanceof OverlayView){
         //            return 0.61f;
         //        } gridPanel handles this by setBounds()!
-        return 1.12f;
+        return 1.08f;
     }
 
     private float getDefaultScale(BaseView object) {

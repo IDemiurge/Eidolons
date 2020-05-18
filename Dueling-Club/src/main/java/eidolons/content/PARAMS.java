@@ -1,6 +1,7 @@
 package eidolons.content;
 
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
@@ -777,7 +778,7 @@ public enum PARAMS implements PARAMETER {
     SINGLE_HAND_DAMAGE_BONUS_MOD(true, null, "", false, 0, "skills", "classes", "units", "chars", "perks"),
     THROW_SIZE_BONUS(null, "", false, 0, "skills", "classes", "units", "chars", "perks"),
 
-    SPACE(null, "", false, 1000, "terrain", "bf obj"), // for passable objects!
+    SPACE(null, "", false, StackingRule.DEFAULT_SPACE_PER_CELL, "terrain", "bf obj"), // for passable objects!
     GIRTH(null, "", false, 300, "units", "chars", "perks", "bf obj"),
     COATING_COUNTERS_APPLIED_PER_HIT_MOD(true, null, "", false, 0, "units", "chars", "perks", "skills"),
     COATING_COUNTERS_APPLIED_TO_ITEM_MOD(true, null, "", false, 0, "units", "chars", "perks", "skills"),
