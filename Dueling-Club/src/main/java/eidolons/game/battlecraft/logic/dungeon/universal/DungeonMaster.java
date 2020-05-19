@@ -174,8 +174,8 @@ public abstract class DungeonMaster {
             return initializer.initDungeon();
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
+            return floorWrapper;
         }
-        return floorWrapper;
     }
 
     protected abstract FacingAdjuster createFacingAdjuster();

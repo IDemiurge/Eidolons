@@ -19,7 +19,6 @@ import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
@@ -109,7 +108,7 @@ public class Analyzer extends AiHandler {
     }
 
     private static Boolean isTargetingUnconscious(UnitAI ai) {
-        return ai.checkMod(AI_MODIFIERS.CRUEL);
+        return true;// ai.checkMod(AI_MODIFIERS.CRUEL);
     }
 
     public static List<Unit> getUnits(UnitAI ai, Boolean ally,

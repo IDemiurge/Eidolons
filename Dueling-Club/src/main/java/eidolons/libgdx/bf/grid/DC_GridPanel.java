@@ -446,7 +446,7 @@ public class DC_GridPanel extends GridPanel {
 
             viewMap.values().stream().forEach(
                     v -> {
-                        if (v == view) {
+                        if (v != view) {
                             v.setActive(false);
                         }
                     });

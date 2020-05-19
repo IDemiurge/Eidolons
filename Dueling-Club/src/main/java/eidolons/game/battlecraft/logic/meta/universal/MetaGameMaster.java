@@ -38,7 +38,7 @@ import main.system.launch.CoreEngine;
 public abstract class MetaGameMaster<E extends MetaGame> {
 
     protected String data;
-    protected PartyManager<E> partyManager;
+    protected PartyManager partyManager;
     protected MetaInitializer<E> initializer;
     protected MetaDataManager<E> metaDataManager;
 

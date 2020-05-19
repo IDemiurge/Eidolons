@@ -173,7 +173,7 @@ public enum GuiEventType implements EventType {
     GRID_RESET(false, true), LE_GUI_TOGGLE(false, true),
     CAMERA_CUSTOM_MOVE, INITIAL_LOAD_DONE, CHOOSE_GRID_ANIM, PLAYER_STATUS_CHANGED, SHOW_LARGE_TEXT,
 
-    LE_FLOORS_TABS(false, true);
+    LE_FLOORS_TABS(false, true), WAITING_ON, WAITING_OFF;
 
     private boolean screenCheck;
     private boolean multiArgs;

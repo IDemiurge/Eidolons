@@ -541,7 +541,7 @@ return ;
     }
 
     private void hoverOff(BaseView object) {
-        CursorDecorator.getInstance().hoverOff(object.getUserObject());
+        CursorDecorator.getInstance().hoverOff(  );
         if (object instanceof LastSeenView) {
             return;
         }

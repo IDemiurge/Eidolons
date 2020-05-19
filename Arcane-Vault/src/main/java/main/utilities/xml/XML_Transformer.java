@@ -1,9 +1,8 @@
-package main.data.xml;
+package main.utilities.xml;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.content.ValueHelper;
-import eidolons.game.core.game.DC_Game;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -12,13 +11,17 @@ import main.content.enums.GenericEnums;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
+import main.data.xml.*;
 import main.elements.conditions.*;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.gui.components.controls.ModelManager;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.graphics.GuiManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -28,35 +31,49 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static main.system.auxiliary.log.LogMaster.log;
+
 public class XML_Transformer {
 
     private static final int PROGRESSION_WEIGHT_CONST = 3;
+    private static boolean main;
+
+    public enum SPECIAL_ROUTINES {
+        SPEACIAL_ROUTINE, CLEAN_UP, FILTER_HEROES, REMOVE_VALUE, RENAME_VALUE, RENAME_TYPE,
+        RELEASE_CLEANUP // remove dev values
+    }
+
+    public static void main(String[] args) {
+        //TODO planned routines via ARGS!
+        for (String arg : args) {
+            SPECIAL_ROUTINES special_routines = SPECIAL_ROUTINES.valueOf(arg);
+            // doRoutine(special_routines, argList);
+        }
+        main = true;
+        GuiManager.init();
+        if (DialogMaster.confirm("Overwrite backup?")) {
+        backUp();
+                    }
+        showTransformDialog();
+    }
 
     public static void showTransformDialog() {
         int i = JOptionPane.showOptionDialog(null, "", "", JOptionPane.DEFAULT_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, SPECIAL_ROUTINES.values(),
                 SPECIAL_ROUTINES.CLEAN_UP);
         switch (SPECIAL_ROUTINES.values()[i]) {
-            case SPEACIAL_ROUTINE:
-                transformStringsToNormal();
-                break;
             case CLEAN_UP:
                 cleanUp();
                 break;
-            case FILTER_HEROES:
-                cleanUp();
-                break;
-            case REMOVE_VALUE:
-                cleanUp();
-                break;
-            case RENAME_TYPE:
-                cleanUp();
-                break;
             case RENAME_VALUE:
-                cleanUp();
+                renameValue();
                 break;
 
         }
+    }
+
+    private static void backUp() {
+        ModelManager.fullBackUp(); // new reserve?
     }
 
     private static void transformStringsToNormal() {
@@ -66,13 +83,44 @@ public class XML_Transformer {
 
     public static void renameValue() {
         String valueName = JOptionPane.showInputDialog(null, "Enter value to be renamed ", null);
-        VALUE val = new ValueHelper(DC_Game.game).getValue(valueName);
-        String newName = JOptionPane.showInputDialog(null, "Enter value to be renamed ", null);
-        renameValue(val, newName);
+        if (valueName == null) {
+            return;
+        }
+        String newName = JOptionPane.showInputDialog(null, "Enter new name for " +
+                valueName, null);
+        renameValue(valueName, newName);
     }
 
-    public static void renameValue(VALUE val, String newName) {
+    public static void renameValue(String name, String newName) {
+        name = StringMaster.getWellFormattedString(name);
+        newName = StringMaster.getWellFormattedString(newName);
+        log(1, "Renaming value " +
+                name + " to " + newName);
+        for (XML_File xmlFile : getXmlFiles()) {
+            String contents = xmlFile.getContents();
+            if (!contents.contains(XML_Writer.closeXML( (name)))) {
+                continue;
+            }
+            log(1, xmlFile+"- Current length: " + xmlFile.getContents().length());
+            String newContents = contents;
 
+            newContents = newContents.replace(XML_Writer.closeXML( (name)),
+                    XML_Writer.closeXML( (newName)));
+            newContents = newContents.replace(XML_Writer.openXML( (name)),
+                    XML_Writer.openXML( (newName)));
+
+            //try with abilities? formulas?
+            if (xmlFile.getType() == DC_TYPE.ABILS) {
+                newContents = newContents.replace(name, newName);
+                newContents = newContents.replace(name.toLowerCase(), newName);
+                newContents = newContents.replace(name.toUpperCase(), newName);
+                newContents = newContents.replace(StringMaster.getWellFormattedString(name), newName);
+            }
+            xmlFile.setContents(newContents);
+            log(1, xmlFile+"-New length: " + xmlFile.getContents().length());
+            FileManager.write(newContents, xmlFile.getFile().getPath());
+
+        }
     }
 
     public static void transformBuffTypes() {
@@ -84,52 +132,6 @@ public class XML_Transformer {
         }
     }
 
-//    public static void transformResistances() {
-//        for (ObjType t : DataManager.getTypes()) {
-//            DAMAGE_TYPE dmg_type = new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(
-//                    DAMAGE_TYPE.class, t.getProperty(PROPS.DAMAGE_TYPE));
-//            if (dmg_type != null) {
-//                switch (dmg_type) {
-//                    // case BLUDGEONING
-//                }
-//            }
-//
-//            int earth = t.getIntParam(PARAMS.EARTH_RESISTANCE);
-//            int water = t.getIntParam(PARAMS.WATER_RESISTANCE);
-//            int air = t.getIntParam(PARAMS.AIR_RESISTANCE);
-//            int arcane = t.getIntParam(PARAMS.ARCANE_RESISTANCE);
-//            int dark = t.getIntParam(PARAMS.SHADOW_RESISTANCE);
-//            int chaos = t.getIntParam(PARAMS.CHAOS_RESISTANCE);
-//            int holy = t.getIntParam(PARAMS.HOLY_RESISTANCE);
-//            int acid = earth / 2 + water / 3;
-//            int sonic = air / 3 + earth / 2;
-//            int light = air / 3 + holy * 2 / 3; // ++ %5
-//            int lightning = air * 2 / 3;
-//            int cold = water * 2 / 3;
-//            int psionic = chaos / 2 + dark / 2 + arcane / 2;
-//            int death = dark / 2 + earth / 2;
-//
-//            if (t.checkProperty(G_PROPS.CLASSIFICATIONS, UnitEnums.CLASSIFICATIONS.CONSTRUCT.toString())) {
-//                psionic = Math.min(100, psionic + 50);
-//                death = Math.min(100, death + 50);
-//                cold = Math.min(100, cold + 25);
-//                lightning = Math.max(0, lightning - 25);
-//                acid = Math.max(0, acid - 25);
-//            }
-//
-//            t.setParam(PARAMS.ACID_RESISTANCE, acid);
-//            t.setParam(PARAMS.SONIC_RESISTANCE, sonic);
-//            t.setParam(PARAMS.LIGHT_RESISTANCE, light);
-//            t.setParam(PARAMS.LIGHTNING_RESISTANCE, lightning);
-//            t.setParam(PARAMS.COLD_RESISTANCE, cold);
-//            t.setParam(PARAMS.PSIONIC_RESISTANCE, psionic);
-//            t.setParam(PARAMS.DEATH_RESISTANCE, death);
-//        }
-//    }
-
-    public static void renameValue(String oldString, String newString) {
-
-    }
 
     public static void filterHeroes() {
         Conditions c = new Conditions();
@@ -197,18 +199,24 @@ public class XML_Transformer {
         // .showConfirmDialog(null, "Create a backup data reserve?");
         // if (ok == JOptionPane.YES_OPTION)
         // XML_Writer.createBackUpReserve();
+        log(1, "Cleaning up XML files... ");
         DequeImpl<XML_File> xmlFiles = getXmlFiles();
         for (XML_File file : xmlFiles) {
+
+            log(1, "Removing alien nodes from " + file);
+            log(1, "Current length: " + file.getContents().length());
             for (VALUE v : ContentValsManager.getValueList()) {
                 if (!ContentValsManager.isValueForOBJ_TYPE(file.getType(), v)) {
                     removeValue(v, file, false, false);
                 }
             }
+            log(1, "New length: " + file.getContents().length());
 
             removeEmptyNodes(file);
             XML_Writer.write(file);
 
         }
+        log(1, "Cleaning up XML files done. ");
     }
 
     private static void removeEmptyNodes(XML_File file) {
@@ -216,11 +224,15 @@ public class XML_Transformer {
         if (doc == null) {
             return;
         }
+        log(1, "Removing empty nodes from " + file);
+        log(1, "Current length: " + file.getContents().length());
         for (Node groupNode : XmlNodeMaster.getNodeList(doc.getFirstChild())) {
             for (Node typeNode : XmlNodeMaster.getNodeList(groupNode)) {
                 for (Node valueGroupNode : XmlNodeMaster.getNodeList(typeNode)) {
                     for (Node valueNode : XmlNodeMaster.getNodeList(valueGroupNode)) {
-                        if (StringMaster.isEmpty(valueNode.getTextContent())) {
+                        //TODO remove default values too? btw, we could do even better than default value -
+                        // we could have default type with all those vals set already.
+                        if (StringMaster.isEmpty(valueNode.getTextContent().trim())) {
                             valueGroupNode.removeChild(valueNode);
                         }
                     }
@@ -229,10 +241,14 @@ public class XML_Transformer {
         }
         String contents = XML_Converter.getStringFromXML(doc);
         file.setContents(contents);
+        log(1, "New length: " + file.getContents().length());
 
     }
 
     public static void removeValue(VALUE val, XML_File file, boolean write, boolean ifEmpty) {
+        log(1, "Remove Value " +
+                val + " from " + file);
+        log(1, "Current length: " + file.getContents().length());
         String newContents = file.getContents();
         String divider = XML_Converter.openXmlFormatted(G_PROPS.NAME.getName());
         List<String> list = new ArrayList<>();
@@ -262,6 +278,7 @@ public class XML_Transformer {
         if (write) {
             XML_Writer.write(file);
         }
+        log(1, "New length: " + file.getContents().length());
     }
 
     public static void renameType(ObjType type, String newName, PROPERTY... props) {
@@ -323,6 +340,9 @@ public class XML_Transformer {
     // }
 
     private static DequeImpl<XML_File> getXmlFiles() {
+        if (!ListMaster.isNotEmpty(XML_Reader.getFiles())) {
+            XML_Reader.readTypes(true);
+        }
         return XML_Reader.getFiles();
         // if (files != null) // ++ refresh by setting to null
         // return files;
@@ -339,13 +359,48 @@ public class XML_Transformer {
         // return files;
     }
 
-    private static void backUp() {
-        ModelManager.backUp(); // new reserve?
-    }
 
-    public enum SPECIAL_ROUTINES {
-        SPEACIAL_ROUTINE, CLEAN_UP, FILTER_HEROES, REMOVE_VALUE, RENAME_VALUE, RENAME_TYPE,
-
-    }
+    //    public static void transformResistances() {
+    //        for (ObjType t : DataManager.getTypes()) {
+    //            DAMAGE_TYPE dmg_type = new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(
+    //                    DAMAGE_TYPE.class, t.getProperty(PROPS.DAMAGE_TYPE));
+    //            if (dmg_type != null) {
+    //                switch (dmg_type) {
+    //                    // case BLUDGEONING
+    //                }
+    //            }
+    //
+    //            int earth = t.getIntParam(PARAMS.EARTH_RESISTANCE);
+    //            int water = t.getIntParam(PARAMS.WATER_RESISTANCE);
+    //            int air = t.getIntParam(PARAMS.AIR_RESISTANCE);
+    //            int arcane = t.getIntParam(PARAMS.ARCANE_RESISTANCE);
+    //            int dark = t.getIntParam(PARAMS.SHADOW_RESISTANCE);
+    //            int chaos = t.getIntParam(PARAMS.CHAOS_RESISTANCE);
+    //            int holy = t.getIntParam(PARAMS.HOLY_RESISTANCE);
+    //            int acid = earth / 2 + water / 3;
+    //            int sonic = air / 3 + earth / 2;
+    //            int light = air / 3 + holy * 2 / 3; // ++ %5
+    //            int lightning = air * 2 / 3;
+    //            int cold = water * 2 / 3;
+    //            int psionic = chaos / 2 + dark / 2 + arcane / 2;
+    //            int death = dark / 2 + earth / 2;
+    //
+    //            if (t.checkProperty(G_PROPS.CLASSIFICATIONS, UnitEnums.CLASSIFICATIONS.CONSTRUCT.toString())) {
+    //                psionic = Math.min(100, psionic + 50);
+    //                death = Math.min(100, death + 50);
+    //                cold = Math.min(100, cold + 25);
+    //                lightning = Math.max(0, lightning - 25);
+    //                acid = Math.max(0, acid - 25);
+    //            }
+    //
+    //            t.setParam(PARAMS.ACID_RESISTANCE, acid);
+    //            t.setParam(PARAMS.SONIC_RESISTANCE, sonic);
+    //            t.setParam(PARAMS.LIGHT_RESISTANCE, light);
+    //            t.setParam(PARAMS.LIGHTNING_RESISTANCE, lightning);
+    //            t.setParam(PARAMS.COLD_RESISTANCE, cold);
+    //            t.setParam(PARAMS.PSIONIC_RESISTANCE, psionic);
+    //            t.setParam(PARAMS.DEATH_RESISTANCE, death);
+    //        }
+    //    }
 
 }

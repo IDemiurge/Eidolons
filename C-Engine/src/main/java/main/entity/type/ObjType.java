@@ -16,8 +16,8 @@ import org.w3c.dom.Node;
 import javax.swing.*;
 
 /**
- * Represents a game object's type, from which it is created
- * Can also have a type field if it is a cloned/generated ObjType. (e.g. leveled up unit)
+ * Represents a game object's type, from which it is created Can also have a type field if it is a cloned/generated
+ * ObjType. (e.g. leveled up unit)
  */
 public class ObjType extends Entity {
     private boolean generated;
@@ -35,17 +35,28 @@ public class ObjType extends Entity {
     }
 
     public ObjType(ObjType type) {
+        this(true, type);
+    }
+
+    public ObjType(ObjType type, boolean model) {
+        this(type);
+        this.setModel(model);
+    }
+
+    public ObjType(boolean generation, ObjType type) {
         this.var = true;
-        this.setType(type);
         setOBJ_TYPE_ENUM(type.getOBJ_TYPE_ENUM());
 
         type.checkBuild();
         cloneMaps(type);
-        setBuilt(true);
 
         setRef(type.getRef());
         setGame(type.getGame());
-        setGenerated(true);
+        if (generation) {
+            setBuilt(true);
+            this.setType(type);
+            setGenerated(true);
+        }
         if (type.getGame() != null)
             type.getGame().initType(this);
     }
@@ -54,10 +65,6 @@ public class ObjType extends Entity {
         setProperty(G_PROPS.NAME, typeName);
     }
 
-    public ObjType(ObjType type, boolean model) {
-        this(type);
-        this.setModel(model);
-    }
 
     public ObjType(Game game) {
         this.game = game;
@@ -173,9 +180,9 @@ public class ObjType extends Entity {
         if (!initialized)
             return;
         if (!built) {
-            if (node==null) {
+            if (node == null) {
                 built = true;
-                main.system.auxiliary.log.LogMaster.dev("Dummy unbuildable type "+this );
+                main.system.auxiliary.log.LogMaster.dev("Dummy unbuildable type " + this);
                 return;
             }
             try {
@@ -202,13 +209,13 @@ public class ObjType extends Entity {
 
     @Override
     public ParamMap getParamMap() {
-            checkBuild();
+        checkBuild();
         return super.getParamMap();
     }
 
     @Override
     public PropMap getPropMap() {
-            checkBuild();
+        checkBuild();
         return super.getPropMap();
     }
 }

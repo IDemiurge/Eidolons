@@ -6,18 +6,25 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.NoHitGroup;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 public class CursorDecorator extends NoHitGroup {
     private FadeImageContainer cursor = new FadeImageContainer();
     private static CursorDecorator instance;
     GearCluster gears;
+    private GdxMaster.CURSOR cursorType;
+    private boolean waiting;
 
     private CursorDecorator() {
         addActor(cursor);
-        cursor.setFadeDuration(0.5f);
+        cursor.setFadeDuration(0.35f);
+        GuiEventManager.bind(GuiEventType.WAITING_ON , p-> waiting());
+        GuiEventManager.bind(GuiEventType.WAITING_OFF , p-> waitingDone());
     }
 
     public static CursorDecorator getInstance() {
@@ -39,21 +46,48 @@ public class CursorDecorator extends NoHitGroup {
     }
 
     private void setCursorType(GdxMaster.CURSOR type) {
+        if (this.cursorType == type) {
+            return;
+        }
+        this.cursorType = type;
         cursor.setImage(
                 GdxImageMaster.cropImagePath(type.getFilePath()));
     }
 
-    public void waiting() {
-        if (gears != null) {
-            gears.remove();
+    public void waitingDone() {
+        if (!waiting) {
+            return;
         }
+        waiting = false;
+        fadeGears();
+    }
+
+    public void waiting() {
+        if (waiting) {
+            return;
+        }
+        hoverOff();
+        waiting = true;
+        fadeGears();
+
         addActor(gears = new GearCluster(3, 0.5f, true));
         gears.fadeIn();
-        
+
+    }
+
+    private void fadeGears() {
+        if (gears != null) {
+            if (gears.getColor().a > 0) {
+                gears.fadeOut();
+                ActionMaster.addRemoveAfter(gears);
+            } else gears.remove();
+        }
     }
 
     public void hovered(DC_Obj object) {
-
+        if (waiting) {
+            return;
+        }
         //check special - interactive, ...
         Unit hero = Eidolons.getMainHero();
         GdxMaster.CURSOR type = GdxMaster.CURSOR.ATTACK;
@@ -73,7 +107,7 @@ public class CursorDecorator extends NoHitGroup {
     }
 
 
-    public void hoverOff(DC_Obj userObject) {
+    public void hoverOff(   ) {
         cursor.setEmpty();
     }
 

@@ -26,8 +26,7 @@ import java.util.List;
 /**
  * Created by JustMe on 5/14/2017.
  */
-public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
-
+public class ScenarioPartyManager extends PartyManager {
 
     public ScenarioPartyManager(MetaGameMaster master) {
         super(master);
@@ -35,8 +34,6 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     @Override
     public void preStart() {
-        //  TODO       is this the right time to set it?
-
     }
 
     protected boolean isWaitForGdx() {
@@ -81,23 +78,11 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     protected Unit findMainHero() {
         return getParty().getLeader();
-        //        Unit hero = Eidolons.getMainHero();
-        //        if (hero == null || getMetaGame().isRestarted()) {
-        //            hero = getGame().getMaster().getByName(
-        //             PartyManager.selectedHero, true, null, null, getGame().getPlayer(true),
-        //             null);
-        //            if (hero == null) {
-        //                List<Unit> list = getGame().getUnits().stream().
-        //                 filter(unit -> unit.isPlayerCharacter()).collect(Collectors.toList());
-        //                hero = list.getVar(0);
-        //            }
-        //        }
-        //        return hero;
     }
 
     @Override
     public ScenarioMeta getMetaGame() {
-        return super.getMetaGame();
+        return (ScenarioMeta) super.getMetaGame();
     }
 
     @Override

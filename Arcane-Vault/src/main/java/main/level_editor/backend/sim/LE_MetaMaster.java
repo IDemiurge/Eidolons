@@ -87,7 +87,7 @@ public class LE_MetaMaster extends ScenarioMetaMaster {
     }
 
     @Override
-    public PartyManager<ScenarioMeta> getPartyManager() {
+    public PartyManager  getPartyManager() {
         return super.getPartyManager();
     }
 

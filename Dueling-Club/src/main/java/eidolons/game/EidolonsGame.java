@@ -5,6 +5,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
 import main.content.values.parameters.PARAMETER;
@@ -119,7 +120,7 @@ public class EidolonsGame {
     }
 
     public static boolean isAltControlPanel() {
-        return BRIDGE;
+        return ShadowMaster.isShadowAlive();
     }
 
     public static FACING_DIRECTION getPresetFacing(Unit unit) {

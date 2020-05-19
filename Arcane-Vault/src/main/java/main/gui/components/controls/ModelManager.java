@@ -31,6 +31,7 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
+import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
@@ -955,5 +956,12 @@ public class ModelManager {
         }
         if (!alt)
             saveAll();
+    }
+
+    public static void fullBackUp() {
+        //entire freaking directory? :)
+        String dir = PathFinder.getTYPES_PATH();
+        String newPath= PathFinder.getXML_PATH()+"/"+PathFinder.MICRO_MODULE_NAME+"/"+"types backup";
+        FileManager.copyDir(dir, newPath);
     }
 }

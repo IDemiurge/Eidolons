@@ -151,11 +151,11 @@ public class Filter<T extends Entity> extends ReferredElement {
         ArrayList<Obj> list = new ArrayList<>(pool);
         loop: for (Obj obj : list) {
             for (Condition c : getConditions()) {
-                if (match(c, obj.getId())) {
+                if (!match(c, obj.getId())) {
                     continue loop;
                 }
-                filteredSet.add((T) obj);
             }
+            filteredSet.add((T) obj);
         }
         cached = filteredSet;
         return filteredSet;

@@ -140,7 +140,11 @@ public class DC_GameManager extends GameManager {
             return false;
         }
         if (unit.isUnconscious()) {
-            getGame().getRules().getUnconsciousRule().unitRecovers(unit);
+            if (unit.isMainHero()) {
+                //some trick here?
+                getGame().getMetaMaster().getShadowMaster().heroRecovers();
+            } else
+                getGame().getRules().getUnconsciousRule().unitRecovers(unit);
         }
         // DC_SoundMaster.playEffectSound(SOUNDS.WHAT, obj);
 

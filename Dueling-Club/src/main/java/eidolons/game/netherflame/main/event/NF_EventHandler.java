@@ -26,7 +26,8 @@ public class NF_EventHandler extends GameEventHandler {
                     }
                     break;
                 case TIME_ELAPSED:
-                    getMaster().getShadowMaster().timeElapsed(event);
+                    //any use for this now?
+                    // getMaster().getShadowMaster().timeElapsed(event);
                     break;
                 case COMBAT_ENDS:
                     getMaster().getShadowMaster().victory(event);

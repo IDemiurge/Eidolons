@@ -38,7 +38,7 @@ public class AV_Menu {
             if (sub.hasSubMenu()) {
                 JMenu menuItem = getMenu(sub);
                 menuItem.addActionListener(handler);
-                // menu.addMenuListener(new AV_MenuHandler(i.getName(), true));
+                menu.addMenuListener(handler);
             } else {
                 JMenuItem menuItem = new JMenuItem(sub.getName());
                 menuItem.setActionCommand(i.getName());

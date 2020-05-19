@@ -14,7 +14,7 @@ import main.system.threading.WaitMaster;
 
 import java.util.List;
 
-public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E> {
+public abstract class PartyManager extends MetaGameHandler  {
 
     public static final java.lang.String NEW_HERO_PARTY = "Your Party";
     public static final boolean PRESET_POWER = false;

@@ -5,9 +5,9 @@ import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
+import eidolons.game.battlecraft.logic.meta.scenario.ScenarioPartyManager;
 import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.game.netherflame.main.death.HeroChain;
@@ -30,7 +30,7 @@ import java.util.List;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
-public class NF_PartyManager extends PartyManager<NF_Meta> {
+public class NF_PartyManager extends ScenarioPartyManager {
 
     private static final String LORD_TYPE = "Anphis Var Keserim";
     private static final int LORD_LEVEL = 3;
@@ -137,18 +137,19 @@ public class NF_PartyManager extends PartyManager<NF_Meta> {
     @Override
     public void heroSelected(Unit hero) {
         //is this the after-respawn?
-        GuiEventManager.trigger(GuiEventType.UNIT_CREATED, hero);
-        GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, hero);
+        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, hero);
         party.setLeader(hero);
         hero.setMainHero(true);
         hero.setPale(false);
         party.setProperty(PROPS.PARTY_MAIN_HERO, hero.getName());
         Eidolons.setSelectedMainHero(hero.getName());
         Eidolons.setMainHero(hero);
+        getGame().getObjMaster().objAdded(hero);
         getGame().getManager().reset();
         getGame().getBattleFieldManager().resetWallMap();
         GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, hero);
-        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, hero);
+        GuiEventManager.trigger(GuiEventType.UNIT_CREATED, hero);
+        GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, hero);
     }
 
     private Coordinates getRespawnCoordinates(ObjType type) {
@@ -199,11 +200,11 @@ public class NF_PartyManager extends PartyManager<NF_Meta> {
             return TutorialManager.nextHero();
         }
         GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL,
-                getMetaGame().getMaster().getPartyManager().getChain().getTypes());
+                getChain().getTypes());
         return (String) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.HERO_SELECTION);
     }
 
-    private boolean isWaitForGdx() {
+    protected boolean isWaitForGdx() {
         return true; //f
     }
 

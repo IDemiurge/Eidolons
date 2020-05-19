@@ -13,7 +13,6 @@ import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.SeenMapper;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.module.dungeoncrawl.objects.Door;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
 import main.ability.AbilityObj;
@@ -48,7 +47,6 @@ import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;
@@ -148,21 +146,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             quietly = false;
 
         }
-        if (!quietly)
-        if (CoreEngine.isIggDemoRunning())
-            if (isPlayerCharacter()) {
-//                if (!ShadowMaster.isShadowAlive()) {
-//                    preventDeath();
-//                    return false;
-//                }
-                if (ShadowMaster.checkCheatDeath(this)) {
-                    preventDeath();
-                    return false;
-                } else {
-
-                }
-            }
-
         if ((game.isDebugMode() && isMine()) || (!ignoreInterrupt && !quietly)) {
             if ((game.isDebugMode() && isMine()) || checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
                 preventDeath();

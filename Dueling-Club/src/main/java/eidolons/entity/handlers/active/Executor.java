@@ -23,7 +23,6 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.libgdx.anims.AnimContext;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
@@ -475,7 +474,6 @@ public class Executor extends ActiveHandler {
         getAction().setTargetGroup(null);
         getAction().setTargetObj(null);
 
-        ShadowMaster.afterActionReset();
     }
 
     public Activator getActivator() {

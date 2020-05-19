@@ -5,6 +5,7 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.netherflame.main.death.ChainHero;
 import eidolons.game.netherflame.main.death.ShadowMaster;
@@ -73,5 +74,19 @@ public class SoulforceMaster extends MetaGameHandler {
             }
         }
         return false;
+    }
+
+    public boolean slipPenalty() {
+        int slipPenalty = getSlipPenalty();
+        if (getSoulforce()<= slipPenalty) {
+            return false;
+        }
+        EUtils.showInfoText("Soulforce lost: "+ slipPenalty);
+        EidolonLord.lord.soulforceLost(slipPenalty);
+        return true;
+    }
+
+    private int getSlipPenalty() {
+        return 20+Eidolons.getMainHero().getLevel()*2;
     }
 }

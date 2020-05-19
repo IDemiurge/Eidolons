@@ -100,7 +100,6 @@ public enum PARAMS implements PARAMETER {
     C_CHARGES(null, "", true, 1, "items"),
     // UNIT/CHAR
 
-    INITIATIVE("Initiative", "", false, 0, "units", "chars", "perks", "bf obj", "skills"),
 
     TOUGHNESS(null, "", false, 0, "units", "chars", "perks", "bf obj"),
     C_TOUGHNESS(null, "", true, 0, "units", "chars", "perks", "bf obj"),
@@ -118,6 +117,7 @@ public enum PARAMS implements PARAMETER {
     C_N_OF_COUNTERS("Extra Attacks", "", true, 2, "units", "chars", "perks"),
 
 
+    INITIATIVE("Initiative", "", false, 4, "units", "chars", "perks", "bf obj", "skills"),
     ATB_START_MOD("ATB_START_PRESET", "", false, 0, "units", "chars", "perks", "bf obj"),
     ATB_START_PRESET("ATB_START_PRESET", "", false, 0, "units", "chars", "perks", "bf obj"),
 
@@ -127,8 +127,7 @@ public enum PARAMS implements PARAMETER {
             return "Readiness";
         }
     },
-    ATB("Initiative", "", false, 0, "units", "chars", "perks", "bf obj"),
-    // INITIATIVE("Initiative", "", false, 30, "units", "chars", "perks", "bf obj"),
+    ATB("Initiative", "", false, 0, "units", "chars", "perks", "bf obj"), //what is this for?
 
 
     STRENGTH(null, Descriptions.Strength, false, 0, "units", "chars", "perks", "jewelry", "classes"),
@@ -616,8 +615,8 @@ public enum PARAMS implements PARAMETER {
     CADENCE_DEFENSE_MOD(true, null, "", false, 0, "skills", "weapons", "units", "chars", "perks"),
     CADENCE_ATTACK_MOD(true, null, "", false, 0, "skills", "weapons", "units", "chars", "perks"),
 
+    //TODO atb perc?
     DURABILITY_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "weapons", "armor"),
-    INITIATIVE_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
     ENDURANCE_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
     TOUGHNESS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
     ESSENCE_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),

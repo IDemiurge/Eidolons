@@ -15,6 +15,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.netherflame.main.NF_MetaMaster;
 import eidolons.game.netherflame.main.story.brief.IggBriefScreenOld;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.GuiEventManagerImpl;
@@ -413,8 +414,10 @@ public abstract class GenericLauncher extends Game {
     }
 
     private MetaGameMaster createMetaForScenario(ScreenData data) {
+        if (!CoreEngine.TEST_LAUNCH) {
             return new ScenarioMetaMaster(data.getName());
-        // return new NF_MetaMaster(data.getName());
+        }
+        return new NF_MetaMaster(data.getName());
     }
 
     protected void trySwitchScreen(EventCallbackParam param) {

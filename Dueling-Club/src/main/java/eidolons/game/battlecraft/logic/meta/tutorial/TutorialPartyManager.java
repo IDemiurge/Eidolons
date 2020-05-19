@@ -11,7 +11,7 @@ import main.entity.type.ObjType;
 /**
  * Created by JustMe on 6/2/2017.
  */
-public class TutorialPartyManager extends PartyManager<TutorialMeta> {
+public class TutorialPartyManager extends PartyManager {
     private static final java.lang.String TUTORIAL_PARTY = "Demo Party";//"Tutorial Party";
 
     public TutorialPartyManager(TutorialMetaMaster tutorialMetaMaster) {

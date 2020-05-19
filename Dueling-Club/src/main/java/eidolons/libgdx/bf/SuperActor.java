@@ -115,6 +115,9 @@ public abstract class SuperActor extends Fluctuating implements
             borderTexture = null;
             setTeamColorBorder(false);
         } else {
+            if (borderTexture==texture) {
+                return ;
+            }
             if (border != null) {
                 removeActor(border);
             }

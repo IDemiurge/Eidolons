@@ -20,7 +20,7 @@ public class GdxColorMaster {
     // new Color(55, 215, 65)
     public static final Color HEALTH = getColor(210, 100, 110, 1f);
     public static final Color ENDURANCE = getColor(240, 60, 85, 1f);
-    public static final Color TOUGHNESS = getColor(113, 245, 5, 1f);
+    public static final Color TOUGHNESS = getColor(110 , 235, 5, 1f);
     public static final Color STAMINA = getColor(180, 150, 45, 1f);
     public static final Color ESSENCE = getColor(80, 30, 225, 1f);
     public static final Color FOCUS = getColor(10, 175, 200, 1f);

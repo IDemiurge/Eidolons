@@ -25,6 +25,10 @@ public class BuffType extends ObjType {
         setOBJ_TYPE_ENUM(DC_TYPE.BUFFS);
     }
 
+    public BuffType(boolean gen, ObjType objType) {
+        super(gen, objType);
+    }
+
     public Integer getDuration() {
         if (getIntParam(G_PARAMS.DURATION) == 0) {
             return null;

@@ -21,6 +21,10 @@ public abstract class XmlHoldingType extends ObjType implements XmlDocHolder {
     public XmlHoldingType() {
     }
 
+    public XmlHoldingType(boolean gen, ObjType objType) {
+        super(gen, objType);
+    }
+
     public String getXml() {
         return getProperty(getXmlProperty());
     }

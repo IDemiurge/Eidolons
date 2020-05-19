@@ -215,7 +215,7 @@ public class LogPanel extends ScrollTextWrapper {
         switch (word) {
             case "Glory":
                 return Color.ORANGE;
-            case "Torment":
+            case "Eidolon Shadow":
                 return Color.PURPLE;
         }
         word = word.replace(".", "");

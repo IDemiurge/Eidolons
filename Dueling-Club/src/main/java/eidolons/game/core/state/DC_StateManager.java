@@ -565,11 +565,11 @@ public class DC_StateManager extends StateManager {
         super.addObject(obj);
         if (obj instanceof DC_Obj) {
             if (((DC_Obj) obj).isPale()) {
-                getGame().getPaleMaster().tryAddUnit(obj);
+                getGame().getPaleMaster().objAdded(obj);
                 return;
             }
         }
-        getGame().getObjMaster().tryAddUnit(obj);
+        getGame().getObjMaster().objAdded(obj);
 
     }
 

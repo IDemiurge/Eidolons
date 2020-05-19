@@ -332,7 +332,7 @@ public class AtbPanel extends GroupX {
     public void act(float delta) {
 //        boolean altBg = EidolonsGame.isAltControlPanel();
         container.setX(184);
-        horizontal.setY(25);
+        horizontal.setY(8);
         super.act(delta);
         if (isRealTime()) {
             if (container.isVisible())

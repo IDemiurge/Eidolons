@@ -1,6 +1,9 @@
 package eidolons.game.battlecraft.logic.meta.tutorial;
 
-import eidolons.game.battlecraft.logic.meta.universal.*;
+import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
+import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.battlecraft.logic.meta.universal.MetaInitializer;
+import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.TestGame;
 
@@ -53,7 +56,7 @@ public class TutorialMetaMaster extends MetaGameMaster<TutorialMeta> {
     }
 
     @Override
-    protected PartyManager<TutorialMeta> createPartyManager() {
+    protected PartyManager createPartyManager() {
 
         return new TutorialPartyManager(this);
     }

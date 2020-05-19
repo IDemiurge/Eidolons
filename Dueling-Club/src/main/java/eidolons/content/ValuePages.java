@@ -111,13 +111,13 @@ public class ValuePages {
      C_ESSENCE,
     };
     public static final PARAMETER[] UNIT_DYNAMIC_PARAMETERS_CORE = {
-     N_OF_COUNTERS,
      ENDURANCE,
      TOUGHNESS,
      STAMINA,
      FOCUS,
      ESSENCE,
      MORALE,
+            N_OF_COUNTERS,
     };
     public static final PARAMETER[] UNIT_DYNAMIC_PARAMETERS = {
             C_ATB, C_ENDURANCE, C_TOUGHNESS, C_STAMINA,

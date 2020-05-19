@@ -86,7 +86,7 @@ none, low, normal, high, always
     }
 
     public enum LOOT_TYPE {
-        gold, artifact, treasure, arcane, items, random, junk, none
+     souls, ash,   gold, artifact, treasure, arcane, items, random, junk, none
     }
 
     public enum PRE_BATTLE_EVENT {

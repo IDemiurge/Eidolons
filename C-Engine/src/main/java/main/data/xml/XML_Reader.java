@@ -220,6 +220,7 @@ public class XML_Reader {
         }
 
         xmlFile = new XML_File(DC_TYPE.getType(xmlName), xmlName, group, macro, text);
+        xmlFile.setFile(file);
         return xmlFile;
     }
 

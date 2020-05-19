@@ -19,7 +19,6 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.xml.XML_Reader;
-import main.data.xml.XML_Transformer;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
 import main.gui.builders.EditViewPanel;
@@ -32,6 +31,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.threading.Weaver;
+import main.utilities.xml.XML_Transformer;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;

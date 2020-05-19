@@ -360,7 +360,8 @@ public class TestMasterContent {
     }
 
     private static void addTestSpells(ObjType type, boolean last) {
-        type.addProperty(PROPS.VERBATIM_SPELLS, "Blink;"
+        type.addProperty(PROPS.VERBATIM_SPELLS, "Psychic Projection;"
+        // type.addProperty(PROPS.VERBATIM_SPELLS, "Blink;"
          + getTEST_LIST(), true);
         if (!addSpells) {
             return;

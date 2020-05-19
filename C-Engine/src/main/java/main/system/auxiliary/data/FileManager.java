@@ -673,7 +673,14 @@ public class FileManager {
         return false;
     }
 
-    public static void copy(String from, String to) {
+    public static void copyDir(String from, String to) {
+        try {
+            FileUtils.copyDirectory(getFile(from), getFile(to));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+        public static void copy(String from, String to) {
         Path src = Paths.get(getFile(from).toURI());
         Path target = Paths.get(getFile(to).toURI());
         try {

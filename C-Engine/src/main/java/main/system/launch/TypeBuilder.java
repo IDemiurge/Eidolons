@@ -32,21 +32,29 @@ public class TypeBuilder {
         if (typeInitializer == null) {
             typeInitializer = new TypeInitializer();
         }
-        OBJ_TYPE objType = ContentValsManager.getOBJ_TYPE(typeType);
+        OBJ_TYPE TYPE = ContentValsManager.getOBJ_TYPE(typeType);
         ObjType type = null;
-        if (objType != null) {
-            type = getTypeInitializer().getNewType(objType);
-            if (isBuildTypeOnInit(objType))
+
+        if (TYPE != null) {
+            if (isUseDefaultType()){
+                type=getTypeInitializer().getOrCreateDefault(TYPE);
+            } else
+                type = getTypeInitializer().getNewType(TYPE);
+            if (isBuildTypeOnInit(TYPE))
                 buildType(node, type);
             else {
                 type.setName(XML_Formatter.restoreXmlNodeName(node.getNodeName()));
-                type.setNode(node);
+                type.setNode(node); //lazy
             }
         } else {
             LogMaster.error("type with name \"" + typeType + "\" not found!");
         }
 
         return type;
+    }
+
+    private static boolean isUseDefaultType() {
+        return true;
     }
 
     private static boolean isBuildTypeOnInit(OBJ_TYPE objType) {

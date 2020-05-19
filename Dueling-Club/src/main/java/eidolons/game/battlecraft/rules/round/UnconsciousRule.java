@@ -48,9 +48,8 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         super(game);
     }
 
-    public static void unitRecovers(Unit unit) {
+    public   void unitRecovers(Unit unit) {
         // unit.removeBuff(BUFF_NAME);
-
         unit.getGame().
                 fireEvent(new Event(
                         STANDARD_EVENT_TYPE.UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS, unit.getRef()));

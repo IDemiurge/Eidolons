@@ -95,9 +95,8 @@ public class QueueView extends UnitView {
             hpBar.setY(portrait.getY()+6);
         } else {
             hpBar.setY(portrait.getY()+1);
-            highlight.setZIndex(999);
         }
-        hpBar.setY(-9);
+        hpBar.setY(-5);
         hpBar.setX(-6);
 
         atbBg.setY(-24);

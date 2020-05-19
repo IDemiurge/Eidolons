@@ -226,6 +226,15 @@ public class TabBuilder extends Builder implements ChangeListener {
         }
     }
 
+    private void addTypeTab(String tabName, Builder builder) {
+        addTypeTab(tabName, builder.build());
+        List<Builder> list = new ArrayList<>(builderArray.length + 1);
+        for (Builder b : builderArray) {
+            list.add(b);
+        }
+        list.add(builder );
+        builderArray = list.toArray(new Builder[builderArray.length + 1]);
+    }
     private void addTypeTab(String tabName, Component component) {
         int code = getTabbedPane().getTabCount();//ContentManager.getTypeCode(tabName);
 
@@ -239,7 +248,6 @@ public class TabBuilder extends Builder implements ChangeListener {
 //                Math.min(code, getTabbedPane().getTabCount() - 1)
         );
         tabmap.put(tabName, component);
-
     }
 
     public void addSearchTopTab() {
@@ -558,10 +566,9 @@ public class TabBuilder extends Builder implements ChangeListener {
         }
 
         TabBuilder tabBuilder = new TabBuilder(name);
-        JComponent tabs = tabBuilder.build();
         builders.put(tabBuilder, null);
 
-        addTypeTab(name, tabs);
+        addTypeTab(name, tabBuilder);
 
     }
 

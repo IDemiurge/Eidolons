@@ -226,10 +226,11 @@ public class GameLoop {
         } else if (activeUnit.isAiControlled()) {
             //SHOWCASE SECURITY
             //            try {
+            GuiEventManager.trigger(GuiEventType.WAITING_ON);
             action = (waitForAI());
             AI_Manager.setOff(false);
-
             waitForAnimations(action);
+            GuiEventManager.trigger(GuiEventType.WAITING_OFF);
 
             //            } catch (Exception e) {
             //                AI_Manager.setOff(true);

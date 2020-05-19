@@ -217,10 +217,10 @@ public class AtbController implements Comparator<Unit> {
     }
 
     protected void addUnit(AtbUnit unit) {
-        if (unit.getInitiative() > 0) {
+        // if (unit.getInitiative() > 0) { wtf???
             unit.setAtbReadiness(unit.getInitialInitiative());
             this.unitsInAtb.add(unit);
-        }
+        // }
     }
 
     public AtbUnit getAtbUnit(Unit unit) {

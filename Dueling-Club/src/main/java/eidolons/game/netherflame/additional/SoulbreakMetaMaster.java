@@ -34,7 +34,7 @@ public class SoulbreakMetaMaster extends  MetaGameMaster<LinearMeta> {
     }
 
     @Override
-    protected PartyManager<LinearMeta> createPartyManager() {
+    protected PartyManager createPartyManager() {
         return null;
     }
 

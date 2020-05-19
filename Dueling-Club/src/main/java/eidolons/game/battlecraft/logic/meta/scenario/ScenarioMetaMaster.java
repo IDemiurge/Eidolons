@@ -104,7 +104,7 @@ public class ScenarioMetaMaster<T extends ScenarioMeta> extends MetaGameMaster<T
     }
 
     @Override
-    protected PartyManager<ScenarioMeta> createPartyManager() {
+    protected PartyManager createPartyManager() {
         return new ScenarioPartyManager(this);
     }
 

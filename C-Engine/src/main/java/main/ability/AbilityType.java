@@ -4,6 +4,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.AbilityConstructor;
 import main.data.xml.XML_Converter;
+import main.entity.type.ObjType;
 import main.entity.type.XmlHoldingType;
 
 public class AbilityType extends XmlHoldingType {
@@ -18,6 +19,10 @@ public class AbilityType extends XmlHoldingType {
     }
 
     public AbilityType() {
+    }
+
+    public AbilityType(boolean gen, ObjType objType) {
+        super(gen, objType);
     }
 
     public void construct() {

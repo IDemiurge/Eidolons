@@ -24,7 +24,7 @@ import static main.system.auxiliary.log.LogMaster.log;
 
 public class PaleAspect {
     private static final String AVATAR_TYPE = IGG_Demo.IMAGE_KESERIM;
-    private static final String AVATAR_TYPE_BRIDGE = "Torment";
+    private static final String AVATAR_TYPE_BRIDGE = "Eidolon Shadow";
     public static boolean ON;
     private static Unit avatarTrue;
     private static Unit avatarShade;
@@ -73,7 +73,7 @@ public class PaleAspect {
                 Eidolons.getMainHero().getY(), DC_Game.game.getPlayer(true));
         GuiEventManager.trigger(GuiEventType.UNIT_CREATED, avatar);
         avatar.setPale(true);
-        avatar.getGame().getPaleMaster().tryAddUnit(avatar);
+        avatar.getGame().getPaleMaster().objAdded(avatar);
         avatar.getGame().getObjMaster().remove(avatar, true);
         return avatar;
     }

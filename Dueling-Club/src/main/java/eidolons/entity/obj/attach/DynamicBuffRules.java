@@ -35,8 +35,8 @@ public class DynamicBuffRules {
         }
         if (unit.isScion()) {
             if (game.getMetaMaster() instanceof NF_MetaMaster) {
-                int sfx = game.getMetaMaster().getShadowMaster().getTimeLeft();
-                addDynamicBuff("Shadow of Death", unit, ": " + sfx);
+                //TODO localize
+                addDynamicBuff("Eidolon Shadow", unit, "", "This is what I am now without the Arts");
             }
         }
 
