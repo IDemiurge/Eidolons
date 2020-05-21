@@ -106,7 +106,7 @@ public class GridViewAnimator {
     }
     public boolean animate(GroupX animated, VIEW_ANIM value, GraphicData data) {
 
-        main.system.auxiliary.log.LogMaster.dev(animated.toString() + "'s Grid Anim handled: " + value.toString() + " \n" + data);
+        // main.system.auxiliary.log.LogMaster.dev(animated.toString() + "'s Grid Anim handled: " + value.toString() + " \n" + data);
         switch (value) {
             case attached:
                 return doAttached((GridUnitView) animated, data);

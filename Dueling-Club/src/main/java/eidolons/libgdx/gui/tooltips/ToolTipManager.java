@@ -64,9 +64,9 @@ public class ToolTipManager extends TablePanel {
     private static boolean hoverOff;
 
     private static final float HOVER_CHECK_PERIOD = 2.0f;
-    private float hoverCheck =0;
+    private float hoverCheck = 0;
     Hoverable hovered;
-    DequeImpl<BaseView> hoveredList=new DequeImpl<>();
+    DequeImpl<BaseView> hoveredList = new DequeImpl<>();
 
     public static void setTooltipPanel(HqTooltipPanel tooltipPanel) {
         ToolTipManager.tooltipPanel = tooltipPanel;
@@ -80,8 +80,7 @@ public class ToolTipManager extends TablePanel {
         guiStage = battleGuiStage;
         GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
             if (ScreenMaster.getScreen().getController().isLeftPressed()) {
-main.system.auxiliary.log.LogMaster.log(1,"SHOW_TOOLTIP blocked due to mouse pressed" );
-return ;
+                return;
             }
             Object object = event.get();
             requestedShow(object);
@@ -231,7 +230,7 @@ return ;
         bottom = null;
         right = null;
 
-//        presetTooltipPos= null;
+        //        presetTooltipPos= null;
         updatePosition();
 
         tooltip.getColor().a = 0;
@@ -245,9 +244,8 @@ return ;
     public void act(float delta) {
         setVisible(!DialogueManager.isRunning());
         super.act(delta);
-        hoverCheck-=delta;
-        if (hoverCheck<=0)
-        {
+        hoverCheck -= delta;
+        if (hoverCheck <= 0) {
             hoverCheck = HOVER_CHECK_PERIOD;
             resetHovered();
         }
@@ -284,10 +282,10 @@ return ;
                 if (guiStage.isBlocked() ||
                         originalPosition != null && originalPosition.dst(GdxMaster.getCursorPosition(this))
                                 > 300 * GdxMaster.getFontSizeModSquareRoot()) {
-//                    if (guiStage.isBlocked())
-//                        main.system.auxiliary.log.LogMaster.log(1, tooltip + " Blocked");
-//                    else
-//                        main.system.auxiliary.log.LogMaster.log(1, tooltip + " Too far!" + originalPosition + "vs " + GdxMaster.getCursorPosition(this));
+                    //                    if (guiStage.isBlocked())
+                    //                        main.system.auxiliary.log.LogMaster.log(1, tooltip + " Blocked");
+                    //                    else
+                    //                        main.system.auxiliary.log.LogMaster.log(1, tooltip + " Too far!" + originalPosition + "vs " + GdxMaster.getCursorPosition(this));
                     requestedShow(null);
                     //                        TODO ? ? if (isStackHoverOn())
                     //                            waitToHideStack = 2;
@@ -302,7 +300,7 @@ return ;
 
     private void resetHovered() {
         for (BaseView hoverable : hoveredList) {
-            if (hoverable!=hovered) {
+            if (hoverable != hovered) {
                 hoverOff(hoverable);
             }
         }
@@ -491,7 +489,7 @@ return ;
 
     private void hovered(BaseView object) {
 
-        CursorDecorator.getInstance(). hovered(object.getUserObject());
+        CursorDecorator.getInstance().hovered(object.getUserObject());
         if (object.getUserObject() instanceof Structure) {
             if (((Structure) object.getUserObject()).isLandscape()) {
                 return;
@@ -528,12 +526,12 @@ return ;
 
 
     private void scale(BaseView object, float scale, float scaleQueue) {
-//        float scaleX = getDefaultScale(object);
-//        if (object.getScaleX() == getDefaultScale(object))
-//            scaleX = getZoomScale(object);
-//        float scaleY = getDefaultScale(object);
-//        if (object.getScaleY() == getDefaultScale(object))
-//            scaleY = getZoomScale(object);
+        //        float scaleX = getDefaultScale(object);
+        //        if (object.getScaleX() == getDefaultScale(object))
+        //            scaleX = getZoomScale(object);
+        //        float scaleY = getDefaultScale(object);
+        //        if (object.getScaleY() == getDefaultScale(object))
+        //            scaleY = getZoomScale(object);
 
         ActionMaster.
                 addScaleActionIfNoActions(object, scale, scale, 0.35f);
@@ -541,7 +539,7 @@ return ;
     }
 
     private void hoverOff(BaseView object) {
-        CursorDecorator.getInstance().hoverOff(  );
+        CursorDecorator.getInstance().hoverOff();
         if (object instanceof LastSeenView) {
             return;
         }

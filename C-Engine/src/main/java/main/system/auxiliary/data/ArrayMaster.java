@@ -328,4 +328,14 @@ public class ArrayMaster<T> {
             }
         }
     }
+
+    public Set<T> flattenToSet(T[][] o) {
+        Set<T> set=new LinkedHashSet<>();
+            for (T[] ts : o) {
+                for (T t : ts) {
+                    set.add(t);
+                }
+        }
+        return set;
+    }
 }

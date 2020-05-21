@@ -100,9 +100,9 @@ public class AtbUnitImpl implements AtbUnit {
                 main.system.auxiliary.log.LogMaster.log(1, " Bad setTimeTillTurn:" +
                  getUnit().getName() + " to " + i);
             } else {
-                main.system.auxiliary.log.LogMaster.log(1,
-                 getUnit().getName() + " setTimeTillTurn to " +
-                  i + " sec ");
+                // main.system.auxiliary.log.LogMaster.log(1,
+                //  getUnit().getName() + " setTimeTillTurn to " +
+                //   i + " sec ");
             }
 
             triggerQueueEvent();

@@ -18,6 +18,7 @@ import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.netherflame.main.event.GameEventHandler;
 import eidolons.game.netherflame.main.event.NF_EventHandler;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.libgdx.gui.overlay.choice.VisualChoiceHandler;
 import eidolons.macro.AdventureInitializer;
 import eidolons.macro.global.persist.Loader;
 import main.content.DC_TYPE;
@@ -52,6 +53,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected GameEventHandler eventHandler;
 
     ShadowMaster shadowMaster = new ShadowMaster(this);
+    private VisualChoiceHandler choiceHandler;
 
     public ShadowMaster getShadowMaster() {
         return shadowMaster;
@@ -79,6 +81,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         partyManager = createPartyManager();
         initializer = createMetaInitializer();
         metaDataManager = createMetaDataManager();
+        choiceHandler = new VisualChoiceHandler(this);
 
         if (CoreEngine.isCombatGame()) {
             lootMaster = createLootMaster();

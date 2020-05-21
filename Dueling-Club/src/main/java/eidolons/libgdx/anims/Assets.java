@@ -512,13 +512,8 @@ public class Assets {
         if (!isKtxTest() && (!GpuTester.isMeasured() || GpuTester.getDedicatedMemory() > 3000)) {
             ktx = false;
         }
-//        if (EidolonsGame.BOSS_FIGHT){
-//            loadSprite(BossAnimator.SPRITE_PATH.bosFIRE_LIGHT, full, ktx);
-//            return;
-//        }
-        if (!EidolonsGame.BRIDGE) {
+        if (!EidolonsGame.DEMO) {
             loadSprite(Sprites.FIRE_LIGHT, full, ktx);
-
             return;
         }
         loadSprite(Sprites.SNOW, full, ktx);

@@ -3,7 +3,7 @@ package eidolons.libgdx.gui.panels.headquarters.hero;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import eidolons.content.DC_ContentValsManager;
+import eidolons.content.ContentConsts;
 import eidolons.content.PARAMS;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
@@ -26,8 +26,8 @@ public class HqParamPanel extends HqElement{
 
     public HqParamPanel(boolean dynamic) {
         this((dynamic)
-         ? DC_ContentValsManager.DYNAMIC_PARAMETERS
-         : DC_ContentValsManager.MAIN_PARAMETERS);
+         ? ContentConsts.DYNAMIC_PARAMETERS
+         : ContentConsts.MAIN_PARAMETERS);
     }
     public HqParamPanel(PARAMETER...params) {
         setBackground(getDefaultBackground());

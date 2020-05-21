@@ -178,14 +178,6 @@ public class NF_PartyManager extends ScenarioPartyManager {
         if (!EidolonsGame.TUTORIAL_MISSION) {
             Collections.shuffle(members);
         }
-        if (EidolonsGame.BRIDGE)
-        //        if (CoreEngine.isLiteLaunch() || getMetaGame().getMissionIndex() == 0)
-        {
-            return TutorialManager.NEXT_HERO;
-        }
-        //        if (getMetaGame().getMissionIndex()>0) {
-        //            return selectedHero;
-        //        }
         if (isWaitForGdx())
             WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
         return super.chooseHero(members);

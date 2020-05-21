@@ -1,7 +1,7 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
 import eidolons.ability.conditions.special.RestCondition;
-import eidolons.content.DC_ContentValsManager;
+import eidolons.content.ContentConsts;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
@@ -338,7 +338,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         //TODO
         float last = unit.getAI().getExplorationTimeOfRegenEffects();
         float delta = time - last;
-        for (PARAMETER param : DC_ContentValsManager.REGENERATED_PARAMS) {
+        for (PARAMETER param : ContentConsts.REGENERATED_PARAMS) {
             int value = getParamRestoration(delta, param,
                     unit.getParamFloat(ContentValsManager.getRegenParam(param))
             );

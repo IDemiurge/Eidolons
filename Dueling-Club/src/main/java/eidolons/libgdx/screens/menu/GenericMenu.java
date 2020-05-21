@@ -15,6 +15,7 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.Blocking;
+import eidolons.libgdx.stage.OverlayingUI;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.audio.DC_SoundMaster;
@@ -32,7 +33,7 @@ import java.util.Map;
 /**
  * Created by JustMe on 11/28/2017.
  */
-public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX implements Blocking {
+public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX implements Blocking, OverlayingUI {
     private final InputListener keyListener;
     protected Map<T, TextButton> cache = new HashMap<>();
     OptionsWindow optionsWindow;

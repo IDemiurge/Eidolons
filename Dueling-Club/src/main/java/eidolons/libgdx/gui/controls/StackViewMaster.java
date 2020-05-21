@@ -30,21 +30,17 @@ import java.util.Map;
  * <p>
  * just proper show/hide!
  * <p>
- * hide when:
- * mouse leaves and stays out for X time
- * user hits ESC
- * any action is activated
+ * hide when: mouse leaves and stays out for X time user hits ESC any action is activated
  * <p>
  * <p>
- * if showing:
- * don't let other things getVar in the way of tooltips/hover
+ * if showing: don't let other things getVar in the way of tooltips/hover
  */
 public class StackViewMaster {
     private static final float WAIT_AFTER_HOVER_OFF = 2;
     private static final float WAIT_AFTER_SHOW = 5;
     private float stackTimer;
     private int minStackSize = OptionsMaster.getControlOptions().
-     getIntValue(CONTROL_OPTION.MIN_OBJECTS_TO_OPEN_STACK_ON_HOVER);
+            getIntValue(CONTROL_OPTION.MIN_OBJECTS_TO_OPEN_STACK_ON_HOVER);
     private float waitToHideStack;
     private Map<GenericGridView, Vector2> posMap = new HashMap<>();
     private Map<GenericGridView, Float> scaleMap = new HashMap<>();
@@ -148,10 +144,12 @@ public class StackViewMaster {
     }
 
     public void checkShowStack(BaseView object) {
-
+        if (true)
+            return;
+        //TODO review this
         Coordinates c = object.getUserObject().getCoordinates();
         GridCellContainer cell = ScreenMaster.getDungeonGrid().getCells()[c.x][
-         PositionMaster.getLogicalY(c.y)];
+                PositionMaster.getLogicalY(c.y)];
 
 
         if (cell.isStackView()) {

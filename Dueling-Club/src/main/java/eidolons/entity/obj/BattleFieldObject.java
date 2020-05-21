@@ -1,6 +1,6 @@
 package eidolons.entity.obj;
 
-import eidolons.content.DC_ContentValsManager;
+import eidolons.content.ContentConsts;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
@@ -345,7 +345,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     public void regen() {
 
-        Arrays.stream(DC_ContentValsManager.REGENERATED_PARAMS).forEach(parameter -> {
+        Arrays.stream(ContentConsts.REGENERATED_PARAMS).forEach(parameter -> {
             regen(parameter);
         });
 

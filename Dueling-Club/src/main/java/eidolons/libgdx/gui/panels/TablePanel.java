@@ -12,6 +12,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
+import eidolons.libgdx.gui.generic.btn.FlipDrawable;
 import main.system.launch.CoreEngine;
 
 import java.util.function.Supplier;
@@ -158,6 +159,12 @@ public class TablePanel<T extends Actor> extends Table {
                 final TextureRegion region = drawable.getRegion();
                 if (region != null)
                     setSize(region.getRegionWidth(), region.getRegionHeight());
+            } else {
+                if (background instanceof FlipDrawable) {
+                    setSize(
+                            background.getMinWidth(),
+                            background.getMinHeight());
+                }
             }
         super.setBackground(background);
     }

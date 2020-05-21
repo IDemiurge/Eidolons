@@ -19,6 +19,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
+import eidolons.libgdx.gui.overlay.choice.VisualChoice;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.CombatInventory;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
@@ -49,6 +50,7 @@ public class BattleGuiStage extends GuiStage {
     private final GuiVisualEffects guiVisualEffects;
     private final CombatInventory combatInventory;
     private final FullscreenAnims fullscreenAnims;
+    private final VisualChoice vc;
     private UnitInfoPanelNew infoPanel;
     protected OutcomePanel outcomePanel;
     ParticlesSprites particlesSprites;
@@ -101,6 +103,9 @@ public class BattleGuiStage extends GuiStage {
         }
 
         getBottomPanel().setX(GdxMaster.centerWidthScreen(getBottomPanel()));
+
+        addActor(vc= new VisualChoice());
+        vc.setVisible(false);
 //        getBottomPanel().setX((GdxMaster.getWidth() - fullLogPanel.getWidth() - getBottomPanel().getWidth()) / 2 + 70);
 
     }
@@ -174,6 +179,17 @@ public class BattleGuiStage extends GuiStage {
     protected void bindEvents() {
         super.bindEvents();
 
+        GuiEventManager.bind(GuiEventType.COMBAT_STARTED, obj -> {
+          topLeftPanel.getAtbPanel().toggleQueue(true);
+          largeText.show("Battle", obj.get().toString(), 2f);
+            // WaitMaster.receiveInput(combat_ui_ready, true);
+        });
+        GuiEventManager.bind(GuiEventType.COMBAT_ENDED , obj -> {
+
+            largeText.show("Battle is Over", obj.get().toString(), 2f);
+            //TODO wait for 2 seconds!
+            topLeftPanel.getAtbPanel().toggleQueue(false);
+        });
 
         GuiEventManager.bind(GuiEventType.SHOW_ACHIEVEMENTS, p -> {
             String stats = QuestMissionStatManager.getGameStatsText();

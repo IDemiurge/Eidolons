@@ -32,4 +32,9 @@ public class UiStage extends StageX implements StageWithClosable{
     public void setDisplayedClosable(Closable displayedClosable) {
         this.displayedClosable = displayedClosable;
     }
+
+    @Override
+    public void setOverlayPanel(OverlayPanel overlayPanel) {
+
+    }
 }

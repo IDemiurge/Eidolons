@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.ai.advanced.engagement;
 
 import com.badlogic.gdx.math.Vector2;
+import com.google.inject.internal.util.ImmutableList;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -11,6 +12,7 @@ import main.content.enums.rules.VisionEnums.PLAYER_STATUS;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.RandomWizard;
 import main.system.sound.SoundFx;
 import main.system.sound.SoundMaster;
 import main.system.text.LogManager;
@@ -49,15 +51,43 @@ public class EngageEventProcessor {
                 comment(event.source, event.type);
                 event.source.getAI().getGroup().setEngagementLevel(ENGAGEMENT_LEVEL.PRE_COMBAT);
             case combat_start:
+                //in another thread so events may catch up while we prepare? Or more predictable
+
+                // largeText("Battle is Joined"  , event.arg.toString(), 3f);
                 statusChange(PLAYER_STATUS.COMBAT, event.arg);
+                master.getEngagementHandler().clearEventQueue();
+                master.getEngagementHandler().addEvent(EngageEvent.ENGAGE_EVENT.combat_started,
+                        2f, event.source.getAI().getGroup().getEncounter().getName());
+
+                //depend on difficulty
+                DC_SoundMaster.playStandardSound(RandomWizard.random()
+                        ? SoundMaster.STD_SOUNDS.NEW__BATTLE_START
+                        : SoundMaster.STD_SOUNDS.NEW__BATTLE_START2);
+                break;
+            case combat_started:
                 master.switchExplorationMode(false);
-                //++ events -                 largeText();
-                //      :: Text, music, camera, ui atb, pace!
-                //        GuiEventManager.trigger(GuiEventType.SHOW_LARGE_TEXT,
-                //                ImmutableList.of("Encounter", "The Dummies", 3f));
+
+                GuiEventManager.trigger(GuiEventType.COMBAT_STARTED, event.arg.toString());
+                break;
+            case combat_ended:
+                master.switchExplorationMode(true);
+                String descr="Stalemate";
+                Boolean result = (Boolean) event.arg;
+                if (result != null) {
+                    descr=result?"Defeat!":"Victory!";
+                }
+                GuiEventManager.trigger(GuiEventType.COMBAT_ENDED, descr);
+                break;
+            case precombat_end:
+                //mercy, my lord!.. Some final choices. Quick death or soul steal
                 break;
             case combat_end:
-                master.switchExplorationMode(true);
+                //sound here?
+                DC_SoundMaster.playStandardSound(RandomWizard.random()
+                        ? SoundMaster.STD_SOUNDS.NEW__BATTLE_END
+                        : SoundMaster.STD_SOUNDS.NEW__BATTLE_END2);
+                master.getEngagementHandler().addEvent(EngageEvent.ENGAGE_EVENT.combat_ended,
+                        2f);
                 break;
             case view_anim:
                 GuiEventManager.triggerWithParams(GuiEventType.GRID_OBJ_ANIM, event.arg, event.source, event.graphicData);
@@ -85,6 +115,12 @@ public class EngageEventProcessor {
         if (EngageEvents.isLogged()){
             log(1, "Event processed:" + event);
         }
+    }
+
+    private void largeText(String s, String descr, float v) {
+        GuiEventManager.trigger(GuiEventType.SHOW_LARGE_TEXT,
+                ImmutableList.of(s  , descr, v));
+
     }
 
     private void popup(String popupText) {

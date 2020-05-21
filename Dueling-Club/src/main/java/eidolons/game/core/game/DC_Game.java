@@ -46,7 +46,6 @@ import eidolons.game.netherflame.main.pale.PaleAspect;
 import eidolons.macro.entity.town.Town;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.DC_RequirementsManager;
-import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.hotkey.DC_KeyManager;
@@ -74,13 +73,11 @@ import main.game.logic.event.Event;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.util.Refactor;
 
 import java.util.*;
@@ -402,9 +399,6 @@ public class DC_Game extends GenericGame {
             combatLoop.resume();
 
         musicMaster.scopeChanged(MUSIC_SCOPE.BATTLE);
-        DC_SoundMaster.playStandardSound(
-                RandomWizard.random() ? STD_SOUNDS.NEW__BATTLE_START2
-                        : STD_SOUNDS.NEW__BATTLE_START);
 
     }
 

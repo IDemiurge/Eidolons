@@ -80,4 +80,6 @@ public interface StageWithClosable {
         setDisplayedClosable(null);
         return true;
     }
+
+    void setOverlayPanel(OverlayPanel overlayPanel);
 }

@@ -7,15 +7,17 @@ import eidolons.libgdx.anims.SimpleAnim;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.Fluctuating;
+import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.ScissorMaster;
-import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import main.content.enums.GenericEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.math.MathMaster;
 
-public class SoulforceBar extends GroupX {
+public class SoulforceBar extends SuperActor {
 
     FloatActionLimited floatAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
     boolean labelDisplayed = true;
@@ -62,12 +64,11 @@ public class SoulforceBar extends GroupX {
         return new Integer( (int)value/10)+"/"+( (int)max/10);
     }
     public void init() {
-        GuiEventManager.bind(GuiEventType.SOULFORCE_RESET , p->
-        {
-            EidolonLord lord = (EidolonLord) p.get();
-            max = lord.getSoulforceMax();
-            set(lord.getSoulforce());
-        });
+        GuiEventManager.bind(GuiEventType.SOULFORCE_GAINED, p ->
+                sfChanged((EidolonLord) p.get(), this.value < value));
+
+        GuiEventManager.bind(GuiEventType.SOULFORCE_LOST , p->
+                sfChanged((EidolonLord) p.get(), this.value < value ));
 
         addAction(floatAction);
         floatAction.setTarget(this);
@@ -106,6 +107,17 @@ public class SoulforceBar extends GroupX {
         innerWidth = barSprite.getWidth();
         height = barSprite.getHeight();
 
+    }
+
+    private void sfChanged(EidolonLord lord, boolean gain) {
+        max = lord.getSoulforceMax();
+        float dif = this.value - lord.getSoulforce();
+        set(lord.getSoulforce());
+        GraphicData data = new GraphicData("");
+        data.setValue(GraphicData.GRAPHIC_VALUE.dur, MathMaster.minMax(dif/10, 0.75f, 2));
+        data.setValue(GraphicData.GRAPHIC_VALUE.alpha, MathMaster.minMax(dif/10, 0.25f, 1));
+        data.setValue(GraphicData.GRAPHIC_VALUE.interpolation,  "fade");
+        GuiEventManager.triggerWithParams(GuiEventType.GRID_SCREEN, this, data);
     }
 
     @Override

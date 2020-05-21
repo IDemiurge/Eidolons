@@ -72,7 +72,7 @@ public class EngageEvent {
         sound,
         view_anim,
         comment,
-        camera, engagement_change, precombat,
+        camera, engagement_change, precombat, precombat_end, combat_ended, combat_started,
 
         // IDEA: sync up with script events?
     }

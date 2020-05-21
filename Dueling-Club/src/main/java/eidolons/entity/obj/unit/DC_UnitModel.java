@@ -93,14 +93,14 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
         if (getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT) {
             //!VisionManager.checkVisible(this)) {
-//        if (getActivePlayerVisionStatus() == PLAYER_VISION.UNKNOWN) {
+            //        if (getActivePlayerVisionStatus() == PLAYER_VISION.UNKNOWN) {
             // if (isHuge())
             // return "Something huge";
             // if (isSmall())
             // return "Something small";
             return "Something " + getGame().getVisionMaster().getHintMaster().getHintsString(this);
         }
-//        return StringMaster.getWellFormattedString(getVisibilityLevel().toString()); //"Someone or something";
+        //        return StringMaster.getWellFormattedString(getVisibilityLevel().toString()); //"Someone or something";
 
         return getName();
     }
@@ -196,12 +196,11 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     }
 
 
-
     public DC_ActiveObj getPreferredInstantAttack() {
         String action = getProperty(PROPS.DEFAULT_INSTANT_ATTACK_ACTION);
         if (!action.isEmpty()) {
             preferredInstantAttack = getAction(action);
-        return preferredInstantAttack;
+            return preferredInstantAttack;
         }
         return getAttackOfType(ActionEnums.ATTACK_TYPE.QUICK_ATTACK);
     }
@@ -226,9 +225,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
                 return subAction;
             }
         }
-        main.system.auxiliary.log.LogMaster.log(1,"No action of type " +
-               type +
-                " found for "+getName() );
+        main.system.auxiliary.log.LogMaster.log(1, "No action of type " +
+                type +
+                " found for " + getName());
         return getAttack().getSubActions().get(0);
     }
 
@@ -261,9 +260,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     }
 
     public boolean turnStarted() {
-//        if (!game.fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_TURN_READY, ref))) {
-//            return false;
-//        }
+        //        if (!game.fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_TURN_READY, ref))) {
+        //            return false;
+        //        }
         return canActNow();
 
     }
@@ -291,6 +290,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public void setMode(MODE mode) {
         if (this.mode == mode) return;
+        if (getEntity().isUnconscious()) {
+            return;
+        }
         if (getBuff("Channeling") != null) {
             if (mode != STD_MODES.CHANNELING) {
                 return;
@@ -307,8 +309,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
             GuiEventManager.triggerWithParams(SHOW_MODE_ICON, this, null);
         } else {
             GuiEventManager.triggerWithParams(SHOW_MODE_ICON, this, mode.getImagePath());
-            EUtils.showInfoText(
-                    StringMaster.getWellFormattedString(mode.getBuffName()) + "...");
+            if (isMainHero())
+                EUtils.showInfoText(
+                        StringMaster.getWellFormattedString(mode.getBuffName()) + "...");
         }
     }
 

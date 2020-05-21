@@ -17,10 +17,12 @@ public class CursorDecorator extends NoHitGroup {
     private FadeImageContainer cursor = new FadeImageContainer();
     private static CursorDecorator instance;
     GearCluster gears;
+    GearCluster smallGears;
     private GdxMaster.CURSOR cursorType;
     private boolean waiting;
 
     private CursorDecorator() {
+        //TODO IDEA: hide main cursor sometimes?
         addActor(cursor);
         cursor.setFadeDuration(0.35f);
         GuiEventManager.bind(GuiEventType.WAITING_ON , p-> waiting());

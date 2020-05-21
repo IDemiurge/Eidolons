@@ -20,7 +20,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 /**
  * Created by JustMe on 5/23/2018.
  */
-public class ConfirmationPanel extends TablePanelX implements Blocking, InputProcessor {
+public class ConfirmationPanel extends TablePanelX implements Blocking, InputProcessor, OverlayingUI {
     private static ConfirmationPanel instance;
     Label label;
     SmartButton ok;

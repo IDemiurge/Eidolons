@@ -3,7 +3,6 @@ package eidolons.libgdx.gui.panels.dc.topleft.atb;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.game.core.game.DC_Game;
@@ -305,7 +304,7 @@ public class AtbPanel extends GroupX {
     }
 
 
-    protected void toggleQueue(boolean visible) {
+    public void toggleQueue(boolean visible) {
         cleanUp();
         rollComponent(container, visible);
 
@@ -330,19 +329,18 @@ public class AtbPanel extends GroupX {
 
     @Override
     public void act(float delta) {
-//        boolean altBg = EidolonsGame.isAltControlPanel();
         container.setX(184);
         horizontal.setY(8);
         super.act(delta);
         if (isRealTime()) {
-            if (container.isVisible())
-                if (ActionMaster.getActionsOfClass(container, MoveToAction.class).size() == 0) {
-                    toggleQueue(false);
-                }
+            // if (container.isVisible())
+            //     if (ActionMaster.getActionsOfClass(container, MoveToAction.class).size() == 0) {
+            //         toggleQueue(false);
+            //     }
         } else {
-            if (!container.isVisible())
-                if (ActionMaster.getActionsOfClass(container, MoveToAction.class).size() == 0)
-                    toggleQueue(true);
+            // if (!container.isVisible())
+            //     if (ActionMaster.getActionsOfClass(container, MoveToAction.class).size() == 0)
+            //         toggleQueue(true);
 
             timePassedSincePosCheck += delta;
             if (DC_Game.game.isDebugMode() ||

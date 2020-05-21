@@ -39,7 +39,9 @@ import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Supplier;
 
 import static main.system.auxiliary.log.LogMaster.ANIM_DEBUG;
@@ -362,7 +364,7 @@ public class Anim extends Group implements Animation {
     }
 
     protected void initEmitters() {
-        if (emitterList == null) {
+        if (emitterList == null || emitterList .isEmpty()) {
             if (data.getValue(ANIM_VALUES.PARTICLE_EFFECTS) != null) {
                 setEmitterList(SpellVfxPool.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS)));
             }
@@ -546,10 +548,7 @@ public class Anim extends Group implements Animation {
     }
 
     protected boolean isDrawTexture() {
-        if (Cinematics.ON) {
-            return false;
-        }
-        return true;
+        return !Cinematics.ON;
     }
 
     public Float getSpeedX() {

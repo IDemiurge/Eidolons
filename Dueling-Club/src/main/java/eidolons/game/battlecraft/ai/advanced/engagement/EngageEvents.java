@@ -226,4 +226,10 @@ public class EngageEvents extends ExplorationHandler {
     public static boolean isLogged() {
         return true;
     }
+
+    public void clearQueue() {
+        eventQueue.clear();
+        //check if some need to be processed immediately?
+        //double combat-start from different groups? impossible?
+    }
 }

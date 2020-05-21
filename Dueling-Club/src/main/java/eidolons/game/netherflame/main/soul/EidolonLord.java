@@ -2,12 +2,10 @@ package eidolons.game.netherflame.main.soul;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.game.EidolonsGame;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.EUtils;
 import eidolons.game.netherflame.main.death.HeroChain;
 import eidolons.game.netherflame.main.soul.eidola.Soul;
 import eidolons.game.netherflame.main.soul.eidola.SoulMaster;
-import main.content.enums.entity.UnitEnums;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
@@ -24,8 +22,10 @@ public class EidolonLord extends LightweightEntity {
         lord.setParam(PARAMS.C_SOULFORCE, getIntParam(PARAMS.BASE_SOULFORCE));
     }
 
-    public void soulsLost(Soul... souls) {
+    public void useArts() {
+    }
 
+    public void soulsLost(Soul... souls) {
         for (Soul soul : souls) {
             if (soul == null) {
                 continue;
@@ -35,32 +35,26 @@ public class EidolonLord extends LightweightEntity {
         }
         SoulMaster.clear();
 
-        //TODO check warnings?
-
     }
 
     public void soulforceGained(int amount) {
         lord.addParam(PARAMS.C_SOULFORCE, amount);
-        GuiEventManager.trigger(GuiEventType.SOULFORCE_RESET, this);
+        EUtils.showInfoText(true, "Soulforce gained: " + amount);
+        GuiEventManager.trigger(GuiEventType.SOULFORCE_GAINED, this);
     }
 
     public void soulforceLost(int amount) {
         lord.addParam(PARAMS.C_SOULFORCE, -amount);
-        GuiEventManager.trigger(GuiEventType.SOULFORCE_RESET, this);
+        EUtils.showInfoText(true, "Soulforce lost: " + amount);
+        GuiEventManager.trigger(GuiEventType.SOULFORCE_LOST, this);
 
     }
 
     public Integer getSoulforce() {
-        if (EidolonsGame.BRIDGE){
-            return Math.min(getSoulforceMax(), Eidolons.getMainHero().getCounter(UnitEnums.COUNTER.Undying) * 10);
-        }
         return super.getIntParam(PARAMS.C_SOULFORCE);
     }
 
     public Integer getSoulforceMax() {
-        if (EidolonsGame.BRIDGE){
-            return 100;
-        }
         return super.getIntParam(PARAMS.SOULFORCE);
     }
 

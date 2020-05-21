@@ -50,6 +50,10 @@ public class DC_CostsFactory {
         // if (cost != null)
         // costs.add(cost);
 
+        cost = getCost(spell, PARAMS.SF_COST, PARAMS.C_SOULFORCE);
+        if (cost != null) {
+            costs.add(cost);
+        }
         cost = getCost(spell, PARAMS.ESS_COST, PARAMS.C_ESSENCE);
         if (cost != null) {
             costs.add(cost);

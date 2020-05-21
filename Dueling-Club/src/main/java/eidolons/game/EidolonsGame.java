@@ -6,8 +6,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.main.death.ShadowMaster;
-import eidolons.system.options.OptionsMaster;
-import eidolons.system.options.SystemOptions;
 import main.content.values.parameters.PARAMETER;
 import main.data.StringMap;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -124,13 +122,6 @@ public class EidolonsGame {
     }
 
     public static FACING_DIRECTION getPresetFacing(Unit unit) {
-        if (BRIDGE) {
-
-            if (OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.TESTER_VERSION)) {
-                return FACING_DIRECTION.EAST;
-            }
-            return FACING_DIRECTION.NORTH;
-        }
         return null;
     }
 
@@ -139,7 +130,7 @@ public class EidolonsGame {
     }
 
     public static boolean isLordPanelEnabled() {
-        return !BRIDGE;
+        return false;
     }
 
 

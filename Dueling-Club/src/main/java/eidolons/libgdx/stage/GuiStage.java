@@ -159,12 +159,12 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         logPanel = new ExtendableLogPanel(true);
         // RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
         addActor(logPanel);
-//        logPanel.setOnClose(()->{
-//            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_OUT);
-//        });
-//        logPanel.setOnOpen(()->{
-//            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_IN);
-//        });
+        //        logPanel.setOnClose(()->{
+        //            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_OUT);
+        //        });
+        //        logPanel.setOnOpen(()->{
+        //            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_IN);
+        //        });
         logPanel.
                 setPosition(GdxMaster.getWidth() - logPanel.getWidth(), GdxMaster.getTopY(logPanel));
         addActor(fullLogPanel = new FullLogPanel(100, 200));
@@ -255,20 +255,20 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     public void draw() {
         //can we just pass if in 'cinematic mode'?
 
-//        if (Cinematics.ON) TODO could it be useful?
-//            if (dialogueContainer.getCurrent().getColor().a == 0) {
-//                getBatch().begin();
-//                drawCinematicMode(getBatch());
-//                blackout.draw(getCustomSpriteBatch());
-//                getBatch().end();
-//                return;
-//            }
-//        if (hqPanel.isVisible()) {
-//            getBatch().begin();
-//            hqPanel.draw(getBatch(), 1f);
-//            getBatch().end();
-//            return;
-//        }
+        //        if (Cinematics.ON) TODO could it be useful?
+        //            if (dialogueContainer.getCurrent().getColor().a == 0) {
+        //                getBatch().begin();
+        //                drawCinematicMode(getBatch());
+        //                blackout.draw(getCustomSpriteBatch());
+        //                getBatch().end();
+        //                return;
+        //            }
+        //        if (hqPanel.isVisible()) {
+        //            getBatch().begin();
+        //            hqPanel.draw(getBatch(), 1f);
+        //            getBatch().end();
+        //            return;
+        //        }
         if (CoreEngine.isFootageMode()) { //|| !EidolonsGame.isHqEnabled()
             getBatch().begin();
             if (gameMenu.isVisible())
@@ -387,8 +387,8 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     }
 
     protected boolean checkBlocked() {
-//        if (dialogueMode)
-//            return true;
+        //        if (dialogueMode)
+        //            return true;
         if (tipMessageWindow != null)
             if (tipMessageWindow.isVisible())
                 if (tipMessageWindow.getColor().a != 0) //TODO why are there such cases?!
@@ -405,11 +405,16 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         Actor actor = super.hit(stageX, stageY, touchable);
 
         if (actor != null)
-            if (blocked) {
+            if (blocked) { //if an overlay has blocked other UI but we want IT to be touchable
                 if (actor instanceof com.badlogic.gdx.scenes.scene2d.ui.List)
                     return actor;
 
                 List<Group> ancestors = GdxMaster.getAncestors(actor);
+                for (Group ancestor : ancestors) {
+                    if (ancestor == overlayPanel) {
+                        return actor;
+                    }
+                }
                 if (actor instanceof Group)
                     ancestors.add((Group) actor);
                 if (checkContainsNoOverlaying(ancestors)) {
@@ -431,6 +436,11 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     }
 
     protected boolean checkContainsNoOverlaying(List<Group> ancestors) {
+        for (Group ancestor : ancestors) {
+            if (ancestor instanceof OverlayingUI) {
+                return false;
+            }
+        }
         if (!ancestors.contains(textPanel))
             if (!ancestors.contains(confirmationPanel))
                 if (!ancestors.contains(tipMessageWindow))
@@ -516,7 +526,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         if (tipMessageWindow != null)
             if (tipMessageWindow.isVisible())
                 if (tipMessageWindow.getColor().a > 0) {
-//            ActorMaster.addRemoveAfter(tipMessageWindow);
+                    //            ActorMaster.addRemoveAfter(tipMessageWindow);
                     tipMessageWindow.setOnClose(() -> tip(o));
                     return;
                 }
@@ -562,9 +572,12 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
     @Override
     public boolean keyUp(int keyCode) {
+        if (overlayPanel != null)
+            if (!overlayPanel.keyUp(keyCode))
+            return true;
         String c = Keys.toString(keyCode);
-
-        FileLogManager.streamInput("Key Up: " + c);
+        // if (Analystics.inOn())
+        //     FileLogManager.streamInput("Key Up: " + c);
         if (!charsUp.contains(c)) {
             charsUp.add(c);
         }
@@ -573,6 +586,9 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
     @Override
     public boolean keyDown(int keyCode) {
+        if (overlayPanel != null)
+        if (!overlayPanel.keyDown(keyCode))
+            return true;
         FileLogManager.streamInput("Key Down: " + Keys.toString(keyCode));
         if (DC_Game.game == null) {
             return false;
@@ -592,6 +608,10 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
     @Override
     public boolean keyTyped(char character) {
+
+        if (overlayPanel != null)
+            if (!overlayPanel.keyTyped(character))
+            return true;
         if ((int) character == 0)
             return false;
         FileLogManager.streamInput("Key Typed: " + character);
@@ -732,19 +752,19 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     }
 
     public void afterBlackout(Runnable runnable) {
-//TODO         blackout.fadeOutAndBack(runnable);
+        //TODO         blackout.fadeOutAndBack(runnable);
         runnable.run();
-//        Eidolons.onNonGdxThread(() -> {
-//            int time=0;
-//            while (time < 3000) {
-//                time += 100;
-//                WaitMaster.WAIT(100);
-//                if (blackout.getChildren().getVar(0). getColor().a == 0) {
-//                    Gdx.app.postRunnable(runnable);
-//                    break;
-//                }
-//            }
-//        });
+        //        Eidolons.onNonGdxThread(() -> {
+        //            int time=0;
+        //            while (time < 3000) {
+        //                time += 100;
+        //                WaitMaster.WAIT(100);
+        //                if (blackout.getChildren().getVar(0). getColor().a == 0) {
+        //                    Gdx.app.postRunnable(runnable);
+        //                    break;
+        //                }
+        //            }
+        //        });
 
     }
 
@@ -767,14 +787,14 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
         dialogueCache.put(handler.getDialogue(), dialogueContainer);
 
-//        Eidolons.getScreen().toBlack();
-//        Eidolons.getScreen().blackout(5, 0);
+        //        Eidolons.getScreen().toBlack();
+        //        Eidolons.getScreen().blackout(5, 0);
     }
 
     protected void dialogueToggle(boolean on) {
-//        if (!DialogueManager.TEST) {
-//            VisionManager.setCinematicVision(on);
-//        }
+        //        if (!DialogueManager.TEST) {
+        //            VisionManager.setCinematicVision(on);
+        //        }
         setDialogueMode(on);
         DialogueManager.setRunning(on);
         Cinematics.ON = on;

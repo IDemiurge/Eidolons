@@ -866,6 +866,20 @@ public class ContentValsManager {
     }
 
     public static boolean isValueForOBJ_TYPE(String type, VALUE p) {
+        OBJ_TYPE TYPE = getOBJ_TYPE(type);
+        if (TYPE == null)
+            return false;
+        if (p.getEntityType() != null)
+        if (p.getEntityType().equalsIgnoreCase("all")) {
+            if (instance == null) {
+                return true;
+            }
+            return instance.checkAllApplies(p, TYPE);
+        }
+        Boolean override =getInstance().getValueForTypeOverride(TYPE, p);
+        if (override != null) {
+            return override;
+        }
 
         if (p.getEntityTypes() != null) {
             if (Arrays.asList(p.getEntityTypes()).contains((type))) {
@@ -875,17 +889,8 @@ public class ContentValsManager {
         if (p.getEntityType() == null) {
             return false;
         }
-        if (p.getEntityType().equalsIgnoreCase("all")) {
-            if (instance == null) {
-                return true;
-            }
-            return instance.checkAllApplies(p, type);
-        }
         if (p.getEntityType().equals(type))
             return true;
-        OBJ_TYPE TYPE = getOBJ_TYPE(type);
-        if (TYPE == null)
-            return false;
         TYPE = TYPE.getParent();
         while (TYPE != null) {
             if (isValueForOBJ_TYPE(TYPE, p)) {
@@ -894,6 +899,10 @@ public class ContentValsManager {
             TYPE = TYPE.getParent();
         }
         return false;
+    }
+
+    protected Boolean getValueForTypeOverride(OBJ_TYPE type, VALUE p) {
+        return null;
     }
 
     public static List<OBJ_TYPE> getOBJ_TYPEsForValue(VALUE value) {
@@ -1096,7 +1105,7 @@ public class ContentValsManager {
 
     }
 
-    public boolean checkAllApplies(VALUE p, String type) {
+    public boolean checkAllApplies(VALUE p, OBJ_TYPE type) {
         return true;
     }
 

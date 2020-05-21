@@ -174,6 +174,13 @@ public static final String SEPARATOR_NARROW = StrPathBuilder.build(
     public static final String STATUS_EXPLORE_DETECTED ="ui/components/dc/status/status_explore_detected.png";
     public static final String STATUS_COMBAT ="ui/components/dc/status/status_combat.png";
     public static final String STATUS_ALARM ="ui/components/dc/status/status_alarm.png";
+    public static final String VC_BG = "ui/components/generic/dialogue/grunge bg full.png";
+    // public static final String VC_BG = "ui/components/generic/vc/bg.png";
+    public static final String VC_DECOR_GATE =  "ui/components/generic/vc/gate.png";
+    public static final String VC_BOTTOM =  "ui/components/generic/vc/bottom.png";
+    public static final String BLACK_250_350 =  "ui/components/generic/vc/black_250_350.png";
+    public static final String HL_250_350 =  "ui/components/generic/vc/hl_250_350.png";
+    public static final String TEXT_BORDER_DECOR = "ui/components/ninepatch/std/frame decor.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

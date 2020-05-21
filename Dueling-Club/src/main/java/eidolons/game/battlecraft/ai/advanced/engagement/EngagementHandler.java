@@ -103,4 +103,12 @@ public class EngagementHandler extends ExplorationHandler {
     public EngageEvents getEvents() {
         return events;
     }
+
+    public void clearEventQueue() {
+        events.clearQueue();
+    }
+
+    public void addEvent(Object... args) {
+        getEvents().addEvent(args);
+    }
 }

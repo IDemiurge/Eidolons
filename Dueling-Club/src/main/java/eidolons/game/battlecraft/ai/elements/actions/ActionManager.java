@@ -1,7 +1,7 @@
 
 package eidolons.game.battlecraft.ai.elements.actions;
 
-import eidolons.content.DC_ContentValsManager;
+import eidolons.content.ContentConsts;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
 import eidolons.entity.active.DC_UnitAction;
@@ -55,7 +55,7 @@ public class ActionManager extends AiHandler {
 
     public static Costs getTotalCost(List<Action> actions) {
         XLinkedMap<PARAMETER, Formula> map = new XLinkedMap<>();
-        for (PARAMETER p : DC_ContentValsManager.PAY_PARAMS) {
+        for (PARAMETER p : ContentConsts.PAY_PARAMS) {
             map.put(p, new Formula(""));
         }
         for (Action a : actions) {

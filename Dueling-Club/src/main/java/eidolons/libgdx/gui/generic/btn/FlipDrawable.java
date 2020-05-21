@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.generic.btn;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import eidolons.libgdx.texture.TextureCache;
 
 import java.util.function.Supplier;
 
@@ -13,6 +14,10 @@ public class FlipDrawable implements Drawable {
         this.background = background;
         this.x = x;
         this.y = y;
+    }
+
+    public FlipDrawable(String path, Supplier<Boolean> x, Supplier<Boolean> y) {
+        this(TextureCache.getOrCreateTextureRegionDrawable(path), x, y);
     }
 
     @Override

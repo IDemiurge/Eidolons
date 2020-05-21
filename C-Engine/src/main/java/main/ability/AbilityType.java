@@ -14,7 +14,6 @@ public class AbilityType extends XmlHoldingType {
 
     public AbilityType(AbilityType type) {
         super(type);
-
         setDoc(type.getDoc().cloneNode(true));
     }
 
@@ -23,6 +22,7 @@ public class AbilityType extends XmlHoldingType {
 
     public AbilityType(boolean gen, ObjType objType) {
         super(gen, objType);
+        cloned();
     }
 
     public void construct() {

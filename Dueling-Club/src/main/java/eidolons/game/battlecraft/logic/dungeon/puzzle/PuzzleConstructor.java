@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
 import eidolons.ability.conditions.AreaCondition;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution.PUZZLE_PUNISHMENT;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution.PUZZLE_RESOLUTION;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Veil;
@@ -55,9 +54,6 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         initEnterTrigger();
         initExitTrigger();
         boolean pale = puzzleData.getBooleanValue(PuzzleData.PUZZLE_VALUE.PALE);
-        if (EidolonsGame.BRIDGE) {
-            pale = true;
-        }
         {
             Veil veil;
             Coordinates c = new Coordinates(puzzleData.getValue(PuzzleData.PUZZLE_VALUE.ENTRANCE)).negativeY()

@@ -218,10 +218,10 @@ public class HpBar extends ValueBar {
         if (teamColor == GdxColorMaster.NEUTRAL)
             teamColor = GdxColorMaster.RED;
         super.setTeamColor(teamColor);
-        secondaryColor = GdxColorMaster.ENDURANCE;
-        //        GdxColorMaster.darker(getTeamColor(), 0.55f);
-        primaryColor = GdxColorMaster.TOUGHNESS;
-        //        GdxColorMaster.lighter(getTeamColor(), 0.55f);
+        secondaryColor = //GdxColorMaster.ENDURANCE;
+               GdxColorMaster.darker(getTeamColor(), 0.25f);
+        primaryColor = //GdxColorMaster.TOUGHNESS;
+               GdxColorMaster.lighter(getTeamColor(), 0.45f);
         label2.setColor((getTeamColor()));
         label1.setColor(primaryColor);
     }

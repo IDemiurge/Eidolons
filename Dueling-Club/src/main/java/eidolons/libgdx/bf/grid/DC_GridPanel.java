@@ -237,9 +237,6 @@ public class DC_GridPanel extends GridPanel {
         if (EidolonsGame.FOOTAGE) {
             return true;
         }
-        if (EidolonsGame.BRIDGE) {
-            return true;
-        }
         if (EidolonsGame.BOSS_FIGHT) {
             return false;
         }
@@ -345,7 +342,10 @@ public class DC_GridPanel extends GridPanel {
 //                }
 //            }
         });
-        GuiEventManager.bind(GuiEventType.GRID_OBJ_ANIM, p -> {
+        GuiEventManager.bind(GuiEventType.CUSTOM_VIEW_ANIM, p -> {
+
+        });
+            GuiEventManager.bind(GuiEventType.GRID_OBJ_ANIM, p -> {
             List list = (List) p.get();
             GraphicData data = (GraphicData) list.get(2);
             if (list.get(1) instanceof Coordinates) {

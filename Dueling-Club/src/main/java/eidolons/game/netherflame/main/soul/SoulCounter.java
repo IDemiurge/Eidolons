@@ -1,38 +1,44 @@
 package eidolons.game.netherflame.main.soul;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechExecutor;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
+import eidolons.libgdx.gui.generic.btn.FlipDrawable;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
+import eidolons.libgdx.texture.Images;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
-public class SoulCounter extends GroupX {
+public class SoulCounter extends SuperActor {
+    private final TablePanelX<Actor> table;
     SmartButton btn;
     LabelX counter;
     int souls = 3;
 
     public SoulCounter() {
-        addActor(btn = new SmartButton(ButtonStyled.STD_BUTTON.SOULS_BTN, () -> {
+        addActor(table = new TablePanelX<>());
+        table.setY(-25);
+        table.setBackground(new FlipDrawable(Images.ZARK_TITLE, () -> false, () -> true));
+        table.addActor(btn = new SmartButton(ButtonStyled.STD_BUTTON.SOULS_BTN, () -> {
             GuiEventManager.trigger(GuiEventType.SOULS_CONSUMED);
         }));
         Label.LabelStyle style = StyleHolder.newStyle(StyleHolder.getHqLabelStyle(20));
-        style.fontColor = GdxColorMaster.CRIMSON;
 
-        addActor(counter = new LabelX("", style));
+        table.addActor(counter = new LabelX("", style));
 
+        //animate on gain/lose
         GuiEventManager.bind(GuiEventType.SOULS_CONSUMED, p -> {
             if (Eidolons.getGame().getManager().getActiveObj() != Eidolons.getMainHero()) {
                 EUtils.showInfoText("Cannot do this now");
@@ -40,9 +46,6 @@ public class SoulCounter extends GroupX {
             }
             DC_SoundMaster.playCueSound(GenericEnums.SOUND_CUE.ghost);
             Eidolons.getMainHero().addCounter(UnitEnums.COUNTER.Undying.getName(), souls + "");
-            if (EidolonsGame.BRIDGE) {
-            EidolonLord.lord.soulforceGained(souls*10);
-            }
             souls = 0;
             counter.setText("" + souls);
             SpeechExecutor.run("script=explosions(true)");
@@ -52,15 +55,22 @@ public class SoulCounter extends GroupX {
             counter.setText("" + souls);
         });
 
-        addListener(new DynamicTooltip(()-> "Turn Souls into Undying counters").getController());
+        addListener(new DynamicTooltip(() -> "Current Soulforce: " +
+                EidolonLord.lord.getSoulforce() +
+                "/" +
+                EidolonLord.lord.getSoulforceMax()).getController());
         counter.setText("3");
     }
 
     @Override
     public void act(float delta) {
+        table.setY(-25);
+        table.setX(-table.getWidth()/2+11);
+        counter.setText(EidolonLord.lord.getSoulforce() + "");
+        // style.fontColor = GdxColorMaster.CRIMSON; if low
         setSize(btn.getWidth(), btn.getHeight());
         GdxMaster.center(counter);
-        counter.setX((btn.getWidth()-counter.getPrefWidth())/2);
+        counter.setX((btn.getWidth() - counter.getPrefWidth()) / 2);
         super.act(delta);
     }
 }

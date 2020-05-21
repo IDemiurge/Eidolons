@@ -113,6 +113,7 @@ public class SpriteX extends GroupX {
         sprite.setFlipY(flipY);
         sprite.setColor(getColor());
         sprite.setAlpha(parentAlpha);
+
         done = !sprite.draw(batch);
 //        sprite.setFlipX(true);
 //        debug();

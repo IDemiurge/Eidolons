@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.construction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
@@ -100,7 +99,7 @@ public class PuzzleActions extends PuzzleElement {
     }
 
     private static boolean isPaleReturn(Puzzle puzzle, PuzzleResolution.PUZZLE_PUNISHMENT punishment) {
-        return !EidolonsGame.BRIDGE;
+        return true;
     }
 
     public static void resolution(PuzzleResolution.PUZZLE_RESOLUTION resolution, Puzzle puzzle, String s) {

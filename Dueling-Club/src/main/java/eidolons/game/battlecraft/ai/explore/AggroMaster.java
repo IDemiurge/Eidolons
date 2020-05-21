@@ -34,7 +34,8 @@ public class AggroMaster extends ExplorationHandler {
     public void checkStatusUpdate() {
         if (checkEngaged()) {
             if (!isCombat())
-                 master.event(new EngageEvent(EngageEvent.ENGAGE_EVENT.combat_start, AggroMaster.getAggroGroup().size()));
+                 master.event(new EngageEvent(EngageEvent.ENGAGE_EVENT.combat_start,
+                         AggroMaster.getAggroGroup().size()));
         } else {
             if (isCombat())
                 master.event(new EngageEvent(EngageEvent.ENGAGE_EVENT.combat_end));
@@ -89,8 +90,6 @@ public class AggroMaster extends ExplorationHandler {
         boolean newAggro = false;
         for (Unit unit : DC_Game.game.getUnits()) {
             if (unit.isDead())
-                continue;
-            if (unit.isUnconscious())
                 continue;
             if (!unit.isEnemyTo(DC_Game.game.getPlayer(true)))
                 continue;

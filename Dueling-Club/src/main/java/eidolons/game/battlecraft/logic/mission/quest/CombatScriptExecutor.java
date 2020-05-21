@@ -335,7 +335,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
             PaleAspect.shadowLeapToLocation(Coordinates.get(args[0]));
             return true;
         }
-        if (EidolonsGame.BRIDGE) {
+        if (EidolonsGame.isAltControlPanel()) { //TODO true form...
             PaleAspect.shadowLeapToLocation(Eidolons.getMainHero(), false, Coordinates.get(args[0]));
             return true;
         }

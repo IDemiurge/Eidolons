@@ -60,9 +60,11 @@ public class ValueTooltip extends Tooltip {
             return;
         }
         clearChildren();
-        List<ValueContainer> values = (List<ValueContainer>) getUserObject();
+        List<Actor> values = (List<Actor>) getUserObject();
 
-        values.forEach(el -> {
+        values.forEach(actor -> {
+            if (actor instanceof ValueContainer) {
+              ValueContainer  el= (ValueContainer) actor;
 //            el.setFixedMinSize(true);
             if (el.getValueText() != null)
                 el.setValueText(TextWrapper.processText((int) (getMaxWidth()*0.86f), el.getValueText(), el.getValueLabel().getStyle()));
@@ -81,7 +83,8 @@ public class ValueTooltip extends Tooltip {
             if (el.getValueLabel().getStyle() == getDefaultLabelStyle()) {
                 el.setValueStyle(StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
             }
-            addElement(el);
+            }
+            addElement(actor);
             row();
         });
     }

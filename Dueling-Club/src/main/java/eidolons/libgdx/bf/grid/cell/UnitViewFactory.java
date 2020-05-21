@@ -121,9 +121,6 @@ public class UnitViewFactory {
             if (bfObj.isWater()) {
                 return null;
             }
-            if (EidolonsGame.BRIDGE) {
-                return null;
-            }
             if (!CoreEngine.isOutlinesFixed()) {
                 return null;
             }

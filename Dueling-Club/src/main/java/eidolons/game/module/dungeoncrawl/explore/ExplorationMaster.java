@@ -5,15 +5,10 @@ import eidolons.game.battlecraft.ai.advanced.engagement.EngagementHandler;
 import eidolons.game.battlecraft.ai.advanced.engagement.PlayerStatus;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.herocreator.logic.party.Party;
-import eidolons.libgdx.anims.construct.AnimConstructor;
-import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import main.entity.Ref;
 import main.game.logic.event.Event;
-import main.system.auxiliary.RandomWizard;
-import main.system.sound.SoundMaster.STD_SOUNDS;
 
 /**
  * Created by JustMe on 8/2/2017.
@@ -78,13 +73,7 @@ public class ExplorationMaster {
     }
 
     public static boolean isExplorationSupported(DC_Game game) {
-//        if (testMode)
-//            return true;
-//        if (game.getGameMode() == GAME_MODES.ARENA)
-//            return false;
-//            return true;
-//        }
-//TODO only if disabled by <?>>
+        //boss fights?
         return true;
     }
 
@@ -112,48 +101,21 @@ public class ExplorationMaster {
         toggling=false;
     }
 
-    private ExplorerUnit createExplorerUnit(Party party) {
-        ExplorerUnit e = new ExplorerUnit(null);
-
-        return e;
-    }
-
     private void explorationToggled() {
-        //speed up resets?
-        //cache unit state?
         if (isExplorationOn()) {
             //TODO quick-fix
             cleaner.cleanUpAfterBattle();
             game.getLogManager().logBattleEnds();
             game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.COMBAT_ENDS, new Ref(game)));
             getResetter().setResetNotRequired(false);
-
             MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.ATMO);
-
-            DC_SoundMaster.playStandardSound(RandomWizard.random()
-             ? STD_SOUNDS.NEW__BATTLE_END
-             : STD_SOUNDS.NEW__BATTLE_END2);
-
         } else {
             game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.COMBAT_STARTS, new Ref(game)));
             game.getLogManager().logBattleStarts();
-            if (AnimConstructor.isPreconstructEnemiesOnCombatStart())
-                AggroMaster.getLastAggroGroup().forEach(unit -> {
-                    AnimConstructor.preconstructAll(unit);
-                });
             getResetter().setResetNotRequired(false);
-//            try {  done in game.startCombat()
-//                MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.BATTLE);
-//            } catch (Exception e) {
-//                main.system.ExceptionMaster.printStackTrace(e);
-//            }
         }
         getResetter().setResetNotRequired(false);
         game.startGameLoop();
-
-//        game.getManager().reset();
-        //exceptions: triggers, scripts,
-
     }
 
     public DC_Game getGame() {

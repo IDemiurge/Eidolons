@@ -10,7 +10,6 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.game.core.CombatLoop;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -219,9 +218,10 @@ public class ShadowMaster extends MetaGameHandler<NF_Meta> {
     }
 
     private void out() {
-        if (getGame().getLoop() instanceof CombatLoop) {
-            ((CombatLoop) getGame().getLoop()).endCombat();
-        }
+        // TODO  what do we do here?
+        // if (getGame().getLoop() instanceof CombatLoop) {
+        //     ((CombatLoop) getGame().getLoop()).endCombat();
+        // }
     }
 
     private void summonShade(Event event) {
@@ -240,7 +240,7 @@ public class ShadowMaster extends MetaGameHandler<NF_Meta> {
 
         new SummonEffect("Eidolon Shadow").apply(ref);
         shade = (Unit) ref.getObj(Ref.KEYS.SUMMONED);
-        shade.setScion(true);
+        shade.setShadow(true);
         GuiEventManager.trigger(GuiEventType.UNIT_CREATED, shade);
         GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO, shade);
         //        GuiEventManager.trigger(GuiEventType.GAME_RESET, shade);

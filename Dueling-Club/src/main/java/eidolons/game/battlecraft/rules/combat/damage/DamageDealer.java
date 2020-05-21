@@ -445,13 +445,13 @@ public class DamageDealer {
             // if (DC_GameManager.checkInterrupted(ref))
             // return 0; ???
         }
-        unconscious = attacked instanceof Unit && attacked.getIntParam(PARAMS.C_TOUGHNESS) <= 0;
+        // unconscious = attacked instanceof Unit && attacked.getIntParam(PARAMS.C_TOUGHNESS) <= 0;
 //                    attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
-
-        if (unconscious) {
-            attacked.getGame().getRules().getUnconsciousRule().
-                    fallUnconscious((Unit) attacked);
-        }
+        //TODO check this
+        // if (unconscious) {
+        //     attacked.getGame().getRules().getUnconsciousRule().
+        //             fallUnconscious((Unit) attacked);
+        // }
         if (toughness_dmg < 0 || endurance_dmg < 0) {
             LogMaster.log(1, toughness_dmg + "rogue damage " + endurance_dmg);
         } else

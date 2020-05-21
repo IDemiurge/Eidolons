@@ -28,6 +28,7 @@ import main.swing.generic.components.editors.EDITOR;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.*;
@@ -35,162 +36,49 @@ import java.util.*;
 import static main.content.enums.entity.HeroEnums.BACKGROUND.*;
 
 public class DC_ContentValsManager extends ContentValsManager {
-    public static final PARAMETER[] DYNAMIC_PARAMETERS = {
-     PARAMS.C_TOUGHNESS,
-     PARAMS.C_ENDURANCE,
-     PARAMS.C_STAMINA,
-     PARAMS.C_MORALE,
-            PARAMS.C_ESSENCE,
-     PARAMS.C_FOCUS,
-    };
-    public static final PARAMETER[] MAIN_PARAMETERS = {
-     PARAMS.ATTACK, PARAMS.DEFENSE, PARAMS.INITIATIVE, PARAMS.ARMOR, PARAMS.FORTITUDE, PARAMS.RESISTANCE, PARAMS.SPIRIT,
-              PARAMS.N_OF_COUNTERS,
-    };
-    public static final VALUE[] ATTRIBUTES = {PARAMS.STRENGTH, PARAMS.VITALITY, PARAMS.AGILITY,
-     PARAMS.DEXTERITY, PARAMS.WILLPOWER, PARAMS.INTELLIGENCE, PARAMS.SPELLPOWER,
-     PARAMS.KNOWLEDGE, PARAMS.WISDOM, PARAMS.CHARISMA,};
 
-    public static final PARAMS[] ATTRIBUTES_WRAPPED = {
-     PARAMS.STRENGTH, PARAMS.INTELLIGENCE, PARAMS.VITALITY,
-     PARAMS.SPELLPOWER, PARAMS.AGILITY, PARAMS.KNOWLEDGE, PARAMS.DEXTERITY,
-     PARAMS.WISDOM, PARAMS.WILLPOWER, PARAMS.CHARISMA,
-
-    };
-
-
-    public static final PARAMS[] COST_PARAMS = {PARAMS.ESS_COST, PARAMS.ENDURANCE_COST,
-     PARAMS.FOC_COST, PARAMS.STA_COST, PARAMS.AP_COST,};
-    public static final PARAMS[] PAY_PARAMS = {PARAMS.C_ESSENCE, PARAMS.C_ENDURANCE,
-     PARAMS.C_FOCUS, PARAMS.C_STAMINA ,};
-    private final static PARAMETER[] ARMOR_MODIFYING_PARAMS = {PARAMS.NOISE, PARAMS.QUICK_SLOTS,
-     PARAMS.ARMOR, PARAMS.DEFENSE, PARAMS.TOUGHNESS, PARAMS.ENDURANCE,
-     PARAMS.SIDE_SIGHT_PENALTY, PARAMS.SIGHT_RANGE, PARAMS.STEALTH, PARAMS.DETECTION,
-     PARAMS.STAMINA_PENALTY, PARAMS.FOCUS_PENALTY, PARAMS.AP_PENALTY,
-     PARAMS.ESSENCE_PENALTY, PARAMS.SPELL_STA_PENALTY, PARAMS.SPELL_FOC_PENALTY,
-     PARAMS.SPELL_AP_PENALTY, PARAMS.SPELL_ESS_PENALTY,
-     // PARAMS.ATTACK_AP_PENALTY, PARAMS.ATTACK_STA_PENALTY, //TODO
-     // OFFHAND?!
-     PARAMS.MOVE_AP_PENALTY, PARAMS.MOVE_STA_PENALTY,
-
-    };
-    private static final DC_TYPE[] BF_OBJ_TYPES = {DC_TYPE.CHARS, DC_TYPE.BF_OBJ,
-     DC_TYPE.UNITS};
-    private static final Integer[] defaultUnitParams = null;
-    // dynamic will be sorted out if need be
-
-    // first page => attributes?
-    private static final Integer[] defaultCharParams = null;
-    public final static Integer[][] defaultParams = {defaultUnitParams, defaultCharParams,};
-    // another page => C_ and PERC
-    private static final Class<?>[] PARAM_ENUM_CLASSES = {G_PARAMS.class, PARAMS.class};
-    private static final Class<?>[] PROP_ENUM_CLASSES = {G_PROPS.class, PROPS.class};
-    private static final String DEFAULT_DEITY = "Faithless";
-    private static final String DEFAULT_WEAPON = "Petty Fist";
-    public static PARAMETER[] REGENERATED_PARAMS = {
-     PARAMS.ENDURANCE, PARAMS.FOCUS,
-     PARAMS.ESSENCE, PARAMS.STAMINA
-     //   ,PARAMS.ENERGY
-    };
-    private static PARAMETER[] WEAPON_MODIFYING_PARAMS = {
-
-     PARAMS.ARMOR, PARAMS.DEFENSE, PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.STAMINA_PENALTY,
-     PARAMS.FOCUS_PENALTY, PARAMS.AP_PENALTY, PARAMS.ESSENCE_PENALTY,
-     PARAMS.SPELL_STA_PENALTY, PARAMS.SPELL_FOC_PENALTY, PARAMS.SPELL_AP_PENALTY,
-     PARAMS.SPELL_ESS_PENALTY,
-     // PARAMS.ATTACK_AP_PENALTY, PARAMS.ATTACK_STA_PENALTY,
-     PARAMS.MOVE_AP_PENALTY, PARAMS.MOVE_STA_PENALTY,};
-    private static PROPERTY[] headerUnitProps = {G_PROPS.ASPECT, G_PROPS.DEITY, G_PROPS.STATUS,
-     G_PROPS.MODE};
-    private static PROPERTY[] headerCharProps = {G_PROPS.RACE, G_PROPS.RANK,};
-    public final static PROPERTY[][] headerProps = {headerUnitProps, headerCharProps,};
-    private static PARAMETER[] headerUnitParams = {PARAMS.BASE_DAMAGE, PARAMS.ARMOR,
-     PARAMS.DEFENSE, PARAMS.ATTACK, PARAMS.C_MORALE, PARAMS.RESISTANCE, PARAMS.SPELL_ARMOR,
-     PARAMS.SIGHT_RANGE,
-    };
-    private static PARAMETER[] headerUnitParams2 = {PARAMS.C_N_OF_COUNTERS ,
-     PARAMS.C_ATB, PARAMS.C_ENDURANCE,
-     PARAMS.STEALTH, PARAMS.CONCEALMENT, PARAMS.DETECTION, PARAMS.BEHIND_SIGHT_BONUS,
-     PARAMS.SIDE_SIGHT_PENALTY,
-     PARAMS.ENDURANCE_REGEN, PARAMS.C_CARRYING_WEIGHT,
-    };
-
-    // next page => Masteries
-    // another page => Modifiers (+sneak)
-    private static PARAMETER[] headerCharParams = null;
-    public final static PARAMETER[][] headerParams = {headerUnitParams, headerCharParams,};
-    private static PARAMETER[] FEAT_MODIFYING_PARAMS = {PARAMS.XP_COST_REDUCTION,
-     PARAMS.XP_COST_REDUCTION_VERBATIM_SPELLS, PARAMS.XP_COST_REDUCTION_LEARNED_SPELLS,
-     PARAMS.XP_COST_REDUCTION_MASTERIES,
-
-     PARAMS.CRITICAL_REDUCTION, PARAMS.CRITICAL_MOD, PARAMS.COUNTER_MOD,
-     PARAMS.COOLDOWN_MOD, PARAMS.BLOCK_CHANCE, PARAMS.PARRY_CHANCE,
-
-    }; // also
-    private static VALUE[] excludedValuesFromAll = {G_PARAMS.POS_X, G_PARAMS.POS_Y,
-     G_PROPS.BF_OBJECT_TYPE, G_PROPS.IMAGE, G_PROPS.TYPE, G_PROPS.LORE, G_PROPS.DEITY,
-     G_PROPS.DESCRIPTION, G_PROPS.GROUP, G_PROPS.SOUNDSET, PARAMS.QUANTITY};
-    private static VALUE[][] excludedValues = {
-     {PROPS.DAMAGE_TYPE,},
-     {},
-     {PROPS.DAMAGE_TYPE,}, // CHARS
-     {}, {}};
-    private static String[] unknownValues = {G_PROPS.TYPE.name(), PROPS.VISIBILITY_STATUS.name(),
-     PROPS.DETECTION_STATUS.name(), PROPS.FACING_DIRECTION.name(),
-     PARAMS.C_ATB.name()  ,
-    };
-    private static List<VALUE> NO_SHOW_NAME_VALUES = new ArrayList<>();
-
-    private static Map<String, Deity> deities;
-    private static List<PARAMS> masteries;
-    private static List<PARAMETER> ARMOR_MODIFYING_PARAMS_FULL;
-    private static HashMap<OBJ_TYPE, List<VALUE>> defaultValues = new HashMap<>();
-    private static Map<String, EDITOR> editorMap;
-    private static List<VALUE> backgroundValues;
-    private static List<PARAMETER> backgroundDynamicParams;
-    private static Map<PRINCIPLES, PARAMETER> alignmentMap = new HashMap<>();
-    private static Map<PRINCIPLES, PARAMETER> identityMap = new HashMap<>();
-    private static String focusMasteries;
-    private static String focusClassGroups;
-    private static ArrayList<PARAMETER> dynamicParams = new ArrayList<>();
+    private static Map<OBJ_TYPE, Set<VALUE>> overrideCache = new HashMap<>();
 
     static {
+        initCaches();
         Arrays.stream(PARAMS.values()).forEach(param -> {
             if (param.isDynamic()) {
-                dynamicParams.add(param);
+                ContentConsts.dynamicParams.add(param);
             }
         });
-        // DEFAULT_VALUES
-        // ArrayMaster.join();
-        // BG_PARAMS
 
         ArrayList<PARAMETER> list = new ArrayList<>();
 
-        ARMOR_MODIFYING_PARAMS_FULL = new ArrayList<>();
-
-        ARMOR_MODIFYING_PARAMS_FULL.addAll(Arrays.asList(ARMOR_MODIFYING_PARAMS));
-        ARMOR_MODIFYING_PARAMS_FULL.addAll(Arrays.asList(ValuePages.RESISTANCES));
+        ContentConsts.ARMOR_MODIFYING_PARAMS_FULL = new ArrayList<>();
+        ContentConsts.ARMOR_MODIFYING_PARAMS_FULL.addAll(Arrays.asList(ContentConsts.ARMOR_MODIFYING_PARAMS));
+        ContentConsts.ARMOR_MODIFYING_PARAMS_FULL.addAll(Arrays.asList(ValuePages.RESISTANCES));
 
         // list.addAll((ARMOR_MODIFYING_PARAMS_FULL));
         // list.addAll(Arrays.asList(WEAPON_MODIFYING_PARAMS));
         list.addAll(Arrays.asList(ValuePages.UNIT_PARAMETERS));
         list.addAll(Arrays.asList(ValuePages.MASTERIES));
-        list.addAll(Arrays.asList(FEAT_MODIFYING_PARAMS));
+        list.addAll(Arrays.asList(ContentConsts.FEAT_MODIFYING_PARAMS));
 
-        FEAT_MODIFYING_PARAMS = list.toArray(new PARAMETER[0]);
-
+        ContentConsts.FEAT_MODIFYING_PARAMS = list.toArray(new PARAMETER[0]);
     }
-
-    private static VALUE[] displayedHeroProperties= new VALUE[]{
-     G_PROPS.ASPECT, G_PROPS.DEITY, G_PROPS.BACKGROUND,
-     G_PROPS.RACE, G_PROPS.MODE, G_PROPS.STATUS, G_PROPS.STANDARD_PASSIVES,
-     PARAMS.INTEGRITY,
-
-    };
-
 
     public DC_ContentValsManager() {
         super();
+    }
+
+    public static void initCaches(){
+        for (Object[] cachePair : ValueTypePairs.cachePairs) {
+           Set<VALUE> set = new ArrayMaster<VALUE>().flattenToSet((VALUE[][]) cachePair[1]);
+            overrideCache.put((OBJ_TYPE) cachePair[0], set);
+        }
+    }
+
+    protected Boolean getValueForTypeOverride(OBJ_TYPE type, VALUE p) {
+        Set<VALUE> override = overrideCache.get(type);
+        if (override != null) {
+            return override.contains(p);
+        }
+        return null;
     }
 
     public static void initTypeDynamicValues() {
@@ -202,6 +90,35 @@ public class DC_ContentValsManager extends ContentValsManager {
 
     }
 
+    public boolean checkAllApplies(VALUE p, OBJ_TYPE type) {
+        if (p instanceof G_PROPS) {
+            switch (((G_PROPS) p)) {
+                case TOOLTIP:
+                case LORE:
+                case PASSIVES:
+                case UNIQUE_ID:
+                case DESCRIPTION:
+                case STD_BOOLS:
+                case DYNAMIC_BOOLS:
+                    return checkAllApplies_((G_PROPS) p,type);
+            }
+        }
+        return true;
+    }
+
+    public boolean checkAllApplies_(G_PROPS p, OBJ_TYPE type) {
+        if (type instanceof DC_TYPE) {
+            switch (((DC_TYPE) type)) {
+                case SKILLS:
+                    switch (p) {
+//TODO
+                    }
+                    break;
+                case SPELLS:
+            }
+        }
+        return true;
+    }
     private static Collection<PARAMETER> generateDerivedParams() {
         Collection<PARAMETER> list = new ArrayList<>();
         for (PARAMS p : PARAMS.values()) {
@@ -255,17 +172,17 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static Deity getDefaultDeity() {
-        return getDeity(null, DEFAULT_DEITY);
+        return getDeity(null, ContentConsts.DEFAULT_DEITY);
     }
 
     public static Deity getDeity(Ref ref, String property) {
         if (StringMaster.isEmpty(property)) {
             return getDefaultDeity();
         }
-        if (deities == null) {
-            deities = new HashMap<>();
+        if (ContentConsts.deities == null) {
+            ContentConsts.deities = new HashMap<>();
         }
-        Deity deity = deities.get(property);
+        Deity deity = ContentConsts.deities.get(property);
         if (deity != null) {
             return deity;
         }
@@ -275,7 +192,7 @@ public class DC_ContentValsManager extends ContentValsManager {
         }
         deity = new Deity(type, ref.getGame(), ref);
         deity.toBase();
-        deities.put(type.getName(), deity);
+        ContentConsts.deities.put(type.getName(), deity);
         return deity;
     }
 
@@ -288,40 +205,40 @@ public class DC_ContentValsManager extends ContentValsManager {
     // }
 
     public static PARAMETER getAlignmentForPrinciple(PRINCIPLES principle) {
-        PARAMETER param = alignmentMap.get(principle);
+        PARAMETER param = ContentConsts.alignmentMap.get(principle);
         if (param != null) {
             return param;
         }
         param = ContentValsManager.getPARAM(principle.toString() + StringMaster.ALIGNMENT);
-        alignmentMap.put(principle, param);
+        ContentConsts.alignmentMap.put(principle, param);
         return param;
     }
 
     public static PARAMETER getIdentityParamForPrinciple(PRINCIPLES principle) {
         // OPTIMIZATION: having a param field on each Principle const!?
         // faster...
-        PARAMETER param = identityMap.get(principle);
+        PARAMETER param = ContentConsts.identityMap.get(principle);
         if (param != null) {
             return param;
         }
         param = ContentValsManager.getPARAM(principle.toString() + StringMaster.IDENTITY);
-        identityMap.put(principle, param);
+        ContentConsts.identityMap.put(principle, param);
         return param;
     }
 
     public static List<PARAMS> getMasteryParams() {
-        if (masteries != null) {
-            return masteries;
+        if (ContentConsts.masteries != null) {
+            return ContentConsts.masteries;
         }
-        masteries = new ArrayList<>();
+        ContentConsts.masteries = new ArrayList<>();
         for (PARAMETER m : ContentValsManager.getMasteries()) {
-            masteries.add((PARAMS) m);
+            ContentConsts.masteries.add((PARAMS) m);
         }
-        return masteries;
+        return ContentConsts.masteries;
     }
 
     public static Collection<String> getLimitedInfoPanelValueList(String objType) {
-        return Arrays.asList(unknownValues);
+        return Arrays.asList(ContentConsts.unknownValues);
     }
 
     public static Collection<String> getInfoPanelValueList(String objType) {
@@ -337,8 +254,8 @@ public class DC_ContentValsManager extends ContentValsManager {
         // valueNames.remove(v.getName());
         // }
         try {
-            if (DC_TYPE.getCode(objType) < excludedValues.length) {
-                for (VALUE v : excludedValues[DC_TYPE.getCode(objType)]) {
+            if (DC_TYPE.getCode(objType) < ContentConsts.excludedValues.length) {
+                for (VALUE v : ContentConsts.excludedValues[DC_TYPE.getCode(objType)]) {
                     valueNames.remove(v.getName());
                 }
             }
@@ -351,20 +268,20 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static PARAMETER[] getArmorModifyingParams() {
-        return ARMOR_MODIFYING_PARAMS_FULL
+        return ContentConsts.ARMOR_MODIFYING_PARAMS_FULL
          .toArray(new PARAMETER[0]);
     }
 
     public static PARAMETER[] getWeaponModifyingParams() {
-        return WEAPON_MODIFYING_PARAMS;
+        return ContentConsts.WEAPON_MODIFYING_PARAMS;
     }
 
     public static PARAMETER[] getFeatModifyingParams() {
-        return FEAT_MODIFYING_PARAMS;
+        return ContentConsts.FEAT_MODIFYING_PARAMS;
     }
 
     public static DC_TYPE[] getBF_TYPES() {
-        return BF_OBJ_TYPES;
+        return ContentConsts.BF_OBJ_TYPES;
     }
 
     public static PARAMETER getDamageTypeResistance(DAMAGE_TYPE type) {
@@ -397,7 +314,7 @@ public class DC_ContentValsManager extends ContentValsManager {
     // }
 
     public static PARAMS[] getCostParams() {
-        return COST_PARAMS;
+        return ContentConsts.COST_PARAMS;
     }
 
     public static PARAMETER getSpecialCostReductionParam(PARAMETER costParam, PROPERTY p) {
@@ -420,32 +337,32 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static boolean isShowValueName(VALUE value) {
-        return !NO_SHOW_NAME_VALUES.contains(value);
+        return !ContentConsts.NO_SHOW_NAME_VALUES.contains(value);
     }
 
     public static List<PARAMETER> getBackgroundDynamicParams() {
 
-        if (backgroundDynamicParams != null) {
-            return backgroundDynamicParams;
+        if (ContentConsts.backgroundDynamicParams != null) {
+            return ContentConsts.backgroundDynamicParams;
         }
-        backgroundDynamicParams = new ArrayList<>();
-        backgroundDynamicParams.addAll(Arrays.asList(ValuePages.PRINCIPLE_IDENTITIES));
+        ContentConsts.backgroundDynamicParams = new ArrayList<>();
+        ContentConsts.backgroundDynamicParams.addAll(Arrays.asList(ValuePages.PRINCIPLE_IDENTITIES));
         // TODO anything else?!
-        backgroundDynamicParams.add(PARAMS.IDENTITY_POINTS_PER_LEVEL);
-        return backgroundDynamicParams;
+        ContentConsts.backgroundDynamicParams.add(PARAMS.IDENTITY_POINTS_PER_LEVEL);
+        return ContentConsts.backgroundDynamicParams;
     }
 
     public static List<VALUE> getBackgroundStaticValues() {
-        if (backgroundValues != null) {
-            return backgroundValues;
+        if (ContentConsts.backgroundValues != null) {
+            return ContentConsts.backgroundValues;
         }
-        backgroundValues = new ArrayList<>();
+        ContentConsts.backgroundValues = new ArrayList<>();
         for (VALUE[] list : ValuePages.BACKGROUND_VALUES) {
-            backgroundValues.addAll(Arrays.asList(list));
+            ContentConsts.backgroundValues.addAll(Arrays.asList(list));
         }
-        backgroundValues.remove(PARAMS.IDENTITY_POINTS_PER_LEVEL);
+        ContentConsts.backgroundValues.remove(PARAMS.IDENTITY_POINTS_PER_LEVEL);
 
-        return backgroundValues;
+        return ContentConsts.backgroundValues;
     }
 
     public static PARAMETER[] getWeaponWeightPenaltyParams() {
@@ -784,11 +701,11 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static Map<String, EDITOR> getEditorMap() {
-        return editorMap;
+        return ContentConsts.editorMap;
     }
 
     public static void setEditorMap(Map<String, EDITOR> editorMap2) {
-        editorMap = editorMap2;
+        ContentConsts.editorMap = editorMap2;
     }
 
     public static CLASS_GROUP getClassGroupsFromClassType(CLASS_TYPE type) {
@@ -848,31 +765,31 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static DC_WeaponObj getDefaultWeapon(Unit heroObj) {
-        return new DC_WeaponObj(DataManager.getType(DEFAULT_WEAPON, DC_TYPE.WEAPONS), heroObj);
+        return new DC_WeaponObj(DataManager.getType(ContentConsts.DEFAULT_WEAPON, DC_TYPE.WEAPONS), heroObj);
     }
 
     @Deprecated
     public static String getFocusMasteries() {
-        if (focusMasteries != null) {
-            return focusMasteries;
+        if (ContentConsts.focusMasteries != null) {
+            return ContentConsts.focusMasteries;
         }
-        focusMasteries = "";
+        ContentConsts.focusMasteries = "";
         //        for (SkillEnums.MASTERY m : SkillTreeView.FOCUS_WORKSPACE) {
         //            focusMasteries += StringMaster.getWellFormattedString(m.toString()) + ";";
         //        }
-        return focusMasteries;
+        return ContentConsts.focusMasteries;
     }
 
     @Deprecated
     public static String getFocusClassGroups() {
-        if (focusClassGroups != null) {
-            return focusClassGroups;
+        if (ContentConsts.focusClassGroups != null) {
+            return ContentConsts.focusClassGroups;
         }
-        focusClassGroups = "";
+        ContentConsts.focusClassGroups = "";
         //        for (CLASS_GROUP m : ClassTreeView.FOCUS_WORKSPACE) {
         //            focusClassGroups += StringMaster.getWellFormattedString(m.toString()) + ";";
         //        }
-        return focusClassGroups;
+        return ContentConsts.focusClassGroups;
     }
 
     public static List<VALUE> getArmorGradeMultiParams() {
@@ -912,7 +829,7 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static List<PARAMETER> getDynamicParams() {
-        return dynamicParams;
+        return ContentConsts.dynamicParams;
     }
 
     public static PARAMS getPayParameterForCost(PARAMS costParam) {
@@ -1010,17 +927,17 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static VALUE[] getDisplayedHeroProperties() {
-        return displayedHeroProperties;
+        return ContentConsts.displayedHeroProperties;
     }
 
     public static void setDisplayedHeroProperties(VALUE[] displayedHeroProperties) {
-        DC_ContentValsManager.displayedHeroProperties = displayedHeroProperties;
+        ContentConsts.displayedHeroProperties = displayedHeroProperties;
     }
 
     public void init() {
-        NO_SHOW_NAME_VALUES.addAll(Arrays.asList(ValuePages.GENERIC_DC_HEADER));
-        NO_SHOW_NAME_VALUES.addAll(Arrays.asList(ValuePages.CHARS_HEADER));
-        NO_SHOW_NAME_VALUES.addAll(Arrays.asList(ValuePages.BF_OBJ_HEADER));
+        ContentConsts.NO_SHOW_NAME_VALUES.addAll(Arrays.asList(ValuePages.GENERIC_DC_HEADER));
+        ContentConsts.NO_SHOW_NAME_VALUES.addAll(Arrays.asList(ValuePages.CHARS_HEADER));
+        ContentConsts.NO_SHOW_NAME_VALUES.addAll(Arrays.asList(ValuePages.BF_OBJ_HEADER));
 
         ArrayList<PARAMETER> params = new ArrayList<>();
         params.addAll(Arrays.asList(G_PARAMS.values()));
@@ -1035,8 +952,8 @@ public class DC_ContentValsManager extends ContentValsManager {
         params.addAll(generateDerivedParams());
 
         ContentValsManager.init(props, params);
-        ContentValsManager.setParamEnumClasses(PARAM_ENUM_CLASSES);
-        ContentValsManager.setPropEnumClasses(PROP_ENUM_CLASSES);
+        ContentValsManager.setParamEnumClasses(ContentConsts.PARAM_ENUM_CLASSES);
+        ContentValsManager.setPropEnumClasses(ContentConsts.PROP_ENUM_CLASSES);
 
         ValuePageManager.init();
 

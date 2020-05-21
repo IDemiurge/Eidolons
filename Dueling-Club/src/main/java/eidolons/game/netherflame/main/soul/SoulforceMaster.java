@@ -13,6 +13,8 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Shadow action costs?
@@ -31,12 +33,17 @@ public class SoulforceMaster extends MetaGameHandler {
     public static Coordinates getLastRespPoint() {
         return lastRespPoint;
     }
-//TODO get CLOSEST
+
+    //TODO get CLOSEST
     public static void setLastRespPoint(Coordinates lastRespPoint) {
         SoulforceMaster.lastRespPoint = lastRespPoint;
     }
 
-    public void shrineActivated(Structure shrine){
+    public static void slain(Unit killed) {
+        EidolonLord.lord.soulforceGained(getSoulforceFromKill(killed));
+    }
+
+    public void shrineActivated(Structure shrine) {
         // activeShrines.add(shrine);
     }
 
@@ -51,7 +58,7 @@ public class SoulforceMaster extends MetaGameHandler {
         return ShadowMaster.isShadowAlive();
     }
 
-    private float getResurrectCost(Unit hero) {
+    private int getResurrectCost(boolean inPlace, Unit hero) {
         return 10 + hero.getIntParam(PARAMS.LEVEL) * 5;
     }
 
@@ -59,34 +66,30 @@ public class SoulforceMaster extends MetaGameHandler {
         return EidolonLord.lord.getSoulforce();
     }
 
-    public static float getSoulforceFromKill(Unit killed) {
+    public static int getSoulforceFromKill(Unit killed) {
         return getForce(killed.getType());
     }
 
-    public static float getForce(ObjType type) {
-        return type.getIntParam(PARAMS.POWER)/50;
+    public static int getForce(ObjType type) {
+        return type.getIntParam(PARAMS.POWER) / 50;
     }
 
-    public boolean canRespawnAny(List<ChainHero> heroes) {
-        for (ChainHero hero : heroes) {
-            if (getSoulforce() >= getResurrectCost(hero.getUnit())) {
-                return true;
-            }
-        }
-        return false;
+    public Set<ChainHero> getHeroesCanRespawn(boolean inPlace, List<ChainHero> heroes) {
+        return heroes.stream().filter(hero -> getSoulforce() >= getResurrectCost(inPlace,hero.getUnit())).collect(Collectors.toSet());
     }
 
     public boolean slipPenalty() {
         int slipPenalty = getSlipPenalty();
-        if (getSoulforce()<= slipPenalty) {
+        if (getSoulforce() <= slipPenalty) {
             return false;
         }
-        EUtils.showInfoText("Soulforce lost: "+ slipPenalty);
+        EUtils.showInfoText("Soulforce lost: " + slipPenalty);
         EidolonLord.lord.soulforceLost(slipPenalty);
         return true;
     }
 
     private int getSlipPenalty() {
-        return 20+Eidolons.getMainHero().getLevel()*2;
+        return 20 + Eidolons.getMainHero().getLevel() * 2;
     }
+
 }

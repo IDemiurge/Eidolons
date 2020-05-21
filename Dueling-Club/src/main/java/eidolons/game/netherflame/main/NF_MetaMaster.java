@@ -37,6 +37,7 @@ public class NF_MetaMaster extends ScenarioMetaMaster<NF_Meta> {
         super(data);
         soulforceMaster = new SoulforceMaster(this);
         eventHandler = new NF_EventHandler(this);
+
     }
 
     public SoulforceMaster getSoulforceMaster() {

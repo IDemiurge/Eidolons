@@ -4,16 +4,19 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.universal.DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.CombatLoop;
-import eidolons.game.core.Eidolons;
 import eidolons.game.netherflame.main.NF_MetaMaster;
 import eidolons.game.netherflame.main.NF_PartyManager;
 import eidolons.game.netherflame.main.event.TipMessageMaster;
-import eidolons.game.netherflame.main.soul.SoulforceMaster;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.gui.overlay.choice.VC_DataSource;
+import eidolons.libgdx.gui.overlay.choice.VisualChoiceHandler;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
+
+import static eidolons.libgdx.gui.overlay.choice.VC_DataSource.VC_OPTION;
+import static eidolons.libgdx.gui.overlay.choice.VC_DataSource.VC_TYPE;
 
 public class NF_DefeatHandler extends DefeatHandler {
 
@@ -28,29 +31,35 @@ public class NF_DefeatHandler extends DefeatHandler {
         // if (getMaster().getSoulforceMaster().isTrueForm()) {
         //     return !SoulforceMaster.getInstance().died();
         // }
-        if (!getMaster().getShadowMaster().death()) {
-            Eidolons.getMainHero().preventDeath();
-            //what is that?
-            return false;
-        }
         getMaster().getPartyManager().getHeroChain().death();
 
-        if (SoulforceMaster.getInstance().canRespawnAny( getMaster().getPartyManager().
-                getHeroChain().getHeroes()))
-            return true;
-        //TODO deal with the corpse loot
+        //TODO deal with the corpse loot!!!
         getGame().getLoop().setPaused(true);
 
-        if (getGame().getLoop() instanceof CombatLoop) { // really?
+        if (VisualChoiceHandler.isOn()) {
+            GuiEventManager.triggerWithParams(GuiEventType.VISUAL_CHOICE,
+                    new VC_DataSource(VC_TYPE.death));
+        VC_OPTION o = (VC_OPTION) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.VISUAL_CHOICE);
+        switch (o) {
+            case ashen_rebirth:
+                return false;
+            case fiery_rebirth:
+                return false;
+            case dissolution:
+                return true;
+        }
+        }
+        //Boolean result
+        if (getGame().getLoop() instanceof CombatLoop) {
             ((CombatLoop) getGame().getLoop()).endCombat();
         }
 
         GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 2f);
-        WaitMaster.WAIT(1000);
+        WaitMaster.WAIT(1000); //need more time or different sequence
         if (!ShadowMaster.isShadowAlive()) {
-            if (!EidolonsGame.TUTORIAL_PATH) {
-                TipMessageMaster.death();
-            }
+            TipMessageMaster.death();
+        } else {
+            getMaster().getShadowMaster();
         }
         //play sound
         GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 1.5f);
@@ -62,11 +71,12 @@ public class NF_DefeatHandler extends DefeatHandler {
         }
         getPartyManager().getParty().death();
         getPartyManager().respawn(newHero);
-//        getGame().getVisionMaster().refresh();
+
         GdxMaster.setDefaultCursor();
         GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
-//        getGame().getDungeonMaster().getSpawner().spawn();
 
+
+        WaitMaster.WAIT(600);
         getGame().getLoop().setPaused(false);
         return false;
     }

@@ -84,7 +84,7 @@ public class GameMenuHandler {
                 GuiEventManager.trigger(GuiEventType.SHOW_ACHIEVEMENTS);
                 GameMenu.menuOpen = false;
                 break;
-            case BACK_TO_TOWN:
+            case RETREAT:
                 if (CoreEngine.isMacro()) {
                     GuiEventManager.trigger(GuiEventType.SHOW_NAVIGATION_PANEL, null);
                     break;
@@ -93,10 +93,9 @@ public class GameMenuHandler {
                 Eidolons.onNonGdxThread(()->
                  Eidolons.getGame().getMetaMaster().getTownMaster().tryReenterTown());
                 break;
-            case RETREAT:
-                GameMenu.menuOpen = false;
-                GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
-                break;
+                // GameMenu.menuOpen = false;
+                // GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
+                // break;
             case RESUME:
             case LAUNCH_GAME:
             case ABOUT:

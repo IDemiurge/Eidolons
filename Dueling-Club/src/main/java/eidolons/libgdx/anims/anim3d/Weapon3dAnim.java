@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.utils.Array;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.EidolonsGame;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.AnimData;
@@ -76,8 +75,7 @@ public class Weapon3dAnim extends ActionAnim {
 
     private boolean isValid() {
         if (sprite != null)
-            if (sprite.getRegions().size > 0)
-                return true;
+            return sprite.getRegions().size > 0;
         return false;
     }
 
@@ -98,7 +96,6 @@ public class Weapon3dAnim extends ActionAnim {
         if (isScreen()){
             sprite.setBlending(GenericEnums.BLENDING.SCREEN);
         }
-        if (EidolonsGame.BRIDGE)
         if (isInvertScreen()){
             sprite.setBlending(GenericEnums.BLENDING.INVERT_SCREEN);
         }
@@ -187,7 +184,7 @@ public class Weapon3dAnim extends ActionAnim {
             return sprite;
         }
 
-        sprite = createSprite(projection); ;
+        sprite = createSprite(projection);
         if (sprite.getRegions().size == 0) {
             return null;
         }

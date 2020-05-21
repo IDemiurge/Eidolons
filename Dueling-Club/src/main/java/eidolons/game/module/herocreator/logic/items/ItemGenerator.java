@@ -728,21 +728,17 @@ public class ItemGenerator implements GenericItemGenerator {
         }
 
         baseWeaponTypes.addAll(DataManager.getBaseTypes(DC_TYPE.WEAPONS));
-        if (!EidolonsGame.BRIDGE){
         baseArmorTypes.addAll(DataManager.getBaseTypes(DC_TYPE.ARMOR));
         baseJewelryTypes.addAll(DataManager.getBaseTypes(DC_TYPE.JEWELRY));
         baseItemTypes.addAll(DataManager.getBaseTypes(DC_TYPE.ITEMS));
-        }
         // baseGarmentTypes.addAll(DataManager.getBaseTypes(OBJ_TYPES.GARMENT));
 
         DataManager.setBaseWeaponTypes(baseWeaponTypes.toArray(new ObjType[0]));
 
-        if (!EidolonsGame.BRIDGE){
         DataManager.setBaseGarmentTypes(baseGarmentTypes.toArray(new ObjType[0]));
         DataManager.setBaseArmorTypes(baseArmorTypes.toArray(new ObjType[0]));
         DataManager.setBaseJewelryTypes(baseJewelryTypes.toArray(new ObjType[0]));
         DataManager.setBaseItemTypes(baseItemTypes.toArray(new ObjType[0]));
-        }
         //Arrays.
         List<ObjType> list = new ArrayList<>();
         list.addAll(baseWeaponTypes);

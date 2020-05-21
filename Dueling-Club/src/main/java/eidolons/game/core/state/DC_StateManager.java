@@ -493,8 +493,12 @@ public class DC_StateManager extends StateManager {
         //        getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.NEW_ROUND, state.getRound());
 
         if (!ExplorationMaster.isExplorationOn()) {
+            if (getState().getRound()>0){
             GuiEventManager.trigger(GuiEventType.SHOW_LARGE_TEXT,
-                    ImmutableList.of("Round "+getState().getRoundDisplayedNumber(), "WAR" , 3f));
+                    ImmutableList.of("Round "+getState().getRoundDisplayedNumber(), "Fight on!" , 3f));
+            //really just some flavor text there? no useful info?
+                // stats, reinf. status, total power remaining
+            }
         }
 
         getGame().getLogManager().addImageToLog(Images.SEPARATOR_NARROW);

@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.datasource;
 
 import eidolons.ability.InventoryTransactionManager;
+import eidolons.content.ContentConsts;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
@@ -210,9 +211,7 @@ public class HqDataMaster {
     }
 
     public static final boolean isSimulationOff() {
-        if (HeroCreationMaster.isHeroCreationInProgress())
-            return false;
-        return true;
+        return !HeroCreationMaster.isHeroCreationInProgress();
     }
 
     public static HqDataMaster createAndSaveInstance(Unit unit) {
@@ -460,7 +459,7 @@ public class HqDataMaster {
                 for (PARAMETER item : DC_ContentValsManager.getAttributes()) {
                     hero.getType().modifyParameter((item), 5, null, true);
                 }
-                for (PARAMETER item : DC_ContentValsManager.DYNAMIC_PARAMETERS) {
+                for (PARAMETER item : ContentConsts.DYNAMIC_PARAMETERS) {
                     hero.setParameter(DC_ContentValsManager.getPercentageParam(item),
                             DC_MathManager.PERCENTAGE);
                 }

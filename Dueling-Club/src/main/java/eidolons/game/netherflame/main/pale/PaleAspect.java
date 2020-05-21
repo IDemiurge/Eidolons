@@ -54,7 +54,6 @@ public class PaleAspect {
         d = 0;
         GuiEventManager.trigger(GuiEventType.POST_PROCESSING, PostFxUpdater.POST_FX_TEMPLATE.PALE_ASPECT);
         getAvatar();
-        if (!EidolonsGame.BRIDGE)
             for (ChainHero hero : EidolonLord.lord.getChain().getHeroes()) {
                 shadowLeapToLocation(hero.getUnit(), true);
             }

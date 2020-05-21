@@ -17,13 +17,14 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.ShaderDrawer;
+import eidolons.libgdx.stage.OverlayingUI;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster;
 import main.system.threading.WaitMaster;
 
-public class TipMessageWindow extends TablePanelX {
+public class TipMessageWindow extends TablePanelX implements OverlayingUI {
 
     private boolean large;
     FadeImageContainer imageContainer;

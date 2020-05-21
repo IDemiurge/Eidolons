@@ -315,7 +315,7 @@ public class Analyzer extends AiHandler {
                     continue;
                 }
             }
-            if (!unit.isScion())
+            if (!unit.isShadow())
                 if (vision_no_vision) {
                     if (!VisionHelper.checkVisible(unit, true)) {
                         continue;

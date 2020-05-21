@@ -31,6 +31,7 @@ public enum STD_MODES implements MODE {
     PRAYER(true, true, true, "C_MORALE", "(max(100, {SOURCE_PRAYER_MOD})/100*("
      + Formulas.PRAYER_CONST + "+{SOURCE_PRAYER_BONUS})"), // {ACTIVE_something}
     COWER(true, true, true),
+    UNCONSCIOUS(false, true, true),
     PANIC(false, true, false){
         @Override
         public AiEnums.BEHAVIOR_MODE getBehaviorMode() {

@@ -1,10 +1,8 @@
 package eidolons.game.battlecraft.rules.counter;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.TriggerRule;
 import eidolons.game.core.EUtils;
-import eidolons.game.netherflame.main.soul.EidolonLord;
 import main.content.enums.entity.UnitEnums;
 import main.game.logic.event.Event;
 import main.system.auxiliary.NumberUtils;
@@ -23,10 +21,6 @@ public class UndyingCounterRule extends TriggerRule {
             return false;
         }
         unit.modifyCounter(UnitEnums.COUNTER.Undying, -1);
-        if (EidolonsGame.BRIDGE)
-            if (unit.isPlayerCharacter()) {
-                EidolonLord.lord.soulforceLost(10);
-            }
         unit.preventDeath();
 //     TODO shouldn't be necessary?
 //      unit.addProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE.getName());

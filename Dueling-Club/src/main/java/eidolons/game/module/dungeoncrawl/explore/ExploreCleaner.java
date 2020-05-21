@@ -41,7 +41,7 @@ public class ExploreCleaner extends ExplorationHandler {
     public void cleanUpAfterBattle() {
         for (Unit unit : new ArrayList<>(Eidolons.getGame().getUnits())) {
             {
-                if (unit.isScion()) {
+                if (unit.isShadow()) {
                     unit.kill(); //TODO lazy..
                     return;
                 }

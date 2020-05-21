@@ -58,4 +58,8 @@ public class TopLeftPanel extends GroupX {
 //        rollComponent(speedControlPanel, true);
     });
     }
+
+    public AtbPanel getAtbPanel() {
+        return atbPanel;
+    }
 }

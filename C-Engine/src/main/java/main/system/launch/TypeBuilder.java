@@ -36,7 +36,7 @@ public class TypeBuilder {
         ObjType type = null;
 
         if (TYPE != null) {
-            if (isUseDefaultType()){
+            if (isUseDefaultType(TYPE)){
                 type=getTypeInitializer().getOrCreateDefault(TYPE);
             } else
                 type = getTypeInitializer().getNewType(TYPE);
@@ -53,8 +53,8 @@ public class TypeBuilder {
         return type;
     }
 
-    private static boolean isUseDefaultType() {
-        return true;
+    private static boolean isUseDefaultType(OBJ_TYPE TYPE) {
+        return !TYPE.isTreeEditType();
     }
 
     private static boolean isBuildTypeOnInit(OBJ_TYPE objType) {

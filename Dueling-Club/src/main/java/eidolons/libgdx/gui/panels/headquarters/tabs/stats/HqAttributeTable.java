@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.stats;
 
-import eidolons.content.DC_ContentValsManager;
+import eidolons.content.ContentConsts;
 import eidolons.content.PARAMS;
 import eidolons.game.module.herocreator.logic.PointMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
@@ -19,7 +19,7 @@ public class HqAttributeTable extends HqStatTable {
 
     @Override
     protected PARAMS[] initDataArray() {
-        return DC_ContentValsManager.ATTRIBUTES_WRAPPED;
+        return ContentConsts.ATTRIBUTES_WRAPPED;
     }
 
     @Override

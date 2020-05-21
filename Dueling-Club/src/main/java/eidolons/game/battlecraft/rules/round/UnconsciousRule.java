@@ -39,8 +39,8 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
      */
 
     public static final Integer DEFAULT_TOUGHNESS_RECOVER = 50;
-    public static final Integer DEFAULT_INITIATIVE_PENALTY = 50;
-    public static final int DEFAULT_ATB_FALL_TO = (int) (-10* AtbController.TIME_LOGIC_MODIFIER);
+    public static final Integer DEFAULT_INITIATIVE_PENALTY = 75;
+    public static final int DEFAULT_ATB_FALL_TO = (int) (-20* AtbController.TIME_LOGIC_MODIFIER);
     public static final int DEFAULT_FOCUS_REQ_UNIT = 0;
     public static final int DEFAULT_FOCUS_REQ = 0;
 
@@ -88,8 +88,6 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         }
         getUnconsciousEffect(unit).apply();
         unit.setUnconscious(true);
-        unit.getAI().getCombatAI().setEngagementDuration(0);
-        unit.getAI().getCombatAI().setEngaged(false);
         unit.getGame().
                 fireEvent(new Event(
                         STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS, unit.getRef()));

@@ -17,7 +17,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.gui.generic.LargeText;
+import eidolons.libgdx.gui.overlay.LargeText;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import eidolons.libgdx.gui.tooltips.CursorDecorator;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
@@ -51,6 +51,9 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
 
     protected LargeText largeText;
     protected CursorDecorator cursorDecorator = CursorDecorator.getInstance();
+
+    protected  OverlayPanel overlayPanel;
+
     public GenericGuiStage(Viewport viewport, Batch batch) {
         super(viewport == null
                         ? new FillViewport(GdxMaster.getWidth(),
@@ -301,5 +304,13 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
 
     public FileChooser getFileChooser() {
         return fileChooser;
+    }
+
+    public OverlayPanel getOverlayPanel() {
+        return overlayPanel;
+    }
+
+    public void setOverlayPanel(OverlayPanel overlayPanel) {
+        this.overlayPanel = overlayPanel;
     }
 }

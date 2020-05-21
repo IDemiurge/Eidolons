@@ -33,7 +33,7 @@ public class DynamicBuffRules {
                 buff.remove();
             }
         }
-        if (unit.isScion()) {
+        if (unit.isShadow()) {
             if (game.getMetaMaster() instanceof NF_MetaMaster) {
                 //TODO localize
                 addDynamicBuff("Eidolon Shadow", unit, "", "This is what I am now without the Arts");

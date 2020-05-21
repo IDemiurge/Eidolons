@@ -9,13 +9,14 @@ import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.LogPanel;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.Blocking;
+import eidolons.libgdx.stage.OverlayingUI;
 import eidolons.libgdx.stage.StageWithClosable;
 import main.system.graphics.FontMaster.FONT;
 
 /**
  * Created by JustMe on 11/14/2017.
  */
-public class OverlayTextPanel extends LogPanel implements Blocking {
+public class OverlayTextPanel extends LogPanel implements Blocking, OverlayingUI {
 
     public static final boolean TEST_MODE = false;
 

@@ -1,6 +1,7 @@
 package eidolons.game.core;
 
 import com.badlogic.gdx.math.Vector2;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.SCREEN_TYPE;
@@ -28,9 +29,12 @@ public class EUtils {
     public static void showInfoText(String s) {
         showInfoText(false, s);
     }
+    public static void gameLog(String s) {
+        DC_Game.game.getLogManager().log(s);
+    }
     public static void showInfoText(boolean logged, String s) {
         if (logged){
-            Eidolons.getGame().getLogManager().log(s);
+            gameLog(s);
         }
         GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, s);
     }
@@ -133,5 +137,10 @@ public class EUtils {
 
     public static void showInfoTextStyled(GuiStage.LABEL_STYLE style, String s) {
         showInfoText(style + STYLE + s);
+    }
+
+    public static void waitAndRun(int i, Runnable o) {
+        WaitMaster.WAIT(i);
+        Eidolons.onNonGdxThread(()-> o.run()        );
     }
 }

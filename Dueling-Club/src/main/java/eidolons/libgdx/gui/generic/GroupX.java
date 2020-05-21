@@ -181,4 +181,8 @@ public class GroupX extends Group {
     public void setStage_(Stage s) {
         setStage(s);
     }
+
+    public void fadeTo(float alpha, float dur) {
+        ActionMaster.addAlphaAction(this, dur, alpha);
+    }
 }

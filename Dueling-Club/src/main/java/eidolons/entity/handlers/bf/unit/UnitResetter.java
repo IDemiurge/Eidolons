@@ -22,6 +22,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.DC_Formulas;
 import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;
+import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -32,6 +33,7 @@ import main.entity.handlers.EntityMaster;
 import main.entity.handlers.EntityResetter;
 import main.entity.obj.ActiveObj;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.GuiEventManager;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
@@ -42,6 +44,8 @@ import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static main.system.GuiEventType.SHOW_MODE_ICON;
 
 /**
  * Created by JustMe on 2/26/2017.
@@ -105,6 +109,10 @@ public class UnitResetter extends EntityResetter<Unit> {
 //        getEntity().setMode(STD_MODES.NORMAL); ??
         // Chronos.mark(toString() + "to base (values)");
         getEntity().setMode(null);
+        if (getEntity().isUnconscious()) {
+            GuiEventManager.triggerWithParams(SHOW_MODE_ICON, this, STD_MODES.UNCONSCIOUS.getImagePath());
+            return;
+        }
         if (getEntity().getSpecialEffects() != null) {
             getEntity().getSpecialEffects().clear();
         }

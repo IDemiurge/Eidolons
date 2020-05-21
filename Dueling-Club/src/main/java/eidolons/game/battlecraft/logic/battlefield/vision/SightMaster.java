@@ -314,7 +314,7 @@ public class SightMaster {
         if (unit instanceof Unit) {
             if (!((Unit) unit).getAI().isOutsideCombat()) {
                 if (activeUnit instanceof Unit) {
-                    if (((Unit) activeUnit).isScion()) {
+                    if (((Unit) activeUnit).isShadow()) {
                         return UNIT_VISION.IN_PLAIN_SIGHT;
                     }
                 }

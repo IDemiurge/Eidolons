@@ -2,9 +2,9 @@ package eidolons.game.battlecraft.ai;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.Patrol;
+import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
-import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.ENGAGEMENT_LEVEL;
 import main.data.XStack;
 import main.entity.obj.MicroObj;
@@ -40,6 +40,7 @@ public class GroupAI {
     private Stack<Coordinates> wanderStepCoordinateStack;
     private Patrol patrol;
     private UnitAI.AI_BEHAVIOR_MODE behavior;
+    private Encounter encounter;
 
     public GroupAI() {
 
@@ -173,7 +174,7 @@ public class GroupAI {
 
     public ENGAGEMENT_LEVEL getEngagementLevel() {
         if (engagementLevel == null) {
-            engagementLevel = VisionEnums.ENGAGEMENT_LEVEL.UNSUSPECTING;
+            engagementLevel = ENGAGEMENT_LEVEL.UNSUSPECTING;
         }
         return engagementLevel;
     }
@@ -232,5 +233,13 @@ public class GroupAI {
 
     public UnitAI.AI_BEHAVIOR_MODE getBehavior() {
         return behavior;
+    }
+
+    public Encounter getEncounter() {
+        return encounter;
+    }
+
+    public void setEncounter(Encounter encounter) {
+        this.encounter = encounter;
     }
 }

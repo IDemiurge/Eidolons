@@ -27,6 +27,7 @@ import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.netherflame.main.hero.ChainParty;
+import eidolons.game.netherflame.main.soul.EidolonLord;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
@@ -132,7 +133,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     protected DC_WeaponObj rangedWeapon;
     protected boolean leader;
     protected boolean usingStealth;
-    private boolean scion;
+    private boolean shadow;
     private DC_ActiveObj lastAction;
     private boolean actorLinked;
 
@@ -652,7 +653,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
     public DequeImpl<DC_QuickItemObj> getQuickItems() {
-//        if (!isItemsInitialized()) {
+        //        if (!isItemsInitialized()) {
         if (quickItems == null) {
             quickItems = new DequeImpl<>();
         }
@@ -685,7 +686,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
     public DequeImpl<DC_HeroItemObj> getInventory() {
-//        if (!isItemsInitialized()) {
+        //        if (!isItemsInitialized()) {
         if (inventory == null) {
             inventory = new DequeImpl<>();
         }
@@ -792,7 +793,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             setProperty(PROPS.INVENTORY, getType().getProperty(getProperty(PROPS.INVENTORY)));
             itemsInitialized = false;
             inventory = (DequeImpl<DC_HeroItemObj>) getInitializer().initContainedItems(PROPS.INVENTORY, null, false);
-//        inventory = new DequeImpl<>();
+            //        inventory = new DequeImpl<>();
         }
         try {
             getInventory().add(item);
@@ -804,7 +805,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         item.setContainer(CONTAINER.INVENTORY);
         if (isPlayerCharacter())
             if (!quiet) {
-//            main.system.auxiliary.log.LogMaster.log(1," " );
+                //            main.system.auxiliary.log.LogMaster.log(1," " );
                 getGame().getLogManager().log(getName() + " receives item: " + item.getName());
                 EUtils.showInfoText("Received: " + item.getName());
             }
@@ -856,7 +857,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
         if (item != null) {
             if (slot == ITEM_SLOT.RESERVE_MAIN_HAND || slot == ITEM_SLOT.RESERVE_OFF_HAND) {
-//               TODO  item.equipReserve(ref);
+                //               TODO  item.equipReserve(ref);
             } else
                 item.equipped(ref);
         }
@@ -1189,7 +1190,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             if (!getGame().isDebugMode()) {
                 if (!getGame().getCombatMaster().isFullManualControl()) {
                     if (owner.getHeroObj() != null) {
-                        if (!isMainHero() && !isScion()) {
+                        if (!isMainHero() && !isShadow()) {
                             return !AI_Manager.isOff();
                         }
                     }
@@ -1395,13 +1396,13 @@ public class Unit extends DC_UnitModel implements FacingEntity {
                         return;
                     }
                 }
-//                if (getCoordinates().dst_(coordinates) >= 2) {
-//                    if (game.isStarted())
-//                        if (!originalCoordinates.equals(coordinates)) {
-//                            LogMaster.log(1, "Teleport bug? ");
-////                            return;
-//                        }
-//                }
+                //                if (getCoordinates().dst_(coordinates) >= 2) {
+                //                    if (game.isStarted())
+                //                        if (!originalCoordinates.equals(coordinates)) {
+                //                            LogMaster.log(1, "Teleport bug? ");
+                ////                            return;
+                //                        }
+                //                }
             }
         super.setCoordinates(coordinates);
     }
@@ -1685,6 +1686,11 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             return;
         }
         if (isMine()) {
+            if (isShadow() || isHero()) {
+                if (EidolonLord.lord != null) {
+                    setParam(PARAMS.C_SOULFORCE, EidolonLord.lord.getSoulforce());
+                }
+            }
             if (CoreEngine.isActiveTestMode()) {
                 TestMasterContent.addVFX_TEST_Spells(getType(), ContentGenerator.getTestSpellFilter(getName()));
 
@@ -1732,12 +1738,12 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return getIntParam(PARAMS.GOLD);
     }
 
-    public boolean isScion() {
-        return scion;
+    public boolean isShadow() {
+        return shadow;
     }
 
-    public void setScion(boolean scion) {
-        this.scion = scion;
+    public void setShadow(boolean shadow) {
+        this.shadow = shadow;
     }
 
     public void xpGained(int xp) {
@@ -1817,8 +1823,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
     //    public UnitEnums.UNIT_GROUP getUnitGroup() {
-//        return  new EnumMaster<UnitEnums.UNIT_GROUP>().retrieveEnumConst(UnitEnums.UNIT_GROUP.class, getProperty(G_PROPS.UNIT_GROUP));
-//    }
+    //        return  new EnumMaster<UnitEnums.UNIT_GROUP>().retrieveEnumConst(UnitEnums.UNIT_GROUP.class, getProperty(G_PROPS.UNIT_GROUP));
+    //    }
     public UnitEnums.UNIT_GROUPS getUnitGroup() {
         return new EnumMaster<UnitEnums.UNIT_GROUPS>().
                 retrieveEnumConst(UnitEnums.UNIT_GROUPS.class, getProperty(G_PROPS.UNIT_GROUP));
