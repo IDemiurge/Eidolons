@@ -21,6 +21,12 @@ import static main.level_editor.backend.handlers.operation.Operation.LE_OPERATIO
 
 public class LE_ModelManager extends LE_Handler {
 
+    private static final int OPTION_NO_META = 0;
+    private static final int OPTION_ALL = 1;
+    private static final int OPTION_NO_OVERLAY = 2;
+    private static final int OPTION_OVERLAYS = 4;
+    private static final int OPTION_STRUCTURE = 8;
+
     EditorModel model;
     Stack<EditorModel> modelStack = new Stack<>();
     private static List<BattleFieldObject> copied;
@@ -43,7 +49,10 @@ public class LE_ModelManager extends LE_Handler {
         return model;
     }
 
-    public void paste() {
+    public void pasteSpecial() {
+
+    }
+        public void paste() {
         Coordinates origin = null;
         if (getSelectionHandler().getSelection().getCoordinates().size() == 1) {
             origin = getSelectionHandler().getSelection().getCoordinates().iterator().next();
@@ -56,7 +65,10 @@ public class LE_ModelManager extends LE_Handler {
         copyTo(copied, origin);
     }
 
-    public void copyTo(List<BattleFieldObject> copied, Coordinates origin) {
+    public void copyTo(List<BattleFieldObject> copied, Coordinates origin ) {
+        copyTo(copied, origin, 0);
+    }
+    public void copyTo(List<BattleFieldObject> copied, Coordinates origin, int option) {
         Coordinates offset = null;
         operation(PASTE_START);
         for (BattleFieldObject obj : copied) {
@@ -70,6 +82,8 @@ public class LE_ModelManager extends LE_Handler {
                             obj.getY() - offset.y);
                 }
             }
+            if (!checkOption(obj, option))
+                continue;
             if (obj.isOverlaying()) {
                 operation(Operation.LE_OPERATION.ADD_OVERLAY, type, c, obj.getDirection());
             } else
@@ -77,6 +91,17 @@ public class LE_ModelManager extends LE_Handler {
 
         }
         operation(PASTE_END);
+    }
+
+    private boolean checkOption(BattleFieldObject obj, int option) {
+        switch (option) {
+            case OPTION_NO_OVERLAY:
+            case OPTION_OVERLAYS:
+            case OPTION_STRUCTURE:
+            case OPTION_NO_META:
+            case OPTION_ALL:
+        }
+        return true;
     }
 
     public void cut() {

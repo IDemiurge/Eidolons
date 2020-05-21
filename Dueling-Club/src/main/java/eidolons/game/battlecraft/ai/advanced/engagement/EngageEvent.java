@@ -81,14 +81,13 @@ public class EngageEvent {
     public String toString() {
         return new XmlStringBuilder2().append("Event-" + id +
                 ":" +
-                "\n").append(", source: ", source)
+                "\n").append("source: ", source)
                 .append(", target: ", target).append(", type: ", type).append(", event_type: ", event_type).append("arg: ", arg)
                 .append(", status: ", status)
                 .append(", level: ", level)
                 .append(", logMsg: '", logMsg).append(", soundPath: " + soundPath).
                         append(", popupText: ", popupText).append(", graphicData: ", graphicData).
-                        append(", c: ", c).append(", anim: ", anim).
-                        append(", delay: ", delay).toString();
+                        append(", c: ", c).append(", anim: ", anim).toString();
     }
 
     public class XmlStringBuilder2 extends XmlStringBuilder {

@@ -3,8 +3,10 @@ package eidolons.libgdx.gui.panels.dc.topleft.atb;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.ActionMaster;
@@ -22,6 +24,7 @@ import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,7 @@ public class AtbPanel extends GroupX {
     protected final int visualSize = 10;
     protected final int DST_BETWEEN_VIEWS = 12;
 
+    protected int viewsShown;
     protected final int maxSizeStacked = 3;
     int viewsToShow = maxSizeStacked;
 
@@ -54,6 +58,7 @@ public class AtbPanel extends GroupX {
     SmartButton stackButton; //rotate it?!
     boolean stacked;
     private ImageContainer horizontal;
+    private Image background;
 
     public AtbPanel(ClockPanel clock) {
         this.clock = clock;
@@ -81,15 +86,18 @@ public class AtbPanel extends GroupX {
     }
 
     protected void init() {
-//        addActor(background = new FadeImageContainer(StrPathBuilder.build("ui",
-//                "components", "dc", "atb", "atb background black.png")));
+        //        addActor(background = new FadeImageContainer(StrPathBuilder.build("ui",
+        //                "components", "dc", "atb", "atb background black.png")));
 
         queue = new QueueViewContainer[maxSize];
         queueGroup = new WidgetGroup();
+        addActor(background = new Image(new TextureRegionDrawable(TextureCache.getOrCreateR(StrPathBuilder.build("ui",
+                "components", "dc", "atb", "atb background black.png")))));
+        background.setPosition(getInactiveX(), 24);
+
         addActor(container = new TablePanelX());
         container.add(queueGroup);
-        container.setBackground(new TextureRegionDrawable(TextureCache.getOrCreateR(StrPathBuilder.build("ui",
-                "components", "dc", "atb", "atb background black.png"))));
+
         addActor(horizontal = new ImageContainer(Images.SEPARATOR_METAL));
         horizontal.setY(13);
         horizontal.setX(-125);
@@ -117,7 +125,7 @@ public class AtbPanel extends GroupX {
         });
         GuiEventManager.bind(GuiEventType.UPDATE_GUI, obj -> {
             if (!isRealTime()) {
-//                cleanUp();
+                //                cleanUp();
                 resetZIndices();
             }
             checkPositionsRequired = true;
@@ -141,12 +149,12 @@ public class AtbPanel extends GroupX {
 
         });
         GuiEventManager.bind(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, obj -> {
-//            if (!isRealTime()) {
+            //            if (!isRealTime()) {
             QueueView p = (QueueView) obj.get();
             removeView(p);
             resetZIndices();
-//                checkPositionsRequired=true;
-//            }
+            //                checkPositionsRequired=true;
+            //            }
         });
 
     }
@@ -160,7 +168,7 @@ public class AtbPanel extends GroupX {
         setBounds(0, 0, imageSize * visualSize + (DST_BETWEEN_VIEWS - 1) * visualSize,
                 imageSize + queueOffsetY);
         queueGroup.setBounds(imageSize * 2, 0, imageSize * visualSize + (DST_BETWEEN_VIEWS - 1) * visualSize, imageSize);
-//        background.setPosition(50, 25 + queueOffsetY);
+        //        background.setPosition(50, 25 + queueOffsetY);
         container.setBounds(imageSize * 2 //imageSize - offset
                 , queueOffsetY, imageSize * visualSize +
                         (DST_BETWEEN_VIEWS - 1) * visualSize, imageSize);
@@ -184,7 +192,7 @@ public class AtbPanel extends GroupX {
         for (int i = 0; i < queue.length; i++) {
             if (queue[i] != null && queue[i].id == id) {
                 // ActionMaster.addFadeInAndOutAction(queue[i], 0.35f, true);
-               queueGroup.removeActor(queue[i]);
+                queueGroup.removeActor(queue[i]);
                 queue[i] = null;
                 manager.sort();
                 break;
@@ -200,8 +208,8 @@ public class AtbPanel extends GroupX {
             QueueViewContainer sub = queue[isLeftToRight() ? i : queue.length - 1 - i];
             if (sub == null)
                 continue;
-//            if (sub.getActions().size != 0)
-//                continue;
+            //            if (sub.getActions().size != 0)
+            //                continue;
             float x = manager.relToPixPos(n);
             n++;
             if (sub.getX() == x)
@@ -215,8 +223,8 @@ public class AtbPanel extends GroupX {
             a.setAction(ActionMaster.getMoveToAction(x, sub.getY(), getViewMoveDuration()));
             sub.addAction(a);
             a.setTarget(sub);
-//            sub.setX(relToPixPos(n));
-//            queue[i].getActions().clear();
+            //            sub.setX(relToPixPos(n));
+            //            queue[i].getActions().clear();
         }
         timePassedSincePosCheck = 0;
         checkPositionsRequired = false;
@@ -235,18 +243,20 @@ public class AtbPanel extends GroupX {
 
     protected void cleanUp() {
         List<QueueView> views = new ArrayList<>();
-        DC_Game.game.getTurnManager().getDisplayedUnitQueue().stream().forEach(unit -> {
+        DequeImpl<Unit> displayedUnitQueue = DC_Game.game.getTurnManager().getDisplayedUnitQueue();
+        viewsShown = DC_Game.game.getTurnManager().getDisplayedUnitQueue().size();
+        displayedUnitQueue.stream().forEach(unit -> {
             Object o = ScreenMaster.getDungeonGrid().getViewMap().get(unit);
             if (o instanceof GridUnitView) {
                 GridUnitView view = ((GridUnitView) o);
-                views.add( view.getInitiativeQueueUnitView());
+                views.add(view.getInitiativeQueueUnitView());
             }
         });
 
         for (QueueViewContainer sub : queue) {
             if (sub == null)
                 continue;
-            if (!views.contains (sub.getActor())) {
+            if (!views.contains(sub.getActor())) {
                 QueueViewContainer view = manager.getIfExists(sub.getActor());
                 if (view == null)
                     continue;
@@ -306,13 +316,24 @@ public class AtbPanel extends GroupX {
 
     public void toggleQueue(boolean visible) {
         cleanUp();
-        rollComponent(container, visible);
+        // rollComponent(container, visible);
 
-        float x = !visible ? -225 : -45;
-        float y = horizontal.getY();
-        ActionMaster.addMoveToAction(container, x, y, 1);
+        float x = !visible ? getInactiveX() : getActiveX();
+        float y = background.getY();
+        ActionMaster.addMoveToAction(background, x, y, 2f);
+        container.setVisible(true);
+        ActionMaster.addAlphaAction(container, 2f, !visible);
 
         checkPositionsRequired = true;
+        getGears().activeWork(0.5f, 1);
+    }
+
+    private float getInactiveX() {
+        return -background.getWidth();
+    }
+
+    private float getActiveX() {
+        return -background.getWidth() + (350 + (imageSize+12) * viewsShown);
     }
 
     protected void rollComponent(Actor container, boolean visible) {

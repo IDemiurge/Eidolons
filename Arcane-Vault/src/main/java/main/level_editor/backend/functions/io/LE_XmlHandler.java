@@ -29,9 +29,9 @@ import java.util.function.Function;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
-public class LE_XmlMaster extends LE_Handler {
+public class LE_XmlHandler extends LE_Handler {
 
-    public LE_XmlMaster(LE_Manager manager) {
+    public LE_XmlHandler(LE_Manager manager) {
         super(manager);
     }
 

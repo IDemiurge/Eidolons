@@ -8,8 +8,6 @@ public class ValueTypePairs {
             },
             {DC_TYPE.SPELLS, ValuePages.SPELL_PAGES
             },
-            {DC_TYPE.PERKS, ValuePages.PERK_PAGES
-            },
             {DC_TYPE.ARMOR, ValuePages.ARMOR_PAGES
             },
             {DC_TYPE.WEAPONS, ValuePages.WEAPON_PAGES

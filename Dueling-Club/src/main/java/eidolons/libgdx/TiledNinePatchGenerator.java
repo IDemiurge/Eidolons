@@ -293,6 +293,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
         DEMIURGE,
         LIGHT,
         HL,
+        ZARK,
         VIGNETTE {
             public boolean isPreventOverlapping() {
                 return true;

@@ -32,6 +32,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     protected MacroTimeMaster macroTimeMaster;
     protected ExplorationMaster master;
     protected boolean resetRequired;
+    private boolean locked;
 
     public ExploreGameLoop(DC_Game game) {
         super(game);
@@ -360,4 +361,12 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return master.getTimeMaster().getTime();
     }
 
+    public boolean isLocked() {
+        return locked;
+    }
+
+    @Override
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
 }

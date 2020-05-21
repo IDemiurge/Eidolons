@@ -1,22 +1,26 @@
 package main.level_editor.backend.handlers.selection;
 
+import com.google.inject.internal.util.ImmutableSet;
 import main.game.bf.Coordinates;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class LE_Selection  implements Serializable {
+public class LE_Selection implements Serializable {
 
-    Set<Integer> ids=new LinkedHashSet<>();
-    Set<Coordinates> coordinates=new LinkedHashSet<>();
+    Set<Integer> ids = new LinkedHashSet<>();
+    Set<Coordinates> coordinates = new LinkedHashSet<>();
     boolean meta;
     String layer;
     private Coordinates lastCoordinates;
+    private LE_Selection frozenSelection;
 
     public LE_Selection() {
 
     }
+
     public LE_Selection(LE_Selection selection) {
         this(new LinkedHashSet<>(selection.ids),
                 new LinkedHashSet<>(selection.coordinates), selection.meta, selection.layer);
@@ -31,6 +35,9 @@ public class LE_Selection  implements Serializable {
     }
 
     public Set<Integer> getIds() {
+        if (frozenSelection != null) {
+            return ImmutableSet.<Integer>builder().addAll(ids).addAll(frozenSelection.getIds()).build();
+        }
         return ids;
     }
 
@@ -38,7 +45,13 @@ public class LE_Selection  implements Serializable {
         this.ids = ids;
     }
 
-    public Set<Coordinates> getCoordinates() {
+    public void addCoordinates(Collection<Coordinates> set) {
+        coordinates.addAll(set);
+    }
+        public Set<Coordinates> getCoordinates() {
+        if (frozenSelection != null) {
+            return ImmutableSet.<Coordinates>builder().addAll(coordinates).addAll(frozenSelection.getCoordinates()).build();
+        }
         return coordinates;
     }
 
@@ -78,4 +91,24 @@ public class LE_Selection  implements Serializable {
     public void setLastCoordinates(Coordinates lastCoordinates) {
         this.lastCoordinates = lastCoordinates;
     }
+
+    public void freezeCurrent() {
+        frozenSelection = new LE_Selection(this);
+    }
+
+    public void setFrozenSelection(LE_Selection frozenSelection) {
+        this.frozenSelection = frozenSelection;
+    }
+
+    public LE_Selection getFrozenSelection() {
+        return frozenSelection;
+    }
+
+    public void clear(){
+        coordinates.clear();
+    }
+    public void add(Coordinates c) {
+        coordinates.add(c);
+    }
+
 }

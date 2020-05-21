@@ -36,7 +36,6 @@ public class HpBar extends ValueBar {
     private static Boolean hpAlwaysVisible;
     private boolean queue;
     BattleFieldObject dataSource;
-    Float primaryDeathBarrier;
 
     //    private boolean primaryDeath;
     private boolean enduranceGreater;
@@ -88,10 +87,6 @@ public class HpBar extends ValueBar {
             fullLengthPerc = displayedSecondaryPerc;
         else {
             fullLengthPerc = displayedPrimaryPerc;
-        }
-        if (getPrimaryPerc() <= 0) {
-            setPrimaryPerc(primaryDeathBarrier);
-            //            primaryDeath = true; TODO //diff color?
         }
         //        float offset = innerWidth * displayedPrimaryPerc / 2;
         label2.setPosition(0,

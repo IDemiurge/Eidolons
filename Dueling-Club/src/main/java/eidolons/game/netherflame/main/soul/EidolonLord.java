@@ -19,7 +19,9 @@ public class EidolonLord extends LightweightEntity {
     public EidolonLord(ObjType type) {
         super(type);
         lord = this;
-        lord.setParam(PARAMS.C_SOULFORCE, getIntParam(PARAMS.BASE_SOULFORCE));
+        lord.setParam(PARAMS.C_SOULFORCE,   type.getIntParam(PARAMS.BASE_SOULFORCE));
+        lord.setParam(PARAMS.SOULFORCE,   type.getIntParam(PARAMS.SOULFORCE));
+        GuiEventManager.trigger(GuiEventType.SOULFORCE_GAINED, this);
     }
 
     public void useArts() {

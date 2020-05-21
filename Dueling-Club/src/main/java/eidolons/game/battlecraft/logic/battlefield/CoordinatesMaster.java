@@ -35,13 +35,14 @@ public class CoordinatesMaster {
         }
         return Coordinates.get(true, x, y);
     }
+
     public static Coordinates getFarmostCoordinateInDirection(DIRECTION d,
                                                               List<Coordinates> coordinates) {
         return getFarmostCoordinateInDirection(d, coordinates, true);
     }
 
 
-        public static Coordinates getFarmostCoordinateInDirection(DIRECTION d,
+    public static Coordinates getFarmostCoordinateInDirection(DIRECTION d,
                                                               List<Coordinates> coordinates, final Boolean prefLessMoreMiddle) {
         coordinates = getSortedByProximityToEdge(d, coordinates, prefLessMoreMiddle);
         if (!ListMaster.isNotEmpty(coordinates))
@@ -158,7 +159,7 @@ public class CoordinatesMaster {
     }
 
     public static String getCoordinatesStringData(
-     Collection<Coordinates> coordinates) {
+            Collection<Coordinates> coordinates) {
         int x1 = getMinX(coordinates);
         int x2 = getMaxX(coordinates);
         int y1 = getMinY(coordinates);
@@ -294,6 +295,7 @@ public class CoordinatesMaster {
     public static List<Coordinates> getCoordinatesWithin(int x, int x1, int y, int y1) {
         return getCoordinatesWithin(x, x1, y, y1, false);
     }
+
     public static List<Coordinates> getCoordinatesWithin(int x, int x1, int y, int y1, boolean inclusive) {
         if (inclusive) {
             x--;
@@ -309,8 +311,8 @@ public class CoordinatesMaster {
     }
 
     public static List<Coordinates> getAdjacentToBothGroups(
-     Collection<Coordinates> coordinatesPool, Collection<Coordinates> coordinates,
-     Collection<Coordinates> coordinates2) {
+            Collection<Coordinates> coordinatesPool, Collection<Coordinates> coordinates,
+            Collection<Coordinates> coordinates2) {
         List<Coordinates> list = new ArrayList<>();
         Set<Coordinates> adjacent1 = new HashSet<>();
         for (Coordinates c : coordinatesPool) {
@@ -433,9 +435,10 @@ public class CoordinatesMaster {
     }
 
     public static int getMinDistanceFromEdge(Coordinates c, int dimension, boolean xOrY) {
-        return xOrY? Math.min(dimension - c.x, c.x):Math.min(dimension - c.y, c.y);
+        return xOrY ? Math.min(dimension - c.x, c.x) : Math.min(dimension - c.y, c.y);
     }
-        public static int getMinDistanceFromEdge(Coordinates c, int w, int h) {
+
+    public static int getMinDistanceFromEdge(Coordinates c, int w, int h) {
         int dstX = Math.min(w - c.x, c.x);
         int dstY = Math.min(h - c.y, c.y);
         return Math.min(dstX, dstY);
@@ -502,20 +505,21 @@ public class CoordinatesMaster {
 
     public static List<Coordinates> getCoordinatesBetween(Coordinates c, Coordinates c2) {
         List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(
-                Math.min(c.x, c2.x) , Math.max(c.x, c2.x), Math.min(c.y, c2.y) , Math.max(
+                Math.min(c.x, c2.x), Math.max(c.x, c2.x), Math.min(c.y, c2.y), Math.max(
                         c.y, c2.y));
         return coordinates;
     }
-        public static List<Coordinates> getCoordinatesBetweenInclusive(Coordinates c, Coordinates c2) {
+
+    public static List<Coordinates> getCoordinatesBetweenInclusive(Coordinates c, Coordinates c2) {
         List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(
-         Math.min(c.x, c2.x)  , Math.max(c.x, c2.x), Math.min(c.y, c2.y)  , Math.max(
-          c.y, c2.y), true);
+                Math.min(c.x, c2.x), Math.max(c.x, c2.x), Math.min(c.y, c2.y), Math.max(
+                        c.y, c2.y), true);
         return coordinates;
     }
 
     public static Set<Coordinates> getZoneCoordinates(DC_ActiveObj entity) {
         Effect effect = EffectFinder.getFirstEffectOfClass(entity,
-         SpecialTargetingEffect.class);
+                SpecialTargetingEffect.class);
         Set<Coordinates> coordinates = null;
         if (effect != null) {
             SpecialTargetingEffect targetEffect = (SpecialTargetingEffect) effect;
@@ -528,7 +532,7 @@ public class CoordinatesMaster {
         Loop loop = new Loop(20);
         while (loop.continues()) {
             Coordinates c = coordinates.getAdjacentCoordinate(
-             new RandomWizard<DIRECTION>().getRandomEnumConst(DIRECTION.class));
+                    new RandomWizard<DIRECTION>().getRandomEnumConst(DIRECTION.class));
             if (c == null)
                 return c;
         }
@@ -537,21 +541,50 @@ public class CoordinatesMaster {
 
     public static Coordinates getClosestTo(Coordinates coordinates, List<Coordinates> collect) {
         return collect.stream().sorted(new SortMaster<Coordinates>().getSorterByExpression_(
-         c -> (int) -(100 * c.dist(coordinates)))).collect(Collectors.toList()).get(0);
+                c -> (int) -(100 * c.dist(coordinates)))).collect(Collectors.toList()).get(0);
     }
 
     public static Set<Coordinates> getMissingCoordinatesFromRect(Coordinates c, int w, int h,
                                                                  Set<Coordinates> coordinates) {
-      Set <Coordinates> missing = new LinkedHashSet<>();
-        for (int i = c.x; i < c.x+w; i++) {
-            for (int j = c.y; j < c.y+h; j++) {
+        Set<Coordinates> missing = new LinkedHashSet<>();
+        for (int i = c.x; i < c.x + w; i++) {
+            for (int j = c.y; j < c.y + h; j++) {
                 Coordinates c1;
-                if (!coordinates.contains(c1=Coordinates.get(i , j ))) {
+                if (!coordinates.contains(c1 = Coordinates.get(i, j))) {
                     missing.add(c1);
                 }
             }
         }
         return missing;
+    }
+
+    public static Set<Coordinates> squareToDiamondArea(Set<Coordinates> coordinatesSet) {
+        /*
+1 1 1
+1 1 1
+
+what if it is not square but rectangular? ..
+confirm Diagonal on block creation?
+
+merging blocks square-diamond to get a different shape
+
+transform selection
+fix selection
+
+         */
+        //just cut corners to the middle
+        // everything that is beyond both middles...
+        int middleX = (getMinX(coordinatesSet) + getMaxX(coordinatesSet)) / 2;
+        int middleY = (getMinY(coordinatesSet) + getMaxY(coordinatesSet)) / 2;
+        int x =Math.max(0,  getWidth(coordinatesSet)*3/5 - 3);
+        int y =  Math.max(0, getHeight(coordinatesSet) * 3 / 5 - 3);
+        coordinatesSet.removeIf(c -> {
+            int diffX = c.x - middleX;
+            int diffY = c.y - middleY;
+
+            return x < Math.abs(diffX) && y < Math.abs(diffY);
+        });
+        return coordinatesSet;
     }
 
     public boolean isOnEdge(Coordinates c, int border) {
@@ -561,12 +594,13 @@ public class CoordinatesMaster {
     public static int getWidth(Collection<Coordinates> list) {
         int x = getMinX(list);
         int x1 = getMaxX(list);
-        return Math.abs(x1 - x)+1;
+        return Math.abs(x1 - x) + 1;
     }
+
     public static int getHeight(Collection<Coordinates> list) {
         int y = getMinY(list);
         int y1 = getMaxY(list);
-        return Math.abs(y1 - y)+1;
+        return Math.abs(y1 - y) + 1;
     }
 
     public static Coordinates getUpperLeftCornerCoordinates(Set<Coordinates> coordinatesList) {
@@ -575,13 +609,13 @@ public class CoordinatesMaster {
 
     public static float getMinDistanceBetweenGroups(Collection<Coordinates> list, Collection<Coordinates> list2,
                                                     float requiredMin) {
-        float min=Integer.MAX_VALUE;
+        float min = Integer.MAX_VALUE;
         for (Coordinates c : list) {
             for (Coordinates c2 : list2) {
                 double dst = c.dst_(c2);
-                if (dst<min)
-                    min= (float) dst;
-                if (dst<requiredMin)
+                if (dst < min)
+                    min = (float) dst;
+                if (dst < requiredMin)
                     return (float) dst;
             }
 

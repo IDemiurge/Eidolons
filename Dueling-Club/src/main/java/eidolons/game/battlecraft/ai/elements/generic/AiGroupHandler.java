@@ -26,6 +26,7 @@ public class AiGroupHandler extends AiHandler {
 
     public GroupAI createEncounterGroup(Encounter encounter, AiData data) {
         GroupAI group = new GroupAI(encounter.getLeader());
+        group.setEncounter(encounter);
         group.setMembers(new DequeImpl<>(encounter.getUnits()));
         if (data == null) {
             data = new AiData(true, EncounterEnums.UNIT_GROUP_TYPE.CROWD, null );

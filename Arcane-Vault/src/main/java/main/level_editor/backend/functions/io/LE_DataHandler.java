@@ -74,7 +74,7 @@ public class LE_DataHandler extends LE_Handler {
 
 
     public void autosave() {
-//        LE_OptionsMaster.getOptions_().getBooleanValue(AUTOSAVE)
+        //        LE_OptionsMaster.getOptions_().getBooleanValue(AUTOSAVE)
         if (isBackupAutosave()) {
             saveAs(getBackupPath(getFloorWrapper()));
         } else {
@@ -94,11 +94,11 @@ public class LE_DataHandler extends LE_Handler {
     public void saveFloor() {
         String path = getDefaultSavePathFull(getFloorWrapper(), "crawl");
         saveAs(path);
-//        try {
-//            saveModulesSeparately();
-//        } catch (Exception e) {
-//            main.system.ExceptionMaster.printStackTrace(e);
-//        }
+        //        try {
+        //            saveModulesSeparately();
+        //        } catch (Exception e) {
+        //            main.system.ExceptionMaster.printStackTrace(e);
+        //        }
     }
 
     private void doPresave() {
@@ -134,7 +134,7 @@ public class LE_DataHandler extends LE_Handler {
         int h = structure.getEffectiveHeight(false);
         int originalH = h;
         int originalW = w;
-//        structure.getEffectiveHeight()
+        //        structure.getEffectiveHeight()
         Set<Coordinates> coordinatesSet = structure.initCoordinateSet(false);
         Set<Coordinates> coordinatesSetToSearch = structure.initCoordinateSet(true);
         int maxX = CoordinatesMaster.getMaxX(coordinatesSet);
@@ -191,8 +191,8 @@ public class LE_DataHandler extends LE_Handler {
         EUtils.showInfoText("Saved " +
                 module.getName() +
                 " as " + PathUtils.getLastPathSegment(path));
-        if (isAutowrapSavedModules()){
-            contents= getXmlMaster().wrapSingleModule(getFloorWrapper(), module, contents);
+        if (isAutowrapSavedModules()) {
+            contents = getXmlMaster().wrapSingleModule(getFloorWrapper(), module, contents);
             FileManager.write(contents, path);
         }
     }
@@ -213,8 +213,8 @@ public class LE_DataHandler extends LE_Handler {
         if (value.isEmpty()) {
             value = "new";
         }
-        value=value.toLowerCase();
-        return PathFinder.getModuleTemplatesPath() +  value +"/" +
+        value = value.toLowerCase();
+        return PathFinder.getModuleTemplatesPath() + value + "/" +
                 module.getName() + ".xml";
     }
 
@@ -225,7 +225,7 @@ public class LE_DataHandler extends LE_Handler {
         saveAs(PathUtils.cropLastPathSegment(path) + "/" + newName);
 
         getFloorWrapper().setName(StringMaster.cropFormat(newName));
-//        getFloorWrapper().getData().apply();
+        //        getFloorWrapper().getData().apply();
         getStructureHandler().updateTree();
     }
 
@@ -244,9 +244,20 @@ public class LE_DataHandler extends LE_Handler {
     }
 
     public void saveAs(String path) {
+        saveAs(path, true);
+    }
+
+    public void saveAs(String path, boolean saveToCategoryFolder) {
         doPresave();
         String contents = getXmlMaster().toXml(getFloorWrapper());
         FileManager.write(contents, PathFinder.getDungeonLevelFolder() + path);
+        if (saveToCategoryFolder
+                && !getFloorWrapper().getData().getValue(LevelStructure.FLOOR_VALUES.readiness).isEmpty()) {
+            FileManager.write(contents, PathFinder.getDungeonLevelFolder() +
+                    getFloorWrapper().getData().getValue(LevelStructure.FLOOR_VALUES.readiness)
+                    + "/" + path);
+            //TODO how to ensure there is no duplicating?
+        }
         EUtils.showInfoText("Saved as " + PathUtils.getLastPathSegment(path));
 
         for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
@@ -278,23 +289,23 @@ public class LE_DataHandler extends LE_Handler {
                 prefix = "test/";
             } else {
                 prefix = PREFIX_CRAWL;
-//                prefix += floor.getGame().getDungeon().getGroup() + "/";
+                //                prefix += floor.getGame().getDungeon().getGroup() + "/";
             }
         } else {
-//            TODO campaign
+            //            TODO campaign
         }
         return getDefaultSavePath(floor, prefix);
     }
 
     public void open(String floorName) {
         Campaign campaign = getDataHandler().getCampaign();
-//        campaign.getFloorPath(floorName);
-//        Floor floor = getDataHandler().loadFloor(floorName);
-//        LevelEditor.floorSelected(floor);
+        //        campaign.getFloorPath(floorName);
+        //        Floor floor = getDataHandler().loadFloor(floorName);
+        //        LevelEditor.floorSelected(floor);
 
-//        ScreenData data = new ScreenData(SCREEN_TYPE.EDITOR, floorName);
-//        data.setParam(new EventCallbackParam(floor));
-//        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
+        //        ScreenData data = new ScreenData(SCREEN_TYPE.EDITOR, floorName);
+        //        data.setParam(new EventCallbackParam(floor));
+        //        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
 
     }
 

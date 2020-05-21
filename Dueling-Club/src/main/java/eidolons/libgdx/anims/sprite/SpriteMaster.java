@@ -3,6 +3,7 @@ package eidolons.libgdx.anims.sprite;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums;
@@ -67,7 +68,9 @@ public class SpriteMaster {
             }
             s.setOrigin(0, s.getHeight() / 2);
             if (obj.isOverlaying()) {
-                s.setScale(0.5f);
+                // s.setScale(0.5f);
+                s.setWidth(s.getWidth()/2);
+                s.setHeight(s.getHeight()/2);
             }
             s.act(RandomWizard.getRandomFloatBetween(0, 3));
         }
@@ -206,6 +209,9 @@ public class SpriteMaster {
     }
 
     private static Color getColor(int i, BfObjEnums.SPRITES sprite, boolean over, BattleFieldObject obj) {
+        if (obj.isLightEmitter()) {
+          return  GdxColorMaster.getColorForTheme(obj.getColorTheme());
+        }
         switch (obj.getName()) {
             case "Netherbound Horror":
                 if (i==4) {

@@ -12,6 +12,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
+import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
 import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import eidolons.libgdx.texture.TextureCache;
@@ -412,6 +413,17 @@ public class GdxImageMaster extends LwjglApplication {
             }
         }
         return weapon.getImagePath();
+    }
+    /*
+    could be a batch job for util to init all existing sprite-atlases and create these singles
+     */
+    public static void genSingleFrameSprite(SpriteAnimation anim, String origPath){
+        /*
+        image or atlas?
+         */
+        TextureRegion frame = anim.getKeyFrames()[0];
+        // TexturePackerLaunch.pack();
+        // writeImage(handle, frame);
     }
 
 }

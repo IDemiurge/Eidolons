@@ -63,12 +63,13 @@ public class ShadeLightCell extends SuperContainer {
     }
 
     public ShadeLightCell(SHADE_CELL type, Object arg) {
-        super(new Image(getTexture(type, arg)));
+        super(new Image(getTexture(type)));
         this.type = type;
         randomize();
         baseAlpha = 0;
+        setUserObject(arg);
         if (isColored()) {
-            teamColor = ShadowMap.getLightColor(null);
+            teamColor = ShadowMap.getLightColor(arg);
             if (getTeamColor() != null)
                 getContent().setColor(getTeamColor());
         }
@@ -85,24 +86,25 @@ public class ShadeLightCell extends SuperContainer {
 
     }
 
-    private static TextureRegion getTexture(SHADE_CELL type, Object arg) {
+    private static TextureRegion getTexture(SHADE_CELL type) {
         TextureAtlas.AtlasRegion texture = getShadowMapAtlas().findRegionFromFullPath(
-                (getTexturePath(type, arg)));
+                (getTexturePath(type)));
         if (texture == null) {
-            main.system.auxiliary.log.LogMaster.important(getTexturePath(type, arg) + " - " + type + " has null texture ( " + arg);
-            return TextureCache.getOrCreateR(getTexturePath(type, arg));
+            main.system.auxiliary.log.LogMaster.important(getTexturePath(type)
+                    + " - " + type + " has null texture ( ");
+            return TextureCache.getOrCreateR(getTexturePath(type));
         }
         return texture;
     }
 
-    private static String getTexturePath(SHADE_CELL type, Object arg) {
+    private static String getTexturePath(SHADE_CELL type) {
         switch (type) {
             //                    TODO varied enough already?
             case VOID:
                 return FileManager.formatPath(PathFinder.getImagePath() +
-                                        StringMaster.cropFormat(type.getTexturePath()) +
-                                        getRandomVoidVariant() +
-                                        ".png", false, false);
+                        StringMaster.cropFormat(type.getTexturePath()) +
+                        getRandomVoidVariant() +
+                        ".png", false, false);
         }
         return type.getTexturePath();
     }
@@ -141,9 +143,9 @@ public class ShadeLightCell extends SuperContainer {
         switch (type) {
             case GAMMA_LIGHT:
             case LIGHT_EMITTER:
+            case GAMMA_SHADOW:
                 return ShadowMap.isColoringSupported();
             case CONCEALMENT:
-            case GAMMA_SHADOW:
                 break;
         }
         return false;
@@ -184,7 +186,7 @@ public class ShadeLightCell extends SuperContainer {
     @Override
     public boolean isIgnored() {
         // check cell is visible TODO
-        if (!InputController.cameraMoved )
+        if (!InputController.cameraMoved)
             return !withinCamera;
         withinCamera = getController().isWithinCamera(this);
         return !withinCamera;
@@ -330,14 +332,23 @@ public class ShadeLightCell extends SuperContainer {
 
     public void setBaseAlpha(float baseAlpha) {
         alphaAction.reset();
-        alphaAction.setStart(getColor().a);
+        float a = getColor().a;
+        alphaAction.setStart(a);
         alphaAction.setEnd(baseAlpha * ShadowMap.getInitialAlphaCoef());
         addAction(alphaAction);
         alphaAction.setTarget(this);
-        alphaAction.setDuration(0.4f + (Math.abs(getColor().a - baseAlpha)) / 2);
+        alphaAction.setDuration(0.4f + (Math.abs(a - baseAlpha)) / 2);
         this.baseAlpha = baseAlpha;
 
-        if (isColored())
-            teamColor = ShadowMap.getLightColor(null);
+        if (isColored()) {
+            teamColor = ShadowMap.getLightColor(getUserObject());
+            setColor(new Color(teamColor));
+            getColor().a = a;
+        }
+    }
+
+    @Override
+    public void setColor(Color color) {
+        super.setColor(color);
     }
 }

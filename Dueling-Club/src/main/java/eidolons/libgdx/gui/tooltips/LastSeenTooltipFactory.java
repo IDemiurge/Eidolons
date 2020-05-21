@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.tooltips;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.bf.grid.cell.BaseView;
@@ -21,26 +22,26 @@ public class LastSeenTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
     }
 
     @Override
-    protected Supplier<List<ValueContainer>> supplier(BattleFieldObject data) {
+    protected Supplier<List<Actor>> supplier(BattleFieldObject object, BaseView view) {
         return ()->{
-            List<ValueContainer> list=    new ArrayList<>() ;
+            List<Actor> list=    new ArrayList<>() ;
             String time =
              String.format(Locale.US, "%.0f",
-             (data.getGame().getLoop().getTime() -
-             data.getLastSeenTime())) ;
-            String name=data.getName();
+             (object.getGame().getLoop().getTime() -
+             object.getLastSeenTime())) ;
+            String name= object.getName();
             String info =  "You have seen " +
              name +
              " here " +time +
              "" +
              "seconds ago";
-            if (!data.isDetectedByPlayer()){
-                OUTLINE_TYPE outline = data.getLastSeenOutline();
+            if (!object.isDetectedByPlayer()){
+                OUTLINE_TYPE outline = object.getLastSeenOutline();
                 if (outline!=null )
                     name = outline.getName();
             } else {
-                if (data instanceof Unit) {
-                    info+=", facing " + data.getLastSeenFacing();
+                if (object instanceof Unit) {
+                    info+=", facing " + object.getLastSeenFacing();
                 }
             }
             list.add(new ValueContainer("You  recall...", info));

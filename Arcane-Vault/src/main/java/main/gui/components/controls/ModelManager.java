@@ -227,14 +227,7 @@ public class ModelManager {
     }
 
     public static void backUp() {
-        XML_Writer.setBackUpMode(true);
-        try {
-            saveAll();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        } finally {
-            XML_Writer.setBackUpMode(false);
-        }
+        fullBackUp();
     }
 
     public static void save(OBJ_TYPE obj_type) {

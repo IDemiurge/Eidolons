@@ -1,6 +1,5 @@
 package eidolons.libgdx.gui.panels.dc.topleft;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -82,10 +81,10 @@ public class ClockPanel extends GroupX {
         return new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (!GdxMaster.isWithin(event.getTarget(),
-                        new Vector2(event.getStageX(), event.getStageY()), true))
-                    return;
-                if (button == 0) {
+                // if (!GdxMaster.isWithin(event.getTarget(),
+                //         new Vector2(event.getStageX(), event.getStageY()), true))
+                //     return;
+                if (button == 1) {
                     DC_Game.game.getLoop().togglePaused();
                 }
 
@@ -94,7 +93,8 @@ public class ClockPanel extends GroupX {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (button == 1) {
+                // if (button == 1) different functions?
+                {
                     if (!DC_Game.game.getLoop().isPaused())
                         DC_Game.game.getDungeonMaster().
                                 getExplorationMaster().

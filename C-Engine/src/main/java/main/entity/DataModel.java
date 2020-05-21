@@ -643,11 +643,12 @@ public abstract class DataModel {
         if (LogMaster.VALUE_DEBUG_ON)
             LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
                     + param.getName() + " by " + amount);
-        if (!quietly || GuiEventManager.isParamEventAlwaysFired(param.getName()))
-            if (!fireParamEvent(param, String.valueOf(amount),
-                    CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
-                return true; // false?
-            }
+        if (isFiringValueEvents())
+            if (!quietly || GuiEventManager.isParamEventAlwaysFired(param.getName()))
+                if (!fireParamEvent(param, String.valueOf(amount),
+                        CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
+                    return true; // false?
+                }
 
         boolean result = true;
         Double newValue;
@@ -927,10 +928,11 @@ public abstract class DataModel {
         //        if (param == null) {
         //            return false;
         //        }
-        if (Game.game != null)
+        if (getGame() == null)
             if (GuiEventManager.isParamEventAlwaysFired(param.getName()) || !quiety)
-                if (getGame() == null)
-                    return false;
+                if (isFiringValueEvents())
+                    if (Game.game != null)
+                        return false;
         //            if (getGame().isStarted()) {
         //                if (!fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
         //                    return false;
@@ -945,6 +947,10 @@ public abstract class DataModel {
         setDirty(true);
 
 
+        return true;
+    }
+
+    protected boolean isFiringValueEvents() {
         return true;
     }
 
@@ -1307,6 +1313,7 @@ public abstract class DataModel {
     public void addParam(String parameter, int value) {
         modifyParameter(ContentValsManager.getPARAM(parameter), value);
     }
+
     public void addParam(PARAMETER parameter, int value) {
         modifyParameter(parameter, value);
     }

@@ -42,7 +42,7 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
     @Override
     public String getPropagatedValue(String valueName) {
         String value = "";
-        if (getData() != null) value = getData().getValue(valueName);
+        if (getData() != null) value = getData().getValue(valueName.toLowerCase());
         if (StringMaster.isEmpty(value)) {
             if (getParent() == null) {
                 return "";
@@ -114,7 +114,14 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
                 coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetween(
                                 getOrigin(), getOrigin().getOffset(getEffectiveWidth(), getEffectiveHeight())));
         }
+        if (isDiagonal()){
+            coordinatesSet= CoordinatesMaster.squareToDiamondArea(coordinatesSet);
+        }
         return coordinatesSet;
+    }
+
+    private boolean isDiagonal() {
+        return getData().getBooleanValue("diagonal");
     }
 
     @Override

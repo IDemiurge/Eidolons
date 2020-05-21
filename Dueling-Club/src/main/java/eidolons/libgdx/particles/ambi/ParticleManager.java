@@ -2,7 +2,6 @@ package eidolons.libgdx.particles.ambi;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.EmitterActor;
@@ -28,6 +27,7 @@ import java.util.Map;
  */
 public class ParticleManager extends GroupX {
     private static final GenericEnums.VFX FOG_VFX = GenericEnums.VFX.SMOKE_TEST;
+    private static final boolean TEST = true;
     private static boolean ambienceOn = OptionsMaster.getGraphicsOptions().getBooleanValue(
             GRAPHIC_OPTION.AMBIENCE_VFX);
     private static boolean ambienceMoveOn;
@@ -152,8 +152,8 @@ public class ParticleManager extends GroupX {
     }
 
     public static boolean isAmbienceOn() {
-        if (EidolonsGame.DUEL) {
-            return false;
+        if (TEST) {
+            return true;
         }
         return ambienceOn;
     }

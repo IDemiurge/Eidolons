@@ -20,7 +20,7 @@ import static main.system.auxiliary.log.LogMaster.log;
 
 public class EngageEvents extends ExplorationHandler {
 
-    private static final float TIMER_PERIOD = 0.25f;
+    private static final float TIMER_PERIOD = 0.2f;
     DequeImpl<EngageEvent> eventQueue = new DequeImpl<>();
     EngageEventProcessor processor;
     Set<Unit> alertedEnemies = new LinkedHashSet<>();

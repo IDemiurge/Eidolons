@@ -50,7 +50,7 @@ public class BattleGuiStage extends GuiStage {
     private final GuiVisualEffects guiVisualEffects;
     private final CombatInventory combatInventory;
     private final FullscreenAnims fullscreenAnims;
-    private final VisualChoice vc;
+    private   VisualChoice vc;
     private UnitInfoPanelNew infoPanel;
     protected OutcomePanel outcomePanel;
     ParticlesSprites particlesSprites;
@@ -104,8 +104,8 @@ public class BattleGuiStage extends GuiStage {
 
         getBottomPanel().setX(GdxMaster.centerWidthScreen(getBottomPanel()));
 
-        addActor(vc= new VisualChoice());
-        vc.setVisible(false);
+        // addActor(vc= new VisualChoice());
+        // vc.setVisible(false);
 //        getBottomPanel().setX((GdxMaster.getWidth() - fullLogPanel.getWidth() - getBottomPanel().getWidth()) / 2 + 70);
 
     }

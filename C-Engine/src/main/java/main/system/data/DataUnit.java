@@ -63,6 +63,9 @@ public class DataUnit<T extends Enum<T>> {
     public boolean getBooleanValue(T t) {
         return StringMaster.getBoolean(getValue(t));
     }
+    public boolean getBooleanValue(String t) {
+        return StringMaster.getBoolean(getValue(t));
+    }
 
     public int getIntValue(String value) {
         String val = getValue(value);

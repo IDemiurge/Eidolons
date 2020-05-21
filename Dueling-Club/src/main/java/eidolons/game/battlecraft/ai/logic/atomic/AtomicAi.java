@@ -215,8 +215,13 @@ public class AtomicAi extends AiHandler {
                 );
         if (facing == null)
             return null;
+        //TODO new stacking rule ai
         Coordinates c = getUnit().getCoordinates().getAdjacentCoordinate(facing.getDirection());
-
+        for (BattleFieldObject object : getGame().getObjectsOnCoordinateNoOverlaying(c)) {
+            if (object.getOwner()==(getUnit().getOwner())) {
+                return Positioner.adjustCoordinate(ai.getUnit(), c, ai.getUnit().getFacing());
+            }
+        }
         if (new StackingRule(game).canBeMovedOnto(getUnit(), c)){
             return c;
         }
@@ -414,9 +419,7 @@ public class AtomicAi extends AiHandler {
             if (ai.checkMod(AI_MODIFIERS.COWARD)) {
                 threat *= 2;
             }
-            if (threat > ai.getUnit().calculatePower()) {
-                return true;
-            }
+            return threat > ai.getUnit().calculatePower();
 
         }
         return false;

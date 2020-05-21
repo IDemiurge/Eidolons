@@ -168,6 +168,7 @@ public static final String SEPARATOR_NARROW = StrPathBuilder.build(
     public static final String ZARK_TITLE = "ui/components/ninepatch/zark/title box.png";
     public static final String ZARK_BOX_UPSIDE_DOWN = "ui/components/ninepatch/zark/zark box down.png";
     public static final String ZARK_BOX = "ui/components/ninepatch/zark/zark box.png";
+    public static final String ZARK_BTN_LARGE ="ui/components/ninepatch/zark/btn2.png" ;
     public static final String INTENT_ICON_BG = "ui/components/dc/atb/intent bg.png";
     public static final String TIME_BG = "ui/components/dc/atb/time bg.png";
     public static final String STATUS_EXPLORE ="ui/components/dc/status/status explore.png";

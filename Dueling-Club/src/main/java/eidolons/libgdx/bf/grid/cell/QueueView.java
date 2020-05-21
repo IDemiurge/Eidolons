@@ -300,7 +300,8 @@ public class QueueView extends UnitView {
         getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
     }
 
-    protected TextureRegion processPortraitTexture(TextureRegion region, String path) {
+    public TextureRegion processPortraitTexture(String path) {
+        TextureRegion  region = TextureCache.getOrCreateR(path);
         if (CoreEngine.isIDE()) {
             GdxImageMaster.round(path, true);
         }

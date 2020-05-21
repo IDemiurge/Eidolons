@@ -1,5 +1,6 @@
 package main.utilities.xml;
 
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.swing.generic.services.dialog.DialogMaster;
@@ -16,6 +17,7 @@ import main.elements.conditions.*;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.gui.components.controls.ModelManager;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -52,8 +54,8 @@ public class XML_Transformer {
         main = true;
         GuiManager.init();
         if (DialogMaster.confirm("Overwrite backup?")) {
-        backUp();
-                    }
+            backUp();
+        }
         showTransformDialog();
     }
 
@@ -98,16 +100,16 @@ public class XML_Transformer {
                 name + " to " + newName);
         for (XML_File xmlFile : getXmlFiles()) {
             String contents = xmlFile.getContents();
-            if (!contents.contains(XML_Writer.closeXML( (name)))) {
+            if (!contents.contains(XML_Writer.closeXML((name)))) {
                 continue;
             }
-            log(1, xmlFile+"- Current length: " + xmlFile.getContents().length());
+            log(1, xmlFile + "- Current length: " + xmlFile.getContents().length());
             String newContents = contents;
 
-            newContents = newContents.replace(XML_Writer.closeXML( (name)),
-                    XML_Writer.closeXML( (newName)));
-            newContents = newContents.replace(XML_Writer.openXML( (name)),
-                    XML_Writer.openXML( (newName)));
+            newContents = newContents.replace(XML_Writer.closeXML((name)),
+                    XML_Writer.closeXML((newName)));
+            newContents = newContents.replace(XML_Writer.openXML((name)),
+                    XML_Writer.openXML((newName)));
 
             //try with abilities? formulas?
             if (xmlFile.getType() == DC_TYPE.ABILS) {
@@ -117,7 +119,7 @@ public class XML_Transformer {
                 newContents = newContents.replace(StringMaster.getWellFormattedString(name), newName);
             }
             xmlFile.setContents(newContents);
-            log(1, xmlFile+"-New length: " + xmlFile.getContents().length());
+            log(1, xmlFile + "-New length: " + xmlFile.getContents().length());
             FileManager.write(newContents, xmlFile.getFile().getPath());
 
         }
@@ -199,21 +201,27 @@ public class XML_Transformer {
         // .showConfirmDialog(null, "Create a backup data reserve?");
         // if (ok == JOptionPane.YES_OPTION)
         // XML_Writer.createBackUpReserve();
+
+        new DC_ContentValsManager().init();
+
         log(1, "Cleaning up XML files... ");
         DequeImpl<XML_File> xmlFiles = getXmlFiles();
         for (XML_File file : xmlFiles) {
-
-            log(1, "Removing alien nodes from " + file);
-            log(1, "Current length: " + file.getContents().length());
-            for (VALUE v : ContentValsManager.getValueList()) {
-                if (!ContentValsManager.isValueForOBJ_TYPE(file.getType(), v)) {
-                    removeValue(v, file, false, false);
-                }
-            }
-            log(1, "New length: " + file.getContents().length());
+            // log(1, file + " current length: " + file.getContents().length());
+            // log(1, "Removing alien nodes from " + file);
+            // for (VALUE v : ContentValsManager.getValueList()) {
+            //     if (!ContentValsManager.isValueForOBJ_TYPE(file.getType(), v)) {
+            //         removeValue(v, file, false, false);
+            //     }
+            // }
 
             removeEmptyNodes(file);
-            XML_Writer.write(file);
+            // log(1, "New length: " + file.getContents().length());
+            try {
+                XML_Writer.write(file);
+            } catch (Exception e) {
+                ExceptionMaster.printStackTrace(e);
+            }
 
         }
         log(1, "Cleaning up XML files done. ");
@@ -225,14 +233,22 @@ public class XML_Transformer {
             return;
         }
         log(1, "Removing empty nodes from " + file);
-        log(1, "Current length: " + file.getContents().length());
+        log(1, file + " current length: " + file.getContents().length());
         for (Node groupNode : XmlNodeMaster.getNodeList(doc.getFirstChild())) {
             for (Node typeNode : XmlNodeMaster.getNodeList(groupNode)) {
                 for (Node valueGroupNode : XmlNodeMaster.getNodeList(typeNode)) {
                     for (Node valueNode : XmlNodeMaster.getNodeList(valueGroupNode)) {
                         //TODO remove default values too? btw, we could do even better than default value -
                         // we could have default type with all those vals set already.
-                        if (StringMaster.isEmpty(valueNode.getTextContent().trim())) {
+                        VALUE value = DC_ContentValsManager.getValue(valueNode.getNodeName());
+                        if (value == null) {
+                            valueGroupNode.removeChild(valueNode);
+                            continue;
+                        }
+                        String defaultValue = value.getDefaultValue();
+                        if (valueNode.getTextContent().trim().equalsIgnoreCase(defaultValue)) {
+                            valueGroupNode.removeChild(valueNode);
+                        } else if (StringMaster.isEmpty(valueNode.getTextContent().trim())) {
                             valueGroupNode.removeChild(valueNode);
                         }
                     }

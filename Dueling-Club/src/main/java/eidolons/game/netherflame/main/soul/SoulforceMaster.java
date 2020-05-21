@@ -43,6 +43,12 @@ public class SoulforceMaster extends MetaGameHandler {
         EidolonLord.lord.soulforceGained(getSoulforceFromKill(killed));
     }
 
+    public static String getTooltip() {
+        return "Current Soulforce: " +
+                EidolonLord.lord.getSoulforce() + "/" +
+                EidolonLord.lord.getSoulforceMax();
+    }
+
     public void shrineActivated(Structure shrine) {
         // activeShrines.add(shrine);
     }

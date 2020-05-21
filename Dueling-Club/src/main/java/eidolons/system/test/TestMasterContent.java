@@ -17,7 +17,6 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.entity.type.SpellType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 import main.system.entity.FilterMaster;
@@ -183,7 +182,7 @@ public class TestMasterContent {
 		 *
 		 * checkMastery() or at least aspect preCheck class/masteries for actions
 		 */
-        SpellType spellType = (SpellType) DataManager.getType(typeName, DC_TYPE.SPELLS);
+       ObjType spellType =   DataManager.getType(typeName, DC_TYPE.SPELLS);
         if (spellType == null) {
             return false;
         }

@@ -31,8 +31,12 @@ public class CombatOptionsPanel extends TablePanelX {
             GameplayOptions.GAMEPLAY_OPTION.DEBUG_MODE,
 //            GameplayOptions.TESTING_OPTION.DEBUG_MODE,
 //            GameplayOptions.TESTING_OPTION.DEBUG_MODE,
-
-
+    };
+    public static final OPTION[] OPTIONS_EXPLORE = {
+            ControlOptions.CONTROL_OPTION.ALT_MODE_ON,
+            ControlOptions.CONTROL_OPTION.CAMERA_ON_ACTIVE,
+            ControlOptions.CONTROL_OPTION.AUTO_CAMERA_OFF,
+            ControlOptions.CONTROL_OPTION.CAMERA_ON_HERO,
     };
     public static final OPTION[] OPTIONS = {
             GameplayOptions.GAMEPLAY_OPTION.INPUT_BETWEEN_TURNS,

@@ -1,7 +1,6 @@
 package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,7 +9,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.sprite.SpriteMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.Hoverable;
@@ -20,10 +18,7 @@ import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
-import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
-import main.system.PathUtils;
-import main.system.launch.CoreEngine;
 
 import java.util.List;
 
@@ -48,11 +43,11 @@ public class BaseView extends SuperActor  implements Hoverable{
     }
 
     public BaseView(TextureRegion portraitTexture, String path) {
-        init(portraitTexture, path);
+        init(path);
     }
 
     public void init(UnitViewOptions o) {
-        init(o.getPortraitTexture(), o.getPortraitPath());
+        init(o.getPortraitPath());
 
     }
 
@@ -153,27 +148,27 @@ public class BaseView extends SuperActor  implements Hoverable{
         return false;
     }
 
-    public void init(TextureRegion portraitTexture, String path) {
-        portrait = initPortrait(portraitTexture, path);
+    public void init(String path) {
+        portrait = initPortrait(path);
         addActor(portrait);
 
-        String type = "objects";
-        String name = PathUtils.getLastPathSegment(path);
-        if (path.contains("heroes")) {
-            type = "heroes";
-        }
-        if (path.contains("units")) {
-            type = "units";
-        }
-        if (CoreEngine.isIDE()) {
-
-            FileHandle handle=new FileHandle(PathFinder.getImagePath() + "unitview/" +
-                    type +
-                    "/" +
-                    name);
-            if (!handle.exists())
-            GdxImageMaster.writeImage(handle, portraitTexture);
-        }
+        // String type = "objects";
+        // String name = PathUtils.getLastPathSegment(path);
+        // if (path.contains("heroes")) {
+        //     type = "heroes";
+        // }
+        // if (path.contains("units")) {
+        //     type = "units";
+        // }
+        // if (CoreEngine.isIDE()) {
+        // TODO EA Check - group into atlases
+        //     FileHandle handle=new FileHandle(PathFinder.getImagePath() + "unitview/" +
+        //             type +
+        //             "/" +
+        //             name);
+        //     if (!handle.exists())
+        //     GdxImageMaster.writeImage(handle, TextureCache.getOrCreateR(path));
+        // }
 //        ResourceMaster.writeImage(path, "unitviews/" +
 //                type +
 //                "/" +
@@ -201,12 +196,13 @@ public class BaseView extends SuperActor  implements Hoverable{
         return 0;
     }
 
-    protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
-        originalTexture = processPortraitTexture(portraitTexture, path);
+    protected FadeImageContainer initPortrait(String path) {
+        originalTexture = processPortraitTexture(path);
         return new FadeImageContainer(new Image(originalTexture));
     }
 
-    protected TextureRegion processPortraitTexture(TextureRegion texture, String path) {
+    protected TextureRegion processPortraitTexture(String path) {
+        TextureRegion  texture = TextureCache.getOrCreateR(path);
         if (TextureCache.isEmptyTexture(texture)) {
             return getPlaceholderPortrait();
         }

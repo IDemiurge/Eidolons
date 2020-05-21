@@ -68,7 +68,7 @@ public class UnitView extends BaseView implements HpBarView {
         this.setMainHero(o.isMainHero());
         setTeamColor(o.getTeamColor());
         this.name = o.getName();
-        init(o.getPortraitTexture(), o.getPortraitPath());
+        init( o.getPortraitPath());
         addActor(this.modeImage = new FadeImageContainer());
 
         try {
@@ -199,7 +199,7 @@ public class UnitView extends BaseView implements HpBarView {
     }
 
     protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
-        originalTexture = processPortraitTexture(portraitTexture, path);
+        originalTexture = processPortraitTexture(path);
         if (isMainHero()) {
             return new FadeImageContainer(new Image(originalTexture));
         }
@@ -255,8 +255,8 @@ public class UnitView extends BaseView implements HpBarView {
                 new Image(textureRegion));
     }
 
-    protected TextureRegion processPortraitTexture(TextureRegion texture, String path) {
-        return texture;
+    public TextureRegion processPortraitTexture(String path) {
+        return TextureCache.getOrCreateR(path);
     }
 
     public void setOutlineSupplier(Supplier<TextureRegion> outlineSupplier) {

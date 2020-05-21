@@ -151,7 +151,7 @@ public class UnitViewFactory {
         view.getHpBar().setTeamColor(options.getTeamColor());
 
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
-        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
+        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj, view));
         view.setToolTip(tooltip);
         if (bfObj.checkBool(GenericEnums.STD_BOOLS.INVISIBLE)) {
             view.setInvisible(true);
@@ -165,7 +165,7 @@ public class UnitViewFactory {
     public static BaseView createGraveyardView(BattleFieldObject bfObj) {
         BaseView view = new BaseView(getOrCreateR(bfObj.getImagePath()), bfObj.getImagePath());
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
-        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
+        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj, view));
         view.addListener(tooltip.getController());
         view.addListener(doCreateListener(bfObj));
         view.setUserObject(bfObj);
@@ -260,7 +260,7 @@ public class UnitViewFactory {
 
     public void addOverlayingListener(OverlayView view, BattleFieldObject bfObj) {
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
-        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
+        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj, view));
         view.addListener(tooltip.getController());
         view.addListener(UnitViewFactory.doCreateListener(bfObj));
     }

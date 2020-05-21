@@ -27,13 +27,20 @@ public class TablePanelX<T extends Actor> extends TablePanel<T> {
         float coef = (float) Math.pow(GdxMaster.getFontSizeMod(), 0.3f);
         setScale(coef, coef);
     }
+
     protected TablePanelX createInnerTable() {
         return new TablePanelX<>(getWidth(), getHeight());
     }
+
     @Override
     public void setSize(float width, float height) {
         setFixedSize(true);
         super.setSize(width, height);
+    }
+
+    public void  addBackgroundActor(Actor actor) {
+        addActor(actor);
+        setSize(actor.getWidth(), actor.getHeight());
     }
 
     @Override

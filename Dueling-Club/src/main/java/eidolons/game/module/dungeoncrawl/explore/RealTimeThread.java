@@ -1,11 +1,9 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
-import com.badlogic.gdx.Gdx;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.anims.construct.AnimConstructor;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.macro.global.time.MacroTimeMaster;
-import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 /**
@@ -13,7 +11,7 @@ import main.system.threading.WaitMaster;
  */
 public class RealTimeThread extends Thread {
 
-    private static final int REAL_TIME_LOGIC_PERIOD = 500;
+    private static final float REAL_TIME_LOGIC_PERIOD = 0.1f;
     private final ExploreGameLoop loop;
     private final DC_Game game;
     private boolean done;
@@ -38,41 +36,42 @@ public class RealTimeThread extends Thread {
         try {
             Eidolons.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
             Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
-            if (!CoreEngine.isGraphicsOff())
-                Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().getAllies().forEach(unit -> {
-                    Gdx.app.postRunnable(() ->
-                     {
-                         try {
-                             AnimConstructor.preconstructAll(unit);
-                         } catch (Exception e) {
-                             main.system.ExceptionMaster.printStackTrace(e);
-                         }
-                     }
-                    );
-                });
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-
+        float period = REAL_TIME_LOGIC_PERIOD;
+        float checkPeriod=0.5f;
+        float timer = 0;
         while (true) {
+            WaitMaster.WAIT((int) (period*1000));
 
-            WaitMaster.WAIT(REAL_TIME_LOGIC_PERIOD);
             if (Eidolons.getGame() == null)
                 return;
             if (loop.isExited())
                 return;
-            if (loop.isStopped()) {
+            if (loop.isStopped())
                 return;
-            }
             if (Eidolons.getGame() != game)
                 return;
-
+            if (loop.isLocked())
+                continue;
+            if (!ScreenMaster.getScreen().isLoaded()) {
+                continue;
+            }
             if (Eidolons.getGame().isPaused()) continue;
             if (!ExplorationMaster.isExplorationOn()) continue;
             if (ExplorationMaster.isRealTimePaused()) continue;
+            loop.setLocked(true);
+            //linked to gdx thread this way
+            loop.act(period);
+            if (timer>=checkPeriod) {
+                timer = 0;
+            }
+            timer+=period;
             try {
                 Eidolons.getGame().getDungeonMaster().getExplorationMaster().
                  getTimeMaster().checkTimedEvents();
+
                 //           do we really want time to pass while we're down in a dungeon?
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);

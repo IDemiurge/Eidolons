@@ -8,7 +8,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
-import main.level_editor.backend.functions.io.LE_XmlMaster;
+import main.level_editor.backend.functions.io.LE_XmlHandler;
 import main.level_editor.backend.functions.mapping.LE_TransitHandler;
 import main.level_editor.backend.functions.mouse.LE_MouseHandler;
 import main.level_editor.backend.functions.palette.PaletteHandlerImpl;
@@ -77,7 +77,7 @@ public abstract class LE_Handler {
         return manager.getEntityHandler();
     }
 
-    public LE_XmlMaster getXmlMaster() {
+    public LE_XmlHandler getXmlMaster() {
         return manager.getXmlMaster();
     }
 

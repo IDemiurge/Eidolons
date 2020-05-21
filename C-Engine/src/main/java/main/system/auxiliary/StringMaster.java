@@ -761,10 +761,10 @@ public class StringMaster {
     }
 
     public static boolean getBoolean(String value) {
-        value = value.trim();
         if (isEmpty(value)) {
             return false;
         }
+        value = value.trim();
         if (value.equalsIgnoreCase("true")) {
             return true;
         }

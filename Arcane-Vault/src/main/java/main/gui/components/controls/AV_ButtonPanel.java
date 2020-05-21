@@ -19,7 +19,6 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.xml.XML_Reader;
-import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
 import main.gui.builders.EditViewPanel;
 import main.gui.components.table.TableMouseListener;
@@ -63,7 +62,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
      // CLEAN_UP,
 //     "Edit",
 //     "Defaults",
-//     "Backup",
+    "Backup",
 //     "Add WS", "Test"
 
     };
@@ -246,7 +245,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
             }
 
             case "Backup": {
-                XML_Writer.createBackUpReserve();
+                ModelManager.fullBackUp();
                 break;
             }
             case RENAME_SELECTED_TYPE: {

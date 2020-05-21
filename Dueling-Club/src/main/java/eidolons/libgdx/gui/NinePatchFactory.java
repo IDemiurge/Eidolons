@@ -9,6 +9,9 @@ import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
 public class NinePatchFactory {
 
+    private static final String ZARK_LARGE_PATH =
+            StrPathBuilder.build(PathFinder.getComponentsPath(),
+                    "ninepatch", "zark","9patch.png");
     private static final String HIGHLIGHT_PATH =
             StrPathBuilder.build(PathFinder.getComponentsPath(),
                     "ninepatch", "std", "hl.png");
@@ -134,12 +137,21 @@ public class NinePatchFactory {
     public static NinePatchDrawable getHighlightDrawable() {
         return new NinePatchDrawable(getHighlight());
     }
+    public static NinePatchDrawable getZarkLargeDrawable() {
+        return new NinePatchDrawable(getZarkLarge());
+    } public static NinePatchDrawable getZarkFrameDrawable() {
+        return new NinePatchDrawable(getZarkFrame());
+    }
 
     private static NinePatch getZarkFrame() {
         return new NinePatch(getOrCreateR(
                 ZARK_FRAME_PATH), 104, 104, 92, 92);
     }
 
+    private static NinePatch getZarkLarge() {
+        return new NinePatch(getOrCreateR(
+                ZARK_LARGE_PATH), 70, 70, 70, 70);
+    }
     private static NinePatch getHighlight() {
         return new NinePatch(getOrCreateR(
                 HIGHLIGHT_PATH), 10, 10, 10, 10);

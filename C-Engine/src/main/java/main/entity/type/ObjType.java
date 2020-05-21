@@ -98,6 +98,10 @@ public class ObjType extends Entity {
         super.setProperty(name, value);
     }
 
+    @Override
+    protected boolean isFiringValueEvents() {
+        return false;
+    }
 
     public ObjType getType() {
         return (type != null) ? type : this;

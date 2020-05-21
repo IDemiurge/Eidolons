@@ -228,7 +228,7 @@ public class LightEmitter extends SuperActor {
     }
 
     private boolean isDynamicUpdates() {
-        return false;
+        return true;
     }
 
     @Override

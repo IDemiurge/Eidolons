@@ -9,19 +9,20 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.StringBuilder;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.HqTooltipPanel;
 import org.apache.commons.lang3.StringUtils;
 
 public class ValueContainer extends TablePanelX implements AbstractValueContainer {
     protected Cell<ImageContainer> imageContainer;
-    protected Cell<Label> nameContainer;
-    protected Cell<Label> valueContainer;
+    protected Cell<LabelX> nameContainer;
+    protected Cell<LabelX> valueContainer;
     private LabelStyle style = StyleHolder.getDefaultLabelStyle();
     private float imageScaleX;
     private float imageScaleY;
-    private Label valueLabel;
-    private Label nameLabel;
+    private LabelX valueLabel;
+    private LabelX nameLabel;
 
     protected ValueContainer() {
 
@@ -65,29 +66,29 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
         setStyle(style);
     }
 
-    public ValueContainer(Label actor) {
+    public ValueContainer(LabelX actor) {
         this(actor, null);
     }
 
-    public ValueContainer(Label nameLabel, Label valueLabel) {
+    public ValueContainer(LabelX nameLabel, LabelX valueLabel) {
         this.nameLabel = nameLabel;
         this.valueLabel = valueLabel;
         init(null, null, null);
     }
 
-    public Cell<Label> getNameContainer() {
+    public Cell<LabelX> getNameContainer() {
         return nameContainer;
     }
 
-    public Cell<Label> getValueContainer() {
+    public Cell<LabelX> getValueContainer() {
         return valueContainer;
     }
 
-    public Label getValueLabel() {
+    public LabelX getValueLabel() {
         return valueLabel;
     }
 
-    public Label getNameLabel() {
+    public LabelX getNameLabel() {
         return nameLabel;
     }
 
@@ -126,7 +127,7 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
 
         if (name != null) {
             setName(name);
-            nameLabel = new Label(name, style);
+            nameLabel = new LabelX(name, style);
         }
         nameContainer.setActor(
                 nameLabel
@@ -139,9 +140,12 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
         }
 
         if (value != null) {
-            valueLabel = new Label(value, style) {
+            valueLabel = new LabelX(value, style) {
                 @Override
                 public float getMaxWidth() {
+                    if (this.wrapped) {
+                        return super.getMaxWidth();
+                    }
                     return super.getPrefWidth();
                 }
 
@@ -216,7 +220,7 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
                 text.replace("Chance", "");
                 if (valueContainer.getActor() != null) {
                     if (valueContainer.getActor() instanceof Label) {
-                        final Label actor = valueContainer.getActor();
+                        final LabelX actor = valueContainer.getActor();
                         actor.getText().append("%");
                     }
                 }
@@ -378,6 +382,17 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
     @Override
     public void layout() {
         super.layout();
+    }
+
+    public void wrapText(float maxWidth) {
+        if (getNameLabel() != null) {
+            getNameLabel().setMaxWidth(maxWidth);
+            getNameLabel().setWrap(true);
+        }
+        if (getValueLabel() != null) {
+            getValueLabel().setMaxWidth(maxWidth);
+            getValueLabel().setWrap(true);
+        }
     }
 }
 

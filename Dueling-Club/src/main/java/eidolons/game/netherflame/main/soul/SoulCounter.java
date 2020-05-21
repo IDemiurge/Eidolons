@@ -9,12 +9,9 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.FlipDrawable;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
-import eidolons.libgdx.texture.Images;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
@@ -29,12 +26,13 @@ public class SoulCounter extends SuperActor {
 
     public SoulCounter() {
         addActor(table = new TablePanelX<>());
-        table.setY(-25);
-        table.setBackground(new FlipDrawable(Images.ZARK_TITLE, () -> false, () -> true));
-        table.addActor(btn = new SmartButton(ButtonStyled.STD_BUTTON.SOULS_BTN, () -> {
-            GuiEventManager.trigger(GuiEventType.SOULS_CONSUMED);
-        }));
-        Label.LabelStyle style = StyleHolder.newStyle(StyleHolder.getHqLabelStyle(20));
+        // table.setY(-25);
+        // table.setBackground(new FlipDrawable(Images.ZARK_TITLE, () -> false, () -> true));
+        // table.addBackgroundActor(new ImageContainer(Images.ZARK_BOX_UPSIDE_DOWN));
+        // table.addActor(btn = new SmartButton(ButtonStyled.STD_BUTTON.SOULS_BTN, () -> {
+        //     GuiEventManager.trigger(GuiEventType.SOULS_CONSUMED);
+        // }));
+        Label.LabelStyle style = StyleHolder.newStyle(StyleHolder.getAVQLabelStyle(24));
 
         table.addActor(counter = new LabelX("", style));
 
@@ -55,22 +53,21 @@ public class SoulCounter extends SuperActor {
             counter.setText("" + souls);
         });
 
-        addListener(new DynamicTooltip(() -> "Current Soulforce: " +
-                EidolonLord.lord.getSoulforce() +
-                "/" +
-                EidolonLord.lord.getSoulforceMax()).getController());
+        addListener(new DynamicTooltip(() ->
+               SoulforceMaster.getTooltip()).getController());
         counter.setText("3");
     }
 
     @Override
     public void act(float delta) {
-        table.setY(-25);
-        table.setX(-table.getWidth()/2+11);
-        counter.setText(EidolonLord.lord.getSoulforce() + "");
+        // table.setY(-25);
+        // table.setX(-table.getWidth()/2+11);
+        counter.setText(EidolonLord.lord.getSoulforce() + "/" +
+                EidolonLord.lord.getSoulforceMax());
         // style.fontColor = GdxColorMaster.CRIMSON; if low
-        setSize(btn.getWidth(), btn.getHeight());
+        // setSize(btn.getWidth(), btn.getHeight());
         GdxMaster.center(counter);
-        counter.setX((btn.getWidth() - counter.getPrefWidth()) / 2);
+        // counter.setX((btn.getWidth() - counter.getPrefWidth()) / 2);
         super.act(delta);
     }
 }

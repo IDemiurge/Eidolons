@@ -2,8 +2,8 @@ package eidolons.libgdx.gui.panels.dc.unitinfo.old;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.generic.ValueContainer;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import static eidolons.libgdx.StyleHolder.getDefaultLabelStyle;
 
 public class MultiValueContainer extends ValueContainer {
 
-    private List<Container<Label>> values = new ArrayList<>();
+    private List<Container<LabelX>> values = new ArrayList<>();
 
     public MultiValueContainer(TextureRegion texture, String name, String... value) {
         init(texture, name, value);
@@ -39,7 +39,7 @@ public class MultiValueContainer extends ValueContainer {
             //super.init() initialize value field as empty Container
             this.valueContainer.setActor(table);
             for (String value : values) {
-                Container<Label> labelContainer = new Container<>(new Label(value, getDefaultLabelStyle()));
+                Container<LabelX> labelContainer = new Container<>(new LabelX(value, getDefaultLabelStyle()));
                 this.values.add(labelContainer);
                 table.add(labelContainer);
                 if (isVertical()) {

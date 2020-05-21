@@ -30,7 +30,7 @@ public class SoulforcePanel extends GroupX {
         addActor(lordBtn = new SmartButton(ButtonStyled.STD_BUTTON.LORD_BTN, ()-> leftButton()));
         addActor(paleBtn = new SmartButton(ButtonStyled.STD_BUTTON.PALE_BTN, ()-> rightButton()));
 
-        bar.addListener(new DynamicTooltip(() -> "Undying counters: " + bar.getTooltip()).getController());
+        bar.addListener(new DynamicTooltip(() ->  SoulforceMaster.getTooltip()).getController());
 //        bar.addListener(new DynamicTooltip(() -> "Current Soulforce: " + bar.getTooltip()).getController());
         lordBtn.addListener(new DynamicTooltip(() -> "Use Eidolon Arts").getController());
         paleBtn.addListener(new DynamicTooltip(() -> "Eidolon Lord panel").getController());
@@ -45,10 +45,9 @@ public class SoulforcePanel extends GroupX {
         lordBtn.setY(bar.getY()-bar.getHeight()/2+27);
         paleBtn.setY(bar.getY()-bar.getHeight()/2+28);
 
-
         GdxMaster.center(soulCounter);
-        soulCounter.setY(15);
-        soulCounter.setX(soulCounter.getX()-41);
+        soulCounter.setY(-15);
+        // soulCounter.setX(soulCounter.getX()-41);
 
         GuiEventManager.bind(GuiEventType.SOULFORCE_GAINED , p->{
             GuiEventManager.triggerWithParams(GuiEventType.GRID_SCREEN,

@@ -92,8 +92,8 @@ public class NF_PartyManager extends ScenarioPartyManager {
     private ObjType generateLordType() {
         ObjType type = new ObjType(LORD_TYPE, DC_TYPE.LORD);
         int soulforce = DC_Formulas.getSoulforceForLordLevel(LORD_LEVEL);
-        type.setParam(PARAMS.SOULFORCE, soulforce);
-        type.setParam(PARAMS.BASE_SOULFORCE, soulforce / 4);
+        type.setParam(PARAMS.SOULFORCE, soulforce );
+        type.setParam(PARAMS.BASE_SOULFORCE, soulforce / 4 );
         return type;
     }
 

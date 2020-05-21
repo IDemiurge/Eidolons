@@ -4,6 +4,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -33,9 +34,19 @@ public class AggroMaster extends ExplorationHandler {
 
     public void checkStatusUpdate() {
         if (checkEngaged()) {
-            if (!isCombat())
-                 master.event(new EngageEvent(EngageEvent.ENGAGE_EVENT.combat_start,
-                         AggroMaster.getAggroGroup().size()));
+            if (!isCombat()) {
+                Unit leader=null;
+                for (Unit unit : AggroMaster.getAggroGroup()) {
+                    if (unit.getAI().isLeader()) {
+                        leader = unit; break;
+                    }
+                }
+                if (leader == null) {
+                    leader = getAggroGroup().get(0);
+                }
+                master.event(new EngageEvent(leader, Eidolons.getMainHero(), EngageEvent.ENGAGE_EVENT.combat_start,
+                        getAggroGroup().size()));
+            }
         } else {
             if (isCombat())
                 master.event(new EngageEvent(EngageEvent.ENGAGE_EVENT.combat_end));

@@ -1,18 +1,18 @@
 package eidolons.libgdx.screens.map.ui;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.macro.entity.party.MacroParty;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.generic.SuperContainer;
+import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.screens.map.MapScreen;
+import eidolons.macro.entity.party.MacroParty;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.MapEvent;
@@ -100,16 +100,16 @@ header for the party?
             addNormalSize(portrait);
             LabelStyle style = StyleHolder.getSizedColoredLabelStyle
              (FONT.MAIN, 18, GdxColorMaster.getDefaultTextColor());
-            ValueContainer name = new ValueContainer(new Label(hero.getName(), style));
+            ValueContainer name = new ValueContainer(new LabelX(hero.getName(), style));
             style = StyleHolder.getSizedColoredLabelStyle
              (FONT.MAIN, 16, GdxColorMaster.getDefaultTextColor());
             //class and level?
             String text = "Level " + hero.getLevel();
-            ValueContainer subname = new ValueContainer(new Label(text, style));
+            ValueContainer subname = new ValueContainer(new LabelX(text, style));
             text = party.getMemberRank(hero);
-            ValueContainer rank = new ValueContainer(new Label(text, style));
+            ValueContainer rank = new ValueContainer(new LabelX(text, style));
             text = StringMaster.getWellFormattedString(party.getStatus(hero).toString());
-            ValueContainer status = new ValueContainer(new Label(text, style));
+            ValueContainer status = new ValueContainer(new LabelX(text, style));
             TablePanel tablePanel = new TablePanel().initDefaultBackground();
             tablePanel.add(name);//.maxWidth(getMainWidth()-128);
             tablePanel.row();
