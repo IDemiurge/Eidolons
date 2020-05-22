@@ -323,7 +323,7 @@ public class MusicMaster {
 
     public void init() {
         if (RandomWizard.random()) {
-            theme = RandomWizard.random() ? MUSIC_THEME.GOODLY : MUSIC_THEME.DARK;
+            theme = RandomWizard.random() ? MUSIC_THEME.dungeon : MUSIC_THEME.mist;
         }
         autoplay = true;
     }
@@ -338,20 +338,6 @@ public class MusicMaster {
     }
 
 
-    //???
-    private void checkUpdateTypes() {
-        if (scope == MUSIC_SCOPE.ATMO) {
-            scope = MUSIC_SCOPE.BATTLE;
-        } else {
-            scope = MUSIC_SCOPE.ATMO;
-            if (theme == null) {
-                theme = MUSIC_THEME.DARK;
-            } else {
-                theme = MUSIC_THEME.GOODLY;
-            }
-        }
-
-    }
 
     private boolean isTrackLooping(String path) {
         return path.toLowerCase().contains("loop");
@@ -910,9 +896,14 @@ public class MusicMaster {
     }
 
     public enum MUSIC_THEME {
-        DARK,
-        BOSS,
-        GOODLY,
+        evil( DUNGEONS_OF_DOOM, LOOMING_SHADES, FALLEN_REALMS),
+        dungeon(LOOMING_SHADES, DARK_SECRETS, DUNGEONS_OF_DOOM),
+        mist(OBSCURE_PATHS_LOOP, FAR_BEYOND_FALLEN, LOOMING_SHADES),
+        vampire(FROM_DUSK_TILL_DAWN, FALLEN_REALMS, OBSCURE_PATHS_LOOP),
+        ;
+
+        MUSIC_THEME(MUSIC_TRACK... tracks) {
+        }
     }
 
     public enum MUSIC_TRACK {

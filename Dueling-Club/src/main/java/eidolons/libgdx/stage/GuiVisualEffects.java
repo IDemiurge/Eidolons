@@ -12,7 +12,7 @@ import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
-import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
+import eidolons.libgdx.particles.ambi.AmbienceDataSource.VFX_TEMPLATE;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.shaders.VignetteShader;
@@ -83,7 +83,7 @@ public class GuiVisualEffects extends GroupX {
         return false;
     }
 
-    private void initEmitters(AMBIENCE_TEMPLATE template, DAY_TIME time) {
+    private void initEmitters(VFX_TEMPLATE template, DAY_TIME time) {
         if (emitters != null) {
             for (EmitterActor emitter : emitters) {
                 emitter.hide();
@@ -171,11 +171,11 @@ public class GuiVisualEffects extends GroupX {
             }
     }
 
-    private int getEmitterCount(AMBIENCE_TEMPLATE template, DAY_TIME time) {
+    private int getEmitterCount(VFX_TEMPLATE template, DAY_TIME time) {
         return 3;
     }
 
-    private WeightMap<GenericEnums.VFX> getEmittersWeightMap(AMBIENCE_TEMPLATE template, boolean night) {
+    private WeightMap<GenericEnums.VFX> getEmittersWeightMap(VFX_TEMPLATE template, boolean night) {
         WeightMap<GenericEnums.VFX> map = new WeightMap<>(GenericEnums.VFX.class);
         int fog = night ? 10 : 5;
         int down = night? 5 : 10;

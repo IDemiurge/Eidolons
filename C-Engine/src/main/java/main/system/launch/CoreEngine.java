@@ -146,9 +146,9 @@ public class CoreEngine {
         int CPU_NUMBER;
         System.out.println("CPU's available:  " +
                 (CPU_NUMBER = Runtime.getRuntime().availableProcessors()));
-//        System.out.println("Total Memory:  " +
-//         (TOTAL_MEMORY =
-//          Runtime.getRuntime().totalMemory()));
+        //        System.out.println("Total Memory:  " +
+        //         (TOTAL_MEMORY =
+        //          Runtime.getRuntime().totalMemory()));
 
         if (System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\Alexa")) {
             me = true;
@@ -369,6 +369,21 @@ public class CoreEngine {
         CoreEngine.phaseAnimsOn = phaseAnimsOn;
     }
 
+    public static void compileReflectionMap() {
+        if (Mapper.isInitialized()) {
+            return;
+        }
+        List<String> classFolders = new ArrayList<>(Arrays.asList(classFolderPaths));
+        try {
+            Chronos.mark("MAPPER INIT");
+            Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
+                    classFolders);
+            Chronos.logTimeElapsedForMark("MAPPER INIT");
+        } catch (ClassNotFoundException | SecurityException | IOException e) {
+            ExceptionMaster.printStackTrace(e);
+        }
+    }
+
     public static void dataInit(boolean macro) {
 
         Chronos.mark("TYPES INIT");
@@ -376,7 +391,6 @@ public class CoreEngine {
         XML_Reader.readTypes(macro);
         WaitMaster.receiveInput(WAIT_OPERATIONS.XML_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.XML_READY);
-        List<String> classFolders = new ArrayList<>(Arrays.asList(classFolderPaths));
         //         if (dialogueDataRequired){
         //             classFolders.add( "main.data.dialogue" );
         //             classFolders.add(  "main.game.battlecraft.logic.meta.scenario.dialogue.speech" );
@@ -384,14 +398,7 @@ public class CoreEngine {
 
         Chronos.logTimeElapsedForMark("TYPES INIT");
         if (isCompileReflectionMap())
-            try {
-                Chronos.mark("MAPPER INIT");
-                Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
-                        classFolders);
-                Chronos.logTimeElapsedForMark("MAPPER INIT");
-            } catch (ClassNotFoundException | SecurityException | IOException e) {
-                ExceptionMaster.printStackTrace(e);
-            }
+            compileReflectionMap();
 
     }
 
@@ -435,7 +442,7 @@ public class CoreEngine {
 
     public static boolean isCombatGame() {
         return isMainGame();
-//        return !toolIsRunning && !isArcaneTower() && !isArcaneVault() && !isLevelEditor() && !isjUnit();
+        //        return !toolIsRunning && !isArcaneTower() && !isArcaneVault() && !isLevelEditor() && !isjUnit();
     }
 
     public static boolean isIDE() {

@@ -73,7 +73,6 @@ public enum GuiEventType implements EventType {
     UPDATE_SHADOW_MAP,
     UPDATE_EMITTERS,
     UPDATE_GRAVEYARD,
-    UPDATE_AMBIENCE,
     CREATE_EMITTER,
     LOG_ENTRY_ADDED,
     FULL_LOG_ENTRY_ADDED,

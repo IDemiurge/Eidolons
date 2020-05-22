@@ -18,12 +18,6 @@ public class SoulforcePanel extends GroupX {
     SoulforceBar bar;
 
     public SoulforcePanel() {
-//        RollDecorator.RollableGroup decorated;
-//        addActor(decorated = RollDecorator.decorate(
-//                bg = new FadeImageContainer(Images.COLUMNS), FACING_DIRECTION.NORTH, true));
-//       decorated.setRollPercentage(0.78f);
-//       decorated.setRollIsLessWhenOpen(true);
-//        decorated.toggle(false);
         addActor(soulCounter = new SoulCounter());
         addActor(bg = new FadeImageContainer("ui/components/dc/soulforce/background.png"));
         addActor(bar = new SoulforceBar( ));
@@ -69,6 +63,12 @@ public class SoulforcePanel extends GroupX {
     @Override
     public void act(float delta) {
         super.act(delta);
+        lordBtn.setX(107);
+        lordBtn.setY(39);
+        paleBtn.setX(434);
+        paleBtn.setY(39);
+        soulCounter.setX(353);
+        soulCounter.setX(77);
     }
 
     private void openLordPanel() {

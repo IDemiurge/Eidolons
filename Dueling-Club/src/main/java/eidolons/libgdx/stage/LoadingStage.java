@@ -18,7 +18,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.particles.ambi.Ambience;
-import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
+import eidolons.libgdx.particles.ambi.AmbienceDataSource.VFX_TEMPLATE;
 import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenMaster;
@@ -124,13 +124,13 @@ public class LoadingStage extends Stage {
                 }
 
                 //local time?!
-                AMBIENCE_TEMPLATE template =
-                        new EnumMaster<AMBIENCE_TEMPLATE>().retrieveEnumConst(AMBIENCE_TEMPLATE.class,
+                VFX_TEMPLATE template =
+                        new EnumMaster<VFX_TEMPLATE>().retrieveEnumConst(VFX_TEMPLATE.class,
                                 new WeightMap<>().
 //                        chain(AMBIENCE_TEMPLATE.COLD, 10).
-        chain(AMBIENCE_TEMPLATE.CAVE, 10).
-                                        chain(AMBIENCE_TEMPLATE.DEEP_MIST, 10).
-                                        chain(AMBIENCE_TEMPLATE.CRYPT, 10).
+        chain(VFX_TEMPLATE.CAVE, 10).
+                                        chain(VFX_TEMPLATE.DEEP_MIST, 10).
+                                        chain(VFX_TEMPLATE.CRYPT, 10).
                                         getRandomByWeight().toString());
 
                 boolean night = TimeMaster.getTime() % (3600 * 24 * 1000) > 3600 * 12 * 1000;

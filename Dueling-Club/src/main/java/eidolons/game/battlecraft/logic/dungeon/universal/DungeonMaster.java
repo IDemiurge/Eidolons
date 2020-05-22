@@ -20,7 +20,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
-import eidolons.libgdx.particles.ambi.ParticleManager;
 import main.game.bf.Coordinates;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
@@ -115,7 +114,6 @@ public abstract class DungeonMaster {
             } catch (Exception e) {
                 ExceptionMaster.printStackTrace(e);
             }
-        ParticleManager.init(floorWrapper.getFloor());
         GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, floorWrapper.getMapBackground());
         spawner.spawn();
     }

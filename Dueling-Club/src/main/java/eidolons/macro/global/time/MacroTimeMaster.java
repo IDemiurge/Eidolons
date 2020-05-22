@@ -47,6 +47,9 @@ public class MacroTimeMaster {
     private MacroTimeMaster() {
         defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
          getIntValue(GAMEPLAY_OPTION.GAME_SPEED)) / 100;
+        if (CoreEngine.TEST_LAUNCH) {
+            defaultSpeed*=50;
+        }
         setSpeed(defaultSpeed);
     }
 

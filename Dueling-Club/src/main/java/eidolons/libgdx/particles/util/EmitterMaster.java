@@ -24,7 +24,10 @@ import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.ImageChooser;
 import main.system.PathUtils;
-import main.system.auxiliary.*;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
@@ -508,11 +511,8 @@ public class EmitterMaster extends GdxUtil {
         String imgName = root.getName();
 
         String base = processImageNameDeep(imgName);
-        if (image.getName().toLowerCase().contains(base.toLowerCase()))
-            return true;
+        return image.getName().toLowerCase().contains(base.toLowerCase());
         //so we'll getVar all the images... isn't it much?
-
-        return false;
     }
 
     public enum VFX_ATLAS {
@@ -523,8 +523,8 @@ public class EmitterMaster extends GdxUtil {
         INVERT, UNIT
     }
 
-    public enum VFX_TEMPLATE {
-        CENTER, SWIRL, FADE, FLOW,
-        MISSILE, WHIRL,
-    }
+    // public enum VFX_TEMPLATE {
+    //     CENTER, SWIRL, FADE, FLOW,
+    //     MISSILE, WHIRL,
+    // }
 }

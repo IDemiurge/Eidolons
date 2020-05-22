@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -33,6 +35,7 @@ import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -90,8 +93,10 @@ public class DungeonScreen extends GameScreenWithTown {
         super.preBindEvent();
 
         GuiEventManager.bind(GuiEventType.INITIAL_LOAD_DONE, p -> {
+            particleManager = new ParticleManager();
             final GridCreateData param = ((GridCreateData) p.get());
             createAndInitModuleGrid(param);
+            gridStage.addActor(particleManager);
         });
     }
 
@@ -101,6 +106,10 @@ public class DungeonScreen extends GameScreenWithTown {
         WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
     }
 
+    public void moduleEntered(Module module, DequeImpl<BattleFieldObject> objects) {
+        super.moduleEntered(module, objects);
+        particleManager.initModule(module);
+    }
     @Override
     protected void afterLoad() {
         Gdx.gl20.glEnable(GL_POINT_SMOOTH);
@@ -112,28 +121,17 @@ public class DungeonScreen extends GameScreenWithTown {
 
         super.afterLoad();
         controller = new DungeonInputController(getCamera());
-        particleManager = new ParticleManager();
-        gridStage.addActor(particleManager);
 
         soundMaster = new DC_SoundMaster(this);
 
         MusicMaster.getInstance().scopeChanged(ATMO);
 
-        if (isDrawGridOnInit())
-            try {
-                batch.begin();
-                gridPanel.draw(batch, 1f);
-                batch.end();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
         try {
             getController().setDefaultPos();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         bindEvents();
-//TODO use simple float pair to make it dynamic
 
         cameraMan.centerCameraOnMainHero();
         selectionPanelClosed();
@@ -141,17 +139,6 @@ public class DungeonScreen extends GameScreenWithTown {
         WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
 
-//        if (CoreEngine.isIggDemo() && !EidolonsGame.FOOTAGE  )
-//            initBackground();
-//
-//        if (!CoreEngine.isLiteLaunch())
-//            if (EidolonsGame.FOOTAGE) {
-//                if (MainLauncher.BG != null) {
-//                    setBackground(MainLauncher.BG);
-//                }
-//            setBackground(Sprites.BG_VALLEY);
-//            setBackground("main/background/ruins dark.png");
-//            }
     }
 
     @Override
@@ -170,10 +157,6 @@ public class DungeonScreen extends GameScreenWithTown {
         });
     }
 
-
-    private boolean isDrawGridOnInit() {
-        return false;
-    }
 
 
     protected void selectionPanelClosed() {

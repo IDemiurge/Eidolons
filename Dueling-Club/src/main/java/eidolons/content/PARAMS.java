@@ -1002,8 +1002,15 @@ could have other params - sf discounts,
         this.mod = mod;
     }
 
-    PARAMS(String shortName, String descr, boolean dynamic, int defaultValue, String... entityTypes) {
-        this(entityTypes[0], shortName, descr, dynamic, defaultValue, Integer.MAX_VALUE);
+    PARAMS(boolean mod, String shortName, String descr, boolean dynamic, int defaultValue ) {
+        this(shortName, descr, dynamic, defaultValue );
+        this.mod = mod;
+    }
+    PARAMS(String shortName, String descr, boolean dynamic, int defaultValue ) {
+        this(null , shortName, descr, dynamic, defaultValue);
+    }
+        PARAMS(String shortName, String descr, boolean dynamic, int defaultValue, String... entityTypes) {
+        this( entityTypes[0], shortName, descr, dynamic, defaultValue, Integer.MAX_VALUE);
         this.entityTypes = entityTypes;
     }
 

@@ -27,6 +27,7 @@ import main.system.auxiliary.log.Err;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
+import main.system.launch.CoreEngine;
 import main.utilities.filter.TypeFilter;
 import main.utilities.workspace.Workspace;
 import main.utilities.workspace.WorkspaceManager;
@@ -551,6 +552,9 @@ public class TabBuilder extends Builder implements ChangeListener {
         String path = PathFinder.getTYPES_PATH();
         if (CLASS == MACRO_OBJ_TYPES.class) {
             path = PathFinder.getMACRO_TYPES_PATH();
+        } else {
+            if (DC_TYPE.getType(name).isTreeEditType())
+                CoreEngine.compileReflectionMap();
         }
         File file = FileManager.getFile(path + name + ".xml");
         List<File> files = new ArrayList<>();
@@ -564,7 +568,6 @@ public class TabBuilder extends Builder implements ChangeListener {
             XML_Reader.loadMap(xmlFile.getType().getName(),
              xmlFile.getContents());
         }
-
         TabBuilder tabBuilder = new TabBuilder(name);
         builders.put(tabBuilder, null);
 

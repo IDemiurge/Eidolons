@@ -289,7 +289,7 @@ public abstract class GridPanel extends Group {
     }
 
     protected boolean isShardsOn() {
-        return false;
+        return true;
     }
 
     protected void drawEmitters(Batch batch) {
@@ -734,6 +734,9 @@ public abstract class GridPanel extends Group {
     }
 
     public DC_Cell getCell(int i, int i1) {
+        if (cells[i][i1] == null) {
+            return null;
+        }
         return cells[i][i1].getUserObject();
     }
 
@@ -969,7 +972,11 @@ public abstract class GridPanel extends Group {
     }
 
     public boolean isVoid(int x, int y) {
-        return getCell(x, y).isVOID();
+        DC_Cell c = getCell(x, y);
+        if (c != null) {
+            return c.isVOID();
+        }
+        return true;
     }
 
     protected void checkAddBorder(int x, int y) {
@@ -1068,9 +1075,9 @@ public abstract class GridPanel extends Group {
         return moduleRows - y;
     }
 
-    public float getModuleY(int y) {
-        return y - (full_rows - moduleRows);
-    }
+    // public float getModuleY(int y) {
+    //     return y - (full_rows - moduleRows);
+    // }
 
     public float getOffsetX() {
         return offsetX;

@@ -78,6 +78,10 @@ public class DefaultActionHandler {
             return doDebugStuff(source, target);
         }
 
+        if (!target.getCoordinates().isAdjacent(source.getCoordinates())) {
+            return false;
+        }
+
         //        if (target.isMine())
         //            return false;
         DC_ActiveObj action = null;
@@ -98,6 +102,9 @@ public class DefaultActionHandler {
             EUtils.showInfoText(msg);
             main.system.auxiliary.log.LogMaster.log(1, source + " " +
                     msg + " " + target);
+            return false;
+        }
+        if (!action.canBeTargeted(target.getId())) {
             return false;
         }
         if (!confirmAction(target, action)) {

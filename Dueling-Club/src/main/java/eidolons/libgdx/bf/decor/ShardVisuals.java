@@ -3,7 +3,6 @@ package eidolons.libgdx.bf.decor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Eidolons;
-import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
@@ -31,8 +30,7 @@ import java.util.*;
 /**
  * Created by JustMe on 10/8/2018.
  * <p>
- * fade for fog and light on top of static shards
- * emitters
+ * fade for fog and light on top of static shards emitters
  * <p>
  * logic for placements and choice of shards
  * <p>
@@ -42,6 +40,9 @@ import java.util.*;
  */
 public class ShardVisuals extends GroupX implements GridElement {
 
+    protected int cols;
+    protected int rows;
+    private int x1, x2, y1, y2;
     private static final int LARGE_SHARD_CHANCE = 85;
     List<Shard> last = new ArrayList<>();
     Map<Shard, List<EmitterActor>> emittersMap = new XLinkedMap<>();
@@ -166,6 +167,12 @@ public class ShardVisuals extends GroupX implements GridElement {
 
     @Override
     public void setModule(Module module) {
+        x1 = module.getOrigin().x;
+        y1 = module.getOrigin().y;
+        cols = module.getEffectiveWidth();
+        rows = module.getEffectiveHeight();
+        x2 = cols + module.getOrigin().x;
+        y2 = rows + module.getOrigin().y;
         try {
             init();
         } catch (Exception e) {
@@ -175,16 +182,16 @@ public class ShardVisuals extends GroupX implements GridElement {
 
     public void init() {
         setSize(grid.getWidth(), grid.getHeight());
-//buffer by 1
-        for (int x = -1; x - 1 < grid.getModuleCols(); x++) {
-            for (int y = -1; y - 1 < grid.getModuleRows(); y++) {
+        //buffer by 1
+        for (int x = x1 - 1; x - 1 < x2; x++) {
+            for (int y = y1 - 1; y - 1 < y2; y++) {
 
-                if (x >= 0 && y >= 0)
-                    if (x < grid.getModuleCols() &&
-                            y < grid.getModuleRows()) {
-                        Coordinates c = DC_Game.game.getGrid().getModuleCoordinates(x, y);
-                        if (grid.getGridCell(c.x, c.y) != null)
-                            if (!grid.isVoid(c.x, c.y)) {
+                if (x >= x1 && y >= y1)
+                    if (x < x2 &&
+                            y < y2) {
+                        // Coordinates c = DC_Game.game.getGrid().getModuleCoordinates(x, y);
+                        if (grid.getGridCell(x, y) != null)
+                            if (!grid.isVoid(x, y)) {
                                 continue;
                             }
                     }
@@ -201,7 +208,7 @@ public class ShardVisuals extends GroupX implements GridElement {
                 AbstractCoordinates c = new AbstractCoordinates(x, y);
                 SHARD_SIZE size = chooseSize(x, y, direction);
                 if (size == null) {
-//                just empty    continue;
+                    //                just empty    continue;
                 }
                 SHARD_TYPE type = SHARD_TYPE.ROCKS;
                 SHARD_OVERLAY overlay = new EnumMaster<SHARD_OVERLAY>().
@@ -252,7 +259,7 @@ public class ShardVisuals extends GroupX implements GridElement {
                     }
                     shard.setPosition(
                             x * GridMaster.CELL_W + offsetX,
-                            y * GridMaster.CELL_H + offsetY);
+                            grid.getGdxY_ForModule(y) * GridMaster.CELL_H + offsetY);
                     last.add(shard);
 
 
@@ -289,6 +296,7 @@ public class ShardVisuals extends GroupX implements GridElement {
                         last.remove(0);
                     }
                     map.put(c, shard);
+                    main.system.auxiliary.log.LogMaster.log(1, c + " has shard with direction " + direction);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
@@ -301,8 +309,8 @@ public class ShardVisuals extends GroupX implements GridElement {
     }
 
     private boolean isVfxOn() {
-//        return OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.AMBIENCE_VFX);
-        return false;
+        //        return OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.AMBIENCE_VFX);
+        return true;
     }
 
     private SHARD_SIZE chooseSize(int x, int y, Object direction) {
@@ -337,7 +345,8 @@ public class ShardVisuals extends GroupX implements GridElement {
         if (direction.isDiagonal()) {
             return false;
         }
-        if (direction.isVertical()) {
+
+        if (isFlipVertical() && direction.isVertical()) {
             direction = direction.flip();
         }
         Coordinates c = Coordinates.get(true, x, y);
@@ -391,6 +400,10 @@ public class ShardVisuals extends GroupX implements GridElement {
         //add to map so we know where large ones are
     }
 
+    private boolean isFlipVertical() {
+        return false;
+    }
+
     private boolean checkSize(Coordinates coordinates, SHARD_SIZE size) {
         if (map.get(coordinates) != null) {
             return map.get(coordinates).getSize() == size;
@@ -409,12 +422,17 @@ public class ShardVisuals extends GroupX implements GridElement {
         if (adj.x >= grid.getCells().length || adj.y >= grid.getCells()[0].length)
             return null;
         return grid.isVoid(adj);
-//        return grid.getCells()[adj.x][adj.y] == null;
+        //        return grid.getCells()[adj.x][adj.y] == null;
     }
 
     private Integer getDirectionForShards(int x, int y) {
 
         Coordinates c = Coordinates.get(true, x, y);
+        if (c.x > 26) {
+            if (c.y < 35) {
+                c.getAdjacentCoordinates();
+            }
+        }
         List<DIRECTION> adj = new ArrayList<>();
         int n = 0;
         for (DIRECTION d : DIRECTION.clockwise) {
@@ -442,7 +460,9 @@ public class ShardVisuals extends GroupX implements GridElement {
                         if (corner == null) {
                             continue; //prevents "diag-orth-diag" adjacency which is rly just a line
                         }
-                        corner = corner.flipVertically();
+                        if (isFlipVertical()) {
+                            corner = corner.flipVertically();
+                        }
                         return corner.getDegrees();
                     }
 
@@ -466,7 +486,7 @@ public class ShardVisuals extends GroupX implements GridElement {
         }
         Collections.shuffle(adj);
         DIRECTION result = adj.get(0);
-        if (result.isVertical())
+        if (isFlipVertical() && result.isVertical())
             result = result.flip();
 
         return result.getDegrees();

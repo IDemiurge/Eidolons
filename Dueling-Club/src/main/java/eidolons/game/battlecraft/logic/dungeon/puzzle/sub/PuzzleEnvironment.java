@@ -6,7 +6,7 @@ import eidolons.system.audio.MusicMaster;
 public class PuzzleEnvironment {
 
     MusicMaster.AMBIENCE ambience;
-    AmbienceDataSource.AMBIENCE_TEMPLATE vfxTemplate;
+    AmbienceDataSource.VFX_TEMPLATE vfxTemplate;
 
 
 

@@ -32,7 +32,7 @@ public class SoulCounter extends SuperActor {
         // table.addActor(btn = new SmartButton(ButtonStyled.STD_BUTTON.SOULS_BTN, () -> {
         //     GuiEventManager.trigger(GuiEventType.SOULS_CONSUMED);
         // }));
-        Label.LabelStyle style = StyleHolder.newStyle(StyleHolder.getAVQLabelStyle(24));
+        Label.LabelStyle style = StyleHolder.newStyle(StyleHolder.getAVQLabelStyle(22));
 
         table.addActor(counter = new LabelX("", style));
 
@@ -62,12 +62,11 @@ public class SoulCounter extends SuperActor {
     public void act(float delta) {
         // table.setY(-25);
         // table.setX(-table.getWidth()/2+11);
-        counter.setText(EidolonLord.lord.getSoulforce() + "/" +
+        counter.setText(EidolonLord.lord.getSoulforce() + "    /    " +
                 EidolonLord.lord.getSoulforceMax());
-        // style.fontColor = GdxColorMaster.CRIMSON; if low
-        // setSize(btn.getWidth(), btn.getHeight());
         GdxMaster.center(counter);
-        // counter.setX((btn.getWidth() - counter.getPrefWidth()) / 2);
+        counter.setX(0);
+        counter.setY(0);
         super.act(delta);
     }
 }

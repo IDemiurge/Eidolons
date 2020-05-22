@@ -291,6 +291,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     public void setMode(MODE mode) {
         if (this.mode == mode) return;
         if (getEntity().isUnconscious()) {
+            this.mode = STD_MODES.UNCONSCIOUS;
             return;
         }
         if (getBuff("Channeling") != null) {

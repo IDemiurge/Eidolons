@@ -231,7 +231,6 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         menuButton.addActor(btnBg);
         this.menuButton = new SmartButton(STD_BUTTON.OPTIONS, () ->
                 gameMenu.toggle());
-        this.menuButton.setFlipX(true);
         this.menuButton.setPosition(-4, 13);
         menuButton.addActor(this.menuButton);
 

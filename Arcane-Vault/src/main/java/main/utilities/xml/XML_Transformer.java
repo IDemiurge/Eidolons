@@ -232,6 +232,9 @@ public class XML_Transformer {
         if (doc == null) {
             return;
         }
+        if (file.getType().isTreeEditType()) {
+            return ; //TODO different cleanup here
+        }
         log(1, "Removing empty nodes from " + file);
         log(1, file + " current length: " + file.getContents().length());
         for (Node groupNode : XmlNodeMaster.getNodeList(doc.getFirstChild())) {

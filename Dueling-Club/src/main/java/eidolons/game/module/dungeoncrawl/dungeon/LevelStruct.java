@@ -4,8 +4,11 @@ import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.libgdx.bf.decor.CellDecor.CELL_PATTERN;
-import eidolons.libgdx.particles.ambi.AmbienceDataSource;
+import eidolons.libgdx.particles.ambi.AmbienceDataSource.VFX_TEMPLATE;
+import eidolons.libgdx.particles.ambi.StructAmbiData;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
+import eidolons.system.audio.MusicMaster.MUSIC_THEME;
+import eidolons.system.audio.Soundscape;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.DungeonEnums;
 import main.data.tree.LayeredData;
@@ -30,8 +33,10 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
     protected List<T> subParts = new ArrayList<>();
     protected StructureData data;
     private Map<Coordinates, Integer> patternMap;
+    private StructAmbiData ambiData;
 
     public LevelStruct() {
+        ambiData = new StructAmbiData(this);
     }
 
     @Override
@@ -202,8 +207,11 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
     }
 
     @Override
-    public AmbienceDataSource.AMBIENCE_TEMPLATE getVfx() {
-        return new EnumMaster<AmbienceDataSource.AMBIENCE_TEMPLATE>().retrieveEnumConst(AmbienceDataSource.AMBIENCE_TEMPLATE.class,
+    public VFX_TEMPLATE getVfx() {
+        // if (CoreEngine.TEST_LAUNCH) {
+        //     return new EnumMaster<VFX_TEMPLATE>().getRandomEnumConst(VFX_TEMPLATE.class);
+        // }
+        return new EnumMaster<VFX_TEMPLATE>().retrieveEnumConst(VFX_TEMPLATE.class,
                 getPropagatedValue("vfx_template"));
     }
 
@@ -230,6 +238,14 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
     public COLOR_THEME getAltColorTheme() {
         return new EnumMaster<COLOR_THEME>().retrieveEnumConst(COLOR_THEME.class,
                 getPropagatedValue("ALT_COLOR_THEME"));
+    }
+    public MUSIC_THEME getMusicTheme() {
+        return new EnumMaster<MUSIC_THEME>().retrieveEnumConst(MUSIC_THEME.class,
+                getPropagatedValue("MUSIC_THEME"));
+    }
+    public Soundscape.SOUNDSCAPE getSoundscape() {
+        return new EnumMaster<Soundscape.SOUNDSCAPE>().retrieveEnumConst(Soundscape.SOUNDSCAPE.class,
+                getPropagatedValue("SOUNDSCAPE"));
     }
 
     @Override
@@ -319,4 +335,13 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
     public Module getModule() {
         return null;
     }
+
+    public StructAmbiData getAmbiData() {
+        return ambiData;
+    }
+
+    public void setAmbiData(StructAmbiData ambiData) {
+        this.ambiData = ambiData;
+    }
+
 }

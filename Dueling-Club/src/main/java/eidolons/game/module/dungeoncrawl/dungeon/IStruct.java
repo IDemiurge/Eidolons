@@ -63,7 +63,7 @@ public interface IStruct {
 
     DungeonEnums.DUNGEON_STYLE getStyle();
 
-    AmbienceDataSource.AMBIENCE_TEMPLATE getVfx();
+    AmbienceDataSource.VFX_TEMPLATE getVfx();
 
     MusicMaster.AMBIENCE getAmbience();
 

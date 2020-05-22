@@ -2,20 +2,19 @@ package eidolons.libgdx.particles.ambi;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.EmitterActor;
-import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
+import eidolons.libgdx.particles.ambi.AmbienceDataSource.VFX_TEMPLATE;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.GenericEnums;
-import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
-import main.data.ability.construct.VariableManager;
+import main.content.enums.macro.MACRO_CONTENT_CONSTS;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.MapEvent;
-import main.system.auxiliary.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,36 +25,40 @@ import java.util.Map;
  * Created by JustMe on 1/8/2017.
  */
 public class ParticleManager extends GroupX {
-    private static final GenericEnums.VFX FOG_VFX = GenericEnums.VFX.SMOKE_TEST;
     private static final boolean TEST = true;
     private static boolean ambienceOn = OptionsMaster.getGraphicsOptions().getBooleanValue(
             GRAPHIC_OPTION.AMBIENCE_VFX);
     private static boolean ambienceMoveOn;
-    private static Floor floor_;
-    public boolean debugMode;
-    List<EmitterMap> emitterMaps = new ArrayList<>();
+
     List<EmitterActor> dynamicVfx = new ArrayList<>();
-    Map<String, EmitterMap> cache = new HashMap<>();
+    Map<Module, GlobalVfxMap> cache = new HashMap<>();
 
     GlobalVfxMap ambienceMap;
 
+    public void initModule(Module module) {
+        //should be part of gridPanel? Under SHadowMap?
+        if (ambienceMap != null) {
+            ambienceMap.remove();
+        } else {
+            bindEvents();
+        }
+        ambienceMap = cache.get(module);
+        if (ambienceMap == null) {
+            cache.put(module, ambienceMap = new GlobalVfxMap(module));
+        }
+        addActor(ambienceMap);
+    }
+
     public ParticleManager() {
-//        if (OptionsMaster) TODO
-//        new AttachEmitterManager();
-        GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {
-            addActor(ambienceMap = new GlobalVfxMap());
-        });
+
+    }
+
+    private void bindEvents() {
         GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
             if (isAmbienceOn())
-                if (ambienceMap != null) {
-                    ambienceMap.update((DAY_TIME) p.get());
-                    addActor(ambienceMap);
-                    return;
-                }
-            if (isAmbienceOn())
-                GuiEventManager.trigger(GuiEventType.INIT_AMBIENCE,
-                        new AmbienceDataSource(getTemplate(floor_), (DAY_TIME) p.get()));
+                ambienceMap.update((MACRO_CONTENT_CONSTS.DAY_TIME) p.get());
         });
+
 
         GuiEventManager.bind(GuiEventType.SHOW_CUSTOM_VFX, p -> {
             List args = (List) p.get();
@@ -90,65 +93,29 @@ public class ParticleManager extends GroupX {
 
 
         });
-        GuiEventManager.bind(GuiEventType.INIT_AMBIENCE, p -> {
-            if (!isAmbienceOn())
-                return;
-
-            AmbienceDataSource dataSource = (AmbienceDataSource) p.get();
-            clearChildren();
-            emitterMaps.clear();
-            for (String sub : dataSource.getEmitters()) {
-                int showChance = dataSource.getShowChance();
-                if (!VariableManager.getVar(sub).isEmpty()) {
-                    showChance = NumberUtils.getInteger(VariableManager.getVar(sub));
-                    sub = VariableManager.removeVarPart(sub);
-                }
-                EmitterMap emitterMap = cache.get(sub);
-                if (emitterMap == null) {
-                    emitterMap = new EmitterMap(sub, showChance, dataSource.getColorHue());
-                    cache.put(sub, emitterMap);
-                } else
-                    emitterMap.setShowChance(showChance);
-
-                emitterMap.update();
-                emitterMaps.add(emitterMap);
-                addActor(emitterMap);
-            }
-        });
-        GuiEventManager.bind(GuiEventType.UPDATE_AMBIENCE, p -> {
-            if (isAmbienceOn())
-                emitterMaps.forEach(emitterMap -> {
-                    try {
-                        emitterMap.update();
-                    } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
-                    }
-                });
-
-        });
     }
 
     @Deprecated
-    public static AMBIENCE_TEMPLATE getTemplate(Floor floor_) {
+    public static VFX_TEMPLATE getTemplate(Floor floor_) {
         if (floor_.getDungeonSubtype() != null)
             switch (floor_.getDungeonSubtype()) {
                 case CAVE:
                 case HIVE:
 
                 case HELL:
-                    return AMBIENCE_TEMPLATE.CAVE;
+                    return VFX_TEMPLATE.CAVE;
                 case DUNGEON:
                 case SEWER:
                 case TOWER:
                 case CASTLE:
                 case DEN:
                 case HOUSE:
-                    return AMBIENCE_TEMPLATE.DUNGEON;
+                    return VFX_TEMPLATE.DUNGEON;
                 case CRYPT:
                 case BARROW:
-                    return AMBIENCE_TEMPLATE.CRYPT;
+                    return VFX_TEMPLATE.CRYPT;
             }
-        return AMBIENCE_TEMPLATE.DEEP_MIST;
+        return VFX_TEMPLATE.DEEP_MIST;
     }
 
     public static boolean isAmbienceOn() {
@@ -186,10 +153,6 @@ public class ParticleManager extends GroupX {
         ParticleManager.ambienceMoveOn = ambienceMoveOn;
     }
 
-    public static void init(Floor floor) {
-        floor_ = floor;
-    }
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
@@ -204,4 +167,5 @@ public class ParticleManager extends GroupX {
         }
         return 100;
     }
+
 }

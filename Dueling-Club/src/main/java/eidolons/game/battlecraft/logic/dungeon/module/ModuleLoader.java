@@ -108,8 +108,7 @@ public class ModuleLoader extends DungeonHandler {
     }
 
     private void initMusic() {
-        AmbienceDataSource.AMBIENCE_TEMPLATE template = loading.getVfx();
-        GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, template);
+        AmbienceDataSource.VFX_TEMPLATE template = loading.getVfx();
     }
 
 

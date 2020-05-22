@@ -221,6 +221,7 @@ public class GroupAI {
 
     public void setMembers(DequeImpl<Unit> members) {
         this.members = members;
+        members.forEach(member -> member.getAI().setGroupAI(this));
     }
 
     public LevelBlock getBlock() {

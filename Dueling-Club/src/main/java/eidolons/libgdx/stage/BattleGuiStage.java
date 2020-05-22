@@ -19,6 +19,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
+import eidolons.libgdx.gui.HideButton;
 import eidolons.libgdx.gui.overlay.choice.VisualChoice;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.CombatInventory;
@@ -50,6 +51,7 @@ public class BattleGuiStage extends GuiStage {
     private final GuiVisualEffects guiVisualEffects;
     private final CombatInventory combatInventory;
     private final FullscreenAnims fullscreenAnims;
+    private   HideButton sbHideBtn;
     private   VisualChoice vc;
     private UnitInfoPanelNew infoPanel;
     protected OutcomePanel outcomePanel;
@@ -97,9 +99,18 @@ public class BattleGuiStage extends GuiStage {
         addActor(fullscreenAnims = new FullscreenAnims());
 
         if (RuleKeeper.isRuleOn(SOULFORCE)) {
+                  //  RollDecorator.RollableGroup decorated;
+                  //  addActor(decorated = RollDecorator.decorate(
+                  //          bg = new FadeImageContainer(Images.COLUMNS), FACING_DIRECTION.NORTH, true));
+                  // decorated.setRollPercentage(0.78f);
+                  // decorated.setRollIsLessWhenOpen(true);
+                  //  decorated.toggle(false);
             addActor(soulforcePanel = new SoulforcePanel());
             GdxMaster.center(soulforcePanel);
             soulforcePanel.setY(GdxMaster.getTopY(soulforcePanel));
+            addActor( sbHideBtn = new HideButton(soulforcePanel));
+            GdxMaster.center(sbHideBtn);
+            sbHideBtn.setY(GdxMaster.getHeight()-60);
         }
 
         getBottomPanel().setX(GdxMaster.centerWidthScreen(getBottomPanel()));

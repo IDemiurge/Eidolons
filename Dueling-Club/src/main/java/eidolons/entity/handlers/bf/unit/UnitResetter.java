@@ -111,7 +111,7 @@ public class UnitResetter extends EntityResetter<Unit> {
         getEntity().setMode(null);
         if (getEntity().isUnconscious()) {
             GuiEventManager.triggerWithParams(SHOW_MODE_ICON, this, STD_MODES.UNCONSCIOUS.getImagePath());
-            return;
+            // return; will break construct() !
         }
         if (getEntity().getSpecialEffects() != null) {
             getEntity().getSpecialEffects().clear();

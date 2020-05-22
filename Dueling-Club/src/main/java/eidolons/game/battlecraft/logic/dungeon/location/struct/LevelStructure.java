@@ -89,7 +89,7 @@ public class LevelStructure {
         vfx_template(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return AmbienceDataSource.AMBIENCE_TEMPLATE.class;
+                return AmbienceDataSource.VFX_TEMPLATE.class;
             }
         },
         ;
@@ -175,7 +175,7 @@ public class LevelStructure {
         vfx_template(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return AmbienceDataSource.AMBIENCE_TEMPLATE.class;
+                return AmbienceDataSource.VFX_TEMPLATE.class;
             }
         },
         ;
@@ -279,7 +279,7 @@ public class LevelStructure {
         vfx_template(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return AmbienceDataSource.AMBIENCE_TEMPLATE.class;
+                return AmbienceDataSource.VFX_TEMPLATE.class;
             }
         },
 
@@ -395,7 +395,7 @@ public class LevelStructure {
         vfx_template(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return AmbienceDataSource.AMBIENCE_TEMPLATE.class;
+                return AmbienceDataSource.VFX_TEMPLATE.class;
             }
         },
 

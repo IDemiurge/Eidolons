@@ -333,7 +333,7 @@ public class AtbPanel extends GroupX {
     }
 
     private float getActiveX() {
-        return -background.getWidth() + (350 + (imageSize+12) * viewsShown);
+        return -background.getWidth() + (550 + (imageSize+12) * viewsShown);
     }
 
     protected void rollComponent(Actor container, boolean visible) {

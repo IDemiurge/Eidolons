@@ -55,6 +55,7 @@ public class Mapper {
     private static Map<String, AE_Item> itemMap = new HashMap<>();
     private static Map<ARGS, AE_Item> primitiveItems = new HashMap<>();
     private static List<Argument> args;
+    private static boolean initialized;
 
     public static AE_Item getItem(String itemName, Class<?>[] parameterTypes) {
         return getItem(itemName, getArgList(parameterTypes));
@@ -236,6 +237,7 @@ public class Mapper {
             sortLists();
         LogMaster.log(LogMaster.CORE_DEBUG, "ARG MAP: \n" + map);
         LogMaster.log(LogMaster.CORE_DEBUG, "ITEM MAP: \n" + itemMap);
+        initialized = true;
     }
 
     private static void sortLists() {
@@ -393,4 +395,7 @@ public class Mapper {
         map.get(item.getArg()).add(item);
     }
 
+    public static boolean isInitialized() {
+        return initialized;
+    }
 }
