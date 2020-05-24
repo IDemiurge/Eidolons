@@ -31,6 +31,7 @@ public class OperationHandler extends LE_Handler {
     public Object[] execute(Operation.LE_OPERATION operation, Object... args) {
         Coordinates c;
         ObjType type;
+        boolean set = false;
         BattleFieldObject obj = null;
         DIRECTION d = null;
         main.system.auxiliary.log.LogMaster.log(1, "operation: " + operation + " args:" + ListMaster.toStringList(args));
@@ -66,6 +67,8 @@ public class OperationHandler extends LE_Handler {
                 block = (LevelBlock) args[0];
                 block.getZone().getSubParts().remove(block);
                 break;
+            case VOID_SET:
+                 set = true;
             case VOID_TOGGLE:
                 c = (Coordinates) args[0];
                 DC_Cell cell = manager.getGame().getCellByCoordinate(c);
@@ -74,8 +77,11 @@ public class OperationHandler extends LE_Handler {
                     for (BattleFieldObject bfObj : manager.getGame().getObjectsOnCoordinateAll(c)) {
                         operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
                     }
+                if (set)
+                    if (isVoid)
+                        return null;
                 GuiEventManager.trigger(
-                        !isVoid ? GuiEventType.CELL_SET_VOID
+                        !isVoid ||set ? GuiEventType.CELL_SET_VOID
                                 : GuiEventType.CELL_RESET_VOID, c);
                 break;
             case MASS_RESET_VOID:
@@ -253,6 +259,11 @@ public class OperationHandler extends LE_Handler {
                 getModelManager().back();
                 break;
             //all kindsd of meta info
+
+            case VOID_SET:
+                if (op.args == null) {
+                    break;
+                }
             case VOID_TOGGLE:
                 execute(Operation.LE_OPERATION.VOID_TOGGLE, op.args);
                 break;

@@ -187,7 +187,8 @@ public class UnitViewFactory {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                tryDefaultAction(event);
+               Eidolons.onNonGdxThread(()->
+                tryDefaultAction(event));
 
                 super.clicked(event, x, y);
             }

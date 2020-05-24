@@ -52,8 +52,7 @@ public class GridCell extends Group implements Borderable {
     // some creatures can walk there?
 
     /**
-     * so we do create cells, but hide them...
-     * fade in
+     * so we do create cells, but hide them... fade in
      * <p>
      * check if void - via prop
      */
@@ -94,7 +93,7 @@ public class GridCell extends Group implements Borderable {
         backImage = new Image(backTexture);
         backImage.setFillParent(true);
         addActor(backImage);
-//        addActor(overlay = new SpriteX());
+        //        addActor(overlay = new SpriteX());
         addActor(overlayTexture = new Image());
         setSize(GridMaster.CELL_W, GridMaster.CELL_H);
 
@@ -114,9 +113,19 @@ public class GridCell extends Group implements Borderable {
                 createListener());
 
         infoText = new Label("", StyleHolder.getDebugLabelStyle());
-//        addActor(infoText); NOW VIA OVERLAYS
+        //        addActor(infoText); NOW VIA OVERLAYS
 
         return this;
+    }
+
+    @Override
+    public void clearListeners() {
+        super.clearListeners();
+    }
+
+    @Override
+    public boolean removeListener(EventListener listener) {
+        return super.removeListener(listener);
     }
 
     protected EventListener createListener() {
@@ -221,22 +230,22 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void act(float delta) {
-//        if (!DungeonScreen.getInstance().controller.isWithinCamera((this))
-//         ) {
-//            return;
-//        }
+        //        if (!DungeonScreen.getInstance().controller.isWithinCamera((this))
+        //         ) {
+        //            return;
+        //        }
         super.act(delta);
         if (isCoordinatesShown()) {
-//            DC_Cell cell = getUserObject();
-//            cordsText.setText(
-//                    ContainerUtils.build(getGridX(), ":", getGridY())
-//                            + (GammaMaster.DEBUG_MODE ? //TODO into method
-//                            "\n gamma=" + DC_Game.game.getVisionMaster().getGammaMaster().
-//                                    getGammaForCell(getGridX(), getGridY())
-//                                    + "\n illumination="
-//                                    + cell.getIntParam(PARAMS.ILLUMINATION)
-//                            : "")
-//            );
+            //            DC_Cell cell = getUserObject();
+            //            cordsText.setText(
+            //                    ContainerUtils.build(getGridX(), ":", getGridY())
+            //                            + (GammaMaster.DEBUG_MODE ? //TODO into method
+            //                            "\n gamma=" + DC_Game.game.getVisionMaster().getGammaMaster().
+            //                                    getGammaForCell(getGridX(), getGridY())
+            //                                    + "\n illumination="
+            //                                    + cell.getIntParam(PARAMS.ILLUMINATION)
+            //                            : "")
+            //            );
             cordsText.setVisible(true);
         } else {
             if (cordsText.isVisible()) {
@@ -314,7 +323,7 @@ public class GridCell extends Group implements Borderable {
     public void setOverlayTexture(TextureRegion overlay) {
         if (overlay == null) {
             ActionMaster.addFadeOutAction(overlayTexture, 2);
-//            setDebug(false, true);
+            //            setDebug(false, true);
             return;
         }
         ActionMaster.addFadeInAction(overlayTexture, 2);
@@ -322,8 +331,8 @@ public class GridCell extends Group implements Borderable {
         this.overlayTexture.setWidth(overlay.getRegionWidth());
         this.overlayTexture.setHeight(overlay.getRegionHeight());
         GdxMaster.center(this.overlayTexture);
-//        debug();
-//        this.overlay = overlay;
+        //        debug();
+        //        this.overlay = overlay;
     }
 
 

@@ -92,8 +92,8 @@ public class LE_ObjHandler extends LE_Handler {
 
     public void addFromPalette(Coordinates c) {
         if (getModel().isBrushMode() && getModel().getBrush().getBrushType() != LE_BrushType.none) {
-            if (getModel().getBrush().getBrushType() ==  LE_BrushType.toggle_void) {
-                operation(Operation.LE_OPERATION.VOID_TOGGLE, c);
+            if (getModel().getBrush().getBrushType().getOperation()!=null ) {
+                operation(getModel().getBrush().getBrushType().getOperation(), c);
                 lastCoordinates = c;
                 return;
             }

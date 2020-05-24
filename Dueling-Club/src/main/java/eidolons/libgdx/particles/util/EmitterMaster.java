@@ -3,6 +3,7 @@ package eidolons.libgdx.particles.util;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.GDX;
@@ -69,7 +70,7 @@ public class EmitterMaster extends GdxUtil {
     private static boolean writeImage = true;
     private static boolean pack = true;
     private static boolean overwriteImage = false;
-    private static boolean sizeImages = false;
+    private static boolean sizeImages = true;
     private static boolean test = true;
     private static Map<VFX_ATLAS, TextureAtlas> atlasMap = new HashMap<>();
     private static boolean manualFix;
@@ -149,17 +150,9 @@ public class EmitterMaster extends GdxUtil {
                     try {
                         for (String s : ContainerUtils.openContainer(imagePath, "\n")) {
                             if (!ImageManager.isImage(s)) {
-
+                                continue;
                             }
                             Texture texture = new Texture(s);
-                            if (sizeImages)
-                                if (texture.getHeight() > MAX_IMAGE_SIZE || texture.getWidth() > MAX_IMAGE_SIZE) {
-                                    //                            EmitterPresetMaster.getInstance().getGroupText(data, EMITTER_VALUE_GROUP.Scale);
-                                    int max = Math.max(texture.getHeight(), texture.getWidth());
-                                    int coef = max / MAX_IMAGE_SIZE;
-                                    texture = GdxImageMaster.size(s, texture.getWidth() * coef,
-                                            texture.getHeight() * coef, false);
-                                }
                             list.add(texture);
                         }
                     } catch (Exception e) {
@@ -198,11 +191,26 @@ public class EmitterMaster extends GdxUtil {
                         }
                         imagesDataBuilder.append(imageName).append("\n");
                         if (writeImage) {
+
                             Texture texture = (new Texture(s));
+                            if (sizeImages) {
+                                // float w=widthCache.get(s);
+                                // float w=widthCache.get(s);
+                                if (texture.getHeight() > MAX_IMAGE_SIZE || texture.getWidth() > MAX_IMAGE_SIZE) {
+                                    //                            EmitterPresetMaster.getInstance().getGroupText(data, EMITTER_VALUE_GROUP.Scale);
+                                    int max = Math.max(texture.getHeight(), texture.getWidth());
+                                    int coef = max / MAX_IMAGE_SIZE;
+                                    texture = GdxImageMaster.size(s, texture.getWidth() * coef,
+                                            texture.getHeight() * coef, false);
+                                }
+                            }
                             if (texture.getWidth() > 1000) {
                                 continue;
                             }
                             FileHandle handle = GDX.file(newPath);
+                            Vector2 size = new Vector2();
+                            // EmitterPresetMaster.getInstance().getGroupText(data, EMITTER_VALUE_GROUP.Scale);
+                            // writeImageMap.put(texture, size);
                             if (!handle.exists() || overwriteImage) {
 //                                if (type==VFX_ATLAS.INVERT){
 //                                nice try!

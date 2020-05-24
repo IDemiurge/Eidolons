@@ -67,8 +67,8 @@ public class SoulforcePanel extends GroupX {
         lordBtn.setY(39);
         paleBtn.setX(434);
         paleBtn.setY(39);
-        soulCounter.setX(353);
-        soulCounter.setX(77);
+        soulCounter.setX(230);
+        soulCounter.setY(51);soulCounter.setZIndex(3465);
     }
 
     private void openLordPanel() {

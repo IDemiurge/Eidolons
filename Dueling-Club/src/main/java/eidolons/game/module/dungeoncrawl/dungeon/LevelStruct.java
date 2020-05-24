@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.libgdx.bf.decor.CellDecor.CELL_PATTERN;
+import eidolons.libgdx.bf.decor.ShardVisuals.SHARD_TYPE;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.VFX_TEMPLATE;
 import eidolons.libgdx.particles.ambi.StructAmbiData;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
@@ -205,7 +206,15 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
         return new EnumMaster<DUNGEON_STYLE>().retrieveEnumConst(DUNGEON_STYLE.class,
                 getPropagatedValue("style"));
     }
+    public SHARD_TYPE getShardTypeAlt() {
+        return new EnumMaster<SHARD_TYPE>().retrieveEnumConst(SHARD_TYPE.class,
+                getPropagatedValue("shard_type_alt"));
+    }
 
+    public SHARD_TYPE getShardType() {
+        return new EnumMaster<SHARD_TYPE>().retrieveEnumConst(SHARD_TYPE.class,
+                getPropagatedValue("shard_type"));
+    }
     @Override
     public VFX_TEMPLATE getVfx() {
         // if (CoreEngine.TEST_LAUNCH) {

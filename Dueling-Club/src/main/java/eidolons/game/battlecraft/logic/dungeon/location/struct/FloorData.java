@@ -26,8 +26,13 @@ public class FloorData extends StructureData<FLOOR_VALUES, Location> {
                 collect(Collectors.toList());
         list.remove(FLOOR_VALUES.height.toString());
         list.remove(FLOOR_VALUES.width.toString());
-        list.remove(LevelStructure.FLOOR_VALUES.id.toString());
-        list.remove(LevelStructure.FLOOR_VALUES.illumination.toString());
+        list.remove(FLOOR_VALUES.id.toString());
+        list.remove(FLOOR_VALUES.illumination.toString());
+        list.remove(FLOOR_VALUES.soundscape.toString());
+        list.remove(FLOOR_VALUES.ambience.toString());
+        list.remove(FLOOR_VALUES.vfx_template.toString());
+        list.remove(FLOOR_VALUES.wall_type.toString());
+        list.remove(FLOOR_VALUES.alt_wall_type.toString());
         return list.toArray(new String[0]);
     }
     @Override

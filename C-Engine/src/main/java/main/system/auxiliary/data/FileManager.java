@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.zip.Inflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -26,6 +27,7 @@ public class FileManager {
     private static Map<String, Boolean> fileCheckMap = new HashMap<>();
     private static Map<String, Boolean> directoryCheckMap = new HashMap<>();
     private static Map<String, List<File>> folderCache = new HashMap<>();
+    private static Map<String, List<File>> variantCache = new HashMap<>();
 
     public static String readFile(String filePath) {
         File file = getFile(filePath, true, false);
@@ -56,11 +58,11 @@ public class FileManager {
 
                 }
                 main.system.auxiliary.log.LogMaster.verbose("Failed to read " + file.getPath());
-//              TODO wtf  try {
-//                    throw new RuntimeException();
-//                } catch (Exception e) {
-//                    main.system.ExceptionMaster.printStackTrace(e);
-//                }
+                //              TODO wtf  try {
+                //                    throw new RuntimeException();
+                //                } catch (Exception e) {
+                //                    main.system.ExceptionMaster.printStackTrace(e);
+                //                }
                 return "";
             }
             if (!PathUtils.fixSlashes(file.getPath()).toLowerCase().contains(PathFinder.getRootPath().toLowerCase()))
@@ -241,12 +243,12 @@ public class FileManager {
             if (file.isFile() || file.isDirectory()) {
                 return file;
             }
-//            if (!allowInvalid)
-//            file = getFile(PathFinder.getRootPath() + path, false);
-//            if (file.isFile() || file.isDirectory()) {
-//                return file;
-//            }
-//            file = new File(path);
+            //            if (!allowInvalid)
+            //            file = getFile(PathFinder.getRootPath() + path, false);
+            //            if (file.isFile() || file.isDirectory()) {
+            //                return file;
+            //            }
+            //            file = new File(path);
             if (!CoreEngine.isActiveTestMode())
                 if (!CoreEngine.isFullFastMode()) {
                     if (!missing.contains(file.getPath())) {
@@ -315,6 +317,26 @@ public class FileManager {
                                                   boolean underslash,
                                                   boolean recursion) {
         return getRandomFilePathVariant("", corePath, format, underslash, recursion);
+    }
+
+    public static String getRandomFilePathVariantSmart(String filename, String dir, String format) {
+        String key = (dir + filename).toLowerCase();
+
+        List<File> filtered = variantCache.get(key);
+        if (!ListMaster.isNotEmpty(filtered)) {
+            String finalFilename = filename.toLowerCase();
+            List<File> files = getFilesFromDirectory(dir, false, false);
+            filtered = files.stream().filter(file
+                    -> (file.getName().toLowerCase().startsWith(finalFilename))
+                    && file.getName().toLowerCase().endsWith(format))
+                    .collect(Collectors.toList());
+            variantCache.put(key, filtered);
+        }
+        int index = RandomWizard.getRandomIndex(filtered);
+        if (index < 0) {
+            return dir + "/" + filename+format;
+        }
+            return filtered.remove(index).getPath();
     }
 
     public static String getRandomFilePathVariant(String prefixPath, String corePath,
@@ -572,21 +594,22 @@ public class FileManager {
     }
 
     public static List<File> getFilesFromDirectory(String path, boolean allowDirectories,
-                                                   boolean subDirectories ) {
+                                                   boolean subDirectories) {
         return getFilesFromDirectory(path, allowDirectories, subDirectories, true);
     }
-        public static List<File> getFilesFromDirectory(String path, boolean allowDirectories,
-        boolean subDirectories,
-        boolean cache) {
+
+    public static List<File> getFilesFromDirectory(String path, boolean allowDirectories,
+                                                   boolean subDirectories,
+                                                   boolean cache) {
         if (!isDirectory(path)) {
             return new ArrayList<>();
         }
-        List<File> result = null ;
+        List<File> result = null;
         if (cache) {
-            result= folderCache.get(path);
-        if (result != null) {
-            return result;
-        }
+            result = folderCache.get(path);
+            if (result != null) {
+                return result;
+            }
         }
         File folder = FileManager.getFile(path);
         result = getFilesFromDirectory(folder, allowDirectories, subDirectories);
@@ -680,7 +703,8 @@ public class FileManager {
             e.printStackTrace();
         }
     }
-        public static void copy(String from, String to) {
+
+    public static void copy(String from, String to) {
         Path src = Paths.get(getFile(from).toURI());
         Path target = Paths.get(getFile(to).toURI());
         try {
@@ -691,8 +715,9 @@ public class FileManager {
     }
 
     public static String getFileNameAndFormat(String template) {
-        return  (getFile(template).getName());
+        return (getFile(template).getName());
     }
+
     public static String getFileName(String template) {
         return StringMaster.cropFormat(getFile(template).getName());
     }

@@ -2,8 +2,10 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.netherflame.dungeons.QD_Enums;
+import eidolons.libgdx.bf.decor.ShardVisuals;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.system.audio.MusicMaster;
+import eidolons.system.audio.Soundscape;
 import main.content.CONTENT_CONSTS;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
@@ -92,6 +94,31 @@ public class LevelStructure {
                 return AmbienceDataSource.VFX_TEMPLATE.class;
             }
         },
+
+        music_theme(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return MusicMaster.MUSIC_THEME.class;
+            }
+        },
+        soundscape(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return Soundscape.SOUNDSCAPE.class;
+            }
+        },
+        shard_type(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardVisuals.SHARD_TYPE.class;
+            }
+        },
+        shard_type_alt(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardVisuals.SHARD_TYPE.class;
+            }
+        },
         ;
 
         private EDIT_VALUE_TYPE type;
@@ -176,6 +203,31 @@ public class LevelStructure {
             @Override
             public Object getArg() {
                 return AmbienceDataSource.VFX_TEMPLATE.class;
+            }
+        },
+
+        music_theme(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return MusicMaster.MUSIC_THEME.class;
+            }
+        },
+        soundscape(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return Soundscape.SOUNDSCAPE.class;
+            }
+        },
+        shard_type(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardVisuals.SHARD_TYPE.class;
+            }
+        },
+        shard_type_alt(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardVisuals.SHARD_TYPE.class;
             }
         },
         ;
@@ -280,6 +332,30 @@ public class LevelStructure {
             @Override
             public Object getArg() {
                 return AmbienceDataSource.VFX_TEMPLATE.class;
+            }
+        },
+        music_theme(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return MusicMaster.MUSIC_THEME.class;
+            }
+        },
+        soundscape(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return Soundscape.SOUNDSCAPE.class;
+            }
+        },
+        shard_type(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardVisuals.SHARD_TYPE.class;
+            }
+        },
+        shard_type_alt(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardVisuals.SHARD_TYPE.class;
             }
         },
 
@@ -399,6 +475,30 @@ public class LevelStructure {
             }
         },
 
+        music_theme(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return MusicMaster.MUSIC_THEME.class;
+            }
+        },
+        soundscape(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return Soundscape.SOUNDSCAPE.class;
+            }
+        },
+        shard_type(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardVisuals.SHARD_TYPE.class;
+            }
+        },
+        shard_type_alt(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardVisuals.SHARD_TYPE.class;
+            }
+        },
 
         assets;
         private EDIT_VALUE_TYPE editValueType;

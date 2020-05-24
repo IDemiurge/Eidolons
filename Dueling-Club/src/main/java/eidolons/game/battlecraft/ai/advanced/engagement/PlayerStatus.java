@@ -49,11 +49,12 @@ public class PlayerStatus {
                 break;
             case COMBAT:
                 iconPath= Images.STATUS_COMBAT;
-                statusText = "Combat\nStatus:\nAlive";
-                if (arg == 0) {
-                    subText = "Reinforcements: Unknown";
-                } else
-                    subText = "Reinforcements: " + arg + " turns";
+                statusText = "Combat\nReinforcements:" ;
+                // + "Status:\nAlive";
+                // if (arg == 0) {
+                    subText = "  Unknown";
+                // } else
+                //     subText = "Reinforcements: " + arg + " turns";
                 break;
             case SHADOW:
                 statusText = "Combat\nStatus:\nShadow";

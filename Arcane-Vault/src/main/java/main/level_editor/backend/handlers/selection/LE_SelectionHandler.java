@@ -1,5 +1,6 @@
 package main.level_editor.backend.handlers.selection;
 
+import com.google.inject.internal.util.ImmutableSet;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
@@ -14,9 +15,11 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
 
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler {
 
@@ -65,7 +68,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
 
     @Override
     public void toDiamond() {
-        Set<Coordinates> transformed= CoordinatesMaster.squareToDiamondArea(getSelection().getCoordinates());
+        Set<Coordinates> transformed = CoordinatesMaster.squareToDiamondArea(getSelection().getCoordinates());
         getModel().setSelection(new LE_Selection());
         getSelection().setCoordinates(transformed);
         selectionChanged();
@@ -98,9 +101,11 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
     public void addToSelected(BattleFieldObject bfObj) {
         Integer id = getIdManager().getId(bfObj);
         if (getModel().getSelection().getIds().contains(id)) {
-            getModel().getSelection().getIds().remove(id);
+            getModel().getSelection().remove(id);
+            getModel().getSelection().remove(getIdManager().getObjectById(id).getCoordinates());
         } else {
-            getModel().getSelection().getIds().add(id);
+            getModel().getSelection().add (id);
+            getModel().getSelection().add(getIdManager().getObjectById(id).getCoordinates());
         }
         selectionChanged();
     }
@@ -108,6 +113,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
     public void select(BattleFieldObject bfObj) {
         Integer id = getIdManager().getId(bfObj);
         getModel().getSelection().setSingleSelection(id);
+        getModel().getSelection().add(getIdManager().getObjectById(id).getCoordinates());
         getSelection().setLastCoordinates(bfObj.getCoordinates());
         selectionChanged();
     }
@@ -156,11 +162,13 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
         getSelection().setLastCoordinates(c);
         List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesBetweenInclusive(c, origin);
         if (objects) {
+            Collection<Integer> ids = new LinkedHashSet<>();
             for (Coordinates c1 : coordinates) {
                 for (BattleFieldObject object : getGame().getObjectsOnCoordinateAll(c1)) {
-                    getSelection().getIds().add(getIdManager().getId(object));
+                    ids.add(getIdManager().getId(object));
                 }
             }
+            getSelection().addIds(ids);
         }
         getSelection().addCoordinates(coordinates);
         //        getSelection().setCoordinates(new LinkedHashSet<>(CoordinatesMaster.getCoordinatesBetweenInclusive(c, origin)));
@@ -172,6 +180,13 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
         return getSelection().getIds().contains(id);
     }
 
+
+    public Set<Coordinates> getCoordinatesAll() {
+        return ImmutableSet.<Coordinates>builder().addAll(getSelection().getCoordinates()).addAll(
+                getSelection().getIds().stream().map(id
+                        -> getIdManager().getObjectById(id).getCoordinates()).collect(Collectors.toSet())).build();
+    }
+
     public enum SELECTION_MODE {
         NONE,
         COORDINATE,
@@ -181,13 +196,13 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
     }
 
     public void selectedCoordinate(Coordinates c) {
-        getSelection() .clear();
+        getSelection().clear();
         addSelectedCoordinate(c);
         getSelection().setLastCoordinates(c);
     }
 
     public void addSelectedCoordinate(Coordinates c) {
-        getSelection() .add(c);
+        getSelection().add(c);
     }
 
     public Coordinates selectCoordinate() {

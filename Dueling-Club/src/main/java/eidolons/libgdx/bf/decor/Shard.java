@@ -12,6 +12,7 @@ import eidolons.libgdx.bf.decor.ShardVisuals.SHARD_SIZE;
 import eidolons.libgdx.bf.decor.ShardVisuals.SHARD_TYPE;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
@@ -52,10 +53,10 @@ public class Shard extends SuperActor {
         init();
         if (TEST_MODE) {
             addActor(debugInfo = new LabelX(
-             direction +
-              "" +
-              "" +
-              "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)));
+                    direction +
+                            "" +
+                            "" +
+                            "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)));
         }
     }
 
@@ -70,27 +71,30 @@ public class Shard extends SuperActor {
 
     private String getBackgroundTexturePath(Object arg) {
         String path = null;
+        String name=null ;
         if (direction == null) {
             path = StrPathBuilder.build("ui", "cells", "shards",
-             type.toString(), "isles", "isle");
+                    type.toString(), "isles"  );
+            name="isle";
         } else if (direction.isDiagonal()) {
             path = StrPathBuilder.build("ui", "cells", "shards",
-             type.toString(), arg.toString());
+                    type.toString(), arg.toString());
         } else {
             if (size == null) {
-                return null ;
+                return null;
             }
-            path = size == SHARD_SIZE.SMALL
-             ?
-             StrPathBuilder.build("ui", "cells", "shards",
-              type.toString(), arg.toString(), size + "up")
-             :
-             StrPathBuilder.build("ui", "cells", "shards",
-              type.toString(), arg.toString(), size + "down");
+            //TODO naming hack - so cheap...
+            path = StrPathBuilder.build("ui", "cells", "shards",
+                    type.toString(), arg.toString());
+
+            name = size == SHARD_SIZE.SMALL
+                    ? size + "up"
+                    : size + "down";
+
         }
-        String file = FileManager.getRandomFilePathVariant(
-         PathFinder.getImagePath() +
-          path, ".png", false, false);
+        String file = FileManager.getRandomFilePathVariantSmart(
+                name, PathFinder.getImagePath() +
+                        path, ".png");
         if (file == null) {
             return null;
         }
@@ -103,17 +107,17 @@ public class Shard extends SuperActor {
 
     private String getForegroundTexturePath(Object arg) {
         return StrPathBuilder.build("ui", "cells", "shards", "overlay",
-         overlay.toString(),
-         //         size.toString() +
-         arg + ".png");
+                overlay.toString(),
+                //         size.toString() +
+                arg + ".png");
     }
 
     private String getRandomForegroundTexturePath(Object arg) {
         String path = getForegroundTexturePath(arg);
 
         String file = FileManager.getRandomFilePathVariant(
-         PathFinder.getImagePath() +
-          path, ".png", false, false);
+                PathFinder.getImagePath() +
+                        path, ".png", false, false);
         if (file == null) {
             return null;
         }
@@ -121,21 +125,21 @@ public class Shard extends SuperActor {
     }
 
     public void init() {
-//        main.system.auxiliary.log.LogMaster.log(1,"Shard init: " +
-//         "overlay=" +overlay +
-//         "size =" +size+
-//         "type" + type+
-//         "BackgroundTexture=" +
-//         getBackgroundTexturePath() );
+        //        main.system.auxiliary.log.LogMaster.log(1,"Shard init: " +
+        //         "overlay=" +overlay +
+        //         "size =" +size+
+        //         "type" + type+
+        //         "BackgroundTexture=" +
+        //         getBackgroundTexturePath() );
 
         //        if (getBackgroundTexturePath() == null) {
         //            GdxImageMaster.flip(getBackgroundTexturePath(direction.flip()),
         //             !direction.isVertical(), direction.isVertical(), true, getBackgroundTexturePath());
         //        }
         if (size != null) {
-        addActor(background = new ImageContainer(getBackgroundTexturePath()));
-        background.setFluctuateAlpha(false);
-        setSize(background.getWidth(), background.getHeight());
+            addActor(background = new ImageContainer(getBackgroundTexturePath()));
+            background.setFluctuateAlpha(false);
+            setSize(background.getWidth(), background.getHeight());
         }
 
         if (overlay == null)
@@ -143,7 +147,7 @@ public class Shard extends SuperActor {
 
         if (!TextureCache.isImage(getForegroundTexturePath())) {
             GdxImageMaster.flip(getForegroundTexturePath(direction.flip()),
-             !direction.isVertical(), direction.isVertical(), true, getForegroundTexturePath());
+                    !direction.isVertical(), direction.isVertical(), true, getForegroundTexturePath());
         }
 
         addActor(foreground = new ImageContainer(getRandomForegroundTexturePath(arg)));
@@ -160,76 +164,37 @@ public class Shard extends SuperActor {
     public void act(float delta) {
         if (isIgnored())
             return;
-        if (getUserObject()!=null)
-         resetColor();
+        if (getUserObject() != null)
+            resetColor();
 
         super.act(delta);
     }
 
     private void resetColor() {
-//        DC_Cell cell = (DC_Cell) getUserObject();
-//        setDebug(cell.isPlayerHasSeen());
-//        if (!cell.isPlayerHasSeen()) {
-//            if (foreground != null) {
-//                foreground. setColor(0.6f,0.6f,0.6f,1f);
-//            }
-//            if (background != null) {
-//            background. setColor(0.6f,0.6f,0.6f,1f);
-//            }
-//        }
-//        else {
-//            setColor(1f,1f,1f,1f);
-//        }
-//        switch (cell.getPlayerVisionStatus()) {
-//            case DETECTED:
-//                break;
-//            case KNOWN:
-//                break;
-//            case UNKNOWN:
-//                break;
-//            case CONCEALED:
-//                break;
-//            case INVISIBLE:
-//                break;
-//            case INVISIBLE_ALLY:
-//                break;
-//        }
-//        switch (cell.getVisibilityLevel()) {
-//
-//            case CLEAR_SIGHT:
-//                break;
-//            case OUTLINE:
-//                break;
-//            case VAGUE_OUTLINE:
-//                break;
-//            case CONCEALED:
-//                break;
-//            case BLOCKED:
-//                break;
-//            case UNSEEN:
-//                break;
-//        }
+        //TODO support color theme?
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-
-        if (getUserObject()==null || parentAlpha == ShaderDrawer.SUPER_DRAW
-//         || batch.getShader() == GrayscaleShader.getGrayscaleShader()
+        if (batch instanceof CustomSpriteBatch) {
+            ((CustomSpriteBatch) batch).resetBlending();
+        }
+        if (getUserObject() == null || parentAlpha == ShaderDrawer.SUPER_DRAW
+            //         || batch.getShader() == GrayscaleShader.getGrayscaleShader()
         ) {
             super.draw(batch, 1);
         } else {
             if (isIgnored())
                 return;
-//            if (GridPanel.SHADER_FOR_UNKNOWN_CELLS)
+            //            if (GridPanel.SHADER_FOR_UNKNOWN_CELLS)
             ShaderDrawer.drawWithCustomShader(this,
                     batch,
                     !getUserObject().isPlayerHasSeen() ?
                             DarkShader.getDarkShader()
-//             FishEyeShader.getShader()
+                            //             FishEyeShader.getShader()
                             : null, true);
         }
-//        super.draw(batch, parentAlpha);
+        //        super.draw(batch, parentAlpha);
     }
 
     @Override

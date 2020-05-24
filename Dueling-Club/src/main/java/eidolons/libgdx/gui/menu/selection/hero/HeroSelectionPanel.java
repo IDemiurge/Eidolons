@@ -27,7 +27,7 @@ public class HeroSelectionPanel extends SelectionPanel {
 
     @Override
     protected boolean isRandom() {
-        return true;
+        return false;
     }
 
     protected String getDoneText() {

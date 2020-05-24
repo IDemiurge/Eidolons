@@ -59,7 +59,7 @@ public class AmbientMaster {
             return Eidolons.getGame().getMetaMaster().getTownMaster().getTown().getAmbience();
         }
         LevelStruct lowestStruct = hero.getGame().getDungeonMaster().getStructMaster().
-                findLowestStruct(hero.getCoordinates());
+                getLowestStruct(hero.getCoordinates());
         if (lowestStruct.getAmbiData().getAmbience()!=null ) {
                 return lowestStruct.getAmbiData().getAmbience();
         }

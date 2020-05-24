@@ -224,7 +224,7 @@ public class EngageEvents extends ExplorationHandler {
     }
 
     public static boolean isLogged() {
-        return true;
+        return false;
     }
 
     public void clearQueue() {

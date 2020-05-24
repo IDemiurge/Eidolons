@@ -771,7 +771,7 @@ public class CoreEngine {
     }
 
     public static boolean isVfxOff() {
-        return vfxOff || isSuperLite();
+        return vfxOff ;
     }
 
     public static void setVfxOff(boolean vfxOff) {

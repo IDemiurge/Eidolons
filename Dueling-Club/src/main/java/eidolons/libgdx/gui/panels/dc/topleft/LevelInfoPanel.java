@@ -11,6 +11,7 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.texture.Images;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 
 public class LevelInfoPanel extends TablePanelX {
     protected ValueContainer locationLabel;
@@ -38,36 +39,30 @@ public class LevelInfoPanel extends TablePanelX {
             CharSequence text = "";
             CharSequence v = "";
             if (Eidolons.getGame() instanceof ScenarioGame) {
-                try {
-//                     if (CoreEngine.isIDE()) {
-//                         text = "Castle Evarinath";
-//                         v =
-// //                                StringMaster.getWellFormattedString(PathUtils.getLastPathSegment
-// //                                        (StringMaster.cropFormat(MainLauncher.getCustomLaunch().
-// //                                                getValue(CustomLaunch.CustomLaunchValue.xml_path)))
-//                                         " Floor [" + 2 + "/" +
-//                                         4 + "]\n" +
-//                                                 "Crypts" ;
-//                     } else {
-                        ScenarioMetaMaster m = ScenarioGame.getGame().getMetaMaster();
-                        text = m.getMetaGame().getScenario().getName();
-                        v = m.getMetaDataManager().getMissionName()
-                                + "\n   Level [" + (m.getMetaGame().getMissionIndex() + 1) + "/" +
-                                m.getMetaGame().getMissionNumber() + "]";
-                    // }
-
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                if (!CoreEngine.TEST_LAUNCH) {
+                    text = "Castle Evarinath";
+                    v =
+                            //                                StringMaster.getWellFormattedString(PathUtils.getLastPathSegment
+                            //                                        (StringMaster.cropFormat(MainLauncher.getCustomLaunch().
+                            //                                                getValue(CustomLaunch.CustomLaunchValue.xml_path)))
+                            " Floor [" + 3 + "/" +
+                                    4 + "]\n" +
+                                    "Citadel";
+                } else {
+                    ScenarioMetaMaster m = ScenarioGame.getGame().getMetaMaster();
+                    text = m.getMetaGame().getScenario().getName();
+                    v = m.getMetaDataManager().getMissionName()
+                            + "\n   Level [" + (m.getMetaGame().getMissionIndex() + 1) + "/" +
+                            m.getMetaGame().getMissionNumber() + "]";
                 }
-            } else {
 
+                locationLabel.setNameText(text);
+                locationLabel.setValueText(v);
+                locationLabel.pack();
+                GdxMaster.top(locationLabel);
+                locationLabel.setX(17);  //GdxMaster.centerWidth(locationLabel);
             }
 
-            locationLabel.setNameText(text);
-            locationLabel.setValueText(v);
-            locationLabel.pack();
-            GdxMaster.top(locationLabel);
-            locationLabel.setX(17);  //GdxMaster.centerWidth(locationLabel);
         });
     }
-}
+    }

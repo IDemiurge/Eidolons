@@ -41,6 +41,10 @@ public class LE_Selection implements Serializable {
         return ids;
     }
 
+    public void addIds(Collection<Integer> set) {
+        ids.addAll(set);
+    }
+
     public void setIds(Set<Integer> ids) {
         this.ids = ids;
     }
@@ -48,7 +52,8 @@ public class LE_Selection implements Serializable {
     public void addCoordinates(Collection<Coordinates> set) {
         coordinates.addAll(set);
     }
-        public Set<Coordinates> getCoordinates() {
+
+    public Set<Coordinates> getCoordinates() {
         if (frozenSelection != null) {
             return ImmutableSet.<Coordinates>builder().addAll(coordinates).addAll(frozenSelection.getCoordinates()).build();
         }
@@ -104,11 +109,23 @@ public class LE_Selection implements Serializable {
         return frozenSelection;
     }
 
-    public void clear(){
+    public void clear() {
         coordinates.clear();
+    }
+
+    public void add(Integer c) {
+        ids.add(c);
+    }
+
+    public void remove(Integer c) {
+        ids.remove(c);
     }
     public void add(Coordinates c) {
         coordinates.add(c);
+    }
+
+    public void remove(Coordinates c) {
+        coordinates.remove(c);
     }
 
 }

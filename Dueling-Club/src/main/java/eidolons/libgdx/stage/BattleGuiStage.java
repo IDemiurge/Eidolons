@@ -110,7 +110,8 @@ public class BattleGuiStage extends GuiStage {
             soulforcePanel.setY(GdxMaster.getTopY(soulforcePanel));
             addActor( sbHideBtn = new HideButton(soulforcePanel));
             GdxMaster.center(sbHideBtn);
-            sbHideBtn.setY(GdxMaster.getHeight()-60);
+            sbHideBtn.setX(sbHideBtn.getX()-7);
+            sbHideBtn.setY(GdxMaster.getHeight()-73);
         }
 
         getBottomPanel().setX(GdxMaster.centerWidthScreen(getBottomPanel()));

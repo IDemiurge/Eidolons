@@ -159,11 +159,11 @@ public class WanderAi extends AiGroupBehavior {
 
     protected int getMaxDistance() {
         if (block == null) {
-            block = master.getGame().getDungeonMaster().getStructMaster().findLowestStruct(
+            block = master.getGame().getDungeonMaster().getStructMaster().getLowestStruct(
              ai.getUnit().getCoordinates());
             if (block == null) {
                 for (Coordinates c : ai.getUnit().getCoordinates().getAdjacent()) {
-                    block = master.getGame().getDungeonMaster().getStructMaster().findLowestStruct(
+                    block = master.getGame().getDungeonMaster().getStructMaster().getLowestStruct(
                      c);
                     if (block != null)
                         break;

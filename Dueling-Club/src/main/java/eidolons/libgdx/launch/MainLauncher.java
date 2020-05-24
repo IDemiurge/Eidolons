@@ -49,6 +49,7 @@ public class MainLauncher extends GenericLauncher {
                     "footage/serpentium.xml;" +
                     "levels/underworld.xml;" +
                     "modules/bastion.xml;";
+    public static String levelPath;
     private static Stack<String> lastChoiceStack;
     public static boolean presetNumbersOn;
     private static CustomLaunch customLaunch;
@@ -189,7 +190,9 @@ public class MainLauncher extends GenericLauncher {
                                     command = FOOTAGE_SEQUENCE.split(";")
                                             [Integer.valueOf(command.replace(".", ""))];
                                 }
-                                setCustomLaunch(new CustomLaunch(command.replace("_", " ")));
+                                String replace = command.replace("_", " ");
+                                levelPath=replace;
+                                setCustomLaunch(new CustomLaunch(replace));
                             }
                         }
                     }

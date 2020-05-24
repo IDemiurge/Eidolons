@@ -94,11 +94,10 @@ public class AtbPanel extends GroupX {
         addActor(background = new Image(new TextureRegionDrawable(TextureCache.getOrCreateR(StrPathBuilder.build("ui",
                 "components", "dc", "atb", "atb background black.png")))));
         background.setPosition(getInactiveX(), 24);
+        addActor(horizontal = new ImageContainer(Images.SEPARATOR_METAL));
 
         addActor(container = new TablePanelX());
         container.add(queueGroup);
-
-        addActor(horizontal = new ImageContainer(Images.SEPARATOR_METAL));
         horizontal.setY(13);
         horizontal.setX(-125);
         resetPositions();
@@ -333,7 +332,10 @@ public class AtbPanel extends GroupX {
     }
 
     private float getActiveX() {
-        return -background.getWidth() + (550 + (imageSize+12) * viewsShown);
+        if (viewsShown>=8) {
+            return   Math.min(200, -background.getWidth() + (950 + (imageSize + 12) * viewsShown));
+        }
+        return -background.getWidth() + (950 + (imageSize+12) * 2);
     }
 
     protected void rollComponent(Actor container, boolean visible) {

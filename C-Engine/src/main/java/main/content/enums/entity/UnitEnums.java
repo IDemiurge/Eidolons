@@ -226,7 +226,6 @@ public final class UnitEnums {
         FLESHLESS("Poison, disease and bleeding have no effect on this unit"),
 
         BLIND_FIGHTER("Concealed and Invisible units do not receive bonuses when fighting this unit"),
-        TRANSPARENT("Transparent"),
         NON_OBSTRUCTING("Non obstructing"),
 
         DARKVISION("Darkvision"),

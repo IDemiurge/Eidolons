@@ -62,7 +62,7 @@ public class SoulCounter extends SuperActor {
     public void act(float delta) {
         // table.setY(-25);
         // table.setX(-table.getWidth()/2+11);
-        counter.setText(EidolonLord.lord.getSoulforce() + "    /    " +
+        counter.setText(EidolonLord.lord.getSoulforce() + "  /  " +
                 EidolonLord.lord.getSoulforceMax());
         GdxMaster.center(counter);
         counter.setX(0);

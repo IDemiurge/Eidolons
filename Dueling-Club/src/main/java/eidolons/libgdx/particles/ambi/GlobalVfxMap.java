@@ -7,6 +7,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.VFX_TEMPLATE;
@@ -31,6 +32,7 @@ public class GlobalVfxMap extends GroupX {
     private DAY_TIME time;
     float updatePeriod = 3f;
     float updateTimer;
+    private VFX_TEMPLATE DEFAULT_TEMPLATE=VFX_TEMPLATE.POISON;
 
     public GlobalVfxMap(Module module) {
         initModuleVfx(module);
@@ -48,8 +50,12 @@ public class GlobalVfxMap extends GroupX {
     public void initModuleVfx(Module module) {
         Map<VFX_TEMPLATE, Set<Coordinates>> templates = new LinkedHashMap<>();
         for (Coordinates c : module.getCoordinatesSet()) {
-            LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().findLowestStruct(c);
-            MapMaster.addToListMap(templates, struct.getVfx(), c);
+            LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(c);
+            VFX_TEMPLATE vfx = struct.getVfx();
+            if (vfx == null) {
+                vfx = DEFAULT_TEMPLATE;
+            }
+            MapMaster.addToListMap(templates, vfx, c);
             colorMap.put(c, GdxColorMaster.getColorForTheme(struct.getColorTheme()));
         }
 
@@ -91,18 +97,21 @@ public class GlobalVfxMap extends GroupX {
 
     @Override
     public void act(float delta) {
-        // float n = 0;
-        // if (maps != null)
-        //     for (EmitterMap map : maps) {
-        //         n += map.getActiveCount();
-        //     }
-        // n = n / GdxMaster.getFontSizeMod();
-        // emitterCountControlCoef = (int) (Math.round(200 / Math.sqrt(n + 1) - 10 * n));
+        float n = 0;
+        if (maps != null)
+            for (EmitterMap map : maps) {
+                n += map.getActiveCount();
+            }
+        n = n / GdxMaster.getFontSizeMod();
+        emitterCountControlCoef = (int) (Math.round(200 / Math.sqrt(n + 1) - 10 * n));
         super.act(delta);
         updateTimer += delta;
         if (updateTimer >= updatePeriod) {
             updateTimer = 0;
             Map<EmitterMap, AmbienceDataSource> dataSourceMap = caches.get(time);
+            if (dataSourceMap == null) {
+                return;
+            }
             for (EmitterMap map : dataSourceMap.keySet()) {
                 if (RandomWizard.chance(10)) {
                     map.init();

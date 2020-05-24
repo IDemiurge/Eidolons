@@ -20,6 +20,7 @@ import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.bf.grid.cell.UnitView;
@@ -149,7 +150,8 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                         }
             if (view instanceof GridUnitView) {
                 if (((GridUnitView) view).getInitiativeQueueUnitView() != null) {
-                    super.addPortraitContainer(Images.CIRCLE_BORDER,
+
+                    super.addTitleContainer(object.getName(), Images.CIRCLE_BORDER,
                             ((GridUnitView) view).getInitiativeQueueUnitView().processPortraitTexture(
                                     object.getImagePath()
                             ));
@@ -161,7 +163,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             // nameContainer.setNameAlignment(Align.center);
             //add(nameContainer);
             //TODO emblem?
-            if (object instanceof Unit)
+            if (object instanceof Unit) {
                 if (object.getOwner().isEnemy()) {
                     PartyTooltip.THREAT_LEVEL threat = ThreatAnalyzer.getThreatLevel(object);
                     Color color = threat.color;
@@ -174,6 +176,8 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                             object.getOwner().isNeutral() ? "Neutral" : "Ally");
 
                 }
+                add(new ImageContainer(Images.SEPARATOR_NARROW));
+            }
 
 
             INFO_LEVEL info_level =
@@ -188,9 +192,13 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             super.startContainer();
             container.defaults().uniform();
             if (object.checkBool(GenericEnums.STD_BOOLS.FAUX)) {
+                super.endContainer();
                 add(new ValueContainer("Fragile"));
+                super.startContainer();
             } else if (object.isIndestructible()) {
+                super.endContainer();
                 add(new ValueContainer("Indestructible"));
+                super.startContainer();
             } else {
                 // add(getValueContainer(object, PARAMS.C_TOUGHNESS, PARAMS.TOUGHNESS));
                 // if (!object.isPlayerCharacter() || EidolonsGame.getVar("endurance")) {
@@ -219,6 +227,8 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                             super.endContainer();
                             startContainer();
                             container.removeBackground();
+                            container.defaults().growX().padRight(10).padLeft(10);
+
                             wrap=false;
                             addParamStringToValues(object, PARAMS.ATTACK);
                             addParamStringToValues(object, PARAMS.DEFENSE);
@@ -360,7 +370,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
         if (attackAction != null) {
             String control =
                     "Click to attack with ";
-            if (!OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.ALT_MODE_ON)) {
+            if (OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.ALT_MODE_ON)) {
                 control = "Alt-" + control;
             }
             Ref ref = Eidolons.getMainHero().getRef().getCopy();

@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
@@ -414,9 +413,9 @@ public abstract class GenericLauncher extends Game {
     }
 
     private MetaGameMaster createMetaForScenario(ScreenData data) {
-        if (!CoreEngine.TEST_LAUNCH) {
-            return new ScenarioMetaMaster(data.getName());
-        }
+        // if (!CoreEngine.TEST_LAUNCH) {
+        //     return new ScenarioMetaMaster(data.getName());
+        // }
         return new NF_MetaMaster(data.getName());
     }
 

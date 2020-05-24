@@ -281,11 +281,11 @@ public class LE_XmlHandler extends LE_Handler {
         Coordinates c = block.getOrigin();
         Set<Coordinates> missing = CoordinatesMaster.getMissingCoordinatesFromRect(c, w, h, block.getCoordinatesSet());
 
-        xmlBuilder.open("Missing");
+        xmlBuilder.open(FloorLoader.MISSING);
         for (Coordinates coordinate : missing) {
             xmlBuilder.append(coordinate + ";");
         }
-        xmlBuilder.close("Missing");
+        xmlBuilder.close(FloorLoader.MISSING);
 
         return xmlBuilder.toString();
     }

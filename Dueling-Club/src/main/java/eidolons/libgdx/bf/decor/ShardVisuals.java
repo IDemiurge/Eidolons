@@ -3,6 +3,8 @@ package eidolons.libgdx.bf.decor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
@@ -26,6 +28,7 @@ import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.secondary.Bools;
 
 import java.util.*;
+import java.util.function.Function;
 
 /**
  * Created by JustMe on 10/8/2018.
@@ -40,6 +43,8 @@ import java.util.*;
  */
 public class ShardVisuals extends GroupX implements GridElement {
 
+    private static final SHARD_TYPE DEFAULT_TYPE = SHARD_TYPE.CHAINS;
+    private static final SHARD_TYPE DEFAULT_TYPE_ALT = SHARD_TYPE.ROCKS;
     protected int cols;
     protected int rows;
     private int x1, x2, y1, y2;
@@ -49,11 +54,25 @@ public class ShardVisuals extends GroupX implements GridElement {
     GroupX emitterLayer = new GroupX();
     private GridPanel grid;
     private Map<Coordinates, Shard> map = new XLinkedMap<>();
+    private Function<Coordinates, SHARD_TYPE> typeFunc;
 
     public ShardVisuals(GridPanel grid) {
         this.grid = grid;
-
         addActor(emitterLayer);
+        typeFunc = c ->
+        {
+            LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(c);
+            SHARD_TYPE type = checkAltShard(c) ?
+                    struct.getShardTypeAlt() : struct.getShardType();
+            if (type == null) {
+                type = checkAltShard(c) ? DEFAULT_TYPE_ALT : DEFAULT_TYPE;
+            }
+            return type;
+        };
+    }
+
+    private boolean checkAltShard(Coordinates c) {
+        return RandomWizard.chance(33);
     }
 
     public static ALPHA_TEMPLATE getTemplateForOverlay(SHARD_OVERLAY overlay) {
@@ -159,6 +178,9 @@ public class ShardVisuals extends GroupX implements GridElement {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (batch instanceof CustomSpriteBatch) {
+            ((CustomSpriteBatch) batch).resetBlending();
+        }
         super.draw(batch, parentAlpha);
         if (batch instanceof CustomSpriteBatch) {
             ((CustomSpriteBatch) batch).resetBlending();
@@ -210,7 +232,8 @@ public class ShardVisuals extends GroupX implements GridElement {
                 if (size == null) {
                     //                just empty    continue;
                 }
-                SHARD_TYPE type = SHARD_TYPE.ROCKS;
+                SHARD_TYPE type = getType(x, y);
+
                 SHARD_OVERLAY overlay = new EnumMaster<SHARD_OVERLAY>().
                         getRandomEnumConst(SHARD_OVERLAY.class);
                 if (!(direction instanceof DIRECTION)) {
@@ -306,6 +329,10 @@ public class ShardVisuals extends GroupX implements GridElement {
         //update-able?
         // more than one shard on a single cell?
 
+    }
+
+    private SHARD_TYPE getType(int x, int y) {
+        return typeFunc.apply(new AbstractCoordinates(true, x, y));
     }
 
     private boolean isVfxOn() {
@@ -470,7 +497,6 @@ public class ShardVisuals extends GroupX implements GridElement {
             }
 
         }
-
         if (adj.size() > 4) {
             if (RandomWizard.chance(adj.size() * getIsleChancePerAdjacent())) {
                 return -1;
@@ -527,7 +553,7 @@ public class ShardVisuals extends GroupX implements GridElement {
     public enum SHARD_TYPE {
         ROCKS,
         ROOTS,
-        METAL,
+        CHAINS,
 
     }
 

@@ -787,6 +787,6 @@ public abstract class DC_Obj extends MicroObj {
             return new EnumMaster<CONTENT_CONSTS.COLOR_THEME>().retrieveEnumConst(CONTENT_CONSTS.COLOR_THEME.class,
                     getProperty("COLOR_THEME"));
         }
-        return getGame().getDungeonMaster().getStructMaster().findLowestStruct(getCoordinates()).getColorTheme();
+        return getGame().getDungeonMaster().getStructMaster().getLowestStruct(getCoordinates()).getColorTheme();
     }
 }

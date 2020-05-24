@@ -85,9 +85,17 @@ public class ValueTooltip extends Tooltip {
                     }
             }
             if (actor.getX() != 0 || actor.getY() != 0)
+            {
+                if (actor.getWidth()>getWidth())
+                {
+                    setWidth(actor.getWidth());
+                    setFixedSize(true);
+                    main.system.auxiliary.log.LogMaster.log(1,actor.getWidth()+" Width from" +actor);
+                }
                 addActor(actor);
+            }
             else {
-                addElement(actor);
+                addElement(actor).center();
                 row();
             }
         });

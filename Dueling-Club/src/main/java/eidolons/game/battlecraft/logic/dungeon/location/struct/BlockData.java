@@ -5,6 +5,10 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.BL
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.game.bf.Coordinates;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class BlockData extends StructureData<BLOCK_VALUE,  LevelBlock> {
 
     private LevelBlock block;
@@ -18,6 +22,17 @@ public class BlockData extends StructureData<BLOCK_VALUE,  LevelBlock> {
         setData(s);
     }
 
+    @Override
+    public String[] getRelevantValues() {
+        List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
+                collect(Collectors.toList());
+        list.remove(LevelStructure.BLOCK_VALUE.height.toString());
+        list.remove(LevelStructure.BLOCK_VALUE.width.toString());
+        list.remove(LevelStructure.BLOCK_VALUE.id.toString());
+        list.remove(BLOCK_VALUE.music_theme.toString());
+        list.remove(BLOCK_VALUE.origin.toString());
+        return list.toArray(new String[0]);
+    }
     @Override
     public BlockData setData(String data) {
         return (BlockData) super.setData(data);

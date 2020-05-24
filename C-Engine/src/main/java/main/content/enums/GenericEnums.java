@@ -466,7 +466,8 @@ public class GenericEnums {
         darkness("invert/chaotic dark"),
 
         DARK_MIST("mist", "dark mist2"),
-        DARK_MIST_LITE("mist", "dark mist2 light"),
+        DARK_MIST_LITE //("mist", "dark mist2 light"),
+         ("mist", "conceal west wind"),
         SMOKE_TEST("Smoke_Test1.pt"),
         DARK_SOULS("dark souls"),
         DARK_SOULS2("dark souls2"),

@@ -34,7 +34,7 @@ public abstract class TooltipFactory<T, A extends Actor> {
     protected List<Actor> values;
     protected TablePanelX<Actor> container;
     protected float maxWidth;
-    protected boolean wrap=true;
+    protected boolean wrap = true;
 
 
     public void add(A actor, T data) {
@@ -61,12 +61,12 @@ public abstract class TooltipFactory<T, A extends Actor> {
         }
         value = value.replace(";", ", ");
         value = StringMaster.getWellFormattedString(value);
-            final ValueContainer valueContainer =
-                    new ValueContainer(showName ? v.getDisplayedName() : "", value);
+        final ValueContainer valueContainer =
+                new ValueContainer(showName ? v.getDisplayedName() : "", value);
 
-            valueContainer.setNameAlignment(Align.left);
-            valueContainer.setValueAlignment(showName ? Align.right : Align.center);
-            add(valueContainer);
+        valueContainer.setNameAlignment(Align.left);
+        valueContainer.setValueAlignment(showName ? Align.right : Align.center);
+        add(valueContainer);
     }
 
     // private String[] splitString(String value, boolean showName) {
@@ -122,35 +122,51 @@ public abstract class TooltipFactory<T, A extends Actor> {
             }
         } else {
             if (actor instanceof ValueContainer) {
-                ((ValueContainer) actor). wrapText(maxWidth);
-            } else
-                if (actor instanceof TablePanel){
-                    actor.setWidth(maxWidth);
-                }
+                ((ValueContainer) actor).wrapText(maxWidth);
+            } else if (actor instanceof TablePanel) {
+                actor.setWidth(maxWidth);
+            }
             values.add(actor);
         }
     }
 
-    protected void addNameContainer(String toolTip) {
+    protected TablePanelX addNameContainer(String toolTip) {
         TablePanelX<Actor> table = new TablePanelX<>();
         // table.setBackground(TextureCache.getOrCreateTextureRegionDrawable(Images.ZARK_BTN_LARGE));
-        table.addBackgroundActor(new ImageContainer( (Images.ZARK_BTN_LARGE)));
-
-      Label.LabelStyle style = StyleHolder.getHqLabelStyle(20);
+        table.addBackgroundActor(new ImageContainer((Images.ZARK_BTN_LARGE)));
+        Label.LabelStyle style = StyleHolder.getHqLabelStyle(20);
         LabelX lbl;
         table.addActor(lbl = new LabelX(toolTip, style));
         GdxMaster.center(lbl);
-        add(table);
+        // table.setX(1);
+
+        TablePanelX table1 = new TablePanelX() {
+            @Override
+            public void layout() {
+                // super.layout();
+                for (Actor child : getChildren()) {
+                    child.setY(-85);
+                }
+                table.setY(0);
+                table.setX(GdxMaster.centerWidth(table));
+
+            }
+        };
+        table1.add(table);
+        add(table1);
+        return table1;
     }
-    protected void addPortraitContainer(String border, TextureRegion textureRegion) {
+
+    protected void addTitleContainer(String name, String border, TextureRegion textureRegion) {
+        TablePanelX table1 = addNameContainer(name);
         TablePanelX<Actor> table = new TablePanelX<>();
         table.addBackgroundActor(new ImageContainer(new Image(textureRegion)));
         // table.setBackground(TextureCache.getOrCreateTextureRegionDrawable(border));
         Image borderImg;
         table.addActor(borderImg = new Image(TextureCache.getOrCreateR(border)));
-        GdxMaster.center(borderImg);
-        add(table);
-        table.setX(maxWidth/2-table.getWidth()/2);
+        // GdxMaster.center(borderImg);
+        table1.row();
+        table1.add(table).left();
     }
 
     protected void startContainer() {

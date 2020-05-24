@@ -287,7 +287,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     @Override
     public void addBlock() {
         LevelZone zone = getModel().getZone();
-        Set<Coordinates> coordinates = getSelectionHandler().getSelection().getCoordinates();
+        Set<Coordinates> coordinates = getSelectionHandler(). getCoordinatesAll();
         LevelBlock block = createBlock(zone, coordinates);
         initNewBlock(block, false);
         if (addBlock(block))
@@ -430,6 +430,9 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         for (Coordinates c : getSelectionHandler().getSelection().getCoordinates()) {
             getModel().getBlock().getCoordinatesSet().remove(c);
         }
+        for (Integer integer : getSelectionHandler().getSelection().getIds()) {
+            getModel().getBlock().getCoordinatesSet().remove(getIdManager().getObjectById(integer).getCoordinates());
+        }
     }
 
     @Override
@@ -437,6 +440,9 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         Set<Coordinates> set = getModel().getBlock().getCoordinatesSet();
         for (Coordinates c : getSelectionHandler().getSelection().getCoordinates()) {
             set.add(c);
+        }
+        for (Integer integer : getSelectionHandler().getSelection().getIds()) {
+            set.add(getIdManager().getObjectById(integer).getCoordinates());
         }
     }
 
@@ -489,7 +495,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     }
 
     public void initWall(Coordinates c) {
-        LevelStruct block = getStructureMaster().findLowestStruct(c);
+        LevelStruct block = getStructureMaster().getLowestStruct(c);
         resetWalls(block, ImmutableSet.of(c));
     }
 
@@ -502,12 +508,8 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         ObjType wallType = null;
         ObjType altWallType = null;
         if (subPart.getData() != null) {
-            if (!StringMaster.isEmpty(subPart.getData().getValue("wall_type"))) {
                 wallType = DataManager.getType(subPart.getWallType(), DC_TYPE.BF_OBJ);
-            }
-            if (!StringMaster.isEmpty(subPart.getData().getValue("alt_wall_type"))) {
                 altWallType = DataManager.getType(subPart.getWallTypeAlt(), DC_TYPE.BF_OBJ);
-            }
         }
         Set<BattleFieldObject> wallObjs = new HashSet<>();
         if (wallType != null)

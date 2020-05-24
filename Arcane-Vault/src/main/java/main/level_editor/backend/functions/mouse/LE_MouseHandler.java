@@ -47,16 +47,21 @@ public class LE_MouseHandler extends LE_Handler {
 
 
         CLICK_MODE mode = getModeForClick(event, tapCount);
+        if (allowBrushShape(mode)) {
+            if (getModel().getBrush().getShape() != null) {
+                Set<Coordinates> coords = getBrushShapeCoords(c, getModel().getBrush().getShape());
+                operation(Operation.LE_OPERATION.FILL_START);
+                coords.forEach(c1 -> clickedCell(mode, c1));
+                operation(Operation.LE_OPERATION.FILL_END);
+                return;
+            }
+        }
         clickedCell(mode, c);
 
     }
 
     private void clickedCell(CLICK_MODE mode, Coordinates c) {
-        if (allowBrushShape(mode)) {
-            if (getModel().getBrush().getShape() != null) {
-                Set<Coordinates> coords = getBrushShapeCoords(c, getModel().getBrush().getShape());
-            }
-        }
+
         switch (mode) {
             case CTRL_R:
                 getEditHandler().getScriptHandler().editScriptData(c);
@@ -67,7 +72,7 @@ public class LE_MouseHandler extends LE_Handler {
                 break;
 
             case CTRL_SHIFT:
-                LevelStruct lowestStruct = getStructureMaster().findLowestStruct(c);
+                LevelStruct lowestStruct = getStructureMaster().getLowestStruct(c);
                 GuiEventManager.trigger(GuiEventType.LE_TREE_SELECT, lowestStruct);
                 break;
             case ALT:
@@ -78,7 +83,10 @@ public class LE_MouseHandler extends LE_Handler {
                 //TODO add alternative w/o objs
                 break;
             case CTRL:
-                getSelectionHandler().addSelectedCoordinate(c);
+                if (getSelectionHandler().getSelection().getCoordinates().contains(c)) {
+                    getSelectionHandler().getSelection().remove(c);
+                } else
+                     getSelectionHandler().addSelectedCoordinate(c);
                 break;
             case NORMAL:
                 getSelectionHandler().selectedCoordinate(c);

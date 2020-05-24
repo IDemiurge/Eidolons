@@ -133,8 +133,8 @@ public class StructureBuilder extends DungeonHandler {
                 c = b.getOrigin();
             } else if (StringMaster.compareByChar(subNode.getNodeName(), FloorLoader.MISSING)) {
 
-                coordinates = CoordinatesMaster.getCoordinatesBetween(b.getOrigin(),
-                        Coordinates.get(c.x + b.getWidth(), c.y + b.getHeight()));
+                coordinates = CoordinatesMaster.getCoordinatesBetweenInclusive(b.getOrigin(),
+                        Coordinates.get(c.x + b.getWidth()-1, c.y + b.getHeight()-1));
                 List<Coordinates> missing = CoordinatesMaster.getCoordinatesFromString(subNode.getTextContent());
                 coordinates.removeAll(missing);
 

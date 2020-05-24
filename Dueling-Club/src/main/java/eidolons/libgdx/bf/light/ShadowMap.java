@@ -88,7 +88,7 @@ public class ShadowMap extends GroupX implements GridElement {
 
             if (colorTheme == null) {
                 LevelStruct lowestStruct = obj.getGame().getDungeonMaster().getStructMaster().
-                        findLowestStruct(obj.getCoordinates());
+                        getLowestStruct(obj.getCoordinates());
                 colorTheme=
                 lowestStruct.getColorTheme();
 

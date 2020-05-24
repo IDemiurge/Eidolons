@@ -30,7 +30,6 @@ public class EngageEventProcessor {
 
     public void process(EngageEvent event) {
         if (EngageEvents.isLogged()){
-            log(1, "Event to process:" + event);
             game.getLogManager().log(event.toString());
         }
         if (event.type != null)
@@ -56,8 +55,12 @@ public class EngageEventProcessor {
                 // largeText("Battle is Joined"  , event.arg.toString(), 3f);
                 statusChange(PLAYER_STATUS.COMBAT, event.arg);
                 master.getEngagementHandler().clearEventQueue();
-                master.getEngagementHandler().addEvent(EngageEvent.ENGAGE_EVENT.combat_started,
-                        2f, event.source.getAI().getGroup().getEncounter().getName());
+                if (event.source.getAI().getGroup().getEncounter() != null) {
+                    master.getEngagementHandler().addEvent(EngageEvent.ENGAGE_EVENT.combat_started,
+                            2f, event.source.getAI().getGroup().getEncounter().getName());
+                } else
+                    master.getEngagementHandler().addEvent(EngageEvent.ENGAGE_EVENT.combat_started,
+                        2f, event.source. getName());
 
                 //depend on difficulty
                 DC_SoundMaster.playStandardSound(RandomWizard.random()

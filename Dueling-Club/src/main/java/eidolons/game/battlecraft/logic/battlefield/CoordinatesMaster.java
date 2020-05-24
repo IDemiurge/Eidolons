@@ -570,19 +570,24 @@ merging blocks square-diamond to get a different shape
 
 transform selection
 fix selection
-
+3x3 - 1
+4x4
+5x5 - 2
+7x7
          */
         //just cut corners to the middle
         // everything that is beyond both middles...
         int middleX = (getMinX(coordinatesSet) + getMaxX(coordinatesSet)) / 2;
         int middleY = (getMinY(coordinatesSet) + getMaxY(coordinatesSet)) / 2;
-        int x =Math.max(0,  getWidth(coordinatesSet)*3/5 - 3);
-        int y =  Math.max(0, getHeight(coordinatesSet) * 3 / 5 - 3);
+        // int x =Math.max(0,  getWidth(coordinatesSet)*3/5 - 3);
+        // int y =  Math.max(0, getHeight(coordinatesSet) * 3 / 5 - 3);
+        int m = Math.max(getHeight(coordinatesSet), getWidth(coordinatesSet));
+        int max =( m -3 )/2+1;
         coordinatesSet.removeIf(c -> {
             int diffX = c.x - middleX;
             int diffY = c.y - middleY;
 
-            return x < Math.abs(diffX) && y < Math.abs(diffY);
+            return   Math.abs(diffX) + Math.abs(diffY) > max;
         });
         return coordinatesSet;
     }

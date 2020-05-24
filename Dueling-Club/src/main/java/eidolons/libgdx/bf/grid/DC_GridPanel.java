@@ -231,7 +231,7 @@ public class DC_GridPanel extends GridPanel {
     }
 
     protected boolean isShardsOn() {
-        if (CoreEngine.TEST_LAUNCH) {
+        if (!CoreEngine.TEST_LAUNCH) {
             return true;
         }
         if (EidolonsGame.FOOTAGE) {

@@ -200,7 +200,9 @@ public class GdxColorMaster {
     }
 
     public static Color getColorForTheme(COLOR_THEME color) {
-
+        if (color == null) {
+            return Color.WHITE;
+        }
         switch (color) {
             case BLUE:
                 return new Color(0.7f, 0.8f, 1f, 1);

@@ -30,7 +30,7 @@ public class StructMaster extends DungeonHandler {
         super(master);
     }
 
-    public LevelStruct findLowestStruct(Coordinates c) {
+    public LevelStruct getLowestStruct(Coordinates c) {
         LevelStruct block = findBlock(c);
         if (block == null) {
             block = findModule(c);
@@ -135,7 +135,7 @@ public class StructMaster extends DungeonHandler {
 
     private int getCellPatternVariant(int i, int j) {
         Coordinates c = Coordinates.get(i, j);
-        LevelStruct struct = findLowestStruct(c);
+        LevelStruct struct = getLowestStruct(c);
         if (struct instanceof LevelBlock) {
             if (struct.getCellPattern() != null) {
 
@@ -171,7 +171,7 @@ public class StructMaster extends DungeonHandler {
     }
 
     public DungeonEnums.CELL_IMAGE getCellType(int i, int j) {
-        LevelStruct struct = findLowestStruct(Coordinates.get(i, j));
+        LevelStruct struct = getLowestStruct(Coordinates.get(i, j));
         if (struct == null) {
             return DungeonEnums.CELL_IMAGE.tiles;
         }
