@@ -172,7 +172,8 @@ public enum GuiEventType implements EventType {
     GRID_RESET(false, true), LE_GUI_TOGGLE(false, true),
     CAMERA_CUSTOM_MOVE, INITIAL_LOAD_DONE, CHOOSE_GRID_ANIM, PLAYER_STATUS_CHANGED, SHOW_LARGE_TEXT,
 
-    LE_FLOORS_TABS(false, true), WAITING_ON, WAITING_OFF, SOULFORCE_GAINED, COMBAT_STARTED, COMBAT_ENDED, VISUAL_CHOICE;
+    LE_FLOORS_TABS(false, true), WAITING_ON, WAITING_OFF, SOULFORCE_GAINED, COMBAT_STARTED, COMBAT_ENDED,
+    VISUAL_CHOICE, PLATFORM_CREATE(false, true), INIT_PLATFORMS(false, true);
 
     private boolean screenCheck;
     private boolean multiArgs;

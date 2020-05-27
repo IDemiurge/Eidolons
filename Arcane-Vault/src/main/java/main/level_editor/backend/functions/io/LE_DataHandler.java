@@ -221,8 +221,9 @@ public class LE_DataHandler extends LE_Handler {
     public void saveVersion() {
         String path = getDefaultSavePath(getFloorWrapper());
         String name = FileManager.getFileNameAndFormat(path);
-        String newName = NameMaster.getUniqueVersionedFileName(name, path);
-        saveAs(PathUtils.cropLastPathSegment(path) + "/" + newName);
+          path = PathUtils.cropLastPathSegment(path);
+        String newName = NameMaster.getUniqueVersionedFileName(name,PathFinder.getDungeonLevelFolder()+ path);
+        saveAs((path) + "/" + newName);
 
         getFloorWrapper().setName(StringMaster.cropFormat(newName));
         //        getFloorWrapper().getData().apply();

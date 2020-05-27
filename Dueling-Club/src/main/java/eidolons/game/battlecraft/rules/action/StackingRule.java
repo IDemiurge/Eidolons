@@ -15,6 +15,8 @@ import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster;
 import eidolons.game.netherflame.main.pale.PaleAspect;
+import eidolons.libgdx.bf.grid.moving.PlatformController;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
@@ -133,8 +135,11 @@ public class StackingRule implements ActionRule {
 
     private boolean canBeMovedOnto(Integer maxSpaceTakenPercentage, Entity unit, Coordinates c,
                                    List<? extends Entity> otherUnits) {
+        Boolean result = checkPlatform(unit, c);
+        if (result != null) {
+            return result;
+        }
         HashMap<Coordinates, Boolean> bools = cache.get(unit);
-        boolean result = false;
         if (maxSpaceTakenPercentage == 100) {
             if (bools != null) {
                 if (bools.containsKey(c)) {
@@ -276,6 +281,19 @@ public class StackingRule implements ActionRule {
             bools.put(c, result);
         }
         return result;
+    }
+
+    private Boolean checkPlatform(Entity unit, Coordinates c) {
+        if (ScreenMaster.getDungeonGrid() == null) {
+            return null;
+        }
+        PlatformController platformController =
+                ScreenMaster.getDungeonGrid().getPlatformHandler().get(c);
+        if (platformController != null)
+        if (platformController.canEnter(unit)) {
+            return true;
+        }
+        return null;
     }
 
     @Override

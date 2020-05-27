@@ -1,9 +1,12 @@
 package eidolons.libgdx.gui.overlay.choice;
 
+import eidolons.game.netherflame.main.death.ChainHero;
+import eidolons.game.netherflame.main.soul.SoulforceMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class VC_DataSource {
 
@@ -13,7 +16,29 @@ public class VC_DataSource {
     public VC_DataSource(VC_TYPE type) {
         this.type = type;
         options = initOptions(type);
+    }
 
+    public VC_DataSource(VC_TYPE type, Object arg) {
+        this.type = type;
+        options = initCustomOptions(type, arg);
+    }
+
+    private List<VC_Option> initCustomOptions(VC_TYPE type, Object arg) {
+        List<VC_Option> options = new LinkedList<>();
+        switch (type) {
+            case hero_choice:
+                VC_OPTION chosen = (VC_OPTION) arg;
+                Set<ChainHero> heroes = SoulforceMaster.getInstance().getHeroesCanRespawn(chosen);
+                for (ChainHero hero : heroes) {
+                    options.add(createHeroOption(hero));
+                }
+                // sortHeroOptions(options);
+        }
+        return options;
+    }
+
+    private VC_Option createHeroOption(ChainHero hero) {
+      return   new VC_Option(hero, hero.getUnit().getName(), hero.getUnit().getToolTip(), hero.getUnit().getImagePath());
     }
 
     private List<VC_Option> initOptions(VC_TYPE type) {
@@ -34,7 +59,7 @@ public class VC_DataSource {
         // soul_steal,
         // precombat,
         death("Death is but another step"),
-        ;
+        hero_choice("An Eidolon must be chosen");
 
         VC_TYPE(String title) {
             this.title = title;

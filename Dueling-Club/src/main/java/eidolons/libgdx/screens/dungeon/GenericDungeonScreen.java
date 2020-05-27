@@ -203,14 +203,13 @@ public abstract class GenericDungeonScreen extends GameScreen {
     }
 
     protected void createAndInitModuleGrid(GridCreateData param) {
-        gridPanel = createGrid(param);
+        gridStage.addActor(gridPanel = createGrid(param));
         Module module = DC_Game.game.getModule();
         if (!CoreEngine.isLevelEditor())
             param.getObjects().removeIf(obj -> !module.getCoordinatesSet().
                     contains(obj.getCoordinates()));
         moduleEntered(module, param.getObjects()); //will be triggered, hopefully
         //do not chain - will fail ...
-        gridStage.addActor(gridPanel);
     }
 
     public void moduleEntered(Module module, DequeImpl<BattleFieldObject> objects) {

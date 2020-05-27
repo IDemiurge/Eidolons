@@ -359,7 +359,7 @@ public class TestMasterContent {
     }
 
     private static void addTestSpells(ObjType type, boolean last) {
-        type.addProperty(PROPS.VERBATIM_SPELLS, "Psychic Projection;"
+        type.addProperty(PROPS.VERBATIM_SPELLS, "Psychic Projection;Blink"
         // type.addProperty(PROPS.VERBATIM_SPELLS, "Blink;"
          + getTEST_LIST(), true);
         if (!addSpells) {
@@ -369,6 +369,7 @@ public class TestMasterContent {
             addAllSpells(type);
             return;
         }
+        if (isAddPartySpells())
         if (Eidolons.getGame().getMetaMaster().getPartyManager().getParty() != null) {
             for (String substring : ContainerUtils.openContainer(Eidolons.getGame().getMetaMaster().
              getPartyManager().getParty().getType().getProperty(PROPS.MEMBERS))) {
@@ -406,6 +407,10 @@ public class TestMasterContent {
                 type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
             }
         }
+    }
+
+    private static boolean isAddPartySpells() {
+        return false;
     }
 
     private static void addAllSpells(ObjType type) {

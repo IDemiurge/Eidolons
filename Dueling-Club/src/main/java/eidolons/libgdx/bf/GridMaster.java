@@ -61,9 +61,10 @@ public class GridMaster {
     }
 
     public static float invertGdxY(float y) {
-        return ScreenMaster.getDungeonGrid().getHeight()-y;
+        return ScreenMaster.getDungeonGrid().getHeight() - y;
     }
-        public static Coordinates invertGdxY(Coordinates c) {
+
+    public static Coordinates invertGdxY(Coordinates c) {
         return new Coordinates(c.x, ScreenMaster.getDungeonGrid().getFullRows() - 1 - c.getY());
     }
 
@@ -74,11 +75,11 @@ public class GridMaster {
         //       TODO cache?
         //        InputController controller = DungeonScreen.getInstance().getController();
         float x = sourceCoordinates.getX() * CELL_W;
-        float y = (gridPanel.getGdxY_ForModule((gdxY ? sourceCoordinates.getY() - 1 : sourceCoordinates.getY()) )* CELL_H);
+        float y = (gridPanel.getGdxY_ForModule((gdxY ? sourceCoordinates.getY() - 1 : sourceCoordinates.getY())) * CELL_H);
 
         if (camera) {
-//            x -= controller.getXCamPos();
-//            y -= controller.getYCamPos();
+            //            x -= controller.getXCamPos();
+            //            y -= controller.getYCamPos();
             x -= GdxMaster.getWidth() / 2;
             y -= GdxMaster.getHeight() / 2;
         }
@@ -92,15 +93,17 @@ public class GridMaster {
     }
 
     public static Coordinates getCenter() {
-        int x = Math.round((Coordinates.getFloorWidth()  / 2));
+        int x = Math.round((Coordinates.getFloorWidth() / 2));
         int y = Math.round((Coordinates.getFloorHeight() / 2));
         return (Coordinates.get(x, y));
     }
+
     public static Coordinates getCameraCenter() {
-        int x = Math.round((ScreenMaster.getScreen().getController().getXCamPos() ) / 128);
-        int y = Math.round((ScreenMaster.getScreen().getController().getYCamPos() ) / 128);
+        int x = Math.round((ScreenMaster.getScreen().getController().getXCamPos()) / 128);
+        int y = Math.round((ScreenMaster.getScreen().getController().getYCamPos()) / 128);
         return invertGdxY(Coordinates.get(x, y));
     }
+
     public static Vector2 getMouseCoordinates() {
         return DungeonScreen.getInstance().getGridStage().screenToStageCoordinates(new CursorPosVector2());
     }
@@ -108,7 +111,7 @@ public class GridMaster {
     public static void offset(Vector2 orig, Vector2 dest, int additionalDistance) {
         Vector2 v = new Vector2(dest.x - orig.x, dest.y - orig.y);
 
-// similar triangles solution!
+        // similar triangles solution!
 
         double hypotenuse = dest.dst(orig);
 
@@ -141,60 +144,66 @@ public class GridMaster {
                                     " - alpha==0");
                         }
 
-                    if (view.getColor().a == 0) {
-                        main.system.auxiliary.log.LogMaster.warn("Validation was required for " + view +
-                                " - alpha==0");
-                        view.fadeIn();
-                    }
-                    if (view.getParent() instanceof GridCellContainer) {
-                        GridCellContainer cell = ((GridCellContainer) view.getParent());
-                        if (!cell.isStackView())
-                            if (view.getX() != cell.getViewX(view) ||
-                                    view.getY() != cell.getViewY(view)) {
-                                cell.recalcUnitViewBounds();
-                            }
+                if (view.getColor().a == 0) {
+                    main.system.auxiliary.log.LogMaster.warn("Validation was required for " + view +
+                            " - alpha==0");
+                    view.fadeIn();
+                }
+                if (view.getParent() instanceof GridCellContainer) {
+                    GridCellContainer cell = ((GridCellContainer) view.getParent());
+                    if (!cell.isStackView())
+                        if (view.getX() != cell.getViewX(view) ||
+                                view.getY() != cell.getViewY(view)) {
+                            cell.recalcUnitViewBounds();
+                        }
 
-                    } else {
-                        //TODO detach bug
-                        if (view.getParent() instanceof GridPanel)
-                            if (!view.getUserObject().isDead())
-                                if (view.getX() <= 128)
+                } else {
+                    //TODO detach bug
+                    if (view.getParent() instanceof GridPanel)
+                        if (!view.getUserObject().isDead())
+                            if (view.getX() <= 128)
                                 if (view.getY() <= 128) {
                                     {
                                         GridPanel grid = ((GridPanel) view.getParent());
-                                        grid.getCells()[view.getUserObject().getX()][ (view.getUserObject().getY())].addActor(view);
+                                        grid.getCells()[view.getUserObject().getX()][(view.getUserObject().getY())].addActor(view);
 
                                         main.system.auxiliary.log.LogMaster.warn("Validation was required for " + view +
                                                 " - re-attached to gridcell!");
                                     }
                                 }
-                    }
                 }
-                if (view.getArrow() != null)
-                    if (view.getArrow().getActions().size == 0)
-                        view.validateArrowRotation();
-
             }
+            if (view.getArrow() != null)
+                if (view.getArrow().getActions().size == 0)
+                    view.validateArrowRotation();
+
         }
+    }
 
-        public static String getImagePath (DungeonEnums.CELL_IMAGE cellType, int cellVariant){
-            String suffix = getCellImgSuffix(cellVariant);
+    public static String getImagePath(DungeonEnums.CELL_IMAGE cellType, int cellVariant) {
+        String suffix = getCellImgSuffix(cellVariant);
 
-            return StrPathBuilder.build(PathFinder.getCellImagesPath(), cellType + suffix + ".png");
+        return StrPathBuilder.build(PathFinder.getCellImagesPath(), cellType + suffix + ".png");
+    }
+
+    private static String getCellImgSuffix(int cellVariant) {
+        switch (cellVariant) {
+            case 1:
+                return "hl";
+            case 2:
+                return "lite";
+            case 3:
+                return "dark";
+            case 4:
+                return "rough";
         }
+        return "";
+    }
 
-        private static String getCellImgSuffix ( int cellVariant){
-            switch (cellVariant) {
-                case 1:
-                    return "hl";
-                case 2:
-                    return "lite";
-                case 3:
-                    return "dark";
-                case 4:
-                    return "rough";
-            }
-            return "";
-        }
-
+    public static Coordinates getClosestCoordinate(float x, float y) {
+        GridPanel grid = ScreenMaster.getDungeonGrid();
+        return
+                Coordinates.getLimited((Math.round(x / CELL_W)),
+                        grid.getGdxY_ForModule(Math.round(y / CELL_H)));
+    }
 }

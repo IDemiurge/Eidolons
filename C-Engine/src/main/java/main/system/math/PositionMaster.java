@@ -1,6 +1,5 @@
 package main.system.math;
 
-import com.badlogic.gdx.math.Vector2;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldGrid;
 import main.game.bf.Coordinates;
@@ -278,8 +277,15 @@ public class PositionMaster   {
     }
 
     public static float getAngle(Coordinates c, Coordinates c2) {
-        return new Vector2(c.x, c.y).angle(new Vector2(c2.x, c2.y));
-
+        int x_diff = getX_Diff(c, c2);
+        if (x_diff==0) {
+            return 90;
+        }
+        int y_diff = getY_Diff(c, c2);
+        if (y_diff==0) {
+            return  0;
+        }
+        return x_diff / y_diff * 360;
     }
 
     public static void initDistancesCache(int w, int h) {

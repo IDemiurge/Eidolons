@@ -109,6 +109,8 @@ public class DungeonScreen extends GameScreenWithTown {
     public void moduleEntered(Module module, DequeImpl<BattleFieldObject> objects) {
         super.moduleEntered(module, objects);
         particleManager.initModule(module);
+        if (module.getPlatformData() != null)
+            gridPanel.getPlatformHandler().init(module.getPlatformData());
     }
     @Override
     protected void afterLoad() {

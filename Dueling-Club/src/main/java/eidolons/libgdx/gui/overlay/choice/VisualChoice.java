@@ -28,7 +28,7 @@ import java.util.List;
 
 public class VisualChoice extends TablePanelX implements OverlayPanel {
 
-    private final GroupX moving;
+    private final TablePanelX moving;
     SpriteX background, blotchTitle, blotchDescr;
     GroupX choicePanel;
     FadeImageContainer staticBackground, moveBtn, bottomHeader, decor;
@@ -53,10 +53,10 @@ public class VisualChoice extends TablePanelX implements OverlayPanel {
         addActor(title = new LabelX("Title", StyleHolder.getAVQLabelStyle(25)));
         addActor(descrContainer = new TablePanelX( ));
         descrContainer. addActor(descr = new LabelX("", StyleHolder.getHqLabelStyle(19)));
-        addActor(moving = new GroupX());
-        moving.addActor(moveBtn = new FadeImageContainer(ButtonStyled.STD_BUTTON.MENU.getPath()));
+        addActor(moving = new TablePanelX());
+        moving.addBackgroundActor(moveBtn = new FadeImageContainer(ButtonStyled.STD_BUTTON.MENU.getPath()));
         moving.addActor(ok = new SmartButton(ButtonStyled.STD_BUTTON.OK, () -> {
-            WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.VISUAL_CHOICE, selected);
+            WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.VISUAL_CHOICE, selected.arg);
             done();
         }
         ));
@@ -72,7 +72,7 @@ public class VisualChoice extends TablePanelX implements OverlayPanel {
         blotchTitle.setRotation(90);
         blotchDescr.setRotation(90);
         blotchTitle. setPosition(GdxMaster.centerWidth(blotchDescr),
-                GdxMaster.getTopY(blotchTitle));
+                GdxMaster.getHeight()-300);
         blotchDescr. setPosition(GdxMaster.centerWidth(blotchDescr),
                 211);
         background.setFps(15);
@@ -81,6 +81,7 @@ public class VisualChoice extends TablePanelX implements OverlayPanel {
 
         choicePanel.setSize(staticBackground.getWidth(), staticBackground.getHeight());
         descrContainer.setSize(bottomHeader.getWidth(), bottomHeader.getHeight());
+        GdxMaster.center(staticBackground);
         GdxMaster.center(choicePanel);
         decor.setX(GdxMaster.centerWidth(decor));
          GdxMaster.top(decor);
@@ -93,6 +94,7 @@ public class VisualChoice extends TablePanelX implements OverlayPanel {
     @Override
     public void act(float delta) {
         super.act(delta);
+
     }
 
     public void setSelected(VC_Option selected) {
@@ -136,10 +138,10 @@ public class VisualChoice extends TablePanelX implements OverlayPanel {
 
     private float getPosX(int i) {
         int middle = items.size() / 2 + 1;
-        int dif = (middle - i);
-        int middleX = (GdxMaster.getWidth() - itemWidth) / 2;
-        int segment = (GdxMaster.getWidth()-150) / (items.size()+1)/ (items.size()+1);
-        return middleX+ (itemWidth + segment) * dif;
+        int dif =(middle - i);
+        int middleX = (GdxMaster.getWidth() - itemWidth) / 2; //where middle item is placed
+        int gap = (GdxMaster.getWidth()-150) / (items.size()+1)/ (items.size()+1);
+        return middleX+ (itemWidth + gap) * dif;
 
     }
     @Deprecated

@@ -13,5 +13,14 @@ public class VendorHandler {
     - conditional soul-items
     - some don't accept gold
     - some only SF?
+
+//relation to SHOP obj/manager?
      */
+    Vendor entity;
+
+    public void initDialogue() {
+
+    }
+
+
 }

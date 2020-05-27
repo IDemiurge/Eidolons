@@ -3,6 +3,7 @@ package main.level_editor.gui.dialog.struct;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.libgdx.gui.utils.FileChooserX;
 import eidolons.libgdx.utils.GdxDialogMaster;
+import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.components.DataTable;
@@ -13,7 +14,7 @@ import main.system.PathUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnit;
 
-public abstract class DataEditDialog<S extends Enum<S> , T extends DataUnit<S>> extends EditDialog<DataTable.DataPair> {
+public abstract class DataEditDialog<S extends Enum<S>, T extends DataUnit<S>> extends EditDialog<DataTable.DataPair> {
 
     protected T data;
     protected T cached;
@@ -24,13 +25,16 @@ public abstract class DataEditDialog<S extends Enum<S> , T extends DataUnit<S>> 
 
     @Override
     protected void editItem(EditValueContainer actor, DataTable.DataPair item) {
-        Object value =null ;
+        Object value = null;
         String stringValue = null;
         LevelStructure.EDIT_VALUE_TYPE type = actor.getType();
         if (type == null) {
             type = LevelStructure.EDIT_VALUE_TYPE.text;
         }
         switch (type) {
+            case coordinates:
+                value = pickCoordinate();
+                break;
             case enum_const:
                 value = enumConst(value, actor.getEdit_arg());
                 break;
@@ -41,12 +45,16 @@ public abstract class DataEditDialog<S extends Enum<S> , T extends DataUnit<S>> 
             case none:
                 return;
             default:
-                value= input(item);
+                value = input(item);
                 break;
         }
         stringValue = string(value);
         data.setValue(item.name, stringValue);
         setUpdateRequired(true);
+    }
+
+    private Coordinates pickCoordinate() {
+        return LevelEditor.getManager().getSelectionHandler().selectCoordinate();
     }
 
     protected Object formatFilePath(DataTable.DataPair item, Object value) {
@@ -114,18 +122,24 @@ public abstract class DataEditDialog<S extends Enum<S> , T extends DataUnit<S>> 
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
         data = (T) userObject;
-        cached  = createDataCopy(data);
+        cached = createDataCopy(data);
 
         show();
     }
 
     @Override
     public void ok() {
+        if (isSaveForUndo()){
         LevelEditor.getManager().getOperationHandler().operation(Operation.LE_OPERATION.SAVE_STRUCTURE,
                 cached, data);
         LevelEditor.getManager().getOperationHandler().execute(Operation.LE_OPERATION.MODIFY_STRUCTURE,
                 data);
+        }
         super.ok();
+    }
+
+    protected boolean isSaveForUndo() {
+        return true;
     }
 
     protected abstract T createDataCopy(T userObject);

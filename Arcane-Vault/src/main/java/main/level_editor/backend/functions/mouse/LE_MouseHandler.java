@@ -39,7 +39,7 @@ public class LE_MouseHandler extends LE_Handler {
         switch (getSelectionHandler().getMode()) {
             case COORDINATE:
             case AREA:
-                WaitMaster.receiveInput(SELECTION_OPERATION, Coordinates.get(gridX, gridY));
+                WaitMaster.receiveInput(SELECTION_OPERATION, c);
                 return;
         }
         //check simplest click
@@ -61,7 +61,6 @@ public class LE_MouseHandler extends LE_Handler {
     }
 
     private void clickedCell(CLICK_MODE mode, Coordinates c) {
-
         switch (mode) {
             case CTRL_R:
                 getEditHandler().getScriptHandler().editScriptData(c);
@@ -155,6 +154,11 @@ public class LE_MouseHandler extends LE_Handler {
     }
 
     public void handleObjectClick(InputEvent event, int tapCount, BattleFieldObject bfObj) {
+        switch (getSelectionHandler().getMode()) {
+            case OBJECT:
+                WaitMaster.receiveInput(SELECTION_OPERATION, bfObj);
+                return;
+        }
         CLICK_MODE mode = getModeForClick(event, tapCount);
 
         switch (mode) {

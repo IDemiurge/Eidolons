@@ -11,6 +11,7 @@ import eidolons.game.battlecraft.logic.mission.universal.MissionHandler;
 import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,9 @@ public class EncounterSpawner extends MissionHandler<QuestMission> {
          */
     }
         public void spawnEncounters(List<Encounter> encounters) {
+            if (!ListMaster.isNotEmpty(encounters)) {
+                return;
+            }
         Map<Integer, String> dataMap = getGame().getMetaMaster().getDungeonMaster().
                 getDataMap(DataMap.encounters);
         for (Encounter encounter : encounters) {

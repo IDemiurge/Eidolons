@@ -30,12 +30,11 @@ public class QuestMissionConstructor extends MissionConstructor<QuestMission> {
             type = new ObjType("Fake dungeon", DC_TYPE.FLOORS);
         }
         String levelPath = type.getProperty(PROPS.FLOOR_FILE_PATH);
-        if (!CoreEngine.TEST_LAUNCH) {
-            if (MainLauncher.levelPath != null) {
-                levelPath = MainLauncher.levelPath;
-            } else
-                levelPath = FileChooserX.chooseFile(PathFinder.getDungeonLevelFolder(), "xml",
-                        DungeonScreen.getInstance().getOverlayStage());
+        if (MainLauncher.levelPath != null) {
+            levelPath = MainLauncher.levelPath;
+        } else if (CoreEngine.TEST_LAUNCH) {
+            levelPath = FileChooserX.chooseFile(PathFinder.getDungeonLevelFolder(), "xml",
+                    DungeonScreen.getInstance().getOverlayStage());
 
         }
         // levelPath = "crawl\\evarinath catacombs.xml";

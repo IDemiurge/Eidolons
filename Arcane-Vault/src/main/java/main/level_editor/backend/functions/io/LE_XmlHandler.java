@@ -239,6 +239,11 @@ public class LE_XmlHandler extends LE_Handler {
 
         xmlBuilder.append("\n").append(buildBorderMap(module));
 
+        // ScreenMaster.getDungeonGrid().getPlatformHandler()
+
+
+        xmlBuilder.appendNode(getAdvFuncs().getPlatformData(module) ,  FloorLoader.PLATFORM_DATA);
+
         xmlBuilder.append("\n").open(FloorLoader.COORDINATES_VOID);
         for (Coordinates coordinates : module.initCoordinateSet(false)) {
             DC_Cell cell = DC_Game.game.getCellByCoordinate(coordinates);

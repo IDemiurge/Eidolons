@@ -23,6 +23,7 @@ import eidolons.game.module.generator.tilemap.TilesMaster;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.utils.GdxDialogMaster;
 import eidolons.system.text.NameMaster;
+import main.content.CONTENT_CONSTS;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.data.DataManager;
@@ -183,6 +184,9 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         //confirm if TRANSFORM
         //what about exits?
 
+        if (blockTemplate == null) {
+            return;
+        }
 
         LevelZone zone = getModel().getZone();
         if (zone == null) {
@@ -534,6 +538,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
 
     private void resetCells(LevelStruct<LevelStruct, LevelStruct> layer) {
         DungeonEnums.CELL_IMAGE type = layer.getCellType();
+        CONTENT_CONSTS.COLOR_THEME theme=layer.getColorTheme();
         if (type != null) {
             Set<DC_Cell> set = new LinkedHashSet<>();
             for (Coordinates coordinates : layer.getCoordinatesSet()) {
@@ -543,6 +548,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
                         set.add(cell);
                         cell.setCellType(type);
                         cell.resetCell(false);
+                        cell.setColorTheme(theme);
                     }
             }
             GuiEventManager.trigger(GuiEventType.CELL_RESET, set);
@@ -570,4 +576,14 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         return block;
     }
 
+    public LevelBlock addBlock(ROOM_TYPE type, String name, Set<Coordinates> coordinates) {
+        LevelZone z=getModel().getZone();
+        LevelBlock block=createBlock(z, coordinates);
+        block.setRoomType(type);
+        block.setName(name);
+        if (addBlock(block)) {
+            return block;
+        }
+        return null ;
+    }
 }

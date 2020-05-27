@@ -292,6 +292,10 @@ public class UnitView extends BaseView implements HpBarView {
         return (BattleFieldObject) super.getUserObject();
     }
 
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+    }
     public int getCurId() {
         return curId;
     }

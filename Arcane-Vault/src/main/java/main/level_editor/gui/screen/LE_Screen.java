@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL30;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.GridCreateData;
 import eidolons.libgdx.bf.grid.GridPanel;
@@ -20,6 +22,7 @@ import main.level_editor.gui.grid.LE_BfGrid;
 import main.level_editor.gui.stage.LE_GuiStage;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.datatypes.DequeImpl;
 import main.system.threading.WaitMaster;
 
 import java.util.HashMap;
@@ -44,6 +47,11 @@ public class LE_Screen extends GenericDungeonScreen {
         ScreenWithLoader screen = new LE_Screen();
         cached.put(parameter, supplier = () -> screen);
         return supplier;
+    }
+
+    @Override
+    public void moduleEntered(Module module, DequeImpl<BattleFieldObject> objects) {
+        super.moduleEntered(module, objects);
     }
 
     public static LE_Screen getInstance() {

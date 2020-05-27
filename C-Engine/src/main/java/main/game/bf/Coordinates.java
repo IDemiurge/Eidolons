@@ -200,7 +200,18 @@ public class Coordinates implements Serializable {
         return new Coordinates(allowInvalid, x, y);
     }
 
-    public static Coordinates get(int x, int y) {
+    public static Coordinates getLimited(int x, int y) {
+        if (x>=coordinates.length)
+            x = coordinates.length-1;
+        if (y>=coordinates[0].length)
+            y = coordinates[0].length-1;
+        if (y< 0)
+            y = 0;
+        if (x< 0)
+            x = 0;
+        return get(x, y);
+    }
+        public static Coordinates get(int x, int y) {
         Coordinates c = coordinates[x][y];
         if (c == null) {
             c = new Coordinates(true, x, y);

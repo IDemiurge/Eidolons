@@ -5,6 +5,7 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.game.netherflame.main.death.ChainHero;
 import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
 import main.system.auxiliary.RandomWizard;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class ChainParty extends Party {
     private  String leaderName;
     Set<Unit> deadHeroes = new LinkedHashSet<>();
+    Set<ChainHero> heroes = new LinkedHashSet<>();
     private int totalXp; //during this run; TODO - will it work with transits?
     private int goldStashed;
     private int deathTaxPerc = 35;
@@ -148,4 +150,7 @@ public class ChainParty extends Party {
         return inventory.stream().filter(t -> isStashed(t)).collect(Collectors.toList());
     }
 
+    public Set<ChainHero> getHeroes() {
+        return heroes;
+    }
 }

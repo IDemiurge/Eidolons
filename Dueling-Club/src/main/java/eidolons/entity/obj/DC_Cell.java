@@ -85,6 +85,7 @@ public class DC_Cell extends DC_Obj implements Cell {
         if (gdx){
             GuiEventManager.trigger(GuiEventType.CELL_RESET, this);
         }
+
     }
     public void setCellType(DungeonEnums.CELL_IMAGE cellType) {
         this.cellType = cellType;

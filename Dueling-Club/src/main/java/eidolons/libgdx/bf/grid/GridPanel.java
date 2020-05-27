@@ -24,12 +24,15 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.decor.Pillars;
 import eidolons.libgdx.bf.decor.ShardVisuals;
 import eidolons.libgdx.bf.grid.cell.*;
+import eidolons.libgdx.bf.grid.moving.PlatformCell;
+import eidolons.libgdx.bf.grid.moving.PlatformHandler;
 import eidolons.libgdx.bf.grid.sub.GridElement;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
@@ -94,6 +97,8 @@ public abstract class GridPanel extends Group {
     protected Coordinates offset;
     protected Map<Module, GridSubParts> containerMap = new HashMap<>();
     protected GridViewAnimator gridViewAnimator = new GridViewAnimator(this);
+    private PlatformHandler platformHandler;
+    List<PlatformCell > platforms = new LinkedList<>();
 
     public GridPanel(int cols, int rows, int moduleCols, int moduleRows) {
         this.square = rows * cols;
@@ -102,7 +107,9 @@ public abstract class GridPanel extends Group {
         this.full_rows = rows;
         this.full_cols = cols;
         initFullGrid();
+        platformHandler = createPlatformHandler(); //platforms between modules?..
     }
+
 
     public void setModule(Module module) {
         offset = module.getOrigin();
@@ -381,7 +388,7 @@ public abstract class GridPanel extends Group {
                 view.setVisible(true);
                 ActionMaster.addFadeInAction(view, getFadeDuration(view));
             } else {
-//                ActionMaster.checkHasAction(view, AlphaAction.class).if
+                //                ActionMaster.checkHasAction(view, AlphaAction.class).if
                 if (view.getActionsOfClass(FadeOutAction.class).size > 0) {
                     return;
                 }
@@ -513,22 +520,16 @@ public abstract class GridPanel extends Group {
             return;
         }
         Coordinates c = object.getCoordinates();
-        //        if (!(object instanceof Entrance))
-        //            if (c.equals(Eidolons.getMainHero().getCoordinates())) {
-        //                if (object != Eidolons.getMainHero()) {
-        //                    uv = uv;// it's a trap!!
-        //                }
-        //            }
-        //        uv.setVisible(true);
-        try {
-            cells[c.x][(c.y)].addActor(uv);
-            GuiEventManager.trigger(GuiEventType.UNIT_VIEW_MOVED, uv);
-            if (uv.getLastSeenView() != null) {
-                if (LastSeenMaster.isUpdateRequired(object))
-                    cells[c.x][(c.y)].addActor(uv.getLastSeenView());
-            }
-        } catch (Exception e) {
+        GridCellContainer cell = getGridCell(c.x, c.y);
+        if (cell == null) {
             main.system.auxiliary.log.LogMaster.dev("No cell for view: " + object.getNameAndCoordinate());
+            return;
+        }
+        cell.addActor(uv);
+        GuiEventManager.trigger(GuiEventType.UNIT_VIEW_MOVED, uv);
+        if (uv.getLastSeenView() != null) {
+            if (LastSeenMaster.isUpdateRequired(object))
+                cell.addActor(uv.getLastSeenView());
         }
         if (overlayManager != null)
             overlayManager.clearTooltip(object);
@@ -575,7 +576,7 @@ public abstract class GridPanel extends Group {
             LogMaster.log(1, obj + " IS NOT ON UNIT MAP!");
             return null;
         }
-//        gridCellContainer.removeActor(uv);
+        //        gridCellContainer.removeActor(uv);
         uv.remove(); //if it was detached...
         uv.setVisible(false);
 
@@ -594,9 +595,9 @@ public abstract class GridPanel extends Group {
     }
 
     protected void resetVisible() {
-//        if (DeathAnim.isOn() && animMaster.getDrawer().isDrawing()) {
-//            return;
-//        }
+        //        if (DeathAnim.isOn() && animMaster.getDrawer().isDrawing()) {
+        //            return;
+        //        }
 
         for (BattleFieldObject sub : viewMap.keySet()) {
             BaseView view = viewMap.get(sub);
@@ -720,8 +721,8 @@ public abstract class GridPanel extends Group {
 
     public BattleFieldObject getObjectForView(BaseView source) {
         return (BattleFieldObject) source.getUserObject(); //TODO igg demo fix
-//        return new MapMaster<BattleFieldObject, BaseView>()
-//         .getKeyForValue(viewMap, source);
+        //        return new MapMaster<BattleFieldObject, BaseView>()
+        //         .getKeyForValue(viewMap, source);
     }
 
     public List<GroupX> getCustomOverlayingObjects() {
@@ -748,8 +749,8 @@ public abstract class GridPanel extends Group {
             BattleFieldObject object = (BattleFieldObject) obj.get();
             UnitView unitView = getUnitView(object);
             unitView.setPortraitTexture(TextureCache.getOrCreateR(object.getImagePath()));
-//            main.system.auxiliary.log.LogMaster.log(1,object.getNameAndCoordinate()+
-//                    " RESET_VIEW: " +object.getImagePath());
+            //            main.system.auxiliary.log.LogMaster.log(1,object.getNameAndCoordinate()+
+            //                    " RESET_VIEW: " +object.getImagePath());
         });
 
         GuiEventManager.bind(removePrevious, CELL_RESET_VOID, obj -> {
@@ -865,6 +866,7 @@ public abstract class GridPanel extends Group {
                         new TextureRegionDrawable(TextureCache.getOrCreateR(cell.getImagePath())));
 
                 container.setOverlayRotation(cell.getOverlayRotation());
+                container.setTeamColor(GdxColorMaster.getColorForTheme(cell.getColorTheme()));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -1102,6 +1104,27 @@ public abstract class GridPanel extends Group {
     }
 
 
+    protected PlatformHandler createPlatformHandler() {
+        return new PlatformHandler(this);
+    }
+
+    public void addPlatform(PlatformCell cell) {
+        int x = cell.getGridX();
+        int y = cell.getGridY();
+        addActor(cell.init());
+        cell.setY(getGdxY_ForModule(y) * GridMaster.CELL_H);
+        cell.setX(x * GridMaster.CELL_W);
+        platforms.add( cell);
+        //z-index TODO
+        // what would need to be ABOVE platforms?
+        // anims, vfx, possibly shadowMap (or not, if it's void)
+        // we don't want it to be above light emitters, but those need a revamp anyway
+        // between modules - perhaps a handler per one?
+    }
+
+    public PlatformHandler getPlatformHandler() {
+        return platformHandler;
+    }
 }
 
 

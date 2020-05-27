@@ -102,6 +102,12 @@ public class LE_GridCell extends GridCellContainer {
     }
 
     @Override
+    public void setTeamColor(Color teamColor) {
+        super.setTeamColor(teamColor);
+        setColor(teamColor);
+    }
+
+    @Override
     public int getUnitViewCountEffective() {
         return super.getUnitViewCountEffective() + 1;
     }

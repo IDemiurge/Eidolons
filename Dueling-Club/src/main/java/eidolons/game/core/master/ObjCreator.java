@@ -4,6 +4,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
@@ -86,7 +87,11 @@ public class ObjCreator extends Master {
 
                 }
             }
-        if (getGame().getModule() != null) {
+
+        if (CoreEngine.isLevelEditor()) {
+            Module module = getGame().getMetaMaster().getModuleMaster().getModule(obj.getCoordinates());
+            obj.setModule(module);
+        } else if (getGame().getModule() != null) {
             obj.setModule(getGame().getModule());
         }
         return obj;
@@ -116,8 +121,8 @@ public class ObjCreator extends Master {
             return false;
         }
         return obj.isPlayerCharacter();
-//        if (!getGame().getMetaMaster().getModuleMaster().isWithinModule(obj.getCoordinates()))
-//            return false;
+        //        if (!getGame().getMetaMaster().getModuleMaster().isWithinModule(obj.getCoordinates()))
+        //            return false;
 
         //TODO check distance
 

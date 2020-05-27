@@ -82,15 +82,18 @@ public class DC_ObjInitializer extends DungeonHandler {
             }
         }
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
-
             obj =  createEncounter(type, c, id);
 
         } else {
-            type = getPlaceholderResolver().resolve(module, type, c);
-            if (type.getOBJ_TYPE_ENUM() == DC_TYPE.UNITS) {
-                obj = getSpawner().spawnUnit(type, c, owner, null, null);
+            ObjType resolvedType = getPlaceholderResolver().resolve(module, type, c);
+            if (resolvedType == null) {
+                main.system.auxiliary.log.LogMaster.log(1,module+": Null resolvedType for " +type);
+                return null;
+            }
+            if (resolvedType.getOBJ_TYPE_ENUM() == DC_TYPE.UNITS) {
+                obj = getSpawner().spawnUnit(resolvedType, c, owner, null, null);
             } else
-                obj = game.createObject(type, c, owner);
+                obj = game.createObject(resolvedType, c, owner);
 
         }
         obj.setModule(module);

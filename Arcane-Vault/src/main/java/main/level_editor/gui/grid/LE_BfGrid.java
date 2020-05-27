@@ -7,6 +7,7 @@ import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.GridSubParts;
 import eidolons.libgdx.bf.grid.GridViewAnimator;
 import eidolons.libgdx.bf.grid.cell.*;
+import eidolons.libgdx.bf.grid.moving.PlatformHandler;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.obj.Obj;
@@ -30,6 +31,11 @@ public class LE_BfGrid extends GridPanel {
         super(cols, rows, moduleCols, moduleRows);
         selectionBorder = TextureCache.getOrCreateR(CellBorderManager.teamcolorPath);
 
+    }
+
+    @Override
+    protected PlatformHandler createPlatformHandler() {
+        return new LE_PlatformHandler(this);
     }
 
     @Override

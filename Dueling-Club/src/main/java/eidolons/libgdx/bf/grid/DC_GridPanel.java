@@ -29,6 +29,7 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.grid.cell.*;
+import eidolons.libgdx.bf.grid.moving.PlatformCell;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
@@ -70,16 +71,21 @@ public class DC_GridPanel extends GridPanel {
     private boolean firstUpdateDone;
     private boolean welcomeInfoShown;
 
-
     public DC_GridPanel(int paramCols, int paramRows, int cols, int rows) {
         super(paramCols, paramRows, cols, rows);
     }
 
-
     @Override
-    public GridPanel initFullGrid() {
-        return super.initFullGrid();
+    public GridCellContainer getGridCell(int x, int y) {
+        for (PlatformCell platform : platforms) {
+            if (platform.getGridX()==x) {
+            if (platform.getGridY()==y)
+                return platform;
+            }
+        }
+        return super.getGridCell(x, y);
     }
+
 
     @Override
     public GridPanel initObjects(DequeImpl<BattleFieldObject> objects) {
@@ -128,6 +134,7 @@ public class DC_GridPanel extends GridPanel {
     @Override
     public void act(float delta) {
         super.act(delta);
+        getPlatformHandler().act(delta);
         if (updateRequired) {
             resetZIndices();
             update();

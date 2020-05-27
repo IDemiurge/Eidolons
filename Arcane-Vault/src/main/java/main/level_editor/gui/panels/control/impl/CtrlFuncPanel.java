@@ -15,6 +15,11 @@ public class CtrlFuncPanel  extends LE_ControlPanel<IAdvFuncs> {
     }
 
     @Override
+    protected int getWrap() {
+        return 4;
+    }
+
+    @Override
     protected float getSpace() {
         return 0;
     }

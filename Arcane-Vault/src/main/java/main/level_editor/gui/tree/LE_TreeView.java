@@ -12,6 +12,7 @@ import com.kotcrab.vis.ui.VisUI;
 import eidolons.game.battlecraft.ai.elements.generic.AiData;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorData;
@@ -24,7 +25,9 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.grid.moving.PlatformController;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
@@ -37,6 +40,7 @@ import main.level_editor.backend.handlers.model.EditorModel;
 import main.level_editor.backend.struct.boss.BossDungeon;
 import main.level_editor.backend.struct.campaign.Campaign;
 import main.level_editor.gui.components.TreeX;
+import main.level_editor.gui.dialog.struct.PlatformEditDialog;
 import main.level_editor.gui.stage.LE_GuiStage;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -56,27 +60,39 @@ public class LE_TreeView extends TreeX<StructNode> {
     @Override
     protected void rightClick(StructNode node) {
 
-        if (node.getData() instanceof LevelBlock) {
-            BlockData data = ((LevelBlock) node.getData()) .getData();
-            if (getStage() instanceof LE_GuiStage) {
-                ((LE_GuiStage) getStage()).getBlockEditor().edit(data);
+        LayeredData nodeData = node.getData();
+        if (nodeData instanceof LevelBlock) {
+            if (((LevelBlock) nodeData).getRoomType() == LocationBuilder.ROOM_TYPE.PLATFORM) {
+                PlatformController controller = ScreenMaster.getDungeonGrid().getPlatformHandler().findByName(
+                        ((LevelBlock) nodeData).getName());
+                ((LE_GuiStage) getStage()).getPlatformDialog().edit(controller.getData());
+                //confirm
+                WaitMaster.waitForInput(PlatformEditDialog.EDIT_DONE);
+            }
+
+            {
+                BlockData data = ((LevelBlock) nodeData) .getData();
+                if (getStage() instanceof LE_GuiStage) {
+
+                    ((LE_GuiStage) getStage()).getBlockEditor().edit(data);
+                }
             }
         }
-        if (node.getData() instanceof LevelZone) {
-            ZoneData data = ((LevelZone) node.getData() ).getData();
+        if (nodeData instanceof LevelZone) {
+            ZoneData data = ((LevelZone) nodeData).getData();
             if (getStage() instanceof LE_GuiStage) {
                 ((LE_GuiStage) getStage()).getZoneEditor().edit(data);
             }
         }
-        if (node.getData() instanceof  Module) {
-            ModuleData data = ( (Module) node.getData()) .getData();
+        if (nodeData instanceof  Module) {
+            ModuleData data = ( (Module) nodeData) .getData();
             if (getStage() instanceof LE_GuiStage) {
                 ((LE_GuiStage) getStage()).getModuleDialog().edit(data);
             }
         }
 
-        if (node.getData() instanceof Location) {
-            FloorData data = (FloorData) ((Location) node.getData()).getData();
+        if (nodeData instanceof Location) {
+            FloorData data = (FloorData) ((Location) nodeData).getData();
             if (getStage() instanceof LE_GuiStage) {
                 ((LE_GuiStage) getStage()).getFloorDialog().edit(data);
             }

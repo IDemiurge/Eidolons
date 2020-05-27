@@ -207,7 +207,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
 
     public Coordinates selectCoordinate() {
         mode = SELECTION_MODE.COORDINATE;
-        EUtils.infoPopup("Select coordinate...");
+        EUtils.showInfoText("Select coordinate...");
         Coordinates c = (Coordinates) WaitMaster.waitForInput(LE_MouseHandler.SELECTION_OPERATION);
         downgradeMode();
         return c;

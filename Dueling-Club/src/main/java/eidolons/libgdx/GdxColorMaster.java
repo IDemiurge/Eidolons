@@ -216,6 +216,8 @@ public class GdxColorMaster {
                 return new Color(1f, 1f, 1f, 1);
             case YELLOW:
                 return new Color(1, 0.9f, 0.7f, 1);
+            case SALAD:
+                return new Color(0.73f, 0.87f, 0.62f, 1);
             case PURPLE:
                 return new Color(0.8f, 0.7f, 0.9f, 1);
             case ORANGE:
@@ -223,7 +225,7 @@ public class GdxColorMaster {
             case PINK:
                 return new Color(0.8f, 0.2f, 0.6f, 1);
             case CRIMSON:
-                return new Color(0.9f, 0.1f, 0.7f, 1);
+                return new Color(0.87f, 0.15f, 0.74f, 1);
             case CYAN:
                 return new Color(0.5f, 0.8f, 0.8f, 1);
         }

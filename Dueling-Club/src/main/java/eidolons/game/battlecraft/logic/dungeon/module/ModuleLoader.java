@@ -74,6 +74,8 @@ public class ModuleLoader extends DungeonHandler {
         if (module.isFirstInit()) {
             module.initBorderObjects();
             module.initObjects();
+            if (module.getPlatformData() != null)
+                GuiEventManager.trigger(GuiEventType.INIT_PLATFORMS, module.getPlatformData());
         }
         module.setFirstInit(false);
 

@@ -41,22 +41,22 @@ import static main.system.auxiliary.log.LogMaster.log;
 public class GridCellContainer extends GridCell implements Hoverable {
     Map<GenericGridView, Integer> indexMap = new LinkedHashMap<>();
     ValueContainer info;
-    private int nonBgUnitViewCount = 0;
-    private int overlayCount = 0;
-    private GraveyardView graveyard;
-    private boolean hasBackground;
-    private GenericGridView topUnitView;
-    private boolean dirty;
-    private boolean secondCheck;
-    private int Z = 2;
-    private boolean hovered;
-    private boolean stackView;
-    private float maxY;
-    private SortMaster<GenericGridView> sorter;
-    private List<GenericGridView> visibleViews;
-    private List<GenericGridView> allViews;
-    private boolean main;
-    private int n;
+    protected int nonBgUnitViewCount = 0;
+    protected int overlayCount = 0;
+    protected GraveyardView graveyard;
+    protected boolean hasBackground;
+    protected GenericGridView topUnitView;
+    protected boolean dirty;
+    protected boolean secondCheck;
+    protected int Z = 2;
+    protected boolean hovered;
+    protected boolean stackView;
+    protected float maxY;
+    protected SortMaster<GenericGridView> sorter;
+    protected List<GenericGridView> visibleViews;
+    protected List<GenericGridView> allViews;
+    protected boolean main;
+    protected int n;
 
     public GridCellContainer(TextureRegion backTexture, int gridX, int gridY) {
         super(backTexture, gridX, gridY);
@@ -108,7 +108,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         return getUnitViews(true);
     }
 
-    private boolean isViewCacheOn() {
+    protected boolean isViewCacheOn() {
         if (EidolonsGame.BOSS_FIGHT)  //hasBackground
             return true;
         //TODO igg demo hack
@@ -216,7 +216,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         info.setPosition(GDX.centerWidth(info), maxY + 10);
     }
 
-    private void recalcImagesPos(GenericGridView actor,
+    protected void recalcImagesPos(GenericGridView actor,
                                  float perImageOffsetX
             , float perImageOffsetY, int i) {
 
@@ -224,7 +224,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         actor.setY(getViewY(perImageOffsetY, i++, getUnitViewCountEffective()));
     }
 
-    private boolean isAnimated() {
+    protected boolean isAnimated() {
         return true;
     }
 
@@ -259,7 +259,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         return true;
     }
 
-    private void recalcImagesPos() {
+    protected void recalcImagesPos() {
         int i = 0;
         int offset = getUnitViewOffset();
         for (GenericGridView actor : getUnitViewsVisible()) {
@@ -298,7 +298,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         return !isWithinCamera();
     }
 
-    private Integer getZIndexForView(GenericGridView actor) {
+    protected Integer getZIndexForView(GenericGridView actor) {
         if (actor.isCellBackground())
             return 1;
         if (indexMap.containsKey(actor)) {
@@ -333,7 +333,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         backImage.setZIndex(0);
     }
 
-    private GenericGridView resetZIndices(List<GenericGridView> filtered, boolean units) {
+    protected GenericGridView resetZIndices(List<GenericGridView> filtered, boolean units) {
         GenericGridView hovered = null;
 
         for (GenericGridView actor : filtered) {
@@ -410,7 +410,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         }
     }
 
-    private boolean isStaticZindex() {
+    protected boolean isStaticZindex() {
         return !Gdx.input.isKeyPressed(Keys.TAB)
                 && !Gdx.input.isKeyPressed(Keys.ALT_LEFT)
                 && !Gdx.input.isKeyPressed(Keys.ALT_RIGHT);
@@ -494,11 +494,11 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
 
-    private float getPosDiffFactorX() {
+    protected float getPosDiffFactorX() {
         return 1.25f;
     }
 
-    private float getPosDiffFactorY() {
+    protected float getPosDiffFactorY() {
         return 1.25f;
     }
 

@@ -224,8 +224,13 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void setUserObject(Object userObject) {
+        boolean propagate = false;
+        if (getUserObject() == null) {
+            propagate = true;
+        }
         super.setUserObject(userObject);
-        getChildren().forEach(ch -> ch.setUserObject(userObject));
+        if (propagate)
+            getChildren().forEach(ch -> ch.setUserObject(userObject));
     }
 
     @Override

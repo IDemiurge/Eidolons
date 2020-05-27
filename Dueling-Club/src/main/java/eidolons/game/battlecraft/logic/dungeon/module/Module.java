@@ -32,6 +32,7 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     private String borderObjectsData;
     private boolean firstInit;
     private boolean startModule;
+    private String platformData;
 
     public Module(Coordinates origin, int width, int height, String name) {
         this.origin = origin;
@@ -244,4 +245,11 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
         this.startModule = startModule;
     }
 
+    public void setPlatformData(String platformData) {
+        this.platformData = platformData;
+    }
+
+    public String getPlatformData() {
+        return platformData;
+    }
 }

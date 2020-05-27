@@ -3,14 +3,20 @@ package eidolons.libgdx.gui.overlay.choice;
 import main.system.auxiliary.StringMaster;
 
 public class VC_Option {
-    VC_DataSource.VC_OPTION type;
+    Object arg;
     public String title;
     public String tooltip;
     public String image;
 
-    //any custom?!
+    public VC_Option(Object arg, String title, String tooltip, String image) {
+        this.title = title;
+        this.tooltip = tooltip;
+        this.image = image;
+        this.arg = arg;
+    }
+
     public VC_Option(VC_DataSource.VC_OPTION type) {
-        this.type = type;
+        this.arg = type;
         this.title = StringMaster.getWellFormattedString(type.toString());
         image = (type.img);
         //TODO localize
@@ -21,5 +27,21 @@ public class VC_Option {
         //to override for custom
         return false;
         // return VisualChoiceHandler.checkOptionDisabled(type);
+    }
+
+    public Object getArg() {
+        return arg;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getTooltip() {
+        return tooltip;
+    }
+
+    public String getImage() {
+        return image;
     }
 }

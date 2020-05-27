@@ -66,17 +66,18 @@ public class LocationBuilder extends DungeonBuilder {
     }
 
     public enum ROOM_TYPE {
-        THRONE_ROOM(60, 45, 3, 0, 4, 0),
-        COMMON_ROOM(25, 25),
-        CORRIDOR(15, 15, 1, 4, 3, 6),
-        TREASURE_ROOM(25, 15, 3, 7, 2, 6),
-        DEATH_ROOM(30, 15, 2, 4, 3, 5),
-        GUARD_ROOM(25, 25, 3, 6, 2, 4),
-        ENTRANCE_ROOM(15, 35),
-        EXIT_ROOM(35, 15),
-        SECRET_ROOM(15, 15, 1, 4, 3, 6),
-        OUTSIDE(60, 45, 3, 0, 4, 0);
-
+        THRONE_ROOM,
+        COMMON_ROOM,
+        CORRIDOR,
+        TREASURE_ROOM,
+        DEATH_ROOM,
+        GUARD_ROOM,
+        ENTRANCE_ROOM,
+        EXIT_ROOM,
+        SECRET_ROOM,
+        OUTSIDE,
+        PLATFORM,
+;
         public static ROOM_TYPE[] mainRoomTypes = {
                 THRONE_ROOM,
                 COMMON_ROOM,
@@ -85,25 +86,6 @@ public class LocationBuilder extends DungeonBuilder {
                 GUARD_ROOM,
                 SECRET_ROOM
         };
-        public int heightMod;
-        public int widthMod;
-        public int minX;
-        public int maxX;
-        public int minY;
-        public int maxY;
-
-        ROOM_TYPE(int widthMod, int heightMod, int minX, int maxX, int minY, int maxY) {
-            this.maxX = maxX;
-            this.maxY = maxY;
-            this.minX = minX;
-            this.minY = minY;
-            this.widthMod = widthMod;
-            this.heightMod = heightMod;
-        }
-
-        ROOM_TYPE(int widthMod, int heightMod) { // , int minWidth, int maxWidth
-            this(widthMod, heightMod, 0, 0, 0, 0);
-        }
 
     }
 

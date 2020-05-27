@@ -21,7 +21,7 @@ public class VisualChoiceHandler extends MetaGameHandler {
     }
 
     public static boolean isOn() {
-        return true;
+        return false;
     }
 
     public   boolean isDisabled(VC_DataSource.VC_OPTION option) {

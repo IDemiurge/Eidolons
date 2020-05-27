@@ -52,6 +52,7 @@ public class FloorLoader extends DungeonHandler {
     public static final String MAIN_ENTRANCE = "MAIN_ENTRANCE";
     public static final String MAIN_EXIT = "MAIN_EXIT";
     public static final String SCRIPT_DATA = "SCRIPT_DATA";
+    public static final String PLATFORM_DATA = "PLATFORM_DATA";
     private String entranceData = "";
 
     public FloorLoader(DungeonMaster master) {
@@ -70,6 +71,9 @@ public class FloorLoader extends DungeonHandler {
     public void processModuleSubNode(Node node, Location location, Module module) {
         log(LOG_CHANNEL.BUILDING, "Module Sub Node: " + node.getNodeName());
         switch (node.getNodeName()) {
+            case PLATFORM_DATA:
+                initPlatformData(module, node.getTextContent());
+                break;
             case CUSTOM_TYPE_DATA:
                 Map<Integer, ObjType> idTypeMap = module.getIdTypeMap();
                 Map<Integer, Map<String, String>> customTypesData = MapMaster.createDataMap(node.getTextContent());
@@ -91,7 +95,7 @@ public class FloorLoader extends DungeonHandler {
                 break;
             case OBJ_NODE_NEW:
                 module.setObjectsData(node.getTextContent());
-                if (isModuleObjInitRequired(module )) {
+                if (isModuleObjInitRequired(module)) {
                     initObjects(module);
                 }
 
@@ -129,11 +133,15 @@ public class FloorLoader extends DungeonHandler {
                 initEncounterGroups(node.getTextContent());
                 break;
             case CUSTOM_AI_GROUPS:
-//             TODO    getMaster().getGame().getAiManager().getGroupHandler()
-//                        .initCustomGroups(node.getTextContent());
+                //             TODO    getMaster().getGame().getAiManager().getGroupHandler()
+                //                        .initCustomGroups(node.getTextContent());
                 break;
         }
 
+    }
+
+    protected void initPlatformData(Module module, String textContent) {
+        module.setPlatformData(textContent);
     }
 
     protected void initObjects(Module module) {
@@ -163,7 +171,7 @@ public class FloorLoader extends DungeonHandler {
                 }
                 break;
             case MODULES:
-                Module.ID=0;
+                Module.ID = 0;
                 getStructureBuilder().build(node, location);
                 checkModuleRemap(false, location);
                 break;
@@ -241,11 +249,11 @@ public class FloorLoader extends DungeonHandler {
             if (type == null) {
                 type = DataManager.getType(typeName, DC_TYPE.ENCOUNTERS);
             }
-                if (type == null) {
+            if (type == null) {
                 type = DataManager.getType(typeName, DC_TYPE.UNITS);
             }
-                if (type == null) {
-                main.system.auxiliary.log.LogMaster.log(1,typeName+ " - NO SUCH TYPE FOR ID !" );
+            if (type == null) {
+                main.system.auxiliary.log.LogMaster.log(1, typeName + " - NO SUCH TYPE FOR ID !");
                 continue;
             }
             String ids = content.split("=")[1];

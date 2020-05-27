@@ -38,10 +38,11 @@ public class Entrance extends Structure { //ScenarioUnit
 
     public void setMainEntrance(boolean mainEntrance) {
         this.mainEntrance = mainEntrance;
-        if (CoreEngine.isLevelEditor()) {
-            getGame().getDungeonMaster().getFloorWrapper().getData().setValue(LevelStructure.FLOOR_VALUES.start_module,
-                    getModule().getId());
-        }
+        if (mainEntrance)
+            if (CoreEngine.isLevelEditor()) {
+                getGame().getDungeonMaster().getFloorWrapper().getData().setValue(LevelStructure.FLOOR_VALUES.start_module,
+                        getModule().getId());
+            }
     }
 
     public boolean isMainEntrance() {

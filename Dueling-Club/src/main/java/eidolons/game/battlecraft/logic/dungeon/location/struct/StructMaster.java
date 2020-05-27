@@ -116,6 +116,14 @@ public class StructMaster extends DungeonHandler {
         }
         return null;
     }
+    public LevelBlock findBlockByName(String name) {
+        for (LevelBlock block : getBlocks()) {
+            if (block.getName().equalsIgnoreCase(name)) {
+                return block;
+            }
+        }
+        return null;
+    }
 
     public LevelBlock findBlockById(Integer id) {
         for (LevelBlock block : getBlocks()) {
@@ -177,4 +185,5 @@ public class StructMaster extends DungeonHandler {
         }
         return struct.getCellType();
     }
+
 }

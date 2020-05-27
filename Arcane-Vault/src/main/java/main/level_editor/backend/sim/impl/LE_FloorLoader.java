@@ -38,6 +38,12 @@ public class LE_FloorLoader extends FloorLoader {
     }
 
     @Override
+    protected void initPlatformData(Module module, String textContent) {
+        super.initPlatformData(module, textContent);
+        LevelEditor.getManager().getAdvFuncs().initPlatforms(textContent);
+    }
+
+    @Override
     public void addMainEntrance(Location location, String text, boolean exit) {
         Integer id = Integer.valueOf(text);
         LevelEditor.getManager().getTransitHandler().addMain(id, exit);

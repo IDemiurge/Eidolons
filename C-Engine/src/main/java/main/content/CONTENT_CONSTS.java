@@ -16,7 +16,7 @@ public class CONTENT_CONSTS {
             public String getSuffix() {
                 return " v";
             }
-        }, ORANGE, PINK, CRIMSON, CYAN,
+        }, ORANGE, PINK, CRIMSON, CYAN, SALAD,
         ;
 
         COLOR_THEME() {

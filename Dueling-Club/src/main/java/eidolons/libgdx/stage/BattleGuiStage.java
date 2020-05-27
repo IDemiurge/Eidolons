@@ -21,6 +21,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.libgdx.gui.HideButton;
 import eidolons.libgdx.gui.overlay.choice.VisualChoice;
+import eidolons.libgdx.gui.overlay.choice.VisualChoiceHandler;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.CombatInventory;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
@@ -51,8 +52,8 @@ public class BattleGuiStage extends GuiStage {
     private final GuiVisualEffects guiVisualEffects;
     private final CombatInventory combatInventory;
     private final FullscreenAnims fullscreenAnims;
-    private   HideButton sbHideBtn;
-    private   VisualChoice vc;
+    private HideButton sbHideBtn;
+    private VisualChoice vc;
     private UnitInfoPanelNew infoPanel;
     protected OutcomePanel outcomePanel;
     ParticlesSprites particlesSprites;
@@ -79,7 +80,7 @@ public class BattleGuiStage extends GuiStage {
         addActor(guiVisualEffects = new GuiVisualEffects());
         addActor(particlesSprites = new ParticlesSprites());
         topLeftPanel = new TopLeftPanel();
-//        atbPanel.setPosition(0, GdxMaster.getHeight() - atbPanel.getHeight());
+        //        atbPanel.setPosition(0, GdxMaster.getHeight() - atbPanel.getHeight());
         addActor(topLeftPanel);
         bottomPanel = new ActionPanel(0, 0);
         addActor(bottomPanel);
@@ -99,26 +100,27 @@ public class BattleGuiStage extends GuiStage {
         addActor(fullscreenAnims = new FullscreenAnims());
 
         if (RuleKeeper.isRuleOn(SOULFORCE)) {
-                  //  RollDecorator.RollableGroup decorated;
-                  //  addActor(decorated = RollDecorator.decorate(
-                  //          bg = new FadeImageContainer(Images.COLUMNS), FACING_DIRECTION.NORTH, true));
-                  // decorated.setRollPercentage(0.78f);
-                  // decorated.setRollIsLessWhenOpen(true);
-                  //  decorated.toggle(false);
+            //  RollDecorator.RollableGroup decorated;
+            //  addActor(decorated = RollDecorator.decorate(
+            //          bg = new FadeImageContainer(Images.COLUMNS), FACING_DIRECTION.NORTH, true));
+            // decorated.setRollPercentage(0.78f);
+            // decorated.setRollIsLessWhenOpen(true);
+            //  decorated.toggle(false);
             addActor(soulforcePanel = new SoulforcePanel());
             GdxMaster.center(soulforcePanel);
             soulforcePanel.setY(GdxMaster.getTopY(soulforcePanel));
-            addActor( sbHideBtn = new HideButton(soulforcePanel));
+            addActor(sbHideBtn = new HideButton(soulforcePanel));
             GdxMaster.center(sbHideBtn);
-            sbHideBtn.setX(sbHideBtn.getX()-7);
-            sbHideBtn.setY(GdxMaster.getHeight()-73);
+            sbHideBtn.setX(sbHideBtn.getX() - 7);
+            sbHideBtn.setY(GdxMaster.getHeight() - 73);
         }
 
         getBottomPanel().setX(GdxMaster.centerWidthScreen(getBottomPanel()));
-
-        // addActor(vc= new VisualChoice());
-        // vc.setVisible(false);
-//        getBottomPanel().setX((GdxMaster.getWidth() - fullLogPanel.getWidth() - getBottomPanel().getWidth()) / 2 + 70);
+        if (VisualChoiceHandler.isOn()) {
+            addActor(vc = new VisualChoice());
+            vc.setVisible(false);
+        }
+        //        getBottomPanel().setX((GdxMaster.getWidth() - fullLogPanel.getWidth() - getBottomPanel().getWidth()) / 2 + 70);
 
     }
 
@@ -134,17 +136,17 @@ public class BattleGuiStage extends GuiStage {
 
     @Override
     protected void drawCinematicMode(Batch batch) {
-//        Camera camera = getViewport().getCamera();
-//        camera.update();
-//        batch.setProjectionMatrix(camera.combined);
-//        dialogueContainer.draw(batch, 1f);
-//        if (confirmationPanel.isVisible()) {
-//            confirmationPanel.draw(batch, 1f);
-//        }
-//        if (tipMessageWindow.isVisible()) {
-//            tipMessageWindow.draw(batch, 1f);
-//        }
-//        fullscreenAnims.draw(batch, 1f);
+        //        Camera camera = getViewport().getCamera();
+        //        camera.update();
+        //        batch.setProjectionMatrix(camera.combined);
+        //        dialogueContainer.draw(batch, 1f);
+        //        if (confirmationPanel.isVisible()) {
+        //            confirmationPanel.draw(batch, 1f);
+        //        }
+        //        if (tipMessageWindow.isVisible()) {
+        //            tipMessageWindow.draw(batch, 1f);
+        //        }
+        //        fullscreenAnims.draw(batch, 1f);
 
     }
 
@@ -192,11 +194,11 @@ public class BattleGuiStage extends GuiStage {
         super.bindEvents();
 
         GuiEventManager.bind(GuiEventType.COMBAT_STARTED, obj -> {
-          topLeftPanel.getAtbPanel().toggleQueue(true);
-          largeText.show("Battle", obj.get().toString(), 2f);
+            topLeftPanel.getAtbPanel().toggleQueue(true);
+            largeText.show("Battle", obj.get().toString(), 2f);
             // WaitMaster.receiveInput(combat_ui_ready, true);
         });
-        GuiEventManager.bind(GuiEventType.COMBAT_ENDED , obj -> {
+        GuiEventManager.bind(GuiEventType.COMBAT_ENDED, obj -> {
 
             largeText.show("Battle is Over", obj.get().toString(), 2f);
             //TODO wait for 2 seconds!

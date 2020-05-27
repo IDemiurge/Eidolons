@@ -28,6 +28,13 @@ public class EnumChooser extends ChooserDialog<Object, SmartButton> {
     }
 
     @Override
+    protected void initSize(int wrap, int size) {
+        super.initSize(wrap, size);
+        setWidth(Math.max(getWidth(), 700));
+        setHeight(Math.max(getHeight(), 400));
+    }
+
+    @Override
     protected boolean isInstaOk() {
         return true;
     }

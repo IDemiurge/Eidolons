@@ -14,6 +14,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.battlecraft.logic.mission.encounter.EncounterData;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.bf.grid.moving.PlatformData;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
@@ -66,6 +67,7 @@ public class LE_GuiStage extends GenericGuiStage {
     private ZoneEditDialog zoneEditor;
     private FloorEditDialog floorDialog;
     private EncounterEditDialog encounterEditor;
+    private PlatformEditDialog platformEditDialog;
     private AiEditDialog aiEditor;
     private boolean positionsAdjusted;
     private CellDataEditor cellDataEditor;
@@ -108,6 +110,7 @@ public class LE_GuiStage extends GenericGuiStage {
         addActor(aiEditor = new AiEditDialog());
         addActor(encounterEditor = new EncounterEditDialog());
         addActor(cellDataEditor = new CellDataEditor());
+        addActor(platformEditDialog = new PlatformEditDialog());
         addActor(editTable = new DataTable(2, 50));
 
         addActor(statusBar = new LE_StatusBar());
@@ -323,6 +326,11 @@ public class LE_GuiStage extends GenericGuiStage {
         return cellDataEditor;
     }
 
+    public PlatformEditDialog getPlatformDialog() {
+        dialog = platformEditDialog;
+        return platformEditDialog;
+    }
+
     public FloorEditDialog getFloorDialog() {
         dialog = floorDialog;
         return floorDialog;
@@ -334,6 +342,9 @@ public class LE_GuiStage extends GenericGuiStage {
 
     public <S extends Enum<S>, T extends DataUnit<S>>
     DataEditDialog<S, T> getEditDialog(DataUnit<S> dataUnit) {
+        if (dataUnit instanceof PlatformData) {
+            return (DataEditDialog<S, T>) getPlatformDialog();
+        }
         if (dataUnit instanceof FloorData) {
             return (DataEditDialog<S, T>) getFloorDialog();
         }
@@ -358,6 +369,7 @@ public class LE_GuiStage extends GenericGuiStage {
         }
         return null;
     }
+
 
 
     public FloorTabs getFloorTabs() {
