@@ -57,8 +57,8 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
     protected abstract double getDefaultVisionRange();
 
     public boolean checkVisible() {
-//        if (isClearshotRequired()) {
-//        }
+        //        if (isClearshotRequired()) {
+        //        }
         if (CoreEngine.isLevelEditor())
             return true;
         return !(Eidolons.getGame().getManager().getMainHeroCoordinates().dst_(c) > visionRange);
@@ -95,11 +95,11 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         getColor().a = 0;
         createEmittersUnder();
         if (isSpriteShown())
-        try {
-            sprite = new SpriteX(spritePath);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+            try {
+                sprite = new SpriteX(spritePath);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
 
         if (sprite != null) {
             if (sprite.getSprite() == null) {
@@ -112,15 +112,25 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         }
         createEmittersOver();
 
-        if (!(getParent() instanceof GridObject)) {
-            Vector2 pos = GridMaster.getCenteredPos(
-                    (c));
-            setPosition(pos.x, pos.y);
+        if (!(getParent() instanceof GridObject)) { //not for secondary
+                      initPosition();
         }
         initialized = true;
 
         if (sprite != null)
             sprite.act(RandomWizard.getRandomFloatBetween(0, 4));
+    }
+
+    protected void initPosition() {
+        Vector2 pos = GridMaster.getCenteredPos((c));
+        setPosition(pos.x+getOffsetX(), pos.y+getOffsetY());
+    }
+
+    public float getOffsetX() {
+        return 0;
+    }
+    public float getOffsetY() {
+        return 0;
     }
 
     private boolean isSpriteShown() {

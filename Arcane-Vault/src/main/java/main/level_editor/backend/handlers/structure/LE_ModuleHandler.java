@@ -146,6 +146,10 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
             for (Coordinates borderCoord : borderCoords) {
 
                 if (type == BORDER_TYPE.wall_chism || type == BORDER_TYPE.chism) {
+                    if (type == BORDER_TYPE.chism) {
+                        toVoid.add(borderCoord);
+                        continue;
+                    }
                     //check NOT outer
                     if (borderCoord.x != right.x &&
                             borderCoord.x != left.x &&
@@ -153,10 +157,6 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
                             borderCoord.y != up.x) {
                         toVoid.add(borderCoord);
                         continue;
-                    }
-                    if (type == BORDER_TYPE.chism) {
-                        //chance
-
                     }
                 }
                 if (type.chance) {

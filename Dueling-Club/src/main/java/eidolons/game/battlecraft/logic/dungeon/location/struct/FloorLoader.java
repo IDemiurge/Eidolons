@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -15,6 +16,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.data.DataUnit;
@@ -73,6 +75,10 @@ public class FloorLoader extends DungeonHandler {
         switch (node.getNodeName()) {
             case PLATFORM_DATA:
                 initPlatformData(module, node.getTextContent());
+                break;
+            case SCRIPT_DATA:
+                location.addTextDataMap(buildCellMap(node.getTextContent()));
+
                 break;
             case CUSTOM_TYPE_DATA:
                 Map<Integer, ObjType> idTypeMap = module.getIdTypeMap();
@@ -138,6 +144,17 @@ public class FloorLoader extends DungeonHandler {
                 break;
         }
 
+    }
+
+    private Map<Coordinates, CellScriptData> buildCellMap(String textContent) {
+        Map<Coordinates, CellScriptData> map = new HashMap<>();
+        for (String substring : ContainerUtils.openContainer(textContent, StringMaster.AND_SEPARATOR)) {
+            String[] split = substring.split("=");
+            Coordinates c = Coordinates.get(split[0]);
+            map.put(c, new CellScriptData(split[1]));
+
+        }
+        return map;
     }
 
     protected void initPlatformData(Module module, String textContent) {
@@ -284,5 +301,10 @@ public class FloorLoader extends DungeonHandler {
         location.initMainEntrance();
         //TODO may not be initialized??
         location.initMainExit();
+        processTextMap(location);
+    }
+
+    protected void processTextMap(Location location) {
+        getMaster().getPortalMaster().init(location.getTextDataMap());
     }
 }

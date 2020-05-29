@@ -24,6 +24,11 @@ public class DungeonEnums {
         natural,
         ornate,
         octagonal("oct"),
+        iron,
+        rock,
+        mossy,
+        //wood
+        //bridge
         ;
         String name;
 

@@ -3,7 +3,6 @@ package main.level_editor.backend.functions.advanced;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
@@ -69,8 +68,8 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
         LevelBlock block =
                 getStructureHandler().addBlock(LocationBuilder.ROOM_TYPE.PLATFORM,
                         name, coordinates);
-        block.getData().setValue(LevelStructure.BLOCK_VALUE.cell_type,
-                data.getValue(PlatformData.PLATFORM_VALUE.cell_type));
+        // block.getData().setValue(LevelStructure.BLOCK_VALUE.cell_type,
+        //         data.getValue(PlatformData.PLATFORM_VALUE.cell_type));
         GuiEventManager.trigger(GuiEventType.PLATFORM_CREATE, data);
         platforms.put(block, data);
         getStructureHandler().updateTree();

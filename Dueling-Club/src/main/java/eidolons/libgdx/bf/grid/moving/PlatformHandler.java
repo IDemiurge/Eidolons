@@ -37,6 +37,7 @@ in the most crazy variant, we could have a pendulum/circular rotation
         }
         return null;
     }
+
     public PlatformController get(Coordinates c) {
         for (PlatformController platform : platforms) {
             if (platform.coordinates.equals(c)) {
@@ -54,15 +55,30 @@ in the most crazy variant, we could have a pendulum/circular rotation
         });
 
         GuiEventManager.bind(GuiEventType.INIT_PLATFORMS, p -> {
-          init(p.get().toString());
+            init(p.get().toString());
         });
         GuiEventManager.bind(GuiEventType.UNIT_VIEW_MOVED, p ->
         {
+            GridUnitView view = (GridUnitView) p.get();
+
+            PlatformController controller = view.
+                    getPlatformController();
+
             for (PlatformController platform : platforms) {
-                GridUnitView view = (GridUnitView) p.get();
                 if (platform.coordinates == view.getUserObject().getCoordinates()) {
                     platform.entered(view.getUserObject());
+                    view.setPlatformController(platform);
+                    if (controller != null)
+                        if (platform != controller) {
+                            controller.left(view.getUserObject());
+                        }
+                    return;
                 }
+            }
+            if (controller != null) //TODO check multi
+            {
+                controller.left(view.getUserObject());
+                view.setPlatformController(null);
             }
         });
     }
@@ -77,7 +93,7 @@ in the most crazy variant, we could have a pendulum/circular rotation
         List<PlatformCell> cells = new ArrayList<>();
         for (String substring : ContainerUtils.openContainer(data.getValue(PlatformData.PLATFORM_VALUE.cells))) {
             Coordinates c = Coordinates.get(substring);
-            PlatformCell cell = new PlatformCell(data.getTexture(), c.x, c.y);
+            PlatformCell cell = new PlatformCell(data.getType(), c.x, c.y, data.getDirection());
             cells.add(cell);
             cell.setUserObject(DC_Game.game.getCellByCoordinate(c));
             grid.addPlatform(cell);
@@ -92,5 +108,7 @@ in the most crazy variant, we could have a pendulum/circular rotation
         }
     }
 
-
+    public Set<PlatformController> getPlatforms() {
+        return platforms;
+    }
 }

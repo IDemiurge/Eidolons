@@ -26,6 +26,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.moving.PlatformController;
+import eidolons.libgdx.bf.grid.moving.PlatformData;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.stage.camera.CameraMan;
@@ -65,7 +66,7 @@ public class LE_TreeView extends TreeX<StructNode> {
             if (((LevelBlock) nodeData).getRoomType() == LocationBuilder.ROOM_TYPE.PLATFORM) {
                 PlatformController controller = ScreenMaster.getDungeonGrid().getPlatformHandler().findByName(
                         ((LevelBlock) nodeData).getName());
-                ((LE_GuiStage) getStage()).getPlatformDialog().edit(controller.getData());
+                ((LE_GuiStage) getStage()).getPlatformDialog().edit((PlatformData) controller.getData());
                 //confirm
                 WaitMaster.waitForInput(PlatformEditDialog.EDIT_DONE);
             }

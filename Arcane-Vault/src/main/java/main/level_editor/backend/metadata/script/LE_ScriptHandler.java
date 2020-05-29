@@ -10,11 +10,12 @@ import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.dialog.struct.CellDataEditor;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 
 import java.util.function.Function;
 
-public class LE_ScriptHandler extends LE_Handler {
+public class LE_ScriptHandler extends LE_Handler implements IScriptHandler{
     public LE_ScriptHandler(LE_Manager manager) {
         super(manager);
     }
@@ -24,7 +25,7 @@ public class LE_ScriptHandler extends LE_Handler {
         CellScriptData data = getFloorWrapper().getTextDataMap().get(c);
         CellScriptData prev = data == null
                 ? new CellScriptData("")
-                : new CellScriptData(data.getData()) ;
+                : new CellScriptData(data.getData());
         if (data == null) {
             data = new CellScriptData("");
         }
@@ -45,21 +46,40 @@ public class LE_ScriptHandler extends LE_Handler {
                 continue;
             }
             CellScriptData scriptData = getFloorWrapper().getTextDataMap().get(coordinates);
-            builder.append(coordinates.toString()).append("=").append(scriptData.getData());
+            builder.append(coordinates.toString()).append("=").append(scriptData.getData())
+                    .append(StringMaster.AND_SEPARATOR);
         }
         return builder.wrap(FloorLoader.SCRIPT_DATA).toString();
     }
+
     public void init() {
         for (Coordinates c : getGame().getCoordinates()) {
             String text = getDisplayedScriptData(c);
             if (!text.isEmpty()) {
-            GuiEventManager.triggerWithParams(
-                    GuiEventType.LE_CELL_SCRIPTS_LABEL_UPDATE, c, text);
-                            }
+                GuiEventManager.triggerWithParams(
+                        GuiEventType.LE_CELL_SCRIPTS_LABEL_UPDATE, c, text);
+            }
         }
 
     }
 
+    @Override
+    public void afterLoaded() {
+        init();
+    }
+
+    public void clear(Coordinates c) {
+
+        getOperationHandler().execute(Operation.LE_OPERATION.CELL_SCRIPT_CHANGE, c,
+                new CellScriptData(""), getScriptData(c));
+        // getFloorWrapper().getTextDataMap().remove(c);
+
+    }
+
+
+    public CellScriptData getScriptData(Coordinates c) {
+        return getFloorWrapper().getTextDataMap().get(c);
+    }
 
     public String getDisplayedScriptData(Coordinates c) {
         CellScriptData data = getFloorWrapper().getTextDataMap().get(c);
@@ -70,4 +90,30 @@ public class LE_ScriptHandler extends LE_Handler {
         return text;
     }
 
+    @Override
+    public void clear() {
+        for (Coordinates coordinate : getSelectionHandler().getSelection().getCoordinates()) {
+            clear(coordinate);
+        }
+    }
+
+    @Override
+    public void copy() {
+        getModelManager().copyScriptData(false);
+    }
+
+    @Override
+    public void paste() {
+        getModelManager().pasteData();
+    }
+
+    @Override
+    public void cut() {
+        getModelManager().copyScriptData(true);
+    }
+
+    @Override
+    public void edit() {
+        editScriptData(getSelectionHandler().getSelection().getLastCoordinates());
+    }
 }

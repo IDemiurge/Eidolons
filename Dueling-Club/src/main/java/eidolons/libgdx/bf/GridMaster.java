@@ -85,7 +85,7 @@ public class GridMaster {
         }
         if (center) {
             x += CELL_W / 2;
-            y -= CELL_H / 2;
+            y += CELL_H / 2;
         } else {
 
         }

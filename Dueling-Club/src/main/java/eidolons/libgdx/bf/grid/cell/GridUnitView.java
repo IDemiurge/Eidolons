@@ -16,6 +16,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.grid.moving.PlatformController;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
@@ -26,6 +27,7 @@ import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.FontMaster.FONT;
 
 import java.util.function.Supplier;
@@ -38,6 +40,7 @@ public class GridUnitView extends GenericGridView {
     private float scaleResetTimer = scaleResetPeriod;
 
     OverlayView attachedObj;
+    private PlatformController platformController;
 
     @Override
     protected boolean isIgnored() {
@@ -334,12 +337,12 @@ public class GridUnitView extends GenericGridView {
     public void validateArrowRotation() {
         int real = getUserObject().getFacing().getDirection().getDegrees() % 360;
         if (Math.abs((arrow.getRotation() + 360 - 4) % 360 - real) > ARROW_ROTATION_OFFSET - 3) {
-            main.system.auxiliary.log.LogMaster.verbose(arrow.getRotation()
+            LogMaster.verbose(arrow.getRotation()
                     + " raw rotation val, to real => " + real);
             updateRotation(real);
 
             if (real % 360 != arrowRotation) {
-                main.system.auxiliary.log.LogMaster.verbose(
+                LogMaster.verbose(
                         getUserObject() + "'s " +
                                 arrowRotation
                                 + " rotation updated to  " + arrowRotation);
@@ -348,8 +351,16 @@ public class GridUnitView extends GenericGridView {
         }
     }
 
+    public PlatformController getPlatformController() {
+        return platformController;
+    }
 
-//    @Override
+    public void setPlatformController(PlatformController platformController) {
+        this.platformController = platformController;
+    }
+
+
+    //    @Override
 //    public void highlightOff() {
 ////        screenOverlay=0;
 //    }

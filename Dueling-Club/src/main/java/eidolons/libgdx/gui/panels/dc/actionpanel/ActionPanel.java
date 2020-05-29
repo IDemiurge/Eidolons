@@ -204,6 +204,9 @@ public class ActionPanel extends GroupX {
         GuiEventManager.bind(GuiEventType.UPDATE_MAIN_HERO, p -> {
             Unit hero = (Unit) p.get();
             // dirty flag?
+            if (hero == null) {
+                hero = Eidolons.getMainHero();
+            }
             if (hero.isDead()) {
                 return;
             }
@@ -298,15 +301,10 @@ public class ActionPanel extends GroupX {
             spellbookBtn.setVisible(true);
             invBtn.setVisible(true);
 
-            if (quickSlotPanel.isHovered() ||
+            //TODO while hovering, don't update!!!
+            BaseSlotPanel.hoveredAny = quickSlotPanel.isHovered() ||
                     spellPanel.isHovered() ||
-                    modeActionsPanel.isHovered()
-            ) {
-                //TODO while hovering, don't update!!!
-                BaseSlotPanel.hoveredAny = true;
-            } else {
-                BaseSlotPanel.hoveredAny = false;
-            }
+                    modeActionsPanel.isHovered();
         }
         spellbookBtn.setPosition(modeActionsPanel.getX() + IMAGE_SIZE * 6 - 12,
                 2);

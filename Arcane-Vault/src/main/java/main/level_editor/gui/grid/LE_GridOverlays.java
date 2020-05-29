@@ -12,6 +12,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
+import eidolons.libgdx.bf.grid.moving.PlatformController;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
@@ -42,6 +43,11 @@ public class LE_GridOverlays extends GridOverlaysManager {
                 GridCellContainer cell = cells[x][y];
                 drawOverlaysForCell(cell, x, y, batch);
             }
+        }
+        for (PlatformController platform : gridPanel.getPlatformHandler().getPlatforms()) {
+            Coordinates c = platform.getDestination();
+            GridCellContainer cell =  cells[c.x][c.y];
+            drawOverlaysForCell(cell, c.x, c.y, batch);
         }
     }
 

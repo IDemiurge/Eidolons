@@ -128,4 +128,7 @@ public class LE_Selection implements Serializable {
         coordinates.remove(c);
     }
 
+    public Coordinates getFirstCoordinate() {
+        return getCoordinates().iterator().next();
+    }
 }

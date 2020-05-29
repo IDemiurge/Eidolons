@@ -77,7 +77,7 @@ public class DataUnit<T extends Enum<T>> {
         return NumberUtils.getInteger(val);
     }
 
-    public float getFloatValue(T value) {
+        public float getFloatValue(T value) {
         float val;
         try {
             val = Float.parseFloat(getValue(value));

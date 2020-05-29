@@ -114,4 +114,7 @@ public class LE_FloorLoader extends FloorLoader {
         }
         return map;
     }
+
+    protected void processTextMap(Location location) {
+    }
 }

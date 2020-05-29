@@ -123,7 +123,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             name = NameMaster.getUniqueVersionedName(new ArrayList<>(blockTemplates.keySet()), name);
             String structName = struct.getName();
             struct.setName(name);
-            getDataHandler().saveModule((Module)struct);
+            getDataHandler().saveModule((Module) struct);
             struct.setName(structName);
         }
         if (struct instanceof LevelBlock) {
@@ -225,6 +225,27 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         updateTree();
     }
 
+    private void fixOverlap(Set<Coordinates> coordinates) {
+        Set<Coordinates> overlap = new LinkedHashSet<>();
+        for (Coordinates c : coordinates) {
+            LevelStruct lowestStruct = getStructureMaster().getLowestStruct(c);
+            if (lowestStruct instanceof LevelBlock) {
+                overlap.add(c);
+            }
+        }
+        if (EUtils.waitConfirm("Remove " +
+                overlap.size() +
+                " overlapping coordinates?")) {
+            coordinates.removeAll(overlap);
+        } else {
+            //remove from others
+            for (Coordinates c : coordinates) {
+                LevelStruct lowestStruct = getStructureMaster().getLowestStruct(c);
+                lowestStruct.getCoordinatesSet().remove(c);
+            }
+        }
+    }
+
     private boolean checkOverlap(RoomModel blockTemplate, Coordinates at) {
         for (int i = 0; i < blockTemplate.getWidth(); i++) {
             for (int j = 0; j < blockTemplate.getHeight(); j++) {
@@ -291,7 +312,8 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     @Override
     public void addBlock() {
         LevelZone zone = getModel().getZone();
-        Set<Coordinates> coordinates = getSelectionHandler(). getCoordinatesAll();
+        Set<Coordinates> coordinates = getSelectionHandler().getCoordinatesAll();
+        fixOverlap(coordinates);
         LevelBlock block = createBlock(zone, coordinates);
         initNewBlock(block, false);
         if (addBlock(block))
@@ -313,7 +335,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             block.getData().apply();
         } else {
             if (insert)
-                return ;
+                return;
             ROOM_TYPE type = LE_Screen.getInstance().getGuiStage().getEnumChooser()
                     .chooseEnum(ROOM_TYPE.class);
             if (type == null) {
@@ -404,7 +426,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     private void mergeBlocks(LevelBlock block, LevelBlock consumed) {
         Set<Coordinates> coordinatesSet = block.getCoordinatesSet();
         coordinatesSet.addAll(consumed.getCoordinatesSet());
-//        consumed.setOrigin(block.getOrigin());
+        //        consumed.setOrigin(block.getOrigin());
         removeBlock(consumed);
         LevelStruct zone = block.getZone();
         getModel().setBlock(block);
@@ -426,7 +448,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     }
 
     public void moveBlock() {
-//TODO tricky!..
+        //TODO tricky!..
     }
 
     @Override
@@ -451,7 +473,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     }
 
     public void transformBlock() {
-//getOperationHandler().operation(Operation.LE_OPERATION.REMOVE_OBJ, transform);
+        //getOperationHandler().operation(Operation.LE_OPERATION.REMOVE_OBJ, transform);
     }
 
 
@@ -512,8 +534,8 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         ObjType wallType = null;
         ObjType altWallType = null;
         if (subPart.getData() != null) {
-                wallType = DataManager.getType(subPart.getWallType(), DC_TYPE.BF_OBJ);
-                altWallType = DataManager.getType(subPart.getWallTypeAlt(), DC_TYPE.BF_OBJ);
+            wallType = DataManager.getType(subPart.getWallType(), DC_TYPE.BF_OBJ);
+            altWallType = DataManager.getType(subPart.getWallTypeAlt(), DC_TYPE.BF_OBJ);
         }
         Set<BattleFieldObject> wallObjs = new HashSet<>();
         if (wallType != null)
@@ -538,7 +560,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
 
     private void resetCells(LevelStruct<LevelStruct, LevelStruct> layer) {
         DungeonEnums.CELL_IMAGE type = layer.getCellType();
-        CONTENT_CONSTS.COLOR_THEME theme=layer.getColorTheme();
+        CONTENT_CONSTS.COLOR_THEME theme = layer.getColorTheme();
         if (type != null) {
             Set<DC_Cell> set = new LinkedHashSet<>();
             for (Coordinates coordinates : layer.getCoordinatesSet()) {
@@ -577,13 +599,13 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     }
 
     public LevelBlock addBlock(ROOM_TYPE type, String name, Set<Coordinates> coordinates) {
-        LevelZone z=getModel().getZone();
-        LevelBlock block=createBlock(z, coordinates);
+        LevelZone z = getModel().getZone();
+        LevelBlock block = createBlock(z, coordinates);
         block.setRoomType(type);
         block.setName(name);
         if (addBlock(block)) {
             return block;
         }
-        return null ;
+        return null;
     }
 }

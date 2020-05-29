@@ -140,7 +140,7 @@ public class LE_GuiStage extends GenericGuiStage {
                 buttons.setX(buttons.getX() + 226);
                 topPanel.setX(222);
                 topPanel.setY(topPanel.getY() + 14);
-                controlPanel.setX(controlPanel.getX() - 165);
+                controlPanel.setX(controlPanel.getX() - 185);
                 controlPanel.setY(controlPanel.getY() - 50);
                 treePanel.setY(treePanel.getY() - 50);
             }

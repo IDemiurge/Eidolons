@@ -53,8 +53,6 @@ public class BlockData extends StructureData<BLOCK_VALUE,  LevelBlock> {
         setValue(BLOCK_VALUE.height, block.getHeight());
         setValue(BLOCK_VALUE.width, block.getWidth());
         setValue(BLOCK_VALUE.name, block.toString());
-        setValue(BLOCK_VALUE.wall_type, block.getWallType());
-        setValue(BLOCK_VALUE.cell_type, block.getCellType());
         setValue(BLOCK_VALUE.room_type, block.getRoomType());
         setValue(BLOCK_VALUE.origin, block.getOrigin().toString());
     }

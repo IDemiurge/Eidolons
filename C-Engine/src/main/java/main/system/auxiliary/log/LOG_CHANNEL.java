@@ -56,7 +56,10 @@ public enum LOG_CHANNEL {
     ERROR_CRITICAL(LOG.SYSTEM_INFO, LogMaster.ERROR_CRITICAL_PREFIX, LogMaster.ERROR_CRITICAL_ON, LogMaster.GENERATION),
 
     BUILDING(LogMaster.BUILDING_PREFIX, LogMaster.BUILDING_ON, LogMaster.BUILDING ),
-    SAVE(LogMaster.SAVE_PREFIX, LogMaster.SAVE_ON, LogMaster.SAVE );
+    SAVE(LogMaster.SAVE_PREFIX, LogMaster.SAVE_ON, LogMaster.SAVE ),
+    CAMERA(LogMaster.CAMERA_PREFIX, LogMaster.CAMERA_ON, LogMaster.CAMERA ),
+
+    ;
     private boolean on;
     private String prefix;
     private int code;

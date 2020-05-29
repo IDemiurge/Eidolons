@@ -61,7 +61,7 @@ public class DC_MovementManager implements MovementManager {
     public static Coordinates getMovementDestinationCoordinate(DC_ActiveObj active) {
         try {
             MoveEffect effect = (MoveEffect) EffectFinder.getEffectsOfClass(active.getAbilities(),
-             MoveEffect.class).get(0);
+                    MoveEffect.class).get(0);
             effect.setRef(active.getRef());
             if (effect instanceof SelfMoveEffect) {
                 SelfMoveEffect selfMoveEffect = (SelfMoveEffect) effect;
@@ -76,15 +76,15 @@ public class DC_MovementManager implements MovementManager {
 
     public static Action getFirstAction(Unit unit, Coordinates coordinates) {
         FACING_SINGLE relative = FacingMaster.getSingleFacing(unit.getFacing(),
-         unit.getCoordinates(), coordinates);
+                unit.getCoordinates(), coordinates);
         if (relative == FACING_SINGLE.IN_FRONT) {
             if (!new CellCondition(UNIT_DIRECTION.AHEAD).check(unit))
                 return null;
             return AiActionFactory.newAction("Move", unit.getAI());
         }
         boolean wantToMoveLeft = (unit.getFacing().isVertical()) ?
-         PositionMaster.isToTheLeft(unit.getCoordinates(), coordinates)
-         : PositionMaster.isAbove(unit.getCoordinates(), coordinates);
+                PositionMaster.isToTheLeft(unit.getCoordinates(), coordinates)
+                : PositionMaster.isAbove(unit.getCoordinates(), coordinates);
         if (!unit.getFacing().isCloserToZero()) {
             wantToMoveLeft = !wantToMoveLeft;
         }
@@ -156,7 +156,7 @@ public class DC_MovementManager implements MovementManager {
     public List<ActionPath> buildPath(Unit unit, Coordinates coordinates) {
         List<DC_ActiveObj> moves = getMoves(unit);
         PathBuilder builder = PathBuilder.getInstance().init
-         (moves, new Action(unit.getAction("Move")));
+                (moves, new Action(unit.getAction("Move")));
         List<ActionPath> paths = builder.build(new ListMaster<Coordinates>().getList(coordinates));
         if (paths.isEmpty()) {
             return null;
@@ -198,10 +198,10 @@ public class DC_MovementManager implements MovementManager {
             context.setTarget(game.getCellByCoordinate(coordinates).getId());
         }
         unit.getGame().getGameLoop().
-         actionInput(new ActionInput(action.getActive(), context));
+                actionInput(new ActionInput(action.getActive(), context));
     }
 
-@Override
+    @Override
     public boolean canMove(Entity obj, Coordinates c) {
         return game.getRules().getStackingRule().canBeMovedOnto(obj, c);
     }
@@ -222,11 +222,11 @@ public class DC_MovementManager implements MovementManager {
         return move((BattleFieldObject) obj, getGrid().getCell(c), false, MOVE_MODIFIER.NONE, obj.getRef());
     }
 
-    public boolean checkPushByMovement(BattleFieldObject obj, Coordinates c){
+    public boolean checkPushByMovement(BattleFieldObject obj, Coordinates c) {
         for (BattleFieldObject object : game.getObjectsOnCoordinateNoOverlaying(c)) {
             if (object instanceof Structure) {
                 if (PushableCondition.isPushable((Structure) object, (Unit) obj)) {
-//                    if (obj.getIntParam(PARAMS.WEIGHT)>=object.getIntParam(PARAMS.WEIGHT))
+                    //                    if (obj.getIntParam(PARAMS.WEIGHT)>=object.getIntParam(PARAMS.WEIGHT))
                     {
                         push(obj, object);
                     }
@@ -237,23 +237,22 @@ public class DC_MovementManager implements MovementManager {
         }
 
 
-
         return false;
 
     }
 
     private void push(BattleFieldObject obj, BattleFieldObject object) {
-        DIRECTION d = DirectionMaster.getRelativeDirection(obj, object) ;
-        Coordinates c=object.getCoordinates().getAdjacentCoordinate(d);
+        DIRECTION d = DirectionMaster.getRelativeDirection(obj, object);
+        Coordinates c = object.getCoordinates().getAdjacentCoordinate(d);
         if (c != null) {
-        move(object, c);
+            move(object, c);
         }
 
     }
 
     public boolean move(BattleFieldObject obj, DC_Cell cell, boolean free, MOVE_MODIFIER mod,
                         Ref ref) {
-        Ref REF =ref.getCopy();// new Ref(obj.getGame());
+        Ref REF = ref.getCopy();// new Ref(obj.getGame());
         REF.setTarget(cell.getId());
         REF.setSource(obj.getId());
         LogMaster.log(LogMaster.MOVEMENT_DEBUG, "Moving " + obj + " to " + cell);
@@ -264,22 +263,22 @@ public class DC_MovementManager implements MovementManager {
 
         Coordinates c = cell.getCoordinates();
         if (mod != MOVE_MODIFIER.TELEPORT) { // TODO UPDATE!
-//            if (RuleKeeper.isRuleOn(RuleKeeper.RULE.COLLISION)) {
-//            BattleFieldObject moveObj = (BattleFieldObject)game.getObjMaster().getObjectByCoordinate( cell.getCoordinates(), false);
-//            if (moveObj != null) {
-//                if (ref.getActive() instanceof DC_ActiveObj) {
-//                    DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
-//                    if (moveObj instanceof Unit) {
-//                        BattleFieldObject heroObj = moveObj;
-//                        c = CollisionRule.collision(ref, activeObj, moveObj, heroObj,
-//                         false, activeObj.getIntParam(PARAMS.FORCE));
-//                        if (c == null) {// TODO UPDATE!
-//                            return true; // displaced by Collision rule?
-//                        }
-//                    }
-//                }
-//            }
-//            }
+            //            if (RuleKeeper.isRuleOn(RuleKeeper.RULE.COLLISION)) {
+            //            BattleFieldObject moveObj = (BattleFieldObject)game.getObjMaster().getObjectByCoordinate( cell.getCoordinates(), false);
+            //            if (moveObj != null) {
+            //                if (ref.getActive() instanceof DC_ActiveObj) {
+            //                    DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
+            //                    if (moveObj instanceof Unit) {
+            //                        BattleFieldObject heroObj = moveObj;
+            //                        c = CollisionRule.collision(ref, activeObj, moveObj, heroObj,
+            //                         false, activeObj.getIntParam(PARAMS.FORCE));
+            //                        if (c == null) {// TODO UPDATE!
+            //                            return true; // displaced by Collision rule?
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            }
         }
         if (obj.isDead()) {
             return false;
@@ -288,20 +287,19 @@ public class DC_MovementManager implements MovementManager {
         if (!game.getRules().getStackingRule().canBeMovedOnto(obj, c)) {
             return false;
         }
-//        if (checkPushByMovement(obj, c)) {
-            //TODO
-//        }
+        //        if (checkPushByMovement(obj, c)) {
+        //TODO
+        //        }
 
 
-
-//
-//   if (game.getObjectByCoordinate(c) instanceof BattleFieldObject) {
-//            BattleFieldObject bfObj = (BattleFieldObject) game.getObjectByCoordinate(c);
-//            if (!bfObj.isDead())
-//                if (bfObj.isWall()) {
-//                    return false;
-//                }
-//        }
+        //
+        //   if (game.getObjectByCoordinate(c) instanceof BattleFieldObject) {
+        //            BattleFieldObject bfObj = (BattleFieldObject) game.getObjectByCoordinate(c);
+        //            if (!bfObj.isDead())
+        //                if (bfObj.isWall()) {
+        //                    return false;
+        //                }
+        //        }
         if (obj instanceof Unit) {
             if (!game.getRules().getEngagedRule().unitMoved((Unit) obj, c.x, c.y)) {
                 return false;
@@ -310,12 +308,17 @@ public class DC_MovementManager implements MovementManager {
         cell.setObjectsModified(true);
         obj.setCoordinates(c);
 
-//        if (IGG_HACK_MOVE)
-//            ScreenMaster.getDungeonGrid().unitMoved(obj); //igg demo hack
-        event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
+        return moved(obj);
+    }
 
-        if (obj instanceof Unit)
-        {
+    public boolean moved(BattleFieldObject obj) {
+        return moved(obj, Ref.getSelfTargetingRefCopy(obj));
+    }
+
+    public boolean moved(BattleFieldObject obj, Ref REF) {
+        Event event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
+
+        if (obj instanceof Unit) {
             game.getDungeonMaster().getTrapMaster().unitMoved((Unit) obj);
             game.getDungeonMaster().getPortalMaster().unitMoved((Unit) obj);
         }
@@ -338,13 +341,13 @@ public class DC_MovementManager implements MovementManager {
 
         if (template.getVarClasses() != null) {
             String vars = ref.getObj(KEYS.ACTIVE).getCustomProperty(
-             CustomValueManager.getVarEnumCustomValueName(MOVE_TEMPLATES.class));
+                    CustomValueManager.getVarEnumCustomValueName(MOVE_TEMPLATES.class));
             List<String> varList = VariableManager.getVarList(vars);
 
             range = varList.get(0);
             if (varList.size() > 1) {
                 direction = new EnumMaster<UNIT_DIRECTION>().retrieveEnumConst(
-                 UNIT_DIRECTION.class, varList.get(1));
+                        UNIT_DIRECTION.class, varList.get(1));
             }
 
             if (varList.size() > 2) {
@@ -363,7 +366,7 @@ public class DC_MovementManager implements MovementManager {
         } else {
             if (range.equals("1")) {
                 return obj.getCoordinates().getAdjacentCoordinate(
-                 DirectionMaster.getDirectionByFacing(facing, direction));
+                        DirectionMaster.getDirectionByFacing(facing, direction));
             }
             // preCheck int >= formla
 

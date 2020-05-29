@@ -91,6 +91,8 @@ public class GridCell extends Group implements Borderable {
 
     public GridCell init() {
         backImage = new Image(backTexture);
+        backImage.getColor().a=getCellImgAlpha();
+
         backImage.setFillParent(true);
         addActor(backImage);
         //        addActor(overlay = new SpriteX());
@@ -116,6 +118,11 @@ public class GridCell extends Group implements Borderable {
         //        addActor(infoText); NOW VIA OVERLAYS
 
         return this;
+    }
+
+    private float getCellImgAlpha() {
+        return      0.8f   ;
+        //TODO derive alpha from somewhere
     }
 
     @Override

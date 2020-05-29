@@ -37,6 +37,9 @@ public class ModuleMaster extends DungeonHandler {
     }
 
     public Module getModule(Coordinates c) {
+        if (modules == null) {
+            return null;
+        }
         for (Module module : modules) {
             if (module.getCoordinatesSet().contains(c)) {
                 return module;

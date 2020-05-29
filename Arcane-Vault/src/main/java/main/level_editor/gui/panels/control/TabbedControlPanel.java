@@ -21,6 +21,7 @@ public class TabbedControlPanel extends TabbedPane implements TabbedPaneListener
     CtrlSelectionPanel selectionPanel= new CtrlSelectionPanel();
     CtrlPalettePanel palettePanel= new CtrlPalettePanel();
     CtrlCustomPanel customPanel = new CtrlCustomPanel();
+    CtrlScriptPanel scriptPanel = new CtrlScriptPanel();
 
     LE_ControlPanel[] panels = {
 //            modulePanel,
@@ -28,7 +29,8 @@ public class TabbedControlPanel extends TabbedPane implements TabbedPaneListener
             structurePanel,
             palettePanel,
             funcsPanel,
-            aiPanel,
+            scriptPanel,
+            // aiPanel,
             selectionPanel,
     };
 

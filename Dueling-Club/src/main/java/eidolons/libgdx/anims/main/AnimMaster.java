@@ -20,6 +20,7 @@ import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.std.sprite.CustomSpriteAnim;
+import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
@@ -283,6 +284,9 @@ public class AnimMaster extends Group {
         onCustomAnim(new SimpleAnim(spritePath, runnable));
     }
 
+    public static void onCustomAnim(GraphicData data, String vfx,String spritePath, Runnable runnable) {
+        onCustomAnim(new SimpleAnim(data, vfx, spritePath, runnable));
+    }
     public static void onCustomAnim(SimpleAnim anim) {
         Gdx.app.postRunnable(() -> anim.startAsSingleAnim());
     }

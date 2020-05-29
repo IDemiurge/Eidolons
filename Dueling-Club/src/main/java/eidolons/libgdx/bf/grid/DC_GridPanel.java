@@ -78,9 +78,9 @@ public class DC_GridPanel extends GridPanel {
     @Override
     public GridCellContainer getGridCell(int x, int y) {
         for (PlatformCell platform : platforms) {
-            if (platform.getGridX()==x) {
-            if (platform.getGridY()==y)
-                return platform;
+            if (platform.getGridX() == x) {
+                if (platform.getGridY() == y)
+                    return platform;
             }
         }
         return super.getGridCell(x, y);
@@ -134,7 +134,9 @@ public class DC_GridPanel extends GridPanel {
     @Override
     public void act(float delta) {
         super.act(delta);
-        getPlatformHandler().act(delta);
+        if (!DC_Game.game.isPaused()) {
+            getPlatformHandler().act(delta);
+        }
         if (updateRequired) {
             resetZIndices();
             update();
@@ -249,14 +251,14 @@ public class DC_GridPanel extends GridPanel {
         }
         return !CoreEngine.isLiteLaunch();
 
-//        if (DC_Game.game.getDungeonMaster().getFloorWrapper() != null) {
-//            switch (DC_Game.game.getDungeonMaster().getFloorWrapper().getLocationType().getGroup()) {
-//                case NATURAL:
-//                case AVERAGE:
-//                case SURFACE:
-//                    return true;
-//            }
-//        }
+        //        if (DC_Game.game.getDungeonMaster().getFloorWrapper() != null) {
+        //            switch (DC_Game.game.getDungeonMaster().getFloorWrapper().getLocationType().getGroup()) {
+        //                case NATURAL:
+        //                case AVERAGE:
+        //                case SURFACE:
+        //                    return true;
+        //            }
+        //        }
     }
 
 
@@ -327,32 +329,32 @@ public class DC_GridPanel extends GridPanel {
 
             unit.getGame().getManager().setHighlightedObj(unit);
 
-//            for (BaseView value : viewMap.values()) {
-//                if (value==view) {
+            //            for (BaseView value : viewMap.values()) {
+            //                if (value==view) {
 
-//                    GuiEventManager.trigger(GuiEventType.SCALE_UP_VIEW, view);
+            //                    GuiEventManager.trigger(GuiEventType.SCALE_UP_VIEW, view);
             view.highlight();
             GraphicData data = new GraphicData("alpha::0.8f");
             gridViewAnimator.animate(view, GridViewAnimator.VIEW_ANIM.screen, data);
             WaitMaster.doAfterWait(4000, () -> {
-//                        if (!DialogueManager.isRunning())
+                //                        if (!DialogueManager.isRunning())
                 {
                     main.system.auxiliary.log.LogMaster.dev("hl off: " + unit);
                     view.highlightOff();
                     unit.getGame().getManager().setHighlightedObj(null);
                 }
             });
-//                } else
-//                {
-//                    value.highlightOff();
-//                    GuiEventManager.trigger(GRID_OBJ_HOVER_OFF, view);
-//                }
-//            }
+            //                } else
+            //                {
+            //                    value.highlightOff();
+            //                    GuiEventManager.trigger(GRID_OBJ_HOVER_OFF, view);
+            //                }
+            //            }
         });
         GuiEventManager.bind(GuiEventType.CUSTOM_VIEW_ANIM, p -> {
 
         });
-            GuiEventManager.bind(GuiEventType.GRID_OBJ_ANIM, p -> {
+        GuiEventManager.bind(GuiEventType.GRID_OBJ_ANIM, p -> {
             List list = (List) p.get();
             GraphicData data = (GraphicData) list.get(2);
             if (list.get(1) instanceof Coordinates) {
@@ -438,9 +440,12 @@ public class DC_GridPanel extends GridPanel {
 
         GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             BattleFieldObject hero = (BattleFieldObject) obj.get();
+            if (DungeonScreen.getInstance().getCameraMan() == null) {
+                return;
+            }
             DungeonScreen.getInstance().getCameraMan().unitActive(hero);
             //dc refactor
-//            AnimConstructor.tryPreconstruct((Unit) hero);
+            //            AnimConstructor.tryPreconstruct((Unit) hero);
             BaseView view = viewMap.get(hero);
             if (view == null) {
                 System.out.println("viewMap not initiatilized at ACTIVE_UNIT_SELECTED!");
@@ -469,7 +474,7 @@ public class DC_GridPanel extends GridPanel {
                 DC_Game.game.getVisionMaster().triggerGuiEvents();
                 GuiEventManager.trigger(UPDATE_GUI, null);
                 GuiEventManager.trigger(UPDATE_SHADOW_MAP);
-//                GuiEventManager.trigger(BLACKOUT_OUT, 5f);
+                //                GuiEventManager.trigger(BLACKOUT_OUT, 5f);
             }
             if (HelpMaster.isDefaultTextOn())
                 if (!welcomeInfoShown) {

@@ -646,6 +646,9 @@ public class GridCellContainer extends GridCell implements Hoverable {
 
     public void fadeOutOverlay() {
 //        setOverlayTexture(null );
+        if (overlay == null) {
+            return;
+        }
         overlay.fadeOut();
         ActionMaster.addRemoveAfter(overlay);
         log(1, "fadeOut overlay" + overlay.getActions());

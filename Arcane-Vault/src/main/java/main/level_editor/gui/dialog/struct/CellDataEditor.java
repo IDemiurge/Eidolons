@@ -3,7 +3,11 @@ package main.level_editor.gui.dialog.struct;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.level_editor.gui.components.DataTable;
+import main.level_editor.gui.components.EditValueContainer;
 import main.system.threading.WaitMaster;
+
+import static eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.EDIT_VALUE_TYPE.*;
 
 public class CellDataEditor extends DataEditDialog<CellScriptData.CELL_SCRIPT_VALUE, CellScriptData> {
 
@@ -25,12 +29,26 @@ public class CellDataEditor extends DataEditDialog<CellScriptData.CELL_SCRIPT_VA
     }
 
     @Override
+    protected void editItem(EditValueContainer actor, DataTable.DataPair item) {
+        // item.value
+        super.editItem(actor, item);
+    }
+
+    @Override
     protected LevelStructure.EDIT_VALUE_TYPE getEditor(CellScriptData.CELL_SCRIPT_VALUE enumConst) {
         switch (enumConst) {
             case facing:
-                return LevelStructure.EDIT_VALUE_TYPE.enum_const;
+                return enum_const;
+            case portals:
+                return coordinates;
+            //     return new MultiEditor(coordinates, );
         }
-        return LevelStructure.EDIT_VALUE_TYPE.text;
+        return text;
+    }
+
+    @Override
+    protected EditValueContainer createElement_(DataTable.DataPair datum) {
+        return super.createElement_(datum);
     }
 
     @Override

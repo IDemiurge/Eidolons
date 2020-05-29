@@ -22,7 +22,7 @@ public class BaseSlotPanel extends TablePanel {
 
     protected PagesMod activePage = PagesMod.NONE;
     private float beforeReset;
-    private float resetPeriod = 4f;
+    private float resetPeriod = 5f;
     private boolean hovered;
     public static boolean hoveredAny;
     private boolean firstUpdateDone;
@@ -95,7 +95,7 @@ public class BaseSlotPanel extends TablePanel {
         if (CoreEngine.TEST_LAUNCH) {
             return 20f;
         }
-        return 7f;
+        return resetPeriod;
     }
 
     protected void initContainer(List<ValueContainer> sources, String emptyImagePath) {

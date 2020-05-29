@@ -13,9 +13,9 @@ import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.functions.mouse.LE_MouseHandler;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.data.ListMaster;
 import main.system.threading.WaitMaster;
 
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -162,13 +162,13 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
         getSelection().setLastCoordinates(c);
         List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesBetweenInclusive(c, origin);
         if (objects) {
-            Collection<Integer> ids = new LinkedHashSet<>();
+            Set<Integer> ids = new LinkedHashSet<>();
             for (Coordinates c1 : coordinates) {
                 for (BattleFieldObject object : getGame().getObjectsOnCoordinateAll(c1)) {
                     ids.add(getIdManager().getId(object));
                 }
             }
-            getSelection().addIds(ids);
+            getSelection().setIds(ids);
         }
         getSelection().addCoordinates(coordinates);
         //        getSelection().setCoordinates(new LinkedHashSet<>(CoordinatesMaster.getCoordinatesBetweenInclusive(c, origin)));
@@ -182,6 +182,9 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
 
 
     public Set<Coordinates> getCoordinatesAll() {
+        if (!ListMaster.isNotEmpty(getSelection().getIds())) {
+            return getSelection().getCoordinates();
+        }
         return ImmutableSet.<Coordinates>builder().addAll(getSelection().getCoordinates()).addAll(
                 getSelection().getIds().stream().map(id
                         -> getIdManager().getObjectById(id).getCoordinates()).collect(Collectors.toSet())).build();

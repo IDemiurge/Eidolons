@@ -117,6 +117,10 @@ public class LogMaster {
     public static final int SAVE = -39;
     public static final boolean SAVE_ON = true;
 
+    public static final String CAMERA_PREFIX = "CAMERA: ";
+    public static final int CAMERA = -41;
+    public static final boolean CAMERA_ON = true;
+
     public static final LOG_CHANNEL[] specialLogChannels = {
 
     };
@@ -179,7 +183,7 @@ public class LogMaster {
             FileLogManager.stream(FileLogManager.LOG_OUTPUT.FULL, s);
         }
         if (isConsoleLogging()) {
-//            log.debug(s);
+            //            log.debug(s);
             System.out.println(s);
         } else {
             logToFile(s);
@@ -413,6 +417,13 @@ public class LogMaster {
         if (CoreEngine.isIDE()) {
             log(PRIORITY_IMPORTANT, PREFIX_DEV + string);
         }
+    }
+
+    public static void dev(LOG_CHANNEL c, String s) {
+        if (CoreEngine.isIDE())
+            if (c.isOn()) {
+                log(c.getPrefix() + s);
+            }
     }
 
     public static void important(String string) {

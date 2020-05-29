@@ -47,10 +47,10 @@ public class VariableManager {
     public static AbilityType getVarType(String abilTypeName, boolean passive, Ref ref) {
         if (passive) {
             abilTypeName = TextParser.parse(abilTypeName, ref, TextParser.ABILITY_PARSING_CODE,
-             TextParser.VARIABLE_PARSING_CODE);
+                    TextParser.VARIABLE_PARSING_CODE);
         } else {
             abilTypeName = TextParser.parse(abilTypeName, ref, TextParser.ACTIVE_PARSING_CODE,
-             TextParser.VARIABLE_PARSING_CODE, TextParser.ABILITY_PARSING_CODE);
+                    TextParser.VARIABLE_PARSING_CODE, TextParser.ABILITY_PARSING_CODE);
         }
         return getVarType(abilTypeName);
     }
@@ -89,18 +89,19 @@ public class VariableManager {
                 // parsedVars +=var + StringMaster.CONTAINER_SEPARATOR; TODO
                 /*
                  * if I want {1} to serve in multiple places for an Ability, I
-				 * will need another Property This property will 1) work in
-				 * parallel to Variables? 2) wait, we already are setting
-				 * Variables to the *parsed*, the question is how does
-				 * TextParser use this? Perhaps I need to run another
-				 * replaceCycle on XML here - one that will *parse* references!
-				 */
+                 * will need another Property This property will 1) work in
+                 * parallel to Variables? 2) wait, we already are setting
+                 * Variables to the *parsed*, the question is how does
+                 * TextParser use this? Perhaps I need to run another
+                 * replaceCycle on XML here - one that will *parse* references!
+                 */
             } else {
                 xml = StringMaster.replaceFirst(xml, StringMaster.VAR_STRING, var);
             }
         }
-
-        xml = StringMaster.replace(true, xml, StringMaster.VAR_STRING, lastVar);
+        if (lastVar != null) {
+            xml = StringMaster.replace(true, xml, StringMaster.VAR_STRING, lastVar);
+        }
         newType.setProperty(G_PROPS.VARIABLES, varProp.toString());
         if (TextParser.checkHasVarRefs(xml)) {
             xml = TextParser.parseXmlVarRefs(newType, xml);
@@ -127,7 +128,8 @@ public class VariableManager {
         }
         return text;
     }
-        public static String substitute(String text, Object... vars) {
+
+    public static String substitute(String text, Object... vars) {
         for (Object sub : vars) {
             if (sub == null) {
                 continue;
@@ -161,6 +163,7 @@ public class VariableManager {
             var = data;
         return StringMaster.cropParenthesises(var);
     }
+
     public static String getVar(String typeName, int i) {
         String[] parts = StringMaster.cropParenthesises(getVarPart(typeName)).split(",");
         if (parts.length > i)
@@ -203,14 +206,14 @@ public class VariableManager {
             if (manualVars) {
                 input =
 
-                 JOptionPane.showInputDialog(type.getName()
-                  + " "
-                  + xml.substring(index + StringMaster.VAR_STRING.length() - 1, xml.indexOf(
-                  ">", index + StringMaster.VAR_STRING.length())) + " variable at #"
+                        JOptionPane.showInputDialog(type.getName()
+                                + " "
+                                + xml.substring(index + StringMaster.VAR_STRING.length() - 1, xml.indexOf(
+                                ">", index + StringMaster.VAR_STRING.length())) + " variable at #"
 
-                  +
+                                +
 
-                  i);
+                                i);
 
             }
             if (input == null) {
@@ -290,7 +293,7 @@ public class VariableManager {
                     return null;
                 }
                 value = value.replace(ContainerUtils.getContainerSeparator(), StringMaster
-                 .getVarSeparator());
+                        .getVarSeparator());
                 prevValue = value;
             }
 
@@ -336,7 +339,7 @@ public class VariableManager {
 
     private static String promptBoolInput(String var) {
         if (JOptionPane.showConfirmDialog(null, var + " - Y/N?", "input boolean",
-         JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             return Boolean.TRUE.toString();
         }
         return Boolean.FALSE.toString();
@@ -424,9 +427,10 @@ public class VariableManager {
     }
 
     public static String getStringWithVariable(Object string, Object arg) {
-        return string+StringMaster.wrapInParenthesis(arg.toString());
+        return string + StringMaster.wrapInParenthesis(arg.toString());
     }
-        public static String getVarString(String string, String arg) {
+
+    public static String getVarString(String string, String arg) {
         return string.replaceFirst(VARIABLE, arg);
     }
 
@@ -493,10 +497,10 @@ public class VariableManager {
                 } else {
 
                     param = ContentValsManager
-                     .findMasteryScore(entity.getProperty(G_PROPS.SPELL_GROUP));
+                            .findMasteryScore(entity.getProperty(G_PROPS.SPELL_GROUP));
                     if (param == null) {
                         param = ContentValsManager
-                         .findMasteryScore(entity.getProperty(G_PROPS.MASTERY));
+                                .findMasteryScore(entity.getProperty(G_PROPS.MASTERY));
                     }
                 }
                 return obj.getRef().getSourceObj().getIntParam(param);
@@ -535,7 +539,7 @@ public class VariableManager {
             public Object evaluate(Entity obj, String s) {
                 Ref ref = obj.getRef();
                 Ref REF = ref.getGame().getGraveyardManager().getTopDeadUnit(
-                 ref.getSourceObj().getCoordinates()).getRef();
+                        ref.getSourceObj().getCoordinates()).getRef();
                 return new Formula(s).getInt(REF);
             }
         },
@@ -543,10 +547,10 @@ public class VariableManager {
             public Object evaluate(Entity obj, String s) {
                 Ref ref = obj.getRef();
                 Ref REF = ref.getGame().getGraveyardManager().getTopDeadUnit(
-                 ref.getSourceObj().getCoordinates()).getRef();
+                        ref.getSourceObj().getCoordinates()).getRef();
                 return new Property("SOURCE", s).getStr(REF);
             }
-        }, COORDINATE{
+        }, COORDINATE {
             @Override
             public Object evaluate(Entity entity, String f) {
                 return new Coordinates(f);

@@ -1,6 +1,7 @@
 package main.level_editor.backend.handlers.model;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -12,9 +13,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.SortMaster;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 import static main.level_editor.backend.handlers.operation.Operation.LE_OPERATION.PASTE_END;
 import static main.level_editor.backend.handlers.operation.Operation.LE_OPERATION.PASTE_START;
@@ -30,6 +29,7 @@ public class LE_ModelManager extends LE_Handler {
     EditorModel model;
     Stack<EditorModel> modelStack = new Stack<>();
     private static List<BattleFieldObject> copied;
+    private static Map<Coordinates, CellScriptData> copiedData;
 
     public LE_ModelManager(LE_Manager manager) {
         super(manager);
@@ -49,13 +49,40 @@ public class LE_ModelManager extends LE_Handler {
         return model;
     }
 
-    public void pasteSpecial() {
+    public void pasteData(Coordinates origin) {
+        operation(PASTE_START);
+        Coordinates offset = null;
+        for (Coordinates c : copiedData.keySet()) {
+            // if (offset == null) {
+            //     offset = c;
+            // }
+            // offset = Coordinates.get(offset.x - c.x, offset.y - c.y);
+            if (copiedData.size() > 1 && offset == null) {
+                offset = c; //the first - top left object will be our offset
+            } else {
+                if (offset != null) {
+                    c = c.getOffset(c.getX() - offset.x,
+                            c.getY() - offset.y);
+                }
+            }
 
+            CellScriptData data = copiedData.get(c);
+            Coordinates coordinates = offset == null ? origin : origin.getOffset(offset);
+            CellScriptData prev = getScriptHandler().getScriptData(coordinates);
+            operation(Operation.LE_OPERATION.CELL_SCRIPT_CHANGE, coordinates, data,
+                    prev);
+        }
+        operation(PASTE_END);
     }
-        public void paste() {
+
+    public void pasteData() {
+        pasteData(getSelectionHandler().getSelection().getFirstCoordinate());
+    }
+
+    public void paste() {
         Coordinates origin = null;
         if (getSelectionHandler().getSelection().getCoordinates().size() == 1) {
-            origin = getSelectionHandler().getSelection().getCoordinates().iterator().next();
+            origin = getSelectionHandler().getSelection().getFirstCoordinate();
             //            origin =getSelectionHandler().getSelectedCoordinate();
         } else {
             origin = getSelectionHandler().selectCoordinate();
@@ -65,9 +92,10 @@ public class LE_ModelManager extends LE_Handler {
         copyTo(copied, origin);
     }
 
-    public void copyTo(List<BattleFieldObject> copied, Coordinates origin ) {
+    public void copyTo(List<BattleFieldObject> copied, Coordinates origin) {
         copyTo(copied, origin, 0);
     }
+
     public void copyTo(List<BattleFieldObject> copied, Coordinates origin, int option) {
         Coordinates offset = null;
         operation(PASTE_START);
@@ -75,7 +103,7 @@ public class LE_ModelManager extends LE_Handler {
             ObjType type = obj.getType();
             Coordinates c = origin;
             if (copied.size() > 1 && offset == null) {
-                offset = obj.getCoordinates();
+                offset = obj.getCoordinates(); //the first - top left object will be our offset
             } else {
                 if (offset != null) {
                     c = c.getOffset(obj.getX() - offset.x,
@@ -110,12 +138,30 @@ public class LE_ModelManager extends LE_Handler {
 
     }
 
+    public void copyScriptData(boolean cut) {
+        copiedData = new TreeMap() {
+            @Override
+            public Comparator comparator() {
+                return SortMaster.getSorterByExpression(obj -> -(((Coordinates) obj).getX() * 10
+                        + ((Coordinates) obj).getY()));
+            }
+        };
+        for (Coordinates c : model.getSelection().getCoordinates()) {
+            copiedData.put(c, new CellScriptData(
+                    getScriptHandler().getScriptData(c).getData()));
+            if (cut)
+                getScriptHandler().clear(c);
+        }
+
+    }
+
     public void copy() {
+
         copied = new ArrayList<>(model.getSelection().getIds().size());
         for (Integer id : model.getSelection().getIds()) {
             copied.add(getIdManager().getObjectById(id));
         }
-        copied.sort(SortMaster.getSorterByExpression(obj -> -(((Obj) obj).getX() + ((Obj) obj).getY())));
+        copied.sort(SortMaster.getSorterByExpression(obj -> -(((Obj) obj).getX() * 10 + ((Obj) obj).getY())));
     }
 
     public void back() {

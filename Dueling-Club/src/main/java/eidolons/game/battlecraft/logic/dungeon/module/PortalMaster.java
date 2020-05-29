@@ -5,16 +5,18 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
-import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.ContainerUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -67,23 +69,27 @@ public class PortalMaster extends DungeonHandler {
         }
         portal.open = false;
         GuiEventManager.trigger(GuiEventType.UNIT_FADE_OUT_AND_BACK, unit);
-        AnimMaster.onCustomAnim(getCloseAnim(portal, to), () -> {
-            if (to.exitFacing != null) {
-                unit.setFacing(to.exitFacing);
-            }
-            unit.setCoordinates(to.coordinates);
-            to.open = true;
-            GuiEventManager.trigger(GuiEventType.UNIT_MOVED, unit);
-            AnimMaster.onCustomAnim(getOpenAnim(portal, to), () -> {
-//                GuiEventManager.trigger(GuiEventType.BLACKOUT_OUT, 2.0f);
-//                GuiEventManager.trigger(GuiEventType.BLACKOUT_IN, 1.4f);
-//                GuiEventManager.trigger(GuiEventType.CAMERA_LAPSE_TO,  unit.getCoordinates());
 
-                if (unit.isPlayerCharacter())
-                    GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, unit);
+        GraphicData data = new GraphicData("x:" +  portal.getOffsetX() + ";y:" +                 portal.getOffsetY());
+        AnimMaster.onCustomAnim(data,
+                "",
+                getCloseAnim(portal, to), () -> {
+                    if (to.exitFacing != null) {
+                        unit.setFacing(to.exitFacing);
+                    }
+                    unit.setCoordinates(to.coordinates);
+                    to.open = true;
+                    GuiEventManager.trigger(GuiEventType.UNIT_MOVED, unit);
+                    AnimMaster.onCustomAnim(getOpenAnim(portal, to), () -> {
+                        //                GuiEventManager.trigger(GuiEventType.BLACKOUT_OUT, 2.0f);
+                        //                GuiEventManager.trigger(GuiEventType.BLACKOUT_IN, 1.4f);
+                        //                GuiEventManager.trigger(GuiEventType.CAMERA_LAPSE_TO,  unit.getCoordinates());
 
-            });
-        });
+                        if (unit.isPlayerCharacter())
+                            GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, unit);
+
+                    });
+                });
     }
 
     public void unitMoved(Unit unit) {
@@ -104,28 +110,33 @@ public class PortalMaster extends DungeonHandler {
 
     }
 
-    public boolean addPortal(String coordinate, String data) {
-        if (VariableManager.removeVarPart(data.toLowerCase()).equals(PORTAL_KEY)) {
-            FACING_DIRECTION facing = null;
-            Coordinates to = null;
-            FACING_DIRECTION facing2 = null;
-            Coordinates from = Coordinates.get(coordinate);
-            if (data.contains(",")) {
-                to = Coordinates.get(VariableManager.getVar(data, 0));
-                facing = FacingMaster.getFacing(VariableManager.getVar(data, 1));
-                facing2 = FacingMaster.getFacing(VariableManager.getVar(data, 2));
-            } else {
-                if (VariableManager.getVars(data).isEmpty()) {
-                    to = from;
-                } else
-                    to = Coordinates.get(VariableManager.getVars(data));
+    public boolean addPortal(Coordinates from, String data) {
+        //format:
+        FACING_DIRECTION facing = null;
+        Coordinates to = null;
+        FACING_DIRECTION facing2 = null;
+        for (String substring : ContainerUtils.openContainer(data, ",")) {
+            if (to == null) {
+                to = Coordinates.get(substring);
+                continue;
             }
-            addPortal(from, to, facing, facing2);
-            return true;
+            if (facing == null) {
+                facing = FacingMaster.getFacing(substring);
+                continue;
+            }
+            if (facing2 == null) {
+                facing2 = FacingMaster.getFacing(substring);
+                continue;
+            }
         }
-
-
-        return false;
+        if (facing == null) {
+            facing = FacingMaster.getRandomFacing();
+        }
+        if (facing2 == null) {
+            facing2 = FacingMaster.getRandomFacing();
+        }
+        addPortal(from, to, facing, facing2);
+        return true;
     }
 
     private void addPortal(Coordinates from, Coordinates to, FACING_DIRECTION facing, FACING_DIRECTION facing2) {
@@ -157,6 +168,15 @@ public class PortalMaster extends DungeonHandler {
         return Sprites.PORTAL_OPEN;
     }
 
+    public void init(Map<Coordinates, CellScriptData> textDataMap) {
+        for (Coordinates c : textDataMap.keySet()) {
+            String data = textDataMap.get(c).getValue(CellScriptData.CELL_SCRIPT_VALUE.portals);
+            if (!data.isEmpty()) {
+                addPortal(c, data);
+            }
+        }
+    }
+
     public enum PORTAL_TYPE {
         OBLIVION, LIGHT, DARK
     }
@@ -175,6 +195,11 @@ public class PortalMaster extends DungeonHandler {
             this.exitFacing = exitFacing;
             this.coordinates = coordinates;
             this.type = type;
+        }
+
+        @Override
+        public float getOffsetY() {
+            return  sprite.getHeight() / 2;
         }
 
         @Override

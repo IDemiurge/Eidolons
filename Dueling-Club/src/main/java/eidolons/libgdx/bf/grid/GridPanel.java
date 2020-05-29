@@ -634,7 +634,7 @@ public abstract class GridPanel extends Group {
                     cell.setZIndex(0);
                 } else {
                     if (!cell.getUserObject().isPlayerHasSeen()) {
-                        cell.setZIndex(x + y);
+                        cell.setZIndex(x + y); //why?
                     } else {
                         cell.setZIndex(square + x + y);
                     }
@@ -663,6 +663,10 @@ public abstract class GridPanel extends Group {
 
         if (shadowMap != null) {
             shadowMap.setZIndex(Integer.MAX_VALUE);
+        }
+        for (PlatformCell platform : platforms) {
+            platform.setZIndex(Integer.MAX_VALUE);
+            //if we had over and under... we could setPos for them on act?
         }
 
         customOverlayingObjects.forEach(obj -> {
@@ -840,7 +844,7 @@ public abstract class GridPanel extends Group {
             manipulators.add(manipulator);
             Coordinates c = manipulator.getCoordinates();
             manipulator.setPosition(c.x * 128,
-                    ((c.y)));
+                    ((c.y* 128)));
         });
         GuiEventManager.bind(removePrevious, INIT_CELL_OVERLAY, (obj) -> {
             DC_Cell cell = (DC_Cell) obj.get();

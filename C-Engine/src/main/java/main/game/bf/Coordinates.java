@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class Coordinates implements Serializable {
+public class Coordinates implements Serializable, Comparable<Coordinates> {
 
 
     public static Coordinates[][] coordinates = new Coordinates[100][100];
@@ -635,5 +635,18 @@ public class Coordinates implements Serializable {
 
     public void flipX(int w) {
         setX(w - x);
+    }
+
+    @Override
+    public int compareTo(Coordinates c) {
+        int val = -getX() * 10 - getY();
+        int val2 = -c.getX() * 10 - c.getY();
+        if (val>val2) {
+            return 1;
+        }
+        if (val<val2) {
+            return -1;
+        }
+        return 0;
     }
 }

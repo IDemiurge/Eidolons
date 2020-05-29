@@ -24,7 +24,7 @@ public class Location extends FloorWrapper {
     private Entrance mainExit;
     private String entranceData;
     private String exitData;
-    private Map<Coordinates, CellScriptData> textDataMap = new HashMap<>();
+    private Map<Coordinates, CellScriptData> textDataMap = new LinkedHashMap<>();
     private Set<Entrance> transits = new LinkedHashSet<>();
     private boolean initialEdit;
 
@@ -150,5 +150,9 @@ public class Location extends FloorWrapper {
 
     public boolean isInitialEdit() {
         return initialEdit;
+    }
+
+    public void addTextDataMap(Map<Coordinates, CellScriptData> map) {
+        textDataMap.putAll(map);
     }
 }

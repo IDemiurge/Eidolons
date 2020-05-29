@@ -54,6 +54,7 @@ public class EditorModel {
         displayMode = (LE_DisplayMode) CloneMaster.deepCopy(model.getDisplayMode());
         paletteSelection = (PaletteSelection) CloneMaster.deepCopy(model.getPaletteSelection());
         brush = model.getBrush();
+        brushMode = model.brushMode ;
     }
 
     public StructNode getTreeModel() {
