@@ -62,7 +62,14 @@ public class FileChooserX {
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
         FileChooser finalFileChooser = fileChooser;
         fileChooser.setListener(new FileChooserAdapter() {
-            @Override
+                                    @Override
+                                    public void canceled() {
+                                        super.canceled();
+                                        WaitMaster.receiveInput(waitOperation, null );
+                                        finalFileChooser.fadeOut();
+                                    }
+
+                                    @Override
             public void selected(Array<FileHandle> file) {
                 if (file.size == 0) {
                     return;

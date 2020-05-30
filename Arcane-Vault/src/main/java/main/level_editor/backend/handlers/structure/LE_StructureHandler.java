@@ -408,6 +408,9 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     private void removeBlock(LevelBlock block) {
         getOperationHandler().operation(Operation.LE_OPERATION.REMOVE_BLOCK, block);
         updateTree();
+        if (block.getRoomType() == ROOM_TYPE.PLATFORM) {
+            getAdvFuncs().platformBlockRemoved(block);
+        }
     }
 
     @Override

@@ -6,7 +6,9 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.data.XList;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.math.PositionMaster;
 import main.system.math.PositionMaster.SHAPES;
 
 import java.util.ArrayList;
@@ -136,6 +138,10 @@ public class DC_PositionMaster {
         return list;
 
     }
+    public static List<Coordinates> getLine(Coordinates origin, Coordinates destination) {
+        DIRECTION d = DirectionMaster.getRelativeDirection(origin, destination);
+        return getLine(d, origin, PositionMaster.getDistance(origin, destination));
+    }
 
     public static Coordinates getRandomValidAdjacent(Coordinates originalCoordinates, Unit unit) {
         for (Coordinates coordinates : originalCoordinates.getAdjacentCoordinates()) {
@@ -148,4 +154,5 @@ public class DC_PositionMaster {
         }
         return originalCoordinates;
     }
+
 }

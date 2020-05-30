@@ -18,8 +18,7 @@ import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.system.math.PositionMaster;
 
-import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.IN_PLAIN_SIGHT;
-import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.IN_SIGHT;
+import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.*;
 
 public class LE_GridOverlays extends GridOverlaysManager {
     public LE_GridOverlays(GridPanel gridPanel) {
@@ -47,7 +46,8 @@ public class LE_GridOverlays extends GridOverlaysManager {
         for (PlatformController platform : gridPanel.getPlatformHandler().getPlatforms()) {
             Coordinates c = platform.getDestination();
             GridCellContainer cell =  cells[c.x][c.y];
-            drawOverlaysForCell(cell, c.x, c.y, batch);
+            drawOverlay(cell,  SPOTTED , batch, cell.getUserObject(),
+                    cell.getGridX(), cell.getGridY());
         }
     }
 

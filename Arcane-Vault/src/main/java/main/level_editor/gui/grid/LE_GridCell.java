@@ -17,6 +17,7 @@ import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.gui.LabelX;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.display.LE_DisplayMode;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.FontMaster;
 
 import java.util.HashMap;
@@ -97,7 +98,6 @@ public class LE_GridCell extends GridCellContainer {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        super.draw(batch, parentAlpha);
 
     }
 
@@ -128,7 +128,7 @@ public class LE_GridCell extends GridCellContainer {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                main.system.auxiliary.log.LogMaster.log(1,x+" " +y);
+                LogMaster.log(1,x+" " +y);
                 InputEvent e = new InputEvent();
                 e.setButton(event.getButton());
                 Eidolons.onNonGdxThread(() ->

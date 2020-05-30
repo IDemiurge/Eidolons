@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.shaders.ShaderDrawer;
@@ -53,6 +54,7 @@ public class SpriteX extends GroupX {
             sprite.setCustomAct(true);
             sprite.setLoops(0);
             sprite.setLooping(true);
+            setOrigin(Align.center);
         }
     }
 

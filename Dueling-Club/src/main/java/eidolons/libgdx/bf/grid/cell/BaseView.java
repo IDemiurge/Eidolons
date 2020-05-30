@@ -74,7 +74,7 @@ public class BaseView extends SuperActor  implements Hoverable{
             spritesContainersUnder.setZIndex(0);
         }
 
-        underlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), false);
+        underlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), false, this);
         if (underlaySprites != null) {
             for (SpriteX spriteX : underlaySprites) {
                 if (isUseSpriteContainer(o.getObj())) {
@@ -107,7 +107,7 @@ public class BaseView extends SuperActor  implements Hoverable{
                     }
                 }
             });
-        overlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), true);
+        overlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), true, this);
         if (overlaySprites != null) {
             for (SpriteX spriteX : overlaySprites) {
                 if (isUseSpriteContainer(o.getObj()))

@@ -16,7 +16,7 @@ public class CtrlFuncPanel  extends LE_ControlPanel<IAdvFuncs> {
 
     @Override
     protected int getWrap() {
-        return 4;
+        return 3;
     }
 
     @Override

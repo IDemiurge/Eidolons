@@ -32,6 +32,8 @@ import eidolons.libgdx.bf.decor.Pillars;
 import eidolons.libgdx.bf.decor.ShardVisuals;
 import eidolons.libgdx.bf.grid.cell.*;
 import eidolons.libgdx.bf.grid.moving.PlatformCell;
+import eidolons.libgdx.bf.grid.moving.PlatformData;
+import eidolons.libgdx.bf.grid.moving.PlatformDecor;
 import eidolons.libgdx.bf.grid.moving.PlatformHandler;
 import eidolons.libgdx.bf.grid.sub.GridElement;
 import eidolons.libgdx.bf.light.ShadowMap;
@@ -70,7 +72,7 @@ public abstract class GridPanel extends Group {
     protected int moduleCols;
     protected int moduleRows;
     protected int x1, x2, y1, y2;
-    private float offsetX, offsetY;
+    protected float offsetX, offsetY;
     protected GridUnitView hoverObj;
     protected static boolean showGridEmitters;
     protected boolean resetVisibleRequired;
@@ -97,8 +99,9 @@ public abstract class GridPanel extends Group {
     protected Coordinates offset;
     protected Map<Module, GridSubParts> containerMap = new HashMap<>();
     protected GridViewAnimator gridViewAnimator = new GridViewAnimator(this);
-    private PlatformHandler platformHandler;
-    List<PlatformCell > platforms = new LinkedList<>();
+    protected PlatformHandler platformHandler;
+    protected List<PlatformCell > platforms = new LinkedList<>();
+    protected Set<PlatformDecor> platformDecor= new LinkedHashSet();
 
     public GridPanel(int cols, int rows, int moduleCols, int moduleRows) {
         this.square = rows * cols;
@@ -154,7 +157,7 @@ public abstract class GridPanel extends Group {
         }
     }
 
-    private GridElement[] getGridElements() {
+    protected GridElement[] getGridElements() {
         return new GridElement[]{
                 shadowMap, shards, overlayManager
         };
@@ -198,7 +201,7 @@ public abstract class GridPanel extends Group {
 
     }
 
-    private void resetCellForModule(GridCellContainer container) {
+    protected void resetCellForModule(GridCellContainer container) {
         ActionMaster.addFadeInAction(container, 1.5f);
         addActor(container);
     }
@@ -586,7 +589,7 @@ public abstract class GridPanel extends Group {
         return uv;
     }
 
-    private BaseView removeOverlay(BattleFieldObject obj) {
+    protected BaseView removeOverlay(BattleFieldObject obj) {
         BaseView overlay = getOverlay(obj);
         overlays.remove(overlay);
         overlay.fadeOut();
@@ -620,6 +623,10 @@ public abstract class GridPanel extends Group {
     }
 
     public void resetZIndices() {
+        for (PlatformDecor platform : platformDecor) {
+            platform.setZIndex(Integer.MAX_VALUE);
+            //if we had over and under... we could setPos for them on act?
+        }
         List<GridCellContainer> topCells = new ArrayList<>();
         loop:
         for (int x = x1; x < x2; x++) {
@@ -657,6 +664,7 @@ public abstract class GridPanel extends Group {
         customOverlayingObjectsUnder.forEach(obj -> {
             obj.setZIndex(Integer.MAX_VALUE);
         });
+
 
         wallMap.setVisible(WallMap.isOn());
         wallMap.setZIndex(Integer.MAX_VALUE);
@@ -1112,13 +1120,21 @@ public abstract class GridPanel extends Group {
         return new PlatformHandler(this);
     }
 
-    public void addPlatform(PlatformCell cell) {
+    public PlatformDecor addPlatform(List<PlatformCell> cells, PlatformData data) {
+        for (PlatformCell cell : cells) {
+
         int x = cell.getGridX();
         int y = cell.getGridY();
         addActor(cell.init());
         cell.setY(getGdxY_ForModule(y) * GridMaster.CELL_H);
         cell.setX(x * GridMaster.CELL_W);
         platforms.add( cell);
+        }
+        PlatformDecor visuals = platformHandler.createCellVisuals(cells, data);
+        //z?
+        platformDecor.add(visuals);
+        addActor(visuals);
+        return visuals;
         //z-index TODO
         // what would need to be ABOVE platforms?
         // anims, vfx, possibly shadowMap (or not, if it's void)

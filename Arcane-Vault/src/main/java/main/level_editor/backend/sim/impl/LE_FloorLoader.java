@@ -94,12 +94,20 @@ public class LE_FloorLoader extends FloorLoader {
             log(1, location + " w = " + w);
             log(1, location + " h = " + h);
         } else {
-            int w =   location.getData().getIntValue(LevelStructure.FLOOR_VALUES.width);
-            int h =   location.getData().getIntValue(LevelStructure.FLOOR_VALUES.height);
+            ModuleGridMapper.calculateTotalSquareSize(grid);
+            int w = ModuleGridMapper.width;
+            int h = ModuleGridMapper.height;
+            // int w =   location.getData().getIntValue(LevelStructure.FLOOR_VALUES.width);
+            // int h =   location.getData().getIntValue(LevelStructure.FLOOR_VALUES.height);
             location.setWidth(w);
             location.setHeight(h);
             log(1, location + " w = " + w);
             log(1, location + " h = " + h);
+            // boolean autoAdjust=true;
+            // if (autoAdjust){
+            //     ArrayList<Point> keys = new ArrayList<>(grid.keySet());
+            //     Collections.shuffle(    new ArrayList<>(grid.values()) );
+            // }
         }
         getBuilder().initLocationSize(location);
         LevelEditor.getManager().getModuleHandler().setGrid(grid);

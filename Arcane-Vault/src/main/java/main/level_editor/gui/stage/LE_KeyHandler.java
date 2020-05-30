@@ -32,6 +32,9 @@ public class LE_KeyHandler extends LE_Handler {
                 globalController.keyDown(keyCode);
                 GuiEventManager.trigger(GuiEventType.LE_GUI_TOGGLE);
                 return ;
+            case Input.Keys.B:
+              getModel().setBrushMode(!getModel().isBrushMode());
+                return ;
             case Input.Keys.ALT_RIGHT:
                 getModel().getDisplayMode().toggleAll();
                 return ;

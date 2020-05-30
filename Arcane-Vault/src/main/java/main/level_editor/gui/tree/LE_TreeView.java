@@ -254,6 +254,8 @@ public class LE_TreeView extends TreeX<StructNode> {
         if (node.getData() instanceof LevelBlock) {
             LevelBlock block = (LevelBlock) node.getData();
             name = "- " +
+                    (block.getName().isEmpty()? "": block.getName()) +
+                    "" +
                     //(block.isTemplate() ? "Template " : "Custom ") +
                     block.getRoomType() +
                     " at " + block.getOrigin() + " with Cells [" +

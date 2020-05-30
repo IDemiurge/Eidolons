@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums;
@@ -24,7 +25,7 @@ public class SpriteMaster {
     private static int n = 1;
     private static SpriteX s;
 
-    public static List<SpriteX> getSpriteForUnit(BattleFieldObject obj, boolean over) {
+    public static List<SpriteX> getSpriteForUnit(BattleFieldObject obj, boolean over, BaseView baseView) {
         String path = getPath(obj, over);
         List<SpriteX> list = new ArrayList<>();
         if (path == null) {
@@ -73,6 +74,12 @@ public class SpriteMaster {
                 s.setHeight(s.getHeight()/2);
             }
             s.act(RandomWizard.getRandomFloatBetween(0, 3));
+            if (!obj.isOverlaying())
+                if (obj.isLightEmitter()) {
+                s.getSprite().centerOnParent(baseView);
+                s.getSprite().setOffsetX(40);
+                s.getSprite().setOffsetY(64);
+            }
         }
 //        s.setScale();
 //        s.setColor();

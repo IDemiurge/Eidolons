@@ -98,19 +98,27 @@ public class ShadeLightCell extends SuperContainer {
     }
 
     private static String getTexturePath(SHADE_CELL type) {
-        switch (type) {
+    String variant = null;
+    switch (type) {
             //                    TODO varied enough already?
-            case VOID:
-                return FileManager.formatPath(PathFinder.getImagePath() +
-                        StringMaster.cropFormat(type.getTexturePath()) +
-                        getRandomVoidVariant() +
-                        ".png", false, false);
+        case VOID:
+            variant=   getRandomVariant(7);
+            break;
+        // case GAMMA_SHADOW:
+        //     variant=   getRandomVariant(3);
+        //     break;
+        }
+        if (variant != null) {
+            return FileManager.formatPath(PathFinder.getImagePath() +
+                    StringMaster.cropFormat(type.getTexturePath()) +
+                    variant +
+                    ".png", false, false);
         }
         return type.getTexturePath();
     }
 
-    private static String getRandomVoidVariant() {
-        int n = RandomWizard.getRandomIntBetween(1, 7, true);
+    private static String getRandomVariant(int max) {
+        int n = RandomWizard.getRandomIntBetween(1, max, true);
         if (n == 1) {
             return "";
         }

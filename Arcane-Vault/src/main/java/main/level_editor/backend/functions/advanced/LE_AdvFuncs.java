@@ -33,10 +33,22 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
 
     private static int ID = 0;
     Map<LevelBlock, PlatformData> platforms = new LinkedHashMap<>();
-    private String platformData="";
+    private String platformData = "";
+    private String platformCopy;
 
     public LE_AdvFuncs(LE_Manager manager) {
         super(manager);
+
+    }
+
+    public void platform_copy() {
+
+        LevelBlock block = getModelManager().getModel().getBlock();
+        if (block == null) {
+        block = (LevelBlock) getStructureMaster().getLowestStruct(getSelectionHandler().getSelection().getLastCoordinates());
+        }
+        PlatformData platform = platforms.get(block);
+        platformCopy = platform.getData();
     }
 
     @Override
@@ -51,16 +63,22 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
 
         // create block with same name then
         // standard data by default perhaps
-
         Set<Coordinates> coordinates = getSelectionHandler().getSelection().getCoordinates();
 
-
         PlatformData data = new PlatformData(coordinates);
-        getDialogHandler().editData(data);
-        boolean o = (boolean) WaitMaster.waitForInput(EDIT_DONE);
-        if (!o)
-            return;
         String name = data.getValue(PlatformData.PLATFORM_VALUE.name);
+
+
+        if (platformCopy == null) {
+            getDialogHandler().editData(data);
+            boolean o = (boolean) WaitMaster.waitForInput(EDIT_DONE);
+            if (!o)
+                return;
+        } else {
+            data.setData(platformCopy);
+            platformCopy=null;
+            data.setCells(coordinates);
+        }
         if (name.isEmpty()) {
             name = getDialogHandler().textInput("Platform unique name...", "Platform N" + ID++);
         }
@@ -77,6 +95,11 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
         //so is it void?
     }
 
+    public void platformBlockRemoved(LevelBlock block) {
+        platforms.remove(block);
+        GuiEventManager.trigger(GuiEventType.PLATFORM_REMOVE, block.getName());
+    }
+
     @Override
     public void afterLoaded() {
         for (String substring : ContainerUtils.openContainer(platformData, StringMaster.AND_SEPARATOR)) {
@@ -90,9 +113,10 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
                 continue;
             }
             platforms.put(block, data);
+            ID++;
         }
         for (LevelBlock block : platforms.keySet()) {
-            GuiEventManager.trigger(GuiEventType.PLATFORM_CREATE, platforms.get(block) );
+            GuiEventManager.trigger(GuiEventType.PLATFORM_CREATE, platforms.get(block));
         }
     }
 
@@ -263,8 +287,8 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
 
     public void initPlatforms(String textContent) {
         if (!textContent.isEmpty()) {
-        platformData += textContent+StringMaster.AND_SEPARATOR;
-                    }
+            platformData += textContent + StringMaster.AND_SEPARATOR;
+        }
 
     }
 }

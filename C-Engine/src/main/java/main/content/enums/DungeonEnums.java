@@ -27,6 +27,11 @@ public class DungeonEnums {
         iron,
         rock,
         mossy,
+        bare,
+        ancient,
+        carved,
+        dark_star,
+
         //wood
         //bridge
         ;

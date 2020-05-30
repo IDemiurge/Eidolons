@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class GearCluster extends GroupX {
     public static final int DEFAULT_SIZE = 100;
-    private   ArrayList<GEAR> gearPool;
+    private ArrayList<GEAR> gearPool;
     List<GearActor> gears = new ArrayList<>();
     float defaultSpeed = 1;
     Float speed = defaultSpeed;
@@ -45,17 +45,18 @@ public class GearCluster extends GroupX {
     };
     private boolean allSmall;
 
-    public GearCluster( int gearCount, float scale, Boolean dark_light_both) {
+    public GearCluster(int gearCount, float scale, Boolean dark_light_both) {
         this(false, gearCount, scale, dark_light_both);
     }
+
     public GearCluster(boolean allSmall, int gearCount, float scale, Boolean dark_light_both) {
-        this. allSmall = allSmall;
+        this.allSmall = allSmall;
         gearPool = new ArrayList<>(Arrays.asList(base_gears));
-//        if (dark_light_both == null) {
-//            gearPool = new ArrayList<>(Arrays.asList(GEAR.values()));
-//        } else {
-//            gearPool = new ArrayList<>(Arrays.asList(dark_light_both? dark_gears : light_gears));
-//        }
+        //        if (dark_light_both == null) {
+        //            gearPool = new ArrayList<>(Arrays.asList(GEAR.values()));
+        //        } else {
+        //            gearPool = new ArrayList<>(Arrays.asList(dark_light_both? dark_gears : light_gears));
+        //        }
         Collections.shuffle(gearPool);
         while (gearPool.size() < gearCount) {
             gearPool.add(new EnumMaster<GEAR>().getRandomEnumConst(GEAR.class));
@@ -64,25 +65,32 @@ public class GearCluster extends GroupX {
         for (int i = 0; i < gearCount; i++) {
             addGear(i);
         }
-
+        pack();
     }
 
     public GearCluster(float scale) {
-        this(3, scale, null );
+        this(3, scale, null);
+    }
+
+    public void reverse() {
+        for (GearActor gear : gears) {
+            gear.setClockwise(!gear.isClockwise());
+        }
     }
 
     private void addGear(int i) {
-        boolean small =allSmall|| i%2==0;
+        boolean small = allSmall || i % 2 == 0;
         GEAR gear = gearPool.remove(0);
         GearActor gearActor = new GearActor(gear, small, speed, RandomWizard.random());
-        float scale =small? 0.6f :1;
-//        this.scale * (1 - i * 0.2f);
+        float scale = small ? 0.6f : 1;
+        //        this.scale * (1 - i * 0.2f);
         addActor(gearActor);
         float y = getGearY(i, scale);
         float x = getGearX(i, scale);
         gearActor.setPosition(x, y);
         gears.add(gearActor);
     }
+
 
     private float getGearY(int i, float scale) {
         switch (i % 3) {
@@ -197,8 +205,16 @@ public class GearCluster extends GroupX {
         this.defaultSpeed = defaultSpeed;
     }
 
+    public void toggle() {
+        if (speed > 0) {
+            stop();
+        } else {
+            work();
+        }
+    }
+
     public enum GEAR {
-        GEAR_1, GEAR_2(75),GEAR_3(85),GEAR_4(85),GEAR_5(125), GEAR_6(85), GEAR_7(125);
+        GEAR_1, GEAR_2(75), GEAR_3(85), GEAR_4(85), GEAR_5(125), GEAR_6(85), GEAR_7(125);
 
         private float speedBasis = 100;
 
@@ -213,7 +229,7 @@ public class GearCluster extends GroupX {
             String path = StrPathBuilder.build(PathFinder.getComponentsPath(),
                     "dc", "clock", StringMaster.getWellFormattedString(toString()) + ".png");
             if (small) {
-               return StringMaster.getAppendedFile(path, " small");
+                return StringMaster.getAppendedFile(path, " small");
             }
             return path;
         }

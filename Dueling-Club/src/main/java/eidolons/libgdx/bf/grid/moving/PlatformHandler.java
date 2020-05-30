@@ -40,7 +40,7 @@ in the most crazy variant, we could have a pendulum/circular rotation
 
     public PlatformController get(Coordinates c) {
         for (PlatformController platform : platforms) {
-            if (platform.coordinates.equals(c)) {
+            if (platform.contains(c)) {
                 return platform;
             }
         }
@@ -52,6 +52,9 @@ in the most crazy variant, we could have a pendulum/circular rotation
         this.grid = grid;
         GuiEventManager.bind(GuiEventType.PLATFORM_CREATE, p -> {
             createPlatform((PlatformData) p.get());
+        });
+        GuiEventManager.bind(GuiEventType.PLATFORM_REMOVE, p -> {
+            removePlatform((String) p.get());
         });
 
         GuiEventManager.bind(GuiEventType.INIT_PLATFORMS, p -> {
@@ -65,7 +68,7 @@ in the most crazy variant, we could have a pendulum/circular rotation
                     getPlatformController();
 
             for (PlatformController platform : platforms) {
-                if (platform.coordinates == view.getUserObject().getCoordinates()) {
+                if (platform.contains(view.getUserObject().getCoordinates())) {
                     platform.entered(view.getUserObject());
                     view.setPlatformController(platform);
                     if (controller != null)
@@ -83,6 +86,15 @@ in the most crazy variant, we could have a pendulum/circular rotation
         });
     }
 
+    private void removePlatform(String s) {
+        PlatformController byName = findByName(s);
+        if (byName == null) {
+            main.system.auxiliary.log.LogMaster.log(1, "No such platform to remove: " + s);
+            return;
+        }
+        platforms.remove(byName);
+    }
+
     public void init(String platformData) {
         for (String substring : ContainerUtils.openContainer(platformData, StringMaster.AND_SEPARATOR)) {
             createPlatform(new PlatformData(substring));
@@ -91,15 +103,20 @@ in the most crazy variant, we could have a pendulum/circular rotation
 
     private void createPlatform(PlatformData data) {
         List<PlatformCell> cells = new ArrayList<>();
-        for (String substring : ContainerUtils.openContainer(data.getValue(PlatformData.PLATFORM_VALUE.cells))) {
+        for (String substring : ContainerUtils.openContainer(data.getValue(PlatformData.PLATFORM_VALUE.cells), ",")) {
             Coordinates c = Coordinates.get(substring);
-            PlatformCell cell = new PlatformCell(data.getType(), c.x, c.y, data.getDirection());
+            PlatformCell cell = create(c, data);
+
             cells.add(cell);
             cell.setUserObject(DC_Game.game.getCellByCoordinate(c));
-            grid.addPlatform(cell);
         }
-        platforms.add(new PlatformController(data, cells));
+        PlatformDecor visuals = grid.addPlatform(cells, data);
+        platforms.add(new PlatformController(data, cells, visuals));
 
+    }
+
+    protected PlatformCell create(Coordinates c, PlatformData data) {
+        return new PlatformCell(data.getType().getTexture(), c.x, c.y, data.getDirection());
     }
 
     public void act(float delta) {
@@ -110,5 +127,9 @@ in the most crazy variant, we could have a pendulum/circular rotation
 
     public Set<PlatformController> getPlatforms() {
         return platforms;
+    }
+
+    public PlatformDecor createCellVisuals(List<PlatformCell> cells, PlatformData data) {
+        return new PlatformDecor(data.getType(), cells);
     }
 }

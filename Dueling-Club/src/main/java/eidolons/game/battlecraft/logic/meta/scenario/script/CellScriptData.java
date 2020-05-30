@@ -27,6 +27,8 @@ public class CellScriptData extends DataUnit<CellScriptData.CELL_SCRIPT_VALUE> {
         puzzles,
         facing,
         named_point,
+
+        platform_block,
 //        traps,
     }
 }

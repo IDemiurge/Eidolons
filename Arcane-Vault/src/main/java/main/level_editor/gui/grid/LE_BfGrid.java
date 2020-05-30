@@ -1,12 +1,16 @@
 package main.level_editor.gui.grid;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.GridSubParts;
 import eidolons.libgdx.bf.grid.GridViewAnimator;
 import eidolons.libgdx.bf.grid.cell.*;
+import eidolons.libgdx.bf.grid.moving.PlatformCell;
+import eidolons.libgdx.bf.grid.moving.PlatformData;
+import eidolons.libgdx.bf.grid.moving.PlatformDecor;
 import eidolons.libgdx.bf.grid.moving.PlatformHandler;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.texture.TextureCache;
@@ -31,6 +35,18 @@ public class LE_BfGrid extends GridPanel {
         super(cols, rows, moduleCols, moduleRows);
         selectionBorder = TextureCache.getOrCreateR(CellBorderManager.teamcolorPath);
 
+    }
+
+    @Override
+    public void addActor(Actor actor) {
+        super.addActor(actor);
+    }
+
+    @Override
+    public PlatformDecor addPlatform(List<PlatformCell> cells, PlatformData data) {
+        PlatformDecor platformDecor = super.addPlatform(cells, data);
+        resetZIndices();
+        return platformDecor;
     }
 
     @Override

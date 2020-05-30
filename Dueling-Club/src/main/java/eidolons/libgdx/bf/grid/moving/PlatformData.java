@@ -19,19 +19,24 @@ public class PlatformData extends DataUnit<PlatformData.PLATFORM_VALUE> {
     }
 
     public static final PLATFORM_VALUE[] std_values = {
-            max_speed, min_speed, acceleration, waitPeriod
+            waitPeriod
     };
 
     public PlatformData(Set<Coordinates> cells) {
         for (PLATFORM_VALUE value : std_values) {
             setValue(value, getDefaultValue(value));
         }
+        setCells(cells);
+        setValue(type, PLATFORM_TYPE.rock.name());
+        // setValue(cell_type, DungeonEnums.CELL_IMAGE.diamond);
+    }
+
+    public void setCells(Set<Coordinates> cells) {
         String c = "";
         for (Coordinates cell : cells) {
-            c += cell.toString() + ";";
+            c += cell.toString() + ",";
         }
         setValue(PLATFORM_VALUE.cells, c);
-        // setValue(cell_type, DungeonEnums.CELL_IMAGE.diamond);
     }
 
     @Override
@@ -41,14 +46,8 @@ public class PlatformData extends DataUnit<PlatformData.PLATFORM_VALUE> {
 
     public int getDefaultValue(PLATFORM_VALUE value) {
         switch (value) {
-            case max_speed:
-                return 150;
-            case min_speed:
-                return 50;
-            case acceleration:
-                return 15;
             case waitPeriod:
-                return 5;
+                return 2;
         }
         return 0;
     }
@@ -85,7 +84,12 @@ public class PlatformData extends DataUnit<PlatformData.PLATFORM_VALUE> {
         waitPeriod,
         powered,
         onCycle, time(),
-        enter_direction;
+        enter_direction(LevelStructure.EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return DIRECTION.class;
+            }
+        };
 
         private LevelStructure.EDIT_VALUE_TYPE editType;
 

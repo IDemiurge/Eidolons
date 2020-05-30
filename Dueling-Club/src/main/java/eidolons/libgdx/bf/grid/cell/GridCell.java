@@ -120,7 +120,7 @@ public class GridCell extends Group implements Borderable {
         return this;
     }
 
-    private float getCellImgAlpha() {
+    protected float getCellImgAlpha() {
         return      0.8f   ;
         //TODO derive alpha from somewhere
     }

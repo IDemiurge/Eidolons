@@ -32,7 +32,7 @@ public class QuestMissionConstructor extends MissionConstructor<QuestMission> {
         String levelPath = type.getProperty(PROPS.FLOOR_FILE_PATH);
         if (MainLauncher.levelPath != null) {
             levelPath = MainLauncher.levelPath;
-        } else if (CoreEngine.TEST_LAUNCH) {
+        } else if (!CoreEngine.TEST_LAUNCH) {
             levelPath = FileChooserX.chooseFile(PathFinder.getDungeonLevelFolder(), "xml",
                     DungeonScreen.getInstance().getOverlayStage());
 

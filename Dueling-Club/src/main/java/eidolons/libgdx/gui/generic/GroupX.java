@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
@@ -25,15 +26,56 @@ public class GroupX extends Group {
     public GroupX() {
     }
 
+    public void addActor(Actor actor, int align) {
+        addActor(actor);
+        initPos(actor, align);
+
+    }
+
+    public void initPos(Actor actor, int align) {
+        if ((align & Align.right) != 0) {
+            GdxMaster.right(actor) ;
+        } else if ((align & Align.left) != 0) {
+            //0
+        } else {
+            actor.setX(GdxMaster.centerWidth(actor));
+        }
+        if ((align & Align.top) != 0) {
+            GdxMaster.top(actor);
+        } else if ((align & Align.bottom) != 0) {
+            //0
+        } else {
+            actor.setY(GdxMaster.centerHeight(actor));
+        }
+    }
+
+    public void pack() {
+        float maxX = 0;
+        float maxY = 0;
+        float minX = 0;
+        float minY = 0;
+        for (Actor child : getChildren()) {
+            if (maxX <= child.getX() + child.getWidth())
+                maxX = child.getX() + child.getWidth();
+            if (maxY <= child.getY() + child.getHeight())
+                maxY = child.getY() + child.getHeight();
+
+            if (minX >= child.getX())
+                minX = child.getX();
+            if (minY >= child.getY())
+                minY = child.getY();
+        }
+
+        setSize(maxX - minX, maxY - minY);
+    }
     @Override
     public void addActor(Actor actor) {
         super.addActor(actor);
-        if (isAutoSize())
-        {
-        if (getWidth() < actor.getWidth() + actor.getX())
-            setWidth(actor.getWidth() + actor.getX());
-        if (getHeight() < actor.getHeight() + actor.getY())
-            setHeight(actor.getHeight() + actor.getY());
+        if (isAutoSize()) {
+            if (getWidth() < actor.getWidth() + actor.getX())
+                setWidth(actor.getWidth() + actor.getX());
+            if (getHeight() < actor.getHeight() + actor.getY())
+                setHeight(actor.getHeight() + actor.getY());
         }
     }
 
@@ -41,6 +83,7 @@ public class GroupX extends Group {
         addActor(actor);
         setSize(actor.getWidth(), actor.getHeight());
     }
+
     public boolean isAutoSize() {
         return autoSize;
     }
@@ -150,7 +193,7 @@ public class GroupX extends Group {
 
     public void fadeIn() {
         setVisible(true);
-//        getColor().a = 0;
+        //        getColor().a = 0;
         for (Action sub : getActionsOfClass(AlphaAction.class)) {
             removeAction(sub);
         }
@@ -165,7 +208,7 @@ public class GroupX extends Group {
     }
 
     public void addActorAtPos(Actor actor, float x, float
-     y) {
+            y) {
         addActor(actor);
         actor.setPosition(x, y);
     }

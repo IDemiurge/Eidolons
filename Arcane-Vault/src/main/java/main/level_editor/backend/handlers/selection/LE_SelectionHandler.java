@@ -85,6 +85,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
         getSelection().setFrozenSelection(frozen);
         mode = SELECTION_MODE.NONE;
         selectionChanged();
+        getModel().setBrushMode(false);
     }
 
     @Override

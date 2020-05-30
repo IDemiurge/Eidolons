@@ -61,10 +61,10 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     }
 
     public static Boolean isVideoEnabled() {
-//        if (CoreEngine.isIggDemo()){
-//            return false;
-//        }
-        if (GdxMaster.getWidth()!=1920){
+        //        if (CoreEngine.isIggDemo()){
+        //            return false;
+        //        }
+        if (GdxMaster.getWidth() != 1920) {
             return false;
         }
         if (videoEnabled == null)
@@ -96,7 +96,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         }
 
         selectionPanel =
-         createSelectionPanel(p);
+                createSelectionPanel(p);
         addSelectionPanel(selectionPanel);
     }
 
@@ -180,8 +180,8 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         updateInputController();
         selectionPanel.setVisible(true);
         selectionPanel.setPosition(
-         GdxMaster.right(selectionPanel),
-         GdxMaster.centerHeight(selectionPanel));
+                GdxMaster.right(selectionPanel),
+                GdxMaster.centerHeight(selectionPanel));
 
         selectionPanel.fadeIn();
 
@@ -190,12 +190,12 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
 
     protected void selectionPanelClosed() {
         if (selectionPanel != null)
-        try {
-            selectionPanel.setStage(null);
-            selectionPanel.setVisible(false);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+            try {
+                selectionPanel.setStage(null);
+                selectionPanel.setVisible(false);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         GdxMaster.setLoadingCursor();
     }
 
@@ -225,13 +225,13 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         if (!isLoadingWithVideo()) {
             initVideo();
         } else if (loadVideo != null) {
-//            try {
-//                loadVideo.stop();
-//                loadVideo.getPlayer().dispose();
-//                loadVideo = null;
-//            } catch (Exception e) {
-//                main.system.ExceptionMaster.printStackTrace(e);
-//            }
+            //            try {
+            //                loadVideo.stop();
+            //                loadVideo.getPlayer().dispose();
+            //                loadVideo = null;
+            //            } catch (Exception e) {
+            //                main.system.ExceptionMaster.printStackTrace(e);
+            //            }
         }
     }
 
@@ -264,6 +264,8 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         } else
             try {
                 super.render(delta);
+            } catch (ArrayIndexOutOfBoundsException e1) {
+                e1.printStackTrace();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -276,9 +278,9 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
 
         if (loadVideo != null) {
             renderVideo(delta);
-            if (isVideoAsBackground()){
-            overlayStage.act(delta);
-            overlayStage.draw();
+            if (isVideoAsBackground()) {
+                overlayStage.act(delta);
+                overlayStage.draw();
             }
 
         }
@@ -325,12 +327,11 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         if (!loadVideo.isAvailable()) return;
         if (loadVideo.getPlayer() == null)
             playVideo();
-        else if (!loadVideo.getPlayer().isPlaying())
-        {
+        else if (!loadVideo.getPlayer().isPlaying()) {
             if (isLooped())
-             playVideo();
+                playVideo();
         }
-//        Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
+        //        Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
         if (isClearForVideo())
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         if (!loadVideo.getPlayer().render())

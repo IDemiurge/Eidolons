@@ -59,8 +59,8 @@ public class FloorManager {
         //from modules too
         if (StringMaster.isEmpty(templatePath)) {
             templatePath = getDefaultFloorTemplate();
-        }
-
+        } else
+            LevelEditor.saveLastLvlPath(templatePath);
         newFloorSelected(templatePath, false);
     }
 

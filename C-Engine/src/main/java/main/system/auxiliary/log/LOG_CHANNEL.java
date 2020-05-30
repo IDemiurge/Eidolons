@@ -59,7 +59,7 @@ public enum LOG_CHANNEL {
     SAVE(LogMaster.SAVE_PREFIX, LogMaster.SAVE_ON, LogMaster.SAVE ),
     CAMERA(LogMaster.CAMERA_PREFIX, LogMaster.CAMERA_ON, LogMaster.CAMERA ),
 
-    ;
+    PLATFORM(LogMaster.PLATFORM_PREFIX, LogMaster.PLATFORM_ON, LogMaster.PLATFORM );
     private boolean on;
     private String prefix;
     private int code;

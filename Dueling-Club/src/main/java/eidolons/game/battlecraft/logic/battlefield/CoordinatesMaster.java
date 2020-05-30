@@ -191,6 +191,23 @@ public class CoordinatesMaster {
         return corners;
     }
 
+    public static Coordinates getCorner(DIRECTION d, Collection<Coordinates> list) {
+        int x = getMinX(list);
+        int x1 = getMaxX(list);
+        int y = getMinY(list);
+        int y1 = getMaxY(list);
+        switch (d) {
+            case UP_LEFT:
+                return Coordinates.get(x, y);
+            case UP_RIGHT:
+                return Coordinates.get(x1, y);
+            case DOWN_RIGHT:
+                return Coordinates.get(x1, y1);
+            case DOWN_LEFT:
+                return Coordinates.get(x, y1);
+        }
+        return Coordinates.get(x, y);
+    }
     public static int[] getMinMaxCoordinates(Collection<Coordinates> list) {
         int x = getMinX(list);
         int x1 = getMaxX(list);

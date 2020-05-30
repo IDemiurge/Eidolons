@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
@@ -8,6 +9,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.texture.Sprites;
@@ -17,6 +19,7 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
+import main.system.launch.CoreEngine;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -30,6 +33,10 @@ public class PortalMaster extends DungeonHandler {
      */
     public PortalMaster(DungeonMaster master) {
         super(master);
+        if (!CoreEngine.TEST_LAUNCH) {
+            Assets.get().getManager().load(Sprites.PORTAL_OPEN, TextureAtlas.class);
+            Assets.get().getManager().load(Sprites.PORTAL_CLOSE, TextureAtlas.class);
+        }
         GuiEventManager.bind(GuiEventType.PORTAL_OPEN, p -> {
             Coordinates c = (Coordinates) p.get();
             boolean done = false;

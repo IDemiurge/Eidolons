@@ -184,6 +184,7 @@ public static final String SEPARATOR_NARROW = StrPathBuilder.build(
     public static final String TEXT_BORDER_DECOR = "ui/components/ninepatch/std/frame decor.png";
     public static final String PLATFORM_HORN = "ui/cells/advanced/platform/visuals/horn.png";
     public static final String PLATFORM_ISLAND = "ui/cells/advanced/platform/visuals/island.png";
+    public static final String PLATFORM_ROCKS= "ui/cells/advanced/platform/visuals/rocks.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

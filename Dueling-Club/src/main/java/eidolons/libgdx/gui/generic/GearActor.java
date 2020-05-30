@@ -13,6 +13,7 @@ public class GearActor extends ImageContainer {
     GEAR gear;
     float speed;
     boolean clockwise;
+    private Float degreesPerSecond;
 
     public GearActor(GEAR gear, boolean small, float speed, boolean clockwise) {
         super(gear.getImagePath(small));
@@ -41,10 +42,22 @@ public class GearActor extends ImageContainer {
 
 
     private float getDegreesPerSecond() {
-        return (clockwise ? -speed : speed) * gear.getSpeedBasis() / getWidth() * 10;
+        if (degreesPerSecond == null) {
+        degreesPerSecond = (clockwise ? -speed : speed) * (gear.getSpeedBasis() / getWidth() * 10);
+        }
+        return degreesPerSecond;
     }
 
     public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public boolean isClockwise() {
+        return clockwise;
+    }
+
+    public void setClockwise(boolean clockwise) {
+        this.clockwise = clockwise;
+        degreesPerSecond=null;
     }
 }

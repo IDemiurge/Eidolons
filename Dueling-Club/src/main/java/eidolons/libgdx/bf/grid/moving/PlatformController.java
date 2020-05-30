@@ -7,16 +7,24 @@ import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.system.math.DC_PositionMaster;
 import main.entity.Entity;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.data.DataUnit;
 import main.system.launch.CoreEngine;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static main.system.auxiliary.log.LogMaster.log;
@@ -24,46 +32,63 @@ import static main.system.auxiliary.log.LogMaster.log;
 public class PlatformController extends MoveController {
 
     private static final boolean TEST = true;
+    private final PlatformDecor visuals;
     List<PlatformCell> cells;
     PlatformCell tip;
     Runnable onCycle; //script
     private float destX, destY, originX, originY, period, time;
+    Interpolation interpolation = Interpolation.sine;
+    private Coordinates block;
+    private boolean blocked;
 
-    public PlatformController(PlatformData data, List<PlatformCell> cells) {
+    public PlatformController(PlatformData data, List<PlatformCell> cells, PlatformDecor visuals) {
         super(data);
         this.cells = cells;
+        this.visuals = visuals;
         init();
         for (PlatformCell cell : cells) {
             cell.setController(this);
         }
     }
 
-    Interpolation interpolation = Interpolation.sine;
-
 
     @Override
     protected void init() {
-        origin = CoordinatesMaster.getCenterCoordinate(cells.stream().map(cell
-                -> cell.getUserObject().getCoordinates()).collect(Collectors.toSet()));
+        Set<Coordinates> coordinatesSet = cells.stream().map(cell
+                -> cell.getUserObject().getCoordinates()).collect(Collectors.toSet());
+        Map<Coordinates, PlatformCell> map = new LinkedHashMap<>();
+        for (PlatformCell cell : cells) {
+            map.put(cell.getUserObject().getCoordinates(), cell);
+        }
+        origin = CoordinatesMaster.getCenterCoordinate(coordinatesSet);
         super.init();
         coordinates = origin;
-        tip = cells.get(0);
-
-        Vector2 v = GridMaster.getVectorForCoordinate(destination);
+        //TODO gotta be the farthest one OUT!
+        initDestination();
         Vector2 v1 = GridMaster.getVectorForCoordinate(origin);
-        destX = v.x;
-        destY = v.y;
         originX = v1.x;
         originY = v1.y;
         period = data.getFloatValue(PlatformData.PLATFORM_VALUE.time);
+
+        if (cells.size() == 1) {
+            tip = cells.get(0);
+        } else {
+            DIRECTION d = DirectionMaster.getRelativeDirection(origin, destination);
+            tip = map.get(CoordinatesMaster.getCorner(d, coordinatesSet));
+        }
+        visuals.setPosition(tip.getX(), tip.getY());
+        if (CoreEngine.TEST_LAUNCH) {
+            period/=2;
+        }
     }
+
 
     public boolean act(float delta) {
         if (TEST) {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
                 powered = !powered;
-                pendulum=!pendulum;
-                waiting=false;
+                pendulum = !pendulum;
+                waiting = false;
             }
         }
         //if we know distance we can calc point of slowdown
@@ -72,33 +97,66 @@ public class PlatformController extends MoveController {
             return false;
 
         time += delta;
-        log(1, this + " tip at " + tip.getX() + " " + tip.getY()+ " ;time= " + time);
+        log(LOG_CHANNEL.PLATFORM, this + " tip at " + tip.getX() + " " + tip.getY() + " ;time= " + time);
         for (PlatformCell cell : cells) {
             if (isInterpolated()) {
+                int offsetX = cell.getOriginalX() - tip.getOriginalX();
+                int offsetY = cell.getOriginalY() - tip.getOriginalY();
                 if (reverse) {
                     float x = interpolation.apply(destX, originX, time / period);
-                    cell.setX(x);
+                    cell.setX(x + offsetX * 128);
                     float y = interpolation.apply(destY, originY, time / period);
-                    cell.setY(y);
+                    cell.setY(y + offsetY * 128);
                 } else {
                     float x = interpolation.apply(originX, destX, time / period);
-                    cell.setX(x);
+                    cell.setX(x + offsetX * 128);
                     float y = interpolation.apply(originY, destY, time / period);
-                    cell.setY(y);
+                    cell.setY(y + offsetY * 128);
                 }
 
-                return true;
+            } else {
+                cell.setX(cell.getX() + speedX * delta);
+                cell.setY(cell.getY() + speedY * delta);
             }
-            cell.setX(cell.getX() + speedX * delta);
-            cell.setY(cell.getY() + speedY * delta);
-
+            visuals.setX(tip.getX());
+            visuals.setY(tip.getY());
         }
 
         return true;
     }
 
+    public void initDestination(Coordinates destination) {
+        Vector2 v = GridMaster.getVectorForCoordinate(destination);
+        destX = v.x;
+        destY = v.y;
+    }
+
+    public void initDestination() {
+        List<Coordinates> line = DC_PositionMaster.getLine(origin, destination);
+
+        for (Coordinates c : line) {
+            if (isBlocked(c)) {
+                block = c;
+                initDestination(c);
+                blocked = true;
+                interpolation = Interpolation.bounce;
+                return;
+            }
+        }
+        interpolation = Interpolation.sine;
+        initDestination(destination);
+    }
+
+    private boolean isBlocked(Coordinates c) {
+        CellScriptData cellScriptData = DC_Game.game.getDungeonMaster().getFloorWrapper().getTextDataMap().get(c);
+        if (cellScriptData != null) {
+            return !cellScriptData.getValue(CellScriptData.CELL_SCRIPT_VALUE.platform_block).isEmpty();
+        }
+        return false;
+    }
+
     protected void arrived() {
-        log(1, this + " arrived! Cur: " + coordinates);
+        log(LOG_CHANNEL.PLATFORM,this + " arrived! Cur: " + coordinates);
         if (isInterpolated()) {
             time = 0;
         }
@@ -111,11 +169,36 @@ public class PlatformController extends MoveController {
 
         }
 
+        visuals.arrived();
+    }
+
+    public void setDestination(Coordinates dest) {
+        destination = dest;
+        initDestination();
+
+    }
+
+
+    public void left(BattleFieldObject userObject) {
+        if (CoreEngine.TEST_LAUNCH) {
+            powered = false;
+        }
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.PLATFORM,userObject + " left " + this);
+        GuiEventManager.trigger(GuiEventType.CAMERA_FOLLOW_OFF);
+        visuals.left();
+    }
+
+    public void entered(BattleFieldObject userObject) {
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.PLATFORM,userObject + " entered " + this);
+        powered = true;
+        waitTimer = 0.3f;
+        GuiEventManager.trigger(GuiEventType.CAMERA_FOLLOW_MAIN);
+        visuals.entered();
     }
 
     @Override
-    protected boolean canArrive() {
-        return true;
+    protected void resumed() {
+        visuals. resumed();
     }
 
     @Override
@@ -125,45 +208,23 @@ public class PlatformController extends MoveController {
 
     @Override
     protected void coordinatesChanged() {
-        log(1, getName() + " is at " + coordinates);
+        log(LOG_CHANNEL.PLATFORM,getName() + " is at " + coordinates);
         for (PlatformCell cell : cells) {
-            Coordinates offset = Coordinates.get(
-                    cell.getX() - tip.getX(),
-                    cell.getY() - tip.getY());
-            DC_Cell dc_cell = DC_Game.game.getCellByCoordinate(coordinates.getOffset(offset));
+            DC_Cell dc_cell = DC_Game.game.getCellByCoordinate(coordinates.getOffset(
+                    cell.getOriginalX() - tip.getOriginalX(),
+                    cell.getOriginalY() - tip.getOriginalY()));
             cell.setUserObject(dc_cell);
         }
     }
 
-    public void left(BattleFieldObject userObject) {
-        if (CoreEngine.TEST_LAUNCH) {
-            powered=false;
-        }
-        main.system.auxiliary.log.LogMaster.log(1, userObject + " left " + this);
-        GuiEventManager.trigger(GuiEventType.CAMERA_FOLLOW_OFF);
+    @Override
+    protected boolean canArrive() {
+        return true;
     }
-
-    public void entered(BattleFieldObject userObject) {
-        main.system.auxiliary.log.LogMaster.log(1, userObject + " entered " + this);
-        powered = true;
-        waitTimer= 0.3f;
-        GuiEventManager.trigger(GuiEventType.CAMERA_FOLLOW_MAIN);
-    }
-
 
     @Override
     protected boolean isArrived() {
-        if (isInterpolated())
-            return time >= period;
-
-        int targetX = destination.x;
-        int targetY = destination.y;
-        if (reverse) {
-            targetX = origin.x;
-            targetY = origin.y;
-        }
-        //TODO check possible SKIP OVER!
-        return tip.getGridX() == targetX && tip.getGridY() == targetY;
+        return time >= period;
     }
 
     @Override
@@ -182,11 +243,24 @@ public class PlatformController extends MoveController {
     @Override
     public String toString() {
         return name + " [from " + origin +
-                " to " + destination+
+                " to " + destination +
                 "] in " + period + "sec.";
     }
 
     public PlatformCell getTip() {
         return tip;
+    }
+
+    public boolean contains(Coordinates c) {
+        for (PlatformCell cell : cells) {
+            if (cell.getUserObject().getCoordinates().equals(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void toggle() {
+        powered = !powered;
     }
 }

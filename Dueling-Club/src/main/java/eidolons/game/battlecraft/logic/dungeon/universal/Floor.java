@@ -75,6 +75,13 @@ public class Floor extends LightweightEntity {
         return getGame().getDungeonMaster().getStructMaster().getCellVariant(i, j);
     }
     public DungeonEnums.CELL_IMAGE getCellType(int i, int j) {
+        CellScriptData cellScriptData = location.getTextDataMap().get(Coordinates.get(i, j));
+        if (cellScriptData != null) {
+            String value = cellScriptData.getValue(CellScriptData.CELL_SCRIPT_VALUE.cell_type);
+            if (!value.isEmpty()) {
+                return DungeonEnums.CELL_IMAGE.valueOf(value.toLowerCase());
+            }
+        }
         return  getGame().getDungeonMaster().getStructMaster().getCellType(i, j);
     }
 

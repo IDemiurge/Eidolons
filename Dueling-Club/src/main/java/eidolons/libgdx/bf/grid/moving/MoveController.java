@@ -14,7 +14,7 @@ public abstract class MoveController {
     Coordinates coordinates;
     Coordinates destination; //what about BLOCKS?
 
-    boolean pendulum=true;
+    boolean pendulum = true;
     boolean waiting;
     float waitPeriod;
     float waitTimer;
@@ -56,18 +56,19 @@ public abstract class MoveController {
             waitTimer += delta;
             if (waitTimer >= waitPeriod) {
                 waiting = false;
+                resumed();
             }
             return false;
         }
         //reverse acceleration when past middle? or will interpolation rule after all?
-
-        if (reverse) {
-            speedY -= accelerationY * delta;
-            speedX -= accelerationX * delta;
-        } else {
-            speedY += accelerationY * delta;
-            speedX += accelerationX * delta;
-        }
+        if (!isInterpolated())
+            if (reverse) {
+                speedY -= accelerationY * delta;
+                speedX -= accelerationX * delta;
+            } else {
+                speedY += accelerationY * delta;
+                speedX += accelerationX * delta;
+            }
 
         if (!canArrive()) {
             return true;
@@ -79,12 +80,17 @@ public abstract class MoveController {
         }
         Coordinates c = calcCurrent();
         if (!c.equals(coordinates)) {
-            coordinates=c;
+            coordinates = c;
             coordinatesChanged();
 
         }
         return true;
     }
+
+    protected void resumed() {
+
+    }
+
     public String getName() {
         return name;
     }
