@@ -8,7 +8,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.VFX_TEMPLATE;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
@@ -37,7 +37,7 @@ public class GlobalVfxMap extends GroupX {
     public GlobalVfxMap(Module module) {
         initModuleVfx(module);
         GuiEventManager.bind(GuiEventType.UNIT_VIEW_MOVED, p -> {
-            GridUnitView view = (GridUnitView) p.get();
+            UnitGridView view = (UnitGridView) p.get();
             if (view.getUserObject() == Eidolons.getMainHero()) {
                 Unit hero = (Unit) view.getUserObject();
                 for (EmitterMap map : maps) {

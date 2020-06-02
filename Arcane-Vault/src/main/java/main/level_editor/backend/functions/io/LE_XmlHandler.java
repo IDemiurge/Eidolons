@@ -233,6 +233,9 @@ public class LE_XmlHandler extends LE_Handler {
 
         xmlBuilder.append("\n").open("Zones");
         for (LevelZone zone : module.getZones()) {
+            if ((zone).getData() == null) {
+               continue;
+            }
             xmlBuilder.appendNode(toXml(zone), "Zone");
         }
         xmlBuilder.close("Zones").append("\n");
@@ -262,6 +265,7 @@ public class LE_XmlHandler extends LE_Handler {
 
     private String toXml(LevelZone zone) {
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
+
         xmlBuilder.appendNode((zone).getData().toString(),
                 FloorLoader.DATA);
         xmlBuilder.open("Blocks");

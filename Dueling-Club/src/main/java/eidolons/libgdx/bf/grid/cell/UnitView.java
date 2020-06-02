@@ -19,6 +19,7 @@ import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.CONTENT_CONSTS;
 import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.system.auxiliary.StringMaster;
@@ -256,6 +257,9 @@ public class UnitView extends BaseView implements HpBarView {
     }
 
     public TextureRegion processPortraitTexture(String path) {
+        if (getUserObject().getFlip()== CONTENT_CONSTS.FLIP.HOR) {
+          return   TextureCache.getFlippedRegion(true, false, path);
+        }
         return TextureCache.getOrCreateR(path);
     }
 

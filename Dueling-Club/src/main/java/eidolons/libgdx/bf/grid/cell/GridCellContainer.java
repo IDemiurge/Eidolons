@@ -228,11 +228,11 @@ public class GridCellContainer extends GridCell implements Hoverable {
         return true;
     }
 
-    public final float getViewX(GridUnitView view) {
+    public final float getViewX(UnitGridView view) {
         return getViewX(getUnitViews(true).indexOf(view));
     }
 
-    public final float getViewY(GridUnitView view) {
+    public final float getViewY(UnitGridView view) {
         return getViewY(getUnitViews(true).indexOf(view), getUnitViewCount());
     }
 

@@ -48,7 +48,7 @@ public class SpellEnums {
     }
 
     public enum SPELL_POOL {
-        MEMORIZED, DIVINED, VERBATIM, SPELLBOOK;
+        MEMORIZED, DIVINED, VERBATIM, SPELLBOOK
     }
 
     public enum SPELL_SUBGROUP {
@@ -310,7 +310,7 @@ public class SpellEnums {
             StringBuilder string = new StringBuilder("SpecEffect(" + effectCase + ",");
             for (String s : args) {
                 string.append(abilName).append(StringMaster.wrapInParenthesis(s));
-                string.append(StringMaster.AND_SEPARATOR);
+                string.append(StringMaster.VERTICAL_BAR);
             }
             string = new StringBuilder(StringMaster.cropLast(string.toString(), 1));
             string.append(")");

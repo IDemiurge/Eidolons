@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -64,6 +65,12 @@ public class ModuleLoader extends DungeonHandler {
         last = getMetaMaster().getModuleMaster()
                 .getCurrent();
         loading = module;
+        // checkBossModuleInit(module);
+        if (module.getData().getValue(LevelStructure.MODULE_VALUE.type).equalsIgnoreCase("boss")) {
+            EidolonsGame.BOSS_FIGHT=true;
+            getMetaMaster().initBossModule(module);
+            // GuiEventManager.trigger(GuiEventType.LOAD_SCOPE, );
+        }
         initLogicalGrid(module);
 //        freeResources();
 //        initTransitFx();

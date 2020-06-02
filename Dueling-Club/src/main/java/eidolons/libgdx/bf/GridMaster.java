@@ -8,7 +8,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.gui.CursorPosVector2;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
@@ -132,8 +132,8 @@ public class GridMaster {
     public static void validateVisibleUnitView(BaseView baseView) {
         if (Cinematics.ON)
             return;
-        if (baseView instanceof GridUnitView) {
-            GridUnitView view = ((GridUnitView) baseView);
+        if (baseView instanceof UnitGridView) {
+            UnitGridView view = ((UnitGridView) baseView);
             if (view.getActionsOfClass(AlphaAction.class).size == 0) {
 
                 if (view.getUserObject() instanceof Unit)

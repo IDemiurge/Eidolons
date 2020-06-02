@@ -136,6 +136,7 @@ public class OperationHandler extends LE_Handler {
                     args = new BattleFieldObject[]{unit};
 //                    getStructureHandler().updateTree(); //too much hassle, leave it
                 }
+
                 break;
             case REMOVE_OVERLAY:
                 obj = (BattleFieldObject) args[0];

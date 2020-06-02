@@ -19,9 +19,9 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.bf.Hoverable;
 import eidolons.libgdx.bf.grid.cell.BaseView;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.bf.grid.cell.LastSeenView;
 import eidolons.libgdx.bf.grid.cell.QueueView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.controls.StackViewMaster;
 import eidolons.libgdx.gui.panels.TablePanel;
@@ -499,8 +499,8 @@ public class ToolTipManager extends TablePanel {
         if (object instanceof QueueView) {
             ((QueueView) object).hoverOn();
         } else {
-            if (object instanceof GridUnitView) {
-                ((GridUnitView) object).getInitiativeQueueUnitView().hoverOn();
+            if (object instanceof UnitGridView) {
+                ((UnitGridView) object).getInitiativeQueueUnitView().hoverOn();
             }
             scaleUp(object);
         }
@@ -553,12 +553,12 @@ public class ToolTipManager extends TablePanel {
         float scaleX;
         float scaleY;
         object.setHovered(false);
-        if (object instanceof GridUnitView) {
+        if (object instanceof UnitGridView) {
             scaleX = object.getScaledWidth();
             scaleY = object.getScaledHeight();
             ActionMaster.
                     addScaleAction(object, scaleX, scaleY, 0.35f);
-            ((GridUnitView) object).getInitiativeQueueUnitView().hoverOff();
+            ((UnitGridView) object).getInitiativeQueueUnitView().hoverOff();
         } else if (object instanceof QueueView) {
             ((QueueView) object).hoverOff();
         }

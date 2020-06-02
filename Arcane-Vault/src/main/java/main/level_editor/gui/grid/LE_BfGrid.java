@@ -104,7 +104,7 @@ public class LE_BfGrid extends GridPanel {
         return new LE_GridOverlays(this);
     }
 
-    protected GridUnitView doCreateUnitView(BattleFieldObject battleFieldObject) {
+    protected UnitGridView doCreateUnitView(BattleFieldObject battleFieldObject) {
         return LE_UnitViewFactory.doCreate(battleFieldObject);
     }
 

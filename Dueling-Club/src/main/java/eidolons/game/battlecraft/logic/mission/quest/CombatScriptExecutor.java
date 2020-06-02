@@ -144,6 +144,9 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         }
 
         switch (function) {
+            case AWAKEN:
+                getMaster().getDungeonMaster().getAwakener().awaken(ref, objects);
+                return true;
             case CINEMATIC:
                 return doCinematicScript(ref, args);
             case ESOTERICA:
@@ -174,17 +177,17 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
             case SCRIPT_IF:
                 args[0]=args[1]+ StringMaster.wrapInParenthesis(args[0]      );
                 getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().
-                        execute(SpeechScript.SPEECH_ACTION.SCRIPT_IF,
+                        execute(SpeechScript.SCRIPT.SCRIPT_IF,
                                 args[0]);
                 return true;
             case SCRIPT_PARALLEL:
                 getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().
-                        execute(SpeechScript.SPEECH_ACTION.SCRIPT_PARALLEL,
+                        execute(SpeechScript.SCRIPT.SCRIPT_PARALLEL,
                                 args[0]);
                 return true;
             case SCRIPT:
                 getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().
-                        execute(SpeechScript.SPEECH_ACTION.SCRIPT,
+                        execute(SpeechScript.SCRIPT.SCRIPT,
                                 args[0]);
                 return true;
 //                return doScript(ref, args);
@@ -568,7 +571,8 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         ATOMIC,
         AGGRO,
         DIALOGUE, TIP, MESSAGE, QUEST, TIP_MSG, TIP_QUEST, DIALOGUE_TIP,
-        ESOTERICA, CINEMATIC
+        ESOTERICA, CINEMATIC,
+        AWAKEN,
     }
 
 }

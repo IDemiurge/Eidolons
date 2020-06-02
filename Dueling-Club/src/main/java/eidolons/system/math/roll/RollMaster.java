@@ -409,11 +409,11 @@ public class RollMaster {
 
     public static Rolls generateRollsFromString(String rollString) {
         boolean or = false;
-        if (rollString.contains(StringMaster.AND_SEPARATOR)) {
+        if (rollString.contains(StringMaster.VERTICAL_BAR)) {
             or = true;
         }
         Rolls rolls = new Rolls(or);
-        String separator = StringMaster.AND_SEPARATOR;
+        String separator = StringMaster.VERTICAL_BAR;
         if (!or) {
             separator = StringMaster.AND;
         }

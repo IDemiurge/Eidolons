@@ -73,7 +73,7 @@ public abstract class GridPanel extends Group {
     protected int moduleRows;
     protected int x1, x2, y1, y2;
     protected float offsetX, offsetY;
-    protected GridUnitView hoverObj;
+    protected UnitGridView hoverObj;
     protected static boolean showGridEmitters;
     protected boolean resetVisibleRequired;
 
@@ -402,17 +402,17 @@ public abstract class GridPanel extends Group {
                 if (overlayManager != null)
                     overlayManager.clearTooltip(view.getUserObject());
             }
-            if (view instanceof GridUnitView)
-                if (((GridUnitView) view).getLastSeenView() != null) {
+            if (view instanceof UnitGridView)
+                if (((UnitGridView) view).getLastSeenView() != null) {
                     BattleFieldObject obj = getObjectForView(view);
 
-                    LastSeenMaster.resetLastSeen((GridUnitView) view,
+                    LastSeenMaster.resetLastSeen((UnitGridView) view,
                             obj, !visible);
                     if (obj.getLastSeenOutline() == null) {
-                        (((GridUnitView) view).getLastSeenView()).setOutlinePathSupplier(
+                        (((UnitGridView) view).getLastSeenView()).setOutlinePathSupplier(
                                 () -> null);
                     } else {
-                        (((GridUnitView) view).getLastSeenView()).setOutlinePathSupplier(
+                        (((UnitGridView) view).getLastSeenView()).setOutlinePathSupplier(
                                 () -> {
                                     try {
                                         return obj.getLastSeenOutline().getImagePath();
@@ -437,7 +437,7 @@ public abstract class GridPanel extends Group {
         return true;
     }
 
-    protected GridUnitView doCreateUnitView(BattleFieldObject battleFieldObject) {
+    protected UnitGridView doCreateUnitView(BattleFieldObject battleFieldObject) {
         return UnitViewFactory.doCreate(battleFieldObject);
     }
 
@@ -518,7 +518,7 @@ public abstract class GridPanel extends Group {
     }
 
     public void unitMoved(BattleFieldObject object) {
-        GridUnitView uv = (GridUnitView) viewMap.get(object);
+        UnitGridView uv = (UnitGridView) viewMap.get(object);
         if (uv == null) {
             return;
         }
@@ -543,7 +543,7 @@ public abstract class GridPanel extends Group {
             main.system.auxiliary.log.LogMaster.log(1, ">>>>>> UnitView already created!!! " + battleFieldObject);
             return viewMap.get(battleFieldObject);
         }
-        GridUnitView view = doCreateUnitView(battleFieldObject);
+        UnitGridView view = doCreateUnitView(battleFieldObject);
         viewMap.put(battleFieldObject, view);
 
 
@@ -614,11 +614,11 @@ public abstract class GridPanel extends Group {
         resetVisibleRequired = false;
     }
 
-    public GridUnitView getHoverObj() {
+    public UnitGridView getHoverObj() {
         return hoverObj;
     }
 
-    public void setHoverObj(GridUnitView hoverObj) {
+    public void setHoverObj(UnitGridView hoverObj) {
         this.hoverObj = hoverObj;
     }
 
@@ -647,9 +647,9 @@ public abstract class GridPanel extends Group {
                     }
                     //                TODO     cell.recalcUnitViewBounds();
                     for (GenericGridView sub : views) {
-                        if (sub.isHovered() && sub instanceof GridUnitView
+                        if (sub.isHovered() && sub instanceof UnitGridView
                         ) {
-                            setHoverObj((GridUnitView) sub);
+                            setHoverObj((UnitGridView) sub);
                             topCells.add(cell);
                             cell.setHovered(true);
                         } else if (
@@ -1144,6 +1144,10 @@ public abstract class GridPanel extends Group {
 
     public PlatformHandler getPlatformHandler() {
         return platformHandler;
+    }
+
+    public GridCell getGridCell(Coordinates coordinate) {
+        return getGridCell(coordinate.x, coordinate.y);
     }
 }
 

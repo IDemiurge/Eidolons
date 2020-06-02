@@ -74,7 +74,7 @@ public class SpeechBuilder {
                 part = part.trim();
                 SpeechScript script = new SpeechScript(part, master);
                 speech.setScript(script);
-                Integer time = script.getIntValue(SpeechScript.SPEECH_ACTION.TIME_THIS);
+                Integer time = script.getIntValue(SpeechScript.SCRIPT.TIME_THIS);
                 if (time != 0) {
                     speech.setTime(time);
                 }

@@ -534,7 +534,7 @@ public class DC_ContentValsManager extends ContentValsManager {
         if (param != null) {
             return new PARAMETER[]{param};
         }
-        if (ContainerUtils.openContainer(sparam, StringMaster.AND_SEPARATOR).size() > 1) {
+        if (ContainerUtils.openContainer(sparam, StringMaster.VERTICAL_BAR).size() > 1) {
             return DC_Game.game.getValueManager().getParamsFromContainer(sparam);
         } else {
             return DC_Game.game.getValueManager().getValueGroupParams(sparam);

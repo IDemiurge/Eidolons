@@ -18,7 +18,7 @@ import eidolons.game.netherflame.main.soul.panel.LordPanel;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.grid.cell.GenericGridView;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.overlay.choice.VC_DataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
@@ -31,7 +31,7 @@ import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.GuiStage;
-import eidolons.swing.generic.services.dialog.DialogMaster;
+import eidolons.libgdx.utils.GdxDialogMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
 import eidolons.system.test.TestDialogMaster;
@@ -174,7 +174,7 @@ public class GlobalController implements Controller {
                 break;
             case Keys.F9:
                 Eidolons.onNonGdxThread(() -> {
-                    String text = DialogMaster.inputText("Your script...", lastScript);
+                    String text = GdxDialogMaster.inputText("Your script...", lastScript);
                     if (!text.contains("=")) {
                         text = "script=" + text;
                     }
@@ -312,7 +312,7 @@ public class GlobalController implements Controller {
 
     private boolean tab() {
         List<GenericGridView> list = new ArrayList<>();
-        GridUnitView hovered = ScreenMaster.getDungeonGrid().getHoverObj();
+        UnitGridView hovered = ScreenMaster.getDungeonGrid().getHoverObj();
         GridCellContainer cell = null;
         if (hovered != null) {
             cell = (GridCellContainer) hovered.getParent();

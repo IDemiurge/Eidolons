@@ -63,6 +63,7 @@ public class Sprites {
     public static final String FANGS = "sprites/weapons3d/atlas/natural/fangs/fangs.txt";
     public static final String CLAWS = "sprites/weapons3d/atlas/natural/claws/claws.txt";
     public static final String KRIS = "sprites/weapons3d/atlas/blade/short swords/kris.txt";
+    public static final String BOSS_HARVESTER =  "sprites/boss/atlas.txt";
 
     private static final Map<String, String> spriteMap;
 

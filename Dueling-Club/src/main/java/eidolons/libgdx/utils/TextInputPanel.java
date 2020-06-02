@@ -20,9 +20,9 @@ import eidolons.libgdx.stage.StageWithClosable;
  * Created by JustMe on 2/22/2018.
  */
 public class TextInputPanel extends TablePanelX implements Blocking, TextFieldListener, TextField.TextFieldFilter {
-    String title, text, hint;
-    TextInputListener textInputListener;
-    private TextField tf;
+    protected  String title, text, hint;
+    protected  TextInputListener textInputListener;
+    protected TextField tf;
 
     public TextInputPanel(String title, String text, String hint, TextInputListener textInputListener) {
         this.title = title;
@@ -84,6 +84,7 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
     @Override
     public void open() {
         fadeIn();
+        getStage().setKeyboardFocus(tf);
 //        if (tf.getText().isEmpty()) {
 //            tf.setText("Input something...");
 //        }

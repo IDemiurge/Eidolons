@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.battlefield.vision.advanced;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 
 /**
@@ -16,7 +16,7 @@ public class LastSeenMaster {
         return false;
     }
 
-    public static void resetLastSeen(GridUnitView view,
+    public static void resetLastSeen(UnitGridView view,
                                      BattleFieldObject obj, boolean visible) {
         if (obj instanceof Unit){
             obj.isPlayerCharacter();

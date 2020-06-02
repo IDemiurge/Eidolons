@@ -116,7 +116,7 @@ public class ContainerUtils {
         }
     }
 
-    public static String joinStringList(List<String> list, String divider, boolean cropLastDivider) {
+    public static String joinStringList(Collection<String> list, String divider, boolean cropLastDivider) {
         if (list == null) {
             return "";
         }
@@ -152,11 +152,11 @@ public class ContainerUtils {
         return joinStringList(convertToStringList(list), divider);
     }
 
-    public static String joinStringList(List<String> list, String divider) {
+    public static String joinStringList(Collection<String> list, String divider) {
         return joinStringList(list, divider, true);
     }
 
-    public static String constructContainer(List<String> list) {
+    public static String constructContainer(Collection<String> list) {
         return joinStringList(list, getContainerSeparator(), false);
     }
 
@@ -165,7 +165,7 @@ public class ContainerUtils {
 
     }
 
-    public static String constructStringContainer(List<?> list) {
+    public static String constructStringContainer(Collection<?> list) {
         return constructStringContainer(list, getContainerSeparator());
     }
 
@@ -178,11 +178,14 @@ public class ContainerUtils {
                 , divider);
     }
 
-    public static String constructStringContainer(List<?> list, String separator) {
+    public static String constructStringContainer(Collection<?> list, String separator) {
         return joinStringList(ListMaster.toStringList(list.toArray()), separator, false);
     }
 
-    public static String constructEntityNameContainer(List<? extends Entity> list
+    public static String constructStringContainer(boolean cropLast, Collection<?> list, String separator) {
+        return joinStringList(ListMaster.toStringList(list.toArray()), separator, cropLast);
+    }
+    public static String constructEntityNameContainer(Collection<? extends Entity> list
 
     ) {
         return joinStringList(ListMaster.toStringList(true, list.toArray()),

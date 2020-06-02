@@ -64,7 +64,7 @@ public class DC_ValueManager implements ValueManager {
 
     @Override
     public PARAMETER[] getParamsFromContainer(String sparam) {
-        List<String> container = ContainerUtils.openContainer(sparam, StringMaster.AND_SEPARATOR);
+        List<String> container = ContainerUtils.openContainer(sparam, StringMaster.VERTICAL_BAR);
         ArrayList<PARAMETER> params = new ArrayList<>();
         for (String s : container) {
             PARAMETER param = ContentValsManager.getPARAM(s);

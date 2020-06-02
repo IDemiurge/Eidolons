@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import eidolons.game.core.EUtils;
 import eidolons.libgdx.GdxMaster;
 import eidolons.system.controls.GlobalController;
+import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
@@ -12,6 +13,8 @@ import main.level_editor.backend.handlers.structure.FloorManager;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+
+import static main.level_editor.backend.handlers.operation.Operation.LE_OPERATION.*;
 
 public class LE_KeyHandler extends LE_Handler {
 
@@ -33,7 +36,14 @@ public class LE_KeyHandler extends LE_Handler {
                 GuiEventManager.trigger(GuiEventType.LE_GUI_TOGGLE);
                 return ;
             case Input.Keys.B:
-              getModel().setBrushMode(!getModel().isBrushMode());
+                getModel().setBrushMode(!getModel().isBrushMode());
+                return ;
+            case Input.Keys.V:
+                operation(CLEAR_START);
+                for (Coordinates c : getSelectionHandler().getSelection().getCoordinates()) {
+                    operation(VOID_SET, c);
+                }
+                operation(CLEAR_END);
                 return ;
             case Input.Keys.ALT_RIGHT:
                 getModel().getDisplayMode().toggleAll();

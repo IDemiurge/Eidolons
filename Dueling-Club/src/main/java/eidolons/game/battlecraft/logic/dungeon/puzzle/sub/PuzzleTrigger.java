@@ -10,12 +10,12 @@ public class PuzzleTrigger extends Trigger {
     Puzzle puzzle;
     PUZZLE_TRIGGER type;
 
-    public enum PUZZLE_TRIGGER{
-    ENTER,
-    ACTION,
-    PUNISH,
-    SOLVE, EXIT,
-}
+    public enum PUZZLE_TRIGGER {
+        ENTER,
+        ACTION,
+        PUNISH,
+        SOLVE, EXIT,
+    }
 
     public PuzzleTrigger(Puzzle puzzle, PUZZLE_TRIGGER type, Event.EVENT_TYPE event, Condition checks, Runnable action) {
         super(event, checks);
@@ -23,9 +23,11 @@ public class PuzzleTrigger extends Trigger {
         this.puzzle = puzzle;
         this.type = type;
     }
+
     public boolean isRemoveOnReset() {
         return false;
     }
+
     @Override
     public boolean trigger() {
         return super.trigger();
@@ -40,8 +42,12 @@ public class PuzzleTrigger extends Trigger {
                 }
             }
         }
-        return super.check(event);
+        if (event.getType() == eventType) {
+            return super.check(event);
+        }
+        return false;
     }
+
     @Override
     public boolean isRemoveAfterTriggers(boolean result) {
         switch (type) {
@@ -57,7 +63,7 @@ public class PuzzleTrigger extends Trigger {
 
     @Override
     public String toString() {
-        return type+ " trigger for " + puzzle;
+        return type + " trigger for " + puzzle;
     }
 
 }

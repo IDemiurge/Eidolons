@@ -2,9 +2,9 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.art;
 
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleActions;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.construction.PuzzleActions;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.game.core.Eidolons;

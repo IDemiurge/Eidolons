@@ -14,6 +14,7 @@ import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.anims.actions.RotateByActionLimited;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.grid.cell.BaseView;
+import eidolons.libgdx.gui.generic.BlockableGroup;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.particles.EmitterActor;
@@ -32,7 +33,16 @@ public class ActionMaster {
     private static final float DEFAULT_FADE_OUT_DURATION = 2;
     private static final float DEFAULT_FADE_IN_DURATION = 0.5f;
 
-    public static void addAfter(Actor actor, Action action) {
+    public static void addAfter(Actor actor, Runnable runnable) {
+        addAfter(actor, new Action() {
+            @Override
+            public boolean act(float delta) {
+                runnable.run(); //TODO ensure it is called once only!
+                return true;
+            }
+        });
+    }
+        public static void addAfter(Actor actor, Action action) {
         if (getActionsOfClass(actor, AfterAction.class).size() > 0) {
             return;
         }
@@ -43,14 +53,14 @@ public class ActionMaster {
         actor.addAction(aa);
     }
 
-    public static <T extends Actor> void addBlockingAction(T a, Predicate<T> o) {
-        Action action = new Action() {
-            @Override
-            public boolean act(float delta) {
-                return o.evaluate(a);
-            }
-        };
-        //TODO could of course do something like 'check if has block-action, skip'
+    public static void addWaitAction(BlockableGroup superActor, float waitPeriod) {
+        superActor.setBlocked(true);
+        BlockingAction action = new BlockingAction(waitPeriod);
+        addAction(superActor, action);
+
+    }
+    public static <T extends BlockableGroup> void addBlockingAction(T a, Predicate<T> o) {
+        BlockingAction action = new BlockingAction(()-> o.evaluate(a));
         addAction(a, action);
     }
     public static Action getAction(Class<? extends Action> aClass) {

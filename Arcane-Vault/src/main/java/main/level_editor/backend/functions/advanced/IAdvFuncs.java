@@ -13,6 +13,8 @@ public interface IAdvFuncs extends ControlButtonHandler {
 
     void toggleVoid();
 
+    void setVoid();
+
     void mirror();
     void rotate();
 

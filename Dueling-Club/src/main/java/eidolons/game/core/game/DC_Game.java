@@ -117,7 +117,7 @@ public class DC_Game extends GenericGame {
 
 
     protected Map<Coordinates, Map<BattleFieldObject, DIRECTION>> directionMap; // ?!
-    protected HashMap<Coordinates, Map<BattleFieldObject, FLIP>> flipMap;
+    protected Map<Coordinates,   FLIP> flipMap;
 
     protected boolean testMode;
     protected boolean dummyPlus;
@@ -679,11 +679,12 @@ public class DC_Game extends GenericGame {
         this.gameType = game_mode;
     }
 
-    public Map<Coordinates, Map<BattleFieldObject, FLIP>> getFlipMap() {
-        if (flipMap == null) {
-            flipMap = new HashMap<>();
-        }
+    public Map<Coordinates, FLIP> getFlipMap() {
         return flipMap;
+    }
+
+    public void setFlipMap(Map<Coordinates, FLIP> flipMap) {
+        this.flipMap = flipMap;
     }
 
     public Map<Coordinates, Map<BattleFieldObject, DIRECTION>> getDirectionMap() {

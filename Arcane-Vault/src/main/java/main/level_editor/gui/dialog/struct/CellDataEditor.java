@@ -2,6 +2,7 @@ package main.level_editor.gui.dialog.struct;
 
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
+import main.content.CONTENT_CONSTS;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.level_editor.gui.components.DataTable;
 import main.level_editor.gui.components.EditValueContainer;
@@ -37,6 +38,7 @@ public class CellDataEditor extends DataEditDialog<CellScriptData.CELL_SCRIPT_VA
     @Override
     protected LevelStructure.EDIT_VALUE_TYPE getEditor(CellScriptData.CELL_SCRIPT_VALUE enumConst) {
         switch (enumConst) {
+            case flip:
             case facing:
                 return enum_const;
             case portals:
@@ -54,6 +56,8 @@ public class CellDataEditor extends DataEditDialog<CellScriptData.CELL_SCRIPT_VA
     @Override
     protected Object getArg(CellScriptData.CELL_SCRIPT_VALUE enumConst) {
         switch (enumConst) {
+            case flip:
+                return CONTENT_CONSTS.FLIP.class;
             case facing:
                 return FACING_DIRECTION.class;
         }

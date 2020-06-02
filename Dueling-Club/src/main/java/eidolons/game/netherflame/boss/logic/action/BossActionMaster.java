@@ -1,4 +1,4 @@
-package eidolons.game.netherflame.boss.logic;
+package eidolons.game.netherflame.boss.logic.action;
 
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;

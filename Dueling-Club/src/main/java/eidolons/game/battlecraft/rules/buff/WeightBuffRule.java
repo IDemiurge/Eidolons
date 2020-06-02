@@ -31,9 +31,9 @@ public class WeightBuffRule extends DC_BuffRule {
     public static final String[] formulas = {getCarryingCapacity() + "*2",
      getCarryingCapacity() + "*3/2", getCarryingCapacity(),};
     private static final String PARAMETERS_MODIFIED_1 =
-     ContainerUtils.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MOVE), StringMaster.AND_SEPARATOR);
+     ContainerUtils.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MOVE), StringMaster.VERTICAL_BAR);
     private static final String PARAMETERS_MODIFIED_2 =
-     ContainerUtils.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MAIN), StringMaster.AND_SEPARATOR);
+     ContainerUtils.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MAIN), StringMaster.VERTICAL_BAR);
 
 
     public WeightBuffRule(GenericGame game) {

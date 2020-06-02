@@ -73,7 +73,7 @@ public class AiGroupHandler extends AiHandler {
             //TODO it's reverse - it's dataUnit=[ids]!
         }
         encounterAiMap =
-                new MapBuilder<>("=", StringMaster.AND_SEPARATOR,
+                new MapBuilder<>("=", StringMaster.VERTICAL_BAR,
                         s -> NumberUtils.getInteger(s),
                         s -> new AiData(s)
                 )

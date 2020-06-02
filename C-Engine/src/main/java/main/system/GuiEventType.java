@@ -162,7 +162,7 @@ public enum GuiEventType implements EventType {
      LE_FLOOR_CHANGED, LE_FLOOR_LOADED,
     LE_TREE_RESET(false, true), LE_REMAP_MODULES(false, true), LE_CHOOSE_BLOCK(false, true),
     CELL_SET_VOID(false, true), CELL_RESET_VOID(false, true),
-    LE_GUI_RESET(false, true), LE_SELECTION_CHANGED(false, true), LE_EDIT(false, true),
+    LE_MODEL_CHANGED(false, true), LE_SELECTION_CHANGED(false, true), LE_EDIT(false, true),
     LE_CENTER_ON_SELECT(false, true), LE_ENUM_CHOICE(false, true),
     LE_DISPLAY_MODE_UPDATE(false, true), LE_AI_DATA_UPDATE(false, true),
     LE_CELL_SCRIPTS_LABEL_UPDATE(false, true), LE_CELL_AI_LABEL_UPDATE(false, true),

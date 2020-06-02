@@ -21,6 +21,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -81,6 +82,11 @@ public class TextureCache {
             return false;
         }
         return true;
+    }
+
+    public static TextureRegion getFlippedRegion(boolean x, boolean y, String path) {
+        Texture texture = GdxImageMaster.flip(path, x, y, CoreEngine.isIDE());
+           return getRegion(GdxImageMaster.getFlippedPath(path, x,y), texture);
     }
 
     public void loadAtlases() {

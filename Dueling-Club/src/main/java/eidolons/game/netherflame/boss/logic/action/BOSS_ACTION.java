@@ -1,4 +1,4 @@
-package eidolons.game.netherflame.boss.logic;
+package eidolons.game.netherflame.boss.logic.action;
 
 public interface BOSS_ACTION {
 

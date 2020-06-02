@@ -2,7 +2,7 @@ package eidolons.game.netherflame.boss.lords.harvester;
 
 import eidolons.game.netherflame.boss.BOSS_PART;
 import eidolons.game.netherflame.boss.BossModel;
-import eidolons.game.netherflame.boss.logic.BOSS_ACTION;
+import eidolons.game.netherflame.boss.logic.action.BOSS_ACTION;
 import main.system.auxiliary.StringMaster;
 
 public class Harvester extends BossModel {
@@ -14,6 +14,21 @@ public class Harvester extends BossModel {
     }
     public BOSS_ACTION[] getActions(){
         return BOSS_ACTION_REAPER.values();
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public int getWidth() {
+        return 0;
+    }
+
+    @Override
+    public int getHeight() {
+        return 0;
     }
 
     public enum HARVESTER_PARTS implements  BOSS_PART{
@@ -53,7 +68,7 @@ public class Harvester extends BossModel {
 
         VOID_RIFT,
         SUNDER,
-        BLACK_MIRROR,
+        BLACK_MIRROR, //create a flipped version(s) of himself ? from ghost to invert-screen?
         NETHER_TUNNEL //SWAP
         ;
 

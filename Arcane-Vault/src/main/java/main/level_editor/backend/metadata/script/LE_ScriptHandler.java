@@ -47,7 +47,7 @@ public class LE_ScriptHandler extends LE_Handler implements IScriptHandler{
             }
             CellScriptData scriptData = getFloorWrapper().getTextDataMap().get(coordinates);
             builder.append(coordinates.toString()).append("=").append(scriptData.getData())
-                    .append(StringMaster.AND_SEPARATOR);
+                    .append(StringMaster.VERTICAL_BAR);
         }
         return builder.wrap(FloorLoader.SCRIPT_DATA).toString();
     }

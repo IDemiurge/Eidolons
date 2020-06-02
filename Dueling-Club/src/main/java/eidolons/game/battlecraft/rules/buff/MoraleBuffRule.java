@@ -31,12 +31,12 @@ public class MoraleBuffRule extends DC_BuffRule {
 
 
     public static final String parameterString = PARAMS.SPIRIT.getName()
-     + StringMaster.AND_SEPARATOR
-     + PARAMS.INITIATIVE.getName() + StringMaster.AND_SEPARATOR
+     + StringMaster.VERTICAL_BAR
+     + PARAMS.INITIATIVE.getName() + StringMaster.VERTICAL_BAR
      + PARAMS.RESISTANCE.getName();
 
     public static final String parameterStringPanic = PARAMS.SPIRIT.getName() +
-     StringMaster.AND_SEPARATOR
+     StringMaster.VERTICAL_BAR
      + PARAMS.RESISTANCE.getName();
 
     // reverse means MORE THAN {THIS} and

@@ -13,7 +13,9 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleLoader;
 import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Awakener;
 import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.battlecraft.logic.mission.universal.*;
 import eidolons.game.battlecraft.logic.mission.universal.stats.MissionStatManager;
 import eidolons.game.core.game.DC_Game;
@@ -37,7 +39,7 @@ public abstract class DungeonMaster {
     protected DC_Game game;
     protected Location floorWrapper;
     protected DungeonInitializer initializer;
-    protected DungeonBuilder  builder;
+    protected DungeonBuilder builder;
     protected Positioner positioner;
     protected Spawner spawner;
     protected FacingAdjuster facingAdjuster;
@@ -52,6 +54,7 @@ public abstract class DungeonMaster {
     private LayerManager layerManager;
     private StructMaster structMaster;
     private FloorLoader floorLoader;
+    private  Awakener awakener;
 
     private Map<DataMap, Map<Integer, String>> dataMaps;
     private DC_ObjInitializer objInitializer;
@@ -75,7 +78,9 @@ public abstract class DungeonMaster {
         objInitializer = createObjInitializer();
         structureBuilder = new StructureBuilder(this);
         floorLoader = createFloorLoader();
+
         if (CoreEngine.isCombatGame()) {
+            awakener = new Awakener(game);
             explorationMaster = new ExplorationMaster(game);
             doorMaster = new DoorMaster(this);
             lockMaster = new LockMaster(this);
@@ -95,11 +100,12 @@ public abstract class DungeonMaster {
     protected FloorLoader createFloorLoader() {
         return new FloorLoader(this);
     }
+
     protected LayerManager createLayerManager() {
         return null;
     }
 
-    protected DungeonBuilder  createBuilder() {
+    protected DungeonBuilder createBuilder() {
         return new DungeonBuilder(this);
     }
 
@@ -108,12 +114,6 @@ public abstract class DungeonMaster {
     }
 
     public void gameStarted() {
-        if (isPuzzlesOn())
-            try {
-                puzzleMaster.initPuzzles(getDungeon() );
-            } catch (Exception e) {
-                ExceptionMaster.printStackTrace(e);
-            }
         GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, floorWrapper.getMapBackground());
         spawner.spawn();
     }
@@ -133,9 +133,9 @@ public abstract class DungeonMaster {
         if (!CoreEngine.isCombatGame()) {
             return;
         }
-//TODO dc init fix
-//        getBattleMaster().getScriptManager().parseDungeonScripts(dungeonWrapper.getDungeon());
-//        trapMaster.initTraps(getDungeon());
+        //TODO dc init fix
+        //        getBattleMaster().getScriptManager().parseDungeonScripts(dungeonWrapper.getDungeon());
+        //        trapMaster.initTraps(getDungeon());
 
         Coordinates.setFloorWidth(floorWrapper.getWidth());
         Coordinates.setFloorHeight(floorWrapper.getHeight());
@@ -150,21 +150,21 @@ public abstract class DungeonMaster {
         switch (type) {
 
         }
-//        getDungeonLevel().initUnitFacingMap(dataMap);
-//        getDungeonLevel().initCellTypeMap(dataMap);
+        //        getDungeonLevel().initUnitFacingMap(dataMap);
+        //        getDungeonLevel().initCellTypeMap(dataMap);
 
-//    TODO     for (String coordinate : dataMap.keySet()) {
-//            String data = dataMap.get(coordinate);
-//            data = BridgeMaster.processMetaData(data);
-//
-//            if (portalMaster.addPortal(coordinate, data)) {
-//                continue;
-//            }
-//            if (KeyMaster.addCustomKey(coordinate, data)) {
-//                continue;
-//            }
-            //anything else?
-//        }
+        //    TODO     for (String coordinate : dataMap.keySet()) {
+        //            String data = dataMap.get(coordinate);
+        //            data = BridgeMaster.processMetaData(data);
+        //
+        //            if (portalMaster.addPortal(coordinate, data)) {
+        //                continue;
+        //            }
+        //            if (KeyMaster.addCustomKey(coordinate, data)) {
+        //                continue;
+        //            }
+        //anything else?
+        //        }
     }
 
     protected Location initDungeon() {
@@ -200,7 +200,7 @@ public abstract class DungeonMaster {
         return facingAdjuster;
     }
 
-    public DungeonBuilder  getBuilder() {
+    public DungeonBuilder getBuilder() {
         return builder;
     }
 
@@ -347,5 +347,15 @@ public abstract class DungeonMaster {
 
     public void reinit() {
         getBuilder().initLocationSize(getFloorWrapper());
+    }
+
+    public void initPuzzles(Map<Coordinates, CellScriptData> textDataMap) {
+        if (isPuzzlesOn()) {
+            getPuzzleMaster().init(textDataMap);
+        }
+    }
+
+    public Awakener getAwakener() {
+        return awakener;
     }
 }

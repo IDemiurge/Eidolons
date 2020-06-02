@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.meta.universal;
 import eidolons.content.PROPS;
 import eidolons.game.EidolonsGame;
 import eidolons.game.Simulation;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
@@ -14,6 +15,8 @@ import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
+import eidolons.game.netherflame.boss.BossManager;
+import eidolons.game.netherflame.boss.demo.DemoBossManager;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.netherflame.main.event.GameEventHandler;
 import eidolons.game.netherflame.main.event.NF_EventHandler;
@@ -322,5 +325,13 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public Floor getFloor() {
         return getMissionMaster().getFloor();
+    }
+    BossManager bossManager;
+    public void initBossModule(Module module) {
+        bossManager = createBossManager(module);
+    }
+
+    protected BossManager createBossManager(Module module) {
+        return new DemoBossManager();
     }
 }

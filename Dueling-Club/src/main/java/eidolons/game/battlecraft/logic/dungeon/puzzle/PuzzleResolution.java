@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
-import eidolons.game.battlecraft.logic.dungeon.puzzle.construction.PuzzleActions;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.system.ConditionsUtils;
@@ -26,7 +25,6 @@ public class PuzzleResolution extends PuzzleElement {
         teleport,
         tip,
         open_portal
-        ;
     }
 
     public enum PUZZLE_PUNISHMENT {

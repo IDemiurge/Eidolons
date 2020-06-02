@@ -2,7 +2,7 @@ package eidolons.libgdx.bf.grid.moving;
 
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -62,7 +62,7 @@ in the most crazy variant, we could have a pendulum/circular rotation
         });
         GuiEventManager.bind(GuiEventType.UNIT_VIEW_MOVED, p ->
         {
-            GridUnitView view = (GridUnitView) p.get();
+            UnitGridView view = (UnitGridView) p.get();
 
             PlatformController controller = view.
                     getPlatformController();
@@ -96,7 +96,7 @@ in the most crazy variant, we could have a pendulum/circular rotation
     }
 
     public void init(String platformData) {
-        for (String substring : ContainerUtils.openContainer(platformData, StringMaster.AND_SEPARATOR)) {
+        for (String substring : ContainerUtils.openContainer(platformData, StringMaster.VERTICAL_BAR)) {
             createPlatform(new PlatformData(substring));
         }
     }

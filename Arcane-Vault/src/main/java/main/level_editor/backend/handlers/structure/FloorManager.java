@@ -58,7 +58,7 @@ public class FloorManager {
                 LE_Screen.getInstance().getGuiStage());
         //from modules too
         if (StringMaster.isEmpty(templatePath)) {
-            templatePath = getDefaultFloorTemplate();
+            templatePath = LevelEditor.readLast();
         } else
             LevelEditor.saveLastLvlPath(templatePath);
         newFloorSelected(templatePath, false);

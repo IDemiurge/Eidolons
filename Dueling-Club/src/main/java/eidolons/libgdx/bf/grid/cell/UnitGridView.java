@@ -32,7 +32,7 @@ import main.system.graphics.FontMaster.FONT;
 
 import java.util.function.Supplier;
 
-public class GridUnitView extends GenericGridView {
+public class UnitGridView extends GenericGridView {
 
     protected QueueView initiativeQueueUnitView;
     private LabelX debugInfo;
@@ -55,7 +55,7 @@ public class GridUnitView extends GenericGridView {
         return super.isWithinCamera();
     }
 
-    public GridUnitView(BattleFieldObject bfObj, UnitViewOptions options) {
+    public UnitGridView(BattleFieldObject bfObj, UnitViewOptions options) {
         super(bfObj, options);
         initQueueView(options);
         if (AiBehaviorManager.TEST_MODE)
@@ -73,7 +73,7 @@ public class GridUnitView extends GenericGridView {
             });
     }
 
-    public GridUnitView(UnitViewOptions o) {
+    public UnitGridView(UnitViewOptions o) {
         this(o.getObj(), o);
     }
 

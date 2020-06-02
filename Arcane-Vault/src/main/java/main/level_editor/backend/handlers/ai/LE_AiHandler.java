@@ -189,7 +189,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
         StringBuilder builder = new StringBuilder();
         for (Integer id : encounterAiMap.keySet()) {
             builder.append(id).append("=");
-            builder.append(encounterAiMap.get(id).toString()).append(StringMaster.AND_SEPARATOR);
+            builder.append(encounterAiMap.get(id).toString()).append(StringMaster.VERTICAL_BAR);
         }
         String xml = XML_Converter.wrap(FloorLoader.ENCOUNTER_AI_GROUPS, builder.toString());
 
@@ -201,7 +201,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
                 }
             }
             builder.append(":");
-            builder.append(data.toString()).append(StringMaster.AND_SEPARATOR);
+            builder.append(data.toString()).append(StringMaster.VERTICAL_BAR);
         }
         xml += XML_Converter.wrap(FloorLoader.CUSTOM_AI_GROUPS, builder.toString());
 
@@ -210,7 +210,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
     public void initEncounterGroups(String textContent) {
         encounterAiMap =
-                new MapBuilder<>(":", StringMaster.AND_SEPARATOR,
+                new MapBuilder<>(":", StringMaster.VERTICAL_BAR,
                         s -> NumberUtils.getInteger(s),
                         s -> new AiData(s))
                         .build(textContent);

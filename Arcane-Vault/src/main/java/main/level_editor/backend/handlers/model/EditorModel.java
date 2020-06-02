@@ -159,4 +159,6 @@ public class EditorModel {
     public LevelStruct getLastSelectedStruct() {
         return lastSelectedStruct;
     }
+
+
 }

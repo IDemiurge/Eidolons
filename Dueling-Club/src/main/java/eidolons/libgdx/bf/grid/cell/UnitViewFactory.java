@@ -51,7 +51,7 @@ public class UnitViewFactory {
         return instance;
     }
 
-    public static GridUnitView doCreate(BattleFieldObject battleFieldObject) {
+    public static UnitGridView doCreate(BattleFieldObject battleFieldObject) {
         return getInstance().create(battleFieldObject);
     }
 
@@ -59,9 +59,9 @@ public class UnitViewFactory {
         return getInstance().createOverlay(bfObj);
     }
 
-    public GridUnitView create(BattleFieldObject bfObj) {
+    public UnitGridView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
-        GridUnitView view = createView(bfObj, options);
+        UnitGridView view = createView(bfObj, options);
 
         addLastSeenView(bfObj, view, options);
 
@@ -89,13 +89,13 @@ public class UnitViewFactory {
         return view;
     }
 
-    protected GridUnitView createView(BattleFieldObject bfObj, UnitViewOptions options) {
+    protected UnitGridView createView(BattleFieldObject bfObj, UnitViewOptions options) {
         return
                 bfObj.isBoss() ? new BossView(options) :
-                        new GridUnitView(bfObj, options);
+                        new UnitGridView(bfObj, options);
     }
 
-    protected void addLastSeenView(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
+    protected void addLastSeenView(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
         if (bfObj instanceof Unit || bfObj.isLandscape() || bfObj.isWall() || bfObj.isWater())
             if (VisionMaster.isLastSeenOn()) {
                 if (!bfObj.isPlayerCharacter())
@@ -109,7 +109,7 @@ public class UnitViewFactory {
             }
     }
 
-    protected void addOutline(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
+    protected void addOutline(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
 
         view.setOutlinePathSupplier(() -> {
             if (CoreEngine.isFootageMode()) {
@@ -143,7 +143,7 @@ public class UnitViewFactory {
         });
     }
 
-    protected void addForDC(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
+    protected void addForDC(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
         view.createHpBar();
         if (bfObj instanceof Unit) {
             view.getInitiativeQueueUnitView().getHpBar().setTeamColor(options.getTeamColor());

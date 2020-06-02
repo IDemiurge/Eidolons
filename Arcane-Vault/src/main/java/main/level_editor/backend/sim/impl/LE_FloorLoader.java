@@ -10,6 +10,7 @@ import eidolons.game.netherflame.dungeons.model.assembly.ModuleGridMapper;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 
 import java.awt.*;
@@ -76,8 +77,7 @@ public class LE_FloorLoader extends FloorLoader {
             }
         }
 
-
-        LinkedHashMap<Point, Module> grid = null;
+        Map<Point, Module> grid = null;
         String s = location.getData().getValue(LevelStructure.FLOOR_VALUES.module_grid);
         if (!s.isEmpty()) {
             grid = gridFromString(s, modules);
@@ -110,13 +110,36 @@ public class LE_FloorLoader extends FloorLoader {
             // }
         }
         getBuilder().initLocationSize(location);
+        s = location.getData().getValue(LevelStructure.FLOOR_VALUES.cell_spans);
+
+        grid= modifyGridCells(grid, s);
         LevelEditor.getManager().getModuleHandler().setGrid(grid);
+    }
+
+    private  Map<Point, Module> modifyGridCells(Map<Point, Module> grid, String s) {
+        Iterator<Point> iterator = grid.keySet().iterator();
+        Map newGrid = new LinkedHashMap<>(grid);
+        for(String substring: ContainerUtils.openContainer( s, StringMaster.VERTICAL_BAR)){
+            Point p = iterator.next();
+            Module module = grid.get(p);
+            String[] split = substring.split("-");
+            int xSpan = NumberUtils.getInteger(split[0])  ;
+            int ySpan = NumberUtils.getInteger(split[1])  ;
+            newGrid.put(p, module);
+            for (int i = 1; i < xSpan; i++) {
+                newGrid.put(new Point(p.x+i, p.y), module);
+            }
+            for (int i = 1; i < ySpan; i++) {
+                newGrid.put(new Point(p.x, p.y+i), module);
+            }
+        }
+        return newGrid;
     }
 
     private LinkedHashMap<Point, Module> gridFromString(String s, Set<Module> modules) {
         LinkedHashMap<Point, Module> map = new LinkedHashMap<>();
         Iterator<Module> iterator = modules.iterator();
-        for (String substring : ContainerUtils.openContainer(s, StringMaster.AND_SEPARATOR)) {
+        for (String substring : ContainerUtils.openContainer(s, StringMaster.VERTICAL_BAR)) {
             Coordinates c = new Coordinates(substring);
             map.put(new Point(c.x, c.y), iterator.next());
         }

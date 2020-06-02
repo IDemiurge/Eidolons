@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * Created by JustMe on 11/28/2018.
  */
-public abstract class UnitViewSprite extends GridUnitView {
+public abstract class UnitViewSprite extends UnitGridView {
     public static final boolean randomEmitter = true;
     public static final boolean TEST_MODE = false;
     private float height;

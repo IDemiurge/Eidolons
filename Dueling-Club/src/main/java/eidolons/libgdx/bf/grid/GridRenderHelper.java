@@ -27,8 +27,8 @@ import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.grid.cell.BaseView;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.bf.grid.cell.HpBarView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.bf.grid.comment.CommentData;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.bf.overlays.HpBarManager;
@@ -574,8 +574,8 @@ public class GridRenderHelper {
 //                        turnField(event.getType());
 //                    }
                     BaseView view = getViewMap().get(hero);
-                    if (view != null && view instanceof GridUnitView) {
-                        GridUnitView unitView = ((GridUnitView) view);
+                    if (view != null && view instanceof UnitGridView) {
+                        UnitGridView unitView = ((UnitGridView) view);
                         unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
 //                    SoundController.getCustomEventSound(SOUND_EVENT.UNIT_TURNS, );
                         if (hero instanceof Unit)

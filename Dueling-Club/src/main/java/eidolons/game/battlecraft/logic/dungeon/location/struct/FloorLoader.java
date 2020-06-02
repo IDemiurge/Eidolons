@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import main.content.CONTENT_CONSTS;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.xml.XmlNodeMaster;
@@ -148,7 +149,7 @@ public class FloorLoader extends DungeonHandler {
 
     private Map<Coordinates, CellScriptData> buildCellMap(String textContent) {
         Map<Coordinates, CellScriptData> map = new HashMap<>();
-        for (String substring : ContainerUtils.openContainer(textContent, StringMaster.AND_SEPARATOR)) {
+        for (String substring : ContainerUtils.openContainer(textContent, StringMaster.VERTICAL_BAR)) {
             String[] split = substring.split("=");
             Coordinates c = Coordinates.get(split[0]);
             map.put(c, new CellScriptData(split[1]));
@@ -305,6 +306,25 @@ public class FloorLoader extends DungeonHandler {
     }
 
     protected void processTextMap(Location location) {
+        initFlipMap(location);
         getMaster().getPortalMaster().init(location.getTextDataMap());
+        getMaster().initPuzzles(location.getTextDataMap());
+    }
+
+    private void initFlipMap(Location location) {
+        getMaster().getGame().setFlipMap( createFlipMap(location.getTextDataMap()));
+    }
+
+    private Map<Coordinates, CONTENT_CONSTS.FLIP>
+    createFlipMap(Map<Coordinates, CellScriptData> textDataMap) {
+        Map<Coordinates,   CONTENT_CONSTS.FLIP> map = new HashMap<>();
+        for (Coordinates coordinates : textDataMap.keySet()) {
+            String value = textDataMap.get(coordinates).getValue(CellScriptData.CELL_SCRIPT_VALUE.flip);
+            if (value.isEmpty()) {
+                CONTENT_CONSTS.FLIP flip = CONTENT_CONSTS.FLIP.valueOf(value.toUpperCase());
+                map.put(coordinates, flip);
+            }
+        }
+        return map;
     }
 }

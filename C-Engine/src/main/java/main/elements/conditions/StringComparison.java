@@ -41,18 +41,18 @@ public class StringComparison extends ConditionImpl {
         val1 = arg1.getStr(ref);
         val2 = arg2.getStr(ref);
         boolean result;
-        if (val2.contains(StringMaster.AND_SEPARATOR)) {
+        if (val2.contains(StringMaster.VERTICAL_BAR)) {
             for (String s : ContainerUtils.open(val2,
-             StringMaster.AND_SEPARATOR)) {
+             StringMaster.VERTICAL_BAR)) {
                 if (compare(val1, s, strict)) {
                     return true;
                 }
             }
         }
-        if (val1.contains(StringMaster.AND_SEPARATOR))// shouldn't happen
+        if (val1.contains(StringMaster.VERTICAL_BAR))// shouldn't happen
         {
             for (String s : ContainerUtils.open(val1,
-             StringMaster.AND_SEPARATOR)) {
+             StringMaster.VERTICAL_BAR)) {
                 if (compare(s, val2, strict)) {
                     return true;
                 }

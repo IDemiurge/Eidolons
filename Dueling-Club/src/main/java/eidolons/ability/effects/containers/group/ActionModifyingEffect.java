@@ -24,7 +24,7 @@ public class ActionModifyingEffect extends HeroObjectModifyingEffect {
     @Override
     protected List<Obj> getObjectsByName(String objName) {
         Unit hero = (Unit) ref.getSourceObj();
-        if (objName.contains(StringMaster.AND_SEPARATOR)) {
+        if (objName.contains(StringMaster.VERTICAL_BAR)) {
             List<Obj> list = new ArrayList<>();
             for (String sub : ContainerUtils.open(objName)) {
                 list.add(hero.getAction(sub));

@@ -112,10 +112,10 @@ public class ImageTransformer {
                 image = flipHorizontally(image);
                 image = flipVertically(image);
                 break;
-            case HORIZONTAL:
+            case HOR:
                 image = flipHorizontally(image);
                 break;
-            case VERTICAL:
+            case VERT:
                 image = flipVertically(image);
                 break;
             default:

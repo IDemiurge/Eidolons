@@ -13,6 +13,7 @@ import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
 import eidolons.game.module.dungeoncrawl.objects.LockObj;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
+import main.content.CONTENT_CONSTS;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
@@ -94,6 +95,8 @@ public class ObjCreator extends Master {
         } else if (getGame().getModule() != null) {
             obj.setModule(getGame().getModule());
         }
+        CONTENT_CONSTS.FLIP flip = game.getFlipMap().get(obj.getCoordinates());
+        obj.setFlip(flip);
         return obj;
 
     }

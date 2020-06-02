@@ -178,13 +178,18 @@ public class LE_ModelManager extends LE_Handler {
     }
 
     public void paletteSelection(ObjType entity) {
-        getModel().getPaletteSelection().setType(entity);
-
-        GuiEventManager.trigger(GuiEventType.LE_GUI_RESET, getModel());
+        setPaletteType(entity);
     }
 
     public void modelChanged() {
         modelStack.push(model);
         model = new EditorModel(model);
+        GuiEventManager.trigger(GuiEventType.LE_MODEL_CHANGED, getModel());
+    }
+
+    public void setPaletteType(ObjType type) {
+        getModel().getPaletteSelection().setType(type);
+        getModel().setBrushMode(false);
+        modelChanged();
     }
 }

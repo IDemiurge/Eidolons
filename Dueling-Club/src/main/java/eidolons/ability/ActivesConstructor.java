@@ -32,9 +32,12 @@ import main.data.ability.construct.AbilityConstructor;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
-import main.elements.targeting.*;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
+import main.elements.targeting.FixedTargeting;
+import main.elements.targeting.MultiTargeting;
+import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
+import main.elements.targeting.Targeting;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Active;
@@ -59,7 +62,7 @@ public class ActivesConstructor {
         // TODO
         ArrayList<ROLL_TYPES> rolls = new ArrayList<>();
         ArrayList<String> vars = new ArrayList<>();
-        for (String roll : ContainerUtils.open(saveRoll, StringMaster.AND_SEPARATOR)) {
+        for (String roll : ContainerUtils.open(saveRoll, StringMaster.VERTICAL_BAR)) {
             String varArgs = VariableManager.getVarPart(roll);
             roll = roll.replace(varArgs, "");
             rolls.add(new EnumMaster<ROLL_TYPES>().retrieveEnumConst(ROLL_TYPES.class, roll));

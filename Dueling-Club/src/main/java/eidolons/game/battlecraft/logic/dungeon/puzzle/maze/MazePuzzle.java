@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.dungeon.puzzle.cell;
+package eidolons.game.battlecraft.logic.dungeon.puzzle.maze;
 
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;

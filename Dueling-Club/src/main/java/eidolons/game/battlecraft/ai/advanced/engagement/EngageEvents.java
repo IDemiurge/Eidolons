@@ -209,6 +209,10 @@ public class EngageEvents extends ExplorationHandler {
     }
 
     public void addEvent(EngageEvent event) {
+        if (isCombat()) {
+            processNow(event);
+            return;
+        }
         event.delay = RandomWizard.getRandomFloatBetween(0.5f, 1f); //TODO specific
         if (isLogged()) {
             log(1, "Event added:" + event);

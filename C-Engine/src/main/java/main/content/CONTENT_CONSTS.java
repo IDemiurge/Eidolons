@@ -54,7 +54,7 @@ public class CONTENT_CONSTS {
     }
 
     public enum FLIP {
-        HORIZONTAL, VERTICAL, BOTH, CCW90, CW90, CCW180, CW180
+        HOR, VERT, BOTH, CCW90, CW90, CCW180, CW180
     }
 
     public enum OBJECT_ARMOR_TYPE {

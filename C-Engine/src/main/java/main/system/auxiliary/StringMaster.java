@@ -28,7 +28,16 @@ public class StringMaster {
     public static final String PAIR_SEPARATOR = ":";
     public static final String ALT_PAIR_SEPARATOR = "=";
     public static final String CONTAINER_SEPARATOR = SEPARATOR;
-    public static final String NETCODE_SEPARATOR = "~=~";
+
+    public static final String VERTICAL_BAR = "|";
+    public static final String AND_PROPERTY_SEPARATOR = "]|[";
+    public static final String UPGRADE_SEPARATOR = ">|<";
+    public static final String COORDINATES_SEPARATOR = "-";
+    public static final String COORDINATES_SEPARATOR_ALT = ":";
+    public static final String ALT_SEPARATOR = ",";
+    public static final String AND_SEPARATOR = "&";
+    public static final String ALT_XML_SEPARATOR = ">";
+
     public static final String FORMULA_REF_OPEN_CHAR = "{";
     public static final String FORMULA_REF_CLOSE_CHAR = "}";
     public static final String VARIABLES_OPEN_CHAR = "(";
@@ -56,31 +65,26 @@ public class StringMaster {
     public static final String REQ_VALUE_SEPARATOR = "=";
     public static final String COUNTER_CHAR = "$";
     public final static String BASE_CHAR = "@";
-    public static final String COUNTER = " Counter";
     public static final String NEW_LINE = System.getProperty("line.separator");
-    public static final String LINE_WRAP = "<%n>";
+
+    public static final String COUNTER = " Counter";
     public static final String DEFAULT = "DEFAULT_";
     public static final String REDUCTION = "_REDUCTION";
     public static final String PARTY_SUFFIX = "'s Party";
-    public static final String PLAYTEST = "Playtest";
     public static final String ARCADE = "Arcade";
     public static final String PRESET = "Preset";
     public static final String CUSTOM = "Custom";
-    public static final String PLAYABLE = "Playable";
-    public static final String ADVENTURE = "Adventure";
     public static final String BATTLE_READY = "Battle Ready";
     public static final String BACKGROUND = "Background";
-    public static final String VALUE_GROUP_CLOSE_CHAR = "]";
-    public static final String VALUE_GROUP_OPEN_CHAR = "[";
-    public static final CharSequence INVISIBLE_BUFF = " invisible";
-    public static final CharSequence INVISIBLE_BUFF_CODE = "-";
     public static final String FEMALE_PREFIX = "w_";
     public static final String MASTERY = "Mastery";
     public static final String WOMAN = "WOMAN";
     public static final String STANDARD = "Standard";
-    public static final String AND_SEPARATOR = "|";
-    public static final String AND_PROPERTY_SEPARATOR = "]|[";
-    public static final String UPGRADE_SEPARATOR = ">|<";
+
+    public static final String VALUE_GROUP_CLOSE_CHAR = "]";
+    public static final String VALUE_GROUP_OPEN_CHAR = "[";
+    public static final CharSequence INVISIBLE_BUFF = " invisible";
+    public static final CharSequence INVISIBLE_BUFF_CODE = "-";
     public static final String SCORE = " Score";
     public static final String AND = " AND ";
     public static final String CODE_BACK_SLASH = "CODE_BACK_SLASH";
@@ -108,9 +112,6 @@ public class StringMaster {
     public static final String ALIGNMENT = " Alignment";
     public static final String MAP_VALUE_KEY_SEPARATOR = null;
     public static final String CELL_DATA_SEPARATOR = "::";
-    public static final String COORDINATES_SEPARATOR = "-";
-    public static final String COORDINATES_SEPARATOR_ALT = ":";
-    public static final String ALT_SEPARATOR = ",";
     public static final String standard_symbols = "'-(),";
     public static final String PREFIX_SEPARATOR = "::";
     static Pattern pattern_ = Pattern.compile("_");
@@ -319,8 +320,8 @@ public class StringMaster {
                     return true;
                 }
             }
-            if (string.contains(AND_SEPARATOR) || string2.contains(AND_SEPARATOR)) {
-                if (compareContainers(string, string2, true, AND_SEPARATOR)) {
+            if (string.contains(VERTICAL_BAR) || string2.contains(VERTICAL_BAR)) {
+                if (compareContainers(string, string2, true, VERTICAL_BAR)) {
                     return true;
                 }
             }

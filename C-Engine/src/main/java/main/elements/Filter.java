@@ -144,12 +144,15 @@ public class Filter<T extends Entity> extends ReferredElement {
         }
         if (GameState.isResetDone())
             if (cached != null) {
-                return cached;
+                if (!ref.getSourceObj().isMine()) {
+                    return cached; //TODO fix it - sometimes it's empty when there are targets!
+                }
             }
         Collection<Obj> pool = getFilteredObjectPool();
         Set<T> filteredSet = new HashSet<>();
         ArrayList<Obj> list = new ArrayList<>(pool);
-        loop: for (Obj obj : list) {
+        loop:
+        for (Obj obj : list) {
             for (Condition c : getConditions()) {
                 if (!match(c, obj.getId())) {
                     continue loop;

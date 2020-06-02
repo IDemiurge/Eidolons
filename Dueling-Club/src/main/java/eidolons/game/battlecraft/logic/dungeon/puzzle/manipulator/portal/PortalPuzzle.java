@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.dungeon.puzzle.portal;
+package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.portal;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;

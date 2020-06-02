@@ -396,7 +396,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     CUSTOM_OBJECT(null, false, "units", "chars", "bf obj"),
     PLACEHOLDER_DATA(null, false, "units", "bf obj"),
     PLACEHOLDER_SYMBOL(null, false, "units", "bf obj"),
-    ;
+    LINKED_UNIT(null, false, "units", "bf obj");
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

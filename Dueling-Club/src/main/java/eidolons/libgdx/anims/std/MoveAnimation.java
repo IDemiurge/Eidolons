@@ -10,7 +10,7 @@ import eidolons.libgdx.anims.actions.MoveByActionLimited;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.cell.BaseView;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.particles.spell.SpellVfx;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
@@ -123,7 +123,7 @@ public class MoveAnimation extends ActionAnim {
         if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
          MoveEffect.class)))
             unit = (Unit) getRef().getTargetObj();
-        GridUnitView actor = (GridUnitView) ScreenMaster.getDungeonGrid().getViewMap()
+        UnitGridView actor = (UnitGridView) ScreenMaster.getDungeonGrid().getViewMap()
          .get(unit);
 
         if (actor.isStackView()) {

@@ -22,7 +22,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.grid.cell.BaseView;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.bf.grid.cell.UnitView;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.screens.map.ui.tooltips.PartyTooltip;
@@ -148,11 +148,11 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
 
                             return values;
                         }
-            if (view instanceof GridUnitView) {
-                if (((GridUnitView) view).getInitiativeQueueUnitView() != null) {
+            if (view instanceof UnitGridView) {
+                if (((UnitGridView) view).getInitiativeQueueUnitView() != null) {
 
                     super.addTitleContainer(object.getName(), Images.CIRCLE_BORDER,
-                            ((GridUnitView) view).getInitiativeQueueUnitView().processPortraitTexture(
+                            ((UnitGridView) view).getInitiativeQueueUnitView().processPortraitTexture(
                                     object.getImagePath()
                             ));
                 }

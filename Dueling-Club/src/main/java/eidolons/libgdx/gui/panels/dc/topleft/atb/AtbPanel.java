@@ -11,8 +11,8 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.bf.grid.cell.QueueView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
@@ -246,8 +246,8 @@ public class AtbPanel extends GroupX {
         viewsShown = DC_Game.game.getTurnManager().getDisplayedUnitQueue().size();
         displayedUnitQueue.stream().forEach(unit -> {
             Object o = ScreenMaster.getDungeonGrid().getViewMap().get(unit);
-            if (o instanceof GridUnitView) {
-                GridUnitView view = ((GridUnitView) o);
+            if (o instanceof UnitGridView) {
+                UnitGridView view = ((UnitGridView) o);
                 views.add(view.getInitiativeQueueUnitView());
             }
         });

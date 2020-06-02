@@ -17,6 +17,7 @@ import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
+import main.content.CONTENT_CONSTS;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums.STD_BOOLS;
@@ -71,6 +72,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     private boolean summoned;
     private boolean revealed;
     private boolean moduleBorder;
+    private CONTENT_CONSTS.FLIP flip;
 
     public BattleFieldObject(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -685,5 +687,13 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     public SeenMapper getSeenMapper() {
         return getVisionController().getSeenMapper();
+    }
+
+    public void setFlip(CONTENT_CONSTS.FLIP flip) {
+        this.flip = flip;
+    }
+
+    public CONTENT_CONSTS.FLIP getFlip() {
+        return flip;
     }
 }

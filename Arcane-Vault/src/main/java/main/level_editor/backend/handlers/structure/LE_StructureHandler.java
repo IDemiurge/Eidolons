@@ -81,12 +81,12 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     public void afterLoaded() {
         String content = FileManager.readFile(getTemplatesPath() + "blocks.xml");
         blockTemplates =
-                new MapBuilder<>(":", StringMaster.AND_SEPARATOR, s -> s, s -> new BlockData(s)).build(content);
+                new MapBuilder<>(":", StringMaster.VERTICAL_BAR, s -> s, s -> new BlockData(s)).build(content);
 
         content = FileManager.readFile(getTemplatesPath() + "zones.xml");
 
         zoneTemplates =
-                new MapBuilder<>(":", StringMaster.AND_SEPARATOR, s -> s, s -> new ZoneData(s)).build(content);
+                new MapBuilder<>(":", StringMaster.VERTICAL_BAR, s -> s, s -> new ZoneData(s)).build(content);
     }
 
     @Override
@@ -94,14 +94,14 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         StringBuilder builder = new StringBuilder();
         for (String s : blockTemplates.keySet()) {
             BlockData data = blockTemplates.get(s);
-            builder.append(s).append(":").append(data.toString()).append(StringMaster.AND_SEPARATOR);
+            builder.append(s).append(":").append(data.toString()).append(StringMaster.VERTICAL_BAR);
         }
         FileManager.write(builder.toString(), getTemplatesPath() + "blocks.xml");
         builder = new StringBuilder();
 
         for (String s : zoneTemplates.keySet()) {
             ZoneData data = zoneTemplates.get(s);
-            builder.append(s).append(":").append(data.toString()).append(StringMaster.AND_SEPARATOR);
+            builder.append(s).append(":").append(data.toString()).append(StringMaster.VERTICAL_BAR);
         }
         FileManager.write(builder.toString(), getTemplatesPath() + "zones.xml");
     }
@@ -233,17 +233,18 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
                 overlap.add(c);
             }
         }
+        if (overlap.size()>0)
         if (EUtils.waitConfirm("Remove " +
                 overlap.size() +
                 " overlapping coordinates?")) {
             coordinates.removeAll(overlap);
-        } else {
+            return ;
+        }
             //remove from others
             for (Coordinates c : coordinates) {
                 LevelStruct lowestStruct = getStructureMaster().getLowestStruct(c);
                 lowestStruct.getCoordinatesSet().remove(c);
             }
-        }
     }
 
     private boolean checkOverlap(RoomModel blockTemplate, Coordinates at) {

@@ -1,11 +1,8 @@
-package eidolons.game.battlecraft.logic.dungeon.puzzle.construction;
+package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
 import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor;
 import eidolons.game.core.Eidolons;
@@ -82,7 +79,7 @@ public class PuzzleActions extends PuzzleElement {
 
                 break;
         }
-        if (!isPaleReturn(puzzle,punishment))
+        // if (!isPaleReturn(puzzle,punishment))
             puzzle.failed();
         if (puzzle.isPale()) {
             PaleAspect.exitPale();

@@ -77,7 +77,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
     public void deselect() {
         getModelManager().modelChanged();
         if (getModel().getSelection().isEmpty()) {
-            PaletteSelection.getInstance().setType(getObjHandler().getDefaultPaletteType());
+            getModelManager().setPaletteType(getObjHandler().getDefaultPaletteType());
             PaletteSelection.getInstance().setOverlayingType(null);
         }
         LE_Selection frozen = getSelection().getFrozenSelection();

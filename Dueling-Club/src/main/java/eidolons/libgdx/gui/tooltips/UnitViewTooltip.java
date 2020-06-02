@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.grid.GridViewAnimator;
 import eidolons.libgdx.bf.grid.cell.BaseView;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.bf.grid.cell.OverlayView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -82,14 +82,14 @@ public class UnitViewTooltip extends ValueTooltip {
 
     @Override
     protected boolean checkActorExitRemoves(Actor toActor) {
-        if (view instanceof GridUnitView) {
-            if (GdxMaster.getAncestors(toActor).contains(((GridUnitView) view).getInitiativeQueueUnitView()))
+        if (view instanceof UnitGridView) {
+            if (GdxMaster.getAncestors(toActor).contains(((UnitGridView) view).getInitiativeQueueUnitView()))
                 return false;
         }
         if (toActor != null) {
-            Group anotherViewThere = GdxMaster.getFirstParentOfClass(toActor, GridUnitView.class);
-            if (anotherViewThere instanceof GridUnitView) {
-                if (view.getUserObject().getCoordinates().equals(((GridUnitView) anotherViewThere).getUserObject().getCoordinates())) {
+            Group anotherViewThere = GdxMaster.getFirstParentOfClass(toActor, UnitGridView.class);
+            if (anotherViewThere instanceof UnitGridView) {
+                if (view.getUserObject().getCoordinates().equals(((UnitGridView) anotherViewThere).getUserObject().getCoordinates())) {
                     if (manager != null)
                         manager.entityHoverOff(getEntity());
                     return false;

@@ -170,7 +170,7 @@ public class LE_MouseHandler extends LE_Handler {
             //remove
             case ALT_2:
                 getSelectionHandler().select(bfObj);
-                getModel().getPaletteSelection().setType(bfObj.getType());
+                getModelManager().setPaletteType(bfObj.getType());
                 break;
             case CTRL_SHIFT:
                 if (bfObj.isOverlaying()) {

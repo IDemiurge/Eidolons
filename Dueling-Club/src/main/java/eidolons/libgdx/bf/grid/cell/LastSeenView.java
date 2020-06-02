@@ -19,9 +19,9 @@ import main.content.enums.rules.VisionEnums;
  */
 public class LastSeenView extends GenericGridView {
 
-    private GridUnitView parentView;
+    private UnitGridView parentView;
 
-    public LastSeenView(UnitViewOptions o, GridUnitView view) {
+    public LastSeenView(UnitViewOptions o, UnitGridView view) {
         super(view.getUserObject(), o);
         greyedOut = true;
         setParentView(view);
@@ -123,11 +123,11 @@ public class LastSeenView extends GenericGridView {
         //        main.system.auxiliary.log.LogMaster.log(1,this+" action: " +action);
     }
 
-    public GridUnitView getParentView() {
+    public UnitGridView getParentView() {
         return parentView;
     }
 
-    public void setParentView(GridUnitView parentView) {
+    public void setParentView(UnitGridView parentView) {
         this.parentView = parentView;
     }
 }

@@ -25,6 +25,8 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.entity.ConditionMaster;
 
+import static main.system.auxiliary.StringMaster.ALT_XML_SEPARATOR;
+
 public abstract class PuzzleConstructor<T extends Puzzle> {
 
     protected T puzzle;
@@ -36,7 +38,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
     }
 
 
-    public T create(String data, String blockData, Coordinates coordinates, LevelBlock block) {
+    public T create(String data, String  blockData, Coordinates coordinates, LevelBlock block) {
         puzzle = createPuzzle();
         puzzle.setCoordinates(coordinates);
         puzzle.setBlock(block);
@@ -87,7 +89,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         PuzzleResolution resolution = createResolution();
         resolution.setSolution(getSolution());
         for (String substring : ContainerUtils.openContainer(puzzleData.getValue(PuzzleData.PUZZLE_VALUE.PUNISHMENT),
-                "|")) {
+                ALT_XML_SEPARATOR)) {
             String arg = VariableManager.getVars(substring);
             PUZZLE_PUNISHMENT p = new EnumMaster<PUZZLE_PUNISHMENT>().
                     retrieveEnumConst(PUZZLE_PUNISHMENT.class, VariableManager.removeVarPart(substring));
@@ -95,7 +97,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         }
 
         for (String substring : ContainerUtils.openContainer(puzzleData.getValue(PuzzleData.PUZZLE_VALUE.RESOLUTION),
-                "|")) {
+                ALT_XML_SEPARATOR)) {
             String arg = VariableManager.getVars(substring);
             PUZZLE_RESOLUTION p = new EnumMaster<PUZZLE_RESOLUTION>().
                     retrieveEnumConst(PUZZLE_RESOLUTION.class, VariableManager.removeVarPart(substring));

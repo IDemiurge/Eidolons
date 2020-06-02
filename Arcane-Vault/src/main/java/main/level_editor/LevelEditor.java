@@ -106,7 +106,7 @@ public class LevelEditor {
 
     }
 
-    private static String readLast() {
+    public static String readLast() {
         return FileManager.readFile(getLastLvlPath());
     }
 

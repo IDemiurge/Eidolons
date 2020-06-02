@@ -1,6 +1,8 @@
-package eidolons.game.battlecraft.logic.dungeon.puzzle.cell;
+package eidolons.game.battlecraft.logic.dungeon.puzzle.maze;
 
-import eidolons.game.battlecraft.logic.dungeon.puzzle.*;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleConstructor;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
@@ -23,7 +25,6 @@ public class MazePuzzleConstructor extends PuzzleConstructor<MazePuzzle> {
         return new MazePuzzle(MazePuzzle.MazeType.VOID);
     }
 
-
     protected boolean isReplayable() {
         return true;
     }
@@ -35,6 +36,9 @@ public class MazePuzzleConstructor extends PuzzleConstructor<MazePuzzle> {
                 return new MazePuzzleCondition((MazePuzzle) puzzle);
             }
         };
+        // DIRECTION d= DIRECTION.LEFT;// TODO
+        // Coordinates back = puzzle.getEntranceCoordinates().getAdjacentCoordinate(d);
+        // resolution.addPunishment(PuzzleResolution.PUZZLE_PUNISHMENT.teleport, back.toString());
         return resolution;
     }
 

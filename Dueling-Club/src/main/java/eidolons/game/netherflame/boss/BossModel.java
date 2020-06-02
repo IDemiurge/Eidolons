@@ -1,10 +1,13 @@
 package eidolons.game.netherflame.boss;
 
-public class BossModel {
+public abstract class BossModel {
 
-    public String getName() {
-        return null;
-    }
+    public abstract String getName();
+
+    public abstract int getWidth();
+    public abstract int getHeight();
+
+
 /*
                             Requirements:
 Gameplay:

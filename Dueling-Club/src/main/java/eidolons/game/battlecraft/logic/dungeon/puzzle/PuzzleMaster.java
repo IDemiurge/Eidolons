@@ -1,10 +1,9 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzleConstructor;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzleConstructor;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
@@ -15,6 +14,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.Map;
@@ -37,26 +37,23 @@ public class PuzzleMaster {
         }
     }
 
-    public void initPuzzles(Floor floor) {
-        Map<String, String> map = floor.getCustomDataMap(CellScriptData.CELL_SCRIPT_VALUE.puzzles);
-        for (String coord : map.keySet()) {
-            String s = map.get(coord);
+    public void init(Map<Coordinates, CellScriptData> textDataMap) {
+        for (Coordinates c : textDataMap.keySet()) {
+            String s = textDataMap.get(c).getValue(CellScriptData.CELL_SCRIPT_VALUE.puzzles);
+            if (!StringMaster.isEmpty(s))
             for (String substring : ContainerUtils.openContainer(s)) {
-                if (substring.split("::")[0].trim().equalsIgnoreCase("puzzle")) {
                     try {
-                        Coordinates c = Coordinates.get(coord);
                         LevelStruct struct = master.getStructMaster().getLowestStruct(c);
                         if (struct instanceof LevelBlock) {
                             LevelBlock block = ((LevelBlock) struct);
                         Puzzle puzzle =//PuzzleConstructor.
-                                createPuzzle(map, block, substring.split("::")[1], c);
+                                createPuzzle(textDataMap, block, substring , c);
                         puzzles.add(puzzle);
                         }
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
 
-                }
             }
         }
     }
@@ -74,20 +71,22 @@ public class PuzzleMaster {
     }
 
 
-    private Puzzle createPuzzle(Map<String, String> customDataMap, LevelBlock block,
-                                String s, Coordinates coordinates) {
+    private Puzzle createPuzzle(Map<Coordinates, CellScriptData> customDataMap, LevelBlock block,
+                                String dataString, Coordinates coordinates) {
         /**
          * type(args...)
          */
 
-        String name = VariableManager.removeVarPart(s);
-        String args = VariableManager.getVars(s);
+        String name = VariableManager.removeVarPart(dataString);
+        String args = VariableManager.getVars(dataString);
 
         String setupData = "";
         for (Coordinates c : block.getCoordinatesSet()) {
-            String data = customDataMap.get(c.toString());
+            CellScriptData data = customDataMap.get(c );
             if (data != null) {
-                setupData += VariableManager.getStringWithVariable(c.toString(), data) + ";";
+                setupData += VariableManager.getStringWithVariable(c.toString(),
+                        data.getValue(CellScriptData.CELL_SCRIPT_VALUE.script)) + ";";
+                //TODO
             }
 
         }
@@ -110,6 +109,7 @@ public class PuzzleMaster {
         }
         return null;
     }
+
 
 
     public enum puzzle_type {

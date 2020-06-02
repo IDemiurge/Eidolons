@@ -7,7 +7,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.GenericGridView;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -48,8 +48,8 @@ public class StackViewMaster {
 
     public StackViewMaster() {
         GuiEventManager.bind(GuiEventType.UNIT_VIEW_MOVED, p -> {
-            if (p.get() instanceof GridUnitView) {
-                if (((GridUnitView) p.get()).isStackView()) {
+            if (p.get() instanceof UnitGridView) {
+                if (((UnitGridView) p.get()).isStackView()) {
                     stackOff();
                 }
 

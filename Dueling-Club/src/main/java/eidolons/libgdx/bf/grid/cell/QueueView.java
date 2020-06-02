@@ -52,7 +52,7 @@ public class QueueView extends UnitView {
     protected Label initiativeLabel;
     protected ImageContainer atbBg;
     protected boolean queueMoving = true;//queueMoving, temporary. 
-    protected GridUnitView parentView;
+    protected UnitGridView parentView;
     private ImageContainer roundBorder;
     private ImageContainer verticalLine;
 
@@ -341,11 +341,11 @@ public class QueueView extends UnitView {
         return getClass().getSimpleName() + " for " + name;
     }
 
-    public GridUnitView getParentView() {
+    public UnitGridView getParentView() {
         return parentView;
     }
 
-    public void setParentView(GridUnitView parentView) {
+    public void setParentView(UnitGridView parentView) {
         this.parentView = parentView;
     }
 

@@ -4,8 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.bf.grid.cell.OverlayView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.bf.grid.cell.UnitViewFactory;
 import eidolons.libgdx.bf.grid.cell.UnitViewOptions;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
@@ -48,7 +48,7 @@ public class LE_UnitViewFactory extends UnitViewFactory {
         view.addListener(createListener(bfObj));
     }
 
-    public static GridUnitView doCreate(BattleFieldObject battleFieldObject) {
+    public static UnitGridView doCreate(BattleFieldObject battleFieldObject) {
         return getInstance().create(battleFieldObject);
     }
 
@@ -57,7 +57,7 @@ public class LE_UnitViewFactory extends UnitViewFactory {
     }
 
     @Override
-    public GridUnitView create(BattleFieldObject battleFieldObject) {
+    public UnitGridView create(BattleFieldObject battleFieldObject) {
         return super.create(battleFieldObject);
     }
 
@@ -66,21 +66,21 @@ public class LE_UnitViewFactory extends UnitViewFactory {
         return super.createOverlay(battleFieldObject);
     }
 
-    protected GridUnitView createView(BattleFieldObject bfObj, UnitViewOptions options) {
+    protected UnitGridView createView(BattleFieldObject bfObj, UnitViewOptions options) {
         return
                         new LE_UnitView(bfObj, options);
     }
     @Override
-    protected void addLastSeenView(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
+    protected void addLastSeenView(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
 
     }
 
     @Override
-    protected void addOutline(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
+    protected void addOutline(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
     }
 
     @Override
-    protected void addForDC(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
+    protected void addForDC(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
         view.setToolTip(new ValueTooltip(bfObj.getName()));
     }
 

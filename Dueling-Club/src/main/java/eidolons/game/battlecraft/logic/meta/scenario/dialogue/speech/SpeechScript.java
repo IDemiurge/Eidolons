@@ -11,11 +11,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
+public class SpeechScript extends DataUnit<SpeechScript.SCRIPT> {
     public static final boolean TEST_MODE = false;
     public static final String SCRIPT_KEY = "script_key=";
     public boolean interrupted;
-    List<Pair<SPEECH_ACTION, String>> actions = new ArrayList<>();
+    List<Pair<SCRIPT, String>> actions = new ArrayList<>();
     MetaGameMaster master;
     private String scriptText;
     private boolean executed;
@@ -46,7 +46,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
 
     @Override
     protected void handleMalformedData(String entry) {
-        setValue(SPEECH_ACTION.SCRIPT, entry);
+        setValue(SCRIPT.SCRIPT, entry);
 
     }
 
@@ -78,24 +78,24 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
     }
 
     @Override
-    public Class<? extends SPEECH_ACTION> getEnumClazz() {
-        return SPEECH_ACTION.class;
+    public Class<? extends SCRIPT> getEnumClazz() {
+        return SCRIPT.class;
     }
 
     @Override
-    public void setValue(SPEECH_ACTION name, String value) {
+    public void setValue(SCRIPT name, String value) {
         actions.add(new ImmutablePair<>(name, value));
         values.put(name.toString(), value);
     }
 
     @Override
-    public void setValue(SPEECH_ACTION name, Object val) {
+    public void setValue(SCRIPT name, Object val) {
         setValue(name, val.toString());
     }
 
     @Override
     public void setValue(String name, String value) {
-        SPEECH_ACTION c = getEnumConst(StringMaster.toEnumFormat(name.trim()));
+        SCRIPT c = getEnumConst(StringMaster.toEnumFormat(name.trim()));
         if (c == null) {
             main.system.auxiliary.log.LogMaster.dev("No script command for: " + name);
             return;
@@ -104,7 +104,13 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
 //        setValue(new EnumMaster<SPEECH_ACTION>().retrieveEnumConst(SPEECH_ACTION.class, name), value);
     }
 
-    public enum SPEECH_ACTION {
+    public enum SCRIPT {
+        //GAMEPLAY
+        AWAKEN,
+        RAISE,
+        COLLAPSE, //(area keyword/
+        AUTO_RAISE_ON,
+        AUTO_RAISE_OFF,
         //AUDIO
         SOUND, MOMENT, MUSIC, PARALLEL_MUSIC, RANDOM_SOUND, SOUNDSCAPE, SOUND_VARIANT,
         LOOP_TRACK, STOP_LOOP, STOP_LOOP_NOW,

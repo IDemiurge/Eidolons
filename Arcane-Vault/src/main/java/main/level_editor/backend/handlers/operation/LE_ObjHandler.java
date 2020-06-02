@@ -2,6 +2,7 @@ package main.level_editor.backend.handlers.operation;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
@@ -75,13 +76,14 @@ public class LE_ObjHandler extends LE_Handler {
 
     public void addFromSelection(Coordinates c) {
         if (getSelectionHandler().getObject() == null) {
-//            getModelManager().getCopied();
+            //            getModelManager().getCopied();
             return;
         }
         ObjType objType = getSelectionHandler().getObject().getType();
         operation(Operation.LE_OPERATION.ADD_OBJ, objType,
                 c);
     }
+
     private void addMultiple(List<Coordinates> coordinates) {
         operation(Operation.LE_OPERATION.FILL_START);
         for (Coordinates c : coordinates) {
@@ -92,7 +94,7 @@ public class LE_ObjHandler extends LE_Handler {
 
     public void addFromPalette(Coordinates c) {
         if (getModel().isBrushMode() && getModel().getBrush().getBrushType() != LE_BrushType.none) {
-            if (getModel().getBrush().getBrushType().getOperation()!=null ) {
+            if (getModel().getBrush().getBrushType().getOperation() != null) {
                 operation(getModel().getBrush().getBrushType().getOperation(), c);
                 lastCoordinates = c;
                 return;
@@ -102,7 +104,7 @@ public class LE_ObjHandler extends LE_Handler {
             operation(Operation.LE_OPERATION.ADD_OBJ, type,
                     c);
             getStructureHandler().initWall(c);
-//            getCoordinatesForShape(PositionMaster.SHAPES.STAR)
+            //            getCoordinatesForShape(PositionMaster.SHAPES.STAR)
         } else {
             ObjType objType = getModel().getPaletteSelection().getObjType();
             if (objType == null) {
@@ -157,6 +159,15 @@ public class LE_ObjHandler extends LE_Handler {
         }
         lastAdded = bfObj;
         lastCoordinates = bfObj.getCoordinates();
+        checkToggleVoid(bfObj);
+    }
+
+    private void checkToggleVoid(BattleFieldObject bfObj) {
+        if (bfObj instanceof Structure) {
+            if (getGame().getCellByCoordinate(bfObj.getCoordinates()).isVOID()) {
+                operation(Operation.LE_OPERATION.VOID_TOGGLE, bfObj.getCoordinates());
+            }
+        }
     }
 
     public BattleFieldObject addOverlay(DIRECTION d, ObjType objType, int gridX, int gridY) {
@@ -212,12 +223,12 @@ public class LE_ObjHandler extends LE_Handler {
         if (lastCoordinates == null) {
             return;
         }
-        Coordinates c1 =lastCoordinates;
+        Coordinates c1 = lastCoordinates;
         if (PositionMaster.inLine(c1, c)) {
             List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesBetweenInclusive(c1, c);
             coordinates.remove(c1);
             Collections.reverse(coordinates);
-            addMultiple(  coordinates);
+            addMultiple(coordinates);
         } else if (PositionMaster.inLineDiagonally(c1, c)) {
             List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesBetweenInclusive(c1, c);
             coordinates.removeIf(coord -> {
@@ -226,7 +237,7 @@ public class LE_ObjHandler extends LE_Handler {
                 return true;
             });
             coordinates.remove(c1);
-            addMultiple(  coordinates);
+            addMultiple(coordinates);
             //TODO
         }
     }

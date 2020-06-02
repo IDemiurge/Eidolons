@@ -102,11 +102,16 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
     }
 
     public static String[] splitCoordinateString(String s) {
+        String cropped = StringMaster.cropParenthesises(s);
         if (s.contains(StringMaster.COORDINATES_SEPARATOR_ALT)) {
-            return StringMaster.cropParenthesises(s).split(
+            return cropped.split(
                     StringMaster.COORDINATES_SEPARATOR_ALT);
         }
-        return StringMaster.cropParenthesises(s).split(
+        if (cropped.startsWith("-")) {
+            cropped=cropped.substring(1 ).replaceFirst("-", "temp");
+            return ("-"+cropped).split("temp");
+        }
+        return cropped.split(
                 StringMaster.COORDINATES_SEPARATOR);
     }
 

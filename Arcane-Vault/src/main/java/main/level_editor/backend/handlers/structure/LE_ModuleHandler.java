@@ -48,15 +48,20 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         return moduleGrid;
     }
 
-    public void setGrid(LinkedHashMap<Point, Module> grid) {
+    public void setGrid( Map<Point, Module> grid) {
         if (moduleGrid != null) {
             if (moduleGrid.equals(grid)) {
                 return;
             }
         }
         moduleGrid = grid;
+        Set<Module> placed = new LinkedHashSet();
         for (Point point : grid.keySet()) {
             Module module = grid.get(point);
+            if (placed.contains(module)) {
+                continue;
+            }
+            placed.add(module);
             Coordinates c = getMappedCoordForPoint(point, module);
 
             log(LOG_CHANNEL.BUILDING, module.getName() + " Module placed at " + c);
@@ -87,7 +92,6 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
             int h = relativeTo.getEffectiveHeight(true);
             offsetY += h;
         }
-
 //        offsetX += module.getData().getIntValue(MODULE_VALUE.width_buffer);
 //        offsetY += module.getData().getIntValue(MODULE_VALUE.height_buffer);
 

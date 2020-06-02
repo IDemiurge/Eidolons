@@ -14,7 +14,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.cell.BaseView;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.bf.grid.moving.PlatformCell;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.screens.GameScreen;
@@ -229,9 +229,9 @@ public class CameraMan {
             if (motions.isEmpty())
                 if (followObj != null) {
                     BaseView baseView = ScreenMaster.getDungeonGrid().getViewMap().get(followObj);
-                    if (baseView instanceof GridUnitView) {
+                    if (baseView instanceof UnitGridView) {
                         if (baseView.getParent() instanceof PlatformCell)
-                            if (((GridUnitView) baseView).getPlatformController() != null) {
+                            if (((UnitGridView) baseView).getPlatformController() != null) {
                                 Vector2 v = new Vector2(baseView.getX(), baseView.getY());
                                 v = baseView.localToStageCoordinates(v);
                                 // baseView.localToParentCoordinates(v);

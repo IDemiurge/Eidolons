@@ -69,10 +69,11 @@ public class LE_GuiStage extends GenericGuiStage {
     private EncounterEditDialog encounterEditor;
     private PlatformEditDialog platformEditDialog;
     private AiEditDialog aiEditor;
-    private boolean positionsAdjusted;
     private CellDataEditor cellDataEditor;
+
     LE_StatusBar statusBar;
     FloorTabs tabs = new FloorTabs();
+    private boolean positionsAdjusted;
 
     public LE_GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -187,7 +188,7 @@ public class LE_GuiStage extends GenericGuiStage {
 //           GuiEventManager.trigger(GuiEventType.LE_TREE_RESET, LevelEditor.getCurrent());
 //        }
         statusBar.setY(20);
-        statusBar.setX(GdxMaster.getWidth() / 2 - 200);
+        statusBar.setX(GdxMaster.getWidth() / 2 - 340);
 //        statusBar.setX(550);
 //        statusBar.setDebug(true);
         super.act(delta);

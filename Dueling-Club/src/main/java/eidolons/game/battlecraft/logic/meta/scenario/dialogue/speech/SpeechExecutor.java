@@ -15,7 +15,6 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SPEECH_ACTION;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
@@ -83,7 +82,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 
-import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SPEECH_ACTION.*;
+import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SCRIPT.*;
 import static eidolons.libgdx.bf.GridMaster.getCameraCenter;
 import static eidolons.libgdx.bf.GridMaster.getCenteredPos;
 import static main.system.auxiliary.log.LogMaster.important;
@@ -120,10 +119,10 @@ public class SpeechExecutor {
     }
 
     public void execute(String speechAction, String value) {
-        execute(new EnumMaster<SPEECH_ACTION>().retrieveEnumConst(SPEECH_ACTION.class, speechAction), value);
+        execute(new EnumMaster<SpeechScript.SCRIPT>().retrieveEnumConst(SpeechScript.SCRIPT.class, speechAction), value);
     }
 
-    public boolean execute(SPEECH_ACTION speechAction, String value) {
+    public boolean execute(SpeechScript.SCRIPT speechAction, String value) {
         try {
             return execute(speechAction, value, true);
         } catch (Exception e) {
@@ -132,7 +131,7 @@ public class SpeechExecutor {
         return !ABORT_ON_EXCEPTION;
     }
 
-    public boolean execute(SPEECH_ACTION speechAction, String value, boolean wait) {
+    public boolean execute(SpeechScript.SCRIPT speechAction, String value, boolean wait) {
         container = dialogueManager.getContainer();
         if (container != null) {
             handler = container.getHandler();
@@ -1084,7 +1083,7 @@ public class SpeechExecutor {
         return !container.isOpaque();
     }
 
-    private boolean checkSkip(SPEECH_ACTION speechAction) {
+    private boolean checkSkip(SpeechScript.SCRIPT speechAction) {
         switch (speechAction) {
             case FULLSCREEN:
             case BLACKOUT:
@@ -1110,7 +1109,7 @@ public class SpeechExecutor {
     }
 
 
-    private void doOut(String value, List<String> vars, SPEECH_ACTION speechAction) {
+    private void doOut(String value, List<String> vars, SpeechScript.SCRIPT speechAction) {
         boolean white = speechAction == WHITEOUT;
         Float dur = 4f;
         if (vars.size() > 0) {
@@ -1232,7 +1231,7 @@ public class SpeechExecutor {
 
     }
 
-    private void doCamera(String value, List<String> vars, SPEECH_ACTION speechAction) {
+    private void doCamera(String value, List<String> vars, SpeechScript.SCRIPT speechAction) {
         CameraMan.MotionData motionData = getMotionData(value, vars, false);
         if (speechAction == CAMERA_SET) {
             GuiEventManager.trigger(GuiEventType.CAMERA_SET_TO, motionData.dest);
@@ -1389,7 +1388,7 @@ public class SpeechExecutor {
         }
         running = true;
         important("Executing script: " + speechScript.toString());
-        for (Pair<SPEECH_ACTION, String> pair : speechScript.actions) {
+        for (Pair<SpeechScript.SCRIPT, String> pair : speechScript.actions) {
             if (!executeAction(pair.getKey(), pair.getValue())) {
                 important("Script aborted");
                 return;
@@ -1412,7 +1411,7 @@ public class SpeechExecutor {
         handler.setSkipping(skipRun);
     }
 
-    private boolean executeAction(SPEECH_ACTION speechAction, String value) {
+    private boolean executeAction(SpeechScript.SCRIPT speechAction, String value) {
         important("Executing action: " + speechAction + " = " + value);
         return execute(speechAction, value);
 

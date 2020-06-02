@@ -102,7 +102,7 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
 
     @Override
     public void afterLoaded() {
-        for (String substring : ContainerUtils.openContainer(platformData, StringMaster.AND_SEPARATOR)) {
+        for (String substring : ContainerUtils.openContainer(platformData, StringMaster.VERTICAL_BAR)) {
             if (substring.isEmpty()) {
                 continue;
             }
@@ -124,7 +124,7 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
         String data = "";
         for (LevelBlock block : platforms.keySet()) {
             if (block.getModule() == module) {
-                data += platforms.get(block).getData() + StringMaster.AND_SEPARATOR;
+                data += platforms.get(block).getData() + StringMaster.VERTICAL_BAR;
             }
         }
         return data;
@@ -173,6 +173,15 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
         operation(CLEAR_END);
     }
 
+    @Override
+    public void setVoid() {
+
+        operation(CLEAR_START);
+        for (Coordinates c : getSelectionHandler().getSelection().getCoordinates()) {
+            operation(VOID_SET, c);
+        }
+        operation(CLEAR_END);
+    }
     public void mirror() {
         //TODO
         LE_Selection selection = getModel().getSelection();
@@ -287,7 +296,7 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
 
     public void initPlatforms(String textContent) {
         if (!textContent.isEmpty()) {
-            platformData += textContent + StringMaster.AND_SEPARATOR;
+            platformData += textContent + StringMaster.VERTICAL_BAR;
         }
 
     }

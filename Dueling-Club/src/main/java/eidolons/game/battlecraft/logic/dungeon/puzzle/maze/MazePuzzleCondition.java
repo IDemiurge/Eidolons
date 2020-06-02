@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.dungeon.puzzle.cell;
+package eidolons.game.battlecraft.logic.dungeon.puzzle.maze;
 
 import eidolons.ability.conditions.DC_Condition;
 import main.entity.Ref;

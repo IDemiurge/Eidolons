@@ -358,8 +358,8 @@ public class LevelStructure {
                 return ShardVisuals.SHARD_TYPE.class;
             }
         },
-
-        module_grid, start_module;
+        start_module,
+        module_grid,  cell_spans;
         private EDIT_VALUE_TYPE type;
 
         FLOOR_VALUES() {

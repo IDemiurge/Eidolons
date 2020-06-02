@@ -12,7 +12,7 @@ import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.grid.cell.BaseView;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.system.EventType;
 import main.system.GuiEventManager;
@@ -109,7 +109,7 @@ public class GridViewAnimator {
         // main.system.auxiliary.log.LogMaster.dev(animated.toString() + "'s Grid Anim handled: " + value.toString() + " \n" + data);
         switch (value) {
             case attached:
-                return doAttached((GridUnitView) animated, data);
+                return doAttached((UnitGridView) animated, data);
             case displace:
                 return doDisplace(animated, data);
             case screen:
@@ -120,7 +120,7 @@ public class GridViewAnimator {
         return false;
     }
 
-    protected boolean doAttached(GridUnitView animated, GraphicData data) {
+    protected boolean doAttached(UnitGridView animated, GraphicData data) {
         for (SpriteX sprite : animated.getOverlaySprites()) {
             doSpriteAnim(sprite, data);
         }
@@ -201,8 +201,8 @@ public class GridViewAnimator {
     }
 
     protected GroupX findView(Object arg) {
-        if (arg instanceof GridUnitView) {
-            return ((GridUnitView) arg).getPortrait();
+        if (arg instanceof UnitGridView) {
+            return ((UnitGridView) arg).getPortrait();
         }
         if (arg instanceof BattleFieldObject) {
             return   gridPanel.getViewMap().get(arg).getPortrait();

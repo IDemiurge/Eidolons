@@ -227,7 +227,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             return EffectFinder.initParamModEffects(modString, ref).apply(ref);
         }
         if (param == null) {
-            if (sparam.contains(StringMaster.AND_SEPARATOR)) {
+            if (sparam.contains(StringMaster.VERTICAL_BAR)) {
                 params = game.getValueManager().getParamsFromContainer(sparam);
             } else {
                 this.param = ContentValsManager.getPARAM(sparam);

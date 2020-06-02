@@ -10,8 +10,8 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.cell.MazePuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -56,9 +56,9 @@ import static main.system.GuiEventType.*;
 
 public class DC_GridPanel extends GridPanel {
 
-    private GridUnitView mainHeroViewShadow;
-    private GridUnitView mainHeroViewPale;
-    protected GridUnitView mainHeroView;
+    private UnitGridView mainHeroViewShadow;
+    private UnitGridView mainHeroViewPale;
+    protected UnitGridView mainHeroView;
     protected AnimMaster animMaster;
 
     private float resetTimer;
@@ -154,7 +154,7 @@ public class DC_GridPanel extends GridPanel {
                             GridMaster.validateVisibleUnitView(viewMap.get(sub));
                             if (sub.isPlayerCharacter()) {
                                 if (ExplorationMaster.isExplorationOn()) {
-                                    GridUnitView view = (GridUnitView) viewMap.get(sub);
+                                    UnitGridView view = (UnitGridView) viewMap.get(sub);
                                     view.resetHpBar();
                                 }
                             }
@@ -174,12 +174,12 @@ public class DC_GridPanel extends GridPanel {
         BaseView view = super.createUnitView(battleFieldObjectbj);
         if (battleFieldObjectbj.isPlayerCharacter()) {
             if (PaleAspect.ON) {
-                mainHeroViewPale = (GridUnitView) view;
+                mainHeroViewPale = (UnitGridView) view;
             }
             if (ShadowMaster.isShadowAlive()) {
-                mainHeroViewShadow = (GridUnitView) view;
+                mainHeroViewShadow = (UnitGridView) view;
             }
-            mainHeroView = (GridUnitView) view;
+            mainHeroView = (UnitGridView) view;
         }
         return view;
     }
@@ -217,7 +217,7 @@ public class DC_GridPanel extends GridPanel {
                 if (!obj.isMine())
                     if (!obj.isWall()) {
                         OUTLINE_TYPE outline = obj.getOutlineType();
-                        GridUnitView uv = (GridUnitView) viewMap.get(obj);
+                        UnitGridView uv = (UnitGridView) viewMap.get(obj);
 
                         TextureRegion texture = null;
                         if (outline != null) {
@@ -294,10 +294,10 @@ public class DC_GridPanel extends GridPanel {
         if (DC_Engine.isAtbMode()) {
             GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
                 Pair<Unit, Pair<Integer, Float>> p = (Pair<Unit, Pair<Integer, Float>>) obj.get();
-                GridUnitView uv = (GridUnitView) viewMap.get(p.getLeft());
+                UnitGridView uv = (UnitGridView) viewMap.get(p.getLeft());
                 if (uv == null) {
                     addUnitView(p.getLeft());
-                    uv = (GridUnitView) viewMap.get(p.getLeft());
+                    uv = (UnitGridView) viewMap.get(p.getLeft());
                 }
                 if (uv != null) {
                     uv.getInitiativeQueueUnitView().setTimeTillTurn(p.getRight().getRight());
@@ -307,10 +307,10 @@ public class DC_GridPanel extends GridPanel {
         } else
             GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
                 Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
-                GridUnitView uv = (GridUnitView) viewMap.get(p.getLeft());
+                UnitGridView uv = (UnitGridView) viewMap.get(p.getLeft());
                 if (uv == null) {
                     addUnitView(p.getLeft());
-                    uv = (GridUnitView) viewMap.get(p.getLeft());
+                    uv = (UnitGridView) viewMap.get(p.getLeft());
                 }
                 if (uv != null)
                     uv.getInitiativeQueueUnitView().updateInitiative(p.getRight());
@@ -420,7 +420,7 @@ public class DC_GridPanel extends GridPanel {
                 }
 
                 if (((Group) b).getUserObject() instanceof Unit) {
-                    final GridUnitView gridView = (GridUnitView) b;
+                    final UnitGridView gridView = (UnitGridView) b;
                     final UnitView unitView = gridView.getInitiativeQueueUnitView();
                     if (unitView != null) {
                         map.put(unitView, () -> p.getRight().run(obj1));
@@ -488,9 +488,9 @@ public class DC_GridPanel extends GridPanel {
         GuiEventManager.bind(UPDATE_UNIT_ACT_STATE, obj -> {
             final Pair<Unit, Boolean> pair = (Pair<Unit, Boolean>) obj.get();
             final BaseView baseView = viewMap.get(pair.getLeft());
-            if (baseView instanceof GridUnitView) {
+            if (baseView instanceof UnitGridView) {
                 final boolean mobilityState = pair.getRight();
-                ((GridUnitView) baseView).getInitiativeQueueUnitView().setQueueMoving(mobilityState);
+                ((UnitGridView) baseView).getInitiativeQueueUnitView().setQueueMoving(mobilityState);
             }
         });
 
@@ -508,7 +508,7 @@ public class DC_GridPanel extends GridPanel {
     private void updateHpBar(Object o) {
         HpBarView view = null;
         if (o instanceof BattleFieldObject) {
-            if (viewMap.get(o) instanceof GridUnitView)
+            if (viewMap.get(o) instanceof UnitGridView)
                 view = (HpBarView) viewMap.get(o);
         } else if (o instanceof HpBarView)
             view = (HpBarView) (o);
@@ -571,7 +571,7 @@ public class DC_GridPanel extends GridPanel {
         }
     }
 
-    public GridUnitView getMainHeroView() {
+    public UnitGridView getMainHeroView() {
         if (PaleAspect.ON) {
             return mainHeroViewPale;
         }
