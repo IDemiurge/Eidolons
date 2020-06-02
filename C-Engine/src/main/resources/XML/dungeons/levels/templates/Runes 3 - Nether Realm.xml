@@ -1,0 +1,42 @@
+<Floor>
+<DATA>name=Nether Realm;cell_type=natural;wall_type=volcanic wall;background=img\main\background\valley red.png
+</DATA>
+<MODULES>
+
+<Nether_plains>
+<DATA>
+wall_type=Jagged Stone Wall;cell_type=natural;
+name=Nether Plains;width=33;height=33;border_width=2;
+border_type=irregular;width_buffer=3;height_buffer=2;
+</DATA>
+<zones>
+<zone><DATA>name=Leaden Lake;</DATA></zone>
+<zone><DATA>name=Hollow Ruins;</DATA></zone>
+</zones>
+</Nether_plains>
+
+
+<Hellfire_Valley>
+<DATA>cell_type=octagonal;
+name=Hellfire Valley;width=25;height=59;border_width=2;
+border_type=chism;width_buffer=3;height_buffer=2;
+</DATA>
+<zones>
+<zone><DATA>name=Brimstone Cliffs;</DATA></zone>
+<zone><DATA>name=Fields of Gore;</DATA></zone>
+</zones> 
+</Hellfire_Valley>
+
+<Soul_Spire>
+<DATA>cell_type=star;;background=img\main\background\eldritch red.png
+name=Soul Spire;width=33;height=33;border_width=2;
+border_type=wall;width_buffer=3;height_buffer=2;
+</DATA>
+<zones>
+<zone><DATA>name=Stargazer;</DATA></zone>
+<zone><DATA>name=Augury;</DATA></zone>
+<zone><DATA>name=Secret;</DATA></zone>
+</zones>
+</Soul_Spire>
+
+</MODULES></Floor>

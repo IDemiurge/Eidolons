@@ -1,0 +1,43 @@
+<Floor>
+<DATA>name=Soul Spire;cell_type=natural;wall_type=volcanic wall;background=img\main\background\Soul Spire2.png;
+module_grid=0-0|1-0|2-0|1-1;cell_spans=1-2|1-1|1-1|1-1;
+</DATA>
+<MODULES>
+
+<MODULE><DATA>name=The Gates;
+	wall_type=volcanic wall;;cell_type=dark_star;
+width=25;height=50;border_width=1;width_buffer=1;height_buffer=1;
+border_type=chism;
+</DATA><zones>
+<zone><DATA>name=Outside;</DATA></zone>
+<zone><DATA>name=Gate;</DATA></zone>
+<zone><DATA>name=Level One;</DATA></zone>
+</zones></MODULE>
+
+<MODULE><DATA>name=Level Two;
+	wall_type=volcanic wall;;cell_type=dark_star;
+width=25;height=25;border_width=1;width_buffer=1;height_buffer=1;
+border_type=chism;
+</DATA><zones>
+<zone><DATA>name=Level Two;</DATA></zone>
+<zone><DATA>name=Outside;</DATA></zone>
+</zones></MODULE>
+<MODULE><DATA>name=Level Three;
+	wall_type=volcanic wall;;cell_type=dark_star;
+width=25;height=25;border_width=1;width_buffer=1;height_buffer=1;
+border_type=chism;
+</DATA><zones>
+<zone><DATA>name=Level Three;</DATA></zone>
+<zone><DATA>name=Outside;</DATA></zone>
+</zones></MODULE>
+
+<MODULE><DATA>name=The Top;
+	wall_type=volcanic wall;;cell_type=dark_star;
+height=25;width=50;border_width=1;width_buffer=1;height_buffer=1;
+border_type=chism;
+</DATA><zones>
+<zone><DATA>name=Outside;</DATA></zone>
+<zone><DATA>name=Top;</DATA></zone>
+</zones></MODULE>
+
+</MODULES></Floor>

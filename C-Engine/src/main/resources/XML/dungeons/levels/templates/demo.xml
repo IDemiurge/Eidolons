@@ -1,0 +1,20 @@
+<Floor>
+<DATA>name=Soul Journey;cell_type=natural;wall_type=volcanic wall;background=img\main\background\Soul Spire2.png;
+</DATA>
+<MODULES>
+
+<MODULE>
+<DATA>name=Soul Bridge;
+	wall_type=volcanic wall;;cell_type=dark_star;
+width=61;height=57;border_width=1;width_buffer=1;height_buffer=1;
+border_type=chism;
+</DATA>
+<zones>
+<zone><DATA>name=Antechamber;</DATA></zone>
+<zone><DATA>name=Bridge;</DATA></zone>
+<zone><DATA>name=Crossroads;</DATA></zone>
+<zone><DATA>name=Hollows Isle;</DATA></zone>
+<zone><DATA>name=Selene chamber;</DATA></zone>
+</zones>
+</MODULE>
+</MODULES></Floor>

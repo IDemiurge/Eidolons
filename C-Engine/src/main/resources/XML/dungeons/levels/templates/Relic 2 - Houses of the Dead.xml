@@ -1,0 +1,42 @@
+<Floor>
+<DATA>name=Houses of the Dead;cell_type=natural;wall_type=old stone wall;background=img\main\background\old cemetery.png;
+</DATA>
+<MODULES>
+
+<MODULE>
+<DATA>
+name=Old Cemetery;cell_type=natural;
+width=37;height=25;border_width=1;border_type=chism;
+</DATA>
+<zones>
+<zone><DATA>name=Commoner Grounds;</DATA></zone>
+<zone><DATA>name=Noble Grounds;</DATA></zone>
+<zone><DATA>name=Werewolf Cage;</DATA></zone>
+</zones>
+</MODULE>
+
+
+<MODULE>
+<DATA>cell_type=star;wall_type=overgrown wall;
+name=Memorial Gardens;width=21;height=35;
+border_type=wall;border_width=1;
+</DATA>
+<zones>
+<zone><DATA>name=Maze;</DATA></zone>
+<zone><DATA>name=Memorial;</DATA></zone>
+<zone><DATA>name=Secret Path;</DATA></zone>
+</zones>
+</MODULE>
+
+<Mausoleum>
+<DATA>cell_type=octagonal;wall_type=old stone wall;
+name=Mausoleum;width=21;height=35;
+border_type=wall;border_width=1;
+</DATA>
+<zones>
+<zone><DATA>name=Outer Grounds;</DATA></zone>
+<zone><DATA>name=Inside;</DATA></zone>
+</zones>
+</Mausoleum>
+
+</MODULES></Floor>

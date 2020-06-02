@@ -1,0 +1,55 @@
+<Floor>
+<DATA>name=Mountain of Doom;cell_type=natural;wall_type=volcanic wall;background=img\main\background\moon valley(1).jpg;
+module_grid=1-0|0-1|0-0|1-1;width=99;height=94;
+</DATA>
+<MODULES>
+
+<MODULE>
+<DATA>name=Volcanic Tunnels;
+alt_default_wall=Cave Wall;cell_type=natural;
+width=21;height=43;border_width=1;width_buffer=3;height_buffer=3;
+border_type=irregular;
+</DATA>
+<zones>
+<zone><DATA>name=Haunted Tunnels;</DATA></zone>
+<zone><DATA>name=Geothermal;</DATA></zone>
+<zone><DATA>name=Precipice;</DATA></zone>
+</zones>
+</MODULE>
+
+
+<MODULE>
+<DATA>cell_type=octagonal;wall_type=crumbling wall;
+name=Prison Pits;width=31;height=29;border_width=1;width_buffer=3;height_buffer=3;
+border_type=wall;
+</DATA>
+<zones>
+<zone><DATA>name=The Chism;</DATA></zone>
+<zone><DATA>name=Mass Grave;</DATA></zone>
+<zone><DATA>name=Telrazi Outpost;</DATA></zone>
+</zones>
+</MODULE>
+
+<MODULE>
+<DATA>cell_type=natural;
+name=Black Lake;width=31;height=29;border_width=1;width_buffer=3;height_buffer=3;
+border_type=wall;
+</DATA>
+<zones>
+<zone><DATA>name=Lake;</DATA></zone>
+<zone><DATA>name=Well;</DATA></zone>
+</zones>
+</MODULE>
+
+<MODULE>
+<DATA>cell_type=natural;
+name=Miner Town;width=21;height=17;border_width=1;width_buffer=3;height_buffer=3;
+border_type=wall;
+</DATA>
+<zones>
+<zone><DATA>name=Ruins;</DATA></zone>
+<zone><DATA>name=Camp;</DATA></zone>
+</zones>
+</MODULE>
+
+</MODULES></Floor>

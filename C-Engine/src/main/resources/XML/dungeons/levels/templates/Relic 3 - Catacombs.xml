@@ -1,0 +1,42 @@
+<Floor>
+<DATA>name=Evarinath Catacombs;cell_type=natural;wall_type=old stone wall;background=img\main\background\bastion_1.1.jpg
+</DATA>
+<MODULES>
+
+<Family_Crypt>
+<DATA>
+alt_default_wall=Cave Wall;
+default_wall=Ancient Wall;cell_type=octagonal;
+name=Family Crypt;width=25;height=45;border_width=2;
+border_type=wall;width_buffer=1;height_buffer=3;
+</DATA>
+<zones>
+<zone><DATA>name=Promenade;</DATA></zone>
+<zone><DATA>name=Maze;</DATA></zone>
+</zones>
+</Family_Crypt>
+
+
+<Ritual_Chamber>
+<DATA>cell_type=star;wall_type=crumbling wall;
+name=Ritual Chamber;width=35;height=31;border_width=2;
+border_type=wall;width_buffer=3;height_buffer=3;
+</DATA>
+<zones>
+<zone><DATA>name=Outer Ring;</DATA></zone>
+<zone><DATA>name=Inner Shrine;</DATA></zone>
+</zones>
+</Ritual_Chamber>
+
+<Sealed_Realm>
+<DATA>cell_type=ornate;wall_type=overgrown wall;
+name=Veiled Realm;width=35;height=31;border_width=2;
+border_type=wall;width_buffer=2;height_buffer=2;
+</DATA>
+<zones>
+<zone><DATA>name=Memorial Halls;</DATA></zone>
+<zone><DATA>name=Secret Garden;</DATA></zone>
+</zones>
+</Sealed_Realm>
+
+</MODULES></Floor>

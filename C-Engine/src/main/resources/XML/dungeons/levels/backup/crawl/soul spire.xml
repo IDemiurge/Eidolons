@@ -1,0 +1,97 @@
+<Floor><DATA>wall_type=volcanic wall;background=img\main\background\Soul Spire2.png;cell_spans=1-2|1-1|1-1|1-1;width=94;name=Soul Spire;module_grid=0-0|1-0|2-0|1-1;cell_type=natural;height=61;</DATA><MODULES>
+<The_Gates><DATA>wall_type=volcanic wall;width_buffer=1;border_width=1;height_buffer=1;origin=0-0;name=The Gates;width=25;cell_type=dark_star;height=50;border_type=chism;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Outside;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Gate;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Level One;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void>28-53;28-52;28-51;28-50;28-49;28-48;28-47;28-46;28-45;28-44;28-43;28-42;28-41;28-40;28-39;28-38;28-37;28-36;28-35;28-34;28-33;28-32;28-31;28-30;28-29;28-28;28-27;28-26;28-25;28-24;28-23;28-22;28-21;28-20;28-19;28-18;28-17;28-16;28-15;28-14;28-13;28-12;28-11;28-10;28-9;28-8;28-7;28-6;28-5;28-4;28-3;28-2;27-53;27-2;26-53;26-2;25-53;25-2;24-53;24-2;23-53;23-2;22-53;22-2;21-53;21-2;20-53;20-2;19-53;19-2;18-53;18-2;17-53;17-2;16-53;16-2;15-53;15-2;14-53;14-2;13-53;13-2;12-53;12-2;11-53;11-2;10-53;10-2;9-53;9-2;8-53;8-2;7-53;7-2;6-53;6-2;5-53;5-2;4-53;4-2;3-53;3-2;2-53;2-52;2-51;2-50;2-49;2-48;2-47;2-46;2-45;2-44;2-43;2-42;2-41;2-40;2-39;2-38;2-37;2-36;2-35;2-34;2-33;2-32;2-31;2-30;2-29;2-28;2-27;2-26;2-25;2-24;2-23;2-22;2-21;2-20;2-19;2-18;2-17;2-16;2-15;2-14;2-13;2-12;2-11;2-10;2-9;2-8;2-7;2-6;2-5;2-4;2-3;2-2;</coordinates_void>
+</The_Gates>
+
+<Level_Two><DATA>wall_type=volcanic wall;width_buffer=1;border_width=1;height_buffer=1;origin=29-0;name=Level Two;width=25;cell_type=dark_star;height=25;border_type=chism;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Level Two;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Outside;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void>57-28;57-27;57-26;57-25;57-24;57-23;57-22;57-21;57-20;57-19;57-18;57-17;57-16;57-15;57-14;57-13;57-12;57-11;57-10;57-9;57-8;57-7;57-6;57-5;57-4;57-3;57-2;56-28;56-2;55-28;55-2;54-28;54-2;53-28;53-2;52-28;52-2;51-28;51-2;50-28;50-2;49-28;49-2;48-28;48-2;47-28;47-2;46-28;46-2;45-28;45-2;44-28;44-2;43-28;43-2;42-28;42-2;41-28;41-2;40-28;40-2;39-28;39-2;38-28;38-2;37-28;37-2;36-28;36-2;35-28;35-2;34-28;34-2;33-28;33-2;32-28;32-2;31-28;31-27;31-26;31-25;31-24;31-23;31-22;31-21;31-20;31-19;31-18;31-17;31-16;31-15;31-14;31-13;31-12;31-11;31-10;31-9;31-8;31-7;31-6;31-5;31-4;31-3;31-2;</coordinates_void>
+</Level_Two>
+
+<Level_Three><DATA>wall_type=volcanic wall;width_buffer=1;border_width=1;height_buffer=1;origin=58-0;name=Level Three;width=25;cell_type=dark_star;height=25;border_type=chism;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Level Three;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Outside;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void>86-28;86-27;86-26;86-25;86-24;86-23;86-22;86-21;86-20;86-19;86-18;86-17;86-16;86-15;86-14;86-13;86-12;86-11;86-10;86-9;86-8;86-7;86-6;86-5;86-4;86-3;86-2;85-28;85-2;84-28;84-2;83-28;83-2;82-28;82-2;81-28;81-2;80-28;80-2;79-28;79-2;78-28;78-2;77-28;77-2;76-28;76-2;75-28;75-2;74-28;74-2;73-28;73-2;72-28;72-2;71-28;71-2;70-28;70-2;69-28;69-2;68-28;68-2;67-28;67-2;66-28;66-2;65-28;65-2;64-28;64-2;63-28;63-2;62-28;62-2;61-28;61-2;60-28;60-27;60-26;60-25;60-24;60-23;60-22;60-21;60-20;60-19;60-18;60-17;60-16;60-15;60-14;60-13;60-12;60-11;60-10;60-9;60-8;60-7;60-6;60-5;60-4;60-3;60-2;</coordinates_void>
+</Level_Three>
+
+<The_Top><DATA>wall_type=volcanic wall;width_buffer=1;border_width=1;height_buffer=1;origin=29-29;name=The Top;width=50;cell_type=dark_star;height=25;border_type=chism;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Outside;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Top;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void>82-57;82-56;82-55;82-54;82-53;82-52;82-51;82-50;82-49;82-48;82-47;82-46;82-45;82-44;82-43;82-42;82-41;82-40;82-39;82-38;82-37;82-36;82-35;82-34;82-33;82-32;82-31;81-57;81-31;80-57;80-31;79-57;79-31;78-57;78-31;77-57;77-31;76-57;76-31;75-57;75-31;74-57;74-31;73-57;73-31;72-57;72-31;71-57;71-31;70-57;70-31;69-57;69-31;68-57;68-31;67-57;67-31;66-57;66-31;65-57;65-31;64-57;64-31;63-57;63-31;62-57;62-31;61-57;61-31;60-57;60-31;59-57;59-31;58-57;58-31;57-57;57-31;56-57;56-31;55-57;55-31;54-57;54-31;53-57;53-31;52-57;52-31;51-57;51-31;50-57;50-31;49-57;49-31;48-57;48-31;47-57;47-31;46-57;46-31;45-57;45-31;44-57;44-31;43-57;43-31;42-57;42-31;41-57;41-31;40-57;40-31;39-57;39-31;38-57;38-31;37-57;37-31;36-57;36-31;35-57;35-31;34-57;34-31;33-57;33-31;32-57;32-31;31-57;31-56;31-55;31-54;31-53;31-52;31-51;31-50;31-49;31-48;31-47;31-46;31-45;31-44;31-43;31-42;31-41;31-40;31-39;31-38;31-37;31-36;31-35;31-34;31-33;31-32;31-31;</coordinates_void>
+</The_Top>
+</MODULES></Floor>
