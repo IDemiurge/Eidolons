@@ -59,7 +59,7 @@ public class BlockTreeBuilder {
 
         }
 
-        RoomTemplateMaster manager = LevelEditor.getManager().getStructureManager().
+        RoomTemplateMaster manager = LevelEditor.getManager().getStructureHandler().
                 getRoomTemplateManager();
 
         for (ROOM_TEMPLATE_GROUP group : manager.getModels().keySet()) {

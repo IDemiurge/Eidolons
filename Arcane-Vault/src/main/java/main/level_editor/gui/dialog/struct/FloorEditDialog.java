@@ -61,7 +61,7 @@ public class FloorEditDialog extends DataEditDialog<LevelStructure.FLOOR_VALUES,
     @Override
     public void ok() {
         super.ok();
-        LevelEditor.getManager().getStructureManager().updateTree();
+        LevelEditor.getManager().getStructureHandler().updateTree();
     }
 
     protected Object formatFilePath(DataTable.DataPair item, Object value) {

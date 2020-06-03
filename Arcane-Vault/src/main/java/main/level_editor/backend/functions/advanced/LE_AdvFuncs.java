@@ -2,133 +2,29 @@ package main.level_editor.backend.functions.advanced;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
-import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.EUtils;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
-import eidolons.libgdx.bf.grid.moving.PlatformData;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.selection.LE_Selection;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
-import main.system.threading.WaitMaster;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 
 import static main.level_editor.backend.handlers.operation.Operation.LE_OPERATION.*;
-import static main.level_editor.gui.dialog.struct.PlatformEditDialog.EDIT_DONE;
 
 public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
 
-    private static int ID = 0;
-    Map<LevelBlock, PlatformData> platforms = new LinkedHashMap<>();
-    private String platformData = "";
-    private String platformCopy;
 
     public LE_AdvFuncs(LE_Manager manager) {
         super(manager);
 
     }
 
-    public void platform_copy() {
-
-        LevelBlock block = getModelManager().getModel().getBlock();
-        if (block == null) {
-        block = (LevelBlock) getStructureMaster().getLowestStruct(getSelectionHandler().getSelection().getLastCoordinates());
-        }
-        PlatformData platform = platforms.get(block);
-        platformCopy = platform.getData();
-    }
-
-    @Override
-    public void platform() {
-        //prompt edit dialogue immediately
-        //create a block for it? of type PLATFORM, which will be checked
-        // link block and platform - ?
-
-        // init them - via overridden Handler? blocks are persistent and well, if we just link by name...
-
-        // we need findByName anyway
-
-        // create block with same name then
-        // standard data by default perhaps
-        Set<Coordinates> coordinates = getSelectionHandler().getSelection().getCoordinates();
-
-        PlatformData data = new PlatformData(coordinates);
-        String name = data.getValue(PlatformData.PLATFORM_VALUE.name);
-
-
-        if (platformCopy == null) {
-            getDialogHandler().editData(data);
-            boolean o = (boolean) WaitMaster.waitForInput(EDIT_DONE);
-            if (!o)
-                return;
-        } else {
-            data.setData(platformCopy);
-            platformCopy=null;
-            data.setCells(coordinates);
-        }
-        if (name.isEmpty()) {
-            name = getDialogHandler().textInput("Platform unique name...", "Platform N" + ID++);
-        }
-        data.setValue(PlatformData.PLATFORM_VALUE.name, name);
-        LevelBlock block =
-                getStructureHandler().addBlock(LocationBuilder.ROOM_TYPE.PLATFORM,
-                        name, coordinates);
-        // block.getData().setValue(LevelStructure.BLOCK_VALUE.cell_type,
-        //         data.getValue(PlatformData.PLATFORM_VALUE.cell_type));
-        GuiEventManager.trigger(GuiEventType.PLATFORM_CREATE, data);
-        platforms.put(block, data);
-        getStructureHandler().updateTree();
-
-        //so is it void?
-    }
-
-    public void platformBlockRemoved(LevelBlock block) {
-        platforms.remove(block);
-        GuiEventManager.trigger(GuiEventType.PLATFORM_REMOVE, block.getName());
-    }
-
-    @Override
-    public void afterLoaded() {
-        for (String substring : ContainerUtils.openContainer(platformData, StringMaster.VERTICAL_BAR)) {
-            if (substring.isEmpty()) {
-                continue;
-            }
-            PlatformData data = new PlatformData(substring);
-            String name = data.getValue(PlatformData.PLATFORM_VALUE.name);
-            LevelBlock block = getStructureMaster().findBlockByName(name);
-            if (block == null) {
-                continue;
-            }
-            platforms.put(block, data);
-            ID++;
-        }
-        for (LevelBlock block : platforms.keySet()) {
-            GuiEventManager.trigger(GuiEventType.PLATFORM_CREATE, platforms.get(block));
-        }
-    }
-
-    public String getPlatformData(Module module) {
-        String data = "";
-        for (LevelBlock block : platforms.keySet()) {
-            if (block.getModule() == module) {
-                data += platforms.get(block).getData() + StringMaster.VERTICAL_BAR;
-            }
-        }
-        return data;
-    }
 
     @Override
     public void fill() {
@@ -292,12 +188,5 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
                 break;
 
         }
-    }
-
-    public void initPlatforms(String textContent) {
-        if (!textContent.isEmpty()) {
-            platformData += textContent + StringMaster.VERTICAL_BAR;
-        }
-
     }
 }

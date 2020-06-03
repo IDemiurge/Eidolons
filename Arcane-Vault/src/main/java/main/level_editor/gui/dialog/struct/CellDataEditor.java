@@ -38,11 +38,14 @@ public class CellDataEditor extends DataEditDialog<CellScriptData.CELL_SCRIPT_VA
     @Override
     protected LevelStructure.EDIT_VALUE_TYPE getEditor(CellScriptData.CELL_SCRIPT_VALUE enumConst) {
         switch (enumConst) {
+            case marks:
             case flip:
             case facing:
                 return enum_const;
             case portals:
                 return coordinates;
+            case script:
+                return script;
             //     return new MultiEditor(coordinates, );
         }
         return text;
@@ -56,6 +59,8 @@ public class CellDataEditor extends DataEditDialog<CellScriptData.CELL_SCRIPT_VA
     @Override
     protected Object getArg(CellScriptData.CELL_SCRIPT_VALUE enumConst) {
         switch (enumConst) {
+            case marks:
+                return CONTENT_CONSTS.MARK.class;
             case flip:
                 return CONTENT_CONSTS.FLIP.class;
             case facing:

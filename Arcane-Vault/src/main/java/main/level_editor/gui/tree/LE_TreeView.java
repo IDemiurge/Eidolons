@@ -261,7 +261,7 @@ public class LE_TreeView extends TreeX<StructNode> {
                     " at " + block.getOrigin() + " with Cells [" +
                     block.getCoordinatesSet().size() +
                     "]" ;
-            c = LevelEditor.getCurrent().getManager().getStructureManager().getColorForBlock(block);
+            c = LevelEditor.getCurrent().getManager().getStructureHandler().getColorForBlock(block);
 
             //img per room type
 //            texture = TextureCache.getOrCreateR(Images.ITEM_BACKGROUND_STONE);

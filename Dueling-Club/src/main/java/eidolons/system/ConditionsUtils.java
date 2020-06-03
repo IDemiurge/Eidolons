@@ -5,7 +5,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzleCondition;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzleCondition;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzleFailCondition;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.OrConditions;
@@ -59,7 +59,7 @@ public class ConditionsUtils {
 
         }
         if (puzzle instanceof MazePuzzle){
-            return new MazePuzzleCondition((MazePuzzle) puzzle);
+            return new MazePuzzleFailCondition((MazePuzzle) puzzle);
         }
         return null ;
     }

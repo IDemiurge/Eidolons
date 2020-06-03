@@ -5,6 +5,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.model.RoomTemplateMaster;
 import eidolons.game.module.generator.tilemap.TileMapper;
@@ -181,7 +182,7 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
     private void reload() {
         initWorkspaceTypeMap();
-        LE_Screen.getInstance().getGuiStage().getPalettePanel().reload();
+        Eidolons.onGdxThread(() -> LE_Screen.getInstance().getGuiStage().getPalettePanel().reload());
         GuiEventManager.trigger(GuiEventType.LE_PALETTE_RESELECT);
     }
 

@@ -41,13 +41,15 @@ public class LE_FloorLoader extends FloorLoader {
     @Override
     protected void initPlatformData(Module module, String textContent) {
         super.initPlatformData(module, textContent);
-        LevelEditor.getManager().getAdvFuncs().initPlatforms(textContent);
+        LevelEditor.getManager().getPlatformHandler().initPlatforms(textContent);
     }
 
     @Override
     public void addMainEntrance(Location location, String text, boolean exit) {
-        Integer id = Integer.valueOf(text);
-        LevelEditor.getManager().getTransitHandler().addMain(id, exit);
+        if (NumberUtils.isInteger(text)) {
+            Integer id = Integer.valueOf(text);
+            LevelEditor.getManager().getTransitHandler().addMain(id, exit);
+        }
     }
 
     @Override
@@ -112,25 +114,25 @@ public class LE_FloorLoader extends FloorLoader {
         getBuilder().initLocationSize(location);
         s = location.getData().getValue(LevelStructure.FLOOR_VALUES.cell_spans);
 
-        grid= modifyGridCells(grid, s);
+        grid = modifyGridCells(grid, s);
         LevelEditor.getManager().getModuleHandler().setGrid(grid);
     }
 
-    private  Map<Point, Module> modifyGridCells(Map<Point, Module> grid, String s) {
+    private Map<Point, Module> modifyGridCells(Map<Point, Module> grid, String s) {
         Iterator<Point> iterator = grid.keySet().iterator();
         Map newGrid = new LinkedHashMap<>(grid);
-        for(String substring: ContainerUtils.openContainer( s, StringMaster.VERTICAL_BAR)){
+        for (String substring : ContainerUtils.openContainer(s, StringMaster.VERTICAL_BAR)) {
             Point p = iterator.next();
             Module module = grid.get(p);
             String[] split = substring.split("-");
-            int xSpan = NumberUtils.getInteger(split[0])  ;
-            int ySpan = NumberUtils.getInteger(split[1])  ;
+            int xSpan = NumberUtils.getInteger(split[0]);
+            int ySpan = NumberUtils.getInteger(split[1]);
             newGrid.put(p, module);
             for (int i = 1; i < xSpan; i++) {
-                newGrid.put(new Point(p.x+i, p.y), module);
+                newGrid.put(new Point(p.x + i, p.y), module);
             }
             for (int i = 1; i < ySpan; i++) {
-                newGrid.put(new Point(p.x, p.y+i), module);
+                newGrid.put(new Point(p.x, p.y + i), module);
             }
         }
         return newGrid;

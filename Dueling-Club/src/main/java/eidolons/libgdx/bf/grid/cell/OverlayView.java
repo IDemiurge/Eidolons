@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
@@ -10,6 +11,8 @@ import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.texture.TextureCache;
+import main.content.CONTENT_CONSTS;
 import main.content.enums.GenericEnums;
 import main.game.bf.directions.DIRECTION;
 
@@ -109,7 +112,14 @@ public class OverlayView extends BaseView implements HpBarView {
         super(viewOptions);
         if (portrait != null)
             portrait.remove();
-        portrait = new FadeImageContainer(new Image(viewOptions.getPortraitTexture()));
+
+        TextureRegion portraitTexture = viewOptions.getPortraitTexture();
+        if (flip == CONTENT_CONSTS.FLIP.VERT) {
+            portraitTexture=  TextureCache.getFlippedRegion(false, true, viewOptions.getPortraitPath());
+        }  else if (flip == CONTENT_CONSTS.FLIP.HOR) {
+            portraitTexture=  TextureCache.getFlippedRegion( true,false, viewOptions.getPortraitPath());
+        }
+        portrait = new FadeImageContainer(new Image(portraitTexture));
         addActor(portrait);
 //        ValueTooltip tooltip = new ValueTooltip();
 //        tooltip.setUserObject(Arrays.asList(new ValueContainer(viewOptions.getName(), "")));

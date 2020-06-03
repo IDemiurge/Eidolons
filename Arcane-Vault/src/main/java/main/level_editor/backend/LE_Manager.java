@@ -1,7 +1,9 @@
 package main.level_editor.backend;
 
+import eidolons.game.battlecraft.logic.dungeon.location.struct.StructMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import main.game.bf.Coordinates;
+import main.level_editor.backend.functions.advanced.IPlatformHandlerImpl;
 import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
 import main.level_editor.backend.functions.io.LE_XmlHandler;
@@ -44,6 +46,7 @@ public class LE_Manager {
     private final LE_ScriptHandler scriptHandler;
     private final LayerHandlerImpl layerHandler;
     private final LE_EntityHandler entityHandler;
+    private final IPlatformHandlerImpl platformHandler;
     private LE_Floor floor;
     private LE_SelectionHandler selectionHandler;
     private LE_ModelManager modelManager;
@@ -67,6 +70,7 @@ public class LE_Manager {
         game = floor.getGame();
         idManager = game.getSimIdManager();
         handlers.add( xmlMaster = new LE_XmlHandler(this));
+        handlers.add( platformHandler = new IPlatformHandlerImpl(this));
         handlers.add(  entityHandler = new LE_EntityHandler(this));
         handlers.add(  mouseHandler = new LE_MouseHandler(this));
         handlers.add( menuHandler = new LE_MenuHandler(this));
@@ -171,7 +175,7 @@ public class LE_Manager {
         return getGame().getMetaMaster().getModuleMaster().getModule(c);
     }
 
-    public LE_StructureHandler getStructureManager() {
+    public LE_StructureHandler getStructureHandler() {
         return structureManager;
     }
 
@@ -179,6 +183,9 @@ public class LE_Manager {
         return entityHandler;
     }
 
+    public StructMaster getStructureMaster() {
+        return getGame().getMetaMaster().getDungeonMaster().getStructMaster();
+    }
     public LE_ModuleHandler getModuleHandler() {
         return moduleHandler;
     }
@@ -225,5 +232,9 @@ public class LE_Manager {
 
     public IHandlerDelegate getDelegate() {
         return delegate;
+    }
+
+    public IPlatformHandlerImpl getPlatformHandler() {
+        return platformHandler;
     }
 }

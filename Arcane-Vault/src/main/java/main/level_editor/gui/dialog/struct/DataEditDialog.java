@@ -32,6 +32,9 @@ public abstract class DataEditDialog<S extends Enum<S>, T extends DataUnit<S>> e
             type = LevelStructure.EDIT_VALUE_TYPE.text;
         }
         switch (type) {
+            case script:
+                value = inputScript(item);
+                break;
             case coordinates:
                 value = pickCoordinate();
                 break;
@@ -53,6 +56,7 @@ public abstract class DataEditDialog<S extends Enum<S>, T extends DataUnit<S>> e
         setUpdateRequired(true);
     }
 
+
     private Coordinates pickCoordinate() {
         return LevelEditor.getManager().getSelectionHandler().selectCoordinate();
     }
@@ -72,6 +76,9 @@ public abstract class DataEditDialog<S extends Enum<S>, T extends DataUnit<S>> e
 
     private Object input(DataTable.DataPair item) {
         return GdxDialogMaster.inputText("Set value " + item.name, item.stringValue);
+    }
+    private String inputScript(DataTable.DataPair item) {
+        return GdxDialogMaster.inputScript("Set script for " + item.name, item.stringValue);
     }
 
     @Override

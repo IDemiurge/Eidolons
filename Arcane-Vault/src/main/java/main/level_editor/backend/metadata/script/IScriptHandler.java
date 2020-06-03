@@ -2,6 +2,10 @@ package main.level_editor.backend.metadata.script;
 
 public interface IScriptHandler {
 
+    void togglable();
+
+    void clearMarks();
+
     void clear();
 
     void copy();
@@ -11,6 +15,7 @@ public interface IScriptHandler {
     void cut();
 
     void edit();
+    void mark();
 
     //platform here?
 }

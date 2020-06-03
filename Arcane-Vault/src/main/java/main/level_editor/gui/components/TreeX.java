@@ -101,10 +101,8 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
     }
 
     protected void click(int tapCount, InputEvent event, Node n, T node) {
-        int button = event.getButton();
-        Eidolons.onNonGdxThread(() -> {
-            clicked(tapCount, event, n, node, button);
-        });
+        int button = event == null ? 0 : event.getButton();
+        Eidolons.onNonGdxThread(() -> clicked(tapCount, event, n, node, button));
     }
 
     protected void clicked(int tapCount, InputEvent event, Node n, T node, int button) {

@@ -5,9 +5,14 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.dungeon.universal.FloorWrapper;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import main.content.DC_TYPE;
+import main.data.DataManager;
+import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 
@@ -27,6 +32,7 @@ public class Location extends FloorWrapper {
     private Map<Coordinates, CellScriptData> textDataMap = new LinkedHashMap<>();
     private Set<Entrance> transits = new LinkedHashSet<>();
     private boolean initialEdit;
+    private String defaultEntrance = "The Light";
 
     public Location(DungeonMaster master, Floor floor) {
         super(floor, master);
@@ -58,9 +64,16 @@ public class Location extends FloorWrapper {
         if (StringMaster.isEmpty(data)) {
             return;
         }
-        Integer id = Integer.valueOf(data);
-        Entrance entrance = (Entrance) getGame().getMetaMaster()
-                .getDungeonMaster().getObjByOriginalModuleId(id);
+        Entrance entrance = null;
+        if (!NumberUtils.isInteger(data)) {
+            Coordinates c = Coordinates.get(data);
+            ObjType type = DataManager.getType(defaultEntrance, DC_TYPE.BF_OBJ);
+            entrance = (Entrance) getGame().createObject(type, c, DC_Player.NEUTRAL);
+        } else {
+            Integer id = Integer.valueOf(data);
+            entrance = (Entrance) getGame().getMetaMaster()
+                    .getDungeonMaster().getObjByOriginalModuleId(id);
+        }
 
         if (exit) {
             setMainExit(entrance);

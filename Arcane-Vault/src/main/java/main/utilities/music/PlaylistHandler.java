@@ -24,6 +24,7 @@ public class PlaylistHandler {
         fury,
         warmup,
         gym,
+        goodly,
         auto,
     }
 

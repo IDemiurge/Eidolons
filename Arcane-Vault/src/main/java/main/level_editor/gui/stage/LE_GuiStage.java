@@ -21,6 +21,7 @@ import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.GenericGuiStage;
 import main.level_editor.LevelEditor;
+import main.level_editor.backend.functions.advanced.ScriptInputHelper;
 import main.level_editor.backend.handlers.structure.FloorManager;
 import main.level_editor.gui.components.DataTable;
 import main.level_editor.gui.dialog.AiEditDialog;
@@ -206,6 +207,26 @@ public class LE_GuiStage extends GenericGuiStage {
             getFileChooser().setZIndex(Integer.MAX_VALUE);
         }
         tooltips.setZIndex(Integer.MAX_VALUE);
+    }
+
+    public void textInput(boolean script, Input.TextInputListener textInputListener, String title, String text, String hint) {
+        if (!script) {
+            super.textInput(script, textInputListener, title, text, hint);
+            return;
+        }
+            textInputPanel = new ScriptInputHelper(LevelEditor.getManager(),
+                    title, text, hint, textInputListener);
+            addActor(textInputPanel);
+            textInputPanel.setPosition(GdxMaster.centerWidth(textInputPanel),
+                    GdxMaster.centerHeight(textInputPanel));
+            textInputPanel.open();
+            setKeyboardFocus(textInputPanel);
+
+    }
+
+    @Override
+    public boolean setKeyboardFocus(Actor actor) {
+        return super.setKeyboardFocus(actor);
     }
 
     @Override

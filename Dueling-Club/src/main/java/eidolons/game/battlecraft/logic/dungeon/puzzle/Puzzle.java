@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
+import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Veil;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.*;
@@ -350,5 +351,8 @@ public class Puzzle {
 
     public Condition createSolutionCondition() {
         return null;
+    }
+
+    public void playerActionDone(DC_ActiveObj action) {
     }
 }

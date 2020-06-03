@@ -147,6 +147,7 @@ public class NF_PartyManager extends ScenarioPartyManager {
         getGame().getObjMaster().objAdded(hero);
         getGame().getManager().reset();
         getGame().getBattleFieldManager().resetWallMap();
+        getGame().getCellByCoordinate(hero.getCoordinates()).setObjectsModified(true);
         GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, hero);
         GuiEventManager.trigger(GuiEventType.UNIT_CREATED, hero);
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, hero);

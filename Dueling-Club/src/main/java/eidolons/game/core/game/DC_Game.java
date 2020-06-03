@@ -117,7 +117,7 @@ public class DC_Game extends GenericGame {
 
 
     protected Map<Coordinates, Map<BattleFieldObject, DIRECTION>> directionMap; // ?!
-    protected Map<Coordinates,   FLIP> flipMap;
+    protected Map<Coordinates, FLIP> flipMap = new LinkedHashMap<>();
 
     protected boolean testMode;
     protected boolean dummyPlus;
@@ -299,6 +299,7 @@ public class DC_Game extends GenericGame {
         droppedItemManager.init();
 
         getDungeonMaster().getModuleLoader().loadInitial();
+        getDungeonMaster().getFloorLoader().loadingDone();
         if (AI_ON) {
             aiManager.init();
             dungeonMaster.getExplorationMaster().getAiMaster().getExploreAiManager().initialize();

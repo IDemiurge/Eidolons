@@ -305,23 +305,25 @@ public class DC_MovementManager implements MovementManager {
                 return false;
             }
         }
-        cell.setObjectsModified(true);
         obj.setCoordinates(c);
 
-        return moved(obj);
+        return moved(obj, cell);
     }
 
-    public boolean moved(BattleFieldObject obj) {
-        return moved(obj, Ref.getSelfTargetingRefCopy(obj));
+    public boolean moved(BattleFieldObject obj, DC_Cell cell) {
+        return moved(obj, cell, Ref.getSelfTargetingRefCopy(obj));
     }
-
-    public boolean moved(BattleFieldObject obj, Ref REF) {
+    public void moved(Unit unit) {
+        moved(unit, game.getCellByCoordinate(unit.getCoordinates()));
+    }
+    public boolean moved(BattleFieldObject obj, DC_Cell cell, Ref REF) {
         Event event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
 
         if (obj instanceof Unit) {
             game.getDungeonMaster().getTrapMaster().unitMoved((Unit) obj);
             game.getDungeonMaster().getPortalMaster().unitMoved((Unit) obj);
         }
+        cell.setObjectsModified(true);
         return game.fireEvent(event);
     }
 
@@ -375,5 +377,6 @@ public class DC_MovementManager implements MovementManager {
         return null;
 
     }
+
 
 }

@@ -89,25 +89,27 @@ import static main.system.auxiliary.log.LogMaster.important;
 
 public class SpeechExecutor {
 
-    private static final boolean ABORT_ON_EXCEPTION = false;
-    private final DialogueManager dialogueManager;
-    DialogueHandler handler;
-    DialogueContainer container;
-    MetaGameMaster master;
-    private int waitOnEachLine;
-    private boolean waiting;
-    private boolean running;
-    private boolean paused;
-    private AbstractCoordinates offset;
-    private boolean skipRun;
-    private boolean finalScript;
-    private SpeechScript lastScript;
-    private SpeechScript lt;
+    protected static final boolean ABORT_ON_EXCEPTION = false;
+    protected final DialogueManager dialogueManager;
+    protected final ExecutorHelper helper;
+    protected  DialogueHandler handler;
+    protected  DialogueContainer container;
+    protected  MetaGameMaster master;
+    protected int waitOnEachLine;
+    protected boolean waiting;
+    protected boolean running;
+    protected boolean paused;
+    protected AbstractCoordinates offset;
+    protected boolean skipRun;
+    protected boolean finalScript;
+    protected SpeechScript lastScript;
+    protected SpeechScript lt;
 
 
     public SpeechExecutor(MetaGameMaster master, DialogueManager dialogueManager) {
         this.master = master;
         this.dialogueManager = dialogueManager;
+        helper = new ExecutorHelper(this);
     }
 
     public static void run(String s) {
@@ -153,9 +155,9 @@ public class SpeechExecutor {
 
         if (wait && !skipRun) {
             if (!Cinematics.ON) {
-//            TODO fix it!
-//             if (Eidolons.getGame().isPaused())
-//                    WaitMaster.waitForCondition(delta -> !Eidolons.getGame().isPaused(), 0);
+                //            TODO fix it!
+                //             if (Eidolons.getGame().isPaused())
+                //                    WaitMaster.waitForCondition(delta -> !Eidolons.getGame().isPaused(), 0);
             }
             if (waitOnEachLine != 0) {
                 WAIT(waitOnEachLine);
@@ -166,6 +168,12 @@ public class SpeechExecutor {
                 return true;
             }
         switch (speechAction) {
+            case AWAKEN:
+            case RAISE:
+            case COLLAPSE:
+                helper.execute(speechAction, value, vars);
+                break;
+                
             case RESET:
                 master.getGame().getManager().reset();
                 break;
@@ -324,12 +332,12 @@ public class SpeechExecutor {
                 if (speechAction == CLEAR) {
                     string = "remove";
                 }
-//            case DECIMATE:
+                //            case DECIMATE:
             case ALL:
-//                if (vars.size() > 0) {
-//                    c1 = getCoordinate(vars.get(1), true);
-//                    coordinatesList = CoordinatesMaster.getCoordinatesBetween(c, c1);
-//                }
+                //                if (vars.size() > 0) {
+                //                    c1 = getCoordinate(vars.get(1), true);
+                //                    coordinatesList = CoordinatesMaster.getCoordinatesBetween(c, c1);
+                //                }
                 if (string.isEmpty())
                     if (vars.size() > 0) {
                         string = vars.get(0);
@@ -412,7 +420,7 @@ public class SpeechExecutor {
                 if (value.equalsIgnoreCase("last")) {
                     master.getMissionMaster().getScriptManager().removeLast();
                 } else {
-//                    TODO master.getBattleMaster().getScriptManager().remove(vars.getVar(0));
+                    //                    TODO master.getBattleMaster().getScriptManager().remove(vars.getVar(0));
                 }
                 break;
             case QUEST_DONE:
@@ -456,11 +464,11 @@ public class SpeechExecutor {
                 } else
                     WaitMaster.waitForCondition(p, 0);
 
-//                if (NumberUtils.isInteger(value)) {
-//                    execute(WAIT_FOR, WaitMaster.WAIT_OPERATIONS.ANIMATION_FINISHED.toString()
-//                            + StringMaster.wrapInParenthesis(value));
-//                } else
-//                    execute(WAIT_FOR, WaitMaster.WAIT_OPERATIONS.ANIMATION_FINISHED.toString());
+                //                if (NumberUtils.isInteger(value)) {
+                //                    execute(WAIT_FOR, WaitMaster.WAIT_OPERATIONS.ANIMATION_FINISHED.toString()
+                //                            + StringMaster.wrapInParenthesis(value));
+                //                } else
+                //                    execute(WAIT_FOR, WaitMaster.WAIT_OPERATIONS.ANIMATION_FINISHED.toString());
                 break;
             case WAIT_PASS:
                 bool = true;
@@ -468,12 +476,12 @@ public class SpeechExecutor {
                     max = Integer.valueOf(vars.get(0));
                 }
             case WAIT_INPUT:
-//                DungeonScreen.getInstance().getController().onInput(() -> {
-//                    WaitMaster.WAIT_OPERATIONS operation = WaitMaster.WAIT_OPERATIONS.INPUT;
-//                    WaitMaster.receiveInput(operation, true, true);
-//                });
-//                //set max from value ?
-//                value = "INPUT";
+                //                DungeonScreen.getInstance().getController().onInput(() -> {
+                //                    WaitMaster.WAIT_OPERATIONS operation = WaitMaster.WAIT_OPERATIONS.INPUT;
+                //                    WaitMaster.receiveInput(operation, true, true);
+                //                });
+                //                //set max from value ?
+                //                value = "INPUT";
                 if (NumberUtils.isInteger(value)) {
                     vars.add(value);
                 }
@@ -589,8 +597,8 @@ public class SpeechExecutor {
                         bool ? "" : value, onDone);
                 Vector2 v = getCenteredPos(c);
                 simpleAnim.setOrigin(v);
-//                simpleAnim.setBlending(b);
-//                simpleAnim.setFps(f);
+                //                simpleAnim.setBlending(b);
+                //                simpleAnim.setFps(f);
                 if (dest != null) {
                     Vector2 v2 = getCenteredPos(dest);
                     simpleAnim.setDest(v2);
@@ -716,7 +724,7 @@ public class SpeechExecutor {
                             path = cue.getPath();
                         break bla;
                     case "ambi":
-//                    case "atmo":
+                        //                    case "atmo":
                     case "music":
                         MusicMaster.MUSIC_TRACK track = MusicMaster.getTrackByName(vars.get(0));
                         if (vars.size() > 1) {
@@ -807,7 +815,7 @@ public class SpeechExecutor {
             case PORTRAIT_ANIM:
                 //animate the portait displayed in UI?
                 AnimMaster.onCustomAnim(value, true, 1, () -> {
-//                    handler.continues();
+                    //                    handler.continues();
                 });
                 break;
             case SHAKE:
@@ -818,7 +826,7 @@ public class SpeechExecutor {
                     case "loop":
                     case "open":
                     case "close":
-//                        PortalMaster
+                        //                        PortalMaster
                         break;
                 }
             case COMMENT_CENTERED:
@@ -876,9 +884,9 @@ public class SpeechExecutor {
                 handler.setAutoCamera(!value.equalsIgnoreCase("off"));
                 break;
             case ZOOM:
-//                if (vars.size() < 2) {
-//                    vars.add("swing");
-//                }
+                //                if (vars.size() < 2) {
+                //                    vars.add("swing");
+                //                }
                 CameraMan.MotionData motion =
                         getMotionData(value, vars, true);
                 GuiEventManager.trigger(GuiEventType.CAMERA_ZOOM, motion);
@@ -890,7 +898,7 @@ public class SpeechExecutor {
                         () ->
                                 master.getMissionMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.DIALOGUE,
                                         new Ref(), finalValue)
-//                                execute(SCRIPT, "dialogue=" + finalValue)
+                        //                                execute(SCRIPT, "dialogue=" + finalValue)
 
                 );
                 //TODO
@@ -983,11 +991,11 @@ public class SpeechExecutor {
                     handler.setSpeed(Float.valueOf(value) / 100);
                 } else
                     handler.setSpeed(Float.valueOf(value));
-//TODO
+                //TODO
                 break;
             case WAIT_OFF:
             case WAIT_EACH:
-//                dialogueManager.getd
+                //                dialogueManager.getd
                 if (value.isEmpty() || !NumberUtils.isInteger(value)) {
                     waitOnEachLine = 0;
                 } else
@@ -1014,8 +1022,8 @@ public class SpeechExecutor {
                 }
                 break;
             case NEXT:
-//                container.getCurrent().disableTimer();
-//                WaitMaster.doAfterWait(getWaitTime(Integer.valueOf(value), vars), () -> container.getCurrent().tryNext());
+                //                container.getCurrent().disableTimer();
+                //                WaitMaster.doAfterWait(getWaitTime(Integer.valueOf(value), vars), () -> container.getCurrent().tryNext());
                 container.getCurrent().disableTimer();
                 container.getCurrent().setTime(new Float(getNextTime(Integer.valueOf(value), vars)));
                 break;
@@ -1038,10 +1046,10 @@ public class SpeechExecutor {
                         break;
                     case "continue":
                     case "next":
-//                    TODO do we need it?    container.getCurrent().tryNext();
+                        //                    TODO do we need it?    container.getCurrent().tryNext();
                         break;
                 }
-//                container.setOnDoneCallback();
+                //                container.setOnDoneCallback();
                 break;
             case VIDEO:
                 Runnable r = null;
@@ -1074,23 +1082,23 @@ public class SpeechExecutor {
         return true;
     }
 
-    private void reset() {
+    protected void reset() {
 
         master.getGame().getManager().reset();
     }
 
-    private boolean isVisionRefreshRequired() {
+    protected boolean isVisionRefreshRequired() {
         return !container.isOpaque();
     }
 
-    private boolean checkSkip(SpeechScript.SCRIPT speechAction) {
+    protected boolean checkSkip(SpeechScript.SCRIPT speechAction) {
         switch (speechAction) {
             case FULLSCREEN:
             case BLACKOUT:
             case WHITEOUT:
             case COMMENT:
-//            case SOUND:
-//            case MUSIC:
+                //            case SOUND:
+                //            case MUSIC:
             case WAIT:
             case WAIT_FOR:
             case WAIT_ANIMS:
@@ -1100,16 +1108,16 @@ public class SpeechExecutor {
         return false;
     }
 
-    private void resume() {
+    protected void resume() {
         container.getCurrent().resume();
     }
 
-    private void pause() {
+    protected void pause() {
         container.getCurrent().pause();
     }
 
 
-    private void doOut(String value, List<String> vars, SpeechScript.SCRIPT speechAction) {
+    protected void doOut(String value, List<String> vars, SpeechScript.SCRIPT speechAction) {
         boolean white = speechAction == WHITEOUT;
         Float dur = 4f;
         if (vars.size() > 0) {
@@ -1129,7 +1137,7 @@ public class SpeechExecutor {
         }
     }
 
-    private void doAnim(Boolean ui_bg_both, String value, List<String> vars) {
+    protected void doAnim(Boolean ui_bg_both, String value, List<String> vars) {
         Float alpha = null;
         switch (value) {
             case "out":
@@ -1151,12 +1159,12 @@ public class SpeechExecutor {
         }
     }
 
-    private void doUnit(String value, List<String> vars) {
+    protected void doUnit(String value, List<String> vars) {
         BattleFieldObject unit = vars.size() == 0 ? Eidolons.getMainHero() : getUnit(vars.get(0));
         doUnit(unit, value, vars);
     }
 
-    private void doUnit(BattleFieldObject unit, String value, List<String> vars) {
+    protected void doUnit(BattleFieldObject unit, String value, List<String> vars) {
         //same find-alg!
         if (unit != null) {
             switch (value) {
@@ -1182,7 +1190,7 @@ public class SpeechExecutor {
                 case "replace":
 
                 case "fade":
-//                    unit.kill(unit, false, false);
+                    //                    unit.kill(unit, false, false);
                     unit.kill(unit, false, true);
                     if (unit instanceof Unit) {
                         new DeathAnim(unit).startAsSingleAnim(Ref.getSelfTargetingRefCopy(unit));
@@ -1207,7 +1215,7 @@ public class SpeechExecutor {
 
     }
 
-    private void doShake(String value, List<String> vars) {
+    protected void doShake(String value, List<String> vars) {
         float intensity = Float.valueOf(value);
         float dur = Float.valueOf(vars.get(0));
         Screenshake.ScreenShakeTemplate temp = Screenshake.ScreenShakeTemplate.MEDIUM;
@@ -1231,7 +1239,7 @@ public class SpeechExecutor {
 
     }
 
-    private void doCamera(String value, List<String> vars, SpeechScript.SCRIPT speechAction) {
+    protected void doCamera(String value, List<String> vars, SpeechScript.SCRIPT speechAction) {
         CameraMan.MotionData motionData = getMotionData(value, vars, false);
         if (speechAction == CAMERA_SET) {
             GuiEventManager.trigger(GuiEventType.CAMERA_SET_TO, motionData.dest);
@@ -1240,7 +1248,7 @@ public class SpeechExecutor {
         GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO, motionData);
     }
 
-    private CameraMan.MotionData getMotionData(String value, List<String> vars, boolean zoom) {
+    protected CameraMan.MotionData getMotionData(String value, List<String> vars, boolean zoom) {
         Vector2 v = null;
         if (!zoom) {
             switch (value) {
@@ -1268,7 +1276,7 @@ public class SpeechExecutor {
             interpolation = ActionMaster.getInterpolation(vars.get(1));
         }
         if (zoom) {
-//        new CameraMan.MotionData(Float.valueOf(value) / 100, Float.valueOf(vars.getVar(0)) / 1000, Interpolation.swing);
+            //        new CameraMan.MotionData(Float.valueOf(value) / 100, Float.valueOf(vars.getVar(0)) / 1000, Interpolation.swing);
             if (duration >= 500) {
                 duration = duration / 1000;
             }
@@ -1277,7 +1285,7 @@ public class SpeechExecutor {
         return new CameraMan.MotionData(v, duration, interpolation);
     }
 
-    private BattleFieldObject getUnit(String value) {
+    protected BattleFieldObject getUnit(String value) {
         value = value.trim();
         switch (value.toLowerCase()) {
             case "me":
@@ -1299,11 +1307,11 @@ public class SpeechExecutor {
         return unit;
     }
 
-    private Coordinates getCoordinate(String value) {
+    protected Coordinates getCoordinate(String value) {
         return getCoordinate(value, false);
     }
 
-    private Coordinates getCoordinate(String value, boolean abstract_) {
+    protected Coordinates getCoordinate(String value, boolean abstract_) {
         value = value.trim();
         if (value.contains("+")) {
             Coordinates c = getCoordinate(value.split("[+]")[0], true);
@@ -1335,15 +1343,15 @@ public class SpeechExecutor {
         return c;
     }
 
-    private int getNextTime(Integer millis, List<String> vars) {
+    protected int getNextTime(Integer millis, List<String> vars) {
         return getTime(millis, vars, 1f);
     }
 
-    private int getWaitTime(Integer millis, List<String> vars) {
+    protected int getWaitTime(Integer millis, List<String> vars) {
         return getTime(millis, vars, 0.5f);
     }
 
-    private int getTime(Integer millis, List<String> vars, float coef) {
+    protected int getTime(Integer millis, List<String> vars, float coef) {
         if (CoreEngine.isSuperLite() && CoreEngine.isIDE()) {
             millis = millis / 2;
         } else if (CoreEngine.isMyLiteLaunch()) {
@@ -1357,15 +1365,15 @@ public class SpeechExecutor {
         return millis;
     }
 
-    private void WAIT(int millis) {
+    protected void WAIT(int millis) {
         if (skipRun) {
             return;
         }
-//        if (!CoreEngine.isIDE())
-//        GdxMaster.setLoadingCursor();
+        //        if (!CoreEngine.isIDE())
+        //        GdxMaster.setLoadingCursor();
         waiting = true;
         WaitMaster.WAIT(millis);
-//        GdxMaster.setDefaultCursor();
+        //        GdxMaster.setDefaultCursor();
     }
 
     public void execute(String text) {
@@ -1411,7 +1419,7 @@ public class SpeechExecutor {
         handler.setSkipping(skipRun);
     }
 
-    private boolean executeAction(SpeechScript.SCRIPT speechAction, String value) {
+    protected boolean executeAction(SpeechScript.SCRIPT speechAction, String value) {
         important("Executing action: " + speechAction + " = " + value);
         return execute(speechAction, value);
 

@@ -20,7 +20,7 @@ public class LevelStructure {
         multi_enum_const,
         image,
         objType,
-        file, coordinates,
+        file, coordinates, script,
 
     }
 

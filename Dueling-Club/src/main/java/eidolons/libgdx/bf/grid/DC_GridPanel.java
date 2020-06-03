@@ -11,6 +11,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.VoidHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -56,6 +57,7 @@ import static main.system.GuiEventType.*;
 
 public class DC_GridPanel extends GridPanel {
 
+    private final VoidHandler voidHandler;
     private UnitGridView mainHeroViewShadow;
     private UnitGridView mainHeroViewPale;
     protected UnitGridView mainHeroView;
@@ -73,6 +75,7 @@ public class DC_GridPanel extends GridPanel {
 
     public DC_GridPanel(int paramCols, int paramRows, int cols, int rows) {
         super(paramCols, paramRows, cols, rows);
+        voidHandler = new VoidHandler(this);
     }
 
     @Override
@@ -136,6 +139,7 @@ public class DC_GridPanel extends GridPanel {
         super.act(delta);
         if (!DC_Game.game.isPaused()) {
             getPlatformHandler().act(delta);
+            voidHandler.act(delta );
         }
         if (updateRequired) {
             resetZIndices();
@@ -264,7 +268,7 @@ public class DC_GridPanel extends GridPanel {
 
     private void initMaze(boolean hide, MazePuzzle.MazeData data) {
         Coordinates c = null;
-        for (Coordinates coordinates : data.mazeWalls) {
+        for (Coordinates coordinates : data.mazeMarks) {
             c = data.c.getOffset(coordinates.negativeY());
             GridCellContainer container = cells[c.getX()][(c.getY())];
             if (container == null) {
@@ -579,6 +583,10 @@ public class DC_GridPanel extends GridPanel {
             return mainHeroViewShadow;
         }
         return mainHeroView;
+    }
+
+    public VoidHandler getVoidHandler() {
+        return voidHandler;
     }
 
     public void clearSelection() {

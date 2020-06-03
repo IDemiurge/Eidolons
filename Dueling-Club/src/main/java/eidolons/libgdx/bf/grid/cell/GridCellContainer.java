@@ -607,6 +607,8 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     public void fadeInOverlay(TextureRegion texture) {
+        if (getVoidAnimHappened())
+            return;
 //        setOverlayTexture(texture);
         if (getUnitViewsVisible().size() >= 1) {
             return;

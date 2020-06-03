@@ -2,26 +2,27 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Awakener;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
 import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
 import eidolons.game.module.generator.model.AbstractCoordinates;
 import eidolons.game.netherflame.main.event.TipMessageMaster;
 import eidolons.game.netherflame.main.pale.PaleAspect;
-import main.content.DC_TYPE;
-import main.content.enums.GenericEnums;
-import main.data.DataManager;
+import main.content.enums.EncounterEnums;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.ContainerUtils;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public class PuzzleActions extends PuzzleElement {
@@ -63,20 +64,8 @@ public class PuzzleActions extends PuzzleElement {
             case tip:
                 TipMessageMaster.tip(data);
                 break;
-            case animate_enemies:
-                for (BattleFieldObject object : getObjects(puzzle)) {
-                    if (object.checkBool(GenericEnums.STD_BOOLS.LIVING_STATUE)) {
-                        Unit unit = (Unit) object.getGame().createObject(DataManager.getType("Living " + object.getName(), DC_TYPE.UNITS),
-                                object.getCoordinates(), object.getGame().getPlayer(false));
-                        object.kill();
-                        unit.getAI().setEngaged(true);
-                        unit.getAI().setEngagedOverride(true);
-
-//                        enemies.add(unit);
-                    }
-
-                }
-
+            case awaken:
+                awaken(puzzle, data);
                 break;
         }
         // if (!isPaleReturn(puzzle,punishment))
@@ -125,9 +114,23 @@ public class PuzzleActions extends PuzzleElement {
             case tip:
                 TipMessageMaster.tip(s);
                 break;
+            case awaken:
+                awaken(puzzle, s);
+                break;
         }
     }
 
+    private static void awaken(Puzzle puzzle, String data) {
+        LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(
+                puzzle.getEntranceCoordinates());
+        List<String> strings = ContainerUtils.openContainer(data);
+        EncounterEnums.UNIT_GROUP_TYPE ai= EncounterEnums.UNIT_GROUP_TYPE.GUARDS;
+        Awakener.awaken_type type = Awakener.awaken_type.valueOf(strings.get(0).toLowerCase());
+        if (strings.size()>1) {
+            // ai
+        }
+        DC_Game.game.getDungeonMaster().getAwakener().awaken(struct, ai, type);
+    }
     private static void teleport(Puzzle puzzle, String data) {
         if (data.isEmpty()) {
             data = puzzle.getEntranceCoordinates().toString();

@@ -142,6 +142,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         List<LevelZone> zones = getModel().getModule().getZones();
         LevelZone zone = new LevelZone(zones.size()); //or default per floor template
         zone.setModule(getModel().getModule());
+        zone.setData(new ZoneData(zone));
         //TODO templates
         zones.add(zone);
         getModel().setZone(zone);
@@ -233,7 +234,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
                 overlap.add(c);
             }
         }
-        if (overlap.size()>0)
+        if (overlap.size() > 0) {
         if (EUtils.waitConfirm("Remove " +
                 overlap.size() +
                 " overlapping coordinates?")) {
@@ -245,6 +246,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
                 LevelStruct lowestStruct = getStructureMaster().getLowestStruct(c);
                 lowestStruct.getCoordinatesSet().remove(c);
             }
+        }
     }
 
     private boolean checkOverlap(RoomModel blockTemplate, Coordinates at) {
@@ -410,7 +412,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         getOperationHandler().operation(Operation.LE_OPERATION.REMOVE_BLOCK, block);
         updateTree();
         if (block.getRoomType() == ROOM_TYPE.PLATFORM) {
-            getAdvFuncs().platformBlockRemoved(block);
+            getPlatformHandler().platformBlockRemoved(block);
         }
     }
 

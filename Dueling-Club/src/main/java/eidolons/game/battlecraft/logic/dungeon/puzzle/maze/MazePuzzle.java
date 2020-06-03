@@ -28,9 +28,7 @@ import java.util.List;
  * <p>
  * use room templates for the maze structure
  * <p>
- * variant - block the cell behind hero
- * variant - just find a way out, culdesacs have traps/fights
- * dynamically changing
+ * variant - block the cell behind hero variant - just find a way out, culdesacs have traps/fights dynamically changing
  * <p>
  * heart of the maze
  * <p>
@@ -40,7 +38,7 @@ import java.util.List;
  */
 public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
 
-    private RoomTemplateMaster master;
+    protected RoomTemplateMaster master;
 
     GeneratorEnums.ROOM_TEMPLATE_GROUP group;
     LocationBuilder.ROOM_TYPE type;
@@ -50,6 +48,7 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
 
     List<Coordinates> mazeWalls;
     MazeData data;
+
     public MazePuzzle(MazeType mazeType) {
         data = new MazeData(getCoordinates(), mazeType);
 
@@ -58,7 +57,7 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
     public void showMaze() {
         //idea - in Pale?
         data = new MazeData(getCoordinates(), data.mazeType);
-        data.mazeWalls = mazeWalls;
+        data.mazeMarks = mazeWalls;
         GuiEventManager.trigger(GuiEventType.SHOW_MAZE, data);
 
     }
@@ -66,7 +65,7 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
     public void hideMaze() {
         //idea - in Pale?
         data = new MazeData(getCoordinates(), data.mazeType);
-        data.mazeWalls = mazeWalls;
+        data.mazeMarks = mazeWalls;
         GuiEventManager.trigger(GuiEventType.HIDE_MAZE, data);
     }
 
@@ -78,7 +77,7 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
     public static class MazeData {
         public Coordinates c;
         public MazeType mazeType;
-        public List<Coordinates> mazeWalls;
+        public List<Coordinates> mazeMarks;
 
         public MazeData(Coordinates c, MazeType mazeType) {
             this.c = c;
@@ -92,11 +91,11 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
         FLAME, DARK,
         ;
 
-        private String imagePath;
+        protected String imagePath;
 
         public String getImagePath() {
             //random variant?
-//            PathFinder.getVar
+            //            PathFinder.getVar
             return Images.LIGHT_SKULL;
         }
 
@@ -108,6 +107,7 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
     protected String getDefaultTitle() {
         return "Twilit Maze";
     }
+
     public void resetAndGlimpseMaze() {
         resetMaze();
         showMaze();
@@ -116,8 +116,8 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
         hideMaze();
     }
 
-    private int getGlimpseTime() {
-        return (int) (2550/getDifficultyCoef());
+    protected int getGlimpseTime() {
+        return (int) (2550 / getDifficultyCoef());
     }
 
     @Override
@@ -130,43 +130,43 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
     public void resetMaze() {
 
         LevelData data = new LevelData("");
-//        data.setValue(GeneratorEnums.LEVEL_VALUES.ROOM_COUNT_MOD);
-//        data.setValue(GeneratorEnums.LEVEL_VALUES.WRAP_CELL_TYPE, 1);
-        data.setTemplateGroups(new GeneratorEnums.ROOM_TEMPLATE_GROUP[]{
-                GeneratorEnums.ROOM_TEMPLATE_GROUP.PUZZLE_MAZE
-        });
+        data.setTemplateGroups(                getTemplateGroups());
         master = new RoomTemplateMaster(data);
         GeneratorEnums.EXIT_TEMPLATE template = getTemplateForPuzzle();
         RoomModel maze = master.getNextRandomModel(LocationBuilder.ROOM_TYPE.THRONE_ROOM,
                 template,
                 FacingMaster.getRandomFacing(), GeneratorEnums.ROOM_TEMPLATE_GROUP.PUZZLE_MAZE);
         mazeWalls = new ArrayList<>();
-//        maze.setRotations();
+        //        maze.setRotations();
         for (int i = 0; i < maze.getCells().length; i++) {
             for (int j = 0; j < maze.getCells()[0].length; j++) {
-                if (maze.getCells()[i][j].equalsIgnoreCase(GeneratorEnums.ROOM_CELL.WALL.symbol)) {
+                if (maze.getCells()[i][j].equalsIgnoreCase(getMarkSymbol().symbol)) {
                     mazeWalls.add(Coordinates.get(i, j));
                 }
 
             }
         }
 
-        //cell overlays for blocked?
-
-
-//        RoomTemplateMaster.createRoomModel(1, "#", data, GeneratorEnums.EXIT_TEMPLATE.THROUGH,
-//                LocationBuilder.ROOM_TYPE.CORRIDOR);
-
     }
 
-    private GeneratorEnums.EXIT_TEMPLATE getTemplateForPuzzle() {
-        if (getWidth()>=11) {
+    protected GeneratorEnums.ROOM_TEMPLATE_GROUP[] getTemplateGroups() {
+        return new GeneratorEnums.ROOM_TEMPLATE_GROUP[]{
+                GeneratorEnums.ROOM_TEMPLATE_GROUP.PUZZLE_MAZE
+        };
+    }
+
+    protected GeneratorEnums.ROOM_CELL getMarkSymbol() {
+        return GeneratorEnums.ROOM_CELL.WALL;
+    }
+
+    protected GeneratorEnums.EXIT_TEMPLATE getTemplateForPuzzle() {
+        if (getWidth() >= 11) {
             return GeneratorEnums.EXIT_TEMPLATE.CROSSROAD;
         }
-        if (getWidth()>=9) {
+        if (getWidth() >= 9) {
             return GeneratorEnums.EXIT_TEMPLATE.FORK;
         }
-        if (getWidth()>=7) {
+        if (getWidth() >= 7) {
             return GeneratorEnums.EXIT_TEMPLATE.ANGLE;
         }
         return GeneratorEnums.EXIT_TEMPLATE.THROUGH;
@@ -174,7 +174,7 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
 
     public String getQuestText() {
         return "Reach the Light on the other side";
-//        return "Cross to the other side";
+        //        return "Cross to the other side";
     }
 
 }

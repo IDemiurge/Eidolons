@@ -102,7 +102,7 @@ public class LE_GridOverlays extends GridOverlaysManager {
         if (struct.getCoordinatesSet().contains(cell.getCoordinates())) {
             boolean block = struct instanceof LevelBlock;
             if (block) {
-                Color c = LevelEditor.getCurrent().getManager().getStructureManager().
+                Color c = LevelEditor.getCurrent().getManager().getStructureHandler().
                         getColorForBlock((LevelBlock) struct);
                 batch.setColor(new Color(c.r, c.g, c.b, 0.33f));
 

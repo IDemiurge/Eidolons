@@ -5,8 +5,6 @@ import main.level_editor.backend.handlers.ControlButtonHandler;
 public interface IAdvFuncs extends ControlButtonHandler {
     //operates on selection?
 
-    void platform();
-
     void fill();
 
     void clear();

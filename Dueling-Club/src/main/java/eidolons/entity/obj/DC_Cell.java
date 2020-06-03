@@ -6,7 +6,6 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.GridMaster;
-import main.content.CONTENT_CONSTS;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
@@ -25,6 +24,12 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static main.content.CONTENT_CONSTS.COLOR_THEME;
+import static main.content.CONTENT_CONSTS.MARK;
+
 public class DC_Cell extends DC_Obj implements Cell {
 
     private static ObjType EMPTY_CELL_TYPE;
@@ -34,7 +39,7 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     private DungeonEnums.CELL_IMAGE cellType;
     private int cellVariant;
-    private  CONTENT_CONSTS.COLOR_THEME colorTheme;
+    private  COLOR_THEME colorTheme;
 
     private float overlayRotation;
     private String overlayData;
@@ -43,6 +48,8 @@ public class DC_Cell extends DC_Obj implements Cell {
     BattleFieldObject[] objects;
     BattleFieldObject[] nonOverlaying;
     private boolean objectsModified;
+
+    private Set<MARK> marks;
 
     @Override
     protected void preInit(Game game, ObjType type, Player owner, Ref ref) {
@@ -132,7 +139,7 @@ public class DC_Cell extends DC_Obj implements Cell {
         this.overlayRotation = overlayRotation;
     }
 
-    public CONTENT_CONSTS.COLOR_THEME getColorTheme() {
+    public COLOR_THEME getColorTheme() {
         return colorTheme;
     }
 
@@ -141,7 +148,7 @@ public class DC_Cell extends DC_Obj implements Cell {
         this.cellVariant = cellVariant;
     }
 
-    public void setColorTheme(CONTENT_CONSTS.COLOR_THEME colorTheme) {
+    public void setColorTheme(COLOR_THEME colorTheme) {
         this.colorTheme = colorTheme;
     }
 
@@ -196,6 +203,12 @@ public class DC_Cell extends DC_Obj implements Cell {
             return DIRECTION.LEFT;
         }
         return null;
+    }
+    public Set<MARK> getMarks() {
+        if (marks == null) {
+            marks = new HashSet<>();
+        }
+        return marks;
     }
 
     public boolean isBorderCell() {

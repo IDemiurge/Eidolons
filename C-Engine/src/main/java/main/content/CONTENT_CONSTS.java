@@ -11,6 +11,9 @@ import main.game.bf.directions.UNIT_DIRECTION;
 
 public class CONTENT_CONSTS {
 
+    public enum    MARK {
+        boss, entrance, resp, togglable,
+    }
     public enum COLOR_THEME {
         BLUE, GREEN, RED, DARK, LIGHT, YELLOW, PURPLE {
             public String getSuffix() {

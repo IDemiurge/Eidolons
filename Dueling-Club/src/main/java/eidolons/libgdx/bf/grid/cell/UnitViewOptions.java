@@ -9,6 +9,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxColorMaster;
+import main.content.CONTENT_CONSTS;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
@@ -35,6 +36,7 @@ public class UnitViewOptions {
     private boolean hoverResponsive;
     private String portraitPath;
     private BattleFieldObject obj;
+    private CONTENT_CONSTS.FLIP flip;
 
 
     public UnitViewOptions() {
@@ -99,6 +101,7 @@ public class UnitViewOptions {
         this.portraitPath =  (obj.getImagePath());
         this.name = obj.getName();
         this.obj = obj;
+        this.flip = obj.getFlip();
 
 
 
@@ -203,6 +206,10 @@ public class UnitViewOptions {
 
     public void setTeamColor(Color teamColor) {
         this.teamColor = teamColor;
+    }
+
+    public CONTENT_CONSTS.FLIP getFlip() {
+        return flip;
     }
 
     public void setHoverResponsive(boolean hoverResponsive) {

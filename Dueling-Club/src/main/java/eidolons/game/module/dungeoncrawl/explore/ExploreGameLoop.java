@@ -154,29 +154,34 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         ActionInput playerAction = playerActionQueue.removeLast();
 
         if (checkActionInputValid(playerAction)) {
-            game.getMovementManager().cancelAutomove(activeUnit);
-            //TODO igg demo fix
-            Eidolons.onThisOrNonGdxThread(() ->
-                    activateAction(playerAction)
-            );
-            waitForAnimations(playerAction);
-            boolean result = playerAction.getAction().getHandler().isResult();
-            master.getActionHandler().playerActionActivated(playerAction.getAction(), result);
-            master.getTimeMaster().setGuiDirtyFlag(true);
-            master.getPartyMaster().leaderActionDone(playerAction);
-
-            getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().killVisibilityResetTimer();
+            playerAction(playerAction);
 
         }
         waitForPause();
         return exited;
     }
 
+    protected void playerAction(ActionInput playerAction) {
+        game.getMovementManager().cancelAutomove(activeUnit);
+        //TODO igg demo fix
+        activateAction(playerAction);
+        waitForAnimations(playerAction);
+        boolean result = playerAction.getAction().getHandler().isResult();
+        master.getActionHandler().playerActionActivated(playerAction.getAction(), result);
+        master.getTimeMaster().setGuiDirtyFlag(true);
+        master.getPartyMaster().leaderActionDone(playerAction); //for members to follow or so..
+        getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().killVisibilityResetTimer(); //still relevant?
+        if (result) {
+            getGame().getDungeonMaster().getPuzzleMaster().playerActionDone(playerAction.getAction());
+        }
+
+    }
+
     protected boolean handleAi() {
         if (master.getAiMaster().isAiActs()) {
             DequeImpl<ActionInput> queue = getAiActionQueue();
             while (!queue.isEmpty()) {
-//            while (queue.size()>3) {
+                //            while (queue.size()>3) {
                 //sort? change display?
                 // active unit?
                 try {
@@ -323,11 +328,11 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 if (game.getMissionMaster().getOutcomeManager().checkOutcomeClear()) {
                     break;
                 }
-                    if (checkNextFloor()) {
-                        game.getMissionMaster().getOutcomeManager().next();
-                        game.getVisionMaster().refresh();
-                        break;
-                    }
+                if (checkNextFloor()) {
+                    game.getMissionMaster().getOutcomeManager().next();
+                    game.getVisionMaster().refresh();
+                    break;
+                }
                 if (result) {
                     break;
                 }

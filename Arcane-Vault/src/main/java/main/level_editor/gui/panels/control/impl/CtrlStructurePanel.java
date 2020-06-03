@@ -12,7 +12,7 @@ public class CtrlStructurePanel extends LE_ControlPanel<IStructureHandler> {
 
     @Override
     protected IStructureHandler getHandler() {
-        return getManager().getStructureManager();
+        return getManager().getStructureHandler();
     }
 
     @Override

@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.StructMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.game.bf.Coordinates;
+import main.level_editor.backend.functions.advanced.IPlatformHandlerImpl;
 import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
 import main.level_editor.backend.functions.io.LE_XmlHandler;
@@ -73,6 +74,9 @@ public abstract class LE_Handler {
         return getGame().getMetaMaster().getDungeonMaster().getStructMaster();
     }
 
+    public IPlatformHandlerImpl getPlatformHandler() {
+        return manager.getPlatformHandler();
+    }
     public LE_EntityHandler getEntityHandler() {
         return manager.getEntityHandler();
     }
@@ -118,7 +122,7 @@ public abstract class LE_Handler {
     }
 
     public LE_StructureHandler getStructureHandler() {
-        return manager.getStructureManager();
+        return manager.getStructureHandler();
     }
 
     public LE_ModuleHandler getModuleHandler() {

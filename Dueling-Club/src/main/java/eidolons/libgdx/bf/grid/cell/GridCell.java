@@ -52,6 +52,7 @@ public class GridCell extends BlockableGroup implements Borderable {
     protected Label infoText;
 
     FadeImageContainer overlay;
+    private boolean voidAnimHappened;
 
     // some creatures can walk there?
 
@@ -124,7 +125,7 @@ public class GridCell extends BlockableGroup implements Borderable {
         return this;
     }
 
-    protected float getCellImgAlpha() {
+    public float getCellImgAlpha() {
         return      0.8f   ;
         //TODO derive alpha from somewhere
     }
@@ -358,6 +359,14 @@ public class GridCell extends BlockableGroup implements Borderable {
 
     public float getOverlayRotation() {
         return overlayRotation;
+    }
+
+    public void setVoidAnimHappened(boolean voidAnimHappened) {
+        this.voidAnimHappened = voidAnimHappened;
+    }
+
+    public boolean getVoidAnimHappened() {
+        return voidAnimHappened;
     }
 }
 

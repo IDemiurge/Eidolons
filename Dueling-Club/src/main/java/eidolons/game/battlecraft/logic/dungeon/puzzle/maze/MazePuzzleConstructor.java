@@ -32,8 +32,8 @@ public class MazePuzzleConstructor extends PuzzleConstructor<MazePuzzle> {
     protected PuzzleResolution createResolution() {
         PuzzleResolution resolution = new PuzzleResolution(puzzle) {
             @Override
-            protected Condition getPunishConditions() {
-                return new MazePuzzleCondition((MazePuzzle) puzzle);
+            protected Condition getFailConditions() {
+                return new MazePuzzleFailCondition((MazePuzzle) puzzle);
             }
         };
         // DIRECTION d= DIRECTION.LEFT;// TODO

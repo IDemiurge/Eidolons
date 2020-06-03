@@ -63,6 +63,7 @@ public class DataUnit<T extends Enum<T>> {
     public boolean getBooleanValue(T t) {
         return StringMaster.getBoolean(getValue(t));
     }
+
     public boolean getBooleanValue(String t) {
         return StringMaster.getBoolean(getValue(t));
     }
@@ -77,7 +78,7 @@ public class DataUnit<T extends Enum<T>> {
         return NumberUtils.getInteger(val);
     }
 
-        public float getFloatValue(T value) {
+    public float getFloatValue(T value) {
         float val;
         try {
             val = Float.parseFloat(getValue(value));
@@ -98,6 +99,7 @@ public class DataUnit<T extends Enum<T>> {
         return Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
                 collect(Collectors.toList()).toArray(new String[0]);
     }
+
     public int getIntValue(T value) {
         return getIntValue(value.name());
     }
@@ -144,8 +146,7 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     public void addValue(T name, String value) {
-        MapMaster.addToStringMap(values, name.name(), value,
-                DataUnitFactory.getSeparator(false));
+        MapMaster.addToStringMap(values, name.name(), value, ",");
     }
 
     public void setValue(String name, String value) {
@@ -181,7 +182,7 @@ public class DataUnit<T extends Enum<T>> {
         for (String entry : entries) {
             String[] pair = entry.split(getPairSeparator());
             if (pair.length != 2) {
-//                format=
+                //                format=
                 LogMaster.log(0, "malformed data:" + entry);
                 handleMalformedData(entry);
                 continue;

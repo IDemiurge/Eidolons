@@ -292,7 +292,7 @@ public class CameraMan {
 
 
     private boolean isArrowMotionsOn() {
-        return CoreEngine.isLevelEditor();
+        return false;
     }
 
     Map<DIRECTION, CameraMotion> moveMap = new HashMap<>();

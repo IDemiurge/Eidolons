@@ -23,6 +23,7 @@ import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -73,7 +74,9 @@ public class ObjCreator extends Master {
         //if (WaitMaster.getCompleteOperations().contains(WAIT_OPERATIONS.DUNGEON_SCREEN_READY))
         GuiEventManager.trigger(GuiEventType.UNIT_CREATED, obj);
         game.getState().addObject(obj);
-
+        if (game.isStarted()) {
+            game.getCellByCoordinate(Coordinates.get(x, y)).setObjectsModified(true);
+        }
         initObject(obj, type);
 
         if (getGame().getMetaMaster().isRngQuestsEnabled())

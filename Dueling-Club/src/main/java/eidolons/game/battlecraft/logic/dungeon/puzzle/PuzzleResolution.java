@@ -24,7 +24,7 @@ public class PuzzleResolution extends PuzzleElement {
         unseal_door,
         teleport,
         tip,
-        open_portal
+        awaken, open_portal
     }
 
     public enum PUZZLE_PUNISHMENT {
@@ -32,7 +32,7 @@ public class PuzzleResolution extends PuzzleElement {
         spell,
         teleport,
         death,
-        animate_enemies,
+        awaken,
         tip,
         ;
     }
@@ -70,7 +70,7 @@ public class PuzzleResolution extends PuzzleElement {
         createActionTriggers();
     }
     protected void createPunishTrigger() {
-        Condition checks = getPunishConditions();
+        Condition checks = getFailConditions();
         if (checks == null) {
             return;
         }
@@ -117,7 +117,7 @@ public class PuzzleResolution extends PuzzleElement {
         return Event.STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE;
     }
 
-    protected Condition getPunishConditions() {
+    protected Condition getFailConditions() {
        return ConditionsUtils.forPuzzlePunishment(puzzle, punishments.keySet());
     }
     

@@ -42,6 +42,15 @@ public class ActionMaster {
             }
         });
     }
+    public static void addCustomAction(Actor actor, Runnable runnable) {
+        addAction(actor, new Action() {
+            @Override
+            public boolean act(float delta) {
+                runnable.run();
+                return true;
+            }
+        });
+    }
         public static void addAfter(Actor actor, Action action) {
         if (getActionsOfClass(actor, AfterAction.class).size() > 0) {
             return;

@@ -259,7 +259,11 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
         textPanel.open();
     }
 
-    public void textInput(Input.TextInputListener textInputListener, String title, String text, String hint) {
+    public void textInput( Input.TextInputListener textInputListener,
+                          String title, String text, String hint) {
+        textInput(false,textInputListener, title, text, hint);
+    }
+    public void textInput(boolean script,Input.TextInputListener textInputListener, String title, String text, String hint) {
         textInputPanel = new TextInputPanel(title, text, hint, textInputListener);
         addActor(textInputPanel);
         textInputPanel.setPosition(GdxMaster.centerWidth(textInputPanel), GdxMaster.centerHeight(textInputPanel));
@@ -313,4 +317,5 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
     public void setOverlayPanel(OverlayPanel overlayPanel) {
         this.overlayPanel = overlayPanel;
     }
+
 }

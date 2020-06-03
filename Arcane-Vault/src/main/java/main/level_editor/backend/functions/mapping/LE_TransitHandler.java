@@ -2,8 +2,10 @@ package main.level_editor.backend.functions.mapping;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import main.content.CONTENT_CONSTS;
 import main.data.xml.XML_Converter;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
@@ -38,16 +40,18 @@ public class LE_TransitHandler extends LE_Handler {
             entrances.add((Entrance) objectById);
         }
     }
-    public void addTransit(Integer id, Coordinates c ) {
+
+    public void addTransit(Integer id, Coordinates c) {
         Obj objectByCoordinate = getGame().getObjectByCoordinate(c);
         if (objectByCoordinate instanceof Entrance) {
             Integer id1 = getIdManager().getId((BattleFieldObject) objectByCoordinate);
             addTransit(id, id1);
         } else {
-            main.system.auxiliary.log.LogMaster.log(1,"NO EXIT: " +c);
+            main.system.auxiliary.log.LogMaster.log(1, "NO EXIT: " + c);
         }
     }
-        public void addTransit(Integer id, Integer id2) {
+
+    public void addTransit(Integer id, Integer id2) {
         moduleTransitMap.put(id, id2);
 
     }
@@ -95,7 +99,7 @@ public class LE_TransitHandler extends LE_Handler {
             }
             BattleFieldObject entrance = getIdManager().getObjectById(id);
             BattleFieldObject pair = getIdManager().getObjectById(pairId);
-            boolean oneWay = pair==null; //TODO
+            boolean oneWay = pair == null; //TODO
             if (oneWay) {
                 builder.append(id).append("->").append(entrance.getCoordinates()).append(";");
             } else {
@@ -104,7 +108,15 @@ public class LE_TransitHandler extends LE_Handler {
             }
         }
         xmlBuilder.append(XML_Converter.wrap(FloorLoader.TRANSIT_IDS, builder.toString()));
+        for (Coordinates c : getFloorWrapper().getTextDataMap().keySet()) {
+            if (getFloorWrapper().getTextDataMap().get(c).getValue(CellScriptData.CELL_SCRIPT_VALUE.marks).contains(
+                    CONTENT_CONSTS.MARK.entrance.name())) {
+                xmlBuilder.append(XML_Converter.wrap(FloorLoader.MAIN_ENTRANCE, c.toString()));
+                return
+                        xmlBuilder.toString();
+            }
 
+        }
         Integer id = null;
         Integer id2 = null;
         for (Entrance entrance : entrances) {
@@ -143,7 +155,7 @@ public class LE_TransitHandler extends LE_Handler {
         EUtils.showInfoText("Unpaired entrance: "
                 + getIdManager().getObjectById(id).getNameAndCoordinate());
         //TODO remove the other end?
-//        entranceAdded(getIdManager().getObjectById(id));
+        //        entranceAdded(getIdManager().getObjectById(id));
     }
 
     public void objAdded(BattleFieldObject obj) {
@@ -151,7 +163,7 @@ public class LE_TransitHandler extends LE_Handler {
             entranceAdded((Entrance) obj);
         } else {
             if (addingExitFor != null) {
-                unpaired= addingExitFor;
+                unpaired = addingExitFor;
             }
             addingExitFor = null;
         }
@@ -163,13 +175,13 @@ public class LE_TransitHandler extends LE_Handler {
             if (EUtils.waitConfirm("Pair with "
                     + getIdManager().getObjectById(unpaired).getNameAndCoordinate())) {
                 addingExitFor = unpaired;
-                unpaired=null ;
+                unpaired = null;
             }
         }
         Integer id = getIdManager().getId(obj);
         if (addingExitFor != null) {
             moduleTransitMap.put(addingExitFor, id);
-            moduleTransitMap.put( id , addingExitFor);
+            moduleTransitMap.put(id, addingExitFor);
             addingExitFor = null;
             return;
         }

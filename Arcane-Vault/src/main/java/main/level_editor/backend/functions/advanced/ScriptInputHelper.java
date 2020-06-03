@@ -3,6 +3,7 @@ package main.level_editor.backend.functions.advanced;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
@@ -19,6 +20,7 @@ public class ScriptInputHelper extends TextInputPanel {
                     "Last",
                     "Area",
                     "Id",
+                    "Struct",
             };
     private String lastInserted;
 
@@ -33,7 +35,9 @@ public class ScriptInputHelper extends TextInputPanel {
         row();
         add(controlPanel);
         for (String cmd : cmds) {
-            controlPanel.add(new SmartButton(cmd, ButtonStyled.STD_BUTTON.MENU, () -> command(cmd)));
+            controlPanel.add(new SmartButton(cmd, ButtonStyled.STD_BUTTON.MENU, () ->
+                    Eidolons.onNonGdxThread(() ->
+                            command(cmd))));
         }
     }
 
@@ -48,6 +52,10 @@ public class ScriptInputHelper extends TextInputPanel {
             case "Id":
                 insert(ContainerUtils.constructStringContainer(true,
                         manager.getSelectionHandler().getSelection().getIds(), ","));
+                break;
+            case "Struct":
+                insert(manager.getStructureMaster().getLowestStruct
+                        (manager.getSelectionHandler().getSelection().getLastCoordinates()).getName());
                 break;
             case "Area":
                 insert(ContainerUtils.constructStringContainer(true,

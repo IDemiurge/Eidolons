@@ -4,10 +4,10 @@ import eidolons.ability.conditions.DC_Condition;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 
-public class MazePuzzleCondition extends DC_Condition {
+public class MazePuzzleFailCondition extends DC_Condition {
     MazePuzzle puzzle;
 
-    public MazePuzzleCondition(MazePuzzle puzzle ) {
+    public MazePuzzleFailCondition(MazePuzzle puzzle ) {
         this.puzzle = puzzle;
     }
 

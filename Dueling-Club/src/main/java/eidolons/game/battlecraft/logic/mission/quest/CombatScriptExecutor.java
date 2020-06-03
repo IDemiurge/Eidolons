@@ -87,7 +87,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
     }
 
     public void createMissionTriggers() {
-        String scripts =  getMission().getFloor().getProperty(PROPS.FLOOR_SCRIPTS);
+        String scripts = getMission().getFloor().getProperty(PROPS.FLOOR_SCRIPTS);
         if (!scripts.isEmpty())
             scripts += ScriptSyntax.SCRIPTS_SEPARATOR;
         try {
@@ -103,7 +103,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
     public String readScriptsFile() {
         String text = FileManager.readFile(
                 getScriptsPath());
-//        text = StringMaster.getLastPart(text, ScriptSyntax.COMMENT_CLOSE);
+        //        text = StringMaster.getLastPart(text, ScriptSyntax.COMMENT_CLOSE);
         String[] parts = text.split(ScriptSyntax.COMMENT_CLOSE);
         if (parts.length == 1)
             return "";
@@ -113,7 +113,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
     private String getScriptsPath() {
         String name = getMission().getFloor().getName();
         if (EidolonsGame.DUEL) {
-            name="duel";
+            name = "duel";
         }
         return PathUtils.buildPath(PathFinder.getTextPath(),
                 "scripts", "demo", name + " " + ScriptGenerator.SCRIPTS_FILE_NAME);
@@ -175,7 +175,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
             case QUEST:
                 return doQuest(false, ref, args);
             case SCRIPT_IF:
-                args[0]=args[1]+ StringMaster.wrapInParenthesis(args[0]      );
+                args[0] = args[1] + StringMaster.wrapInParenthesis(args[0]);
                 getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().
                         execute(SpeechScript.SCRIPT.SCRIPT_IF,
                                 args[0]);
@@ -190,7 +190,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
                         execute(SpeechScript.SCRIPT.SCRIPT,
                                 args[0]);
                 return true;
-//                return doScript(ref, args);
+            //                return doScript(ref, args);
 
             case REPOSITION:
                 return doReposition(ref, args);
@@ -260,16 +260,16 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
             BattleFieldObject a = getGame().getObjMaster().getByName(arg, ref);
             if (a != null) {
                 AggroMaster.aggro((Unit) a, Eidolons.getMainHero());
-                hasAggro=true;
-            }
-        }
-        if (!hasAggro)
-        for (Unit unit : Eidolons.getGame().getUnits()) {
-            if (Eidolons.getMainHero().getCoordinates().dst(unit.getCoordinates()) < dst) {
-                AggroMaster.aggro(unit, Eidolons.getMainHero());
                 hasAggro = true;
             }
         }
+        if (!hasAggro)
+            for (Unit unit : Eidolons.getGame().getUnits()) {
+                if (Eidolons.getMainHero().getCoordinates().dst(unit.getCoordinates()) < dst) {
+                    AggroMaster.aggro(unit, Eidolons.getMainHero());
+                    hasAggro = true;
+                }
+            }
         if (hasAggro) {
             Eidolons.getGame().getDungeonMaster().getExplorationMaster().switchExplorationMode(false);
         } else {
@@ -331,9 +331,9 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
 
     //moves all party members to new positions around given origin
     private boolean doReposition(Ref ref, String[] args) {
-//        GuiEventManager.trigger(GuiEventType.SHADOW_MAP_FADE_IN, 100);
-//        String group = args[i];
-//        i++;
+        //        GuiEventManager.trigger(GuiEventType.SHADOW_MAP_FADE_IN, 100);
+        //        String group = args[i];
+        //        i++;
         if (PaleAspect.ON) {
             PaleAspect.shadowLeapToLocation(Coordinates.get(args[0]));
             return true;
@@ -354,11 +354,12 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
             } else {
                 unit.setCoordinates((Coordinates) RandomWizard.getRandomListObject(coordinates));
             }
+            game.getMovementManager().moved(unit);
         }
         for (Unit unit : members) {
             GuiEventManager.trigger(GuiEventType.UNIT_MOVED, unit);
         }
-//        GuiEventManager.trigger(GuiEventType.SHADOW_MAP_FADE_OUT,  0);
+        //        GuiEventManager.trigger(GuiEventType.SHADOW_MAP_FADE_OUT,  0);
         return true;
     }
 
@@ -371,7 +372,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         if (text == null) {
             text = key;
         }
-//        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, img, text, c);
+        //        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, img, text, c);
 
         GridRenderHelper.instance.comment_(img, text, c);
         Eidolons.getGame().getLogManager().log(name + " :" + removeSequentialKey(text));
@@ -379,8 +380,8 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
     }
 
     public static boolean doComment(Unit unit, String key, Vector2 at) {
-//        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, unit, key, at);
-        GridRenderHelper.instance.comment_( unit, key, at);
+        //        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, unit, key, at);
+        GridRenderHelper.instance.comment_(unit, key, at);
         return true;
     }
 
@@ -418,7 +419,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
 
     private boolean doKill(Entity entity) {
         entity.kill(entity, true, false);
-//        entity.kill(killer, !annihilate, quiet);
+        //        entity.kill(killer, !annihilate, quiet);
         return true;
     }
 
@@ -428,7 +429,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
     }
 
     private boolean doUnitOperation(COMBAT_SCRIPT_FUNCTION function, Ref ref, String[] args) {
-//        int i = 0;
+        //        int i = 0;
         String name = args.length == 0 ? "source" : args[0];
         Unit unit = (Unit) ref.getObj(name);
         if (unit == null) {
@@ -468,7 +469,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         else
             i++;
         List<String> units = new ArrayList<>();
-//        if (args[i].contains(ScriptSyntax.SPAWN_ARG_UNITS_WAVE))
+        //        if (args[i].contains(ScriptSyntax.SPAWN_ARG_UNITS_WAVE))
         String unitString = args[i];
         int level = NumberUtils.getInteger(VariableManager.getVars(unitString));
         unitString = VariableManager.removeVarPart(unitString);
@@ -497,9 +498,9 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
             return false;
         i++;
 
-//        CoordinatesFactory.createCoordinates(unitString);
-//        if (origin==null )
-//            origin = ref.getObj(unitString).getCoordinates();
+        //        CoordinatesFactory.createCoordinates(unitString);
+        //        if (origin==null )
+        //            origin = ref.getObj(unitString).getCoordinates();
 
         List<Coordinates> coordinates = null;
         if (group) {
@@ -537,13 +538,13 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
     }
 
     private Coordinates getCoordinates(String arg, Ref ref) {
-//TODO have an arg for N of Units
+        //TODO have an arg for N of Units
         Coordinates origin = null;
-            try {
-                origin = Coordinates.get(arg);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+        try {
+            origin = Coordinates.get(arg);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         return origin;
     }
 

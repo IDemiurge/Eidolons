@@ -18,6 +18,7 @@ import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.CONTENT_CONSTS;
 import main.system.GuiEventManager;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class BaseView extends SuperActor  implements Hoverable{
     protected TextureRegion originalTexture;
     protected TextureRegion originalTextureAlt;
     protected FadeImageContainer portrait;
+    protected CONTENT_CONSTS.FLIP flip;
     private Image altPortrait;
     protected List<SpriteX> overlaySprites;
     protected List<SpriteX> underlaySprites;

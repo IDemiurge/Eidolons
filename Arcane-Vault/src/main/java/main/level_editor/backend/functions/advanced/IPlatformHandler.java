@@ -1,6 +1,12 @@
 package main.level_editor.backend.functions.advanced;
 
 public interface IPlatformHandler {
+
+    void platform();
+    void move();
+    void remove();
+    void destination();
+    void obstacle();
     /*
 destinations could be ofc a list. Hold shift to edit+add
 

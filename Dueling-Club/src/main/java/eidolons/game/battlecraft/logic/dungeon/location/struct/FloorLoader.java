@@ -8,7 +8,6 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
-import main.content.CONTENT_CONSTS;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.xml.XmlNodeMaster;
@@ -16,6 +15,7 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static main.content.CONTENT_CONSTS.FLIP;
+import static main.content.CONTENT_CONSTS.MARK;
 import static main.system.auxiliary.log.LogMaster.log;
 
 public class FloorLoader extends DungeonHandler {
@@ -147,16 +149,6 @@ public class FloorLoader extends DungeonHandler {
 
     }
 
-    private Map<Coordinates, CellScriptData> buildCellMap(String textContent) {
-        Map<Coordinates, CellScriptData> map = new HashMap<>();
-        for (String substring : ContainerUtils.openContainer(textContent, StringMaster.VERTICAL_BAR)) {
-            String[] split = substring.split("=");
-            Coordinates c = Coordinates.get(split[0]);
-            map.put(c, new CellScriptData(split[1]));
-
-        }
-        return map;
-    }
 
     protected void initPlatformData(Module module, String textContent) {
         module.setPlatformData(textContent);
@@ -306,25 +298,53 @@ public class FloorLoader extends DungeonHandler {
     }
 
     protected void processTextMap(Location location) {
-        initFlipMap(location);
         getMaster().getPortalMaster().init(location.getTextDataMap());
         getMaster().initPuzzles(location.getTextDataMap());
+
+    }
+    public void loadingDone() {
+        initMarks(master.getFloorWrapper().getTextDataMap());
     }
 
-    private void initFlipMap(Location location) {
-        getMaster().getGame().setFlipMap( createFlipMap(location.getTextDataMap()));
+    protected Map<Coordinates, CellScriptData> buildCellMap(String textContent) {
+        Map<Coordinates, CellScriptData> map = new HashMap<>();
+        for (String substring : ContainerUtils.openContainer(textContent, StringMaster.VERTICAL_BAR)) {
+            String[] split = substring.split("=");
+            if (split.length < 2)
+                continue;
+            Coordinates c = Coordinates.get(split[0]);
+            map.put(c, new CellScriptData(split[1]));
+
+        }
+        initFlipMap(map);
+        return map;
     }
 
-    private Map<Coordinates, CONTENT_CONSTS.FLIP>
-    createFlipMap(Map<Coordinates, CellScriptData> textDataMap) {
-        Map<Coordinates,   CONTENT_CONSTS.FLIP> map = new HashMap<>();
+    protected void initFlipMap(Map<Coordinates, CellScriptData> map) {
+        getMaster().getGame().getFlipMap().putAll(createFlipMap(map));
+    }
+
+    protected void initMarks(Map<Coordinates, CellScriptData> textDataMap) {
+        for (Coordinates coordinates : textDataMap.keySet()) {
+            String string = textDataMap.get(coordinates).getValue(CellScriptData.CELL_SCRIPT_VALUE.marks);
+            for (String substring : ContainerUtils.openContainer(string)) {
+                MARK mark = new EnumMaster<MARK>().retrieveEnumConst(MARK.class, substring);
+                getGame().getCellByCoordinate(coordinates).getMarks().add(mark);
+            }
+        }
+    }
+
+
+    protected Map<Coordinates, FLIP> createFlipMap(Map<Coordinates, CellScriptData> textDataMap) {
+        Map<Coordinates, FLIP> map = new HashMap<>();
         for (Coordinates coordinates : textDataMap.keySet()) {
             String value = textDataMap.get(coordinates).getValue(CellScriptData.CELL_SCRIPT_VALUE.flip);
-            if (value.isEmpty()) {
-                CONTENT_CONSTS.FLIP flip = CONTENT_CONSTS.FLIP.valueOf(value.toUpperCase());
+            if (!value.isEmpty()) {
+                FLIP flip = FLIP.valueOf(value.toUpperCase());
                 map.put(coordinates, flip);
             }
         }
         return map;
     }
+
 }

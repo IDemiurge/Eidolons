@@ -6,17 +6,18 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.DC_TYPE;
-import main.content.enums.EncounterEnums;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.EnumMaster;
 import main.system.sound.SoundMaster;
 import main.system.threading.WaitMaster;
 
@@ -24,6 +25,8 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+
+import static main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
 
 public class Awakener {
     /*
@@ -50,9 +53,28 @@ public class Awakener {
     }
 
     public void awaken(Ref ref, Object[] args) {
+        LevelStruct struct;
+        if (args[0] instanceof LevelBlock) {
+            struct = (LevelStruct) args[0];
+        } else
+            struct = game.getDungeonMaster().getStructMaster().findBlockByName(args[0].toString());
 
+        UNIT_GROUP_TYPE ai;
+        if (args[1] instanceof UNIT_GROUP_TYPE) {
+            ai = (UNIT_GROUP_TYPE) args[1];
+        } else
+            ai = new EnumMaster<UNIT_GROUP_TYPE>().retrieveEnumConst(UNIT_GROUP_TYPE.class, (args[1].toString()));
+
+        awaken_type type;
+        if (args[1] instanceof awaken_type) {
+            type = (awaken_type) args[2];
+        } else
+            type = new EnumMaster<awaken_type>().retrieveEnumConst(awaken_type.class, (args[1].toString()));
+
+        awaken(struct, ai, type);
     }
-    public void awaken(LevelStruct struct, EncounterEnums.UNIT_GROUP_TYPE aiType, awaken_type type) {
+
+    public void awaken(LevelStruct struct, UNIT_GROUP_TYPE aiType, awaken_type type) {
         Set<BattleFieldObject> objects = findObjects(struct);
 
         GroupAI group = null;
@@ -101,7 +123,9 @@ public class Awakener {
         Coordinates c = guard.getCoordinates();
         Unit unit = (Unit) game.createObject(type, c, game.getPlayer(false));
         map.put(unit, guard);
-        game.softRemove(guard);
+        guard.kill();
+        // game.remove(guard);
+        // game.softRemove(guard);
         //retain % of health, flip,
         return unit;
     }
