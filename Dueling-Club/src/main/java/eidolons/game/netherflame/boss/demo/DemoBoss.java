@@ -2,12 +2,12 @@ package eidolons.game.netherflame.boss.demo;
 
 import eidolons.game.netherflame.boss.BossModel;
 
-public class DemoHarvester extends BossModel {
+public class DemoBoss extends BossModel {
 
 
     @Override
     public String getName() {
-        return  "Lord Nerulac";
+        return  "Black Iron";
     }
 
     @Override

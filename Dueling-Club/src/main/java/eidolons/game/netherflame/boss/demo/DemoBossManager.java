@@ -14,7 +14,7 @@ import eidolons.game.netherflame.boss.logic.rules.BossTargeter;
 import eidolons.game.netherflame.boss.logic.rules.BossVision;
 import eidolons.game.netherflame.boss.logic.rules.RoundRules;
 
-public class DemoBossManager extends BossManager<DemoHarvester> {
+public class DemoBossManager extends BossManager<DemoBoss> {
 
     @Override
     protected BossVision createVisionRules() {
@@ -32,8 +32,8 @@ public class DemoBossManager extends BossManager<DemoHarvester> {
     }
 
     @Override
-    protected DemoHarvester createModel() {
-        return new DemoHarvester();
+    protected DemoBoss createModel() {
+        return new DemoBoss();
     }
 
     @Override

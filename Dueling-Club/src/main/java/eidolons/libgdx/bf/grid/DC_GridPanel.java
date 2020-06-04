@@ -64,10 +64,10 @@ public class DC_GridPanel extends GridPanel {
     protected AnimMaster animMaster;
 
     private float resetTimer;
-    private float autoResetVisibleOnInterval = 0.5f;
+    private final float autoResetVisibleOnInterval = 0.5f;
 
     private List<GroupX> commentSprites = new ArrayList<>(5);
-    private List<GroupX> activeCommentSprites = new ArrayList<>(3);
+    private final List<GroupX> activeCommentSprites = new ArrayList<>(3);
 
     private boolean updateRequired;
     private boolean firstUpdateDone;
@@ -269,16 +269,18 @@ public class DC_GridPanel extends GridPanel {
     private void initMaze(boolean hide, MazePuzzle.MazeData data) {
         Coordinates c = null;
         for (Coordinates coordinates : data.mazeMarks) {
-            c = data.c.getOffset(coordinates.negativeY());
+            c = data.c.getOffset(coordinates);
             GridCellContainer container = cells[c.getX()][(c.getY())];
             if (container == null) {
                 main.system.auxiliary.log.LogMaster.warn("Void cell in maze puzzle!" + c);
                 continue;
-
             }
             container.setOverlayTexture(
                     hide ? null :
                             TextureCache.getOrCreateR(data.mazeType.getImagePath()));
+
+            gridViewAnimator.animate(container,
+                    GridViewAnimator.VIEW_ANIM.screen, new GraphicData("alpha:0.6f;dur:1f"));
             //TODO VFX or sprite?
         }
     }

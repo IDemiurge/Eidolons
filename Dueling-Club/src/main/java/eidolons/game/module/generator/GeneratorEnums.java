@@ -362,6 +362,7 @@ OOO##
         DUNGEON, //classic and simple
         MAZE, //always spinning, fractal like
         PUZZLE_MAZE, //always spinning, fractal like
+        VOID_MAZE, //always spinning, fractal like
         GROVE, //chaos...
         CEMETERY, //enclosed areas
         RANDOM, //will mix all
@@ -381,12 +382,14 @@ OOO##
             if (this == PUZZLE_MAZE) {
                 return false;
             }
+            if (this == VOID_MAZE) {
+                return false;
+            }
             return name().contains("_");
 
         }
 
         public ROOM_TEMPLATE_GROUP getMultiGroupOne() {
-
             return valueOf(name().split("_")[0]);
         }
 

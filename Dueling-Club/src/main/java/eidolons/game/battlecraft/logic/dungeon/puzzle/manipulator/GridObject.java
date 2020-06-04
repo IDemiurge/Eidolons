@@ -30,7 +30,7 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
     protected Map<EmitterActor, Vector2> emitters = new XLinkedMap<>();
     protected Coordinates c;
     protected double visionRange;
-    private String spritePath;
+    private final String spritePath;
     protected boolean initialized;
     private boolean flipX;
     String key;
@@ -272,6 +272,10 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
     public void fadeOut(boolean manual) {
         fadeOut();
         hidden = true;
+    }
+
+    public SpriteX getSprite() {
+        return sprite;
     }
 
     public void setUnder(Boolean under) {

@@ -6,12 +6,10 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.LevelData;
 import eidolons.game.module.generator.model.RoomModel;
-import eidolons.game.module.generator.model.RoomTemplateMaster;
 import eidolons.libgdx.shaders.post.PostFxUpdater;
 import eidolons.libgdx.texture.Images;
 import eidolons.system.audio.MusicMaster;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
@@ -38,16 +36,9 @@ import java.util.List;
  */
 public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
 
-    protected RoomTemplateMaster master;
-
-    GeneratorEnums.ROOM_TEMPLATE_GROUP group;
-    LocationBuilder.ROOM_TYPE type;
-    GeneratorEnums.EXIT_TEMPLATE exit;
-    FACING_DIRECTION enter;
-
-
-    List<Coordinates> mazeWalls;
-    MazeData data;
+    protected CustomRoomTemplateMaster master;
+    protected List<Coordinates> markedCells;
+    protected MazeData data;
 
     public MazePuzzle(MazeType mazeType) {
         data = new MazeData(getCoordinates(), mazeType);
@@ -57,7 +48,7 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
     public void showMaze() {
         //idea - in Pale?
         data = new MazeData(getCoordinates(), data.mazeType);
-        data.mazeMarks = mazeWalls;
+        data.mazeMarks = markedCells;
         GuiEventManager.trigger(GuiEventType.SHOW_MAZE, data);
 
     }
@@ -65,12 +56,12 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
     public void hideMaze() {
         //idea - in Pale?
         data = new MazeData(getCoordinates(), data.mazeType);
-        data.mazeMarks = mazeWalls;
+        data.mazeMarks = markedCells;
         GuiEventManager.trigger(GuiEventType.HIDE_MAZE, data);
     }
 
-    public List<Coordinates> getMazeWalls() {
-        return mazeWalls;
+    public List<Coordinates> getMarkedCells() {
+        return markedCells;
     }
 
 
@@ -120,39 +111,43 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
         return (int) (2550 / getDifficultyCoef());
     }
 
+
     @Override
     public void activate() {
         super.activate();
-
         GuiEventManager.trigger(GuiEventType.POST_PROCESSING, PostFxUpdater.POST_FX_TEMPLATE.MAZE);
     }
 
-    public void resetMaze() {
+    public RoomModel resetMaze() {
 
         LevelData data = new LevelData("");
-        data.setTemplateGroups(                getTemplateGroups());
-        master = new RoomTemplateMaster(data);
+        data.setTemplateGroups(new GeneratorEnums.ROOM_TEMPLATE_GROUP[]{
+                getTemplateGroup()
+        });
+        master = new CustomRoomTemplateMaster(data.getTemplateGroups());
         GeneratorEnums.EXIT_TEMPLATE template = getTemplateForPuzzle();
-        RoomModel maze = master.getNextRandomModel(LocationBuilder.ROOM_TYPE.THRONE_ROOM,
+        RoomModel maze = master.getNextRandomModel(getRoomTypeForPuzzle(),
                 template,
-                FacingMaster.getRandomFacing(), GeneratorEnums.ROOM_TEMPLATE_GROUP.PUZZLE_MAZE);
-        mazeWalls = new ArrayList<>();
+                FacingMaster.getRandomFacing(), getTemplateGroup());
+        markedCells = new ArrayList<>();
         //        maze.setRotations();
         for (int i = 0; i < maze.getCells().length; i++) {
             for (int j = 0; j < maze.getCells()[0].length; j++) {
                 if (maze.getCells()[i][j].equalsIgnoreCase(getMarkSymbol().symbol)) {
-                    mazeWalls.add(Coordinates.get(i, j));
+                    markedCells.add(Coordinates.get(i, j));
                 }
-
             }
         }
-
+        return maze;
     }
 
-    protected GeneratorEnums.ROOM_TEMPLATE_GROUP[] getTemplateGroups() {
-        return new GeneratorEnums.ROOM_TEMPLATE_GROUP[]{
-                GeneratorEnums.ROOM_TEMPLATE_GROUP.PUZZLE_MAZE
-        };
+
+    protected LocationBuilder.ROOM_TYPE getRoomTypeForPuzzle() {
+        return LocationBuilder.ROOM_TYPE.THRONE_ROOM;
+    }
+
+    protected GeneratorEnums.ROOM_TEMPLATE_GROUP getTemplateGroup() {
+        return GeneratorEnums.ROOM_TEMPLATE_GROUP.PUZZLE_MAZE;
     }
 
     protected GeneratorEnums.ROOM_CELL getMarkSymbol() {

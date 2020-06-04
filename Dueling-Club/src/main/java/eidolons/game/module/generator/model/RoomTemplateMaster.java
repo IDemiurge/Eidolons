@@ -48,12 +48,12 @@ public class RoomTemplateMaster {
     private static final boolean APPLY_FAIL_SAFE_EXITS = true;
     private final LevelData data;
     Stack<List<RoomModel>> roomPoolStack = new Stack<>();
-    private ROOM_TEMPLATE_GROUP[] groups;
-    private String wrapType;
-    private int wrapWidth;
-    private Map<ROOM_TEMPLATE_GROUP, Set<RoomModel>> models = new LinkedHashMap<>();
-    private Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, List<RoomModel>>>> templateMap;
-    private Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>>> preloadedData;
+    private final ROOM_TEMPLATE_GROUP[] groups;
+    private final String wrapType;
+    private final int wrapWidth;
+    private final Map<ROOM_TEMPLATE_GROUP, Set<RoomModel>> models = new LinkedHashMap<>();
+    private final Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, List<RoomModel>>>> templateMap;
+    private final Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>>> preloadedData;
 
     public RoomTemplateMaster(LevelData data) {
         this.data = data;
@@ -75,7 +75,7 @@ public class RoomTemplateMaster {
     loadMergedData(boolean singleFile) {
         Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>>> map = new HashMap<>();
         if (singleFile) {
-
+//?
         }
         for (ROOM_TEMPLATE_GROUP group : groups) {
 

@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Veil;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.*;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.cinematic.flight.FlightData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.generator.model.AbstractCoordinates;
 import eidolons.game.netherflame.main.event.TipMessageMaster;
@@ -34,26 +35,26 @@ import static main.system.auxiliary.log.LogMaster.log;
 
 public class Puzzle {
 
-    PuzzleEnvironment environment;
-    PuzzleQuest quest;
-    PuzzleData data;
-    PuzzleStats stats;
+    protected PuzzleEnvironment environment;
+    protected PuzzleQuest quest;
+    protected PuzzleData data;
+    protected PuzzleStats stats;
 
-    List<PuzzleTrigger> triggers = new ArrayList<>();
+    protected List<PuzzleTrigger> triggers = new ArrayList<>();
 
-    List<PuzzleSetup> setups;
-    List<PuzzleRules> rules;
-    List<PuzzleResolution> resolutions;
+    protected List<PuzzleSetup> setups;
+    protected List<PuzzleRules> rules;
+    protected List<PuzzleResolution> resolutions;
 
-    boolean active;
-    boolean solved;
-    boolean failed;
-    private Coordinates coordinates;
+    protected boolean active;
+    protected boolean solved;
+    protected boolean failed;
+    protected Coordinates coordinates;
 
-    private Veil veil;
-    private Veil exitVeil;
-    private LevelBlock block;
-    private String title;
+    protected Veil veil;
+    protected Veil exitVeil;
+    protected LevelBlock block;
+    protected String title;
 
     public Puzzle() {
         stats = new PuzzleStats(this);
@@ -204,8 +205,36 @@ public class Puzzle {
         stats.started();
         log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle Activated: " + this);
         glimpse();
+
+        if (isMinimizeUI()) {
+            GuiEventManager.trigger(GuiEventType.MINIMIZE_UI_ON);
+        }
+        if (getOverrideBackground() != null) {
+            GuiEventManager.trigger(GuiEventType.UPDATE_DUNGEON_BACKGROUND, getOverrideBackground());
+        }
+        if (getFlightData() != null) {
+            GuiEventManager.trigger(GuiEventType.FLIGHT_START, getFlightData());
+        }
     }
 
+    public String getOverrideBackground() {
+        return null ;
+    }
+
+    public FlightData getFlightData() {
+        return null;
+    }
+    public void ended() {
+        if (isMinimizeUI())
+            GuiEventManager.trigger(GuiEventType.MINIMIZE_UI_OFF);
+
+        if (getOverrideBackground() != null) {
+            GuiEventManager.trigger(GuiEventType.RESET_DUNGEON_BACKGROUND );
+        }
+        if (getFlightData() != null) {
+            GuiEventManager.trigger(GuiEventType.FLIGHT_END );
+        }
+    }
     protected PuzzleQuest initQuest(PuzzleData data) {
         return new PuzzleQuest(this, data);
     }
@@ -215,7 +244,9 @@ public class Puzzle {
     }
 
     public Coordinates getExitCoordinates() {
-        return new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.EXIT)).negativeY().getOffset(getCoordinates());
+        return
+                getAbsoluteCoordinate(
+                new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.EXIT)));
     }
 
     public void setBlock(LevelBlock block) {
@@ -223,7 +254,8 @@ public class Puzzle {
     }
 
     public Coordinates getEntranceCoordinates() {
-        return new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.ENTRANCE)).negativeY().getOffset(getCoordinates());
+        return
+                getAbsoluteCoordinate(                new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.ENTRANCE)));
     }
 
     public void failed() {
@@ -245,10 +277,7 @@ public class Puzzle {
         }
         );
         TipMessageMaster.tip(src);
-    }
-
-    public void exited() {
-
+        ended();
     }
 
     public void complete() {
@@ -265,9 +294,10 @@ public class Puzzle {
         }
         );
         TipMessageMaster.tip(src);
+        ended();
     }
 
-    private String getFailText() {
+    protected String getFailText() {
         String key = data.getValue(PuzzleData.PUZZLE_VALUE.TIP_FAIL);
         if (StringMaster.isEmpty(key)) {
             key = getTitle() + "_failed";
@@ -275,7 +305,8 @@ public class Puzzle {
         return DescriptionTooltips.getTipMap().get(
                 key.toLowerCase());
     }
-    private String getCompletionText() {
+
+    protected String getCompletionText() {
         return getTitle() + " has been completed! \n" +
                 quest.getVictoryText() + "\n" +
                 stats.getVictoryText();
@@ -283,8 +314,8 @@ public class Puzzle {
 
     public void finished() {
         log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle finished: " + this);
-//        resolutions.forEach(r -> r.finished());
-//        rules.forEach(r -> r.finished());
+        //        resolutions.forEach(r -> r.finished());
+        //        rules.forEach(r -> r.finished());
         glimpse();
 
         if (isPale()) {
@@ -301,11 +332,12 @@ public class Puzzle {
     }
 
     public Coordinates getAbsoluteCoordinate(Coordinates wall) {
-        return wall.negativeY().getOffset(getCoordinates());
+        //PUZZLES USE BOTTOM-LEFT AS ORIGIN COORDINATE .negativeY()
+        return wall.getOffset(getCoordinates());
     }
 
     public Coordinates getAbsoluteCoordinate(int i, int j) {
-        return new AbstractCoordinates(true, i, j).negativeY().getOffset(getCoordinates());
+        return new AbstractCoordinates(true, i, j).getOffset(getCoordinates());
     }
 
     public float getDifficultyCoef() {
@@ -346,7 +378,8 @@ public class Puzzle {
     }
 
     public Coordinates getCenterCoordinates() {
-        return Coordinates.get(getCoordinates().x + getWidth() / 2, getCoordinates().y - getHeight() / 2);
+        return Coordinates.get(getCoordinates().x + getWidth() / 2,
+                getCoordinates().y + getHeight() / 2);
     }
 
     public Condition createSolutionCondition() {
@@ -354,5 +387,9 @@ public class Puzzle {
     }
 
     public void playerActionDone(DC_ActiveObj action) {
+    }
+
+    public boolean isMinimizeUI() {
+        return false;
     }
 }

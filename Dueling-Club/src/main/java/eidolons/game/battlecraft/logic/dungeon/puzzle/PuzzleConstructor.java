@@ -38,7 +38,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
     }
 
 
-    public T create(String data, String  blockData, Coordinates coordinates, LevelBlock block) {
+    public T create(String data, String blockData, Coordinates coordinates, LevelBlock block) {
         puzzle = createPuzzle();
         puzzle.setCoordinates(coordinates);
         puzzle.setBlock(block);
@@ -46,9 +46,9 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         puzzleData = createData(data);
         puzzle.setData(puzzleData);
         PuzzleResolution resolution = createResolutions(puzzleData);
-//        resolution.addPunishment();
+        //        resolution.addPunishment();
         puzzle.setResolutions(resolution);
-//        puzzle.setup(setup);
+        //        puzzle.setup(setup);
         PuzzleRules rules = createRules(puzzleData);
         puzzle.setRules(rules);
         initSetup();
@@ -58,27 +58,24 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         boolean pale = puzzleData.getBooleanValue(PuzzleData.PUZZLE_VALUE.PALE);
         {
             Veil veil;
-            Coordinates c = new Coordinates(puzzleData.getValue(PuzzleData.PUZZLE_VALUE.ENTRANCE)).negativeY()
-                    .getOffset(puzzle.getCoordinates());
+            Coordinates c = puzzle.getEntranceCoordinates();
 
             if (!isAreaEnter()) {
                 puzzle.setEnterVeil(veil = new Veil(puzzle, c, pale, true));
                 GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, veil);
             }
-
             if (isPointExit())
                 if (!puzzleData.getValue(PuzzleData.PUZZLE_VALUE.EXIT).isEmpty()) {
-                    c = new Coordinates(puzzleData.getValue(PuzzleData.PUZZLE_VALUE.EXIT)).negativeY()
-                            .getOffset(puzzle.getCoordinates());
-
-                    puzzle.setExitVeil(veil = new Veil(puzzle, c, pale, false));
-                    GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, veil);
+                    c = puzzle.getExitCoordinates();
+                    if (c != null) {
+                        puzzle.setExitVeil(veil = new Veil(puzzle, c, pale, false));
+                        GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, veil);
+                    }
                 }
         }
 
         return puzzle;
     }
-
 
 
     protected PuzzleRules createRules(PuzzleData puzzleData) {
@@ -127,8 +124,8 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
             data.setValue(values[i++], substring);
         }
         int coef = getDifficultyCoef(Eidolons.getGame().getMissionMaster().getOptionManager().getDifficulty());
-//        if () TODO disable by option
-//            coef=100;
+        //        if () TODO disable by option
+        //            coef=100;
         data.setValue(PuzzleData.PUZZLE_VALUE.DIFFICULTY_COEF, coef);
 
         int reward = puzzle.getSoulforceBase() * coef / 100;
@@ -197,7 +194,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
     private void exited() {
         //TODO isApplyPunishment()
         if (isPointExit())
-            if (Eidolons.getMainHero().getCoordinates().equals(puzzle.getExitCoordinates())){
+            if (Eidolons.getMainHero().getCoordinates().equals(puzzle.getExitCoordinates())) {
                 return;
             }
         puzzle.failed();
@@ -205,7 +202,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
 
     protected void initEnterTrigger() {
         puzzle.createTriggerGlobal(PuzzleTrigger.PUZZLE_TRIGGER.ENTER,
-                ConditionsUtils.join(new LambdaCondition(ref -> !puzzle.active  && (!puzzle.solved || isReplayable())),
+                ConditionsUtils.join(new LambdaCondition(ref -> !puzzle.active && (!puzzle.solved || isReplayable())),
                         ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
                         getPuzzleEnterConditions()),
                 () -> entered(), Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING
@@ -223,7 +220,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
                             puzzle.getExitCoordinates()),
                     new NotCondition(new AreaCondition(puzzle.getCoordinates(), puzzle.getWidth(), puzzle.getHeight())));
         }
-        return new PositionCondition(
+        return new PositionCondition(()->
                 puzzle.getExitCoordinates());
     }
 
@@ -237,9 +234,11 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         return new PositionCondition(
                 puzzle.getEntranceCoordinates());
     }
+
     protected boolean isPointExit() {
         return false;
     }
+
     protected boolean isAreaEnter() {
         return false;
     }

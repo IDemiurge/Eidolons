@@ -14,7 +14,10 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.game.logic.event.Event;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.MapMaster;
+import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 
 import java.util.*;
@@ -60,16 +63,17 @@ Accelerating collapse
  */
 public class VoidHandler {
 
-    private static final boolean TEST_MODE = true;
+    public static boolean TEST_MODE = true;
     GridPanel gridPanel;
     Set<BattleFieldObject> autoRaise = new LinkedHashSet<>();
-    private Map<GridCell, DIRECTION> raised = new LinkedHashMap<>();
-    private Map<GridCell, DIRECTION> collapsed = new LinkedHashMap<>();
+    private final Map<GridCell, DIRECTION> raised = new LinkedHashMap<>();
+    private final Map<GridCell, DIRECTION> collapsed = new LinkedHashMap<>();
     private float collapsePeriod;
     private float collapseDelay;
     private boolean canDropHero;
     private boolean unmark;
     private boolean raiseOneMax;
+    private final boolean collapseDown = true;
 
     public VoidHandler(GridPanel gridPanel) {
         this.gridPanel = gridPanel;
@@ -77,6 +81,14 @@ public class VoidHandler {
 
     public void toggleAuto() {
         toggleAuto(Eidolons.getMainHero());
+    }
+
+    public void toggleAutoOff(Unit obj) {
+        autoRaise.remove(obj);
+    }
+
+    public void toggleAutoOn(Unit obj) {
+        autoRaise.add(obj);
     }
 
     public void toggleAuto(Unit obj) {
@@ -89,19 +101,24 @@ public class VoidHandler {
     }
 
     public void act(float delta) {
-        collapseDelay-=delta;
-        if (collapseDelay<=0) {
-            collapseDelay=collapsePeriod;
-            GridCell gridCell=raised.keySet().iterator().next();
-            raised.keySet().remove(gridCell);
-            DC_Cell cell = gridCell.getUserObject();
-            if (canDropHero || ! Eidolons.getMainHero().getCoordinates().equals(cell.getCoordinates())) {
+        if (collapsePeriod != 0) {
+            if (!raised.isEmpty()) {
+                collapseDelay -= delta;
 
-                    Coordinates c =  cell. getCoordinates();
-                    toggle(false, c, ImmutableList.of(c), 1f, raised.get(cell));
-                    if (unmark){
-                        cell.getMarks().remove(CONTENT_CONSTS.MARK.togglable);
+                if (collapseDelay <= 0) {
+                    collapseDelay = collapsePeriod;
+                    GridCell gridCell = raised.keySet().iterator().next();
+                    raised.keySet().remove(gridCell);
+                    DC_Cell cell = gridCell.getUserObject();
+                    if (canDropHero || !Eidolons.getMainHero().getCoordinates().equals(cell.getCoordinates())) {
+
+                        Coordinates c = cell.getCoordinates();
+                        toggle(false, c, ImmutableList.of(c), 1f, raised.get(cell));
+                        if (unmark) {
+                            cell.getMarks().remove(CONTENT_CONSTS.MARK.togglable);
+                        }
                     }
+                }
             }
         }
         if (TEST_MODE) {
@@ -120,17 +137,17 @@ public class VoidHandler {
             direction = facing.getDirection();
         }
         //TODO check diag adjacent
-        if (!raiseOneMax){
+        if (!raiseOneMax) {
             checkRaise(object, direction);
             boolean clockwise = RandomWizard.random();
-            checkRaise(object,  direction.rotate45( clockwise));
-            checkRaise(object,  direction.rotate90(!clockwise));
-            return ;
+            checkRaise(object, direction.rotate45(clockwise));
+            checkRaise(object, direction.rotate90(!clockwise));
+            return;
         }
         if (!checkRaise(object, direction)) {
             boolean clockwise = RandomWizard.random();
-            if (!checkRaise(object,  direction.rotate45(clockwise))) {
-                checkRaise(object,  direction.rotate90(!clockwise));
+            if (!checkRaise(object, direction.rotate45(clockwise))) {
+                checkRaise(object, direction.rotate90(!clockwise));
             }
         }
 
@@ -191,6 +208,12 @@ public class VoidHandler {
             period += 0.2f;
             // WaitMaster.WAIT(period);
             animate(period, raiseOrCollapse, cell, speed, from);
+
+            if (!CoreEngine.TEST_LAUNCH) {
+                cell.getUserObject().getGame().fireEvent(
+                        new Event(Event.STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, cell.getUserObject().getGame()
+                        ));
+            }
         }
 
     }
@@ -215,8 +238,16 @@ public class VoidHandler {
         //TODO IDEA: Maybe scaling from SLICE could look nice? basically, scaling only on one axis. Depending on facing...
         float offsetX = 0;
         float offsetY = 0;
-        // if (!raiseOrCollapse)
-        //     from = from.flip();
+        if (!raiseOrCollapse) {
+            from = from.flip();
+            if (collapseDown) {
+                if (from.growX == null) {
+                    from = DIRECTION.DOWN;
+                } else {
+                    from = from.growX ? DIRECTION.DOWN_RIGHT : DIRECTION.DOWN_LEFT;
+                }
+            }
+        }
         //cell will move in a way to 'arrive' at where we are raising 'from'
         if (from.growY != null) {
             offsetY = from.growY ? -64 : 64;
@@ -230,16 +261,16 @@ public class VoidHandler {
             cell.setPosition(x + offsetX, y + offsetY);
         } else
             cell.setPosition(x, y);
-        cell.setScale(scale);
+        // cell.setScale(scale);
         cell.getBackImage().setVisible(true);
         if (raiseOrCollapse) {
             cell.getColor().a = 0;
         }
 
         ActionMaster.addWaitAction(cell, waitPeriod);
-        ActionMaster.addCustomAction(cell, ()-> DC_SoundMaster.playStandardSound(raiseOrCollapse?
+        ActionMaster.addCustomAction(cell, () -> DC_SoundMaster.playStandardSound(raiseOrCollapse ?
                 SoundMaster.STD_SOUNDS.NEW__TAB
-                :SoundMaster.STD_SOUNDS.CHAIN));
+                : SoundMaster.STD_SOUNDS.CHAIN));
 
         ActionMaster.addAlphaAction(cell, dur, !raiseOrCollapse);
         // if (isScaleOn()) {
@@ -250,15 +281,17 @@ public class VoidHandler {
         } else
             ActionMaster.addMoveToAction(cell, x + offsetX, y + offsetY, dur);
 
+        DIRECTION direction = from;
         ActionMaster.addAfter(cell, () -> {
 
             cell.getUserObject().setVOID(!raiseOrCollapse);
             if (raiseOrCollapse) {
-                raised.put(cell, from);
+                raised.put(cell, direction);
                 collapsed.remove(cell);
             } else {
-                collapsed.put(cell, from);
+                collapsed.put(cell, direction);
                 raised.remove(cell);
+                cell.setPosition(x, y);
             }
         });
     }
@@ -277,5 +310,16 @@ public class VoidHandler {
 
     public void setRaiseOneMax(boolean raiseOneMax) {
         this.raiseOneMax = raiseOneMax;
+    }
+
+    public void collapseAll() {
+        LinkedHashMap<DIRECTION, List<Coordinates>> map = new LinkedHashMap<>();
+        for (GridCell gridCell : raised.keySet()) {
+            MapMaster.addToListMap(map, raised.get(gridCell), gridCell.getUserObject().getCoordinates());
+        }
+        for (DIRECTION direction : map.keySet()) {
+            toggle(false, map.get(direction),
+                    2f, direction);
+        }
     }
 }

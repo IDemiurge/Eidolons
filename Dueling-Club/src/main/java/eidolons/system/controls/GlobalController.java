@@ -10,9 +10,9 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.flight.FlightHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.main.death.ShadowMaster;
-import eidolons.game.netherflame.main.pale.PaleAspect;
 import eidolons.game.netherflame.main.soul.EidolonLord;
 import eidolons.game.netherflame.main.soul.panel.LordPanel;
 import eidolons.libgdx.anims.ActionMaster;
@@ -185,13 +185,17 @@ public class GlobalController implements Controller {
                 });
                 return true;
             case Keys.F8:
-                if (EidolonsGame.DUEL) {
-                    return false;
-                }
-                if (CoreEngine.isIDE()) {
-                    EidolonLord.lord.soulforceGained(110);
-                }
-                PaleAspect.togglePale();
+
+                GuiEventManager.trigger(GuiEventType.FLIGHT_START, FlightHandler.TEST_DATA);
+
+                // if (CoreEngine.isIDE()) {
+                //     EidolonLord.lord.soulforceGained(110);
+                // }
+                return true;
+            case Keys.F7:
+                GuiEventManager.trigger(GuiEventType.FLIGHT_END );
+                // DC_Game.game.getMetaMaster().getDialogueManager().test();
+
                 return true;
             case Keys.F6:
                 // new Thread(() -> IntroLauncher.introBriefing(), " thread").start();
@@ -202,13 +206,6 @@ public class GlobalController implements Controller {
                     GuiEventManager.trigger(GuiEventType.VISUAL_CHOICE,
                             new VC_DataSource(VC_DataSource.VC_TYPE.hero_choice, o));
                 });
-                return true;
-            case Keys.F7:
-                if (EidolonsGame.DUEL) {
-                    return false;
-                }
-                DC_Game.game.getMetaMaster().getDialogueManager().test();
-
                 return true;
             case Keys.F3:
                 new Thread(() -> {

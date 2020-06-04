@@ -8,10 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Predicate;
-import eidolons.libgdx.anims.actions.AutoFloatAction;
-import eidolons.libgdx.anims.actions.FadeInAction;
-import eidolons.libgdx.anims.actions.FadeOutAction;
-import eidolons.libgdx.anims.actions.RotateByActionLimited;
+import eidolons.libgdx.anims.actions.*;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.gui.generic.BlockableGroup;
@@ -237,7 +234,17 @@ public class ActionMaster {
         action.setTarget(actor);
     }
 
-    public static MoveToAction addMoveByAction(Actor actor, float x, float y, float v) {
+    public static MoveByActionLimited addMoveByActionReal(Actor actor, float x, float y, float v) {
+        MoveByActionLimited moveBy= (MoveByActionLimited) getAction(MoveByActionLimited.class);
+        moveBy.setStartPointX(actor.getX());
+        moveBy.setStartPointY(actor.getY());
+        moveBy.setAmountX(x);
+        moveBy.setAmountX(y);
+        moveBy.setDuration(v);
+        addAction(actor, moveBy);
+        return moveBy;
+    }
+        public static MoveToAction addMoveByAction(Actor actor, float x, float y, float v) {
         return addMoveToAction(actor, actor.getX() + x, actor.getY() + y, v);
     }
 

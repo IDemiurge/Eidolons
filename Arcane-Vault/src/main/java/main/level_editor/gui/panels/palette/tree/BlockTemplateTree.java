@@ -38,6 +38,7 @@ public class BlockTemplateTree extends TreeX<PaletteNode> {
                         if (node.getParent().toString().equalsIgnoreCase("Custom")) {
                             click(1, null, node, (PaletteNode) node.getObject());
                             node.expandTo();
+                            return;
                         }
                     }
                 }
@@ -45,6 +46,14 @@ public class BlockTemplateTree extends TreeX<PaletteNode> {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
+        deselect();
+    }
+
+    @Override
+    public void deselect() {
+        super.deselect();
+        room_type = null;
+        room_group = null;
     }
 
     @Override

@@ -30,6 +30,7 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,8 +43,8 @@ public class StackingRule implements ActionRule {
     private static final int MAX_OVERLAYING_ON_CELL = 4;
     private static final Integer CORPSE_GIRTH_FACTOR = 3;
     private static StackingRule instance;
-    private DC_Game game;
-    private HashMap<Entity, HashMap<Coordinates, Boolean>> cache = new HashMap();
+    private final DC_Game game;
+    private final HashMap<Entity, HashMap<Coordinates, Boolean>> cache = new HashMap();
 
     public StackingRule(DC_Game game2) {
         game = game2;
@@ -206,6 +207,7 @@ public class StackingRule implements ActionRule {
             return false;
         }
         if (cell.isVOID()) {
+            if (!CoreEngine.TEST_LAUNCH)
             if (!unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.VOIDWALKER.getName())) {
                 return false;
             }

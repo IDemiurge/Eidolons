@@ -2,9 +2,11 @@ package eidolons.game.module.cinematic.flight;
 
 import eidolons.libgdx.bf.grid.moving.MoveController;
 import main.game.bf.Coordinates;
+import main.system.data.DataUnit;
 
-public class FlyMoveController extends MoveController {
-    public FlyMoveController(FlyingObj.FlyObjData data) {
+public class FlyPlatformController extends MoveController {
+
+    public FlyPlatformController(DataUnit data) {
         super(data);
     }
 

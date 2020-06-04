@@ -24,7 +24,8 @@ public class PuzzleResolution extends PuzzleElement {
         unseal_door,
         teleport,
         tip,
-        awaken, open_portal
+        awaken,
+        open_portal
     }
 
     public enum PUZZLE_PUNISHMENT {
@@ -113,7 +114,7 @@ public class PuzzleResolution extends PuzzleElement {
     }
 
     protected Event.EVENT_TYPE getPunishEvent() {
-//TODO
+        //TODO sometimes we should check on other events too...
         return Event.STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE;
     }
 

@@ -143,4 +143,7 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
     public void select(Object o) {
 
     }
+
+    public void deselect() {
+    }
 }

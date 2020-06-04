@@ -3,13 +3,13 @@ package eidolons.game.netherflame.boss.logic.rules;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.netherflame.boss.BossHandler;
 import eidolons.game.netherflame.boss.BossManager;
-import eidolons.game.netherflame.boss.demo.DemoHarvester;
+import eidolons.game.netherflame.boss.demo.DemoBoss;
 import eidolons.game.netherflame.boss.logic.action.BossAction;
 import main.elements.conditions.DistanceCondition;
 import main.game.bf.Coordinates;
 
-public class BossTargeter extends BossHandler<DemoHarvester> {
-    public BossTargeter(BossManager<DemoHarvester> manager) {
+public class BossTargeter extends BossHandler<DemoBoss> {
+    public BossTargeter(BossManager<DemoBoss> manager) {
         super(manager);
     }
     /*

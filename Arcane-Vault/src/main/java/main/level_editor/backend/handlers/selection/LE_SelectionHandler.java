@@ -86,6 +86,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
         mode = SELECTION_MODE.NONE;
         selectionChanged();
         getModel().setBrushMode(false);
+        GuiEventManager.trigger(GuiEventType.LE_DESELECT);
     }
 
     @Override

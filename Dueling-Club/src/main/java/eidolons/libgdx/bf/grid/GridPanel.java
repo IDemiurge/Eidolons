@@ -23,6 +23,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.flight.FlightHandler;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
@@ -95,6 +96,7 @@ public abstract class GridPanel extends Group {
 
     protected GridRenderHelper manager;
     protected GridOverlaysManager overlayManager;
+    FlightHandler flightHandler;
 
     protected Coordinates offset;
     protected Map<Module, GridSubParts> containerMap = new HashMap<>();
@@ -111,6 +113,11 @@ public abstract class GridPanel extends Group {
         this.full_cols = cols;
         initFullGrid();
         platformHandler = createPlatformHandler(); //platforms between modules?..
+        flightHandler = new FlightHandler();
+        addActor(flightHandler.getObjsOver());
+        addActor(flightHandler.getObjsUnder());
+        addActor(flightHandler.getObjsVfx());
+        //TODO have over and under layers!
     }
 
 
@@ -692,6 +699,8 @@ public abstract class GridPanel extends Group {
         overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
 
         overlayManager.setZIndex(Integer.MAX_VALUE);
+        flightHandler.getObjsOver().setZIndex(Integer.MAX_VALUE);
+        flightHandler.getObjsVfx().setZIndex(Integer.MAX_VALUE);
 
 
     }
@@ -806,13 +815,18 @@ public abstract class GridPanel extends Group {
             addUnitView((BattleFieldObject) p.get());
         });
         GuiEventManager.bind(removePrevious, REMOVE_GRID_OBJ, p -> {
-            List list = (List) p.get();
-            String key = (String) list.get(0);
-            Coordinates c = (Coordinates) list.get(1);
-            GridObject gridObj = findGridObj(key, c);
-            if (gridObj == null) {
-                main.system.auxiliary.log.LogMaster.dev("No grid obj to remove: " + key + c);
-                return;
+            GridObject gridObj;
+            if (p.get() instanceof GridObject) {
+                 gridObj = ((GridObject) p.get());
+            } else {
+                List list = (List) p.get();
+                String key = (String) list.get(0);
+                Coordinates c = (Coordinates) list.get(1);
+                gridObj = findGridObj(key, c);
+                if (gridObj == null) {
+                    main.system.auxiliary.log.LogMaster.dev("No grid obj to remove: " + key + c);
+                    return;
+                }
             }
             gridObj.fadeOut(true);
             customOverlayingObjectsUnder.remove(gridObj);

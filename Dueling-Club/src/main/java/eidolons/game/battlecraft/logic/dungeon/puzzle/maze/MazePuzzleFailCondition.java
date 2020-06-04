@@ -13,8 +13,8 @@ public class MazePuzzleFailCondition extends DC_Condition {
 
     @Override
     public boolean check(Ref ref) {
-        if (puzzle.getMazeWalls() != null)
-        for (Coordinates wall : puzzle.getMazeWalls()) {
+        if (puzzle.getMarkedCells() != null)
+        for (Coordinates wall : puzzle.getMarkedCells()) {
             if (ref.getSourceObj().getCoordinates().equals(puzzle.getAbsoluteCoordinate(wall))) {
                 return true;
             }

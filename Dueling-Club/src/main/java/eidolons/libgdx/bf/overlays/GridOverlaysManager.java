@@ -19,6 +19,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.VoidHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
@@ -43,6 +44,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
@@ -345,17 +347,23 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
         if (parent.getActions().size == 0) {
             addTooltip(obj, parent, overlay, v, x, y);
         }
-//        if (ActorMaster.getActionsOfClass(parent, MoveByActionLimited.class).size() == 0)
-//            if (ActorMaster.getActionsOfClass(parent, MoveToAction.class).size() == 0)
-//                addTooltip(obj, parent, overlay, v, x, y);
+        //        if (ActorMaster.getActionsOfClass(parent, MoveByActionLimited.class).size() == 0)
+        //            if (ActorMaster.getActionsOfClass(parent, MoveToAction.class).size() == 0)
+        //                addTooltip(obj, parent, overlay, v, x, y);
 
     }
 
     private String getInfoText(DC_Obj obj) {
         StringBuilder builder = new StringBuilder();
-        builder.append(obj.getVisibilityLevel()).append("\n");
-        builder.append(obj.getPlayerVisionStatus()).append("\n");
-        builder.append(obj.getVisibilityLevel()).append("\n");
+        if (!VoidHandler.TEST_MODE) {
+            if (obj instanceof DC_Cell) {
+                builder.append(ListMaster.toStringList(((DC_Cell) obj).getMarks())).append("\n");
+            }
+        } else {
+            builder.append(obj.getVisibilityLevel()).append("\n");
+            builder.append(obj.getPlayerVisionStatus()).append("\n");
+            builder.append(obj.getVisibilityLevel()).append("\n");
+        }
         return builder.toString();
     }
 

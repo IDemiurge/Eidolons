@@ -39,20 +39,24 @@ import main.system.launch.CoreEngine;
 
 import static com.badlogic.gdx.graphics.GL20.GL_NICEST;
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
-import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
-import static main.system.GuiEventType.UPDATE_GUI;
+import static main.system.GuiEventType.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public abstract class GenericDungeonScreen extends GameScreen {
     protected StageX gridStage;
     protected GridPanel gridPanel;
     protected ParticleManager particleManager;
+    private String bgPath;
+    private String previousBg;
 
     protected void preBindEvent() {
 
         GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
             final String path = (String) param.get();
             setBackground(path);
+        });
+        GuiEventManager.bind(RESET_DUNGEON_BACKGROUND, param -> {
+            resetBackground();
         });
     }
 
@@ -82,24 +86,32 @@ public abstract class GenericDungeonScreen extends GameScreen {
         }
     }
 
+    protected void resetBackground() {
+        setBackground(previousBg);
+    }
+
     protected void setBackground(String path) {
         if (path == null) {
             return;
         }
-        path = path.trim();
-        if (!ImageManager.isImageFile(path)) {
-            return;
-        }
-        if (!TextureCache.isImage(path)) {
-            if (path.endsWith(".txt")) {
-                backgroundSprite = SpriteAnimationFactory.getSpriteAnimation(path, false);
+        previousBg = this.bgPath;
+        this.bgPath = path.trim();
+
+        if (!TextureCache.isImage(bgPath)) {
+            if (bgPath.endsWith(".txt")) {
+                backgroundSprite = SpriteAnimationFactory.getSpriteAnimation(bgPath, false);
             }
             return;
         }
-
-        TextureRegion texture = getOrCreateR(path);
+        if (!ImageManager.isImageFile(path)) {
+            return;
+        }
+        TextureRegion texture = getOrCreateR(bgPath);
         if (texture.getTexture() != TextureCache.getMissingTexture())
+        {
             backTexture = texture;
+            backgroundSprite=null;
+        }
 
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
             TextureManager.initBackgroundCache(backTexture);
@@ -153,8 +165,8 @@ public abstract class GenericDungeonScreen extends GameScreen {
                 Gdx.graphics.getHeight() / 2);
         backgroundSprite.setOffsetX(-Gdx.graphics.getWidth() / 2);
         backgroundSprite.setSpeed(0.5f);
-        backgroundSprite.setOffsetY(getCam().position.y);
-        backgroundSprite.setOffsetX(getCam().position.x);
+        // backgroundSprite.setOffsetY(getCam().position.y);
+        // backgroundSprite.setOffsetX(getCam().position.x);
         backgroundSprite.draw(batch);
     }
 
@@ -198,8 +210,8 @@ public abstract class GenericDungeonScreen extends GameScreen {
     protected void afterLoad() {
         setCam((OrthographicCamera) viewPort.getCamera());
 
-//        final GridCreateData param = ((GridCreateData) data.getParams().get());
-//        createAndInitModuleGrid(param);
+        //        final GridCreateData param = ((GridCreateData) data.getParams().get());
+        //        createAndInitModuleGrid(param);
     }
 
     protected void createAndInitModuleGrid(GridCreateData param) {
@@ -214,7 +226,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
 
     public void moduleEntered(Module module, DequeImpl<BattleFieldObject> objects) {
         gridPanel.setModule(module);
-        gridPanel.initObjects(objects );
+        gridPanel.initObjects(objects);
         gridPanel.afterInit();
     }
 
@@ -247,7 +259,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
 
                     } else {
                         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-//                            CoreEngine.setCinematicMode(!CoreEngine.isFootageMode());
+                            //                            CoreEngine.setCinematicMode(!CoreEngine.isFootageMode());
                             boolean visionDebugMode = DC_Game.game.getVisionMaster().isVisionDebugMode();
                             DC_Game.game.getVisionMaster().setVisionDebugMode(!visionDebugMode);
                         }

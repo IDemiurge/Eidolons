@@ -2,9 +2,9 @@ package eidolons.game.netherflame.boss.demo.anims;
 
 import eidolons.game.netherflame.boss.BossManager;
 import eidolons.game.netherflame.boss.anims.BossAssets;
-import eidolons.game.netherflame.boss.demo.DemoHarvester;
+import eidolons.game.netherflame.boss.demo.DemoBoss;
 
-public class DemoBossAssets extends BossAssets<DemoHarvester> {
+public class DemoBossAssets extends BossAssets<DemoBoss> {
     public DemoBossAssets(BossManager manager) {
         super(manager);
     }

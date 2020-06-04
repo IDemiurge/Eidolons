@@ -27,6 +27,6 @@ public class CinematicGridObject extends GridObject {
 
     @Override
     protected int getFps() {
-        return 0;
+        return 20;
     }
 }

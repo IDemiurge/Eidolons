@@ -3,6 +3,9 @@ package eidolons.game.module.cinematic.flight;
 import main.system.data.DataUnit;
 
 public class FlightData extends DataUnit<FlightData.FLIGHT_VALUE> {
+    public FlightData(String text) {
+        super(text);
+    }
 
     /**
      * In LE - on zone level perhaps, accessible by entering a cell, generate script Or maybe platform => flight! So,
@@ -16,10 +19,10 @@ public class FlightData extends DataUnit<FlightData.FLIGHT_VALUE> {
         trail,
         trail_omni, //water waves
         angle, //
-        objs_map, //weightmap via simple text?
+        objs_under, //weightmap via simple text?
 background,
         fixed_duration,
-        angle_delta,//can do a  bit of turning randomly?
+        angle_delta, objs_over,//can do a  bit of turning randomly?
     }
 
     public enum FLIGHT_ENVIRON {

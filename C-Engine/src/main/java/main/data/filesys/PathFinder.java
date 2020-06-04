@@ -12,6 +12,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class PathFinder {
+//TODO ALL METHODS TO CONSTS!
 
     public static final String HOME = System.getProperty("user.home");
     public static final String OPTIONS_PATH = HOME + "/Eidolons/";
@@ -27,7 +28,7 @@ public class PathFinder {
     private static String TYPES_PATH;
     private static String MACRO_TYPES_PATH;
     private static String RES_PATH;
-    private static Lock initLock = new ReentrantLock();
+    private static final Lock initLock = new ReentrantLock();
     private static volatile boolean isInitialized = false;
     private static String jarName;
     private static String spritesPath;
@@ -36,7 +37,7 @@ public class PathFinder {
         ClassLoader classLoader = PathFinder.class.getClassLoader();
         if (classLoader.getResource("") != null) {
             File temp = new File(classLoader.getResource("").getFile());
-            ROOT_PATH=PathUtils.fixSlashes(new File(temp.getParentFile().toURI()).getPath());
+            ROOT_PATH = PathUtils.fixSlashes(new File(temp.getParentFile().toURI()).getPath());
             XML_PATH = ROOT_PATH + "xml/";
             System.out.println("Root path: " + ROOT_PATH);
         } else {
@@ -63,7 +64,7 @@ public class PathFinder {
             path = path.split("file:")[0];
             System.out.println("Root path for Jar: " + path);
 
-            ROOT_PATH=PathUtils.fixSlashes(path);
+            ROOT_PATH = PathUtils.fixSlashes(path);
             XML_PATH = ROOT_PATH + "xml/";
 
         }
@@ -116,6 +117,7 @@ public class PathFinder {
         init();
         return XML_PATH + "dungeons/levels/";
     }
+
     public static String getModuleTemplatesPath() {
         return XML_PATH + "dungeons/levels/templates/modules/";
     }
@@ -123,9 +125,11 @@ public class PathFinder {
     public static String getFloorTemplatesPath() {
         return XML_PATH + "dungeons/levels/templates/floors/";
     }
+
     public static String getModulesPath() {
         return XML_PATH + "dungeons/levels/modules/";
     }
+
     public static String getTextPath() {
         init();
         return RES_PATH + "/text/";
@@ -220,6 +224,7 @@ public class PathFinder {
         init();
         return XML_PATH + "/workspaces/";
     }
+
     public static String getEditorWorkspacePath() {
         init();
         return getLevelEditorPath() + "/workspaces/palettes/";
@@ -276,8 +281,9 @@ public class PathFinder {
     }
 
     public static String getTexturesPath() {
-        return getImagePath() +                 "main/textures/";
+        return getImagePath() + "main/textures/";
     }
+
     public static String getSpellSpritesPath() {
         init();
         return
@@ -502,6 +508,10 @@ public class PathFinder {
                 "cursor.png");
     }
 
+    public static String getFlyObjPath() {
+        return "main/textures/fly obj/";
+    }
+
     public static String getBordersPath() {
         return "ui/components/generic/borders/";
     }
@@ -523,8 +533,8 @@ public class PathFinder {
     }
 
     //    public static String getDialoguesPath(String locale) {
-//        return getDialoguesPath(texmaster)
-//    }
+    //        return getDialoguesPath(texmaster)
+    //    }
     public static String getDialoguesPath(String locale) {
         return getRootPath() + PathFinder.getTextPath()
                 + locale + "/dialogue/";

@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Created by JustMe on 2/10/2018.
  */
-public class ImageContainer extends SuperContainer {
+public class ImageContainer extends SuperContainer  implements Flippable{
     protected boolean flipX, flipY;
     protected Sprite sprite;
     protected String path;
@@ -39,6 +39,7 @@ public class ImageContainer extends SuperContainer {
             addActor(content);
         }
         this.path = path;
+
     }
 
     public ImageContainer() {
@@ -183,6 +184,8 @@ public class ImageContainer extends SuperContainer {
         this.flipY = flipY;
         if (sprite != null)
             sprite.setFlip(flipX, flipY);
+
+        // new FlipDrawable(new TextureRegionDrawable(getContent().getDrawable()), ()-> flipX, ()-> flipX)
     }
 
 

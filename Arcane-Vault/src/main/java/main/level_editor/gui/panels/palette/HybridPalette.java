@@ -38,6 +38,9 @@ public class HybridPalette extends ClosablePanel implements TabbedPaneListener {
 
         reload();
 
+        GuiEventManager.bind(GuiEventType.LE_DESELECT, p -> {
+            palette.getTree().deselect();
+        });
         GuiEventManager.bind(GuiEventType.LE_PALETTE_RESELECT, p -> {
             palette.getTree().reselect();
         });
