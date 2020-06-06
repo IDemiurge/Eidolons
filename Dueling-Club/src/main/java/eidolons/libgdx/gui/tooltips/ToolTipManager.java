@@ -12,6 +12,7 @@ import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
@@ -54,11 +55,11 @@ public class ToolTipManager extends TablePanel {
     private Cell actorCell;
     private float toWait;
     private Vector2 originalPosition;
-    private float offsetX = 32;
-    private float offsetY = 32;
+    private final float offsetX = 32;
+    private final float offsetY = 32;
     private Boolean bottom;
     private Boolean right;
-    private StackViewMaster stackMaster = new StackViewMaster();
+    private final StackViewMaster stackMaster = new StackViewMaster();
     private static Vector2 presetTooltipPos;
     private static HqTooltipPanel tooltipPanel;
     private static boolean hoverOff;
@@ -67,6 +68,7 @@ public class ToolTipManager extends TablePanel {
     private float hoverCheck = 0;
     Hoverable hovered;
     DequeImpl<BaseView> hoveredList = new DequeImpl<>();
+    private boolean hidden;
 
     public static void setTooltipPanel(HqTooltipPanel tooltipPanel) {
         ToolTipManager.tooltipPanel = tooltipPanel;
@@ -194,15 +196,8 @@ public class ToolTipManager extends TablePanel {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) != CoreEngine.isLevelEditor()) {
-            if (tooltip instanceof UnitViewTooltip)
-                return;
-        }
-        if (DungeonScreen.getInstance() != null)
-            if (DungeonScreen.getInstance().getGridPanel() != null)
-                if (DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().size() > 0) {
-                    return;
-                }
+        if (hidden)
+            return ;
         if (parentAlpha == ShaderDrawer.SUPER_DRAW ||
                 ConfirmationPanel.getInstance().isVisible())
             super.draw(batch, 1);
@@ -240,9 +235,26 @@ public class ToolTipManager extends TablePanel {
             entityHover(tooltip.getEntity());
     }
 
+    private boolean isHidden() {
+        if (!DialogueManager.isRunning()) {
+            return true;
+        }
+        if (DC_Game.game.getDungeonMaster().getPuzzleMaster().isUiMinimized()) {
+            return true;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) != CoreEngine.isLevelEditor()) {
+            if (tooltip instanceof UnitViewTooltip)
+                return true;
+        }
+        if (DungeonScreen.getInstance() != null)
+            if (DungeonScreen.getInstance().getGridPanel() != null)
+                return DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().size() > 0;
+        return false;
+    }
     @Override
     public void act(float delta) {
-        setVisible(!DialogueManager.isRunning());
+        if (hidden = isHidden())
+            return ;
         super.act(delta);
         hoverCheck -= delta;
         if (hoverCheck <= 0) {
@@ -297,6 +309,7 @@ public class ToolTipManager extends TablePanel {
         }
         updatePosition();
     }
+
 
     private void resetHovered() {
         for (BaseView hoverable : hoveredList) {

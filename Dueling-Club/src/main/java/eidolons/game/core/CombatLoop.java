@@ -19,7 +19,7 @@ public class CombatLoop extends GameLoop {
        super.stop();
 //        signal();
         main.system.auxiliary.log.LogMaster.log(1,"Combat Loop stopped" );
-        actionInput(null);
+        actionInputManual(null);
         if (!DC_Engine.isAtbMode())
             return;
         AtbTurnManager manager = (AtbTurnManager) game.getTurnManager();

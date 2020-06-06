@@ -12,9 +12,20 @@ import java.util.Set;
 
 public class FlightHandler extends GroupX {
 
+    public enum FLIGHT_ENVIRON{
+        astral("objs_over:mist(20),comet_bright(10),comet_pale(20),mist(10),;" +
+                "objs_under:stars(15);" +
+                "angle:30;"),
+        ;
+        public String data;
+
+        FLIGHT_ENVIRON(String data) {
+            this.data = data;
+        }
+    }
     public static final String TEST_DATA =
-            "objs_over:cinders(10);cloud(20),wraith(30),;" +
-                    "objs_under:mist(20);stars(5),isle(10),cloud(10),;" +
+            "objs_over:cinders(10),cloud(20),wraith(30),;" +
+                    "objs_under:mist(20),stars(5),isle(10),cloud(10),;" +
                     "angle:30;";
     Set<FlyingObjs> objs = new LinkedHashSet<>();
     private FlightData data;
@@ -85,7 +96,7 @@ shakes,
             int intensity = map.get(type);
             FlyingObjs obj = new FlyingObjs(type, platform, intensity, cinematic);
             objs.add(obj);
-            obj.start();
+            obj.reset();
             if (type.vfx != null) {
                 objsVfx.addActor(obj);
             } else if (under) {

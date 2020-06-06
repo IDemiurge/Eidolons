@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.maze;
 
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
@@ -7,8 +8,8 @@ import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.LevelData;
 import eidolons.game.module.generator.model.RoomModel;
 import eidolons.libgdx.shaders.post.PostFxUpdater;
-import eidolons.libgdx.texture.Images;
 import eidolons.system.audio.MusicMaster;
+import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -40,23 +41,24 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
     protected List<Coordinates> markedCells;
     protected MazeData data;
 
-    public MazePuzzle(MazeType mazeType) {
-        data = new MazeData(getCoordinates(), mazeType);
+    public MazePuzzle(MazeType mazeType, MazeType alt) {
+        data = new MazeData(getCoordinates(), mazeType, alt);
 
     }
 
     public void showMaze() {
-        //idea - in Pale?
-        data = new MazeData(getCoordinates(), data.mazeType);
+        data.c=getCoordinates();
         data.mazeMarks = markedCells;
+        List<Coordinates> area = CoordinatesMaster.getCoordinatesBetween(Coordinates.get(0,0),
+               Coordinates.get(getWidth(), getHeight()));
+        area.removeAll(markedCells);
+        data.mazeMarksAlt = area;
         GuiEventManager.trigger(GuiEventType.SHOW_MAZE, data);
 
     }
 
     public void hideMaze() {
-        //idea - in Pale?
-        data = new MazeData(getCoordinates(), data.mazeType);
-        data.mazeMarks = markedCells;
+        data.c=getCoordinates();
         GuiEventManager.trigger(GuiEventType.HIDE_MAZE, data);
     }
 
@@ -69,25 +71,31 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
         public Coordinates c;
         public MazeType mazeType;
         public List<Coordinates> mazeMarks;
+        public MazeType mazeTypeAlt;
+        public List<Coordinates> mazeMarksAlt;
 
         public MazeData(Coordinates c, MazeType mazeType) {
             this.c = c;
             this.mazeType = mazeType;
         }
+
+        public MazeData(Coordinates c, MazeType mazeType, MazeType mazeTypeAlt) {
+            this.c = c;
+            this.mazeType = mazeType;
+            this.mazeTypeAlt = mazeTypeAlt;
+        }
     }
 
 
     public enum MazeType {
-        STONE, VOID,
-        FLAME, DARK,
-        ;
+        STONE, SKULL,
+        FLAME, DARK,    LIGHT,
+        NONE;
 
         protected String imagePath;
 
         public String getImagePath() {
-            //random variant?
-            //            PathFinder.getVar
-            return Images.LIGHT_SKULL;
+          return   PathFinder.getOutlinesPath()+"overlays/"+name().toLowerCase()+".png";
         }
 
         public void setImagePath(String imagePath) {

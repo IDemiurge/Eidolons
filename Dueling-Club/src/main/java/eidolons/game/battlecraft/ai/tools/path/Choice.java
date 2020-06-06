@@ -17,9 +17,9 @@ import java.util.List;
  * Created by JustMe on 4/13/2017.
  */
 public class Choice {
-    private Coordinates coordinates;
+    private final Coordinates coordinates;
     private Coordinates prevCoordinates;
-    private List<Action> actions;
+    private final List<Action> actions;
     private Boolean[] turns;
     int maxUnitsInStack;
 
@@ -34,7 +34,7 @@ public class Choice {
 
         maxUnitsInStack=
         Eidolons.getGame().getRules().getStackingRule().getStackFactor(coordinates,
-                Eidolons.getGame().getAiManager().getUnit(), false);
+                actions[0].getSource(), false);
 
     }
 

@@ -25,9 +25,4 @@ background,
         angle_delta, objs_over,//can do a  bit of turning randomly?
     }
 
-    public enum FLIGHT_ENVIRON {
-        water,
-        nether,
-
-    }
 }

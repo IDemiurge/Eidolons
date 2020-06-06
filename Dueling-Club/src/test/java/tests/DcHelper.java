@@ -72,7 +72,7 @@ public class DcHelper implements JUnitHelper {
 
             readiness = game.getAtbController().getAtbUnit(
              (Unit) context.getSourceObj()).getAtbReadiness();
-        game.getLoop().actionInput(new ActionInput(action, context));
+        game.getLoop().actionInputManual(new ActionInput(action, context));
         if (waitForCompletion) {
             Object result = WaitMaster.waitForInput(
              WAIT_OPERATIONS.ACTION_COMPLETE);

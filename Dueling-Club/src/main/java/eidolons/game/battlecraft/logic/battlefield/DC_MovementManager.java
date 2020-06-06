@@ -46,12 +46,18 @@ import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 public class DC_MovementManager implements MovementManager {
 
     private static DC_MovementManager instance;
     Map<Unit, List<ActionPath>> pathCache = new HashMap<>();
-    private DC_Game game;
+    private final DC_Game game;
+    public static Coordinates playerDestination;
+    public static boolean outsideInterrupt;
+    public static List<Coordinates> playerPath;
 
     public DC_MovementManager(DC_Game game) {
         this.game = game;
@@ -151,13 +157,17 @@ public class DC_MovementManager implements MovementManager {
 
     public void cancelAutomove(Obj activeUnit) {
         pathCache.remove(activeUnit);
+        playerDestination=null;
+        playerPath=null;
     }
 
     public List<ActionPath> buildPath(Unit unit, Coordinates coordinates) {
         List<DC_ActiveObj> moves = getMoves(unit);
         PathBuilder builder = PathBuilder.getInstance().init
                 (moves, new Action(unit.getAction("Move")));
+        builder.simplified=true;
         List<ActionPath> paths = builder.build(new ListMaster<Coordinates>().getList(coordinates));
+        builder.simplified=false;
         if (paths.isEmpty()) {
             return null;
         }
@@ -172,33 +182,83 @@ public class DC_MovementManager implements MovementManager {
     }
 
     public void moveTo(Coordinates coordinates) {
-        Unit unit = game.getManager().getActiveObj();
-        List<ActionPath> paths = pathCache.get(unit);
-        if (paths == null) {
-            paths = buildPath(unit, coordinates);
-            pathCache.put(unit, paths);
-        }
-        if (paths == null) {
-            return;
-        }
-        Action action = null;
-        for (ActionPath path : paths) {
-            action = path.getActions().get(0);
-            break;
-        }
-        if (action == null) {
-            pathCache.remove(unit);
-            return;
-        }
-        // ActionAnimation anim = new ActionAnimation(action);
-        // anim.start();
+        playerDestination = coordinates;
+        //highlight the destination with overlays
+    }
 
-        Context context = new Context(unit.getRef());
-        if (action.getActive().isMove()) {
-            context.setTarget(game.getCellByCoordinate(coordinates).getId());
+    private boolean checkInterruption(Unit unit) {
+        if (outsideInterrupt) {
+            outsideInterrupt = false;
+            return true;
         }
-        unit.getGame().getGameLoop().
-                actionInput(new ActionInput(action.getActive(), context));
+        /*
+                check status
+
+         */
+        return false;
+    }
+
+    public boolean isValidDestination(Coordinates coordinates, Unit unit) {
+        if (coordinates == null)
+            return false;
+
+        return !unit.getCoordinates().equals(coordinates);
+    }
+
+    public boolean checkContinueMove() {
+        if (playerDestination == null)
+            return false;
+        Unit unit = game.getManager().getActiveObj();
+        if (checkInterruption(unit)) {
+            return false;
+        }
+        if (!isValidDestination(playerDestination, unit)) {
+            return false;
+        }
+        try {
+            List<ActionPath> paths = pathCache.get(unit);
+            //TODO IDEA: plot the path on the grid for PC to see!
+            if (paths == null) {
+                paths = buildPath(unit, playerDestination);
+                pathCache.put(unit, paths);
+            }
+            if (paths == null) {
+                log(1, "Cannot find path to " + playerDestination);
+                game.getLogManager().log("Cannot find path to " + playerDestination);
+                return false;
+            }
+            Action action = null;
+            for (ActionPath path : paths) {
+                if (!checkPathStillValid(path, playerDestination)) {
+                    continue;
+                }
+                action = path.getActions().get(0);
+                playerPath = path.choices.stream().map(c -> c.getCoordinates()).collect(Collectors.toList());
+                break;
+            }
+            if (action == null) {
+                pathCache.remove(unit);
+                return false;
+            }
+            // ActionAnimation anim = new ActionAnimation(action);
+            // anim.start();
+
+            Context context = new Context(unit.getRef());
+            if (action.getTarget() != null) {
+                context.setTarget(action.getTarget().getId());
+            }
+            unit.getGame().getGameLoop().
+                    actionInput_(new ActionInput(action.getActive(), context));
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            return false;
+        }
+        return true;
+
+    }
+
+    private boolean checkPathStillValid(ActionPath path, Coordinates playerDestination) {
+        return true;
     }
 
     @Override
@@ -255,7 +315,7 @@ public class DC_MovementManager implements MovementManager {
         Ref REF = ref.getCopy();// new Ref(obj.getGame());
         REF.setTarget(cell.getId());
         REF.setSource(obj.getId());
-        LogMaster.log(LogMaster.MOVEMENT_DEBUG, "Moving " + obj + " to " + cell);
+        log(LogMaster.MOVEMENT_DEBUG, "Moving " + obj + " to " + cell);
         Event event = new Event(STANDARD_EVENT_TYPE.UNIT_BEING_MOVED, REF);
         if (!game.fireEvent(event)) {
             return false;
@@ -313,9 +373,11 @@ public class DC_MovementManager implements MovementManager {
     public boolean moved(BattleFieldObject obj, DC_Cell cell) {
         return moved(obj, cell, Ref.getSelfTargetingRefCopy(obj));
     }
+
     public void moved(Unit unit) {
         moved(unit, game.getCellByCoordinate(unit.getCoordinates()));
     }
+
     public boolean moved(BattleFieldObject obj, DC_Cell cell, Ref REF) {
         Event event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
 

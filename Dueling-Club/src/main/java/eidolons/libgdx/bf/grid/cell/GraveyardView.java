@@ -9,9 +9,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.datasource.GraveyardDataSource;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.NinePatchFactory;
-import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureCache;
 
 import java.util.Arrays;
@@ -20,11 +18,11 @@ import java.util.List;
 public class GraveyardView extends TablePanel {
     private static final int SIZE = 4;
     private static final int ROW_SIZE = 2;
-    private Cell<UnitView>[] graves;
+    private final Cell<UnitView>[] graves;
 
-    private TablePanel<UnitView> graveTables;
+    private final TablePanel<UnitView> graveTables;
 
-    private Button graveyardButton;
+    private final Button graveyardButton;
     private int graveCount = 0;
 
     public GraveyardView() {
@@ -47,11 +45,11 @@ public class GraveyardView extends TablePanel {
             graves[i] = graveTables.add().expand().fill();
         }
         add(graveTables).expand().fill();
-        ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(
-         new ValueContainer("\"Death smiles at us all,", ""),
-         new ValueContainer("all a man can do is smile back.\"", "")));
-        graveyardButton.addListener(tooltip.getController());
+        // ValueTooltip tooltip = new ValueTooltip();
+        // tooltip.setUserObject(Arrays.asList(
+        //  new ValueContainer("\"Death smiles at us all,", ""),
+        //  new ValueContainer("all a man can do is smile back.\"", "")));
+        // graveyardButton.addListener(tooltip.getController());
 
         graveyardButton.addListener(new BattleClickListener() {
             @Override

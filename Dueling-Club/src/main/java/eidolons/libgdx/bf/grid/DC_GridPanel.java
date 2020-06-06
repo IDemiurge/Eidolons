@@ -38,7 +38,6 @@ import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
-import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.text.HelpMaster;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.game.bf.Coordinates;
@@ -53,6 +52,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
+import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.*;
 
 public class DC_GridPanel extends GridPanel {
@@ -139,7 +139,7 @@ public class DC_GridPanel extends GridPanel {
         super.act(delta);
         if (!DC_Game.game.isPaused()) {
             getPlatformHandler().act(delta);
-            voidHandler.act(delta );
+            voidHandler.act(delta);
         }
         if (updateRequired) {
             resetZIndices();
@@ -229,7 +229,7 @@ public class DC_GridPanel extends GridPanel {
                             if (obj instanceof Unit) {
                                 LogMaster.log(1, obj + " has OUTLINE: " + path);
                             }
-                            texture = TextureCache.getOrCreateR(path);
+                            texture = getOrCreateR(path);
                             uv.setOutline(texture);
                         } else {
                             if (obj instanceof Unit) {
@@ -268,21 +268,23 @@ public class DC_GridPanel extends GridPanel {
 
     private void initMaze(boolean hide, MazePuzzle.MazeData data) {
         Coordinates c = null;
+        if (data.mazeTypeAlt != MazePuzzle.MazeType.NONE) {
+            if (data.mazeMarksAlt != null)
+                for (Coordinates coordinates : data.mazeMarksAlt) {
+                    c = data.c.getOffset(coordinates);
+                    GridCellContainer container = cells[c.getX()][(c.getY())];
+                    container.setOverlayTexture(
+                            hide ? null : getOrCreateR(data.mazeTypeAlt.getImagePath()));
+                }
+        }
         for (Coordinates coordinates : data.mazeMarks) {
             c = data.c.getOffset(coordinates);
             GridCellContainer container = cells[c.getX()][(c.getY())];
-            if (container == null) {
-                main.system.auxiliary.log.LogMaster.warn("Void cell in maze puzzle!" + c);
-                continue;
-            }
             container.setOverlayTexture(
-                    hide ? null :
-                            TextureCache.getOrCreateR(data.mazeType.getImagePath()));
-
-            gridViewAnimator.animate(container,
-                    GridViewAnimator.VIEW_ANIM.screen, new GraphicData("alpha:0.6f;dur:1f"));
-            //TODO VFX or sprite?
+                    hide ? null : getOrCreateR(data.mazeType.getImagePath()));
         }
+        // gridViewAnimator.animate(container,
+        //         GridViewAnimator.VIEW_ANIM.screen, new GraphicData("alpha:0.6f;dur:1f"));
     }
 
     protected void bindEvents() {

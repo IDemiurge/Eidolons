@@ -401,7 +401,9 @@ public class GameLoop {
         playerActionQueue.add(actionInput);
     }
 
-    public void actionInput(ActionInput actionInput) {
+    public void actionInput_(ActionInput actionInput) {
+    }
+    public void actionInputManual(ActionInput actionInput) {
         if (AI_Manager.isRunning())
             EUtils.showInfoText(RandomWizard.random() ? "The enemy has the initiative!" : "The enemy has initiative...");
         if (isPaused()) {
@@ -488,7 +490,7 @@ public class GameLoop {
             if (this instanceof ExploreGameLoop) {
 
             } else {
-                actionInput(null);
+                actionInputManual(null);
             }
         }
     }
@@ -578,4 +580,5 @@ public class GameLoop {
     public DC_ActiveObj getLastActionEvent() {
         return lastActionEvent;
     }
+
 }

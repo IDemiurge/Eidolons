@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf.decor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -52,12 +53,13 @@ public class ShardVisuals extends GroupX implements GridElement {
     List<Shard> last = new ArrayList<>();
     Map<Shard, List<EmitterActor>> emittersMap = new XLinkedMap<>();
     GroupX emitterLayer = new GroupX();
-    private GridPanel grid;
-    private Map<Coordinates, Shard> map = new XLinkedMap<>();
-    private Function<Coordinates, SHARD_TYPE> typeFunc;
+    private final GridPanel grid;
+    private final Map<Coordinates, Shard> map = new XLinkedMap<>();
+    private final Function<Coordinates, SHARD_TYPE> typeFunc;
 
     public ShardVisuals(GridPanel grid) {
         this.grid = grid;
+        setTouchable(Touchable.disabled);
         addActor(emitterLayer);
         typeFunc = c ->
         {

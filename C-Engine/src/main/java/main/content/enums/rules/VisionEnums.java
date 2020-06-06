@@ -143,10 +143,12 @@ public class VisionEnums {
     public enum PLAYER_STATUS {
         EXPLORATION_UNDETECTED,
         EXPLORATION_DETECTED,
+        PUZZLE,
         ALERTED,
         COMBAT,
         SHADOW,
         DEAD //GHOST!
+
     }
 
     public enum ENGAGEMENT_LEVEL {

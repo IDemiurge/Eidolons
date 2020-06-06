@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.meta.universal;
 
 import eidolons.content.PROPS;
 import eidolons.game.EidolonsGame;
-import eidolons.game.Simulation;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -113,9 +112,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     public DC_Game init() {
         game = Eidolons.game;
         if (game == null) {
-            Simulation.init(false, this);
+            // Simulation.init(false, this);
             game = createGame();
-            Simulation.setRealGame(game);
+            // Simulation.setRealGame(game);
         }
         game.setMetaMaster(this);
         metaGame = initializer.initMetaGame(data);

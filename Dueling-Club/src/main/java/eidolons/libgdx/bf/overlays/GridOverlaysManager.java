@@ -17,6 +17,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.VoidHandler;
@@ -254,9 +255,10 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
         for (int x = x1; x < x2; x++) {
             for (int y = y2 - 1; y >= y1; y--) {
                 GridCellContainer cell = cells[x][y];
-                for (Actor c : cell.getUnitViews(true)) {
-                    drawOverlaysForView(((GenericGridView) c), batch, x, y);
-                }
+                if (cell.visibleViews != null)
+                    for (Actor c : cell.visibleViews) {
+                        drawOverlaysForView(((GenericGridView) c), batch, x, y);
+                    }
                 drawOverlaysForCell(cell, x, y, batch);
             }
         }
@@ -290,10 +292,23 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
     protected void drawOverlaysForCell(GridCellContainer container, int x, int y,
                                        Batch batch) {
 
-        if (debug || sightInfoDisplayed) {
-            DC_Cell cell = Eidolons.getGame().getObjMaster().getCellByCoordinate(Coordinates.get(x, y));
+        boolean path = false;
+        Coordinates c = Coordinates.get(x, y);
+        if (c.equals(DC_MovementManager.playerDestination) ||
+                (DC_MovementManager.playerPath != null && DC_MovementManager.playerPath.contains(c))) {
+            path = true;
+        }
+        if (debug || sightInfoDisplayed || path) {
+            DC_Cell cell = Eidolons.getGame().getObjMaster().
+                    getCellByCoordinate(c);
             if (debug) {
                 drawOverlay(container, INFO_TEXT, batch, cell, x, y);
+                return;
+            } else if (path) {
+                if (c.equals(DC_MovementManager.playerDestination)) {
+                    drawOverlay(container, DESTINATION, batch, cell, x, y);
+                } else
+                    drawOverlay(container, PATH, batch, cell, x, y);
             }
             UNIT_VISION vision = cell.getUnitVisionStatus(observer);
             if (vision == null) {
@@ -638,11 +653,14 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
         FOG_OF_WAR,
         WATCH,
         BLOCKED,
-        INFO_TEXT;
+        INFO_TEXT,
+        PATH,
+        DESTINATION,
+        ;
 
         public Alignment alignment;
         String path = StrPathBuilder.build(PathFinder.getComponentsPath(),
-                "dc", "overlays", toString() + ".png");
+                "dc", "overlays", toString().toLowerCase() + ".png");
 
         OVERLAY() {
 

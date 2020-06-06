@@ -19,6 +19,7 @@ import main.system.auxiliary.data.FileManager;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.Stack;
 
 import static main.content.enums.GenericEnums.*;
 import static main.system.auxiliary.log.LogMaster.log;
@@ -29,24 +30,18 @@ start    - already in motion?
  */
 public class FlyingObjs extends GroupX {
 
-    private final float minDelay;
-    private final float maxDelay;
-    private final float angle;
-    private final OrthographicCamera camera;
+    private final float minDelay, maxDelay, angle;
+    private float timer = 0;
     private final int intensity;
     FLY_OBJ_TYPE type;
     CinematicPlatform platform; // don't want to collide with it right? Or is it ABOVE?..
-    private float timer = 0;
-    Set<FlyingObj> objects = new LinkedHashSet<>(); //might want to *STOP* them or change their ANGLE
+    private final OrthographicCamera camera;
     private final boolean cinematic;
-    private boolean right;
-    private boolean up;
-    private float cam_x;
-    private float cam_y;
-    private int w;
-    private int h;
-    private float gridW;
-    private float gridH;
+    private boolean right, up;
+    private float cam_x, cam_y;
+    private int w, h;
+    Set<FlyingObj> objects = new LinkedHashSet<>(); //might want to *STOP* them or change their ANGLE
+    Stack<FlyingObj> pool = new Stack<>();
     private boolean stopping;
 
     public FlyingObjs(FLY_OBJ_TYPE type, CinematicPlatform platform, int intensity, boolean cinematic) {
@@ -79,27 +74,24 @@ public class FlyingObjs extends GroupX {
                 timer -= delta;
             }
         for (FlyingObj object : new ArrayList<>(objects)) {
-            try {
-                object.act(delta);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                object.remove();
-                objects.remove(object);
+            object.act(delta);
+            if (object.actor instanceof EmitterActor) {
+                if (((EmitterActor) object.actor).isComplete()) {
+                    pool.add(object);
+                    object.remove();
+                }
             }
-            //TODO reuse these objects ... just put them back in place, add new actions and voila!
         }
     }
 
     public void stop(float maxDelay) {
         stopping = true;
-        for (FlyingObj object : objects) {
-        }
+        // for (FlyingObj object : objects) {
+        // }
     }
 
-    public void start() {
+    public void reset() {
         stopping = false;
-        gridW = ScreenMaster.getDungeonGrid().getWidth();
-        gridH = ScreenMaster.getDungeonGrid().getHeight();
         float zoom = ScreenMaster.getScreen().getController().getZoom();
         cam_x = camera.position.x;
         cam_y = camera.position.y;
@@ -110,9 +102,9 @@ public class FlyingObjs extends GroupX {
 
     private void sendObject() {
         // if (!cinematic) {
-        start();
+        reset();
         // }
-        FlyingObj obj = create();
+        FlyingObj obj = getOrCreate();
         addActor(obj);
         Vector2 v = getPosForNew();
         obj.setPosition(v.x, v.y);
@@ -124,8 +116,6 @@ public class FlyingObjs extends GroupX {
 
     private void addActions(FlyingObj obj) {
         //MoveToBezier
-
-
         Vector2 dest = getDestination(obj, cinematic);
         float dur = getDuration(obj, cinematic);
         MoveToAction action = ActionMaster.addMoveToAction(obj, dest.x, dest.y, dur);
@@ -140,19 +130,22 @@ public class FlyingObjs extends GroupX {
         if (cinematic) {
 
         } else {
-            //cannot predict if player will follow, but we can increase speed and reduce alpha after it leaves
+            //TODO cannot predict if player will follow, but we can increase speed and reduce alpha after it leaves
             //camera, and REMOVE it soon
         }
         ActionMaster.addAfter(obj, () -> {
             if (obj.actor instanceof EmitterActor) {
                 ((EmitterActor) obj.actor).allowFinish();
-            } else
+            } else {
                 obj.remove();
-            // pool.add(obj);
+                pool.add(obj);
+            }
 
         });
 
         if (obj.actor instanceof EmitterActor) {
+            ((EmitterActor) obj.actor).getEffect().
+                    scaleEffect(RandomWizard.getRandomFloatBetween(0.5f, 1f));
             ((EmitterActor) obj.actor).start();
         }
     }
@@ -163,7 +156,8 @@ public class FlyingObjs extends GroupX {
 
     private float getDuration(FlyingObj obj, boolean cinematic) {
         //this is completely up to me! Depends on TYPE? Or also intensity?
-        float base = cinematic ? 5 : 5 * getGridSizeFactor();
+        float i = RandomWizard.getRandomFloatBetween(3, 5);
+        float base = cinematic ? i : i * getGridSizeFactor();
         return (float) (base *
                 type.speedFactor
                 * (1 / Math.sqrt(intensity)));
@@ -236,12 +230,24 @@ public class FlyingObjs extends GroupX {
     }
 
 
-    public FlyingObj create() { //override?
-        // sprites, textures, vfx - generally any actor perhaps
-        //use actions after all? That would mean probably NOT responsive to input/... which is OK?
-        // MoveController controller = new FlyMoveController(data);
+    public FlyingObj getOrCreate() {
+        if (pool.size() >= getMaxPoolSize()) {
+            FlyingObj obj = pool.pop();
+            reset(obj);
+            return obj;
+        }
         SuperActor actor = createActor();
         return new FlyingObj(actor);
+    }
+
+    private int getMaxPoolSize() {
+        return 5; //depends on speed?
+    }
+
+    private void reset(FlyingObj obj) {
+        if (obj.actor instanceof EmitterActor) {
+            ((EmitterActor) obj.actor).reset();
+        }
     }
 
     @Override
@@ -255,6 +261,8 @@ public class FlyingObjs extends GroupX {
         switch (type) {
             case mist:
             case cinders:
+            case comet_bright:
+            case comet_pale:
                 actor = new EmitterActor(path);
                 break;
             default:
@@ -287,12 +295,12 @@ public class FlyingObjs extends GroupX {
         // star_field,
         // cloud_field, //this would require some alpha tricks!
         //
-        mist(2f,
-                VFX.missile_arcane_intense, VFX.missile_death, VFX.missile_arcane, VFX.missile_nether_nox),
-                // VFX.MIST_WHITE3, VFX.MIST_WHITE2, VFX.MIST_TRUE2, VFX.MIST_WIND),
-        cinders(3f,
-                        VFX.missile_warp, VFX.missile_pale, VFX.missile_chaos, VFX.missile_arcane_pink),
-                // VFX.CINDERS3, VFX.CINDERS2, VFX.CINDERS),
+        comet_pale(2.5f,
+                VFX.missile_pale, VFX.missile_pale, VFX.missile_arcane, VFX.missile_nether_nox),
+        comet_bright(3f,
+                VFX.missile_warp, VFX.missile_death, VFX.missile_chaos, VFX.missile_arcane_pink),
+        mist(2f, VFX.MIST_WHITE3, VFX.MIST_WHITE2, VFX.MIST_TRUE2, VFX.MIST_WIND),
+        cinders(3f, VFX.CINDERS3, VFX.CINDERS2, VFX.CINDERS),
 
         debris(0.4f, ALPHA_TEMPLATE.CLOUD, true, false, 0f),
         light(0.3f, ALPHA_TEMPLATE.CLOUD, true, false, 0f), //sprite?

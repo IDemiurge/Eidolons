@@ -161,9 +161,9 @@ public abstract class GenericDungeonScreen extends GameScreen {
     }
 
     private void drawSpriteBg(Batch batch) {
-        backgroundSprite.setOffsetY(-
+        backgroundSprite.setOffsetY(
                 Gdx.graphics.getHeight() / 2);
-        backgroundSprite.setOffsetX(-Gdx.graphics.getWidth() / 2);
+        backgroundSprite.setOffsetX( Gdx.graphics.getWidth() / 2);
         backgroundSprite.setSpeed(0.5f);
         // backgroundSprite.setOffsetY(getCam().position.y);
         // backgroundSprite.setOffsetX(getCam().position.x);

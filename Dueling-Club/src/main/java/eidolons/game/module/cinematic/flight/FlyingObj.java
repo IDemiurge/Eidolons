@@ -1,5 +1,6 @@
 package eidolons.game.module.cinematic.flight;
 
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.moving.MoveController;
 
@@ -9,6 +10,7 @@ public class FlyingObj extends SuperActor { //just wrap?
 
     public FlyingObj(SuperActor actor ) {
         addActor(this.actor = actor);
+        setTouchable(Touchable.disabled);
     }
 
     public void act(float delta) {

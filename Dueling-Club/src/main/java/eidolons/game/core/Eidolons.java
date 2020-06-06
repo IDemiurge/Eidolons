@@ -234,7 +234,7 @@ public class Eidolons {
     }
 
     public static void activateMainHeroAction(DC_ActiveObj action) {
-        Eidolons.getGame().getLoop().actionInput(
+        Eidolons.getGame().getLoop().actionInputManual(
                 new ActionInput((action), Eidolons.getMainHero()));
     }
 

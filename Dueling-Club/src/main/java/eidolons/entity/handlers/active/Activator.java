@@ -110,7 +110,7 @@ public class Activator extends ActiveHandler {
             if (getEntity().getOwnerUnit().getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
 //                GuiEventManager.trigger(GuiEventType.)
                 try {
-                    getGame().getLoop().actionInput(null);
+                    getGame().getLoop().actionInputManual(null);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }

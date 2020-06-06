@@ -240,7 +240,7 @@ public class QuickWeaponPanel extends TablePanelX {
                         return false;
                     }
                     attack.setAutoSelectionOn(true);
-                    getActiveWeaponDataSource().getWeapon().getGame().getLoop().actionInput(
+                    getActiveWeaponDataSource().getWeapon().getGame().getLoop().actionInputManual(
                             new ActionInput(attack
                                     , new Context(getDataSource().getOwnerObj(), null))
                     );

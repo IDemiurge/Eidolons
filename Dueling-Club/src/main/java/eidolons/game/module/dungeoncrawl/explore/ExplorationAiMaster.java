@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
  */
 public class ExplorationAiMaster extends ExplorationHandler {
 
-    private DequeImpl<UnitAI> activeUnitAIs;
+    private final DequeImpl<UnitAI> activeUnitAIs;
     private boolean aiActs;
-    private DequeImpl<ActionInput> aiActionQueue;
+    private final DequeImpl<ActionInput> aiActionQueue;
     private Set<Unit> allies;
-    private ExploreAiManager aiManager;
+    private final ExploreAiManager aiManager;
 
     public ExplorationAiMaster(ExplorationMaster master) {
         super(master);
@@ -140,7 +140,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
             ActionInput input = new ActionInput(
              ai.getStandingOrders().getCurrentAction().getActive(),
              new Context(ai.getStandingOrders().getCurrentAction().getRef()));
-            master.getGame().getGameLoop().actionInput(input);
+            master.getGame().getGameLoop().actionInputManual(input);
             return true;
         }
         return false;

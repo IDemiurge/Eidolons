@@ -53,7 +53,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
     protected boolean stackView;
     protected float maxY;
     protected SortMaster<GenericGridView> sorter;
-    protected List<GenericGridView> visibleViews;
+    public List<GenericGridView> visibleViews;
     protected List<GenericGridView> allViews;
     protected boolean main;
     protected int n;
@@ -229,11 +229,11 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     public final float getViewX(UnitGridView view) {
-        return getViewX(getUnitViews(true).indexOf(view));
+        return getViewX(visibleViews.indexOf(view));
     }
 
     public final float getViewY(UnitGridView view) {
-        return getViewY(getUnitViews(true).indexOf(view), getUnitViewCount());
+        return getViewY(visibleViews.indexOf(view), getUnitViewCount());
     }
 
     public final float getViewX(int i) {

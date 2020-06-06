@@ -44,8 +44,8 @@ public class FacingPanel extends TablePanel {
     //     "FACE_BACKGROUND.png");
     //    private final ImageContainer faceBackground;
 
-    private SmartButton btnTurnClockwise;
-    private SmartButton btnTurnAntiClockwise;
+    private final SmartButton btnTurnClockwise;
+    private final SmartButton btnTurnAntiClockwise;
     boolean sneaking;
 
 
@@ -113,13 +113,13 @@ public class FacingPanel extends TablePanel {
     }
 
     private void move(boolean forward) {
-        DC_Game.game.getLoop().actionInput(
+        DC_Game.game.getLoop().actionInputManual(
                 new ActionInput(dataSource.getEntity().getAction(forward? "Move" : "Move Back"),
                         new Context(dataSource.getEntity().getRef())));
         gears.activeWork(0.25f, 0.5f);
     }
         private void turn(boolean clockwise) {
-        DC_Game.game.getLoop().actionInput(
+        DC_Game.game.getLoop().actionInputManual(
                 new ActionInput(dataSource.getTurnAction(clockwise),
                         new Context(dataSource.getEntity().getRef())));
         gears.activeWork(0.25f, 0.5f);

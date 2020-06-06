@@ -1,7 +1,9 @@
 package eidolons.game.battlecraft.ai.advanced.engagement;
 
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.texture.Images;
 import main.content.enums.rules.VisionEnums;
+import main.system.auxiliary.NumberUtils;
 
 public class PlayerStatus {
     String iconPath;
@@ -19,6 +21,15 @@ public class PlayerStatus {
 
     private void init() {
         switch (type) {
+            case PUZZLE:
+                statusText=DC_Game.game.getDungeonMaster().getPuzzleMaster().getCurrent().getTitle();
+                iconPath=Images.STATUS_PUZZLE;
+                if (arg == 0) {
+                    subText = "First attempt";
+                } else {
+                    subText =(arg+1)+  NumberUtils.getOrdinalEnding(arg+1) + " attempt";
+                }
+                break;
             case EXPLORATION_UNDETECTED:
             case EXPLORATION_DETECTED:
             case ALERTED:
@@ -36,32 +47,32 @@ public class PlayerStatus {
         }
         switch (type) {
             case EXPLORATION_UNDETECTED:
-                iconPath= Images.STATUS_EXPLORE;
+                iconPath = Images.STATUS_EXPLORE;
                 statusText = "Exploration\nStatus:\nUndetected";
                 break;
             case EXPLORATION_DETECTED:
-                iconPath= Images.STATUS_EXPLORE_DETECTED;
+                iconPath = Images.STATUS_EXPLORE_DETECTED;
                 statusText = "Exploration\nStatus:\nDetected";
                 break;
             case ALERTED:
-                iconPath= Images.STATUS_ALARM;
+                iconPath = Images.STATUS_ALARM;
                 statusText = "On Alert\nStatus:\nHunted";
                 break;
             case COMBAT:
-                iconPath= Images.STATUS_COMBAT;
-                statusText = "Combat\nReinforcements:" ;
+                iconPath = Images.STATUS_COMBAT;
+                statusText = "Combat\nReinforcements:";
                 // + "Status:\nAlive";
                 // if (arg == 0) {
-                    subText = "  Unknown";
+                subText = "  Unknown";
                 // } else
                 //     subText = "Reinforcements: " + arg + " turns";
                 break;
             case SHADOW:
                 statusText = "Combat\nStatus:\nShadow";
                 if (arg == 0) {
-//                    subText = " turns left";
+                    //                    subText = " turns left";
                 } else
-                    subText = arg +" turns left";
+                    subText = arg + " turns left";
                 break;
             case DEAD:
                 statusText = "Combat\nStatus:\nDead";

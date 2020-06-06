@@ -34,7 +34,7 @@ public class RoomModel implements Serializable {
     }
     //allow other rooms to carve into this room's wall space
 
-    public void setRotations(Boolean[] rotations) {
+    public void setRotations(Boolean... rotations) {
         this.rotations = rotations;
         if (getRotations()!=null )
             for (Boolean sub : getRotations()) {

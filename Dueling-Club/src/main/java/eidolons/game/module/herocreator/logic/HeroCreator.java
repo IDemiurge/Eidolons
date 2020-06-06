@@ -4,8 +4,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.mission.universal.PlayerManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.macro.AdventureInitializer;
-import eidolons.macro.global.persist.Loader;
 import eidolons.system.test.TestMasterContent;
 import main.content.CONTENT_CONSTS.RANK;
 import main.content.DC_TYPE;
@@ -36,9 +34,9 @@ public class HeroCreator {
     }
 
     public static Unit initHero(String typeName) {
-        if (AdventureInitializer.isLoad()) {
-            return Loader.getLoadedHero(typeName);
-        }
+        // if (AdventureInitializer.isLoad()) {
+        //     return Loader.getLoadedHero(typeName);
+        // }
         ObjType type = new ObjType(DataManager.getType(typeName, DC_TYPE.CHARS));
         Eidolons.getGame().initType(type);
         try {

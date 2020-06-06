@@ -396,6 +396,7 @@ public class GlobalController implements Controller {
             GuiEventManager.trigger(GuiEventType.CLEAR_COMMENTS);
             guiStage.getTooltips().getStackMaster().stackOff();
             guiStage.getGameMenu().open();
+            ScreenMaster.getScreen().getController().resetZoom();
             return true;
         }
         return false;

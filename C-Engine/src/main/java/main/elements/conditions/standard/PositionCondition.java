@@ -11,9 +11,10 @@ public class PositionCondition extends MicroCondition {
 
     private Coordinates c;
     Supplier<Coordinates> supplier;
-    private String key;
+    private final String key;
 
     public PositionCondition(Supplier<Coordinates> supplier) {
+        this(Ref.KEYS.MATCH.toString());
         this.supplier = supplier;
     }
 
@@ -47,11 +48,6 @@ public class PositionCondition extends MicroCondition {
         } else {
             return obj.getCoordinates().equals(c);
         }
-
     }
 
-    public enum POSITION_CONDITIONS {
-        DIAGONAL,
-        ;
-    }
 }

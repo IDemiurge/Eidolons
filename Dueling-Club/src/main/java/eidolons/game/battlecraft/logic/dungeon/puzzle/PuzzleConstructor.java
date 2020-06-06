@@ -61,15 +61,13 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
             Coordinates c = puzzle.getEntranceCoordinates();
 
             if (!isAreaEnter()) {
-                puzzle.setEnterVeil(veil = new Veil(puzzle, c, pale, true));
-                GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, veil);
+                puzzle.setEnterVeil(new Veil(puzzle, c, pale, true));
             }
             if (isPointExit())
                 if (!puzzleData.getValue(PuzzleData.PUZZLE_VALUE.EXIT).isEmpty()) {
                     c = puzzle.getExitCoordinates();
                     if (c != null) {
-                        puzzle.setExitVeil(veil = new Veil(puzzle, c, pale, false));
-                        GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, veil);
+                        puzzle.setExitVeil(new Veil(puzzle, c, pale, false));
                     }
                 }
         }

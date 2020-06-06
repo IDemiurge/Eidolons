@@ -30,6 +30,18 @@ public class PuzzleMaster {
         this.master = master;
     }
 
+    public boolean isUiMinimized(){
+        if (getCurrent() == null) {
+            return false;
+        }
+        return getCurrent().isMinimizeUI();
+    }
+        public Puzzle getCurrent(){
+        if (activePuzzles.isEmpty()) {
+            return null;
+        }
+        return activePuzzles.get(0);
+    }
 
     public void playerActionDone(DC_ActiveObj action) {
         for (Puzzle activePuzzle : activePuzzles) {

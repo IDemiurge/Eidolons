@@ -23,6 +23,7 @@ import eidolons.game.battlecraft.ai.tools.priority.PriorityModifier;
 import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
 import eidolons.game.battlecraft.ai.tools.prune.PruneMaster;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import main.content.values.parameters.PARAMETER;
 
@@ -60,8 +61,8 @@ public class AiMaster {
     protected AiPriorityConstantMaster priorityConstantMaster;
     protected PriorityModifier priorityModifier;
     protected PathBuilderAtomic pathBuilderAtomic;
-    private AiAutoGroupHandler autoGroupHandler;
-    private AiGroupHandler groupHandler;
+    private final AiAutoGroupHandler autoGroupHandler;
+    private final AiGroupHandler groupHandler;
 
     public AiMaster(DC_Game game) {
         this.game = game;
@@ -236,6 +237,9 @@ public class AiMaster {
     }
 
     public Unit getUnit() {
+        if (unit == null) {
+            return Eidolons.getMainHero(); //TODO dangerous
+        }
         return unit;
     }
 

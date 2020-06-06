@@ -31,8 +31,8 @@ public class GammaMaster {
     private static final Float LIGHT_EMITTER_ALPHA_FACTOR = 0.02f;
     private static final Float CONCEALMENT_ALPHA_FACTOR = 0.02f;
     private static Float[][] voidAlphaCache;
-    private VisionMaster master;
-    private Map<DC_Obj, Integer> cache = new HashMap<>();
+    private final VisionMaster master;
+    private final Map<DC_Obj, Integer> cache = new HashMap<>();
     private boolean dirty;
     private Coordinates mainExitCoordingates;
 
@@ -215,7 +215,7 @@ public class GammaMaster {
 
 
     private float getVoidAlpha(int x, int y) {
-        if (true)
+        if (isVoidAlphaStatic())
             return 0.7f;
         if (EidolonsGame.BOSS_FIGHT)
             return 0.6f;
@@ -258,6 +258,10 @@ public class GammaMaster {
         alpha = alpha / (Math.max(1, dst));
         voidAlphaCache[x][y] = alpha;
         return alpha;
+    }
+
+    private boolean isVoidAlphaStatic() {
+        return true;
     }
 
     protected float getHiglightAlpha(int x, int y) {

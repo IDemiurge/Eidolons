@@ -29,8 +29,8 @@ import main.system.threading.WaitMaster;
 public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
     private static final int REAL_TIME_LOGIC_PERIOD = 350;
-    private MacroTimeMaster timeMaster;
-    private MacroGame macroGame;
+    private final MacroTimeMaster timeMaster;
+    private final MacroGame macroGame;
     private Place lastEnteredPlace;
     private boolean locked;
 
@@ -89,7 +89,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     @Override
-    public void actionInput(ActionInput actionInput) {
+    public void actionInputManual(ActionInput actionInput) {
         if (isPaused())
             return;
         //check blocked

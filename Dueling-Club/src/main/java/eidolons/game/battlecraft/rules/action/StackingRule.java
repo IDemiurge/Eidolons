@@ -7,6 +7,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.VoidHandler;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.round.WaterRule;
@@ -140,6 +141,7 @@ public class StackingRule implements ActionRule {
         if (result != null) {
             return result;
         }
+        result = false;
         HashMap<Coordinates, Boolean> bools = cache.get(unit);
         if (maxSpaceTakenPercentage == 100) {
             if (bools != null) {
@@ -207,7 +209,7 @@ public class StackingRule implements ActionRule {
             return false;
         }
         if (cell.isVOID()) {
-            if (!CoreEngine.TEST_LAUNCH)
+            if (!CoreEngine.TEST_LAUNCH || !VoidHandler.TEST_MODE)
             if (!unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.VOIDWALKER.getName())) {
                 return false;
             }
@@ -319,6 +321,9 @@ public class StackingRule implements ActionRule {
 
     public int getStackFactor(Coordinates coordinates, Unit unit, boolean engagement) {
         int stackFactor=1;
+        if (unit == null) {
+            return stackFactor;
+        }
         for (BattleFieldObject object : game.getObjectsOnCoordinateNoOverlaying(coordinates)) {
             if (object==unit) {
                 continue;

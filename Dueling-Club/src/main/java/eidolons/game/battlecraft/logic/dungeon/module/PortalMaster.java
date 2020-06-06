@@ -74,7 +74,9 @@ public class PortalMaster extends DungeonHandler {
         if (to == null) {
             return;
         }
-        portal.open = false;
+            portal.used = true;
+        if (portal.oneWay)
+            portal.open = false;
         GuiEventManager.trigger(GuiEventType.UNIT_FADE_OUT_AND_BACK, unit);
 
         GraphicData data = new GraphicData("x:" +  portal.getOffsetX() + ";y:" +                 portal.getOffsetY());
@@ -95,6 +97,8 @@ public class PortalMaster extends DungeonHandler {
                         if (unit.isPlayerCharacter())
                             GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, unit);
 
+                        if (portal.oneWay)
+                            to.open=false;
                     });
                 });
     }
@@ -135,12 +139,6 @@ public class PortalMaster extends DungeonHandler {
                 facing2 = FacingMaster.getFacing(substring);
                 continue;
             }
-        }
-        if (facing == null) {
-            facing = FacingMaster.getRandomFacing();
-        }
-        if (facing2 == null) {
-            facing2 = FacingMaster.getRandomFacing();
         }
         addPortal(from, to, facing, facing2);
         return true;
@@ -189,6 +187,7 @@ public class PortalMaster extends DungeonHandler {
     }
 
     private static class Portal extends GridObject {
+        public boolean oneWay=true; //TODO
         FACING_DIRECTION exitFacing;
         Coordinates coordinates;
         PORTAL_TYPE type;
@@ -206,7 +205,7 @@ public class PortalMaster extends DungeonHandler {
 
         @Override
         public float getOffsetY() {
-            return  sprite.getHeight() / 2;
+            return  0;//-sprite.getHeight() / 2;
         }
 
         @Override

@@ -195,8 +195,9 @@ public class DC_Game extends GenericGame {
         effectManager = new DC_EffectManager(this);
         setTestMaster(new TestMasterContent(this));
         conditionMaster = new DC_ConditionMaster();
-        logManager = new DC_LogManager(this);
-
+        if (!isSimulation()) {
+            logManager = new DC_LogManager(this);
+        }
         if (!CoreEngine.isArcaneVault())
              rules = new DC_Rules(this);
 

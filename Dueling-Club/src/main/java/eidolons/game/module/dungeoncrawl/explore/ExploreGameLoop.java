@@ -143,7 +143,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         //             activateAction(data);
         //        }
         if (playerActionQueue.isEmpty()) {
-            game.getMovementManager().promptContinuePath(activeUnit);
+            game.getMovementManager().checkContinueMove();
             return null;
         }
 
@@ -162,7 +162,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     protected void playerAction(ActionInput playerAction) {
-        game.getMovementManager().cancelAutomove(activeUnit);
+
         //TODO igg demo fix
         activateAction(playerAction);
         waitForAnimations(playerAction);
@@ -250,7 +250,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     @Override
     public void queueActionInput(ActionInput actionInput) {
         if (playerActionQueue.size() > 0)
+        {
+            main.system.auxiliary.log.LogMaster.log(1,actionInput+" won't be done; playerActionQueue=  " +playerActionQueue);
             return;
+        }
         //        if (actionQueue.contains(actionInput))
         //            return;
         //        if (actionQueue.size() > 0) {
@@ -271,7 +274,11 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     @Override
-    public void actionInput(ActionInput actionInput) {
+    public void actionInputManual(ActionInput actionInput) {
+        game.getMovementManager().cancelAutomove(activeUnit);
+        actionInput_(actionInput);
+    }
+    public void actionInput_(ActionInput actionInput) {
         if (isStopped()) {
             main.system.auxiliary.log.LogMaster.log(1, "action input in stopped ");
             return;

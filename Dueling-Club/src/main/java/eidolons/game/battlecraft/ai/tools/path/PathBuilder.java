@@ -15,6 +15,7 @@ import eidolons.game.battlecraft.ai.tools.time.TimeLimitMaster.METRIC;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
+import main.elements.Filter;
 import main.elements.costs.Costs;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -53,6 +54,7 @@ public class PathBuilder extends AiHandler {
 
     private PathChoiceMaster pathChoiceMaster;
     private int timeLimit;
+    public boolean simplified;
 
     private PathBuilder(AiMaster master) {
         super(master);
@@ -118,7 +120,7 @@ public class PathBuilder extends AiHandler {
     }
 
     public List<ActionPath> build(List<Coordinates> targetCoordinates
-     , List<DC_ActiveObj> moveActions, Action targetAction) {
+            , List<DC_ActiveObj> moveActions, Action targetAction) {
         this.targetAction = targetAction;
         init();
         pathChoiceMaster.init(unit, targetAction, targetCoordinate, moveActions);
@@ -126,16 +128,18 @@ public class PathBuilder extends AiHandler {
     }
 
     public List<ActionPath> build(List<Coordinates> targetCoordinates) {
+        Filter.pathbuilding = true;
         try {
             paths = buildPaths(targetCoordinates);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
+            Filter.pathbuilding = false;
             resetUnit();
         }
         main.system.auxiliary.log.LogMaster.log(1,
-         targetAction.getActive().getOwnerUnit().getNameAndCoordinate()
-          + "'s Paths: " + ContainerUtils.joinList(paths, StringMaster.NEW_LINE));
+                targetAction.getActive().getOwnerUnit().getNameAndCoordinate()
+                        + "'s Paths: " + ContainerUtils.joinList(paths, StringMaster.NEW_LINE));
 
         try {
             filterPaths();
@@ -166,7 +170,7 @@ public class PathBuilder extends AiHandler {
             reset();
             path = new ActionPath(originalCoordinate);
             // TODO first step must be activateable!
-            List<Choice> choices = pathChoiceMaster.getChoices(path, c_coordinate, targetCoordinate, c_facing);
+            List<Choice> choices = pathChoiceMaster.getChoices(simplified, path, c_coordinate, targetCoordinate, c_facing);
             for (Choice choice : choices) {
                 base_choice = choice;
                 Chronos.mark(getChronosPrefix() + base_choice);
@@ -225,12 +229,12 @@ public class PathBuilder extends AiHandler {
         if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAi()))
             return false;
         if (Chronos.getTimeElapsedForMark(getChronosPrefix() + targetAction) >
-         (timeLimit > 0 ? timeLimit :
-          TimeLimitMaster.getTimeLimitForPathBuilding()
-           * TimeLimitMaster.CRITICAL_FAIL_FACTOR)) {
+                (timeLimit > 0 ? timeLimit :
+                        TimeLimitMaster.getTimeLimitForPathBuilding()
+                                * TimeLimitMaster.CRITICAL_FAIL_FACTOR)) {
             Chronos.logTimeElapsedForMark(getChronosPrefix() + targetAction);
             LogMaster.log(1, "*** CRITICAL_FAIL TimeLimitForPathBuilding "
-             + targetAction);
+                    + targetAction);
             return false;
         }
         if (paths.size() > 0) {
@@ -241,7 +245,7 @@ public class PathBuilder extends AiHandler {
                 return false;
             }
             if (!TimeLimitMaster.checkTimeLimit(METRIC.PATH_CELL, getChronosPrefix()
-             + targetCoordinate)) {
+                    + targetCoordinate)) {
                 return false;
             }
             if (!TimeLimitMaster.checkTimeLimit(METRIC.ACTION, getChronosPrefix() + targetAction)) {
@@ -252,12 +256,15 @@ public class PathBuilder extends AiHandler {
             return true;
         }
 
-        List<Choice> choices = pathChoiceMaster.getChoices(path, c_coordinate, targetCoordinate, c_facing);
+        List<Choice> choices = pathChoiceMaster.getChoices(simplified, path, c_coordinate, targetCoordinate, c_facing);
         // depth first search
         for (Choice nextChoice : choices) {
             if (!step(nextChoice)) {
                 return false;
             }
+            if (simplified)
+                if (!paths.isEmpty())
+                return false;
             // if (!failed)
             clonePath();
             back();
@@ -326,7 +333,7 @@ public class PathBuilder extends AiHandler {
 
     private void log(int result) {
         LogMaster.log(LOG_CHANNEL.PATHING_DEBUG, result
-         + " priority for path: " + path);
+                + " priority for path: " + path);
     }
 
     private boolean checkFailed() {
@@ -356,16 +363,16 @@ public class PathBuilder extends AiHandler {
         //            main.system.ExceptionMaster.printStackTrace(e);
         //        }
 
-        int stackFactor=0;
+        int stackFactor = 0;
         for (Choice choice : path.getChoices()) {
-            if (choice.maxUnitsInStack>1) {
-                stackFactor+=choice.maxUnitsInStack;
+            if (choice.maxUnitsInStack > 1) {
+                stackFactor += choice.maxUnitsInStack;
             }
         }
 
         int size = path.getActions().size() + stackFactor;
         result = result
-         * getParamAnalyzer().getActionNumberFactor(size) / 100;
+                * getParamAnalyzer().getActionNumberFactor(size) / 100;
 
 
         path.setPriority(result);
@@ -391,11 +398,11 @@ public class PathBuilder extends AiHandler {
     private void filterPaths() {
         filteredPaths = new ArrayList<>();
         main.system.auxiliary.log.LogMaster.log(1, " Filtering against "
-         + bestResult);
+                + bestResult);
         for (ActionPath p : paths) {
             int priority = p.getPriority();
             main.system.auxiliary.log.LogMaster.log(1, p + " paths priority = "
-             + priority);
+                    + priority);
 
             if (bestResult - priority >= FILTER_THRESHOLD) {
                 continue;
@@ -403,7 +410,7 @@ public class PathBuilder extends AiHandler {
             filteredPaths.add(p);
         }
         main.system.auxiliary.log.LogMaster.log(1, targetAction + "'s Filtered Paths: " +
-         ContainerUtils.joinList(filteredPaths, StringMaster.NEW_LINE));
+                ContainerUtils.joinList(filteredPaths, StringMaster.NEW_LINE));
 
     }
 

@@ -67,8 +67,8 @@ import java.util.List;
 public class Executor extends ActiveHandler {
     protected boolean result;
     private boolean interrupted;
-    private Activator activator;
-    private Targeter targeter;
+    private final Activator activator;
+    private final Targeter targeter;
     private List<DC_ActiveObj> pendingAttacksOpportunity;
     private boolean visualsRefreshed;
     private boolean failedLast;
@@ -113,7 +113,7 @@ public class Executor extends ActiveHandler {
 
     public void activateOnGameLoopThread(Ref ref) {
         targeter.setForcePresetTarget(true);
-        Eidolons.getGame().getGameLoop().actionInput(
+        Eidolons.getGame().getGameLoop().actionInputManual(
                 new ActionInput(getAction(), new Context(ref)));
     }
 
@@ -124,12 +124,12 @@ public class Executor extends ActiveHandler {
             activate();
             return;
         }
-        Eidolons.getGame().getGameLoop().actionInput(
+        Eidolons.getGame().getGameLoop().actionInputManual(
                 new ActionInput(getAction(), t));
     }
 
     public void activateOnGameLoopThread() {
-        Eidolons.getGame().getGameLoop().actionInput(
+        Eidolons.getGame().getGameLoop().actionInputManual(
                 new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
     }
 

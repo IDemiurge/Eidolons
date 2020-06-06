@@ -194,6 +194,7 @@ public class UnitAI {
         if (getUnit().getGame().getAiManager().isDefaultAiGroupForUnitOn())
             if (groupAI == null) {
                 groupAI = (unit.getGame().getAiManager().getCustomUnitGroup(getUnit()));
+                main.system.auxiliary.log.LogMaster.log(1,"Custom AI UnitGroup created for "+unit.getNameAndCoordinate() );
                 if (groupAI != null) {
                     groupAI.add(getUnit());
                 }

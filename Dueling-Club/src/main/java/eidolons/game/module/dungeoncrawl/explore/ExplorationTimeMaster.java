@@ -49,10 +49,10 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     private static float defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
             getIntValue(GAMEPLAY_OPTION.GAME_SPEED)) / 100;
     private static float speed = defaultSpeed;
-    private float visibilityResetPeriod = 1.25f;
+    private final float visibilityResetPeriod = 1.25f;
     private float visibilityResetTimer = visibilityResetPeriod;
     private float ignore_reset_delta;
-    private float ignore_reset_period = 5.5f;
+    private final float ignore_reset_period = 5.5f;
 
     public static void setDefaultSpeed(float daSpeed) {
         defaultSpeed = daSpeed;
@@ -206,6 +206,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private void processTimedEffects() {
+        getGame().getMovementManager().checkContinueMove();
         guiDirtyFlag = false;
 
         if (isResetIgnoreSetterOn())

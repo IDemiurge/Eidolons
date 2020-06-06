@@ -56,9 +56,9 @@ public abstract class InputController implements InputProcessor {
     private Runnable onInputGdx;
     private Runnable onPassInput;
 
-    private DequeImpl<Runnable> onInputQueue =  (new DequeImpl<>());
-    private DequeImpl<Runnable> onInputGdxQueue =  (new DequeImpl<>());
-    private DequeImpl<Runnable> onPassInputQueue =  (new DequeImpl<>());
+    private final DequeImpl<Runnable> onInputQueue =  (new DequeImpl<>());
+    private final DequeImpl<Runnable> onInputGdxQueue =  (new DequeImpl<>());
+    private final DequeImpl<Runnable> onPassInputQueue =  (new DequeImpl<>());
     protected float defaultZoom;
 
     public static boolean cameraMoved;
@@ -418,6 +418,11 @@ public abstract class InputController implements InputProcessor {
         return true;
     }
 
+    private void setZoom(float zoom) {
+        camera.zoom = zoom;
+        cameraZoomChanged();
+        cameraPosChanged();
+    }
     public void cameraZoomChanged() {
         width = GdxMaster.getWidth() * camera.zoom;
         height = GdxMaster.getHeight() * camera.zoom;
@@ -565,4 +570,9 @@ public abstract class InputController implements InputProcessor {
             return DIRECTION.RIGHT;
         return null;
     }
+
+    public void resetZoom() {
+        setZoom(defaultZoom);
+    }
+
 }

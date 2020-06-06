@@ -279,7 +279,7 @@ public class DefaultActionHandler {
         if (context.getTargetObj() != null)
             if (!action.canBeTargeted(context.getTarget(), false))
                 return false;
-        Eidolons.getGame().getGameLoop().actionInput(
+        Eidolons.getGame().getGameLoop().actionInputManual(
                 new ActionInput(action, context));
         return true;
     }
@@ -362,6 +362,6 @@ public class DefaultActionHandler {
     }
 
     private static boolean isMoveToOn() {
-        return false;
+        return true;
     }
 }

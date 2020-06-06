@@ -1,9 +1,11 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.battlecraft.ai.advanced.engagement.PlayerStatus;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Veil;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.*;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.ScriptLib;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.flight.FlightData;
@@ -17,6 +19,7 @@ import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.text.DescriptionTooltips;
 import main.content.enums.GenericEnums;
+import main.content.enums.rules.VisionEnums;
 import main.elements.conditions.Condition;
 import main.elements.triggers.Trigger;
 import main.game.bf.Coordinates;
@@ -26,6 +29,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +39,7 @@ import static main.system.auxiliary.log.LogMaster.log;
 
 public class Puzzle {
 
+    private static final boolean TEST_MODE = true;
     protected PuzzleEnvironment environment;
     protected PuzzleQuest quest;
     protected PuzzleData data;
@@ -201,6 +206,9 @@ public class Puzzle {
         resolutions.forEach(r -> r.started());
         rules.forEach(r -> r.started());
         getMaster().activated(this);
+        GuiEventManager.trigger(GuiEventType.PLAYER_STATUS_CHANGED,
+                new PlayerStatus(VisionEnums.PLAYER_STATUS.PUZZLE,
+                        stats.getIntValue(PuzzleStats.PUZZLE_STAT.TIMES_FAILED)));
         quest = initQuest(data);
         stats.started();
         log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle Activated: " + this);
@@ -218,23 +226,25 @@ public class Puzzle {
     }
 
     public String getOverrideBackground() {
-        return null ;
+        return null;
     }
 
     public FlightData getFlightData() {
         return null;
     }
+
     public void ended() {
         if (isMinimizeUI())
             GuiEventManager.trigger(GuiEventType.MINIMIZE_UI_OFF);
 
         if (getOverrideBackground() != null) {
-            GuiEventManager.trigger(GuiEventType.RESET_DUNGEON_BACKGROUND );
+            GuiEventManager.trigger(GuiEventType.RESET_DUNGEON_BACKGROUND);
         }
         if (getFlightData() != null) {
-            GuiEventManager.trigger(GuiEventType.FLIGHT_END );
+            GuiEventManager.trigger(GuiEventType.FLIGHT_END);
         }
     }
+
     protected PuzzleQuest initQuest(PuzzleData data) {
         return new PuzzleQuest(this, data);
     }
@@ -246,7 +256,7 @@ public class Puzzle {
     public Coordinates getExitCoordinates() {
         return
                 getAbsoluteCoordinate(
-                new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.EXIT)));
+                        new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.EXIT)));
     }
 
     public void setBlock(LevelBlock block) {
@@ -255,7 +265,7 @@ public class Puzzle {
 
     public Coordinates getEntranceCoordinates() {
         return
-                getAbsoluteCoordinate(                new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.ENTRANCE)));
+                getAbsoluteCoordinate(new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.ENTRANCE)));
     }
 
     public void failed() {
@@ -271,6 +281,9 @@ public class Puzzle {
         failed = true;
 
         String text = getFailText();
+
+        cinematicFail();
+        WaitMaster.WAIT(getWaitTimeBeforeEndMsg(true));
         TipMessageSource src = new TipMessageSource(
                 text, "", "Continue", false, () -> {
             Eidolons.onThisOrNonGdxThread(() -> finished());
@@ -280,20 +293,47 @@ public class Puzzle {
         ended();
     }
 
+    protected int getWaitTimeBeforeEndMsg(boolean failed) {
+        return 0;
+    }
+
+    private void cinematicFail() {
+        if (getFailCinematicScriptKey() != null) {
+        ScriptLib.execute(getFailCinematicScriptKey());
+                    }
+    }
+    private void cinematicWin() {
+        if (getWinCinematicScriptKey() != null) {
+        ScriptLib.execute(getWinCinematicScriptKey());
+                    }
+    }
+
+    protected String getFailCinematicScriptKey() {
+        return null;
+    }
+    protected String getWinCinematicScriptKey() {
+        return null;
+    }
+
     public void complete() {
         log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle completed: " + this);
-        quest.complete();
-        stats.complete();
-        //TODO  stats.complete();
-        GuiEventManager.trigger(GuiEventType.PUZZLE_COMPLETED, this);
-        solved = true;
-        String text = getCompletionText();
-        TipMessageSource src = new TipMessageSource(
-                text, "", "Onward!", false, () -> {
-            Eidolons.onThisOrNonGdxThread(() -> finished());
+
+        cinematicWin();
+        WaitMaster.WAIT(getWaitTimeBeforeEndMsg(false));
+        if (!TEST_MODE) {
+            quest.complete();
+            stats.complete();
+            solved = true;
+            String text = getCompletionText();
+            TipMessageSource src = new TipMessageSource(
+                    text, "", "Onward!", false, () -> {
+                Eidolons.onThisOrNonGdxThread(() -> finished());
+            }
+            );
+            TipMessageMaster.tip(src);
+        } else {
+            failed();
         }
-        );
-        TipMessageMaster.tip(src);
         ended();
     }
 
@@ -380,6 +420,10 @@ public class Puzzle {
     public Coordinates getCenterCoordinates() {
         return Coordinates.get(getCoordinates().x + getWidth() / 2,
                 getCoordinates().y + getHeight() / 2);
+    }
+
+    protected void updateQuest() {
+        GuiEventManager.trigger(GuiEventType.QUEST_UPDATE, quest);
     }
 
     public Condition createSolutionCondition() {

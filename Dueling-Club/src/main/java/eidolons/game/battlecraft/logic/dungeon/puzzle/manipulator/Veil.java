@@ -6,12 +6,14 @@ import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.game.bf.Coordinates;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 public class Veil extends GridObject {
 
-    private final boolean pale;
-    private final boolean enter;
-    Puzzle puzzle;
+    protected final boolean pale;
+    protected final boolean enter;
+    protected Puzzle puzzle;
 
     //link to puzzle
     public Veil(Puzzle puzzle, Coordinates c, boolean pale, boolean enter) {
@@ -24,6 +26,7 @@ public class Veil extends GridObject {
         this.pale = pale;
         this.enter = enter;
         this.puzzle = puzzle;
+        GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, this);
     }
 
     @Override

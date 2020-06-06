@@ -22,7 +22,7 @@ public class MazePuzzleConstructor extends PuzzleConstructor<MazePuzzle> {
 
     @Override
     protected MazePuzzle createPuzzle() {
-        return new MazePuzzle(MazePuzzle.MazeType.VOID);
+        return new MazePuzzle(MazePuzzle.MazeType.SKULL, MazePuzzle.MazeType.NONE);
     }
 
     protected boolean isReplayable() {

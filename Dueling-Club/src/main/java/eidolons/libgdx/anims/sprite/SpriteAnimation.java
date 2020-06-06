@@ -9,10 +9,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.GdxMaster;
-import main.content.enums.GenericEnums.BLENDING;
 import eidolons.libgdx.bf.datasource.SpriteData;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.TextureManager;
+import main.content.enums.GenericEnums.BLENDING;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -565,7 +565,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public void setSpeed(float speed) {
-        setFps(Math.round(originalFps / speed));
+        setFps(Math.round(originalFps * speed));
         this.speed = speed;
     }
 

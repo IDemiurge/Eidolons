@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class TrapMaster extends DungeonHandler {
 
-    private Map<Coordinates, Trap> trapMap = new HashMap<>();
+    private final Map<Coordinates, Trap> trapMap = new HashMap<>();
 
     public TrapMaster(DungeonMaster master) {
         super(master);
@@ -42,7 +42,7 @@ public class TrapMaster extends DungeonHandler {
                             tip.run();
                             victim.kill(victim, true, null);
                             try {
-                                victim.getGame().getLoop().actionInput(null);
+                                victim.getGame().getLoop().actionInputManual(null);
                             } catch (Exception e) {
                                 main.system.ExceptionMaster.printStackTrace(e);
                             }

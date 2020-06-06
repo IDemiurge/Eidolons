@@ -34,6 +34,7 @@ public class Filter<T extends Entity> extends ReferredElement {
     private Collection<Integer> dynamicExceptions;
     private HashSet<Obj> filteredSet;
     private Set<T> cached;
+    public static boolean pathbuilding;
 
     public Filter() {
     }
@@ -144,7 +145,7 @@ public class Filter<T extends Entity> extends ReferredElement {
         }
         if (GameState.isResetDone())
             if (cached != null) {
-                if (!ref.getSourceObj().isMine()) {
+                if (!ref.getSourceObj().isMine() || pathbuilding) {
                     return cached; //TODO fix it - sometimes it's empty when there are targets!
                 }
             }

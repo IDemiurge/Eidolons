@@ -33,8 +33,8 @@ public class PathChoiceMaster {
     protected PathBuilder pathBuilder;
     protected List<DC_ActiveObj> moveActions; // only special here?
     private DC_UnitAction stdMove;
-    private ArrayList<Object> sneakCells;
-    private ArrayList<Object> nonSneakCells;
+    private final ArrayList<Object> sneakCells;
+    private final ArrayList<Object> nonSneakCells;
     private Unit unit;
     private Action targetAction;
     private Coordinates targetCoordinate;
@@ -58,7 +58,7 @@ public class PathChoiceMaster {
     }
 
 
-    List<Choice> getChoices(ActionPath path, Coordinates c_coordinate, Coordinates targetCoordinate, FACING_DIRECTION c_facing) {
+    List<Choice> getChoices(boolean simplified, ActionPath path, Coordinates c_coordinate, Coordinates targetCoordinate, FACING_DIRECTION c_facing) {
         Chronos.mark("Finding choices for " + path);
         pathBuilder.adjustUnit();
 

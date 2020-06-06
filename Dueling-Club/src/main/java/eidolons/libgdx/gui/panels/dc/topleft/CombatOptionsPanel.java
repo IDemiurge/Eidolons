@@ -15,6 +15,8 @@ import eidolons.system.options.GameplayOptions;
 import eidolons.system.options.Options.OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.graphics.FontMaster;
 import main.system.launch.CoreEngine;
 
@@ -49,13 +51,20 @@ public class CombatOptionsPanel extends TablePanelX {
     private final RollDecorator.RollableGroup decorated;
 
     public void hide() {
-        if (!decorated.isOpen()) {
+        if (decorated.isOpen()) {
             decorated.toggle(false);
+        }
+    }
+    public void show() {
+        if (!decorated.isOpen()) {
+            decorated.toggle(true);
         }
     }
 
     public CombatOptionsPanel() {
         GDX.loadVisUI();
+        GuiEventManager.bind(GuiEventType.MINIMIZE_UI_ON , p-> hide() );
+        GuiEventManager.bind(GuiEventType.MINIMIZE_UI_OFF , p-> show() );
         List<OPTION> list = new LinkedList<>();
         for (OPTION devOption : OPTIONS) {
             list.add(devOption);

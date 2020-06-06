@@ -1,6 +1,7 @@
 package eidolons.libgdx.anims.anim3d;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +14,7 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
+import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Animation;
 import eidolons.libgdx.anims.Assets;
@@ -34,10 +36,11 @@ import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.system.ExceptionMaster;
+import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
@@ -50,6 +53,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static eidolons.libgdx.anims.sprite.SpriteAnimationFactory.fps30;
+import static main.system.ExceptionMaster.printStackTrace;
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 9/6/2017.
@@ -77,7 +82,7 @@ public class AnimMaster3d {
             {"glaive", "battle spear"},
             //     {"pike", "spear"},
             //     {"staff", "spear"},
-//            {"battle spear", "lance"},
+            //            {"battle spear", "lance"},
             //     {"scythe", "spear"},
             {"sickle", "hand axe"},
 
@@ -101,9 +106,9 @@ public class AnimMaster3d {
             {"fist swing", "punch"},
             {"aimed shot", "quick shot"}
     };
-    public static boolean JPG_WEAPONS =false;// EidolonsGame.BRIDGE;
-    private static Map<String, TextureAtlas> atlasMap = new HashMap<>();
-    private static List<DC_WeaponObj> broken = new ArrayList<>();
+    public static boolean JPG_WEAPONS = false;// EidolonsGame.BRIDGE;
+    private static final Map<String, TextureAtlas> atlasMap = new HashMap<>();
+    private static final List<DC_WeaponObj> broken = new ArrayList<>();
     private static Map<String, String> substituteMap;
     private static Boolean off;
     private static float fps = fps30;
@@ -143,8 +148,7 @@ public class AnimMaster3d {
             return true;
         }
         if (weapon.getAmmo() != null) {
-            if (getOrCreateAtlas(weapon.getAmmo().getWrappedWeapon()) == null)
-                return false;
+            return getOrCreateAtlas(weapon.getAmmo().getWrappedWeapon()) != null;
         }
         return true;
     }
@@ -190,8 +194,8 @@ public class AnimMaster3d {
                     try {
                         path = getPotionAtlasPath(sub.getActive());
                     } catch (Exception e) {
-                        LogMaster.log(1, "FAILED TO LOAD A QUICK ITEM ATLAS: " + sub);
-                        ExceptionMaster.printStackTrace(e);
+                        log(1, "FAILED TO LOAD A QUICK ITEM ATLAS: " + sub);
+                        printStackTrace(e);
                         return;
                     }
                     preloadAtlas(path);
@@ -267,7 +271,7 @@ public class AnimMaster3d {
                     actionName = getActionAtlasKey(activeObj);
             }
         Boolean offhand = null;
-//       TODO !!! if (projection != null)
+        //       TODO !!! if (projection != null)
         if (isAssymetric(weapon.getBaseTypeName()))
             offhand = (activeObj.isOffhand());
 
@@ -310,7 +314,7 @@ public class AnimMaster3d {
 
     public static String getAtlasPath(DC_WeaponObj weapon, String name) {
         if (weapon.getWeaponGroup() == null) {
-            LogMaster.log(1, "Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP));
+            log(1, "Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP));
             return "Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP);
         }
         String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
@@ -400,7 +404,7 @@ public class AnimMaster3d {
 
         TextureAtlas atlas = getAtlas(activeObj, aCase);
         if (atlas == null) {
-            main.system.auxiliary.log.LogMaster.log(1, activeObj + " has invalid atlas: " + name);
+            log(1, activeObj + " has invalid atlas: " + name);
             return SpriteAnimationFactory.dummySpriteRegions;
         }
 
@@ -424,7 +428,7 @@ public class AnimMaster3d {
                     regions = findAtlasRegions(atlas, projection, activeObj, false);
         }
         if (regions.size == 0)
-            LogMaster.log(
+            log(
                     1, activeObj + ": " + aCase + " no 3d sprites: " + name + atlas);
         return regions;
     }
@@ -464,7 +468,7 @@ public class AnimMaster3d {
             name = sub.getName() + name.substring(name.indexOf(SEPARATOR));
             regions = atlas.findRegions(name.toLowerCase());
 
-            LogMaster.log(
+            log(
                     1, activeObj + " searching " + name);
             if (regions.size > 0)
                 break;
@@ -506,26 +510,26 @@ public class AnimMaster3d {
         try {
             path = getFullAtlasPath(weapon);
         } catch (Exception e) {
-            LogMaster.log(1, "FAILED TO LOAD ATLAS FOR WEAPON: " + weapon);
-            ExceptionMaster.printStackTrace(e);
+            log(1, "FAILED TO LOAD ATLAS FOR WEAPON: " + weapon);
+            printStackTrace(e);
             return;
         }
         preloadAtlas(path);
     }
 
     private static void preloadAtlas(String path) {
-//        if (atlasMap.containsKey(path))
-//            return;
+        //        if (atlasMap.containsKey(path))
+        //            return;
         if (!FileManager.isFile(path)) {
             //            brokenPaths.add(path)
-            LogMaster.log(1, path + " needs to preload, but it is not a file!..");
+            log(1, path + " needs to preload, but it is not a file!..");
             return;
         }
         if (!Assets.get().getManager().isLoaded(path)) {
-            LogMaster.log(1, path + " loading...");
+            log(1, path + " loading...");
             Assets.get().getManager().load(path, TextureAtlas.class);
         }
-//        atlasMap.put(path, null);
+        //        atlasMap.put(path, null);
     }
 
     public static TextureAtlas getOrCreateAtlas(DC_WeaponObj weapon) {
@@ -536,7 +540,7 @@ public class AnimMaster3d {
         try {
             return getOrCreateAtlas(path);
         } catch (Exception e) {
-            ExceptionMaster.printStackTrace(e);
+            printStackTrace(e);
             broken.add(weapon);
             return null;
         }
@@ -544,20 +548,86 @@ public class AnimMaster3d {
 
     public static TextureAtlas getOrCreateAtlas(String path) {
         try {
-            return getOrCreateAtlas(path, true);
+            if (CoreEngine.isIDE())
+                if (isUseOneFrameVersions()) {
+                    String p = getOneFramePath(path);
+                    if (new FileHandle(p).exists()) {
+                        log(1, "One-frame atlas used:\n" + p);
+                        return getOrCreateAtlas(p, true);
+                    }
+                }
+            TextureAtlas atlas = getOrCreateAtlas(path, true);
+            if (!isUseOneFrameVersions()) {
+                return atlas;
+            }
+            //TODO we could also do something like halving frames, in the future...
+            String p = getOneFramePath(path);
+            AtlasRegion region = atlas.getRegions().get(atlas.getRegions().size / 2);//use mid frame
+            String imgName =
+                    StringMaster.cropFormat(PathUtils.getLastPathSegment(path)) + " img.png";
+            String imgPath = PathUtils.cropLastPathSegment(p) + imgName;
+            GdxImageMaster.writeImage(new FileHandle(imgPath), region);
+            int w = (int) region.getRotatedPackedWidth();
+            int h = (int) region.getRotatedPackedHeight();
+            String size = w + ", " + h;
+            // region.getTexture().getTextureData()
+            String contents = getString(imgName,
+                    StringMaster.cropFormat(imgName), size, size);
+            FileManager.write(contents, p);
+            log(1, "One-frame atlas saved:\n" +
+                    contents + "\n\n at" + "\n" + p);
+            return getOrCreateAtlas(p, true);
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            printStackTrace(e);
             try {
                 return new SmartTextureAtlas(path);
             } catch (Exception e1) {
-                main.system.ExceptionMaster.printStackTrace(e1);
+                printStackTrace(e1);
             }
         }
         return null;
     }
 
+    private static boolean isUseOneFrameVersions() {
+        return CoreEngine.TEST_LAUNCH;
+    }
+
+    private static String getOneFrameImagePath(String path) {
+        return PathFinder.getImagePath() + "gen/one_frame/" +
+                GdxImageMaster.cropImagePath(path);
+        // return StringMaster.cropFormat(path) + " single.png";
+    }
+
+    private static String getOneFramePath(String path) {
+        return PathFinder.getImagePath() + "gen/one_frame/" +
+                GdxImageMaster.cropImagePath(path);
+    }
+
+
+    public static String getString(String fileName, String textureName, String atlasSize, String size) {
+        return "\n" +
+                fileName +
+                "\n" +
+                "size: " +
+                atlasSize +
+                "\n" +
+                "format: RGBA8888\n" +
+                "filter: Nearest,Nearest\n" +
+                "repeat: none\n" +
+                textureName +
+                "\n" +
+                "  rotate: false\n" +
+                "  xy: 0, 0\n" +
+                "  size: " +
+                size +
+                "\n" +
+                "  orig: 0, 0\n" +
+                "  offset: 0, 0\n" +
+                "  index: 1";
+    }
+
     public static TextureAtlas getOrCreateAtlas(String path, boolean cache) {
-        if (!FileManager.isFile(path)) {
+        if (!new FileHandle(path).exists()) {
             main.system.auxiliary.log.LogMaster.important("CRITICAL: No atlas for path - " + path);
             return null;
         }
@@ -574,36 +644,36 @@ public class AnimMaster3d {
             } else {
                 Chronos.mark("loading " + path);
                 Assets.get().getManager().load(path, TextureAtlas.class);
-//                while (!Assets.getVar().getManager().isLoaded(path)) {
-//                    if (Assets.getVar().getManager().update())
-//                        break;
-//                }
+                //                while (!Assets.getVar().getManager().isLoaded(path)) {
+                //                    if (Assets.getVar().getManager().update())
+                //                        break;
+                //                }
 
                 while (!Assets.get().getManager().isLoaded(path)) {
-                    LogMaster.log(1, "... loading " + path);
-//                    if (Assets.get().getManager().update(5000))
+                    log(1, "... loading " + path);
+                    //                    if (Assets.get().getManager().update(5000))
                     if (Assets.get().getManager().update(10))
                         break;
                 }
-//                while (!Assets.get().getManager().update(1000)) {
-//                    if (Assets.get().getManager().isLoaded(path))
-//                        break;
-//                    main.system.auxiliary.log.LogMaster.log(1, "... loading " + path);
-//                }
+                //                while (!Assets.get().getManager().update(1000)) {
+                //                    if (Assets.get().getManager().isLoaded(path))
+                //                        break;
+                //                    main.system.auxiliary.log.LogMaster.log(1, "... loading " + path);
+                //                }
 
                 if (!Assets.get().getManager().isLoaded(path)) {
-                    LogMaster.log(1, "************* Atlas failed to load! " + path);
-//                    main.system.auxiliary.log.LogMaster.log(1, "************* ALT_ASSET_LOAD set to TRUE " + path);
-//                    OptionsMaster.getGraphicsOptions().setValue(GraphicsOptions.GRAPHIC_OPTION.ALT_ASSET_LOAD, true);
-//                    Assets.setON(false);
-//                    OptionsMaster.saveOptions();
+                    log(1, "************* Atlas failed to load! " + path);
+                    //                    main.system.auxiliary.log.LogMaster.log(1, "************* ALT_ASSET_LOAD set to TRUE " + path);
+                    //                    OptionsMaster.getGraphicsOptions().setValue(GraphicsOptions.GRAPHIC_OPTION.ALT_ASSET_LOAD, true);
+                    //                    Assets.setON(false);
+                    //                    OptionsMaster.saveOptions();
                     return null; //getOrCreateAtlas(path, cache);
                 }
                 try {
                     Assets.get().getManager().finishLoadingAsset(path);
                     atlas = Assets.get().getManager().get(path, TextureAtlas.class);
                 } catch (Exception e) {
-                    ExceptionMaster.printStackTrace(e);
+                    printStackTrace(e);
                     FileLogManager.streamMain("CRITICAL: asset not loaded - " + path);
 
                     LogMaster.important("ALL assets: \n"
@@ -618,7 +688,7 @@ public class AnimMaster3d {
                         try {
                             atlas = Assets.get().getManager().get(path, TextureAtlas.class);
                         } catch (Exception e) {
-//                            main.system.ExceptionMaster.printStackTrace(e);
+                            //                            main.system.ExceptionMaster.printStackTrace(e);
                         }
                     }
                 }
@@ -630,7 +700,7 @@ public class AnimMaster3d {
             }
         }
         if (cache) {
-//            atlasMap.put(path, atlas);
+            //            atlasMap.put(path, atlas);
         }
         return atlas;
 
@@ -642,7 +712,7 @@ public class AnimMaster3d {
             return TextureCache.formatTexturePath(PathFinder.getImagePath()
                     + getAtlasPath(weapon, getWeaponAtlasKey(weapon)));
         } catch (Exception e) {
-            ExceptionMaster.printStackTrace(e);
+            printStackTrace(e);
         }
         return null;
     }
@@ -693,14 +763,14 @@ public class AnimMaster3d {
     }
 
     public static Boolean isOff() {
-//        if (EidolonsGame.BRIDGE)
-//            return true;
-//        if (CoreEngine.isIDE())
-//            if (!CoreEngine.isGraphicTestMode())
-//                if (CoreEngine.isLiteLaunch()) {
-//                    if (!EidolonsGame.BOSS_FIGHT)
-//                        return true;
-//                }
+        //        if (EidolonsGame.BRIDGE)
+        //            return true;
+        //        if (CoreEngine.isIDE())
+        //            if (!CoreEngine.isGraphicTestMode())
+        //                if (CoreEngine.isLiteLaunch()) {
+        //                    if (!EidolonsGame.BOSS_FIGHT)
+        //                        return true;
+        //                }
         if (off == null)
             off = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.WEAPON_3D_ANIMS_OFF);
         return off;

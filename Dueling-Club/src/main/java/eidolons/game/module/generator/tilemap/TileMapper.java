@@ -25,10 +25,10 @@ import java.util.regex.Pattern;
  */
 public class TileMapper {
     private static boolean loggingOff;
-    private TileConverter converter;
-    private LevelModel model;
-    private LevelData data;
-    private ROOM_CELL DEFAULT_CELL = ROOM_CELL.WALL;
+    private final TileConverter converter;
+    private final LevelModel model;
+    private final LevelData data;
+    private final ROOM_CELL DEFAULT_CELL = ROOM_CELL.WALL;
 
     public TileMapper(LevelModel model, LevelData data) {
         this.model = model;
@@ -144,7 +144,7 @@ public class TileMapper {
         StringBuilder columnsBuilder = new StringBuilder("\nX     ");
         for (int x = 0; x < cells.length; x++) {
             columnsBuilder.append(x + 1).append(RngXmlMaster.TILEMAP_ROW_SEPARATOR);
-            if (x < 10) columnsBuilder.append(" ");
+            if (x < 9) columnsBuilder.append(" ");
             separatorBuilder.append("___");
         }
         columns = columnsBuilder.toString();
@@ -153,7 +153,7 @@ public class TileMapper {
         for (int y = 0; y < cells[0].length; y++) {
 
             if (decorate)
-                if (y < 10)
+                if (y < 9)
                     stringBuilder1.append(y + 1).append("  | ");
                 else
                     stringBuilder1.append(y + 1).append(" | ");

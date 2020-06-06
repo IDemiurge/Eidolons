@@ -10,6 +10,7 @@ import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.GridCell;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.CONTENT_CONSTS;
+import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
@@ -17,7 +18,6 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.event.Event;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
-import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 
 import java.util.*;
@@ -63,7 +63,7 @@ Accelerating collapse
  */
 public class VoidHandler {
 
-    public static boolean TEST_MODE = true;
+    public static boolean TEST_MODE = false;
     GridPanel gridPanel;
     Set<BattleFieldObject> autoRaise = new LinkedHashSet<>();
     private final Map<GridCell, DIRECTION> raised = new LinkedHashMap<>();
@@ -208,12 +208,13 @@ public class VoidHandler {
             period += 0.2f;
             // WaitMaster.WAIT(period);
             animate(period, raiseOrCollapse, cell, speed, from);
-
-            if (!CoreEngine.TEST_LAUNCH) {
-                cell.getUserObject().getGame().fireEvent(
-                        new Event(Event.STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, cell.getUserObject().getGame()
-                        ));
-            }
+            Ref ref=Eidolons.getMainHero().getRef();
+            Eidolons.onNonGdxThread(() ->
+                    cell.getUserObject().getGame().getDungeonMaster().getPuzzleMaster().processEvent(
+                            //this is kind of a hack
+                            new Event(Event.STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE,
+                                    ref
+                            )));
         }
 
     }
