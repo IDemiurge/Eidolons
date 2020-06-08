@@ -12,10 +12,11 @@ import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.WeightMap;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class DataUnit<T extends Enum<T>> {
+public class DataUnit<T extends Enum<T>> implements Serializable {
     public static final String TRUE = "TRUE";
     protected Class<? extends Enum<T>> enumClass;
     protected Class<? extends T> enumClazz;
@@ -138,19 +139,21 @@ public class DataUnit<T extends Enum<T>> {
     }
 
 
-    public void setValue(T name, String value) {
+    public DataUnit<T> setValue(T name, String value) {
         if (value == null) {
             removeValue(name);
         }
-        setValue(name.name(), value);
+        return setValue(name.name(), value);
     }
+
 
     public void addValue(T name, String value) {
         MapMaster.addToStringMap(values, name.name(), value, ",");
     }
 
-    public void setValue(String name, String value) {
+    public DataUnit<T> setValue(String name, String value) {
         values.put(name, value);
+        return this;
     }
 
     public String getValue(T t) {

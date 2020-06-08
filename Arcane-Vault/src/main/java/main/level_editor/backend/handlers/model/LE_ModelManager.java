@@ -1,7 +1,7 @@
 package main.level_editor.backend.handlers.model;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
+import eidolons.libgdx.bf.datasource.GraphicData;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -13,7 +13,9 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.SortMaster;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 import static main.level_editor.backend.handlers.operation.Operation.LE_OPERATION.PASTE_END;
 import static main.level_editor.backend.handlers.operation.Operation.LE_OPERATION.PASTE_START;
@@ -29,7 +31,6 @@ public class LE_ModelManager extends LE_Handler {
     EditorModel model;
     Stack<EditorModel> modelStack = new Stack<>();
     private static List<BattleFieldObject> copied;
-    private static Map<Coordinates, CellScriptData> copiedData;
 
     public LE_ModelManager(LE_Manager manager) {
         super(manager);
@@ -49,48 +50,6 @@ public class LE_ModelManager extends LE_Handler {
         return model;
     }
 
-    public void pasteData(Coordinates origin) {
-        operation(PASTE_START);
-        Coordinates offset = null;
-        for (Coordinates c : copiedData.keySet()) {
-            // if (offset == null) {
-            //     offset = c;
-            // }
-            // offset = Coordinates.get(offset.x - c.x, offset.y - c.y);
-            if (copiedData.size() > 1 && offset == null) {
-                offset = c; //the first - top left object will be our offset
-            } else {
-                if (offset != null) {
-                    c = c.getOffset(c.getX() - offset.x,
-                            c.getY() - offset.y);
-                }
-            }
-
-            CellScriptData data = copiedData.get(c);
-            Coordinates coordinates = offset == null ? origin : origin.getOffset(offset);
-            CellScriptData prev = getScriptHandler().getScriptData(coordinates);
-            operation(Operation.LE_OPERATION.CELL_SCRIPT_CHANGE, coordinates, data,
-                    prev);
-        }
-        operation(PASTE_END);
-    }
-
-    public void pasteData() {
-        pasteData(getSelectionHandler().getSelection().getFirstCoordinate());
-    }
-
-    public void paste() {
-        Coordinates origin = null;
-        if (getSelectionHandler().getSelection().getCoordinates().size() == 1) {
-            origin = getSelectionHandler().getSelection().getFirstCoordinate();
-            //            origin =getSelectionHandler().getSelectedCoordinate();
-        } else {
-            origin = getSelectionHandler().selectCoordinate();
-        }
-        //TODO all data - ai, script, layer props...
-
-        copyTo(copied, origin);
-    }
 
     public void copyTo(List<BattleFieldObject> copied, Coordinates origin) {
         copyTo(copied, origin, 0);
@@ -133,36 +92,68 @@ public class LE_ModelManager extends LE_Handler {
     }
 
     public void cut() {
+        switch (getLayer()) {
+            case decor:
+                getDecorHandler().cut();
+                return;
+            case script:
+                getScriptHandler().cut();
+                return;
+            case obj:
+                break;
+        }
         copy();
         getObjHandler().removeSelected();
 
     }
 
-    public void copyScriptData(boolean cut) {
-        copiedData = new TreeMap() {
-            @Override
-            public Comparator comparator() {
-                return SortMaster.getSorterByExpression(obj -> -(((Coordinates) obj).getX() * 10
-                        + ((Coordinates) obj).getY()));
-            }
-        };
-        for (Coordinates c : model.getSelection().getCoordinates()) {
-            copiedData.put(c, new CellScriptData(
-                    getScriptHandler().getScriptData(c).getData()));
-            if (cut)
-                getScriptHandler().clear(c);
+    public void clear() {
+        switch (getLayer()) {
+            case decor:
+                getDecorHandler().clear();
+                return;
+            case script:
+                getScriptHandler().clear();
+                return;
+            case obj:
+                getObjHandler().removeSelected();
+                return;
         }
+    }
 
+    public void paste() {
+        Coordinates origin = getSelectionHandler().getSelection().getFirstCoordinate();
+        switch (getLayer()) {
+            case decor:
+                getDecorHandler().paste();
+                return;
+            case script:
+                getScriptHandler().paste();
+                return;
+            case obj:
+                copyTo(copied, origin);
+                return;
+        }
     }
 
     public void copy() {
-
+        switch (getLayer()) {
+            case decor:
+                getDecorHandler().copy();
+                return;
+            case script:
+                getScriptHandler().copy();
+                return;
+            case obj:
+                break;
+        }
         copied = new ArrayList<>(model.getSelection().getIds().size());
         for (Integer id : model.getSelection().getIds()) {
             copied.add(getIdManager().getObjectById(id));
         }
         copied.sort(SortMaster.getSorterByExpression(obj -> -(((Obj) obj).getX() * 10 + ((Obj) obj).getY())));
     }
+
 
     public void back() {
         model = modelStack.pop();
@@ -190,6 +181,16 @@ public class LE_ModelManager extends LE_Handler {
     public void setPaletteType(ObjType type) {
         getModel().getPaletteSelection().setType(type);
         getModel().setBrushMode(false);
+        manager.setLayer(LE_Manager.LE_LAYER.obj);
         modelChanged();
     }
+
+    public void paletteDecorSelection(String data) {
+        getModel().getPaletteSelection().setDecorData(new GraphicData(data));
+        getModel().setBrushMode(false);
+        manager.setLayer(LE_Manager.LE_LAYER.decor);
+        modelChanged();
+
+    }
+
 }

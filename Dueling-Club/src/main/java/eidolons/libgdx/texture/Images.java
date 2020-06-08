@@ -4,7 +4,12 @@ import eidolons.entity.Deity;
 import eidolons.game.netherflame.main.NF_Images;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.data.filesys.PathFinder;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.StrPathBuilder;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 4/17/2018.
@@ -186,6 +191,10 @@ public static final String SEPARATOR_NARROW = StrPathBuilder.build(
     public static final String PLATFORM_HORN = "ui/cells/advanced/platform/visuals/horn.png";
     public static final String PLATFORM_ISLAND = "ui/cells/advanced/platform/visuals/island.png";
     public static final String PLATFORM_ROCKS= "ui/cells/advanced/platform/visuals/rocks.png";
+    public static final String BLOTCH = "ui/INK BLOTCH.png";
+    public static final String BLOTCH_INVERT = "ui/INK BLOTCH INVERT.png";
+
+
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {
@@ -273,5 +282,27 @@ public static final String SEPARATOR_NARROW = StrPathBuilder.build(
     public static String getDefaultSkillImage(String mastery) {
         return "gen/skill/mastery/"+mastery+".png";
 
+    }
+
+    public static String getByName(String path) {
+        try {
+            return (String) Images.class.getDeclaredField(path.toUpperCase().replace(" ", "_")).get(null);
+        }  catch (NoSuchFieldException e) {
+            ExceptionMaster.printStackTrace(e);
+        }catch (Exception e) {
+            ExceptionMaster.printStackTrace(e);
+        }
+        return null ;
+    }
+
+    public static List<String> getFieldsAsPaths() {
+        return Arrays.stream(Images.class.getDeclaredFields()).map(field -> {
+            try {
+                return field.get(null).toString();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }).collect(Collectors.toList());
     }
 }

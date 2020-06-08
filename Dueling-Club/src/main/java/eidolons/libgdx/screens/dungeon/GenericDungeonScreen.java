@@ -209,12 +209,12 @@ public abstract class GenericDungeonScreen extends GameScreen {
     @Override
     protected void afterLoad() {
         setCam((OrthographicCamera) viewPort.getCamera());
-
         //        final GridCreateData param = ((GridCreateData) data.getParams().get());
         //        createAndInitModuleGrid(param);
     }
 
     protected void createAndInitModuleGrid(GridCreateData param) {
+
         gridStage.addActor(gridPanel = createGrid(param));
         Module module = DC_Game.game.getModule();
         if (!CoreEngine.isLevelEditor())

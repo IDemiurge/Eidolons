@@ -1,0 +1,87 @@
+package eidolons.libgdx.bf.decor;
+
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Align;
+import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.anims.sprite.SpriteX;
+import eidolons.libgdx.bf.datasource.GraphicData;
+import eidolons.libgdx.bf.datasource.SpriteData;
+import eidolons.libgdx.bf.generic.Flippable;
+import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.gui.generic.NoHitImageX;
+import main.content.enums.GenericEnums;
+import main.game.bf.Coordinates;
+
+public class DecorFactory {
+
+    private static final int DEFAULT_SIGHT_RANGE = 12;
+
+    public static Actor createDecor(Coordinates c, GraphicData data) {
+        Actor actor;
+        String path = data.getTexturePath();
+        if (path == null) {
+            path = data.getSpritePath();
+            actor = new SpriteX(path);
+        } else {
+            actor = new NoHitImageX(path);
+        }
+        boolean x = data.getBooleanValue(GraphicData.GRAPHIC_VALUE.flipX);
+        boolean y = data.getBooleanValue(GraphicData.GRAPHIC_VALUE.flipY);
+        float scale = data.getFloatValue(GraphicData.GRAPHIC_VALUE.scale);
+        if (scale == 0) {
+            scale = 1;
+        }
+        actor.setScale(scale);
+        if (actor instanceof Flippable) {
+            ((Flippable) actor).setFlipX(x);
+            ((Flippable) actor).setFlipY(y);
+        }
+
+        actor.setColor(data.getColor());
+
+        float alpha = data.getFloatValue(GraphicData.GRAPHIC_VALUE.alpha);
+        if (alpha != 0)
+            actor.getColor().a = alpha;
+        boolean sprite = true;
+        if (actor instanceof ImageContainer) {
+            if (data.getAlphaTemplate() != null) {
+                ((ImageContainer) actor).setAlphaTemplate(data.getAlphaTemplate());
+            }
+            ((ImageContainer) actor).pack();
+        } else {
+            if (actor instanceof SpriteX) {
+                sprite = true;
+                initSprite((SpriteX) actor, data);
+                //TODO
+            }
+        }
+        actor.setOrigin(Align.center);//TODO
+        float rotation = data.getFloatValue(GraphicData.GRAPHIC_VALUE.rotation);
+        if (rotation != 0) {
+            actor.setRotation(rotation);
+        }
+
+        return new CellDecor(actor, DEFAULT_SIGHT_RANGE, DC_Game.game.getCellByCoordinate(c), sprite);
+    }
+
+    private static void initSprite(SpriteX actor, GraphicData data) {
+        actor.getSprite().setData(new SpriteData(data.getData()));
+        float fps = data.getFloatValue(GraphicData.GRAPHIC_VALUE.fps);
+        if (fps != 0) {
+            actor.setFps((int) fps);
+        } else
+            actor.setFps(15); //?
+
+        if (data.getValue(GraphicData.GRAPHIC_VALUE.blending).isEmpty()) {
+            actor.setBlending(GenericEnums.BLENDING.SCREEN);
+        }
+        if (data.getIntValue(GraphicData.GRAPHIC_VALUE.x) == 0) {
+            if (data.getIntValue(GraphicData.GRAPHIC_VALUE.y) == 0) {
+                actor.setWidth(128);
+                actor.setHeight(128);
+                actor.getSprite().centerOnParent(actor);
+            }
+        }
+    }
+
+}

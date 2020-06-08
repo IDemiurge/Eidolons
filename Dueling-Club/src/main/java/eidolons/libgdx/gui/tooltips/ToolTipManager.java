@@ -235,12 +235,14 @@ public class ToolTipManager extends TablePanel {
             entityHover(tooltip.getEntity());
     }
 
-    private boolean isHidden() {
-        if (!DialogueManager.isRunning()) {
+    protected boolean isHidden() {
+        if (DialogueManager.isRunning()) {
             return true;
         }
+        if (DC_Game.game.getDungeonMaster().getPuzzleMaster() != null) {
         if (DC_Game.game.getDungeonMaster().getPuzzleMaster().isUiMinimized()) {
             return true;
+        }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) != CoreEngine.isLevelEditor()) {
             if (tooltip instanceof UnitViewTooltip)
@@ -255,6 +257,9 @@ public class ToolTipManager extends TablePanel {
     public void act(float delta) {
         if (hidden = isHidden())
             return ;
+        // if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+        //  //TODO    retained = tooltip;
+        // }
         super.act(delta);
         hoverCheck -= delta;
         if (hoverCheck <= 0) {
@@ -608,6 +613,10 @@ public class ToolTipManager extends TablePanel {
         //            return OverlayView.SCALE;
         //        } gridPanel handles this by setBounds()!
         return 1;
+    }
+
+    public GenericGuiStage getGuiStage() {
+        return guiStage;
     }
 
     public StackViewMaster getStackMaster() {

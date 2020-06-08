@@ -1,6 +1,7 @@
 package eidolons.libgdx.texture;
 
 import main.data.filesys.PathFinder;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.lang.reflect.Field;
@@ -91,5 +92,16 @@ public class Sprites {
         return PathFinder.getSpritesPath() + "/hero/" +  StringMaster.cropVersion(name.replace("lvl", "")).trim() + ".txt";
     }
 
+
+    public static String getByName(String path) {
+        try {
+            return (String) Sprites.class.getDeclaredField(path.toUpperCase().replace(" ", "_")).get(null);
+        }  catch (NoSuchFieldException e) {
+            ExceptionMaster.printStackTrace(e);
+        }catch (Exception e) {
+            ExceptionMaster.printStackTrace(e);
+        }
+        return null ;
+    }
     // "boss/reaper/attack/sever"
 }

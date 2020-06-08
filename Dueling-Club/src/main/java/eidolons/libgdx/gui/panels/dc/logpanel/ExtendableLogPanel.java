@@ -56,7 +56,7 @@ public class ExtendableLogPanel extends LogPanel {
         heightAction.setEnd(height);
         addAction(heightAction);
         heightAction.setTarget(this);
-        heightAction.setReverse(false);
+        heightAction.setReverse(true);
         heightAction.restart();
     }
 
@@ -66,11 +66,11 @@ public class ExtendableLogPanel extends LogPanel {
     public void act(float delta) {
         super.act(delta);
 
-        if (!heightAction.isReverse()) {
+        if (heightAction.isReverse()) {
             adjustHeight(heightAction.getValue());
-        } else
+        }
         if (heightAction.getTime() >= heightAction.getDuration()) {
-            heightAction.setReverse(true);
+            heightAction.setReverse(false  );
         }
     }
 

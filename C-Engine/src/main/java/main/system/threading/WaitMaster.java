@@ -14,13 +14,13 @@ import java.util.function.Predicate;
 
 public class WaitMaster {
     // Sync map?
-    private static Map<WAIT_OPERATIONS, Waiter> waiters = new HashMap<>();
+    private static final Map<WAIT_OPERATIONS, Waiter> waiters = new HashMap<>();
     // private static List<Waiter> activeWaiters = new ArrayList<>() ;
     private static DequeImpl<WAIT_OPERATIONS> completeOperations;
 
-    private static Map<Object, Lock> locks = new HashMap<>();
-    private static Map<Lock, Condition> conditions = new HashMap<>();
-    private static Set<Object> unlocked = new LinkedHashSet<>();
+    private static final Map<Object, Lock> locks = new HashMap<>();
+    private static final Map<Lock, Condition> conditions = new HashMap<>();
+    private static final Set<Object> unlocked = new LinkedHashSet<>();
     private static int conditionCounter = 0;
 
     public static void unlock(Object o) {
@@ -251,7 +251,7 @@ public class WaitMaster {
         ACTIVE_UNIT_SELECTED, ACTION_INPUT, ANIMATION_QUEUE_FINISHED,
         GAME_RESUMED, GAME_FINISHED, AI_TRAINING_FINISHED, GDX_READY, TEXT_INPUT, DUNGEON_SCREEN_READY,
         GAME_LOOP_STARTED, XML_READY, CONFIRM, HC_DONE, TOWN_DONE, PLAYER_ACTION_FINISHED, BRIEFING_COMPLETE, MESSAGE_RESPONSE, MESSAGE_RESPONSE_DEATH,
-        FULLSCREEN_DONE, COMMENT_DONE, INPUT, FILE_SELECTION, DIALOG_SELECTION, DIALOG_SELECTION_CELL_SCRIPT_VALUE, DIALOG_SELECTION_ENUM, VISUAL_CHOICE, PLATFORM_EDIT_DONE, WAIT_COMPLETE
+        FULLSCREEN_DONE, COMMENT_DONE, INPUT, FILE_SELECTION, DIALOG_SELECTION, DIALOG_SELECTION_CELL_SCRIPT_VALUE, DIALOG_SELECTION_ENUM, VISUAL_CHOICE, PLATFORM_EDIT_DONE, DATA_EDIT, WAIT_COMPLETE
     }
 
 }

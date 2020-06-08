@@ -6,11 +6,13 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.libgdx.bf.decor.DecorData;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
+import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
@@ -35,25 +37,32 @@ public class OperationHandler extends LE_Handler {
         BattleFieldObject obj = null;
         DIRECTION d = null;
         main.system.auxiliary.log.LogMaster.log(1, "operation: " + operation + " args:" + ListMaster.toStringList(args));
+
+        EventType event=null ;
         switch (operation) {
+            case CELL_DECOR_CHANGE:
+                event = GuiEventType.CELL_DECOR_RESET;
+                c = (Coordinates) args[0];
+                DecorData data = (DecorData) args[1];
+                if (data==null || data.getData().isEmpty()) {
+                    getFloorWrapper().getDecorMap().remove(c);
+                } else {
+                    getFloorWrapper().getDecorMap().put(c, data);
+                }
+                GuiEventManager.triggerWithParams(
+                        event, c, data );
+                break;
             case CELL_SCRIPT_CHANGE:
+                event=GuiEventType.LE_CELL_SCRIPTS_LABEL_UPDATE;
                 c = (Coordinates) args[0];
                 CellScriptData scriptData = (CellScriptData) args[1];
-                if (scriptData.getData().isEmpty()) {
+                if (scriptData==null || scriptData.getData().isEmpty()) {
                     getFloorWrapper().getTextDataMap().remove(c);
                 } else {
                     getFloorWrapper().getTextDataMap().put(c, scriptData);
                 }
-
-//                String layerName = (String) args[2];
-//                if (layerName != null) {
-//                    Layer layer = getLayerHandler().getLayer(layerName);
-//                    layer.getScripts().put(c, scriptData);
-//                    //color, hidden, ...
-//                }
-
                 GuiEventManager.triggerWithParams(
-                        GuiEventType.LE_CELL_SCRIPTS_LABEL_UPDATE, c, scriptData.getData());
+                        event, c, scriptData.getData());
                 break;
             case SELECTION:
                 break;
@@ -161,10 +170,10 @@ public class OperationHandler extends LE_Handler {
                 args = new BattleFieldObject[]{getObjHandler().addOverlay(d, type, c.x, c.y)};
                 break;
             case MODIFY_STRUCTURE:
-                StructureData data = (StructureData) args[0];
-                data.apply();
+                StructureData sdata = (StructureData) args[0];
+                sdata.apply();
 
-                getStructureHandler().reset(data.getLevelStruct());
+                getStructureHandler().reset(sdata.getLevelStruct());
                 getStructureHandler().updateTree();
 //                if (data instanceof BlockData) {
 //                    getStructureManager().blockReset(((BlockData) data).getBlock());
@@ -232,7 +241,11 @@ public class OperationHandler extends LE_Handler {
 
         }
         switch (op.operation) {
-
+            case CELL_DECOR_CHANGE:
+                execute(Operation.LE_OPERATION.CELL_DECOR_CHANGE, op.args[0],
+                        op.args[2],
+                        op.args[1]);
+                break;
             case CELL_SCRIPT_CHANGE:
                 execute(Operation.LE_OPERATION.CELL_SCRIPT_CHANGE, op.args[0],
                         op.args[2],

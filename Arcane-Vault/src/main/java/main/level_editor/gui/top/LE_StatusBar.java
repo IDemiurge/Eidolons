@@ -14,6 +14,7 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.texture.TextureCache;
 import main.game.bf.Coordinates;
+import main.level_editor.LevelEditor;
 import main.level_editor.backend.handlers.model.EditorModel;
 import main.level_editor.gui.grid.LE_GridCell;
 import main.system.GuiEventManager;
@@ -28,7 +29,7 @@ last
      */
     EditorModel model;
     ValueContainer palette = new ValueContainer(new TextureRegion(
-            TextureCache.getMissingTexture()) , "Palette: ", "");
+            TextureCache.getMissingTexture()), "Palette: ", "");
     ValueContainer overlaying = new ValueContainer("Overlaying: ", "");
     ValueContainer curCoordinate = new ValueContainer("Coord: ", "");
 
@@ -40,15 +41,20 @@ last
     ValueContainer selectionInfo = new ValueContainer("", "");
     ValueContainer structInfo = new ValueContainer("", "");
 
+    ValueContainer layerInfo = new ValueContainer("Layer", "");
+
 
     public LE_StatusBar() {
         super(800, 40);
-        TablePanelX<Actor> table = new TablePanelX<>(160, 40);
+        TablePanelX<Actor> table = new TablePanelX<>(190, 40);
         table.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        table.add(layerInfo).left();
         table.add(selectionInfo).left();
         selectionInfo.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
         table.add(structInfo).left();
         add(table);
+
+
         table = new TablePanelX<>(100, 40);
         table.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
         table.add(curCoordinate).left();
@@ -83,7 +89,7 @@ last
     @Override
     public void act(float delta) {
         super.act(delta);
-
+        layerInfo.setValueText(LevelEditor.getManager().getLayer().toString());
         if (LE_GridCell.hoveredCell == null) {
             return;
         }
@@ -105,14 +111,14 @@ last
             // wall or module end
             Module module = DC_Game.game.getMetaMaster().getModuleMaster().getModule(c);
             int left = c.x - module.getX();
-            int right =   module.getWidth() - left-1;
-            int top =  c.y - module.getY();
-            int bottom =  module.getHeight() - top-1;
+            int right = module.getWidth() - left - 1;
+            int top = c.y - module.getY();
+            int bottom = module.getHeight() - top - 1;
             dstLeft.setValueText(left + "");
             dstRight.setValueText(right + "");
             dstDown.setValueText(bottom + "");
             dstUp.setValueText(top + "");
-            return ;
+            return;
         }
         for (int i = c.x + 1; i < cells.length; i++) {
             if (DC_Game.game.getGrid().getObjects(i, c.y).length > 0)
@@ -157,13 +163,14 @@ last
             //            overlaying.getImageContainer().getActor().setImage(TextureCache.getEmptyPath());
             overlaying.setValueText("");
         } else {
-        // img = model.getPaletteSelection().getObjTypeOverlaying().getImagePath();
-        name = model.getPaletteSelection().getObjTypeOverlaying().getName();
-        //        overlaying.getImageContainer().getActor().setImage(img);
-        overlaying.setValueText(name);
+            // img = model.getPaletteSelection().getObjTypeOverlaying().getImagePath();
+            name = model.getPaletteSelection().getObjTypeOverlaying().getName();
+            //        overlaying.getImageContainer().getActor().setImage(img);
+            overlaying.setValueText(name);
         }
         updateSelectionInfo(model);
     }
+
     private void updateSelectionInfo(EditorModel model) {
         int size = model.getSelection().getIds().size();
         int width = CoordinatesMaster.getWidth(model.getSelection().getCoordinates());

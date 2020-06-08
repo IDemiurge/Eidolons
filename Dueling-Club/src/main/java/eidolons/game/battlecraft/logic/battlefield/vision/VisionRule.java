@@ -172,8 +172,7 @@ public class VisionRule {
     }
 
     public boolean isResetRequired(Unit observer, DC_Obj cell, float dstCoef) {
-        if (observer.isDead() || observer.isUnconscious())
-            return false;
+        ////TODO should we reset if observer is dead/unc.?
         if (observer.isMine()) {
             if (observer.getGame().isDebugMode()) {
                 return true;

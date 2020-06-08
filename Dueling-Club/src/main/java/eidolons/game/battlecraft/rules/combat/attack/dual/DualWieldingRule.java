@@ -62,12 +62,8 @@ public class DualWieldingRule {
             return false;
         }
 
-        if (buff.getRef().getObj(KEYS.WEAPON) == action.getRef().getObj(KEYS.WEAPON)) {
-            return false;
-        }
+        return buff.getRef().getObj(KEYS.WEAPON) != action.getRef().getObj(KEYS.WEAPON);
         // preCheck new weapon - ? Buff ref?
-
-        return true;
     }
 
     public static void checkDualAttackCadence(DC_UnitAction action, Unit unit) {
@@ -75,7 +71,8 @@ public class DualWieldingRule {
             return;
         }
         boolean singleCadence = checkSingleWeaponCadence(unit, action);
-        if (!UnitAnalyzer.checkDualWielding(unit) && !UnitAnalyzer.checkDualNaturalWeapons(unit)
+        boolean natural =isNaturalAllowed() && UnitAnalyzer.checkDualNaturalWeapons(unit) ;
+        if (!UnitAnalyzer.checkDualWielding(unit) && !natural
          && !singleCadence
             // || checkSingleCadence(action)
          ) {
@@ -191,8 +188,11 @@ public class DualWieldingRule {
         // TODO defense mod effect
     }
 
-    private static void addHeroBuff(Unit unit, Boolean offhand) {
+    private static boolean isNaturalAllowed() {
+        return false;
+    }
 
+    private static void addHeroBuff(Unit unit, Boolean offhand) {
 
     }
 

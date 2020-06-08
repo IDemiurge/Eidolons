@@ -244,7 +244,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                             endContainer();
                     }
             if (!object.isIndestructible())
-                if (info_level == INFO_LEVEL.VERBOSE) {
+                if (info_level != INFO_LEVEL.BASIC) {
                     addParamStringToValues(object, PARAMS.ARMOR);
                     addParamStringToValues(object, PARAMS.RESISTANCE);
                 }

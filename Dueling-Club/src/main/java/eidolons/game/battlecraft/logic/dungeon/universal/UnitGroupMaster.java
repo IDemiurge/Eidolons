@@ -114,7 +114,7 @@ public class UnitGroupMaster {
         Integer level = levelMap.get(owner).get(type);
         if (level != null) {
             if (level != 0) {
-                type = new UnitLevelManager().getLeveledType(type, level % 10);
+                type = UnitLevelManager.getLeveledType(type, level % 10);
                 levelMap.get(owner).put(type, level / 10);
             }
         }
@@ -124,7 +124,7 @@ public class UnitGroupMaster {
 
     private static String getNewName(String string, int level) {
         return FileManager.getUniqueFileVersion(string + " "
-         + StringMaster.wrapInBraces("" + level), getGroupFilePath(string));
+                + StringMaster.wrapInBraces("" + level), getGroupFilePath(string));
     }
 
     private static List<ObjAtCoordinate> mapPositions(List<ObjType> list, Entity hero) {
@@ -182,17 +182,17 @@ public class UnitGroupMaster {
 
     private static int getUnitCost(ObjType unit, ObjType factionType) {
         int costMod = 100;
-//        if (!factionType.getProperty(PROPS.UNIT_POOL).contains(unit.getName())) {
-//            costMod += 10;
-//            for (String f : ContainerUtils
-//             .openContainer(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
-//                costMod += 5;
-//                ObjType allyFactionType = DataManager.getType(f, MACRO_OBJ_TYPES.FACTIONS);
-//                if (allyFactionType.getProperty(PROPS.UNIT_POOL).contains(unit.getName())) {
-//                    break;
-//                }
-//            }
-//        }
+        //        if (!factionType.getProperty(PROPS.UNIT_POOL).contains(unit.getName())) {
+        //            costMod += 10;
+        //            for (String f : ContainerUtils
+        //             .openContainer(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
+        //                costMod += 5;
+        //                ObjType allyFactionType = DataManager.getType(f, MACRO_OBJ_TYPES.FACTIONS);
+        //                if (allyFactionType.getProperty(PROPS.UNIT_POOL).contains(unit.getName())) {
+        //                    break;
+        //                }
+        //            }
+        //        }
         return unit.getIntParam(PARAMS.POWER) * costMod / 100;
     }
 
@@ -240,7 +240,7 @@ public class UnitGroupMaster {
 
     public static String chooseGroup(Entity faction, int level) {
         File groupFile = ListChooser.chooseFile(getFactionPath(faction), StringMaster
-         .wrapInBraces("" + level), SELECTION_MODE.SINGLE);
+                .wrapInBraces("" + level), SELECTION_MODE.SINGLE);
         if (groupFile != null) {
             return groupFile.getPath();
         }
@@ -252,7 +252,7 @@ public class UnitGroupMaster {
             List<ObjType> available = new ArrayList<>(DataManager.getTypes(MACRO_OBJ_TYPES.FACTIONS));
             // DC_HeroObj
             FilterMaster.filterByProp(available, G_PROPS.WORKSPACE_GROUP.getName(), ""
-             + MetaEnums.WORKSPACE_GROUP.COMPLETE);
+                    + MetaEnums.WORKSPACE_GROUP.COMPLETE);
             ObjType faction = ListChooser.chooseType_(available, MACRO_OBJ_TYPES.FACTIONS);
             if (factionLeaderRequired) {
                 hero = UnitGroupMaster.createGroupLeader(me, faction, powerLevel);
@@ -271,25 +271,25 @@ public class UnitGroupMaster {
     }
 
     public static ObjType createGroupLeader(boolean me, Entity faction, int unitGroupLevel) {
-         return null ;
-//        List<ObjType> list = DataManager.getTypesSubGroup(DC_TYPE.CHARS, StringMaster.PRESET);
-//        String backgrounds = faction.getProperty(PROPS.HERO_BACKGROUNDS);
-//        FilterMaster.filterOut(list, new NotCondition(new StringComparison(backgrounds,
-//         StringMaster.getValueRef(KEYS.MATCH, G_PROPS.BACKGROUND), false)));
-//        FilterMaster.filterOut(list, new NotCondition(new NumericCondition("2", "abs("
-//         + StringMaster.getValueRef(KEYS.MATCH, PARAMS.LEVEL) + "-" + unitGroupLevel + ")",
-//         false)));
-//        String name = ListChooser.chooseType(DataManager.toStringList(list), DC_TYPE.CHARS);
-//
-//        if (name == null) {
-//            return null;
-//        }
-//        if (me) {
-//            myHero = name;
-//        } else {
-//            enemyHero = name;
-//        }
-//        return DataManager.getType(name, DC_TYPE.CHARS);
+        return null;
+        //        List<ObjType> list = DataManager.getTypesSubGroup(DC_TYPE.CHARS, StringMaster.PRESET);
+        //        String backgrounds = faction.getProperty(PROPS.HERO_BACKGROUNDS);
+        //        FilterMaster.filterOut(list, new NotCondition(new StringComparison(backgrounds,
+        //         StringMaster.getValueRef(KEYS.MATCH, G_PROPS.BACKGROUND), false)));
+        //        FilterMaster.filterOut(list, new NotCondition(new NumericCondition("2", "abs("
+        //         + StringMaster.getValueRef(KEYS.MATCH, PARAMS.LEVEL) + "-" + unitGroupLevel + ")",
+        //         false)));
+        //        String name = ListChooser.chooseType(DataManager.toStringList(list), DC_TYPE.CHARS);
+        //
+        //        if (name == null) {
+        //            return null;
+        //        }
+        //        if (me) {
+        //            myHero = name;
+        //        } else {
+        //            enemyHero = name;
+        //        }
+        //        return DataManager.getType(name, DC_TYPE.CHARS);
     }
 
     public static boolean isMirror() {

@@ -6,13 +6,14 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.bf.Fluctuating;
+import eidolons.libgdx.bf.generic.Flippable;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.shaders.ShaderMaster;
 import main.content.enums.GenericEnums;
 
 
-public class SpriteX extends GroupX {
+public class SpriteX extends GroupX  implements Flippable {
 
     SpriteAnimation sprite;
     Fluctuating f;

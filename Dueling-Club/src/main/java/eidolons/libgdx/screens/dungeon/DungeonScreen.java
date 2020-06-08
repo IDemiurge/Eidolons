@@ -11,7 +11,6 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.GridCreateData;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
@@ -47,10 +46,8 @@ import static main.system.GuiEventType.UPDATE_SHADOW_MAP;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
- * Created with IntelliJ IDEA.
- * Date: 21.10.2016
- * Time: 23:55
- * To change this template use File | Settings | File Templates.
+ * Created with IntelliJ IDEA. Date: 21.10.2016 Time: 23:55 To change this template use File | Settings | File
+ * Templates.
  */
 public class DungeonScreen extends GameScreenWithTown {
     protected static DungeonScreen instance;
@@ -112,6 +109,7 @@ public class DungeonScreen extends GameScreenWithTown {
         if (module.getPlatformData() != null)
             gridPanel.getPlatformHandler().init(module.getPlatformData());
     }
+
     @Override
     protected void afterLoad() {
         Gdx.gl20.glEnable(GL_POINT_SMOOTH);
@@ -160,7 +158,6 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
 
-
     protected void selectionPanelClosed() {
         if (TownPanel.getActiveInstance() != null)
             return;//TODO fix late events in auto-load
@@ -175,16 +172,16 @@ public class DungeonScreen extends GameScreenWithTown {
 
 
     protected boolean canShowScreen() {
-//        if (selectionPanel != null) TODO igg demo fix
-//            if (selectionPanel.isVisible()) {
-//                return false;
-//            }
+        //        if (selectionPanel != null) TODO igg demo fix
+        //            if (selectionPanel.isVisible()) {
+        //                return false;
+        //            }
         boolean show = super.canShowScreen();
         if (show) {
             if (!firstShow) {
                 firstShow = true;
-//                toBlack();
-//                blackout(5, 0);
+                //                toBlack();
+                //                blackout(5, 0);
                 blackout(5, 1, true);
             }
         }
@@ -194,10 +191,10 @@ public class DungeonScreen extends GameScreenWithTown {
     @Override
     protected void doBlackout() {
         if (getCamera() != null) {
-//            float h = Gdx.graphics.getHeight() * getCam().zoom;
-//            float w = Gdx.graphics.getWidth() * getCam().zoom;
-//            getBatch().blackSprite.setBounds(getCam().position.x - w / 2,
-//                    getCam().position.y - h/ 2, 1920 , 1050); //center?}
+            //            float h = Gdx.graphics.getHeight() * getCam().zoom;
+            //            float w = Gdx.graphics.getWidth() * getCam().zoom;
+            //            getBatch().blackSprite.setBounds(getCam().position.x - w / 2,
+            //                    getCam().position.y - h/ 2, 1920 , 1050); //center?}
             Camera camera = guiStage.getViewport().getCamera();
             camera.update();
             batch.setProjectionMatrix(camera.combined);
@@ -216,10 +213,10 @@ public class DungeonScreen extends GameScreenWithTown {
     public void renderMain(float delta) {
 
         checkInputController();
-//        stages.for
+        //        stages.for
         guiStage.act(delta);
         if (isShowingGrid())
-//            if (isDrawGrid())
+            //            if (isDrawGrid())
             gridStage.act(delta);
         setBlocked(checkBlocked());
         cameraMan.act(delta);
@@ -230,7 +227,7 @@ public class DungeonScreen extends GameScreenWithTown {
                 postProcessing.begin();
             batch.begin();
             drawBg(delta);
-//            selectionPanel.setPosition(0, 0);
+            //            selectionPanel.setPosition(0, 0);
             selectionPanel.setPosition(selectionPanel.getWidth() / 2, selectionPanel.getY());
             selectionPanel.draw(batch, 1);
             batch.end();
@@ -240,10 +237,8 @@ public class DungeonScreen extends GameScreenWithTown {
             }
         } else {
             if (DC_Game.game != null)
-                if (DC_Game.game.getLoop() instanceof RealTimeGameLoop) {
-                    if (!isBlocked())
-                        ((RealTimeGameLoop) Eidolons.game.getLoop()).setLocked(false);
-                }
+                if (!isBlocked())////TODO some dialogue windows will pause RT -thread and more?
+                    Eidolons.game.getLoop().setVisualLock(false);
             if (postProcessing != null)
                 postProcessing.begin();
             drawBg(delta);
@@ -336,14 +331,14 @@ public class DungeonScreen extends GameScreenWithTown {
     protected void resetShader() {
 
         batch.setShader(null);
-//        guiStage .getCustomSpriteBatch().setShader(null);
+        //        guiStage .getCustomSpriteBatch().setShader(null);
 
         if (batch.getShader() != DarkShader.getDarkShader())
             if (isBlocked() || ExplorationMaster.isWaiting()) {
                 bufferedShader = batch.getShader();
                 batch.setFluctuatingShader(DarkShader.getInstance());
                 guiStage.getCustomSpriteBatch().setShader(GrayscaleShader.getGrayscaleShader());
-//                guiStage .getCustomSpriteBatch().setFluctuatingShader(GrayscaleShader.getGrayscaleShader());
+                //                guiStage .getCustomSpriteBatch().setFluctuatingShader(GrayscaleShader.getGrayscaleShader());
             }
     }
 
@@ -389,11 +384,11 @@ public class DungeonScreen extends GameScreenWithTown {
 
     @Override
     protected InputProcessor createInputController() {
-//        if (GdxMaster.isVisibleEffectively(selectionPanel)){ //TODO for 'aesthetic' choice after death
-//                if (selectionPanel.getStage()==guiStage) {
-//            return GdxMaster.getMultiplexer(guiStage, controller);
-//            }
-//        }
+        //        if (GdxMaster.isVisibleEffectively(selectionPanel)){ //TODO for 'aesthetic' choice after death
+        //                if (selectionPanel.getStage()==guiStage) {
+        //            return GdxMaster.getMultiplexer(guiStage, controller);
+        //            }
+        //        }
         if (isWaitingForInputNow())
             return getWaitForInputController(param);
         if (getGuiStage().isDialogueMode()) {

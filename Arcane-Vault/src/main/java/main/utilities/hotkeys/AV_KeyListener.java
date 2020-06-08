@@ -2,7 +2,6 @@ package main.utilities.hotkeys;
 
 import eidolons.content.ValueHelper;
 import eidolons.game.core.game.DC_Game;
-import main.gui.components.controls.AV_ButtonPanel;
 import main.gui.components.controls.ModelManager;
 import main.launch.ArcaneVault;
 import main.utilities.filter.FilterMaster;
@@ -16,7 +15,7 @@ public class AV_KeyListener implements KeyListener {
 
     private static final char DELETE_HOTKEY_CHAR = 'w';
     private static final char COPY_VALUES_HOTKEY_CHAR = 'c';
-    private DC_Game game;
+    private final DC_Game game;
 
     public AV_KeyListener(DC_Game game) {
         this.game = game;
@@ -70,12 +69,8 @@ public class AV_KeyListener implements KeyListener {
     }
 
     private void toggleWorkspace() {
-        new Thread(new Runnable() {
-            public void run() {
-                ArcaneVault.getMainBuilder().getButtonPanel().handleButtonClick(false,
-                        AV_ButtonPanel.WS_TOGGLE);
-            }
-        }, "WS_TOGGLE thread").start();
+        new Thread(() -> ArcaneVault.getMainBuilder().getButtonPanel().handleButtonClick(false,
+                 "WS Add"), "WS_TOGGLE thread").start();
     }
 
     private void delete() {

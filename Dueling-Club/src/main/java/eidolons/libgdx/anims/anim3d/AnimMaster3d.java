@@ -23,9 +23,11 @@ import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.bf.decor.CellDecorLayer;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TexturePackerLaunch;
+import eidolons.libgdx.utils.mixer.MaskTest;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.entity.ItemEnums.ARMOR_TYPE;
@@ -589,13 +591,12 @@ public class AnimMaster3d {
     }
 
     private static boolean isUseOneFrameVersions() {
-        return CoreEngine.TEST_LAUNCH;
+        return !CellDecorLayer.spriteTest&& !MaskTest.spriteMaskTest&& CoreEngine.TEST_LAUNCH;
     }
 
-    private static String getOneFrameImagePath(String path) {
+    public static String getOneFrameImagePath(String path) {
         return PathFinder.getImagePath() + "gen/one_frame/" +
-                GdxImageMaster.cropImagePath(path);
-        // return StringMaster.cropFormat(path) + " single.png";
+          StringMaster.cropFormat(path) + " img.png";
     }
 
     private static String getOneFramePath(String path) {

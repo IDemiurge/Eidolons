@@ -1,13 +1,13 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
-import eidolons.libgdx.bf.decor.CellDecor;
+import eidolons.libgdx.bf.decor.CellDecorLayer;
 import main.game.bf.Coordinates;
 
 import java.util.function.Function;
 
 public class CellMaster {
 
-    public static  Function<Coordinates, Integer> getFunc(int width, int height, CellDecor.CELL_PATTERN cellPattern) {
+    public static  Function<Coordinates, Integer> getFunc(int width, int height, CellDecorLayer.CELL_PATTERN cellPattern) {
 
         switch (cellPattern) {
             case CHESS:
@@ -37,7 +37,7 @@ public class CellMaster {
                 break;
             case CROSS_DIAG:
                 if (width!=height)
-                    return getFunc(width, height, CellDecor.CELL_PATTERN.CROSS);
+                    return getFunc(width, height, CellDecorLayer.CELL_PATTERN.CROSS);
                 /*
                 1 0 0 0 1
                 0 1 0 1 0
@@ -57,7 +57,7 @@ public class CellMaster {
                 break;
             case OUTER_BORDER:
                 //inverse
-                return c-> getFunc(width, height, CellDecor.CELL_PATTERN.CENTERPIECE).apply(c) == 1
+                return c-> getFunc(width, height, CellDecorLayer.CELL_PATTERN.CENTERPIECE).apply(c) == 1
                         ? 0
                         : 1;
             case SPIRAL:

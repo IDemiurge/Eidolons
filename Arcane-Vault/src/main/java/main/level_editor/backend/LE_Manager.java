@@ -21,6 +21,7 @@ import main.level_editor.backend.handlers.structure.LE_MapHandler;
 import main.level_editor.backend.handlers.structure.LE_ModuleHandler;
 import main.level_editor.backend.handlers.structure.LE_StructureHandler;
 import main.level_editor.backend.handlers.structure.layer.LayerHandlerImpl;
+import main.level_editor.backend.metadata.decor.LE_DecorHandler;
 import main.level_editor.backend.metadata.object.LE_EntityHandler;
 import main.level_editor.backend.metadata.script.LE_ScriptHandler;
 import main.level_editor.backend.sim.LE_GameSim;
@@ -47,22 +48,25 @@ public class LE_Manager {
     private final LayerHandlerImpl layerHandler;
     private final LE_EntityHandler entityHandler;
     private final IPlatformHandlerImpl platformHandler;
-    private LE_Floor floor;
-    private LE_SelectionHandler selectionHandler;
-    private LE_ModelManager modelManager;
-    private LE_DataHandler dataHandler;
-    private LE_MouseHandler mouseHandler;
-    private LE_AdvFuncs advFuncs;
-    private LE_MenuHandler menuHandler;
-    private LE_StructureHandler structureManager;
-    private LE_ModuleHandler moduleHandler;
-    private PaletteHandlerImpl paletteHandler;
-    private LE_MapHandler mapHandler;
-    private Set<LE_Handler> handlers= new LinkedHashSet<>();
-    private LE_TransitHandler transitHandler;
-    private LE_XmlHandler xmlMaster;
+    private final LE_Floor floor;
+    private final LE_SelectionHandler selectionHandler;
+    private final LE_ModelManager modelManager;
+    private final LE_DataHandler dataHandler;
+    private final LE_MouseHandler mouseHandler;
+    private final LE_AdvFuncs advFuncs;
+    private final LE_MenuHandler menuHandler;
+    private final LE_StructureHandler structureManager;
+    private final LE_ModuleHandler moduleHandler;
+    private final PaletteHandlerImpl paletteHandler;
+    private final LE_MapHandler mapHandler;
+    private final Set<LE_Handler> handlers= new LinkedHashSet<>();
+    private final LE_TransitHandler transitHandler;
+    private final LE_XmlHandler xmlMaster;
+    LE_DecorHandler decorHandler;
     private boolean loaded;
-    private IHandlerDelegate delegate;
+    private final IHandlerDelegate delegate;
+    private LE_LAYER layer=LE_LAYER.obj;
+    private int layerId;
 
     public LE_Manager(LE_Floor floor) {
         this.floor = floor;        
@@ -92,6 +96,7 @@ public class LE_Manager {
         handlers.add(  mapHandler = new LE_MapHandler(this));
         handlers.add(  transitHandler = new LE_TransitHandler(this));
         handlers.add(  advFuncs = new LE_AdvFuncs(this));
+        handlers.add( decorHandler = new LE_DecorHandler(this));
         delegate = new LE_HandlerDelegate(this);
 //        layerHandler = new IRngHandler(this);
     }
@@ -108,6 +113,11 @@ public class LE_Manager {
             handler.afterLoaded();
         }
     }
+
+    public LE_DecorHandler getDecorHandler() {
+        return decorHandler;
+    }
+
     public LE_MapHandler getMapHandler() {
         return mapHandler;
     }
@@ -236,5 +246,26 @@ public class LE_Manager {
 
     public IPlatformHandlerImpl getPlatformHandler() {
         return platformHandler;
+    }
+
+    public LE_LAYER getLayer() {
+        return layer;
+    }
+
+    public void setLayer(LE_LAYER layer) {
+        this.layer = layer;
+    }
+
+    public void cycleLayer() {
+        layerId++;
+        if (layerId >= LE_LAYER.values().length)
+            layerId = 0;
+        setLayer(LE_LAYER.values()[layerId]);
+    }
+
+    public enum LE_LAYER {
+        obj,
+        decor,
+        script,
     }
 }

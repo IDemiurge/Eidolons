@@ -72,6 +72,8 @@ public class GameLoop {
     private boolean firstActionDone;
     private DC_ActiveObj lastAction;
     private DC_ActiveObj lastActionEvent;
+    private boolean logicWaiting;
+    private boolean visualLock;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -146,6 +148,11 @@ public class GameLoop {
     protected boolean roundLoop() {
         game.getStateManager().newRound();
         while (true) {
+            if (isVisualLock()){
+                setLogicWaiting(true);
+                lock();
+            }
+            setVisualLock(true);
             if (stopped) {
                 lock();
             }
@@ -581,4 +588,22 @@ public class GameLoop {
         return lastActionEvent;
     }
 
+    public boolean isLogicWaiting() {
+        return logicWaiting;
+    }
+
+    public void setLogicWaiting(boolean logicWaiting) {
+        this.logicWaiting = logicWaiting;
+    }
+    public boolean isVisualLock() {
+        return visualLock;
+    }
+
+    public void setVisualLock(boolean visualLock) {
+        this.visualLock = visualLock;
+        if (!visualLock){
+            if (isLogicWaiting())
+                signal();
+        }
+    }
 }

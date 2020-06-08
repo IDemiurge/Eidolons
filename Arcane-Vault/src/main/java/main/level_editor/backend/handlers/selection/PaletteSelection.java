@@ -2,6 +2,7 @@ package main.level_editor.backend.handlers.selection;
 
 import eidolons.game.core.EUtils;
 import eidolons.game.module.generator.model.RoomModel;
+import eidolons.libgdx.bf.datasource.GraphicData;
 import main.content.enums.GenericEnums;
 import main.entity.EntityCheckMaster;
 import main.entity.type.ObjType;
@@ -12,6 +13,7 @@ public class PaletteSelection implements Serializable {
 
     private RoomModel template;
     private static PaletteSelection instance;
+    private GraphicData decorData;
 
     public static PaletteSelection getInstance() {
         if (instance == null) {
@@ -63,8 +65,15 @@ public class PaletteSelection implements Serializable {
         return template;
     }
 
+    public GraphicData getDecorData() {
+        return decorData;
+    }
 
-//custom type?
+    public void setDecorData(GraphicData decorData) {
+        this.decorData = decorData;
+    }
+
+    //custom type?
 
     //templates of rooms, scripts,
 }

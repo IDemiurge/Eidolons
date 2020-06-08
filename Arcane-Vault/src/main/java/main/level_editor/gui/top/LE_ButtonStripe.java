@@ -26,13 +26,19 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
         setHeight(80);
         setWidth(900);
         addActor(undo = new SmartButton(ButtonStyled.STD_BUTTON.LE_UNDO, () ->
-                Eidolons.onGdxThread(() -> LevelEditor.getCurrent().getManager().getOperationHandler().undo())));
-        TablePanelX<Actor> container = new TablePanelX (80, 60){
+                Eidolons.onGdxThread(() -> {
+                    try {
+                        LevelEditor.getCurrent().getManager().getOperationHandler().undo();
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
+                })));
+        TablePanelX<Actor> container = new TablePanelX(80, 60) {
             @Override
             public void layout() {
                 super.layout();
-                save.setY(save.getY()+20);
-//                saveV.setY(saveV.getY()+20);
+                save.setY(save.getY() + 20);
+                //                saveV.setY(saveV.getY()+20);
             }
         };
         container.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
@@ -44,19 +50,19 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
                 saveV = new SmartButton(ButtonStyled.STD_BUTTON.CHEST, () ->
                         Eidolons.onGdxThread(() -> LevelEditor.getCurrent().getManager().
                                 getDataHandler().saveVersion()))).top();
-//        addActor(new TablePanelX<>(40, getHeight()));
+        //        addActor(new TablePanelX<>(40, getHeight()));
         addActor(controlPanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_CTRL, null));
         addActor(palettePanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_PALETTE, null));
         addActor(structurePanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_STRUCT, null));
 
-        addActor(brushes = new SmartButton(ButtonStyled.STD_BUTTON.LE_BRUSH, ()->{
+        addActor(brushes = new SmartButton(ButtonStyled.STD_BUTTON.LE_BRUSH, () -> {
             boolean b = LevelEditor.getModel().isBrushMode();
             LevelEditor.getModel().setBrushMode(!b);
-//            if (getStage() instanceof LE_GuiStage) {
-//                ((LE_GuiStage) getStage()).toggleUiVisible();
-//            }
+            //            if (getStage() instanceof LE_GuiStage) {
+            //                ((LE_GuiStage) getStage()).toggleUiVisible();
+            //            }
         }));
-        addActor(viewModes = new SmartButton(ButtonStyled.STD_BUTTON.LE_VIEWS, ()-> {
+        addActor(viewModes = new SmartButton(ButtonStyled.STD_BUTTON.LE_VIEWS, () -> {
             LevelEditor.getModel().getDisplayMode().toggleAll();
         }));
     }

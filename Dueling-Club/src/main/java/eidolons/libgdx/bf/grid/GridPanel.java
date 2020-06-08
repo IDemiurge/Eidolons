@@ -29,6 +29,9 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.decor.CellDecorLayer;
+import eidolons.libgdx.bf.decor.DecorData;
+import eidolons.libgdx.bf.decor.DecorData.DECOR_LEVEL;
 import eidolons.libgdx.bf.decor.Pillars;
 import eidolons.libgdx.bf.decor.ShardVisuals;
 import eidolons.libgdx.bf.grid.cell.*;
@@ -102,8 +105,9 @@ public abstract class GridPanel extends Group {
     protected Map<Module, GridSubParts> containerMap = new HashMap<>();
     protected GridViewAnimator gridViewAnimator = new GridViewAnimator(this);
     protected PlatformHandler platformHandler;
-    protected List<PlatformCell > platforms = new LinkedList<>();
-    protected Set<PlatformDecor> platformDecor= new LinkedHashSet();
+    protected List<PlatformCell> platforms = new LinkedList<>();
+    protected Set<PlatformDecor> platformDecor = new LinkedHashSet();
+    private final Map<DECOR_LEVEL, CellDecorLayer> decorMap = new HashMap<>();
 
     public GridPanel(int cols, int rows, int moduleCols, int moduleRows) {
         this.square = rows * cols;
@@ -117,9 +121,35 @@ public abstract class GridPanel extends Group {
         addActor(flightHandler.getObjsOver());
         addActor(flightHandler.getObjsUnder());
         addActor(flightHandler.getObjsVfx());
+
+        for (DECOR_LEVEL level : DECOR_LEVEL.values()) {
+            CellDecorLayer cellDecorLayer;
+            addActor(cellDecorLayer = new CellDecorLayer(this));
+            decorMap.put(level, cellDecorLayer);
+        }
         //TODO have over and under layers!
     }
 
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+/*
+platforms...
+ */
+        if (!isCustomHit())
+            return super.hit(x, y, touchable);
+        int gridX = (int) (x / 128);
+        int gridY = getGdxY_ForModule((int) (y / 128));
+        GridCellContainer child = getGridCell(gridX, gridY);
+        if (child == null) {
+            return super.hit(x, y, touchable);
+        }
+        Vector2 v = child.parentToLocalCoordinates(new Vector2(x, y));
+        return child.hit(v.x, v.y, touchable);
+    }
+
+    protected boolean isCustomHit() {
+        return true;
+    }
 
     public void setModule(Module module) {
         offset = module.getOrigin();
@@ -634,6 +664,7 @@ public abstract class GridPanel extends Group {
             platform.setZIndex(Integer.MAX_VALUE);
             //if we had over and under... we could setPos for them on act?
         }
+        decorMap.get(DECOR_LEVEL.BOTTOM).setZIndex(Integer.MAX_VALUE);
         List<GridCellContainer> topCells = new ArrayList<>();
         loop:
         for (int x = x1; x < x2; x++) {
@@ -672,6 +703,7 @@ public abstract class GridPanel extends Group {
             obj.setZIndex(Integer.MAX_VALUE);
         });
 
+        decorMap.get(DECOR_LEVEL.OVER_CELLS).setZIndex(Integer.MAX_VALUE);
 
         wallMap.setVisible(WallMap.isOn());
         wallMap.setZIndex(Integer.MAX_VALUE);
@@ -681,15 +713,18 @@ public abstract class GridPanel extends Group {
         }
         for (PlatformCell platform : platforms) {
             platform.setZIndex(Integer.MAX_VALUE);
-            //if we had over and under... we could setPos for them on act?
         }
 
         customOverlayingObjects.forEach(obj -> {
             obj.setZIndex(Integer.MAX_VALUE);
         });
+
+        decorMap.get(DECOR_LEVEL.OVER_MAPS).setZIndex(Integer.MAX_VALUE);
         for (GridCellContainer cell : topCells) {
             cell.setZIndex(Integer.MAX_VALUE);
         }
+        /////////////////
+
         customOverlayingObjectsTop.forEach(obj -> {
             obj.setZIndex(Integer.MAX_VALUE);
         });
@@ -702,7 +737,7 @@ public abstract class GridPanel extends Group {
         flightHandler.getObjsOver().setZIndex(Integer.MAX_VALUE);
         flightHandler.getObjsVfx().setZIndex(Integer.MAX_VALUE);
 
-
+        decorMap.get(DECOR_LEVEL.TOP).setZIndex(Integer.MAX_VALUE);
     }
 
     public void addOverlay(OverlayView view) {
@@ -778,6 +813,19 @@ public abstract class GridPanel extends Group {
             Coordinates c = (Coordinates) obj.get();
             restoreVoid(c.x, c.y, true);
         });
+        GuiEventManager.bind(removePrevious, CELL_DECOR_RESET, obj -> {
+            List list = (List) obj.get();
+            Coordinates c = (Coordinates) list.get(0);
+            DecorData data = (DecorData) list.get(1);
+            for (DECOR_LEVEL level : decorMap.keySet()) {
+                CellDecorLayer cellDecorLayer = decorMap.get(level);
+                if (data == null) {
+                    cellDecorLayer.remove(c);
+                } else
+                    cellDecorLayer.add(c, data.getGraphicData(level));
+            }
+            resetZIndices();
+        });
 
         GuiEventManager.bind(removePrevious, CELL_SET_VOID, obj -> {
             Coordinates c = (Coordinates) obj.get();
@@ -817,7 +865,7 @@ public abstract class GridPanel extends Group {
         GuiEventManager.bind(removePrevious, REMOVE_GRID_OBJ, p -> {
             GridObject gridObj;
             if (p.get() instanceof GridObject) {
-                 gridObj = ((GridObject) p.get());
+                gridObj = ((GridObject) p.get());
             } else {
                 List list = (List) p.get();
                 String key = (String) list.get(0);
@@ -866,7 +914,7 @@ public abstract class GridPanel extends Group {
             manipulators.add(manipulator);
             Coordinates c = manipulator.getCoordinates();
             manipulator.setPosition(c.x * 128,
-                    ((c.y* 128)));
+                    ((c.y * 128)));
         });
         GuiEventManager.bind(removePrevious, INIT_CELL_OVERLAY, (obj) -> {
             DC_Cell cell = (DC_Cell) obj.get();
@@ -1120,10 +1168,10 @@ public abstract class GridPanel extends Group {
     }
 
     public GridCellContainer getGridCell(int x, int y) {
-        if (x >= cells.length) {
+        if (x >= cells.length || y < 0) {
             return null;
         }
-        if (y >= cells[0].length) {
+        if (y >= cells[0].length || y < 0) {
             return null;
         }
         return cells[x][y];
@@ -1137,12 +1185,12 @@ public abstract class GridPanel extends Group {
     public PlatformDecor addPlatform(List<PlatformCell> cells, PlatformData data) {
         for (PlatformCell cell : cells) {
 
-        int x = cell.getGridX();
-        int y = cell.getGridY();
-        addActor(cell.init());
-        cell.setY(getGdxY_ForModule(y) * GridMaster.CELL_H);
-        cell.setX(x * GridMaster.CELL_W);
-        platforms.add( cell);
+            int x = cell.getGridX();
+            int y = cell.getGridY();
+            addActor(cell.init());
+            cell.setY(getGdxY_ForModule(y) * GridMaster.CELL_H);
+            cell.setX(x * GridMaster.CELL_W);
+            platforms.add(cell);
         }
         PlatformDecor visuals = platformHandler.createCellVisuals(cells, data);
         //z?

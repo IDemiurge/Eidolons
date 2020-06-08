@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.libgdx.bf.decor.DecorData;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -30,9 +31,10 @@ public class Location extends FloorWrapper {
     private String entranceData;
     private String exitData;
     private Map<Coordinates, CellScriptData> textDataMap = new LinkedHashMap<>();
-    private Set<Entrance> transits = new LinkedHashSet<>();
+    private final Map<Coordinates, DecorData> decorMap = new LinkedHashMap<>();
+    private final Set<Entrance> transits = new LinkedHashSet<>();
     private boolean initialEdit;
-    private String defaultEntrance = "The Light";
+    private final String defaultEntrance = "The Light";
 
     public Location(DungeonMaster master, Floor floor) {
         super(floor, master);
@@ -167,5 +169,13 @@ public class Location extends FloorWrapper {
 
     public void addTextDataMap(Map<Coordinates, CellScriptData> map) {
         textDataMap.putAll(map);
+    }
+
+    public Map<Coordinates, DecorData> getDecorMap() {
+        return decorMap;
+    }
+
+    public void addDecorDataMap(Map<Coordinates, DecorData> map) {
+        decorMap.putAll(map);
     }
 }

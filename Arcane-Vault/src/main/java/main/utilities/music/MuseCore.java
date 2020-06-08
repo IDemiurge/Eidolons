@@ -5,12 +5,11 @@ import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MuseCore implements NativeKeyListener {
-    private static final int SHIFT = 1;
-    private static final int ALT =8;
+    private static final int SHIFT = 17;
+    private static final int ALT =136;
 
     public void init() {
         try {
@@ -25,7 +24,7 @@ public class MuseCore implements NativeKeyListener {
         GlobalScreen.addNativeKeyListener(this);
         // Get the logger for "org.jnativehook" and set the level to off.
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-        logger.setLevel(Level.OFF);
+        // logger.setLevel(Level.OFF);
 
         // Don't forget to disable the parent handlers.
         logger.setUseParentHandlers(false);
@@ -37,8 +36,7 @@ public class MuseCore implements NativeKeyListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        switch (nativeKeyEvent.getModifiers()) {
-            case ALT:
+         if ((ALT & nativeKeyEvent.getModifiers())!=0) {
                 if (nativeKeyEvent.getKeyCode() > 58) {
                     if (nativeKeyEvent.getKeyCode() <= 61) {
                         try {
@@ -49,8 +47,8 @@ public class MuseCore implements NativeKeyListener {
                         }
                     }
                 }
-                break;
-            case SHIFT:
+
+             if ((SHIFT & nativeKeyEvent.getModifiers())!=0) {
                 if (nativeKeyEvent.getKeyCode() > 58) {
                     if (nativeKeyEvent.getKeyCode() < 70) {
                         try {
@@ -61,7 +59,7 @@ public class MuseCore implements NativeKeyListener {
                         }
                     }
                 }
-                break;
+                }
 //            default:
 //                main.system.auxiliary.log.LogMaster.log(1, " nativeKeyEvent.getModifiers()=" +
 //                        nativeKeyEvent.getModifiers());

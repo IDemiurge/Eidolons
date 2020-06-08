@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -85,9 +86,9 @@ public class GridCellContainer extends GridCell implements Hoverable {
             graveyard.setWidth(getWidth());
             graveyard.setHeight(getHeight());
         }
-//        setUserObject(new GridCellDataSource(
-//                Coordinates.get(getGridX(), getGridY())
-//        ));
+        //        setUserObject(new GridCellDataSource(
+        //                Coordinates.get(getGridX(), getGridY())
+        //        ));
         return this;
     }
 
@@ -217,7 +218,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     protected void recalcImagesPos(GenericGridView actor,
-                                 float perImageOffsetX
+                                   float perImageOffsetX
             , float perImageOffsetY, int i) {
 
         actor.setX(getViewX(perImageOffsetX, i));
@@ -367,7 +368,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
                             actor.setZIndex(z - 1);
                         } else
                             actor.setZIndex(z);
-//                        n++; why here
+                        //                        n++; why here
                         continue;
                     }
                 }
@@ -393,7 +394,6 @@ public class GridCellContainer extends GridCell implements Hoverable {
             return;
         super.act(delta);
         resetZIndices();
-
         if (n != nonBgUnitViewCount || secondCheck) {
             dirty = true;
         }
@@ -402,12 +402,12 @@ public class GridCellContainer extends GridCell implements Hoverable {
             recalcUnitViewBounds();
             dirty = false;
         }
-        if (getUnitViewCount()==0)
-        if (GdxMaster.isVisibleEffectively(overlay)) {
-            if (RandomWizard.chance(1)) {
-                log(1, this + " has overlay" + overlay.getColor());
+        if (getUnitViewCount() == 0)
+            if (GdxMaster.isVisibleEffectively(overlay)) {
+                if (RandomWizard.chance(1)) {
+                    log(1, this + " has overlay" + overlay.getColor());
+                }
             }
-        }
     }
 
     protected boolean isStaticZindex() {
@@ -538,13 +538,13 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     public int getUnitViewCount() {
-//        return nonBgUnitViewCount;
+        //        return nonBgUnitViewCount;
         return hasBackground ? nonBgUnitViewCount + 1 : nonBgUnitViewCount;
     }
 
     public int getUnitViewCountEffective() {
         return nonBgUnitViewCount;
-//        return hasBackground ? nonBgUnitViewCount - 1 : nonBgUnitViewCount;//-graveyard.getGraveCount() ;
+        //        return hasBackground ? nonBgUnitViewCount - 1 : nonBgUnitViewCount;//-graveyard.getGraveCount() ;
     }
 
     public GenericGridView getTopUnitView() {
@@ -609,7 +609,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
     public void fadeInOverlay(TextureRegion texture) {
         if (getVoidAnimHappened())
             return;
-//        setOverlayTexture(texture);
+        //        setOverlayTexture(texture);
         if (getUnitViewsVisible().size() >= 1) {
             return;
         }
@@ -633,6 +633,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
                     return getFadeDuration();
                 }
             });
+            overlay.setTouchable(Touchable.disabled);
             GdxMaster.center(overlay);
         } else {
             if (overlay.getParent() == null) {
@@ -647,7 +648,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     public void fadeOutOverlay() {
-//        setOverlayTexture(null );
+        //        setOverlayTexture(null );
         if (overlay == null) {
             return;
         }

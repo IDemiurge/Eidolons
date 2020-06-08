@@ -38,6 +38,11 @@ public class LE_BfGrid extends GridPanel {
     }
 
     @Override
+    protected boolean isCustomHit() {
+        return false;
+    }
+
+    @Override
     public void addActor(Actor actor) {
         super.addActor(actor);
     }

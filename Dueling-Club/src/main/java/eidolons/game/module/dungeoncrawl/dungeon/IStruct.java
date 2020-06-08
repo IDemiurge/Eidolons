@@ -1,7 +1,7 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
-import eidolons.libgdx.bf.decor.CellDecor;
+import eidolons.libgdx.bf.decor.CellDecorLayer;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.system.audio.MusicMaster;
 import main.content.CONTENT_CONSTS;
@@ -69,7 +69,7 @@ public interface IStruct {
 
     CONTENT_CONSTS.COLOR_THEME getColorTheme();
 
-    CellDecor.CELL_PATTERN getCellPattern();
+    CellDecorLayer.CELL_PATTERN getCellPattern();
 
     CONTENT_CONSTS.COLOR_THEME getAltColorTheme();
 

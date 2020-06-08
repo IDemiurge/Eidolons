@@ -27,6 +27,7 @@ import main.level_editor.backend.handlers.structure.LE_MapHandler;
 import main.level_editor.backend.handlers.structure.LE_ModuleHandler;
 import main.level_editor.backend.handlers.structure.LE_StructureHandler;
 import main.level_editor.backend.handlers.structure.layer.LayerHandlerImpl;
+import main.level_editor.backend.metadata.decor.LE_DecorHandler;
 import main.level_editor.backend.metadata.object.LE_EntityHandler;
 import main.level_editor.backend.metadata.script.LE_ScriptHandler;
 import main.level_editor.backend.sim.LE_GameSim;
@@ -56,12 +57,17 @@ public abstract class LE_Handler {
     public void load() {
     }
 
-    public <T extends Enum<T>> void editData(DataUnit<T> data){
+    protected LE_Manager.LE_LAYER getLayer() {
+        return manager.getLayer();
+    }
+    public <T extends Enum<T>> void editData(DataUnit<T> data) {
         getEditHandler().editDataUnit(data);
     }
+
     protected boolean isLoaded() {
         return manager.isLoaded();
     }
+
     public String getDataMapString(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
         return "";
     }
@@ -77,6 +83,7 @@ public abstract class LE_Handler {
     public IPlatformHandlerImpl getPlatformHandler() {
         return manager.getPlatformHandler();
     }
+
     public LE_EntityHandler getEntityHandler() {
         return manager.getEntityHandler();
     }
@@ -87,6 +94,10 @@ public abstract class LE_Handler {
 
     protected LevelStruct getDungeonLevel() {
         return getGame().getDungeonMaster().getFloorWrapper();
+    }
+
+    public LE_DecorHandler getDecorHandler() {
+        return manager.getDecorHandler();
     }
 
     public LE_DialogHandler getDialogHandler() {
@@ -158,8 +169,9 @@ public abstract class LE_Handler {
     }
 
     public LE_Floor getFloor() {
-        return manager.getFloor() ;
+        return manager.getFloor();
     }
+
     public EditorModel getModel() {
         return getModelManager().getModel();
     }

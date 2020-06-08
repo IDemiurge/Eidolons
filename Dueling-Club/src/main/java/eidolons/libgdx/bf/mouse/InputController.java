@@ -474,6 +474,12 @@ public abstract class InputController implements InputProcessor {
         return false;
     }
 
+    public boolean isWithinCamera(float x, float y, float width, float height, boolean adjustForRotation) {
+        if (adjustForRotation) {
+            return isWithinCamera(x-width, y-height, 3*width, 3*height);
+        } else
+            return isWithinCamera(x, y, width, height);
+    }
     public boolean isWithinCamera(float x, float y, float width, float height) {
         float xPos = Math.abs(camera.position.x - x) - width;
         if (xPos > halfWidth)

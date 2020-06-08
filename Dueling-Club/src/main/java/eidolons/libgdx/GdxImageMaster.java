@@ -37,8 +37,8 @@ import java.util.Map;
 public class GdxImageMaster extends LwjglApplication {
 
     private static final String PATH = "gen/round/";
-    private static Map<Texture, Pixmap> pixmaps = new HashMap<>();
-    private static Map<String, Texture> sizedViewCache = new HashMap<>();
+    private static final Map<Texture, Pixmap> pixmaps = new HashMap<>();
+    private static final Map<String, Texture> sizedViewCache = new HashMap<>();
 
 
     public GdxImageMaster() {
@@ -156,14 +156,14 @@ public class GdxImageMaster extends LwjglApplication {
 
     public static Texture size(String path, int width, int height, boolean write) {
         int size = (width + height) / 2;
-        Texture texture = null ;
+        Texture texture = null;
         if (height == AtbPanel.imageSize && width == AtbPanel.imageSize) {
             texture = sizedViewCache.get(path);
             if (texture != null) {
                 return texture;
             }
         }
-        texture =  TextureCache.getOrCreate(path);
+        texture = TextureCache.getOrCreate(path);
         if (texture.getWidth() == size) {
             if (texture.getHeight() == size) {
                 return texture;
@@ -179,8 +179,8 @@ public class GdxImageMaster extends LwjglApplication {
                         newPath);
         if (handle.exists())
             return TextureCache.getOrCreate(newPath);
-            if (!texture.getTextureData().isPrepared())
-                texture.getTextureData().prepare();
+        if (!texture.getTextureData().isPrepared())
+            texture.getTextureData().prepare();
         Pixmap pixmap = texture.getTextureData().consumePixmap();
         Pixmap pixmap2 = new Pixmap(width, height, pixmap.getFormat());
         pixmap2.drawPixmap(pixmap,
@@ -354,8 +354,8 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static String cropImagePath(String s) {
-        return s.toLowerCase()
-                .replace(PathFinder.getImagePath().toLowerCase(), "");
+        s = FileManager.formatPath(s, true, true);
+        return s.replace(PathFinder.getImagePath().toLowerCase(), "");
     }
 
     public static String getAttackActionPath(DC_ActiveObj obj) {
@@ -414,10 +414,11 @@ public class GdxImageMaster extends LwjglApplication {
         }
         return weapon.getImagePath();
     }
+
     /*
     could be a batch job for util to init all existing sprite-atlases and create these singles
      */
-    public static void genSingleFrameSprite(SpriteAnimation anim, String origPath){
+    public static void genSingleFrameSprite(SpriteAnimation anim, String origPath) {
         /*
         image or atlas?
          */

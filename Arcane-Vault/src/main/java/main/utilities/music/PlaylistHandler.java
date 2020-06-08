@@ -16,16 +16,18 @@ public class PlaylistHandler {
 
     private static final String ROOT_PATH_PICK = "C:\\music\\playlists\\auto\\";
     private static final String ROOT_PATH = "C:\\music\\playlists\\";
-    private static Map<PLAYLIST_TYPE, List<File>> cache = new HashMap<>();
+    private static final Map<PLAYLIST_TYPE, List<File>> cache = new HashMap<>();
 
     public enum PLAYLIST_TYPE {
-        deep,
-        ost,
-        fury,
-        warmup,
-        gym,
-        goodly,
-        auto,
+        deep, //1
+        ost, //2
+        fury, //3
+        warmup, //4
+        gym, //5
+        goodly, //6
+        pagan, //7
+        dark, //8
+        auto, //9
     }
 
     public static void playRandom(PLAYLIST_TYPE type) {

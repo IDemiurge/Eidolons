@@ -106,6 +106,11 @@ public class LE_ObjHandler extends LE_Handler {
             getStructureHandler().initWall(c);
             //            getCoordinatesForShape(PositionMaster.SHAPES.STAR)
         } else {
+            if (getModel().getPaletteSelection().getDecorData() != null) {
+                getDecorHandler().fromPalette(c);
+                return;
+            }
+
             ObjType objType = getModel().getPaletteSelection().getObjType();
             if (objType == null) {
                 return;

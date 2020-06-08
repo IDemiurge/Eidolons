@@ -280,11 +280,6 @@ public class BaseView extends SuperActor  implements Hoverable{
     public void highlight() {
         highlight.setColor(getTeamColor().r, getTeamColor().g, getTeamColor().b, highlight.getColor().a);
         highlight.fadeIn();
-//        fire_light.fadeIn();
-
-        //screen anim
-
-        main.system.auxiliary.log.LogMaster.dev("highlight ");
     }
 
     public void highlightOff() {

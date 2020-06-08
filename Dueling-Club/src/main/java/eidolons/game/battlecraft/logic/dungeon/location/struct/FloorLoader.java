@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.libgdx.bf.decor.DecorData;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.xml.XmlNodeMaster;
@@ -58,6 +59,7 @@ public class FloorLoader extends DungeonHandler {
     public static final String MAIN_EXIT = "MAIN_EXIT";
     public static final String SCRIPT_DATA = "SCRIPT_DATA";
     public static final String PLATFORM_DATA = "PLATFORM_DATA";
+    public static final String DECOR_DATA = "DECOR";
     private String entranceData = "";
 
     public FloorLoader(DungeonMaster master) {
@@ -76,12 +78,14 @@ public class FloorLoader extends DungeonHandler {
     public void processModuleSubNode(Node node, Location location, Module module) {
         log(LOG_CHANNEL.BUILDING, "Module Sub Node: " + node.getNodeName());
         switch (node.getNodeName()) {
+            case DECOR_DATA:
+                location.addDecorDataMap(buildDecorMap(node.getTextContent()));
+                break;
             case PLATFORM_DATA:
                 initPlatformData(module, node.getTextContent());
                 break;
             case SCRIPT_DATA:
                 location.addTextDataMap(buildCellMap(node.getTextContent()));
-
                 break;
             case CUSTOM_TYPE_DATA:
                 Map<Integer, ObjType> idTypeMap = module.getIdTypeMap();
@@ -314,12 +318,22 @@ public class FloorLoader extends DungeonHandler {
                 continue;
             Coordinates c = Coordinates.get(split[0]);
             map.put(c, new CellScriptData(split[1]));
-
         }
         initFlipMap(map);
         return map;
     }
 
+    protected Map<Coordinates, DecorData> buildDecorMap(String textContent) {
+        Map<Coordinates, DecorData> map = new HashMap<>();
+        for (String substring : ContainerUtils.openContainer(textContent, StringMaster.VERTICAL_BAR)) {
+            String[] split = substring.split("=");
+            if (split.length < 2)
+                continue;
+            Coordinates c = Coordinates.get(split[0]);
+            map.put(c, new DecorData(split[1]));
+        }
+        return map;
+    }
     protected void initFlipMap(Map<Coordinates, CellScriptData> map) {
         getMaster().getGame().getFlipMap().putAll(createFlipMap(map));
     }

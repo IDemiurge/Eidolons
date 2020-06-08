@@ -107,7 +107,9 @@ public class DC_Formulas {
     private static final String CLAIM_OUTPUT = "2*({SOURCE_LEVEL})*{SOURCE_MAGIC_AFFINITY}/100";
     private static final int FOCUS_PER_CRYSTAL = 5;
     private static final float INT_MSTR_MODIFIER = 0.2f;
-    private static final String LEVEL_XP_FORMULA = "100+(max(1, {AMOUNT})-1)*20+(max(1, {AMOUNT})-1)*(max(1, {AMOUNT})-1)*5";
+    private static final String LEVEL_XP_FORMULA =
+            "100+(max(1, {AMOUNT})-1)" +
+            "*20+(max(1, {AMOUNT})-1)*(max(1, {AMOUNT})-1)*5";
     private static final String LEVEL_GOLD_FORMULA = "125+(max(1, {AMOUNT})-1)*25+(max(1, {AMOUNT})-1)*(max(1, {AMOUNT})-1)*10";
     private static final int OFF_HAND_ATTACK_MOD = 50;
     private static final int OFF_HAND_DAMAGE_MOD = 75;

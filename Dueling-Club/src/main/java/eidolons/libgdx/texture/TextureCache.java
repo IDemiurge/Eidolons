@@ -37,27 +37,27 @@ import java.util.regex.Pattern;
 
 public class TextureCache {
     private static final boolean atlasesOn = false;
-    private static Boolean uiAtlasesOn = false;
+    private static final Boolean uiAtlasesOn = false;
     private static final boolean tryCompressedFormat = true;
     private static TextureCache instance;
-    private static Lock creationLock = new ReentrantLock();
-    private static AtomicInteger counter = new AtomicInteger(0);
+    private static final Lock creationLock = new ReentrantLock();
+    private static final AtomicInteger counter = new AtomicInteger(0);
     private static boolean altTexturesOn = true;
     private static Texture missingTexture;
     private static Texture empty;
 
-    private static Map<String, TextureRegion> regionCache = new HashMap<>(300);
-    private static Map<TextureRegion, TextureRegionDrawable> drawableMap = new HashMap<>(300);
+    private static final Map<String, TextureRegion> regionCache = new HashMap<>(300);
+    private static final Map<TextureRegion, TextureRegionDrawable> drawableMap = new HashMap<>(300);
     private static boolean returnEmptyOnFail = true;
-    private static List<String> missingTextures = new LinkedList<>();
+    private static final List<String> missingTextures = new LinkedList<>();
 
-    private Map<String, Texture> cache;
-    private Map<Texture, Texture> greyscaleCache;
-    private String imagePath;
+    private final Map<String, Texture> cache;
+    private final Map<Texture, Texture> greyscaleCache;
+    private final String imagePath;
     private SmartTextureAtlas uiAtlas;
     private SmartTextureAtlas mainAtlas;
     private SmartTextureAtlas genAtlas;
-    private Pattern pattern;
+    private final Pattern pattern;
     private boolean silent;
 
     public static TextureRegion fromAtlas(String atlasPath, String light) {
@@ -403,6 +403,9 @@ public class TextureCache {
         try {
             t = getOrCreate(property);
         } catch (Exception e) {
+        }
+        if (t == null) {
+            return false;
         }
         return t != missingTexture;
     }

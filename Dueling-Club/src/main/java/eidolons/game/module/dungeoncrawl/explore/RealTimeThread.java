@@ -53,7 +53,7 @@ public class RealTimeThread extends Thread {
                 return;
             if (Eidolons.getGame() != game)
                 return;
-            if (loop.isLocked())
+            if (loop.isVisualLock())
                 continue;
             if (!ScreenMaster.getScreen().isLoaded()) {
                 continue;
@@ -61,7 +61,7 @@ public class RealTimeThread extends Thread {
             if (Eidolons.getGame().isPaused()) continue;
             if (!ExplorationMaster.isExplorationOn()) continue;
             if (ExplorationMaster.isRealTimePaused()) continue;
-            loop.setLocked(true);
+            loop.setVisualLock(true);
             //linked to gdx thread this way
             loop.act(period);
             if (timer>=checkPeriod) {

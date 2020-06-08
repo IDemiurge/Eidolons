@@ -23,11 +23,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class FileManager {
-    private static List<String> missing = new ArrayList<>();
-    private static Map<String, Boolean> fileCheckMap = new HashMap<>();
-    private static Map<String, Boolean> directoryCheckMap = new HashMap<>();
-    private static Map<String, List<File>> folderCache = new HashMap<>();
-    private static Map<String, List<File>> variantCache = new HashMap<>();
+    private static final List<String> missing = new ArrayList<>();
+    private static final Map<String, Boolean> fileCheckMap = new HashMap<>();
+    private static final Map<String, Boolean> directoryCheckMap = new HashMap<>();
+    private static final Map<String, List<File>> folderCache = new HashMap<>();
+    private static final Map<String, List<File>> variantCache = new HashMap<>();
 
     public static String readFile(String filePath) {
         File file = getFile(filePath, true, false);
@@ -386,30 +386,23 @@ public class FileManager {
         if (number == 0) {
             key = "";
         }
-
         return corePath + key + format;
     }
 
     public static List<String> getFileNames(List<File> files) {
-
         List<String> list = new ArrayList<>();
-
         for (File file : files) {
             list.add(file.getName());
         }
         return list;
-
     }
 
     public static List<String> getFilePaths(List<File> files) {
-
         List<String> list = new ArrayList<>();
-
         for (File file : files) {
             list.add(file.getAbsolutePath());
         }
         return list;
-
     }
 
     public static String getUniqueVersion(File file) {

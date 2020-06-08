@@ -174,7 +174,7 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
         textPanel.setPosition(GdxMaster.centerWidth(textPanel),
                 GdxMaster.centerHeight(textPanel));
 
-        addActor(tooltips = new ToolTipManager(this));
+        addActor(tooltips = createToolTipManager( ));
 
         addActor(infoTooltipContainer = new SuperContainer(infoTooltip) {
             @Override
@@ -198,6 +198,10 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
 
         largeText.setPosition(GdxMaster.centerWidth(largeText),
                 GdxMaster.centerHeight(largeText));
+    }
+
+    protected ToolTipManager createToolTipManager() {
+        return new ToolTipManager(this);
     }
 
     protected void showTooltip(String s, LabelX tooltip, float dur) {
@@ -318,4 +322,7 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
         this.overlayPanel = overlayPanel;
     }
 
+    public TextInputPanel getTextInputPanel() {
+       return textInputPanel;
+    }
 }

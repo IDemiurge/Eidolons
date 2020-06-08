@@ -48,7 +48,7 @@ public class DistanceCondition extends NumericCondition {
         if (objRef != null) {
             if (objRef2 != null) {
                 return PositionMaster.getDistance(ref.getObj(objRef), ref.getObj(objRef2))
-                        >= distance.getInt(ref);
+                         <= distance.getInt(ref);
             }
         }
 

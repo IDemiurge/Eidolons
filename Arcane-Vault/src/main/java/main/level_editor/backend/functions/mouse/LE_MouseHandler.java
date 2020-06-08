@@ -26,7 +26,7 @@ import java.util.Set;
 public class LE_MouseHandler extends LE_Handler {
     public static final WaitMaster.WAIT_OPERATIONS SELECTION_OPERATION = WaitMaster.WAIT_OPERATIONS.SELECT_BF_OBJ;
     //sync with CombatMouseListener
-    private static CLICK_MODE[] clickModes;
+    private static final CLICK_MODE[] clickModes;
 
     public LE_MouseHandler(LE_Manager manager) {
         super(manager);
@@ -34,7 +34,7 @@ public class LE_MouseHandler extends LE_Handler {
 
 
     public void handleCellClick(InputEvent event, int tapCount, int gridX, int gridY) {
-//        LE_Selection selection = getSelectionHandler().getSelection();
+        //        LE_Selection selection = getSelectionHandler().getSelection();
         Coordinates c = Coordinates.get(gridX, gridY);
         switch (getSelectionHandler().getMode()) {
             case COORDINATE:
@@ -43,7 +43,7 @@ public class LE_MouseHandler extends LE_Handler {
                 return;
         }
         //check simplest click
-//        selection.setCoordinates(new ListMaster<Coordinates>().toSet(Coordinates.get(gridX,gridY)));
+        //        selection.setCoordinates(new ListMaster<Coordinates>().toSet(Coordinates.get(gridX,gridY)));
 
 
         CLICK_MODE mode = getModeForClick(event, tapCount);
@@ -62,8 +62,11 @@ public class LE_MouseHandler extends LE_Handler {
 
     private void clickedCell(CLICK_MODE mode, Coordinates c) {
         switch (mode) {
+            case ALT:
+                manager.getScriptHandler().editScriptData(c);
+                break;
             case CTRL_R:
-                getEditHandler().getScriptHandler().editScriptData(c);
+                getEditHandler().editCell(c);
                 break;
             case CTRL_SHIFT_R:
             case SHIFT_R:
@@ -74,9 +77,6 @@ public class LE_MouseHandler extends LE_Handler {
                 LevelStruct lowestStruct = getStructureMaster().getLowestStruct(c);
                 GuiEventManager.trigger(GuiEventType.LE_TREE_SELECT, lowestStruct);
                 break;
-            case ALT:
-                manager.getScriptHandler().editScriptData(c);
-                break;
             case SHIFT:
                 getSelectionHandler().addAreaToSelectedCoordinates(c, true);
                 //TODO add alternative w/o objs
@@ -85,7 +85,7 @@ public class LE_MouseHandler extends LE_Handler {
                 if (getSelectionHandler().getSelection().getCoordinates().contains(c)) {
                     getSelectionHandler().getSelection().remove(c);
                 } else
-                     getSelectionHandler().addSelectedCoordinate(c);
+                    getSelectionHandler().addSelectedCoordinate(c);
                 break;
             case NORMAL:
                 getSelectionHandler().selectedCoordinate(c);
@@ -116,8 +116,8 @@ public class LE_MouseHandler extends LE_Handler {
 
     private boolean allowBrushShape(CLICK_MODE mode) {
         switch (mode) {
-             case RIGHT:
-               return true;
+            case RIGHT:
+                return true;
         }
         return false;
     }
@@ -125,7 +125,7 @@ public class LE_MouseHandler extends LE_Handler {
     private Set<Coordinates> getBrushShapeCoords(Coordinates c, BrushShape shape) {
         Set<Coordinates> set = new LinkedHashSet<>();
         set.add(c);
-//        CoordinatesMaster.getCoordinatesBetween()
+        //        CoordinatesMaster.getCoordinatesBetween()
         switch (shape) {
             case square_2:
                 set.add(c.getAdjacentCoordinate(DIRECTION.DOWN));
@@ -198,10 +198,16 @@ public class LE_MouseHandler extends LE_Handler {
                 break;
             case DOUBLE:
             case RIGHT:
+                if (manager.getLayer() == LE_Manager.LE_LAYER.decor) {
+                    if (getModel().getPaletteSelection().getDecorData() != null) {
+                        getDecorHandler().fromPalette(bfObj.getCoordinates());
+                        return;
+                    }
+                }
                 if (getModel().getPaletteSelection().getObjTypeOverlaying() != null) {
                     if (bfObj instanceof Structure) {
-//                    event.getStageY()
-                        DIRECTION d =  LE_Screen.getInstance().getGuiStage().getEnumChooser()
+                        //                    event.getStageY()
+                        DIRECTION d = LE_Screen.getInstance().getGuiStage().getEnumChooser()
                                 .chooseEnum(DIRECTION.class);
                         if (d == null) {
                             EUtils.onConfirm("Random or center?", () ->
@@ -210,8 +216,8 @@ public class LE_MouseHandler extends LE_Handler {
                                     () -> {
                                     });
                         } else
-                        operation(Operation.LE_OPERATION.ADD_OVERLAY, getModel().getPaletteSelection().getObjTypeOverlaying(),
-                                bfObj.getCoordinates(), d );
+                            operation(Operation.LE_OPERATION.ADD_OVERLAY, getModel().getPaletteSelection().getObjTypeOverlaying(),
+                                    bfObj.getCoordinates(), d);
                         break;
                     }
                 }
@@ -221,7 +227,8 @@ public class LE_MouseHandler extends LE_Handler {
                     operation(Operation.LE_OPERATION.REMOVE_OBJ, bfObj);
                 break;
             case CTRL_SHIFT_R:
-                getEditHandler().getScriptHandler().editScriptData(bfObj.getCoordinates());
+
+                getEditHandler().editCell(bfObj.getCoordinates());
                 break;
             case CTRL_R:
                 if (bfObj instanceof Entrance) {

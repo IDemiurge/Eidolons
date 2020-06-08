@@ -6,6 +6,7 @@ import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.operation.Operation;
@@ -37,6 +38,9 @@ public class LE_EditHandler extends LE_Handler {
 //        WaitMaster.waitForInput()
     }
 
+    public <T extends Enum> T chooseEnum(Class<T> c) {
+      return LE_Screen.getInstance().getGuiStage().getEnumChooser().chooseEnum(c);
+    }
     public <T extends Enum<T>> void editDataUnit(DataUnit<T> dataUnit) {
         LE_Screen.getInstance().getGuiStage().getEditDialog(dataUnit).edit(dataUnit);
     }
@@ -56,4 +60,10 @@ public class LE_EditHandler extends LE_Handler {
         return pairs;
     }
 
+    public void editCell(Coordinates c) {
+        if (manager.getLayer() == LE_Manager.LE_LAYER.decor) {
+            getEditHandler().getDecorHandler().editData(c);
+        } else
+            getEditHandler().getScriptHandler().editScriptData(c);
+    }
 }

@@ -76,8 +76,6 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
                 return;
             }
             ok();
-        } else if (59 == (int) c) {
-            close();
         }
     }
 

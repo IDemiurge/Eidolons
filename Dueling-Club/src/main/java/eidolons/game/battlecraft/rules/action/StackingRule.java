@@ -13,6 +13,7 @@ import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.round.WaterRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster;
 import eidolons.game.netherflame.main.pale.PaleAspect;
@@ -77,25 +78,26 @@ public class StackingRule implements ActionRule {
     }
 
     //apply on each reset?
-    public  void checkStackingPenalty(Unit unit) {
+    public void checkStackingPenalty(Unit unit) {
         int stackFactor = getStackFactor(unit.getCoordinates(), unit, false);
         //depends on girth?
         int amount = stackFactor * 25;
         unit.modifyParameter(PARAMS.AP_PENALTY, amount, null, true);
-        String descr =  "Packed too close to other objects, this unit spends " +
-               amount +                "% more ATB on non-move actions."                ;
-        game.getRules().getDynamicBuffRules().addDynamicBuff("Packed", unit, ""+stackFactor, descr);
+        String descr = "Packed too close to other objects, this unit spends " +
+                amount + "% more ATB on non-move actions.";
+        game.getRules().getDynamicBuffRules().addDynamicBuff("Packed", unit, "" + stackFactor, descr);
         // Effects effects = new Effects();
         // effects.apply
 
         stackFactor = getStackFactor(unit.getCoordinates(), unit, true);
-          amount = stackFactor * 50;
+        amount = stackFactor * 50;
         unit.modifyParameter(PARAMS.MOVE_AP_PENALTY, amount, null, true);
-          descr =  "Engaged in close quarters, this unit spends " +
-                amount +                "% more ATB on move actions."                ;
-        game.getRules().getDynamicBuffRules().addDynamicBuff("Close Quarters", unit, ""+stackFactor, descr);
+        descr = "Engaged in close quarters, this unit spends " +
+                amount + "% more ATB on move actions.";
+        game.getRules().getDynamicBuffRules().addDynamicBuff("Close Quarters", unit, "" + stackFactor, descr);
     }
-        public static void actionMissed(DC_ActiveObj action) {
+
+    public static void actionMissed(DC_ActiveObj action) {
         if (RuleKeeper.isRuleOn(RULE.MISSED_ATTACK_REDIRECTION))
             return;
         Ref ref = action.getRef();
@@ -124,6 +126,10 @@ public class StackingRule implements ActionRule {
 
         action.activatedOn(ref);
 
+    }
+
+    public boolean isStackingSupported() {
+        return ExplorationMaster.isExplorationOn();
     }
 
     public boolean canBeMovedOnto(Entity unit, Coordinates c) {
@@ -160,6 +166,11 @@ public class StackingRule implements ActionRule {
             if (!units.contains(u)) {
                 if (u.isDead())
                     continue;
+                if (!isStackingSupported()) {
+                    if (!isStackUnit(u)) {
+                        return false;
+                    }
+                }
                 if (u.isWall())
                     return false;
                 if (u.isImpassable())
@@ -173,7 +184,7 @@ public class StackingRule implements ActionRule {
                 if (!u.isAnnihilated())
                     //                    continue; TODO why was Type necessary?
                     units.addCast(u);
-//                    units.addCast(!u.isDead() ? u.getType() : u);
+                //                    units.addCast(!u.isDead() ? u.getType() : u);
             }
         }
         if (!EidolonsGame.DUEL)
@@ -210,9 +221,9 @@ public class StackingRule implements ActionRule {
         }
         if (cell.isVOID()) {
             if (!CoreEngine.TEST_LAUNCH || !VoidHandler.TEST_MODE)
-            if (!unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.VOIDWALKER.getName())) {
-                return false;
-            }
+                if (!unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.VOIDWALKER.getName())) {
+                    return false;
+                }
         }
 
         //TODO ???
@@ -287,6 +298,13 @@ public class StackingRule implements ActionRule {
         return result;
     }
 
+    private boolean isStackUnit(BattleFieldObject u) {
+        if (u instanceof Unit) {
+            return !((Unit) u).isUnconscious();
+        }
+        return false;
+    }
+
     private Boolean checkPlatform(Entity unit, Coordinates c) {
         if (ScreenMaster.getDungeonGrid() == null) {
             return null;
@@ -294,9 +312,9 @@ public class StackingRule implements ActionRule {
         PlatformController platformController =
                 ScreenMaster.getDungeonGrid().getPlatformHandler().get(c);
         if (platformController != null)
-        if (platformController.canEnter(unit)) {
-            return true;
-        }
+            if (platformController.canEnter(unit)) {
+                return true;
+            }
         return null;
     }
 
@@ -320,16 +338,16 @@ public class StackingRule implements ActionRule {
     }
 
     public int getStackFactor(Coordinates coordinates, Unit unit, boolean engagement) {
-        int stackFactor=1;
+        int stackFactor = 1;
         if (unit == null) {
             return stackFactor;
         }
         for (BattleFieldObject object : game.getObjectsOnCoordinateNoOverlaying(coordinates)) {
-            if (object==unit) {
+            if (object == unit) {
                 continue;
             }
             if (object.getOwner().isHostileTo(unit.getOwner()) == engagement) {
-                stackFactor+=object.getIntParam(PARAMS.GIRTH)/400 + 1;
+                stackFactor += object.getIntParam(PARAMS.GIRTH) / 400 + 1;
             }
         }
         return stackFactor;

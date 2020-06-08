@@ -32,7 +32,6 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     private final MacroTimeMaster timeMaster;
     private final MacroGame macroGame;
     private Place lastEnteredPlace;
-    private boolean locked;
 
     public MacroGameLoop(MacroGame game) {
         super();
@@ -227,14 +226,6 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
         return null;
     }
 
-    public boolean isLocked() {
-        return locked;
-    }
-
-    @Override
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
 
     public MacroTimeMaster getTimeMaster() {
         return timeMaster;

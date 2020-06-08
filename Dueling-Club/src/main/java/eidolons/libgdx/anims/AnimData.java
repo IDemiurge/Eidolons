@@ -36,7 +36,7 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
     }
 
     @Override
-    public void setValue(ANIM_VALUES name, String value) {
+    public DataUnit<ANIM_VALUES> setValue(ANIM_VALUES name, String value) {
         if (!StringMaster.isEmpty(value)) {
             switch (name) {
                 case SPRITES:
@@ -55,6 +55,7 @@ public class AnimData extends DataUnit<ANIM_VALUES> {
             }
         }
         super.setValue(name, value);
+        return null;
     }
 
     public void add(VALUE val, String value) {

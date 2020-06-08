@@ -27,8 +27,8 @@ public class LE_HandlerDelegate extends LE_Handler implements IHandlerDelegate {
     }
 
     @Override
-    public void addZone() {
-        getStructureHandler().addZone();
+    public void decor() {
+        getDecorHandler().edit();
     }
 
     @Override

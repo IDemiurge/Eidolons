@@ -12,14 +12,16 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 import main.content.DC_TYPE;
 import main.level_editor.gui.components.TreeX;
 import main.level_editor.gui.dialog.BlockTemplateChooser;
+import main.level_editor.gui.panels.palette.table.DecorChooser;
 import main.level_editor.gui.panels.palette.tree.BlockTemplateTree;
+import main.level_editor.gui.panels.palette.tree.DecorTree;
 import main.level_editor.gui.panels.palette.tree.PaletteTree;
 
 
 public class UpperPalette extends TablePanelX {
     private ScrollPane treeScroll;
     private TablePanelX table;
-    private VisSplitPane split;
+    private final VisSplitPane split;
     private TreeX tree;
     //for easy auto-select
 
@@ -60,6 +62,11 @@ public class UpperPalette extends TablePanelX {
             table.setBackground((Drawable) null);
             return;
         }
+        if (value == HybridPalette.PALETTE.decor) {
+            table =  new DecorChooser( );
+            table.setBackground((Drawable) null);
+            return;
+        }
         table = new PaletteTypesTable(0);
         table.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
 
@@ -76,6 +83,10 @@ public class UpperPalette extends TablePanelX {
                 break;
             case encounters:
                 arg = DC_TYPE.ENCOUNTERS;
+                break;
+            case decor:
+                treeScroll = new ScrollPaneX(tree =new DecorTree((DecorChooser) table)
+                );
                 break;
             case custom:
                 treeScroll = new ScrollPaneX(tree =new PaletteTree(null, table)

@@ -24,7 +24,7 @@ public class HybridPalette extends ClosablePanel implements TabbedPaneListener {
     private Tab lastSelected;
 
     public enum PALETTE {
-        encounters, obj, unit, custom, blocks,  //groups
+        encounters, obj, unit, decor, custom, blocks,  //groups
     }
 
     private final TablePanelX<Actor> table;

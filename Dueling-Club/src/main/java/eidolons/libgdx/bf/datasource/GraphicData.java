@@ -1,22 +1,62 @@
 package eidolons.libgdx.bf.datasource;
 
+import com.badlogic.gdx.graphics.Color;
+import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.anims.anim3d.AnimMaster3d;
+import eidolons.libgdx.texture.Images;
+import eidolons.libgdx.texture.Sprites;
+import eidolons.libgdx.texture.TextureCache;
+import main.data.filesys.PathFinder;
+import main.system.PathUtils;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnit;
 
+import java.util.regex.Pattern;
+
+import static main.content.enums.GenericEnums.ALPHA_TEMPLATE;
+
 public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
+    private boolean alt;
+
+    public GraphicData(String text, boolean alt) {
+        super(text);
+        this.alt = alt;
+    }
+
     public GraphicData(String text) {
         super(text);
     }
 
     @Override
     protected String getSeparator() {
-//        if (dialogue) return Pattern.quote("|");
-        return super.getSeparator();
+        if (alt)
+            return Pattern.quote("|");
+        return ",";
     }
 
     @Override
     protected String getPairSeparator() {
-//        return Pattern.quote("::");
-        return super.getPairSeparator();
+        if (alt)
+            return Pattern.quote("::");
+        return "=";
+    }
+
+    @Override
+    public GraphicData setValue(String name, String value) {
+        return (GraphicData) super.setValue(name, value);
+    }
+
+    @Override
+    public GraphicData clone() {
+        return new GraphicData(getData());
+    }
+
+    @Override
+    public GraphicData setValue(GRAPHIC_VALUE name, String value) {
+        return (GraphicData) super.setValue(name, value);
     }
 
     @Override
@@ -24,8 +64,69 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
         return GRAPHIC_VALUE.class;
     }
 
-    public enum GRAPHIC_VALUE{
+    public Color getColor() {
+        if (getValue(GRAPHIC_VALUE.color).isEmpty()) {
+            return new Color(1, 1, 1, 1);
+        }
+        return GdxColorMaster.getColorByName(getValue(GRAPHIC_VALUE.color));
+    }
+
+    public ALPHA_TEMPLATE getAlphaTemplate() {
+        if (getValue(GRAPHIC_VALUE.alpha_template).isEmpty()) {
+            return null;
+        }
+        return new EnumMaster<ALPHA_TEMPLATE>().retrieveEnumConst(ALPHA_TEMPLATE.class,
+                getValue(GRAPHIC_VALUE.alpha_template));
+    }
+
+    public String getName() {
+        return PathUtils.getLastPathSegment(StringMaster.cropFormat(getMainPath()));
+    }
+
+    public String getMainPath() {
+        if (getValue(GRAPHIC_VALUE.texture).isEmpty()) {
+            return getValue(GRAPHIC_VALUE.sprite);
+        }
+        return getValue(GRAPHIC_VALUE.texture);
+    }
+
+    public String getImage() {
+        String path = null;
+        if (!getValue(GRAPHIC_VALUE.texture).isEmpty())
+            path = getTexturePath();
+        if (path == null) {
+            path = getSpritePath();
+            return GdxImageMaster.cropImagePath(AnimMaster3d.getOneFrameImagePath(path));
+        }
+        return path;
+    }
+
+    public String getTexturePath() {
+        String path = getValue(GRAPHIC_VALUE.texture);
+        if (!TextureCache.isImage(path)) {
+            if (TextureCache.isImage(PathFinder.getTexturesPath() + path + ".png")) {
+                path = PathFinder.getTexturesPath() + path + ".png";
+            } else
+                path = Images.getByName(path);
+        }
+        return path;
+    }
+
+    public String getSpritePath() {
+        String path = getValue(GraphicData.GRAPHIC_VALUE.sprite);
+        if (!FileManager.isFile(PathFinder.getImagePath() + path)) {
+            // if (TextureCache.isImage(PathFinder.getSpritesPathFull() + path + ".png")) {
+            //     path = PathFinder.getTexturesPath() + path + ".png";
+            // } else
+            // TODO sprite list via recursion on /..cells!
+            path = Sprites.getByName(path);
+        }
+        return path;
+    }
+
+    public enum GRAPHIC_VALUE {
         x, y, dur, scale, rotation, flipX, flipY, color, alpha,
-        blending,  interpolation
+        texture, alpha_template,
+        blending, sprite, fps, interpolation
     }
 }

@@ -1,24 +1,16 @@
 package main.gui.components.controls;
 
 import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitGroupMaster;
-import eidolons.game.module.herocreator.CharacterCreator;
-import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.libgdx.anims.construct.AnimConstructor;
-import eidolons.libgdx.screens.map.editor.MapEditor;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.AV_DataManager;
-import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
-import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
-import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.gui.builders.EditViewPanel;
 import main.gui.components.table.TableMouseListener;
@@ -46,28 +38,27 @@ public class AV_ButtonPanel extends G_ButtonPanel {
     public static final String RENAME_VALUE = ("Rename Value");
     public static final String REMOVE_VALUE = ("Remove Value");
     public static final String CLEAN_UP = ("Clean Up");
-    public static final String NEW_TREE = "New Tree";
-    public static final String WS_TOGGLE = "WS Add";
     public static final String DEFAULTS = "Defaults";
-    static String[] commands = new String[]{"Add", "Remove", "Upgrade",
+    static String[] commands = new String[]{
+            "New",
+            "Clone",
+            "Remove",
+            "Upgrade",
      "Undo", "Save all"
-     // "Reload", doesn't work yet!
-     // "New Hero",
-     // "Edit",
-     // RENAME_TYPE, RENAME_VALUE, REMOVE_VALUE
-     , WS_TOGGLE, "Save",
-     // "Group", "Clone",
+     , "WS Add", "Save",
      "Add Tab", "Toggle",
             "Copy","Paste",
+            "Backup",
+     // "Group",
      // CLEAN_UP,
 //     "Edit",
 //     "Defaults",
-    "Backup",
 //     "Add WS", "Test"
-
+            // "Reload", doesn't work yet!
+            // "New Hero",
+            // "Edit",
+            // RENAME_TYPE, RENAME_VALUE, REMOVE_VALUE
     };
-    protected boolean skillSelectionListeningThreadRunning;
-    protected boolean classSelectionListeningThreadRunning;
     XmlTransformMenu xmlTransformMenu;
 
     public AV_ButtonPanel() {
@@ -76,38 +67,8 @@ public class AV_ButtonPanel extends G_ButtonPanel {
     }
 
     @Override
-    public int getColumns() {
-        return 2;
-    }
-
-    private void renameType(ObjType type) {
-        if (type == null) {
-            return;
-        }
-
-        String input = ListChooser.chooseEnum(PROPERTY.class, SELECTION_MODE.MULTIPLE);
-
-        if (StringMaster.isEmpty(input)) {
-            return;
-        }
-
-        List<PROPERTY> propList = new ListMaster<>(PROPERTY.class).toList(input);
-
-        String newName = JOptionPane.showInputDialog("Enter new name");
-        if (StringMaster.isEmpty(newName)) {
-            return;
-        }
-        XML_Transformer.renameType(type, newName, propList.toArray(new PROPERTY[propList.size()]));
-    }
-
-    @Override
     public void actionPerformed(final ActionEvent e) {
-        new Thread(new Runnable() {
-            public void run() {
-                handleAction(e);
-            }
-        }, " thread").start();
-
+        new Thread(() -> handleAction(e), e.getActionCommand()+" thread").start();
     }
 
     public void handleAction(ActionEvent e) {
@@ -118,69 +79,26 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 
     public void handleButtonClick(boolean alt, String command) {
         switch (command) {
+            case "Info":
+                //
+            case "Preview":
+            case "Apply":
+            case "Level Up":
+            case "New":
+                {
+                ModelManager.add();
+                break;
+            }
             case "Copy":
                 AV_DataManager.copy(ArcaneVault.getSelectedType());
                 break;
             case "Paste":
                 AV_DataManager.paste(ArcaneVault.getSelectedType());
                 break;
-            case DEFAULTS:
-                ModelManager.addDefaultValues(alt);
-                break;
-            case "Test":
-                if (alt)
-                    DC_SoundMaster.preconstructEffectSounds();
-                else
-                    AnimConstructor.preconstructAllForAV();
-                break;
-            case "Test1":
-
-                ItemGenerator.setGenerationOn(true);
-
-                String playerParty = null;
-                ObjType type = null;
-
-                if (ArcaneVault.getSelectedOBJ_TYPE() == DC_TYPE.PARTY) {
-                    type = ArcaneVault.getSelectedType();
-                    playerParty = type.getProperty(PROPS.MEMBERS);
-                } else if (ArcaneVault.getWorkspaceManager().getActiveWorkspace() != null) {
-                    type = DataManager.getType(ArcaneVault.getWorkspaceManager()
-                     .getActiveWorkspace().getName(), DC_TYPE.PARTY);
-                    playerParty = type.getProperty(PROPS.MEMBERS);
-                    // default
-                    // for selected type(s)
-                    // for workspace
-
-                }
-                String enemyParty = UnitGroupMaster.getRandomReadyGroup(type.getLevel());
-
-                // UnitGroupMaster.readGroupFile(UnitGroupMaster
-                // .getRandomReadyGroup(1));
-
-//				if (FAST_DC.isRunning()) {
-//					FAST_DC.getGameLauncher().ENEMY_PARTY = enemyParty;
-//					FAST_DC.getGameLauncher().PLAYER_PARTY = playerParty;
-//					FAST_DC.getGameLauncher().initData();
-//					DebugMaster.setAltMode(true);
-//					DC_Game.game.getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.RESTART);
-//
-//					return;
-//				}
-//
-//				ItemGenerator.init();
-//				String[] args = new String[] { FAST_DC.PRESET_ARG, playerParty, enemyParty };
-//				FAST_DC.main(args);
-                break;
             case "Add WS":
                 ArcaneVault.getWorkspaceManager().newWorkspaceForParty();
                 break;
             case "Add Tab": {
-                // boolean micro = true;
-                // List<OBJ_TYPE> types = new ArrayList<>();
-                // if (micro){
-                // types = new ArrayList<>(Arrays.asList( OBJ_TYPES.values()));
-                // }
-                // types.removeAll( XML_Reader.getXmlMap().keySet());
                 Class<?> ENUM_CLASS = DC_TYPE.class;
                 String toAdd = ListChooser.chooseEnum(ENUM_CLASS,
                  SELECTION_MODE.MULTIPLE);
@@ -192,16 +110,6 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 break;
             }
 
-            case "Edit": {
-//                if (ArcaneVault.getSelectedType() != null)
-                MapEditor.launch( );
-//				if (ArcaneVault.getSelectedOBJ_TYPE() == MACRO_OBJ_TYPES.CAMPAIGN) {
-//					if (ArcaneVault.getSelectedType() != null)
-//						WorldEditor.editCampaign(ArcaneVault.getSelectedType());
-//				} else
-//					WorldEditor.editDefaultCampaign(); // ?
-                break;
-            }
             case "Clone": {
                 final boolean alt_ = alt;
                 new Thread(new Runnable() {
@@ -253,7 +161,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 break;
             }
             case RENAME_TYPE: {
-                type = DataManager.getType(JOptionPane.showInputDialog("Enter type name"));
+                ObjType type = DataManager.getType(JOptionPane.showInputDialog("Enter type name"));
                 renameType(type);
                 break;
             }
@@ -262,31 +170,16 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 break;
 
             }
-            case RENAME_VALUE: {
+            case DEFAULTS:
+                ModelManager.addDefaultValues(alt);
                 break;
-            }
-            case REMOVE_VALUE: {
-                String values = JOptionPane.showInputDialog("Enter value names");
-                if (values == null) {
-                    values = (ListChooser.chooseEnum(PARAMETER.class, PROPERTY.class));
-                }
-                if (values == null) {
-                    break;
-                }
-                String input = ListChooser.chooseEnum(DC_TYPE.class);
-                if (input == null) {
-                    break;
-                }
-                for (String typeName : ContainerUtils.open(input)) {
-                    DC_TYPE TYPE = DC_TYPE.getType(typeName);
-                    for (String valName : ContainerUtils.open(values)) {
-                        VALUE val = ContentValsManager.getValue(valName);
-                        boolean emptyOnly = JOptionPane.showConfirmDialog(null, "Empty only?") == JOptionPane.YES_OPTION;
-                        XML_Transformer.removeValue(val, XML_Reader.getFile(TYPE), true, emptyOnly);
-                    }
-                }
+            case "Test":
+                if (alt)
+                    DC_SoundMaster.preconstructEffectSounds();
+                else
+                    AnimConstructor.preconstructAllForAV();
                 break;
-            }
+
             case "Transform": {
                 if (xmlTransformMenu == null) {
                     xmlTransformMenu = new XmlTransformMenu();
@@ -310,15 +203,6 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 }
                 break;
             }
-            case "New Hero": {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        CharacterCreator.addNewHero();
-                    }
-                });
-                break;
-            }
             case "Remove": {
                 ModelManager.remove();
                 break;
@@ -331,10 +215,6 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                         TableMouseListener.configureEditors();
                     }
                 });
-            }
-            case "Add": {
-                ModelManager.add();
-                break;
             }
             case "Save": {
                 ModelManager.save();
@@ -403,6 +283,30 @@ public class AV_ButtonPanel extends G_ButtonPanel {
     public boolean isInitialized() {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    @Override
+    public int getColumns() {
+        return 2;
+    }
+
+    private void renameType(ObjType type) {
+        if (type == null) {
+            return;
+        }
+        String input = ListChooser.chooseEnum(PROPERTY.class, SELECTION_MODE.MULTIPLE);
+
+        if (StringMaster.isEmpty(input)) {
+            return;
+        }
+
+        List<PROPERTY> propList = new ListMaster<>(PROPERTY.class).toList(input);
+
+        String newName = JOptionPane.showInputDialog("Enter new name");
+        if (StringMaster.isEmpty(newName)) {
+            return;
+        }
+        XML_Transformer.renameType(type, newName, propList.toArray(new PROPERTY[propList.size()]));
     }
 
 }

@@ -17,7 +17,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SCRIPT> {
     public boolean interrupted;
     List<Pair<SCRIPT, String>> actions = new ArrayList<>();
     MetaGameMaster master;
-    private String scriptText;
+    private final String scriptText;
     private boolean executed;
     private boolean executing;
 
@@ -83,9 +83,10 @@ public class SpeechScript extends DataUnit<SpeechScript.SCRIPT> {
     }
 
     @Override
-    public void setValue(SCRIPT name, String value) {
+    public DataUnit<SCRIPT> setValue(SCRIPT name, String value) {
         actions.add(new ImmutablePair<>(name, value));
         values.put(name.toString(), value);
+        return null;
     }
 
     @Override
@@ -94,14 +95,15 @@ public class SpeechScript extends DataUnit<SpeechScript.SCRIPT> {
     }
 
     @Override
-    public void setValue(String name, String value) {
+    public DataUnit<SCRIPT> setValue(String name, String value) {
         SCRIPT c = getEnumConst(StringMaster.toEnumFormat(name.trim()));
         if (c == null) {
             main.system.auxiliary.log.LogMaster.dev("No script command for: " + name);
-            return;
+            return null;
         }
         setValue(c, value);
 //        setValue(new EnumMaster<SPEECH_ACTION>().retrieveEnumConst(SPEECH_ACTION.class, name), value);
+        return null;
     }
 
     public enum SCRIPT {
