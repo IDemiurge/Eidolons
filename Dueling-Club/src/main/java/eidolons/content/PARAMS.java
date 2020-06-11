@@ -798,7 +798,10 @@ could have other params - sf discounts,
     DEBT_MOD(null, "", false, 0, "chars", "units"),
     INTEREST_MOD(null, "", false, 0, "chars", "units"),
 
-    SUMMON_ATB(null, "", false, 0);
+    SUMMON_ATB(null, "", false, 0)
+    , GRID_WIDTH(null, "", false, 1, "boss")
+    , GRID_HEIGHT(null, "", false, 1, "boss")
+    ;
 
     static {
         COUNTER_MOD.addSpecialDefault(DC_TYPE.ACTIONS, 75);
@@ -959,7 +962,7 @@ could have other params - sf discounts,
     boolean writeToType;
     Color color;
     INPUT_REQ inputReq;
-    private String name;
+    private final String name;
     private String shortName;
     private String descr;
     private String entityType;

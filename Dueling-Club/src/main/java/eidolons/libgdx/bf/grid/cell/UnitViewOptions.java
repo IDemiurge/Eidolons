@@ -9,6 +9,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
@@ -38,6 +39,10 @@ public class UnitViewOptions {
     private BattleFieldObject obj;
     private CONTENT_CONSTS.FLIP flip;
 
+    public void setPortraitPath(String portraitPath) {
+        this.portraitPath = portraitPath;
+        portraitTexture = TextureCache.getOrCreateR(portraitPath);
+    }
 
     public UnitViewOptions() {
 

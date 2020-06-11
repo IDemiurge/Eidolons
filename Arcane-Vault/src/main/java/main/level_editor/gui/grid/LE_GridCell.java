@@ -30,6 +30,7 @@ public class LE_GridCell extends GridCellContainer {
 
     LabelX scriptsLabel;
     LabelX aiLabel;
+    LabelX decorLabel;
     public static LE_GridCell hoveredCell;
 
     public LE_GridCell(TextureRegion backTexture, int gridX, int gridY) {
@@ -38,8 +39,11 @@ public class LE_GridCell extends GridCellContainer {
                 12, GdxColorMaster.PURPLE)));
         addActor(aiLabel = new LabelX("", StyleHolder.getSizedColoredLabelStyle(FontMaster.FONT.NYALA,
                 12, GdxColorMaster.CYAN)));
+        addActor(decorLabel = new LabelX("", StyleHolder.getSizedColoredLabelStyle(FontMaster.FONT.NYALA,
+                12, GdxColorMaster.RED)));
         scriptsLabel.setTouchable(Touchable.disabled);
         aiLabel.setTouchable(Touchable.disabled);
+        decorLabel.setTouchable(Touchable.disabled);
 
         addListener(new LE_GridCellHighlighter(this).getController());
     }
@@ -47,32 +51,33 @@ public class LE_GridCell extends GridCellContainer {
     protected boolean isGraveyardOn() {
         return false;
     }
+
     @Override
     public void setHovered(boolean hovered) {
         super.setHovered(hovered);
-        if (hovered){
+        if (hovered) {
             hoveredCell = this;
         }
     }
 
     @Override
     protected boolean isCoordinatesShown() {
-        return
-                getDisplayMode().isShowCoordinates();
+        return getDisplayMode().isShowCoordinates();
     }
 
     private LE_DisplayMode getDisplayMode() {
         return LevelEditor.getModel().getDisplayMode();
     }
 
-    public void displayModeUpdated() {
+    public void displayModeUpdated(LE_DisplayMode mode) {
         for (Color color : colorOverlays.keySet()) {
             //check?
-            if (getDisplayMode().isShowAllColors())
+            if (mode.isShowAllColors())
                 colorOverlays.get(color).fadeIn();
             else
                 colorOverlays.get(color).fadeOut();
         }
+
     }
 
     @Override
@@ -83,6 +88,7 @@ public class LE_GridCell extends GridCellContainer {
         scriptsLabel.setY(GdxMaster.getTopY(scriptsLabel) - 15);
         aiLabel.setVisible(getDisplayMode().isShowMetaAi());
         scriptsLabel.setVisible(getDisplayMode().isShowScripts());
+        decorLabel.setVisible(getDisplayMode().isShowDecorText());
         aiLabel.setZIndex(Integer.MAX_VALUE);
         scriptsLabel.setZIndex(Integer.MAX_VALUE);
     }
@@ -93,6 +99,10 @@ public class LE_GridCell extends GridCellContainer {
 
     public LabelX getAiLabel() {
         return aiLabel;
+    }
+
+    public LabelX getDecorLabel() {
+        return decorLabel;
     }
 
     @Override
@@ -128,7 +138,7 @@ public class LE_GridCell extends GridCellContainer {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LogMaster.log(1,x+" " +y);
+                LogMaster.log(1, x + " " + y);
                 InputEvent e = new InputEvent();
                 e.setButton(event.getButton());
                 Eidolons.onNonGdxThread(() ->
@@ -139,8 +149,8 @@ public class LE_GridCell extends GridCellContainer {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchDown(event, x, y, pointer, button);
-//                if (button==0)
-//                    return false;
+                //                if (button==0)
+                //                    return false;
                 return true;
             }
         };

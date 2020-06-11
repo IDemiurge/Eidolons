@@ -35,8 +35,7 @@ import main.system.launch.CoreEngine;
 /**
  * Created by JustMe on 5/7/2017.
  * <p>
- * Does everything TO the *DC_Game
- * It kind of "owns" the Game
+ * Does everything TO the *DC_Game It kind of "owns" the Game
  */
 public abstract class MetaGameMaster<E extends MetaGame> {
 
@@ -325,12 +324,25 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     public Floor getFloor() {
         return getMissionMaster().getFloor();
     }
+
     BossManager bossManager;
+
     public void initBossModule(Module module) {
         bossManager = createBossManager(module);
     }
 
     protected BossManager createBossManager(Module module) {
-        return new DemoBossManager();
+        return new DemoBossManager(getGame());
+    }
+
+    public void loadingDone() {
+        if (bossManager != null) {
+            try {
+                bossManager.init();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                return;
+            }
+        }
     }
 }

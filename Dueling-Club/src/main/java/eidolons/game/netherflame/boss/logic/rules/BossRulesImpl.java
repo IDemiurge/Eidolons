@@ -11,7 +11,9 @@ public class BossRulesImpl <T extends BossModel> extends BossHandler<T> implemen
     }
     @Override
     public void handleEvent(Event e) {
-
+/*
+custom rules for extra attacks
+ */
     }
 
     @Override

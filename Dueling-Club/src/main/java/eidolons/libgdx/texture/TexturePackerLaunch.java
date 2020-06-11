@@ -40,7 +40,7 @@ public class TexturePackerLaunch {
     public static final String TEST_WEAPONS_OUTPUT =
             "Y:\\[Eidolons demos]\\weapons3d lite//";
 
-    static String packs[] = {
+    static String[] packs = {
             //     "long swords",
             "hammers",
             "great_swords",
@@ -57,21 +57,21 @@ public class TexturePackerLaunch {
             //     "pollaxe",
     };
 
-    static String mainFolders[] = {
+    static String[] mainFolders = {
 //            "", //root
             //     "gen",
             "ui",
 //                 "main",
     };
 
-    static String mainFoldersExceptions[] = {
+    static String[] mainFoldersExceptions = {
             "main/sprites",
     };
 
-    static String cullFolders[] = {
+    static String[] cullFolders = {
             "Y:/[Eidolons demos]/weapons3d workspace/",
     };
-    private static float cullPercentage = 0.33f;
+    private static final float cullPercentage = 0.33f;
     private static Settings settings;
 
     public static void main(String[] args) {
@@ -166,8 +166,8 @@ public class TexturePackerLaunch {
         settings.format = Format.RGBA8888;
         settings.jpegQuality = 0.85f;
 
-        settings.maxHeight = (int) Math.pow(2, 13);
-        settings.maxWidth = (int) Math.pow(2, 13);
+        settings.maxHeight = (int) Math.pow(2, 12);
+        settings.maxWidth = (int) Math.pow(2, 12);
         return settings;
     }
 
@@ -192,8 +192,8 @@ public class TexturePackerLaunch {
 //            settings.scale = new float[]{f};
 //        }
 
-        settings.maxHeight = (int) Math.pow(2, 13);
-        settings.maxWidth = (int) Math.pow(2, 13);
+        settings.maxHeight = (int) Math.pow(2, 12);
+        settings.maxWidth = (int) Math.pow(2, 12);
 //        settings.maxHeight = (int) Math.pow(2, 13);
 //        settings.maxWidth = (int) Math.pow(2, 13);
         settings.atlasExtension = ATLAS_EXTENSION;
@@ -202,7 +202,7 @@ public class TexturePackerLaunch {
         settings.stripWhitespaceX = TRIM;
         settings.square = false;
         settings.format = Format.RGBA8888;
-        settings.limitMemory = false;
+        // settings.limitMemory = false;
         settings.jpegQuality = 0.7f;
 
         if (DialogMaster.confirm("Jpg?"))
@@ -243,6 +243,34 @@ public class TexturePackerLaunch {
         }
 
     }
+    private static void customizeSettings(Settings settings) {
+        boolean bool = DialogMaster.confirm("Half scale?");
+        if (bool) {
+            settings.scale=new float[]{
+                    0.5f
+            };
+        }
+        bool = DialogMaster.confirm("Low quality?");
+        if (bool) {
+            settings.format=Format.RGBA4444;
+        }
+
+
+    }
+
+    public static void pack(String inputDir, String outputDir, String packFileName) {
+        Settings settings = getSettings();
+
+        if (DialogMaster.confirm("Customize Settings?")) {
+            customizeSettings(settings);
+        } else {
+            settings =
+                    DialogMaster.confirm("Best settings?") ? getBestSettings() :
+                            DialogMaster.confirm("Worst settings?") ? getWorstSettings() :
+                                    getSettings();
+        }
+        TexturePacker.process(settings, inputDir, outputDir, packFileName);
+    }
 
     private static void customPack() {
         String inputDir = DialogMaster.inputText("Folder path to pack?", PathFinder.getSpritesPath());
@@ -263,13 +291,6 @@ public class TexturePackerLaunch {
         pack(inputDir, outputDir, packFileName); //+"/"+suffix
     }
 
-
-    public static void pack(String inputDir, String outputDir, String packFileName) {
-        Settings settings = DialogMaster.confirm("Best settings?") ? getBestSettings() :
-                DialogMaster.confirm("Worst settings?") ? getWorstSettings() :
-                        getSettings();
-        TexturePacker.process(settings, inputDir, outputDir, packFileName);
-    }
 
     public static void pack(String inputDir, String outputDir, String packFileName, Settings settings) {
         TexturePacker.process(settings, inputDir, outputDir, packFileName);

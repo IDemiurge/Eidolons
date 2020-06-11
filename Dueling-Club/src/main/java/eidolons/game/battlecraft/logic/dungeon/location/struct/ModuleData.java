@@ -22,7 +22,6 @@ public class ModuleData extends StructureData<MODULE_VALUE, Module> {
         list.remove(MODULE_VALUE.assets.toString());
         list.remove(MODULE_VALUE.id.toString());
         list.remove(MODULE_VALUE.illumination.toString());
-        list.remove(MODULE_VALUE.type.toString());
         list.remove(MODULE_VALUE.tile_map.toString());
         list.remove(MODULE_VALUE.width_buffer.toString());
         list.remove(MODULE_VALUE.height_buffer.toString());

@@ -5,6 +5,7 @@ import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.datasource.GraphicData.GRAPHIC_VALUE;
 import eidolons.libgdx.bf.decor.DecorData;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Manager;
@@ -13,7 +14,6 @@ import main.level_editor.backend.metadata.script.CellDataHandler;
 import main.level_editor.gui.dialog.struct.DecorEditor;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.threading.WaitMaster;
 
@@ -22,7 +22,7 @@ import java.util.*;
 
 public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDecorHandler {
 
-  public static Map<DECOR, List<GraphicData>> decorPalette = new LinkedHashMap<>();
+    public static Map<DECOR, List<GraphicData>> decorPalette = new LinkedHashMap<>();
 
     @Override
     public void afterLoaded() {
@@ -32,20 +32,28 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
         // }
         for (DECOR value : DECOR.values()) {
             List<GraphicData> items = new ArrayList<>();
+            List<File> files = null;
             switch (value) {
                 case texture:
-                    List<File> files = FileManager.getFilesFromDirectory(
+                    files = FileManager.getFilesFromDirectory(
                             PathFinder.getTexturesPath(), false, true);
                     items.addAll(createDecorList(FileManager.getFilePaths(files), false));
                     break;
                 case image:
                     // items.addAll( createDecorList(Images.getFieldsAsPaths(), false));
                     break;
+                case boss:
+                    files = FileManager.getSpriteFilesFromDirectory("boss");
                 case sprites:
-                    files = getFilesFromDirectory("cells");
-                    files.addAll(getFilesFromDirectory("unit"));
-                    files.removeIf(file-> !StringMaster.getFormat(file.getName()).toLowerCase().contains("txt"));
+                    if (files == null) {
+                        files = FileManager.getSpriteFilesFromDirectory("cells");
+                        files.addAll(FileManager.getSpriteFilesFromDirectory("unit"));
+                    }
                     items.addAll(createDecorList(FileManager.getFilePaths(files), true));
+                    break;
+                case vfx:
+                    ////TODO need append-decor mode!
+                    items.addAll(createVfxData());
                     break;
             }
             decorPalette.put(value, items); //gonna be used by script-helper too
@@ -53,10 +61,14 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
 
     }
 
-    private List<File> getFilesFromDirectory(String suffix) {
-        return FileManager.getFilesFromDirectory(
-                PathFinder.getImagePath()+
-                PathFinder.getSpritesPath()+suffix, false, true);
+    private Collection<GraphicData> createVfxData() {
+        Collection<GraphicData> list = new ArrayList<>();
+        for (GenericEnums.VFX vfx : GenericEnums.VFX.values()) {
+            GraphicData data = new GraphicData("");
+            data.setValue(GRAPHIC_VALUE.vfx, vfx);
+            list.add(data);
+        }
+        return list;
     }
 
     private List<GraphicData> createDecorList(List<String> fileNames, boolean sprite) {
@@ -65,7 +77,7 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
             String path = GdxImageMaster.cropImagePath(file);
             //just use name?
             GraphicData data = new GraphicData("");
-            data.setValue(sprite? GRAPHIC_VALUE.sprite : GRAPHIC_VALUE.texture, path);
+            data.setValue(sprite ? GRAPHIC_VALUE.sprite : GRAPHIC_VALUE.texture, path);
             items.add(data);
             items.addAll(
                     createTransformed(data, sprite));
@@ -87,7 +99,7 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
         texture,
         image,
         sprites,
-        vfx,
+        vfx, boss,
     }
 
     public LE_DecorHandler(LE_Manager manager) {

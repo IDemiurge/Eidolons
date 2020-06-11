@@ -69,11 +69,19 @@ public class ValuePages {
     public static final VALUE[] AV_TRAILING_PAGE = {G_PROPS.DESCRIPTION, G_PROPS.LORE,
 
     };
+    public static final PARAMETER[] BOSS_PARAMETERS = {
+            GRID_WIDTH,  GRID_HEIGHT,
+            TOUGHNESS, ENDURANCE,
+            ARMOR, ATTACK, DEFENSE, INITIATIVE, N_OF_COUNTERS,
+            ATB_START_MOD, ATB_START_PRESET,
+            BASE_DAMAGE,
+            CONCEALMENT, DETECTION,SIGHT_RANGE,
+            ENDURANCE_REGEN,
+            WEIGHT,
+    };
     public static final PARAMETER[] UNIT_PARAMETERS = {
-     // ACTIONS
      TOUGHNESS, ENDURANCE, STAMINA, ESSENCE, FOCUS,
      MORALE,
-
      DAMAGE, OFF_HAND_DAMAGE,
 
      ARMOR, ATTACK, DEFENSE, INITIATIVE, N_OF_COUNTERS,
@@ -135,6 +143,22 @@ public class ValuePages {
      PROPS.PERKS,
     };
     // INFO LEVELS
+    public static final VALUE[] BOSS_VALUES={
+            G_PROPS.BOSS_TYPE,
+            G_PROPS.BOSS_GROUP,
+            G_PROPS.ACTIVES,
+            G_PROPS.STANDARD_PASSIVES,
+            PROPS.VERBATIM_SPELLS,
+            G_PROPS.ARMOR_ITEM,
+            G_PROPS.MAIN_HAND_ITEM,
+            G_PROPS.OFF_HAND_ITEM,
+             PROPS.NATURAL_WEAPON,
+             PROPS.OFFHAND_NATURAL_WEAPON,
+
+            //width / height?
+            //emblem
+    };
+
     public static final VALUE[] UNIT_PROPERTIES = {G_PROPS.MAIN_HAND_ITEM, G_PROPS.OFF_HAND_ITEM,
             G_PROPS.RESERVE_MAIN_HAND_ITEM, G_PROPS.RESERVE_OFF_HAND_ITEM,
      G_PROPS.ARMOR_ITEM, PROPS.INVENTORY, PROPS.QUICK_ITEMS, PROPS.JEWELRY,
@@ -616,7 +640,15 @@ public class ValuePages {
      ASTRAL_RESISTANCES, DESCRIPTION};
     public static final VALUE[][] ALT_BF_OBJ_PAGES = {BF_OBJ_HEADER, NATURAL_RESISTANCES,
      ASTRAL_RESISTANCES,}; // DIFFERENT
-    public static final VALUE[][] UNIT_PAGES = {UNIT_PARAMETERS, UNIT_DYNAMIC_PARAMETERS,
+
+    public static final VALUE[][] BOSS_PAGES = {
+            BOSS_VALUES,
+            BOSS_PARAMETERS,
+            BASE_ATTRIBUTES,
+            RESISTANCES,
+    };
+
+    public static final VALUE[][]  UNIT_PAGES = {UNIT_PARAMETERS, UNIT_DYNAMIC_PARAMETERS,
      UNIT_PROPERTIES, ATTRIBUTES, BASE_ATTRIBUTES, MASTERIES, RESISTANCES,
      UNIT_LEVEL_PARAMETERS, LEVEL_PARAMETERS };
     public static final VALUE[][] CHAR_PAGES = {UNIT_PARAMETERS, UNIT_DYNAMIC_PARAMETERS,

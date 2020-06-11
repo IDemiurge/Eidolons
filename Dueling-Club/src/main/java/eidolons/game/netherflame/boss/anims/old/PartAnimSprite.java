@@ -1,4 +1,4 @@
-package eidolons.game.netherflame.boss.anims;
+package eidolons.game.netherflame.boss.anims.old;
 
 import eidolons.libgdx.anims.sprite.SpriteX;
 import main.content.enums.GenericEnums;

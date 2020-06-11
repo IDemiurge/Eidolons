@@ -1,4 +1,4 @@
-package eidolons.game.netherflame.boss.anims;
+package eidolons.game.netherflame.boss.anims.old;
 
 public class PartAnim {
     BossAnimData data;

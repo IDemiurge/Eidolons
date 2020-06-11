@@ -24,7 +24,7 @@ public class GenericEnums {
         ;
 
         private int code;
-        private String crystal;
+        private final String crystal;
         private String mastery;
         private String gateway;
 
@@ -172,8 +172,8 @@ public class GenericEnums {
 
 //        public int glory_coef;
 
-        private int attributePercentage;
-        private int masteryPercentage;
+        private final int attributePercentage;
+        private final int masteryPercentage;
         private boolean enemySneakAttacksOn;
         private int powerPercentage=100;
 
@@ -215,7 +215,7 @@ public class GenericEnums {
 
     public enum RESIST_GRADE {
         Impregnable(200), Resistant(150), Normal(100), Vulnerable(50), Ineffective(0);
-        private int percent;
+        private final int percent;
 
         RESIST_GRADE(int percent) {
             this.percent = percent;
@@ -250,7 +250,7 @@ public class GenericEnums {
         DISARM_TRAP("Disarm Trap"),
         FORCE("Force"), HEARING("Hearing");
         boolean logToTop;
-        private String name;
+        private final String name;
 
         ROLL_TYPES(String s, boolean logToTop) {
             this(s);
@@ -665,6 +665,7 @@ public class GenericEnums {
     }
 
     public enum BLENDING {
+        NORMAL(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA),
         INVERT_SCREEN(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA),
         PREMULTIPLIED_ALPHA(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA),
         SCREEN(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),

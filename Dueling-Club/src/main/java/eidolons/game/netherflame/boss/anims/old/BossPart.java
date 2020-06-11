@@ -1,10 +1,9 @@
-package eidolons.game.netherflame.boss.anims.view;
+package eidolons.game.netherflame.boss.anims.old;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.game.netherflame.boss.BOSS_PART;
 import eidolons.game.netherflame.boss.anims.BossAnimHandler;
 import eidolons.game.netherflame.boss.anims.BossAnims;
-import eidolons.game.netherflame.boss.anims.PartAnim;
 import eidolons.libgdx.gui.generic.GroupX;
 
 import java.util.Queue;

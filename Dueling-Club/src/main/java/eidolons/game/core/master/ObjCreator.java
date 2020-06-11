@@ -72,7 +72,8 @@ public class ObjCreator extends Master {
                 obj = new Unit(type, x, y, owner, getGame(), ref);
         }
         //if (WaitMaster.getCompleteOperations().contains(WAIT_OPERATIONS.DUNGEON_SCREEN_READY))
-        GuiEventManager.trigger(GuiEventType.UNIT_CREATED, obj);
+        if (!EntityCheckMaster.isBoss(type))
+            GuiEventManager.trigger(GuiEventType.UNIT_CREATED, obj);
         game.getState().addObject(obj);
         if (game.isStarted()) {
             game.getCellByCoordinate(Coordinates.get(x, y)).setObjectsModified(true);

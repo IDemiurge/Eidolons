@@ -14,7 +14,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObje
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.boss.anims.view.BossView;
+import eidolons.game.netherflame.boss.anims.old.BossView;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;

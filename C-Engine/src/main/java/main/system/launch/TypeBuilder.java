@@ -171,7 +171,7 @@ public class TypeBuilder {
 
     }
 
-    private static TypeInitializer getTypeInitializer() {
+    public static TypeInitializer getTypeInitializer() {
         return typeInitializer;
     }
 

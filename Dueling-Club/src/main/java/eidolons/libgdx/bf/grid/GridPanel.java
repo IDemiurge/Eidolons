@@ -53,6 +53,7 @@ import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.data.ability.construct.VariableManager;
+import main.entity.EntityCheckMaster;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -107,7 +108,7 @@ public abstract class GridPanel extends Group {
     protected PlatformHandler platformHandler;
     protected List<PlatformCell> platforms = new LinkedList<>();
     protected Set<PlatformDecor> platformDecor = new LinkedHashSet();
-    private final Map<DECOR_LEVEL, CellDecorLayer> decorMap = new HashMap<>();
+    protected final Map<DECOR_LEVEL, CellDecorLayer> decorMap = new HashMap<>();
 
     public GridPanel(int cols, int rows, int moduleCols, int moduleRows) {
         this.square = rows * cols;
@@ -504,6 +505,9 @@ platforms...
                 continue;
             }
             for (BattleFieldObject object : map.get(coordinates)) {
+                if (EntityCheckMaster.isBoss(object.getType())) {
+                    continue;
+                }
                 if (!object.isOverlaying()) {
                     if (viewMap.get(object) != null) {
                         return;
@@ -814,17 +818,7 @@ platforms...
             restoreVoid(c.x, c.y, true);
         });
         GuiEventManager.bind(removePrevious, CELL_DECOR_RESET, obj -> {
-            List list = (List) obj.get();
-            Coordinates c = (Coordinates) list.get(0);
-            DecorData data = (DecorData) list.get(1);
-            for (DECOR_LEVEL level : decorMap.keySet()) {
-                CellDecorLayer cellDecorLayer = decorMap.get(level);
-                if (data == null) {
-                    cellDecorLayer.remove(c);
-                } else
-                    cellDecorLayer.add(c, data.getGraphicData(level));
-            }
-            resetZIndices();
+            createDecor(obj.get());
         });
 
         GuiEventManager.bind(removePrevious, CELL_SET_VOID, obj -> {
@@ -1007,6 +1001,19 @@ platforms...
         });
 
 
+    }
+
+    protected void createDecor(Object o) {
+        List list = (List) o;
+        Coordinates c = (Coordinates) list.get(0);
+        DecorData data = (DecorData) list.get(1);
+        for (DECOR_LEVEL level : decorMap.keySet()) {
+            CellDecorLayer cellDecorLayer = decorMap.get(level);
+            if (data == null) {
+                cellDecorLayer.remove(c);
+            } else
+                cellDecorLayer.add(c, data.getGraphicData(level));
+        }
     }
 
     public BaseView getOverlay(Obj object) {

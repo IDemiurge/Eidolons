@@ -16,6 +16,11 @@ public class LE_DisplayMode  implements Serializable {
     boolean showSpace;
 
     boolean showAllColors;
+    boolean showDecorText;
+
+    /*
+    can we just have shadowmap/vfx here same way?
+     */
 
     public void toggleAll(){
         showCoordinates = !showCoordinates;
@@ -24,6 +29,7 @@ public class LE_DisplayMode  implements Serializable {
         showIllumination = !showIllumination;
         showSpace = !showSpace;
         showAllColors = !showAllColors;
+        showDecorText = !showDecorText;
         GuiEventManager.trigger(GuiEventType.LE_DISPLAY_MODE_UPDATE );
     }
     public void onAll(){
@@ -33,6 +39,7 @@ public class LE_DisplayMode  implements Serializable {
         showIllumination = true;
         showSpace = true;
         showAllColors = true;
+        showDecorText = true;
         GuiEventManager.trigger(GuiEventType.LE_DISPLAY_MODE_UPDATE );
     }
     public void offAll(){
@@ -42,7 +49,12 @@ public class LE_DisplayMode  implements Serializable {
         showScripts = false;
         showIllumination = false;
         showSpace = false;
+        showDecorText = false;
         GuiEventManager.trigger(GuiEventType.LE_DISPLAY_MODE_UPDATE );
+    }
+
+    public boolean isShowDecorText() {
+        return showDecorText;
     }
 
     public boolean isShowStacks() {
@@ -110,6 +122,9 @@ public class LE_DisplayMode  implements Serializable {
     }
     public void toggleAi( ) {
         this.showMetaAi = !showMetaAi;
+    }
+    public void toggleDecorText( ) {
+        this.showDecorText = !showDecorText;
     }
     public void toggleScripts( ) {
         this.showScripts = !showScripts;

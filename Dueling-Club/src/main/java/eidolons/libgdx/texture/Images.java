@@ -193,7 +193,9 @@ public static final String SEPARATOR_NARROW = StrPathBuilder.build(
     public static final String PLATFORM_ROCKS= "ui/cells/advanced/platform/visuals/rocks.png";
     public static final String BLOTCH = "ui/INK BLOTCH.png";
     public static final String BLOTCH_INVERT = "ui/INK BLOTCH INVERT.png";
-
+    public static final String RUNE_CIRCLE = "sprites/boss/knight/runes.png";
+    public static final String GLAIVE = "sprites/boss/knight/glaive.png";
+    public static final String ARIUS_ORB = "sprites/boss/knight/stone.png";
 
 
     public static String getSketch(BACKGROUND background) {
@@ -288,7 +290,7 @@ public static final String SEPARATOR_NARROW = StrPathBuilder.build(
         try {
             return (String) Images.class.getDeclaredField(path.toUpperCase().replace(" ", "_")).get(null);
         }  catch (NoSuchFieldException e) {
-            ExceptionMaster.printStackTrace(e);
+            main.system.auxiliary.log.LogMaster.log(1,"No such image field: " +path);
         }catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
         }

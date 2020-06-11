@@ -22,6 +22,7 @@ public class TabbedControlPanel extends TabbedPane implements TabbedPaneListener
     CtrlPalettePanel palettePanel= new CtrlPalettePanel();
     CtrlCustomPanel customPanel = new CtrlCustomPanel();
     CtrlScriptPanel scriptPanel = new CtrlScriptPanel();
+    CtrlDecorPanel decorPanel = new CtrlDecorPanel();
 
     LE_ControlPanel[] panels = {
 //            modulePanel,
@@ -31,7 +32,7 @@ public class TabbedControlPanel extends TabbedPane implements TabbedPaneListener
             funcsPanel,
             scriptPanel,
             // aiPanel,
-            selectionPanel,
+            selectionPanel,decorPanel
     };
 
     public TabbedControlPanel(TablePanelX holder) {
@@ -76,8 +77,8 @@ public class TabbedControlPanel extends TabbedPane implements TabbedPaneListener
 
     public class LE_Tab extends Tab {
 
-        private Table table;
-        private String title;
+        private final Table table;
+        private final String title;
 
         public LE_Tab(Table table, String title) {
             super(false, false);

@@ -12,6 +12,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.texture.TextureCache;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
@@ -41,13 +42,16 @@ last
     ValueContainer selectionInfo = new ValueContainer("", "");
     ValueContainer structInfo = new ValueContainer("", "");
 
-    ValueContainer layerInfo = new ValueContainer("Layer", "");
+    ValueContainer layerInfo = new ValueContainer("Layer: ", "");
+    ValueContainer zoomInfo = new ValueContainer("Zoom: ", "");
 
 
     public LE_StatusBar() {
         super(800, 40);
+        // zoomInfo.addListener()  cycle zoom
         TablePanelX<Actor> table = new TablePanelX<>(190, 40);
         table.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        table.add(zoomInfo).left();
         table.add(layerInfo).left();
         table.add(selectionInfo).left();
         selectionInfo.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
@@ -90,6 +94,7 @@ last
     public void act(float delta) {
         super.act(delta);
         layerInfo.setValueText(LevelEditor.getManager().getLayer().toString());
+        zoomInfo.setValueText(ScreenMaster.getScreen().controller.getZoom()*100+"%");
         if (LE_GridCell.hoveredCell == null) {
             return;
         }

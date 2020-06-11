@@ -18,7 +18,7 @@ public class SimulationManager {
 
     private static final String[] unitTypes = {DC_TYPE.UNITS.getName(),
             DC_TYPE.BF_OBJ.getName(), DC_TYPE.CHARS.getName(),};
-    private static Map<ObjType, Unit> unitMap = new HashMap<>();
+    private static final Map<ObjType, Unit> unitMap = new HashMap<>();
 
     public static void initUnitObj(String name) {
         ObjType type = getUnitType(name);
@@ -48,6 +48,7 @@ public class SimulationManager {
         unit.toBase();
         unit.afterEffects();
         applyEffectForUnit(unit);
+        ArcaneVault.getMainBuilder().getEditViewPanel().resetData(unit.getType());
     }
 
     private static void applyEffectForUnit(Unit unit) {

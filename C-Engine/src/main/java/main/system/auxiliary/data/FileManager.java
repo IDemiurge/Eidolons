@@ -714,4 +714,12 @@ public class FileManager {
     public static String getFileName(String template) {
         return StringMaster.cropFormat(getFile(template).getName());
     }
+
+    public static List<File> getSpriteFilesFromDirectory(String suffix) {
+        List<File> files = getFilesFromDirectory(
+                PathFinder.getImagePath() +
+                        PathFinder.getSpritesPath() + suffix, false, true);
+        files.removeIf(file-> !StringMaster.getFormat(file.getName()).toLowerCase().contains("txt"));
+        return files;
+    }
 }

@@ -4,9 +4,11 @@ import com.badlogic.gdx.graphics.Color;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
+import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
@@ -96,7 +98,17 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
             path = getTexturePath();
         if (path == null) {
             path = getSpritePath();
+            if (!StringMaster.isEmpty(path)) {
             return GdxImageMaster.cropImagePath(AnimMaster3d.getOneFrameImagePath(path));
+            }
+        }
+        if (!getVfxPath().isEmpty()) {
+            String imagePath = EmitterPresetMaster.getInstance().getImagePath(getVfxPath());
+            if (!TextureCache.isImage(imagePath)) {
+                return Images.COLOR_EMBLEM;
+            }
+            return imagePath;
+
         }
         return path;
     }
@@ -124,9 +136,19 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
         return path;
     }
 
+    public String getVfxPath() {
+        String path = getValue(GRAPHIC_VALUE.vfx);
+        if (!path.isEmpty())
+            if (!FileManager.isFile(PathFinder.getImagePath() + path)) {
+                path = GenericEnums.VFX.valueOf(path).getPath();
+            }
+        return path;
+    }
+
+
     public enum GRAPHIC_VALUE {
         x, y, dur, scale, rotation, flipX, flipY, color, alpha,
         texture, alpha_template,
-        blending, sprite, fps, interpolation
+        blending, sprite, fps, vfx, interpolation
     }
 }

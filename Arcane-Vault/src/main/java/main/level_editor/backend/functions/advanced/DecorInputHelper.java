@@ -24,6 +24,7 @@ public class DecorInputHelper extends TextInputPanel {
                     "Rotate45",
                     "Align",
                     "Blending",
+                    "Vfx",
 
             };
 
@@ -44,6 +45,7 @@ public class DecorInputHelper extends TextInputPanel {
                             command(cmd))));
             if (i++>=cmds.length/2){
                 controlPanel.row();
+                i=0;
             }
         }
     }
@@ -60,16 +62,24 @@ public class DecorInputHelper extends TextInputPanel {
                          "true").getData());
                 break;
             case   "Rotate90":
+                int intValue = getData().getIntValue(GraphicData.GRAPHIC_VALUE.rotation);
+
                 break;
             case   "Rotate45":
                 break;
             case   "Align":
+                break;
+            case   "Vfx":
                 break;
             case   "Blending":
                 insert(new GraphicData("").setValue(GraphicData.GRAPHIC_VALUE.blending,
                         LevelEditor.getManager().getEditHandler().chooseEnum(GenericEnums.BLENDING.class)+"").getData());
                 break;
         }
+    }
+
+    private GraphicData getData() {
+        return new GraphicData(tf.getText());
     }
     /*
     keywords with tooltips

@@ -1,4 +1,4 @@
-package eidolons.game.netherflame.boss.anims.view;
+package eidolons.game.netherflame.boss.anims.old;
 
 import eidolons.game.netherflame.boss.BOSS_PART;
 import eidolons.game.netherflame.boss.anims.BossAnimHandler;

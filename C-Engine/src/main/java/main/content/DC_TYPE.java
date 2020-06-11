@@ -17,6 +17,7 @@ import java.util.Map;
 //it's actually ENTITY_TYPE
 
 public enum DC_TYPE implements OBJ_TYPE {
+    BOSS("boss", G_PROPS.BOSS_GROUP, 21, G_PROPS.BOSS_TYPE),
     UNITS("units", G_PROPS.ASPECT, 0, G_PROPS.UNIT_GROUP),
     SPELLS("spells", G_PROPS.ASPECT, 1, G_PROPS.SPELL_GROUP),
     CHARS("chars",
@@ -84,7 +85,7 @@ public enum DC_TYPE implements OBJ_TYPE {
     META("meta", G_PROPS.GROUP, -1, true),
     ALL("all");
 
-    private static Map<String, DC_TYPE> searchMap;
+    private static final Map<String, DC_TYPE> searchMap;
 
     static {
 TERRAIN.omitted=true;

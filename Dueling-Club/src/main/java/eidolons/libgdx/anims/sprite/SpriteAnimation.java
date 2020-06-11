@@ -13,10 +13,8 @@ import eidolons.libgdx.bf.datasource.SpriteData;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.TextureManager;
 import main.content.enums.GenericEnums.BLENDING;
-import main.system.ExceptionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.Arrays;
@@ -184,12 +182,12 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             checkReverse();
             lastCycle = cycles;
             cycles = (int) (stateTime / lifecycleDuration);
-            if (cycles > lastCycle) {
+            if (checkCycle()) {
                 if (onCycle != null) {
                     onCycle.run();
                 }
             }
-            lifecycle = stateTime % lifecycleDuration / lifecycleDuration;
+            lifecycle = stateTime % lifecycleDuration / lifecycleDuration; //% of completion!
 
         }
         updateSpeed();
@@ -208,25 +206,29 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         float alpha = this.alpha;
         drawTextureRegion(batch, currentFrame, alpha, offsetX, offsetY);
 
-        try {
-            for (int i = 1; i < getTrailingFramesNumber(); ) {
-
-                TextureRegion frame = getOffsetFrame(stateTime, -i);
-                if (frame == null) {
-                    LogMaster.log(1, stateTime + " null");
-                    return true;
-                }
-                i++;
-                alpha = 3f / (i * i);
-                if (alpha > 0.1f)
-                    drawTextureRegion(batch, currentFrame, alpha, offsetX, offsetY);
-                else
-                    return true;
-            }
-        } catch (Exception e) {
-            ExceptionMaster.printStackTrace(e);
-        }
+        // try {
+        //     for (int i = 1; i < getTrailingFramesNumber(); ) {
+        //
+        //         TextureRegion frame = getOffsetFrame(stateTime, -i);
+        //         if (frame == null) {
+        //             LogMaster.log(1, stateTime + " null");
+        //             return true;
+        //         }
+        //         i++;
+        //         alpha = 3f / (i * i);
+        //         if (alpha > 0.1f)
+        //             drawTextureRegion(batch, currentFrame, alpha, offsetX, offsetY);
+        //         else
+        //             return true;
+        //     }
+        // } catch (Exception e) {
+        //     ExceptionMaster.printStackTrace(e);
+        // }
         return true;
+    }
+
+    protected boolean checkCycle() {
+        return cycles > lastCycle;
     }
 
     public BLENDING getBlending() {

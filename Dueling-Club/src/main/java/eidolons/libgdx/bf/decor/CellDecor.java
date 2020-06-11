@@ -7,6 +7,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
@@ -24,6 +25,7 @@ public class CellDecor extends GroupX {
     private boolean withinCamera;
     private boolean hidden;
     private ShaderProgram shader;
+    private EmitterActor emitterActor;
 
     public CellDecor(Actor actor, int sightRange, DC_Cell cell, boolean hideOrDarken) {
         addActor(this.actor = actor);
@@ -39,6 +41,13 @@ public class CellDecor extends GroupX {
         if (y1 > actor.getY()) y1 = actor.getY();
     }
 
+    public CellDecor(EmitterActor emitterActor, Actor actor, int defaultSightRange,
+                     DC_Cell cell, boolean sprite) {
+        this(actor, defaultSightRange, cell, sprite);
+        addActor(this.emitterActor = emitterActor);
+        emitterActor.start();
+    }
+
     @Override
     public void act(float delta) {
         if (((hidden || !checkVisible()))) {
@@ -51,6 +60,24 @@ public class CellDecor extends GroupX {
             }
         }
         super.act(delta);
+    }
+
+    @Override
+    public void fadeOut() {
+        super.fadeOut();
+        if (emitterActor != null) {
+            emitterActor.allowFinish();
+        }
+    }
+
+    @Override
+    public void fadeIn() {
+        if (!CoreEngine.isLevelEditor())
+            super.fadeIn();
+        if (emitterActor != null) {
+            emitterActor.reset();
+            emitterActor.start();
+        }
     }
 
     private boolean checkVisible() {

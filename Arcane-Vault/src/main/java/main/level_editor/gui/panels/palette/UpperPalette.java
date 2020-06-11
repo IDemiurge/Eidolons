@@ -31,7 +31,9 @@ public class UpperPalette extends TablePanelX {
         initScrollPane(value);
 
         TablePanelX<Actor> container ;
-        if (value == HybridPalette.PALETTE.blocks) {
+
+        if (isScrolled(value)) {
+        // if (value == HybridPalette.PALETTE.blocks) {
 //            container = new TablePanelX<>(300, 750);
             container = new TablePanelX<>();
             container.add(table).top().left();
@@ -44,7 +46,7 @@ public class UpperPalette extends TablePanelX {
                 StyleHolder.getScrollStyle().vScroll);
 
         Group tableContainer= container;
-        if (value == HybridPalette.PALETTE.blocks) {
+        if (isScrolled(value)) {
             tableContainer = new ScrollPaneX(container);
         }
         add(split = new VisSplitPane(tableContainer, treeScroll, false, style)).fill().size(650, 750);
@@ -54,6 +56,13 @@ public class UpperPalette extends TablePanelX {
         split.setSize(650, 750);
 
         split.setLayoutEnabled(true);
+    }
+
+    private boolean isScrolled(HybridPalette.PALETTE value) {
+        if (value== HybridPalette.PALETTE.blocks) return true;
+        if (value== HybridPalette.PALETTE.custom) return true;
+        if (value== HybridPalette.PALETTE.decor) return true;
+        return value == HybridPalette.PALETTE.obj;
     }
 
     private void initTable(HybridPalette.PALETTE value) {
@@ -87,7 +96,7 @@ public class UpperPalette extends TablePanelX {
             case decor:
                 treeScroll = new ScrollPaneX(tree =new DecorTree((DecorChooser) table)
                 );
-                break;
+                return;
             case custom:
                 treeScroll = new ScrollPaneX(tree =new PaletteTree(null, table)
                          );
@@ -102,6 +111,9 @@ public class UpperPalette extends TablePanelX {
         } else {
 
         }
+        // if (isScrolled(value)) {
+        //     treeScroll = new ScrollPaneX(tree);
+        // }
     }
 
 

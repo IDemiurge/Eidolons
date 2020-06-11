@@ -1,20 +1,35 @@
 package eidolons.game.netherflame.boss.demo;
 
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.netherflame.boss.BossManager;
 import eidolons.game.netherflame.boss.ai.BossAi;
 import eidolons.game.netherflame.boss.anims.BossAnim3dHandler;
+import eidolons.game.netherflame.boss.anims.view.BossViewFactory;
 import eidolons.game.netherflame.boss.demo.anims.DemoAnimHandler3d;
-import eidolons.game.netherflame.boss.demo.logic.DemoBossRules;
-import eidolons.game.netherflame.boss.demo.logic.DemoBossTargeter;
-import eidolons.game.netherflame.boss.demo.logic.DemoBossVision;
-import eidolons.game.netherflame.boss.demo.logic.DemoRoundRules;
+import eidolons.game.netherflame.boss.demo.knight.DemoBossViewFactory;
+import eidolons.game.netherflame.boss.demo.logic.*;
 import eidolons.game.netherflame.boss.demo.logic.ai.DemoBossAi;
+import eidolons.game.netherflame.boss.logic.BossCycle;
 import eidolons.game.netherflame.boss.logic.rules.BossRulesImpl;
 import eidolons.game.netherflame.boss.logic.rules.BossTargeter;
 import eidolons.game.netherflame.boss.logic.rules.BossVision;
 import eidolons.game.netherflame.boss.logic.rules.RoundRules;
 
 public class DemoBossManager extends BossManager<DemoBoss> {
+
+    public DemoBossManager(DC_Game game) {
+        super(game);
+    }
+
+    @Override
+    protected BossViewFactory createFactory() {
+        return new DemoBossViewFactory(this);
+    }
+
+    @Override
+    protected BossCycle createCycle() {
+        return new DemoBossCycle(this);
+    }
 
     @Override
     protected BossVision createVisionRules() {

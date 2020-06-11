@@ -10,7 +10,7 @@ public class BossAnims {
         hit,
         hit_large,
         appear,
-        death, idle,
+        death, idle, attack,
 
 
     }

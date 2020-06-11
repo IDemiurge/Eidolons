@@ -326,11 +326,11 @@ public class FloorLoader extends DungeonHandler {
     protected Map<Coordinates, DecorData> buildDecorMap(String textContent) {
         Map<Coordinates, DecorData> map = new HashMap<>();
         for (String substring : ContainerUtils.openContainer(textContent, StringMaster.VERTICAL_BAR)) {
-            String[] split = substring.split("=");
-            if (split.length < 2)
+            int index = substring.indexOf("=");
+            if (index < 0)
                 continue;
-            Coordinates c = Coordinates.get(split[0]);
-            map.put(c, new DecorData(split[1]));
+            Coordinates c = Coordinates.get(substring.substring(0, index));
+            map.put(c, new DecorData(substring.substring(index+1)));
         }
         return map;
     }

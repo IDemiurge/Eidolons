@@ -591,12 +591,12 @@ public class AnimMaster3d {
     }
 
     private static boolean isUseOneFrameVersions() {
-        return !CellDecorLayer.spriteTest&& !MaskTest.spriteMaskTest&& CoreEngine.TEST_LAUNCH;
+        return !CellDecorLayer.spriteTest && !MaskTest.spriteMaskTest && CoreEngine.TEST_LAUNCH;
     }
 
     public static String getOneFrameImagePath(String path) {
         return PathFinder.getImagePath() + "gen/one_frame/" +
-          StringMaster.cropFormat(path) + " img.png";
+                StringMaster.cropFormat(path) + " img.png";
     }
 
     private static String getOneFramePath(String path) {
@@ -629,8 +629,11 @@ public class AnimMaster3d {
 
     public static TextureAtlas getOrCreateAtlas(String path, boolean cache) {
         if (!new FileHandle(path).exists()) {
-            main.system.auxiliary.log.LogMaster.important("CRITICAL: No atlas for path - " + path);
-            return null;
+            path = GdxImageMaster.appendImagePath(path);
+            if (!new FileHandle(path).exists()) {
+                main.system.auxiliary.log.LogMaster.important("CRITICAL: No atlas for path - " + path);
+                return null;
+            }
         }
         path = TextureCache.formatTexturePath(path);
 

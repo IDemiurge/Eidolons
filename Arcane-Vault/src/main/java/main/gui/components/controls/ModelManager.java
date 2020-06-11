@@ -71,9 +71,9 @@ public class ModelManager {
     private static boolean saving;
     private static boolean autoSaveOff;
     private static int classId;
-    private static List<ObjType> idSet = new ArrayList<>();
+    private static final List<ObjType> idSet = new ArrayList<>();
     private static boolean backupOnLaunch;
-    private static List<String> masteriesToCleanUp = Arrays.asList("Spellcraft",
+    private static final List<String> masteriesToCleanUp = Arrays.asList("Spellcraft",
             "Spellcraft", "Spellcraft", "Affliction");
     private static boolean autoAdjust;
 
@@ -175,15 +175,10 @@ public class ModelManager {
     }
 
     public static void add(final Boolean upgrade) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                addType(upgrade);
-            }
-        });
+        SwingUtilities.invokeLater(() -> addType(upgrade));
     }
 
-    private static void addType(Boolean upgrade_parent_new) {
+    private static void addType(Boolean upgrade) {
         DefaultMutableTreeNode node = ArcaneVault.getMainBuilder().getSelectedNode();
         String selected = ArcaneVault.getMainBuilder().getSelectedTabName();
 
@@ -195,8 +190,12 @@ public class ModelManager {
         if (newName == null) {
             return;
         }
+        if (upgrade == null) {
+            node=null;
+            upgrade = false;
+        }
         ArcaneVault.getMainBuilder().getTreeBuilder().newType(newName, node, selected,
-                upgrade_parent_new);
+                upgrade);
 
         SoundMaster.playStandardSound(STD_SOUNDS.CLOSE);
         ArcaneVault.setDirty(true);

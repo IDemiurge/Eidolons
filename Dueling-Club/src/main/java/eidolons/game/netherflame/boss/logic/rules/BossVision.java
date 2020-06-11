@@ -20,6 +20,6 @@ public class BossVision <T extends BossModel> extends BossHandler<T> {
     }
 
     public boolean isVisible(Unit hero) {
-        return false;
+        return true;
     }
 }

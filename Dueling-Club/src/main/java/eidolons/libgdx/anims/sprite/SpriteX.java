@@ -13,7 +13,7 @@ import eidolons.libgdx.shaders.ShaderMaster;
 import main.content.enums.GenericEnums;
 
 
-public class SpriteX extends GroupX  implements Flippable {
+public class SpriteX extends GroupX implements Flippable {
 
     SpriteAnimation sprite;
     Fluctuating f;
@@ -38,6 +38,14 @@ public class SpriteX extends GroupX  implements Flippable {
         this(path, null, null);
     }
 
+    public SpriteX(SPRITE_TEMPLATE template, GenericEnums.ALPHA_TEMPLATE alphaTemplate, SpriteAnimation sprite
+    ) {
+        this(null, template, alphaTemplate);
+        this.sprite = sprite;
+        initSprite();
+
+    }
+
     public SpriteX(String path, SPRITE_TEMPLATE template, GenericEnums.ALPHA_TEMPLATE alphaTemplate) {
         if (alphaTemplate != null) {
             f = new Fluctuating(alphaTemplate);
@@ -52,11 +60,15 @@ public class SpriteX extends GroupX  implements Flippable {
         }
         if (path != null) {
             sprite = SpriteAnimationFactory.getSpriteAnimation(path, true, false);
-            sprite.setCustomAct(true);
-            sprite.setLoops(0);
-            sprite.setLooping(true);
-            setOrigin(Align.center);
+            initSprite();
         }
+    }
+
+    private void initSprite() {
+        sprite.setCustomAct(true);
+        sprite.setLoops(0);
+        sprite.setLooping(true);
+        setOrigin(Align.center);
     }
 
     @Override
@@ -96,12 +108,11 @@ public class SpriteX extends GroupX  implements Flippable {
             return;
         }
         if (shader != null)
-        if (parentAlpha!= ShaderDrawer.SUPER_DRAW)
-        {
-            ShaderDrawer.drawWithCustomShader(this, batch,
-                    shader, true);
-            return;
-        }
+            if (parentAlpha != ShaderDrawer.SUPER_DRAW) {
+                ShaderDrawer.drawWithCustomShader(this, batch,
+                        shader, true);
+                return;
+            }
 
         super.draw(batch, parentAlpha);
 
@@ -118,12 +129,12 @@ public class SpriteX extends GroupX  implements Flippable {
         sprite.setAlpha(parentAlpha);
 
         done = !sprite.draw(batch);
-//        sprite.setFlipX(true);
-//        debug();
-//        Gdx.gl20.glDisable(GL_BLEND);
-//        Gdx.gl20.glDisable(GL_LINE_SMOOTH);
-//        Gdx.gl20.glDisable(GL_POINT_SMOOTH);
-//        Gdx.gl20.glDisable(GL_POLYGON_SMOOTH);
+        //        sprite.setFlipX(true);
+        //        debug();
+        //        Gdx.gl20.glDisable(GL_BLEND);
+        //        Gdx.gl20.glDisable(GL_LINE_SMOOTH);
+        //        Gdx.gl20.glDisable(GL_POINT_SMOOTH);
+        //        Gdx.gl20.glDisable(GL_POLYGON_SMOOTH);
     }
 
     public boolean draw(Batch batch) {
@@ -184,7 +195,7 @@ public class SpriteX extends GroupX  implements Flippable {
     }
 
     public void setFps(int i) {
-        if (i==0){
+        if (i == 0) {
             return;
         }
         this.fps = i;
@@ -196,6 +207,7 @@ public class SpriteX extends GroupX  implements Flippable {
     public void setFlipX(boolean flipX) {
         this.flipX = flipX;
     }
+
     public void setFlipY(boolean flipY) {
         this.flipY = flipY;
     }
@@ -210,7 +222,7 @@ public class SpriteX extends GroupX  implements Flippable {
 
 
     public enum SPRITE_TEMPLATE {
-//        WITCH_FLAME,
+        //        WITCH_FLAME,
 
         ;
 

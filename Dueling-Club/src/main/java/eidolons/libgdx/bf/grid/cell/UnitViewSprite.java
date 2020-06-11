@@ -3,7 +3,7 @@ package eidolons.libgdx.bf.grid.cell;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import eidolons.game.netherflame.boss.anims.view.SpriteModel;
+import eidolons.game.netherflame.boss.anims.old.SpriteModel;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.GridMaster;

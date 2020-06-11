@@ -5,6 +5,7 @@ import eidolons.game.netherflame.boss.BossHandler;
 import eidolons.game.netherflame.boss.BossManager;
 import eidolons.game.netherflame.boss.demo.DemoBoss;
 import eidolons.game.netherflame.boss.logic.action.BossAction;
+import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import main.elements.conditions.DistanceCondition;
 import main.game.bf.Coordinates;
 
@@ -21,11 +22,11 @@ public class BossTargeter extends BossHandler<DemoBoss> {
         //we could even just switch thru action types and add special conditions that way
         return false;
     }
-    public boolean bossHasCoordinate(Coordinates c){
+    public boolean bossHasCoordinate(Coordinates c, BossUnit bossUnit){
         //dynamic?
         return false;
     }
-    public boolean actionCanTargetBoss(DC_ActiveObj action){
+    public boolean actionCanTargetBoss(DC_ActiveObj action, BossUnit bossUnit){
         // normal targeting check?
         // the trick is that boss being at 10:10 with size 3x3 should be targetable at 7:7 etc
 

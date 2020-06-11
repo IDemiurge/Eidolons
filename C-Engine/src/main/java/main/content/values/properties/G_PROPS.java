@@ -19,14 +19,22 @@ public enum G_PROPS implements PROPERTY {
     TYPE("all", "Type"),
     PARENT_TYPE("hidden", null),
     CLASSIFICATIONS("", true, "units", "chars", "bf obj", "terrain"),
-    // CLASSIFICATION("all", "Classifications"),
+
+    VARIABLES("all", "Variables"), PASSIVES("all", "Passives"),
+    DESCRIPTION("all", "Description"),
+    LORE("all", "Lore"),
+    STD_BOOLS(null, true, "all"),
+    DYNAMIC_BOOLS(null, true, "all"),
 
     HOTKEY("actions", "Hotkey"),
     GROUP("all", "Group"),
     UNIT_GROUP("UNIT_GROUP", false, "units"),
+
+    BOSS_TYPE("UNIT_GROUP", false, "boss"),
+    BOSS_GROUP("UNIT_GROUP", false, "boss"),
+
     GENDER("Gender", false, "chars"),
     ASPECT("Aspect", false, "chars", "units", "spells", "deities"),
-    VARIABLES("all", "Variables"),
     VARIABLE_TYPES("abils", "Variables"),
     KEYS("keys", false, "skills"), // target
     BUFF_TYPE("buffs", "Buff_type"),
@@ -58,12 +66,11 @@ public enum G_PROPS implements PROPERTY {
     ACTIVES("Actives", true, "units", "chars", "items", "actions", "classes", "spells", "weapons", "bf obj", "deities", "skills"),
     CUSTOM_SOUNDSET("Custom Soundset", false, "units", "chars", "actions", "spells", "bf obj", "items"),
 
-    PASSIVES("all", "Passives"),
+
 
     DEITY("Deity", "units", "chars"),
     FLAVOR("Flavor", false, "scenarios", "weapons", "armor", "items", "jewelry", "classes", "skills", "spells"),
-    DESCRIPTION("all", "Description"),
-    LORE("all", "Lore"),
+
     // "chars"
     RANK("Rank", "chars", "classes"),
     RACE("Race", "chars", "units"),
@@ -100,8 +107,6 @@ public enum G_PROPS implements PROPERTY {
 
     SKILL_GROUP("skills", "Skill Type"),
     EMBLEM("EMBLEM", false, "chars", "deities", "factions"),
-    STD_BOOLS(null, true, "all"),
-    DYNAMIC_BOOLS(null, true, "all"),
 
     STANDARD_PASSIVES("Passives", true,"buffs", "units", "chars", "classes", "bf obj", "skills", "weapons", "armor"),
     IMMUNITIES(null, true, "units", "chars", "classes", "bf obj", "skills", "weapons", "armor"),
@@ -164,7 +169,7 @@ public enum G_PROPS implements PROPERTY {
 
     boolean writeToType;
     INPUT_REQ inputReq;
-    private String name;
+    private final String name;
     private String entityType;
     private String defaultValue;
     private boolean lowPriority = false;
@@ -174,7 +179,7 @@ public enum G_PROPS implements PROPERTY {
     private boolean superLowPriority;
     private boolean highPriority;
     private String shortName;
-    private String fullName;
+    private final String fullName;
     private Map<OBJ_TYPE, Object> defaultValuesMap;
     private String iconPath;
 

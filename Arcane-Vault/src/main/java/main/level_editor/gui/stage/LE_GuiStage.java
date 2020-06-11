@@ -215,18 +215,20 @@ public class LE_GuiStage extends GenericGuiStage {
     }
 
     public void textInput(boolean script, Input.TextInputListener textInputListener, String title, String text, String hint) {
-        if (!script) {
-            super.textInput(script, textInputListener, title, text, hint);
-            return;
-        }
-        if (getDialog() != null) {
+        if (script) {
+            textInputPanel = new ScriptInputHelper(LevelEditor.getManager(),
+                    title, text, hint, textInputListener);
+        } else if (getDialog() != null) {
             if (getDialog() == decorEditor) {
                 textInputPanel = new DecorInputHelper(LevelEditor.getManager(),
                         title, text, hint, textInputListener);
             }
-        } else
-            textInputPanel = new ScriptInputHelper(LevelEditor.getManager(),
-                    title, text, hint, textInputListener);
+        }
+        if (textInputPanel == null)
+        {
+            super.textInput(script, textInputListener, title, text, hint);
+            return ;
+        }
         addActor(textInputPanel);
         textInputPanel.setPosition(GdxMaster.centerWidth(textInputPanel),
                 GdxMaster.centerHeight(textInputPanel));

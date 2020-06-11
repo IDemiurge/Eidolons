@@ -66,17 +66,13 @@ public class ModuleLoader extends DungeonHandler {
                 .getCurrent();
         loading = module;
         // checkBossModuleInit(module);
-        if (module.getData().getValue(LevelStructure.MODULE_VALUE.type).equalsIgnoreCase("boss")) {
-            EidolonsGame.BOSS_FIGHT=true;
-            getMetaMaster().initBossModule(module);
-            // GuiEventManager.trigger(GuiEventType.LOAD_SCOPE, );
-        }
+
         initLogicalGrid(module);
-//        freeResources();
-//        initTransitFx();
-//        showLoadScreen();
-//        initMusic();
-//        loadAssets(module);
+        //        freeResources();
+        //        initTransitFx();
+        //        showLoadScreen();
+        //        initMusic();
+        //        loadAssets(module);
         adjustTransitHero(module);
         if (module.isFirstInit()) {
             module.initBorderObjects();
@@ -105,10 +101,20 @@ public class ModuleLoader extends DungeonHandler {
         if (!CoreEngine.isLevelEditor()) {
             spawnEncounters(module);
         }
+        if (module.getData().getValue(LevelStructure.MODULE_VALUE.type).equalsIgnoreCase("boss")) {
+            EidolonsGame.BOSS_FIGHT = true;
+            try {
+                getMetaMaster().initBossModule(module);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                return ;
+            }
+            // GuiEventManager.trigger(GuiEventType.LOAD_SCOPE, );
+        }
         //TODO
-//        PositionMaster.initDistancesCache(loading.getId(),
-//                getModule().getEffectiveWidth(),
-//                getModule().getEffectiveHeight());
+        //        PositionMaster.initDistancesCache(loading.getId(),
+        //                getModule().getEffectiveWidth(),
+        //                getModule().getEffectiveHeight());
     }
 
     private void spawnEncounters(Module module) {
@@ -124,7 +130,7 @@ public class ModuleLoader extends DungeonHandler {
     private void loadAssets(Module module) {
         String descriptors = module.getData().getValue(LevelStructure.MODULE_VALUE.assets);
         for (String path : ContainerUtils.openContainer(descriptors, ",")) {
-//            BfObjEnums.SPRITES.valueOf()
+            //            BfObjEnums.SPRITES.valueOf()
             boolean ktx = false;
             Assets.loadSprite(path, false, ktx);
         }

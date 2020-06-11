@@ -73,7 +73,7 @@ public class LE_KeyHandler extends LE_Handler {
                     return;
                 case Input.Keys.ESCAPE:
                     //do we have a 'main menu'?
-                    if (LE_Screen.getInstance().getGuiStage().getTextInputPanel().isVisible()) {
+                    if (GdxMaster.isVisibleEffectively(LE_Screen.getInstance().getGuiStage().getTextInputPanel())) {
                         LE_Screen.getInstance().getGuiStage().getTextInputPanel().close();
                     } else if (GdxMaster.isVisibleEffectively(dialog)) {
                         dialog.cancel();
@@ -105,8 +105,8 @@ public class LE_KeyHandler extends LE_Handler {
     }
 
     public void keyTyped(char character) {
-
         main.system.auxiliary.log.LogMaster.log(1, "keyTyped " + character);
+        GuiEventManager.trigger(GuiEventType.KEY_TYPED, (int) character);
     }
 
     public void keyUp(int keyCode) {

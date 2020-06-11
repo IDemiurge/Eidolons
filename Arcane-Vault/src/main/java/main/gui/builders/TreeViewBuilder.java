@@ -2,9 +2,7 @@ package main.gui.builders;
 
 import eidolons.game.Simulation;
 import main.ability.utilities.NodeMaster;
-import main.content.DC_TYPE;
-import main.content.OBJ_TYPE;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.ContentValsManager;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -14,6 +12,7 @@ import main.launch.ArcaneVault;
 import main.swing.generic.components.Builder;
 import main.system.auxiliary.CloneMaster;
 import main.system.graphics.ColorManager;
+import main.system.launch.TypeBuilder;
 import main.utilities.workspace.Workspace;
 
 import javax.swing.*;
@@ -152,72 +151,44 @@ public class TreeViewBuilder extends Builder {
         return (DefaultTreeModel) tree.getTree().getModel();
     }
 
-    public void newType(String newName, DefaultMutableTreeNode node, String TYPE, Boolean upgrade) {
+    public void newType(String newName, DefaultMutableTreeNode node, String TYPE, boolean upgrade) {
         DefaultMutableTreeNode newNode;
         ObjType newType;
         boolean empty = false;
         if (node == null) {
             empty = true;
         }
-        if (DataManager.getType(node.getUserObject().toString(), TYPE) == null) {
-            empty = true;
-        }
+        ObjType objType = null;
         if (empty) {
             newType = getEmptyType(TYPE, newName);
             newNode = new DefaultMutableTreeNode(newName, true);
+            newNode.setUserObject(newType.getName());
         } else {
-            ObjType type = DataManager.getType(node.getUserObject() + "", TYPE);
-            newType = CloneMaster.getTypeCopy(type, newName, ArcaneVault.getGame(), TYPE);
+            objType = DataManager.getType(node.getUserObject().toString(), TYPE);
+            newType = CloneMaster.getTypeCopy(objType, newName, ArcaneVault.getGame(), TYPE);
             newType.setGenerated(false);
             newNode = (DefaultMutableTreeNode) CloneMaster.deepCopy(node);
-
             newNode.setUserObject(newName);
         }
 
         DefaultMutableTreeNode parent = ((DefaultMutableTreeNode) getTree().getSelectionPath()
                 .getLastPathComponent());
-        if (!empty) // upgrade_parent_new
-        {
-            if (upgrade == null) {
-                parent = (DefaultMutableTreeNode) parent.getParent();
-            } else {
-                if (!upgrade) {
-                    parent.removeFromParent();
-                    newNode.add(parent);
-                    parent = (DefaultMutableTreeNode) parent.getParent();
-                    parent.add(newNode);
-                }
-            }
+        if ( empty || !upgrade) {
+            parent = (DefaultMutableTreeNode) parent.getParent();
         }
         newNode.removeAllChildren();
-
-        // parent.add(newNode);
         getTreeModel().insertNodeInto(newNode, parent, 0);
 
         newType.setProperty(G_PROPS.NAME, newName);
         newType.setProperty(G_PROPS.DISPLAYED_NAME, newName);
         if (empty) {
-
             newType.setProperty(DataManager.getSubGroupingKey(TYPE), parent.getUserObject()
                     .toString());
-
             newType.setProperty(DataManager.getGroupingKey(TYPE), ArcaneVault.getMainBuilder()
                     .getSelectedSubTabName());
         }
-        if (upgrade != null) {
-            if (upgrade) {
-                newType.setProperty(G_PROPS.BASE_TYPE, node.getUserObject().toString());
-            } else {
-                // parent.getUserObject().toString()
-                parent.getParent();
-
-                ObjType selectedType = DataManager.getType(node.getUserObject().toString(), TYPE);
-
-                selectedType.setProperty(G_PROPS.BASE_TYPE, newNode.getUserObject().toString());
-
-                newType.setProperty(G_PROPS.BASE_TYPE, parent.getUserObject().toString());
-
-            }
+        if (upgrade) {
+            newType.setProperty(G_PROPS.BASE_TYPE, node.getUserObject().toString());
         }
 
         DataManager.addType(newName, TYPE, newType);
@@ -229,12 +200,8 @@ public class TreeViewBuilder extends Builder {
     }
 
     private ObjType getEmptyType(String TYPE, String newName) {
-        ObjType type = new ObjType(newName);
-        OBJ_TYPE t = DC_TYPE.getType(TYPE);
-        if (ArcaneVault.isMacroMode()) {
-            t = MACRO_OBJ_TYPES.getType(TYPE);
-        }
-        // type.setObjType(t);
+        ObjType type = TypeBuilder.getTypeInitializer().getOrCreateDefault(ContentValsManager.getOBJ_TYPE(TYPE));
+        type.setName(newName);
         Simulation.getGame().initType(type);
         return type;
     }

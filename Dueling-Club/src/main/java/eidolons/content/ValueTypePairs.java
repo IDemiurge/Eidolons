@@ -14,5 +14,7 @@ public class ValueTypePairs {
             },
             {DC_TYPE.ACTIONS, ValuePages.ACTION_PAGES
             },
+            {DC_TYPE.BOSS, ValuePages.BOSS_PAGES
+            },
     };
 }

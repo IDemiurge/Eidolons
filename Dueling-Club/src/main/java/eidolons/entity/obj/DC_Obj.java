@@ -48,8 +48,10 @@ import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class DC_Obj extends MicroObj {
 
@@ -67,6 +69,8 @@ public abstract class DC_Obj extends MicroObj {
 
     protected boolean pale;
 
+    protected  Set<ObjType> appliedTypes=new LinkedHashSet<>();
+    protected  ObjType originalType;
 
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -788,5 +792,21 @@ public abstract class DC_Obj extends MicroObj {
                     getProperty("COLOR_THEME"));
         }
         return getGame().getDungeonMaster().getStructMaster().getLowestStruct(getCoordinates()).getColorTheme();
+    }
+
+    public Set<ObjType> getAppliedTypes() {
+        return appliedTypes;
+    }
+
+    public void setAppliedTypes(Set<ObjType> appliedTypes) {
+        this.appliedTypes = appliedTypes;
+    }
+
+    public ObjType getOriginalType() {
+        return originalType;
+    }
+
+    public void setOriginalType(ObjType originalType) {
+        this.originalType = originalType;
     }
 }

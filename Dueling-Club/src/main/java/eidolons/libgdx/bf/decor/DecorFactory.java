@@ -9,8 +9,11 @@ import eidolons.libgdx.bf.datasource.SpriteData;
 import eidolons.libgdx.bf.generic.Flippable;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.NoHitImageX;
+import eidolons.libgdx.particles.EmitterActor;
+import eidolons.libgdx.texture.Images;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.StringMaster;
 
 public class DecorFactory {
 
@@ -21,17 +24,21 @@ public class DecorFactory {
         String path = data.getTexturePath();
         if (path == null) {
             path = data.getSpritePath();
-            actor = new SpriteX(path);
+            if (StringMaster.isEmpty(path )) {
+                actor = new NoHitImageX(Images.COLOR_EMBLEM);
+            } else
+            {
+                actor = new SpriteX(path);
+            }
         } else {
             actor = new NoHitImageX(path);
         }
         boolean x = data.getBooleanValue(GraphicData.GRAPHIC_VALUE.flipX);
         boolean y = data.getBooleanValue(GraphicData.GRAPHIC_VALUE.flipY);
         float scale = data.getFloatValue(GraphicData.GRAPHIC_VALUE.scale);
-        if (scale == 0) {
-            scale = 1;
+        if (scale != 0) {
+            actor.setScale(scale);
         }
-        actor.setScale(scale);
         if (actor instanceof Flippable) {
             ((Flippable) actor).setFlipX(x);
             ((Flippable) actor).setFlipY(y);
@@ -60,7 +67,12 @@ public class DecorFactory {
         if (rotation != 0) {
             actor.setRotation(rotation);
         }
-
+        String value = data.getVfxPath();
+        if (!value.isEmpty()) {
+            //what about CustomObject and such?
+            return new CellDecor(new EmitterActor(value),
+                    actor, DEFAULT_SIGHT_RANGE, DC_Game.game.getCellByCoordinate(c), sprite);
+        }
         return new CellDecor(actor, DEFAULT_SIGHT_RANGE, DC_Game.game.getCellByCoordinate(c), sprite);
     }
 

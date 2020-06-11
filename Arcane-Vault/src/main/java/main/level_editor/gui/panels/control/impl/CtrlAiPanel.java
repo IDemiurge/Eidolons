@@ -16,7 +16,7 @@ public class CtrlAiPanel extends LE_ControlPanel<IAiHandler> {
 
     @Override
     protected int getWrap() {
-        return 5;
+        return 4;
     }
 
     @Override

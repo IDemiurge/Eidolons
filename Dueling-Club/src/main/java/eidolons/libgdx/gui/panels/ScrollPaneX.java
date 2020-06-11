@@ -20,11 +20,11 @@ public class ScrollPaneX extends ScrollPane {
                 getStage().setScrollFocus(ScrollPaneX.this);
             }
         });
-        setForceScroll(false, true);
     }
 
     @Override
     public void act(float delta) {
+        setForceScroll(false, false);
         super.act(delta);
     }
 }

@@ -1,5 +1,6 @@
 package main.entity;
 
+import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
@@ -72,7 +73,7 @@ public class EntityCheckMaster {
     }
 
     public static boolean isBoss(ObjType type) {
-        return type.checkProperty(G_PROPS.CLASSIFICATIONS, "Boss");
+        return type.getOBJ_TYPE_ENUM() == DC_TYPE.BOSS;
     }
 
     public static boolean isImmaterial(Entity unit) {

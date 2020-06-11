@@ -52,9 +52,9 @@ public class QueueView extends UnitView {
     protected Label initiativeLabel;
     protected ImageContainer atbBg;
     protected boolean queueMoving = true;//queueMoving, temporary. 
-    protected UnitGridView parentView;
+    protected Actor parentView;
     private ImageContainer roundBorder;
-    private ImageContainer verticalLine;
+    private final ImageContainer verticalLine;
 
     protected QueueView(UnitViewOptions o, int curId) {
         super(o, curId);
@@ -341,11 +341,11 @@ public class QueueView extends UnitView {
         return getClass().getSimpleName() + " for " + name;
     }
 
-    public UnitGridView getParentView() {
+    public Actor getParentView() {
         return parentView;
     }
 
-    public void setParentView(UnitGridView parentView) {
+    public void setParentView(Actor parentView) {
         this.parentView = parentView;
     }
 
@@ -369,7 +369,7 @@ public class QueueView extends UnitView {
 
     @Override
     public BattleFieldObject getUserObject() {
-        return parentView.getUserObject();
+        return (BattleFieldObject) parentView.getUserObject();
     }
 
     @Override

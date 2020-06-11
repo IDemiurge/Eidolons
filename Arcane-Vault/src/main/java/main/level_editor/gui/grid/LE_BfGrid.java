@@ -17,6 +17,7 @@ import eidolons.libgdx.texture.TextureCache;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
+import main.level_editor.backend.display.LE_DisplayMode;
 import main.level_editor.backend.functions.advanced.LE_GridAnimTester;
 import main.level_editor.backend.handlers.selection.LE_Selection;
 import main.system.GuiEventManager;
@@ -171,10 +172,11 @@ public class LE_BfGrid extends GridPanel {
             updateCellLabel( (List) obj.get(), true);
         });
             GuiEventManager.bind(LE_DISPLAY_MODE_UPDATE, obj -> {
+                LE_DisplayMode mode = (LE_DisplayMode) obj.get();
             for (GridCellContainer[] col : cells) {
                 for (GridCellContainer container : col) {
                     if (container instanceof LE_GridCell) {
-                        ((LE_GridCell) container).displayModeUpdated();
+                        ((LE_GridCell) container).displayModeUpdated(mode);
 
                     }
                 }
@@ -182,12 +184,21 @@ public class LE_BfGrid extends GridPanel {
         });
     }
 
+    @Override
+    protected void createDecor(Object o) {
+        super.createDecor(o);
+        resetZIndices();
+        updateCellLabel( (List) o, null );
+    }
 
-    private void updateCellLabel(List list, boolean aiOrScripts) {
+    private void updateCellLabel(List list, Boolean aiOrScriptsOrDecor) {
         Coordinates c = (Coordinates) list.get(0);
-        String data = (String) list.get(1);
+        String data =  list.get(1).toString();
         GridCellContainer container = cells[c.x][ (c.y)];
-        if (aiOrScripts) {
+        if (aiOrScriptsOrDecor == null) {
+            ((LE_GridCell) container).getDecorLabel().setText(data);
+        } else
+        if (aiOrScriptsOrDecor) {
             ((LE_GridCell) container).getAiLabel().setText(data);
         } else {
             ((LE_GridCell) container).getScriptsLabel().setText(data);

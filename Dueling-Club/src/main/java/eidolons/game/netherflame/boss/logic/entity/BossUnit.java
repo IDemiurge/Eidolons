@@ -1,10 +1,11 @@
 package eidolons.game.netherflame.boss.logic.entity;
 
+import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.netherflame.boss.BossManager;
+import eidolons.game.netherflame.boss.logic.BossCycle;
 import main.content.enums.rules.VisionEnums;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -23,29 +24,44 @@ import java.util.List;
  * reach
  */
 public class BossUnit extends Unit {
-    int left = 1;
-    int right = 1;
-    int top = 1;
-    int bot = 1;
+    BossCycle.BOSS_TYPE bossType;
+    BossManager manager;
     List<Coordinates> zone;
-    private float height;
-    private float width;
+    private final float height;
+    private final float width;
 
 
     public BossUnit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
-        height = top + bot + 1;
-        width = left + right + 1;
+        width= getIntParam(PARAMS.GRID_WIDTH);
+        height= getIntParam(PARAMS.GRID_HEIGHT);
+        // bossType= new EnumMaster<ENUM>().retrieveEnumConst(ENUM.class, string )
+    }
+
+    public void init(BossManager manager){
+        this.manager = manager;
+        //w h
+
     }
 
     @Override
+    public void newRound() {
+        super.newRound();
+        manager.getRoundRules().roundStarts();
+    }
+
+    @Override
+    protected EntityMaster initMaster() {
+        return new BossMaster(this);
+    }
+    @Override
     public FACING_DIRECTION getFacingOrNull() {
-        return super.getFacingOrNull();
+        return FACING_DIRECTION.SOUTH;
     }
 
     @Override
     public FACING_DIRECTION getFacing() {
-        return FACING_DIRECTION.NONE;
+        return FACING_DIRECTION.SOUTH;
     }
 
     public boolean isBoss() {
@@ -54,14 +70,15 @@ public class BossUnit extends Unit {
 
     @Override
     public Coordinates getCoordinates() {
-        return CoordinatesMaster.getClosestTo(Eidolons.getMainHero().getCoordinates(), zone);
+        // return CoordinatesMaster.getClosestTo(Eidolons.getMainHero().getCoordinates(), zone);
+        return super.getCoordinates();
     }
 
     public void setCoordinates(Coordinates coordinates) {
         originalCoordinates = coordinates;
         Coordinates c = getOriginalCoordinates();
-        zone = CoordinatesMaster.getCoordinatesWithin(c.x - left, c.x + right, c.y - top, c.y + bot, true);
-
+        super.setCoordinates(coordinates);
+        // zone = CoordinatesMaster.getCoordinatesWithin(c.x - left, c.x + right, c.y - top, c.y + bot, true);
     }
 
     @Override
@@ -82,34 +99,22 @@ public class BossUnit extends Unit {
     @Override
     public void setDead(boolean dead) {
         super.setDead(dead);
+        if (dead){
+
+        }
     }
 
-    @Override
-    protected EntityMaster initMaster() {
-        return new BossMaster(this);
-    }
 
     @Override
     public VisionEnums.VISION_MODE getVisionMode() {
         return super.getVisionMode();
     }
 
-    public int getLeft() {
-        return left;
-    }
 
-    public int getRight() {
-        return right;
+    @Override
+    public BossMaster getMaster() {
+        return (BossMaster) super.getMaster();
     }
-
-    public int getTop() {
-        return top;
-    }
-
-    public int getBot() {
-        return bot;
-    }
-
     public List<Coordinates> getZone() {
         return zone;
     }
@@ -130,7 +135,8 @@ public class BossUnit extends Unit {
 
     @Override
     public boolean isDetectedByPlayer() {
-        return true;
+        // return manager.getVisionRules().isDetected(this, type);
+        return false;
     }
 
     @Override

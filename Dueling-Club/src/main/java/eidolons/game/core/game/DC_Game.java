@@ -301,6 +301,7 @@ public class DC_Game extends GenericGame {
 
         getDungeonMaster().getModuleLoader().loadInitial();
         getDungeonMaster().getFloorLoader().loadingDone();
+        getMetaMaster().loadingDone();
         if (AI_ON) {
             aiManager.init();
             dungeonMaster.getExplorationMaster().getAiMaster().getExploreAiManager().initialize();

@@ -16,8 +16,8 @@ public class KtxCompressor extends GdxUtil {
     private final String[] args;
     private SpriteBatch spriteBatch;
 
-    private boolean checkRGB=true;
-    private boolean writeKTX=true;
+    private final boolean checkRGB = true;
+    private final boolean writeKTX = true;
 
     public KtxCompressor(String... args) {
         this.args = args;
@@ -25,7 +25,7 @@ public class KtxCompressor extends GdxUtil {
 
     private void checkRGB(File file) {
         String contents = FileManager.readFile(file);
-        if (contents.contains(".jpg"))        if (contents.contains("RGBA8888"))
+        if (contents.contains(".jpg")) if (contents.contains("RGBA8888"))
             FileManager.write(contents.replace("RGBA8888", "RGB888"),
                     (file.getPath()));
     }
@@ -38,27 +38,38 @@ public class KtxCompressor extends GdxUtil {
 
     public static void main(String[] args) {
         CoreEngine.systemInit();
+        args = new String[]{
+                 "sprites/boss/knight"
+        };
         new KtxCompressor(args).start();
     }
 
     @Override
     protected void execute() {
         for (String arg : args) {
-            for (File file : FileManager.getFilesFromDirectory(PathFinder.getImagePath() +
-                    PathFinder.getSpritesPath() + arg, false, true)) {
-                if (file.getName().contains(".txt")) {
-                    if (checkRGB)
-                    checkRGB(file);
-                    if (!file.getName().contains("ktx")) {
-                        generateAtlasVersion(file);
-                    }
-                } else {
-                    if (writeKTX)
-                    if (!file.getName().contains(".ktx"))
-                        convert(file.getPath());
+            String path = PathFinder.getImagePath() +
+                      arg;
+            if (FileManager.isFile(path)) {
+                convert(FileManager.getFile(path));
+            } else
+                for (File file : FileManager.getFilesFromDirectory(path, false, true)) {
+                    convert(file);
                 }
-            }
 
+        }
+    }
+
+    private void convert(File file) {
+        if (file.getName().contains(".txt")) {
+            if (checkRGB)
+                checkRGB(file);
+            if (!file.getName().contains("ktx")) {
+                generateAtlasVersion(file);
+            }
+        } else {
+            if (writeKTX)
+                if (!file.getName().contains(".ktx"))
+                    convert(file.getPath());
         }
     }
 
