@@ -16,11 +16,8 @@ import main.system.GuiEventType;
 
 public class UnitViewTooltip extends ValueTooltip {
 
-    BaseView view;
-
-    public UnitViewTooltip(BaseView view) {
+    public UnitViewTooltip(Actor view) {
         super(view);
-        this.view = view;
     }
 
     @Override
@@ -31,7 +28,7 @@ public class UnitViewTooltip extends ValueTooltip {
     }
 
     public BaseView getView() {
-        return view;
+        return (BaseView) actor;
     }
 
     public Vector2 getDefaultOffset() {
@@ -46,12 +43,12 @@ public class UnitViewTooltip extends ValueTooltip {
     @Override
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
         setUpdateRequired(true);
-        if (view.isHoverResponsive() || view instanceof OverlayView) //TODO quick fix to ignore bf obj
+        if (getView().isHoverResponsive() || getView()instanceof OverlayView) //TODO quick fix to ignore bf obj
         {
-            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, view);
+            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, getView());
         }
-        if (view.getPortrait().getScreenOverlay() <= 0.01f) {
-            ScreenMaster.getDungeonGrid().getGridViewAnimator().animate(view,
+        if (getView().getPortrait().getScreenOverlay() <= 0.01f) {
+            ScreenMaster.getDungeonGrid().getGridViewAnimator().animate(getView(),
                     GridViewAnimator.VIEW_ANIM.screen);
         }
         super.onMouseEnter(event, x, y, pointer, fromActor);
@@ -63,7 +60,7 @@ public class UnitViewTooltip extends ValueTooltip {
             return;
         }
         super.onMouseMoved(event, x, y);
-        //        if (view.isHoverResponsive() || view instanceof OverlayView) //TODO quick fix to ignore bf obj
+        //        if (view.isHoverResponsive() || getView()instanceof OverlayView) //TODO quick fix to ignore bf obj
         //            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, view);
 
     }
@@ -71,9 +68,9 @@ public class UnitViewTooltip extends ValueTooltip {
     @Override
     protected void exited() {
         super.exited();
-        if (view.isHoverResponsive() || view instanceof OverlayView) // quick fix to ignore passive UnitViews
+        if (getView().isHoverResponsive() || getView()instanceof OverlayView) // quick fix to ignore passive UnitViews
             //(done) TODO check if toActor is not just a child of the UnitView, like arrow or emblem!
-            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, view);
+            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, getView());
     }
 
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
@@ -82,14 +79,14 @@ public class UnitViewTooltip extends ValueTooltip {
 
     @Override
     protected boolean checkActorExitRemoves(Actor toActor) {
-        if (view instanceof UnitGridView) {
-            if (GdxMaster.getAncestors(toActor).contains(((UnitGridView) view).getInitiativeQueueUnitView()))
+        if (getView()instanceof UnitGridView) {
+            if (GdxMaster.getAncestors(toActor).contains(((UnitGridView) getView()).getInitiativeQueueUnitView()))
                 return false;
         }
         if (toActor != null) {
             Group anotherViewThere = GdxMaster.getFirstParentOfClass(toActor, UnitGridView.class);
             if (anotherViewThere instanceof UnitGridView) {
-                if (view.getUserObject().getCoordinates().equals(((UnitGridView) anotherViewThere).getUserObject().getCoordinates())) {
+                if (getView().getUserObject().getCoordinates().equals(((UnitGridView) anotherViewThere).getUserObject().getCoordinates())) {
                     if (manager != null)
                         manager.entityHoverOff(getEntity());
                     return false;

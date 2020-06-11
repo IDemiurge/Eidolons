@@ -40,6 +40,7 @@ public class BossUnit extends Unit {
 
     public void init(BossManager manager){
         this.manager = manager;
+        ((BossMaster) master).setManager(manager);
         //w h
 
     }
@@ -47,7 +48,7 @@ public class BossUnit extends Unit {
     @Override
     public void newRound() {
         super.newRound();
-        manager.getRoundRules().roundStarts();
+        // manager.getRoundRules().roundStarts();
     }
 
     @Override

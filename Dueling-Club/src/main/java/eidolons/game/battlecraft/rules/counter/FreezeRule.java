@@ -79,7 +79,7 @@ public class FreezeRule extends DC_CounterRule {
 
     @Override
     public String getBuffName() {
-        return MetaEnums.STD_BUFF_NAMES.Frost.getName();
+        return MetaEnums.STD_BUFF_NAME.Frost.getName();
     }
 
     @Override

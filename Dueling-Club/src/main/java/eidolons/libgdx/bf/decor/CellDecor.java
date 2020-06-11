@@ -93,7 +93,7 @@ public class CellDecor extends GroupX {
 
     public boolean isWithinCameraCheck() {
         return getController().isWithinCamera(
-                x1, y1, x2 - x1, y2 - y1, true);
+                x1+getX(), y1+getY(), x2 - x1+getX(), y2 - y1+getY(), true);
     }
 
     @Override

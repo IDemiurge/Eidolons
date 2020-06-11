@@ -31,7 +31,6 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
-import main.data.ability.construct.AbilityConstructor;
 import main.data.ability.construct.VariableManager;
 import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
@@ -59,7 +58,6 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
     @Override
     protected void initDefaults() {
-
     }
 
     @Override
@@ -121,11 +119,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public void initActives() {
-        // if (!isActivesReady()) {
-
-        AbilityConstructor.constructActives(getEntity());
-        // }
-        //        setActivesReady(true);
+        master.getActionManager().resetActions(getEntity());
     }
 
     public void initSpells(boolean reset) {

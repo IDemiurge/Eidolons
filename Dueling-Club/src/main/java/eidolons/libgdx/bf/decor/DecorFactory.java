@@ -21,6 +21,9 @@ public class DecorFactory {
 
     public static Actor createDecor(Coordinates c, GraphicData data) {
         Actor actor;
+        if (data.getBooleanValue(GraphicData.GRAPHIC_VALUE.editor)) {
+            return new NoHitImageX(Images.REALLY_EMPTY_32);
+        }
         String path = data.getTexturePath();
         if (path == null) {
             path = data.getSpritePath();

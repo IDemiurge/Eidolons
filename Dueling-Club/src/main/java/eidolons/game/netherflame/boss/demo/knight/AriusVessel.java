@@ -1,11 +1,13 @@
 package eidolons.game.netherflame.boss.demo.knight;
 
+import com.badlogic.gdx.utils.Align;
 import eidolons.game.netherflame.boss.anims.BossAnims;
 import eidolons.game.netherflame.boss.anims.generic.BossVisual;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.BlendImageContainer;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
+import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.texture.Images;
 import main.content.enums.GenericEnums;
 
@@ -14,17 +16,30 @@ public class AriusVessel extends BossVisual {
     BlendImageContainer runes;
     BlendImageContainer glaive;
     FadeImageContainer orb;
-    private final float speed=1f;
+    private final float speed=2f;
+
+    EmitterActor emitterActor;
 
     public AriusVessel(BossUnit unit) {
         super(unit);
         setSize(400,400);
         addActor(runes = new BlendImageContainer(Images.RUNE_CIRCLE, GenericEnums.BLENDING.SCREEN));
         addActor(glaive = new BlendImageContainer(Images.GLAIVE,GenericEnums.BLENDING.INVERT_SCREEN));
-        addActor(orb = new FadeImageContainer(Images.ARIUS_ORB));
+        addActor(orb = new BlendImageContainer(Images.ARIUS_ORB,GenericEnums.BLENDING.NORMAL));
         GdxMaster.center(runes);
         GdxMaster.center(glaive);
         GdxMaster.center(orb); //use a planet from macro? :)
+
+        runes.setOrigin(Align.center);
+        glaive.setOrigin(Align.center);
+        orb.setOrigin(Align.center);
+
+        addActor(emitterActor = new EmitterActor(GenericEnums.VFX.invert_bloody_bleed2));
+        emitterActor.start();
+        emitterActor.setX(orb.getX());
+        emitterActor.setY(orb.getY());
+        runes.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.SHARD_OVERLAY);
+        // orb.setSclaeTemplate(GenericEnums.ALPHA_TEMPLATE.HEART);
     }
 
     @Override
@@ -33,7 +48,8 @@ public class AriusVessel extends BossVisual {
         //up and down?
         // speed = speedAction.getValue();
         runes.setRotation(runes.getRotation()+delta*speed);
-        glaive.setRotation(runes.getRotation()-delta*speed);
+        glaive.setRotation(runes.getRotation()-delta*speed*2);
+        orb.setRotation(runes.getRotation()-delta*speed/2);
         //TODO manual!
     }
 

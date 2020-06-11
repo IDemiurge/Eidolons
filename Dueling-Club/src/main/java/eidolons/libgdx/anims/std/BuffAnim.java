@@ -8,7 +8,7 @@ import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.texture.TextureCache;
-import main.content.enums.system.MetaEnums.STD_BUFF_NAMES;
+import main.content.enums.system.MetaEnums.STD_BUFF_NAME;
 import main.data.filesys.PathFinder;
 import main.entity.obj.BuffObj;
 import main.game.bf.Coordinates;
@@ -51,8 +51,8 @@ public class BuffAnim extends ActionAnim {
         /*
         ablaze, frozen, bleeding, wounded, charmed,
          */
-        STD_BUFF_NAMES name =
-         new EnumMaster<STD_BUFF_NAMES>().retrieveEnumConst(STD_BUFF_NAMES.class, buff.getName());
+        STD_BUFF_NAME name =
+         new EnumMaster<STD_BUFF_NAME>().retrieveEnumConst(STD_BUFF_NAME.class, buff.getName());
         if (name == null) {
             return data;
         }
@@ -71,11 +71,11 @@ public class BuffAnim extends ActionAnim {
         return data;
     }
 
-    private static String getStdSprites(STD_BUFF_NAMES name) {
+    private static String getStdSprites(STD_BUFF_NAME name) {
         return "buffs/" + name.getName() + ".png";
     }
 
-    private static String getStdSfx(STD_BUFF_NAMES name) {
+    private static String getStdSfx(STD_BUFF_NAME name) {
         switch (name) {
 
             case Channeling:

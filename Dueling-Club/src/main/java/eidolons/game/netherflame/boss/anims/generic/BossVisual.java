@@ -6,9 +6,11 @@ import eidolons.game.netherflame.boss.anims.BossAnims;
 import eidolons.game.netherflame.boss.anims.view.BossQueueView;
 import eidolons.game.netherflame.boss.anims.view.BossTooltip;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
+import eidolons.libgdx.bf.grid.cell.QueueView;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import main.system.launch.CoreEngine;
 
 public abstract class BossVisual extends GroupX {
     /*
@@ -20,7 +22,7 @@ public abstract class BossVisual extends GroupX {
 
     linked QueueVIew?
      */
-   protected BossQueueView queueView;
+    protected BossQueueView queueView;
     protected boolean hovered;
     protected boolean targetHighlight;
     protected boolean aiMoving;
@@ -32,6 +34,10 @@ public abstract class BossVisual extends GroupX {
         this.unit = unit;
         setUserObject(unit);
         init();
+        if (CoreEngine.TEST_LAUNCH) {
+            debugAll();
+        }
+
     }
 
     public void targetHighlight(boolean on) {
@@ -41,20 +47,23 @@ public abstract class BossVisual extends GroupX {
     public void setAiMoving(boolean on) {
         aiMoving = on;
     }
+
     public void setActive(boolean on) {
         active = on;
     }
-        public void hovered(boolean on) {
+
+    public void hovered(boolean on) {
         hovered = on;
     }
 
     public void init() {
         if (isInitListeners())
-        addListener(createListener());
-        addListener(new BossTooltip(null ).getController());
-        setSize(unit.getWidth() * 128,unit.getHeight() * 128 );
+            addListener(createListener());
 
-        if (isInitQueueView()){
+        addListener(new BossTooltip(this).getController());
+        setSize(unit.getWidth() * 128, unit.getHeight() * 128);
+
+        if (isInitQueueView()) {
             queueView = new BossQueueView(unit, getPortrait(), this);
             queueView.setUserObject(unit);
             queueView.setParentView(this);
@@ -67,7 +76,7 @@ public abstract class BossVisual extends GroupX {
         return true;
     }
 
-    protected  String getPortrait() {
+    protected String getPortrait() {
         return unit.getImagePath();
     }
 
@@ -78,8 +87,8 @@ public abstract class BossVisual extends GroupX {
     public abstract void animate(BossAnims.BOSS_ANIM_COMMON anim);
 
     protected EventListener createListener() {
-        return new SmartClickListener(this){
-//radial?
+        return new SmartClickListener(this) {
+            //radial?
             @Override
             protected void entered() {
                 hovered(true);
@@ -100,4 +109,11 @@ public abstract class BossVisual extends GroupX {
         };
     }
 
+    public BossUnit getUnit() {
+        return unit;
+    }
+
+    public QueueView getQueueView() {
+        return queueView;
+    }
 }

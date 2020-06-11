@@ -17,7 +17,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
 public class SleepEffect extends DC_Effect implements OneshotEffect {
 
-    private String buffName;
+    private final String buffName;
 
     public SleepEffect(String buffName) {
         this.buffName = buffName;
@@ -47,6 +47,6 @@ public class SleepEffect extends DC_Effect implements OneshotEffect {
         if (buffName != null) {
             return buffName;
         }
-        return MetaEnums.STD_BUFF_NAMES.Asleep.name();
+        return MetaEnums.STD_BUFF_NAME.Asleep.name();
     }
 }

@@ -1,5 +1,7 @@
 package eidolons.libgdx.bf.generic;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import main.content.enums.GenericEnums;
 
 public class BlendImageContainer extends FadeImageContainer {
@@ -16,5 +18,13 @@ public class BlendImageContainer extends FadeImageContainer {
 
     public GenericEnums.BLENDING getBlending() {
         return blending;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        // blending.null
+        ((CustomSpriteBatch) batch).setBlending(blending);
+        super.draw(batch, parentAlpha);
+        ((CustomSpriteBatch) batch).resetBlending();
     }
 }

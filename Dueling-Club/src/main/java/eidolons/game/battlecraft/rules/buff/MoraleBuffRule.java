@@ -21,9 +21,9 @@ import main.system.auxiliary.StringMaster;
 
 public class MoraleBuffRule extends DC_BuffRule {
     public static final String[] buffNames = {
-     MetaEnums.STD_BUFF_NAMES.Panic.getName(),
-     MetaEnums.STD_BUFF_NAMES.Fearful.getName(),
-     MetaEnums.STD_BUFF_NAMES.Inspired.getName()
+     MetaEnums.STD_BUFF_NAME.Panic.getName(),
+     MetaEnums.STD_BUFF_NAME.Fearful.getName(),
+     MetaEnums.STD_BUFF_NAME.Inspired.getName()
     };
     public static final String[] formulas = {"1", "10", "100",};
 

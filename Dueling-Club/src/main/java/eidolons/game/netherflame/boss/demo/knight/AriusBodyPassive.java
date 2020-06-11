@@ -1,5 +1,6 @@
 package eidolons.game.netherflame.boss.demo.knight;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import eidolons.game.netherflame.boss.anims.generic.BossSpriteVisual;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import eidolons.libgdx.anims.Assets;
@@ -27,10 +28,14 @@ public class AriusBodyPassive extends BossSpriteVisual {
         return 0;
     }
 
+    protected Animation.PlayMode getPlayMode() {
+        return Animation.PlayMode.LOOP;
+    }
     @Override
     protected String getSpriteKey() {
         if (CoreEngine.TEST_LAUNCH) {
-            return Assets.getKtxAtlasPath(Sprites.BOSS_KNIGHT);
+            // return Assets.getKtxAtlasPath(Sprites.BOSS_KNIGHT);
+            return Assets.getScaledAtlasPath(Sprites.BOSS_KNIGHT);
         }
         return Sprites.BOSS_KNIGHT;
     }

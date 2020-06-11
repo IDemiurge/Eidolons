@@ -1,10 +1,7 @@
 package eidolons.game.netherflame.boss.anims.view;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -24,22 +21,22 @@ or just substitute another sprite?
     private boolean reverse;
     private Integer targetFrame;
 
-    public SmartSprite(float frameDuration,  TextureAtlas atlas, int begin, int end) {
-        super(frameDuration, true, atlas);
-        frames = Arrays.stream(atlas.getRegions().items).collect(Collectors.toList()).toArray(new TextureAtlas.AtlasRegion[0]);
+    public SmartSprite(float frameDuration, TextureAtlas atlas, int begin, int end) {
+        this(null, frameDuration, atlas, begin, end);
+    }
+    public SmartSprite(PlayMode playMode, float frameDuration, TextureAtlas atlas, int begin, int end) {
+        super(frameDuration, playMode!=null, atlas);
+        frames = Arrays.stream(atlas.getRegions().items).collect(Collectors.toList()).toArray(
+                new TextureAtlas.AtlasRegion[atlas.getRegions().size]);
         this.begin = begin;
         this.end = end;
+        if (end==0) {
+            this.end = atlas.getRegions().size;
+        }
         resetRange();
-        setPlayMode(PlayMode.LOOP_PINGPONG);
-        GuiEventManager.bind(GuiEventType.KEY_TYPED , p->{
-            int code = (int) p.get();
-            if (code== Input.Keys.F) {
-                allowFinish();
-            }
-            if (code== Input.Keys.B) {
-                playBackTo(0, 2f);
-            }
-        } );
+        if (playMode==null) {
+            setPlayMode(PlayMode.LOOP_PINGPONG);
+        }
     }
 
     public void allowFinish() {
@@ -85,6 +82,18 @@ or just substitute another sprite?
     }
 
     private void resetRange() {
-        setKeyFrames(Arrays.copyOfRange(frames, begin, end));
+        if (end == 0) {
+            if (begin == 0)
+                setKeyFrames(frames);
+            else
+                end = frames.length;
+        }
+        if (end != 0) {
+            TextureAtlas.AtlasRegion[] regions = new TextureAtlas.AtlasRegion[end - begin];
+            for (int i = begin; i <end ; i++) {
+                regions[i]=frames[i];
+            }
+            setKeyFrames(regions);
+        }
     }
 }

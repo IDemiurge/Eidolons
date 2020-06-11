@@ -64,11 +64,11 @@ import java.util.stream.Collectors;
 public class Assets {
     private static boolean ON = true;
     static Assets assets;
-    private static List<String> ktxAtlases = new ArrayList<>();
-    private static int estMemoryLoad = 0;
-    private static int memoryBuffer = 500;
+    private static final List<String> ktxAtlases = new ArrayList<>();
+    private static final int estMemoryLoad = 0;
+    private static final int memoryBuffer = 500;
     AssetManager manager;
-    private TextureAtlas dummyAtlas = new TextureAtlas(PathFinder.getImagePath() + "sprites/ui/dummy.txt");
+    private final TextureAtlas dummyAtlas = new TextureAtlas(PathFinder.getImagePath() + "sprites/ui/dummy.txt");
 
     public static void setON(boolean ON) {
         Assets.ON = ON;
@@ -361,6 +361,10 @@ public class Assets {
                 StringMaster.getAppendedFile(PathUtils.getLastPathSegment(path), " ktx");
     }
 
+    public static String getScaledAtlasPath(String path) {
+        return PathUtils.cropLastPathSegment(path) + "scaled/" +
+                PathUtils.getLastPathSegment(path);
+    }
     public static void loadedKtxAtlas(String texturePath) {
         texturePath = TextureCache.formatTexturePath(texturePath);
         ktxAtlases.add(texturePath);

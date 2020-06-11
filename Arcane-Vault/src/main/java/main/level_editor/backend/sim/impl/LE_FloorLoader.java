@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.netherflame.dungeons.model.assembly.ModuleGridMapper;
+import eidolons.libgdx.bf.decor.DecorData;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.system.auxiliary.ContainerUtils;
@@ -149,5 +150,10 @@ public class LE_FloorLoader extends FloorLoader {
     }
 
     protected void processTextMap(Location location) {
+    }
+
+    @Override
+    protected void initDecor(Map<Coordinates, DecorData> decorMap) {
+
     }
 }

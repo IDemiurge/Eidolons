@@ -87,7 +87,7 @@ public class BlazeRule extends DamageCounterRule implements TimedRule{
 
     @Override
     public String getBuffName() { // different while burning slow?
-        return MetaEnums.STD_BUFF_NAMES.Ablaze.getName();
+        return MetaEnums.STD_BUFF_NAME.Ablaze.getName();
     }
 
     @Override

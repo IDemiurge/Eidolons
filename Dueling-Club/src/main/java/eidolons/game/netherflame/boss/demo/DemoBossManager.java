@@ -10,6 +10,7 @@ import eidolons.game.netherflame.boss.demo.knight.DemoBossViewFactory;
 import eidolons.game.netherflame.boss.demo.logic.*;
 import eidolons.game.netherflame.boss.demo.logic.ai.DemoBossAi;
 import eidolons.game.netherflame.boss.logic.BossCycle;
+import eidolons.game.netherflame.boss.logic.action.BossActionMaster;
 import eidolons.game.netherflame.boss.logic.rules.BossRulesImpl;
 import eidolons.game.netherflame.boss.logic.rules.BossTargeter;
 import eidolons.game.netherflame.boss.logic.rules.BossVision;
@@ -19,6 +20,11 @@ public class DemoBossManager extends BossManager<DemoBoss> {
 
     public DemoBossManager(DC_Game game) {
         super(game);
+    }
+
+    @Override
+    protected BossActionMaster createActionMaster() {
+        return new DemoBossActionManager(this);
     }
 
     @Override

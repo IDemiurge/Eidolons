@@ -17,8 +17,8 @@ import main.elements.conditions.NotCondition;
 import main.game.core.game.GenericGame;
 
 public class FocusBuffRule extends DC_BuffRule {
-    public static final String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Discombobulated.getName(),
-            MetaEnums.STD_BUFF_NAMES.Dizzy.getName(), MetaEnums.STD_BUFF_NAMES.Razorsharp.getName()};
+    public static final String[] buffNames = {MetaEnums.STD_BUFF_NAME.Discombobulated.getName(),
+            MetaEnums.STD_BUFF_NAME.Dizzy.getName(), MetaEnums.STD_BUFF_NAME.Razorsharp.getName()};
     public static final String[] formulas = {"1", "10", "50",};
 
     // reverse means MORE THAN {THIS} and

@@ -9,6 +9,8 @@ import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import main.entity.Ref;
 import main.game.logic.event.Event;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 /**
  * Created by JustMe on 8/2/2017.
@@ -21,14 +23,14 @@ public class ExplorationMaster {
     DC_Game game;
     ExplorationAiMaster aiMaster;
     ExplorationTimeMaster timeMaster;
-    private ExploreEnemyPartyMaster enemyPartyMaster;
-    private ExplorePartyMaster partyMaster;
-    private ExploreCleaner cleaner;
-    private ExplorationResetHandler resetter;
-    private ExplorationActionHandler actionHandler;
-    private AggroMaster aggroMaster;
+    private final ExploreEnemyPartyMaster enemyPartyMaster;
+    private final ExplorePartyMaster partyMaster;
+    private final ExploreCleaner cleaner;
+    private final ExplorationResetHandler resetter;
+    private final ExplorationActionHandler actionHandler;
+    private final AggroMaster aggroMaster;
     private boolean toggling;
-    private EngagementHandler engagementHandler;
+    private final EngagementHandler engagementHandler;
     private PlayerStatus playerStatus;
 
     public ExplorationMaster(DC_Game game) {
@@ -110,6 +112,7 @@ public class ExplorationMaster {
             getResetter().setResetNotRequired(false);
             MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.ATMO);
         } else {
+            GuiEventManager.trigger(GuiEventType.COMBAT_STARTED );
             game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.COMBAT_STARTS, new Ref(game)));
             game.getLogManager().logBattleStarts();
             getResetter().setResetNotRequired(false);
@@ -147,7 +150,7 @@ public class ExplorationMaster {
     }
 
     public void init() {
-        explorationOn = getAggroMaster().checkExplorationDefault();
+        // explorationOn = getAggroMaster().checkExplorationDefault();
     }
 
     public ExploreGameLoop getLoop() {

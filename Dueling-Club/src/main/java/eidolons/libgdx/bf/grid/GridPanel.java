@@ -821,6 +821,10 @@ platforms...
             createDecor(obj.get());
         });
 
+        GuiEventManager.bind(removePrevious, CELL_DECOR_INIT, obj -> {
+            Map<Coordinates, DecorData> decorMap= (Map<Coordinates, DecorData>) obj.get();
+            initDecor(decorMap);
+        });
         GuiEventManager.bind(removePrevious, CELL_SET_VOID, obj -> {
             Coordinates c = (Coordinates) obj.get();
             main.system.auxiliary.log.LogMaster.log(1, "CELL_SET_VOID " + c);
@@ -1003,10 +1007,21 @@ platforms...
 
     }
 
+    protected void initDecor(Map<Coordinates, DecorData> decorMap) {
+        for (Coordinates coordinates : decorMap.keySet()) {
+            createDecor(coordinates, decorMap.get(coordinates));
+        }
+    }
     protected void createDecor(Object o) {
+
         List list = (List) o;
         Coordinates c = (Coordinates) list.get(0);
         DecorData data = (DecorData) list.get(1);
+        createDecor(c, data);
+
+    }
+        protected void createDecor(Coordinates c,
+                                   DecorData data            ) {
         for (DECOR_LEVEL level : decorMap.keySet()) {
             CellDecorLayer cellDecorLayer = decorMap.get(level);
             if (data == null) {
@@ -1034,10 +1049,7 @@ platforms...
     }
 
     public static boolean isDrawEmittersOnTop() {
-        if (EidolonsGame.FOOTAGE) {
-            return false;
-        }
-        return !EidolonsGame.BOSS_FIGHT;
+        return !EidolonsGame.FOOTAGE;
     }
 
     public void setUpdateRequired(boolean b) {

@@ -39,7 +39,9 @@ public class DC_MathManager extends MathMaster {
     }
 
     public static Integer getStartingFocus(Obj obj) {
-        return MathMaster.applyMod(obj.getIntParam(PARAMS.STARTING_FOCUS), obj.getIntParam(PARAMS.ORGANIZATION));
+        return obj.getIntParam(PARAMS.STARTING_FOCUS);
+        // return MathMaster.applyMod(obj.getIntParam(PARAMS.STARTING_FOCUS),
+        //         obj.getIntParam(PARAMS.ORGANIZATION));
     }
 
 

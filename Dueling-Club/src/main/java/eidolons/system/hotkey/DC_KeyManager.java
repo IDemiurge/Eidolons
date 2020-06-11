@@ -22,6 +22,8 @@ import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -52,7 +54,7 @@ public class DC_KeyManager
     //    private Map<String, HOTKEYS> specKeyMap;
     // private Map<Integer, HotKey> keyMap;
     private DC_GameManager mngr;
-    private ACTION_TYPE action_group = ActionEnums.ACTION_TYPE.STANDARD;
+    private final ACTION_TYPE action_group = ActionEnums.ACTION_TYPE.STANDARD;
     private Controller controller;
 
     public DC_KeyManager() {
@@ -166,10 +168,13 @@ public class DC_KeyManager
             return; // play random sound!...
         }
 
-
         char CHAR = (e.getKeyChar());
         int keyMod = e.getModifiers();
         //        arrowPressed(e); TODO
+
+        if (CoreEngine.isIDE()){
+            GuiEventManager.trigger(GuiEventType.KEY_TYPED, (int) CHAR);
+        }
         handleKeyTyped(keyMod, CHAR);
     }
 

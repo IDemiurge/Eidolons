@@ -6,6 +6,7 @@ import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.grid.cell.QueueView;
 import eidolons.libgdx.bf.grid.cell.UnitViewOptions;
+import eidolons.libgdx.bf.overlays.HpBar;
 
 public class BossQueueView extends QueueView {
     private final BossVisual parent;
@@ -19,6 +20,7 @@ public class BossQueueView extends QueueView {
         super(createOptions(unit, path), 0);
         // portrait= new FadeImageContainer(path);
         this.parent = parent;
+        hpBar = new HpBar(unit);
     }
 
     private static UnitViewOptions createOptions(BossUnit unit, String path) {

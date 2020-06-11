@@ -14,6 +14,7 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
+import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.elements.conditions.Condition;
@@ -67,9 +68,7 @@ public class BuffMaster extends Master {
     public static boolean checkBuffDispelable(BuffObj buff) {
         if (buff.getBuffType() == GenericEnums.BUFF_TYPE.SPELL) {
             if (!buff.isPermanent()) {
-                if (!buff.checkBool(GenericEnums.STD_BOOLS.NON_DISPELABLE)) {
-                    return true;
-                }
+                return !buff.checkBool(GenericEnums.STD_BOOLS.NON_DISPELABLE);
             }
         }
 
@@ -97,6 +96,24 @@ public class BuffMaster extends Master {
             type.setName(name);
         }
         return type;
+    }
+
+    public   void applyStdBuff(MetaEnums.STD_BUFF_NAME buffName, BattleFieldObject entity) {
+        //switch to get effects?
+
+        BuffType type = (BuffType) DataManager.getType(buffName.getName(), DC_TYPE.BUFFS);
+        Effect fx = getEffects(buffName);
+        double dur=0;
+        BuffObj buff= createBuff(type, null, entity.getOwner(), new Ref(entity), fx, dur, null);
+        entity.addBuff(buff);
+    }
+
+    private Effect getEffects(MetaEnums.STD_BUFF_NAME buffName) {
+        switch (buffName) {
+            case Disabled:
+                return EffectMaster.getDisablingEffect();
+        }
+        return null;
     }
 
     public void atbTimeElapsed(Float time) {

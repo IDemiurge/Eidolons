@@ -190,12 +190,19 @@ public class BattleGuiStage extends GuiStage {
         }
     }
 
+    @Override
+    public boolean keyTyped(char character) {
+        if (CoreEngine.isIDE()){
+            GuiEventManager.trigger(GuiEventType.KEY_TYPED, (int) character);
+        }
+        return super.keyTyped(character);
+    }
+
     protected void bindEvents() {
         super.bindEvents();
 
         GuiEventManager.bind(GuiEventType.COMBAT_STARTED, obj -> {
             topLeftPanel.getAtbPanel().toggleQueue(true);
-            largeText.show("Battle", obj.get().toString(), 2f);
             // WaitMaster.receiveInput(combat_ui_ready, true);
         });
         GuiEventManager.bind(GuiEventType.COMBAT_ENDED, obj -> {

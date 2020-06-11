@@ -1,9 +1,11 @@
 package eidolons.game.netherflame.boss;
 
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.netherflame.boss.ai.BossAi;
 import eidolons.game.netherflame.boss.anims.BossAnimHandler;
 import eidolons.game.netherflame.boss.anims.generic.BossVisual;
 import eidolons.game.netherflame.boss.logic.BossCycle;
+import eidolons.game.netherflame.boss.logic.action.BossActionMaster;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import eidolons.game.netherflame.boss.logic.rules.BossRules;
 import eidolons.game.netherflame.boss.logic.rules.BossTargeter;
@@ -19,6 +21,10 @@ public class BossHandler<T extends BossModel> {
 
     public BossHandler(BossManager<T> manager) {
         this.manager = manager;
+    }
+
+    protected DC_Game getGame() {
+        return manager.getGame();
     }
 
     public T getModel() {
@@ -41,6 +47,9 @@ public class BossHandler<T extends BossModel> {
         return manager.getRules();
     }
 
+    public BossActionMaster getActionMaster() {
+        return manager.getActionMaster();
+    }
     public BossTargeter getTargeter() {
         return manager.getTargeter();
     }
@@ -89,5 +98,9 @@ public class BossHandler<T extends BossModel> {
     }
 
     public void afterInit() {
+    }
+
+    public void battleStarted() {
+
     }
 }

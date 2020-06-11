@@ -70,7 +70,7 @@ public class WaitRule {
         if (!unit.hasBuff(WAIT_BUFF)) {
             return true;
         }
-        if (target.hasBuff(MetaEnums.STD_BUFF_NAMES.Channeling.name())) {
+        if (target.hasBuff(MetaEnums.STD_BUFF_NAME.Channeling.name())) {
             return true;
         }
         if (target.isDead()) {

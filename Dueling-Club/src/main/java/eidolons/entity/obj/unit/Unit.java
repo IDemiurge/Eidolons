@@ -94,8 +94,6 @@ import main.system.math.MathMaster;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static eidolons.game.battlecraft.logic.meta.universal.PartyManager.PRESET_POWER;
-
 public class Unit extends DC_UnitModel implements FacingEntity {
     protected DC_WeaponObj offhandNaturalWeapon;
     protected DC_WeaponObj naturalWeapon;
@@ -190,17 +188,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         initDeity();
         initEmblem();
         initIntegrityAlignments();
-        if (PRESET_POWER) {
-            getType().setParam(PARAMS.POWER, 50);
-            getType().setParam(PARAMS.HERO_LEVEL, 1);
-            getType().setParam(PARAMS.LEVEL, 3);
-            setParam(PARAMS.POWER, 50);
-            setParam(PARAMS.HERO_LEVEL, 1);
-            setParam(PARAMS.LEVEL, 3);
-            setParam(PARAMS.TOTAL_XP, DC_Formulas.getTotalXpForLevel(getLevel()));
-            addParam(PARAMS.XP, 100);
+        getInitializer().init();
 
-        }
     }
 
     @Override
@@ -939,7 +928,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         if (!checkParam(PARAMS.DIVINATION_MASTERY)) {
             return false;
         }
-        return !deity.getName().equals(MetaEnums.STD_BUFF_NAMES.Faithless.name());
+        return !deity.getName().equals(MetaEnums.STD_BUFF_NAME.Faithless.name());
 
     }
 

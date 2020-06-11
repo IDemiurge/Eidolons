@@ -6,6 +6,7 @@ import eidolons.game.netherflame.boss.anims.BossAnim3dHandler;
 import eidolons.game.netherflame.boss.anims.BossAnimHandler;
 import eidolons.game.netherflame.boss.anims.view.BossViewFactory;
 import eidolons.game.netherflame.boss.logic.BossCycle;
+import eidolons.game.netherflame.boss.logic.action.BossActionMaster;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import eidolons.game.netherflame.boss.logic.rules.*;
 import main.content.CONTENT_CONSTS;
@@ -25,6 +26,7 @@ public abstract class BossManager<T extends BossModel> {
     protected final BossVision visionRules;
     protected final BossCycle cycle;
     protected final BossViewFactory factory;
+    protected final BossActionMaster actionMaster;
     protected final T model; //full status?
     protected final BossAi ai;
     protected final BossAnim3dHandler animHandler3d;
@@ -40,6 +42,7 @@ public abstract class BossManager<T extends BossModel> {
         model = createModel();
         handlers.add(cycle = createCycle());
         handlers.add(ai = createAi());
+        handlers.add(actionMaster = createActionMaster());
         handlers.add(rules = createRules());
         handlers.add(animHandler3d = createAnimHandler());
         handlers.add(factory = createFactory());
@@ -47,6 +50,8 @@ public abstract class BossManager<T extends BossModel> {
         handlers.add(roundRules = createRoundRules());
         handlers.add(visionRules = createVisionRules());
     }
+
+    protected abstract BossActionMaster createActionMaster();
 
     public void init() {
         for (Coordinates c : game.getModule().getCoordinatesSet()) {
@@ -67,6 +72,11 @@ public abstract class BossManager<T extends BossModel> {
         // assembly = new BossAssembly(parts);
     }
 
+    public void battleStarted() {
+        for (BossHandler handler : getHandlers()) {
+            handler.battleStarted();
+        }
+    }
 
     private Map<BossCycle.BOSS_TYPE, BossUnit> createEntities() {
         Map<BossCycle.BOSS_TYPE, BossUnit> entities = new LinkedHashMap<>();
@@ -76,6 +86,7 @@ public abstract class BossManager<T extends BossModel> {
                     origin.getOffset(model.getOffset(boss_type)),
                     game.getPlayer(false));
             entities.put(boss_type, unit);
+            unit.init(this);
         }
         return entities;
     }
@@ -98,6 +109,10 @@ public abstract class BossManager<T extends BossModel> {
     protected abstract BossRulesImpl createRules();
 
     protected abstract BossAi createAi();
+
+    public BossActionMaster getActionMaster() {
+        return actionMaster;
+    }
 
     public T getModel() {
         return model;
@@ -137,5 +152,9 @@ public abstract class BossManager<T extends BossModel> {
 
     public BossViewFactory getFactory() {
         return factory;
+    }
+
+    public DC_Game getGame() {
+        return game;
     }
 }

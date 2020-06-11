@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
@@ -201,10 +200,6 @@ public class GridCell extends BlockableGroup implements Borderable {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (EidolonsGame.BOSS_FIGHT) {
-            super.draw(batch, 1);
-            return;
-        }
         if (!isWithinCamera()) {
             return;
         }

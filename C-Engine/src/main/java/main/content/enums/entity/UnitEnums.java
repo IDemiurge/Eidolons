@@ -133,8 +133,8 @@ public final class UnitEnums {
         private Map<COUNTER, COUNTER_INTERACTION> interactionMap;
         private COUNTER down;
         private COUNTER up;
-        private String imagePath;
-        private String name =
+        private final String imagePath;
+        private final String name =
          StringMaster.getWellFormattedString(name()) + StringMaster.COUNTER;
 
         COUNTER() {
@@ -385,7 +385,10 @@ public final class UnitEnums {
         UNCONSCIOUS,
         UNDYING,
         ENGAGED,
-        VIRULENT, // cannot
+        VIRULENT,
+        DISABLED, //("Is not active now")
+
+        // cannot
         // act/counter,
         // gets
         // -75%
@@ -487,7 +490,7 @@ public final class UnitEnums {
         ANIMALS("Animals,Wolves,Wargs,wild,"),
         REPTILES, BANDIT_SCUM(), SPIDERS,;
 
-        private String subgroups;
+        private final String subgroups;
 
         UNIT_GROUP(String groups) {
             this.subgroups = groups;

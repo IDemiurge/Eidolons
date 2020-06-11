@@ -15,6 +15,8 @@ import main.data.xml.XmlNodeMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
@@ -308,6 +310,11 @@ public class FloorLoader extends DungeonHandler {
     }
     public void loadingDone() {
         initMarks(master.getFloorWrapper().getTextDataMap());
+        initDecor(master.getFloorWrapper().getDecorMap());
+    }
+
+    protected void initDecor(Map<Coordinates, DecorData> decorMap) {
+        GuiEventManager.trigger(GuiEventType.CELL_DECOR_INIT , decorMap);
     }
 
     protected Map<Coordinates, CellScriptData> buildCellMap(String textContent) {

@@ -20,8 +20,8 @@ import main.system.text.LogManager;
 import static main.system.auxiliary.log.LogMaster.log;
 
 public class EngageEventProcessor {
-    private DC_Game game;
-    private ExplorationMaster master;
+    private final DC_Game game;
+    private final ExplorationMaster master;
 
     public EngageEventProcessor(ExplorationMaster master) {
         this.game = master.getGame();
@@ -69,8 +69,7 @@ public class EngageEventProcessor {
                 break;
             case combat_started:
                 master.switchExplorationMode(false);
-
-                GuiEventManager.trigger(GuiEventType.COMBAT_STARTED, event.arg.toString());
+                largeText( "Battle", event.arg.toString(), 2f);
                 break;
             case combat_ended:
                 master.switchExplorationMode(true);

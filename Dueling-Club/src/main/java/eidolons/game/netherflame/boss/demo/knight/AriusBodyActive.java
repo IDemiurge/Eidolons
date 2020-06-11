@@ -24,18 +24,23 @@ public class AriusBodyActive extends BossSpriteVisual {
 
     @Override
     protected int getEnd() {
+        if (CoreEngine.TEST_LAUNCH)
+            return 0;
         return 120;
     }
 
     @Override
     protected int getBegin() {
+        if (CoreEngine.TEST_LAUNCH)
+            return 0;
         return 40;
     }
 
     @Override
     protected String getSpriteKey() {
         if (CoreEngine.TEST_LAUNCH) {
-            return Assets.getKtxAtlasPath(Sprites.BOSS_KNIGHT_ATTACK);
+            // return Assets.getKtxAtlasPath(Sprites.BOSS_KNIGHT_ATTACK);
+            return Assets.getScaledAtlasPath(Sprites.BOSS_KNIGHT_ATTACK);
         }
         return Sprites.BOSS_KNIGHT_ATTACK;
     }

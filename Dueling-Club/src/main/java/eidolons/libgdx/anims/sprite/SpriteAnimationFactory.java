@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
-import eidolons.game.netherflame.boss.anims.view.SmartSprite;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
@@ -120,16 +119,11 @@ public class SpriteAnimationFactory {
                 //                OptionsMaster.saveOptions();
                 return getDefaultSprite(key);
             }
-            if (atlas == null) {
+            if (atlas == null  ) {
                 important("CRITICAL: No atlas for path - " + key);
                 return getDefaultSprite(key);
             }
             SpriteAnimation a =null ;
-            if (cutTest) {
-                if (key.contains("boss")) {
-                    a= new SmartSprite(fps30, atlas, 40, 120);
-                }
-            }
             if (a == null) {
               a = new SpriteAnimation(fps30, false, atlas);
             }
@@ -149,9 +143,6 @@ public class SpriteAnimationFactory {
         cache.put(key.toLowerCase(), a);
         return a;
     }
-
-    public static final  boolean cutTest=true;
-
 
     public static SpriteAnimation getDefaultSprite(String key) {
         important("Sprite replaced by default: " + key);

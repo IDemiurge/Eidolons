@@ -14,7 +14,6 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObje
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.boss.anims.old.BossView;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;
@@ -90,9 +89,7 @@ public class UnitViewFactory {
     }
 
     protected UnitGridView createView(BattleFieldObject bfObj, UnitViewOptions options) {
-        return
-                bfObj.isBoss() ? new BossView(options) :
-                        new UnitGridView(bfObj, options);
+        return new UnitGridView(bfObj, options);
     }
 
     protected void addLastSeenView(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
@@ -100,7 +97,7 @@ public class UnitViewFactory {
             if (VisionMaster.isLastSeenOn()) {
                 if (!bfObj.isPlayerCharacter())
                     if (!bfObj.isBoss())
-//                        if (!bfObj.isWall())
+                    //                        if (!bfObj.isWall())
                     {
                         LastSeenView lsv = new LastSeenView(options, view);
                         view.setLastSeenView(lsv);
@@ -187,8 +184,8 @@ public class UnitViewFactory {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-               Eidolons.onNonGdxThread(()->
-                tryDefaultAction(event));
+                Eidolons.onNonGdxThread(() ->
+                        tryDefaultAction(event));
 
                 super.clicked(event, x, y);
             }
@@ -225,9 +222,9 @@ public class UnitViewFactory {
                                 }
                     //TODO control options
                     if (event.getButton() == Buttons.LEFT) {
-                            DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
-                            event.cancel();
-                         {
+                        DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
+                        event.cancel();
+                        {
                             if (DefaultActionHandler.leftClickActor(bfObj)) {
                             }
                         }

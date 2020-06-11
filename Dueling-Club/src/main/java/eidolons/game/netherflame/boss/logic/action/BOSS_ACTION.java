@@ -1,6 +1,10 @@
 package eidolons.game.netherflame.boss.logic.action;
 
+import main.system.auxiliary.StringMaster;
+
 public interface BOSS_ACTION {
 
-    String getName();
+    default String getName() {
+        return StringMaster.getWellFormattedString(toString());
+    }
 }

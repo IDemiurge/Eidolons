@@ -1,12 +1,24 @@
 package eidolons.game.netherflame.boss.logic.entity;
 
 import eidolons.entity.handlers.bf.unit.*;
+import eidolons.game.netherflame.boss.BossManager;
+import main.game.logic.generic.ActionManager;
 
 public class BossMaster extends UnitMaster {
-    public BossMaster(BossUnit bossUnit) {
+    private BossManager manager;
+
+    public BossMaster(BossUnit bossUnit ) {
         super(bossUnit);
     }
 
+    public void setManager(BossManager manager) {
+        this.manager = manager;
+    }
+
+    @Override
+    public ActionManager getActionManager() {
+        return manager.getActionMaster();
+    }
 
     @Override
     public BossUnit getUnit() {

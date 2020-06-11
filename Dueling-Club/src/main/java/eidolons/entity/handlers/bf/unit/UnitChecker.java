@@ -8,7 +8,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.content.DC_TYPE;
-import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.enums.entity.UnitEnums.IMMUNITIES;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
@@ -56,7 +55,7 @@ public class UnitChecker extends EntityChecker<Unit> {
 
     public boolean canUseArmor() {
         return checkContainerProp(G_PROPS.CLASSIFICATIONS,
-                UnitEnums.CLASSIFICATIONS.HUMANOID.toString());
+                CLASSIFICATIONS.HUMANOID.toString());
     }
 
 
@@ -207,10 +206,10 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (checkStatus(STATUS.CHARMED)) {
             return false;
         }
-        if (checkStatus(UnitEnums.STATUS.EXHAUSTED)) {
+        if (checkStatus(STATUS.EXHAUSTED)) {
             return false;
         }
-        if (checkStatus(UnitEnums.STATUS.ASLEEP)) {
+        if (checkStatus(STATUS.ASLEEP)) {
             return false;
         }
         return !checkStatus(STATUS.FROZEN);
@@ -230,24 +229,24 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean checkStatusDisablesCounters() {
-        if (checkStatus(UnitEnums.STATUS.IMMOBILE)) {
+        if (checkStatus(STATUS.IMMOBILE)) {
             return true;
         }
-        if (checkStatus(UnitEnums.STATUS.CHARMED)) {
+        if (checkStatus(STATUS.CHARMED)) {
             return true;
         }
-        if (checkStatus(UnitEnums.STATUS.ENSNARED)) {
+        if (checkStatus(STATUS.ENSNARED)) {
             return true;
         }
-        if (checkStatus(UnitEnums.STATUS.PRONE)) {
+        if (checkStatus(STATUS.PRONE)) {
             return true;
         }
-        return checkStatus(UnitEnums.STATUS.EXHAUSTED);
+        return checkStatus(STATUS.EXHAUSTED);
 
     }
 
     public boolean isUnconscious() {
-        if (checkStatus(UnitEnums.STATUS.UNCONSCIOUS))
+        if (checkStatus(STATUS.UNCONSCIOUS))
             return true;
         if (getEntity().isPlayerCharacter()) {
             if (ShadowMaster.isShadowAlive())
@@ -292,7 +291,7 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (!canCounter()) {
             return false;
         }
-        if (active.checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
+        if (active.checkPassive(STANDARD_PASSIVES.NO_RETALIATION)) {
             return false;
         }
         // if (!attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
@@ -331,26 +330,29 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean checkStatusPreventsActions() {
-        if (checkStatus(UnitEnums.STATUS.DEAD)) {
+        if (checkStatus(STATUS.DEAD)) {
+            return true;
+        }
+        if (checkStatus(STATUS.DISABLED)) {
             return true;
         }
         if (checkPassive(STANDARD_PASSIVES.IMMOBILE)) {
             return true;
         }
-        if (checkStatus(UnitEnums.STATUS.EXHAUSTED)) {
+        if (checkStatus(STATUS.EXHAUSTED)) {
             return true;
         }
-        if (checkStatus(UnitEnums.STATUS.ASLEEP)) {
+        if (checkStatus(STATUS.ASLEEP)) {
             return true;
         }
         return checkStatus(STATUS.FROZEN);
     }
 
     public boolean isIncapacitated() {
-        if (checkStatus(UnitEnums.STATUS.IMMOBILE)) {
+        if (checkStatus(STATUS.IMMOBILE)) {
             return true;
         }
-        if (checkStatus(UnitEnums.STATUS.CHARMED)) {
+        if (checkStatus(STATUS.CHARMED)) {
             return true;
         }
         return checkStatusPreventsActions();
@@ -358,11 +360,11 @@ public class UnitChecker extends EntityChecker<Unit> {
 
     public boolean isImmobilized() {
 
-        if (checkStatus(UnitEnums.STATUS.IMMOBILE)) {
+        if (checkStatus(STATUS.IMMOBILE)) {
             return true;
         }
 
-        if (checkStatus(UnitEnums.STATUS.CHARMED)) {
+        if (checkStatus(STATUS.CHARMED)) {
             return true;
         }
 
@@ -385,22 +387,22 @@ public class UnitChecker extends EntityChecker<Unit> {
 
 
     public boolean isLiving() {
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.UNDEAD)) {
+        if (checkClassification(CLASSIFICATIONS.UNDEAD)) {
             return false;
         }
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)) {
+        if (checkClassification(CLASSIFICATIONS.WRAITH)) {
             return false;
         }
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.ELEMENTAL)) {
+        if (checkClassification(CLASSIFICATIONS.ELEMENTAL)) {
             return false;
         }
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.CONSTRUCT)) {
+        if (checkClassification(CLASSIFICATIONS.CONSTRUCT)) {
             return false;
         }
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.STRUCTURE)) {
+        if (checkClassification(CLASSIFICATIONS.STRUCTURE)) {
             return false;
         }
-        return !checkClassification(UnitEnums.CLASSIFICATIONS.MECHANICAL);
+        return !checkClassification(CLASSIFICATIONS.MECHANICAL);
     }
 
     public boolean isHidden() {
@@ -414,7 +416,7 @@ public class UnitChecker extends EntityChecker<Unit> {
 
     public boolean hasDoubleStrike() {
         return
-                checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_STRIKE);
+                checkPassive(STANDARD_PASSIVES.DOUBLE_STRIKE);
     }
 
     public boolean checkImmunity(IMMUNITIES type) {

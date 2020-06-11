@@ -403,6 +403,7 @@ public class DC_Game extends GenericGame {
 
         musicMaster.scopeChanged(MUSIC_SCOPE.BATTLE);
 
+        metaMaster.combatStarts();
     }
 
 

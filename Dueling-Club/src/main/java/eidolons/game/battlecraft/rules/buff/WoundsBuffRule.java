@@ -29,8 +29,8 @@ public class WoundsBuffRule extends DC_BuffRule {
     public static final String[] formulas = {
      "{SOURCE_ENDURANCE}/10", "{SOURCE_ENDURANCE}/5"};
 
-    public static final String[] buffTypeNames = {MetaEnums.STD_BUFF_NAMES.Critically_Wounded.getName(),
-     MetaEnums.STD_BUFF_NAMES.Wounded.getName(),};
+    public static final String[] buffTypeNames = {MetaEnums.STD_BUFF_NAME.Critically_Wounded.getName(),
+     MetaEnums.STD_BUFF_NAME.Wounded.getName(),};
 
     public WoundsBuffRule(GenericGame game) {
         super(game);

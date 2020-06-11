@@ -98,7 +98,7 @@ public class RageRule extends DC_CounterRule {
 
     @Override
     public String getBuffName() {
-        return MetaEnums.STD_BUFF_NAMES.Enraged.getName();
+        return MetaEnums.STD_BUFF_NAME.Enraged.getName();
     }
 
     @Override

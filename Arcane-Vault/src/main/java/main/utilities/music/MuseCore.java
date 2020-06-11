@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class MuseCore implements NativeKeyListener {
     private static final int SHIFT = 17;
-    private static final int ALT =136;
+    private static final int ALT = 136;
 
     public void init() {
         try {
@@ -36,19 +36,19 @@ public class MuseCore implements NativeKeyListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-         if ((ALT & nativeKeyEvent.getModifiers())!=0) {
-                if (nativeKeyEvent.getKeyCode() > 58) {
-                    if (nativeKeyEvent.getKeyCode() <= 61) {
-                        try {
-                            int index = nativeKeyEvent.getKeyCode() - 59;
-                            PlaylistHandler.playRandom(PlaylistHandler.PLAYLIST_TYPE.values()[index]);
-                        } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
-                        }
+        if ((ALT & nativeKeyEvent.getModifiers()) != 0) {
+            if (nativeKeyEvent.getKeyCode() > 58) {
+                if (nativeKeyEvent.getKeyCode() <= 58 + PlaylistHandler.PLAYLIST_TYPE.values().length) {
+                    try {
+                        int index = nativeKeyEvent.getKeyCode() - 59;
+                        PlaylistHandler.playRandom(PlaylistHandler.PLAYLIST_TYPE.values()[index]);
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
+            }
 
-             if ((SHIFT & nativeKeyEvent.getModifiers())!=0) {
+            if ((SHIFT & nativeKeyEvent.getModifiers()) != 0) {
                 if (nativeKeyEvent.getKeyCode() > 58) {
                     if (nativeKeyEvent.getKeyCode() < 70) {
                         try {
@@ -59,10 +59,10 @@ public class MuseCore implements NativeKeyListener {
                         }
                     }
                 }
-                }
-//            default:
-//                main.system.auxiliary.log.LogMaster.log(1, " nativeKeyEvent.getModifiers()=" +
-//                        nativeKeyEvent.getModifiers());
+            }
+            //            default:
+            //                main.system.auxiliary.log.LogMaster.log(1, " nativeKeyEvent.getModifiers()=" +
+            //                        nativeKeyEvent.getModifiers());
         }
 
     }

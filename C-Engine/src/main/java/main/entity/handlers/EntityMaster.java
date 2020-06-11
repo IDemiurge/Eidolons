@@ -3,6 +3,7 @@ package main.entity.handlers;
 
 import main.entity.Entity;
 import main.game.core.game.Game;
+import main.game.logic.generic.ActionManager;
 
 /**
  * Created by JustMe on 2/15/2017.
@@ -80,5 +81,9 @@ public abstract class EntityMaster<E extends Entity> {
 
     public Game getGame() {
         return game;
+    }
+
+    public ActionManager getActionManager() {
+        return null  ;
     }
 }

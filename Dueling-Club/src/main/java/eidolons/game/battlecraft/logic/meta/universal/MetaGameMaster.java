@@ -345,4 +345,13 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             }
         }
     }
+
+    public BossManager getBossManager() {
+        return bossManager;
+    }
+
+    public void combatStarts() {
+        if (bossManager != null)
+                bossManager.battleStarted();
+    }
 }

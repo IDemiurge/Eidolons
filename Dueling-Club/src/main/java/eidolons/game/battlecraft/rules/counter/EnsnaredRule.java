@@ -94,7 +94,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
 
     @Override
     public String getBuffName() {
-        return MetaEnums.STD_BUFF_NAMES.Entangled.getName();
+        return MetaEnums.STD_BUFF_NAME.Entangled.getName();
     }
 
     @Override

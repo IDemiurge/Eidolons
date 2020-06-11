@@ -6,6 +6,7 @@ import eidolons.game.netherflame.boss.BossManager;
 import eidolons.game.netherflame.boss.BossModel;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import main.content.DC_TYPE;
+import main.content.enums.system.MetaEnums;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 
@@ -60,10 +61,14 @@ public abstract class BossCycle<T extends BossModel> extends BossHandler<T> {
         entity.removeBuff(getFreezeBuffName());
     }
 
+    private String getFreezeBuffName() {
+        return MetaEnums.STD_BUFF_NAME.Disabled.getName();
+    }
 
     private void freeze(BOSS_TYPE type) {
         toggleActive(type, false);
         BossUnit entity = getEntity(type);
+       getGame().getManager().getBuffMaster() .applyStdBuff(MetaEnums.STD_BUFF_NAME.Disabled, entity);
         // entity.addBuff();
     }
 
@@ -98,9 +103,6 @@ public abstract class BossCycle<T extends BossModel> extends BossHandler<T> {
         return DataManager.getType(getModel().getName(type) + (active ? " Active" : ""), DC_TYPE.BOSS);
     }
 
-    private String getFreezeBuffName() {
-        return null;
-    }
 
 
     public enum BOSS_TYPE {

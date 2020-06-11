@@ -4,24 +4,33 @@ import eidolons.game.netherflame.boss.anims.BossAnims;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 
 public abstract class BossSwitchVisuals extends BossVisual {
-   protected BossVisual active;
-    protected  BossVisual passive;
+    protected BossVisual active;
+    protected BossVisual passive;
     protected BossVisual current;
+    private boolean activeOn;
 
     public BossSwitchVisuals(BossUnit unit) {
         super(unit);
         addActor(active = createActive(unit));
         addActor(passive = createPassive(unit));
-// Vector2 v = getOffsetActive();
-// active.setPosition(v.x, v.y);
+        active.setVisible(false);
+        // Vector2 v = getOffsetActive();
+        // active.setPosition(v.x, v.y);
         //what about mouse events? all that stuff? Just delegate to the ..?
     }
 
+    public void toggle() {
+        toggle(!activeOn);
+    }
+
     public void toggle(boolean activeOn) {
+        this.activeOn = activeOn;
         (!activeOn ? active : passive).fadeOut();
         current = activeOn ? active : passive;
+        current.setVisible(true);
         current.fadeIn();
     }
+
     @Override
     public void animate(BossAnims.BOSS_ANIM_COMMON anim) {
         current.animate(anim);

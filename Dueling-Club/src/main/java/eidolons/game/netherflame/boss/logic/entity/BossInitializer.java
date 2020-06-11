@@ -10,25 +10,19 @@ public class BossInitializer extends UnitInitializer {
     }
 
 
-
     @Override
     public void initActives() {
-       /**
-        * no turn, move, or such... or?
-        *
-        * actions from the enum?
-        */
+        super.initActives();
 
-
-   }
+    }
 
     @Override
     public void init() {
         super.init();
 
-//        initRoundTriggers();
+        //        initRoundTriggers();
 
-    //special event handler?
+        //special event handler?
 
 
     }

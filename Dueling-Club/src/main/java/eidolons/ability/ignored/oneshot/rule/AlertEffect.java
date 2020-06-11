@@ -16,7 +16,7 @@ public class AlertEffect extends WaitEffect {
 
     @Override
     protected String getBuffName() {
-        return MetaEnums.STD_BUFF_NAMES.On_Alert.getName();
+        return MetaEnums.STD_BUFF_NAME.On_Alert.getName();
     }
 
     @Override

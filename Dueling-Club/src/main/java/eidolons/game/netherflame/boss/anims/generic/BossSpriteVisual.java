@@ -1,5 +1,6 @@
 package eidolons.game.netherflame.boss.anims.generic;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import eidolons.game.netherflame.boss.anims.BossAnims;
 import eidolons.game.netherflame.boss.anims.view.SmartSprite;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
@@ -13,7 +14,7 @@ public abstract class BossSpriteVisual extends BossVisual {
 
     public BossSpriteVisual(BossUnit unit) {
         super(unit);
-        sprite = new SmartSprite(getFrameDuration(), AnimMaster3d.getOrCreateAtlas(
+        sprite = new SmartSprite(getPlayMode(), getFrameDuration(), AnimMaster3d.getOrCreateAtlas(
                 getSpriteKey()), getBegin(),
                 getEnd());
         addActor(new SpriteX(getTemplate(), getAlphaTemplate(), sprite));
@@ -21,6 +22,10 @@ public abstract class BossSpriteVisual extends BossVisual {
         if (isScaled()){
             sprite.setScale(2f);
         }
+    }
+
+    protected Animation.PlayMode getPlayMode() {
+        return Animation.PlayMode.LOOP_PINGPONG;
     }
 
     private boolean isScaled() {

@@ -14,6 +14,7 @@ import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.GraveyardManager;
 import main.game.bf.MovementManager;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 6/2/2017.
@@ -26,7 +27,7 @@ public class CombatMaster {
     protected GenericTurnManager turnManager;
     protected MovementManager movementManager;
     protected GraveyardManager graveyardManager;
-    private DC_ActionManager actionManager;
+    private final DC_ActionManager actionManager;
     private boolean chancesOff;
     private boolean diceAverage;
     private boolean rollsAverage;
@@ -102,7 +103,10 @@ public class CombatMaster {
     }
 
     public boolean isFullManualControl() {
-        return OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.MANUAL_CONTROL);
+        if (CoreEngine.isIDE()) {
+            return true;
+        }
+        return  OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.MANUAL_CONTROL);
     }
 
 

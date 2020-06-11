@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.game.DC_Game;
@@ -153,9 +152,6 @@ public abstract class GenericDungeonScreen extends GameScreen {
     private boolean isCenteredBackground() {
         if (backgroundSprite != null) {
             return true;
-        }
-        if (EidolonsGame.FOOTAGE || EidolonsGame.BOSS_FIGHT) {
-            return false;
         }
         return !ScreenMaster.isFullscreen();
     }

@@ -88,6 +88,7 @@ public class EngageEvents extends ExplorationHandler {
         if (source.isMine()) {
             if (isCombat()) {
                 //warning about aggro of other enemies
+                if (isWarningOn())
                 addEvent(ENGAGE_EVENT.popup, getAggroWarning(object));
                 return;
             }
@@ -113,6 +114,10 @@ public class EngageEvents extends ExplorationHandler {
                 logEvent(LogManager.LOGGING_DETAIL_LEVEL.FULL, "An enemy has been alerted!");
             }
         }
+    }
+
+    private boolean isWarningOn() {
+        return false;
     }
 
     private String getAggroWarning(BattleFieldObject object) {

@@ -1,10 +1,10 @@
 package eidolons.game.netherflame.boss.anims.view;
 
-import eidolons.libgdx.bf.grid.cell.BaseView;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
 
 public class BossTooltip extends UnitViewTooltip {
-    public BossTooltip(BaseView view) {
+    public BossTooltip(Actor view) {
         super(view);
     }
     /*
@@ -13,4 +13,5 @@ public class BossTooltip extends UnitViewTooltip {
         use zark frame?
 
      */
+
 }

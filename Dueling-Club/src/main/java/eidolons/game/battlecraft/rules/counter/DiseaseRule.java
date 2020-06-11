@@ -106,7 +106,7 @@ public class DiseaseRule extends DamageCounterRule  implements TimedRule {
 
     @Override
     public String getBuffName() {
-        return MetaEnums.STD_BUFF_NAMES.Contaminated.getName();
+        return MetaEnums.STD_BUFF_NAME.Contaminated.getName();
     }
 
     @Override

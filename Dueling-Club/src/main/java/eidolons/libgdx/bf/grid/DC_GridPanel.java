@@ -200,8 +200,10 @@ public class DC_GridPanel extends GridPanel {
     @Override
     public void resetZIndices() {
         super.resetZIndices();
-        for (BossVisual bossVisual : bossVisuals) {
-            bossVisual.setZIndex(Integer.MAX_VALUE);
+        for (BossVisual visual : bossVisuals) {
+            visual.setZIndex(Integer.MAX_VALUE);
+            visual.   setPosition(visual.getUnit().getX()*128,
+                    getGdxY_ForModule(visual.getUnit().getY())*128);
         }
         animMaster.setZIndex(Integer.MAX_VALUE);
     }
@@ -255,9 +257,6 @@ public class DC_GridPanel extends GridPanel {
         if (EidolonsGame.FOOTAGE) {
             return true;
         }
-        if (EidolonsGame.BOSS_FIGHT) {
-            return false;
-        }
         return !CoreEngine.isLiteLaunch();
 
         //        if (DC_Game.game.getDungeonMaster().getFloorWrapper() != null) {
@@ -300,6 +299,9 @@ public class DC_GridPanel extends GridPanel {
             ////TODO how to manage it z?
             addActor(visual);
             bossVisuals.add(visual);
+            visual.   setPosition(visual.getUnit().getX()*128,
+                    getGdxY_ForModule(visual.getUnit().getY())*128);
+            //centering?
             // CellDecorLayer layer = decorMap.get(level);
 
         });
@@ -316,14 +318,22 @@ public class DC_GridPanel extends GridPanel {
             GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
                 Pair<Unit, Pair<Integer, Float>> p = (Pair<Unit, Pair<Integer, Float>>) obj.get();
                 UnitGridView uv = (UnitGridView) viewMap.get(p.getLeft());
+                QueueView initiativeQueueUnitView = null;
                 if (uv == null) {
-                    addUnitView(p.getLeft());
-                    uv = (UnitGridView) viewMap.get(p.getLeft());
+                    for (BossVisual bossVisual : bossVisuals) {
+                        if (bossVisual.getUnit() == p.getLeft()) {
+                            initiativeQueueUnitView = bossVisual.getQueueView();
+                            break;
+                        }
+                    }
+                    // addUnitView(p.getLeft());
+                    // uv = (UnitGridView) viewMap.get(p.getLeft());
+                } else {
+                    initiativeQueueUnitView = uv.getInitiativeQueueUnitView();
                 }
-                if (uv != null) {
-                    uv.getInitiativeQueueUnitView().setTimeTillTurn(p.getRight().getRight());
-                    uv.getInitiativeQueueUnitView().updateInitiative(p.getRight().getLeft());
-                }
+
+                initiativeQueueUnitView.setTimeTillTurn(p.getRight().getRight());
+                initiativeQueueUnitView.updateInitiative(p.getRight().getLeft());
             });
         } else
             GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
