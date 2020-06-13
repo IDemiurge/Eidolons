@@ -282,4 +282,8 @@ public abstract class GenericDungeonScreen extends GameScreen {
     }
 
     public abstract GridPanel getGridPanel();
+
+    public ParticleManager getParticleManager() {
+        return particleManager;
+    }
 }

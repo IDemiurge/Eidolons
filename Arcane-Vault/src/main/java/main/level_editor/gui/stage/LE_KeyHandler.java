@@ -6,6 +6,7 @@ import eidolons.game.core.EUtils;
 import eidolons.libgdx.GdxMaster;
 import eidolons.system.controls.GlobalController;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
@@ -34,6 +35,9 @@ public class LE_KeyHandler extends LE_Handler {
         if (!alt && !ctrl) {
             ChooserDialog dialog = LE_Screen.getInstance().getGuiStage().getDialog();
             switch (keyCode) {
+                case Input.Keys.F1:
+                    getDisplayHandler().gameView();
+                    break;
                 case Input.Keys.TAB:
                     globalController.keyDown(keyCode);
                     GuiEventManager.trigger(GuiEventType.LE_GUI_TOGGLE);
@@ -88,20 +92,29 @@ public class LE_KeyHandler extends LE_Handler {
                 //camera?
             }
         }
-        if (ctrl) {
-            switch (keyCode) {
-                case Input.Keys.TAB:
-                    manager.cycleLayer();
-                    return;
-            }
-        }
         if (alt) {
             switch (keyCode) {
                 case Input.Keys.SPACE:
                     getCameraHandler().cycleCameraMode();
                     return;
+                case Input.Keys.Q:
+                    manager.cycleLayer();
+                    return;
             }
         }
+        switch (keyCode) {
+            case Input.Keys.UP:
+            case Input.Keys.DOWN:
+            case Input.Keys.RIGHT:
+            case Input.Keys.LEFT:
+                DIRECTION d = getDirectionForKey(keyCode, alt);
+                if (ctrl){
+                LevelEditor.getManager().getOperationHandler().move(d);
+                }else {
+                LevelEditor.getManager().getDecorHandler().offset(d);
+
+                }
+                }
     }
 
     public void keyTyped(char character) {
@@ -185,6 +198,21 @@ public class LE_KeyHandler extends LE_Handler {
                     return;
             }
         }
-    }
 
 }
+
+    private DIRECTION getDirectionForKey(int keyCode, boolean alt) {
+        switch (keyCode) {
+            case Input.Keys.UP:
+        return alt? DIRECTION.UP_LEFT: DIRECTION.UP;
+            case Input.Keys.DOWN:
+        return alt? DIRECTION.DOWN_LEFT: DIRECTION.DOWN;
+            case Input.Keys.RIGHT:
+        return alt? DIRECTION.UP_RIGHT: DIRECTION.RIGHT;
+            case Input.Keys.LEFT:
+        return alt? DIRECTION.DOWN_RIGHT: DIRECTION.LEFT;
+
+    }
+        return null;
+    }
+    }

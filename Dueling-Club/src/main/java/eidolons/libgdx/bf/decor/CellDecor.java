@@ -8,6 +8,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.EmitterActor;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
@@ -111,6 +112,7 @@ public class CellDecor extends GroupX {
             }
         }
         super.draw(batch, parentAlpha);
+        ((CustomSpriteBatch) batch).resetBlending();
     }
 
 }

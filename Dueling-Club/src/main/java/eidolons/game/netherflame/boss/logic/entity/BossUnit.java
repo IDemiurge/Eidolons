@@ -71,7 +71,7 @@ public class BossUnit extends Unit {
 
     @Override
     public Coordinates getCoordinates() {
-        // return CoordinatesMaster.getClosestTo(Eidolons.getMainHero().getCoordinates(), zone);
+        // return CoordinatesMaster.getClosestTo(Eidolons.getPlayerCoordinates(), zone);
         return super.getCoordinates();
     }
 

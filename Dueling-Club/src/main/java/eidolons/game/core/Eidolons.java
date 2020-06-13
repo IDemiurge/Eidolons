@@ -14,6 +14,7 @@ import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.libgdx.launch.GenericLauncher;
@@ -28,6 +29,7 @@ import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.test.Debugger;
+import main.game.bf.Coordinates;
 import main.game.core.game.Game;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -109,7 +111,14 @@ public class Eidolons {
         MAIN_HERO = mainHero;
     }
 
-    public static Unit getMainHero() {
+    public static Coordinates getPlayerCoordinates() {
+        if (CoreEngine.isLevelEditor()) {
+          return GridMaster.getCameraCenter();
+        } else {
+            return getMainHero().getCoordinates();
+        }
+    }
+        public static Unit getMainHero() {
         if (mainHero == null) {
             if (game == null)
                 return null;

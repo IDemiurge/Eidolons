@@ -97,7 +97,7 @@ public abstract class CellDataHandler<T extends DataUnit> extends LE_Handler {
     protected abstract String getXmlNodeName();
 
     public void clear(Coordinates c) {
-        getOperationHandler().execute(getOperation(), c,
+        getOperationHandler().operation(getOperation(), c,
                 createData(""), getData(c));
     }
 
@@ -126,7 +126,7 @@ public abstract class CellDataHandler<T extends DataUnit> extends LE_Handler {
 
         String text = data.getData();
         if (!text.equals(prev.getData())) {
-            getOperationHandler().execute(getOperation(), c, data, prev);
+            getOperationHandler().operation(getOperation(), c, data, prev);
         }
     }
 

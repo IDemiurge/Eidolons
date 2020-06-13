@@ -58,7 +58,7 @@ public class SimpleAnim implements Animation {
     }
     public SimpleAnim(String vfx, String spritePaths, Runnable onDone) {
         this(vfx, spritePaths, onDone, GridMaster.getCenteredPos(
-                Eidolons.getMainHero().getCoordinates()), null, null);
+                Eidolons.getPlayerCoordinates()), null, null);
         this.spritePaths = spritePaths;
         this.onDone = onDone;
     }

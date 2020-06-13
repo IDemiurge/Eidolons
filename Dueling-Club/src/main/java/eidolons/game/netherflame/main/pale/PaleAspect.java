@@ -107,7 +107,7 @@ public class PaleAspect {
     }
 
     public static void shadowLeapToLocation(Unit unit, boolean adjacent) {
-        Coordinates c = Eidolons.getMainHero().getCoordinates();
+        Coordinates c = Eidolons.getPlayerCoordinates();
         shadowLeapToLocation(unit, adjacent, c);
     }
 

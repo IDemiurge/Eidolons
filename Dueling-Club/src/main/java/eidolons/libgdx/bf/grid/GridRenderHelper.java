@@ -79,7 +79,7 @@ public class GridRenderHelper {
     DC_GridPanel panel;
     private Integer waitCounter = 0;
     private Coordinates c;
-    private List<Runnable> commentRunnables =    new ArrayList<>() ;
+    private final List<Runnable> commentRunnables =    new ArrayList<>() ;
 
     public GridRenderHelper(DC_GridPanel panel) {
         instance = this;
@@ -271,9 +271,9 @@ public class GridRenderHelper {
         SpriteX finalCommentBgSprite = commentBgSprite;
         SpriteX finalCommentTextBgSprite = commentTextBgSprite;
         DIRECTION textPlacement = textTop ? DIRECTION.DOWN
-                : (c.dst(Eidolons.getMainHero().getCoordinates()) > 4) ? DIRECTION.LEFT : DIRECTION.RIGHT;
+                : (c.dst(Eidolons.getPlayerCoordinates()) > 4) ? DIRECTION.LEFT : DIRECTION.RIGHT;
         if (finalAt != null) {
-            Vector2 v = GridMaster.getCenteredPos(Eidolons.getMainHero().getCoordinates());
+            Vector2 v = GridMaster.getCenteredPos(Eidolons.getPlayerCoordinates());
             if (v.x < finalAt.x) {
                 textPlacement = DIRECTION.LEFT;
             } else {

@@ -68,7 +68,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
             if (ai.getExplorationTimePassed() <= ExplorationTimeMaster.secondsPerAP)
                 continue;
             double distance = PositionMaster.getExactDistance(ai.getUnit().getCoordinates(),
-             Eidolons.getMainHero().getCoordinates());
+             Eidolons.getPlayerCoordinates());
             if (distance > getMaxDistance(ai))
                 continue;
             try {

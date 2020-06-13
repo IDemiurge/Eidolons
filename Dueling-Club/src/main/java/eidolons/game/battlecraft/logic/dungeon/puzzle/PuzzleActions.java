@@ -39,7 +39,7 @@ public class PuzzleActions extends PuzzleElement {
                 case ROTATE_MOSAIC_CELL_ANTICLOCKWISE:
                     arg= 1;
                 case ROTATE_MOSAIC_CELL_CLOCKWISE:
-                    DC_Cell cell = DC_Game.game.getCellByCoordinate(Eidolons.getMainHero().getCoordinates());
+                    DC_Cell cell = DC_Game.game.getCellByCoordinate(Eidolons.getPlayerCoordinates());
                     cell.setOverlayRotation(cell.getOverlayRotation() + 90 * (int) (arg));
                     GuiEventManager.trigger(GuiEventType.CELL_RESET, cell);
                     break;

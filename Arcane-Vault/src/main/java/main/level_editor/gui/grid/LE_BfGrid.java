@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.libgdx.bf.decor.DecorData;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.GridSubParts;
 import eidolons.libgdx.bf.grid.GridViewAnimator;
@@ -20,7 +21,10 @@ import main.level_editor.LevelEditor;
 import main.level_editor.backend.display.LE_DisplayMode;
 import main.level_editor.backend.functions.advanced.LE_GridAnimTester;
 import main.level_editor.backend.handlers.selection.LE_Selection;
+import main.level_editor.backend.metadata.options.LE_Options;
+import main.level_editor.backend.metadata.options.LE_OptionsMaster;
 import main.system.GuiEventManager;
+import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.List;
@@ -67,17 +71,17 @@ public class LE_BfGrid extends GridPanel {
 
     @Override
     protected boolean isShadowMapOn() {
-        return false;
+        return LE_OptionsMaster.getOptions_().getBooleanValue(LE_Options.EDITOR_OPTIONS.real_view_enabled);
+    }
+
+    @Override
+    protected boolean isShardsOn() {
+        return LE_OptionsMaster.getOptions_().getBooleanValue(LE_Options.EDITOR_OPTIONS.real_view_enabled);
     }
 
     @Override
     protected void resetVisible() {
         super.resetVisible();
-    }
-
-    @Override
-    protected void addVoidDecorators(boolean hasVoid) {
-        super.addVoidDecorators(false);
     }
 
     @Override
@@ -185,17 +189,21 @@ public class LE_BfGrid extends GridPanel {
     }
 
     @Override
-    protected void createDecor(Object o) {
-        super.createDecor(o);
+    protected void createDecor(Coordinates c, DecorData data) {
+        super.createDecor(c, data);
         resetZIndices();
-        updateCellLabel( (List) o, null );
+        updateCellLabel(c, data.getData(), null );
     }
 
     private void updateCellLabel(List list, Boolean aiOrScriptsOrDecor) {
         Coordinates c = (Coordinates) list.get(0);
         String data =  list.get(1).toString();
+        updateCellLabel(c, data, aiOrScriptsOrDecor);
+    }
+        private void updateCellLabel(Coordinates c , String data, Boolean aiOrScriptsOrDecor) {
         GridCellContainer container = cells[c.x][ (c.y)];
         if (aiOrScriptsOrDecor == null) {
+            data= data.replace(";", StringMaster.NEW_LINE);
             ((LE_GridCell) container).getDecorLabel().setText(data);
         } else
         if (aiOrScriptsOrDecor) {

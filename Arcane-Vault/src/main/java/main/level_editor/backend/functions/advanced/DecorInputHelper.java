@@ -51,6 +51,7 @@ public class DecorInputHelper extends TextInputPanel {
     }
 
     private void command(String cmd) {
+        int d = 90;
         switch (cmd) {
             case "FlipX":
                 //remove if contains
@@ -61,11 +62,13 @@ public class DecorInputHelper extends TextInputPanel {
                 insert(new GraphicData("").setValue(GraphicData.GRAPHIC_VALUE.flipY,
                          "true").getData());
                 break;
-            case   "Rotate90":
-                int intValue = getData().getIntValue(GraphicData.GRAPHIC_VALUE.rotation);
-
-                break;
             case   "Rotate45":
+                d=45;
+            case   "Rotate90":
+                GraphicData data = getData();
+                int intValue = data. getIntValue(GraphicData.GRAPHIC_VALUE.rotation);
+                data.setValue(GraphicData.GRAPHIC_VALUE.rotation, (intValue+d)%360);
+                tf.setText(data.getData());
                 break;
             case   "Align":
                 break;

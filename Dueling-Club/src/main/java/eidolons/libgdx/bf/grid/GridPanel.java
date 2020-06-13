@@ -25,6 +25,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.flight.FlightHandler;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.game.netherflame.boss.anims.generic.BossVisual;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FadeOutAction;
@@ -56,8 +57,8 @@ import main.data.ability.construct.VariableManager;
 import main.entity.EntityCheckMaster;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -109,6 +110,7 @@ public abstract class GridPanel extends Group {
     protected List<PlatformCell> platforms = new LinkedList<>();
     protected Set<PlatformDecor> platformDecor = new LinkedHashSet();
     protected final Map<DECOR_LEVEL, CellDecorLayer> decorMap = new HashMap<>();
+    private boolean decorInitialized;
 
     public GridPanel(int cols, int rows, int moduleCols, int moduleRows) {
         this.square = rows * cols;
@@ -293,7 +295,7 @@ platforms...
                 try {
                     addActor(shards = new ShardVisuals(this));
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    ExceptionMaster.printStackTrace(e);
                 }
             if (isPillarsOn())
                 addActor(pillars = new Pillars(this));
@@ -455,7 +457,7 @@ platforms...
                                     try {
                                         return obj.getLastSeenOutline().getImagePath();
                                     } catch (Exception e) {
-                                        main.system.ExceptionMaster.printStackTrace(e);
+                                        ExceptionMaster.printStackTrace(e);
                                     }
                                     return null;
                                 });
@@ -486,7 +488,7 @@ platforms...
     protected void createUnitsViews(DequeImpl<BattleFieldObject> units) {
 
         Map<Coordinates, List<BattleFieldObject>> map = new HashMap<>();
-        main.system.auxiliary.log.LogMaster.log(1, " " + units);
+        LogMaster.log(1, " " + units);
         for (BattleFieldObject object : units) {
             Coordinates c = object.getCoordinates();
             if (c == null)
@@ -527,12 +529,12 @@ platforms...
                         [(coordinates.getY())];
 
                 if (gridCellContainer == null) {
-                    main.system.auxiliary.log.LogMaster.log(1, "Grid cell is null at " + coordinates);
+                    LogMaster.log(1, "Grid cell is null at " + coordinates);
                     continue;
                 }
                 views.forEach(gridCellContainer::addActor);
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
 
         }
@@ -566,11 +568,11 @@ platforms...
         Coordinates c = object.getCoordinates();
         GridCellContainer cell = getGridCell(c.x, c.y);
         if (cell == null) {
-            main.system.auxiliary.log.LogMaster.dev("No cell for view: " + object.getNameAndCoordinate());
+            LogMaster.dev("No cell for view: " + object.getNameAndCoordinate());
             return;
         }
         cell.addActor(uv);
-        GuiEventManager.trigger(GuiEventType.UNIT_VIEW_MOVED, uv);
+        GuiEventManager.trigger(UNIT_VIEW_MOVED, uv);
         if (uv.getLastSeenView() != null) {
             if (LastSeenMaster.isUpdateRequired(object))
                 cell.addActor(uv.getLastSeenView());
@@ -581,7 +583,7 @@ platforms...
 
     protected BaseView createUnitView(BattleFieldObject battleFieldObject) {
         if (viewMap.get(battleFieldObject) != null) {
-            main.system.auxiliary.log.LogMaster.log(1, ">>>>>> UnitView already created!!! " + battleFieldObject);
+            LogMaster.log(1, ">>>>>> UnitView already created!!! " + battleFieldObject);
             return viewMap.get(battleFieldObject);
         }
         UnitGridView view = doCreateUnitView(battleFieldObject);
@@ -591,7 +593,7 @@ platforms...
         unitMoved(battleFieldObject);
         if (!isVisibleByDefault(battleFieldObject))
             view.setVisible(false);
-        GuiEventManager.trigger(GuiEventType.UNIT_VIEW_CREATED, view);
+        GuiEventManager.trigger(UNIT_VIEW_CREATED, view);
         return view;
     }
 
@@ -668,7 +670,7 @@ platforms...
             platform.setZIndex(Integer.MAX_VALUE);
             //if we had over and under... we could setPos for them on act?
         }
-        decorMap.get(DECOR_LEVEL.BOTTOM).setZIndex(Integer.MAX_VALUE);
+        decorMap.get(DECOR_LEVEL.BOTTOM).setZIndex(0);
         List<GridCellContainer> topCells = new ArrayList<>();
         loop:
         for (int x = x1; x < x2; x++) {
@@ -742,6 +744,12 @@ platforms...
         flightHandler.getObjsVfx().setZIndex(Integer.MAX_VALUE);
 
         decorMap.get(DECOR_LEVEL.TOP).setZIndex(Integer.MAX_VALUE);
+
+        for (BossVisual visual : bossVisuals) {
+            visual.setZIndex(Integer.MAX_VALUE);
+            visual.setPosition(visual.getCoordinates().getX() * 128,
+                    getGdxY_ForModule(visual.getCoordinates().getY()) * 128);
+        }
     }
 
     public void addOverlay(OverlayView view) {
@@ -801,10 +809,20 @@ platforms...
         return cells[i][i1].getUserObject();
     }
 
+    protected final Set<BossVisual> bossVisuals = new LinkedHashSet<>();
 
     protected void bindEvents() {
         boolean removePrevious = !CoreEngine.isLevelEditor();
-
+        GuiEventManager.bind(ADD_BOSS_VIEW, obj -> {
+            BossVisual visual = (BossVisual) obj.get();
+            ////TODO how to manage it z?
+            addActor(visual);
+            bossVisuals.add(visual);
+            visual.setPosition(visual.getCoordinates().getX() * 128,
+                    getGdxY_ForModule(visual.getCoordinates().getY()) * 128);
+            //centering?
+            // CellDecorLayer layer = decorMap.get(level);
+        });
         GuiEventManager.bind(removePrevious, RESET_VIEW, obj -> {
             BattleFieldObject object = (BattleFieldObject) obj.get();
             UnitView unitView = getUnitView(object);
@@ -822,12 +840,12 @@ platforms...
         });
 
         GuiEventManager.bind(removePrevious, CELL_DECOR_INIT, obj -> {
-            Map<Coordinates, DecorData> decorMap= (Map<Coordinates, DecorData>) obj.get();
+            Map<Coordinates, DecorData> decorMap = (Map<Coordinates, DecorData>) obj.get();
             initDecor(decorMap);
         });
         GuiEventManager.bind(removePrevious, CELL_SET_VOID, obj -> {
             Coordinates c = (Coordinates) obj.get();
-            main.system.auxiliary.log.LogMaster.log(1, "CELL_SET_VOID " + c);
+            LogMaster.log(1, "CELL_SET_VOID " + c);
             setVoid(c.x, c.y, true);
         });
         GuiEventManager.bind(removePrevious, CELLS_MASS_RESET_VOID, obj -> {
@@ -870,7 +888,7 @@ platforms...
                 Coordinates c = (Coordinates) list.get(1);
                 gridObj = findGridObj(key, c);
                 if (gridObj == null) {
-                    main.system.auxiliary.log.LogMaster.dev("No grid obj to remove: " + key + c);
+                    LogMaster.dev("No grid obj to remove: " + key + c);
                     return;
                 }
             }
@@ -881,7 +899,7 @@ platforms...
             gridObjects.remove(gridObj);
         });
 
-        GuiEventManager.bind(removePrevious, GuiEventType.ADD_GRID_OBJ, p -> {
+        GuiEventManager.bind(removePrevious, ADD_GRID_OBJ, p -> {
             GridObject object = (GridObject) p.get();
             addActor(object);
 
@@ -940,7 +958,7 @@ platforms...
                 container.setOverlayRotation(cell.getOverlayRotation());
                 container.setTeamColor(GdxColorMaster.getColorForTheme(cell.getColorTheme()));
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
 
         });
@@ -1007,11 +1025,13 @@ platforms...
 
     }
 
-    protected void initDecor(Map<Coordinates, DecorData> decorMap) {
+    public void initDecor(Map<Coordinates, DecorData> decorMap) {
         for (Coordinates coordinates : decorMap.keySet()) {
             createDecor(coordinates, decorMap.get(coordinates));
         }
+        decorInitialized=true;
     }
+
     protected void createDecor(Object o) {
 
         List list = (List) o;
@@ -1020,8 +1040,9 @@ platforms...
         createDecor(c, data);
 
     }
-        protected void createDecor(Coordinates c,
-                                   DecorData data            ) {
+
+    protected void createDecor(Coordinates c,
+                               DecorData data) {
         for (DECOR_LEVEL level : decorMap.keySet()) {
             CellDecorLayer cellDecorLayer = decorMap.get(level);
             if (data == null) {
@@ -1151,7 +1172,7 @@ platforms...
 
         cellContainer.fadeOutOverlay();
 
-        main.system.auxiliary.log.LogMaster.log(1, "fadeOutOverlay " + cellContainer);
+        LogMaster.log(1, "fadeOutOverlay " + cellContainer);
     }
 
     public void showMoveGhostOnCell(Unit unit) {
@@ -1163,7 +1184,7 @@ platforms...
         }
         cellContainer.fadeInOverlay(texture);
 
-        main.system.auxiliary.log.LogMaster.log(1, "showMoveGhostOnCell " + cellContainer);
+        LogMaster.log(1, "showMoveGhostOnCell " + cellContainer);
     }
 
     public int getGdxY_ForModule(int y) {
@@ -1229,6 +1250,22 @@ platforms...
 
     public GridCell getGridCell(Coordinates coordinate) {
         return getGridCell(coordinate.x, coordinate.y);
+    }
+
+    public ShadowMap getShadowMap() {
+        return shadowMap;
+    }
+
+    public ShardVisuals getShards() {
+        return shards;
+    }
+
+    public boolean isDecorInitialized() {
+        return decorInitialized;
+    }
+
+    public void setDecorInitialized(boolean decorInitialized) {
+        this.decorInitialized = decorInitialized;
     }
 }
 

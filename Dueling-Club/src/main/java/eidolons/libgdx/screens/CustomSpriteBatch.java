@@ -26,7 +26,7 @@ public class CustomSpriteBatch extends ShaderBatch {
     private static CustomSpriteBatch instance;
     PostProcessController controller;
     private BLENDING blending;
-    private Set<FluctuatingShader> shaders = new HashSet<>();
+    private final Set<FluctuatingShader> shaders = new HashSet<>();
     private ShaderProgram bufferedShader;
 
 
@@ -111,6 +111,7 @@ public class CustomSpriteBatch extends ShaderBatch {
 //                    batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 //                }
         switch (blending) {
+            case SUBTRACT:
             case INVERT_SCREEN:
                 //lots of experimentation there..
 //                setBlendFunction(GL20.GL_ONE_MINUS_SRC_COLOR, GL20.GL_DST_COLOR);

@@ -90,8 +90,9 @@ public class SpeechScript extends DataUnit<SpeechScript.SCRIPT> {
     }
 
     @Override
-    public void setValue(SCRIPT name, Object val) {
+    public DataUnit<SCRIPT> setValue(SCRIPT name, Object val) {
         setValue(name, val.toString());
+        return null;
     }
 
     @Override

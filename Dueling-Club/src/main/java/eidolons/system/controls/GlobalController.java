@@ -193,7 +193,7 @@ public class GlobalController implements Controller {
                 // }
                 return true;
             case Keys.F7:
-                GuiEventManager.trigger(GuiEventType.FLIGHT_END );
+                GuiEventManager.trigger(GuiEventType.FLIGHT_END);
                 // DC_Game.game.getMetaMaster().getDialogueManager().test();
 
                 return true;
@@ -201,7 +201,7 @@ public class GlobalController implements Controller {
                 // new Thread(() -> IntroLauncher.introBriefing(), " thread").start();
                 GuiEventManager.trigger(GuiEventType.VISUAL_CHOICE,
                         new VC_DataSource(VC_DataSource.VC_TYPE.death));
-                Eidolons.onNonGdxThread(()->{
+                Eidolons.onNonGdxThread(() -> {
                     Object o = WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.VISUAL_CHOICE);
                     GuiEventManager.trigger(GuiEventType.VISUAL_CHOICE,
                             new VC_DataSource(VC_DataSource.VC_TYPE.hero_choice, o));
@@ -316,7 +316,8 @@ public class GlobalController implements Controller {
             list.addAll(cell.getUnitViewsVisible());
         }
         if (list.size() <= 1) {
-            GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
+            if (!CoreEngine.isLevelEditor())
+                GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
             if (ScreenMaster.getScreen().getController().inputPass()) {
 
             }

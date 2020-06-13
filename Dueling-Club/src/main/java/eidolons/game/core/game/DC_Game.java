@@ -190,7 +190,7 @@ public class DC_Game extends GenericGame {
         requirementsManager = new DC_RequirementsManager(this);
         valueManager = new DC_ValueManager(this);
         if (!isSimulation())
-            visionMaster = new VisionMaster(this);
+            visionMaster = createVisionMaster();
         mathManager = new DC_MathManager(this);
         effectManager = new DC_EffectManager(this);
         setTestMaster(new TestMasterContent(this));
@@ -219,6 +219,10 @@ public class DC_Game extends GenericGame {
             return;
         missionMaster = createBattleMaster();
         musicMaster = MusicMaster.getInstance();
+    }
+
+    protected VisionMaster createVisionMaster() {
+        return new VisionMaster(this);
     }
 
     protected DC_GameManager createGameManager() {

@@ -4,12 +4,12 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.game.netherflame.boss.anims.BossAnims;
 import eidolons.game.netherflame.boss.anims.view.BossQueueView;
-import eidolons.game.netherflame.boss.anims.view.BossTooltip;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import eidolons.libgdx.bf.grid.cell.QueueView;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import main.game.bf.Coordinates;
 import main.system.launch.CoreEngine;
 
 public abstract class BossVisual extends GroupX {
@@ -34,8 +34,9 @@ public abstract class BossVisual extends GroupX {
         this.unit = unit;
         setUserObject(unit);
         init();
-        if (CoreEngine.TEST_LAUNCH) {
-            debugAll();
+        if (!CoreEngine.isLevelEditor()) {
+            if (CoreEngine.TEST_LAUNCH)
+                debugAll();
         }
 
     }
@@ -60,7 +61,10 @@ public abstract class BossVisual extends GroupX {
         if (isInitListeners())
             addListener(createListener());
 
-        addListener(new BossTooltip(this).getController());
+        // addListener(new BossTooltip(this).getController());
+        if (unit == null) {
+            return;
+        }
         setSize(unit.getWidth() * 128, unit.getHeight() * 128);
 
         if (isInitQueueView()) {
@@ -115,5 +119,9 @@ public abstract class BossVisual extends GroupX {
 
     public QueueView getQueueView() {
         return queueView;
+    }
+
+    public Coordinates getCoordinates() {
+        return getUnit().getCoordinates();
     }
 }

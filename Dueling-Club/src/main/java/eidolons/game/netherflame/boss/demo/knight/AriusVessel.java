@@ -34,10 +34,10 @@ public class AriusVessel extends BossVisual {
         glaive.setOrigin(Align.center);
         orb.setOrigin(Align.center);
 
-        addActor(emitterActor = new EmitterActor(GenericEnums.VFX.invert_bloody_bleed2));
-        emitterActor.start();
-        emitterActor.setX(orb.getX());
-        emitterActor.setY(orb.getY());
+        // addActor(emitterActor = new EmitterActor(GenericEnums.VFX.invert_bloody_bleed2));
+        // emitterActor.start();
+        // emitterActor.setX(orb.getX());
+        // emitterActor.setY(orb.getY());
         runes.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.SHARD_OVERLAY);
         // orb.setSclaeTemplate(GenericEnums.ALPHA_TEMPLATE.HEART);
     }
@@ -47,6 +47,10 @@ public class AriusVessel extends BossVisual {
         super.act(delta);
         //up and down?
         // speed = speedAction.getValue();
+
+        glaive.setX(glaive.getX()+12);
+        glaive.setX(glaive.getY()+5);
+
         runes.setRotation(runes.getRotation()+delta*speed);
         glaive.setRotation(runes.getRotation()-delta*speed*2);
         orb.setRotation(runes.getRotation()-delta*speed/2);

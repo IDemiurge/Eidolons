@@ -31,7 +31,7 @@ public class DungeonEnums {
         ancient,
         carved,
         dark_star,
-
+red_stone,
         //wood
         //bridge
         ;
@@ -202,7 +202,7 @@ public class DungeonEnums {
         ERSIDRIS(PathFinder.getBgPicsPath(), "ERSIDRIS.png")
 
         ;
-        private String backgroundFilePath;
+        private final String backgroundFilePath;
 
         MAP_BACKGROUND(String... backgroundPathSegments) {
             this.backgroundFilePath = StrPathBuilder.build(backgroundPathSegments);
@@ -224,8 +224,8 @@ public class DungeonEnums {
         // ROCKS("Tree Sapling(2);Oak(2);Shrub(3);",
         // "Fallen Tree(1);Mossy Boulder(1);Sleek Rock(1);"),
         ;
-        private String centerObjects;
-        private String peripheryObjects;
+        private final String centerObjects;
+        private final String peripheryObjects;
 
         MAP_FILL_TEMPLATE(String centerObjects, String peripheryObjects) {
             this.centerObjects = centerObjects;

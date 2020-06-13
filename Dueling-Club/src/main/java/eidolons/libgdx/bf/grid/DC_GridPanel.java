@@ -73,7 +73,6 @@ public class DC_GridPanel extends GridPanel {
     private boolean updateRequired;
     private boolean firstUpdateDone;
     private boolean welcomeInfoShown;
-    private final Set<BossVisual> bossVisuals = new LinkedHashSet<>();
 
     public DC_GridPanel(int paramCols, int paramRows, int cols, int rows) {
         super(paramCols, paramRows, cols, rows);
@@ -200,11 +199,6 @@ public class DC_GridPanel extends GridPanel {
     @Override
     public void resetZIndices() {
         super.resetZIndices();
-        for (BossVisual visual : bossVisuals) {
-            visual.setZIndex(Integer.MAX_VALUE);
-            visual.   setPosition(visual.getUnit().getX()*128,
-                    getGdxY_ForModule(visual.getUnit().getY())*128);
-        }
         animMaster.setZIndex(Integer.MAX_VALUE);
     }
 
@@ -294,17 +288,7 @@ public class DC_GridPanel extends GridPanel {
     protected void bindEvents() {
         super.bindEvents();
 
-        GuiEventManager.bind(ADD_BOSS_VIEW, obj -> {
-            BossVisual visual = (BossVisual) obj.get();
-            ////TODO how to manage it z?
-            addActor(visual);
-            bossVisuals.add(visual);
-            visual.   setPosition(visual.getUnit().getX()*128,
-                    getGdxY_ForModule(visual.getUnit().getY())*128);
-            //centering?
-            // CellDecorLayer layer = decorMap.get(level);
 
-        });
         GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
             List list = (List) obj.get();
             UnitView view = (UnitView) getViewMap().get(list.get(0));

@@ -192,7 +192,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
     private void exited() {
         //TODO isApplyPunishment()
         if (isPointExit())
-            if (Eidolons.getMainHero().getCoordinates().equals(puzzle.getExitCoordinates())) {
+            if (Eidolons.getPlayerCoordinates().equals(puzzle.getExitCoordinates())) {
                 return;
             }
         puzzle.failed();

@@ -3,9 +3,11 @@ package main.level_editor.backend.sim;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.game.ScenarioGame;
@@ -23,14 +25,11 @@ import main.level_editor.backend.sim.impl.LE_DungeonMaster;
 import java.util.Map;
 
 public class LE_GameSim extends ScenarioGame {
-    private static final String DUMMY = "Base Human Unit";
+    private static final String DUMMY = "Thief";
     private final LE_IdManager simIdManager;
     private Unit dummyPC;
     private DC_Player ally;
     private DC_Player enemy;
-    /*
-
-     */
 
     public void enterModule(Module module) {
         grid = new DC_BattleFieldGrid(module);
@@ -44,7 +43,6 @@ public class LE_GameSim extends ScenarioGame {
         simIdManager = new LE_IdManager();
         setSimulation(true);
     }
-
     @Override
     public DC_Player getPlayer(boolean me) {
         return me ? ally : enemy;
@@ -53,6 +51,11 @@ public class LE_GameSim extends ScenarioGame {
     @Override
     protected DC_KeyManager createKeyManager() {
         return null;
+    }
+
+    @Override
+    protected VisionMaster createVisionMaster() {
+        return new LE_VisionMaster(this);
     }
 
     @Override
@@ -152,6 +155,11 @@ public class LE_GameSim extends ScenarioGame {
     public void start(boolean first) {
         dungeonMaster.gameStarted();
 
+        ObjType type=DataManager.getType(DUMMY, DC_TYPE.UNITS);
+        dummyPC = (Unit) createObject(type, 0, 0, getPlayer(true), new Ref(getGame()));
+        Eidolons.setMainHero(dummyPC);
+
+        getDungeonMaster().getFloorLoader().loadingDone();
 //        try {
 //            getManager().reset();
 //        } catch (Exception e) {

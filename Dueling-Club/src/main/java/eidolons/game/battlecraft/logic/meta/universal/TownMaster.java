@@ -202,7 +202,7 @@ public class TownMaster extends MetaGameHandler {
 
         Entrance entrance = master.getGame().getDungeonMaster().
                 getFloorWrapper().getMainEntrance();
-        int dst = Eidolons.getMainHero().getCoordinates().dst(
+        int dst = Eidolons.getPlayerCoordinates().dst(
                 entrance.getOriginalCoordinates());
         int n = 2 + dst / 8;
         if (master.getMetaDataManager().getMetaGame() instanceof ScenarioMeta) {

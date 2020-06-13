@@ -17,6 +17,12 @@ public class LE_DisplayMode  implements Serializable {
 
     boolean showAllColors;
     boolean showDecorText;
+    boolean showVfx;
+    boolean showShadowMap;
+    boolean showShards;
+
+    private boolean gameView;
+    private boolean showGamma;
 
     /*
     can we just have shadowmap/vfx here same way?
@@ -54,6 +60,9 @@ public class LE_DisplayMode  implements Serializable {
     }
 
     public boolean isShowDecorText() {
+        if (isGameView()) {
+            return false;
+        }
         return showDecorText;
     }
 
@@ -128,5 +137,71 @@ public class LE_DisplayMode  implements Serializable {
     }
     public void toggleScripts( ) {
         this.showScripts = !showScripts;
+    }
+
+    public void setGameView(boolean gameView) {
+        this.gameView = gameView;
+    }
+
+    public void setShowDecorText(boolean showDecorText) {
+        this.showDecorText = showDecorText;
+    }
+
+    public boolean isShowVfx() {
+        if (gameView) {
+            return true;
+        }
+        return showVfx;
+    }
+
+    public void setShowVfx(boolean showVfx) {
+        this.showVfx = showVfx;
+    }
+
+    public boolean isShowShadowMap() {
+        if (gameView) {
+            return true;
+        }
+        return showShadowMap;
+    }
+
+    public void setShowShadowMap(boolean showShadowMap) {
+        this.showShadowMap = showShadowMap;
+    }
+
+    public boolean isShowShards() {
+        if (gameView) {
+            return true;
+        }
+        return showShards;
+    }
+
+    public void setShowShards(boolean showShards) {
+        this.showShards = showShards;
+    }
+
+    public void toggleShadows() {
+        setShowShadowMap(!showShadowMap);
+    }
+    public void toggleVfx() {
+        setShowVfx(!showVfx);
+    }
+
+    public boolean isGameView() {
+        return gameView;
+    }
+
+    public void toggleGamma() {
+        setShowGamma(!showGamma);
+    }
+    public boolean isShowGamma() {
+        if (gameView) {
+            return false;
+        }
+        return showGamma;
+    }
+
+    public void setShowGamma(boolean showGamma) {
+        this.showGamma = showGamma;
     }
 }

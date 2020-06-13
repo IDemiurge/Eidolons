@@ -19,6 +19,7 @@ import eidolons.libgdx.stage.StageX;
 import main.level_editor.backend.handlers.structure.FloorManager;
 import main.level_editor.backend.struct.level.LE_Floor;
 import main.level_editor.gui.grid.LE_BfGrid;
+import main.level_editor.gui.grid.LE_GridCell;
 import main.level_editor.gui.stage.LE_GuiStage;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -32,7 +33,7 @@ import java.util.function.Supplier;
 
 public class LE_Screen extends GenericDungeonScreen {
 
-    private static Map<LE_Floor, Supplier<ScreenWithLoader>> cached = new HashMap();
+    private static final Map<LE_Floor, Supplier<ScreenWithLoader>> cached = new HashMap();
     private static LE_Screen instance;
     private LE_Floor floor;
     private LE_InputController processor;
@@ -71,6 +72,8 @@ public class LE_Screen extends GenericDungeonScreen {
         floor = (LE_Floor) data.getParameter();
 
         GuiEventManager.bind(GuiEventType.LE_FLOORS_TABS, p -> {
+            LE_GridCell.hoveredCell=null; //TODO refactor?
+
             main.system.auxiliary.log.LogMaster.log(1,"Tabs for " +floorName);
                 ((LE_GuiStage) guiStage).getFloorTabs().removeAll();
                 List<LE_Floor> floors = (List<LE_Floor>) p.get();

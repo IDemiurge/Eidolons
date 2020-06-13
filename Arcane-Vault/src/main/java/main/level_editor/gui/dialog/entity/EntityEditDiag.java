@@ -14,9 +14,9 @@ public abstract class EntityEditDiag<S extends Enum<S>, T extends DataUnit<S>> e
 
     @Override
     public void ok() {
-        LevelEditor.getManager().getOperationHandler().execute(Operation.LE_OPERATION.SAVE_ENTITY_DATA,
+        LevelEditor.getManager().getOperationHandler().operation(Operation.LE_OPERATION.SAVE_ENTITY_DATA,
                 cached);
-        LevelEditor.getManager().getOperationHandler().execute(Operation.LE_OPERATION.MODIFY_ENTITY,
+        LevelEditor.getManager().getOperationHandler().operation(Operation.LE_OPERATION.MODIFY_ENTITY,
                 data);
         super.ok();
     }

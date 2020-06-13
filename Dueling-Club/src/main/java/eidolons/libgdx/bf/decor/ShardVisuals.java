@@ -14,7 +14,7 @@ import eidolons.libgdx.bf.grid.sub.GridElement;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
-import eidolons.libgdx.screens.dungeon.DungeonScreen;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.GenericEnums;
@@ -205,6 +205,7 @@ public class ShardVisuals extends GroupX implements GridElement {
     }
 
     public void init() {
+        clearChildren();
         setSize(grid.getWidth(), grid.getHeight());
         //buffer by 1
         for (int x = x1 - 1; x - 1 < x2; x++) {
@@ -294,7 +295,7 @@ public class ShardVisuals extends GroupX implements GridElement {
                             EmitterActor actor = new EmitterActor(preset) {
                                 @Override
                                 public void act(float delta) {
-                                    if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(), 400, 400)) {
+                                    if (!ScreenMaster.getScreen().getController().isWithinCamera(getX(), getY(), 400, 400)) {
                                         return;
                                     }
                                     super.act(delta);
@@ -302,7 +303,7 @@ public class ShardVisuals extends GroupX implements GridElement {
 
                                 @Override
                                 public void draw(Batch batch, float parentAlpha) {
-                                    if (!DungeonScreen.getInstance().getController().isWithinCamera(getX(), getY(), 400, 400)) {
+                                    if (!ScreenMaster.getScreen().getController().isWithinCamera(getX(), getY(), 400, 400)) {
                                         return;
                                     }
                                     super.draw(batch, parentAlpha);

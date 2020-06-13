@@ -38,7 +38,7 @@ public class GdxColorMaster {
     public static final Color BLUE = getColor(25, 25, 255, 1f);
     public static final Color YELLOW = getColor(165, 185, 55, 1f);
     public static final Color DARK_ORANGE = getColor(195, 105, 25, 1f);
-    public static final Color ORANGE = getColor(225, 135, 55, 1f);
+    public static final Color ORANGE = Color.ORANGE ;
     public static final Color FIRE = getColor(255, 115, 75, 1f);
     public static final Color WHITE = new Color(1, 1, 1, 1f);
     public static final Color PALE_GOLD = getColor(252, 238, 210, 1f);
@@ -64,11 +64,11 @@ public class GdxColorMaster {
     public static final Color STANDARD_TEXT = PALE_GOLD;
     private static final Color LIGHT_YELLOW = getColor(195, 205, 125, 1f);
     public static final Color COPPER = LIGHT_YELLOW;
-    private static final Color BROWN = getColor(165, 155, 45, 1f);
-    private static final Color DARK_GREEN = getColor(35, 155, 45, 1f);
-    private static final Color DARK_BLUE = getColor(35, 45, 155, 1f);
-    private static final Color MAGENTA = getColor(195, 55, 225, 1f);
-    private static final Color PSYCHIC = getColor(195, 55, 225, 1f);
+    public static final Color BROWN = getColor(165, 155, 45, 1f);
+    public static final Color DARK_GREEN = getColor(35, 155, 45, 1f);
+    public static final Color DARK_BLUE = getColor(35, 45, 155, 1f);
+    public static final Color MAGENTA = getColor(195, 55, 225, 1f);
+    public static final Color PSYCHIC = getColor(195, 55, 225, 1f);
 
     public static Color getColorByName(String value) {
         try {
@@ -85,8 +85,8 @@ public class GdxColorMaster {
         return new Color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, 1);
     }
 
-    public static Color getColor(int r, int b, int g, float a) {
-        return new Color(r / 100, b / 100, g / 100, a);
+    public static Color getColor(int r, int g, int b, float a) {
+        return new Color(r / 100, g / 100, b / 100, a);
     }
 
     public static Color getDamageTypeColor(DAMAGE_TYPE dmgType) {

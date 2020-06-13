@@ -92,6 +92,9 @@ public class Shard extends SuperActor {
                     : size + "down";
 
         }
+        if (name == null) {
+            return null;
+        }
         String file = FileManager.getRandomFilePathVariantSmart(
                 name, PathFinder.getImagePath() +
                         path, ".png");

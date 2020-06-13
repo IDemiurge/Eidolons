@@ -357,7 +357,8 @@ static {
         ITEM,
         HUGE,
         PUSHABLE,
-        LARGE
+        LARGE,
+        WALL
     }
 
     public enum BF_OBJECT_TYPE {

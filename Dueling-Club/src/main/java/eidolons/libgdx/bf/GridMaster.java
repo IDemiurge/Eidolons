@@ -100,8 +100,8 @@ public class GridMaster {
 
     public static Coordinates getCameraCenter() {
         int x = Math.round((ScreenMaster.getScreen().getController().getXCamPos()) / 128);
-        int y = Math.round((ScreenMaster.getScreen().getController().getYCamPos()) / 128);
-        return invertGdxY(Coordinates.get(x, y));
+        int y = Math.round(invertGdxY(ScreenMaster.getScreen().getController().getYCamPos()) / 128);
+        return  (Coordinates.get(true, x, y));
     }
 
     public static Vector2 getMouseCoordinates() {

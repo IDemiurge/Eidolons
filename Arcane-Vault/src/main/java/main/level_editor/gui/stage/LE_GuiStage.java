@@ -147,7 +147,7 @@ public class LE_GuiStage extends GenericGuiStage {
                 buttons.setX(buttons.getX() + 226);
                 topPanel.setX(222);
                 topPanel.setY(topPanel.getY() + 14);
-                controlPanel.setX(controlPanel.getX() - 185);
+                controlPanel.setX(controlPanel.getX() - 215);
                 controlPanel.setY(controlPanel.getY() - 50);
                 treePanel.setY(treePanel.getY() - 50);
             }
@@ -224,10 +224,9 @@ public class LE_GuiStage extends GenericGuiStage {
                         title, text, hint, textInputListener);
             }
         }
-        if (textInputPanel == null)
-        {
+        if (textInputPanel == null) {
             super.textInput(script, textInputListener, title, text, hint);
-            return ;
+            return;
         }
         addActor(textInputPanel);
         textInputPanel.setPosition(GdxMaster.centerWidth(textInputPanel),
@@ -352,6 +351,17 @@ public class LE_GuiStage extends GenericGuiStage {
     }
 
     public void toggleUiVisible() {
+        if (LevelEditor.getManager().getDisplayHandler().getDisplayMode().isGameView()) {
+            statusBar.toggleFade();
+            topPanel.toggleFade();
+            boolean v = tabs.getTabsPane().isVisible();
+            tabs.getTabsPane().setVisible(!v);
+            v = buttons.isVisible();
+            buttons.setVisible(!v);
+            floorsTable.toggleFade();
+            v = open.isVisible();
+            open.setVisible(!v);
+        }
         controlPanel.toggleFade();
         treePanel.toggleFade();
         palettePanel.toggleFade();

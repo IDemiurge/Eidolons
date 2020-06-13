@@ -51,6 +51,9 @@ public class EditorModel {
 
     private void copy(EditorModel model) {
         selection = (LE_Selection) CloneMaster.deepCopy(model.getSelection());
+        if (selection == null) {
+            selection = new LE_Selection();
+        }
         displayMode = (LE_DisplayMode) CloneMaster.deepCopy(model.getDisplayMode());
         paletteSelection = (PaletteSelection) CloneMaster.deepCopy(model.getPaletteSelection());
         brush = model.getBrush();
@@ -100,6 +103,9 @@ public class EditorModel {
     }
 
     public void setSelection(LE_Selection selection) {
+        if (selection == null) {
+            return ;
+        }
         this.selection = selection;
     }
 

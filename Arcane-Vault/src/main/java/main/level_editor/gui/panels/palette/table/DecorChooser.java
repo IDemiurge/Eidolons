@@ -18,7 +18,7 @@ public class DecorChooser extends SelectionImageTable {
     List<GraphicData> files;
 
     public DecorChooser() {
-        super(4, 155, 5);
+        super(4, 1155, 5);
     }
 
     @Override

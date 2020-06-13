@@ -117,6 +117,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
     public void select(BattleFieldObject bfObj) {
         Integer id = getIdManager().getId(bfObj);
         getModel().getSelection().setSingleSelection(id);
+        getSelection().clear();
         getModel().getSelection().add(getIdManager().getObjectById(id).getCoordinates());
         getSelection().setLastCoordinates(bfObj.getCoordinates());
         selectionChanged();

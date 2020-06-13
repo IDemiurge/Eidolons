@@ -40,7 +40,7 @@ public class DialogueActor extends LightweightEntity {
             setLinkedUnit(Eidolons.getMainHero());
             return;
         }
-        Coordinates c = Eidolons.getMainHero().getCoordinates();
+        Coordinates c = Eidolons.getPlayerCoordinates();
         List<Coordinates> area = CoordinatesMaster.getCoordinatesWithin(
                 Math.max(0, c.getX() - 10),
                 Math.min(((DC_Game) getGame()).getDungeon().getCellsX(), c.getX() + 10),

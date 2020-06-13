@@ -31,7 +31,7 @@ public class AnimDrawMaster extends Group {
     private boolean drawing;
     private boolean drawingPlayer;
     private Boolean parallelDrawing;
-    private AnimController controller;
+    private final AnimController controller;
 
     public AnimDrawMaster(AnimMaster animMaster) {
         controller = new AnimController();
@@ -235,7 +235,7 @@ public class AnimDrawMaster extends Group {
 
 //        if (FADE_SPRITE_TEST) {
 //            try {
-//                Coordinates c = Eidolons.getMainHero().getCoordinates();
+//                Coordinates c = Eidolons.getPlayerCoordinates();
 //                SpriteAnimation animation = SpriteAnimationFactory.getSpriteAnimation("sprite shadow.png");
 //                addActor(fadeTest = new FadeSprite(animation));
 //                fadeTest.setBlending(BLENDING.SCREEN);

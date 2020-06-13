@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.bf.grid.GridPanel;
@@ -60,6 +62,12 @@ public class LE_GridOverlays extends GridOverlaysManager {
     protected void drawOverlaysForCell(GridCellContainer container, int x, int y, Batch batch) {
         DC_Cell cell = container.getUserObject();
 
+        if (LevelEditor.getModel().getDisplayMode().isShowGamma()) {
+            if (getOverlayActor(container, INFO_TEXT) instanceof Label) {
+                ((Label) getOverlayActor(container, INFO_TEXT)).setText(getInfoText(cell));
+            }
+            drawOverlay(container, INFO_TEXT, batch, cell, x, y);
+        }
         if (LevelEditor.getManager().getSelectionHandler().isSelected(cell)) {
             drawOverlay(container, IN_PLAIN_SIGHT, batch, cell, x, y);
         }
@@ -95,9 +103,15 @@ public class LE_GridOverlays extends GridOverlaysManager {
             checkDrawForStruct(batch, container, cell, struct);
         }
 
-
     }
 
+    protected String getInfoText(DC_Obj obj) {
+        StringBuilder builder = new StringBuilder();
+                // builder.append(ListMaster.toStringList(((DC_Cell) obj).getMarks())).append("\n");
+        builder.append("Gamma: ").append(obj.getGame().getVisionMaster()
+                .getGammaMaster().getGamma(Eidolons.getMainHero(), obj)).append("\n");
+        return builder.toString();
+    }
     private void checkDrawForStruct(Batch batch, GridCellContainer container, DC_Cell cell, LevelStruct struct) {
         if (struct.getCoordinatesSet().contains(cell.getCoordinates())) {
             boolean block = struct instanceof LevelBlock;

@@ -29,23 +29,23 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  */
 public class VisionMaster implements GenericVisionManager {
 
-    private final VisionRule visionRule;
+    protected final VisionRule visionRule;
     ConcurrentLinkedDeque<BattleFieldObject> visibleList = new ConcurrentLinkedDeque<>();
     ConcurrentLinkedDeque<BattleFieldObject> invisibleList = new ConcurrentLinkedDeque<>();
-    private SightMaster sightMaster;
-    private DetectionMaster detectionMaster;
-    private IlluminationMaster illuminationMaster;
-    private VisibilityMaster visibilityMaster;
-    private GammaMaster gammaMaster;
-    private HintMaster hintMaster;
-    private OutlineMaster outlineMaster;
-    private DC_Game game;
-    private boolean fastMode;
-    private boolean firstResetDone;
-    private VisionController visionController;
-    private BattleFieldObject[] visible;
-    private BattleFieldObject[] invisible;
-    private boolean visionDebugMode;
+    protected SightMaster sightMaster;
+    protected DetectionMaster detectionMaster;
+    protected IlluminationMaster illuminationMaster;
+    protected VisibilityMaster visibilityMaster;
+    protected GammaMaster gammaMaster;
+    protected HintMaster hintMaster;
+    protected OutlineMaster outlineMaster;
+    protected DC_Game game;
+    protected boolean fastMode;
+    protected boolean firstResetDone;
+    protected VisionController visionController;
+    protected BattleFieldObject[] visible;
+    protected BattleFieldObject[] invisible;
+    protected boolean visionDebugMode;
 
     public VisionMaster(DC_Game game) {
         this.game = game;
@@ -124,7 +124,7 @@ public class VisionMaster implements GenericVisionManager {
     }
 
 
-    private void resetPlayerVision(DC_Player player) {
+    protected void resetPlayerVision(DC_Player player) {
         for (Obj sub : player.collectControlledUnits()) {
             Unit unit = (Unit) sub;
             if (player.isMe()) //enemy sees all objects always...?
@@ -150,7 +150,7 @@ public class VisionMaster implements GenericVisionManager {
         return visionRule;
     }
 
-    private void resetLastKnownCoordinates() {
+    protected void resetLastKnownCoordinates() {
         //   TODO must communicate with GridPanel
 //        for (Unit u : game.getUnits()) {
 //            if (checkVisible(u)) {
@@ -192,7 +192,7 @@ public class VisionMaster implements GenericVisionManager {
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, visibleList);
     }
 
-    private boolean isVisibleOnGrid(BattleFieldObject object) {
+    protected boolean isVisibleOnGrid(BattleFieldObject object) {
         return visionRule.isDisplayedOnGrid(
                 game.getManager().getMainHero(), object);
     }

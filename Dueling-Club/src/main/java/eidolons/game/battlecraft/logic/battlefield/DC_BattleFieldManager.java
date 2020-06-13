@@ -4,12 +4,13 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
-import main.content.DC_TYPE;
 import main.content.enums.rules.VisionEnums;
 import main.entity.Entity;
+import main.entity.EntityCheckMaster;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldManager;
 import main.game.bf.Coordinates;
@@ -17,6 +18,7 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
 import java.util.*;
@@ -26,13 +28,13 @@ import java.util.*;
  */
 public class DC_BattleFieldManager extends BattleFieldManager {
 
-    private DC_Game game;
+    private final DC_Game game;
     private Map<Coordinates, List<DIRECTION>> wallDirectionMap;
     private List<BattleFieldObject> wallObjects;
     private Map<Coordinates, List<DIRECTION>> diagonalJoints;
     private Map<Coordinates, List<DIRECTION>> visibleWallMap= new LinkedHashMap<>();
     private Map<Coordinates, List<DIRECTION>> visibleDiagonalJoints= new LinkedHashMap<>();
-    private Map<Coordinates, DOOR_STATE> doorMap = new HashMap<>();
+    private final Map<Coordinates, DOOR_STATE> doorMap = new HashMap<>();
 
     public DC_BattleFieldManager(DC_Game game, Integer id, int w, int h) {
         super(game, id, w, h);
@@ -70,6 +72,12 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
 
     private void resetVisibleWallMap() {
+        if (CoreEngine.isLevelEditor())
+        {
+            visibleWallMap = wallDirectionMap;
+            visibleDiagonalJoints = diagonalJoints;
+            return;
+        }
         visibleWallMap.clear();
         visibleDiagonalJoints.clear();
         for (BattleFieldObject wall : wallObjects) {
@@ -86,9 +94,13 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         wallObjects = new ArrayList<>();
         HashMap<Coordinates, BattleFieldObject> wallMap = new HashMap<>();
         // game.getGrid().getWallCache()
-        for (Obj obj : game.getObjects(DC_TYPE.BF_OBJ)) {
+        Module module = game.getModule();
+        for (Obj obj : game.getStructures()) {
+            if (obj.getModule()!=module) {
+                continue;
+            }
             BattleFieldObject bfObj = (BattleFieldObject) obj;
-            if (bfObj.isWall()) {
+            if (EntityCheckMaster.isWall(bfObj)) {
                 wallObjects.add(bfObj);
                 wallMap.put(bfObj.getCoordinates(), bfObj);
             }

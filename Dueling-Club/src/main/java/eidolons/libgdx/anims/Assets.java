@@ -622,6 +622,9 @@ public class Assets {
     }
 
     public static boolean checkSprite(String path) {
+        if (CoreEngine.isUtility()) {
+            return true;
+        }
         if (path.contains("blotch")) {
             return true;
         }
@@ -676,7 +679,7 @@ public class Assets {
         if (sub == Eidolons.getMainHero()) {
             return true;
         }
-        return Eidolons.getMainHero().getCoordinates().dst(sub.getCoordinates()) <= (full ? 30 : 10);
+        return Eidolons.getPlayerCoordinates().dst(sub.getCoordinates()) <= (full ? 30 : 10);
     }
 
 

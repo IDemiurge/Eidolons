@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.StructMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.game.bf.Coordinates;
+import main.level_editor.backend.display.LE_DisplayHandler;
 import main.level_editor.backend.functions.advanced.IPlatformHandlerImpl;
 import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
@@ -37,6 +38,7 @@ import main.level_editor.gui.grid.LE_CameraHandler;
 import main.level_editor.gui.stage.LE_KeyHandler;
 import main.system.data.DataUnit;
 
+import java.util.Set;
 import java.util.function.Function;
 
 public abstract class LE_Handler {
@@ -57,6 +59,9 @@ public abstract class LE_Handler {
     public void load() {
     }
 
+    protected Set<Coordinates> getCoordinates() {
+        return getSelectionHandler().getSelection().getCoordinates();
+    }
     protected LE_Manager.LE_LAYER getLayer() {
         return manager.getLayer();
     }
@@ -102,6 +107,9 @@ public abstract class LE_Handler {
 
     public LE_DialogHandler getDialogHandler() {
         return manager.getDialogHandler();
+    }
+    public LE_DisplayHandler getDisplayHandler() {
+        return manager.getDisplayHandler();
     }
 
     public LE_AiHandler getAiHandler() {

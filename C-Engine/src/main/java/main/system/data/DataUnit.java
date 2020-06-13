@@ -147,6 +147,9 @@ public class DataUnit<T extends Enum<T>> implements Serializable {
     }
 
 
+    public void addValue(String name, String value) {
+        MapMaster.addToStringMap(values, name, value, ",");
+    }
     public void addValue(T name, String value) {
         MapMaster.addToStringMap(values, name.name(), value, ",");
     }
@@ -330,11 +333,12 @@ public class DataUnit<T extends Enum<T>> implements Serializable {
         return new WeightMap(getValue(val), String.class);
     }
 
-    public void setValue(T name, Object val) {
+    public DataUnit<T> setValue(T name, Object val) {
         if (val == null) {
             removeValue(name);
         } else
             setValue(name, val.toString());
+        return this;
     }
 
     public DataUnit<T> clear() {

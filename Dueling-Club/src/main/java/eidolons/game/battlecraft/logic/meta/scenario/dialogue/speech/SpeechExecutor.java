@@ -847,7 +847,7 @@ public class SpeechExecutor {
                     if (bool) {
                         c = getCameraCenter();
                     } else
-                        c = Eidolons.getMainHero().getCoordinates().getOffset(c1);
+                        c = Eidolons.getPlayerCoordinates().getOffset(c1);
                     if (c1 != null) {
                         c = c.getOffset(c1);
                     }
@@ -1253,7 +1253,7 @@ public class SpeechExecutor {
         if (!zoom) {
             switch (value) {
                 case "me":
-                    v = getCenteredPos(Eidolons.getMainHero().getCoordinates());
+                    v = getCenteredPos(Eidolons.getPlayerCoordinates());
                     break;
                 case "orig":
                     v = new Vector2(0, 0);

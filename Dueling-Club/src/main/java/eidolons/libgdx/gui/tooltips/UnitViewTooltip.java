@@ -43,6 +43,9 @@ public class UnitViewTooltip extends ValueTooltip {
     @Override
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
         setUpdateRequired(true);
+        if (!(actor instanceof BaseView)) {
+        return ;
+        }
         if (getView().isHoverResponsive() || getView()instanceof OverlayView) //TODO quick fix to ignore bf obj
         {
             GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, getView());

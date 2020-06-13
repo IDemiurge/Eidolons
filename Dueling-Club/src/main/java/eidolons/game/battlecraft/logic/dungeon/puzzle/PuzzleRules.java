@@ -91,7 +91,7 @@ public class PuzzleRules extends PuzzleElement {
 
     public void manipulatorActs(Manipulator manipulator) {
 
-        DC_Cell cell = DC_Game.game.getCellByCoordinate(Eidolons.getMainHero().getCoordinates());
+        DC_Cell cell = DC_Game.game.getCellByCoordinate(Eidolons.getPlayerCoordinates());
 
         cell.setOverlayRotation(cell.getOverlayRotation()+90);
 

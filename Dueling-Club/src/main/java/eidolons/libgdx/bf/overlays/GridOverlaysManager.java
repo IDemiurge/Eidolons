@@ -368,13 +368,14 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
 
     }
 
-    private String getInfoText(DC_Obj obj) {
+    protected String getInfoText(DC_Obj obj) {
         StringBuilder builder = new StringBuilder();
         if (!VoidHandler.TEST_MODE) {
             if (obj instanceof DC_Cell) {
                 builder.append(ListMaster.toStringList(((DC_Cell) obj).getMarks())).append("\n");
             }
         } else {
+            builder.append("Gamma: ").append(obj.getGamma()).append("\n");
             builder.append(obj.getVisibilityLevel()).append("\n");
             builder.append(obj.getPlayerVisionStatus()).append("\n");
             builder.append(obj.getVisibilityLevel()).append("\n");

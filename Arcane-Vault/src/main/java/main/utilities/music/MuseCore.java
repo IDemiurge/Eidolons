@@ -41,6 +41,9 @@ public class MuseCore implements NativeKeyListener {
                 if (nativeKeyEvent.getKeyCode() <= 58 + PlaylistHandler.PLAYLIST_TYPE.values().length) {
                     try {
                         int index = nativeKeyEvent.getKeyCode() - 59;
+                        if (index==3) {
+                            return ; //ALT F4!
+                        }
                         PlaylistHandler.playRandom(PlaylistHandler.PLAYLIST_TYPE.values()[index]);
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);

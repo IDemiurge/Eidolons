@@ -1259,8 +1259,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
     public boolean isPlayerCharacter() {
-
-        return isMainHero() && isMine();
+        return Eidolons.getMainHero() == this;
     }
 
     public boolean toggleActionMode(DC_ActiveObj action, String mode) {

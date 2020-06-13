@@ -44,7 +44,10 @@ public class OperationHandler extends LE_Handler {
                 event = GuiEventType.CELL_DECOR_RESET;
                 c = (Coordinates) args[0];
                 DecorData data = (DecorData) args[1];
-                if (data==null || data.getData().isEmpty()) {
+                if (data==null) {
+                    data = new DecorData("");
+                }
+                if (data.getData().isEmpty()) {
                     getFloorWrapper().getDecorMap().remove(c);
                 } else {
                     getFloorWrapper().getDecorMap().put(c, data);
@@ -229,10 +232,14 @@ public class OperationHandler extends LE_Handler {
     }
 
     private boolean revert(Operation op, boolean redo) {
+        main.system.auxiliary.log.LogMaster.log(1,"Reverting " +op);
         if (op.operation.bulkEnd) {
             Operation rev = operations.pop();
             while (!operations.empty()) {
                 revert(rev, redo);
+                if (operations.empty()) {
+                    continue;
+                }
                 rev = operations.pop();
                 if (rev.operation.bulkStart) {
                     break;
@@ -302,4 +309,18 @@ public class OperationHandler extends LE_Handler {
         return false;
     }
 
+    public void move(DIRECTION d) {
+        switch (manager.getLayer()) {
+            case obj:
+                getDecorHandler().move(d);
+                break;
+            case decor:
+                getDecorHandler().move(d);
+                break;
+            case script:
+                getDecorHandler().move(d);
+                break;
+        }
+
+    }
 }

@@ -42,8 +42,8 @@ public class DC_LogManager extends LogManager {
     public static final String ALIGN_CENTER = "<center>";
     public static final String IMAGE_SEPARATOR = "[img==]";
     public static final String UNIT_TURN_PREFIX = "Active: ";
-    private int logLevel = 1;
-    private List<String> fullEntryList = new ArrayList<>();
+    private final int logLevel = 1;
+    private final List<String> fullEntryList = new ArrayList<>();
 
     public DC_LogManager(Game game) {
         super(game);
@@ -95,14 +95,14 @@ public class DC_LogManager extends LogManager {
                 return;
             }
         if (obj == Eidolons.getMainHero()) {
-            DIRECTION relative = DirectionMaster.getRelativeDirection(Eidolons.getMainHero().getCoordinates(),
+            DIRECTION relative = DirectionMaster.getRelativeDirection(Eidolons.getPlayerCoordinates(),
                     Eidolons.getMainHero().getLastCoordinates());
-            int dst = Eidolons.getMainHero().getCoordinates().dst(Eidolons.getMainHero().getLastCoordinates());
+            int dst = Eidolons.getPlayerCoordinates().dst(Eidolons.getMainHero().getLastCoordinates());
             String gamelog = name + " has moved [" + relative.toString().toLowerCase() + "] "
                     +StringMaster.wrapInParenthesis(""+dst);
             log(gamelog);
         } else {
-            int dst = Eidolons.getMainHero().getCoordinates().dst(obj.getCoordinates());
+            int dst = Eidolons.getPlayerCoordinates().dst(obj.getCoordinates());
             String gamelog = name + " has moved to a new position at [" + dst + "] distance";
             log(gamelog);
         }

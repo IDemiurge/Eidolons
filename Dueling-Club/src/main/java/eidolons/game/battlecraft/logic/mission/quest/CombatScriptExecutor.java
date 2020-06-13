@@ -265,7 +265,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         }
         if (!hasAggro)
             for (Unit unit : Eidolons.getGame().getUnits()) {
-                if (Eidolons.getMainHero().getCoordinates().dst(unit.getCoordinates()) < dst) {
+                if (Eidolons.getPlayerCoordinates().dst(unit.getCoordinates()) < dst) {
                     AggroMaster.aggro(unit, Eidolons.getMainHero());
                     hasAggro = true;
                 }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -103,7 +104,12 @@ last
         curCoordinate.setValueText(c.toString());
 
 
-        DC_Cell[][] cells = DC_Game.game.getGrid().getCells();
+        DC_BattleFieldGrid grid = DC_Game.game.getGrid();
+        if (LE_GridCell.hoveredCell.getParent() != ScreenMaster.getDungeonGrid()) {
+            LE_GridCell.hoveredCell=null;
+            return;
+        }
+        DC_Cell[][] cells = grid.getCells();
         LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(c);
         if (struct != null) {
             CharSequence type = struct.getClass().getSimpleName();
@@ -126,7 +132,8 @@ last
             return;
         }
         for (int i = c.x + 1; i < cells.length; i++) {
-            if (DC_Game.game.getGrid().getObjects(i, c.y).length > 0)
+
+            if (grid.getObjects(i, c.y).length > 0)
                 break;
             dst++;
         }
@@ -134,7 +141,7 @@ last
 
         dst = 0;
         for (int i = c.x - 1; i >= 0; i--) {
-            if (DC_Game.game.getGrid().getObjects(i, c.y).length > 0)
+            if (grid.getObjects(i, c.y).length > 0)
                 break;
             dst++;
         }
@@ -142,7 +149,7 @@ last
 
         dst = 0;
         for (int i = c.y + 1; i < cells[0].length; i++) {
-            if (DC_Game.game.getGrid().getObjects(c.x, i).length > 0)
+            if (grid.getObjects(c.x, i).length > 0)
                 break;
             dst++;
         }
@@ -150,7 +157,7 @@ last
 
         dst = 0;
         for (int i = c.y - 1; i >= 0; i--) {
-            if (DC_Game.game.getGrid().getObjects(c.x, i).length > 0)
+            if (grid.getObjects(c.x, i).length > 0)
                 break;
             dst++;
         }
@@ -160,6 +167,10 @@ last
 
     @Override
     public void updateAct(float de) {
+        if (model.getDisplayMode().isGameView()) {
+            zoomInfo.setName("Game View; Zoom: ");
+        } else
+            zoomInfo.setName("Zoom: ");
         String img = model.getPaletteSelection().getObjType().getImagePath();
         String name = model.getPaletteSelection().getObjType().getName();
         palette.getImageContainer().getActor().setImage(img);
@@ -177,6 +188,11 @@ last
     }
 
     private void updateSelectionInfo(EditorModel model) {
+        if (model.getSelection() == null) {
+            selectionInfo.setNameText("null" );
+            selectionInfo.setValueText( " ");
+            return;
+        }
         int size = model.getSelection().getIds().size();
         int width = CoordinatesMaster.getWidth(model.getSelection().getCoordinates());
         int height = CoordinatesMaster.getHeight(model.getSelection().getCoordinates());

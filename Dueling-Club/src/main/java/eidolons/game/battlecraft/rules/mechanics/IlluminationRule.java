@@ -7,14 +7,13 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import main.content.C_OBJ_TYPE;
 import main.content.enums.GenericEnums;
 import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
+import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 
 import java.util.HashMap;
@@ -23,7 +22,7 @@ import java.util.Map;
 public class IlluminationRule {
     private static final boolean BASE_ILLUMINATION = true;
     private static boolean applied;
-    private Map<Obj, LightEmittingEffect> effectCache = new HashMap<>();
+    private final Map<Obj, LightEmittingEffect> effectCache = new HashMap<>();
 
 
     public IlluminationRule() {
@@ -39,7 +38,7 @@ public class IlluminationRule {
             return;
         }
 
-        for (Obj obj : DC_Game.game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
+        for (Obj obj : DC_Game.game.getStructures()) {
             if (isOutsideBoundaries(obj))
                 continue;
             LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
@@ -52,14 +51,18 @@ public class IlluminationRule {
     }
 
     private boolean isOutsideBoundaries(Obj obj) {
-        Coordinates c = obj.getCoordinates();
-        LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(c);
-        LevelStruct struct2 = DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(Eidolons.getMainHero().getCoordinates());
-
-        if (struct != struct2) {
-            return c.dst(Eidolons.getMainHero().getCoordinates()) > 10;
+        if (CoreEngine.isLevelEditor()) {
+            return false;
         }
-        return false;
+        Coordinates c = obj.getCoordinates();
+        // LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(c);
+        // LevelStruct struct2 = DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(Eidolons.getPlayerCoordinates());
+
+        // if (struct != struct2) {
+        ////TODO Review !
+            return c.dst(Eidolons.getPlayerCoordinates()) > 10;
+        // }
+        // return false;
     }
 
     public void resetIllumination() {
@@ -80,7 +83,7 @@ public class IlluminationRule {
     }
 
     private boolean isSpectrumResetRequired(Obj obj) {
-        return obj.getCoordinates().dst_(Eidolons.getMainHero().getCoordinates()) < 8;
+        return obj.getCoordinates().dst_(Eidolons.getPlayerCoordinates()) < 8;
     }
 
     public Map<Obj, LightEmittingEffect> getEffectCache() {

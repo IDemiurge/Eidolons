@@ -43,7 +43,8 @@ public class EntityCheckMaster {
     }
 
     public static boolean isWall(Entity entity) {
-        return entity.checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.WALL.toString());
+        return entity.checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.WALL.toString())
+                || entity.checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_TAGS.WALL.toString());
     }
 
     public static BACKGROUND getBackground(Entity hero) {

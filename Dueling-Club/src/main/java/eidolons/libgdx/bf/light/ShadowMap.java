@@ -46,8 +46,8 @@ public class ShadowMap extends GroupX implements GridElement {
 
     private static final Color DEFAULT_COLOR = new Color(1, 0.9f, 0.7f, 1);
     private static boolean on = true;
-    private GridPanel grid;
-    private Map<SHADE_CELL, ShadeLightCell[][]> cells = new LinkedHashMap<>();
+    private final GridPanel grid;
+    private final Map<SHADE_CELL, ShadeLightCell[][]> cells = new LinkedHashMap<>();
     private List<LightEmitter>[][] emitters;
 
     public ShadowMap(GridPanel grid) {
@@ -138,6 +138,7 @@ public class ShadowMap extends GroupX implements GridElement {
     }
 
     private void init() {
+        clearChildren();
         for (SHADE_CELL type : SHADE_CELL_VALUES) {
             getCells().put(type, new ShadeLightCell[grid.getModuleCols()][grid.getModuleRows()]);
             emitters = new List[grid.getModuleCols()][grid.getModuleRows()];
@@ -384,7 +385,7 @@ public class ShadowMap extends GroupX implements GridElement {
         ;
 
         public float defaultAlpha;
-        private String texturePath;
+        private final String texturePath;
 
         SHADE_CELL(float alpha, String texturePath) {
             defaultAlpha = alpha;

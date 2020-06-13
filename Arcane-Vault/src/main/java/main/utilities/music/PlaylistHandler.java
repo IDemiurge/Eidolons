@@ -22,12 +22,13 @@ public class PlaylistHandler {
         deep, //1
         ost, //2
         fury, //3
-        warmup, //4
+        auto, //4
         gym, //5
         goodly, //6
         pagan, //7
         dark, //8
-        auto, //9
+        warmup, //9
+        rpg, //10
     }
 
     public static void playRandom(PLAYLIST_TYPE type) {

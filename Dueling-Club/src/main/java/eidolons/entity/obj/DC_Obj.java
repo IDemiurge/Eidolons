@@ -69,8 +69,8 @@ public abstract class DC_Obj extends MicroObj {
 
     protected boolean pale;
 
-    protected  Set<ObjType> appliedTypes=new LinkedHashSet<>();
-    protected  ObjType originalType;
+    protected Set<ObjType> appliedTypes = new LinkedHashSet<>();
+    protected ObjType originalType;
 
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -97,6 +97,9 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public GammaMapper getGammaMapper() {
+        if (getVisionController() == null) {
+            return null;
+        }
         return getVisionController().getGammaMapper();
     }
 
@@ -699,11 +702,16 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public Integer getGamma(Unit source) {
+        if (getGammaMapper() == null) {
+            return null;
+        }
         return getGammaMapper().get(source, this);
     }
 
     public void setGamma(Unit source, Integer i) {
-        getGammaMapper().set(source, this, i);
+        if (getGammaMapper() != null) {
+            getGammaMapper().set(source, this, i);
+        }
         if (source.isPlayerCharacter()) {
             {
                 setGamma(i);
@@ -724,7 +732,7 @@ public abstract class DC_Obj extends MicroObj {
 
     public VisionController getVisionController() {
         if (visionController == null) {
-            if (!isSimulation())
+            if (!isSimulation() || CoreEngine.isLevelEditor())
                 visionController = getGame().getVisionMaster().getVisionController();
             else {
                 return null;

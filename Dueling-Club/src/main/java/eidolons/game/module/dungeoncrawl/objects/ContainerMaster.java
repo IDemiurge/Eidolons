@@ -76,10 +76,10 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     public static MATERIAL[] rareMaterials;
     public static MATERIAL[] uncommonMaterials;
     public static MATERIAL[] commonMaterials;
-    private static boolean test_mode = QuestMaster.TEST_MODE;
+    private static final boolean test_mode = QuestMaster.TEST_MODE;
     Map<ObjType, Map<CONTAINER_CONTENTS,
             Map<ITEM_RARITY, List<ObjType>>>> itemPoolsMaps = new HashMap();
-    private boolean noDuplicates = true;
+    private final boolean noDuplicates = true;
     private BattleFieldObject container;
 
 
@@ -706,7 +706,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
     private boolean checkCanPlaceQuestItem(DungeonQuest quest, String contents, BattleFieldObject obj) {
         if (obj instanceof ContainerObj) {
-            if (obj.getCoordinates().dst(Eidolons.getMainHero().getCoordinates()) > 20) {
+            if (obj.getCoordinates().dst(Eidolons.getPlayerCoordinates()) > 20) {
                 return false;
             }
             return obj.getProperty(G_PROPS.BF_OBJECT_GROUP).equalsIgnoreCase(BF_OBJECT_GROUP.TREASURE.toString());

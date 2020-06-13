@@ -1,5 +1,7 @@
 package main.level_editor.backend.handlers.operation;
 
+import java.util.Arrays;
+
 public class Operation {
 
     protected LE_OPERATION operation;
@@ -66,5 +68,12 @@ public class Operation {
 
     public Object[] getArgs() {
         return args;
+    }
+
+    @Override
+    public String toString() {
+        return "Operation " + operation +
+                ", args=" + Arrays.toString(args) +
+                '}';
     }
 }

@@ -718,7 +718,7 @@ public class FileManager {
     public static List<File> getSpriteFilesFromDirectory(String suffix) {
         List<File> files = getFilesFromDirectory(
                 PathFinder.getImagePath() +
-                        PathFinder.getSpritesPath() + suffix, false, true);
+                        PathFinder.getSpritesPath() + suffix, false, true, false);
         files.removeIf(file-> !StringMaster.getFormat(file.getName()).toLowerCase().contains("txt"));
         return files;
     }

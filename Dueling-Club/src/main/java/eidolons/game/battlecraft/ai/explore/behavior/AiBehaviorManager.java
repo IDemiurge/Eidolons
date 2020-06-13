@@ -32,13 +32,13 @@ public class AiBehaviorManager extends AiHandler {
     public static AI_BEHAVIOR_MODE TESTED = !CoreEngine.isFullFastMode() ? null :
             AI_BEHAVIOR_MODE.GUARD;
     public static final boolean TEST_MODE = TESTED != null;
-    private static UNIT_GROUP_TYPE TESTED_GROUP = !CoreEngine.isFullFastMode() ? null :
+    private static final UNIT_GROUP_TYPE TESTED_GROUP = !CoreEngine.isFullFastMode() ? null :
             EncounterEnums.UNIT_GROUP_TYPE.GUARDS;
     Set<UnitExploreAI> aiSet = new LinkedHashSet<>();
-    private DequeImpl<ActionInput> aiActionQueue = new DequeImpl<>();
-    private Integer maxActiveCount = null;
-    private List<GroupAI> activeGroups = new ArrayList<>();
-    private boolean testMode = false;
+    private final DequeImpl<ActionInput> aiActionQueue = new DequeImpl<>();
+    private final Integer maxActiveCount = null;
+    private final List<GroupAI> activeGroups = new ArrayList<>();
+    private final boolean testMode = false;
     private List<GroupAI> groups;
 
     public AiBehaviorManager(AiMaster master) {
@@ -64,7 +64,7 @@ public class AiBehaviorManager extends AiHandler {
         //            units = units.stream().filter(unit -> unit.isAiControlled()).
         //             sorted(
         //             SortMaster.getObjSorterByExpression(obj -> obj.getCoordinates().
-        //              dst(Eidolons.getMainHero().getCoordinates()))).collect(Collectors.toCollection(LinkedHashSet::new)) ;
+        //              dst(Eidolons.getPlayerCoordinates()))).collect(Collectors.toCollection(LinkedHashSet::new)) ;
         //            for (Unit unit : new HashSet<>(units)) {
         //                units.addAll(unit.getAI().getGroup().getMembers());
         //            }
@@ -75,7 +75,7 @@ public class AiBehaviorManager extends AiHandler {
         if (testMode) {
             Collections.sort(groups,
                     new SortMaster<GroupAI>().getSorterByExpression_(groupAI -> -groupAI.getLeader().getCoordinates().
-                            dst(Eidolons.getMainHero().getCoordinates())));
+                            dst(Eidolons.getPlayerCoordinates())));
         }
         Integer n = 0;
         for (GroupAI group : new ArrayList<>(groups)) {

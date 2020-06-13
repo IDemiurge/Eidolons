@@ -24,4 +24,8 @@ public interface IDecorHandler {
     void cut();
 
     void edit();
+
+    void move();
+
+    void boss();
 }

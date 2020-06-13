@@ -37,6 +37,8 @@ public class GuiEventManager {
     public static void bind(boolean removePreviousBind, EventType type, final EventCallback event) {
         if (CoreEngine.isGraphicsOff())
             return;
+        if (CoreEngine.isUtility())
+            return;
         if (removePreviousBind)
             manager.removeBind(type);
         manager.bind(type, event);

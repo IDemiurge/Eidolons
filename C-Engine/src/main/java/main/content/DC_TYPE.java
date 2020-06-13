@@ -17,7 +17,6 @@ import java.util.Map;
 //it's actually ENTITY_TYPE
 
 public enum DC_TYPE implements OBJ_TYPE {
-    BOSS("boss", G_PROPS.BOSS_GROUP, 21, G_PROPS.BOSS_TYPE),
     UNITS("units", G_PROPS.ASPECT, 0, G_PROPS.UNIT_GROUP),
     SPELLS("spells", G_PROPS.ASPECT, 1, G_PROPS.SPELL_GROUP),
     CHARS("chars",
@@ -65,6 +64,7 @@ public enum DC_TYPE implements OBJ_TYPE {
     PARTY("party", G_PROPS.GROUP, 17),
     TERRAIN("terrain", G_PROPS.GROUP, 18, false),
 
+    BOSS("boss", G_PROPS.BOSS_GROUP,19, G_PROPS.BOSS_TYPE),
     SCENARIOS("scenarios", G_PROPS.GROUP, 21),
     PLACES("places", G_PROPS.GROUP, 23),
     DIALOGUE("dialogue", G_PROPS.GROUP, 24) {

@@ -14,6 +14,7 @@ import eidolons.libgdx.texture.Images;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 
 public class DecorFactory {
 
@@ -21,6 +22,7 @@ public class DecorFactory {
 
     public static Actor createDecor(Coordinates c, GraphicData data) {
         Actor actor;
+        if (!CoreEngine.isLevelEditor())
         if (data.getBooleanValue(GraphicData.GRAPHIC_VALUE.editor)) {
             return new NoHitImageX(Images.REALLY_EMPTY_32);
         }
@@ -87,8 +89,11 @@ public class DecorFactory {
         } else
             actor.setFps(15); //?
 
-        if (data.getValue(GraphicData.GRAPHIC_VALUE.blending).isEmpty()) {
+        String blending = data.getValue(GraphicData.GRAPHIC_VALUE.blending);
+        if (blending.isEmpty()) {
             actor.setBlending(GenericEnums.BLENDING.SCREEN);
+        } else {
+            actor.setBlending(GenericEnums.BLENDING.valueOf(blending.toUpperCase()));
         }
         if (data.getIntValue(GraphicData.GRAPHIC_VALUE.x) == 0) {
             if (data.getIntValue(GraphicData.GRAPHIC_VALUE.y) == 0) {

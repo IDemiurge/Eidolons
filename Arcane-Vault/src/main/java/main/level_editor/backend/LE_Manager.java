@@ -3,6 +3,7 @@ package main.level_editor.backend;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import main.game.bf.Coordinates;
+import main.level_editor.backend.display.LE_DisplayHandler;
 import main.level_editor.backend.functions.advanced.IPlatformHandlerImpl;
 import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
@@ -67,6 +68,7 @@ public class LE_Manager {
     private final IHandlerDelegate delegate;
     private LE_LAYER layer=LE_LAYER.obj;
     private int layerId;
+    private final LE_DisplayHandler displayHandler;
 
     public LE_Manager(LE_Floor floor) {
         this.floor = floor;        
@@ -97,6 +99,7 @@ public class LE_Manager {
         handlers.add(  transitHandler = new LE_TransitHandler(this));
         handlers.add(  advFuncs = new LE_AdvFuncs(this));
         handlers.add( decorHandler = new LE_DecorHandler(this));
+        handlers.add( displayHandler = new LE_DisplayHandler(this));
         delegate = new LE_HandlerDelegate(this);
 //        layerHandler = new IRngHandler(this);
     }
@@ -262,6 +265,11 @@ public class LE_Manager {
             layerId = 0;
         setLayer(LE_LAYER.values()[layerId]);
     }
+
+    public LE_DisplayHandler getDisplayHandler() {
+        return displayHandler;
+    }
+
 
     public enum LE_LAYER {
         obj,

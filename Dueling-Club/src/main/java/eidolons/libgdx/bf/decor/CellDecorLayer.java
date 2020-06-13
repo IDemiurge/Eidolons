@@ -5,6 +5,7 @@ import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.game.bf.Coordinates;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 public class CellDecorLayer extends GroupX {
 
-    public static boolean spriteTest=true;
+    public static boolean spriteTest= CoreEngine.isLevelEditor();
     GridPanel gridPanel;
     Map<Coordinates, List<Actor>> map = new LinkedHashMap<>();
 

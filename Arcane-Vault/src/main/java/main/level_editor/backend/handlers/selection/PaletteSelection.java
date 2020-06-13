@@ -51,6 +51,7 @@ public class PaletteSelection implements Serializable {
             setOverlayingType(null);
             EUtils.showInfoText("Palette type selected: " + objType.getName());
         }
+        setDecorData(null);
     }
 
     public void setOverlayingType(ObjType objTypeOverlaying) {

@@ -110,7 +110,7 @@ public class VoidHandler {
                     GridCell gridCell = raised.keySet().iterator().next();
                     raised.keySet().remove(gridCell);
                     DC_Cell cell = gridCell.getUserObject();
-                    if (canDropHero || !Eidolons.getMainHero().getCoordinates().equals(cell.getCoordinates())) {
+                    if (canDropHero || !Eidolons.getPlayerCoordinates().equals(cell.getCoordinates())) {
 
                         Coordinates c = cell.getCoordinates();
                         toggle(false, c, ImmutableList.of(c), 1f, raised.get(cell));

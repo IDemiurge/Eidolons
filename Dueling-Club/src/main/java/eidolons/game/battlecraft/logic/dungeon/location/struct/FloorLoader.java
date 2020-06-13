@@ -7,8 +7,11 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.bf.decor.DecorData;
+import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.xml.XmlNodeMaster;
@@ -308,13 +311,20 @@ public class FloorLoader extends DungeonHandler {
         getMaster().initPuzzles(location.getTextDataMap());
 
     }
+
     public void loadingDone() {
         initMarks(master.getFloorWrapper().getTextDataMap());
         initDecor(master.getFloorWrapper().getDecorMap());
     }
 
     protected void initDecor(Map<Coordinates, DecorData> decorMap) {
-        GuiEventManager.trigger(GuiEventType.CELL_DECOR_INIT , decorMap);
+        GridPanel dungeonGrid = ScreenMaster.getDungeonGrid();
+        if (dungeonGrid != null)
+            Eidolons.onGdxThread(() -> {
+                dungeonGrid.initDecor(decorMap);
+            });
+        else
+            GuiEventManager.trigger(GuiEventType.CELL_DECOR_INIT, decorMap);
     }
 
     protected Map<Coordinates, CellScriptData> buildCellMap(String textContent) {
@@ -331,16 +341,17 @@ public class FloorLoader extends DungeonHandler {
     }
 
     protected Map<Coordinates, DecorData> buildDecorMap(String textContent) {
-        Map<Coordinates, DecorData> map = new HashMap<>();
+        Map<Coordinates, DecorData> map = new LinkedHashMap<>();
         for (String substring : ContainerUtils.openContainer(textContent, StringMaster.VERTICAL_BAR)) {
             int index = substring.indexOf("=");
             if (index < 0)
                 continue;
             Coordinates c = Coordinates.get(substring.substring(0, index));
-            map.put(c, new DecorData(substring.substring(index+1)));
+            map.put(c, new DecorData(substring.substring(index + 1)));
         }
         return map;
     }
+
     protected void initFlipMap(Map<Coordinates, CellScriptData> map) {
         getMaster().getGame().getFlipMap().putAll(createFlipMap(map));
     }
