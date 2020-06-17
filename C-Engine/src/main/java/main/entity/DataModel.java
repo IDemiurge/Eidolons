@@ -5,6 +5,7 @@ import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.ContentValsManager;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
+import main.content.ValueMap;
 import main.content.enums.GenericEnums.STD_BOOLS;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
@@ -78,7 +79,7 @@ public abstract class DataModel {
     protected String modifierKey;
     protected Double C;
     private HashMap<PROPERTY, Map<String, Boolean>> propCache;
-    private Map<PARAMETER, Integer> integerMap = new HashMap<>();
+    private final Map<PARAMETER, Integer> integerMap = new HashMap<>();
     private boolean beingReset;
     private boolean loaded;
 
@@ -332,7 +333,7 @@ public abstract class DataModel {
             return 0;
         }
         if (NumberUtils.isInteger(string)) {
-            result = NumberUtils.getInteger(string);
+            result = NumberUtils.getIntParse(string);
         } else
             result = FormulaMaster.getInt(string, ref);
 
@@ -431,7 +432,7 @@ public abstract class DataModel {
         if (value.isEmpty()) {
             return true;
         }
-        Integer val2 = NumberUtils.getInteger(value);
+        Integer val2 = NumberUtils.getIntParse(value);
         if (val2 == null)
             return false;
         return checkParam(param, val2);
@@ -630,7 +631,7 @@ public abstract class DataModel {
         if (!NumberUtils.isNumber(amountString, false))
             amount = new Formula(amountString).evaluate(ref);
         else if (NumberUtils.isInteger(amountString)) {
-            amount = NumberUtils.getInteger(amountString);
+            amount = NumberUtils.getIntParse(amountString);
             if (amount.equals(0)) {
                 return false;
             }
@@ -914,13 +915,13 @@ public abstract class DataModel {
 
     public void modifyParameter(String param, String string) {
         PARAMETER p = ContentValsManager.getPARAM(param);
-        int perc = NumberUtils.getInteger(string);
+        int perc = NumberUtils.getIntParse(string);
         modifyParameter(p, perc);
     }
 
     public void modifyParamByPercent(String param, String string) {
         PARAMETER p = ContentValsManager.getPARAM(param);
-        int perc = NumberUtils.getInteger(string);
+        int perc = NumberUtils.getIntParse(string);
         modifyParamByPercent(p, perc);
     }
 
@@ -1259,7 +1260,7 @@ public abstract class DataModel {
             if (!base) {
                 setParam((PARAMETER) valName, value);
             } else {
-                setParam((PARAMETER) valName, NumberUtils.getInteger(value), false, true);
+                setParam((PARAMETER) valName, NumberUtils.getIntParse(value), false, true);
             }
         }
         setDirty(true);
@@ -1319,7 +1320,7 @@ public abstract class DataModel {
     }
 
     public void addParam(PARAMETER parameter, String param, boolean base) {
-        modifyParameter(parameter, NumberUtils.getInteger(param), base);
+        modifyParameter(parameter, NumberUtils.getIntParse(param), base);
     }
 
     public void copyValues(Entity type, List<VALUE> list) {
@@ -1629,7 +1630,7 @@ public abstract class DataModel {
     }
 
     public int getTypeId() {
-        return NumberUtils.getInteger(getProperty(G_PROPS.ID));
+        return NumberUtils.getIntParse(getProperty(G_PROPS.ID));
     }
 
     public List<ObjType> getListFromProperty(OBJ_TYPE TYPE, PROPERTY prop) {
@@ -1716,4 +1717,7 @@ public abstract class DataModel {
         setProperty(G_PROPS.DESCRIPTION, description);
     }
 
+    public ValueMap getValueMap(boolean parameter) {
+        return parameter ? getParamMap() : getPropMap();
+    }
 }

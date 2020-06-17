@@ -12,6 +12,7 @@ import main.content.enums.GenericEnums;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
+import main.data.filesys.PathFinder;
 import main.data.xml.*;
 import main.elements.conditions.*;
 import main.entity.Ref.KEYS;
@@ -28,10 +29,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
@@ -42,7 +40,7 @@ public class XML_Transformer {
 
     public enum SPECIAL_ROUTINES {
         SPEACIAL_ROUTINE, CLEAN_UP, FILTER_HEROES, REMOVE_VALUE, RENAME_VALUE, RENAME_TYPE,
-        RELEASE_CLEANUP // remove dev values
+        REPAIR, RELEASE_CLEANUP // remove dev values
     }
 
     public static void main(String[] args) {
@@ -70,9 +68,13 @@ public class XML_Transformer {
             case RENAME_VALUE:
                 renameValue();
                 break;
+            case REPAIR:
+                repair(DC_TYPE.SPELLS);
+                break;
 
         }
     }
+
 
     private static void backUp() {
         ModelManager.fullBackUp(); // new reserve?
@@ -134,7 +136,58 @@ public class XML_Transformer {
         }
     }
 
+    private static void repair(OBJ_TYPE TYPE  ) {
+/*
+restore values from backup file
+run comparison based on current valueTypePairs
+- list values that are not present...
+ */
+        Map<String, ObjType> map = new LinkedHashMap<>();
+         DataManager.getTypes(TYPE).stream().forEach(type-> map.put(type.getName(), type));
+        // XML_Reader.setCustomTypesPath(PathFinder.getBACKUP_TYPES_PATH());
+        XML_Reader.readTypeFile(PathFinder.getBACKUP_TYPES_PATH()+TYPE.getName()
+                +".xml", TYPE);
+        Set<VALUE> missing=new LinkedHashSet<>();
+        Set<ObjType> repaired = new LinkedHashSet<>();
+        Document doc = XML_Converter.getDoc(XML_Reader.getFile((DC_TYPE) TYPE).getContents());
+        for (Node group : XmlNodeMaster.getNodeListFromFirstChild(doc,true))
+        for (Node typeNode : XmlNodeMaster.getNodeList(group))
+        {
+            ObjType type = map.get(XML_Formatter.restoreXmlNodeName(typeNode.getNodeName()));
+            for (Node node : XmlNodeMaster.getNodeList(typeNode))
+        {
+            if (node.getNodeName().equalsIgnoreCase("params")) {
+                repair(true,type, missing ,repaired, node, TYPE);
+            }
+            if (node.getNodeName().equalsIgnoreCase("props")) {
+                repair(false,type, missing ,repaired, node, TYPE);
+            }
+        }
+        }
+        // XML_Converter.getTypeListFromXML(backupXml , false).for
 
+        log(missing.size()+ " Missing vals: " + ContainerUtils.constructStringContainer(missing, "\n"));
+        log(repaired.size()+ " Repaired types: " + ContainerUtils.constructStringContainer(repaired, "\n"));
+
+        if (DialogMaster.confirm("Save?")) {
+            XML_Writer.writeXML_ForTypeGroup(TYPE);
+        }
+
+    }
+
+    private static void repair(boolean parameter, ObjType type, Set<VALUE> missing,
+                               Set<ObjType> repaired, Node node, OBJ_TYPE TYPE) {
+        for (Node valNode : XmlNodeMaster.getNodeList(node)) {
+            VALUE val = ContentValsManager.getValue(valNode.getNodeName());
+            String value = valNode.getTextContent();
+            if (DC_ContentValsManager.isValueForOBJ_TYPE(TYPE, val ))
+                if (!type.getValueMap(parameter).containsKey(val)) {
+                    type.setValue(val, value);
+                    repaired.add(type);
+                    missing.add(val);
+                }
+        }
+    }
     public static void filterHeroes() {
         Conditions c = new Conditions();
         c.add(new NotCondition(new NumericCondition(StringMaster.getValueRef(KEYS.SOURCE,

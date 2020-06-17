@@ -34,8 +34,8 @@ public class CombatMaster {
     private boolean fullManualControl;
 
     public CombatMaster(DC_Game game) {
-        armorMaster = new ArmorMaster(false);
-        armorSimulator = new ArmorMaster(true);
+        armorMaster = new ArmorMaster(false, game);
+        armorSimulator = new ArmorMaster(true, game);
         attackMaster = new DC_AttackMaster(game);
         actionManager = new ActionInitializer(game);
         turnManager =  new AtbTurnManager(game) ;

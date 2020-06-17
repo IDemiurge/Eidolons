@@ -44,7 +44,7 @@ public abstract class LogManager {
     private List<String> displayedLines;
     private List<LogEntryNode> topNodes = new ArrayList<>();
     private Map<Integer, List<LogEntryNode>> topNodeMap;
-    private Map<ENTRY_TYPE, LogEntryNode> pendingEntries = new HashMap<>();
+    private final Map<ENTRY_TYPE, LogEntryNode> pendingEntries = new HashMap<>();
     private int layer;
     private Map<ENTRY_TYPE, List<ANIM>> pendingAnimsToLink;
     private boolean logNodesOn;
@@ -399,7 +399,7 @@ public abstract class LogManager {
     public abstract boolean logMovement(Ref ref);
 
     public void logValueMod(PARAMETER param, Number i, Obj obj) {
-        Integer amount = NumberUtils.getInteger(i.toString());
+        Integer amount = NumberUtils.getIntParse(i.toString());
         if (amount.toString().equals("0")) {
             return;
         }

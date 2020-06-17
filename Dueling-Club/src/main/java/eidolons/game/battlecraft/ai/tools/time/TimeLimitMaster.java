@@ -12,16 +12,16 @@ import main.system.math.MathMaster;
 
 public class TimeLimitMaster {
     public static final long CRITICAL_FAIL_FACTOR = 10;
-    private static double TIME_LIMIT_FACTOR = 5;
-    private static int AI_TIME_LIMIT_MIN = 3000;
+    private static final double TIME_LIMIT_FACTOR = 5;
+    private static final int AI_TIME_LIMIT_MIN = 3000;
     private static final int AI_TIME_LIMIT_MAX = 7000;
-    private static int AI_TIME_LIMIT_PER_POWER = 150;
-    private static int AI_TIME_LIMIT_MIN_EXPLORE = 500;
-    private static int AI_TIME_LIMIT_PER_POWER_EXPLORE = 15;
-    private static int ACTION_TIME_LIMIT = 3000;
-    private static int PATH_TIME_LIMIT = 2000;
-    private static int CELL_PATH_TIME_LIMIT = 500;
-    private static int PATH_STEP_TIME_LIMIT = 250;
+    private static final int AI_TIME_LIMIT_PER_POWER = 150;
+    private static final int AI_TIME_LIMIT_MIN_EXPLORE = 500;
+    private static final int AI_TIME_LIMIT_PER_POWER_EXPLORE = 15;
+    private static final int ACTION_TIME_LIMIT = 3000;
+    private static final int PATH_TIME_LIMIT = 2000;
+    private static final int CELL_PATH_TIME_LIMIT = 500;
+    private static final int PATH_STEP_TIME_LIMIT = 250;
     private static Float timeLimitMod;
 
     public TimeLimitMaster(UnitAI ai) {
@@ -100,7 +100,8 @@ public class TimeLimitMaster {
     }
 
     public static boolean checkTimeLimitForAi(UnitAI ai) {
-        if (CoreEngine.TEST_LAUNCH) {
+        if (OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.AI_DEBUG)) {
+        // if (CoreEngine.TEST_LAUNCH) {
             return true;
         }
         if (getTimeLimitForAi(ai) > getMarkForAi(ai))

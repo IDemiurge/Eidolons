@@ -61,9 +61,9 @@ public class StyleHolder {
     private static LabelStyle defaultLabelStyle;
     private static LabelStyle avqLabelStyle;
     private static TextButtonStyle defaultTextButtonStyle;
-    private static Map<FONT, Map<Color, LabelStyle>> colorLabelStyleMap = new HashMap<>();
-    private static Map<FONT, Map<Integer, LabelStyle>> sizeLabelStyleMap = new HashMap<>();
-    private static Map<FONT, Map<Pair<Integer, Color>, LabelStyle>> sizeColorLabelStyleMap = new HashMap<>();
+    private static final Map<FONT, Map<Color, LabelStyle>> colorLabelStyleMap = new HashMap<>();
+    private static final Map<FONT, Map<Integer, LabelStyle>> sizeLabelStyleMap = new HashMap<>();
+    private static final Map<FONT, Map<Pair<Integer, Color>, LabelStyle>> sizeColorLabelStyleMap = new HashMap<>();
     private static TextButtonStyle defaultTabStyle;
     private static ScrollPaneStyle scrollStyle;
     private static TextButtonStyle dialogueReplyStyle;
@@ -81,7 +81,7 @@ public class StyleHolder {
             String path = getHieroPath(font);
             for (File file : FileManager.getFilesFromDirectory(path, false)) {
                 String size = StringMaster.cropFormat(file.getName().replace(StringMaster.getStringBeforeNumerals(file.getName()), "")).trim();
-                list.add(NumberUtils.getInteger(size));
+                list.add(NumberUtils.getIntParse(size));
             }
 
         }

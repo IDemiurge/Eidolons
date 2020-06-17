@@ -27,6 +27,7 @@ public class PathFinder {
     private static String FONT_PATH;
     private static String TYPES_PATH;
     private static String MACRO_TYPES_PATH;
+    private static String BACKUP_TYPES_PATH;
     private static String RES_PATH;
     private static final Lock initLock = new ReentrantLock();
     private static volatile boolean isInitialized = false;
@@ -81,6 +82,7 @@ public class PathFinder {
         MACRO_TYPES_PATH = XML_PATH + MACRO_MODULE_NAME + "/types/";
 
         TYPES_PATH = XML_PATH + MICRO_MODULE_NAME + "/types/";
+       BACKUP_TYPES_PATH = XML_PATH + MICRO_MODULE_NAME + "/types/backup/";
 
     }
 
@@ -198,6 +200,10 @@ public class PathFinder {
     public static String getTYPES_PATH() {
         init();
         return TYPES_PATH;
+    }
+    public static String getBACKUP_TYPES_PATH() {
+        init();
+        return BACKUP_TYPES_PATH;
     }
 
     public static String getRootPath() {

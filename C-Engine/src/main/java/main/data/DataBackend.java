@@ -40,8 +40,8 @@ public class DataBackend {
     private   List<ObjType> overwrittenTypes;
     private   Map<OBJ_TYPE, Map<String, List<String>>> subGroupsMaps;
     private   Map<C_OBJ_TYPE, List<ObjType>> customObjTypeCache;
-    private   Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps = new ConcurrentMap();
-    private   Map<OBJ_TYPE, Map<String, ObjType>> caches = new HashMap<>();
+    private final Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps = new ConcurrentMap();
+    private final Map<OBJ_TYPE, Map<String, ObjType>> caches = new HashMap<>();
 
     public   void init() {
         subGroupsMaps = new HashMap<>();
@@ -701,9 +701,9 @@ public class DataBackend {
             ObjType type = getType(string, TYPE);
             if (type == null) {
                 if (NumberUtils.isInteger(string)) {
-                    type = Game.game.getTypeById(NumberUtils.getInteger(string));
+                    type = Game.game.getTypeById(NumberUtils.getIntParse(string));
                     if (type == null) {
-                        Obj obj = Game.game.getObjectById(NumberUtils.getInteger(string));
+                        Obj obj = Game.game.getObjectById(NumberUtils.getIntParse(string));
                         if (obj != null) {
                             type = obj.getType();
                         }

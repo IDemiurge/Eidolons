@@ -605,7 +605,7 @@ public class ModelManager {
         if (idSet.contains(type)) {
             return;
         }
-        int id = NumberUtils.getInteger(type.getProperty(G_PROPS.ID));
+        int id = NumberUtils.getIntParse(type.getProperty(G_PROPS.ID));
         if (id % 2 != 1) {
             type.setProperty(G_PROPS.ID, "" + classId);
             classId += 2;

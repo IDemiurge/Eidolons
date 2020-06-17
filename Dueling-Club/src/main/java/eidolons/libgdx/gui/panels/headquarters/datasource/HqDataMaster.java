@@ -123,7 +123,7 @@ public class HqDataMaster {
             for (String substring : ContainerUtils.openContainer(val)) {
                 if (!NumberUtils.isInteger(substring))
                     continue;
-                Integer id = NumberUtils.getInteger(substring);
+                Integer id = NumberUtils.getIntParse(substring);
                 if (id != 0) {
                     Obj obj = model.getGame().getObjectById(id);
                     if (obj == null)

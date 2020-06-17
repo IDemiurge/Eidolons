@@ -137,6 +137,7 @@ public abstract class GridPanel extends Group {
     public Actor hit(float x, float y, boolean touchable) {
 /*
 platforms...
+it sort of broke at some point - need to investigate!
  */
         if (!isCustomHit())
             return super.hit(x, y, touchable);
@@ -151,7 +152,7 @@ platforms...
     }
 
     protected boolean isCustomHit() {
-        return true;
+        return false;
     }
 
     public void setModule(Module module) {

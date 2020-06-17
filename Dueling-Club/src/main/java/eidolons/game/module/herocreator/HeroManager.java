@@ -42,8 +42,8 @@ import main.entity.obj.Attachment;
 import main.entity.obj.BuffObj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
@@ -139,11 +139,9 @@ public class HeroManager {
 
     public static boolean isQuickSlotWeapon(Entity type) {
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) {
-            if (type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.SMALL + "")
+            return type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.SMALL + "")
                     || type.checkSingleProp(G_PROPS.WEAPON_SIZE, ItemEnums.WEAPON_SIZE.TINY + "")
-                    || type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
-                return true;
-            }
+                    || type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "");
         }
         return false;
     }
@@ -161,8 +159,7 @@ public class HeroManager {
                 return true;
         possible_slot = getItemSlot(hero, item, false, true);
         if (possible_slot != null)
-            if (possible_slot == slot || possible_slot.getReserve() == slot)
-                return true;
+            return possible_slot == slot || possible_slot.getReserve() == slot;
         return false;
     }
 
@@ -300,7 +297,7 @@ public class HeroManager {
     public static WEAPON_CLASS getWeaponClass(String type) {
         ObjType objType = DataManager.getType(type, DC_TYPE.WEAPONS);
         if (objType == null) {
-            objType = Eidolons.game.getObjectById(NumberUtils.getInteger(type)).getType();
+            objType = Eidolons.game.getObjectById(NumberUtils.getIntParse(type)).getType();
         }
         return getWeaponClass(objType);
     }

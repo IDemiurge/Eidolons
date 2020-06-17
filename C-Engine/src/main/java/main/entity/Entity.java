@@ -225,7 +225,7 @@ public abstract class Entity extends DataModel implements OBJ {
 
             if (!value.equals(baseValue)) {
                 if (isValidMapStored(p)){
-                    getValidParams().put(p, NumberUtils.getInteger(value));
+                    getValidParams().put(p, NumberUtils.getIntParse(value));
                 }
                 String amount = getType().getParam(p);
                 putParameter(p, amount);

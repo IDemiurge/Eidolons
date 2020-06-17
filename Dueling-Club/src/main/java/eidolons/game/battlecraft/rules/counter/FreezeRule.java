@@ -100,7 +100,7 @@ public class FreezeRule extends DC_CounterRule {
 
     private boolean checkIsFrozen(BattleFieldObject unit) {
         return unit.getIntParam(PARAMS.INITIATIVE ) <= NumberUtils
-         .getInteger(INITIATIVE_PER_COUNTER)
+         .getIntParse(INITIATIVE_PER_COUNTER)
          * -getNumberOfCounters(unit);
     }
 

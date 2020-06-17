@@ -950,9 +950,9 @@ public class StringMaster {
 
     public static Integer getWeight(String string, boolean inverse) {
         if (inverse) {
-            return NumberUtils.getInteger(getWeightItem(string, false));
+            return NumberUtils.getIntParse(getWeightItem(string, false));
         }
-        return NumberUtils.getInteger(StringMaster.cropParenthesises(VariableManager.getVarPartLast(string)));
+        return NumberUtils.getIntParse(StringMaster.cropParenthesises(VariableManager.getVarPartLast(string)));
     }
 
     public static String getWeightItem(String string, boolean inverse) {
@@ -1152,7 +1152,7 @@ public class StringMaster {
 
     public static String getNameFromId(String property, Game game) {
         if (NumberUtils.isInteger(property)) {
-            Obj obj = game.getObjectById(NumberUtils.getInteger(property));
+            Obj obj = game.getObjectById(NumberUtils.getIntParse(property));
             if (obj == null) {
                 return wrapInBraces("invalid id " + property);
             }

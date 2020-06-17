@@ -38,10 +38,10 @@ public class DecorData extends DataUnit<DecorData.DECOR_LEVEL> {
 
 
     public enum DECOR_LEVEL {
-        TOP,
         BOTTOM,
+        OVER_CELLS,
         OVER_MAPS,
-        OVER_CELLS
+        TOP,
 
     }
 }

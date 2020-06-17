@@ -192,10 +192,11 @@ public class BattleGuiStage extends GuiStage {
 
     @Override
     public boolean keyTyped(char character) {
-        if (CoreEngine.isIDE()){
+        if (CoreEngine.isIDE()) {
             GuiEventManager.trigger(GuiEventType.KEY_TYPED, (int) character);
         }
-        return super.keyTyped(character);
+        Eidolons.onNonGdxThread(() -> super.keyTyped(character));
+        return true;
     }
 
     protected void bindEvents() {

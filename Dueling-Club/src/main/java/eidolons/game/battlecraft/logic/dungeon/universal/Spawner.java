@@ -114,7 +114,7 @@ public class Spawner  extends DungeonHandler  {
             String level = data.getContainerValue(PARTY_VALUE.LEVEL, i);
             if (!owner.isMe())
                 if (owner.isAi())
-                    if (NumberUtils.getInteger(level) == 0) {
+                    if (NumberUtils.getIntParse(level) == 0) {
                         level = getMinLevel(type) + "";
                     }
             units.add(spawnUnit(type, c, owner, facing, level));
@@ -146,7 +146,7 @@ public class Spawner  extends DungeonHandler  {
 
         //TODO chars or units?!
         if (level != null) {
-            int levelUps = NumberUtils.getInteger(level);
+            int levelUps = NumberUtils.getIntParse(level);
             if (levelUps > 0) {
                 type = new UnitLevelManager().getLeveledType(type, levelUps);
             }

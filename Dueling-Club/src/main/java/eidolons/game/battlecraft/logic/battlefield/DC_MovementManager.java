@@ -163,6 +163,9 @@ public class DC_MovementManager implements MovementManager {
 
     public List<ActionPath> buildPath(Unit unit, Coordinates coordinates) {
         List<DC_ActiveObj> moves = getMoves(unit);
+
+        // ActionPath path = game.getAiManager().getStarBuilder().getPath(unit.getCoordinates(), coordinates);
+        // return ImmutableList.of(path);
         PathBuilder builder = PathBuilder.getInstance().init
                 (moves, new Action(unit.getAction("Move")));
         builder.simplified=true;
@@ -171,7 +174,6 @@ public class DC_MovementManager implements MovementManager {
         if (paths.isEmpty()) {
             return null;
         }
-
         return paths;
     }
 
@@ -232,7 +234,7 @@ public class DC_MovementManager implements MovementManager {
                 if (!checkPathStillValid(path, playerDestination)) {
                     continue;
                 }
-                action = path.getActions().get(0);
+                action = path.getActions().remove(0);
                 playerPath = path.choices.stream().map(c -> c.getCoordinates()).collect(Collectors.toList());
                 break;
             }

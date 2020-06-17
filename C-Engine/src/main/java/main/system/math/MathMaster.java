@@ -7,9 +7,9 @@ import main.entity.obj.Obj;
 import main.game.core.game.Game;
 import main.game.core.game.GenericGame;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.NumberUtils;
 import main.system.datatypes.WeightMap;
 
 import java.awt.event.ActionEvent;
@@ -143,7 +143,7 @@ public abstract class MathMaster {
     public static int getMaxCoordinateFromUnitGroupData(boolean x_y, String data) {
         int max = 0; // x-y=name;
         for (String substring : ContainerUtils.open(data, ",")) {
-            Integer c = NumberUtils.getInteger(substring.split("=")[x_y ? 0 : 1]);
+            Integer c = NumberUtils.getIntParse(substring.split("=")[x_y ? 0 : 1]);
             if (c > max) {
                 max = c;
             }
@@ -160,7 +160,7 @@ public abstract class MathMaster {
         if (param.isMod()) {
             return true;
         }
-        Integer i = NumberUtils.getInteger(param.getDefaultValue());
+        Integer i = NumberUtils.getIntParse(param.getDefaultValue());
         return i == 100;
     }
 

@@ -26,7 +26,7 @@ public class RngSelectionPanel extends ScenarioSelectionPanel {
 
     protected Comparator<? super SelectableItemData> getDataSorter() {
         return new SortMaster<SelectableItemData>().getSorterByExpression_(t ->
-         NumberUtils.getInteger(t.getEntity().getProperty(G_PROPS.ID)));
+         NumberUtils.getIntParse(t.getEntity().getProperty(G_PROPS.ID)));
     }
     @Override
     protected void scenarioChosen(final ObjType scenario) {

@@ -146,13 +146,13 @@ public class TextureManager {
 
         if (!xOrY) {
             if (NumberUtils.isNumber(y, true)) {
-                return NumberUtils.getInteger(y);
+                return NumberUtils.getIntParse(y);
             }
         }
         path = StringMaster.cropLast(path, y);
         String x = StringMaster.getLastPart(path, " ");
         if (NumberUtils.isNumber(x, true)) {
-            return NumberUtils.getInteger(x);
+            return NumberUtils.getIntParse(x);
         }
         return xOrY ?
          getXY(origPath).getKey() :

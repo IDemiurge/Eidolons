@@ -35,19 +35,19 @@ import static main.system.auxiliary.log.LogMaster.*;
 public class XML_Reader {
     // private static final Logger = Logger.getLogger(XML_Reader.class);
 
-    private static Map<String, Set<String>> tabGroupMap = new HashMap<>();
-    private static Map<String, Set<String>> treeSubGroupMap = new HashMap<>();
+    private static final Map<String, Set<String>> tabGroupMap = new HashMap<>();
+    private static final Map<String, Set<String>> treeSubGroupMap = new HashMap<>();
 
-    private static Map<String, Set<String>> macroTabGroupMap = new HashMap<>();
-    private static Map<String, Set<String>> macroTreeSubGroupMap = new HashMap<>();
+    private static final Map<String, Set<String>> macroTabGroupMap = new HashMap<>();
+    private static final Map<String, Set<String>> macroTreeSubGroupMap = new HashMap<>();
 
-    private static Map<String, Map<String, ObjType>> typeMaps = new HashMap<>();
+    private static final Map<String, Map<String, ObjType>> typeMaps = new HashMap<>();
     private static Map<String, ObjType> bufferCharTypeMap = new HashMap<>(20);
     private static boolean macro;
 
     private static boolean concurrentReadingOn = true;
-    private static Map<String, XML_File> heroFiles = new HashMap<>();
-    private static Map<String, XML_File> partyFiles = new HashMap<>();
+    private static final Map<String, XML_File> heroFiles = new HashMap<>();
+    private static final Map<String, XML_File> partyFiles = new HashMap<>();
     private static DequeImpl<XML_File> files = new DequeImpl<>();
 
     private static Map<String, ObjType> originalCharTypeMap;
@@ -303,11 +303,15 @@ public class XML_Reader {
         return brokenXml;
     }
 
-    public static void readTypeFile(boolean macro, OBJ_TYPE type) {
+    public static void readTypeFile(String path, OBJ_TYPE type) {
+        XML_File xml = readFile(FileManager.getFile(path));
+        xml.setType(type);
+        loadFile(xml);
+    }
+        public static void readTypeFile(boolean macro, OBJ_TYPE type) {
         String path = StrPathBuilder.build((macro ? PathFinder.getMACRO_TYPES_PATH()
                 : PathFinder.getTYPES_PATH()), type.getName() + ".xml");
-        XML_File xml = readFile(FileManager.getFile(path));
-        loadFile(xml);
+            readTypeFile(path, type);
     }
 
     public static void loadXml(boolean macro) {

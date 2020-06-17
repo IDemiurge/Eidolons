@@ -7,9 +7,9 @@ import main.data.xml.XML_Writer;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.NumberUtils;
 import main.system.entity.CounterMaster;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
@@ -31,7 +31,7 @@ public class ValueHelper {
     Stack<String> searches = new Stack<>();
     private Entity entity;
     private Component parent;
-    private DC_Game game;
+    private final DC_Game game;
 
     public ValueHelper(DC_Game game) {
         this.game = game;
@@ -128,7 +128,7 @@ public class ValueHelper {
                     // if (getEntity() instanceof DC_HeroObj ) //set items
                     // initialized false!
                 } else {
-                    getEntity().setCounter(valueName, NumberUtils.getInteger(input));
+                    getEntity().setCounter(valueName, NumberUtils.getIntParse(input));
                 }
                 game.getManager().reset();
                 game.getManager().refreshAll();

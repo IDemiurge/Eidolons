@@ -12,8 +12,8 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.core.game.Game;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 import main.system.math.Parameter;
@@ -208,7 +208,7 @@ public class TextParser {
         if (!NumberUtils.isInteger(value)) {
             return ref_substring;
         }
-        int index = NumberUtils.getInteger(value) - 1;
+        int index = NumberUtils.getIntParse(value) - 1;
         String varProp = entity.getProperty(G_PROPS.VARIABLES);
         return ContainerUtils.openContainer(varProp).get(index);
     }
@@ -262,7 +262,7 @@ public class TextParser {
             entity = entity.getType();
         }
         if (NumberUtils.isInteger(value)) {
-            int index = NumberUtils.getInteger(value) - 1;
+            int index = NumberUtils.getIntParse(value) - 1;
             String varProp = entity.getProperty(G_PROPS.VARIABLES);
             if (StringMaster.isEmpty(varProp)) {
                 varProp = DEFAULT_VARS;

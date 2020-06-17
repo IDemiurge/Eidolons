@@ -215,9 +215,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return super.isConstructed();
     }
     protected boolean isConstructOnToBase() {
-        if (!ExplorationMaster.isExplorationOn())
-            return true;
-        return false;
+        return !ExplorationMaster.isExplorationOn();
     }
 
     @Override
@@ -905,7 +903,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     @Override
     protected void putParameter(PARAMETER param, String value) {
         if (param == PARAMS.AP_COST) {
-            int v = NumberUtils.getInteger(value);
+            int v = NumberUtils.getIntParse(value);
             if (v > type.getIntParam(param) * 2) {
                 return;
             }

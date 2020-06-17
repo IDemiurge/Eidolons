@@ -10,7 +10,6 @@ import main.system.math.MathMaster;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -18,8 +17,6 @@ import java.util.regex.Pattern;
  * Created by JustMe on 7/24/2018.
  */
 public class NumberUtils {
-    private static final String UNICODE = "UNICODE";
-    private static final String CODEEND = "CODEEND";
 
     public static String getNegativeFormula(String formula) {
         return "-1* (" + formula + ")";
@@ -86,7 +83,7 @@ public class NumberUtils {
         return isNumber(value, true);
     }
 
-    public static Integer getInteger(char value) {
+    public static Integer getIntParse(char value) {
         switch (value) {
             case '0':
                 return 0;
@@ -112,16 +109,26 @@ public class NumberUtils {
         return null;
     }
 
-    public static Integer getInteger(String value) {
-        return getInteger(value, null);
+    public static Integer getIntParse(String value) {
+        return getIntParse(value, null);
     }
 
-    public static Integer getInteger(String value, Ref ref) {
+    public static Integer getInt(String value) {
+        return getIntParse(value, null, false);
+    }
+
+    public static Integer getIntParse(String value, Ref ref) {
+        return getIntParse(value, ref, true);
+    }
+
+    public static Integer getIntParse(String value, Ref ref, boolean parse) {
         if (value == null)
             return 0;
-        if (!isInteger(value)) {
-            return new Formula(value).getInt(ref == null ? new Ref() : ref);
-        }
+            if (!isInteger(value)) {
+                if (!parse)
+                    return 0;
+                return new Formula(value).getInt(ref == null ? new Ref() : ref);
+            }
         if (value.contains(".")) {
             value = value.split(Pattern.quote("."))[0];
         }
@@ -137,7 +144,7 @@ public class NumberUtils {
                 if (c == ('-')) {
                     negative = true;
                 } else {
-                    result += getInteger(c) * Math.pow(10, value.length() - i - 1);
+                    result += getIntParse(c) * Math.pow(10, value.length() - i - 1);
                 }
             }
             if (negative) {
@@ -240,28 +247,9 @@ public class NumberUtils {
         return 0.0f;
     }
 
-    public static String getCodeFromChar(String key) {
-        return UNICODE + key.codePointAt(0) + CODEEND;
-        // Character.toChars(int).
-    }
-
-    public static String getStringFromCode(String key) {
-        List<String> list = ContainerUtils.openContainer(key);
-        StringBuilder result = new StringBuilder();
-        for (String o : list) {
-            o = StringMaster.getSubStringBetween(o, UNICODE, CODEEND);
-            try {
-                // Character.toChars((int) StringMaster.getInteger(o)).
-                result.append((char) (int) getInteger(o));
-            } catch (Exception e) {
-                return result.toString();
-            }
-        }
-        return result.toString();
-    }
     public static String getNumericSuffix(String indexString) {
         StringBuilder result = new StringBuilder();
-        for (int i = indexString.length()-1; i >= 0; i--) {
+        for (int i = indexString.length() - 1; i >= 0; i--) {
             char c = indexString.charAt(i);
             if (Character.isDigit(c)) {
                 result.append(c);

@@ -129,7 +129,7 @@ public class PrincipleMaster {
             // string = TextParser.parse(string, ref,
             // TextParser.INFO_PARSING_CODE);
             // Ref.setInfoObject(type); TODO support {n} or is it useless?
-            int amount = NumberUtils.getInteger(TextParser.parse(string, ref,
+            int amount = NumberUtils.getIntParse(TextParser.parse(string, ref,
              TextParser.INFO_PARSING_CODE));
             // if (param.getName().contains(StringMaster.ALIGNMENT)) {
             //

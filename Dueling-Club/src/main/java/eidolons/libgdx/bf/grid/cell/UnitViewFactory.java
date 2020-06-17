@@ -184,9 +184,9 @@ public class UnitViewFactory {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                int btn = event.getButton();
                 Eidolons.onNonGdxThread(() ->
-                        tryDefaultAction(event));
-
+                        tryDefaultAction(btn,event));
                 super.clicked(event, x, y);
             }
 
@@ -199,10 +199,10 @@ public class UnitViewFactory {
                 return super.handle(e);
             }
 
-            private void tryDefaultAction(InputEvent event) {
+            private void tryDefaultAction(int button, InputEvent event) {
                 try {
                     if (getTapCount() > 1)
-                        if (event.getButton() == 0)
+                        if (button == 0)
                             if (bfObj.isPlayerCharacter() && !UnitInfoPanelNew.isNewUnitInfoPanelWIP())
                                 if (EidolonsGame.isHqEnabled()) {
                                     HqMaster.openHqPanel();
@@ -221,7 +221,7 @@ public class UnitViewFactory {
 
                                 }
                     //TODO control options
-                    if (event.getButton() == Buttons.LEFT) {
+                    if (button == Buttons.LEFT) {
                         DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
                         event.cancel();
                         {

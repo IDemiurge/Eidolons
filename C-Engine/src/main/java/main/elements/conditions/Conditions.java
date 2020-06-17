@@ -4,7 +4,6 @@ import main.data.ability.OmittedConstructor;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.system.entity.ConditionMaster;
-import main.system.launch.CoreEngine;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -228,7 +227,7 @@ public class Conditions extends Vector<Condition> implements Condition {
     }
 
     @Override
-    public boolean isTrue() {
+    public Boolean isTrue() {
         return false;
     }
 

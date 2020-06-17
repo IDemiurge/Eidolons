@@ -18,6 +18,7 @@ import eidolons.game.battlecraft.ai.tools.*;
 import eidolons.game.battlecraft.ai.tools.path.CellPrioritizer;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilderAtomic;
+import eidolons.game.battlecraft.ai.tools.path.alphastar.StarBuilder;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityModifier;
 import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
@@ -63,6 +64,7 @@ public class AiMaster {
     protected PathBuilderAtomic pathBuilderAtomic;
     private final AiAutoGroupHandler autoGroupHandler;
     private final AiGroupHandler groupHandler;
+    private final StarBuilder starBuilder;
 
     public AiMaster(DC_Game game) {
         this.game = game;
@@ -90,7 +92,7 @@ public class AiMaster {
         this.autoGroupHandler = new AiAutoGroupHandler(this);
         this.groupHandler = new AiGroupHandler(this);
         executor = new AiExecutor(game);
-
+        starBuilder = new StarBuilder(this);
     }
 
 
@@ -115,6 +117,7 @@ public class AiMaster {
         this.priorityConstantMaster.initialize();
         this.priorityModifier.initialize();
         this.pathBuilderAtomic.initialize();
+        this.starBuilder.initialize();
 
     }
 
@@ -266,4 +269,9 @@ public class AiMaster {
     public AiGroupHandler getGroupHandler() {
         return groupHandler;
     }
+
+    public StarBuilder getStarBuilder() {
+        return starBuilder;
+    }
+
 }

@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.INFO_LEVEL;
+import main.system.launch.CoreEngine;
 import main.system.text.LogManager;
 
 public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
@@ -25,6 +26,7 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         GAMEPLAY_OPTION.PREGENERATED_RNG_LEVELS.setDevOnly(true);
         GAMEPLAY_OPTION.AUTOSAVE_ON.setDevOnly(true);
 
+        GAMEPLAY_OPTION.AI_DEBUG.setDevOnly(true);
         GAMEPLAY_OPTION.IMMORTALITY.setDevOnly(true);
         GAMEPLAY_OPTION.GHOST_MODE.setDevOnly(true);
     }
@@ -48,6 +50,7 @@ static {
         RANDOM_HERO(false),
         MANUAL_CONTROL(false),
         DEBUG_MODE(false),
+        AI_DEBUG(CoreEngine.TEST_LAUNCH),
         LOG_DETAIL_LEVEL(LogManager.LOGGING_DETAIL_LEVEL.values()),
 
         INFO_DETAIL_LEVEL(INFO_LEVEL.values()),

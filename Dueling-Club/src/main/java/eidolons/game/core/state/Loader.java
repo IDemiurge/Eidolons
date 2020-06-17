@@ -180,7 +180,7 @@ public class Loader {
 
                 object.getPropMap().putAll(props);
                 object.getParamMap().putAll(params);
-                object.setId(NumberUtils.getInteger(props.get(G_PROPS.ID)));
+                object.setId(NumberUtils.getIntParse(props.get(G_PROPS.ID)));
                 objects.add(object);
                 init(object);
 

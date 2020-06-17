@@ -211,7 +211,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
     public void initEncounterGroups(String textContent) {
         encounterAiMap =
                 new MapBuilder<>(":", StringMaster.VERTICAL_BAR,
-                        s -> NumberUtils.getInteger(s),
+                        s -> NumberUtils.getIntParse(s),
                         s -> new AiData(s))
                         .build(textContent);
     }

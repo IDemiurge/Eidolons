@@ -10,4 +10,5 @@ public interface ValueMap extends Serializable {
 
     String put(String valueName, String value);
 
+    boolean containsKey(Object val);
 }

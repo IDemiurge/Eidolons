@@ -19,7 +19,7 @@ public interface Condition extends Serializable {
 
     Condition join(Condition condition);
 
-    boolean isTrue();
+    Boolean isTrue();
 
     void setXml(String xml);
 

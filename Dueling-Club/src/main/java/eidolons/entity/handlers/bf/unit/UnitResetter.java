@@ -311,7 +311,7 @@ public class UnitResetter extends EntityResetter<Unit> {
         for (String feat : ContainerUtils.open(getProperty(property))) {
             if (!NumberUtils.isInteger(VariableManager.getVarPart(feat)))
                 continue;
-            Integer rank = NumberUtils.getInteger(VariableManager.getVarPart(feat));
+            Integer rank = NumberUtils.getIntParse(VariableManager.getVarPart(feat));
             if (rank == 0) {
                 continue;
             }

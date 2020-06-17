@@ -63,7 +63,8 @@ public enum G_PROPS implements PROPERTY {
     MASTERY("Mastery", "armor", "weapons", "skills"),
     STATUS("Status", true, "units", "chars", "buffs", "spells", "actions", "weapons", "armor", "terrain"),
     MODE("Mode", false, "units", "chars"),
-    ACTIVES("Actives", true, "units", "chars", "items", "actions", "classes", "spells", "weapons", "bf obj", "deities", "skills"),
+    ACTIVES("Actives", true, "units", "chars", "items", "actions",
+            "classes", "spells", "weapons", "bf obj", "deities", "skills"),
     CUSTOM_SOUNDSET("Custom Soundset", false, "units", "chars", "actions", "spells", "bf obj", "items"),
 
 

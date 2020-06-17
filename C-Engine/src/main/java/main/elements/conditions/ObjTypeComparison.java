@@ -8,8 +8,8 @@ import main.entity.Ref.KEYS;
 
 public class ObjTypeComparison extends MicroCondition {
 
-    private OBJ_TYPE TYPE;
-    private String key;
+    private final OBJ_TYPE TYPE;
+    private final String key;
 
     @OmittedConstructor
     public ObjTypeComparison(OBJ_TYPE TYPE, String key, boolean b) {
@@ -40,7 +40,4 @@ public class ObjTypeComparison extends MicroCondition {
         return TYPE.equals(entity.getOBJ_TYPE_ENUM());
     }
 
-    public boolean isLoggingBlocked() {
-        return true;
-    }
 }

@@ -19,9 +19,10 @@ import java.util.regex.Pattern;
  * Created by JustMe on 5/20/2017.
  */
 public class XML_Formatter {
-    public static final String ASCII = "ASCII";
-    public static final String ASCII_OPEN = "ASCII_OPEN";
-    public static final String ASCII_CLOSE = "ASCII_CLOSE";
+
+    private static final String UNICODE = "UNICODE";
+    private static final String CODEEND = "CODEEND";
+    
     private static final CharSequence COMMA_CODE = "765";
     private static final CharSequence QUOTE_CODE = "986";
     private static final CharSequence COLON_CODE = "846";
@@ -32,15 +33,14 @@ public class XML_Formatter {
     protected static String replacedTextContent = "&";
     static String replaced = "~?[]><!@#$%^&*()-=//;+',\"`";
     static CharsetEncoder asciiEncoder = StandardCharsets.US_ASCII.newEncoder();
-    private static Map<String, String> xmlFormatReplacements = new HashMap<>();
-    private static Map<String, String> cache = new HashMap<>();
+    private static final Map<String, String> xmlFormatReplacements = new HashMap<>();
+    private static final Map<String, String> cache = new HashMap<>();
 
     // or "ISO-8859-1" for ISO Latin 1
 
     static {
-        int i = 0;
         for (char key : (replaced).toCharArray()) {
-            String value = NumberUtils.getCodeFromChar("" + key);
+            String value =  getCodeFromChar("" + key);
             xmlFormatReplacements.put(("" + key), value);
         }
     }
@@ -50,18 +50,18 @@ public class XML_Formatter {
     }
 
     public static String getCodeFromChar(String key) {
-        return ASCII_OPEN + key.codePointAt(0) + ASCII_CLOSE;
-        // return constructContainer(ListMaster.toStringList(key.getBytes()));
+        return UNICODE + key.codePointAt(0) + CODEEND;
+        // Character.toChars(int).
     }
 
     public static String getStringFromCode(String key) {
         List<String> list = ContainerUtils.openContainer(key);
         StringBuilder result = new StringBuilder();
         for (String o : list) {
-            o = StringMaster.getSubStringBetween(o, ASCII_OPEN, ASCII_CLOSE);
+            o = StringMaster.getSubStringBetween(o, UNICODE, CODEEND);
             try {
                 // Character.toChars((int) StringMaster.getInteger(o)).
-                result.append((char) (int) NumberUtils.getInteger(o));
+                result.append((char) (int)NumberUtils.getIntParse(o));
             } catch (Exception e) {
                 return result.toString();
             }
@@ -99,8 +99,7 @@ public class XML_Formatter {
         if (string.contains("/s")) {
             string = string.replace("/s", "\\s");
         }
-        String result = string.replace(replacedTextContent, NumberUtils
-                .getCodeFromChar(replacedTextContent));
+        String result = string.replace(replacedTextContent,  getCodeFromChar(replacedTextContent));
         result = encodeNonASCII(result);
         if (isValueWrappedInCDATA(value))
             result = checkWrapInCDATA(result);
@@ -136,14 +135,13 @@ public class XML_Formatter {
 
     public static String restoreXmlNodeText(String s) {
         while (true) {
-            if (!s.contains(ASCII_OPEN)) {
+            if (!s.contains(UNICODE)) {
                 break;
             }
-            String code = StringMaster.getSubStringBetween(s, ASCII_OPEN,
-                    ASCII_CLOSE);
+            String code = StringMaster.getSubStringBetween(s, UNICODE,
+                    CODEEND);
             try {
-                s = s.replace(ASCII_OPEN + code + ASCII_CLOSE, NumberUtils
-                        .getStringFromCode(code));
+                s = s.replace(UNICODE + code + CODEEND, getStringFromCode(code));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 return s;
@@ -153,10 +151,10 @@ public class XML_Formatter {
     }
 
     public static String restoreXmlNodeName(String s) {
-        if (s.contains(ASCII_OPEN)) {
+        if (s.contains(UNICODE)) {
         for (String x : xmlFormatReplacements.keySet()) {
             String code = xmlFormatReplacements.get(x);
-            s = s.replace(code, NumberUtils.getStringFromCode(code));
+            s = s.replace(code,  getStringFromCode(code));
         }
         }
         if (s.startsWith(FIRST_CHAR)) {
@@ -210,7 +208,7 @@ public class XML_Formatter {
     }
 
     private static String restoreXmlTextContent(String string) {
-        return string.replace(NumberUtils.getCodeFromChar(replacedTextContent),
+        return string.replace( getCodeFromChar(replacedTextContent),
                 replacedTextContent);
     }
 
@@ -223,4 +221,19 @@ public class XML_Formatter {
         return XML_Converter.wrap(value.getName(),
                 formatXmlTextContent(obj.getValue(value), value));
     }
+
+    // public static String getStringFromCode(String key) {
+    //     List<String> list = ContainerUtils.openContainer(key);
+    //     StringBuilder result = new StringBuilder();
+    //     for (String o : list) {
+    //         o = StringMaster.getSubStringBetween(o, UNICODE, CODEEND);
+    //         try {
+    //             // Character.toChars((int) StringMaster.getInteger(o)).
+    //             result.append((char) (int) NumberUtils.getInteger(o));
+    //         } catch (Exception e) {
+    //             return result.toString();
+    //         }
+    //     }
+    //     return result.toString();
+    // }
 }

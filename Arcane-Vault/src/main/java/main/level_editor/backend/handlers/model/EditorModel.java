@@ -37,6 +37,7 @@ public class EditorModel {
     private ObjType defaultWallType;
     private boolean brushMode;
     private LevelStruct lastSelectedStruct;
+    private boolean appendMode;
 
     public EditorModel() {
         selection = new LE_Selection();
@@ -58,6 +59,7 @@ public class EditorModel {
         paletteSelection = (PaletteSelection) CloneMaster.deepCopy(model.getPaletteSelection());
         brush = model.getBrush();
         brushMode = model.brushMode ;
+        appendMode = model.appendMode ;
     }
 
     public StructNode getTreeModel() {
@@ -167,4 +169,15 @@ public class EditorModel {
     }
 
 
+    public boolean isAppendMode() {
+        return appendMode;
+    }
+
+    public void setAppendMode(boolean appendMode) {
+        this.appendMode = appendMode;
+    }
+
+    public void toggleAppend() {
+        appendMode = !appendMode;
+    }
 }

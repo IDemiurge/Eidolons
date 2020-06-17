@@ -91,7 +91,7 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
                 DC_HeroItemObj item = null;
                 if (NumberUtils.isInteger(subString)) {
                     Integer id = NumberUtils
-                            .getInteger(subString);
+                            .getIntParse(subString);
                     if (!game.isSimulation()) {
                         item = (DC_HeroItemObj) game.getObjectById(id);
                     } else {

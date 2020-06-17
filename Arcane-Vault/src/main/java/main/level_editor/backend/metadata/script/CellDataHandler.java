@@ -52,10 +52,20 @@ public abstract class CellDataHandler<T extends DataUnit> extends LE_Handler {
             String data = copiedData.get(c);
             Coordinates coordinates = offset == null ? origin : origin.getOffset(offset);
             T prev = getData(coordinates);
-            operation(getOperation(), coordinates, createData(data),
+            T result = createData(data);
+            if (isAppend()){
+                result = append(prev, result);
+            }
+            operation(getOperation(), coordinates, result,
                     prev);
         }
         operation(PASTE_END);
+    }
+
+    protected abstract T append(T prev, T result);
+
+    protected boolean isAppend() {
+        return getModel().isAppendMode();
     }
 
 

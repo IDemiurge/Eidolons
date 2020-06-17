@@ -14,7 +14,7 @@ public class UndyingCounterRule extends TriggerRule {
             return false;
         }
         Unit unit = (Unit) event.getRef().getTargetObj();
-        int n = NumberUtils.getInteger(unit.getCustomParamMap().get(CounterMaster.findCounter("undying")));
+        int n = NumberUtils.getIntParse(unit.getCustomParamMap().get(CounterMaster.findCounter("undying")));
 
 //                event.getRef().getSourceObj().getCounter(CounterMaster.findCounter(UnitEnums.COUNTER.Undying.getName()));
         if (n == 0) {

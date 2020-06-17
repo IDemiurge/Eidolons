@@ -18,13 +18,14 @@ public class DecorChooser extends SelectionImageTable {
     List<GraphicData> files;
 
     public DecorChooser() {
-        super(4, 1155, 5);
+        super(1, 0, 5);
     }
 
     @Override
     public void setUserObject(Object userObject) {
         files = (List<GraphicData>) userObject;
         size = files.size();
+        initSize(6, size);
         super.setUserObject(userObject);
     }
 

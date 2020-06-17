@@ -41,7 +41,7 @@ public class VariableManager {
 
     public static final String VARIABLE = StringMaster.VAR_STRING;
     private static boolean variableInputRequesting = false;
-    private static List<ObjType> varCache = new ArrayList<>();
+    private static final List<ObjType> varCache = new ArrayList<>();
     private static String prevValue;
 
     public static AbilityType getVarType(String abilTypeName, boolean passive, Ref ref) {
@@ -77,7 +77,7 @@ public class VariableManager {
         // TODO {1}
         List<String> varList = getVarList(vars);
         String xml = newType.getProperty(G_PROPS.ABILITIES);
-        XML_Converter.getStringFromXML(newType.getDoc());
+        // XML_Converter.getStringFromXML(newType.getDoc());
         StringBuilder varProp = new StringBuilder();
         String lastVar = null;
         for (String var : varList) {
@@ -95,7 +95,7 @@ public class VariableManager {
                  * TextParser use this? Perhaps I need to run another
                  * replaceCycle on XML here - one that will *parse* references!
                  */
-            } else {
+            } else { //we can do better than 'replace'... use indices or something!
                 xml = StringMaster.replaceFirst(xml, StringMaster.VAR_STRING, var);
             }
         }

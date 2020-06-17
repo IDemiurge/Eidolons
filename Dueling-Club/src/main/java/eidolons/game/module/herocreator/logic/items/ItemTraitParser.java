@@ -92,7 +92,7 @@ public class ItemTraitParser {
         String last = mnemonic.substring(
          mnemonic.length() - 1);
         if (NumberUtils.isInteger(last)) {
-            n = TRAIT_EFFECT_SCALE.values()[NumberUtils.getInteger(last)].coef;
+            n = TRAIT_EFFECT_SCALE.values()[NumberUtils.getIntParse(last)].coef;
             mnemonic = mnemonic.substring(0,
              mnemonic.length() - 1);
             template = new EnumMaster<TRAIT_EFFECT_TEMPLATE>().

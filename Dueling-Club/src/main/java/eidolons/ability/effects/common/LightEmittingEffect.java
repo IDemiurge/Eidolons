@@ -1,7 +1,6 @@
 package eidolons.ability.effects.common;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.DC_Cell;
 import main.ability.effects.Effect;
 import main.ability.effects.EffectImpl;
 import main.ability.effects.Effects;
@@ -56,16 +55,15 @@ public class LightEmittingEffect extends SpectrumEffect {
                 if (light>0) {
                     plus =plus/3*2;// (int) Math.round(math.sqrt(plus));
                 }
-                if (ref.getTargetObj() instanceof DC_Cell) {
-                    main.system.auxiliary.log.LogMaster.log(1,ref.getTargetObj()+" added gamma for cell: "+plus );
-                }
-
                 ref.getTargetObj().modifyParameter(PARAMS.ILLUMINATION, plus, true);
+                if (ref.getTargetObj() != null)
+                    lastCoordinates = ref.getTargetObj().getCoordinates();
+                // if (ref.getTargetObj() instanceof DC_Cell) {
+                //     main.system.auxiliary.log.LogMaster.log(1,ref.getTargetObj()+" added gamma for cell: "+plus );
+                // }
 //             if (game.isDebugMode())
 //                 main.system.auxiliary.log.LogMaster.log(1, ref.getTargetObj()+"'s ILLUMINATION: +" + getAmount()
 //                  + "="+ ref.getTargetObj().getIntParam(PARAMS.ILLUMINATION));
-                if (ref.getTargetObj() != null)
-                    lastCoordinates = ref.getTargetObj().getCoordinates();
                 return true;//addLight(ref);
             }
 

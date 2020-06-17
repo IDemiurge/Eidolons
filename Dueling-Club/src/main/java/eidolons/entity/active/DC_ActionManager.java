@@ -464,7 +464,7 @@ public class DC_ActionManager implements ActionManager {
                 if (type.getIntParam(param) == 0) {
                     type.setParam(param, param.getDefaultValue());
                 }
-                type.modifyParamByPercent(param, NumberUtils.getInteger(mode.getParamModMap().get(
+                type.modifyParamByPercent(param, NumberUtils.getIntParse(mode.getParamModMap().get(
                         s)), false);
             }
         }

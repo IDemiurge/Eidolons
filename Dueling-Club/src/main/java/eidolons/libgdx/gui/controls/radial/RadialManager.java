@@ -236,7 +236,8 @@ public class RadialManager {
                 } else if (el.getActionType() == ACTION_TYPE.MODE) {
                     modes.add(valueContainer);
                 } else {
-                    if (!el.isAttackAny()) {
+                    // if (!el.isAttackAny())  //TODO special attacks separately?
+                    {
                         if (el.getActionType() != ACTION_TYPE.HIDDEN) {
                             specialActions.add(valueContainer);
                         }

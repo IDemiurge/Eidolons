@@ -60,7 +60,7 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
             getEntity().getValueCache().put(p, value);
             if (!value.equals(baseValue)) {
                 if (getEntity(). isValidMapStored(p)){
-                    getEntity().getValidParams().put(p, NumberUtils.getInteger(value));
+                    getEntity().getValidParams().put(p, NumberUtils.getIntParse(value));
                 }
                 String amount = getType().getParam(p);
                 if (getEntity().isTypeLinked()) {

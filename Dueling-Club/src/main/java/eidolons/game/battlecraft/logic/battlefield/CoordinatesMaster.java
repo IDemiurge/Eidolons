@@ -221,8 +221,8 @@ public class CoordinatesMaster {
         int[] array = new int[4];
         int i = 0;
         for (String s : string.split(";")) {
-            array[i++] = NumberUtils.getInteger(s.split("-")[0].trim().substring(1));
-            array[i++] = NumberUtils.getInteger(s.split("-")[1]);
+            array[i++] = NumberUtils.getIntParse(s.split("-")[0].trim().substring(1));
+            array[i++] = NumberUtils.getIntParse(s.split("-")[1]);
         }
         return array;
     }

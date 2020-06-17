@@ -76,7 +76,7 @@ public class DataUnit<T extends Enum<T>> implements Serializable {
         }
         if (!NumberUtils.isInteger(val))
             return 0;
-        return NumberUtils.getInteger(val);
+        return NumberUtils.getIntParse(val);
     }
 
     public float getFloatValue(T value) {

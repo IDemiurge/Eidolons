@@ -241,11 +241,11 @@ public class SortMaster<T> {
         String id2 = o2.getValue(p);
 
         if (NumberUtils.isInteger(id1)) {
-            if (NumberUtils.getInteger(id1) > NumberUtils.getInteger(id2)) {
+            if (NumberUtils.getIntParse(id1) > NumberUtils.getIntParse(id2)) {
                 int i = descending ? -1 : 1;
                 return i;
             }
-            if (NumberUtils.getInteger(id1) == NumberUtils.getInteger(id2)) {
+            if (NumberUtils.getIntParse(id1) == NumberUtils.getIntParse(id2)) {
                 return 0;
             }
             return descending ? 1 : -1;

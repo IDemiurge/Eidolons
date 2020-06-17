@@ -33,12 +33,12 @@ public class EnumMaster<T> {
 
     };
     public static Class<?> ALT_CONSTS_CLASS; // set dynamically
-    private static Map<Class, Map<String, Object>> enumCache = new HashMap<>();
-    private static Map<Class, Map<String, Object>> enumCacheStrict = new HashMap<>();
-    private static Map<Class, Map<String, Integer>> enumIndexCache = new HashMap<>();
+    private static final Map<Class, Map<String, Object>> enumCache = new HashMap<>();
+    private static final Map<Class, Map<String, Object>> enumCacheStrict = new HashMap<>();
+    private static final Map<Class, Map<String, Integer>> enumIndexCache = new HashMap<>();
     private static List<Class> enumClasses;
-    private static Map<String, Class> enumMap = new HashMap<>();
-    private static List<Class<?>> additionalEnumClasses = new ArrayList<>();
+    private static final Map<String, Class> enumMap = new HashMap<>();
+    private static final List<Class<?>> additionalEnumClasses = new ArrayList<>();
 
     // private static final Logger = Logger.getLogger(EnumMaster.class);
     public static Class<?> getEnumClass(String name) {
@@ -198,7 +198,8 @@ public class EnumMaster<T> {
     public static Object get(Class<?> c, String s) {
         return getEnumConst(c, s);
     }
-    public static int getEnumConstIndex(Class<?> enumClass, Object CONST) {
+
+        public static int getEnumConstIndex(Class<?> enumClass, Object CONST) {
         if (CONST == null) {
             return -1;
         }
@@ -512,8 +513,8 @@ public class EnumMaster<T> {
                 int index2 = ListMaster.getIndexString(ListMaster.toStringList(ENUM
                  .getEnumConstants()), name, true);
                 if (index == index2) {
-                    index = NumberUtils.getInteger(type1.getProperty(G_PROPS.ID));
-                    index2 = NumberUtils.getInteger(type2.getProperty(G_PROPS.ID));
+                    index = NumberUtils.getIntParse(type1.getProperty(G_PROPS.ID));
+                    index2 = NumberUtils.getIntParse(type2.getProperty(G_PROPS.ID));
 
                 }
                 if (index2 == -1) {
@@ -567,4 +568,13 @@ public class EnumMaster<T> {
         if (i >= clazz.getEnumConstants().length) i = 0;
         return clazz.getEnumConstants()[i];
     }
+
+    // public T getNextEnumConst(Class<T> enumClass, T CONST) {
+    //     List<Object> consts = getEnumConstants(enumClass);
+    //     int i = consts.indexOf(CONST);
+    //     if (consts.size()<=i) {
+    //         consts.get(0);
+    //     }
+    //     return (T) consts.get(i);
+    // }
 }

@@ -125,8 +125,8 @@ public class LE_FloorLoader extends FloorLoader {
             Point p = iterator.next();
             Module module = grid.get(p);
             String[] split = substring.split("-");
-            int xSpan = NumberUtils.getInteger(split[0]);
-            int ySpan = NumberUtils.getInteger(split[1]);
+            int xSpan = NumberUtils.getInt(split[0]);
+            int ySpan = NumberUtils.getInt(split[1]);
             newGrid.put(p, module);
             for (int i = 1; i < xSpan; i++) {
                 newGrid.put(new Point(p.x + i, p.y), module);

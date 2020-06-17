@@ -64,9 +64,8 @@ public class LE_ObjHandler extends LE_Handler {
             GuiEventManager.trigger(GuiEventType.REMOVE_OVERLAY_VIEW, bfObj);
         } else
             GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, bfObj);
-        getGame().softRemove(bfObj);
+        getGame().remove(bfObj);
         getAiHandler().removed(bfObj);
-
 
     }
 

@@ -471,7 +471,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         List<String> units = new ArrayList<>();
         //        if (args[i].contains(ScriptSyntax.SPAWN_ARG_UNITS_WAVE))
         String unitString = args[i];
-        int level = NumberUtils.getInteger(VariableManager.getVars(unitString));
+        int level = NumberUtils.getIntParse(VariableManager.getVars(unitString));
         unitString = VariableManager.removeVarPart(unitString);
         ObjType wave = DataManager.getType(unitString, DC_TYPE.ENCOUNTERS);
         if (wave != null) {

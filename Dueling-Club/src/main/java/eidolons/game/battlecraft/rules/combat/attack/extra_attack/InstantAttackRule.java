@@ -97,7 +97,9 @@ public class InstantAttackRule {
 
     public static Set<Unit> getPotentialInstantAttackers(DC_ActiveObj action) {
         Set<Unit> set = new HashSet<>();
-        for (Coordinates adjacentCoordinate : action.getOwnerUnit().getCoordinates().getAdjacentCoordinates()) {
+        Coordinates dest = DC_MovementManager
+                .getMovementDestinationCoordinate(action);
+        for (Coordinates adjacentCoordinate : dest.getAdjacentCoordinates()) {
             for (BattleFieldObject o : action.getGame().getObjectsOnCoordinateNoOverlaying(adjacentCoordinate)) {
                 if (o instanceof Unit) {
                     Unit unit = (Unit) o;

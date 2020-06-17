@@ -94,7 +94,7 @@ public abstract class TooltipFactory<T, A extends Actor> {
     }
 
     protected ValueContainer getValueContainer(BattleFieldObject hero, PARAMS cur, PARAMS max) {
-        final Integer cv = NumberUtils.getInteger(hero.getCachedValue(max));
+        final Integer cv = NumberUtils.getIntParse(hero.getCachedValue(max));
         final Integer v = hero.getIntParam(cur);
         final String name = max.getDisplayedName();
         final TextureRegion iconTexture =

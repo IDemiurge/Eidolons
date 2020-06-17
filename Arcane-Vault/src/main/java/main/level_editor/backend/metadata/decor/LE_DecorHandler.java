@@ -18,11 +18,14 @@ import main.level_editor.backend.metadata.script.CellDataHandler;
 import main.level_editor.gui.dialog.struct.DecorEditor;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.threading.WaitMaster;
 
 import java.io.File;
 import java.util.*;
+
+import static eidolons.libgdx.bf.decor.DecorData.DECOR_LEVEL;
 
 public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDecorHandler {
 
@@ -115,7 +118,7 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
         GraphicData decor = getModel().getPaletteSelection().getDecorData();
         ////TODO could have operations there too like flips / ..
         DecorData data = createData("");
-        DecorData.DECOR_LEVEL level = getEditHandler().chooseEnum(DecorData.DECOR_LEVEL.class);
+        DECOR_LEVEL level = getEditHandler().chooseEnum(DECOR_LEVEL.class);
         data.setValue(level.name(), decor.getData());
         setData(c, data.getData());
 
@@ -152,7 +155,7 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
 
 
     public void offset(DIRECTION d) {
-        int n=5;
+        int n = 5;
         switch (d) {
             case UP:
                 offset(0, n);
@@ -180,6 +183,7 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
                 break;
         }
     }
+
     public void offset(int x, int y) {
         for (Coordinates coordinate : getCoordinates()) {
             addIntValue(coordinate, GRAPHIC_VALUE.x, x);
@@ -189,47 +193,24 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
 
     public void rotate(boolean clockwise) {
         for (Coordinates coordinate : getCoordinates()) {
-            int n=clockwise? -5 : 5;
-            addIntValue(coordinate, GRAPHIC_VALUE.rotation,n);
+            int n = clockwise ? -5 : 5;
+            addIntValue(coordinate, GRAPHIC_VALUE.rotation, n);
         }
     }
 
     private void addIntValue(Coordinates c, GRAPHIC_VALUE value, int n) {
         DecorData decorData = new DecorData(getData(c).getData());
-        for (DecorData.DECOR_LEVEL decor_level : DecorData.DECOR_LEVEL.values()) {
+        for (DECOR_LEVEL decor_level : DECOR_LEVEL.values()) {
             String data = decorData.getValue(decor_level);
             if (data.isEmpty()) {
                 continue;
             }
             GraphicData graphicData = new GraphicData(data);
-            int intValue =   graphicData. getIntValue(value);
-            intValue+=n;
-            decorData.setValue(decor_level,graphicData.setValue(value, intValue).getData() );
+            int intValue = graphicData.getIntValue(value);
+            intValue += n;
+            decorData.setValue(decor_level, graphicData.setValue(value, intValue).getData());
         }
         setData(c, decorData.getData());
-    }
-
-    public void append(String s) {
-        for (Coordinates coordinate : getCoordinates()) {
-            getData(coordinate); //TODO
-        }
-
-        }
-
-    @Override
-    public void move( ) {
-        DIRECTION direction = getEditHandler().chooseEnum(DIRECTION.class);
-        move(direction);
-    }
-    public void move(DIRECTION d) {
-        for (Coordinates coordinate : getCoordinates()) {
-            DecorData data = getData(coordinate);
-            clear(coordinate);
-           coordinate= coordinate.getAdjacentCoordinate(d);
-            if (coordinate != null) {
-                append(coordinate, data);
-            }
-        }
     }
 
     private void append(Coordinates coordinate, DecorData data) {
@@ -240,13 +221,49 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
     }
 
     @Override
+    protected DecorData append(DecorData previous, DecorData data) {
+        for (DECOR_LEVEL level : DECOR_LEVEL.values()) {
+            if (!data.getValue(level).isEmpty() &&
+                    !previous.getValue(level).isEmpty())
+            {
+                DECOR_LEVEL next = new EnumMaster<DECOR_LEVEL>().getNextEnumConst(DECOR_LEVEL.class, level);
+                if (next== DECOR_LEVEL.BOTTOM) {
+                    if (!previous.getValue(next).isEmpty()) {
+                        continue;
+                        //confirm
+                    }
+                }
+                data.setValue(next, data.getValue(level));
+            }
+        }
+        return data;
+    }
+
+    @Override
+    public void move() {
+        DIRECTION direction = getEditHandler().chooseEnum(DIRECTION.class);
+        move(direction);
+    }
+
+    public void move(DIRECTION d) {
+        for (Coordinates coordinate : getCoordinates()) {
+            DecorData data = getData(coordinate);
+            clear(coordinate);
+            coordinate = coordinate.getAdjacentCoordinate(d);
+            if (coordinate != null) {
+                append(coordinate, data);
+            }
+        }
+    }
+
+    @Override
     protected void init() {
         //now via floorloader
 
-        if (ScreenMaster.getDungeonGrid()!=null )
-        if (ScreenMaster.getDungeonGrid().isDecorInitialized()) {
-            return ;
-        }
+        if (ScreenMaster.getDungeonGrid() != null)
+            if (ScreenMaster.getDungeonGrid().isDecorInitialized()) {
+                return;
+            }
         for (Coordinates coordinates : getMap().keySet()) {
             DecorData decorData = getMap().get(coordinates);
             if (decorData != null) {
@@ -254,16 +271,18 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
             }
         }
     }
+
+
     @Override
     public void boss() {
-        Eidolons.onGdxThread(()->{
-        AriusVessel ariusVessel = new AriusVessel(null){
-            @Override
-            public Coordinates getCoordinates() {
-                return  getSelectionHandler().getSelection().getLastCoordinates();
-            }
-        };
-        GuiEventManager.triggerWithParams(GuiEventType.ADD_BOSS_VIEW, ariusVessel);
+        Eidolons.onGdxThread(() -> {
+            AriusVessel ariusVessel = new AriusVessel(null) {
+                @Override
+                public Coordinates getCoordinates() {
+                    return getSelectionHandler().getSelection().getLastCoordinates();
+                }
+            };
+            GuiEventManager.triggerWithParams(GuiEventType.ADD_BOSS_VIEW, ariusVessel);
             // AriusBodyActive ariusBodyActive = new AriusBodyActive(null);
             // GuiEventManager.triggerWithParams(GuiEventType.ADD_BOSS_VIEW, ariusVessel);
         });

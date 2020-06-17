@@ -83,7 +83,7 @@ public class TestMasterContent {
      + "Ancient Dark Steel Bolts;";
     public static boolean addSpells = true;
     public static boolean addAllSpells = false;
-    public static boolean test_on = false;
+    public static boolean test_on = CoreEngine.TEST_LAUNCH;
     static boolean auto_test_list = false;
     static boolean full_test = false;
     static boolean char_test_active_filtering = true;
@@ -108,7 +108,8 @@ public class TestMasterContent {
 
     private static String GRAPHICS_TEST_LIST = "Raise Skeleton;Fire Bolt;Chaos Bolt;Force Field;" +
      "Summon Vampire Bat;Blink";
-    private static String TEST_LIST =
+    private static String TEST_ACTIONS ="Lounge";
+    private static String TEST_SPELLS =
      //     "Raise Skeleton;" +
      //     "Light;Haze;" +
      //      "Leap into Darkness;Blink;Summon Vampire Bat;"+
@@ -218,15 +219,15 @@ public class TestMasterContent {
     }
 
     public static void addToTEST_LIST(String a) {
-        TEST_LIST += a + ";";
+        TEST_SPELLS += a + ";";
     }
 
     public static String getTEST_LIST() {
-        return TEST_LIST;
+        return TEST_SPELLS;
     }
 
     public static void setTEST_LIST(String tEST_LIST) {
-        TEST_LIST = tEST_LIST;
+        TEST_SPELLS = tEST_LIST;
     }
 
     public static String getFIX_LIST() {
@@ -282,6 +283,8 @@ public class TestMasterContent {
         // for (String s : StringMaster.open(getPOLISH_LIST()))
         // if (checkHeroForTestSpell(type, s, last))
         // type.addProperty(G_PROPS.ACTIVES, s, true);
+
+        type.addProperty(G_PROPS.ACTIVES, TEST_ACTIONS, true);
 
         if (full != null) {
             if (full) {
@@ -577,7 +580,7 @@ public class TestMasterContent {
         POLISH_LIST = constructTestList(DC_TYPE.SKILLS, MetaEnums.WORKSPACE_GROUP.POLISH);
         FOCUS_LIST = constructTestList(DC_TYPE.SPELLS, MetaEnums.WORKSPACE_GROUP.FOCUS);
         FIX_LIST = constructTestList(DC_TYPE.SPELLS, MetaEnums.WORKSPACE_GROUP.FIX);
-        TEST_LIST = constructTestList(DC_TYPE.SPELLS, MetaEnums.WORKSPACE_GROUP.TEST);
+        TEST_SPELLS = constructTestList(DC_TYPE.SPELLS, MetaEnums.WORKSPACE_GROUP.TEST);
 
         FOCUS_SKILL_LIST = constructTestList(DC_TYPE.SKILLS, MetaEnums.WORKSPACE_GROUP.FOCUS);
         FIX_SKILL_LIST = constructTestList(DC_TYPE.SKILLS, MetaEnums.WORKSPACE_GROUP.FIX);

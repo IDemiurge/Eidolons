@@ -104,7 +104,7 @@ public class DefaultActionHandler {
                     msg + " " + target);
             return false;
         }
-        if (!action.canBeTargeted(target.getId())) {
+        if (!action.canBeTargeted(target.getId(), false)) {
             return false;
         }
         if (!confirmAction(target, action)) {
@@ -263,6 +263,10 @@ public class DefaultActionHandler {
 
     private static boolean activate(Context context, DC_ActiveObj action) {
         if (!action.getActivator().canBeActivated(context, true)) {
+            action.getActivator().cannotActivate();
+            return false;
+        }
+        if (!action.getTargeter().canBeTargeted(context.getTarget(), false)) {
             action.getActivator().cannotActivate();
             return false;
         }

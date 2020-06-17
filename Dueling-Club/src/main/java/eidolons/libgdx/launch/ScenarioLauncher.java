@@ -27,7 +27,7 @@ public class ScenarioLauncher {
 
 
         if (args.length > 1)
-            missionIndex = NumberUtils.getInteger(args[1]);
+            missionIndex = NumberUtils.getIntParse(args[1]);
         if (args.length > 0) {
             if (args[0] != null)
                 launch(CRAWL);

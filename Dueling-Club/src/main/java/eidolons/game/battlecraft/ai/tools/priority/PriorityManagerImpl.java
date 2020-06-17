@@ -1105,6 +1105,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             // }
 
         } else {
+            if (isCOUNTER_PENALTY_ON())
             if (!active.isRanged() && targetObj.canCounter() &&
                     !getUnit().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)
                     && !active.checkProperty(G_PROPS.STANDARD_PASSIVES,
@@ -1176,6 +1177,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             priority = priority * RandomWizard.getRandomIntBetween(50, 100) / 100;
         }
         return priority;
+    }
+
+    private boolean isCOUNTER_PENALTY_ON() {
+        return false;
     }
 
     private void applyThrowPenalty(DC_ActiveObj active) {

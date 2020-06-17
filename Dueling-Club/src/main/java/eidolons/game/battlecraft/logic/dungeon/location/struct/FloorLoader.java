@@ -226,7 +226,7 @@ public class FloorLoader extends DungeonHandler {
 
     protected void initTransits(Location location) {
         for (String substring : ContainerUtils.openContainer(entranceData)) {
-            Integer id = NumberUtils.getInteger(substring.split("->")[0]);
+            Integer id = NumberUtils.getIntParse(substring.split("->")[0]);
             Coordinates c = Coordinates.get(substring.split("->")[1]);
             processTransitPair(id, c, location);
         }

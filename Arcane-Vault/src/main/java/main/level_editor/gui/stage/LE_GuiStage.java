@@ -203,10 +203,10 @@ public class LE_GuiStage extends GenericGuiStage {
             GdxMaster.center(dialog);
             dialog.setZIndex(Integer.MAX_VALUE);
         }
-        enumChooser.setZIndex(Integer.MAX_VALUE);
         if (textInputPanel != null) {
             textInputPanel.setZIndex(Integer.MAX_VALUE);
         }
+        enumChooser.setZIndex(Integer.MAX_VALUE);
         confirmationPanel.setZIndex(Integer.MAX_VALUE);
         if (getFileChooser() != null) {
             getFileChooser().setZIndex(Integer.MAX_VALUE);

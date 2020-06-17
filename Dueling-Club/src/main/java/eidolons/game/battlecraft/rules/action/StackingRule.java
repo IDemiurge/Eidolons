@@ -161,13 +161,16 @@ public class StackingRule implements ActionRule {
         }
 
         //getVar all units on the cell
-        DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
+        DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits); //already placed ones?
         for (BattleFieldObject u : game.getObjMaster().getObjects(c.x, c.y, false)) {
             if (!units.contains(u)) {
+                if (u==unit) {
+                    continue;
+                }
                 if (u.isDead())
                     continue;
                 if (!isStackingSupported()) {
-                    if (!isStackUnit(u)) {
+                    if (isStackUnit(u)) {
                         return false;
                     }
                 }
@@ -233,7 +236,7 @@ public class StackingRule implements ActionRule {
             }
         }
         // no passable/overlaying!
-        int space = NumberUtils.getInteger(PARAMS.SPACE.getDefaultValue());
+        int space = NumberUtils.getIntParse(PARAMS.SPACE.getDefaultValue());
         if (c != null) {
             if (!game.isSimulation()) {
                 space = cell.getIntParam(PARAMS.SPACE);
@@ -268,7 +271,7 @@ public class StackingRule implements ActionRule {
         }
         // [QUICK FIX]
         if (unit.getIntParam(PARAMS.GIRTH) == 0) {
-            girth += NumberUtils.getInteger(PARAMS.GIRTH.getDefaultValue());
+            girth += NumberUtils.getIntParse(PARAMS.GIRTH.getDefaultValue());
         } else {
             girth += unit.getIntParam(PARAMS.GIRTH);
         }

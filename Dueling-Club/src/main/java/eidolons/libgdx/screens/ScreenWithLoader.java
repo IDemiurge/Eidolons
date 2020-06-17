@@ -194,8 +194,8 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected void done(EventCallbackParam param) {
-        if (isLoaded()) {
             updateInputController();
+        if (isLoaded()) {
             main.system.auxiliary.log.LogMaster.dev(" FIX DOUBLE LOAD!!!! " + toString() + param);
             return;
         }

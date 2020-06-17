@@ -12,7 +12,10 @@ import eidolons.game.battlecraft.ai.tools.target.ReasonMaster;
 import eidolons.game.battlecraft.ai.tools.target.ReasonMaster.FILTER_REASON;
 import eidolons.game.battlecraft.ai.tools.time.TimeLimitMaster;
 import eidolons.game.battlecraft.ai.tools.time.TimeLimitMaster.METRIC;
+import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.core.EUtils;
+import eidolons.libgdx.GdxMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.elements.Filter;
@@ -24,9 +27,11 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
+import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PathBuilder extends AiHandler {
     private static final int FILTER_THRESHOLD = 10;
@@ -181,6 +186,17 @@ public class PathBuilder extends AiHandler {
                 if (unit.getUnitAI().getLogLevel() > AiLogger.LOG_LEVEL_RESULTS) {
                     Chronos.logTimeElapsedForMark(getChronosPrefix() + choice); // TODO
                 }
+                if (!simplified)
+                if (!failed)
+                if (isDebug()){
+                EUtils.showInfoText(true, "Ai built " + path);
+                DC_MovementManager.playerPath=path.choices.stream()
+                        .map(ch->ch.getCoordinates()).collect(Collectors.toList());
+
+                DC_MovementManager.playerDestination=path.getTargetCoordinates();
+                WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.INPUT);
+                GdxMaster.onInputGdx(()-> WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.INPUT, true));
+                }
                 // mark removed???
             }
             if (unit.getUnitAI().getLogLevel() > AiLogger.LOG_LEVEL_BASIC) {
@@ -192,6 +208,7 @@ public class PathBuilder extends AiHandler {
         }
         return paths;
     }
+
 
 
     private void applyChoice(Choice choice) {

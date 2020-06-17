@@ -307,7 +307,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     @Override
     protected void putParameter(PARAMETER param, String value) {
         if (param == PARAMS.C_TOUGHNESS) {
-            if (NumberUtils.getInteger(value) >
+            if (NumberUtils.getIntParse(value) >
                     getIntParam(PARAMS.TOUGHNESS)) {
                 LogMaster.log(1, "gotcha dwarf " + this + value);
             //igg demo hack!

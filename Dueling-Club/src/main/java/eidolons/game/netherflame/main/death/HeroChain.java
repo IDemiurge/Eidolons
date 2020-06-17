@@ -20,7 +20,7 @@ public class HeroChain {
     public HeroChain(Party party, int lives) {
         this.party = party;
         types = party.getMemberTypes();
-       party.initMembers();
+       // party.initMembers();
         heroes = party.getMembers().stream().map(member -> new ChainHero(lives, member)).collect(Collectors.toList());
 //        heroes = party.getMemberTypes().stream().map(member -> new ChainHero(lives, member)).collect(Collectors.toList());
     }

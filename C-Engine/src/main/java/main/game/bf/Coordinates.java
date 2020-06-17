@@ -71,8 +71,8 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
     }
 
     public Coordinates(boolean custom, String s) {
-        this(custom, NumberUtils.getInteger(splitCoordinateString(s)[0].trim()), NumberUtils
-                .getInteger(splitCoordinateString(s)[1].trim()));
+        this(custom, NumberUtils.getIntParse(splitCoordinateString(s)[0].trim()), NumberUtils
+                .getIntParse(splitCoordinateString(s)[1].trim()));
     }
 
     public static void resetCaches() {
@@ -197,8 +197,8 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
     }
 
     public static Coordinates get(boolean custom, String s) {
-        return get(custom, NumberUtils.getInteger(splitCoordinateString(s)[0].trim()), NumberUtils
-                .getInteger(splitCoordinateString(s)[1].trim()));
+        return get(custom, NumberUtils.getIntParse(splitCoordinateString(s)[0].trim()), NumberUtils
+                .getIntParse(splitCoordinateString(s)[1].trim()));
     }
 
     public static Coordinates get(boolean allowInvalid, int x, int y) {

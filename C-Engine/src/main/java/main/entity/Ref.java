@@ -486,7 +486,7 @@ public class Ref implements Cloneable, Serializable {
 
     public Obj getLastRemovedObj(KEYS key) {
         try {
-            return game.getObjectById(NumberUtils.getInteger(getRemovedValues()
+            return game.getObjectById(NumberUtils.getIntParse(getRemovedValues()
                     .get(key)));
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);

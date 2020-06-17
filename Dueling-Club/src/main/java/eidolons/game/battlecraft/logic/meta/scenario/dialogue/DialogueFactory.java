@@ -44,8 +44,8 @@ public class DialogueFactory {
                 data, DIALOGUE_SEPARATOR)) {
             String[] array = contents.split(ID_SEPARATOR);
             String name = array[0];
-            int firstId = NumberUtils.getInteger(array[1]);
-            int lastId = NumberUtils.getInteger(array[2]);
+            int firstId = NumberUtils.getIntParse(array[1]);
+            int lastId = NumberUtils.getIntParse(array[2]);
             List<Integer> ids = MathMaster.getIntsInRange(firstId, lastId);
 
             String metaData ="";// "time_between_script_actions=500;"; //TODO
@@ -110,7 +110,7 @@ public class DialogueFactory {
         Speech parent = null;
         Speech root = null;
         for (String ID : ContainerUtils.open(idSequence)) {
-            Speech speech = getSpeech(NumberUtils.getInteger(ID));
+            Speech speech = getSpeech(NumberUtils.getIntParse(ID));
 
             getBuilder().buildSpeech(speech);
 

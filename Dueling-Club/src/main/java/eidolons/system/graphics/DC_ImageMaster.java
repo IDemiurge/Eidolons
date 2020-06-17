@@ -1,8 +1,8 @@
 package eidolons.system.graphics;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator.MOD_IDENTIFIER;
@@ -129,7 +129,7 @@ public class DC_ImageMaster {
 
     public static Image getImageDynamic(MOD_IDENTIFIER mod, Object... values) {
         Image image = null;
-        int value = NumberUtils.getInteger((values.length == 0 ? 0 : values[0]).toString());
+        int value = NumberUtils.getIntParse((values.length == 0 ? 0 : values[0]).toString());
         Attack attack = (Attack) (values.length < 2 ? null : values[1]);
         switch (mod) {
             case AMMO:

@@ -173,7 +173,7 @@ public class MainLauncher extends GenericLauncher {
                     MainMenu.getInstance().getHandler().handle(item);
                 } else {
                     if (NumberUtils.isInteger(command)) {
-                        int i = NumberUtils.getInteger(command);
+                        int i = NumberUtils.getIntParse(command);
                         if (i < 0) {
                             i = getLast();
                         }
@@ -207,7 +207,7 @@ public class MainLauncher extends GenericLauncher {
             lastChoiceStack.addAll(ContainerUtils.openContainer(
                     FileManager.readFile(LAST_CHOICE_FILE)));
         }
-        return NumberUtils.getInteger(lastChoiceStack.remove(0));
+        return NumberUtils.getIntParse(lastChoiceStack.remove(0));
     }
 
     public static CustomLaunch getCustomLaunch() {

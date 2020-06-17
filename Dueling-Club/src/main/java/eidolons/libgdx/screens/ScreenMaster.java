@@ -114,10 +114,10 @@ public class ScreenMaster {
         String[] parts = resolution.toString().substring(1).
                 split("x");
         Integer w =
-                NumberUtils.getInteger(
+                NumberUtils.getInt(
                         parts[0]);
         Integer h =
-                NumberUtils.getInteger(parts[1]);
+                NumberUtils.getInt(parts[1]);
 //        if (Gdx.graphics.getDisplayMode())
         if (!fullscreen) {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

@@ -289,7 +289,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             // or special separator!
             if (NumberUtils.isInteger(StringMaster.cropParenthesises(VariableManager
                     .getVarPart(feat)))) {
-                rank = NumberUtils.getInteger(StringMaster.cropParenthesises(VariableManager
+                rank = NumberUtils.getIntParse(StringMaster.cropParenthesises(VariableManager
                         .getVarPart(feat)));
                 feat = VariableManager.removeVarPart(feat);
             }

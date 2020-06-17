@@ -108,13 +108,13 @@ public class LE_KeyHandler extends LE_Handler {
             case Input.Keys.RIGHT:
             case Input.Keys.LEFT:
                 DIRECTION d = getDirectionForKey(keyCode, alt);
-                if (ctrl){
-                LevelEditor.getManager().getOperationHandler().move(d);
-                }else {
-                LevelEditor.getManager().getDecorHandler().offset(d);
+                if (ctrl) {
+                    LevelEditor.getManager().getOperationHandler().move(d);
+                } else {
+                    LevelEditor.getManager().getDecorHandler().offset(d);
 
                 }
-                }
+        }
     }
 
     public void keyTyped(char character) {
@@ -127,92 +127,100 @@ public class LE_KeyHandler extends LE_Handler {
                 Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
         boolean ctrl = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
                 Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT);
-        if (alt) {
-            switch (keyCode) {
-                case Input.Keys.V:
-                    LevelEditor.getCurrent().getManager().getDataHandler().saveVersion();
-                    return;
-                case Input.Keys.F:
-                    LevelEditor.getCurrent().getManager().getAdvFuncs().fill();
-                    return;
-                case Input.Keys.S:
-                    LevelEditor.getCurrent().getManager().getDataHandler().saveFloor();
-                    return;
-                case Input.Keys.M:
-                    LevelEditor.getCurrent().getManager().getDataHandler().saveModulesSeparately();
-                    return;
-            }
-        }
-        if (ctrl) {
-            switch (keyCode) {
-                case Input.Keys.R:
 
-                    LE_Screen.getInstance().getGuiStage().getPalettePanel().reload();
-                    GuiEventManager.trigger(GuiEventType.LE_PALETTE_RESELECT);
+        if (alt && ctrl) {
+            switch (keyCode) {
+                case Input.Keys.A:
+                    getModel().toggleAppend();
                     break;
-                case Input.Keys.TAB:
-
-                    boolean shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||
-                            Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
-                    if (shift) {
-                        FloorManager.selectPreviousFloor();
-                    } else {
-                        FloorManager.selectNextFloor();
-                    }
-                    return;
-                case Input.Keys.Q:
-                    LevelEditor.getCurrent().getManager().getAdvFuncs().toggleVoid();
-                    return;
-                case Input.Keys.M:
-                    LevelEditor.getCurrent().getManager().getDataHandler().saveModule(getModel().getModule());
-                    return;
-                case Input.Keys.S:
-                    LevelEditor.getCurrent().getManager().getDataHandler().saveAs();
-                    return;
-                case Input.Keys.SPACE:
-                    LevelEditor.getCurrent().getManager().getEditHandler().edit();
-                    return;
-                case Input.Keys.X:
-                    LevelEditor.getCurrent().getManager().getModelManager().cut();
-                    return;
-                case Input.Keys.Z:
-                    LevelEditor.getCurrent().getManager().getOperationHandler().undo();
-                    return;
-                case Input.Keys.Y:
-                    LevelEditor.getCurrent().getManager().getOperationHandler().redo();
-                    return;
-                case Input.Keys.C:
-                    LevelEditor.getCurrent().getManager().getModelManager().copy();
-                    return;
-                case Input.Keys.V:
-                    LevelEditor.getCurrent().getManager().getModelManager().paste();
-                    return;
-
             }
-        } else {
-            switch (keyCode) {
-                case Input.Keys.F8:
-                case Input.Keys.F7:
-                case Input.Keys.TAB:
-                    globalController.keyDown(keyCode);
-                    return;
             }
+            if (alt) {
+                switch (keyCode) {
+                    case Input.Keys.V:
+                        LevelEditor.getCurrent().getManager().getDataHandler().saveVersion();
+                        return;
+                    case Input.Keys.F:
+                        LevelEditor.getCurrent().getManager().getAdvFuncs().fill();
+                        return;
+                    case Input.Keys.S:
+                        LevelEditor.getCurrent().getManager().getDataHandler().saveFloor();
+                        return;
+                    case Input.Keys.M:
+                        LevelEditor.getCurrent().getManager().getDataHandler().saveModulesSeparately();
+                        return;
+                }
+            }
+            if (ctrl) {
+                switch (keyCode) {
+                    case Input.Keys.R:
+
+                        LE_Screen.getInstance().getGuiStage().getPalettePanel().reload();
+                        GuiEventManager.trigger(GuiEventType.LE_PALETTE_RESELECT);
+                        break;
+                    case Input.Keys.TAB:
+
+                        boolean shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||
+                                Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
+                        if (shift) {
+                            FloorManager.selectPreviousFloor();
+                        } else {
+                            FloorManager.selectNextFloor();
+                        }
+                        return;
+                    case Input.Keys.Q:
+                        LevelEditor.getCurrent().getManager().getAdvFuncs().toggleVoid();
+                        return;
+                    case Input.Keys.M:
+                        LevelEditor.getCurrent().getManager().getDataHandler().saveModule(getModel().getModule());
+                        return;
+                    case Input.Keys.S:
+                        LevelEditor.getCurrent().getManager().getDataHandler().saveAs();
+                        return;
+                    case Input.Keys.SPACE:
+                        LevelEditor.getCurrent().getManager().getEditHandler().edit();
+                        return;
+                    case Input.Keys.X:
+                        LevelEditor.getCurrent().getManager().getModelManager().cut();
+                        return;
+                    case Input.Keys.Z:
+                        LevelEditor.getCurrent().getManager().getOperationHandler().undo();
+                        return;
+                    case Input.Keys.Y:
+                        LevelEditor.getCurrent().getManager().getOperationHandler().redo();
+                        return;
+                    case Input.Keys.C:
+                        LevelEditor.getCurrent().getManager().getModelManager().copy();
+                        return;
+                    case Input.Keys.V:
+                        LevelEditor.getCurrent().getManager().getModelManager().paste();
+                        return;
+
+                }
+            } else {
+                switch (keyCode) {
+                    case Input.Keys.F8:
+                    case Input.Keys.F7:
+                    case Input.Keys.TAB:
+                        globalController.keyDown(keyCode);
+                        return;
+                }
+            }
+
         }
 
-}
+        private DIRECTION getDirectionForKey ( int keyCode, boolean alt){
+            switch (keyCode) {
+                case Input.Keys.UP:
+                    return alt ? DIRECTION.UP_LEFT : DIRECTION.UP;
+                case Input.Keys.DOWN:
+                    return alt ? DIRECTION.DOWN_LEFT : DIRECTION.DOWN;
+                case Input.Keys.RIGHT:
+                    return alt ? DIRECTION.UP_RIGHT : DIRECTION.RIGHT;
+                case Input.Keys.LEFT:
+                    return alt ? DIRECTION.DOWN_RIGHT : DIRECTION.LEFT;
 
-    private DIRECTION getDirectionForKey(int keyCode, boolean alt) {
-        switch (keyCode) {
-            case Input.Keys.UP:
-        return alt? DIRECTION.UP_LEFT: DIRECTION.UP;
-            case Input.Keys.DOWN:
-        return alt? DIRECTION.DOWN_LEFT: DIRECTION.DOWN;
-            case Input.Keys.RIGHT:
-        return alt? DIRECTION.UP_RIGHT: DIRECTION.RIGHT;
-            case Input.Keys.LEFT:
-        return alt? DIRECTION.DOWN_RIGHT: DIRECTION.LEFT;
-
-    }
-        return null;
-    }
+            }
+            return null;
+        }
     }

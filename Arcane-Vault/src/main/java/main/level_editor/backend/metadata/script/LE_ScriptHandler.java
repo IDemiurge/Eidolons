@@ -98,6 +98,14 @@ public class LE_ScriptHandler extends CellDataHandler<CellScriptData> implements
     }
 
     @Override
+    protected CellScriptData append(CellScriptData prev, CellScriptData result) {
+        for (String s : prev.getValues().keySet()) {
+            result.addValue(s, prev.getValue(s));
+        }
+        return result;
+    }
+
+    @Override
     protected String getXmlNodeName() {
         return FloorLoader.SCRIPT_DATA;
     }

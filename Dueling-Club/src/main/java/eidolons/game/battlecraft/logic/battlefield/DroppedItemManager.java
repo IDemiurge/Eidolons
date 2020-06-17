@@ -25,7 +25,7 @@ public class DroppedItemManager {
 
     private static final List<DC_HeroItemObj> VOID = new ArrayList<>();
     List<DC_HeroItemObj>[][] itemMap;
-    private DC_Game game;
+    private final DC_Game game;
 
     public DroppedItemManager(DC_Game game) {
         this.game = game;
@@ -139,7 +139,7 @@ public class DroppedItemManager {
         }
         List<DC_HeroItemObj> list = new ArrayList<>();
         for (String id : ContainerUtils.open(cell.getProperty(PROPS.DROPPED_ITEMS))) {
-            Obj item = game.getObjectById(NumberUtils.getInteger(id));
+            Obj item = game.getObjectById(NumberUtils.getIntParse(id));
             if (item != null) {
                 list.add((DC_HeroItemObj) item);
             }

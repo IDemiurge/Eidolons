@@ -69,10 +69,10 @@ public class EmitterMaster extends GdxUtil {
     };
     private static boolean writeImage = true;
     private static boolean pack = true;
-    private static boolean overwriteImage = false;
-    private static boolean sizeImages = true;
+    private static final boolean overwriteImage = false;
+    private static final boolean sizeImages = true;
     private static boolean test = true;
-    private static Map<VFX_ATLAS, TextureAtlas> atlasMap = new HashMap<>();
+    private static final Map<VFX_ATLAS, TextureAtlas> atlasMap = new HashMap<>();
     private static boolean manualFix;
 
     public static void main(String[] args) {
@@ -325,7 +325,7 @@ public class EmitterMaster extends GdxUtil {
     private static String processImageNameDeep(String imageName) {
         String last = StringMaster.getLastPart(imageName, "_");
         while (NumberUtils.isInteger(last)) {
-            int n = NumberUtils.getInteger(last);
+            int n = NumberUtils.getIntParse(last);
             imageName = StringMaster.cropLast(imageName, "_")
                     + n;
             last = StringMaster.getLastPart(imageName, "_");

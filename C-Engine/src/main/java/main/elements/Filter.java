@@ -318,7 +318,7 @@ public class Filter<T extends Entity> extends ReferredElement {
             }
 
             if (filterValue instanceof PARAMETER) {
-                if (t.getIntParam((PARAMETER) filterValue) == NumberUtils.getInteger(value)) {
+                if (t.getIntParam((PARAMETER) filterValue) == NumberUtils.getIntParse(value)) {
                     list.add(t);
                 }
             }

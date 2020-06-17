@@ -130,7 +130,7 @@ public class DC_CostsFactory {
         Formula formula;
 
         boolean var;
-        int amount = NumberUtils.getInteger(paramValue);
+        int amount = NumberUtils.getIntParse(paramValue);
         if (amount == 0) {
             return null;
         }

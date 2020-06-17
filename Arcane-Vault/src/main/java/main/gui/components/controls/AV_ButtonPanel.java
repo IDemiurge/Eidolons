@@ -52,7 +52,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
             "Add Tab", "Toggle",
             "Copy", "Paste",
             "Backup",
-
+            "Transform"
             // "WS Add",
             // "Group",
             // CLEAN_UP,
@@ -195,11 +195,13 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 break;
 
             case "Transform": {
-                if (xmlTransformMenu == null) {
-                    xmlTransformMenu = new XmlTransformMenu();
-                } else {
-                    xmlTransformMenu.setVisible(xmlTransformMenu.isVisible());
-                }
+                XML_Transformer.showTransformDialog();
+                // if (xmlTransformMenu == null) {
+                //     xmlTransformMenu = new XmlTransformMenu();
+                // } else {
+                //     xmlTransformMenu.setVisible(xmlTransformMenu.isVisible());
+                // }
+                break;
             }
             case "Undo": {
                 if (alt) {

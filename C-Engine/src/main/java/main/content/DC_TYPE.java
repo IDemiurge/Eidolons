@@ -17,6 +17,7 @@ import java.util.Map;
 //it's actually ENTITY_TYPE
 
 public enum DC_TYPE implements OBJ_TYPE {
+    //don't change the order!
     UNITS("units", G_PROPS.ASPECT, 0, G_PROPS.UNIT_GROUP),
     SPELLS("spells", G_PROPS.ASPECT, 1, G_PROPS.SPELL_GROUP),
     CHARS("chars",

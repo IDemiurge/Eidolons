@@ -31,6 +31,7 @@ public class CombatOptionsPanel extends TablePanelX {
             GameplayOptions.GAMEPLAY_OPTION.MANUAL_CONTROL,
             GameplayOptions.GAMEPLAY_OPTION.GHOST_MODE,
             GameplayOptions.GAMEPLAY_OPTION.DEBUG_MODE,
+            GameplayOptions.GAMEPLAY_OPTION.AI_DEBUG,
 //            GameplayOptions.TESTING_OPTION.DEBUG_MODE,
 //            GameplayOptions.TESTING_OPTION.DEBUG_MODE,
     };
@@ -41,9 +42,9 @@ public class CombatOptionsPanel extends TablePanelX {
             ControlOptions.CONTROL_OPTION.CAMERA_ON_HERO,
     };
     public static final OPTION[] OPTIONS = {
+            ControlOptions.CONTROL_OPTION.ALT_MODE_ON,
             GameplayOptions.GAMEPLAY_OPTION.INPUT_BETWEEN_TURNS,
 //            GameplayOptions.GAMEPLAY_OPTION.SPACE_BETWEEN_TURNS,
-            ControlOptions.CONTROL_OPTION.ALT_MODE_ON,
             ControlOptions.CONTROL_OPTION.CAMERA_ON_ACTIVE,
             ControlOptions.CONTROL_OPTION.AUTO_CAMERA_OFF,
             ControlOptions.CONTROL_OPTION.CAMERA_ON_HERO,

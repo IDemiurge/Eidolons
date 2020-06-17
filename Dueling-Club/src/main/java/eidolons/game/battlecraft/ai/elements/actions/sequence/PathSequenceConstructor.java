@@ -81,6 +81,10 @@ public class PathSequenceConstructor extends AiHandler {
         // paths = new ArrayList<>(set);
         //
         // else
+
+        if (isStar()){
+            paths = getStarBuilder().build(targetCells);
+        } else
         paths = getPathBuilder().init(moveActions, action).build(targetCells);
         if (action != null) {
             paths = filterPaths(action, paths);
@@ -88,6 +92,10 @@ public class PathSequenceConstructor extends AiHandler {
         pathCache.put(targetCells, paths);
 
         return paths;
+    }
+
+    private boolean isStar() {
+        return true;
     }
 
     private boolean isPathCacheOn() {

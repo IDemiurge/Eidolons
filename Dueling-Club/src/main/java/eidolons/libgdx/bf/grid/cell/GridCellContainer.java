@@ -30,7 +30,6 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
-import main.system.auxiliary.RandomWizard;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -402,12 +401,6 @@ public class GridCellContainer extends GridCell implements Hoverable {
             recalcUnitViewBounds();
             dirty = false;
         }
-        if (getUnitViewCount() == 0)
-            if (GdxMaster.isVisibleEffectively(overlay)) {
-                if (RandomWizard.chance(1)) {
-                    log(1, this + " has overlay" + overlay.getColor());
-                }
-            }
     }
 
     protected boolean isStaticZindex() {

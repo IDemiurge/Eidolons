@@ -509,8 +509,8 @@ public class DC_Game extends GenericGame {
     @Override
     public void remove(Obj obj) {
         super.remove(obj);
-        if (obj instanceof Unit) {
-            removeUnit((Unit) obj);
+        if (obj instanceof BattleFieldObject) {
+            softRemove((BattleFieldObject) obj);
         }
     }
 

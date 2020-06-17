@@ -230,7 +230,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
         if (CoreEngine.isAutoFixOn())
             if (isPlayerCharacter()) {
-                Integer integer = NumberUtils.getInteger(value);
+                Integer integer = NumberUtils.getIntParse(value);
                 if (param.getName().contains("Percentage")) {
                     if (integer < 0) {
                         return;
@@ -251,7 +251,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             if (!getGame().getState().getManager().isResetting())
                 //this is gross!
                 if (!isBeingReset()) {
-                    getValidParams().put(param, NumberUtils.getInteger(value));
+                    getValidParams().put(param, NumberUtils.getIntParse(value));
                 }
 
         super.putParameter(param, value);
