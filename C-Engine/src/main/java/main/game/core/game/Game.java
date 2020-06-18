@@ -53,7 +53,6 @@ public abstract class Game implements Serializable {
 
     protected boolean simulation;
     protected boolean debugMode;
-    protected boolean offline = true;
     protected boolean initialized = false;
     protected boolean started = false;
     private boolean running;
@@ -91,14 +90,6 @@ public abstract class Game implements Serializable {
 
     public void setIdManager(IdManager idManager) {
         this.idManager = idManager;
-    }
-
-    public boolean isOffline() {
-        return offline;
-    }
-
-    public void setOffline(boolean offline) {
-        this.offline = offline;
     }
 
     public abstract void init();
@@ -305,10 +296,6 @@ public abstract class Game implements Serializable {
     }
 
 
-
-    public boolean isOnline() {
-        return !isOffline();
-    }
 
     public boolean isCloningMode() {
         return cloningMode;

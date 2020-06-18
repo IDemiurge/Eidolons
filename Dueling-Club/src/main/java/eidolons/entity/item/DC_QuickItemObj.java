@@ -3,13 +3,13 @@ package eidolons.entity.item;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.game.module.dungeoncrawl.objects.Trap;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.content.enums.GenericEnums;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -85,7 +85,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 
         if (checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
             this.ammo = true;
-            typeName = DC_ActionManager.RELOAD + " " + type.getGroup();
+            typeName = ActionEnums.RELOAD + " " + type.getGroup();
             ref.setID(KEYS.AMMO, id);
             setParam(PARAMS.CHARGES, getIntParam(PARAMS.DURABILITY));// TODO C_
             // in
@@ -94,7 +94,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
             // version!
             setParam(PARAMS.C_CHARGES, getIntParam(PARAMS.CHARGES));
         } else {
-            typeName = DC_ActionManager.THROW;
+            typeName = ActionEnums.THROW;
 
             // will it not have effect on hero?
 
@@ -212,7 +212,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 
     public boolean activate() {
         if (getGame().getLoop().isPaused()) {
-            return false; //TODO igg demo hack
+            return false;
         }
         if (!isConstructed() || wrapped) {
             construct();

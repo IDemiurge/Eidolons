@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+    //TODO refactor class
 public class TaskManager extends AiHandler {
 
     public TaskManager(AiMaster master) {
@@ -43,54 +44,54 @@ public class TaskManager extends AiHandler {
         }
         if (mode != null) {
             if (task.getArg() instanceof Integer)
-            if (action.getGame().getObjectById((Integer) task.getArg()) instanceof Unit) {
-                Unit target = (Unit) action.getGame().getObjectById(
-                        (Integer) task.getArg());
-                switch (mode) {
+                if (action.getGame().getObjectById((Integer) task.getArg()) instanceof Unit) {
+                    Unit target = (Unit) action.getGame().getObjectById(
+                            (Integer) task.getArg());
+                    switch (mode) {
 
-                    case ANY_ITEM:
-                    case MULTI:
+                        case ANY_ITEM:
+                        case MULTI:
 
-                    case CORPSE:
-                    case MY_ITEM:
-                        break;
-                    case ANY_ARMOR:
-                        if (target.getArmor() != null) {
-                            return target.getArmor().getId();
-                        }
-                        return null;
-                    case ANY_WEAPON:
-                    case ENEMY_WEAPON:
-                        if (target.getMainWeapon() != null) {
-                            return target.getMainWeapon().getId();
-                        }
-                        if (target.getOffhandWeapon() != null) {
-                            return target.getOffhandWeapon().getId();
-                        }
-                        return null;
-
-                    case ENEMY_ITEM:
-                    case ENEMY_ARMOR:
-                        if (target.getArmor() != null) {
-                            return target.getArmor().getId();
-                        } else {
+                        case CORPSE:
+                        case MY_ITEM:
+                            break;
+                        case ANY_ARMOR:
+                            if (target.getArmor() != null) {
+                                return target.getArmor().getId();
+                            }
                             return null;
-                        }
-                    case MY_WEAPON:
-                        if (action.getOwnerUnit().getMainWeapon() != null) {
-                            return action.getOwnerUnit().getMainWeapon().getId();
-                        }
-                        if (action.getOwnerUnit().getOffhandWeapon() != null) {
-                            return action.getOwnerUnit().getOffhandWeapon().getId();
-                        }
-                        return null;
-                    case MY_ARMOR:
-                        if (action.getOwnerUnit().getArmor() != null) {
-                            return action.getOwnerUnit().getArmor().getId();
-                        }
-                        return null;
+                        case ANY_WEAPON:
+                        case ENEMY_WEAPON:
+                            if (target.getMainWeapon() != null) {
+                                return target.getMainWeapon().getId();
+                            }
+                            if (target.getOffhandWeapon() != null) {
+                                return target.getOffhandWeapon().getId();
+                            }
+                            return null;
+
+                        case ENEMY_ITEM:
+                        case ENEMY_ARMOR:
+                            if (target.getArmor() != null) {
+                                return target.getArmor().getId();
+                            } else {
+                                return null;
+                            }
+                        case MY_WEAPON:
+                            if (action.getOwnerUnit().getMainWeapon() != null) {
+                                return action.getOwnerUnit().getMainWeapon().getId();
+                            }
+                            if (action.getOwnerUnit().getOffhandWeapon() != null) {
+                                return action.getOwnerUnit().getOffhandWeapon().getId();
+                            }
+                            return null;
+                        case MY_ARMOR:
+                            if (action.getOwnerUnit().getArmor() != null) {
+                                return action.getOwnerUnit().getArmor().getId();
+                            }
+                            return null;
+                    }
                 }
-            }
         }
 
         return (Integer) task.getArg();
@@ -189,8 +190,8 @@ public class TaskManager extends AiHandler {
             case ATTACK:
                 if (behaviorMode == AiEnums.BEHAVIOR_MODE.BERSERK || behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
                     targets = (Analyzer.getUnits(ai, true, true, true, false));
-//                    List<Set<BattleFieldObject>> objs = Analyzer.getCells(ai, true, true, false).stream().map(
-//                            c -> game.getObjectsOnCoordinate(c.getCoordinates())).collect(Collectors.toList());
+                    //                    List<Set<BattleFieldObject>> objs = Analyzer.getCells(ai, true, true, false).stream().map(
+                    //                            c -> game.getObjectsOnCoordinate(c.getCoordinates())).collect(Collectors.toList());
                     for (DC_Cell cell : Analyzer.getCells(ai, true, false, false)) {
                         targets3.addAll(game.getObjectsOnCoordinateNoOverlaying(cell.getCoordinates()));
                     }
@@ -228,7 +229,6 @@ public class TaskManager extends AiHandler {
                 break;
         }
         if (targets.isEmpty())
-//        if (targets2.isEmpty()) igg demo hack
             if (targets3.isEmpty()) {
                 return new ArrayList<>();
             }
@@ -252,7 +252,7 @@ public class TaskManager extends AiHandler {
                 list.add(new Task(forced, ai, goal, id));
             }
         }
-//        ActionManager.setTargetPool(targets); ???
+        //        ActionManager.setTargetPool(targets); ???
 
         return list;
     }

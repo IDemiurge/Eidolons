@@ -13,8 +13,9 @@ import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.AnimEnums;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.anims.CompositeAnim;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.construct.AnimResourceFinder;
 import eidolons.libgdx.audio.SoundPlayer;
 import eidolons.libgdx.bf.GridMaster;
@@ -54,8 +55,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-import static eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART.CAST;
-import static eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART.IMPACT;
+import static eidolons.libgdx.anims.AnimEnums.ANIM_PART.CAST;
+import static eidolons.libgdx.anims.AnimEnums.ANIM_PART.IMPACT;
 
 //import main.game.logic.battle.player.Player;
 
@@ -70,8 +71,8 @@ public class DC_SoundMaster extends SoundMaster {
             G_PROPS.SPELL_TYPE,
     };
     private static SoundPlayer soundPlayer;
-    private SoundController controller;
-    private DungeonScreen screen;
+    private final SoundController controller;
+    private final DungeonScreen screen;
 
     public DC_SoundMaster(DungeonScreen screen) {
         this.screen = screen;
@@ -431,7 +432,7 @@ public class DC_SoundMaster extends SoundMaster {
     public static void preconstructEffectSounds() {
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             Spell active = new Spell(type, DC_Player.NEUTRAL, DC_Game.game, new Ref());
-            for (ANIM_PART part : ANIM_PART.values()) {
+            for (ANIM_PART part : AnimEnums.ANIM_PART.values()) {
                 preconstructSpell(active, part);
             }
         }

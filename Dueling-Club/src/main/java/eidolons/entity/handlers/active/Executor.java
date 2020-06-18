@@ -39,14 +39,17 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.FileLogManager;
+import main.system.auxiliary.log.FileLogger;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.auxiliary.secondary.Bools;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
-import main.system.text.LogManager;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static main.system.text.LogManager.LOGGING_DETAIL_LEVEL.FULL;
 
 //REVIEW 40 public methods and not a single one (or did I miss something?) has comments...
 //First of all - what is the purpose of the whole class? in plain english please.
@@ -54,14 +57,7 @@ import java.util.List;
 /**
  * Created by JustMe on 2/21/2017.
  * <portrait>
- * :: Check can
- * :: Determine Target
- * :: Check interruptions
- * :: Resolve
- * :: Pay costs
- * Intersecting
- * :: Log
- * :: Communicate
+ * :: Check can :: Determine Target :: Check interruptions :: Resolve :: Pay costs Intersecting :: Log :: Communicate
  * events
  */
 public class Executor extends ActiveHandler {
@@ -75,12 +71,8 @@ public class Executor extends ActiveHandler {
     private boolean instantMode;
     private boolean counterMode;
     private boolean attackOfOpportunityMode;
-    private boolean continuous;
     private Boolean cancelled;
     private boolean triggered;
-    private boolean resistanceChecked;
-    private int timeCost;
-    private Context context;
 
     public Executor(DC_ActiveObj active, ActiveMaster entityMaster) {
         super(active, entityMaster);
@@ -98,15 +90,14 @@ public class Executor extends ActiveHandler {
 
     public Boolean activateOn(Context context) {
         if (context.getTargetObj() != null || context.getGroup() != null || context.isTriggered()) {
-//            Ref ref = getAction().getRef();
-//            ref.setTarget(context.getTarget());
+            //            Ref ref = getAction().getRef();
+            //            ref.setTarget(context.getTarget());
             targeter.setForcePresetTarget(true);
             targeter.setPresetTarget(context.getTargetObj());
             getAction().setTargetObj(context.getTargetObj());
             getAction().setTargetGroup(context.getGroup());
         } else
             targeter.setForcePresetTarget(false);
-        this.context = context;
         activate();
         return !Bools.isTrue(isCancelled());
     }
@@ -134,10 +125,6 @@ public class Executor extends ActiveHandler {
     }
 
     public boolean activate() {
-//        if (!getEntity().isConstructed()){
-//            AbilityConstructor.constructActives(getEntity());
-//            getEntity().construct(); already done?
-//        }
         reset();
         syncActionRefWithSource();
 
@@ -154,7 +141,6 @@ public class Executor extends ActiveHandler {
         Obj target = getAction().getTargetObj();
         AnimContext animContext = new AnimContext(getAction());
         animContext.setTarget(target);
-
 
         boolean gameLog = getAction().getLogger().isActivationLogged();
         String targets = " ";
@@ -194,12 +180,6 @@ public class Executor extends ActiveHandler {
             EUtils.showInfoText(getEntity().getName() + " cancelled");
             return false;
         }
-//        else {???
-//            if (BooleanMaster.isFalse(cancelled))
-//                cancelled();
-//        }
-        //TODO BEFORE RESOLVE???
-
 
         if (AnimMaster.isOn())
             if (!AnimConstructor.isReconstruct())
@@ -208,14 +188,9 @@ public class Executor extends ActiveHandler {
 
         getEntity().getOwnerUnit().setLastAction(getEntity());
 
-        if (getEntity().getOwnerUnit().isBoss()) { //TODO boss fix - what about spells?
-            GuiEventManager.trigger(GuiEventType.BOSS_ACTION, input);
-        } else {
-            if (!input.getAction().isAttackAny()) //EA HACK
-                GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES,
-                        input
-                );
-        }
+        if (!input.getAction().isAttackAny())
+            GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES,
+                    input);
 
         actionComplete();
         return isResult();
@@ -227,7 +202,7 @@ public class Executor extends ActiveHandler {
         if (!ExplorationMaster.isExplorationOn()) {
             super.log(string, gameLog);
             if (!gameLog) {
-//                SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, string);
+                SpecialLogger.getInstance().appendAnalyticsLog(FileLogger.SPECIAL_LOG.COMBAT, string);
             }
         }
     }
@@ -246,11 +221,8 @@ public class Executor extends ActiveHandler {
             }
         }
 
-        try {
-            getAction().setRef(getAction().getOwnerObj().getRef());
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+
+        getAction().setRef(getAction().getOwnerObj().getRef());
 
     }
 
@@ -266,20 +238,12 @@ public class Executor extends ActiveHandler {
 
     private void beingActivated() {
         fireEvent(STANDARD_EVENT_TYPE.ACTION_BEING_ACTIVATED, true);
-        if (getChecker().isCancellable()) {
-//            activated(ref); TODO ???
-//            if (!result) {
-//                getGame().getManager().setActivatingAction(null);
-//            }
-        } else if (!checkExtraAttacksDoNotInterrupt(getLogger().getEntryType())) {
-            // TODO NEW ENTRY AOO?
-            payCosts();
-            setResult(false);
-            setInterrupted(true);
-        } else {
-//            activated(ref); TODO
-        }
-
+        if (!getChecker().isCancellable())
+            if (!checkExtraAttacksDoNotInterrupt(getLogger().getEntryType())) {
+                payCosts();
+                setResult(false);
+                setInterrupted(true);
+            }
 
         if (getChecker().isRangedTouch()) {
             boolean missed = ConcealmentRule.checkMissed(getAction());
@@ -298,9 +262,6 @@ public class Executor extends ActiveHandler {
                 StackingRule.actionMissed(getAction());
             }
         }
-//        if (getGame().getRules().getEngagedRule().checkDisengagingActionCancelled(getAction())) {
-        // return false; TODO
-//        }
     }
 
     private void initActivation() {
@@ -318,48 +279,44 @@ public class Executor extends ActiveHandler {
         addStdPassives();
         ForceRule.addForceEffects(getAction());
         getAction().activatePassives();
-//        setResistanceChecked(false); ??
 
         GuiEventManager.trigger(GuiEventType.ACTION_BEING_RESOLVED, getAction());
 
         if (getAction().getAbilities() != null) {
             try {
-                setResult(getAction().getAbilities().activatedOn(
-//                 getTargeter(). TODO would this be ok?
-                        getRef()));
+                setResult(getAction().getAbilities().activatedOn(getRef()));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-//        else
+
+        ///////////////////
         // for Multi-targeting when single-wrapped Abilities cannot be used
         if (getAction().isStandardAttack()
-//if (getAction().isRanged()
-                || getAction().getAbilities() == null) //TODO broke on aimed shot eh?
+                //if (getAction().isRanged() //TODO broke on aimed shot eh?
+                || getAction().getAbilities() == null)
             if (!isResult() && getAction().getActives() != null) {
                 result = true;
                 for (Active active : getAction().getActives()) {
-                    ((Ability) active).setForcePresetTargeting(true); //TODO igg demo hack
+                    ((Ability) active).setForcePresetTargeting(true);
+                    //TODO DC Review
                     try {
                         setResult(isResult() & active.activatedOn(getRef()));
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
                     if (!isResult()) {
-                        break;// TODO if cancelled!
+                        break; //if cancelled!
                     }
                     if (!game.isStarted()) {
                         continue;
                     }
-                    // cancelled = null; TODO ???
                     if (getAction().getActives().size() > 1) { // between
                         game.getManager().reset();
                         refreshVisuals();
                     }
                 }
             }
-
-//        DC_SoundMaster.playEffectSound(SOUNDS.IMPACT, this); //TODO queue on anim!
 
     }
 
@@ -406,12 +363,10 @@ public class Executor extends ActiveHandler {
     }
 
     private void reduceAtbReadiness() {
-
         long initiativeCost = Math.round(
                 -AtbMaster.reduceReadiness(getAction()));
 
-
-        getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
+        getGame().getLogManager().log(FULL, StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
                 -initiativeCost +
                 "%, now at " + AtbMaster.getDisplayedAtb(getOwnerObj()) +
                 "%");
@@ -432,8 +387,8 @@ public class Executor extends ActiveHandler {
         if (interrupting) {
             setInterrupted(!result);
         }
-//        if (cancel)
-//            this.result=result;
+        //        if (cancel)
+        //            this.result=result;
     }
 
 
@@ -469,8 +424,6 @@ public class Executor extends ActiveHandler {
 
                     }
         }
-//        getAnimator().waitForAnimation();
-
         getAction().setTargetGroup(null);
         getAction().setTargetObj(null);
 
@@ -483,23 +436,6 @@ public class Executor extends ActiveHandler {
     public Targeter getTargeter() {
         return targeter;
     }
-
-//    public boolean activateChanneling() {
-//        initCosts();
-//        initChannelingCosts();
-//        game.getLogManager().log(">> " + getAction().getOwnerObj().getName() + " has begun Channeling " + getName());
-//        boolean result = (checkExtraAttacksDoNotInterrupt(ENTRY_TYPE.ACTION));
-//        if (result) {
-//            this.channeling = true;
-////            ChannelingRule.playChannelingSound(getAction(), HeroAnalyzer.isFemale(ownerObj));
-//            result = ChannelingRule.activateChanneing(getAction());
-//        }
-//
-//        channelingActivateCosts.pay(ref);
-//        actionComplete();
-//        return result;
-//    }
-
 
     public void addPendingAttackOpportunity(DC_ActiveObj attack) {
         getPendingAttacksOpportunity().add(attack);

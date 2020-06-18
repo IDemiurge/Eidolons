@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.ai.elements.actions.sequence;
 
-import eidolons.entity.active.DC_ActionManager.STD_SPEC_ACTIONS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.ai.UnitAI;
@@ -13,6 +12,7 @@ import eidolons.game.battlecraft.ai.tools.AiLogger;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.battlecraft.ai.tools.time.TimeLimitMaster;
+import main.content.enums.entity.ActionEnums;
 import main.elements.targeting.Targeting;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
@@ -124,7 +124,7 @@ public class PathSequenceConstructor extends AiHandler {
             return new ListMaster<Coordinates>().getList(targetAction.getTarget().getCoordinates());
         }
         if (targetAction.getActive().getName().equalsIgnoreCase(
-         StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Guard_Mode.toString()))) {
+         StringMaster.getWellFormattedString(ActionEnums.STD_SPEC_ACTIONS.Guard_Mode.toString()))) {
             return new ListMaster<Coordinates>().toList_(targetAction.getTask().getObjArg().getCoordinates());
         }
         Boolean fastPickClosestToTargetOrSelf = null;

@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.dc.inventory;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_HeroSlotItem;
@@ -21,14 +22,16 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.images.ImageManager;
 import main.system.text.TextParser;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by JustMe on 3/31/2017.
  */
 public class InventoryFactory {
-    private static Map<Entity, InvItemActor> cache = new HashMap<>();
-    private InventoryClickHandler handler;
+    private static final ObjectMap<Entity, InvItemActor> cache = new ObjectMap<>();
+    private final InventoryClickHandler handler;
 
     public InventoryFactory(InventoryClickHandler inventoryClickHandler) {
         this.handler = inventoryClickHandler;

@@ -15,8 +15,8 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import eidolons.libgdx.anims.*;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.anims.construct.AnimConstructor;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.std.sprite.CustomSpriteAnim;
@@ -84,7 +84,7 @@ public class AnimMaster extends Group {
     }
 
     public static boolean isSmoothStop(Anim anim) {
-        if (anim.getPart() == ANIM_PART.CAST) {
+        if (anim.getPart() == AnimEnums.ANIM_PART.CAST) {
             return false; //TODO igg demo hack
         }
         if (anim.getOrigin().equals(anim.getDestination()))

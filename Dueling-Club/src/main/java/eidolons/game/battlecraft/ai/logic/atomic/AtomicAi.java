@@ -1,8 +1,6 @@
 package eidolons.game.battlecraft.ai.logic.atomic;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
-import eidolons.entity.active.DC_ActionManager.STD_SPEC_ACTIONS;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.BattleFieldObject;
@@ -27,6 +25,7 @@ import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_ACTION;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.rules.VisionEnums;
@@ -75,11 +74,11 @@ public class AtomicAi extends AiHandler {
         if (action != null)
             action.setTaskDescription("Approach");
         else {
-            SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, getUnit() + " finds no atomic action!");
+            SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, getUnit() + " finds no atomic action!");
             return null;
         }
         String message = getUnit() + " chooses atomic action: " + action;
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, message);
         return action;
     }
 
@@ -129,11 +128,11 @@ public class AtomicAi extends AiHandler {
             return null;
         }
         if (ParamAnalyzer.isFatigued(getUnit())) {
-            return AiActionFactory.newAction(STD_MODE_ACTIONS.Rest.name(),
+            return AiActionFactory.newAction(ActionEnums.STD_MODE_ACTIONS.Rest.name(),
                     getUnit().getAI());
         }
         if (ParamAnalyzer.isHazed(getUnit())) {
-            return AiActionFactory.newAction(STD_MODE_ACTIONS.Concentrate.name(),
+            return AiActionFactory.newAction(ActionEnums.STD_MODE_ACTIONS.Concentrate.name(),
                     getUnit().getAI());
         }
 
@@ -147,21 +146,21 @@ public class AtomicAi extends AiHandler {
                     }
                 }
         if (ai.getType() == AI_TYPE.CASTER) {
-            return AiActionFactory.newAction(STD_MODE_ACTIONS.Meditate.toString(), ai);
+            return AiActionFactory.newAction(ActionEnums.STD_MODE_ACTIONS.Meditate.toString(), ai);
         }
 
         return AiActionFactory.newAction(
                 RandomWizard.random() ? RandomWizard.random() ?
-                        STD_SPEC_ACTIONS.Wait.toString() : RandomWizard.random() ?
-                        STD_SPEC_ACTIONS.Wait.toString() :
-                        STD_MODE_ACTIONS.Defend.toString() : RandomWizard.random() ?
-                        STD_SPEC_ACTIONS.Wait.toString() :
-                        STD_MODE_ACTIONS.On_Alert.toString(), ai);
+                        ActionEnums.STD_SPEC_ACTIONS.Wait.toString() : RandomWizard.random() ?
+                        ActionEnums.STD_SPEC_ACTIONS.Wait.toString() :
+                        ActionEnums.STD_MODE_ACTIONS.Defend.toString() : RandomWizard.random() ?
+                        ActionEnums.STD_SPEC_ACTIONS.Wait.toString() :
+                        ActionEnums.STD_MODE_ACTIONS.On_Alert.toString(), ai);
     }
 
     public Action getAtomicWait(Unit unit) {
         return AiActionFactory.newAction(unit.getAction(
-                STD_SPEC_ACTIONS.Wait.toString()), Ref.getSelfTargetingRefCopy(unit));
+                ActionEnums.STD_SPEC_ACTIONS.Wait.toString()), Ref.getSelfTargetingRefCopy(unit));
     }
 
     private Action getReloadAction(UnitAI ai) {

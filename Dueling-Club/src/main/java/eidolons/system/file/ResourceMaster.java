@@ -36,9 +36,9 @@ public class ResourceMaster {
     private static final String USED_FOLDER = "entity";
     static boolean setProperty = true;
     static boolean useFirstEntityIfOverlap = true;
-    private static String folderName = "gen";
-    private static Map<String, ObjType> map = new XLinkedMap<>();
-    private static boolean writeUnused = false;
+    private static final String folderName = "gen";
+    private static final Map<String, ObjType> map = new XLinkedMap<>();
+    private static final boolean writeUnused = false;
 
     public static void updateImagePaths() {
 
@@ -225,4 +225,7 @@ public class ResourceMaster {
         return "png";
     }
 
+    public static boolean isWriteViewImgOnInit() {
+        return false;
+    }
 }

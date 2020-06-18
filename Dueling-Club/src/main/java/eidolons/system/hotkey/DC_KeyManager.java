@@ -2,10 +2,6 @@ package eidolons.system.hotkey;
 
 import com.badlogic.gdx.Input;
 import eidolons.content.ValueHelper;
-import eidolons.entity.active.DC_ActionManager;
-import eidolons.entity.active.DC_ActionManager.ADDITIONAL_MOVE_ACTIONS;
-import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
-import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.Eidolons;
@@ -19,6 +15,9 @@ import eidolons.system.options.OptionsMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
+import main.content.enums.entity.ActionEnums.ADDITIONAL_MOVE_ACTIONS;
+import main.content.enums.entity.ActionEnums.STD_ACTIONS;
+import main.content.enums.entity.ActionEnums.STD_MODE_ACTIONS;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -84,12 +83,12 @@ public class DC_KeyManager
 
     private void initStdModeHotkeys() {
         int i = 0; //TODO [quick fix] - due to "either camp or defend", one removed always
-        for (STD_MODE_ACTIONS action : STD_MODE_ACTIONS.values()) {
+        for (STD_MODE_ACTIONS action : ActionEnums.STD_MODE_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
                     G_PROPS.HOTKEY);
             stdModeKeyMap.put(key, i);
             LogMaster.log(LogMaster.CORE_DEBUG, ">> mode hotkey " + key);
-            if (action != STD_MODE_ACTIONS.Defend)
+            if (action != ActionEnums.STD_MODE_ACTIONS.Defend)
                 i++;
 
         }
@@ -98,7 +97,7 @@ public class DC_KeyManager
 
     private void initStdHotkeys() {
         int i = 0;
-        for (STD_ACTIONS action : STD_ACTIONS.values()) {
+        for (STD_ACTIONS action : ActionEnums.STD_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
                     G_PROPS.HOTKEY);
             stdActionKeyMap.put(key, i);
@@ -106,7 +105,7 @@ public class DC_KeyManager
             i++;
         }
         i = 0;
-        for (ADDITIONAL_MOVE_ACTIONS action : ADDITIONAL_MOVE_ACTIONS.values()) {
+        for (ADDITIONAL_MOVE_ACTIONS action : ActionEnums.ADDITIONAL_MOVE_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
                     G_PROPS.HOTKEY);
             addMoveActionKeyMap.put(key, i);
@@ -114,14 +113,14 @@ public class DC_KeyManager
             i++;
         }
         customActionKeyMap = new LinkedHashMap<>();
-        customActionKeyMap.put("l", DC_ActionManager.STD_SPEC_ACTIONS.On_Alert.toString());
-        customActionKeyMap.put("v", DC_ActionManager.STD_SPEC_ACTIONS.Wait.toString());
-        customActionKeyMap.put("p", DC_ActionManager.STD_SPEC_ACTIONS.Push.toString());
-        customActionKeyMap.put("u", DC_ActionManager.STD_SPEC_ACTIONS.Pull.toString());
+        customActionKeyMap.put("l", ActionEnums.STD_SPEC_ACTIONS.On_Alert.toString());
+        customActionKeyMap.put("v", ActionEnums.STD_SPEC_ACTIONS.Wait.toString());
+        customActionKeyMap.put("p", ActionEnums.STD_SPEC_ACTIONS.Push.toString());
+        customActionKeyMap.put("u", ActionEnums.STD_SPEC_ACTIONS.Pull.toString());
         customActionKeyMap.put("g",
                 StringMaster.getWellFormattedString(
-                        DC_ActionManager.STD_SPEC_ACTIONS.Toggle_Weapon_Set.toString()));
-        customActionKeyMap.put("h", DC_ActionManager.STD_SPEC_ACTIONS.Search_Mode.toString());
+                        ActionEnums.STD_SPEC_ACTIONS.Toggle_Weapon_Set.toString()));
+        customActionKeyMap.put("h", ActionEnums.STD_SPEC_ACTIONS.Search_Mode.toString());
     }
 
     private boolean checkCustomHotkey(KeyEvent e) {

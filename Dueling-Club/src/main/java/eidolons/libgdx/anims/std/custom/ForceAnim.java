@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.anims.anim3d.Weapon3dAnim;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.particles.PhaseVfx;
@@ -30,7 +30,7 @@ import java.util.List;
 public class ForceAnim extends Weapon3dAnim {
 
     private VfxContainer<PhaseVfx> shaped;
-    private GenericEnums.DAMAGE_TYPE type;
+    private final GenericEnums.DAMAGE_TYPE type;
 
     public static final List vfxList_death = Arrays.asList(GenericEnums.VFX.dark_blood,
             GenericEnums.VFX.missile_death,
@@ -204,10 +204,7 @@ public class ForceAnim extends Weapon3dAnim {
     }
 
     private boolean isVfxOn() {
-        if (!getActive().isMine()) {
-            return true;
-        }
-        return false;
+        return !getActive().isMine();
     }
 
     private String getVfxPath() {

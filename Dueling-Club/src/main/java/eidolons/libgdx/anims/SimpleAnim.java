@@ -3,7 +3,6 @@ package eidolons.libgdx.anims;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.datasource.GraphicData;
@@ -160,7 +159,7 @@ public class SimpleAnim implements Animation {
     }
 
     @Override
-    public AnimConstructor.ANIM_PART getPart() {
+    public AnimEnums.ANIM_PART getPart() {
         return null;
     }
 

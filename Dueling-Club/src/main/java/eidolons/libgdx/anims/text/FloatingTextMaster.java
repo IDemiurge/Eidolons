@@ -20,9 +20,10 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.AnimEnums;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.anims.Animation;
 import eidolons.libgdx.anims.CompositeAnim;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.screens.ScreenMaster;
@@ -455,9 +456,9 @@ public class FloatingTextMaster {
     private ANIM_PART getPart(TEXT_CASES aCase) {
         switch (aCase) {
             case COSTS:
-                return ANIM_PART.MISSILE;
+                return AnimEnums.ANIM_PART.MISSILE;
         }
-        return ANIM_PART.IMPACT;
+        return AnimEnums.ANIM_PART.IMPACT;
     }
 
     public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity) {

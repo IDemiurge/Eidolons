@@ -25,6 +25,7 @@ public class GraveyardView extends TablePanel {
     private final Button graveyardButton;
     private int graveCount = 0;
 
+    //Gdx Review
     public GraveyardView() {
         graveyardButton = new Button(new Image(
          TextureCache.getOrCreate(

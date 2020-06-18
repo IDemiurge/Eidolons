@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -8,9 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
+import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.Hoverable;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
@@ -18,27 +21,32 @@ import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.file.ResourceMaster;
 import main.content.CONTENT_CONSTS;
+import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
+import main.system.PathUtils;
+import main.system.launch.CoreEngine;
 
 import java.util.List;
 
 import static main.system.GuiEventType.TARGET_SELECTION;
 
-public class BaseView extends SuperActor  implements Hoverable{
+public class BaseView extends SuperActor  implements Hoverable, Borderable {
     protected TextureRegion originalTexture;
     protected TextureRegion originalTextureAlt;
+    protected TextureRegion borderTexture;
     protected FadeImageContainer portrait;
-    protected CONTENT_CONSTS.FLIP flip;
     private Image altPortrait;
-    protected List<SpriteX> overlaySprites;
+    protected List<SpriteX> overlaySprites; //To-Cleanup - could be higher up or local
     protected List<SpriteX> underlaySprites;
-    protected boolean forceTransform;
     protected GroupX spritesContainers;
     protected GroupX spritesContainersUnder;
     protected FadeImageContainer highlight;
     private float expandWidth;
     private float expandHeight;
+    protected CONTENT_CONSTS.FLIP flip;
+    protected boolean forceTransform;
 
     public BaseView(UnitViewOptions o) {
         init(o);
@@ -71,7 +79,6 @@ public class BaseView extends SuperActor  implements Hoverable{
                             }
                         }
                     }
-
             );
             spritesContainersUnder.setZIndex(0);
         }
@@ -81,10 +88,6 @@ public class BaseView extends SuperActor  implements Hoverable{
             for (SpriteX spriteX : underlaySprites) {
                 if (isUseSpriteContainer(o.getObj())) {
                     spritesContainersUnder.addActor(spriteX);
-//                    float maxX;
-//                    float maxY;
-//                    spritesContainersUnder.setSize(maxX-minX, maxY);
-//                    spriteX.setOrigin(x, y);
                 } else {
                     addActor(spriteX);
                     spriteX.setZIndex(0);
@@ -126,12 +129,6 @@ public class BaseView extends SuperActor  implements Hoverable{
                 forceTransform = true;
             }
         }
-
-        //TODO disable hover?
-        /**
-         * fade?
-         * scale?
-         */
     }
 
     public boolean isWithinCameraCheck() {
@@ -139,13 +136,10 @@ public class BaseView extends SuperActor  implements Hoverable{
     }
 
     protected boolean isUseSpriteContainer(BattleFieldObject obj) {
-        switch (obj.getName()) {
+        switch (obj.getName()) { //To-Cleanup
             case "Ash Vault":
             case "Eldritch Vault":
                 return true;
-        }
-        if (obj instanceof Unit) {
-            return false;
         }
         return false;
     }
@@ -153,28 +147,6 @@ public class BaseView extends SuperActor  implements Hoverable{
     public void init(String path) {
         portrait = initPortrait(path);
         addActor(portrait);
-
-        // String type = "objects";
-        // String name = PathUtils.getLastPathSegment(path);
-        // if (path.contains("heroes")) {
-        //     type = "heroes";
-        // }
-        // if (path.contains("units")) {
-        //     type = "units";
-        // }
-        // if (CoreEngine.isIDE()) {
-        // TODO EA Check - group into atlases
-        //     FileHandle handle=new FileHandle(PathFinder.getImagePath() + "unitview/" +
-        //             type +
-        //             "/" +
-        //             name);
-        //     if (!handle.exists())
-        //     GdxImageMaster.writeImage(handle, TextureCache.getOrCreateR(path));
-        // }
-//        ResourceMaster.writeImage(path, "unitviews/" +
-//                type +
-//                "/" +
-//                name);
 
         addListener(new BattleClickListener() {
             @Override
@@ -190,6 +162,31 @@ public class BaseView extends SuperActor  implements Hoverable{
                 }
             }
         });
+
+        //write portrait IMG on init
+        // TODO EA Check - group into atlases
+
+        if (!ResourceMaster.isWriteViewImgOnInit()) {
+            return;
+        }
+        String type = "objects";
+        String name = PathUtils.getLastPathSegment(path);
+        if (path.contains("heroes")) {
+            type = "heroes";
+        }
+        if (path.contains("units")) {
+            type = "units";
+        }
+        if (CoreEngine.isIDE()) {
+            FileHandle handle=new FileHandle(PathFinder.getImagePath() + "unitview/" +
+                    type +
+                    "/" +
+                    name);
+            if (!handle.exists())
+            GdxImageMaster.writeImage(handle, TextureCache.getOrCreateR(path));
+        }
+       ResourceMaster.writeImage(path, "unitviews/" +               type +               "/" +               name);
+
     }
 
     @Override
@@ -286,6 +283,34 @@ public class BaseView extends SuperActor  implements Hoverable{
             if (highlight.isVisible()) {
                 highlight.fadeOut();
             }
+        }
+    }
+
+    @Override
+    public TextureRegion getBorder() {
+        return borderTexture;
+    }
+
+    @Override
+    public void setBorder(TextureRegion texture) {
+
+        if (texture == null) {
+            ActionMaster.addFadeOutAction(border, 0.65f, true);
+            borderTexture = null;
+            setTeamColorBorder(false);
+        } else {
+            if (borderTexture==texture) {
+                return ;
+            }
+            if (border != null) {
+                removeActor(border);
+            }
+            addActor(border = new Image(texture));
+            border.getColor().a = 0;
+            ActionMaster.addFadeInAction(border, 0.65f);
+
+            borderTexture = texture;
+            updateBorderSize();
         }
     }
 }

@@ -1,17 +1,15 @@
 package eidolons.libgdx.anims.std;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import eidolons.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
-import eidolons.libgdx.anims.Anim;
-import eidolons.libgdx.anims.AnimData;
+import eidolons.libgdx.anims.*;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
-import eidolons.libgdx.anims.Animation;
-import eidolons.libgdx.anims.CompositeAnim;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.GridMaster;
 import main.ability.effects.Effect;
@@ -22,15 +20,12 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.images.ImageManager;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by JustMe on 1/11/2017.
  */
 public class EffectAnimCreator {
 
-    private static Map<Effect, Anim> map = new HashMap<>();
+    private static final ObjectMap<Effect, Anim> map = new ObjectMap<>(125);
     private static boolean cachingOn;
 
     public static float getEffectAnimDelay(Effect e, Animation anim, ANIM_PART part) {
@@ -71,7 +66,7 @@ public class EffectAnimCreator {
         if (target != null) {
             anim.setForcedDestination(target.getCoordinates());
         }
-        anim.setPart(ANIM_PART.MISSILE); //TODO gotta be some way to generalize this
+        anim.setPart(AnimEnums.ANIM_PART.MISSILE); //TODO gotta be some way to generalize this
         anim.setMaster(AnimMaster.getInstance());
         return anim;
     }
@@ -191,7 +186,7 @@ public class EffectAnimCreator {
 
     public static ANIM_PART getPartToAttachTo(Effect effect) {
         //        if (e instanceof  DealDamageEffect)
-        return ANIM_PART.IMPACT;
+        return AnimEnums.ANIM_PART.IMPACT;
 
         //        return ANIM_PART.AFTEREFFECT;
 

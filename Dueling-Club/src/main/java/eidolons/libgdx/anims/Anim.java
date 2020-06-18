@@ -12,7 +12,7 @@ import eidolons.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import eidolons.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import eidolons.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -406,7 +406,7 @@ public class Anim extends Group implements Animation {
     }
 
     private boolean isContinuous(ANIM_PART part) {
-        return part==ANIM_PART.MISSILE;
+        return part== AnimEnums.ANIM_PART.MISSILE;
     }
 
     protected void initDuration() {
@@ -473,7 +473,7 @@ public class Anim extends Group implements Animation {
     //        setDuration(getOrigin().dst(getDestination())/new Vector2(getSpeedX(), getSpeedY()).len());
 
     protected boolean isSpeedSupported() {
-        return part == ANIM_PART.MISSILE;
+        return part == AnimEnums.ANIM_PART.MISSILE;
     }
 
     public String getTexturePath() {

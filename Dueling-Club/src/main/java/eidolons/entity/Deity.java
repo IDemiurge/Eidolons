@@ -9,6 +9,7 @@ import main.data.DataManager;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.Entity;
 import main.entity.Ref;
+import main.entity.handlers.EntityMaster;
 import main.entity.obj.ActiveObj;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Deity extends Entity {
+    //DC Review
     private List<String> unitPool;
     private ArrayList<Deity> alliedDeities;
     private ArrayList<Deity> friendDeities;
@@ -135,6 +137,11 @@ public class Deity extends Entity {
         // // if hero is party commander; diversified emblems for monsters
         // owner.setEmblem(ImageManager
         // .getIcon(getProperty(G_PROPS.EMBLEM, true)).getEmitterPath());
+    }
+
+    @Override
+    protected EntityMaster initMaster() {
+        return null;
     }
 
     @Override

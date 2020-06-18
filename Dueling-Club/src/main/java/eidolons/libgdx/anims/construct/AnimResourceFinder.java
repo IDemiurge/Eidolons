@@ -3,7 +3,8 @@ package eidolons.libgdx.anims.construct;
 import eidolons.content.PROPS;
 import eidolons.entity.active.Spell;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.AnimEnums;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.system.PathUtils;
@@ -63,8 +64,8 @@ public class AnimResourceFinder {
     public static boolean isFindClosestResource(ANIM_PART part, ANIM_VALUES val,
                                                 int partsCount) {
 
-        if (part != ANIM_PART.PRECAST)
-            if (part != ANIM_PART.AFTEREFFECT)
+        if (part != AnimEnums.ANIM_PART.PRECAST)
+            if (part != AnimEnums.ANIM_PART.AFTEREFFECT)
                 if (partsCount < 2)
                     return true;
 

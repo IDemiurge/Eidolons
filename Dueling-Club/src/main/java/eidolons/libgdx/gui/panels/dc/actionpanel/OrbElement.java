@@ -29,19 +29,16 @@ import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 public class OrbElement extends SuperActor {
     private static final String EMPTY_PATH = StrPathBuilder.build(
             PathFinder.getComponentsPath(), "dc", "orbs", "orb 64.png");
-    private static final String OVERLAY_PATH = StrPathBuilder.build(
-            PathFinder.getComponentsPath(), "dc", "orbs", "overlay.png");
     private final PARAMS parameter;
-    private Label label;
-    private Image background;
+    private final Label label;
     private Image gem;
     private ImageContainer gemLight;
     private Image overlay;
 
-    private Image icon;
+    private final Image icon;
     private Image lighting;
-    private TextureRegion orbRegion;
-    private TextureRegion iconRegion;
+    private final TextureRegion orbRegion;
+    private final TextureRegion iconRegion;
     private int orbFullness = 62;
     private int orbFullnessPrevious = 62;
     private float fluctuation = 0;
@@ -54,7 +51,7 @@ public class OrbElement extends SuperActor {
         label = new Label(value, StyleHolder.
                 getSizedLabelStyle(FONT.AVQ, 18));
         calculateOrbFullness(value);
-        addActor(background = new Image(getOrCreateR(EMPTY_PATH)));
+        addActor( new Image(getOrCreateR(EMPTY_PATH)));
         //        addActor(icon);
         icon.setPosition(orbRegion.getRegionWidth() / 2 - icon.getWidth() / 2,
                 orbRegion.getRegionHeight() / 2 - icon.getHeight() / 2);

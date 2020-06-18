@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
@@ -51,9 +52,7 @@ import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.*;
 
@@ -66,9 +65,9 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
     protected GridPanel gridPanel;
     protected boolean sightInfoDisplayed;
     protected boolean debug;
-    protected Map<OVERLAY, Map<Actor, ClickListener>> listenerCaches = new HashMap<>();
-    protected Map<Entity, Map<Rectangle, Tooltip>> tooltipMap = new HashMap<>();
-    protected Map<Entity, Map<OVERLAY, Rectangle>> overlayMap = new HashMap<>();
+    protected ObjectMap<OVERLAY, ObjectMap<Actor, ClickListener>> listenerCaches = new ObjectMap<>();
+    protected ObjectMap<Entity, ObjectMap<Rectangle, Tooltip>> tooltipMap = new ObjectMap<>();
+    protected ObjectMap<Entity, ObjectMap<OVERLAY, Rectangle>> overlayMap = new ObjectMap<>();
     protected BattleFieldObject observer;
 
     protected int cols;
@@ -81,7 +80,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
         setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.OVERLAYS);
         for (OVERLAY sub : OVERLAY.values()) {
             if (isTooltipRequired(sub)) {
-                listenerCaches.put(sub, new HashMap<>());
+                listenerCaches.put(sub, new ObjectMap<>());
             }
         }
         gridPanel.addListener(getGlobalOverlayListener(gridPanel));
@@ -144,10 +143,10 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
             }
 
             protected ImmutablePair<Entity, OVERLAY> getEntityAndOverlay(float x, float y) {
-                for (Entity e : tooltipMap.keySet()) {
-                    Map<OVERLAY, Rectangle> map = overlayMap.get(e);
+                for (Entity e : tooltipMap.keys()) {
+                    ObjectMap<OVERLAY, Rectangle> map = overlayMap.get(e);
                     if (map != null)
-                        for (OVERLAY sub : map.keySet()) {
+                        for (OVERLAY sub : map.keys()) {
                             if (map.get(sub).contains(x, y)) {
                                 return new ImmutablePair<>(e, sub);
                             }
@@ -157,9 +156,9 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
             }
 
             protected Entity getEntity(float x, float y) {
-                for (Entity e : tooltipMap.keySet()) {
-                    Map<Rectangle, Tooltip> map = tooltipMap.get(e);
-                    for (Rectangle sub : map.keySet()) {
+                for (Entity e : tooltipMap.keys()) {
+                    ObjectMap<Rectangle, Tooltip> map = tooltipMap.get(e);
+                    for (Rectangle sub : map.keys()) {
                         if (sub.contains(x, y)) {
                             return e;
                         }
@@ -171,8 +170,8 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
             protected Tooltip getTooltip(float x, float y) {
 
                 Tooltip tooltip = null;
-                for (Map<Rectangle, Tooltip> map : tooltipMap.values()) {
-                    for (Rectangle sub : map.keySet()) {
+                for (ObjectMap<Rectangle, Tooltip> map : tooltipMap.values()) {
+                    for (Rectangle sub : map.keys()) {
                         if (sub.contains(x, y)) {
                             tooltip = map.get(sub);
                             break;
@@ -397,9 +396,9 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
             if (obj == null) {
                 obj = Eidolons.getGame().getObjMaster().getCellByCoordinate(Coordinates.get(x, y));
             }
-            Map<Rectangle, Tooltip> map = tooltipMap.get(obj);
+            ObjectMap<Rectangle, Tooltip> map = tooltipMap.get(obj);
             if (map == null) {
-                map = new HashMap<>();
+                map = new ObjectMap<>();
                 tooltipMap.put(obj, map);
             }
             rect = getOverlayMap(obj).get(overlay);
@@ -420,7 +419,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
             if (obj == null) {
                 obj = Eidolons.getGame().getObjMaster().getCellByCoordinate(Coordinates.get(x, y));
             }
-            Map<OVERLAY, Rectangle> map2 = getOverlayMap(obj);
+            ObjectMap<OVERLAY, Rectangle> map2 = getOverlayMap(obj);
             rect = map2.get(overlay);
             if (rect == null) {
                 rect = new Rectangle(v.x, v.y, getOverlayWidth(overlay, parent)
@@ -432,10 +431,10 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
 
     }
 
-    protected Map<OVERLAY, Rectangle> getOverlayMap(Obj obj) {
-        Map<OVERLAY, Rectangle> map = overlayMap.get(obj);
+    protected ObjectMap<OVERLAY, Rectangle> getOverlayMap(Obj obj) {
+        ObjectMap<OVERLAY, Rectangle> map = overlayMap.get(obj);
         if (map == null) {
-            map = new HashMap<>();
+            map = new ObjectMap<>();
             overlayMap.put(obj, map);
         }
         return map;

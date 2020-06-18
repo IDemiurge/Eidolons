@@ -8,7 +8,6 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
@@ -50,7 +49,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
@@ -59,12 +57,12 @@ import static main.system.auxiliary.log.LogMaster.log;
  */
 public class DC_StateManager extends StateManager {
 
-    private StatesKeeper keeper;
-    private OBJ_TYPE[] toBaseIgnoredTypes = {DC_TYPE.SPELLS, DC_TYPE.ACTIONS};
-    private boolean savingOn = ConfigMaster.getInstance()
+    private final StatesKeeper keeper;
+    private final OBJ_TYPE[] toBaseIgnoredTypes = {DC_TYPE.SPELLS, DC_TYPE.ACTIONS};
+    private final boolean savingOn = ConfigMaster.getInstance()
             .getBoolean("SAVING_ON_DEFAULT");
 
-    private Lock resetLock = new ReentrantLock();
+    private final Lock resetLock = new ReentrantLock();
     private volatile boolean resetting = false;
     private Set<BattleFieldObject> objectsToReset;
     private Set<Unit> unitsToReset;
@@ -238,13 +236,14 @@ public class DC_StateManager extends StateManager {
 
 
     private void triggerOnResetGuiEvents() {
-        GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE_MANY, objectsToReset.stream().filter(obj -> {
-            if (!VisionHelper.checkVisible(obj))
-                return true;
-            if ((obj).isWall())
-                return true;
-            return (obj).isOverlaying();
-        }).collect(Collectors.toList()));
+        //TODO DC cleanup - why walls and overlaying? this is some kind of a hack..
+        // GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE_MANY, objectsToReset.stream().filter(obj -> {
+        //     if (!VisionHelper.checkVisible(obj))
+        //         return true;
+        //     if ((obj).isWall())
+        //         return true;
+        //     return (obj).isOverlaying();
+        // }).collect(Collectors.toList()));
     }
 
     /**

@@ -1,8 +1,10 @@
 package eidolons.entity.obj.unit;
 
 import eidolons.content.*;
-import eidolons.entity.active.*;
-import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.DC_QuickItemAction;
+import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.bf.unit.*;
 import eidolons.entity.item.*;
 import eidolons.entity.obj.BattleFieldObject;
@@ -47,9 +49,9 @@ import main.content.CONTENT_CONSTS.FLIP;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
-import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.enums.GenericEnums;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.GENDER;
@@ -66,7 +68,6 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
 import main.content.values.properties.PROPERTY;
-import main.data.DataManager;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -121,9 +122,9 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     protected List<Spell> spellbook;
     protected boolean itemsInitialized;
     protected boolean aiControlled;
+    protected Boolean mainHero;
     protected MACRO_MODES macroMode;
     protected GENDER gender;
-    protected Boolean mainHero;
     protected FLIP flip;
     protected ObjType backgroundType;
     protected Map<DC_ActiveObj, String> actionModeMap;
@@ -131,9 +132,9 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     protected DC_WeaponObj rangedWeapon;
     protected boolean leader;
     protected boolean usingStealth;
-    private boolean shadow;
     private DC_ActiveObj lastAction;
-    private boolean actorLinked;
+    private boolean shadow;
+    private boolean actorLinked; //for dialogue
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
@@ -147,7 +148,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
                     addProperty(true, PROPS.INVENTORY, "Jade Key");
                 }
             }
-            SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
+            SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
             setName(getName().replace(" IGG", ""));
 
         } else {
@@ -549,37 +550,6 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
     }
 
-    /**
-     * mastery group (spell/skill),
-     *
-     * @param potential    has or can have
-     * @param TYPE
-     * @param dividingProp spellgroup/mastery group/...
-     * @param prop         spellbook/verbatim/skills/etc
-     * @return
-     */
-
-    public boolean checkItemGroup(PROPERTY prop, PROPERTY dividingProp, String name,
-                                  boolean potential, OBJ_TYPE TYPE) {
-        // at least one item with NAME as PROP
-
-        for (String item : ContainerUtils.open(getProperty(prop))) {
-
-            ObjType type = DataManager.getType(item, TYPE);
-            if (type == null) {
-                continue;
-            }
-            if (!potential) {
-                return type.checkSingleProp(dividingProp, name);
-            }
-
-            return game.getRequirementsManager().check(this, type) == null;
-
-        }
-
-        return false;
-
-    }
 
     public List<Spell> getSpellbook() {
         return spellbook;
@@ -778,11 +748,11 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     public boolean addItemToInventory(DC_HeroItemObj item, boolean quiet) {
         if (isInventoryFull())
             return false;
-        if (getInventory() == null) { //TODO  igg demo hack
+        if (getInventory() == null) { //TODO EA check - INV system is loose?
             setProperty(PROPS.INVENTORY, getType().getProperty(getProperty(PROPS.INVENTORY)));
             itemsInitialized = false;
-            inventory = (DequeImpl<DC_HeroItemObj>) getInitializer().initContainedItems(PROPS.INVENTORY, null, false);
-            //        inventory = new DequeImpl<>();
+            inventory = (DequeImpl<DC_HeroItemObj>) getInitializer().
+                    initContainedItems(PROPS.INVENTORY, null, false);
         }
         try {
             getInventory().add(item);
@@ -1397,8 +1367,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
     public DC_ActiveObj getAttackAction(boolean offhand) {
 
-        return getAction(offhand ? DC_ActionManager.OFFHAND_ATTACK :
-                DC_ActionManager.ATTACK);
+        return getAction(offhand ? ActionEnums.OFFHAND_ATTACK :
+                ActionEnums.ATTACK);
     }
 
     public Unit getEngagementTarget() {
@@ -1439,7 +1409,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
     public List<DC_UnitAction> getAttacks(boolean offhand) {
-        return getAction(offhand ? DC_ActionManager.OFFHAND_ATTACK : DC_ActionManager.ATTACK).getSubActions();
+        return getAction(offhand ? ActionEnums.OFFHAND_ATTACK : ActionEnums.ATTACK).getSubActions();
     }
 
     public void resetQuickSlotsNumber() {
@@ -1700,8 +1670,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     public DC_ActiveObj getTurnAction(boolean clockwise) {
         return getAction(
                 clockwise
-                        ? STD_ACTIONS.Turn_Clockwise.toString()
-                        : STD_ACTIONS.Turn_Anticlockwise.toString());
+                        ? ActionEnums.STD_ACTIONS.Turn_Clockwise.toString()
+                        : ActionEnums.STD_ACTIONS.Turn_Anticlockwise.toString());
     }
 
     public DequeImpl<Perk> getPerks() {

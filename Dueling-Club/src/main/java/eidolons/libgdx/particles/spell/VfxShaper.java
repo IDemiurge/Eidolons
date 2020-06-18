@@ -3,8 +3,8 @@ package eidolons.libgdx.particles.spell;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.actions.MoveByActionLimited;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.particles.PhaseVfx;
 import eidolons.libgdx.particles.VfxContainer;
 
@@ -105,7 +105,7 @@ public class VfxShaper {
     }
 
     private static PhaseVfx createPhaseVfx(String path, VfxContainer container, float posX, float posY) {
-        PhaseVfx vfx = PhaseVfxPool.getEmitterActor(path, ANIM_PART.MISSILE, ANIM_PART.IMPACT);
+        PhaseVfx vfx = PhaseVfxPool.getEmitterActor(path, AnimEnums.ANIM_PART.MISSILE, AnimEnums.ANIM_PART.IMPACT);
         container.add(vfx);
         vfx.setPosition(posX, posY);
         return vfx;

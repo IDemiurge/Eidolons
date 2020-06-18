@@ -137,7 +137,7 @@ public class ActionInitializer extends DC_ActionManager {
 
     private void addCustomActions(Unit unit, DequeImpl<ActiveObj> actives) {
 
-        String activesProp = unit.getProperty(ACTIVES);
+        String activesProp = unit.getProperty(ActionEnums.ACTIVES);
         for (String typeName : ContainerUtils.open(activesProp)) {
             ObjType type = DataManager.getType(typeName, DC_TYPE.ACTIONS);
             DC_UnitAction action;
@@ -183,36 +183,36 @@ public class ActionInitializer extends DC_ActionManager {
             }
         }
         activesProp = activesPropBuilder.toString();
-        unit.setProperty(ACTIVES, activesProp);
+        unit.setProperty(ActionEnums.ACTIVES, activesProp);
     }
 
     private void addSpecialActions(Unit unit, DequeImpl<ActiveObj> actives) {
         // should be another passive to deny unit even those commodities...
 
-        actives.add(getOrCreateAction(DUMMY_ACTION, unit));
+        actives.add(getOrCreateAction(ActionEnums.DUMMY_ACTION, unit));
         if (unit.isBfObj()) {
             return;
         }
 
-        actives.add(getOrCreateAction(MOVE_LEFT, unit));
-        actives.add(getOrCreateAction(MOVE_RIGHT, unit));
-        actives.add(getOrCreateAction(MOVE_BACK, unit));
+        actives.add(getOrCreateAction(ActionEnums.MOVE_LEFT, unit));
+        actives.add(getOrCreateAction(ActionEnums.MOVE_RIGHT, unit));
+        actives.add(getOrCreateAction(ActionEnums.MOVE_BACK, unit));
 
         if (!unit.isHuge() && !unit.checkPassive(UnitEnums.STANDARD_PASSIVES.CLUMSY)) {
-            actives.add(getOrCreateAction(CLUMSY_LEAP, unit));
+            actives.add(getOrCreateAction(ActionEnums.CLUMSY_LEAP, unit));
 
         }
-        actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Wait.name(), unit));
+        actives.add(getOrCreateAction(ActionEnums.STD_SPEC_ACTIONS.Wait.name(), unit));
 
 
         //        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.PUSH))
-        actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Push.name(), unit));
-        actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Pull.name(), unit));
+        actives.add(getOrCreateAction(ActionEnums.STD_SPEC_ACTIONS.Push.name(), unit));
+        actives.add(getOrCreateAction(ActionEnums.STD_SPEC_ACTIONS.Pull.name(), unit));
 
         actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, unit));
 
         if (UnitAnalyzer.checkOffhand(unit)) {
-            actives.add(getOrCreateAction(OFFHAND_ATTACK, unit));
+            actives.add(getOrCreateAction(ActionEnums.OFFHAND_ATTACK, unit));
             addOffhandActions(unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK), unit);
             addOffhandActions(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK), unit);
         }
@@ -230,30 +230,30 @@ public class ActionInitializer extends DC_ActionManager {
 
         if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.USE_INVENTORY)) {
             if (unit.canUseItems()) {
-                actives.add(getOrCreateAction(USE_INVENTORY, unit));
+                actives.add(getOrCreateAction(ActionEnums.USE_INVENTORY, unit));
             }
         }
 
         if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.TOGGLE_WEAPON_SET)) {
             if (unit.getReserveOffhandWeapon() != null ||
                     unit.getReserveMainWeapon() != null) {
-                actives.add(getOrCreateAction(TOGGLE_WEAPON_SET, unit));
+                actives.add(getOrCreateAction(ActionEnums.TOGGLE_WEAPON_SET, unit));
             }
         }
         if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.WATCH)) {
-            actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Watch.name(), unit));
+            actives.add(getOrCreateAction(ActionEnums.STD_SPEC_ACTIONS.Watch.name(), unit));
         }
 
 
         if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.FLEE)) {
             if (FleeRule.isFleeAllowed()) {
-                actives.add(getOrCreateAction(FLEE, unit));
+                actives.add(getOrCreateAction(ActionEnums.FLEE, unit));
             }
         }
         if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.PICK_UP)) {
             try {
                 if (unit.getGame().getDroppedItemManager().checkHasItemsBeneath(unit)) {
-                    actives.add(getOrCreateAction(PICK_UP, unit));
+                    actives.add(getOrCreateAction(ActionEnums.PICK_UP, unit));
                 }
             } catch (Exception e) {
                 // main.system.ExceptionMaster.printStackTrace(e);
@@ -261,12 +261,12 @@ public class ActionInitializer extends DC_ActionManager {
         }
         if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.DIVINATION)) {
             if (unit.canDivine()) {
-                actives.add(getOrCreateAction(DIVINATION, unit));
+                actives.add(getOrCreateAction(ActionEnums.DIVINATION, unit));
             }
         }
         if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.TOSS_ITEM)) {
             if (ListMaster.isNotEmpty(unit.getQuickItems())) {
-                actives.add(getOrCreateAction(TOSS_ITEM, unit));
+                actives.add(getOrCreateAction(ActionEnums.TOSS_ITEM, unit));
             }
         }
 
@@ -277,7 +277,7 @@ public class ActionInitializer extends DC_ActionManager {
 
         if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.GUARD_MODE))
             actives.add(getOrCreateAction(StringMaster.getWellFormattedString(
-                    STD_SPEC_ACTIONS.Guard_Mode.name()), unit));
+                    ActionEnums.STD_SPEC_ACTIONS.Guard_Mode.name()), unit));
 
         // for (Entity e : LockMaster.getObjectsToUnlock(unit)) {
         // actives.add(getUnlockAction(unit, e));

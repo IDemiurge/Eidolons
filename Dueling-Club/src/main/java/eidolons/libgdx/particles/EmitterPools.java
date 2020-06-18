@@ -2,25 +2,23 @@ package eidolons.libgdx.particles;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Pool;
 import eidolons.libgdx.anims.Assets;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.launch.CoreEngine;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by JustMe on 1/16/2017.
  */
 public class EmitterPools {
 
-    private static Map<String, Pool<EmitterActor>> actorPoolMap = new HashMap<>();
-    private static Map<String, Pool<ParticleEffectX>> effectPoolMap = new HashMap<>();
-    private static boolean effectPoolingOn = true;
-    private static boolean actorPoolingOn = true; //TODO emitters are not reset properly!
-    private static boolean logging = true; //TODO emitters are not reset properly!
+    private static final ObjectMap<String, Pool<EmitterActor>> actorPoolMap = new ObjectMap<>();
+    private static final ObjectMap<String, Pool<ParticleEffectX>> effectPoolMap = new ObjectMap<>();
+    private static final boolean effectPoolingOn = true;
+    private static final boolean actorPoolingOn = true; //TODO emitters are not reset properly!
+    private static final boolean logging = true; //TODO emitters are not reset properly!
     private static int emittersCounter=0;
 
     public static EmitterActor getEmitterActor(GenericEnums.VFX sfx) {

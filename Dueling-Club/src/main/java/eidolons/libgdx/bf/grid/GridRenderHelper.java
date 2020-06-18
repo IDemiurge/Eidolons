@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.DummyUnit;
@@ -128,7 +129,7 @@ public class GridRenderHelper {
         }
     }
 
-    public Map<BattleFieldObject, BaseView> getViewMap() {
+    public ObjectMap<Obj, BaseView> getViewMap() {
         return panel.getViewMap();
     }
 

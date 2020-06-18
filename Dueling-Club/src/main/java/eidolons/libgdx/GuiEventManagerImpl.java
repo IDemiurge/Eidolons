@@ -1,13 +1,15 @@
 package eidolons.libgdx;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.system.*;
-import main.system.auxiliary.data.MapMaster;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -22,14 +24,14 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
     };
     private static GuiEventManagerImpl instance;
     private static boolean isInitialized;
-    private static Lock initLock = new ReentrantLock();
-    private Map<EventType, EventCallback> eventMap = new HashMap<>();
-    private List<Runnable> eventQueue = new ArrayList<>();
-    private Lock lock = new ReentrantLock();
-    private Condition condition = lock.newCondition();
+    private static final Lock initLock = new ReentrantLock();
+    private final ObjectMap<EventType, EventCallback> eventMap = new ObjectMap<>(100);
+    private List<Runnable> eventQueue = new LinkedList<>();
+    private final Lock lock = new ReentrantLock();
+    private final Condition condition = lock.newCondition();
 
-    private Map<EventType, EventCallbackParam> onDemand = new ConcurrentHashMap<>();
-    private Map<EventType, List<EventCallbackParam>> onDemandMap = new ConcurrentHashMap<>();
+    private final ObjectMap<EventType, EventCallbackParam> onDemand = new ObjectMap<>();
+    private final ObjectMap<EventType, List<EventCallbackParam>> onDemandMap = new ObjectMap<>();
 
     public void cleanUp() {
         getInstance()._cleanUp();
@@ -110,7 +112,7 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
         //        } catch (InterruptedException e) {
         //            main.system.ExceptionMaster.printStackTrace(e);
         //        }
-        Map<EventType, EventCallback> cache = new HashMap<>();
+        ObjectMap<EventType, EventCallback> cache = new ObjectMap<>();
         for (EventType eventType : savedBindings) {
             EventCallback saved = eventMap.get(eventType);
             cache.put(eventType, saved);
@@ -119,7 +121,7 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
         eventQueue.clear();
         onDemand.clear();
 
-        for (EventType eventType : cache.keySet()) {
+        for (EventType eventType : cache.keys()) {
             eventMap.put(eventType, cache.get(eventType));
         }
     }
@@ -181,7 +183,13 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
             //            if (obj instanceof OnDemandCallback) {
             //            onDemand.put(type, obj);
             if (isOnDemandCallback(type))
-                MapMaster.addToListMap(onDemandMap, type, obj);
+            {
+                List<EventCallbackParam> eventCallbackParams = onDemandMap.get(type);
+                if (eventCallbackParams == null) {
+                    onDemandMap.put(type, eventCallbackParams = new LinkedList<>());
+                }
+                eventCallbackParams.add( obj);
+            }
             //            }
         }
     }

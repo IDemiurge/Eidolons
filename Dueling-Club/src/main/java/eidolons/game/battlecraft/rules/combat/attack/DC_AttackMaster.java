@@ -41,9 +41,9 @@ import main.system.sound.SoundMaster.SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 public class DC_AttackMaster {
-    private ParryRule parryRule;
-    private CounterAttackRule counterRule;
-    private DC_Game game;
+    private final ParryRule parryRule;
+    private final CounterAttackRule counterRule;
+    private final DC_Game game;
 
     // private static boolean precalc;
 
@@ -225,14 +225,8 @@ public class DC_AttackMaster {
                         + " makes a Sneak Attack against " + attacked.getName());
             }
         }
-        if (attack.isSneak()) {
-            if (!attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.VIGILANCE))
-                canCounter = false;
-        }
         if (canCounter) {
-            if (!attacked.canCounter(action, attack.isSneak())) {
-                canCounter = false;
-            }
+                canCounter = attacked.canCounter(action, attack.isSneak());
         }
 
         LogMaster.log(LogMaster.ATTACKING_DEBUG, attacker.getNameIfKnown() + " attacks "

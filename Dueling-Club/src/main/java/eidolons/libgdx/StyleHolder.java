@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
@@ -29,9 +30,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class StyleHolder {
     public static final FONT DEFAULT_FONT = FONT.MAIN;
@@ -55,15 +54,15 @@ public class StyleHolder {
     private static final Color DEFAULT_COLOR = new Color(ColorManager.GOLDEN_WHITE.getRGB());
     private static final float SMART_FONT_SIZE_COEF = 0.15f;
     public static Boolean HIERO_ON = null;
-    static Map<STD_BUTTON, Map<LabelStyle, TextButtonStyle>> textButtonStyleMap = new HashMap<>();
-    static Map<FONT, List<Integer>> hieroMap = new HashMap<>();
-    static Map<FONT, Map<Integer, LabelStyle>> hieroStyleMap = new HashMap<>();
+    static ObjectMap<STD_BUTTON, ObjectMap<LabelStyle, TextButtonStyle>> textButtonStyleMap = new ObjectMap<>();
+    static ObjectMap<FONT, List<Integer>> hieroMap = new ObjectMap<>();
+    static ObjectMap<FONT, ObjectMap<Integer, LabelStyle>> hieroStyleMap = new ObjectMap<>();
     private static LabelStyle defaultLabelStyle;
     private static LabelStyle avqLabelStyle;
     private static TextButtonStyle defaultTextButtonStyle;
-    private static final Map<FONT, Map<Color, LabelStyle>> colorLabelStyleMap = new HashMap<>();
-    private static final Map<FONT, Map<Integer, LabelStyle>> sizeLabelStyleMap = new HashMap<>();
-    private static final Map<FONT, Map<Pair<Integer, Color>, LabelStyle>> sizeColorLabelStyleMap = new HashMap<>();
+    private static final ObjectMap<FONT, ObjectMap<Color, LabelStyle>> colorLabelStyleMap = new ObjectMap<>();
+    private static final ObjectMap<FONT, ObjectMap<Integer, LabelStyle>> sizeLabelStyleMap = new ObjectMap<>();
+    private static final ObjectMap<FONT, ObjectMap<Pair<Integer, Color>, LabelStyle>> sizeColorLabelStyleMap = new ObjectMap<>();
     private static TextButtonStyle defaultTabStyle;
     private static ScrollPaneStyle scrollStyle;
     private static TextButtonStyle dialogueReplyStyle;
@@ -77,7 +76,7 @@ public class StyleHolder {
         for (FONT font : FONT.values()) {
             List<Integer> list;
             hieroMap.put(font, list = new ArrayList<>());
-            hieroStyleMap.put(font, new HashMap<>());
+            hieroStyleMap.put(font, new ObjectMap<>());
             String path = getHieroPath(font);
             for (File file : FileManager.getFilesFromDirectory(path, false)) {
                 String size = StringMaster.cropFormat(file.getName().replace(StringMaster.getStringBeforeNumerals(file.getName()), "")).trim();
@@ -134,7 +133,7 @@ public class StyleHolder {
                     int mod = Math.round(size * (GdxMaster.getFontSizeMod() - 1) * adjustSizeCoef);
                     size += mod;
                 }
-        Map<Pair<Integer, Color>, LabelStyle> map = getSizedColoredLabelStyleMap(fontStyle, size, color);
+        ObjectMap<Pair<Integer, Color>, LabelStyle> map = getSizedColoredLabelStyleMap(fontStyle, size, color);
 
         ImmutablePair<Integer, Color> pair = new ImmutablePair<>(size, color);
 
@@ -148,10 +147,10 @@ public class StyleHolder {
         return map.get(pair);
     }
 
-    private static Map<Pair<Integer, Color>, LabelStyle> getSizedColoredLabelStyleMap(FONT fontStyle, Integer size, Color color) {
+    private static ObjectMap<Pair<Integer, Color>, LabelStyle> getSizedColoredLabelStyleMap(FONT fontStyle, Integer size, Color color) {
 
         if (!sizeColorLabelStyleMap.containsKey(fontStyle)) {
-            Map<Pair<Integer, Color>, LabelStyle> map = new HashMap<>();
+            ObjectMap<Pair<Integer, Color>, LabelStyle> map = new ObjectMap<>();
             sizeColorLabelStyleMap.put(fontStyle, map);
             return map;
         }
@@ -167,7 +166,7 @@ public class StyleHolder {
     }
 
     public static LabelStyle getLabelStyle(FONT font, Color color) {
-        Map<Color, LabelStyle> map = getLabelStyleMap(font, color);
+        ObjectMap<Color, LabelStyle> map = getLabelStyleMap(font, color);
         if (!map.containsKey(color)) {
             LabelStyle style = new LabelStyle
              (getFont(font, DEFAULT_COLOR, getDefaultSize()), color);
@@ -177,9 +176,9 @@ public class StyleHolder {
         return map.get(color);
     }
 
-    private static Map<Color, LabelStyle> getLabelStyleMap(FONT font, Color color) {
+    private static ObjectMap<Color, LabelStyle> getLabelStyleMap(FONT font, Color color) {
         if (!colorLabelStyleMap.containsKey(font)) {
-            Map<Color, LabelStyle> map = new HashMap<>();
+            ObjectMap<Color, LabelStyle> map = new ObjectMap<>();
             colorLabelStyleMap.put(font, map);
             return map;
         }
@@ -316,7 +315,7 @@ public class StyleHolder {
 
     public static TextButtonStyle getTextButtonStyle(
      FONT FONT, Color color, int size) {
-        return getTextButtonStyle(null, FONT, color, size);
+        return getTextButtonStyle(STD_BUTTON.EMPTY, FONT, color, size);
     }
 
     public static TextButtonStyle getMenuTextButtonStyle(
@@ -338,13 +337,13 @@ public class StyleHolder {
     }
     public static TextButtonStyle getTextButtonStyle(
      STD_BUTTON button, FONT FONT, Color color, int size) {
-        Map<LabelStyle, TextButtonStyle> map = textButtonStyleMap.get(button);
+        ObjectMap<LabelStyle, TextButtonStyle> map = textButtonStyleMap.get(button);
         LabelStyle labelStyle = getSizedColoredLabelStyle(FONT, size, color);
         TextButtonStyle style = null;
         if (map != null) {
             style = map.get(labelStyle);
         } else {
-            map = new HashMap<>();
+            map = new ObjectMap<>();
             textButtonStyleMap.put(button, map);
         }
         if (style != null)
@@ -382,7 +381,7 @@ public class StyleHolder {
 
     private static void initBtnStyle(TextButtonStyle style, STD_BUTTON button) {
 
-        if (button != null) {
+        if (button != STD_BUTTON.EMPTY) {
             style.up = button.getTexture();
             if (button.isVersioned()) {
                 style.down = button.getTextureDown();

@@ -240,7 +240,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME);
     }
 
-
+    //Gdx Review
     protected boolean isMustWaitForAnim(ActionInput action) {
         return ScreenMaster.getDungeonGrid()
                 .getViewMap().get(activeUnit).getActions().size > 0 || AnimMaster.getInstance().isDrawingPlayer();
@@ -314,7 +314,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         if (ExplorationMaster.isExplorationOn()) //TODO refactor!
             super.loopExited();
         else {
-            SpecialLogger.getInstance().appendSpecialLog(
+            SpecialLogger.getInstance().appendAnalyticsLog(
                     SPECIAL_LOG.EXCEPTIONS, "Explore game loop failed to exit");
         }
 

@@ -48,7 +48,9 @@ public class AtbController implements Comparator<Unit> {
 
     protected static int compareForSort(AtbUnit first, AtbUnit second) {
         if (first.getTimeTillTurn() == second.getTimeTillTurn())
-            return first.getUnit()== Eidolons.getMainHero() ? -1 : second.getUnit()== Eidolons.getMainHero()? 1 : 0; //igg demo hack
+            return first.getUnit()== Eidolons.getMainHero()
+                    ? -1 :
+                    second.getUnit()== Eidolons.getMainHero()? 1 : 0; //EA check
         if (first.getTimeTillTurn() < second.getTimeTillTurn())
             return -1;
         else

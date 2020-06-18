@@ -16,7 +16,6 @@ import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.hero.DC_Attributes;
 import eidolons.entity.obj.hero.DC_Masteries;
-import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.*;
@@ -1498,15 +1497,6 @@ public class HeroWrapper extends HeroDataModel {
         return getHero().canAttack();
     }
 
-    @Override
-    public boolean checkItemGroup(PROPERTY prop, PROPERTY dividingProp, String name, boolean potential, OBJ_TYPE TYPE) {
-        return getHero().checkItemGroup(prop, dividingProp, name, potential, TYPE);
-    }
-
-    @Override
-    public boolean canAttack(DC_UnitModel attacked) {
-        return getHero().canAttack(attacked);
-    }
 
     @Override
     public boolean isSneaking() {

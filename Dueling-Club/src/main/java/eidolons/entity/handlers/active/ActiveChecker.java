@@ -3,7 +3,6 @@ package eidolons.entity.handlers.active;
 import eidolons.ability.effects.containers.customtarget.ShapeEffect;
 import eidolons.ability.effects.containers.customtarget.ZoneEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
@@ -61,14 +60,6 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
         if (getEntity().getOwnerUnit().isAiControlled()) {
             getEntity().getCosts().setReason("This unit is AI controlled!");
             return true;
-        } else {
-            if (!getGame().isOffline()) {
-                if (!getEntity().getOwnerUnit().isMine()) {
-                    getEntity().getCosts().setReason("You do not control this unit!");
-                    return true;
-                }
-            }
-
         }
         return false;
     }
@@ -99,8 +90,8 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
 
     public boolean isAttackGeneric() {
-        return getName().equals(DC_ActionManager.ATTACK)
-         || getName().equals(DC_ActionManager.OFFHAND_ATTACK);
+        return getName().equals(ActionEnums.ATTACK)
+         || getName().equals(ActionEnums.OFFHAND_ATTACK);
     }
 
     public boolean isOffhand() {

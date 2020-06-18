@@ -44,7 +44,7 @@ import java.util.*;
  * toBase() is called whenever we need to update them - first they are set to their base,
  * then modified by various effects
  * <portrait>
- * esetObjects, afterEffects (apply masteries/attributes), preCheck parameter buff rules (focus, stamina, …)
+ * resetObjects, afterEffects (apply masteries/attributes), preCheck parameter buff rules (focus, stamina, …)
  * :: Dynamic values are not reset to base on toBase()
  * :: Properties – container (; separated), variable(value),
  * :: Parameters – formula syntax: {ref_value}, e.g. {source_base strength}, event_ prefix checked first, replaced ref with event’s ref if necessary
@@ -99,44 +99,7 @@ public abstract class Entity extends DataModel implements OBJ {
         return checkSingleProp(getOBJ_TYPE_ENUM().getGroupingKey(), string);
     }
 
-    protected EntityMaster initMaster() {
-        return new EntityMaster(this) {
-            @Override
-            protected EntityAnimator createEntityAnimator() {
-                return null;
-            }
-
-            @Override
-            protected EntityLogger createEntityLogger() {
-                return null;
-            }
-
-            @Override
-            protected EntityInitializer createInitializer() {
-                return new EntityInitializer(getEntity(), this);
-            }
-
-            @Override
-            protected EntityChecker createEntityChecker() {
-                return null;
-            }
-
-            @Override
-            protected EntityResetter createResetter() {
-                return new EntityResetter(getEntity(), this);
-            }
-
-            @Override
-            protected EntityCalculator createCalculator() {
-                return null;
-            }
-
-            @Override
-            protected EntityHandler createHandler() {
-                return null;
-            }
-        };
-    }
+    protected abstract EntityMaster initMaster();
 
     public void addToState() {
         if (game.isCloningMode()) {
@@ -201,9 +164,8 @@ public abstract class Entity extends DataModel implements OBJ {
         if (this.owner != getOriginalOwner()) {
             LogMaster.log(LogMaster.CORE_DEBUG, getName()
              + ": original owner restored!");
+            this.owner = getOriginalOwner();
         }
-
-        this.owner = getOriginalOwner();
 
         HashSet<PARAMETER> params = new HashSet<>(getParamMap().keySet());
         params.addAll(type.getParamMap().keySet());
@@ -361,13 +323,6 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public Game getGame() {
-        if (game == null) {
-//            LogMaster.log(1, "Null game on " + toString());
-            if (Game.game != null)
-                if (Game.game.isSimulation()) {
-                    game = Game.game;
-                }
-        }
         return game;
     }
 
@@ -402,9 +357,6 @@ public abstract class Entity extends DataModel implements OBJ {
     @Override
     public String toString() {
         return getName() + " - " + id + " (" + getOBJ_TYPE() + ")";
-        // " (" + getOBJ_TYPE() + ") HAS: "
-        // + propMap.getMap().toString() + " "
-        // + paramMap.getMap().toString();
     }
 
     public Player getOwner() {
@@ -587,10 +539,6 @@ public abstract class Entity extends DataModel implements OBJ {
                             return null;
                         }
                         return cache.get(getName()); // modified name for
-                        // upgrades?
-                        // or
-                        // displayed only?
-
                     }
                 }
             }

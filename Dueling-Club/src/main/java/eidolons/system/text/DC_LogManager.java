@@ -153,8 +153,8 @@ public class DC_LogManager extends LogManager {
         });
         text.delete(text.length() - 2, text.length());
         String message = text.toString();
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.COMBAT, message);
         log(message);
     }
 
@@ -166,8 +166,8 @@ public class DC_LogManager extends LogManager {
         });
         text.delete(text.length() - 2, text.length());
         String message = text.toString();
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.COMBAT, message);
         log(message);
     }
 

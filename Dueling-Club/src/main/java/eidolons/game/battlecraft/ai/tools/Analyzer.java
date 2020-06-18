@@ -133,13 +133,6 @@ public class Analyzer extends AiHandler {
                 return true;
             }
         }
-//        for (STD_SPEC_ACTIONS action : DC_ActionManager.STD_SPEC_ACTIONS.values()) {
-//            actions.remove(unit.getAction(
-//             StringMaster.getWellFormattedString(
-//              action.toString())));
-//        }
-//        if (!ListMaster.isNotEmpty(actions))
-//            return false;
         return false;
     }
 
@@ -347,65 +340,8 @@ public class Analyzer extends AiHandler {
 
 
     public static List<DC_Cell> getSafeCells(UnitAI ai) {
-        // filter by distance?
-        // prune
-        // to speed it up... now that I've disabled the special actions on
-        // retreat...
-        // I can just choose an *adjacent* cell for *Move* and make the right
-        // turning sequence if necessary
-        // when stuck, "Cower" mode would be nice to have :)
-
-        /*
-         * let's say, all *detected* cells that are not adjacent to enemies!
-         */
         // TODO performance dicatates adjacent only...
         return getCells(ai, true, false, true);
-
-        // List<DC_Cell> cells = getCellsSet(ai, false, false, true);
-        // List<DC_Cell> list = new ArrayList<>();
-        // int max_distance = -1;
-        // loop: for (DC_Cell c : cells) {
-        // for (Coordinates c1 : c.getCoordinates().getAdjacentCoordinates()) {
-        // DC_HeroObj enemy = ai.getUnit().getGame()
-        // .getUnitByCoordinate(c1);
-        // if (!isEnemy(enemy, ai.getUnit()))
-        // continue;
-        // if (enemy.canAct())
-        // continue loop;
-        // }
-        // int distance = PositionMaster.getDistance(ai.getUnit()
-        // .getCoordinates(), c.getCoordinates());
-        //
-        // if (distance >= max_distance + 1) {
-        // max_distance = distance;
-        // list.add(c);
-        // }
-        // }
-        // List<DC_Cell> remove = new ArrayList<>();
-        // for (DC_Cell c : list) {
-        // int distance = PositionMaster.getDistance(ai.getUnit()
-        // .getCoordinates(), c.getCoordinates());
-        // if (distance + 1 < max_distance) {
-        // remove.add(c);
-        // }
-        // }
-        //
-        // for (DC_Cell c : remove)
-        // list.remove(c);
-        //
-        // DIRECTION direction =
-        // FacingManager.rotate180(ai.getUnit().getFacing())
-        // .getDirection();
-        // Coordinates behind = ai.getUnit().getCoordinates()
-        // .getAdjacentCoordinate(direction);
-        //
-        // if (!list.contains(behind)) {
-        // if (ai.getUnit().getGame().getUnitByCoordinate(behind) == null)
-        // list.add(ai.getUnit().getGame().getCellByCoordinate(behind));
-        // }
-
-        // return list;
-
     }
 
     public static List<DC_Cell> getMoveTargetCells(UnitAI ai) {
@@ -437,20 +373,7 @@ public class Analyzer extends AiHandler {
             if (free) {
                 if (!StackingRule.checkCanPlace(cell.getCoordinates(), targetUnit, null))
                     continue;
-//                Unit unit = targetUnit.getGame().getUnitByCoordinate(
-//                 cell.getCoordinates());
-//                if (unit != null) {
-//                    if (VisionManager.checkVisible(unit)) {
-//                        continue;
-//                    }
-//                }
             }
-//            if (detected) // TODO igg demo bug
-//            {
-//                if (cell.getActivePlayerVisionStatus() != PLAYER_VISION.DETECTED) {
-//                    continue;
-//                }
-//            }
             list.add(cell);
 
         }
@@ -458,18 +381,6 @@ public class Analyzer extends AiHandler {
         return list;
     }
 
-    public static List<? extends DC_Obj> getStalkCells(UnitAI ai) {
-        // getOrCreate closest enemy?
-//        DC_HeroObj enemy = getClosestEnemy(ai);
-//        List<DC_Obj> list = new ArrayList<>();
-//        for (DC_Cell cell : getCellsSet(ai, false, false, true)) {
-//            if (PositionMaster.getDistance(cell, enemy) <= HearingRule
-//                    .getSafeDistance(ai.getUnit(), enemy))
-//                list.add(cell);
-//        }
-//        return list;
-        return null;
-    }
 
     public static List<? extends DC_Obj> getWanderCells(UnitAI ai) {
         DIRECTION d = ai.getGroup().getWanderDirection();

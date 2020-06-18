@@ -1,6 +1,7 @@
 package eidolons.entity.obj.unit;
 
 import main.entity.Entity;
+import main.entity.handlers.EntityMaster;
 import main.game.bf.directions.FACING_DIRECTION;
 
 public abstract class DummyUnit extends Entity implements FacingEntity {
@@ -12,5 +13,10 @@ public abstract class DummyUnit extends Entity implements FacingEntity {
     @Override
     public void init() {
 
+    }
+
+    @Override
+    protected EntityMaster initMaster() {
+        return null;
     }
 }

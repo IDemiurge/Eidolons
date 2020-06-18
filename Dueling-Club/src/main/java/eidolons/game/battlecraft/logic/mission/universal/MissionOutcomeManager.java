@@ -80,7 +80,7 @@ public class MissionOutcomeManager<E extends DungeonSequence> extends MissionHan
         outcome = false;
         // MusicMaster.playMoment(MUSIC_MOMENT.DEFEAT);
         String message = "Defeat!";
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
 
         if (end) {
             end();
@@ -91,7 +91,7 @@ public class MissionOutcomeManager<E extends DungeonSequence> extends MissionHan
         outcome = true;
         MusicMaster.playMoment(MUSIC_MOMENT.VICTORY);
         String message = "Victory!";
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
         end();
         // final prize dialogue
         // stats screen - keep a log on everything party does!

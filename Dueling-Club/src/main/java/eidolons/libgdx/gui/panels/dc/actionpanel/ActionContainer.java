@@ -28,13 +28,13 @@ import main.system.images.ImageManager.BORDER;
 
 import static eidolons.libgdx.gui.UiMaster.UI_ACTIONS.SCALE_ACTION_ICON;
 
-public class ActionValueContainer extends ValueContainer {
+public class ActionContainer extends ValueContainer {
 
     protected static TextureRegion lightUnderlay = TextureCache.getOrCreateR(
             SHADE_CELL.LIGHT_EMITTER.getTexturePath());
     static TextureRegion overlay = TextureCache.getOrCreateR
             (BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImagePath());
-    private static ActionValueContainer lastPressed;
+    private static ActionContainer lastPressed;
     private static boolean darkened;
     private final float scaleByOnHover = (new Float(64) / ActionPanel.IMAGE_SIZE) - 1;
     protected Runnable clickAction;
@@ -50,28 +50,28 @@ public class ActionValueContainer extends ValueContainer {
 
 
     //overlay!
-    public ActionValueContainer(boolean valid, TextureRegion texture, Runnable action) {
+    public ActionContainer(boolean valid, TextureRegion texture, Runnable action) {
         this(texture, action);
         this.setValid(valid);
     }
 
-    public ActionValueContainer(TextureRegion texture, Runnable action) {
+    public ActionContainer(TextureRegion texture, Runnable action) {
 
         this(texture, null, action);
     }
 
-    public ActionValueContainer(TextureRegion texture, String value, Runnable action) {
+    public ActionContainer(TextureRegion texture, String value, Runnable action) {
         super(texture, value);
         bindAction(action);
 
     }
 
-    public ActionValueContainer(int size, boolean valid, String image, Runnable invokeClicked) {
+    public ActionContainer(int size, boolean valid, String image, Runnable invokeClicked) {
         this(size, valid, TextureCache.getSizedRegion(size, image), invokeClicked);
     }
 
-    public ActionValueContainer(int size, boolean valid, TextureRegion region,
-                                Runnable runnable) {
+    public ActionContainer(int size, boolean valid, TextureRegion region,
+                           Runnable runnable) {
         this(valid, region, runnable);
         this.size = size;
     }
@@ -82,15 +82,15 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     public static void setDarkened(boolean darkened) {
-        ActionValueContainer.darkened = darkened;
+        ActionContainer.darkened = darkened;
     }
 
-    public static ActionValueContainer getLastPressed() {
+    public static ActionContainer getLastPressed() {
         return lastPressed;
     }
 
-    public static void setLastPressed(ActionValueContainer lastPressed) {
-        ActionValueContainer.lastPressed = lastPressed;
+    public static void setLastPressed(ActionContainer lastPressed) {
+        ActionContainer.lastPressed = lastPressed;
     }
 
     protected void initSize() {
@@ -111,7 +111,7 @@ public class ActionValueContainer extends ValueContainer {
                 if (isScaledOnHover())
                     ActionMaster.addScaleAction(imageContainer.getActor(), getImageScaleX() - scaleByOnHover, getImageScaleY() - scaleByOnHover,
                             UiMaster.getDuration(SCALE_ACTION_ICON));
-                setLastPressed(ActionValueContainer.this);
+                setLastPressed(ActionContainer.this);
                 return super.touchDown(event, x, y, pointer, button);
             }
 
@@ -138,7 +138,7 @@ public class ActionValueContainer extends ValueContainer {
                     return super.mouseMoved(event, x, y);
                 if (isHover())
                     return false;
-                if (getLastPressed() == ActionValueContainer.this)
+                if (getLastPressed() == ActionContainer.this)
                     return true;
 //                if (GdxMaster.getFirstParentOfClass(event.getTarget(),
 //                        ActionValueContainer.class)!=null) {
@@ -171,7 +171,7 @@ public class ActionValueContainer extends ValueContainer {
                     setHover(true);
                     if (isScaledOnHover())
                         scaleUp();
-                    if (getLastPressed() != ActionValueContainer.this)
+                    if (getLastPressed() != ActionContainer.this)
                         setLastPressed(null);
                 }
                 super.enter(event, x, y, pointer, fromActor);
@@ -195,7 +195,7 @@ public class ActionValueContainer extends ValueContainer {
                 if (isScaledOnHover()) {
                     scaleDown();
                 }
-                if (getLastPressed() != ActionValueContainer.this)
+                if (getLastPressed() != ActionContainer.this)
                     setLastPressed(null);
             }
         });

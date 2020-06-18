@@ -140,15 +140,6 @@ public abstract class DC_Obj extends MicroObj {
     protected void addDefaultValues() {
         if (CoreEngine.isDefaultValuesAddedDynamically())
             DC_ContentValsManager.addDefaultValues(this);
-        // for (String value : DC_ContentManager
-        // .getInfoPanelValueList(getOBJ_TYPE())) {
-        // VALUE VAL = ContentManager.getValue(value);
-        // if (StringMaster.isEmpty(getValue(VAL))
-        // && !StringMaster.isEmpty(VAL.getDefaultValue())) {
-        // getType().setValue(VAL, VAL.getDefaultValue());
-        // setValue(VAL, VAL.getDefaultValue());
-        // }
-        // }
     }
 
     public boolean checkInSight() {
@@ -280,11 +271,8 @@ public abstract class DC_Obj extends MicroObj {
         }
         Ref ref = Ref.getCopy(REF);
         ref.setTarget(target.getId());
-        //        if (this instanceof Unit) { //TODO igg demo hack
         ref.setSource(getId());
-        //        } else {
         ref.setID(KEYS.THIS, getId());
-        //        }
         Effect effect = specialEffects.get(case_type);
         getGame().getLogManager().log(getName() + ": special effect " + case_type.getName());
         effect.apply(ref);
@@ -401,248 +389,6 @@ public abstract class DC_Obj extends MicroObj {
         getVisibilityLevelMapper().setForMe(this, visibilityLevelForPlayer);
     }
 
-
-    //           TODO OLD                                <><><><><>
-    //    public VISIBILITY_LEVEL getActiveVisibilityLevel() {
-    //        return getVisibilityLevel(true);
-    //    }
-    //    public VISIBILITY_LEVEL getVisibilityLevel() {
-    //        return getVisibilityLevel(false);
-    //    }
-    //
-    //    public void setVisibilityLevel(VISIBILITY_LEVEL visibilityLevel) {
-    //        Unit seeingUnit = getGame().getVisionMaster().getSeeingUnit();
-    //        if (seeingUnit != null) {
-    //            if (seeingUnit.isMine())
-    //                if (seeingUnit.isMainHero()) {
-    //                    setVisibilityLevelForPlayer(visibilityLevel);
-    //                }
-    //        }
-    //
-    //        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
-    //         this + " setVisibilityLevel " + visibilityLevel);
-    //        if (this instanceof Unit) {
-    //            if (activeUnitVisionStatus == UNIT_TO_UNIT_VISION.IN_SIGHT ||
-    //             activeUnitVisionStatus == UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT) {
-    //                if (visibilityLevel == VISIBILITY_LEVEL.UNSEEN || visibilityLevel == VISIBILITY_LEVEL.BLOCKED)
-    //                    main.system.auxiliary.log.LogMaster.log(1,
-    //                     this + " gotcha " + visibilityLevel);
-    //            } else {
-    //                if (activeUnitVisionStatus == UNIT_TO_UNIT_VISION.BEYOND_SIGHT)
-    //                    if (visibilityLevel == VISIBILITY_LEVEL.CLEAR_SIGHT
-    //                     ) {
-    //                        main.system.auxiliary.log.LogMaster.log(1,
-    //                         this + " gotcha " + visibilityLevel);
-    //                    }
-    //
-    //            }
-    //        }
-    //        this.visibilityLevel = visibilityLevel;
-    //    }
-    //
-    //    public VISIBILITY_LEVEL getVisibilityLevel(boolean active) {
-    //        if (VisionManager.isVisionHacked()) {
-    //            return VISIBILITY_LEVEL.CLEAR_SIGHT;
-    //        }
-    //        if (!active) {
-    //            if (!game.isDebugMode()) {
-    //                return getVisibilityLevelForPlayer();
-    //            }
-    //        }
-    //        return visibilityLevel;
-    //    }
-    //
-    //    public VISIBILITY_LEVEL getVisibilityLevelForPlayer() {
-    //        if (visibilityLevelForPlayer == null) {
-    //            if (game.isDebugMode())
-    //                return VISIBILITY_LEVEL.CLEAR_SIGHT;
-    //            return VISIBILITY_LEVEL.UNSEEN;
-    //        }
-    //        if (isDisplayEnemyVisibility()) {
-    //            return visibilityLevel;
-    //        }
-    //        return visibilityLevelForPlayer;
-    //    }
-    //
-    //    private void setVisibilityLevelForPlayer(VISIBILITY_LEVEL visibilityLevelForPlayer) {
-    //        this.visibilityLevelForPlayer = visibilityLevelForPlayer;
-    //    }
-    //
-    //
-    //
-    //
-    //    public OUTLINE_TYPE getOutlineType() {
-    //        if (getGame().isSimulation()) {
-    //            return null;
-    //        }
-    //        if (VisionManager.isVisionHacked()) {
-    //            return null;
-    //        }
-    //        if (!game.isDebugMode()) {
-    //            return getOutlineTypeForPlayer();
-    //        }
-    //        return outlineType;
-    //    }
-    //
-    //    public void setOutlineType(OUTLINE_TYPE outlineType) {
-    //        if (getGame().getManager().getActiveObj() != null) {
-    //            if (getGame().getManager().getActiveObj().isMine())
-    //            // TODO MAIN HERO ONLY?
-    //            {
-    //                setOutlineTypeForPlayer(outlineType);
-    //            }
-    //        }
-    //        else {
-    //            setOutlineTypeForPlayer(outlineType);
-    //        }
-    //        if (outlineType != null)
-    //            if (isMine()) {
-    //                return;
-    //            }
-    //        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
-    //         this + "   setOutlineType " + outlineType);
-    //        this.outlineType = outlineType;
-    //    }
-    //
-    //    public OUTLINE_TYPE getOutlineTypeForPlayer() {
-    //        if (isDisplayEnemyVisibility()) {
-    //            return outlineType;
-    //        }
-    //        return outlineTypeForPlayer;
-    //    }
-    //
-    //    public void setOutlineTypeForPlayer(OUTLINE_TYPE outlineTypeForPlayer) {
-    //
-    //        this.outlineTypeForPlayer = outlineTypeForPlayer;
-    //        if (outlineTypeForPlayer == null) {
-    //            if (getGame().getManager().getActiveObj() != null) {
-    //                if (!getGame().getManager().getActiveObj().isMine()) {
-    //                    main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "outlineTypeForPlayer set to "
-    //                     + outlineTypeForPlayer);
-    //                }
-    //            }
-    //        }
-    //
-    //        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
-    //         this + "   setOutlineTypeForPlayer " + outlineTypeForPlayer);
-    //        // main.system.auxiliary.getGame().getLogManager().appendSpecialLog(SPECIAL_LOG.VISIBILITY, "outlineTypeForPlayer set to "
-    //        // + outlineTypeForPlayer);
-    //    }
-    //
-    //    protected boolean isDisplayEnemyVisibility() {
-    //        return false;
-    //    }
-    //
-    //    public UNIT_TO_UNIT_VISION getUnitVisionStatus() {
-    //        if (VisionManager.isVisionHacked()) {
-    //            return VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
-    //        }
-    //        if (activeUnitVisionStatus == null) {
-    //            try {
-    //                activeUnitVisionStatus = getGame().getVisionMaster()
-    //                 .getUnitVisibilityStatus(this);
-    //            } catch (Exception e) {
-    //                main.system.ExceptionMaster.printStackTrace(e);
-    //            }
-    //        }
-    //        return activeUnitVisionStatus;
-    //    }
-    //
-    //    public void setUnitVisionStatus(UNIT_TO_UNIT_VISION unitVisionStatus) {
-    //        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "setUnitVisionStatus " + getNameAndCoordinate() +
-    //         " from " +
-    //         this.activeUnitVisionStatus +
-    //         " to "
-    //         + unitVisionStatus.toString());
-    //
-    //        this.activeUnitVisionStatus = unitVisionStatus;
-    //        if (unitVisionStatus != null) {
-    //            setProperty(PROPS.VISIBILITY_STATUS, unitVisionStatus.toString());
-    //        }
-    //    }
-    //
-    //    public UNIT_TO_PLAYER_VISION getActivePlayerVisionStatus() {
-    //        if (VisionManager.isVisionHacked()) {
-    //            return VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED;
-    //        }
-    //        return activeVisionStatus;
-    //    }
-    //
-    //    public UNIT_TO_PLAYER_VISION getPlayerVisionStatus(boolean active) {
-    //        if (VisionManager.isVisionHacked()) {
-    //            return VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED;
-    //        }
-    //
-    //        if (active) {
-    //            return activeVisionStatus;
-    //        }
-    //        return playerVisionStatus;
-    //    }
-    //
-    //    public void setPlayerVisionStatus(UNIT_TO_PLAYER_VISION playerVisionStatus) {
-    //        if (getGame().getManager().getActiveObj() != null) {
-    //            if (getGame().getManager().getActiveObj().isMine()) {
-    ////                if (this instanceof Unit)
-    ////              main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "set PlayerVisionStatus " + getNameAndCoordinate()   +
-    ////                 " from " +
-    ////                 this.playerVisionStatus +
-    ////                 " to "
-    ////                 + playerVisionStatus.toString());
-    //                this.playerVisionStatus = playerVisionStatus;
-    //            }
-    //        }
-    ////        if (this instanceof Unit)
-    ////      main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "set activeVisionStatus " + getNameAndCoordinate()   +
-    ////         " from " +
-    ////         this.activeVisionStatus +
-    ////         " to "
-    ////         + playerVisionStatus.toString());
-    //        this.activeVisionStatus = playerVisionStatus;
-    //        if (playerVisionStatus != null) {
-    //            setProperty(PROPS.DETECTION_STATUS, playerVisionStatus.toString());
-    //        }
-    //
-    //    }
-    //
-    //
-    //    public boolean isDetected() {
-    //        if (VisionManager.isVisionHacked()) {
-    //            return true;
-    //        }
-    //        if (getGame().getManager().getActiveObj() != null) {
-    //            if (getGame().getManager().getActiveObj().isMine()) {
-    //                return isDetectedByPlayer();
-    //            }
-    //        }
-    //        return detected;
-    //    }
-    //
-    //    public void setDetected(boolean b) {
-    //        if (!b) {
-    //            this.detected = b;
-    //        }
-    //        this.detected = b;
-    //        if (getGame().getManager().getActiveObj() != null) {
-    //            if (getGame().getManager().getActiveObj().isMine()) {
-    //                setDetectedByPlayer(b);
-    //            }
-    //        }
-    //    }
-    //
-    //    public boolean isDetectedByPlayer() {
-    //        if (VisionManager.isVisionHacked()) {
-    //            return true;
-    //        }
-    //        if (isMine()) return true;
-    //        return detectedByPlayer;
-    //    }
-    //
-    //    public void setDetectedByPlayer(boolean detectedByPlayer) {
-    //        if (!detectedByPlayer) {
-    //            this.detectedByPlayer = detectedByPlayer;
-    //        }
-    //        this.detectedByPlayer = detectedByPlayer;
-    //    }
     public boolean checkVisible() {
 
         return VisionHelper.checkVisible(this);
@@ -804,10 +550,6 @@ public abstract class DC_Obj extends MicroObj {
 
     public Set<ObjType> getAppliedTypes() {
         return appliedTypes;
-    }
-
-    public void setAppliedTypes(Set<ObjType> appliedTypes) {
-        this.appliedTypes = appliedTypes;
     }
 
     public ObjType getOriginalType() {

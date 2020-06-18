@@ -106,12 +106,12 @@ public class AI_Manager extends AiMaster {
                 action = actionManager.getForcedAction(getAI(unit));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
-                SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, getUnit() +
+                SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, getUnit() +
                         "'s Forced Action choice failed: " + e.getMessage());
                 return null;
             } finally {
                 running = false;
-                SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, getUnit() +
+                SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, getUnit() +
                         " opts for Forced Action: " + action);
             }
         } else {

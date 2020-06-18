@@ -88,7 +88,7 @@ public class AddSpecialEffects extends MicroEffect {
                 event = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
                 break;
             case SPELL_HIT:
-                targeting = new FixedTargeting(Ref.KEYS.SOURCE); //TODO igg demo fix
+                targeting = new FixedTargeting(Ref.KEYS.SOURCE); //TODO EA check
                 conditions.add(new RefCondition(Ref.KEYS.SOURCE, Ref.KEYS.EVENT_TARGET));
                 event = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
                 break;

@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.ai.elements.actions.sequence;
 
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
@@ -23,6 +22,7 @@ import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.battlecraft.ai.tools.time.TimeLimitMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
 import main.content.enums.system.AiEnums;
@@ -35,8 +35,8 @@ import main.game.core.game.Game;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.Chronos;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -248,9 +248,9 @@ public class ActionSequenceConstructor extends AiHandler {
 
         if (!ListMaster.isNotEmpty(moveActions)) {
             // [QUICK FIX]
-            if (!unit.getAction(DC_ActionManager.STD_ACTIONS.Turn_Anticlockwise.name())
+            if (!unit.getAction(ActionEnums.STD_ACTIONS.Turn_Anticlockwise.name())
              .canBeActivated(action.getRef(), true)
-             && !unit.getAction(DC_ActionManager.STD_ACTIONS.Move.name()).canBeActivated(
+             && !unit.getAction(ActionEnums.STD_ACTIONS.Move.name()).canBeActivated(
              action.getRef(), true)) {
                 return null;
             }

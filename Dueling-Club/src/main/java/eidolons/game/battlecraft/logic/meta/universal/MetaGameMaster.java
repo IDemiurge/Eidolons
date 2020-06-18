@@ -233,7 +233,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     public void next(Boolean outcome) {
 
         String message = (outcome != null) ? "next level!" : "game restarted!";
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
 
         gameExited();
         game.reinit(outcome == null);

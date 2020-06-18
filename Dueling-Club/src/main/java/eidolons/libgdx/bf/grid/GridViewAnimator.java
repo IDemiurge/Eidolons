@@ -205,7 +205,7 @@ public class GridViewAnimator {
             return ((UnitGridView) arg).getPortrait();
         }
         if (arg instanceof BattleFieldObject) {
-            return   gridPanel.getViewMap().get(arg).getPortrait();
+            return   gridPanel.getUnitView((BattleFieldObject) arg).getPortrait();
         }
         return null;
     }

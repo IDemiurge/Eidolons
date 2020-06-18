@@ -33,7 +33,7 @@ public class DC_UnitAction extends DC_ActiveObj {
 
     public DC_UnitAction(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref);
-        if (type.getType() == DC_ActionManager.DUMMY_ACTION_TYPE) {
+        if (type.getType() == ActionEnums.DUMMY_ACTION_TYPE) {
             dummy = true;
         }
     }

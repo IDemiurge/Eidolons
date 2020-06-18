@@ -2,8 +2,8 @@ package eidolons.libgdx.anims.main;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.CompositeAnim;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.std.sprite.LockKeyAnimation;
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class EventAnimMaster {
     AnimMaster master;
-    private Map<Event, Anim> pendingEventAnims = new XLinkedMap<>();
+    private final Map<Event, Anim> pendingEventAnims = new XLinkedMap<>();
 
     public EventAnimMaster(AnimMaster master) {
         this.master = master;
@@ -97,7 +97,7 @@ public class EventAnimMaster {
                 }
 
             if (parentAnim.getMap().isEmpty())
-                parentAnim.add(ANIM_PART.AFTEREFFECT, anim);
+                parentAnim.add(AnimEnums.ANIM_PART.AFTEREFFECT, anim);
             else
                 parentAnim.addEventAnim(anim, event); //TODO}
             return true;
@@ -108,10 +108,7 @@ public class EventAnimMaster {
     }
 
     private boolean isImmediateAnim(Anim anim) {
-        if (anim instanceof LockKeyAnimation) {
-            return true;
-        }
-            return false;
+        return anim instanceof LockKeyAnimation;
     }
 
     private CompositeAnim getEventAttachAnim(Event event, Anim anim) {

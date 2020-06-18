@@ -1,24 +1,25 @@
 package eidolons.entity.handlers.bf.unit;
 
-import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.enums.entity.UnitEnums.IMMUNITIES;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
+import main.data.DataManager;
 import main.entity.handlers.EntityChecker;
 import main.entity.handlers.EntityMaster;
 import main.entity.obj.Obj;
+import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
+import main.system.auxiliary.ContainerUtils;
 import main.system.launch.CoreEngine;
-import main.system.math.PositionMaster;
 
 /**
  * Created by JustMe on 2/26/2017.
@@ -112,7 +113,7 @@ public class UnitChecker extends EntityChecker<Unit> {
 
         if (getGame().isDebugMode())
             return false;
-        if (CoreEngine.isLiteLaunch()){
+        if (CoreEngine.isLiteLaunch()) {
             if (CoreEngine.isActiveTestMode()) {
                 return true;
             }
@@ -248,39 +249,11 @@ public class UnitChecker extends EntityChecker<Unit> {
     public boolean isUnconscious() {
         if (checkStatus(STATUS.UNCONSCIOUS))
             return true;
-        if (getEntity().isPlayerCharacter()) {
-            if (ShadowMaster.isShadowAlive())
-                return true; //TODO igg demo hack
-            return getEntity().getBuff("Unconscious") != null;
-        }
-
-        return false;
+        return getEntity().getBuff("Unconscious") != null;
     }
 
     public boolean canAttack() {
         return getEntity().getAttack().canBeActivated(getRef(), true);
-    }
-
-    // melee/ranged separate!
-    public boolean canAttack(DC_UnitModel attacked) {
-        if (!canAttack()) {
-            return false;
-        }
-        // ConditionMaster.getAdjacent().preCheck(ref);
-        int range = getIntParam(PARAMS.RANGE);
-        if (range == 1) {
-            return attacked.getCoordinates().isAdjacent(getEntity().getCoordinates());
-        }
-        return (range >= PositionMaster.getDistance(getEntity(), attacked));
-
-    }
-
-    public boolean canMove() {
-        if (isBfObj()) {
-            return false;
-        }
-        // if (isstructure)
-        return canActNow();
     }
 
     public boolean canCounter(DC_ActiveObj active) {
@@ -291,12 +264,14 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (!canCounter()) {
             return false;
         }
+        if (getEntity().checkPassive(STANDARD_PASSIVES.VIGILANCE))
+            return true;
+        if (sneak)
+            return false;
         if (active.checkPassive(STANDARD_PASSIVES.NO_RETALIATION)) {
             return false;
         }
-        // if (!attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
         return !active.getOwnerUnit().checkPassive(STANDARD_PASSIVES.NO_RETALIATION);
-        // may still fail to activate any particular Attack Action!
     }
 
     public boolean canAct() {
@@ -423,4 +398,36 @@ public class UnitChecker extends EntityChecker<Unit> {
         return checkProperty(G_PROPS.IMMUNITIES, type.toString());
     }
 
+
+    /**
+     * mastery group (spell/skill),
+     *
+     * @param potential    has or can have
+     * @param TYPE
+     * @param dividingProp spellgroup/mastery group/...
+     * @param prop         spellbook/verbatim/skills/etc
+     * @return
+     */
+
+    public boolean checkItemGroup(PROPERTY prop, PROPERTY dividingProp, String name,
+                                  boolean potential, OBJ_TYPE TYPE) {
+        // at least one item with NAME as PROP
+
+        for (String item : ContainerUtils.open(getProperty(prop))) {
+
+            ObjType type = DataManager.getType(item, TYPE);
+            if (type == null) {
+                continue;
+            }
+            if (!potential) {
+                return type.checkSingleProp(dividingProp, name);
+            }
+
+            return game.getRequirementsManager().check(getEntity(), type) == null;
+
+        }
+
+        return false;
+
+    }
 }

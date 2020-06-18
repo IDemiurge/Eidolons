@@ -12,7 +12,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.UiMaster;
-import eidolons.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
+import eidolons.libgdx.gui.panels.dc.actionpanel.ActionContainer;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
@@ -27,9 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class RadialValueContainer extends ActionValueContainer {
-    protected List<RadialValueContainer> childNodes = new ArrayList<>();
-    protected RadialValueContainer parent;
+public class RadialContainer extends ActionContainer {
+    protected List<RadialContainer> childNodes = new ArrayList<>();
+    protected RadialContainer parent;
     protected Supplier<Tooltip> tooltipSupplier;
     protected Tooltip tooltip;
     Runnable lazyChildInitializer;
@@ -40,10 +40,10 @@ public class RadialValueContainer extends ActionValueContainer {
     private boolean textOverlayOn;
 
 
-    public RadialValueContainer( TextureRegion texture, Runnable action) {
+    public RadialContainer(TextureRegion texture, Runnable action) {
         this(UiMaster.getIconSize(), texture, action);
     }
-    public RadialValueContainer(int size, TextureRegion texture, Runnable action) {
+    public RadialContainer(int size, TextureRegion texture, Runnable action) {
         super(texture, action);
         this.size = size;
         setUnderlay(
@@ -96,11 +96,11 @@ public class RadialValueContainer extends ActionValueContainer {
     }
 
 
-    public RadialValueContainer(TextureRegion texture, String value, Runnable action) {
+    public RadialContainer(TextureRegion texture, String value, Runnable action) {
         super(texture, value, action);
     }
 
-    public RadialValueContainer(TextureRegion textureRegion, Runnable runnable, boolean valid, DC_ActiveObj activeObj, DC_Obj target) {
+    public RadialContainer(TextureRegion textureRegion, Runnable runnable, boolean valid, DC_ActiveObj activeObj, DC_Obj target) {
         this(textureRegion, runnable);
         this.setValid(valid);
         try {
@@ -170,9 +170,7 @@ public class RadialValueContainer extends ActionValueContainer {
     }
 
     protected boolean checkUnderlayRequired() {
-        if (getParent() == null)
-            return false;
-        return true;
+        return getParent() != null;
     }
 
     public void setInfoTextSupplier(Supplier<String> infoTextSupplier) {
@@ -198,23 +196,23 @@ public class RadialValueContainer extends ActionValueContainer {
 
     }
 
-    public List<RadialValueContainer> getChildNodes() {
+    public List<RadialContainer> getChildNodes() {
         if (!ListMaster.isNotEmpty(childNodes))
             if (lazyChildInitializer != null)
                 lazyChildInitializer.run();
         return childNodes;
     }
 
-    public void setChildNodes(List<RadialValueContainer> childNodes) {
+    public void setChildNodes(List<RadialContainer> childNodes) {
         this.childNodes = childNodes;
     }
 
     @Override
-    public RadialValueContainer getParent() {
+    public RadialContainer getParent() {
         return parent;
     }
 
-    public void setParent(RadialValueContainer parent) {
+    public void setParent(RadialContainer parent) {
         this.parent = parent;
     }
 

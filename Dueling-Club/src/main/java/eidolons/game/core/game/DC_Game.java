@@ -295,7 +295,6 @@ public class DC_Game extends GenericGame {
             aiManager = new AI_Manager(this);
         }
         dungeonMaster.init();
-        setOffline(true);
 
         battleFieldManager = new DC_BattleFieldManager(this, getModule().getId(),
                 getModule().getEffectiveWidth(), getModule().getEffectiveHeight());

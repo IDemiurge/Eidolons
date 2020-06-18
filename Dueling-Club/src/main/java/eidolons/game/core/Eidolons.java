@@ -144,7 +144,7 @@ public class Eidolons {
         GenericLauncher.setFirstInitDone(false);
         game.getMetaMaster().gameExited();
 
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN,
                 "GAME EXIT TO MAIN MENU");
         game.exit(true);
         game = null;

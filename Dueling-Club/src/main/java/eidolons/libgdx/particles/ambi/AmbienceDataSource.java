@@ -1,6 +1,7 @@
 package eidolons.libgdx.particles.ambi;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.ObjectMap;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.GenericEnums;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
@@ -8,9 +9,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.datatypes.WeightMap;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static eidolons.libgdx.particles.ambi.AmbienceDataSource.VFX_TEMPLATE.*;
 import static main.content.enums.GenericEnums.VFX.*;
@@ -21,7 +20,7 @@ import static main.content.enums.GenericEnums.VFX.*;
 public class AmbienceDataSource {
 
 
-    private final Map<String, Integer> map = new HashMap<>();
+    private final ObjectMap<String, Integer> map = new ObjectMap<>(12);
     Color colorHue;
     boolean shadow;
     private List<String> emitters;
@@ -142,7 +141,7 @@ public class AmbienceDataSource {
         this.emitters = emitters;
     }
 
-    public Map<String, Integer> getMap() {
+    public ObjectMap<String, Integer> getMap() {
         return map;
     }
 

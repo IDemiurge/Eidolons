@@ -117,7 +117,7 @@ public class GameLoop {
         setExited(false);
 
         if (game.getLoop() == this)
-            SpecialLogger.getInstance().appendSpecialLog(
+            SpecialLogger.getInstance().appendAnalyticsLog(
                     SPECIAL_LOG.EXCEPTIONS, "game loop exits without new loop running!");
     }
 

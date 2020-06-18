@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.tree;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.core.EUtils;
@@ -10,8 +11,8 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.gui.controls.radial.RadialContainer;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
-import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -31,9 +32,7 @@ import main.system.math.MathMaster;
 import main.system.text.TextParser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
 
@@ -42,7 +41,7 @@ import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
  */
 public abstract class SlotSelectionRadialMenu extends RadialMenu {
     private static HtNode activeNode;
-    protected Map<List, List> cache = new HashMap<>();
+    protected ObjectMap<List, List> cache = new ObjectMap<>();
     protected HqHeroDataSource dataSource;
     private int tier;
     private int slot;
@@ -159,13 +158,13 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
         List<ObjType> available = (List<ObjType>) params.get(0);
         tier = (int) params.get(1);
         slot = (int) params.get(2);
-        List<RadialValueContainer> nodes = getNodes(available);
+        List<RadialContainer> nodes = getNodes(available);
         init(nodes);
         open();
     }
 
-    protected List<RadialValueContainer> getNodes(List<ObjType> available) {
-        List<RadialValueContainer> list = cache.get(available);
+    protected List<RadialContainer> getNodes(List<ObjType> available) {
+        List<RadialContainer> list = cache.get(available);
         if (list == null) {
             list = createNodes(available);
         }
@@ -195,13 +194,13 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
         return super.getMaxCoef();
     }
 
-    protected List<RadialValueContainer> createNodes(List<ObjType> available) {
-        List<RadialValueContainer> list = new ArrayList<>();
+    protected List<RadialContainer> createNodes(List<ObjType> available) {
+        List<RadialContainer> list = new ArrayList<>();
         for (ObjType type : available) {
             String reason = getReqReason(type);
             boolean valid = reason == null;
             TextureRegion region = TextureCache.getOrCreateR(getImagePath(type));
-            RadialValueContainer node = new RadialValueContainer(getIconSize(), region, () -> {
+            RadialContainer node = new RadialContainer(getIconSize(), region, () -> {
 
                 if (valid)
                     selected(type);

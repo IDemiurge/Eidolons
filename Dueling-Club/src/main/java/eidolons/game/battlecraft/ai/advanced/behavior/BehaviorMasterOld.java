@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.ai.advanced.behavior;
 
-import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
@@ -13,6 +12,7 @@ import eidolons.game.battlecraft.ai.explore.PatrolMaster;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.battlecraft.ai.explore.behavior.WanderAiMaster;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
@@ -116,7 +116,7 @@ public class BehaviorMasterOld extends AiHandler {
                     // recursion = true;
                     // return getAction(type, ai);
                 } else {
-                    action = STD_ACTIONS.Move.name();
+                    action = ActionEnums.STD_ACTIONS.Move.name();
                     // if (!unit.getAction(action).canBeActivated()) {
                     // }
                     ActionPath path =

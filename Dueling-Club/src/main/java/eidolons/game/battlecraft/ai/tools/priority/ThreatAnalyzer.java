@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.ai.tools.priority;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.active.Spell;
@@ -15,6 +14,7 @@ import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.screens.map.ui.tooltips.PartyTooltip;
 import eidolons.macro.entity.party.MacroParty;
+import main.content.enums.entity.ActionEnums;
 import main.game.logic.action.context.Context;
 import main.system.math.FuncMaster;
 import main.system.math.PositionMaster;
@@ -22,13 +22,14 @@ import main.system.math.PositionMaster;
 import java.util.HashMap;
 import java.util.Map;
 
+import static main.system.auxiliary.log.LogMaster.log;
+
 /**
  * Created by JustMe on 4/11/2017.
  */
 public class ThreatAnalyzer extends AiHandler {
 
     Map<UnitAI, Map<Unit, Integer>> threatMemoryMap = new HashMap<>();
-    //    Map<UnitAI, Map<Unit, Integer>> grudgeMemoryMap = new HashMap<>();
 
     public ThreatAnalyzer(AiMaster master) {
         super(master);
@@ -87,8 +88,6 @@ public class ThreatAnalyzer extends AiHandler {
         if (unit.getAI().getType().isCaster())
             return new FuncMaster().total(unit.getSpells(), s -> {
                 Spell spell = (Spell) s;
-                //            if (spell.isDamageSpell())
-                //            return FutureBuilder.precalculateDamage(spell, source, false);
                 return getPriorityManager().getSpellPriority(spell, new Context(unit, target))
                         / getRangedThreatFactorSpell(unit, target);
             });
@@ -130,7 +129,7 @@ public class ThreatAnalyzer extends AiHandler {
             return 0;
         int threat = 0;
         int factor = 1;
-        DC_UnitAction attack = enemy.getAction(DC_ActionManager.ATTACK);
+        DC_UnitAction attack = enemy.getAction(ActionEnums.ATTACK);
         if (attack == null) {
             return 0;
         }
@@ -142,7 +141,6 @@ public class ThreatAnalyzer extends AiHandler {
                         return atk.getIntParam(PARAMS.AP_COST);
                     return 0;
                 }
-                //         FutureBuilder.precalculateDamage(attack, getUnit(), true)
         );
 
         try {
@@ -151,42 +149,10 @@ public class ThreatAnalyzer extends AiHandler {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
-        // special attacks? dual wielding?
-
         threat /= distance;
-        main.system.auxiliary.log.LogMaster.log(1, getUnit() + " feels " +
-                threat +
-                " threat from " + enemy);
+        log(1, getUnit() + " feels " + threat + " threat from " + enemy);
         return threat;
     }
 
-    //        if (now) {
-    //        attack.initCosts();
-    //        try {
-    //            int ap_factor = enemy.getIntParam(PARAMS.C_N_OF_ACTIONS)
-    //             / attack.getCosts().getCost(PARAMS.C_N_OF_ACTIONS).getPayment()
-    //             .getAmountFormula().getInt(enemy.getRef());
-    //            int sta_factor = enemy.getIntParam(PARAMS.C_STAMINA)
-    //             / attack.getCosts().getCost(PARAMS.C_STAMINA).getPayment()
-    //             .getAmountFormula().getInt(enemy.getRef());
-    //            int foc_factor = enemy.getIntParam(PARAMS.C_FOCUS)
-    //             / attack.getCosts().getCost(PARAMS.C_FOCUS).getPayment().getAmountFormula()
-    //             .getInt(enemy.getRef());
-    //            factor = Math.min(sta_factor, ap_factor);
-    //            factor = Math.min(factor, foc_factor);// extract to
-    //            // getTimesActivate()
-    //            // TODO
-    //        } catch (Exception e) {
-    //            // main.system.ExceptionMaster.printStackTrace(e);
-    //        }
-    //    }
 
-    public enum THREAT_TYPE {
-        RANGED,
-        MELEE,
-        MAGIC,
-        GRUDGE,
-        PRIORITY,
-        POWER
-    }
 }

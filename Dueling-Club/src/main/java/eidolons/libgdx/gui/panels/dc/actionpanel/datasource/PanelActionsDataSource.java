@@ -6,7 +6,7 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.UiMaster;
 import eidolons.libgdx.gui.generic.ValueContainer;
-import eidolons.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
+import eidolons.libgdx.gui.panels.dc.actionpanel.ActionContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.*;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -23,9 +23,9 @@ public class PanelActionsDataSource implements
         EffectsAndAbilitiesSource, ResourceSource,
         MainWeaponDataSource<ValueContainer>, OffWeaponDataSource {
 
-    private Unit unit;
+    private final Unit unit;
 
-    private UnitDataSource unitDataSource;
+    private final UnitDataSource unitDataSource;
 
     public PanelActionsDataSource(Unit unit) {
         this.unit = unit;
@@ -62,7 +62,7 @@ public class PanelActionsDataSource implements
         List<ValueContainer> list = items.stream()
                 .map((DC_QuickItemObj key) -> {
                     boolean valid = key.getActive().canBeManuallyActivated();
-                    final ValueContainer valueContainer = new ActionValueContainer(
+                    final ValueContainer valueContainer = new ActionContainer(
                             UiMaster.getBottomQuickItemIconSize(),
                             valid,
                             (key.getImagePath()),

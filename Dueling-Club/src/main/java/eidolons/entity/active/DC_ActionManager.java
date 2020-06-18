@@ -17,9 +17,7 @@ import main.content.CONTENT_CONSTS2.STD_ACTION_MODES;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
-import main.content.enums.entity.ActionEnums;
-import main.content.enums.entity.ActionEnums.ACTION_TYPE;
-import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
+import main.content.enums.entity.ActionEnums.*;
 import main.content.enums.entity.ItemEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -45,47 +43,17 @@ import main.system.threading.Weaver;
 
 import java.util.*;
 
+import static main.content.enums.entity.ActionEnums.*;
+
 public class DC_ActionManager implements ActionManager {
 
-    public static final String OFFHAND_ATTACK = StringMaster
-            .getWellFormattedString(STD_SPEC_ACTIONS.OFFHAND_ATTACK.name());
-    public static final String DUAL_ATTACK = StringMaster
-            .getWellFormattedString(STD_SPEC_ACTIONS.DUAL_ATTACK.name());
-    public static final G_PROPS ACTIVES = G_PROPS.ACTIVES;
-    public static final String ATTACK = (STD_ACTIONS.Attack
-            .name());
-    public static final String OFFHAND = "Off Hand ";
-    public static final String RELOAD = "Reload";
-    public static final String THROW = "Throw";
-    public static final String CLUMSY_LEAP = "Clumsy Leap";
-    public static final String MOVE_RIGHT = "Move Right";
-    public static final String MOVE_LEFT = "Move Left";
-    public static final String MOVE_BACK = "Move Back";
-    public static final String FLEE = "Flee";
-    public static final String SEARCH_MODE = "Search Mode";
-    public static final String TOGGLE_WEAPON_SET = "Toggle Weapon Set";
-    public static final String THROW_MAIN = "Throw Main Hand Weapon";
-    public static final String THROW_OFFHAND = "Throw Off Hand Weapon";
-    public static final String TOSS_ITEM = "Toss Item";
-    public static final String ENTER = "Enter";
-    public static final String DISARM = "Disarm";
-    public static final String UNLOCK = "Unlock";
-    public static final String DUMMY_ACTION = "Dummy Action";
-    public static ObjType DUMMY_ACTION_TYPE;
-    public static final String USE_INVENTORY = StringMaster
-            .getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.toString());
-    public static final String DIVINATION = "Divination";
-    public static final String PICK_UP = "Pick Up Items";
     protected static ArrayList<ObjType> stdObjTypes;
     protected static ArrayList<ObjType> hiddenActions;
     protected static ArrayList<ObjType> modeObjTypes;
     protected static ArrayList<ObjType> orderObjTypes;
     protected GenericGame game;
     protected HashMap<Entity, Map<String, ActiveObj>> actionsCache = new HashMap<>();
-    protected boolean offhandInit;
 
-    ActionInitializer initializer;
-    
     public DC_ActionManager(GenericGame game) {
         this.game = game;
     }
@@ -143,12 +111,12 @@ public class DC_ActionManager implements ActionManager {
             if (action.toString().equals(activeObj.getType().getName())) {
                 switch (action) {
                     case Attack:
-                        return ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
+                        return ACTION_TYPE_GROUPS.ATTACK;
                     case Move:
-                        return ActionEnums.ACTION_TYPE_GROUPS.MOVE;
+                        return ACTION_TYPE_GROUPS.MOVE;
                     case Turn_Anticlockwise:
                     case Turn_Clockwise:
-                        return ActionEnums.ACTION_TYPE_GROUPS.TURN;
+                        return ACTION_TYPE_GROUPS.TURN;
 
                     default:
                         break;
@@ -160,12 +128,12 @@ public class DC_ActionManager implements ActionManager {
             if (activeObj.getType().getName().contains(action.toString())) {
                 switch (action) {
                     case Attack:
-                        return ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
+                        return ACTION_TYPE_GROUPS.ATTACK;
                     case Move:
-                        return ActionEnums.ACTION_TYPE_GROUPS.MOVE;
+                        return ACTION_TYPE_GROUPS.MOVE;
                     case Turn_Anticlockwise:
                     case Turn_Clockwise:
-                        return ActionEnums.ACTION_TYPE_GROUPS.TURN;
+                        return ACTION_TYPE_GROUPS.TURN;
                     default:
                         break;
 
@@ -330,8 +298,8 @@ public class DC_ActionManager implements ActionManager {
         List<DC_ActiveObj> actions = new ArrayList<>();
         // actions.addAll(generateModesForUnit(unit,
         // ACTION_TYPE_GROUPS.ATTACK));
-        actions.addAll(generateModesForUnit(unit, ActionEnums.ACTION_TYPE_GROUPS.MOVE));
-        actions.addAll(generateModesForUnit(unit, ActionEnums.ACTION_TYPE_GROUPS.TURN));
+        actions.addAll(generateModesForUnit(unit, ACTION_TYPE_GROUPS.MOVE));
+        actions.addAll(generateModesForUnit(unit, ACTION_TYPE_GROUPS.TURN));
         // actions.addAll(generateModesForUnit(unit, ACTION_TYPE_GROUPS.MODE));
         actions.addAll(getSpecialModesFromUnit(unit));
         return actions;
@@ -474,8 +442,8 @@ public class DC_ActionManager implements ActionManager {
         DC_UnitAction subAction = newAction(type, new Ref(baseAction.getOwnerUnit()), baseAction
                 .getOwner(), game);
         // TODO not all!..
-        subAction.setActionType(ActionEnums.ACTION_TYPE.HIDDEN);
-        subAction.setActionTypeGroup(ActionEnums.ACTION_TYPE_GROUPS.HIDDEN);
+        subAction.setActionType(ACTION_TYPE.HIDDEN);
+        subAction.setActionTypeGroup(ACTION_TYPE_GROUPS.HIDDEN);
         return subAction;
     }
 
@@ -703,131 +671,5 @@ public class DC_ActionManager implements ActionManager {
         actionsCache.clear();
     }
 
-
-    public enum ADDITIONAL_MOVE_ACTIONS {
-        MOVE_LEFT, MOVE_RIGHT, MOVE_BACK, CLUMSY_LEAP;
-
-        public String toString() {
-            return StringMaster.getWellFormattedString(name());
-        }
-    }
-
-    public enum HIDDEN_ACTIONS {
-        Cower_In_Terror,
-        Helpless_Rage,
-        Idle,
-        Stumble_About;
-
-        public String toString() {
-            return StringMaster.getWellFormattedString(name());
-        }
-    }
-
-    public enum STD_ACTIONS {
-        Attack, Turn_Anticlockwise, Turn_Clockwise, Move;
-
-        public String toString() {
-            return StringMaster.getWellFormattedString(name());
-        }
-    }
-
-    public enum STD_MODE_ACTIONS {
-        Defend, Camp, Concentrate, Rest, Meditate, On_Alert;
-
-        public String toString() {
-            return StringMaster.getWellFormattedString(name());
-        }
-    }
-
-    public enum STD_ORDER_ACTIONS {
-        Press_the_Attack,
-        Hold_Fast,
-        Protect_me,
-        Heal_me,
-        Kill_Him,
-        Retreat,
-        Cancel_Order {
-            @Override
-            public String toString() {
-                return StringMaster.getWellFormattedString(name());
-            }
-        },
-        ;
-
-        public String toString() {
-            return "Order: " + StringMaster.getWellFormattedString(name() +
-                    "!");
-        }
-
-    }
-
-    public enum STD_SPEC_ACTIONS {
-        On_Alert,  Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Guard_Mode, Watch, Wait, Toggle_Weapon_Set
-, Push, Pull,
-//        @Override
-//        public String toString() {
-//            return StringMaster.getWellFormattedString(name());
-//        }
-    }
-
-    public enum WEAPON_ATTACKS {
-        Twohanded_Blade_Thrust,
-        Twohanded_Sword_Swing,
-
-        Sword_Swing,
-        Blade_Thrust,
-        Slash,
-        Stab,
-
-        Axe_Swing,
-        Chop,
-        Hack,
-        Hook,
-        Spike_Stab,
-
-        Twohanded_Axe_Sweep,
-
-        Heavy_Swing,
-        Head_Smash,
-        Slam,
-        Chain_Thrust,
-
-        Hilt_Smash,
-        Shield_Push,
-
-        Spear_Poke,
-        Impale,
-
-        Pole_Push,
-        Pole_Smash,
-        Pole_Thrust,
-        Shield_Bash,
-        Slice,
-        Kick,
-        Rip,
-        Punch,
-        Elbow_Smash,
-        Fist_Swing,
-        Nail_Swipe,
-        Leg_Push,
-        Arm_Push,
-        Bite,
-        Dig_Into,
-        Tear,
-
-        Tail_Smash,
-        Tail_Sting,
-        Pierce,
-
-        Implode,
-        Force_Push,
-        Hoof_Slam,
-        ;
-
-        public String toString() {
-            return StringMaster.getWellFormattedString(name());
-        }
-
-    }
 
 }

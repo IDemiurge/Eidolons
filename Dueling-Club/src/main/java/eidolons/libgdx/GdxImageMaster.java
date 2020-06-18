@@ -7,7 +7,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
@@ -17,6 +16,7 @@ import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
 import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
+import main.content.enums.entity.ActionEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -381,7 +381,7 @@ public class GdxImageMaster extends LwjglApplication {
         String path = StrPathBuilder.build("main", "actions", "standard attack",
                 weaponGroup,
                 baseType,
-                action.getName().replace(DC_ActionManager.OFFHAND, "").replace(" ", "_") + ".png");
+                action.getName().replace(ActionEnums.OFFHAND, "").replace(" ", "_") + ".png");
         return path;
     }
 

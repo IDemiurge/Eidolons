@@ -18,7 +18,7 @@ public class MicroObj extends Obj {
     protected Coordinates coordinates;
     protected boolean overlaying;
     protected int z;
-    protected Boolean overlayingInitialized; //for performance
+    protected Boolean overlayingInitialized;
     protected Coordinates originalCoordinates;
     private boolean invalidCoordinates;
 
@@ -56,11 +56,7 @@ public class MicroObj extends Obj {
         if (coordinates == null || invalidCoordinates) {
             coordinates = Coordinates.get(getX(), getY());
             invalidCoordinates = false;
-        } else {
-            //            coordinates.setX(getX());
-            //            coordinates.setY(getY());
         }
-        // coordinates.setZ(getZ()); better use separately
         return coordinates;
     }
 
@@ -128,14 +124,10 @@ public class MicroObj extends Obj {
 
     @Override
     protected void addDynamicValues() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void afterEffects() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -145,8 +137,6 @@ public class MicroObj extends Obj {
 
     @Override
     public void clicked() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override

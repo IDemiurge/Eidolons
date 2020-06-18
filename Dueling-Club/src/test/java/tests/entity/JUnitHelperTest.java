@@ -1,8 +1,8 @@
 package tests.entity;
 
-import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.content.enums.entity.ActionEnums;
 import main.game.logic.action.context.Context;
 import org.junit.Test;
 import res.JUnitResources;
@@ -31,7 +31,7 @@ public class JUnitHelperTest extends EidolonsTest {
         helper.turn(unit, main.game.bf.directions.FACING_DIRECTION.WEST);
         helper.turn(unit, main.game.bf.directions.FACING_DIRECTION.SOUTH);
         helper.turn(unit, true, true);
-        helper.doAction(unit, STD_ACTIONS.Move.name(), new Context(unit.getRef()), true);
+        helper.doAction(unit, ActionEnums.STD_ACTIONS.Move.name(), new Context(unit.getRef()), true);
         assertTrue(unit.getX() == 0);
 //      TODO helper.buff(unit, ;
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
@@ -13,9 +14,6 @@ import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static main.system.ExceptionMaster.printStackTrace;
 import static main.system.auxiliary.log.LogMaster.important;
@@ -27,7 +25,7 @@ import static main.system.auxiliary.log.LogMaster.log;
 public class SpriteAnimationFactory {
     public final static float defaultFrameDuration = 0.025f;
     public final static float fps30 = 0.033f;
-    static Map<String, SpriteAnimation> cache = new HashMap<>();
+    static ObjectMap<String, SpriteAnimation> cache = new ObjectMap<>(350);
     public static Array<AtlasRegion> dummySpriteRegions;
     private static final boolean singleFrameSpriteMode = false;
     private static final boolean testMode = false;

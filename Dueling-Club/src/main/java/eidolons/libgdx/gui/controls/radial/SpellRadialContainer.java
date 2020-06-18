@@ -8,7 +8,7 @@ import eidolons.libgdx.gui.UiMaster;
 /**
  * Created by JustMe on 3/9/2018.
  */
-public class SpellRadialContainer extends RadialValueContainer {
+public class SpellRadialContainer extends RadialContainer {
     public SpellRadialContainer(TextureRegion texture, Runnable action) {
         super(texture, action);
     }

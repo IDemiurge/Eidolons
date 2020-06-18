@@ -40,11 +40,6 @@ public class BossChecker extends UnitChecker {
     }
 
     @Override
-    public boolean canMove() {
-        return false;
-    }
-
-    @Override
     public boolean checkImmunity(UnitEnums.IMMUNITIES type) {
         return super.checkImmunity(type);
     }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.Eidolons;
@@ -32,9 +33,7 @@ import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by JustMe on 10/12/2018.
@@ -43,7 +42,7 @@ public class FullscreenAnims extends GroupX {
     public static final boolean randomFacingMode = true;
     private static final float DELAY = 0.5f;
     private static final boolean SPRITE_MODE = true; //TODO just make 2 instances
-    Map<FULLSCREEN_ANIM, Map<FACING_DIRECTION, Actor>> groupCache = new HashMap<>();
+    ObjectMap<FULLSCREEN_ANIM, ObjectMap<FACING_DIRECTION, Actor>> groupCache = new ObjectMap<>();
     private FullscreenAnimDataSource data;
     private float delayTimer;
     private float showingTimer;
@@ -287,7 +286,7 @@ public class FullscreenAnims extends GroupX {
 
     private void init() {
         for (FULLSCREEN_ANIM type : FULLSCREEN_ANIM.values()) {
-            Map<FACING_DIRECTION, Actor> map = new HashMap<>();
+            ObjectMap<FACING_DIRECTION, Actor> map = new ObjectMap<>();
             for (FACING_DIRECTION facing : FACING_DIRECTION.values) {
                 //                Actor group = new Actor();
 

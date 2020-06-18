@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
@@ -90,13 +92,13 @@ public abstract class GridPanel extends Group {
 
     protected GridCellContainer[][] cells;
     //    protected GridCellContainer[][] removedCells;
-    protected Map<BattleFieldObject, BaseView> viewMap;
+    protected ObjectMap<Obj, BaseView> viewMap;
     protected List<Manipulator> manipulators = new ArrayList<>();
     protected List<GridObject> gridObjects = new ArrayList<>();
     protected List<GroupX> customOverlayingObjects = new ArrayList<>();
     protected List<GroupX> customOverlayingObjectsTop = new ArrayList<>();
     protected List<GroupX> customOverlayingObjectsUnder = new ArrayList<>(100);
-    protected List<GroupWithEmitters> emitterGroups = new ArrayList<>(125);
+    protected Array<GroupWithEmitters> emitterGroups = new Array <>(125);
     protected List<OverlayView> overlays = new ArrayList<>();
 
     protected GridRenderHelper manager;
@@ -109,7 +111,7 @@ public abstract class GridPanel extends Group {
     protected PlatformHandler platformHandler;
     protected List<PlatformCell> platforms = new LinkedList<>();
     protected Set<PlatformDecor> platformDecor = new LinkedHashSet();
-    protected final Map<DECOR_LEVEL, CellDecorLayer> decorMap = new HashMap<>();
+    protected final ObjectMap<DECOR_LEVEL, CellDecorLayer> decorMap = new ObjectMap<>(4);
     private boolean decorInitialized;
 
     public GridPanel(int cols, int rows, int moduleCols, int moduleRows) {
@@ -344,7 +346,7 @@ it sort of broke at some point - need to investigate!
     }
 
     protected void drawEmitters(Batch batch) {
-        for (int i = 0; i < emitterGroups.size(); i++) {
+        for (int i = 0; i < emitterGroups.size; i++) {
             emitterGroups.get(i).draw(batch, 1f, true);
         }
     }
@@ -646,7 +648,7 @@ it sort of broke at some point - need to investigate!
         //            return;
         //        }
 
-        for (BattleFieldObject sub : viewMap.keySet()) {
+        for (Obj sub : viewMap.keys()) {
             BaseView view = viewMap.get(sub);
             if (view.getActions().size == 0) {
                 if (sub.isDead()) {
@@ -772,7 +774,7 @@ it sort of broke at some point - need to investigate!
         overlays.add(view);
     }
 
-    public Map<BattleFieldObject, BaseView> getViewMap() {
+    public ObjectMap<Obj, BaseView> getViewMap() {
         return viewMap;
     }
 
@@ -1044,7 +1046,7 @@ it sort of broke at some point - need to investigate!
 
     protected void createDecor(Coordinates c,
                                DecorData data) {
-        for (DECOR_LEVEL level : decorMap.keySet()) {
+        for (DECOR_LEVEL level : decorMap.keys()) {
             CellDecorLayer cellDecorLayer = decorMap.get(level);
             if (data == null) {
                 cellDecorLayer.remove(c);

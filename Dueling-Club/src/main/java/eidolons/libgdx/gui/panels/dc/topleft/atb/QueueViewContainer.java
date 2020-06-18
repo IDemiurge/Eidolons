@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -13,9 +14,6 @@ import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
-
-import java.util.HashMap;
-import java.util.Map;
 
 class QueueViewContainer extends Container<QueueView> {
     private  Image intentIconBg;
@@ -27,7 +25,7 @@ class QueueViewContainer extends Container<QueueView> {
     public boolean immobilized;
 
     SpriteX intentIconSprite;
-    Map<INTENT_ICON, SpriteAnimation> iconMap = new HashMap<>();
+    ObjectMap<INTENT_ICON, SpriteAnimation> iconMap = new ObjectMap<>(12);
     private INTENT_ICON intentIcon;
 
     public QueueViewContainer(QueueView actor) {

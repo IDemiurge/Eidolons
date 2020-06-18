@@ -3,7 +3,8 @@ package eidolons.libgdx.anims.std;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.libgdx.anims.Anim;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.AnimEnums;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.anims.anim3d.Potion3dAnim;
 import eidolons.libgdx.anims.std.sprite.LockKeyAnimation;
 import main.game.logic.event.Event;
@@ -65,9 +66,9 @@ public class EventAnimCreator {
     public static ANIM_PART getPartToAttachTo(Event event) {
         switch (((STANDARD_EVENT_TYPE) event.getType())) {
             case UNIT_HAS_BEEN_KILLED:
-                return ANIM_PART.AFTEREFFECT;
+                return AnimEnums.ANIM_PART.AFTEREFFECT;
         }
-        return ANIM_PART.IMPACT;
+        return AnimEnums.ANIM_PART.IMPACT;
     }
 
 }

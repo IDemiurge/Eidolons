@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.ai.tools.path;
 import eidolons.ability.conditions.special.SneakCondition;
 import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.DC_Cell;
@@ -11,6 +10,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.ability.effects.Effect;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.elements.targeting.FixedTargeting;
@@ -53,7 +53,7 @@ public class PathChoiceMaster {
         this.targetAction = targetAction;
         this.targetCoordinate = targetCoordinate;
         this.moveActions = moveActions;
-        stdMove = unit.getAction(DC_ActionManager.STD_ACTIONS.Move.name());
+        stdMove = unit.getAction(ActionEnums.STD_ACTIONS.Move.name());
         return this;
     }
 

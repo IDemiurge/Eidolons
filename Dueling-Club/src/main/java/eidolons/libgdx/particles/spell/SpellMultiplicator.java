@@ -9,6 +9,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.std.SpellAnim;
 import eidolons.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
@@ -34,7 +35,7 @@ import static eidolons.libgdx.bf.GridMaster.getCenteredPos;
 public class SpellMultiplicator implements Runnable {
     static final MULTIPLICATION_METHOD defaultMultiplicationMethod = MULTIPLICATION_METHOD.COORDINATE;
     MULTIPLICATION_METHOD multiplicationMethod = defaultMultiplicationMethod;
-    private Anim anim;
+    private final Anim anim;
     private SpellAnim spellAnim;
     //parallel, in different threads!
     private List<SpellVfx> emitterList;
@@ -64,7 +65,7 @@ public class SpellMultiplicator implements Runnable {
 //        if (anim.getPart() == AnimConstructor.ANIM_PART.IMPACT) {
 //            return true;
 //        }
-        if (anim.getPart() != AnimConstructor.ANIM_PART.MISSILE) {
+        if (anim.getPart() != AnimEnums.ANIM_PART.MISSILE) {
             return false;
         }
         if (anim instanceof SpellAnim) {
@@ -298,7 +299,7 @@ public class SpellMultiplicator implements Runnable {
         }
         MoveByAction action = ActionMaster.getMoveByAction(getOrigin(), v, actor, (int) speed);
 
-        if (anim.getPart() == AnimConstructor.ANIM_PART.IMPACT) {
+        if (anim.getPart() == AnimEnums.ANIM_PART.IMPACT) {
             duration = 1f / 100;
             action.setDuration(duration);
         } else {

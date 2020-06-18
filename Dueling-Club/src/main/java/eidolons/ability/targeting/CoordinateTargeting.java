@@ -22,13 +22,12 @@ import java.util.Set;
 
 public class CoordinateTargeting extends TargetingImpl {
     private static final KEYS DEFAULT_KEY = KEYS.SOURCE;
-    private UNIT_DIRECTION unitDirection;
+    private final UNIT_DIRECTION unitDirection;
     private DIRECTION direction;
-    private String facingKey;
-    private String coordinateKey;
-    boolean flip; //TODO igg demo fix
+    private final String facingKey;
+    private final String coordinateKey;
     boolean useActivesRange;
-    private boolean cellTargeting = true;
+    private final boolean cellTargeting = true;
 
     public CoordinateTargeting(UNIT_DIRECTION unitDirection, String facingKey, String coordinateKey) {
         this.unitDirection = unitDirection;
@@ -76,9 +75,6 @@ public class CoordinateTargeting extends TargetingImpl {
         if (unitDirection != null) {
             BattleFieldObject unit = (BattleFieldObject) obj;
             used_direction = DirectionMaster.getDirectionByFacing(unit.getFacing(), unitDirection);
-            if (flip) {
-                used_direction = used_direction.flip();
-            }
         }
         if (used_direction != null) {
             if (useActivesRange) {

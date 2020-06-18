@@ -18,7 +18,6 @@ import java.util.Set;
  */
 
 public abstract class GenericTurnManager implements TurnManager {
-    private static boolean visionInitialized;
     protected DequeImpl<Unit> unitQueue;
     protected DequeImpl<Unit> displayedUnitQueue;
     protected DC_Game game;
@@ -27,14 +26,6 @@ public abstract class GenericTurnManager implements TurnManager {
 
     public GenericTurnManager(DC_Game game) {
         this.game = game;
-    }
-
-    public static boolean isVisionInitialized() {
-        return visionInitialized;
-    }
-
-    public static void setVisionInitialized(boolean visionInitialized) {
-        GenericTurnManager.visionInitialized = visionInitialized;
     }
 
     public void init() {
@@ -54,15 +45,6 @@ public abstract class GenericTurnManager implements TurnManager {
             }
         }
         return getActiveUnit();
-    }
-
-    protected boolean playerHasActiveUnits() {
-        for (Unit u : getUnitQueue()) {
-            if (u.isMine() || (u.isPlayerControlled() && !game.isOffline())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public Boolean nextAction() {

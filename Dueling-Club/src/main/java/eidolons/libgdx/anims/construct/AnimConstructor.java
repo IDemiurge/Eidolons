@@ -1,10 +1,9 @@
 package eidolons.libgdx.anims.construct;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
-import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.Spell;
@@ -56,36 +55,20 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static eidolons.libgdx.anims.AnimEnums.ANIM_PART;
+import static eidolons.libgdx.anims.AnimEnums.anim_vals;
 
 /**
  * Created by JustMe on 1/11/2017.
  */
 public class AnimConstructor {
-    public static final VALUE[] anim_vals = {
-            PROPS.ANIM_SPRITE_PRECAST,
-            PROPS.ANIM_SPRITE_CAST,
-            PROPS.ANIM_SPRITE_RESOLVE,
-            PROPS.ANIM_SPRITE_MAIN,
-            PROPS.ANIM_SPRITE_IMPACT,
-            PROPS.ANIM_SPRITE_AFTEREFFECT,
-            PROPS.ANIM_MISSILE_SPRITE,
-            PROPS.ANIM_MODS_SPRITE,
-
-            PROPS.ANIM_MISSILE_VFX,
-            PROPS.ANIM_VFX_PRECAST,
-            PROPS.ANIM_VFX_CAST,
-            PROPS.ANIM_VFX_RESOLVE,
-            PROPS.ANIM_VFX_MAIN,
-            PROPS.ANIM_VFX_IMPACT,
-            PROPS.ANIM_VFX_AFTEREFFECT,
-            PROPS.ANIM_MODS_VFX,
-            PARAMS.ANIM_SPEED,
-            PARAMS.ANIM_FRAME_DURATION,
-    };
-    static Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
-    private static boolean autoconstruct = false;
-    private static boolean reconstruct = false;
+    static ObjectMap<DC_ActiveObj, CompositeAnim> map = new ObjectMap<>(200);
+    private static final boolean autoconstruct = false;
+    private static final boolean reconstruct = false;
 
     private AnimConstructor() {
 
@@ -165,7 +148,7 @@ public class AnimConstructor {
     }
 
     public static CompositeAnim getCached(ActiveObj active) {
-        CompositeAnim anim = map.get(active);
+        CompositeAnim anim = map.get((DC_ActiveObj) active);
         if (anim != null) {
             anim.reset();
             return anim;
@@ -179,7 +162,7 @@ public class AnimConstructor {
         }
         if (!checkAnimationSupported((DC_ActiveObj) active))
             return null;
-        CompositeAnim anim = map.get(active);
+        CompositeAnim anim = map.get((DC_ActiveObj) active);
         if (!isReconstruct()) {
             if (anim != null) {
                 anim.reset();
@@ -606,7 +589,7 @@ public class AnimConstructor {
     }
 
     public static void removeCache(Anim anim) {
-        map.remove(anim.getActive());
+        map.remove((DC_ActiveObj) anim.getActive());
     }
 
     private boolean isPartIgnored(String partPath) {
@@ -697,35 +680,6 @@ public class AnimConstructor {
     public static CompositeAnim getParryAnim(DC_WeaponObj weaponObj, DC_ActiveObj attack) {
         Parry3dAnim parryAnim = new Parry3dAnim(weaponObj, attack);
         return new CompositeAnim(parryAnim);
-    }
-
-    public enum ANIM_PART {
-        PRECAST(2F), //channeling
-        CAST(2.5f),
-        RESOLVE(2),
-        MISSILE(3) {
-            @Override
-            public String getPartPath() {
-                return
-                        "missile";
-            }
-        }, //flying missile
-        IMPACT(1),
-        AFTEREFFECT(2.5f);
-
-        public String getPartPath() {
-            return super.toString();
-        }
-
-        private float defaultDuration;
-
-        ANIM_PART(float defaultDuration) {
-            this.defaultDuration = defaultDuration;
-        }
-
-        public float getDefaultDuration() {
-            return defaultDuration;
-        }
     }
 
 

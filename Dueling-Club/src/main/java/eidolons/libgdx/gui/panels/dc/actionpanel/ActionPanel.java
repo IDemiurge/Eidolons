@@ -3,7 +3,6 @@ package eidolons.libgdx.gui.panels.dc.actionpanel;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
@@ -21,6 +20,7 @@ import eidolons.libgdx.gui.panels.dc.actionpanel.facing.FacingPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.WeaponDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
+import main.content.enums.entity.ActionEnums;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -169,7 +169,7 @@ public class ActionPanel extends GroupX {
 
         if (DC_Game.game != null)
             if (DC_Game.game.isStarted())
-                Eidolons.activateMainHeroAction(DC_ActionManager.USE_INVENTORY);
+                Eidolons.activateMainHeroAction(ActionEnums.USE_INVENTORY);
     }
 
     @Override
@@ -233,7 +233,7 @@ public class ActionPanel extends GroupX {
         GuiEventManager.bind(ACTION_PANEL_UPDATE, obj -> {
             final ActiveQuickSlotsDataSource source = (ActiveQuickSlotsDataSource) obj.get();
             if (source != null) {
-                ActionValueContainer.setDarkened(false);
+                ActionContainer.setDarkened(false);
                 if (getY() < 0) {
                     if (isMovedDownOnEnemyTurn())
                         ActionMaster.addMoveToAction(this, getX(), 0, 1);
@@ -253,7 +253,7 @@ public class ActionPanel extends GroupX {
                 if (isMovedDownOnEnemyTurn())
                     ActionMaster.addMoveToAction(this, getX(), -IMAGE_SIZE, 1);
 
-                ActionValueContainer.setDarkened(true);
+                ActionContainer.setDarkened(true);
                 // ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
                 // ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
             }

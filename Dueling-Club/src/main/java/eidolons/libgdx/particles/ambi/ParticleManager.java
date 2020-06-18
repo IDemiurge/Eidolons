@@ -2,6 +2,7 @@ package eidolons.libgdx.particles.ambi;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -17,9 +18,7 @@ import main.system.GuiEventType;
 import main.system.MapEvent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by JustMe on 1/8/2017.
@@ -31,7 +30,7 @@ public class ParticleManager extends GroupX {
     private static boolean ambienceMoveOn;
 
     List<EmitterActor> dynamicVfx = new ArrayList<>();
-    Map<Module, GlobalVfxMap> cache = new HashMap<>();
+    ObjectMap<Module, GlobalVfxMap> cache = new ObjectMap<>(5);
 
     GlobalVfxMap ambienceMap;
 

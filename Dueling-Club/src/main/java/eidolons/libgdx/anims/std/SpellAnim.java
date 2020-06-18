@@ -8,7 +8,7 @@ import eidolons.entity.active.Spell;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.anims.construct.AnimConstructor;
+import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -41,7 +41,7 @@ public class SpellAnim extends ActionAnim {
 
     SPELL_ANIMS template;
 
-    public SpellAnim(Entity active, AnimData params, SPELL_ANIMS template, AnimConstructor.ANIM_PART part) {
+    public SpellAnim(Entity active, AnimData params, SPELL_ANIMS template, AnimEnums.ANIM_PART part) {
         super(active, params, part);
         this.template = template;
     }
@@ -70,7 +70,7 @@ public class SpellAnim extends ActionAnim {
 
     }
 
-    public static final String getOverriddenVfx(DC_ActiveObj active, AnimConstructor.ANIM_PART part) {
+    public static final String getOverriddenVfx(DC_ActiveObj active, AnimEnums.ANIM_PART part) {
         //could be a bit randomized too!
         // enum for vfx after all?
 
@@ -100,7 +100,7 @@ public class SpellAnim extends ActionAnim {
         return data;
     }
 
-    private static String getForGroup(SpellEnums.SPELL_GROUP group, AnimConstructor.ANIM_PART part) {
+    private static String getForGroup(SpellEnums.SPELL_GROUP group, AnimEnums.ANIM_PART part) {
         String path = StrPathBuilder.build(part.getPartPath(), group, part.getPartPath());
         if (FileManager.isFile(PathFinder.getRootPath() + PathFinder.getSpellVfxPath() + path)) {
             return path;
@@ -116,7 +116,7 @@ public class SpellAnim extends ActionAnim {
         }
         switch (group) {
             case FIRE:
-                if (part == AnimConstructor.ANIM_PART.CAST) {
+                if (part == AnimEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(4) + 1;
                     if (i == 1) {
                         return "cast/destruction center5";
@@ -124,14 +124,14 @@ public class SpellAnim extends ActionAnim {
                     return "cast/destruction center5";
                 }
 
-                if (part == AnimConstructor.ANIM_PART.AFTEREFFECT) {
+                if (part == AnimEnums.ANIM_PART.AFTEREFFECT) {
                     if (RandomWizard.chance(66))
                         return "flow/fire flow";
                     return "flow/fire flow3";
                 }
                 break;
             case SAVAGE:
-                if (part == AnimConstructor.ANIM_PART.CAST) {
+                if (part == AnimEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(2) + 1;
                     if (i == 1) {
                         return "cast/savage center";
@@ -214,7 +214,7 @@ public class SpellAnim extends ActionAnim {
                 }
                 break;
             case WITCHERY:
-                if (part == AnimConstructor.ANIM_PART.CAST) {
+                if (part == AnimEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(2) + 1;
                     if (i == 1) {
                         return "cast/witchery center";
@@ -225,14 +225,14 @@ public class SpellAnim extends ActionAnim {
             case SHADOW:
 //                "breath"
 
-                if (part == AnimConstructor.ANIM_PART.MISSILE) {
+                if (part == AnimEnums.ANIM_PART.MISSILE) {
 //                    if (RandomWizard.chance(66))
 //                        return "missile/shadow missile3";
 //                    if (RandomWizard.chance(66))
 //                        return "missile/dark writhe";
 //                    return "missile/shadow missile2";
                 }
-                if (part == AnimConstructor.ANIM_PART.CAST) {
+                if (part == AnimEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(2) + 1;
                     if (i == 1) {
                         return "cast/shadow center";
@@ -241,7 +241,7 @@ public class SpellAnim extends ActionAnim {
                 }
                 break;
             case PSYCHIC:
-                if (part == AnimConstructor.ANIM_PART.CAST) {
+                if (part == AnimEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(6) + 1;
                     if (i == 1) {
                         return "cast/witchery circle slow";
@@ -345,7 +345,7 @@ public class SpellAnim extends ActionAnim {
         return null;
     }
 
-    private static String getForName(AnimConstructor.ANIM_PART part, String name) {
+    private static String getForName(AnimEnums.ANIM_PART part, String name) {
         switch (name) {
             case "Burst of Rage":
             case "Shadow Fury":
@@ -365,7 +365,7 @@ public class SpellAnim extends ActionAnim {
         return null;
     }
 
-    private boolean isVfxOverridden(DC_ActiveObj active, AnimConstructor.ANIM_PART part) {
+    private boolean isVfxOverridden(DC_ActiveObj active, AnimEnums.ANIM_PART part) {
         return getOverriddenVfx(active, part) != null;
     }
 
@@ -434,7 +434,7 @@ public class SpellAnim extends ActionAnim {
         return reslt;
     }
 
-    private float getDefaultVfxSpeed(AnimConstructor.ANIM_PART part) {
+    private float getDefaultVfxSpeed(AnimEnums.ANIM_PART part) {
         switch (part) {
 //            case CAST:
 //                return 1.18f;

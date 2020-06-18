@@ -27,6 +27,10 @@ public class TablePanel<T extends Actor> extends Table {
     public TablePanel() {
     }
 
+    @Override
+    public String toString() {
+        return getUserObject()+" -\n"+super.toString();
+    }
 
     public void removeBackground() {
         background(new EmptyDrawable());

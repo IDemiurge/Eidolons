@@ -36,7 +36,6 @@ import java.util.List;
 public class DC_WeaponObj extends DC_HeroSlotItem {
 
     private boolean mainHand;
-    private boolean natural;
     private List<DC_UnitAction> attackActions;
     private DC_QuickItemObj ammo;
     private DC_QuickItemObj lastAmmo;
@@ -247,14 +246,10 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     @Override
     public void setRef(Ref ref) {
-        if (!equipped) { // TODO preCheck ref contains *this* ?
+        if (!equipped) { // TODO EA Check  ref contains *this* ?
             // HC unequip bug?
             equipped(ref);
         }
-    }
-
-    public void equippedInReserve(Ref ref) {
-        //TODO igg demo fix
     }
 
     @Override

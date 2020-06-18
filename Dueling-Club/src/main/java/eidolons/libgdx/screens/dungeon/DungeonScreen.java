@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -15,7 +14,6 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.GridCreateData;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
 import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
 import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
@@ -53,7 +51,6 @@ public class DungeonScreen extends GameScreenWithTown {
     protected static DungeonScreen instance;
 
     private boolean blocked;
-    private GridCellContainer stackView;
     private boolean firstShow;
     private boolean gridFirstDraw;
 
@@ -166,23 +163,16 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     protected void triggerInitialEvents() {
-        //        DC_Game.game.getVisionMaster().triggerGuiEvents();
         GuiEventManager.trigger(UPDATE_SHADOW_MAP);
     }
 
 
     protected boolean canShowScreen() {
-        //        if (selectionPanel != null) TODO igg demo fix
-        //            if (selectionPanel.isVisible()) {
-        //                return false;
-        //            }
         boolean show = super.canShowScreen();
         if (show) {
             if (!firstShow) {
                 firstShow = true;
-                //                toBlack();
-                //                blackout(5, 0);
-                blackout(5, 1, true);
+                blackout(3, 1, true);
             }
         }
         return show;
@@ -191,10 +181,6 @@ public class DungeonScreen extends GameScreenWithTown {
     @Override
     protected void doBlackout() {
         if (getCamera() != null) {
-            //            float h = Gdx.graphics.getHeight() * getCam().zoom;
-            //            float w = Gdx.graphics.getWidth() * getCam().zoom;
-            //            getBatch().blackSprite.setBounds(getCam().position.x - w / 2,
-            //                    getCam().position.y - h/ 2, 1920 , 1050); //center?}
             Camera camera = guiStage.getViewport().getCamera();
             camera.update();
             batch.setProjectionMatrix(camera.combined);
@@ -213,7 +199,6 @@ public class DungeonScreen extends GameScreenWithTown {
     public void renderMain(float delta) {
 
         checkInputController();
-        //        stages.for
         guiStage.act(delta);
         if (isShowingGrid())
             //            if (isDrawGrid())
@@ -271,20 +256,9 @@ public class DungeonScreen extends GameScreenWithTown {
 
     @Override
     public void resize(int width, int height) {
-        //     animationEffectStage.getViewport().update(width, height);
-
-        //        float aspectRatio = (float) width / (float) height;
-        //        cam = new OrthographicCamera(width * aspectRatio, height) ;
-
         gridStage.getRoot().setSize(width, height);
-        //        guiStage.getRoot().setSize(width, height);
         gridStage.getViewport().update(width, height);
-        //        guiStage.setViewport(new ScreenViewport(new OrthographicCamera(width, height)));
         guiStage.getViewport().update(width, height);
-        //        getGuiStage().getGuiVisuals().resized();
-
-        //        BattleGuiStage.camera.viewportWidth=width;
-        //        BattleGuiStage.camera.viewportHeight=height;
     }
 
 
@@ -317,11 +291,6 @@ public class DungeonScreen extends GameScreenWithTown {
         }
     }
 
-    private boolean isSpriteBgTest() {
-        return EidolonsGame.TUTORIAL_MISSION;
-    }
-
-
     @Override
     public void reset() {
         super.reset();
@@ -329,16 +298,13 @@ public class DungeonScreen extends GameScreenWithTown {
     }
 
     protected void resetShader() {
-
         batch.setShader(null);
-        //        guiStage .getCustomSpriteBatch().setShader(null);
 
         if (batch.getShader() != DarkShader.getDarkShader())
             if (isBlocked() || ExplorationMaster.isWaiting()) {
                 bufferedShader = batch.getShader();
                 batch.setFluctuatingShader(DarkShader.getInstance());
                 guiStage.getCustomSpriteBatch().setShader(GrayscaleShader.getGrayscaleShader());
-                //                guiStage .getCustomSpriteBatch().setFluctuatingShader(GrayscaleShader.getGrayscaleShader());
             }
     }
 
@@ -384,11 +350,6 @@ public class DungeonScreen extends GameScreenWithTown {
 
     @Override
     protected InputProcessor createInputController() {
-        //        if (GdxMaster.isVisibleEffectively(selectionPanel)){ //TODO for 'aesthetic' choice after death
-        //                if (selectionPanel.getStage()==guiStage) {
-        //            return GdxMaster.getMultiplexer(guiStage, controller);
-        //            }
-        //        }
         if (isWaitingForInputNow())
             return getWaitForInputController(param);
         if (getGuiStage().isDialogueMode()) {
@@ -400,9 +361,7 @@ public class DungeonScreen extends GameScreenWithTown {
             if (TownPanel.getActiveInstance() != null || CoreEngine.isIggDemoRunning() || selectionPanel instanceof HeroSelectionPanel) {
                 return GdxMaster.getMultiplexer(guiStage, super.createInputController());
             } else {
-                return super.createInputController()
-
-                        ;
+                return super.createInputController()                        ;
             }
         }
     }
@@ -436,11 +395,4 @@ public class DungeonScreen extends GameScreenWithTown {
         return true;
     }
 
-    public GridCellContainer getStackView() {
-        return stackView;
-    }
-
-    public void setStackView(GridCellContainer stackView) {
-        this.stackView = stackView;
-    }
 }

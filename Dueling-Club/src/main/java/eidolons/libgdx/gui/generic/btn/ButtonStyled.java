@@ -135,7 +135,7 @@ public class ButtonStyled extends ImageContainer {
         LE_STRUCT("ui/level_editor/anew/buttons/struct.png"),
         LE_BRUSH("ui/level_editor/anew/buttons/brush.png"),
         LE_VIEWS("ui/level_editor/anew/buttons/view.png"),
-        ARROW(Images.ROLL_ARROW);
+        ARROW(Images.ROLL_ARROW), EMPTY("");
 
         String path;
         private Drawable texture;

@@ -46,13 +46,12 @@ public class DeathMaster extends Master {
 
 
     public void unitAnnihilated(Obj _killed, Obj _killer) {
-
         String message = null;
         if (_killed == _killer) {
             message = _killed + " annihilates";// + _killed.getInfoString();
         } else
             message = _killed + " is annihilated by " + _killer;
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
         getGame().getLogManager().log(message);
         getGame().getGraveyardManager().removeCorpse(_killed);
         _killed.setAnnihilated(true);
@@ -60,14 +59,7 @@ public class DeathMaster extends Master {
         getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ANNIHILATED,
                 new Context(_killer, _killed)));
 
-        //     TODO igg demo fix
-        //      GuiEventManager.trigger(GuiEventType.SHOW_SPRITE,
-        //                HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.BONE,
-        //                        HitAnim.HIT.BONE_CRACK),
-        //                _killed.getRef().getObj(KEYS.HOSTILITY));
-
         getGameMaster().remove(_killed, true);
-        //	TODO 	getGame().getDroppedItemManager().remove((DC_HeroObj) _killed, item);
 
     }
 
@@ -127,7 +119,7 @@ public class DeathMaster extends Master {
         }
         if (!quietly)
             checkXpGranted(_killed, _killer);
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
         _killed.setDead(true);
 
 

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
@@ -51,7 +52,9 @@ import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 import main.system.threading.WaitMaster;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static eidolons.libgdx.anims.sprite.SpriteAnimationFactory.fps30;
@@ -109,9 +112,9 @@ public class AnimMaster3d {
             {"aimed shot", "quick shot"}
     };
     public static boolean JPG_WEAPONS = false;// EidolonsGame.BRIDGE;
-    private static final Map<String, TextureAtlas> atlasMap = new HashMap<>();
+    // private static final Map<String, TextureAtlas> atlasMap = new HashMap<>();
     private static final List<DC_WeaponObj> broken = new ArrayList<>();
-    private static Map<String, String> substituteMap;
+    private static ObjectMap<String, String> substituteMap;
     private static Boolean off;
     private static float fps = fps30;
 
@@ -120,7 +123,7 @@ public class AnimMaster3d {
     }
 
     public static void init() {
-        substituteMap = new HashMap<>();
+        substituteMap = new ObjectMap<>();
         for (String[] sub : substitutesWeapons) {
             substituteMap.put(sub[0], sub[1]);
         }

@@ -187,8 +187,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
             return true;
         }
         if (obj.getName().equalsIgnoreCase("gateway glyph")) {
-            //TODO igg demo hack
-
+            //TODO make real
             new TownPortalEffect().apply(new Ref(unit));
             return true;
         }

@@ -28,8 +28,8 @@ import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.gui.HideButton;
+import eidolons.libgdx.gui.controls.radial.RadialContainer;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
-import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
@@ -420,7 +420,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
                     if (!ancestors.contains(LordPanel.getInstance()))
                         if (!ancestors.contains(OptionsWindow.getInstance())) {
                             if (GdxMaster.getFirstParentOfClass(
-                                    actor, RadialValueContainer.class) == null) {
+                                    actor, RadialContainer.class) == null) {
                                 if (HqPanel.getActiveInstance() == null || !ancestors.contains(HqPanel.getActiveInstance()))
                                     return null;
                             } else if (

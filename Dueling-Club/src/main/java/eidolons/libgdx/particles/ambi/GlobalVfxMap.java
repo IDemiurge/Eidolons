@@ -27,12 +27,12 @@ public class GlobalVfxMap extends GroupX {
 
     Map<DAY_TIME, Map<EmitterMap, AmbienceDataSource>> caches = new HashMap<>();
     Map<Coordinates, Color> colorMap = new HashMap<>();
-    private List<EmitterMap> maps = new ArrayList<>();
+    private final List<EmitterMap> maps = new ArrayList<>();
     private Integer emitterCountControlCoef;
     private DAY_TIME time;
     float updatePeriod = 3f;
     float updateTimer;
-    private VFX_TEMPLATE DEFAULT_TEMPLATE=VFX_TEMPLATE.POISON;
+    private final VFX_TEMPLATE DEFAULT_TEMPLATE=VFX_TEMPLATE.POISON;
 
     public GlobalVfxMap(Module module) {
         initModuleVfx(module);
@@ -64,7 +64,7 @@ public class GlobalVfxMap extends GroupX {
             for (DAY_TIME time : DAY_TIME.values()) {
                 AmbienceDataSource data = new AmbienceDataSource(template, time);
 
-                for (String path : data.getMap().keySet()) {
+                for (String path : data.getMap().keys()) {
                     Integer chance = data.getMap().get(path);
                     if (emitterMap == null) {
                         emitterMap =

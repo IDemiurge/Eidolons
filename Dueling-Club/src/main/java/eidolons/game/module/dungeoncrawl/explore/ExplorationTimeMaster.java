@@ -239,7 +239,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             guiDirtyFlag = false;
         }
 
-        GuiEventManager.trigger(ACTION_PANEL_UPDATE, //igg demo hack
+        GuiEventManager.trigger(ACTION_PANEL_UPDATE, //DC Review
                 new PanelActionsDataSource(Eidolons.getMainHero()));
     }
 

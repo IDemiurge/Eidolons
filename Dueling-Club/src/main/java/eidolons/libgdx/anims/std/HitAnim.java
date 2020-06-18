@@ -22,7 +22,7 @@ import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.fullscreen.ScreenshakeMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -65,7 +65,7 @@ public class HitAnim extends ActionAnim {
     private static boolean displacementOn = true;
     private SPRITE_TYPE spriteType;
     private HIT hitType;
-    private String text;
+    private final String text;
     private String imagePath;
     private Color c;
     private FloatingText floatingText;
@@ -105,7 +105,7 @@ public class HitAnim extends ActionAnim {
             damageType = active.getDamageType();
         }
 
-        part = ANIM_PART.IMPACT;
+        part = AnimEnums.ANIM_PART.IMPACT;
     }
 
     @Override
@@ -307,7 +307,7 @@ public class HitAnim extends ActionAnim {
         addFadeAnim();
 
         if (getActive() instanceof Spell) {
-            DC_SoundMaster.playAnimStartSound(getActive(), ANIM_PART.IMPACT);
+            DC_SoundMaster.playAnimStartSound(getActive(), AnimEnums.ANIM_PART.IMPACT);
         }
         //        if (textSupplier != null)
         //            floatingText.setText(textSupplier.getVar());
@@ -436,7 +436,7 @@ public class HitAnim extends ActionAnim {
         }
         getActionTarget().setX(originalActorX);
         getActionTarget().setY(originalActorY);
-        GuiEventManager.trigger(HP_BAR_UPDATE, getActionTarget());
+        GuiEventManager.trigger(HP_BAR_UPDATE, getActionTarget().getUserObject());
         if (getParentAnim() != null)
             getParentAnim().setHpUpdate(false);
     }

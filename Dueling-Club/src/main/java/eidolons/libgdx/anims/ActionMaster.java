@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Predicate;
 import eidolons.libgdx.anims.actions.*;
 import eidolons.libgdx.anims.main.AnimMaster;
@@ -20,13 +21,15 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.ReflectionMaster;
 import main.system.threading.WaitMaster;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by JustMe on 1/26/2017.
  */
 public class ActionMaster {
-    public static final Map<Class, ActionPool> poolMap = new HashMap<>();
+    public static final ObjectMap<Class, ActionPool> poolMap = new ObjectMap<>();
     private static final float DEFAULT_FADE_OUT_DURATION = 2;
     private static final float DEFAULT_FADE_IN_DURATION = 0.5f;
 

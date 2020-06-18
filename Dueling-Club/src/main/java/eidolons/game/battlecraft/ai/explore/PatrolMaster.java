@@ -1,12 +1,12 @@
 package eidolons.game.battlecraft.ai.explore;
 
-import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.explore.behavior.WanderAiMaster;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.AiEnums;
 import main.entity.Ref;
 import main.entity.obj.Obj;
@@ -112,7 +112,7 @@ public class PatrolMaster {
     }
 
     private static Action getIdleAction(Patrol patrol, UnitAI ai) {
-        STD_ACTIONS.Turn_Anticlockwise.name();
+        ActionEnums.STD_ACTIONS.Turn_Anticlockwise.name();
         // preCheck Prepare actions - rest, ... if turn is near over? OR
         // getPrepareAction instead or return NULL!
         return null;

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
@@ -25,10 +26,8 @@ import main.system.launch.CoreEngine;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -46,13 +45,13 @@ public class TextureCache {
     private static Texture missingTexture;
     private static Texture empty;
 
-    private static final Map<String, TextureRegion> regionCache = new HashMap<>(300);
-    private static final Map<TextureRegion, TextureRegionDrawable> drawableMap = new HashMap<>(300);
+    private static final ObjectMap<String, TextureRegion> regionCache = new ObjectMap<>(1300);
+    private static final ObjectMap<TextureRegion, TextureRegionDrawable> drawableMap = new ObjectMap<>(1300);
     private static boolean returnEmptyOnFail = true;
     private static final List<String> missingTextures = new LinkedList<>();
 
-    private final Map<String, Texture> cache;
-    private final Map<Texture, Texture> greyscaleCache;
+    private final ObjectMap<String, Texture> cache;
+    private final ObjectMap<Texture, Texture> greyscaleCache;
     private final String imagePath;
     private SmartTextureAtlas uiAtlas;
     private SmartTextureAtlas mainAtlas;
@@ -99,8 +98,8 @@ public class TextureCache {
 //            uiAtlasesOn = CoreEngine.isJarlike() || !CoreEngine.isIDE() ;
 
         this.imagePath = PathFinder.getImagePath();
-        this.cache = new HashMap<>();
-        this.greyscaleCache = new HashMap<>();
+        this.cache = new ObjectMap<>(1300);
+        this.greyscaleCache = new ObjectMap<>(100);
         if (atlasesOn) {
             loadAtlases();
         } else {
@@ -118,10 +117,10 @@ public class TextureCache {
 
     public void logDiagnostics() {
         main.system.auxiliary.log.LogMaster.important(
-                "cache.size " + cache.size() +
-                        "regionCache.size " + regionCache.size() +
-                        "drawableMap.size " + drawableMap.size() +
-                        "greyscaleCache.size " + greyscaleCache.size()
+                "cache.size " + cache.size +
+                        "regionCache.size " + regionCache.size +
+                        "drawableMap.size " + drawableMap.size +
+                        "greyscaleCache.size " + greyscaleCache.size
         );
     }
 
@@ -423,7 +422,7 @@ public class TextureCache {
 
 
     public void dispose() {
-        for (String s : cache.keySet()) {
+        for (String s : cache.keys()) {
             if (checkRetainTexture(s))
                 continue;
 

@@ -13,7 +13,6 @@ import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.GridMaster;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.system.AiEnums;
 import main.content.mode.STD_MODES;
 import main.entity.Ref;
 import main.system.GuiEventManager;
@@ -56,30 +55,20 @@ public class Activator extends ActiveHandler {
             return false;
         }
 
-
-        if (!getEntity().isMine()) //TODO igg demo hack
+        if (!getEntity().isMine()) //TODO EA check - no recheck for enemies?
             if (!first) {//|| broken) {
                 if (canActivate != null) {
 
                     return canActivate;
                 }
             }
-//     TODO req string   if (ExplorationMaster.isExplorationOn()) {
-//            if (getChecker().checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.COMBAT_ONLY.toString())) {
-//                return false;
-//            }
-//            if (getChecker().checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.COMBAT_ONLY.toString())) {
-//                return false;
-//            }
-//        }
         if (getChecker().checkStatus(UnitEnums.STATUS.BLOCKED)) {
             return false;
         }
-        // toBase();
+
         boolean result = false;
         try {
             getInitializer().initCosts(); // TODO ++ preCheck if there are any targets
-
             result = getAction().getCosts().canBePaid(ref);
             broken = false;
         } catch (Exception e) {
@@ -105,19 +94,6 @@ public class Activator extends ActiveHandler {
     }
 
     public boolean canBeManuallyActivated() {
-        //TODO igg demo hack critical
-        if (getEntity().getOwnerUnit().getName().contains("Gorr ")) {
-            if (getEntity().getOwnerUnit().getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
-//                GuiEventManager.trigger(GuiEventType.)
-                try {
-                    getGame().getLoop().actionInputManual(null);
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-//                new ActionInput());
-                return false;
-            }
-        }
         if (getChecker().isBlocked()) {
             return false;
         }

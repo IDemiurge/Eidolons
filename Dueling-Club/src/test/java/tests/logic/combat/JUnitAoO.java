@@ -1,6 +1,6 @@
 package tests.logic.combat;
 
-import eidolons.entity.active.DC_ActionManager.STD_SPEC_ACTIONS;
+import main.content.enums.entity.ActionEnums;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -22,6 +22,6 @@ public class JUnitAoO extends ActionTest{
 
     @Override
     protected String getActionName() {
-        return StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.toString());
+        return StringMaster.getWellFormattedString(ActionEnums.STD_SPEC_ACTIONS.Use_Inventory.toString());
     }
 }

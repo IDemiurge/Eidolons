@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.std.EffectAnimCreator;
@@ -41,7 +41,7 @@ public class CompositeAnim implements Animation {
     Map<ANIM_PART, List<Pair<GuiEventType, EventCallbackParam>>> onFinishEventMap;
     Map<ANIM_PART, List<Animation>> attached;
     Map<ANIM_PART, List<Animation>> timeAttachedAnims;
-    private List<Animation> parallelAnims = new ArrayList<>();
+    private final List<Animation> parallelAnims = new ArrayList<>();
     ANIM_PART part;
     int index;
     private boolean finished;
@@ -58,7 +58,7 @@ public class CompositeAnim implements Animation {
 
 
     public CompositeAnim(Animation... anims) {
-        this(new MapMaster<ANIM_PART, Animation>().constructMap(new ArrayList<>(Arrays.asList(ANIM_PART.values()).subList(0, anims.length)),
+        this(new MapMaster<ANIM_PART, Animation>().constructMap(new ArrayList<>(Arrays.asList(AnimEnums.ANIM_PART.values()).subList(0, anims.length)),
                 new ArrayList<>(Arrays.asList(anims))));
 
     }
@@ -98,7 +98,7 @@ public class CompositeAnim implements Animation {
             for (ANIM_PART anim_part : map.keySet()) {
                 if (i++ <= index)
                     continue;
-                if (anim_part != ANIM_PART.MISSILE) {
+                if (anim_part != AnimEnums.ANIM_PART.MISSILE) {
                     if (!parallelAnims.contains(map.get(anim_part))) {
                         parallelAnims.add(map.get(anim_part));
                     break;
@@ -111,7 +111,7 @@ public class CompositeAnim implements Animation {
 
     private boolean isParallel() {
         if (currentAnim instanceof SpellAnim) {
-            if (part == ANIM_PART.MISSILE) {
+            if (part == AnimEnums.ANIM_PART.MISSILE) {
                 return time <= 2;
             }
         }
@@ -155,13 +155,13 @@ public class CompositeAnim implements Animation {
                 if (!checkAfterEffects()) {
                     finished();
                     if (currentAnim instanceof DeathAnim) {
-                        map.remove(ANIM_PART.AFTEREFFECT);
+                        map.remove(AnimEnums.ANIM_PART.AFTEREFFECT);
                     }
                     return false;
                 }
             }
             if (currentAnim instanceof DeathAnim) {
-                map.remove(ANIM_PART.AFTEREFFECT);
+                map.remove(AnimEnums.ANIM_PART.AFTEREFFECT);
             } //TODO EA hack
             initPartAnim();
             if (currentAnim == null)
@@ -192,11 +192,11 @@ public class CompositeAnim implements Animation {
     }
 
     private boolean checkAfterEffects() {
-        if (attached.containsKey(ANIM_PART.AFTEREFFECT))
+        if (attached.containsKey(AnimEnums.ANIM_PART.AFTEREFFECT))
 //        if (OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION. GENERATE_AFTER_EFFECTS))
         {
-            if (timeAttachedAnims.get(ANIM_PART.AFTEREFFECT) != null) {
-                timeAttachedAnims.get(ANIM_PART.AFTEREFFECT).forEach(a -> {
+            if (timeAttachedAnims.get(AnimEnums.ANIM_PART.AFTEREFFECT) != null) {
+                timeAttachedAnims.get(AnimEnums.ANIM_PART.AFTEREFFECT).forEach(a -> {
                     a.start(getRef());
 //                    a.setDelayNotCounted(true); TODO
                     AnimMaster.getInstance().addAttached(a);
@@ -208,17 +208,17 @@ public class CompositeAnim implements Animation {
 //                    AnimMaster.getInstance().addAttached(a);
 //                });
 //            }
-            if (attached.get(ANIM_PART.AFTEREFFECT).isEmpty()) {
+            if (attached.get(AnimEnums.ANIM_PART.AFTEREFFECT).isEmpty()) {
                 return false;
             }
-            for (Animation sub : new ArrayList<>(attached.get(ANIM_PART.AFTEREFFECT))) {
-                map.put(ANIM_PART.AFTEREFFECT, sub);
+            for (Animation sub : new ArrayList<>(attached.get(AnimEnums.ANIM_PART.AFTEREFFECT))) {
+                map.put(AnimEnums.ANIM_PART.AFTEREFFECT, sub);
 
             }
-            if (map.containsKey(ANIM_PART.AFTEREFFECT)) {
+            if (map.containsKey(AnimEnums.ANIM_PART.AFTEREFFECT)) {
                 index--;
             }
-            attached.remove(ANIM_PART.AFTEREFFECT);
+            attached.remove(AnimEnums.ANIM_PART.AFTEREFFECT);
 //            part = ANIM_PART.AFTEREFFECT; //TODO rework this!
 //            triggerFinishEvents();
             return true;
@@ -587,9 +587,9 @@ public class CompositeAnim implements Animation {
 
     public void setForcedDestination(Coordinates forcedDestination) {
         map.values().forEach(anim -> {
-            if (anim.getPart() != ANIM_PART.CAST) {
-                if (anim.getPart() != ANIM_PART.PRECAST) {
-                    if (anim.getPart() != ANIM_PART.RESOLVE) {
+            if (anim.getPart() != AnimEnums.ANIM_PART.CAST) {
+                if (anim.getPart() != AnimEnums.ANIM_PART.PRECAST) {
+                    if (anim.getPart() != AnimEnums.ANIM_PART.RESOLVE) {
                         anim.setForcedDestination(forcedDestination);
                     }
                 }
@@ -632,8 +632,7 @@ public class CompositeAnim implements Animation {
 
     public boolean isEventAnim() {
         if (map.isEmpty())
-            if (!attached.isEmpty())
-                return true;
+            return !attached.isEmpty();
         return false;
     }
 

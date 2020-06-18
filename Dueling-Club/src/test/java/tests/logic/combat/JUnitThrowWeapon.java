@@ -1,7 +1,7 @@
 package tests.logic.combat;
 
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.item.DC_WeaponObj;
+import main.content.enums.entity.ActionEnums;
 import org.junit.Test;
 
 import static org.junit.Assert.fail;
@@ -11,7 +11,7 @@ import static org.junit.Assert.fail;
  */
 public class JUnitThrowWeapon extends ActionTest {
 
-    private String itemName="Iron Dagger";
+    private final String itemName="Iron Dagger";
 
     @Override
     @Test
@@ -31,7 +31,7 @@ public class JUnitThrowWeapon extends ActionTest {
 
     @Override
     protected String getActionName() {
-        return DC_ActionManager.THROW_MAIN;
+        return ActionEnums.THROW_MAIN;
 //        return DC_ActionManager.getThrowName(itemName);
     }
 }

@@ -16,7 +16,6 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.controls.GlobalController;
-import main.system.ExceptionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
@@ -60,7 +59,7 @@ public class SmartButton extends TextButton implements EventListener {
         super(text, StyleHolder.getTextButtonStyle(style, btnStyle));
         this.runnable = runnable;
         addListener(this);
-//        getStyle(). TODO this won't affect  *** !
+        //        getStyle(). TODO this won't affect  *** !
         this.style = btnStyle;
     }
 
@@ -87,26 +86,8 @@ public class SmartButton extends TextButton implements EventListener {
         return super.getPrefHeight();
     }
 
-    //    addListener(new SmartClickListener(this) {
-    //        @Override
-    //        public void clicked(InputEvent event, float x, float y) {
-    //            super.clicked(event, x, y);
-    //            runnable.run();
-    //        }
-    //    }
-    //        );
     @Override
-    public boolean handle(Event event) {
-        // igg demo hack
-        try {
-            return handleEvent(event);
-        } catch (Exception e) {
-            ExceptionMaster.printStackTrace(e);
-        }
-        return true;
-    }
-
-    public boolean handleEvent(Event e) {
+    public boolean handle(Event e) {
         if (!isIgnoreConfirmBlock())
             if (ConfirmationPanel.getInstance().isVisible())
                 return true;
@@ -228,7 +209,7 @@ public class SmartButton extends TextButton implements EventListener {
 
     @Override
     public void setBackground(Drawable background) {
-        super.setBackground(new FlipDrawable(background, ()-> flipX, ()-> flipY));
+        super.setBackground(new FlipDrawable(background, () -> flipX, () -> flipY));
 
     }
 

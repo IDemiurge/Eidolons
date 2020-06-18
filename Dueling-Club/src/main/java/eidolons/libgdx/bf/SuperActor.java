@@ -3,12 +3,10 @@ package eidolons.libgdx.bf;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.ScreenMaster;
@@ -18,9 +16,8 @@ import main.content.enums.GenericEnums;
  * Created by JustMe on 8/17/2017.
  */
 public abstract class SuperActor extends Fluctuating implements
-        CachedIgnoreActor, Borderable {
+        CachedIgnoreActor, TeamColored {
     protected Image border = null;
-    protected TextureRegion borderTexture;
     protected boolean teamColorBorder;
     protected Color teamColor;
     protected float scaledWidth = 1;
@@ -33,8 +30,8 @@ public abstract class SuperActor extends Fluctuating implements
     private boolean hoverResponsive;
 
 
-    private boolean customDrawParams;
-    private boolean normalDrawDisabled;
+    // private boolean customDrawParams;
+    // private boolean normalDrawDisabled;
     protected float screenOverlay;
     protected Color customColor;
 
@@ -102,33 +99,6 @@ public abstract class SuperActor extends Fluctuating implements
         setAlphaTemplate(alphaTemplate);
     }
 
-    @Override
-    public TextureRegion getBorder() {
-        return borderTexture;
-    }
-
-    @Override
-    public void setBorder(TextureRegion texture) {
-
-        if (texture == null) {
-            ActionMaster.addFadeOutAction(border, 0.65f, true);
-            borderTexture = null;
-            setTeamColorBorder(false);
-        } else {
-            if (borderTexture==texture) {
-                return ;
-            }
-            if (border != null) {
-                removeActor(border);
-            }
-            addActor(border = new Image(texture));
-            border.getColor().a = 0;
-            ActionMaster.addFadeInAction(border, 0.65f);
-
-            borderTexture = texture;
-            updateBorderSize();
-        }
-    }
 
     protected void alphaFluctuation(float delta) {
         if (isTeamColorBorder())

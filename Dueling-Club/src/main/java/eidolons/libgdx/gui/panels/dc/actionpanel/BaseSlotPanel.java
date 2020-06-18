@@ -4,25 +4,24 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
 import main.system.launch.CoreEngine;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
 public class BaseSlotPanel extends TablePanel {
     protected final int imageSize;
-    protected Map<PagesMod, TablePanel> modTableMap = new HashMap<>();
+    protected ObjectMap<PagesMod, TablePanel> modTableMap = new ObjectMap<>(5);
 
     protected PagesMod activePage = PagesMod.NONE;
     private float beforeReset;
-    private float resetPeriod = 5f;
+    private final float resetPeriod = 5f;
     private boolean hovered;
     public static boolean hoveredAny;
     private boolean firstUpdateDone;
@@ -113,7 +112,7 @@ public class BaseSlotPanel extends TablePanel {
             addPage(sources.subList(indx, toIndx), emptyImagePath);
         }
 
-        if (modTableMap.size() == 0) {
+        if (modTableMap.size == 0) {
             addPage(Collections.EMPTY_LIST, emptyImagePath);
         }
 
@@ -136,7 +135,7 @@ public class BaseSlotPanel extends TablePanel {
 
     protected void addPage(List<ValueContainer> list, String emptyImagePath) {
         final TablePanel page = initPage(list, emptyImagePath);
-        modTableMap.put(PagesMod.values()[modTableMap.size()], page);
+        modTableMap.put(PagesMod.values()[modTableMap.size], page);
         addElement(page).left().bottom();
 
         page.setVisible(false);
@@ -146,7 +145,7 @@ public class BaseSlotPanel extends TablePanel {
     protected void setActivePage(PagesMod page) {
         TablePanel view = modTableMap.get(activePage);
         if (view == null) {
-            if (modTableMap.isEmpty())
+            if (modTableMap.size==0)
                 return;
             else
                 view = modTableMap.values().iterator().next();

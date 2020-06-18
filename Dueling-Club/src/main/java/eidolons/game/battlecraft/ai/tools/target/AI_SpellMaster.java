@@ -10,7 +10,6 @@ import eidolons.ability.effects.oneshot.mechanic.DrainEffect;
 import eidolons.ability.effects.oneshot.mechanic.ModifyCounterEffect;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.ability.effects.oneshot.unit.CreateObjectEffect;
-import eidolons.ability.effects.oneshot.unit.GatewayEffect;
 import eidolons.ability.effects.oneshot.unit.RaiseEffect;
 import eidolons.ability.effects.oneshot.unit.SummonEffect;
 import eidolons.ability.targeting.TemplateAutoTargeting;
@@ -167,9 +166,6 @@ public class AI_SpellMaster {
             }// if (EffectMaster.preCheck(actives, MoveEffect.class)) {// return
             // AI_LOGIC.CUSTOM;// }
             if (EffectFinder.check(actives, SummonEffect.class)) {
-                return AiEnums.AI_LOGIC.SUMMON;
-            }
-            if (EffectFinder.check(actives, GatewayEffect.class)) {
                 return AiEnums.AI_LOGIC.SUMMON;
             }
             if (EffectFinder.check(actives, CreateObjectEffect.class)) {
@@ -407,12 +403,6 @@ public class AI_SpellMaster {
 
     public static ObjType getSummonedUnit(DC_ActiveObj active, Ref ref) {
         ObjType type;
-        List<Effect> list = EffectFinder.getEffectsOfClass(
-         active.getAbilities(), GatewayEffect.class);
-        if (!list.isEmpty()) {
-            GatewayEffect effect = (GatewayEffect) list.get(0);
-            return DataManager.getType(effect.getUnitType(), C_OBJ_TYPE.BF_OBJ);
-        }
 
         SummonEffect effect = null;
         try {

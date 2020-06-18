@@ -309,8 +309,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         if (param == PARAMS.C_TOUGHNESS) {
             if (NumberUtils.getIntParse(value) >
                     getIntParam(PARAMS.TOUGHNESS)) {
-                LogMaster.log(1, "gotcha dwarf " + this + value);
-            //igg demo hack!
+                LogMaster.log(1, "BUG: toughness >100%! " + this + value);
+            //TODO debug
                 value = getParam(PARAMS.TOUGHNESS);
             }
         }
@@ -359,7 +359,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         }
         Integer regen = getIntParam(ContentValsManager.getRegenParam(p));
         if (regen != 0) {
-            //TODO igg demo hack
+            //TODO DC Review
             if (p == PARAMS.STAMINA) {
                 regen = MathMaster.getMinMax(regen, 5, getIntParam("stamina")/2);
             }

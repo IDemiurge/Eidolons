@@ -1,12 +1,12 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 
 import java.util.ArrayList;
@@ -35,9 +35,7 @@ public class ActionFilter {
         if (AI_Manager.getBrokenActions().contains(a))
             return true;
         if (a.isRanged()) {
-            if (!a.isThrow()) {
-                return true;
-            }
+            return !a.isThrow();
         }
         return false;
     }
@@ -62,7 +60,7 @@ public class ActionFilter {
     }
 
     public static void filterAttacks(List<DC_ActiveObj> actions, Unit unit) {
-        actions.remove(AiActionFactory.getUnitAction(unit, DC_ActionManager.OFFHAND_ATTACK));
+        actions.remove(AiActionFactory.getUnitAction(unit, ActionEnums.OFFHAND_ATTACK));
         DC_UnitAction
                 action = unit.getAction(
                 "Throw", false);

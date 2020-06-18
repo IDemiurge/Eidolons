@@ -5,7 +5,7 @@ import eidolons.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import eidolons.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.system.MetaEnums.STD_BUFF_NAME;
@@ -33,7 +33,7 @@ public class BuffAnim extends ActionAnim {
         mods = new ANIM_MOD[]{
          CONTINUOUS_ANIM_MODS.PENDULUM_ALPHA
         };
-        part = ANIM_PART.AFTEREFFECT;
+        part = AnimEnums.ANIM_PART.AFTEREFFECT;
         textureSupplier = () -> TextureCache.getOrCreate(buff.getImagePath());
 
 //setPlayContinuous(buff.checkBool());

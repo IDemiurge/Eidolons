@@ -4,7 +4,6 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.Deity;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.handlers.bf.unit.UnitCalculator;
@@ -318,11 +317,11 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
 
     public DC_UnitAction getAttack() {
-        return getAction(DC_ActionManager.ATTACK);
+        return getAction(ActionEnums.ATTACK);
     }
 
     public DC_UnitAction getOffhandAttack() {
-        return getAction(DC_ActionManager.OFFHAND_ATTACK);
+        return getAction(ActionEnums.OFFHAND_ATTACK);
     }
 
     public FACING_DIRECTION getFacingOrNull() {
@@ -479,10 +478,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public boolean canAttack() {
         return getChecker().canAttack();
-    }
-
-    public boolean canAttack(DC_UnitModel attacked) {
-        return getChecker().canAttack(attacked);
     }
 
     public boolean canCounter() {

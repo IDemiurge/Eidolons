@@ -3,6 +3,7 @@ package eidolons.libgdx.bf.grid;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
@@ -41,6 +42,7 @@ import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.system.text.HelpMaster;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -51,7 +53,9 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.*;
@@ -214,10 +218,8 @@ public class DC_GridPanel extends GridPanel {
     }
 
     public void updateOutlines() {
-
-        Object[] array = viewMap.keySet().toArray();
-        for (int i = 0; i < array.length; i++) {
-            BattleFieldObject obj = (BattleFieldObject) array[i];
+        for (Obj key : viewMap.keys()) {
+            BattleFieldObject obj = (BattleFieldObject) key;
             if (!obj.isOverlaying())
                 if (!obj.isMine())
                     if (!obj.isWall()) {
@@ -252,15 +254,6 @@ public class DC_GridPanel extends GridPanel {
             return true;
         }
         return !CoreEngine.isLiteLaunch();
-
-        //        if (DC_Game.game.getDungeonMaster().getFloorWrapper() != null) {
-        //            switch (DC_Game.game.getDungeonMaster().getFloorWrapper().getLocationType().getGroup()) {
-        //                case NATURAL:
-        //                case AVERAGE:
-        //                case SURFACE:
-        //                    return true;
-        //            }
-        //        }
     }
 
 
@@ -291,7 +284,7 @@ public class DC_GridPanel extends GridPanel {
 
         GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
             List list = (List) obj.get();
-            UnitView view = (UnitView) getViewMap().get(list.get(0));
+            UnitView view = getUnitView((BattleFieldObject) list.get(0));
             if (view == null) {
                 main.system.auxiliary.log.LogMaster.verbose("show mode icons failed " + obj);
                 return;
@@ -378,7 +371,7 @@ public class DC_GridPanel extends GridPanel {
                 GridObject gridObj = findGridObj(key, c);
                 gridViewAnimator.animate(gridObj, data);
             } else {
-                gridViewAnimator.animate(viewMap.get(list.get(1)),
+                gridViewAnimator.animate(viewMap.get((Obj) list.get(1)),
                         (GridViewAnimator.VIEW_ANIM) list.get(0), data);
             }
 
@@ -416,7 +409,8 @@ public class DC_GridPanel extends GridPanel {
         });
 
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
-            Pair<Set<DC_Obj>, TargetRunnable> p = (Pair<Set<DC_Obj>, TargetRunnable>) obj.get();
+            Pair<Set<BattleFieldObject>, TargetRunnable> p =
+                    (Pair<Set<BattleFieldObject>, TargetRunnable>) obj.get();
             if (p.getLeft().isEmpty()) {
                 FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.REQUIREMENT,
                         "No targets available!",
@@ -426,7 +420,7 @@ public class DC_GridPanel extends GridPanel {
                 return;
             }
             EUtils.playSound(STD_SOUNDS.NEW__TAB);
-            Map<Borderable, Runnable> map = new HashMap<>();
+            ObjectMap<Borderable, Runnable> map = new ObjectMap<>();
 
             for (DC_Obj obj1 : p.getLeft()) {
                 Borderable b = viewMap.get(obj1);
@@ -459,24 +453,17 @@ public class DC_GridPanel extends GridPanel {
                 return;
             }
             DungeonScreen.getInstance().getCameraMan().unitActive(hero);
-            //dc refactor
+            //gdx Review
             //            AnimConstructor.tryPreconstruct((Unit) hero);
             BaseView view = viewMap.get(hero);
             if (view == null) {
-                System.out.println("viewMap not initiatilized at ACTIVE_UNIT_SELECTED!");
+                System.out.println("No view for ACTIVE_UNIT_SELECTED!");
                 return;
             }
 
-            if (view.getParent() instanceof GridCellContainer) {
-                //                ((GridCellContainer) view.getParent()).popupUnitView((GridUnitView) view);
+            for (BaseView v : viewMap.values()) {
+                v.setActive(false);
             }
-
-            viewMap.values().stream().forEach(
-                    v -> {
-                        if (v != view) {
-                            v.setActive(false);
-                        }
-                    });
             view.setActive(true);
             if (hero.isMine()) {
                 GuiEventManager.trigger(SHOW_TEAM_COLOR_BORDER, view);
@@ -509,20 +496,16 @@ public class DC_GridPanel extends GridPanel {
             }
         });
 
-        GuiEventManager.bind(GuiEventType.HP_BAR_UPDATE_MANY, p -> {
-            List list = (List) p.get();
-            list.forEach(o -> updateHpBar(o));
-        });
         GuiEventManager.bind(GuiEventType.HP_BAR_UPDATE, p -> {
-            updateHpBar(p.get());
+            updateHpBar((BattleFieldObject) p.get());
         });
 
     }
 
 
-    private void updateHpBar(Object o) {
+    private void updateHpBar(BattleFieldObject o) {
         HpBarView view = null;
-        if (o instanceof BattleFieldObject) {
+        if (o != null) {
             if (viewMap.get(o) instanceof UnitGridView)
                 view = (HpBarView) viewMap.get(o);
         } else if (o instanceof HpBarView)
@@ -564,15 +547,14 @@ public class DC_GridPanel extends GridPanel {
 
     protected void update() {
         shadowMap.update();
-
-        //update torches?
         updateTorches();
         updateRequired = false;
 
     }
 
+    //gdx Review
     private void updateTorches() {
-        for (BattleFieldObject object : viewMap.keySet()) {
+        for (Obj object : viewMap.keys()) {
             if (!(object instanceof Unit)) {
                 continue;
             }
