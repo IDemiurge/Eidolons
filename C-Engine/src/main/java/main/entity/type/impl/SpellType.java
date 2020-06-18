@@ -1,4 +1,4 @@
-package main.entity.type;
+package main.entity.type.impl;
 
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.SpellEnums.SPELL_GROUP;

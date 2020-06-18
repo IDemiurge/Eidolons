@@ -11,7 +11,7 @@ import eidolons.libgdx.screens.menu.GenericMenu;
 import eidolons.libgdx.screens.menu.MenuItem;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.graphics.FontMaster.FONT;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -111,7 +111,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
             }
         }
         if (item == GAME_MENU_ITEM.RETREAT)
-            return !CoreEngine.isMacro();
+            return !Flags.isMacro();
         return item.hidden;
     }
 
@@ -164,7 +164,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
 //        INFO(QUICK_HELP, TUTORIAL_RECAP, MANUAL),
         ;
         boolean hidden;
-        private GAME_MENU_ITEM[] items;
+        private final GAME_MENU_ITEM[] items;
 
         GAME_MENU_ITEM(boolean hidden, GAME_MENU_ITEM... items) {
             this(items);

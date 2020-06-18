@@ -5,7 +5,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGame;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.mission.quest.QuestMission;
 import main.system.auxiliary.ContainerUtils;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * Created by JustMe on 5/12/2017.
  */
 public class ScenarioMeta extends MetaGame {
-    private Scenario scenario;
+    private final Scenario scenario;
     private int missionIndex;
     private List<String> missions;
     private int missionNumber;
@@ -51,7 +51,7 @@ public class ScenarioMeta extends MetaGame {
 
     public boolean isPartyRespawn() {
 //        if (getMissionIndex().checkProperty(PROPS.MISSION_BRIEFING_DATA))
-        if (CoreEngine.isMacro()) {
+        if (Flags.isMacro()) {
             return false;
         }
         if (getMissionIndex() == 0)

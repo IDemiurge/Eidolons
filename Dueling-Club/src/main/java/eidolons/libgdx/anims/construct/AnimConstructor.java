@@ -53,7 +53,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,7 +75,7 @@ public class AnimConstructor {
     }
 
     private static boolean isPreconstructOn() {
-        return CoreEngine.isJar() || !CoreEngine.isFastMode(); //TODO;
+        return Flags.isJar() || !Flags.isFastMode(); //TODO;
     }
 
     public static void preconstructAllForAV() {
@@ -123,7 +123,7 @@ public class AnimConstructor {
     }
 
     public static boolean isPreconstructAllOnGameInit() {
-        return !CoreEngine.isIDE()  ;
+        return !Flags.isIDE()  ;
     }
 
     public static boolean isPreconstructEnemiesOnCombatStart() {
@@ -409,7 +409,7 @@ public class AnimConstructor {
             list = SpellVfxPool.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-            if (CoreEngine.isJar())
+            if (Flags.isJar())
                 System.out.println("getEffect failed" + data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
 
             list = SpellVfxPool.getEmitters(
@@ -629,13 +629,13 @@ public class AnimConstructor {
                 path = PathFinder.getSpritesPathFull();
                 break;
         }
-        if (CoreEngine.isJar())
+        if (Flags.isJar())
             System.out.println(s + " path= " + path);
         return path;
     }
 
     public static boolean isReconstruct() {
-        if (CoreEngine.isJar())
+        if (Flags.isJar())
             return false;
         return reconstruct;
     }

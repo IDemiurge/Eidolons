@@ -4,6 +4,7 @@ import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.TimeMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.io.File;
 import java.net.URI;
@@ -43,7 +44,7 @@ public class PathFinder {
             System.out.println("Root path: " + ROOT_PATH);
         } else {
             //FOR JARS
-            CoreEngine.setJar(true);
+            Flags.setJar(true);
 
             URI uri = null;
             try {
@@ -56,7 +57,7 @@ public class PathFinder {
                 jarName = PathUtils.getLastPathSegment((uri.toString()));
 
             if (jarName.contains(".exe")) {
-                CoreEngine.setExe(true);
+                Flags.setExe(true);
             }
 
             System.out.println("jarName: " + jarName);

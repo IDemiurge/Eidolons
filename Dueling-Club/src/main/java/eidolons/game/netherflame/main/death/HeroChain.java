@@ -3,7 +3,7 @@ package eidolons.game.netherflame.main.death;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.entity.type.ObjType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +26,7 @@ public class HeroChain {
     }
 
     public void spawned(Unit hero) {
-        if (CoreEngine.isActiveTestMode()) {
+        if (Flags.isActiveTestMode()) {
 
         }
     }

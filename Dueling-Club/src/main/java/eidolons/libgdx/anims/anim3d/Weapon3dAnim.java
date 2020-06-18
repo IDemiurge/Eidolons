@@ -23,7 +23,7 @@ import main.entity.Ref;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -167,11 +167,12 @@ public class Weapon3dAnim extends ActionAnim {
         boolean offhand = getActive().isOffhand();
         boolean flipHor = false;
         if (getProjection(ref,getActive()) == PROJECTION.HOR) {
-            flipHor = getActive().getOwnerUnit().getFacing() == FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerUnit(), targetObj);
+            flipHor = getActive().getOwnerUnit().getFacing() == FACING_DIRECTION.WEST;
+            // PositionMaster.isToTheLeft(activeObj.getOwnerUnit(), targetObj);
         } else {
             flipHor = (getProjection(ref,getActive()) == PROJECTION.TO) != offhand;
 //            if (RandomWizard.chance(33))
-//                flipHor = !flipHor; TODO igg demo fix
+//                flipHor = !flipHor; TODO anim Review - is it viable?
         }
         return flipHor;
     }
@@ -239,7 +240,7 @@ public class Weapon3dAnim extends ActionAnim {
 //        if (batch instanceof CustomSpriteBatch) {
 //           post=  ((CustomSpriteBatch) batch);
 //        }
-        if (CoreEngine.isFootageMode())
+        if (Flags.isFootageMode())
             return;
         super.draw(batch, parentAlpha);
     }

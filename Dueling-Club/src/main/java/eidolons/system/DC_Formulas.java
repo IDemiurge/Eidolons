@@ -159,13 +159,8 @@ public class DC_Formulas {
     }
 
     public static int getEssenceFromWisdom(int amount) {
-
         return calculateFormula(ESS_WIS_FORMULA, amount) / 5 * 5;
         // return Math.round(amount * ESS_WIS_MODIFIER);
-    }
-
-    public static int getDamageFromStrength(int amount) { // igg demo TODO
-        return calculateFormula(TOUGHNESS_FROM_STRENGTH_FORMULA, amount) / 5 * 5;
     }
 
     public static int getCarryingCapacityFromStrength(int amount) {

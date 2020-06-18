@@ -35,10 +35,10 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         setBackground(NinePatchFactory.getLightDecorPanelFilledDrawableNoMinSize());
         setSize(600, 300);
         add(label = new Label("", StyleHolder.getSizedLabelStyle(getFONT(), getFontSize())))
-         .center().colspan(2).minWidth(400).top().row();
+                .center().colspan(2).minWidth(400).top().row();
         TablePanel<Actor> btns = new TablePanel<>();
         add(btns)
-         .center().colspan(2).fill().minWidth(400);
+                .center().colspan(2).fill().minWidth(400);
         btns.addNormalSize(cancel = new SmartButton(STD_BUTTON.CANCEL, () -> {
             cancel();
         })).left();
@@ -59,7 +59,7 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
     }
 
     public static void clearInstance() {
-        instance=new ConfirmationPanel();
+        instance = new ConfirmationPanel();
         if (instance.getStage() instanceof GuiStage) {
             ((GuiStage) instance.getStage()).resetConfirmPanel(instance);
         }
@@ -79,15 +79,9 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha == ShaderDrawer.SUPER_DRAW)
-        {
-//            if (!batch.isDrawing())
-//                batch.begin(); // TODO igg demo fix
+        if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
             super.draw(batch, 1);
-//            if (batch.isDrawing())
-//                batch.end();
-        }
-        else
+        } else
             ShaderDrawer.drawWithCustomShader(this, batch, null);
     }
 
@@ -98,18 +92,18 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         getStageWithClosable().openClosable(this);
         cancel.setVisible(canCancel);
         String wrapped = text;
-//        if (!wrapped.contains("\n")) {
-//            wrapped = TextWrapper.wrapWithNewLine(text,
-//             label.getStyle().font.getSpaceWidth()
-//             FontMaster.getStringLengthForWidth(getFONT(), getFontSize(),
-//              (int) (getWidth() / 3 * 2)));
-//        }
+        //        if (!wrapped.contains("\n")) {
+        //            wrapped = TextWrapper.wrapWithNewLine(text,
+        //             label.getStyle().font.getSpaceWidth()
+        //             FontMaster.getStringLengthForWidth(getFONT(), getFontSize(),
+        //              (int) (getWidth() / 3 * 2)));
+        //        }
         label.setWrap(true);
         label.setText(wrapped);
         label.pack();
         setFixedSize(false);
         pack();
-        setSize(Math.max(getWidth(), GdxMaster.getWidth()/3), Math.max(getHeight(), GdxMaster.getHeight()/4) );
+        setSize(Math.max(getWidth(), GdxMaster.getWidth() / 3), Math.max(getHeight(), GdxMaster.getHeight() / 4));
         setPosition(GdxMaster.centerWidth(this), GdxMaster.centerHeight(this));
     }
 

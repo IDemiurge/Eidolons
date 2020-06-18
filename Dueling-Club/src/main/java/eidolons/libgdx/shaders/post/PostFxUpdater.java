@@ -27,7 +27,7 @@ import static eidolons.game.battlecraft.ai.tools.ParamAnalyzer.BUFF_RULE_STATUS.
 public class PostFxUpdater {
     public static final POST_FX_FACTOR[] vals = POST_FX_FACTOR.values();
     PostProcessController controller;
-    private Map<POST_FX_FACTOR, FloatAction> fxMap = new LinkedHashMap<>();
+    private final Map<POST_FX_FACTOR, FloatAction> fxMap = new LinkedHashMap<>();
 
     public static Boolean heroFxOff;
     public static Boolean shadowFxOff;
@@ -285,7 +285,7 @@ public class PostFxUpdater {
         }
     }
 
-    //            if (fxFactor== POST_FX_FACTOR.BLOOM) { TODO igg demo
+    //            if (fxFactor== POST_FX_FACTOR.BLOOM) { TODO EA check - wtf is with postfx?
 //                fxMap.remove(POST_FX_FACTOR.LENS2);
 //                fxMap.remove(POST_FX_FACTOR.FADE_COLOR);
 //                fxMap.remove(POST_FX_FACTOR.SMOOTH);
@@ -353,7 +353,7 @@ public class PostFxUpdater {
         MOTION_BLUR,
         //burn, disease,
         // night sight ,
-        DISTORT, SMOOTH, LENS2;
+        DISTORT, SMOOTH, LENS2
     }
 
     public enum POST_FX_TEMPLATE {

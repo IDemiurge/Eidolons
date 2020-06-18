@@ -3,6 +3,7 @@ package eidolons.content;
 import eidolons.game.core.game.DC_Game;
 import main.content.ContentValsManager;
 import main.content.ValueManager;
+import main.content.enums.system.MetaEnums;
 import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -14,10 +15,22 @@ import java.util.List;
 
 public class DC_ValueManager implements ValueManager {
 
+    public static final String CUSTOM_VALUE = "CUSTOM_VALUE";
+    private static final String VARIABLES = "VARIABLES";
+
     private ValueHelper valueHelper;
 
     public DC_ValueManager(DC_Game game) {
         valueHelper = new ValueHelper(game);
+    }
+
+    public static String getCustomValueName(MetaEnums.CUSTOM_VALUE_TEMPLATE template, Object... array) {
+        return StringMaster.getEnumFormat(template.getText(array));
+    }
+
+    public static String getVarEnumCustomValueName(Class<?> ENUM_CLASS) {
+        return ENUM_CLASS.getSimpleName() + "_" + VARIABLES + "_"
+                + CUSTOM_VALUE;
     }
 
     public static VALUE_GROUP getValueGroup(String string) {

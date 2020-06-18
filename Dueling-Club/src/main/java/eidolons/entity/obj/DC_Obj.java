@@ -47,6 +47,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -138,7 +139,7 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     protected void addDefaultValues() {
-        if (CoreEngine.isDefaultValuesAddedDynamically())
+        if (Flags.isDefaultValuesAddedDynamically())
             DC_ContentValsManager.addDefaultValues(this);
     }
 

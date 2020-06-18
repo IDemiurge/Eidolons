@@ -23,7 +23,7 @@ import java.util.List;
  * Created by JustMe on 11/28/2017.
  */
 public class AnimatedMenuScreen extends ScreenWithVideoLoader {
-
+//Gdx Review - double init?
     MainMenu mainMenu;
 
     public AnimatedMenuScreen() {
@@ -38,18 +38,12 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
         GuiEventManager.bind(GuiEventType.BRIEFING_FINISHED, p -> {
             mainMenu.setVisible(true);
         });
-//        getOverlayStage().clear(); TODO igg demo fix why needed??
         mainMenu = MainMenu.getInstance();
         mainMenu.setVisible(true);
         getOverlayStage().addActor(mainMenu);
         mainMenu.setPosition(
                 GdxMaster.centerWidth(mainMenu)
                 , GdxMaster.centerHeight(mainMenu));
-//        if (CoreEngine.isIDE()) {
-//            if (Eidolons.getResolution() != RESOLUTION._1920x1080) {
-//                mainMenu.setPosition(0, (float) (Eidolons.getResolutionDimensions().getHeight() - mainMenu.getHeight() - 100));
-//            }
-//        }
     }
 
     @Override

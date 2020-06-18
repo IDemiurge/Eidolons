@@ -321,7 +321,7 @@ public class CoordinatesMaster {
         List<Coordinates> list = new ArrayList<>();
         for (; x1 > x; x1--) {
             for (int y_ = y1; y_ > y; y_--) {
-                list.add(Coordinates.get(x1, y_));
+                list.add(Coordinates.get(true, x1, y_));
             }
         }
         return list;

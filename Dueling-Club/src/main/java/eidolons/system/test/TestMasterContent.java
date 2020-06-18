@@ -21,6 +21,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 import main.system.entity.FilterMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +134,7 @@ public class TestMasterContent {
 
     // WORKSPACE_GROUP[] ws_groups_included = {WORKSPACE_GROUP.TEST,
     // WORKSPACE_GROUP.FIX, WORKSPACE_GROUP.POLISH};
-    private static boolean addSkills= CoreEngine.isSkillTestMode();
+    private static boolean addSkills= Flags.isSkillTestMode();
     private static boolean addItems;
     private static boolean addActives;
     private static boolean first;
@@ -458,7 +459,7 @@ public class TestMasterContent {
             first = true;
             last = false;
         }
-        if (CoreEngine.isIDE())
+        if (Flags.isIDE())
             if (weaponTest) {
                 if (ALL_WEAPONS_TEST) {
                     for (ObjType s : DataManager.getTypes(DC_TYPE.WEAPONS)) {

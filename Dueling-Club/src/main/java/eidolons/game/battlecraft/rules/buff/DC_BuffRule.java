@@ -23,7 +23,7 @@ import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.HashMap;
@@ -36,8 +36,8 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     protected Map<Integer, Conditions> conditionsMap = new HashMap<>();
     protected Unit target;
     Map<Obj, Effect[]> effectCache = new XLinkedMap<>();
-    private Map<Obj, Integer> levelCache = new ConcurrentHashMap<>();
-    private Map<Obj, Boolean> checkCache = new HashMap<>();
+    private final Map<Obj, Integer> levelCache = new ConcurrentHashMap<>();
+    private final Map<Obj, Boolean> checkCache = new HashMap<>();
 
     public DC_BuffRule(GenericGame game) {
         super(game);
@@ -210,7 +210,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
 
         // TODO only animate after Buff Level changes!!!
         super.apply(ref);
-        if (CoreEngine.isPhaseAnimsOn())
+        if (Flags.isPhaseAnimsOn())
         {
             //TODO
         }

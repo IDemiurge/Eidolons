@@ -10,7 +10,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +40,6 @@ public class HqMaster {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        //TODO igg demo hack
     }
 
     public static void openHqPanel() {
@@ -103,7 +102,7 @@ public class HqMaster {
     }
 
     public static void filterContent(Collection<ObjType> list) {
-        if (CoreEngine.isIDE())
+        if (Flags.isIDE())
             list.removeIf(t -> t.getWorkspaceGroup() != FILTER_GROUP
                     && t.getWorkspaceGroup() != FILTER_GROUP_DEV);
         else
@@ -119,10 +118,8 @@ public class HqMaster {
         if (entity.getWorkspaceGroup() == FILTER_GROUP) {
             return true;
         }
-        if (CoreEngine.isIDE())
-            if (entity.getWorkspaceGroup() == FILTER_GROUP_DEV) {
-                return true;
-            }
+        if (Flags.isIDE())
+            return entity.getWorkspaceGroup() == FILTER_GROUP_DEV;
 
         return false;
     }
@@ -131,10 +128,7 @@ public class HqMaster {
         if (type.getWorkspaceGroup() == MetaEnums.WORKSPACE_GROUP.COMPLETE) {
             return true;
         }
-        if (type.getWorkspaceGroup() == MetaEnums.WORKSPACE_GROUP.IGG_TODO) {
-            return true;
-        }
-        return false;
+        return type.getWorkspaceGroup() == MetaEnums.WORKSPACE_GROUP.IGG_TODO;
     }
 
 }

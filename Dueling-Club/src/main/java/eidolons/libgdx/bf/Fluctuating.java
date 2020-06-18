@@ -7,7 +7,7 @@ import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.utils.GdxTimeMaster;
 import main.content.enums.GenericEnums;
 import main.system.auxiliary.RandomWizard;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 
 /**
@@ -33,7 +33,7 @@ public class Fluctuating extends GroupX {
     public static int fluctuatingAlphaPeriodGlobal = 1;
 
     static {
-        if (CoreEngine.isMainGame()) {
+        if (Flags.isMainGame()) {
             fluctuatingAlphaPeriodGlobal =1;
 //            OptionsMaster.getGraphicsOptions().
 //                    getIntValue(GraphicsOptions.GRAPHIC_OPTION.PERFORMANCE_BOOST) / 10 + 1;

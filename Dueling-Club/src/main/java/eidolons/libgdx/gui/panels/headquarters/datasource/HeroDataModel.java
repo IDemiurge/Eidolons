@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.datasource;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PROPS;
@@ -24,7 +25,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by JustMe on 4/15/2018.
@@ -220,12 +220,12 @@ public class HeroDataModel extends Unit {
     }
 
     @Override
-    public Map<PARAMETER, Integer> getIntegerMap() {
+    public ObjectMap<PARAMETER, Integer> getIntegerMap() {
         return getHero().getIntegerMap();
     }
 
     @Override
-    public Map<PARAMETER, Integer> getIntegerMap(boolean base) {
+    public ObjectMap<PARAMETER, Integer> getIntegerMap(boolean base) {
         return getHero().getIntegerMap(base);
     }
 
@@ -242,11 +242,6 @@ public class HeroDataModel extends Unit {
     @Override
     public void getBoolean(VALUE prop, Boolean b) {
         getHero().getBoolean(prop, b);
-    }
-
-    @Override
-    public Boolean getBoolean(String prop) {
-        return getHero().getBoolean(prop);
     }
 
     @Override
@@ -305,7 +300,7 @@ public class HeroDataModel extends Unit {
     }
 
     @Override
-    public Map<PROPERTY, Map<String, Boolean>> getPropCache(boolean base) {
+    public ObjectMap<PROPERTY, ObjectMap<String, Boolean>> getPropCache(boolean base) {
         return getHero().getPropCache(base);
     }
 
@@ -415,7 +410,7 @@ public class HeroDataModel extends Unit {
     }
 
     @Override
-    public Map<PARAMETER, Map<String, Double>> getModifierMaps() {
+    public ObjectMap<PARAMETER, ObjectMap<String, Double>> getModifierMaps() {
         return getHero().getModifierMaps();
     }
 

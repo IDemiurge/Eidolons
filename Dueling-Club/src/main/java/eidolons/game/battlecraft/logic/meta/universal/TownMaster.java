@@ -23,7 +23,7 @@ import main.entity.type.ObjType;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 import main.system.threading.Waiter;
 
@@ -33,6 +33,8 @@ import java.util.ArrayList;
  * Created by JustMe on 10/13/2018.
  */
 public class TownMaster extends MetaGameHandler {
+
+    //Macro Review
 
     protected static final java.lang.String DEFAULT_TOWN = "Strangeville"; //"Headquarters"
     ShopManager shopManager;
@@ -73,17 +75,12 @@ public class TownMaster extends MetaGameHandler {
         }
         getMaster().getGame().getLoop().setPaused(true);
         boolean result = enterTown(town, true);
-        if (!CoreEngine.isIggDemoRunning()) // igg demo hack ?
-            getMaster().getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().playerWaits();
-        try {
-            getMaster().getGame().getManager().reset();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+
+        getMaster().getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().playerWaits();
         if (!result) {
             EUtils.infoPopup("Something went wrong in this town...");
             GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, null);
-//            Eidolons.exitToMenu();
+            //            Eidolons.exitToMenu();
             return;
         }
         getMaster().getGame().getLoop().setPaused(false);
@@ -132,7 +129,7 @@ public class TownMaster extends MetaGameHandler {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        if (CoreEngine.isFullFastMode()) {
+        if (Flags.isFullFastMode()) {
             new Thread(() -> {
                 GuiEventManager.trigger(GuiEventType.QUEST_TAKEN, "To the Rescue");
                 WaitMaster.WAIT(900);
@@ -237,6 +234,6 @@ public class TownMaster extends MetaGameHandler {
     }
 
     private boolean isFoodRequired() {
-        return !CoreEngine.isFastMode() && !CoreEngine.isIggDemoRunning();
+        return !Flags.isFastMode() && !Flags.isIggDemoRunning();
     }
 }

@@ -166,7 +166,7 @@ public abstract class SuperActor extends Fluctuating implements
     @Override
     public void addAction(Action action) {
         if (getActions().size > 50) {
-            getActions().clear(); //TODO igg demo hack
+            getActions().clear(); //TODO EA check hack
         }
         if (!getActions().contains(action, true))
             super.addAction(action);

@@ -26,7 +26,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
@@ -294,7 +294,7 @@ public class ArmorMaster {
             DC_SoundMaster.playBlockedSound(attacker, attacked, shield, weapon, blockValue, damage);
             // shield.reduceDurabilityForDamage(damage, blockValue,
             // durabilityMod);
-            if (CoreEngine.isPhaseAnimsOn()) {
+            if (Flags.isPhaseAnimsOn()) {
                 //                PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
                 //                 Attack.getAnimationKey(action));
                 //                animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_SHIELD, chance, blockValue,
@@ -305,7 +305,7 @@ public class ArmorMaster {
                     "Shield block!", attacked);
             Integer finalBlockValue = blockValue;
             DC_WeaponObj finalShield = shield;
-            // TODO igg demo fix
+            // TODO gdx Review - why didn't this ever work?
             GuiEventManager.trigger(GuiEventType.SHOW_SPRITE_SUPPLIER,
                     (Supplier<SpriteAnimation>) () -> ShieldMaster.getSprite(finalShield, action, finalBlockValue));
 

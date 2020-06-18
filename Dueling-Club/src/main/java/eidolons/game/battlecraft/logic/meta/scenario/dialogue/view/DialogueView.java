@@ -19,7 +19,7 @@ import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.Images;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 //IDEA zoom into the portrait sometimes! perhaps we can have a Full sprite + scissors? even custom border overlay
 // or flash it with a shader to signify some emotion ... use dif borders
@@ -27,7 +27,7 @@ public class DialogueView extends TablePanelX implements Scene {
     public static final float HEIGHT = 400;
     public static final float WIDTH = 1800;
 
-    private DialogueInputProcessor inputProcessor;
+    private final DialogueInputProcessor inputProcessor;
     DialogueContainer container;
     DialogueHandler handler;
 
@@ -41,7 +41,7 @@ public class DialogueView extends TablePanelX implements Scene {
     private Float timeToRespond;
     private boolean canSkip;
     private boolean autoRespond;
-    private Float speed = 0.5f;
+    private final Float speed = 0.5f;
     private boolean paused;
     private boolean timerDisabled;
     private boolean scrollToBottom;
@@ -94,7 +94,7 @@ public class DialogueView extends TablePanelX implements Scene {
         portraitLeft.setUserObject(active);
         portraitRight.setUserObject(listener);
         String text = data.getMessage();
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
             if (SpeechScript.TEST_MODE) {
                 if (data.getSpeech().getScript() != null) {
                     text += "\n" + data.getSpeech().getScript().getScriptText();
@@ -145,7 +145,7 @@ public class DialogueView extends TablePanelX implements Scene {
     }
 
     public boolean space() {
-        if (!CoreEngine.isIDE() || Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
+        if (!Flags.isIDE() || Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
             if (!isRepliesEnabled()) {
                 paused = !paused;
                 return true;

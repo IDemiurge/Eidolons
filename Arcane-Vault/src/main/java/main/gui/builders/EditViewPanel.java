@@ -15,6 +15,7 @@ import main.gui.components.controls.ModelManager;
 import main.gui.components.menu.AV_Menu;
 import main.gui.components.table.AV_TableCellRenderer;
 import main.gui.components.table.TableMouseListener;
+import main.handlers.AV_VersionHandler;
 import main.launch.ArcaneVault;
 import main.simulation.SimulationManager;
 import main.swing.generic.components.G_Panel;
@@ -22,7 +23,6 @@ import main.swing.generic.components.misc.G_Table;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.ColorManager;
-import main.system.launch.CoreEngine;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -386,12 +386,12 @@ public class EditViewPanel implements TableModelListener {
                     //                        } else
                     {
                         t.setValue(valName, newValue);
-                        t.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
+                        t.setProperty(G_PROPS.VERSION, AV_VersionHandler.getVersion(t));
                     }
                 }
             } else {
                 type.setValue(valName, newValue);
-                type.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
+                type.setProperty(G_PROPS.VERSION,  AV_VersionHandler.getVersion(type));
 
             }
         }

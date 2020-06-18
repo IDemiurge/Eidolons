@@ -13,7 +13,7 @@ import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.FlipDrawable;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.function.Supplier;
 
@@ -54,7 +54,7 @@ public class TablePanel<T extends Actor> extends Table {
 
     @Override
     public Table debugAll() {
-        if (!CoreEngine.isIDE()) {
+        if (!Flags.isIDE()) {
             return this;
         }
         return super.debugAll();
@@ -62,7 +62,7 @@ public class TablePanel<T extends Actor> extends Table {
 
     @Override
     public Table debug() {
-        if (!CoreEngine.isIDE()) {
+        if (!Flags.isIDE()) {
             return this;
         }
         return super.debug();

@@ -192,9 +192,10 @@ public class AtomicAi extends AiHandler {
     public Action getAtomicActionTurn(UnitAI ai) {
         Coordinates pick =
                 getApproachCoordinate(ai);
-        if (pick == null) { //TODO igg demo fix
-            return AiActionFactory.newAction(RandomWizard.random() ?
-                    "Turn Clockwise" : "Turn Anticlockwise", ai);
+        if (pick == null) { //TODO AI Review
+            return null;
+            // return AiActionFactory.newAction(RandomWizard.random() ?
+            //         "Turn Clockwise" : "Turn Anticlockwise", ai);
         }
         List<Action> sequence = getTurnSequenceConstructor()
                 .getTurnSequence(FACING_SINGLE.IN_FRONT, getUnit(), pick);

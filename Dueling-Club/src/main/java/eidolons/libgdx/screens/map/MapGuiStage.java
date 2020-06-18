@@ -21,7 +21,7 @@ import eidolons.libgdx.stage.GuiStage;
 import eidolons.macro.entity.party.MacroParty;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 
 import static main.system.MapEvent.CREATE_PARTY;
@@ -72,7 +72,7 @@ public class MapGuiStage extends GuiStage {
 
 
     public void resetZIndices() {
-        if (CoreEngine.isMapEditor())
+        if (Flags.isMapEditor())
             return;
         hqPanel.setZIndex(Integer.MAX_VALUE);
         super.resetZIndices();

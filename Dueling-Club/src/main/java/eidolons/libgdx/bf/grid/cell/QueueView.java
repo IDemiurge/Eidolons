@@ -29,7 +29,7 @@ import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.function.Supplier;
 
@@ -302,11 +302,11 @@ public class QueueView extends UnitView {
 
     public TextureRegion processPortraitTexture(String path) {
         TextureRegion  region = TextureCache.getOrCreateR(path);
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
             GdxImageMaster.round(path, true);
         }
         Texture texture = GdxImageMaster.size(GdxImageMaster.getRoundedPath(path),
-                AtbPanel.imageSize, CoreEngine.isIDE());
+                AtbPanel.imageSize, Flags.isIDE());
 
         if (texture == null)
             return region;
@@ -357,11 +357,11 @@ public class QueueView extends UnitView {
         if (defaultTexture == null) {
             //TODO EA check
             String path = OUTLINE_TYPE.UNKNOWN.getImagePath();
-            if (CoreEngine.isIDE()) {
+            if (Flags.isIDE()) {
                 GdxImageMaster.round(path, true);
             }
             return new TextureRegion(GdxImageMaster.size(GdxImageMaster.getRoundedPath(path),
-                    AtbPanel.imageSize, CoreEngine.isIDE()));
+                    AtbPanel.imageSize, Flags.isIDE()));
         }
         return defaultTexture;
     }

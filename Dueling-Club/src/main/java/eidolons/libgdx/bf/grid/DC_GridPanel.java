@@ -49,6 +49,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.Pair;
@@ -253,7 +254,7 @@ public class DC_GridPanel extends GridPanel {
         if (EidolonsGame.FOOTAGE) {
             return true;
         }
-        return !CoreEngine.isLiteLaunch();
+        return !Flags.isLiteLaunch();
     }
 
 

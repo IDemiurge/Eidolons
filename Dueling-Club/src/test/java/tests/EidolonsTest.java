@@ -8,6 +8,7 @@ import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.junit.Before;
@@ -64,7 +65,7 @@ public class EidolonsTest {
     private void commonInit() {
         LogMaster.setOff(isLoggingOff()); //log everything* or nothing to speed up
         CoreEngine.setGraphicsOff(isGraphicsOff());
-        CoreEngine.setjUnit(true);
+        Flags.setjUnit(true);
         if (isSelectiveXml())
             CoreEngine.setSelectivelyReadTypes(getXmlTypesToRead());
         AI_Manager.setOff(isAiOff());

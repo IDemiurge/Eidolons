@@ -53,6 +53,7 @@ import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.secondary.ReflectionMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -239,7 +240,7 @@ public class Assets {
 //            loadSprite("", false, true);
             return false;
         }
-        if (!CoreEngine.isIDE()) {
+        if (!Flags.isIDE()) {
         Chronos.mark("preload Audio");
         try {
             preloadAudio(full);
@@ -248,7 +249,7 @@ public class Assets {
         }
         Chronos.logTimeElapsedForMark("preload Audio");
         }
-        if (!CoreEngine.isVfxOff()) {
+        if (!Flags.isVfxOff()) {
             if (emitters) {
                 Chronos.mark("preload Emitters");
                 preloadEmitters();
@@ -328,7 +329,7 @@ public class Assets {
     }
 
     public static void preloadAudio(boolean full) {
-        if (CoreEngine.isSuperLite()) {
+        if (Flags.isSuperLite()) {
             return;
         }
         for (GenericEnums.SOUND_CUE value : GenericEnums.SOUND_CUE.values()) {
@@ -553,7 +554,7 @@ public class Assets {
             loadSprite(Sprites.GHOST_FIST, full, ktx);
             loadSprite(FULLSCREEN_ANIM.BLOOD.getSpritePath(), full, ktx);
 
-            if (!CoreEngine.isSuperLite()) {
+            if (!Flags.isSuperLite()) {
                 loadSprite("sprites/weapons3d/atlas/pole arm/scythes/reaper scythe.txt", full, ktx);
             }
 //            loadSprite(FullscreenAnims.FULLSCREEN_ANIM.BLOOD_SCREEN.getSpritePath(), full);
@@ -614,15 +615,9 @@ public class Assets {
         return false;
     }
 
-    private static boolean isPreloadOn() {
-        if (CoreEngine.isIDE()) {
-            return false;
-        }
-        return CoreEngine.isYouTube();
-    }
-
+    //gdx revamp - assets are IMPORTANT
     public static boolean checkSprite(String path) {
-        if (CoreEngine.isUtility()) {
+        if (Flags.isUtility()) {
             return true;
         }
         if (path.contains("blotch")) {

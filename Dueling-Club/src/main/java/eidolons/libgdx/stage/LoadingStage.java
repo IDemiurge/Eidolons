@@ -31,6 +31,7 @@ import main.system.auxiliary.TimeMaster;
 import main.system.datatypes.WeightMap;
 import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,15 +40,15 @@ import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
 public class LoadingStage extends Stage {
     protected ScreenData data;
-    private boolean fogOn = false;//!CoreEngine.isLiteLaunch();
+    private final boolean fogOn = false;//!CoreEngine.isLiteLaunch();
     private boolean engineInit = true;
-    private Image fullscreenImage;
-    private List<Ambience> fogList = new ArrayList<>();
+    private final Image fullscreenImage;
+    private final List<Ambience> fogList = new ArrayList<>();
 
     Group vfxLayer;
     private Label missionName;
-    private Label underText;
-    private float counter = 0;
+    private final Label underText;
+    private final float counter = 0;
 
     public LoadingStage(ScreenData data) {
         this.data = data;
@@ -69,7 +70,7 @@ public class LoadingStage extends Stage {
         float s = MathUtils.lerp(1, Math.max(x, y), 0.5f);
         fullscreenImage.setScale(s);
         addActor(fullscreenImage);
-        if (!CoreEngine.isCombatGame()){
+        if (!Flags.isCombatGame()){
             fullscreenImage.setVisible(false);
         }
 //        fullscreenImage.setPosition(GdxMaster.centerWidth(fullscreenImage),

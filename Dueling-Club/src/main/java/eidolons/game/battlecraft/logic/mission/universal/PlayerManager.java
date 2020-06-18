@@ -12,7 +12,7 @@ import main.system.data.PlayerData;
 import main.system.data.PlayerData.ALLEGIENCE;
 import main.system.data.PlayerData.PLAYER_VALUE;
 import main.system.graphics.ColorManager.FLAG_COLOR;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -152,7 +152,7 @@ public class PlayerManager<E extends DungeonSequence> extends MissionHandler<E> 
         return getColorFlag(enemy, false);
     }
     private FLAG_COLOR getColorFlag(boolean enemy, boolean alt) {
-        if (CoreEngine.isIggDemo()){
+        if (Flags.isIggDemo()){
             if (enemy) {
                 return alt ? defaultEnemyColorAlt : defaultEnemyColor;
             }

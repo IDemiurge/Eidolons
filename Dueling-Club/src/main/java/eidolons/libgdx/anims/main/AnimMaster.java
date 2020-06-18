@@ -85,7 +85,7 @@ public class AnimMaster extends Group {
 
     public static boolean isSmoothStop(Anim anim) {
         if (anim.getPart() == AnimEnums.ANIM_PART.CAST) {
-            return false; //TODO igg demo hack
+            return false; //TODO anim Review - was it too long? on vfx side..
         }
         if (anim.getOrigin().equals(anim.getDestination()))
             return true;

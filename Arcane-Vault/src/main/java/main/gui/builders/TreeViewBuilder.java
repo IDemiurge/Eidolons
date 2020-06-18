@@ -6,13 +6,13 @@ import main.content.ContentValsManager;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
+import main.entity.type.TypeBuilder;
 import main.gui.components.tree.AV_Tree;
 import main.gui.components.tree.AV_TreeSelectionListener;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.Builder;
 import main.system.auxiliary.CloneMaster;
 import main.system.graphics.ColorManager;
-import main.system.launch.TypeBuilder;
 import main.utilities.workspace.Workspace;
 
 import javax.swing.*;

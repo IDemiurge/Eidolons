@@ -39,6 +39,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -195,7 +196,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
 
     public void initItems() {
-        if (CoreEngine.isItemGenerationOff()) {
+        if (Flags.isItemGenerationOff()) {
             main.system.auxiliary.log.LogMaster.log(1, "NO ITEMS! - Item Generation Off!");
             return;
         }

@@ -19,7 +19,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.ContainerUtils;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 2/26/2017.
@@ -113,8 +113,8 @@ public class UnitChecker extends EntityChecker<Unit> {
 
         if (getGame().isDebugMode())
             return false;
-        if (CoreEngine.isLiteLaunch()) {
-            if (CoreEngine.isActiveTestMode()) {
+        if (Flags.isLiteLaunch()) {
+            if (Flags.isActiveTestMode()) {
                 return true;
             }
         }

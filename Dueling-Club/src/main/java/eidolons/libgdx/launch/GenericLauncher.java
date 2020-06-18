@@ -44,6 +44,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -175,11 +176,11 @@ public abstract class GenericLauncher extends Game {
         conf.samples = 4;
         conf.fullscreen = false;
         fullscreen = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
-        if (CoreEngine.isGraphicTestMode()) {
+        if (Flags.isGraphicTestMode()) {
             fullscreen = true;
         }
         conf.foregroundFPS = FRAMERATE;
-        if (!CoreEngine.isJar())
+        if (!Flags.isJar())
             conf.backgroundFPS = isStopOnInactive() ? 1 : FRAMERATE;
         else
             conf.backgroundFPS = isStopOnInactive() ? -1 : FRAMERATE;
@@ -310,7 +311,7 @@ public abstract class GenericLauncher extends Game {
             render_();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-            if (!CoreEngine.isIDE()) {
+            if (!Flags.isIDE()) {
                 CrashManager.crashed();
                 System.exit(-1);
             }
@@ -367,7 +368,7 @@ public abstract class GenericLauncher extends Game {
 
         switch (data.getType()) {
             case BATTLE:
-                if (!CoreEngine.isMacro()) {
+                if (!Flags.isMacro()) {
                     if (firstInitDone)
                         return;
                     if (initRunning)

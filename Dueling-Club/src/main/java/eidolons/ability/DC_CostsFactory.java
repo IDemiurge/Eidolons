@@ -16,7 +16,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.Formula;
 
 import java.util.ArrayList;
@@ -90,7 +90,7 @@ public class DC_CostsFactory {
                     PARAMS.C_FOCUS, new Formula(s)));
 
 //        if (!DC_Engine.isAtbMode())
-        if (!CoreEngine.isSafeMode()) // TODO igg hack
+        if (!Flags.isSafeMode()) // TODO igg hack
             requirements.add(new Requirement(
                     new NumericCondition("1", StringMaster.getValueRef(KEYS.ACTIVE,
                             PARAMS.C_COOLDOWN)),

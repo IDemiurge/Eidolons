@@ -50,6 +50,7 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.TextParser;
 
@@ -320,7 +321,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         if (getOwnerUnit() == null) {
             return getName();
         }
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
         return StringMaster.getPossessive(getOwnerUnit().getName()) + " " + getName();
         }
         return StringMaster.getPossessive(getOwnerUnit().getNameIfKnown()) + " " + getName();
@@ -918,7 +919,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public boolean isTargetingCached() {
         if (targetingCachingOff)
             return false;
-        return CoreEngine.isTargetingResultCachingOn();
+        return Flags.isTargetingResultCachingOn();
     }
 
     public List<DC_ActiveObj> getValidSubactions() {

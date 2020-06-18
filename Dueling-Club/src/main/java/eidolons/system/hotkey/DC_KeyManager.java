@@ -26,7 +26,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -171,7 +171,7 @@ public class DC_KeyManager
         int keyMod = e.getModifiers();
         //        arrowPressed(e); TODO
 
-        if (CoreEngine.isIDE()){
+        if (Flags.isIDE()){
             GuiEventManager.trigger(GuiEventType.KEY_TYPED, (int) CHAR);
         }
         handleKeyTyped(keyMod, CHAR);
@@ -224,7 +224,7 @@ public class DC_KeyManager
             }
         }
 
-        if (!CoreEngine.isJar() && !CoreEngine.isJarlike()) {
+        if (!Flags.isJar() && !Flags.isJarlike()) {
             if (checkControllerHotkey(keyMod, CHAR)) {
                 return true;
             }

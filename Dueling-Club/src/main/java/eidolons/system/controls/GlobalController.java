@@ -43,6 +43,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class GlobalController implements Controller {
             return true;
         }
         if (TEST_MODE)
-            if (CoreEngine.isIDE()) {
+            if (Flags.isIDE()) {
                 try {
                     if (doTest(keyCode))
                         return false;
@@ -116,16 +117,16 @@ public class GlobalController implements Controller {
                 EUtils.showInfoText("... Tutorial " + (bool ? "on" : "off"));
                 break;
             case Keys.F2:
-                if (CoreEngine.isIDE()) {
+                if (Flags.isIDE()) {
                     EidolonLord.lord.soulforceLost(50);
                     return false;
                 }
-                if (CoreEngine.isIDE())
+                if (Flags.isIDE())
                     LordPanel.getInstance().init();
                 GuiEventManager.trigger(GuiEventType.TOGGLE_LORD_PANEL);
                 return true;
             case Keys.F1:
-                if (!CoreEngine.isIDE())
+                if (!Flags.isIDE())
                     if (!EidolonsGame.isHqEnabled()) {
                         return false;
                     }
@@ -140,7 +141,7 @@ public class GlobalController implements Controller {
                 HqMaster.toggleHqPanel();
                 return true;
             case Keys.F4:
-                if (CoreEngine.isIDE())
+                if (Flags.isIDE())
                     if (Eidolons.getScope() != SCOPE.MENU) {
                         Eidolons.exitToMenu();
                         return true;
@@ -409,7 +410,7 @@ public class GlobalController implements Controller {
             active = true;
             return true;
         }
-        if (CoreEngine.isContentTestMode()) {
+        if (Flags.isContentTestMode()) {
             if (TestDialogMaster.key(c))
                 return false;
         }

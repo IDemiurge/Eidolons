@@ -1,5 +1,6 @@
 package main.entity;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.ContentValsManager;
@@ -34,17 +35,14 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.CounterMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.Formula;
 import main.system.math.FormulaMaster;
 import main.system.math.MathMaster;
 import main.system.text.TextParser;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by JustMe on 1/28/2017.
@@ -63,10 +61,10 @@ public abstract class DataModel {
     private PropMap propMap = new PropMap();
     private ParamMap paramMap = new ParamMap();
 
-    protected Map<PARAMETER, Map<String, Double>> modifierMaps;
-    protected Map<VALUE, Boolean> booleanMap = new HashMap<>();
-    protected Map<String, String> customParamMap;
-    protected Map<String, String> customPropMap;
+    protected ObjectMap<PARAMETER, ObjectMap<String, Double>> modifierMaps;
+    protected ObjectMap<VALUE, Boolean> booleanMap = new ObjectMap<>();
+    protected ObjectMap<String, String> customParamMap;
+    protected ObjectMap<String, String> customPropMap;
     protected XLinkedMap<VALUE, String> rawValues;
     protected boolean constructed = false;
     protected boolean constructing;
@@ -78,8 +76,8 @@ public abstract class DataModel {
     protected boolean defaultValuesInitialized;
     protected String modifierKey;
     protected Double C;
-    private HashMap<PROPERTY, Map<String, Boolean>> propCache;
-    private final Map<PARAMETER, Integer> integerMap = new HashMap<>();
+    private ObjectMap<PROPERTY, ObjectMap<String, Boolean>> propCache;
+    private final ObjectMap<PARAMETER, Integer> integerMap = new ObjectMap<>();
     private boolean beingReset;
     private boolean loaded;
 
@@ -347,11 +345,11 @@ public abstract class DataModel {
         return integerCacheOn;
     }
 
-    public Map<PARAMETER, Integer> getIntegerMap() {
+    public ObjectMap<PARAMETER, Integer> getIntegerMap() {
         return integerMap;
     }
 
-    public Map<PARAMETER, Integer> getIntegerMap(boolean base) {
+    public ObjectMap<PARAMETER, Integer> getIntegerMap(boolean base) {
         if (base) {
             return type.getIntegerMap(false);
         }
@@ -368,10 +366,6 @@ public abstract class DataModel {
 
     public void getBoolean(VALUE prop, Boolean b) {
         booleanMap.put(prop, b);
-    }
-
-    public Boolean getBoolean(String prop) {
-        return booleanMap.get(prop);
     }
 
     public String getProperty(String prop) {
@@ -448,17 +442,17 @@ public abstract class DataModel {
 
     }
 
-    public Map<PROPERTY, Map<String, Boolean>> getPropCache(boolean base) {
+    public ObjectMap<PROPERTY, ObjectMap<String, Boolean>> getPropCache(boolean base) {
         return base ? type.getPropCache() : getPropCache();
     }
 
     public boolean checkProperty(PROPERTY p, String value, boolean base) {
         Boolean result = null;
-        Map<String, Boolean> boolCache = null;
-        if (!CoreEngine.isRamEconomy()) {
+        ObjectMap<String, Boolean> boolCache = null;
+        if (!Flags.isRamEconomy()) {
             boolCache = getPropCache().get(p);
             if (boolCache == null) {
-                boolCache = new HashMap<>();
+                boolCache = new ObjectMap<>();
                 getPropCache().put(p, boolCache);
             }
             result = boolCache.get(value);
@@ -473,7 +467,7 @@ public abstract class DataModel {
         } else {
             result = checkSingleProp(p, value);
         }
-        if (!CoreEngine.isRamEconomy())
+        if (!Flags.isRamEconomy())
             boolCache.put(value, result);
         return result;
     }
@@ -691,14 +685,15 @@ public abstract class DataModel {
         setParam(param, newValue.toString(), quietly);
 
         if (isModifierMapOn()) {
-            Map<String, Double> map = getModifierMaps().get(param);
+            ObjectMap<String, Double> map = getModifierMaps().get(param);
             if (map == null) {
-                map = new XLinkedMap<>();
+                map = new ObjectMap<>();
                 getModifierMaps().put(param, map);
             }
             if (modifierKey != null) {
                 modifierKey = this.modifierKey;
             }
+            if (modifierKey != null) {
             Double amountByModifier = map.get(modifierKey);
             this.modifierKey = null; //for a single operation
             if (modifierKey != null) {
@@ -707,6 +702,7 @@ public abstract class DataModel {
                 } else {
                     map.put(modifierKey, amountByModifier + amount.doubleValue());
                 }
+            }
             }
         }
 
@@ -720,9 +716,9 @@ public abstract class DataModel {
         return false;
     }
 
-    public Map<PARAMETER, Map<String, Double>> getModifierMaps() {
+    public ObjectMap<PARAMETER, ObjectMap<String, Double>> getModifierMaps() {
         if (modifierMaps == null) {
-            modifierMaps = new XLinkedMap<>();
+            modifierMaps = new ObjectMap<>();
         }
         return modifierMaps;
     }
@@ -1336,7 +1332,7 @@ public abstract class DataModel {
     }
 
     public void cloneMapsWithExceptions(DataModel type, VALUE... exceptions) {
-        Map<VALUE, String> map = new HashMap<>();
+        ObjectMap<VALUE, String> map = new ObjectMap<>();
         for (VALUE exception : exceptions) {
             map.put(exception, getValue(exception));
         }
@@ -1361,37 +1357,28 @@ public abstract class DataModel {
 
     }
 
-    protected ParamMap cloneParamMap(Map<PARAMETER, String> map) {
+    protected ParamMap cloneParamMap(ObjectMap<PARAMETER, String> map) {
         ParamMap clone = new ParamMap();
-        Map<PARAMETER, String> innerMap = new HashMap<>();
-        map.keySet().removeIf(key -> map.get(key) == null);
-        map.keySet().removeIf(key -> (key) == null);
-        innerMap.putAll(map);
-
+        ObjectMap<PARAMETER, String> innerMap = new ObjectMap<>();
+        for (PARAMETER key : map.keys()) {
+            String value = map.get(key);
+            if (value != null) {
+                innerMap.put(key, value);
+            }
+        }
         clone.setMap(innerMap);
-
-        // so the problem is that it doesn't seem to carry over c_ and perc_
-        // values?
-        //        for (PARAMETER p : type.getParamMap().getMap().keySet()) {
-        //            if (!p.isDynamic()) {
-        //                paramMap.remove(p);
-        //            }
-        //        }
-        //        for (PARAMETER p : type.getParamMap().getMap().keySet()) {
-        //            paramMap.put(p, type.getParamMap().getMap().get(p));
-        //        }
-
-
         return clone;
     }
 
-    protected PropMap clonePropMap(Map<PROPERTY, String> map) {
+    protected PropMap clonePropMap(ObjectMap<PROPERTY, String> map) {
         PropMap clone = new PropMap();
-        Map<PROPERTY, String> innerMap = new ConcurrentHashMap<>();
-        map.keySet().removeIf(key -> map.get(key) == null);
-        map.keySet().removeIf(key -> (key) == null);
-        innerMap.putAll(map);
-
+        ObjectMap<PROPERTY, String> innerMap = new ObjectMap<>();
+        for (PROPERTY key : map.keys()) {
+            String value = map.get(key);
+            if (value != null) {
+                innerMap.put(key, value);
+            }
+        }
         clone.setMap(innerMap);
         return clone;
     }
@@ -1484,14 +1471,14 @@ public abstract class DataModel {
         return !StringMaster.isEmpty(getCustomProperty(name));
     }
 
-    public Map<String, String> getCustomPropMap() {
+    public ObjectMap<String, String> getCustomPropMap() {
         if (customPropMap == null) {
-            setCustomPropMap(new HashMap<>());
+            setCustomPropMap(new ObjectMap<>());
         }
         return customPropMap;
     }
 
-    public void setCustomPropMap(Map<String, String> customPropMap) {
+    public void setCustomPropMap(ObjectMap<String, String> customPropMap) {
         this.customPropMap = customPropMap;
     }
 
@@ -1504,14 +1491,14 @@ public abstract class DataModel {
         getCustomParamMap().put(properName, value);
     }
 
-    public Map<String, String> getCustomParamMap() {
+    public ObjectMap<String, String> getCustomParamMap() {
         if (customParamMap == null) {
-            setCustomParamMap(new XLinkedMap<>());
+            setCustomParamMap(new ObjectMap<>());
         }
         return customParamMap;
     }
 
-    public void setCustomParamMap(Map<String, String> customParamMap) {
+    public void setCustomParamMap(ObjectMap<String, String> customParamMap) {
         this.customParamMap = customParamMap;
     }
 
@@ -1647,9 +1634,9 @@ public abstract class DataModel {
         }
     }
 
-    public HashMap<PROPERTY, Map<String, Boolean>> getPropCache() {
+    public ObjectMap<PROPERTY, ObjectMap<String, Boolean>> getPropCache() {
         if (propCache == null) {
-            propCache = new HashMap<>();
+            propCache = new ObjectMap<>();
         }
         return propCache;
     }

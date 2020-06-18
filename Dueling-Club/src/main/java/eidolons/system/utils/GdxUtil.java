@@ -3,7 +3,7 @@ package eidolons.system.utils;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 5/13/2018.
@@ -11,12 +11,12 @@ import main.system.launch.CoreEngine;
 public abstract class GdxUtil implements ApplicationListener {
     @Override
     public void create() {
-        CoreEngine.setUtility(true);
+        Flags.setUtility(true);
         execute();
         if (isExitOnDone())
             Gdx.app.exit();
         else
-            CoreEngine.setUtility(false);
+            Flags.setUtility(false);
     }
 
     protected boolean isExitOnDone() {

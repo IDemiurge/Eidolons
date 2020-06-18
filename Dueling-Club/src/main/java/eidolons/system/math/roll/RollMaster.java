@@ -20,7 +20,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 
@@ -217,7 +217,7 @@ public class RollMaster {
         }
         ref.getGame().getLogManager().log(RollMaster.logString);
         ref.getGame().getLogManager().doneLogEntryNode();
-        if (CoreEngine.isPhaseAnimsOn())
+        if (Flags.isPhaseAnimsOn())
         {
             //TODO
         }

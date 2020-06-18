@@ -23,7 +23,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster;
 import main.system.threading.WaitMaster;
 
@@ -60,7 +60,7 @@ public class MusicMaster {
     private boolean shuffle = true;
     private boolean autoplay = true;
     private boolean loopPlaylist = false;
-    private Map<String, Music> musicCache = new XLinkedMap<>();
+    private final Map<String, Music> musicCache = new XLinkedMap<>();
 
     Soundscape soundscape = new Soundscape();
 
@@ -70,7 +70,7 @@ public class MusicMaster {
     private boolean stopped;
     private boolean running;
 
-    private Map<MUSIC_SCOPE, Music> trackCache = new XLinkedMap<>();
+    private final Map<MUSIC_SCOPE, Music> trackCache = new XLinkedMap<>();
     List<PreloadedMusic> looping = new ArrayList<>();
 
 //    static Map<MUSIC_SCOPE, Integer> indexMap; //what was the idea?..
@@ -226,8 +226,8 @@ public class MusicMaster {
         if (getInstance().scope!=MUSIC_SCOPE.MENU && DialogueManager.isRunning()) {
             return false;
         }
-        if (CoreEngine.isjUnit()) return false;
-        if (CoreEngine.isLiteLaunch()) return false;
+        if (Flags.isjUnit()) return false;
+        if (Flags.isLiteLaunch()) return false;
         if (on == null)
             on = !(OptionsMaster.getSoundOptions().
                     getBooleanValue(SOUND_OPTION.MUSIC_OFF));
@@ -599,7 +599,7 @@ public class MusicMaster {
     }
 
     private boolean isAmbientOn() {
-        if (CoreEngine.isActiveTestMode()) {
+        if (Flags.isActiveTestMode()) {
             return false;
         }
         if (scope == MUSIC_SCOPE.MENU) {

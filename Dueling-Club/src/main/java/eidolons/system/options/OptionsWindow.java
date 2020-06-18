@@ -30,7 +30,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.Map;
@@ -254,7 +254,7 @@ public class OptionsWindow extends VisWindow {
                 if (option.isHidden())
                     continue;
                 if (option.isDevOnly())
-                    if (!CoreEngine.isIDE())
+                    if (!Flags.isIDE())
                         continue;
                 VisLabel label = new VisLabel(option.getName());
                 content.add(label).left();

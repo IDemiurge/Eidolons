@@ -45,7 +45,7 @@ import main.system.PathUtils;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.Player;
 import main.system.sound.SoundMaster;
 
@@ -551,7 +551,7 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     private static String getActionEffectSoundPath(Spell spell, ANIM_PART part) {
-        if (CoreEngine.isIggDemo()) {
+        if (Flags.isIggDemo()) {
             return getSpellSound(spell, part);
         }
 

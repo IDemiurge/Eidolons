@@ -14,7 +14,7 @@ import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.GraveyardManager;
 import main.game.bf.MovementManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 6/2/2017.
@@ -103,7 +103,7 @@ public class CombatMaster {
     }
 
     public boolean isFullManualControl() {
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
             return true;
         }
         return  OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.MANUAL_CONTROL);

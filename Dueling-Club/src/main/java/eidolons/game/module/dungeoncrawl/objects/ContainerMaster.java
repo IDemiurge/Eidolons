@@ -48,7 +48,7 @@ import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.FilterMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
@@ -92,11 +92,11 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public static boolean isGenerateItemsForUnits() {
-        return !CoreEngine.isFullFastMode();
+        return !Flags.isFullFastMode();
     }
 
     public static boolean isGenerateItemsForContainers() {
-        return !CoreEngine.isFullFastMode() || test_mode;
+        return !Flags.isFullFastMode() || test_mode;
     }
 
     public static boolean loot(Unit unit, DC_Obj obj) {
@@ -650,7 +650,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         } else
             main.system.auxiliary.log.LogMaster.verbose( ">> " + obj + " has contents: " + contents + itemValueList);
 
-        if (!CoreEngine.isIggDemo())
+        if (!Flags.isIggDemo())
             contents = checkSpecialContents(contents, obj);
 
         int gold = getAmountOfGold(obj, totalCost);

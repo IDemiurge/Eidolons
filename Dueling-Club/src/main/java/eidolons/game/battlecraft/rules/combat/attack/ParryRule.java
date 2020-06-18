@@ -18,7 +18,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 /**
@@ -103,7 +103,7 @@ public class ParryRule {
         durabilityLost = durabilityLost * mod / 100;
         attacker.getActiveWeapon(attack.isOffhand()).reduceDurability(durabilityLost);
 
-        if (CoreEngine.isPhaseAnimsOn()) {
+        if (Flags.isPhaseAnimsOn()) {
             //TODO
         }
         GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, new CustomSpriteAnim(attack.getAction(), HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.SPARKS,
@@ -128,7 +128,7 @@ public class ParryRule {
     // precalculateRawDamageForDisplay
     private boolean canParry(Attack attack) {
 
-        if (CoreEngine.isRuleTestMode())
+        if (Flags.isRuleTestMode())
             return true;
 
         Unit attackedUnit = (Unit) attack.getAttackedUnit();

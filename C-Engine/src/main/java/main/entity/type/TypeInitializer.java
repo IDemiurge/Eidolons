@@ -1,4 +1,4 @@
-package main.system.launch;
+package main.entity.type;
 
 import main.ability.AbilityType;
 import main.content.ContentValsManager;
@@ -7,7 +7,10 @@ import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
 import main.data.dialogue.DialogueType;
-import main.entity.type.*;
+import main.entity.type.impl.ActionType;
+import main.entity.type.impl.BuffType;
+import main.entity.type.impl.SpellType;
+import main.entity.type.impl.UnitType;
 import main.system.auxiliary.StringMaster;
 
 import java.util.HashMap;
@@ -15,7 +18,7 @@ import java.util.Map;
 
 public class TypeInitializer {
     private boolean xmlTreeValue = false;
-    private Map<OBJ_TYPE, ObjType> defaultTypes = new HashMap<>();
+    private final Map<OBJ_TYPE, ObjType> defaultTypes = new HashMap<>();
 
     public ObjType getNewType(OBJ_TYPE obj_type) {
         DC_TYPE OBJ_TYPE;

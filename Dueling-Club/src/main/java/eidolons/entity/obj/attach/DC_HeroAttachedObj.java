@@ -122,17 +122,6 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
         this.hero = hero;
     }
 
-    protected void modifyHeroParameters() {
-        for (PARAMETER p : getParamMap().getMap().keySet()) {
-            if (ContentValsManager.isValueForOBJ_TYPE(getHero().getOBJ_TYPE_ENUM(), p)) {
-                Integer amount = getIntParam(p);
-                if (amount != 0) {
-                    getHero().modifyParameter(p, amount);
-                }
-            }
-        }
-
-    }
 
     @Override
     public void activatePassives() {

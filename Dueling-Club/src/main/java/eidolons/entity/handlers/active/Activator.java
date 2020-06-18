@@ -19,7 +19,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Bools;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 2/25/2017.
@@ -41,7 +41,7 @@ public class Activator extends ActiveHandler {
     }
 
     public boolean canBeActivated(Ref ref, boolean first) {
-        if (CoreEngine.isActiveTestMode()) {
+        if (Flags.isActiveTestMode()) {
             return true;
         }
         if (getGame().getCombatMaster().isActionBlocked(getAction()))

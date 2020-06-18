@@ -36,6 +36,7 @@ import main.system.auxiliary.log.SpecialLogger;
 import main.system.auxiliary.secondary.Bools;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -386,7 +387,7 @@ public class GameLoop {
             return;
         }
         if (logged)
-            if (CoreEngine.isIDE())
+            if (Flags.isIDE())
                 game.getLogManager().log(paused ? "Game paused" : "Game resumed");
         if (paused)
             GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, "Game Paused");
@@ -461,9 +462,9 @@ public class GameLoop {
                 //check party
                 return true;
             }
-        if (CoreEngine.isIDE())
+        if (Flags.isIDE())
             if (!Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT))
-                if (game.isDebugMode() || (CoreEngine.isLevelTestMode() && !Eidolons.getMainHero().getLastCoordinates().equals(c)))
+                if (game.isDebugMode() || (Flags.isLevelTestMode() && !Eidolons.getMainHero().getLastCoordinates().equals(c)))
                     if (location.getMainEntrance() != null)
                         return location.getMainEntrance().getCoordinates().equals(c);
         return false;

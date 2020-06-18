@@ -6,7 +6,6 @@ import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.gui.generic.GroupX;
-import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 5/6/2018.
@@ -40,8 +39,7 @@ public class SpriteActor extends GroupX {
 
     @Override
     public float getHeight() {
-        if (CoreEngine.isIggDemo())
-        return 80; //TODO igg demo hack
+        // return 80;  //To-Cleanup
         if (anim != null) {
             return anim.getHeight();
         }
@@ -50,8 +48,7 @@ public class SpriteActor extends GroupX {
 
     @Override
     public float getWidth() {
-        if (CoreEngine.isIggDemo())
-            return 80; //TODO igg demo hack
+            // return 80; //To-Cleanup
         if (anim != null) {
             return anim.getWidth();
         }

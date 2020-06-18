@@ -18,6 +18,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.*;
 
@@ -47,30 +48,30 @@ public class ContentValsManager {
     private static List<PARAMETER> params;
     private static List<String> sprops;
     private static List<String> sparams;
-    private static Map<String, List<String>> spropListsMap = new ConcurrentMap<>(
+    private static final Map<String, List<String>> spropListsMap = new ConcurrentMap<>(
             400, 0.75f);
-    private static Map<String, List<String>> sparamListsMap = new ConcurrentMap<>(
+    private static final Map<String, List<String>> sparamListsMap = new ConcurrentMap<>(
             400, 0.75f);
 
-    private static Map<String, List<String>> spropListsMapAV = new ConcurrentMap<>();
-    private static Map<String, List<String>> sparamListsMapAV = new ConcurrentMap<>();
+    private static final Map<String, List<String>> spropListsMapAV = new ConcurrentMap<>();
+    private static final Map<String, List<String>> sparamListsMapAV = new ConcurrentMap<>();
 
-    private static Map<String, List<PROPERTY>> propListsMap = new ConcurrentMap<>(
+    private static final Map<String, List<PROPERTY>> propListsMap = new ConcurrentMap<>(
             400, 0.75f);
-    private static Map<String, List<PARAMETER>> paramListsMap = new ConcurrentMap<>(400, 0.75f);
-    private static Map<String, List<VALUE>> valueListsMap = new ConcurrentMap<>();
-    private static Map<String, List<VALUE>> valueListsMapAV = new ConcurrentMap<>();
+    private static final Map<String, List<PARAMETER>> paramListsMap = new ConcurrentMap<>(400, 0.75f);
+    private static final Map<String, List<VALUE>> valueListsMap = new ConcurrentMap<>();
+    private static final Map<String, List<VALUE>> valueListsMapAV = new ConcurrentMap<>();
 
-    private static Map<String, List<PROPERTY>> propListsMapAV = new ConcurrentMap<>();
-    private static Map<String, List<PARAMETER>> paramListsMapAV = new ConcurrentMap<>();
+    private static final Map<String, List<PROPERTY>> propListsMapAV = new ConcurrentMap<>();
+    private static final Map<String, List<PARAMETER>> paramListsMapAV = new ConcurrentMap<>();
 
-    private static List<VALUE> lowPriorityValues = new ArrayList<>();
+    private static final List<VALUE> lowPriorityValues = new ArrayList<>();
 
-    private static List<String> highPriorityValues = new ArrayList<>();
-    private static List<VALUE> superLowPriorityValues = new ArrayList<>();
-    private static List<PARAMETER> attributes = new ArrayList<>();
-    private static List<PARAMETER> masteries = new ArrayList<>();
-    private static List<PARAMETER> masteryScores = new ArrayList<>();
+    private static final List<String> highPriorityValues = new ArrayList<>();
+    private static final List<VALUE> superLowPriorityValues = new ArrayList<>();
+    private static final List<PARAMETER> attributes = new ArrayList<>();
+    private static final List<PARAMETER> masteries = new ArrayList<>();
+    private static final List<PARAMETER> masteryScores = new ArrayList<>();
 
     private static Map<String, List<VALUE>> AV_IgnoredValues;
     private static List<PARAMETER> unitParameters;
@@ -87,9 +88,9 @@ public class ContentValsManager {
     private static Set<VALUE> excludedValueSet;
     private static TypeMaster typeMaster;
     private static ContentValsManager instance;
-    private static Map<PARAMETER, PARAMETER> currentCache = new HashMap<>();
-    private static Map<PARAMETER, PARAMETER> regenCache = new HashMap<>();
-    private static Map<PARAMETER, PARAMETER> percCache = new HashMap<>();
+    private static final Map<PARAMETER, PARAMETER> currentCache = new HashMap<>();
+    private static final Map<PARAMETER, PARAMETER> regenCache = new HashMap<>();
+    private static final Map<PARAMETER, PARAMETER> percCache = new HashMap<>();
     private Map<String, VALUE> commons;
     private Map<String, Map<String, VALUE>> maps;
 
@@ -816,7 +817,7 @@ public class ContentValsManager {
             }
 
         if (type == null) {
-            if (!CoreEngine.isMapEditor())
+            if (!Flags.isMapEditor())
                 if (CoreEngine.isArcaneVault())
                     return null;
             if (!XML_Reader.isMacro()) {

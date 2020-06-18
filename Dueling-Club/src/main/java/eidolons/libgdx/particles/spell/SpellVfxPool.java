@@ -9,7 +9,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.Chronos;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,10 +21,10 @@ import java.util.Map;
  */
 public class SpellVfxPool extends EmitterPools{
 
-    private static Map<String, Pool<SpellVfx>> actorPoolMap = new HashMap<>();
+    private static final Map<String, Pool<SpellVfx>> actorPoolMap = new HashMap<>();
 
     public static SpellVfx getEmitterActor(String path) {
-        if (CoreEngine.isJar())
+        if (Flags.isJar())
             System.out.println("getEmitterActor " + path);
 
         if (SpellVfxMaster.isRandomVfx()) {

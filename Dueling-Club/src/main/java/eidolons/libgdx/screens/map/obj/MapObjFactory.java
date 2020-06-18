@@ -1,8 +1,8 @@
 package eidolons.libgdx.screens.map.obj;
 
-import eidolons.macro.entity.MacroObj;
 import eidolons.libgdx.screens.map.editor.EditorManager;
-import main.system.launch.CoreEngine;
+import eidolons.macro.entity.MacroObj;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 2/10/2018.
@@ -18,7 +18,7 @@ public abstract class MapObjFactory<E extends MapActor, T extends MacroObj> {
     }
 
     public void handle(E actor, T obj) {
-        if (CoreEngine.isMapEditor()) {
+        if (Flags.isMapEditor()) {
             EditorManager.map(actor, obj);
             actor.addListener(EditorManager.getMouseListener(actor));
         }

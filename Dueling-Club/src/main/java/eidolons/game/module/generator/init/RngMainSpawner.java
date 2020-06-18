@@ -33,7 +33,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.FuncMaster;
 
 import java.util.*;
@@ -62,8 +62,8 @@ public class RngMainSpawner {
             EncounterEnums.UNIT_GROUP_TYPE.PATROL,
     };
     private static final float POWER_FILL_COEF = 1.25f;
-    private static final boolean SPAWN_GROUP_ON_ONE_CELL = CoreEngine.isCombatGame();
-    private static final boolean SPAWN_GROUP_IN_CENTER = CoreEngine.isCombatGame();
+    private static final boolean SPAWN_GROUP_ON_ONE_CELL = Flags.isCombatGame();
+    private static final boolean SPAWN_GROUP_IN_CENTER = Flags.isCombatGame();
     Map<LevelBlock, Float> coefMap = new LinkedHashMap<>();
     private DungeonLevel level;
     private LevelData data;
@@ -124,8 +124,8 @@ public class RngMainSpawner {
         //some meta data to take from?
 
         log(1, "Spawning for quests ");
-        if (!CoreEngine.isFullFastMode())
-            if (CoreEngine.isCombatGame())
+        if (!Flags.isFullFastMode())
+            if (Flags.isCombatGame())
                 if (Eidolons.getGame().getMetaMaster().isRngQuestsEnabled())
                     try {
                         spawnForQuests();
@@ -790,7 +790,7 @@ public class RngMainSpawner {
     }
 
     private boolean isEnclosedSpawnAllowed() {
-        return !CoreEngine.isCombatGame();
+        return !Flags.isCombatGame();
     }
 
     private void addUnit(ObjAtCoordinate at, LevelBlock levelBlock) {

@@ -642,10 +642,11 @@ public class GridRenderHelper {
     public void unitMoved(Obj sourceObj) {
         if (!MoveAnimation.isOn() || AnimMaster.isAnimationOffFor(sourceObj,
                 getViewMap().get(sourceObj))
-                || sourceObj.getGame().getManager().getActiveObj() != sourceObj
+                || sourceObj.getGame().getManager().getActiveObj() != sourceObj)
+            //TODO EA check...
             //what about COUNTER ATTACK?!
-            //TODO igg demo hack for force and teleport now...
-        )
+
+            //move immediately
             panel.unitMoved((BattleFieldObject) sourceObj);
     }
 

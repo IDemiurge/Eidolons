@@ -1,9 +1,10 @@
-package main.entity.type;
+package main.entity.type.impl;
 
 import main.content.DC_TYPE;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
+import main.entity.type.ObjType;
 
 public class BuffType extends ObjType {
 

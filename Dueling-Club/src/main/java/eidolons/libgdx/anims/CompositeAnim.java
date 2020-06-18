@@ -36,6 +36,7 @@ import java.util.Map;
  */
 public class CompositeAnim implements Animation {
 
+    //ObjectMap
     Map<ANIM_PART, Animation> map = new XLinkedMap<>();
     Map<ANIM_PART, List<Pair<GuiEventType, EventCallbackParam>>> onStartEventMap;
     Map<ANIM_PART, List<Pair<GuiEventType, EventCallbackParam>>> onFinishEventMap;
@@ -171,7 +172,8 @@ public class CompositeAnim implements Animation {
         }
         drawAttached(batch);
 
-//     TODO    if (parallelAnims.isEmpty()){
+//     TODO anim Review
+        //      if (parallelAnims.isEmpty()){
 //            for (Anim sub : new ArrayList<>(parallelAnims)) {
 //                if (!sub.draw(batch)) {
 //                    parallelAnims.remove(sub);
@@ -340,12 +342,6 @@ public class CompositeAnim implements Animation {
     }
 
     public Ref getRef() {
-//        if (ref == null)
-//            if (getActive() == null)
-//                return null;
-//            else {
-//                ref = Ref.getCopy(getActive().getRef());
-//            }
         return ref;
     }
 
@@ -354,8 +350,6 @@ public class CompositeAnim implements Animation {
     }
 
     public void start() {
-//        if (isFinished()) TODO igg demo fix -  wtf?
-////            return;
         parallelAnims.clear();
         hpUpdate = true;
         time = 0;
@@ -385,10 +379,8 @@ public class CompositeAnim implements Animation {
         queueGraphicEvents();
         queueTextEvents();
         running = true;
-//        LogMaster.log(LogMaster.ANIM_DEBUG, this + " started: "
-//        );
+       LogMaster.log(LogMaster.ANIM_DEBUG, this + " started: "        );
 
-//       TODO  GuiEventManager.trigger(GuiEventType.COMPOSITE_ANIMATION_STARTED, this);
 
     }
 

@@ -76,7 +76,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
     BuffPanelSimple buffPanelSimple;
     ResistInfoTabsPanel resistPanel;
     HqTraitsPanel traitsPanel;
-    private ImageContainer black;
+    private final ImageContainer black;
 
     public static boolean isNewUnitInfoPanelWIP() {
             return true;
@@ -87,7 +87,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
     public void layout() {
         super.layout();
         center.setY(getHeight() - center.getHeight());
-        center.setY(- 200); //TODO igg demo hack
+        center.setY(- 200); //TODO Gdx revamp - this panel..
         secondWeapon.setY(weapon.getY());
         float max = Math.max(left.getHeight(), right.getHeight());
         left.setY(max - left.getHeight());

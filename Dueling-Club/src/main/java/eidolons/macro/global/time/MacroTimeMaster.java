@@ -18,6 +18,7 @@ import main.system.MapEvent;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 2/10/2018.
@@ -34,7 +35,7 @@ public class MacroTimeMaster {
     private float delta;
     private boolean guiDirtyFlag;
     private int lastPeriod;
-    private DAY_TIME[] times = DAY_TIME.values();
+    private final DAY_TIME[] times = DAY_TIME.values();
     private DAY_TIME dayTime;
     private WEATHER weather;
     private GameDate date;
@@ -282,7 +283,7 @@ public class MacroTimeMaster {
     }
 
     private float getMaxSpeed() {
-        if (CoreEngine.isFastMode())
+        if (Flags.isFastMode())
             return 100f;
         return 10f;
     }

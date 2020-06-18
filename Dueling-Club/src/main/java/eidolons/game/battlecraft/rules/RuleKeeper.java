@@ -10,6 +10,7 @@ import main.data.XLinkedMap;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +22,8 @@ public class RuleKeeper implements Controller {
 //            RULE.SHIELD,
     };
     static Map<Object, Boolean> overrideMap = new HashMap<>();
-    private static Map<RULE, Boolean> map = new XLinkedMap<>();
-    private static Map<RULE, Boolean> mapTest = new XLinkedMap<>();
+    private static final Map<RULE, Boolean> map = new XLinkedMap<>();
+    private static final Map<RULE, Boolean> mapTest = new XLinkedMap<>();
     private static RULE_SCOPE scope = RULE_SCOPE.BASIC;
     private static RuleKeeper instance;
 
@@ -50,8 +51,8 @@ public class RuleKeeper implements Controller {
                 }
             }
         }
-        if (CoreEngine.isIDE())
-            if (CoreEngine.isLiteLaunch())
+        if (Flags.isIDE())
+            if (Flags.isLiteLaunch())
                 for (RULE r : RULES_BEING_TESTED) {
                     mapTest.put(r, true);
                 }

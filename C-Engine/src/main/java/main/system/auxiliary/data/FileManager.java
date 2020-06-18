@@ -6,7 +6,7 @@ import main.system.PathUtils;
 import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster;
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Node;
@@ -50,8 +50,8 @@ public class FileManager {
 
     public static String readFile(File file, String lineSeparator) {
         if (!isFile(file)) {
-            if (CoreEngine.isJar()) {
-                if (!CoreEngine.isWindows()) {
+            if (Flags.isJar()) {
+                if (!Flags.isWindows()) {
                     String lowerCase = file.getPath().toLowerCase();
                     if (!lowerCase.equals(file.getPath()))
                         return readFile(FileManager.getFile(file.getPath().toLowerCase()));
@@ -249,8 +249,8 @@ public class FileManager {
             //                return file;
             //            }
             //            file = new File(path);
-            if (!CoreEngine.isActiveTestMode())
-                if (!CoreEngine.isFullFastMode()) {
+            if (!Flags.isActiveTestMode())
+                if (!Flags.isFullFastMode()) {
                     if (!missing.contains(file.getPath())) {
                         main.system.auxiliary.log.LogMaster.verbose("FILE NOT FOUND: " + file);
                         missing.add(file.getPath());
@@ -294,7 +294,7 @@ public class FileManager {
         if (force) {
             return formatted.toString().toLowerCase();
         }
-        if (!CoreEngine.isWindows()) {
+        if (!Flags.isWindows()) {
 
             return (PathFinder.getRootPath() + formatted.toString().toLowerCase())
                     .replace("%20", " ");
@@ -504,7 +504,7 @@ public class FileManager {
     }
 
     public static boolean write(String content, String filepath, boolean formatPath) {
-        if (CoreEngine.isWindows())
+        if (Flags.isWindows())
             if (!filepath.contains(":")) {
                 filepath = PathFinder.getRootPath() + "/" + filepath;
             }

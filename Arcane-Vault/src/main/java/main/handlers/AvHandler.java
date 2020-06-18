@@ -1,8 +1,9 @@
-package main.data;
+package main.handlers;
 
 import eidolons.game.core.game.DC_Game;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.DC_TYPE;
+import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
 

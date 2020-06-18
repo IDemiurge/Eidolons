@@ -9,7 +9,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import static eidolons.game.netherflame.main.event.TIP.*;
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE_DEATH;
 
 public class TipMessageMaster {
-    private static List<Event.EVENT_TYPE> eventsMessaged=    new ArrayList<>() ;
+    private static final List<Event.EVENT_TYPE> eventsMessaged=    new ArrayList<>() ;
     public static final TIP[] tutorialTips = {
 //            ALERT,
 
@@ -109,7 +109,7 @@ public class TipMessageMaster {
     private static Runnable createChain(TIP[] tips) {
         if (tips.length <= 1)
             return () -> {
-                if (!CoreEngine.isIDE())
+                if (!Flags.isIDE())
                 if (tips[0].once){
                     tips[0].done = true;
                 }

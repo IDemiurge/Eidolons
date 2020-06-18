@@ -12,14 +12,14 @@ import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class KeyMaster {
-    private static Map<Floor, Map<String, String>> pairMaps = new HashMap<>();
-    private static Map<Coordinates, String> customKeyMap = new HashMap<>();
+    private static final Map<Floor, Map<String, String>> pairMaps = new HashMap<>();
+    private static final Map<Coordinates, String> customKeyMap = new HashMap<>();
 
     private static Map<String, String> getPairMap(Floor floor) {
         Map<String, String> map = pairMaps.get(floor);
@@ -40,7 +40,7 @@ public class KeyMaster {
     }
 
     public static boolean hasKey(Unit unit, Door door) {
-        if (CoreEngine.isKeyCheat()) {
+        if (Flags.isKeyCheat()) {
             return true;
         }
         String type = getRequiredKey(door);
@@ -115,7 +115,7 @@ public class KeyMaster {
     }
 
     public static void doorUnsealed(Door door, Unit unit) {
-        if (CoreEngine.isKeyCheat()) {
+        if (Flags.isKeyCheat()) {
             return;
         }
         DC_HeroItemObj key = unit.findItem(getRequiredKey(door), true);

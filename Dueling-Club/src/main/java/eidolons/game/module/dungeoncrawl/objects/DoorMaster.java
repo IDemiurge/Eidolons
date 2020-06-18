@@ -17,7 +17,7 @@ import main.entity.Ref;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.PositionMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -177,7 +177,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
     @Override
     public void open(DungeonObj obj, Ref ref) {
         Door door = (Door) obj;
-        if (CoreEngine.isActiveTestMode())
+        if (Flags.isActiveTestMode())
             door.setState(DOOR_STATE.SEALED);
 
         if (door.getState()==DOOR_STATE.SEALED){

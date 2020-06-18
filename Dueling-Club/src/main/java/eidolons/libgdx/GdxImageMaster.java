@@ -27,6 +27,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -193,7 +194,7 @@ public class GdxImageMaster extends LwjglApplication {
         if (write) {
             writeImage(handle, pixmap2);
             texture = new Texture(pixmap2);
-            if (!CoreEngine.isUtility()) {
+            if (!Flags.isUtility()) {
                 pixmap.dispose();
                 pixmap2.dispose();
             }

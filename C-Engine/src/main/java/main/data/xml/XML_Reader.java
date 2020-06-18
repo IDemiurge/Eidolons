@@ -9,6 +9,7 @@ import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
+import main.entity.type.TypeBuilder;
 import main.game.core.game.Game;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
@@ -17,7 +18,7 @@ import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
-import main.system.launch.TypeBuilder;
+import main.system.launch.Flags;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -130,7 +131,7 @@ public class XML_Reader {
 
     public static void loadXml(String path) {
         File folder = FileManager.getFile(path);
-        if (CoreEngine.isJar())
+        if (Flags.isJar())
             log(1, "ENGINE INIT >> Loading xml files from: \n " + path);
         final File[] files = folder.listFiles();
 
@@ -144,25 +145,25 @@ public class XML_Reader {
                 if (checkFile(file)) {
                     try {
                         XML_File xmlFile = readFile(file);
-                        if (CoreEngine.isJar())
+                        if (Flags.isJar())
                             log(1, "ENGINE INIT >> " + file + " is read!");
                         if (xmlFile == null)
                             continue;
                         loadFile(xmlFile);
-                        if (CoreEngine.isJar())
+                        if (Flags.isJar())
                             log(1, "ENGINE INIT >> " + file + " is loaded!");
                     } catch (Exception e) {
                         brokenXml = true;
-                        if (CoreEngine.isJar())
+                        if (Flags.isJar())
                             log(1, "ENGINE INIT >> " + file + " is broken!");
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
                 } else {
-                    if (CoreEngine.isJar())
+                    if (Flags.isJar())
                         log(1, "ENGINE INIT >> not a valid xml file: \n " + file);
                 }
             }
-            if (CoreEngine.isJar())
+            if (Flags.isJar())
                 log(1, "ENGINE INIT >> Done loading xml files from: \n " + path);
 /*            Arrays.stream(files)
                     .filter(XML_Reader::checkFile)

@@ -35,7 +35,7 @@ import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.List;
 
@@ -168,7 +168,7 @@ public class BattleGuiStage extends GuiStage {
 
     @Override
     protected boolean checkBlocked() {
-        if (CoreEngine.isActiveTestMode()) {
+        if (Flags.isActiveTestMode()) {
             return super.checkBlocked() || outcomePanel.isVisible();
         }
         return super.checkBlocked() || outcomePanel.isVisible() || GDX.isVisible(infoPanel);
@@ -192,7 +192,7 @@ public class BattleGuiStage extends GuiStage {
 
     @Override
     public boolean keyTyped(char character) {
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
             GuiEventManager.trigger(GuiEventType.KEY_TYPED, (int) character);
         }
         Eidolons.onNonGdxThread(() -> super.keyTyped(character));

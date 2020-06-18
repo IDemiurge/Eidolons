@@ -14,7 +14,7 @@ import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -111,7 +111,7 @@ public class TileMapper {
             try {
                 cells[point.x][point.y] = val;
             } catch (Exception e) {
-                if (!CoreEngine.isMacro())
+                if (!Flags.isMacro())
                     main.system.ExceptionMaster.printStackTrace(e);
             }
         }

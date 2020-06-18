@@ -22,7 +22,7 @@ import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.data.filesys.PathFinder;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -487,14 +487,14 @@ public class GdxMaster {
     }
 
     public static void setLoadingCursor() {
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
             return;
         }
         setCursorType(CURSOR.LOADING);
     }
 
     public static void setEmptyCursor() {
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
             return;
         }
         setCursorType(CURSOR.EMPTY);

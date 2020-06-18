@@ -1,5 +1,7 @@
-package main.entity.type;
+package main.entity.type.impl;
 
+
+import main.entity.type.ObjType;
 
 public class ActionType extends ObjType {
     public ActionType(ObjType type) {

@@ -14,7 +14,7 @@ import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.PositionMaster;
 
 import java.util.HashMap;
@@ -39,11 +39,11 @@ public class StackViewMaster {
     private static final float WAIT_AFTER_HOVER_OFF = 2;
     private static final float WAIT_AFTER_SHOW = 5;
     private float stackTimer;
-    private int minStackSize = OptionsMaster.getControlOptions().
+    private final int minStackSize = OptionsMaster.getControlOptions().
             getIntValue(CONTROL_OPTION.MIN_OBJECTS_TO_OPEN_STACK_ON_HOVER);
     private float waitToHideStack;
-    private Map<GenericGridView, Vector2> posMap = new HashMap<>();
-    private Map<GenericGridView, Float> scaleMap = new HashMap<>();
+    private final Map<GenericGridView, Vector2> posMap = new HashMap<>();
+    private final Map<GenericGridView, Float> scaleMap = new HashMap<>();
     private GridCellContainer stackCell;
 
     public StackViewMaster() {
@@ -161,7 +161,7 @@ public class StackViewMaster {
     }
 
     private boolean isStackHoverOn(GridCellContainer cell) {
-        if (CoreEngine.isFootageMode())
+        if (Flags.isFootageMode())
             return false;
         if (isOff())
             return false;

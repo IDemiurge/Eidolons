@@ -12,7 +12,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.io.File;
 import java.util.List;
@@ -89,7 +89,7 @@ public class TexturePackerLaunch {
         }
         String[] chosen = packs;
         GuiManager.init();
-        if (CoreEngine.isExe() || CoreEngine.isJar())
+        if (Flags.isExe() || Flags.isJar())
             chosen =
                     ListChooser.chooseFile(POTIONS ? WORKSPACE_PATH_POTIONS : WORKSPACE_PATH, null, SELECTION_MODE.MULTIPLE, true)
                             .split(";");

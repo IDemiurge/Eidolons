@@ -10,7 +10,7 @@ import main.content.enums.GenericEnums.DIFFICULTY;
 import main.content.enums.entity.SkillEnums.ATTRIBUTE;
 import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.EnumMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 5/7/2017.
@@ -35,7 +35,7 @@ public class MissionOptionManager<E extends DungeonSequence> extends MissionHand
         options = new BattleOptions();
         options.setValue(ARENA_GAME_OPTIONS.DIFFICULTY, defaultDifficulty.name());
 
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
             difficulty = defaultDifficulty;
         }
     }

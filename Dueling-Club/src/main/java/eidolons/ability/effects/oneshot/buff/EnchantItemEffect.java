@@ -18,7 +18,7 @@ import main.content.values.properties.G_PROPS;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.type.BuffType;
+import main.entity.type.impl.BuffType;
 import main.system.auxiliary.StringMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 
@@ -26,8 +26,8 @@ public class EnchantItemEffect extends MicroEffect implements OneshotEffect {
 
     private static final String buffName = "Enchantment";
     private SPECIAL_EFFECTS_CASE case_type;
-    private boolean weapon;
-    private String energy;
+    private final boolean weapon;
+    private final String energy;
     private Boolean selectSpell;
     private Spell spell;
 

@@ -28,7 +28,7 @@ import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.List;
 
@@ -95,7 +95,7 @@ public class LordPanel extends GroupX implements Blocking {
 
     public void init() {
         clearChildren();
-        if (CoreEngine.isLiteLaunch()) {
+        if (Flags.isLiteLaunch()) {
             addActor(background = new Image(TextureCache.getOrCreate(Images.BG_EIDOLONS)));
         } else {
             backgroundSprite = SpriteAnimationFactory.getSpriteAnimation(BACKGROUND);
@@ -150,7 +150,7 @@ public class LordPanel extends GroupX implements Blocking {
         super.act(delta);
         tabsLeft.setX(350);
         tabsLeft.setY(600);
-        if (CoreEngine.isLiteLaunch()) {
+        if (Flags.isLiteLaunch()) {
             lordView.setZIndex(1);
         } else {
             lordView.setZIndex(0);

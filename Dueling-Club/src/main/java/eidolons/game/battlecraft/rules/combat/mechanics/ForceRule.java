@@ -88,7 +88,7 @@ public class ForceRule {
     private static int getAttackerWeightModifier(DC_ActiveObj attack, Obj weapon) {
         return MathMaster.applyMods(
                 attack.getOwnerUnit().getIntParam(PARAMS.WEIGHT) +
-                      2*  weapon.getIntParam(PARAMS.WEIGHT)
+                        2 * weapon.getIntParam(PARAMS.WEIGHT)
                 , weapon.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT),
                 attack.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT));
     }
@@ -150,11 +150,11 @@ public class ForceRule {
             KnockdownRule.knockdown(target);
         }
 
-    applyPush(force, action, source, target);
-//        if (action.isSpell()) {
-//            applyDamage(force, action, source, target);
-//        }
-}
+        applyPush(force, action, source, target);
+        //        if (action.isSpell()) {
+        //            applyDamage(force, action, source, target);
+        //        }
+    }
 
     private static boolean isTestMode() {
         return RuleKeeper.isRuleTestOn(RULE.FORCE);
@@ -175,7 +175,7 @@ public class ForceRule {
         return getForceFromAttack(attack);
     }
 
-
+    //DC revamp
     public static void addForceEffects(DC_ActiveObj action) {
         if (!RuleKeeper.isRuleOn(RULE.FORCE))
             return;
@@ -185,9 +185,9 @@ public class ForceRule {
         if (!(action.getRef().getTargetObj() instanceof BattleFieldObject)) {
             return;
         }
-//        BattleFieldObject source = action.getOwnerUnit();
-//        BattleFieldObject target = (BattleFieldObject) action.getRef().getTargetObj();
-//        Damage dmg = getDamageObject(action, source, target);
+        //        BattleFieldObject source = action.getOwnerUnit();
+        //        BattleFieldObject target = (BattleFieldObject) action.getRef().getTargetObj();
+        //        Damage dmg = getDamageObject(action, source, target);
         Effect effects = getForceEffects(action);
         if (effects != null) {
             action.addSpecialEffect(
@@ -197,7 +197,7 @@ public class ForceRule {
             SPECIAL_EFFECTS_CASE CASE = action.isSpell() ? SPECIAL_EFFECTS_CASE.SPELL_IMPACT :
                     SPECIAL_EFFECTS_CASE.ON_ATTACK;
             Effect onCase = action.getSpecialEffects().get(CASE);
-            if (onCase !=null ) {
+            if (onCase != null) {
                 List<Effect> force = EffectFinder.getEffectsOfClass(onCase, ForceEffect.class);
                 if (onCase instanceof Effects) {
                     for (Effect effect : force) {
@@ -210,13 +210,8 @@ public class ForceRule {
                 }
             }
 
-            //TODO igg demo hack - make it unique by class then
         }
 
-        //TODO igg demo hack - source of doubling?
-//        if (dmg != null) {
-//            action.addBonusDamage(action.isSpell() ? DAMAGE_CASE.SPELL : DAMAGE_CASE.ATTACK, dmg);
-//        }
 
     }
 
@@ -234,10 +229,7 @@ public class ForceRule {
                 if (spell.isMissile()) {
                     if (spell.getResistanceType() == RESISTANCE_TYPE.REDUCE_DAMAGE) {
                         if (!DamageCalculator.isPeriodic(ref)) {
-                            if (!ref.isTriggered()) {
-                                return true;
-
-                            }
+                            return !ref.isTriggered();
                         }
                     }
                 }
@@ -250,11 +242,11 @@ public class ForceRule {
     private static Effect getForceEffects(DC_ActiveObj action) {
         String force = String.valueOf(getForce(action));
         KnockdownEffect e = new KnockdownEffect(force);
-//        ForcePushEffect e1 = new ForcePushEffect(force);
-//        InterruptionEffect e2 = new InterruptionEffect(force);
+        //        ForcePushEffect e1 = new ForcePushEffect(force);
+        //        InterruptionEffect e2 = new InterruptionEffect(force);
         Effects effects = new Effects();
-//        if ()
-//            effects.add(e);
+        //        if ()
+        //            effects.add(e);
         effects.add(new ForceEffect(force, action.isAttackAny()));
         return effects;
 
@@ -353,13 +345,13 @@ public class ForceRule {
         boolean valid = new ClearShotCondition().check(o, target.getCoordinates());
         if (!valid) {
             target.setCoordinates(o);
-            distance=0;
+            distance = 0;
         }
         if (distance == 0) {
-            int damage = 2*getDamage(force, attack, source, target);
+            int damage = 2 * getDamage(force, attack, source, target);
             attack.getGame().getLogManager().log(attack.getName() + "'s FORCE has slammed " +
-                    ref.getTargetObj().getNameIfKnown() + " against an obstacle!"  );
-            new DealDamageEffect(new Formula(""+damage), DAMAGE_TYPE.BLUDGEONING).apply(ref);
+                    ref.getTargetObj().getNameIfKnown() + " against an obstacle!");
+            new DealDamageEffect(new Formula("" + damage), DAMAGE_TYPE.BLUDGEONING).apply(ref);
         } else {
 
             attack.getGame().getLogManager().log(attack.getName() + "'s FORCE has pushed " +
@@ -392,16 +384,16 @@ public class ForceRule {
         ref.setTarget(target.getId());
         attack.getGame().getLogManager().log(attack.getName() + "'s FORCE is dealing " +
                 damage + " damage to " +
-                ref.getTargetObj().getNameIfKnown() );
+                ref.getTargetObj().getNameIfKnown());
         new DealDamageEffect(new Formula(damage + ""), GenericEnums.DAMAGE_TYPE.BLUDGEONING).apply(ref);
     }
 
 
     private static int getPushDistance(int force, BattleFieldObject target) {
         int distance = Math.round(force * PUSH_DISTANCE_COEFFICIENT /
-                (1 + 2*target.getIntParam(PARAMS.TOTAL_WEIGHT)));
+                (1 + 2 * target.getIntParam(PARAMS.TOTAL_WEIGHT)));
         LogMaster.log(1, "getPushDistance = " + force + "/10/"
-                + 2*target.getIntParam(PARAMS.TOTAL_WEIGHT) + " = (max ==2) " + distance);
+                + 2 * target.getIntParam(PARAMS.TOTAL_WEIGHT) + " = (max ==2) " + distance);
         distance = MathMaster.getMinMax(distance, 0, 2);
         return distance;
     }

@@ -1,5 +1,6 @@
 package eidolons.game.module.herocreator.logic;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
@@ -7,20 +8,18 @@ import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class AttributeMaster {
 
     public static List<String> getAttributeBonusInfoStrings(ATTRIBUTE attr, Unit hero) {
         List<String> list = new ArrayList<>();
-        Object key;
-        key = StringMaster.getWellFormattedString(attr.name());
+        Object key  = StringMaster.getWellFormattedString(attr.name());
         for (PARAMS p : attr.getParams()) {
-            Map<String, Double> map = hero.getModifierMaps().get(p);
+            ObjectMap<String, Double> map = hero.getModifierMaps().get(p);
             if (map == null) {
                 continue;
             }
-            Double amount = map.get(key);
+            Double amount = map.get((String) key);
             if (amount == null) {
                 continue;
             }

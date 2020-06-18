@@ -8,7 +8,7 @@ import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.entity.BfObjEnums.*;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import static main.content.enums.entity.BfObjEnums.BF_OBJ_SUB_TYPES_HANGING.*;
 import static main.content.enums.entity.BfObjEnums.BF_OBJ_SUB_TYPES_LIGHT_EMITTER.*;
@@ -1549,7 +1549,7 @@ public class RngBfObjProvider {
                                                       Boolean indestructible_nullForSecret) {
         //TODO check surface! cemetery etc WallMap.getWallVersion(
 
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
             if (AttachEmitterManager.TEST_MODE) {
                 return new WeightMap<String>().
                         chain(ROCKS, 17).chain(SLEEK_ROCK, 13).chain(RUNESTONE, 6);

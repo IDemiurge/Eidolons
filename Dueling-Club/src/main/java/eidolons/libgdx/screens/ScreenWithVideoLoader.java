@@ -25,7 +25,7 @@ import main.entity.Entity;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -209,7 +209,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
                 return new QuestSelectionPanel(() -> (List<? extends Entity>) iterator.next());
             }
         }
-        if (CoreEngine.isIggDemoRunning())
+        if (Flags.isIggDemoRunning())
             return new IggHeroSelectionPanel(() -> (List<? extends Entity>) p.get());
         return new HeroSelectionPanel(() -> (List<? extends Entity>) p.get());
 
@@ -259,7 +259,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
 
     @Override
     public void render(float delta) {
-        if (CoreEngine.isJar() && !CoreEngine.isCrashSafeMode()) {
+        if (Flags.isJar() && !Flags.isCrashSafeMode()) {
             super.render(delta);
         } else
             try {

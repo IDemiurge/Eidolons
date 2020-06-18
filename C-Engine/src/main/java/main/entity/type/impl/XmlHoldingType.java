@@ -1,10 +1,11 @@
-package main.entity.type;
+package main.entity.type.impl;
 
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.AbilityConstructor;
 import main.data.ability.construct.XmlDocHolder;
 import main.data.xml.XML_Converter;
+import main.entity.type.ObjType;
 import org.w3c.dom.Node;
 
 /**

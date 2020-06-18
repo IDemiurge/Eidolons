@@ -48,7 +48,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
@@ -193,16 +193,16 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
         if (Cinematics.ON) {
             return;
         }
-        if (CoreEngine.isIDE())
+        if (Flags.isIDE())
             debug = (Gdx.input.isKeyPressed(Keys.ALT_LEFT));
         setSightInfoDisplayed(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT));
         if (sightInfoDisplayed) {
             if (gridPanel.getHoverObj() != null) {
-                observer = gridPanel.getObjectForView(gridPanel.getHoverObj());
+                observer = gridPanel.getHoverObj().getUserObject();
             }
             if (!(observer instanceof Unit)) {
                 if (gridPanel instanceof DC_GridPanel) {
-                    observer = gridPanel.getObjectForView(((DC_GridPanel) gridPanel).getMainHeroView());
+                    observer = Eidolons.getMainHero();
                 }
             } else {
                 if (!VisionRule.isSightInfoAvailable(observer))

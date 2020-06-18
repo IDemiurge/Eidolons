@@ -4,6 +4,7 @@ import main.data.filesys.PathFinder;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -30,7 +31,7 @@ public class GpuTester {
 
     }
     public static void test() {
-        if (!CoreEngine.isWindows()){
+        if (!Flags.isWindows()){
             return;
         }
         new Thread(() -> {

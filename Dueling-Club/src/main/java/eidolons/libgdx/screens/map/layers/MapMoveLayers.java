@@ -5,11 +5,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.anims.ActionMaster;
-import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.macro.MacroGame;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -18,7 +18,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.secondary.GeometryMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -385,7 +385,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
 
     @Override
     protected boolean isTinted(MapMoveLayer sub) {
-        if (CoreEngine.isMapEditor())
+        if (Flags.isMapEditor())
             return false;
         return sub.type.tinted;
     }

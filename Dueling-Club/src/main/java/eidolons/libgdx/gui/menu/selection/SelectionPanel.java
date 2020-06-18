@@ -24,7 +24,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -188,7 +188,7 @@ public abstract class SelectionPanel extends TablePanelX {
 
 
         if (isAutoDoneEnabled())
-            if (CoreEngine.isMacro()
+            if (Flags.isMacro()
              || ListMaster.isNotEmpty(MainLauncher.presetNumbers)) {
                 listPanel.updateAct(0);
                 tryDone();

@@ -35,6 +35,7 @@ import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import static com.badlogic.gdx.graphics.GL20.GL_NICEST;
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
@@ -247,7 +248,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
     }
 
     private void doFlagsOnInput() {
-        if (CoreEngine.isDevEnabled() && !Cinematics.ON)
+        if (Flags.isDevEnabled() && !Cinematics.ON)
             if (DC_Game.game != null) {
                 if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
                     if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {

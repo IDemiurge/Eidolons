@@ -13,7 +13,7 @@ import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import static main.system.ExceptionMaster.printStackTrace;
 import static main.system.auxiliary.log.LogMaster.important;
@@ -32,7 +32,7 @@ public class SpriteAnimationFactory {
 
     public static void init() {
         dummySpriteRegions = new Array();
-        if (CoreEngine.isIDE() && testMode)
+        if (Flags.isIDE() && testMode)
             dummySpriteRegions.add(new AtlasRegion(TextureCache.getOrCreate(Images.EMPTY_SKULL), 0, 0, 128, 128));
         else {
             dummySpriteRegions.add(new AtlasRegion(TextureCache.getOrCreate(Images.REALLY_EMPTY_32), 0, 0, 128, 128));
@@ -111,7 +111,7 @@ public class SpriteAnimationFactory {
                 printStackTrace(e);
                 important("CRITICAL: No atlas for path - " + key);
                 important("Setting Lite Mode... ");
-                CoreEngine.setLiteLaunch(true);
+                Flags.setLiteLaunch(true);
                 //          TODO really?
                 //           OptionsMaster.getGraphicsOptions().setValue(GraphicsOptions.GRAPHIC_OPTION.LITE_MODE, true);
                 //                OptionsMaster.saveOptions();

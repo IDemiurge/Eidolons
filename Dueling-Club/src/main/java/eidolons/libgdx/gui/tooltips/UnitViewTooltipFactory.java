@@ -273,7 +273,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                 add(new ValueContainer("ID", object.getId() + ""));
             }
             if (object.getCustomParamMap() != null) {
-                object.getCustomParamMap().keySet().forEach(counter -> {
+                for (String counter : object.getCustomParamMap().keys()) {
                     final String name = StringMaster.getWellFormattedString(counter);
                     String img = CounterMaster.getImagePath(counter);
                     if (img != null) {
@@ -288,7 +288,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                         valueContainer.setValueAlignment(Align.right);
                         add(valueContainer);
                     }
-                });
+                }
             }
 
             //            if (VisionManager.isVisibilityOn()){

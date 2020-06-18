@@ -1,4 +1,4 @@
-package main.system.launch;
+package main.entity.type;
 
 import main.content.ContentValsManager;
 import main.content.OBJ_TYPE;
@@ -9,10 +9,10 @@ import main.data.ability.construct.XmlDocHolder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
 import main.entity.DataModel;
-import main.entity.type.ObjType;
-import main.entity.type.XmlHoldingType;
+import main.entity.type.impl.XmlHoldingType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 

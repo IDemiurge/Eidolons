@@ -2,7 +2,7 @@ package main.system.auxiliary;
 
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.data.FileManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class ClassFinder {
      */
     public static Class[] getClasses(String packageName)
      throws ClassNotFoundException, IOException {
-        if (CoreEngine.isJar()) {
+        if (Flags.isJar()) {
             return getClassesFromJar(packageName);
         }
         ClassLoader classLoader = Thread.currentThread()
@@ -75,8 +75,7 @@ public class ClassFinder {
             while (e.hasMoreElements()) {
                 JarEntry je = e.nextElement();
                 if (je.isDirectory() || !je.getName().endsWith(".class")) {
-                  if (CoreEngine.isDebugLaunch())
-                    System.out.println("Jar entry passed: " +je.getName());
+                    //EA check - we could do it offline or something... feels hacky!
                     continue;
                 }
 

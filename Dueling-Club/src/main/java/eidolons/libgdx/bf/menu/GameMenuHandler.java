@@ -8,7 +8,7 @@ import eidolons.macro.global.persist.Saver;
 import eidolons.system.text.HelpMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 11/24/2017.
@@ -85,7 +85,7 @@ public class GameMenuHandler {
                 GameMenu.menuOpen = false;
                 break;
             case RETREAT:
-                if (CoreEngine.isMacro()) {
+                if (Flags.isMacro()) {
                     GuiEventManager.trigger(GuiEventType.SHOW_NAVIGATION_PANEL, null);
                     break;
                 }

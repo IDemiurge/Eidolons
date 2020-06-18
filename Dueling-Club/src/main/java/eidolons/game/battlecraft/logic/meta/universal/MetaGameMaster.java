@@ -30,7 +30,7 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 5/7/2017.
@@ -84,7 +84,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         metaDataManager = createMetaDataManager();
         choiceHandler = new VisualChoiceHandler(this);
 
-        if (CoreEngine.isCombatGame()) {
+        if (Flags.isCombatGame()) {
             lootMaster = createLootMaster();
             eventHandler = new NF_EventHandler(this);
             defeatHandler = createDefeatHandler();
@@ -148,24 +148,24 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected boolean isTownEnabled() {
         if (EidolonsGame.TOWN)
             return true;
-        if (CoreEngine.isFullFastMode()) {
+        if (Flags.isFullFastMode()) {
             return false;
         }
-        if (CoreEngine.isMacro()) {
+        if (Flags.isMacro()) {
             return false;
         }
-        return game.getMetaMaster().isRngDungeon() || !CoreEngine.isSafeMode();
+        return game.getMetaMaster().isRngDungeon() || !Flags.isSafeMode();
     }
 
     public boolean isRngQuestsEnabled() {
-        if (CoreEngine.isFullFastMode()) {
+        if (Flags.isFullFastMode()) {
             return false;
         }
         if (!QuestMaster.ON)
             return false;
         if (!isRngDungeon())
             return false;
-        return !CoreEngine.isMacro();
+        return !Flags.isMacro();
     }
 
     public void preStart() {

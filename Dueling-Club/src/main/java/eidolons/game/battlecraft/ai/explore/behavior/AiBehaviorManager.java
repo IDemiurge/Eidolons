@@ -20,7 +20,7 @@ import main.game.logic.action.context.Context;
 import main.system.SortMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.*;
 
@@ -29,10 +29,10 @@ import java.util.*;
  */
 public class AiBehaviorManager extends AiHandler {
 
-    public static AI_BEHAVIOR_MODE TESTED = !CoreEngine.isFullFastMode() ? null :
+    public static AI_BEHAVIOR_MODE TESTED = !Flags.isFullFastMode() ? null :
             AI_BEHAVIOR_MODE.GUARD;
     public static final boolean TEST_MODE = TESTED != null;
-    private static final UNIT_GROUP_TYPE TESTED_GROUP = !CoreEngine.isFullFastMode() ? null :
+    private static final UNIT_GROUP_TYPE TESTED_GROUP = !Flags.isFullFastMode() ? null :
             EncounterEnums.UNIT_GROUP_TYPE.GUARDS;
     Set<UnitExploreAI> aiSet = new LinkedHashSet<>();
     private final DequeImpl<ActionInput> aiActionQueue = new DequeImpl<>();

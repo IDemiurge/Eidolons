@@ -18,6 +18,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import org.w3c.dom.Node;
 
 public class AddTriggerEffect extends MultiEffect implements
@@ -53,7 +54,7 @@ public class AddTriggerEffect extends MultiEffect implements
     // continuous
     @Override
     public boolean applyThis() {
-        if (!CoreEngine.isCombatGame()) {
+        if (!Flags.isCombatGame()) {
             return true;
         }
         if (trigger == null) {

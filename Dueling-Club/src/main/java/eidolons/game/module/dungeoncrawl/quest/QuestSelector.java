@@ -7,7 +7,7 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class QuestSelector extends QuestHandler {
             selectQuests();
 
             String result =
-             (CoreEngine.isFastMode()) ? DataManager.getRandomType(MACRO_OBJ_TYPES.QUEST).getName()
+             (Flags.isFastMode()) ? DataManager.getRandomType(MACRO_OBJ_TYPES.QUEST).getName()
               : (String) WaitMaster.waitForInput(QuestSelectionPanel.WAIT_OPERATION);
             if (result == null) {
                 return list;
@@ -52,7 +52,7 @@ public class QuestSelector extends QuestHandler {
             Quest quest = master.getCreator().create(type);
             list.add(quest);
         }
-        if (CoreEngine.isFastMode() )
+        if (Flags.isFastMode() )
             GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL, null);
         return list;
     }

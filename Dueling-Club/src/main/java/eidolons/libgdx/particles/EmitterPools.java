@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Pool;
 import eidolons.libgdx.anims.Assets;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 1/16/2017.
@@ -43,7 +43,7 @@ public class EmitterPools {
     }
         public static EmitterActor getEmitterActor(String path, boolean dummy) {
         if (!dummy){
-        if (CoreEngine.isVfxOff()) {
+        if (Flags.isVfxOff()) {
             if (!checkVfx(path)) {
                 return getDummy(path);
             }
@@ -95,7 +95,7 @@ public class EmitterPools {
 //        if (CoreEngine.isJar())
 //            System.out.println("getEffect " + path);
 
-        if (CoreEngine.isVfxOff()){
+        if (Flags.isVfxOff()){
             if (!checkVfx(path)) {
                 return getDummyFx(path);
             }

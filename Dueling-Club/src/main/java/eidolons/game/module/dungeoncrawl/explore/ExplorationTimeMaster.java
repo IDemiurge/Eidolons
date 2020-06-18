@@ -24,7 +24,7 @@ import main.entity.Ref;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
@@ -193,7 +193,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         ai_delta += delta;
         ignore_reset_delta += delta;
 
-    if (!CoreEngine.isActiveTestMode())
+    if (!Flags.isActiveTestMode())
         if (AiBehaviorManager.isNewAiOn()) {
             boolean aiActs = master.getAiMaster().getExploreAiManager().getBehaviorManager().update();
             master.getAiMaster().setAiActs(aiActs);
@@ -266,10 +266,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private float getRoundEffectPeriod() {
-        if (DC_Engine.isAtbMode()) {
-            return 5; //TODO igg demo hack
-        }
-        return 10;
+        //DC Review
+            return 5;
     }
 
     private void processEndOfRoundEffects() {
@@ -392,7 +390,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private float getRegenModifier() {
-        if (CoreEngine.isTestingMode())
+        if (Flags.isTestingMode())
             return REGEN_MODIFIER * 5;
         return REGEN_MODIFIER;
     }
@@ -438,7 +436,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             return;
         int defaultWaitTime = OptionsMaster.getGameplayOptions().getIntValue(
                 GAMEPLAY_OPTION.DEFAULT_WAIT_TIME);
-        if (CoreEngine.isFastMode()) {
+        if (Flags.isFastMode()) {
             defaultWaitTime *= 100;
         }
         wait(defaultWaitTime, false);

@@ -8,7 +8,7 @@ import eidolons.system.options.OptionsMaster;
 import main.content.enums.DungeonEnums;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 public class NF_Images {
     public static final String SHADOW = PathFinder.getArtFolder() + "Shadow.jpg";
@@ -22,7 +22,7 @@ public class NF_Images {
             if (EidolonsGame.BOSS_FIGHT) {
                 return Sprites.BG_DEFAULT;
             }
-        if (!CoreEngine.isLiteLaunch() && !OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.BACKGROUND_SPRITES_OFF)) {
+        if (!Flags.isLiteLaunch() && !OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.BACKGROUND_SPRITES_OFF)) {
             switch (mission) {
                 case TUTORIAL:
                     path = Sprites.BG_GATEWAY;

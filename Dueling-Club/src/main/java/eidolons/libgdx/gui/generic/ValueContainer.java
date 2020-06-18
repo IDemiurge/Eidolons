@@ -281,7 +281,7 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
 
     @Override
     protected boolean isVisibleEffectively() {
-        return true; //TODO igg demo hack performance
+        return true; //TODO performance fix
     }
 
     public float getImageScaleX() {

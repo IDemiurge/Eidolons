@@ -36,7 +36,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -175,7 +175,7 @@ public class Anim extends Group implements Animation {
     }
 
     public boolean tryDraw(Batch batch) {
-        if (CoreEngine.isFootageMode())
+        if (Flags.isFootageMode())
             return false;
         return draw(batch);
     }

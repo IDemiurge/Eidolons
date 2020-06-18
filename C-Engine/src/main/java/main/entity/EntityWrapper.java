@@ -1,24 +1,18 @@
 package main.entity;
 
-import main.ability.effects.Effect.MOD_PROP_TYPE;
+import com.badlogic.gdx.utils.ObjectMap;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
-import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.STD_BOOLS;
 import main.content.enums.entity.UnitEnums.COUNTER;
-import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.ParamMap;
 import main.content.values.properties.PROPERTY;
 import main.content.values.properties.PropMap;
-import main.data.XLinkedMap;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by JustMe on 5/10/2017.
@@ -33,19 +27,9 @@ public interface EntityWrapper<E extends DataModel> {
         return getEntity().getDescription();
     }
 
-    default String getCustomValue(String value_ref) {
-        return getEntity().getCustomValue(value_ref);
-    }
-
-
-    default String getCustomProperty(String value_ref) {
-        return getEntity().getCustomProperty(value_ref);
-    }
-
     default Integer getCounter(String value_ref) {
         return getEntity().getCounter(value_ref);
     }
-
 
     default void setGroup(String group, boolean base) {
         getEntity().setGroup(group, base);
@@ -58,10 +42,6 @@ public interface EntityWrapper<E extends DataModel> {
 
     default boolean setCounter(String name, int newValue, boolean strict) {
         return getEntity().setCounter(name, newValue, strict);
-    }
-
-    default void removeCounter(String name) {
-        getEntity().removeCounter(name);
     }
 
     default boolean modifyCounter(String name, int modValue) {
@@ -101,27 +81,12 @@ public interface EntityWrapper<E extends DataModel> {
         return getEntity().getParamDouble(param, base);
     }
 
-
-    default String getDoubleParam(PARAMETER param) {
-        return getEntity().getDoubleParam(param);
-    }
-
     default Game getGame() {
         return getEntity().getGame();
     }
 
-
-    default String getDoubleParam(PARAMETER param, boolean base) {
-        return getEntity().getDoubleParam(param, base);
-    }
-
-
     default Integer getIntParam(String param) {
         return getEntity().getIntParam(param);
-    }
-
-    default String getStrParam(PARAMETER param) {
-        return getEntity().getStrParam(param);
     }
 
 
@@ -135,7 +100,7 @@ public interface EntityWrapper<E extends DataModel> {
     }
 
 
-    default Map<PARAMETER, Integer> getIntegerMap(boolean base) {
+    default ObjectMap<PARAMETER, Integer> getIntegerMap(boolean base) {
         return getEntity().getIntegerMap(base);
     }
 
@@ -154,10 +119,6 @@ public interface EntityWrapper<E extends DataModel> {
     }
 
 
-    default Boolean getBoolean(String prop) {
-        return getEntity().getBoolean(prop);
-    }
-
     default String getProperty(String prop) {
         return getEntity().getProperty(prop);
     }
@@ -173,15 +134,6 @@ public interface EntityWrapper<E extends DataModel> {
 
     default String getProperty(PROPERTY prop) {
         return getEntity().getProperty(prop);
-    }
-
-    default boolean checkValue(VALUE v) {
-        return getEntity().checkValue(v);
-    }
-
-
-    default boolean checkValue(VALUE v, String value) {
-        return getEntity().checkValue(v, value);
     }
 
 
@@ -205,7 +157,7 @@ public interface EntityWrapper<E extends DataModel> {
     }
 
 
-    default Map<PROPERTY, Map<String, Boolean>> getPropCache(boolean base) {
+    default ObjectMap<PROPERTY, ObjectMap<String, Boolean>> getPropCache(boolean base) {
         return getEntity().getPropCache(base);
     }
 
@@ -221,17 +173,6 @@ public interface EntityWrapper<E extends DataModel> {
         return getEntity().checkSingleProp(PROP, value);
     }
 
-    default boolean checkContainerProp(PROPERTY PROP, String value) {
-        return getEntity().checkContainerProp(PROP, value);
-    }
-
-    default boolean checkContainerProp(PROPERTY PROP, String value, boolean any) {
-        return getEntity().checkContainerProp(PROP, value, any);
-    }
-
-    default boolean checkSubGroup(String string) {
-        return getEntity().checkSubGroup(string);
-    }
 
     default boolean checkProperty(PROPERTY p) {
         return getEntity().checkProperty(p);
@@ -297,7 +238,7 @@ public interface EntityWrapper<E extends DataModel> {
         return getEntity().modifyParameter(param, amountString, minMax, quietly, modifierKey);
     }
 
-    default Map<PARAMETER, Map<String, Double>> getModifierMaps() {
+    default ObjectMap<PARAMETER, ObjectMap<String, Double>> getModifierMaps() {
         return getEntity().getModifierMaps();
     }
 
@@ -325,18 +266,6 @@ public interface EntityWrapper<E extends DataModel> {
         return getEntity().modifyParameter(param, amount);
     }
 
-    default void decrementParam(PARAMETER param) {
-        getEntity().decrementParam(param);
-    }
-
-    default int getContainerCount(PROPERTY p) {
-        return getEntity().getContainerCount(p);
-    }
-
-    default void incrementParam(PARAMETER param) {
-        getEntity().incrementParam(param);
-    }
-
     default boolean multiplyParamByPercent(PARAMETER param, int perc, boolean base) {
         return getEntity().multiplyParamByPercent(param, perc, base);
     }
@@ -351,18 +280,6 @@ public interface EntityWrapper<E extends DataModel> {
 
     default boolean modifyParamByPercent(PARAMETER param, int perc, boolean base) {
         return getEntity().modifyParamByPercent(param, perc, base);
-    }
-
-    default boolean firePropEvent(CONSTRUCTED_EVENT_TYPE EVENT_TYPE, String val) {
-        return getEntity().firePropEvent(EVENT_TYPE, val);
-    }
-
-    default boolean fireParamEvent(PARAMETER param, String amount, CONSTRUCTED_EVENT_TYPE event_type) {
-        return getEntity().fireParamEvent(param, amount, event_type);
-    }
-
-    default void resetParam(PARAMETER param) {
-        getEntity().resetDynamicParam(param);
     }
 
     default void setParam(PARAMETER param, int i, boolean quietly, boolean base) {
@@ -389,13 +306,6 @@ public interface EntityWrapper<E extends DataModel> {
         getEntity().setParam(param, i);
     }
 
-    default void setParamMax(PARAMETER p, int i) {
-        getEntity().setParamMax(p, i);
-    }
-
-    default void setParamMin(PARAMETER p, int i) {
-        getEntity().setParamMin(p, i);
-    }
 
     default String getDisplayedName() {
         return getEntity().getDisplayedName();
@@ -417,18 +327,6 @@ public interface EntityWrapper<E extends DataModel> {
         getEntity().resetPercentages();
     }
 
-    default void resetCurrentValues() {
-        getEntity().resetCurrentValues();
-    }
-
-    default void resetCurrentValue(PARAMETER base_p) {
-        getEntity().resetCurrentValue(base_p);
-    }
-
-    default void resetPercentage(PARAMETER p) {
-        getEntity().resetPercentage(p);
-    }
-
     default boolean setParam(PARAMETER param, String value) {
         return getEntity().setParam(param, value);
     }
@@ -445,25 +343,6 @@ public interface EntityWrapper<E extends DataModel> {
         getEntity().setProperty(prop, value);
     }
 
-    default void modifyProperty(MOD_PROP_TYPE p, PROPERTY prop, String value) {
-        getEntity().modifyProperty(p, prop, value);
-    }
-
-    default void removeLastPartFromProperty(PROPERTY prop) {
-        getEntity().removeLastPartFromProperty(prop);
-    }
-
-    default void removeFromProperty(PROPERTY prop, String value) {
-        getEntity().removeFromProperty(prop, value);
-    }
-
-    default void appendProperty(PROPERTY prop, String value) {
-        getEntity().appendProperty(prop, value);
-    }
-
-    default boolean addOrRemoveProperty(PROPERTY prop, String value) {
-        return getEntity().addOrRemoveProperty(prop, value);
-    }
 
     default boolean addProperty(PROPERTY prop, String value) {
         return getEntity().addProperty(prop, value);
@@ -481,24 +360,8 @@ public interface EntityWrapper<E extends DataModel> {
         return getEntity().addProperty(prop, value, noDuplicates, addInFront);
     }
 
-    default void putProperty(PROPERTY prop, String value) {
-        getEntity().putProperty(prop, value);
-    }
-
-    default void putParameter(PARAMETER param, String value) {
-        getEntity().putParameter(param, value);
-    }
-
-    default boolean isTypeLinked() {
-        return getEntity().isTypeLinked();
-    }
-
     default void addProperty(String prop, String value) {
         getEntity().addProperty(prop, value);
-    }
-
-    default boolean clearProperty(PROPERTY prop) {
-        return getEntity().clearProperty(prop);
     }
 
     default boolean removeProperty(PROPERTY prop) {
@@ -545,33 +408,10 @@ public interface EntityWrapper<E extends DataModel> {
         getEntity().cloneMaps(type);
     }
 
-    default void mergeValues(Entity type, VALUE... vals) {
-        getEntity().mergeValues(type, vals);
-    }
-
     default void addParam(PARAMETER parameter, String param, boolean base) {
         getEntity().addParam(parameter, param, base);
     }
 
-    default void copyValues(Entity type, List<VALUE> list) {
-        getEntity().copyValues(type, list);
-    }
-
-    default void copyValues(Entity type, VALUE... vals) {
-        getEntity().copyValues(type, vals);
-    }
-
-    default void cloneMapsWithExceptions(Entity type, VALUE... exceptions) {
-        getEntity().cloneMapsWithExceptions(type, exceptions);
-    }
-
-    default ParamMap cloneParamMap(Map<PARAMETER, String> map) {
-        return getEntity().cloneParamMap(map);
-    }
-
-    default PropMap clonePropMap(Map<PROPERTY, String> map) {
-        return getEntity().clonePropMap(map);
-    }
 
     default int getId() {
         return getEntity().getId();
@@ -593,10 +433,6 @@ public interface EntityWrapper<E extends DataModel> {
         getEntity().setName(name);
     }
 
-    default String getUniqueId() {
-        return getEntity().getUniqueId();
-    }
-
     default boolean isConstructed() {
         return getEntity().isConstructed();
     }
@@ -611,22 +447,6 @@ public interface EntityWrapper<E extends DataModel> {
 
     default void setDirty(boolean dirty) {
         getEntity().setDirty(dirty);
-    }
-
-    default boolean isPassivesReady() {
-        return getEntity().isPassivesReady();
-    }
-
-    default void setPassivesReady(boolean passivesReady) {
-        getEntity().setPassivesReady(passivesReady);
-    }
-
-    default boolean isActivesReady() {
-        return getEntity().isActivesReady();
-    }
-
-    default void setActivesReady(boolean activesReady) {
-        getEntity().setActivesReady(activesReady);
     }
 
     default boolean checkBool(DYNAMIC_BOOLS bool) {
@@ -650,74 +470,10 @@ public interface EntityWrapper<E extends DataModel> {
         getEntity().setInitialized(initialized);
     }
 
-    default String getNameOrId() {
-        return getEntity().getNameOrId();
-    }
-
-    default String getRawValue(VALUE value) {
-        return getEntity().getRawValue(value);
-    }
-
-    default XLinkedMap<VALUE, String> getRawValues() {
-        return getEntity().getRawValues();
-    }
-
-    default void setRawValues(XLinkedMap<VALUE, String> rawValues) {
-        getEntity().setRawValues(rawValues);
-    }
-
-    default boolean isDefaultValuesInitialized() {
-        return getEntity().isDefaultValuesInitialized();
-    }
-
-    default void setDefaultValuesInitialized(boolean defaultValuesInitialized) {
-        getEntity().setDefaultValuesInitialized(defaultValuesInitialized);
-    }
-
-    default void cloned() {
-        getEntity().cloned();
-    }
-
     default int getLevel() {
         return getEntity().getLevel();
     }
 
-    default String getOriginalName() {
-        return getEntity().getOriginalName();
-    }
-
-    default void setOriginalName(String originalName) {
-        getEntity().setOriginalName(originalName);
-    }
-
-
-    default WORKSPACE_GROUP getWorkspaceGroup() {
-        return getEntity().getWorkspaceGroup();
-    }
-
-    default void setWorkspaceGroup(WORKSPACE_GROUP value) {
-        getEntity().setWorkspaceGroup(value);
-    }
-
-    default int getTypeId() {
-        return getEntity().getTypeId();
-    }
-
-    default List<ObjType> getListFromProperty(OBJ_TYPE TYPE, PROPERTY prop) {
-        return getEntity().getListFromProperty(TYPE, prop);
-    }
-
-    default void resetPropertyFromList(PROPERTY prop, List<? extends Entity> list) {
-        getEntity().resetPropertyFromList(prop, list);
-    }
-
-    default HashMap<PROPERTY, Map<String, Boolean>> getPropCache() {
-        return getEntity().getPropCache();
-    }
-
-    default int getSumOfParams(PARAMETER... params) {
-        return getEntity().getSumOfParams(params);
-    }
 
    E getEntity();
 

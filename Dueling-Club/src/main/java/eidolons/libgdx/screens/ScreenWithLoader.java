@@ -25,7 +25,7 @@ import main.system.EventCallbackParam;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 public abstract class ScreenWithLoader extends ScreenAdapter {
     public static final String ASSET_LOADING = "ASSET LOADING";
@@ -74,10 +74,10 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected void initPostProcessing() {
-        if (CoreEngine.isIggDemo()) {
+        if (Flags.isIggDemo()) {
             return;
         }
-        if (CoreEngine.isLiteLaunch() || !CoreEngine.isIDE())
+        if (Flags.isLiteLaunch() || !Flags.isIDE())
             if (OptionsMaster.getPostProcessingOptions().getBooleanValue(
                     PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF))
                 return;

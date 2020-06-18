@@ -6,7 +6,7 @@ import main.content.values.parameters.PARAMETER;
 import main.data.xml.XML_Formatter;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -127,7 +127,7 @@ public class IGG_Demo {
             @Override
             public String getXmlLevelName() {
 
-                if (CoreEngine.isTesterVersion()){
+                if (Flags.isTesterVersion()){
 //                    OptionsMaster.getSystemOptions().getValue(SystemOptions.SYSTEM_OPTION.Custom_level)
 //                    return "levels/ashen path.xml";
                 }

@@ -19,6 +19,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster;
 
@@ -301,7 +302,7 @@ public abstract class InputController implements InputProcessor {
     }
 
     private boolean isManualCameraDisabled() {
-        if (!CoreEngine.isIDE())
+        if (!Flags.isIDE())
             return Cinematics.ON;
         return false;
     }

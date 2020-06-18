@@ -5,7 +5,7 @@ import eidolons.libgdx.launch.ScenarioLauncher;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 11/17/2017.
@@ -24,7 +24,7 @@ public class HelpMaster {
 
     public static String getHeroInfoText(String name, String suffix) {
         String prefix = null ;
-        if (CoreEngine.isIggDemo()) {
+        if (Flags.isIggDemo()) {
             prefix = "igg";
         } else
         if (name.contains(" ")) {

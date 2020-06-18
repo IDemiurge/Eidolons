@@ -5,7 +5,7 @@ import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster.OPTIONS_GROUP;
 import eidolons.system.options.SystemOptions.SYSTEM_OPTION;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.Map;
 
@@ -52,10 +52,10 @@ public class SystemAnalyzer {
         Options gameplay = defaults.get(OPTIONS_GROUP.GAMEPLAY);
         Options sound = defaults.get(OPTIONS_GROUP.SOUND);
 
-        float level = CoreEngine.getMemoryLevel();
+        float level = Flags.getMemoryLevel();
 
 
-        if (CoreEngine.isSuperLite()){
+        if (Flags.isSuperLite()){
             level=1.5f;
         }
         if (level <= 1.0) {

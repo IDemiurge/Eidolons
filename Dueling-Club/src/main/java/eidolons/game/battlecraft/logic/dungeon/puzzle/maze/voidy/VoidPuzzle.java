@@ -51,13 +51,19 @@ public class VoidPuzzle extends MazePuzzle {
         }
     }
 
+    public boolean isTransform() {
+        return false;
+    }
+
     @Override
     public RoomModel resetMaze() {
         if (template != null) {
             return template;
         }
         template = super.resetMaze();
-        transformMaze();
+        if (isTransform()) {
+            transformMaze();
+        }
         resetHandler();
         falseExits = new ArrayList<>();
         for (int i = 0; i < template.getCells().length; i++) {
@@ -231,13 +237,15 @@ public class VoidPuzzle extends MazePuzzle {
             // if (!collapsing) {
             //     firstMoveDone();
             // } else
-                {
+            {
                 collapsePeriod -= getTimePenalty(action);
                 handler.setCollapsePeriod(collapsePeriod);
             }
             GuiEventManager.trigger(GuiEventType.QUEST_UPDATE, quest);
         }
-    }    @Override
+    }
+
+    @Override
     public void hideMaze() {
         super.hideMaze();
         firstMoveDone();
@@ -288,6 +296,9 @@ public class VoidPuzzle extends MazePuzzle {
 
     @Override
     public Coordinates getExitCoordinates() {
+        if (realExit == null) {
+            return null;
+        }
         return getAbsoluteCoordinate(realExit);
     }
 

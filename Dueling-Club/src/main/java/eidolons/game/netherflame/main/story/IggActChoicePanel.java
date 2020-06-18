@@ -14,7 +14,7 @@ import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.menu.MainMenu;
 import main.entity.Entity;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster;
 
 import java.util.List;
@@ -118,7 +118,7 @@ public class IggActChoicePanel extends ScenarioSelectionPanel {
         return new ScenarioListPanel(){
             @Override
             public boolean isBlocked(SelectableItemData item) {
-                if (CoreEngine.isIDE()){
+                if (Flags.isIDE()){
                     if (MainLauncher.presetNumbersOn) {
                        return false;
                     }

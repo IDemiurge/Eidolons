@@ -90,6 +90,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 
 import java.util.*;
@@ -229,7 +230,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             }
         }
 
-        if (CoreEngine.isAutoFixOn())
+        if (Flags.isAutoFixOn())
             if (isPlayerCharacter()) {
                 Integer integer = NumberUtils.getIntParse(value);
                 if (param.getName().contains("Percentage")) {
@@ -1223,7 +1224,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
     public boolean isRevenant() {
         if (isPlayerCharacter()) {
-            return CoreEngine.isIggDemoRunning();
+            return Flags.isIggDemoRunning();
         }
         return false;
     }
@@ -1595,7 +1596,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         if (isDead()) {
             prefix += "(Dead) ";
         }
-        return prefix + getName() + (CoreEngine.isIDE() || AI_Manager.isRunning() ? " at " + getCoordinates()
+        return prefix + getName() + (Flags.isIDE() || AI_Manager.isRunning() ? " at " + getCoordinates()
                 : "");
     }
 
@@ -1649,17 +1650,17 @@ public class Unit extends DC_UnitModel implements FacingEntity {
                     setParam(PARAMS.C_SOULFORCE, EidolonLord.lord.getSoulforce());
                 }
             }
-            if (CoreEngine.isActiveTestMode()) {
+            if (Flags.isActiveTestMode()) {
                 TestMasterContent.addVFX_TEST_Spells(getType(), ContentGenerator.getTestSpellFilter(getName()));
 
             }
-            if (CoreEngine.isAnimationTestMode()) {
+            if (Flags.isAnimationTestMode()) {
                 TestMasterContent.addANIM_TEST_Spells(getType());
             }
-            if (CoreEngine.isLogicTest())
+            if (Flags.isLogicTest())
                 TestMasterContent.addTestGroupSpells(getType());
 
-            if (CoreEngine.isGuiTestMode()) {
+            if (Flags.isGuiTestMode()) {
                 TestMasterContent.addGRAPHICS_TEST_Spells(getType());
             }
         }

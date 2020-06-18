@@ -5,7 +5,7 @@ import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.AbilityConstructor;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
-import main.entity.type.XmlHoldingType;
+import main.entity.type.impl.XmlHoldingType;
 
 public class AbilityType extends XmlHoldingType {
 

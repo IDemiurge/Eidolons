@@ -18,7 +18,7 @@ import eidolons.macro.map.Place;
 import eidolons.macro.map.travel.MapWanderAi;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -33,9 +33,9 @@ public class MapObjStage extends Stage {
     private final MapWanderAi wanderAi;
     private MacroParty mainParty;
     private PartyActor mainPartyActor;
-    private Group pointsGroup = new Group();
-    private List<PlaceActor> places = new ArrayList<>();
-    private List<PartyActor> parties = new ArrayList<>();
+    private final Group pointsGroup = new Group();
+    private final List<PlaceActor> places = new ArrayList<>();
+    private final List<PartyActor> parties = new ArrayList<>();
 
 
     public MapObjStage(Viewport viewport, Batch batch) {
@@ -65,12 +65,9 @@ public class MapObjStage extends Stage {
     public void act(float delta) {
         super.act(delta);
         wanderAi.act(delta);
-        if (CoreEngine.isMapEditor())
-            if (EditorManager.getMode() == MAP_EDITOR_MOUSE_MODE.POINT) {
-                pointsGroup.setVisible(true);
-            } else
-                pointsGroup.setVisible(false);
-        if (!CoreEngine.isMapEditor())
+        if (Flags.isMapEditor())
+            pointsGroup.setVisible(EditorManager.getMode() == MAP_EDITOR_MOUSE_MODE.POINT);
+        if (!Flags.isMapEditor())
             for (PlaceActor place : places) {
                 switch (place.getPlace().getInfoLevel()) {
                     case VISIBLE:

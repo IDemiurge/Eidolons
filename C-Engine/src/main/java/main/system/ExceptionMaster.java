@@ -2,7 +2,7 @@ package main.system;
 
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +19,7 @@ public class ExceptionMaster {
             // CoreEngine.isLiteLaunch();
             boolean PRINT_ALL = false;
             if (!PRINT_ALL) {
-                if (CoreEngine.isJar() || LogMaster.isOff() || !CoreEngine.isLiteLaunch()) {
+                if (Flags.isJar() || LogMaster.isOff() || !Flags.isLiteLaunch()) {
                   if (e.getMessage()!=null )  if (printed.contains(e.getMessage()))
                         return;
                     else

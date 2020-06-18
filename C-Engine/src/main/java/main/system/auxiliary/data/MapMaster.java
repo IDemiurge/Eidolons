@@ -1,5 +1,6 @@
 package main.system.auxiliary.data;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import main.data.XLinkedMap;
 import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
@@ -174,6 +175,14 @@ public class MapMaster<E, T> {
         return null;
     }
 
+    public E getKeyForValue(ObjectMap<E, T> itemMap, T value) {
+        for (ObjectMap.Entry<E, T> e : itemMap.entries()) {
+            if (itemMap.get(e.key).equals(value)) {
+                return e.key;
+            }
+        }
+        return null;
+    }
     public List<T> joinMap(Map<E, List<T>> map) {
         List<T> list = new ArrayList<>();
         for (E e : map.keySet()) {

@@ -22,7 +22,7 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.XLine;
 import main.system.auxiliary.ContainerUtils;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
@@ -54,8 +54,8 @@ public abstract class AiBehavior {
     protected Action queuedAction;
     protected Map<XLine, List<Coordinates>> pathCache = new HashMap<>();
     private Action lastAction;
-    private List<Action> actionLog = new ArrayList<>();
-    private List<Orders> ordersLog = new ArrayList<>();
+    private final List<Action> actionLog = new ArrayList<>();
+    private final List<Orders> ordersLog = new ArrayList<>();
 
     public AiBehavior(AiMaster master, UnitAI ai) {
         this.master = master;
@@ -294,7 +294,7 @@ public abstract class AiBehavior {
     }
 
     protected boolean isLogged() {
-        return CoreEngine.isIDE() && AiBehaviorManager.TEST_MODE;
+        return Flags.isIDE() && AiBehaviorManager.TEST_MODE;
     }
 
     protected void initOrders() {

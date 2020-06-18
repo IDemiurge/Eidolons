@@ -3,14 +3,14 @@ package eidolons.libgdx.screens.map.layers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.macro.MacroGame;
 import eidolons.macro.global.time.MacroTimeMaster;
-import eidolons.libgdx.screens.map.MapScreen;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.WEATHER;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,7 +148,7 @@ public abstract class MapTimedLayer<T extends Actor> extends Group {
             init();
         clearLayer();
         spawnLayer();
-        if (CoreEngine.isMapEditor())
+        if (Flags.isMapEditor())
             return;
         if (isTinted())
             applyTint();

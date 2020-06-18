@@ -103,7 +103,7 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
 
         if (sprite != null) {
             if (sprite.getSprite() == null) {
-                sprite = null; //TODO igg demo fix
+                sprite = null; //TODO EA check
             } else {
                 sprite.setFlipX(flipX);
                 sprite.setFps(getFps());

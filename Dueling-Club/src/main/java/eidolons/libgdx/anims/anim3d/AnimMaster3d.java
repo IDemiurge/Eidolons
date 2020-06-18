@@ -49,6 +49,7 @@ import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.PositionMaster;
 import main.system.threading.WaitMaster;
 
@@ -137,7 +138,7 @@ public class AnimMaster3d {
             return false;
         if (!active.isAttackAny()) return false;
         if (!active.getOwnerUnit().isPlayerCharacter()) {
-            if (CoreEngine.isFastMode())
+            if (Flags.isFastMode())
                 return false;
         }
         DC_WeaponObj weapon = active.getActiveWeapon();
@@ -173,7 +174,7 @@ public class AnimMaster3d {
 
     public static void preloadAtlases(Unit unit) {
         if (!unit.isPlayerCharacter()) {
-            if (CoreEngine.isFastMode())
+            if (Flags.isFastMode())
                 return;
         }
         if (isOff())
@@ -553,11 +554,11 @@ public class AnimMaster3d {
 
     public static TextureAtlas getOrCreateAtlas(String path) {
         try {
-            if (CoreEngine.isIDE())
+            if (Flags.isIDE())
                 if (isUseOneFrameVersions()) {
                     String p = getOneFramePath(path);
                     if (new FileHandle(p).exists()) {
-                        log(1, "One-frame atlas used:\n" + p);
+                        // log(1, "One-frame atlas used:\n" + p);
                         return getOrCreateAtlas(p, true);
                     }
                 }

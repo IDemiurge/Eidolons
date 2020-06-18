@@ -57,6 +57,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 
 import java.util.*;
@@ -268,7 +269,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         //            getBatch().end();
         //            return;
         //        }
-        if (CoreEngine.isFootageMode()) { //|| !EidolonsGame.isHqEnabled()
+        if (Flags.isFootageMode()) { //|| !EidolonsGame.isHqEnabled()
             getBatch().begin();
             if (gameMenu.isVisible())
                 gameMenu.draw(getBatch(), 1);
@@ -320,13 +321,13 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
         blocked = checkBlocked();
 
-        if (actionTooltipContainer != null)
-            if (actionTooltipContainer.getActions().size == 0) {
-                actionTooltipContainer.setFluctuateAlpha(true);
-                if (!Eidolons.getGame().getManager().isSelecting())
-                    if (!CoreEngine.isIggDemoRunning()) //TODO igg demo fix
-                        hideTooltip(actionTooltip, 1);
-            }
+        ////TODO GDx revamp - can't do this all the time!
+        // if (actionTooltipContainer != null)
+        //     if (actionTooltipContainer.getActions().size == 0) {
+        //         actionTooltipContainer.setFluctuateAlpha(true);
+        //         if (!Eidolons.getGame().getManager().isSelecting())
+        //                 hideTooltip(actionTooltip, 1);
+        //     }
         if (infoTooltipContainer != null)
             if (infoTooltipContainer.getActions().size == 0)
                 infoTooltipContainer.setFluctuateAlpha(true);

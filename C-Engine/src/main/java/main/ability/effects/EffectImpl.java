@@ -2,7 +2,6 @@ package main.ability.effects;
 
 import main.ability.Ability;
 import main.ability.ActiveAbilityObj;
-import main.ability.PassiveAbilityObj;
 import main.ability.effects.continuous.ContinuousEffect;
 import main.data.ability.construct.Construct;
 import main.data.ability.construct.ConstructionManager;
@@ -16,6 +15,7 @@ import main.entity.obj.Obj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
@@ -28,21 +28,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * An effect is contained in an {@link Ability} and can either be passive
- * (static) or OneShot (active). OneShot ones take effect when an ability
- * invoking them resolves. They perform some tasks and fire corresponding
- * events, enabling event handler to preCheck triggers and watchers, possibly
- * leading to more abilities resolving and more effects coming in play. Static
- * effects often have watchers, conditions and triggers as well. Passive effects
- * are often contained within a buff, an object that represents one or two
- * static effects bestowed on the target, prodives API for manipulating these
- * effects from the outside
+ * An effect is contained in an {@link Ability} and can either be passive (static) or OneShot (active). OneShot ones
+ * take effect when an ability invoking them resolves. They perform some tasks and fire corresponding events, enabling
+ * event handler to preCheck triggers and watchers, possibly leading to more abilities resolving and more effects coming
+ * in play. Static effects often have watchers, conditions and triggers as well. Passive effects are often contained
+ * within a buff, an object that represents one or two static effects bestowed on the target, provides API for
+ * manipulating these effects from the outside
  *
  * @author JustMe
  */
 
 // EFFECT ARE ABOUT WHAT
-// ABILITIE ARE ABOUT HOW
+// ABILITIES ARE ABOUT HOW
 public abstract class EffectImpl extends ReferredElement implements Effect {
     private static Map<UUID, Pair<Class, String>[]> constructorMap;
     private static boolean mappingOn;
@@ -65,11 +62,11 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     private boolean copied;
     private boolean continuousWrapped;
     private Boolean forceStaticParse;
-    private Formula originalFormula;
+    private Formula originalFormula; //perhaps we could have more subclasses with fields
     private int amount;
     private boolean applied;
     private String xml;
-    private UUID id;
+    private UUID id; //To-Cleanup - if we don't do restore-xml..
     private String name;
 
     public EffectImpl() {
@@ -92,14 +89,14 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     }
 
     public void mapThisToConstrParams(Object... args) {
-//        if (ConstructionManager.isConstructing())
-//            return ;
+        //        if (ConstructionManager.isConstructing())
+        //            return ;
         if (!isMappingOn())
             return;
         if (mapped)
             return;
         Pair<Class, String>[] paramType = Arrays.stream(args).map(obj ->
-         new ImmutablePair(obj.getClass(), ConstructionManager.getXmlFromObject(obj))
+                new ImmutablePair(obj.getClass(), ConstructionManager.getXmlFromObject(obj))
         ).collect(Collectors.toList()).toArray(new Pair[args.length]);
         id = UUID.randomUUID();
         getConstructorMap().put(id, paramType);
@@ -171,7 +168,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     public String toString() {
         if (name != null) return name;
         name = getClass().getSimpleName()
-         + ("" + this.hashCode()).substring(("" + this.hashCode()).length() - 2);
+                + ("" + this.hashCode()).substring(("" + this.hashCode()).length() - 2);
         return name;
     }
 
@@ -186,8 +183,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         if (getFormula() != null) {
             arg = " " + StringMaster.wrapInParenthesis("" + getFormula().getInt(ref));
         }
-        // if (infoLevel==FULL) TODO
-        // arg += getFormula().toString();
         return arg;
     }
 
@@ -196,19 +191,18 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         setRef(ref);
 
         // for logging
-        boolean active = getLayer() != BUFF_RULE && ref.getObj(KEYS.ACTIVE) != null
-         && (!(ref.getObj(KEYS.ABILITY) instanceof PassiveAbilityObj));
+        // boolean active = getLayer() != BUFF_RULE && ref.getObj(KEYS.ACTIVE) != null
+        //  && (!(ref.getObj(KEYS.ABILITY) instanceof PassiveAbilityObj));
 
         if ((ref.getGroup() == null && targetGroup == null) || isIgnoreGroupTargeting()) {
             // single-target effect
             return apply();
         } else {
-//multi-target effect, applies to each target
+            //multi-target effect, applies to each target
             GroupImpl group = ref.getGroup();
             if (group == null) {
                 group = targetGroup;
             } else if (targetGroup == null) {
-                // group.setIgnoreGroupTargeting(true);// TODO later instead?
                 targetGroup = group;
             }
             if (group.isIgnoreGroupTargeting()) {
@@ -217,14 +211,11 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
             List<Integer> groupIds = group.getObjectIds();
             boolean result = true;
             for (Integer id : groupIds) {
-
-
                 if (isInterrupted()) {
                     break;
                 }
 
                 Ref REF = this.ref.getCopy();
-                // REF.setGroup(new GroupImpl(targetGroup));
                 REF.getGroup().setIgnoreGroupTargeting(true);
 
                 REF.setTarget(id);
@@ -232,14 +223,12 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
                 if (construct != null) {
                     result &= getCopy().apply(REF);
                 } else {
-                    // this.ref.setTarget(id);
                     setIgnoreGroupTargeting(true);
                     result &= apply(REF);
                     setIgnoreGroupTargeting(false);
                 }
 
             }
-            // game.getManager().refreshAll();
             return result;
         }
 
@@ -255,23 +244,15 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         if (!quietMode) {
             if (checkEventsFired())
                 if (!game.getManager().effectApplies(this)) {
-                    LogMaster.log(1, "effect resisted! - " + toString());
-                    // TODO sound?
+                    LogMaster.log(LOG_CHANNEL.EFFECT_DEBUG, "effect resisted! - " + toString());
                     return false;
                 }
         }
-
         if (isInterrupted()) {
             setInterrupted(false);
-            LogMaster.log(1, "effect interrupted! - " + toString());
+            LogMaster.log(LOG_CHANNEL.EFFECT_DEBUG, "effect interrupted! - " + toString());
             return false;
         }
-
-//        try {
-//            animateSprite();
-//        } catch (Exception e) {
-//            main.system.ExceptionMaster.printStackTrace(e);
-//        }
         if (ref.getObj(KEYS.ABILITY) instanceof ActiveAbilityObj) {
             if (ref.getActive() != null) {
                 if (!ref.getActive().isEffectSoundPlayed()) {
@@ -280,16 +261,10 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
                 }
             }
         }
-        boolean result = false;
-        try {
-            result = applyThis();
+        boolean             result = applyThis();
             applied = true;
             if (checkEventsFired())
-              fireAppliedEvent();
-
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+                fireAppliedEvent();
 
         return result;
 
@@ -327,7 +302,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     public void addToFormula(Object mod) {
         setFormula(
 
-         new Formula(StringMaster.wrapInParenthesis(getFormulaString()) + "+" + mod));
+                new Formula(StringMaster.wrapInParenthesis(getFormulaString()) + "+" + mod));
 
     }
 

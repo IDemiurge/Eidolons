@@ -36,12 +36,12 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.entity.type.TypeBuilder;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnitFactory;
-import main.system.launch.TypeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

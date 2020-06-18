@@ -61,7 +61,9 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
             if (getEntity().isAttackAny()) {
                 main.system.auxiliary.log.LogMaster.important(">>> ATTACK CONSTRUCT FAILeD: " + getEntity());
             } else if (!getEntity().getName().equalsIgnoreCase("wait"))
-                if (!getEntity().getName().equalsIgnoreCase("idle")) {
+                if (!getEntity().getName().equalsIgnoreCase("idle"))
+                if (!getEntity().getName().equalsIgnoreCase("Dummy Action"))
+                {
                     main.system.auxiliary.log.LogMaster.important(">>> NO EFFECTS AFTER CONSTRUCT: " + getEntity());
                 }
         }

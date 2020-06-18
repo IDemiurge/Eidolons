@@ -8,7 +8,7 @@ import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.TimerTaskMaster;
 
 import java.util.ArrayList;
@@ -144,7 +144,7 @@ public class LogFileMasterOld {
     }
 
     private static boolean isWritingLogFilesOn() {
-        return CoreEngine.isWritingLogFilesOn();
+        return Flags.isWritingLogFilesOn();
     }
 
     public static void checkWriteToFileNewThread(final LOG_CHANNEL channel, final String text) {

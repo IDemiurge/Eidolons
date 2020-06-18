@@ -18,6 +18,7 @@ import main.content.CONTENT_CONSTS;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster;
 import main.system.threading.WaitMaster;
 
@@ -33,8 +34,8 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     public static   boolean TEST = false;
     private static final String DUEL = "Duel";
     private static final String INTRO = "Intro";
-    private static   boolean SKIP_INTRO = CoreEngine.TEST_LAUNCH;
-    private static   boolean PARSE_ON_INIT = CoreEngine.isIDE();
+    private static final boolean SKIP_INTRO = CoreEngine.TEST_LAUNCH;
+    private static   boolean PARSE_ON_INIT = Flags.isIDE();
     private static boolean running;
     private static Runnable afterDialogue;
 
@@ -59,10 +60,10 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
 
 
         GuiEventManager.bind(INIT_DIALOG, obj -> {
-            if (CoreEngine.isIDE())
+            if (Flags.isIDE())
                 if (!EidolonsGame.BRIDGE)
-                    if (CoreEngine.isLiteLaunch()) {
-                        if (!CoreEngine.isDialogueTest()) {
+                    if (Flags.isLiteLaunch()) {
+                        if (!Flags.isDialogueTest()) {
                             return;
                         }
                     }

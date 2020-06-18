@@ -52,7 +52,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.secondary.Bools;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import static main.system.GuiEventType.HP_BAR_UPDATE;
 
@@ -443,7 +443,7 @@ public class HitAnim extends ActionAnim {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (CoreEngine.isFootageMode())
+        if (Flags.isFootageMode())
             return;
         super.draw(batch, parentAlpha);
 

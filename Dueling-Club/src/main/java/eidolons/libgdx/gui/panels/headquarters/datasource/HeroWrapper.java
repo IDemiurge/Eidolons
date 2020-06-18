@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.datasource;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.Deity;
@@ -77,7 +78,6 @@ import main.system.datatypes.DequeImpl;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -388,7 +388,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<PARAMETER, Integer> getValidParams() {
+    public  Map<PARAMETER, Integer> getValidParams() {
         return getHero().getValidParams();
     }
 
@@ -666,7 +666,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<SPECIAL_EFFECTS_CASE, Effect> getSpecialEffects() {
+    public  Map<SPECIAL_EFFECTS_CASE, Effect> getSpecialEffects() {
         return getHero().getSpecialEffects();
     }
 
@@ -716,7 +716,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<DAMAGE_CASE, List<Damage>> getBonusDamage() {
+    public  Map<DAMAGE_CASE, List<Damage>> getBonusDamage() {
         return getHero().getBonusDamage();
     }
 
@@ -955,7 +955,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<PARAMETER, Integer> getIntegerMap() {
+    public ObjectMap<PARAMETER, Integer> getIntegerMap() {
         return getHero().getIntegerMap();
     }
 
@@ -970,7 +970,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<PARAMETER, Integer> getIntegerMap(boolean base) {
+    public ObjectMap<PARAMETER, Integer> getIntegerMap(boolean base) {
         return getHero().getIntegerMap(base);
     }
 
@@ -1038,11 +1038,6 @@ public class HeroWrapper extends HeroDataModel {
     @Override
     public void getBoolean(VALUE prop, Boolean b) {
         getHero().getBoolean(prop, b);
-    }
-
-    @Override
-    public Boolean getBoolean(String prop) {
-        return getHero().getBoolean(prop);
     }
 
     @Override
@@ -1172,7 +1167,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> getActionMap() {
+    public  Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> getActionMap() {
         return getHero().getActionMap();
     }
 
@@ -1312,7 +1307,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<PROPERTY, Map<String, Boolean>> getPropCache(boolean base) {
+    public ObjectMap<PROPERTY, ObjectMap<String, Boolean>> getPropCache(boolean base) {
         return getHero().getPropCache(base);
     }
 
@@ -1935,7 +1930,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<PARAMETER, Map<String, Double>> getModifierMaps() {
+    public ObjectMap<PARAMETER, ObjectMap<String, Double>> getModifierMaps() {
         return getHero().getModifierMaps();
     }
 
@@ -2473,7 +2468,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<DC_ActiveObj, String> getActionModeMap() {
+    public  Map<DC_ActiveObj, String> getActionModeMap() {
         return getHero().getActionModeMap();
     }
 
@@ -2873,13 +2868,8 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<String, String> getCustomPropMap() {
+    public ObjectMap<String, String> getCustomPropMap() {
         return getHero().getCustomPropMap();
-    }
-
-    @Override
-    public void setCustomPropMap(Map<String, String> customPropMap) {
-        getHero().setCustomPropMap(customPropMap);
     }
 
     @Override
@@ -2893,13 +2883,8 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<String, String> getCustomParamMap() {
+    public ObjectMap<String, String> getCustomParamMap() {
         return getHero().getCustomParamMap();
-    }
-
-    @Override
-    public void setCustomParamMap(Map<String, String> customParamMap) {
-        getHero().setCustomParamMap(customParamMap);
     }
 
     @Override
@@ -3012,10 +2997,6 @@ public class HeroWrapper extends HeroDataModel {
         getHero().resetPropertyFromList(prop, list);
     }
 
-    @Override
-    public HashMap<PROPERTY, Map<String, Boolean>> getPropCache() {
-        return getHero().getPropCache();
-    }
 
     @Override
     public int getSumOfParams(PARAMETER... params) {

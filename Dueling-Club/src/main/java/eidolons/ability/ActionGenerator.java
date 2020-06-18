@@ -7,8 +7,8 @@ import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
-import main.entity.type.ActionType;
 import main.entity.type.ObjType;
+import main.entity.type.impl.ActionType;
 import main.system.auxiliary.StringMaster;
 
 import java.util.HashSet;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class ActionGenerator {
 
-    private static Set<String> offhandTypes = new HashSet<>();
+    private static final Set<String> offhandTypes = new HashSet<>();
 
     public static void addDefaultSneakModsToAction(ObjType type) {
 

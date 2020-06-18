@@ -13,15 +13,15 @@ import main.data.DataManager;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.type.BuffType;
 import main.entity.type.ObjType;
+import main.entity.type.impl.BuffType;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.MessageManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     private boolean isTransient;
     private Boolean negative;
     private Effect dispelEffects;
-    private double timeInGame = 0;
+    private final double timeInGame = 0;
     private double period;
     private List<PeriodicEffect> timeEffects;
     private boolean immobilizing;

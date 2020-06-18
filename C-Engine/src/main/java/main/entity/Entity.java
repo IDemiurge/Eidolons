@@ -9,27 +9,24 @@ import main.content.enums.GenericEnums.ASPECT;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
-import main.content.values.properties.PROPERTY;
 import main.entity.handlers.*;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
-import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
-import main.system.math.Property;
 import main.system.text.TextParser;
 import main.system.threading.Weaver;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
 
 /**
  * Root class of every CoreEngine object
@@ -149,84 +146,80 @@ public abstract class Entity extends DataModel implements OBJ {
                     return;
                 }
             }
-
-        getPropCache().clear();
-        getIntegerMap(false).clear(); // TODO [OPTIMIZED] no need to clear
-        // type's map?
-        if (modifierMaps != null) {
-            modifierMaps.clear(); // remember? For interesting spells or log
-        }
-        // info...
-        if (!type.checkProperty(G_PROPS.DISPLAYED_NAME)) {
-            setProperty(G_PROPS.DISPLAYED_NAME, getName(), true);
-        }
-
-        if (this.owner != getOriginalOwner()) {
-            LogMaster.log(LogMaster.CORE_DEBUG, getName()
-             + ": original owner restored!");
-            this.owner = getOriginalOwner();
-        }
-
-        HashSet<PARAMETER> params = new HashSet<>(getParamMap().keySet());
-        params.addAll(type.getParamMap().keySet());
-        for (PARAMETER p : params) {
-            if (p == null) {
-                continue;
-            }
-            if (p.isDynamic()) {
-                if (p.isWriteToType()) {
-                    getType().setParam(p, getParam(p), true);
-                }
-                continue;
-            }
-
-            String baseValue = getType().getParam(p);
-            String value = getParam(p);
-
-            getValueCache().put(p, value);
-
-            if (!value.equals(baseValue)) {
-                if (isValidMapStored(p)){
-                    getValidParams().put(p, NumberUtils.getIntParse(value));
-                }
-                String amount = getType().getParam(p);
-                putParameter(p, amount);
-                if (game.isStarted() && !game.isSimulation()) {
-                    if (p.isDynamic()) {
-                        fireParamEvent(p, amount, CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED);
-                    }
-                }
-            }
-        }
-        HashSet<PROPERTY> props = new HashSet<>(getPropMap().keySet());
-        props.addAll(type.getPropMap().keySet());
-        for (PROPERTY p : props) {
-
-            if (p.isDynamic()) {
-                if (p.isWriteToType()) {
-                    getType().setProperty(p, getProperty(p));
-                }
-                continue;
-            }
-            String baseValue = getType().getProperty(p);
-            if (TextParser.isRef(baseValue)) {
-                baseValue = new Property(baseValue).getStr(ref);
-                if ((baseValue) == null) {
-                    baseValue = getType().getProperty(p);
-                }
-            }
-            String value = getProperty(p);
-            getValueCache().put(p, value);
-            if (!value.equals(baseValue)) {
-                putProperty(p, baseValue);
-            } else {
-                putProperty(p, baseValue);
-            }
-
-        }
-//        resetStatus();
-        setDirty(false);
-        setBeingReset(false);
+//To-Cleanup
+//         getPropCache().clear();
+//         getIntegerMap(false).clear(); // TODO [OPTIMIZED] no need to clear
+//         // type's map?
+//         if (modifierMaps != null) {
+//             modifierMaps.clear(); // remember? For interesting spells or log
+//         }
+//         // info...
+//         if (!type.checkProperty(G_PROPS.DISPLAYED_NAME)) {
+//             setProperty(G_PROPS.DISPLAYED_NAME, getName(), true);
+//         }
+//
+//         if (this.owner != getOriginalOwner()) {
+//             LogMaster.log(LogMaster.CORE_DEBUG, getName()
+//              + ": original owner restored!");
+//             this.owner = getOriginalOwner();
+//         }
+//
+//         for (PARAMETER p : getParamMap().keySet()) {
+//             if (p == null) {
+//                 continue;
+//             }
+//             if (p.isDynamic()) {
+//                 if (p.isWriteToType()) {
+//                     getType().setParam(p, getParam(p), true);
+//                 }
+//                 continue;
+//             }
+//
+//             String baseValue = getType().getParam(p);
+//             String value = getParam(p);
+//
+//             getValueCache().put(p, value);
+//
+//             if (!value.equals(baseValue)) {
+//                 if (isValidMapStored(p)){
+//                     getValidParams().put(p, NumberUtils.getIntParse(value));
+//                 }
+//                 String amount = getType().getParam(p);
+//                 putParameter(p, amount);
+//                 if (game.isStarted() && !game.isSimulation()) {
+//                     if (p.isDynamic()) {
+//                         fireParamEvent(p, amount, CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED);
+//                     }
+//                 }
+//             }
+//         }
+//         for (PROPERTY p : getPropMap().keySet()) {
+//
+//             if (p.isDynamic()) {
+//                 if (p.isWriteToType()) {
+//                     getType().setProperty(p, getProperty(p));
+//                 }
+//                 continue;
+//             }
+//             String baseValue = getType().getProperty(p);
+//             if (TextParser.isRef(baseValue)) {
+//                 baseValue = new Property(baseValue).getStr(ref);
+//                 if ((baseValue) == null) {
+//                     baseValue = getType().getProperty(p);
+//                 }
+//             }
+//             String value = getProperty(p);
+//             getValueCache().put(p, value);
+//             if (!value.equals(baseValue)) {
+//                 putProperty(p, baseValue);
+//             } else {
+//                 putProperty(p, baseValue);
+//             }
+//
+//         }
+// //        resetStatus();
+//         setDirty(false);
+//         setBeingReset(false);
 
     }
 

@@ -24,7 +24,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,7 +140,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
     @Override
     protected PARAMETER[] initDataArray() {
         List<PARAMETER> unlocked = SkillMaster.getUnlockedMasteries(getUserObject().getEntity());
-        if (CoreEngine.isIggDemoRunning()) {
+        if (Flags.isIggDemoRunning()) {
             List<PARAMETER> pool = IGG_Demo.getMasteriesForHero(getUserObject().getEntity().getName());
             pool.removeIf(p ->
                     unlocked.contains(p));

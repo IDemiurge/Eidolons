@@ -14,17 +14,16 @@ import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.system.text.DescriptionTooltips;
 import main.content.ContentValsManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
  * Created by JustMe on 9/21/2017.
  */
 public class OrbsPanel extends TablePanel {
-    private PARAMS[] params;
-    private OrbElement[] orbs;
+    private final PARAMS[] params;
+    private final OrbElement[] orbs;
 
     public OrbsPanel(PARAMS... params) {
         this.params = params;
@@ -48,7 +47,7 @@ public class OrbsPanel extends TablePanel {
         el.addListener(new SmartClickListener(el) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (CoreEngine.isIDE()) {
+                if (Flags.isIDE()) {
                     int perc = 25;
                     if (event.getButton() == 1 || getTapCount() > 1) {
                         perc = -25;

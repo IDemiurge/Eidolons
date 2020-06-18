@@ -26,7 +26,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.ColorManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -226,7 +226,7 @@ public class LogPanel extends ScrollTextWrapper {
         if (Eidolons.MAIN_HERO != null)
         if (StringMaster.containsWord( Eidolons.MAIN_HERO.getName(), word)
         ) {
-            if (CoreEngine.isIggDemoRunning()) {
+            if (Flags.isIggDemoRunning()) {
                 return GdxColorMaster.lighter((IGG_Demo.getHeroColor(Eidolons.getMainHero().getName())));
             }
             return GdxColorMaster.lighter(GdxColorMaster.getColor(Eidolons.getMainHero().getOwner().getFlagColor().getColor()));

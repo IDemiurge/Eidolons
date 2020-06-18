@@ -22,7 +22,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -84,7 +84,7 @@ public class TextureCache {
     }
 
     public static TextureRegion getFlippedRegion(boolean x, boolean y, String path) {
-        Texture texture = GdxImageMaster.flip(path, x, y, CoreEngine.isIDE());
+        Texture texture = GdxImageMaster.flip(path, x, y, Flags.isIDE());
            return getRegion(GdxImageMaster.getFlippedPath(path, x,y), texture);
     }
 

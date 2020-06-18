@@ -37,6 +37,7 @@ import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import javax.swing.*;
@@ -165,7 +166,7 @@ public class Eidolons {
 
     public static Party getParty() {
         if (party == null)
-            if (CoreEngine.isMacro()) {
+            if (Flags.isMacro()) {
                 if (MacroGame.game == null) {
                     return null;
                 }
@@ -205,7 +206,7 @@ public class Eidolons {
     }
 
     public static void exitToMenu() {
-        CoreEngine.setIggDemoRunning(false);
+        Flags.setIggDemoRunning(false);
         DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__ENTER);
         try {
             DC_Game.game.getMetaMaster().gameExited();

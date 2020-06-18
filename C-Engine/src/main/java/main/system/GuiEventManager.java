@@ -4,6 +4,7 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.Arrays;
 
@@ -37,7 +38,7 @@ public class GuiEventManager {
     public static void bind(boolean removePreviousBind, EventType type, final EventCallback event) {
         if (CoreEngine.isGraphicsOff())
             return;
-        if (CoreEngine.isUtility())
+        if (Flags.isUtility())
             return;
         if (removePreviousBind)
             manager.removeBind(type);

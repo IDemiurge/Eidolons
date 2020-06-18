@@ -15,7 +15,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 7/26/2018.
@@ -98,7 +98,7 @@ public class RngTypeChooser {
     }
 
     private static ROOM_CELL checkRandomCellResolves(ROOM_CELL value) {
-        if (CoreEngine.isFullFastMode()) {
+        if (Flags.isFullFastMode()) {
             if (TilesMaster.isPassable(value)) {
                 return ROOM_CELL.FLOOR;
             }

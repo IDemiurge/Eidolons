@@ -25,7 +25,7 @@ import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import main.game.bf.Coordinates;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.Map;
 import java.util.Set;
@@ -48,20 +48,20 @@ public abstract class DungeonMaster {
     private LockMaster lockMaster;
     private ContainerMaster containerMaster;
     private InteractiveObjMaster interactiveMaster;
-    private TrapMaster trapMaster;
+    private final TrapMaster trapMaster;
     private PuzzleMaster puzzleMaster;
-    private PortalMaster portalMaster;
-    private LayerManager layerManager;
-    private StructMaster structMaster;
-    private FloorLoader floorLoader;
+    private final PortalMaster portalMaster;
+    private final LayerManager layerManager;
+    private final StructMaster structMaster;
+    private final FloorLoader floorLoader;
     private  Awakener awakener;
 
     private Map<DataMap, Map<Integer, String>> dataMaps;
-    private DC_ObjInitializer objInitializer;
-    private StructureBuilder structureBuilder;
-    private ModuleLoader moduleLoader;
-    private PlaceholderResolver placeholderResolver;
-    private TransitHandler transitHandler;
+    private final DC_ObjInitializer objInitializer;
+    private final StructureBuilder structureBuilder;
+    private final ModuleLoader moduleLoader;
+    private final PlaceholderResolver placeholderResolver;
+    private final TransitHandler transitHandler;
 
 
     public DungeonMaster(DC_Game game) {
@@ -79,7 +79,7 @@ public abstract class DungeonMaster {
         structureBuilder = new StructureBuilder(this);
         floorLoader = createFloorLoader();
 
-        if (CoreEngine.isCombatGame()) {
+        if (Flags.isCombatGame()) {
             awakener = new Awakener(game);
             explorationMaster = new ExplorationMaster(game);
             doorMaster = new DoorMaster(this);
@@ -130,7 +130,7 @@ public abstract class DungeonMaster {
         if (floorWrapper == null) {
             floorWrapper = initDungeon();
         }
-        if (!CoreEngine.isCombatGame()) {
+        if (!Flags.isCombatGame()) {
             return;
         }
         //TODO dc init fix

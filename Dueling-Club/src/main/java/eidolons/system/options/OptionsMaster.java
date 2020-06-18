@@ -61,6 +61,7 @@ import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -82,7 +83,7 @@ public class OptionsMaster {
     protected String OPTIONS_MODE;
 
     public static void init() {
-//    TODO    Gdx.app.getPreferences()
+        //    TODO    Gdx.app.getPreferences()
         getInstance().initialize();
     }
 
@@ -193,9 +194,9 @@ public class OptionsMaster {
 
     protected static void applyGameplayOptions(GameplayOptions gameplayOptions) {
         for (Object sub : gameplayOptions.getValues().keySet()) {
-//            new EnumMaster<GAMEPLAY_OPTION>().
-//                    retrieveEnumConst(GAMEPLAY_OPTION.class,
-//                            gameplayOptions.getValues().get(sub).toString());
+            //            new EnumMaster<GAMEPLAY_OPTION>().
+            //                    retrieveEnumConst(GAMEPLAY_OPTION.class,
+            //                            gameplayOptions.getValues().get(sub).toString());
 
             GAMEPLAY_OPTION key = gameplayOptions.getKey((sub.toString()));
             if (key == null) {
@@ -215,7 +216,7 @@ public class OptionsMaster {
                     break;
                 case GHOST_MODE:
                     // if (!CoreEngine.isFastMode())
-                        VisionRule.setPlayerUnseenMode(gameplayOptions.getBooleanValue(key));
+                    VisionRule.setPlayerUnseenMode(gameplayOptions.getBooleanValue(key));
                     break;
                 case RULES_SCOPE:
                     RuleKeeper.setScope(
@@ -345,13 +346,13 @@ public class OptionsMaster {
     protected static void applySystemOption(SYSTEM_OPTION key, String value, boolean bool) {
         switch (key) {
             case LITE_MODE:
-                CoreEngine.setLiteLaunch(bool);
+                Flags.setLiteLaunch(bool);
                 break;
             case SUPERLITE_MODE:
-                CoreEngine.setSuperLite(bool);
+                Flags.setSuperLite(bool);
                 break;
             case DEV:
-                CoreEngine.setDevEnabled(bool);
+                Flags.setDevEnabled(bool);
                 break;
             case LOGGING:
             case LAZY:
@@ -367,25 +368,25 @@ public class OptionsMaster {
                 FileLogManager.on = bool;
                 break;
             case TESTER_VERSION:
-                CoreEngine.setTesterVersion(bool);
+                Flags.setTesterVersion(bool);
                 break;
             case ActiveTestMode:
-                CoreEngine.setActiveTestMode(bool);
+                Flags.setActiveTestMode(bool);
                 break;
             case Ram_economy:
-                CoreEngine.setRamEconomy(bool);
+                Flags.setRamEconomy(bool);
                 break;
             case levelTestMode:
-                CoreEngine.setLevelTestMode(bool);
+                Flags.setLevelTestMode(bool);
                 break;
             case contentTestMode:
-                CoreEngine.setContentTestMode(bool);
+                Flags.setContentTestMode(bool);
                 break;
             case reverseExit:
-                CoreEngine.setReverseExit(bool);
+                Flags.setReverseExit(bool);
                 break;
             case KeyCheat:
-                CoreEngine.setKeyCheat(bool);
+                Flags.setKeyCheat(bool);
                 break;
         }
 
@@ -393,9 +394,9 @@ public class OptionsMaster {
 
     protected static void applyOption(GRAPHIC_OPTION key, String value, boolean bool) {
         switch (key) {
-//            case ALT_ASSET_LOAD:
-//                Assets.setON(!bool);
-//                break;
+            //            case ALT_ASSET_LOAD:
+            //                Assets.setON(!bool);
+            //                break;
             case AMBIENCE_DENSITY:
                 EmitterMap.setGlobalShowChanceCoef(Integer.valueOf(value));
                 break;
@@ -510,8 +511,8 @@ public class OptionsMaster {
             });
 
         if (CoreEngine.TEST_LAUNCH) {
-            CoreEngine.setFullFastMode(true);
-            CoreEngine.setSuperLite(true);
+            Flags.setFullFastMode(true);
+            Flags.setSuperLite(true);
         }
     }
 
@@ -526,16 +527,16 @@ public class OptionsMaster {
         return instance;
     }
 
-    public static Options getOptionsByConst(OPTION option ) {
-        OPTIONS_GROUP group= getGroupForConst(option);
-        return  getOptions(group);
+    public static Options getOptionsByConst(OPTION option) {
+        OPTIONS_GROUP group = getGroupForConst(option);
+        return getOptions(group);
     }
 
-        public static void setOption(OPTION option, Object value, boolean apply) {
-        OPTIONS_GROUP group= getGroupForConst(option);
+    public static void setOption(OPTION option, Object value, boolean apply) {
+        OPTIONS_GROUP group = getGroupForConst(option);
         Options options = getOptions(group);
         options.setValue(option.toString(), value.toString());
-        if (apply){
+        if (apply) {
             applyOptions(group);
         }
 
@@ -546,15 +547,20 @@ public class OptionsMaster {
             case GRAPHICS:
                 applyGraphicsOptions();
                 break;
-            case GAMEPLAY:applyGameplayOptions();
+            case GAMEPLAY:
+                applyGameplayOptions();
                 break;
-            case CONTROLS:applyControlOptions();
+            case CONTROLS:
+                applyControlOptions();
                 break;
-            case SOUND:applySoundOptions(getSoundOptions());
+            case SOUND:
+                applySoundOptions(getSoundOptions());
                 break;
-            case ANIMATION:applyAnimOptions();
+            case ANIMATION:
+                applyAnimOptions();
                 break;
-            case SYSTEM:applySystemOptions(getSystemOptions());
+            case SYSTEM:
+                applySystemOptions(getSystemOptions());
                 break;
             case POST_PROCESSING:
                 break;
@@ -596,7 +602,8 @@ public class OptionsMaster {
         content.append(XML_Converter.closeXml("Options"));
         String path = getSaveOptionsPath();
         FileManager.write(content.toString(), path);
-//    TODO igg demo fix    FileManager.write("Global options are now saved at " + getGlobalOptionsPath(), getLocalOptionsPath());
+        //    TODO EA check
+        //     FileManager.write("Global options are now saved at " + getGlobalOptionsPath(), getLocalOptionsPath());
     }
 
     protected String getSaveOptionsPath() {
@@ -682,8 +689,8 @@ public class OptionsMaster {
     }
 
     protected boolean isLocalOptionsPreferred() {
-//        return CoreEngine.isMe() &&
-////                !CoreEngine.isJar();
+        //        return CoreEngine.isMe() &&
+        ////                !CoreEngine.isJar();
         return false;
     }
 
@@ -698,7 +705,7 @@ public class OptionsMaster {
             optionsMap = readOptions(data);
             addMissingDefaults(optionsMap);
 
-            if (!CoreEngine.isIDE())
+            if (!Flags.isIDE())
                 if (MetaDataUnit.getInstance().getIntValue(META_DATA.TIMES_LAUNCHED) < 2)
                     autoAdjustOptions(OPTIONS_GROUP.GRAPHICS, optionsMap.get(OPTIONS_GROUP.GRAPHICS));
         }
@@ -712,9 +719,9 @@ public class OptionsMaster {
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
         }
-//        if (CoreEngine.isMapPreview()) {
-//            getGraphicsOptions().setValue("RESOLUTION", RESOLUTION._3840x2160.toString());
-//        }
+        //        if (CoreEngine.isMapPreview()) {
+        //            getGraphicsOptions().setValue("RESOLUTION", RESOLUTION._3840x2160.toString());
+        //        }
         cacheOptions();
 
         initFlags();
@@ -738,7 +745,7 @@ public class OptionsMaster {
     }
 
     protected void initFlags() {
-        if (CoreEngine.isLiteLaunch()) {
+        if (Flags.isLiteLaunch()) {
             getSystemOptions().setValue(SYSTEM_OPTION.LITE_MODE, true);
         }
     }

@@ -5,7 +5,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.*;
 import eidolons.game.core.game.DC_Game;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 5/8/2017.
@@ -48,7 +48,7 @@ public class LocationMaster extends DungeonMaster {
     }
 
     private boolean isRngDungeon() {
-        if (CoreEngine.isjUnit())
+        if (Flags.isjUnit())
             return false;
         return getGame().getMetaMaster().isRngDungeon();
     }

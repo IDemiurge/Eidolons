@@ -7,16 +7,16 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import eidolons.macro.MacroGame;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.screens.map.layers.*;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.macro.MacroGame;
 import main.content.enums.GenericEnums;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +32,10 @@ public class MapStage extends Stage {
     protected MapMoveLayers moveLayerMaster;
     protected MapParticles particles;
     List<MapTimedLayer> layers = new ArrayList<>();
-    private Group topLayer;
-    private ImageContainer map;
-    private ImageContainer nextMap;
-    private MapRoutes routes;
+    private final Group topLayer;
+    private final ImageContainer map;
+    private final ImageContainer nextMap;
+    private final MapRoutes routes;
     private float lastNextMapAlphaPercentage;
 
     public MapStage(Viewport viewport, Batch batch) {
@@ -94,7 +94,7 @@ public class MapStage extends Stage {
     public void act(float delta) {
         super.act(delta);
         resetZIndices();
-        if (CoreEngine.isMapEditor())
+        if (Flags.isMapEditor())
             return;
         if (nextMap.getContent()==null )
             return; //TODO make sure background is initialized always on time! 

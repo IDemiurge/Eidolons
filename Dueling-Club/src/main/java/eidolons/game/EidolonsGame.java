@@ -9,7 +9,7 @@ import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.content.values.parameters.PARAMETER;
 import main.data.StringMap;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public class EidolonsGame {
     public static boolean SELECT_SCENARIO;
     public static boolean FOOTAGE;
     public static boolean DUEL_TEST;
-    public static boolean IDE = CoreEngine.isIDE();
+    public static boolean IDE = Flags.isIDE();
 
 
     public static boolean BOSS_FIGHT;
@@ -43,8 +43,8 @@ public class EidolonsGame {
     public static boolean TUTORIAL;
     public static boolean PUZZLES;
     public static boolean TOWN;
-    private static Map<String, Boolean> varMap = new StringMap<>();
-    private static Map<String, Boolean> actionMap = new StringMap<>();
+    private static final Map<String, Boolean> varMap = new StringMap<>();
+    private static final Map<String, Boolean> actionMap = new StringMap<>();
 
     public static final void reset() {
     }
@@ -144,7 +144,7 @@ public class EidolonsGame {
     }
 
     public static boolean isSpellsEnabled() {
-        return CoreEngine.isIDE() && !EidolonsGame.DUEL;
+        return Flags.isIDE() && !EidolonsGame.DUEL;
     }
 
     public static boolean isParamBlocked(PARAMETER parameter) {

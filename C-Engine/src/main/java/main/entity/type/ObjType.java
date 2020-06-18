@@ -10,7 +10,6 @@ import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
 import main.game.core.game.Game;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.TypeBuilder;
 import org.w3c.dom.Node;
 
 import javax.swing.*;

@@ -13,7 +13,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnit;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 import main.system.util.Refactor;
 
@@ -60,7 +60,7 @@ public class DialogueFactory {
 
     public void init(MetaGameMaster master) {
         this.master = master;
-        if (CoreEngine.isCombatGame() ) {
+        if (Flags.isCombatGame() ) {
             String pathRoot = getFileRootPath();
 //             PathFinder.getRootPath() +   PathFinder.getScenariosPath() +p +StringMaster.getPathSeparator()+
 //                 TextMaster.getLocale();
@@ -75,7 +75,7 @@ public class DialogueFactory {
     }
 
     protected String getFileRootPath() {
-        if (CoreEngine.isIggDemoRunning()) {
+        if (Flags.isIggDemoRunning()) {
             return PathFinder.getDialoguesPath(TextMaster.getLocale());
         }
         if (master.isRngDungeon()) {
@@ -99,7 +99,7 @@ public class DialogueFactory {
 
     @Refactor
     public GameDialogue getDialogue(String name) {
-        if (map.isEmpty() || CoreEngine.isDialogueTest())
+        if (map.isEmpty() || Flags.isDialogueTest())
             init(Eidolons.game.getMetaMaster());
         return map.get(StringMaster.formatMapKey(name));
     }

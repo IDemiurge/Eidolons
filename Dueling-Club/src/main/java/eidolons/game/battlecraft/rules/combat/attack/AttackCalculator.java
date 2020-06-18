@@ -28,7 +28,7 @@ import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
@@ -62,19 +62,19 @@ public class AttackCalculator {
     // Map<PARAMETER, String> calcMap;
     boolean precalc;
     DC_AttackMaster master;
-    private DC_ActiveObj action;
-    private Unit attacker;
+    private final DC_ActiveObj action;
+    private final Unit attacker;
     private BattleFieldObject attacked;
-    private DC_WeaponObj weapon;
-    private boolean counter;
-    private boolean offhand;
-    private boolean critical;
-    private boolean sneak;
-    private Ref ref;
+    private final DC_WeaponObj weapon;
+    private final boolean counter;
+    private final boolean offhand;
+    private final boolean critical;
+    private final boolean sneak;
+    private final Ref ref;
     private Integer amount;
-    private boolean AoO;
-    private boolean instant;
-    private boolean disengage;
+    private final boolean AoO;
+    private final boolean instant;
+    private final boolean disengage;
     private boolean min;
     private boolean max;
 
@@ -109,7 +109,7 @@ public class AttackCalculator {
         initAllModifiers();
         amount = applyDamageBonuses();
 
-        if (CoreEngine.isPhaseAnimsOn())
+        if (Flags.isPhaseAnimsOn())
             if (!precalc  ) {
                  //TODO
             }
@@ -178,7 +178,7 @@ public class AttackCalculator {
             diff = -diff;
         }
         int bonus = Math.round(amount * (mod * diff) / 100);
-        if (CoreEngine.isPhaseAnimsOn())
+        if (Flags.isPhaseAnimsOn())
             if (!precalc) {
                  //TODO
             }

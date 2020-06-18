@@ -45,7 +45,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
@@ -110,7 +110,7 @@ public class HqDataMaster {
     }
 
     private static String getNewSaveHeroName(HeroDataModel model) {
-        if (CoreEngine.isIggDemo()) {
+        if (Flags.isIggDemo()) {
             return model.getName()+" lvl " + model.getIntParam(PARAMS.HERO_LEVEL);
         }
         return NameMaster.getUniqueVersionedName(model.getName(), DC_TYPE.CHARS);

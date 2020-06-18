@@ -34,7 +34,7 @@ import main.content.enums.DungeonEnums.MAP_BACKGROUND;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -142,7 +142,7 @@ public class TownPanel extends TabbedPanel {
     }
 
     private boolean isDisabled() {
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
             return false;
         }
         for (Quest quest : getUserObject().getQuests()) {

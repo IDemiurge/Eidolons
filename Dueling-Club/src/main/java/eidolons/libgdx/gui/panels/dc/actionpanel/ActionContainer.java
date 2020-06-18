@@ -29,6 +29,7 @@ import main.system.images.ImageManager.BORDER;
 import static eidolons.libgdx.gui.UiMaster.UI_ACTIONS.SCALE_ACTION_ICON;
 
 public class ActionContainer extends ValueContainer {
+//Gdx Review - are they all they could be? Used quite widely..
 
     protected static TextureRegion lightUnderlay = TextureCache.getOrCreateR(
             SHADE_CELL.LIGHT_EMITTER.getTexturePath());
@@ -36,18 +37,19 @@ public class ActionContainer extends ValueContainer {
             (BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImagePath());
     private static ActionContainer lastPressed;
     private static boolean darkened;
+
     private final float scaleByOnHover = (new Float(64) / ActionPanel.IMAGE_SIZE) - 1;
+
+    private RadialMenu customRadialMenu;
     protected Runnable clickAction;
     private boolean valid = true;
     protected boolean hover;
-    protected TextureRegion underlay;
     protected float underlayOffsetX;
     protected float underlayOffsetY;
     protected float size = UiMaster.getIconSize();
-    private RadialMenu customRadialMenu;
+    protected TextureRegion underlay;
     FadeImageContainer highlight;
     private boolean highlighted;
-
 
     //overlay!
     public ActionContainer(boolean valid, TextureRegion texture, Runnable action) {
@@ -159,14 +161,6 @@ public class ActionContainer extends ValueContainer {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (!isValid()) return;
-//           TODO igg demo fix
-//                if (GdxMaster.getFirstParentOfClass(event.getTarget(),
-//                        ActionValueContainer.class)!=null) {
-//                    if (GdxMaster.getAncestors(event.getTarget()).size()>
-//                            GdxMaster.getAncestors(event.getRelatedActor()).size()) {
-//                        return;
-//                    }
-//                }
                 if (!isHover()) {
                     setHover(true);
                     if (isScaledOnHover())

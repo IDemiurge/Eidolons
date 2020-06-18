@@ -2,7 +2,7 @@ package main.game.logic.action.context;
 
 import main.entity.Ref;
 import main.entity.obj.Obj;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public class Context extends Ref {
         setEffect(ref.getEffect());
         setTriggered(ref.isTriggered());
         setDebug(ref.isDebug());
-        if (CoreEngine.isPhaseAnimsOn())
+        if (Flags.isPhaseAnimsOn())
             setAnimationActive(ref.getAnimationActive());
 
         target = getTargetObj();

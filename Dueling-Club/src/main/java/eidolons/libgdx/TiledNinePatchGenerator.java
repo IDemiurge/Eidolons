@@ -15,12 +15,13 @@ import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 4/29/2018.
  */
 public class TiledNinePatchGenerator implements ApplicationListener {
-    private static VISUALS[] replaced_sauron = {
+    private static final VISUALS[] replaced_sauron = {
      VISUALS.INFO_PANEL,
      VISUALS.INFO_PANEL_HC,
      VISUALS.END_PANEL,
@@ -135,7 +136,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
      String path,
      boolean preventOverlapping,
      boolean fillWithBlack) {
-        boolean write = CoreEngine.isIDE() && !CoreEngine.isIggDemo();
+        boolean write = Flags.isIDE() && !Flags.isIggDemo();
 
         FileHandle handle = GDX.file(
          PathFinder.getImagePath() +

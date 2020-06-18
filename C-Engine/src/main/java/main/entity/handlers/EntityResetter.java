@@ -11,7 +11,6 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.math.Property;
 import main.system.text.TextParser;
 
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -42,9 +41,7 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
 
         getEntity().setOwner(getEntity().getOriginalOwner());
 
-        HashSet<PARAMETER> params = new HashSet<>(getEntity().getParamMap().keySet());
-        params.addAll(getType().getParamMap().keySet());
-        for (PARAMETER p : params) {
+        for (PARAMETER p : getEntity().getType(). getParamMap().keySet()) {
             if (p == null) {
                 continue;
             }
@@ -74,9 +71,7 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
                 }
             }
         }
-        HashSet<PROPERTY> props = new HashSet<>(getEntity().getPropMap().keySet());
-        props.addAll(getType().getPropMap().keySet());
-        for (PROPERTY p : props) {
+        for (PROPERTY p : getEntity().getType().getPropMap().keySet()) {
 
             if (p.isDynamic()) {
                 if (p.isWriteToType()) {

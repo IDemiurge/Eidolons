@@ -17,7 +17,7 @@ import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class MainMenuHandler {
                 MainLauncher.presetNumbers.add(0, n);
             }
         }
-        CoreEngine.setMacro(false);
+        Flags.setMacro(false);
         GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL, scenarioTypes);
         return null;
     }
@@ -135,7 +135,7 @@ public class MainMenuHandler {
                     Loader.load();
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
-                    CoreEngine.setMacro(false);
+                    Flags.setMacro(false);
                     Eidolons.exitToMenu();
                 }
                 break;

@@ -389,8 +389,6 @@ public class VisionRule {
             return null;
 
         }
-
-
         return null;
     }
 
@@ -399,15 +397,11 @@ public class VisionRule {
         if (hero.isDead()) {
             return false;
         }
-        //        if (hero.isSneaking()) {
-        //            return false;
-        //        }
-
         UNIT_VISION vision = unit.getGame().getVisionMaster().getSightMaster().getUnitVisibilityStatus(hero, unit);
         switch (vision) {
 
             case IN_PLAIN_SIGHT:
-                if (!hero.isSneaking())//TODO IGG HACK
+                if (!hero.isSneaking())//TODO DC Review - how does stealth work anyway?
                     return true;
             case IN_SIGHT:
             case CONCEALED:
@@ -416,32 +410,10 @@ public class VisionRule {
             case BLOCKED:
                 return false;
         }
-        //        VISIBILITY_LEVEL visibility =    controller.getVisibilityLevelMapper().getVar(unit, hero);
-        //        switch (visibility) {
-        //            case CLEAR_SIGHT:
-        //                break;
-        //            case UNSEEN:
-        //                if (!isResetRequired(unit, hero, 0.5f))
-        //                    return false;
-        //            case OUTLINE:
-        //            case VAGUE_OUTLINE:
-        //            case CONCEALED:
-        //                if (!ExplorationMaster.isExplorationOn())
-        //                    break;
-        //                else
-        //                    return false;
-        //            case BLOCKED:
-        //                return false;
-        //        }
-        //        if (controller.getVisibilityLevelMapper().getVar(unit, hero) == VISIBILITY_LEVEL.CLEAR_SIGHT
-        //         || !ExplorationMaster.isExplorationOn()
-        //         &&  controller.getVisibilityLevelMapper().getVar(unit, hero) == VISIBILITY_LEVEL.BLOCKED
-        //         ) {
-
         if (hero.isSneaking()) {
             //add chance? not right...
             //                apply spotted?
-            return isResetRequired(unit, hero, 0.25f);//TODO IGG HACK
+            return isResetRequired(unit, hero, 0.25f);
         }
         return isResetRequired(unit, hero, 0.5f);
     }

@@ -99,7 +99,9 @@ public abstract class GridPanel extends Group {
     protected List<GroupX> customOverlayingObjectsTop = new ArrayList<>();
     protected List<GroupX> customOverlayingObjectsUnder = new ArrayList<>(100);
     protected Array<GroupWithEmitters> emitterGroups = new Array <>(125);
+
     protected List<OverlayView> overlays = new ArrayList<>();
+    protected Set<BossVisual> bossVisuals = new LinkedHashSet<>();
 
     protected GridRenderHelper manager;
     protected GridOverlaysManager overlayManager;
@@ -447,7 +449,7 @@ it sort of broke at some point - need to investigate!
             }
             if (view instanceof UnitGridView)
                 if (((UnitGridView) view).getLastSeenView() != null) {
-                    BattleFieldObject obj = getObjectForView(view);
+                    BattleFieldObject obj = ((UnitGridView) view).getUserObject();
 
                     LastSeenMaster.resetLastSeen((UnitGridView) view,
                             obj, !visible);
@@ -560,7 +562,7 @@ it sort of broke at some point - need to investigate!
     }
 
     public void unitViewMoved(BaseView view) {
-        unitMoved(getObjectForView(view));
+        unitMoved((BattleFieldObject) (view).getUserObject());
     }
 
     public void unitMoved(BattleFieldObject object) {
@@ -790,12 +792,6 @@ it sort of broke at some point - need to investigate!
         return moduleRows;
     }
 
-    public BattleFieldObject getObjectForView(BaseView source) {
-        return (BattleFieldObject) source.getUserObject(); //TODO igg demo fix
-        //        return new MapMaster<BattleFieldObject, BaseView>()
-        //         .getKeyForValue(viewMap, source);
-    }
-
     public List<GroupX> getCustomOverlayingObjects() {
         return customOverlayingObjects;
     }
@@ -811,8 +807,6 @@ it sort of broke at some point - need to investigate!
         }
         return cells[i][i1].getUserObject();
     }
-
-    protected final Set<BossVisual> bossVisuals = new LinkedHashSet<>();
 
     protected void bindEvents() {
         boolean removePrevious = !CoreEngine.isLevelEditor();
@@ -1175,7 +1169,7 @@ it sort of broke at some point - need to investigate!
 
         cellContainer.fadeOutOverlay();
 
-        LogMaster.log(1, "fadeOutOverlay " + cellContainer);
+        // LogMaster.log(1, "fadeOutOverlay " + cellContainer);
     }
 
     public void showMoveGhostOnCell(Unit unit) {
@@ -1187,7 +1181,7 @@ it sort of broke at some point - need to investigate!
         }
         cellContainer.fadeInOverlay(texture);
 
-        LogMaster.log(1, "showMoveGhostOnCell " + cellContainer);
+        // LogMaster.log(1, "showMoveGhostOnCell " + cellContainer);
     }
 
     public int getGdxY_ForModule(int y) {

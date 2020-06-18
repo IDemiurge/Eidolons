@@ -4,12 +4,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.macro.MacroGame;
-import eidolons.macro.map.Place;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.MapMoveLayers.MAP_POINTS;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.macro.MacroGame;
+import eidolons.macro.map.Place;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
@@ -21,7 +21,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager.STD_IMAGES;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -38,7 +38,7 @@ public class MapPointMaster {
     private static MapPointMaster instance;
 
     private MapPointMaster() {
-        if (CoreEngine.isMapEditor()) {
+        if (Flags.isMapEditor()) {
             GuiEventManager.bind(MapEvent.LOCATION_ADDED, p -> {
                 Pair<String, Coordinates> pair = (Pair<String, Coordinates>) p.get();
                 TextureRegion region = TextureCache.getOrCreateR(STD_IMAGES.MAP_PLACE.getPath());

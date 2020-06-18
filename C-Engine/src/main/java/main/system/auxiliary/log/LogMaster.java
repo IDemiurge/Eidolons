@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import org.apache.log4j.Priority;
 
 import java.util.logging.Level;
@@ -24,8 +24,8 @@ public class LogMaster {
     public static final String PREFIX_WARNING = "WARNING: ";
     public static final String PREFIX_ERROR = "ERROR: ";
 
-    private static int PRIORITY_LEVEL_LOGGED =
-            CoreEngine.isIDE() ? 1 : CoreEngine.isExe() ? 1 : 0;
+    private static final int PRIORITY_LEVEL_LOGGED =
+            Flags.isIDE() ? 1 : Flags.isExe() ? 1 : 0;
     public static final int CORE_DEBUG = -1;
     public static final String CORE_DEBUG_PREFIX = "CORE: ";
     public static final int CORE_DEBUG_1 = -100;
@@ -199,7 +199,7 @@ public class LogMaster {
     }
 
     private static boolean isConsoleLogging() {
-        return !CoreEngine.isExe();
+        return !Flags.isExe();
     }
 
     //TODO do these categories!
@@ -418,13 +418,13 @@ public class LogMaster {
     }
 
     public static void dev(String string) {
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
             log(PRIORITY_IMPORTANT, PREFIX_DEV + string);
         }
     }
 
     public static void dev(LOG_CHANNEL c, String s) {
-        if (CoreEngine.isIDE())
+        if (Flags.isIDE())
             if (c.isOn()) {
                 log(c.getPrefix() + s);
             }
@@ -432,7 +432,7 @@ public class LogMaster {
 
     public static void important(String string) {
         log(PRIORITY_IMPORTANT, PREFIX_IMPORTANT + string);
-        if (!CoreEngine.isIDE()) {
+        if (!Flags.isIDE()) {
             FileLogManager.streamMain(string);
         }
     }

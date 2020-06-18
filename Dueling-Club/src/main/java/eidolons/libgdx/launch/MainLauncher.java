@@ -15,6 +15,7 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -60,10 +61,10 @@ public class MainLauncher extends GenericLauncher {
         GpuTester.test();
         CoreEngine.setSwingOn(false);
 //        if (!CoreEngine.isIDE())
-        CoreEngine.setSafeMode(true);
-        CoreEngine.setIggDemo(true);
-        CoreEngine.setMainGame(true);
-        CoreEngine.setDialogueTest(true);
+        Flags.setSafeMode(true);
+        Flags.setIggDemo(true);
+        Flags.setMainGame(true);
+        Flags.setDialogueTest(true);
 //        EidolonsGame.BRIDGE = true;
 //        CoreEngine.setGraphicTestMode(args.length > 0);
 //        CoreEngine.setActiveTestMode(args.length > 0);
@@ -74,7 +75,7 @@ public class MainLauncher extends GenericLauncher {
                 EidolonsGame.TOWN = true;
             }
             CoreEngine.TEST_LAUNCH = args[0].contains(";test");
-            CoreEngine.setFastMode(CoreEngine.TEST_LAUNCH);
+            Flags.setFastMode(CoreEngine.TEST_LAUNCH);
 
             if (args[0].contains("selectfootage")) {
                 CoreEngine.swingOn = true;
@@ -114,26 +115,26 @@ public class MainLauncher extends GenericLauncher {
             if (EidolonsGame.DUEL_TEST) {
                 EidolonsGame.BRIDGE = true;
             }
-            CoreEngine.setLevelTestMode(false);
+            Flags.setLevelTestMode(false);
             args = args[0].split(";");
         }
-        CoreEngine.setSkillTestMode(args.length > 0);
+        Flags.setSkillTestMode(args.length > 0);
 //        CoreEngine.setLiteLaunch(args.length > 0);
 //        CoreEngine.setContentTestMode(args.length > 2);
         if (!EidolonsGame.BOSS_FIGHT)
-            CoreEngine.setLevelTestMode(args.length > 4);
+            Flags.setLevelTestMode(args.length > 4);
 
-        if (!CoreEngine.isIggDemo()) {
-            CoreEngine.setFastMode(args.length > 1);
-            CoreEngine.setFullFastMode(args.length > 3);
+        if (!Flags.isIggDemo()) {
+            Flags.setFastMode(args.length > 1);
+            Flags.setFullFastMode(args.length > 3);
         }
-        if (CoreEngine.isIDE()) {
-            CoreEngine.setJarlike(!CoreEngine.isFastMode());
-            if (CoreEngine.isFastMode())//|| CoreEngine.isActiveTestMode())
+        if (Flags.isIDE()) {
+            Flags.setJarlike(!Flags.isFastMode());
+            if (Flags.isFastMode())//|| CoreEngine.isActiveTestMode())
                 TestMasterContent.setAddSpells(true);
-            if (CoreEngine.isFullFastMode()) {
+            if (Flags.isFullFastMode()) {
                 TestMasterContent.setAddAllSpells(true);
-                if (CoreEngine.isMe())
+                if (Flags.isMe())
                     OptionsMaster.setOptionsPath("C:\\Users\\justm\\AppData\\Local\\Eidolons\\fast options.xml");
             }
         }
@@ -151,7 +152,7 @@ public class MainLauncher extends GenericLauncher {
 
         for (String command : commands) {
             if (command.contains(MAIN_MENU_ITEM.MAP_PREVIEW.toString())) {
-                CoreEngine.setMapPreview(true);
+                Flags.setMapPreview(true);
             }
         }
 
@@ -224,10 +225,10 @@ public class MainLauncher extends GenericLauncher {
         switch (value) {
             case "ready/graveyard.xml":
             case "crawl/Dwarven Halls.xml":
-                CoreEngine.setReverseExit(true);
+                Flags.setReverseExit(true);
                 return null;
             case "ready/ship.xml":
-                CoreEngine.setReverseExit(true);
+                Flags.setReverseExit(true);
 //                    return Sprites.BG_BASTION;
                 return "main/background/ship flip.jpg";
 

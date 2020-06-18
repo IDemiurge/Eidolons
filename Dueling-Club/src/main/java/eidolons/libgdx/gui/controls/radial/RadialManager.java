@@ -35,7 +35,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -146,7 +146,7 @@ public class RadialManager {
     }
 
     public static List<RadialContainer> createNodes(DC_Obj target) {
-        if (CoreEngine.isIDE())
+        if (Flags.isIDE())
             if (OutcomePanel.TEST_MODE)
                 try {
                     GuiEventManager.trigger(GAME_FINISHED, DC_Game.game);
@@ -300,7 +300,7 @@ public class RadialManager {
 
 
     protected static boolean checkExamineNode(DC_Obj target) {
-        if (!UnitInfoPanelNew.EXAMINE_READY && !CoreEngine.isIDE()) {
+        if (!UnitInfoPanelNew.EXAMINE_READY && !Flags.isIDE()) {
             return false;
         }
         return target instanceof Unit && (

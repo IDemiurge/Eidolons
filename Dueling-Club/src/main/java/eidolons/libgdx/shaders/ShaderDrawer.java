@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 5/17/2018.
@@ -50,7 +51,7 @@ public class ShaderDrawer {
             actor.draw(batch, ShaderDrawer.SUPER_DRAW);
             return;
         }
-        if (CoreEngine.isIDE())
+        if (Flags.isIDE())
             if (shader!=null && !shader.isCompiled())
             {
                 drawWithCustomShader(actor, batch, null , false, true);

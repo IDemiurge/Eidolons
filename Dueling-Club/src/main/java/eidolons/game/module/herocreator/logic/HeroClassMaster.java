@@ -18,7 +18,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,14 +101,11 @@ public class HeroClassMaster {
         if (hero.getProperty(PROPS.SECOND_CLASS).equalsIgnoreCase(property)) {
             return true;
         }
-        if (hero.getProperty(PROPS.THIRD_CLASS).equalsIgnoreCase(property)) {
-            return true;
-        }
-        return false;
+        return hero.getProperty(PROPS.THIRD_CLASS).equalsIgnoreCase(property);
     }
 
     public static List<ObjType> getClassesToChooseFrom(Unit hero, int tier) {
-        if (CoreEngine.isIggDemoRunning()){
+        if (Flags.isIggDemoRunning()){
             return getPotentiallyAvailableClasses(hero, tier);
         }
         return getAllClasses(hero, tier);

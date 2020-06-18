@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.netherflame.main.death.ShadowMaster;
@@ -109,10 +108,6 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     protected boolean isViewCacheOn() {
-        if (EidolonsGame.BOSS_FIGHT)  //hasBackground
-            return true;
-        //TODO igg demo hack
-
         if (checkIgnored())
             return false;
         return !main;
@@ -430,7 +425,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
             GenericGridView view = (GenericGridView) actor;
 
             if (isAnimated()) {
-                ActionMaster.addFadeInAction(actor, getFadeDuration() / 1.5f); //igg demo hack
+                ActionMaster.addFadeInAction(actor, getFadeDuration() );
             }
             //recalc all
             indexMap.put(view, getZIndexForView(view));
@@ -452,7 +447,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     protected float getFadeDuration() {
-        return 0.21f;
+        return 0.14f;
     }
 
     @Override
@@ -637,7 +632,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         overlay.getColor().a = 0;
         overlay.fadeIn();
         ActionMaster.addAfter(overlay, new FadeOutAction());
-        log(1, "fadeIn overlay" + this);
+        // log(1, "fadeIn overlay" + this);
     }
 
     public void fadeOutOverlay() {

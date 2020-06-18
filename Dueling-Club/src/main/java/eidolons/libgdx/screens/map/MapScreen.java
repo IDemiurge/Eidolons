@@ -25,7 +25,7 @@ import eidolons.macro.global.time.MacroTimeMaster;
 import main.data.xml.XML_Reader;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import static main.system.MapEvent.MAP_READY;
 import static main.system.MapEvent.UPDATE_MAP_BACKGROUND;
@@ -50,7 +50,7 @@ public class MapScreen extends GameScreenWithTown {
     }
 
     public static MapScreen getInstance() {
-        if (CoreEngine.isMapEditor())
+        if (Flags.isMapEditor())
             return EditorMapView.getInstance();
         if (instance == null) {
             instance = new MapScreen();
@@ -159,7 +159,7 @@ public class MapScreen extends GameScreenWithTown {
     protected boolean canShowScreen() {
         if (MacroGame.getGame() == null)
             return false;
-        if (!CoreEngine.isMapEditor())
+        if (!Flags.isMapEditor())
             if (!MacroGame.getGame().isStarted())
                 return false;
         return super.canShowScreen();
@@ -169,7 +169,7 @@ public class MapScreen extends GameScreenWithTown {
 //        VignetteShader.getShader().begin();
 //        getBatch().setShader(VignetteShader.getShader());
         if (canShowScreen()) {
-            if (!CoreEngine.isMapEditor()) {
+            if (!Flags.isMapEditor()) {
                 MacroGame.getGame().getRealtimeLoop().act(delta);
                 cameraMan.act(delta);
             }
@@ -180,11 +180,11 @@ public class MapScreen extends GameScreenWithTown {
             guiStage.act(delta);
 
             mapStage.draw();
-            if (Gdx.input.isKeyPressed(Keys.O) || CoreEngine.isMapEditor()) {
+            if (Gdx.input.isKeyPressed(Keys.O) || Flags.isMapEditor()) {
                 objectStage.draw();
             }
-            if (!CoreEngine.isFootageMode())
-            if (Gdx.input.isKeyPressed(Keys.G)|| CoreEngine.isMapEditor() ) {
+            if (!Flags.isFootageMode())
+            if (Gdx.input.isKeyPressed(Keys.G)|| Flags.isMapEditor() ) {
                 guiStage.draw();
             } else {
 //                getBatch().begin();
@@ -225,7 +225,7 @@ public class MapScreen extends GameScreenWithTown {
         if (!canShowScreen())
             return false;
 
-        if (CoreEngine.isMapEditor())
+        if (Flags.isMapEditor())
             return false;
         if (getTimeMaster().isPlayerCamping())
             return true;

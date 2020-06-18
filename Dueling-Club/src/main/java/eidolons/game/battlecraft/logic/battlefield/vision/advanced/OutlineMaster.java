@@ -10,7 +10,7 @@ import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_IMAGE;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 2/22/2017.
@@ -18,7 +18,7 @@ import main.system.launch.CoreEngine;
 public class OutlineMaster {
 
 
-    private static boolean outlinesOn = true;
+    private static final boolean outlinesOn = true;
     protected VisionMaster master;
 
     public OutlineMaster(VisionMaster visionMaster) {
@@ -34,7 +34,7 @@ public class OutlineMaster {
     }
 
     public OUTLINE_TYPE getOutlineType(DC_Obj unit, Unit activeUnit) {
-        if (CoreEngine.isFootageMode()){
+        if (Flags.isFootageMode()){
             return null;
         }
         if (unit.getGame().isSimulation()) {

@@ -15,7 +15,7 @@ import eidolons.libgdx.texture.TextureManager;
 import main.content.enums.GenericEnums.BLENDING;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.Arrays;
 
@@ -147,7 +147,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
     public boolean draw(Batch batch) {
 
-        if (CoreEngine.isFootageMode())
+        if (Flags.isFootageMode())
             return false;
 
         if (!isCustomAct()) {

@@ -18,7 +18,7 @@ import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.RandomWizard;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.PositionMaster;
 
 import java.util.Arrays;
@@ -64,7 +64,7 @@ public class ForceAnim extends Weapon3dAnim {
     private String getSpritePath() {
 
         if (type == GenericEnums.DAMAGE_TYPE.SHADOW || type == GenericEnums.DAMAGE_TYPE.DEATH) {
-            if (!CoreEngine.isSuperLite())
+            if (!Flags.isSuperLite())
                 return Sprites.REAPER_SCYTHE;
             else {
                 return Sprites.GHOST_FIST;

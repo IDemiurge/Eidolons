@@ -11,7 +11,7 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 10/18/2018.
@@ -184,11 +184,11 @@ public class WanderAi extends AiGroupBehavior {
         if (getUnit().getAI().getGroup().getMembers().size()==0){
             return 1;
         }
-        return CoreEngine.isSafeMode()? 2: 7;
+        return Flags.isSafeMode()? 2: 7;
     }
 
     private float getBlockSizeCoefForMaxDistance() {
-        return CoreEngine.isSafeMode()? 0.1f: 0.5f;
+        return Flags.isSafeMode()? 0.1f: 0.5f;
     }
 
 }

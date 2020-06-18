@@ -21,6 +21,7 @@ import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -57,7 +58,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 WaitMaster.waitForInput(getOperationToWaitFor());//, 2000);
             getGdxScreen().setRealTimeGameLoop(this);
         }
-        if (!CoreEngine.isJUnit()) {
+        if (!Flags.isJUnit()) {
             //            if (realTimeThread == null)
             startRealTimeThread();
 
@@ -160,9 +161,9 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return exited;
     }
 
+    //To-Cleanup - some old stuff here
     protected void playerAction(ActionInput playerAction) {
 
-        //TODO igg demo fix
         activateAction(playerAction);
         waitForAnimations(playerAction);
         boolean result = playerAction.getAction().getHandler().isResult();
@@ -248,9 +249,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     @Override
     public void queueActionInput(ActionInput actionInput) {
-        if (playerActionQueue.size() > 0)
-        {
-            main.system.auxiliary.log.LogMaster.log(1,actionInput+" won't be done; playerActionQueue=  " +playerActionQueue);
+        if (playerActionQueue.size() > 0) {
+            main.system.auxiliary.log.LogMaster.log(1, actionInput + " won't be done; playerActionQueue=  " + playerActionQueue);
             return;
         }
         //        if (actionQueue.contains(actionInput))
@@ -277,6 +277,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         game.getMovementManager().cancelAutomove(activeUnit);
         actionInput_(actionInput);
     }
+
     public void actionInput_(ActionInput actionInput) {
         if (isStopped()) {
             main.system.auxiliary.log.LogMaster.log(1, "action input in stopped ");

@@ -19,6 +19,7 @@ import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.stage.Closable;
 import eidolons.libgdx.stage.StageWithClosable;
+import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.audio.SoundController;
 import eidolons.system.audio.SoundController.SOUND_EVENT;
@@ -28,7 +29,7 @@ import main.system.EventCallbackParam;
 import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 
 import java.util.Collections;
@@ -79,21 +80,14 @@ public class RadialMenu extends Group implements Closable {
     }
 
     protected void initBackground() {
-        if (!CoreEngine.isJar() && !CoreEngine.isFraps()) {
-            return;
+        if (!Flags.isLiteLaunch()) {
+            background = SpriteAnimationFactory.getSpriteAnimation(getBackgroundSpritePath(), false);
+            background.setFrameDuration(0.05f);
         }
-        background = SpriteAnimationFactory.getSpriteAnimation(getBackgroundSpritePath(), false);
-        if (background == null) {
-            return;
-        }
-        background.setFrameDuration(0.05f);
     }
 
     protected String getBackgroundSpritePath() {
-//        if (CoreEngine.isLiteLaunch()) {
-        return "";
-//        }
-//        return Sprites.RADIAL;
+        return Sprites.RADIAL;
     }
 
     protected void bindEvents() {
@@ -240,8 +234,8 @@ public class RadialMenu extends Group implements Closable {
         updatePosition();
         setColor(new Color(1, 1, 1, 0));
         adjustPosition();
-//  TODO fade out the old nodes       ActorMaster.addChained
-//         (this, ActorMaster.addFadeOutAction(this, getAnimationDuration()/2),
+        //  TODO fade out the old nodes       ActorMaster.addChained
+        //         (this, ActorMaster.addFadeOutAction(this, getAnimationDuration()/2),
         ActionMaster.addFadeInAction(this, getAnimationDuration());
         ActionMaster.addAfter(this, new Action() {
             @Override
@@ -295,10 +289,10 @@ public class RadialMenu extends Group implements Closable {
         int step = getSpectrumDegrees() / currentNode.getChildNodes().size();
         int initial = getStartDegree();
 
-//        double coefficient = currentNode.getChildNodes().size() > 6 ? 2 : 1.5;
-//        if (currentNode.getChildNodes().size() > 10) {
-//            coefficient = 2.5;
-//        }
+        //        double coefficient = currentNode.getChildNodes().size() > 6 ? 2 : 1.5;
+        //        if (currentNode.getChildNodes().size() > 10) {
+        //            coefficient = 2.5;
+        //        }
         double coefficient = MathMaster.getMinMax((float) (currentNode.
                 getChildNodes().size() / (Math.PI + 1)), getMinCoef(), getMaxCoef());
         boolean makeSecondRing = isMakeSecondRing(currentNode.getChildNodes().size());
@@ -429,8 +423,8 @@ public class RadialMenu extends Group implements Closable {
     }
 
     public void hover(Entity entity) {
-//        for (Actor sub : getChildren()) {
-//        }
+        //        for (Actor sub : getChildren()) {
+        //        }
     }
 
     public void hoverOff(Entity entity) {

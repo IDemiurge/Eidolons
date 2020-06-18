@@ -1,13 +1,13 @@
 package eidolons.entity.handlers.active;
 
 import eidolons.content.DC_ContentValsManager;
+import eidolons.content.DC_ValueManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.TerrainRule;
 import eidolons.game.battlecraft.rules.perk.FlyingRule;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.system.CustomValueManager;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TAGS;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
@@ -107,7 +107,7 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
     protected void addCustomMod(CUSTOM_VALUE_TEMPLATE template, String string, PARAMETER param,
                                 boolean percent) {
 
-        String value_ref = CustomValueManager.getCustomValueName(template, param.getName(), string);
+        String value_ref = DC_ValueManager.getCustomValueName(template, param.getName(), string);
         int amount = getOwnerObj().getCounter(value_ref);
         if (amount == 0) {
             return;

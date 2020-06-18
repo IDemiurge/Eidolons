@@ -18,6 +18,7 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlNodeMaster;
 import main.entity.type.ObjType;
+import main.entity.type.TypeBuilder;
 import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
@@ -25,7 +26,6 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.TypeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

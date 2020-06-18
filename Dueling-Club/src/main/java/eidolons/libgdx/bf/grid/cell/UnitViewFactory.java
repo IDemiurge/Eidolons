@@ -31,7 +31,7 @@ import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.Map;
 
@@ -109,7 +109,7 @@ public class UnitViewFactory {
     protected void addOutline(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
 
         view.setOutlinePathSupplier(() -> {
-            if (CoreEngine.isFootageMode()) {
+            if (Flags.isFootageMode()) {
                 return null;
             }
             if (Cinematics.ON) {
@@ -118,7 +118,7 @@ public class UnitViewFactory {
             if (bfObj.isWater()) {
                 return null;
             }
-            if (!CoreEngine.isOutlinesFixed()) {
+            if (!Flags.isOutlinesFixed()) {
                 return null;
             }
             if (bfObj.isBoss()) {

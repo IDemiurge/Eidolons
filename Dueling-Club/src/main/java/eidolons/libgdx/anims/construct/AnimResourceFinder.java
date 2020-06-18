@@ -9,7 +9,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.system.PathUtils;
 import main.system.auxiliary.data.FileManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 11/15/2018.
@@ -55,7 +55,7 @@ public class AnimResourceFinder {
         }
         //        if (file != null || closest || isPartIgnored(partPath))
 
-        if (CoreEngine.isJar())
+        if (Flags.isJar())
             System.out.println(pathRoot + " root; file found " + file);
         return file;
         //        return findResourceForSpell(spell, partPath, size, props, pathRoot, true);

@@ -11,7 +11,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 public class ExtendableLogPanel extends LogPanel {
-    private final boolean top;  //TODO igg demo insight INTO DECORATOR
+    private final boolean top;
     private float prevHeight;
     private final Actor extendButton;
 

@@ -26,7 +26,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +38,10 @@ import java.util.Map;
 public class DungeonLevel  {
 
     private TileMap tileMap;
-    private LevelModel model;
+    private final LevelModel model;
     private SUBLEVEL_TYPE sublevelType;
     private LOCATION_TYPE locationType;
-    private List<ObjAtCoordinate> objects = new ArrayList<>();
+    private final List<ObjAtCoordinate> objects = new ArrayList<>();
     private String directionMapData;
     private int powerLevel;
     private Map<String, DIRECTION> directionMap;
@@ -295,7 +295,7 @@ public class DungeonLevel  {
     public Coordinates getEntranceCoordinates() {
         if (entranceCoordinates == null) {
             int i = 0;
-            if (CoreEngine.isReverseExit())
+            if (Flags.isReverseExit())
                 i = 1;
             String s = (getEntranceData().split(";")[i]);
             if (s.contains("(")) {
@@ -309,7 +309,7 @@ public class DungeonLevel  {
     public Coordinates getExitCoordinates() {
         if (exitCoordinates == null) {
             int i = 1;
-            if (CoreEngine.isReverseExit())
+            if (Flags.isReverseExit())
                 i = 0;
             exitCoordinates = new Coordinates(getEntranceData().split(";")[i]);
         }

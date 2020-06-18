@@ -13,6 +13,7 @@ import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
+import main.entity.type.TypeBuilder;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.model.EditorModel;
 import main.level_editor.backend.handlers.structure.FloorManager;
@@ -25,7 +26,6 @@ import main.level_editor.gui.screen.LE_WaitingScreen;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
-import main.system.launch.TypeBuilder;
 import main.system.threading.WaitMaster;
 
 import java.util.Arrays;

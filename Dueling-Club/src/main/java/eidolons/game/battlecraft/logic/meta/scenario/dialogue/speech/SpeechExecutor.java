@@ -71,6 +71,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.TimerTaskMaster;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.Pair;
@@ -92,7 +93,7 @@ public class SpeechExecutor {
     protected static final boolean ABORT_ON_EXCEPTION = false;
     protected final DialogueManager dialogueManager;
     protected final ExecutorHelper helper;
-    protected  DialogueHandler handler;
+    protected  DialogueHandler handler; //gdx Review - don't want to depend..
     protected  DialogueContainer container;
     protected  MetaGameMaster master;
     protected int waitOnEachLine;
@@ -199,7 +200,7 @@ public class SpeechExecutor {
                 /*
 
                  */
-                CoreEngine.setFlag(value, Boolean.valueOf(vars.get(0)));
+                Flags.setFlag(value, Boolean.valueOf(vars.get(0)));
                 break;
             case CHEAT:
 
@@ -1352,7 +1353,7 @@ public class SpeechExecutor {
     }
 
     protected int getTime(Integer millis, List<String> vars, float coef) {
-        if (CoreEngine.isSuperLite() && CoreEngine.isIDE()) {
+        if (Flags.isSuperLite() && Flags.isIDE()) {
             millis = millis / 2;
         } else if (CoreEngine.isMyLiteLaunch()) {
             millis = millis * 2 / 3;

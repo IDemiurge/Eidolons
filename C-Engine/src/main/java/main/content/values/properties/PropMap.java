@@ -1,29 +1,25 @@
 package main.content.values.properties;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.ValueMap;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 public class PropMap implements ValueMap {
-    Map<PROPERTY, String> map = new HashMap<>();
-
+    ObjectMap<PROPERTY, String> map = new ObjectMap<>();
 
     @Override
     public String toString() {
         return map.toString();
     }
 
-    public Map<PROPERTY, String> getMap() {
+    public ObjectMap<PROPERTY, String> getMap() {
         return map;
     }
 
-    public void setMap(Map<PROPERTY, String> map) {
+    public void setMap(ObjectMap<PROPERTY, String> map) {
         this.map = map;
     }
 
@@ -32,7 +28,7 @@ public class PropMap implements ValueMap {
         if (valueName == null) {
             return "";
         }
-        String value = map.get(valueName);
+        String value = map.get((PROPERTY) valueName);
         if (value == null) {
             return "";
         }
@@ -54,20 +50,9 @@ public class PropMap implements ValueMap {
         return previous;
     }
 
-    public int size() {
-        return map.size();
-    }
-
-    public boolean isEmpty() {
-        return map.isEmpty();
-    }
 
     public boolean containsKey(Object key) {
-        return map.containsKey(key);
-    }
-
-    public boolean containsValue(Object value) {
-        return map.containsValue(value);
+        return map.containsKey((PROPERTY) key);
     }
 
     public String put(PROPERTY key, String value) {
@@ -79,27 +64,20 @@ public class PropMap implements ValueMap {
     }
 
     public String remove(Object key) {
-        return map.remove(key);
+        return map.remove((PROPERTY) key);
     }
 
     public void putAll(Map<? extends PROPERTY, ? extends String> m) {
-        map.putAll(m);
+        // map.putAll(m);
     }
 
     public void clear() {
         map.clear();
     }
 
-    public Set<PROPERTY> keySet() {
-        return map.keySet();
+    public ObjectMap.Keys<PROPERTY> keySet() {
+        return map.keys();
     }
 
-    public Collection<String> values() {
-        return map.values();
-    }
-
-    public Set<Entry<PROPERTY, String>> entrySet() {
-        return map.entrySet();
-    }
 
 }

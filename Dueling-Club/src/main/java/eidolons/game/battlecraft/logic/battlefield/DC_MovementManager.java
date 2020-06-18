@@ -4,6 +4,7 @@ import eidolons.ability.conditions.req.CellCondition;
 import eidolons.ability.conditions.shortcut.PushableCondition;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
+import eidolons.content.DC_ValueManager;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
@@ -20,7 +21,6 @@ import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_Game;
-import eidolons.system.CustomValueManager;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums;
@@ -407,7 +407,7 @@ public class DC_MovementManager implements MovementManager {
 
         if (template.getVarClasses() != null) {
             String vars = ref.getObj(KEYS.ACTIVE).getCustomProperty(
-                    CustomValueManager.getVarEnumCustomValueName(MOVE_TEMPLATES.class));
+                    DC_ValueManager.getVarEnumCustomValueName(MOVE_TEMPLATES.class));
             List<String> varList = VariableManager.getVarList(vars);
 
             range = varList.get(0);

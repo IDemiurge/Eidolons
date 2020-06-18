@@ -7,7 +7,6 @@ import main.content.OBJ_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
-import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -259,22 +258,6 @@ public class ConditionMaster {
 
     public static Condition getAdjacentCondition() {
         return getDistanceFilterCondition(SOURCE, 1);
-    }
-
-    public static Condition getMoraleAffectedFilterCondition() {
-        return getMoraleAffectedCondition(KEYS.MATCH);
-
-    }
-
-    public static Condition getPassiveRetainCondition() {
-        return new StringComparison("{SOURCE_PASSIVES}", "{ABILITY_NAME}", false);
-    }
-
-    public static Condition getGraveConditions() {
-        Conditions c = new Conditions();
-        c.add(getTYPECondition(DC_TYPE.TERRAIN));
-        c.add(new NumericCondition("{MATCH_" + G_PARAMS.N_OF_CORPSES + "}", "0", false));
-        return c;
     }
 
     public static Conditions getClaimedBfObjConditions(String BF_OBJECT_TYPE) {
@@ -695,7 +678,7 @@ public class ConditionMaster {
         COORDINATES("coordinates","coord"),
         CAN_ACTIVATE("cost", "can activate", "can pay"), SPOT("spot"), FACING();
 
-        private String[] names;
+        private final String[] names;
 
         CONDITION_TEMPLATES(String... names) {
             this.names = names;

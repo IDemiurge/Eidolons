@@ -70,12 +70,12 @@ public class UnitInfoWeapon extends QuickWeaponPanel{
 
     @Override
     public void updateAct(float delta) {
+        //TODO Gdx Review - radial wasn't working, and it ain't looking top?
         if (super.getUserObject() == null) {
             return;
         }
         weapon.addListener(getListener());
         setVisible(true);
-        //TODO igg demo hack for null weapons
         super.updateAct(delta);
         if (!isVisible())
             return;

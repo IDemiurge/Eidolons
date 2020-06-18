@@ -30,7 +30,7 @@ import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -337,7 +337,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
             getIncome(10);
 
         //randomize initial gold!
-        if (!CoreEngine.isMacro()) {
+        if (!Flags.isMacro()) {
             Integer base = Math.max(200, getType().getIntParam(PARAMS.GOLD));
             addParam(PARAMS.GOLD, RandomWizard.getRandomIntBetween(
              base / 3 * 2, base * 3 / 2

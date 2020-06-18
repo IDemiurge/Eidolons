@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -54,6 +56,14 @@ last
         table.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
         table.add(zoomInfo).left();
         table.add(layerInfo).left();
+
+        layerInfo.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+             LevelEditor.getManager().cycleLayer();
+             super.clicked(event, x, y);
+            }
+        });
         table.add(selectionInfo).left();
         selectionInfo.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
         table.add(structInfo).left();

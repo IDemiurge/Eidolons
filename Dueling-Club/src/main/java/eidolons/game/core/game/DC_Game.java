@@ -78,11 +78,12 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.util.Refactor;
 
 import java.util.*;
 
-import static main.system.launch.CoreEngine.isCombatGame;
+import static main.system.launch.Flags.isCombatGame;
 
 /**
  * contains references to everything that may be needed in scope of a single game
@@ -201,7 +202,7 @@ public class DC_Game extends GenericGame {
         if (!CoreEngine.isArcaneVault())
              rules = new DC_Rules(this);
 
-        if (!isCombatGame() && !CoreEngine.isDungeonTool() && !CoreEngine.isLevelEditor())
+        if (!isCombatGame() && !Flags.isDungeonTool() && !CoreEngine.isLevelEditor())
             return;
         if (isSimulation()) {
             return;
@@ -212,7 +213,7 @@ public class DC_Game extends GenericGame {
         }
         dungeonMaster = createDungeonMaster();
 
-        //TODO igg demo hack
+        //TODO DC main - transit
         if (nextLevel)
             dungeonMaster.setExplorationMaster(master);
         if (!isCombatGame())
@@ -253,7 +254,7 @@ public class DC_Game extends GenericGame {
     }
 
     protected boolean isLocation() {
-        return CoreEngine.isMainGame();
+        return Flags.isMainGame();
     }
 
     protected DungeonMaster createDungeonMaster() {
@@ -438,7 +439,7 @@ public class DC_Game extends GenericGame {
     @Override
     public void initObjTypes() {
         super.initObjTypes();
-        if (CoreEngine.isMacro()) {
+        if (Flags.isMacro()) {
             for (OBJ_TYPE TYPE : MACRO_OBJ_TYPES.values()) {
                 if (TYPE.getCode() == -1) {
                     continue;
@@ -449,9 +450,9 @@ public class DC_Game extends GenericGame {
         if (!CoreEngine.isLevelEditor())
             if ((!CoreEngine.isArcaneVault()
                     || !XML_Reader.isMacro())
-                    && !CoreEngine.isItemGenerationOff()
+                    && !Flags.isItemGenerationOff()
             ) {
-                itemGenerator = new ItemGenerator(CoreEngine.isFastMode());
+                itemGenerator = new ItemGenerator(Flags.isFastMode());
                 itemGenerator.init();
             }
 
@@ -834,7 +835,8 @@ public class DC_Game extends GenericGame {
     public GameLoop getGameLoop() {
         if (loop.getThread() != null)
             if (!loop.getThread().isAlive()) {
-                LogMaster.log(1, "********* getGameLoop() --> THREAD WAS DEAD! restarting.... "); // igg demo hack
+                LogMaster.log(1, "********* getGameLoop() --> THREAD WAS DEAD! restarting.... ");
+                // EA check
                 if (loop == combatLoop) {
                     combatLoop.endCombat();
                 } else {

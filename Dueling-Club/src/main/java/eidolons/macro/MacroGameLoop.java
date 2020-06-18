@@ -20,7 +20,7 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 
 /**
@@ -171,7 +171,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
 
     private boolean isAutoEnterCombat() {
-        return CoreEngine.isFastMode();
+        return Flags.isFastMode();
     }
 
     public boolean tryEnter(Place sub) {

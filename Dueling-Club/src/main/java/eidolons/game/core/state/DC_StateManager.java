@@ -42,6 +42,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -95,7 +96,7 @@ public class DC_StateManager extends StateManager {
 
     public void resetAllSynchronized_(boolean recursion) {
         if (!recursion)
-            if (CoreEngine.isIDE()) {
+            if (Flags.isIDE()) {
                 Eidolons.tryIt(() -> resetAllSynchronized_(false));
                 return;
             }
@@ -587,10 +588,8 @@ public class DC_StateManager extends StateManager {
             }
             if (obj instanceof Unit) {
                 unitsToReset.remove(obj);
+                removeAttachedObjects((Unit) obj);
             }
-
-            removeAttachedObjects((Unit) obj);
-
         }
         Map<Integer, Obj> map = state.getObjMaps().get(obj.getOBJ_TYPE_ENUM());
         if (map != null) {

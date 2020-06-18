@@ -37,19 +37,20 @@ public class ConstructionManager {
 
         if (item.isENUM()) {
             return new Construct(node.getNodeName(), node.getTextContent(),
-             true);
+                    true);
         }
         String xml = XML_Converter.getStringFromXML(node, false);
         return new Construct(node.getNodeName(), getConstructs(node), xml);
     }
 
-    public static String getXmlFromObject(Object obj) { //for restoring constructor xml
+    //for restoring constructor xml
+    //TODO core Review - why is it needed?
+    public static String getXmlFromObject(Object obj) {
         String xml = "" + obj;
         if (obj.getClass().isEnum()) {
-// StringMaster.getWellFormattedString(string
+            // StringMaster.getWellFormattedString(string
         } else {
             //primitive
-
         }
         // what else? effects, other constructible/convertable...
         return xml;

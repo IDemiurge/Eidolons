@@ -7,14 +7,14 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPE
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 4/25/2018.
  */
 public class HqButtonPanel extends HqElement {
     public HqButtonPanel() {
-        if (!CoreEngine.isJar()) {
+        if (!Flags.isJar()) {
             add(new SmartButton("Level Up", STD_BUTTON.MENU, () -> {
                 levelUp();
             }));

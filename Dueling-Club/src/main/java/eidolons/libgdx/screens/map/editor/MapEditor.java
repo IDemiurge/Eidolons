@@ -3,12 +3,13 @@ package eidolons.libgdx.screens.map.editor;
 import com.badlogic.gdx.Gdx;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.launch.GenericLauncher;
-import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.SCREEN_TYPE;
+import eidolons.libgdx.screens.ScreenData;
 import main.data.xml.XML_Reader;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -26,7 +27,7 @@ public class MapEditor extends GenericLauncher {
     }
 
     public static void launch(String arg) {
-        CoreEngine.setMapEditor(true);
+        Flags.setMapEditor(true);
         CoreEngine.setSelectivelyReadTypes(microForMacro);
         XML_Reader.readTypes(false);
         //custom options?!

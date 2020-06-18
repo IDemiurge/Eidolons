@@ -29,6 +29,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 
 import java.util.ArrayList;
@@ -97,13 +98,13 @@ public class ItemGenerator implements GenericItemGenerator {
     private static final int ARMOR_MODIFIER = 5;
     private static ItemGenerator defaultGenerator;
     private static ItemGenerator basicGenerator;
-    private static Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps = new ConcurrentMap();
-    private static List<ObjType> baseWeaponTypes = new ArrayList<>();
+    private static final Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps = new ConcurrentMap();
+    private static final List<ObjType> baseWeaponTypes = new ArrayList<>();
     private static List<ObjType> baseWeaponTypesForShops;
-    private static List<ObjType> baseJewelryTypes = new ArrayList<>();
-    private static List<ObjType> baseItemTypes = new ArrayList<>();
-    private static List<ObjType> baseArmorTypes = new ArrayList<>();
-    private static List<ObjType> baseGarmentTypes = new ArrayList<>();
+    private static final List<ObjType> baseJewelryTypes = new ArrayList<>();
+    private static final List<ObjType> baseItemTypes = new ArrayList<>();
+    private static final List<ObjType> baseArmorTypes = new ArrayList<>();
+    private static final List<ObjType> baseGarmentTypes = new ArrayList<>();
     private static boolean switcher = true;
     private static boolean basicMode = true;
 
@@ -115,7 +116,7 @@ public class ItemGenerator implements GenericItemGenerator {
     public QUALITY_LEVEL[] defaultQualityLevels = ItemEnums.QUALITY_LEVEL.values();
     QUALITY_LEVEL[] qualityLevels;
     MATERIAL[] materials;
-    private boolean basic;
+    private final boolean basic;
     private boolean preGenerate;
 
     public ItemGenerator(boolean basic) {
@@ -642,7 +643,7 @@ public class ItemGenerator implements GenericItemGenerator {
     }
 
     public static boolean isJewelryOn() {
-        return jewelryGenerated || !CoreEngine.isFastMode();
+        return jewelryGenerated || !Flags.isFastMode();
     }
 
     public static ObjType generateItem_(QUALITY_LEVEL quality, MATERIAL material, ObjType type) {

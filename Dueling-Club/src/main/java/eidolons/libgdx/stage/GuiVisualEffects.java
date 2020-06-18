@@ -24,7 +24,7 @@ import main.system.GuiEventManager;
 import main.system.MapEvent;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +43,7 @@ public class GuiVisualEffects extends GroupX {
         GuiVisualEffects.off = off;
     }
 
+    //TODO gdx revamp
     public GuiVisualEffects() {
         if (isVignetteOn()) {
             addActor(vignette =
@@ -69,9 +70,8 @@ public class GuiVisualEffects extends GroupX {
         if ( off) {
             return;
         }
-        if (!CoreEngine.isDebugLaunch())
         if (HqPanel.getActiveInstance()!= null) {
-            return; //TODO igg demo fix
+            return;
         }
         super.draw(batch, parentAlpha);
         if (batch instanceof CustomSpriteBatch) {
@@ -283,7 +283,7 @@ public class GuiVisualEffects extends GroupX {
     }
 
     public void resetZIndices() {
-        if (CoreEngine.isMapEditor())
+        if (Flags.isMapEditor())
             return;
         lightLayer.setZIndex(0);
         vignette.setZIndex(0);

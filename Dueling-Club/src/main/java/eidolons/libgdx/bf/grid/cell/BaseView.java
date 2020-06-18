@@ -26,7 +26,7 @@ import main.content.CONTENT_CONSTS;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.PathUtils;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.List;
 
@@ -177,7 +177,7 @@ public class BaseView extends SuperActor  implements Hoverable, Borderable {
         if (path.contains("units")) {
             type = "units";
         }
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
             FileHandle handle=new FileHandle(PathFinder.getImagePath() + "unitview/" +
                     type +
                     "/" +

@@ -37,7 +37,7 @@ import main.system.auxiliary.secondary.Bools;
 import main.system.datatypes.WeightMap;
 import main.system.graphics.FontMaster.FONT;
 import main.system.graphics.MigMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -223,7 +223,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
 
                 } else if (exit_continue_next) {
 
-                    if (CoreEngine.isMacro()) {
+                    if (Flags.isMacro()) {
                         GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
                     } else {
                         Eidolons.exitFromGame();

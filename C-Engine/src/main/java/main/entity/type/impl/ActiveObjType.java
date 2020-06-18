@@ -1,8 +1,9 @@
-package main.entity.type;
+package main.entity.type.impl;
 
 import main.elements.costs.Costs;
 import main.entity.obj.Active;
 import main.entity.obj.Obj;
+import main.entity.type.ObjType;
 
 public abstract class ActiveObjType extends ObjType implements Active {
 

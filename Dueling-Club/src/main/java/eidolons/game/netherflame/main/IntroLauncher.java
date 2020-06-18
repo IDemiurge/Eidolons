@@ -10,17 +10,18 @@ import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 
 public class IntroLauncher {
 
 
     public static boolean INTRO_RUNNING = false;
-    private static String splitter = ";";
+    private static final String splitter = ";";
 
     public static void start(Runnable onDone) {
         new Thread(() -> {
-            CoreEngine.setIggDemoRunning(true);
+            Flags.setIggDemoRunning(true);
             if (isIntroSkipped()) {
                 onDone.run();
                 return;
@@ -39,7 +40,7 @@ public class IntroLauncher {
         if (CoreEngine.uploadPackage== CoreEngine.UPLOAD_PACKAGE.Aphotic){
             return true;
         }
-        if (CoreEngine.isJar()) {
+        if (Flags.isJar()) {
             return OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.INTRO_OFF);
         }
         return false;

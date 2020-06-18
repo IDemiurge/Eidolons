@@ -33,7 +33,7 @@ import eidolons.system.audio.MusicMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -358,7 +358,7 @@ public class DungeonScreen extends GameScreenWithTown {
         if (canShowScreen()) {  //town is considered 'loading phase' still
             return GdxMaster.getMultiplexer(guiStage, controller, gridStage);
         } else {
-            if (TownPanel.getActiveInstance() != null || CoreEngine.isIggDemoRunning() || selectionPanel instanceof HeroSelectionPanel) {
+            if (TownPanel.getActiveInstance() != null || Flags.isIggDemoRunning() || selectionPanel instanceof HeroSelectionPanel) {
                 return GdxMaster.getMultiplexer(guiStage, super.createInputController());
             } else {
                 return super.createInputController()                        ;
