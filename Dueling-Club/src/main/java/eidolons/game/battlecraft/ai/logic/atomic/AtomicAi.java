@@ -44,7 +44,6 @@ import main.system.math.PositionMaster;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AtomicAi extends AiHandler {
 
@@ -218,11 +217,11 @@ public class AtomicAi extends AiHandler {
         //TODO new stacking rule ai
         Coordinates c = getUnit().getCoordinates().getAdjacentCoordinate(facing.getDirection());
         for (BattleFieldObject object : getGame().getObjectsOnCoordinateNoOverlaying(c)) {
-            if (object.getOwner()==(getUnit().getOwner())) {
+            if (object.getOwner() == (getUnit().getOwner())) {
                 return Positioner.adjustCoordinate(ai.getUnit(), c, ai.getUnit().getFacing());
             }
         }
-        if (new StackingRule(game).canBeMovedOnto(getUnit(), c)){
+        if (new StackingRule(game).canBeMovedOnto(getUnit(), c)) {
             return c;
         }
         return Positioner.adjustCoordinate(ai.getUnit(), c, ai.getUnit().getFacing());
@@ -287,8 +286,8 @@ public class AtomicAi extends AiHandler {
         if (action == null) {
             try {
                 action = DC_MovementManager.getFirstAction(unit, pick);
-//                main.system.auxiliary.log.LogMaster.log(1, " ATOMIC ACTION " + action +
-//                 "  CHOSEN TO GET TO " + pick);
+                //                main.system.auxiliary.log.LogMaster.log(1, " ATOMIC ACTION " + action +
+                //                 "  CHOSEN TO GET TO " + pick);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 //TODO what to return???
@@ -303,20 +302,20 @@ public class AtomicAi extends AiHandler {
 
     private int getCellPriorityMod(Coordinates c, UnitAI ai) {
         int mod = 100;
-//        if (FacingMaster
-//                .getSingleFacing(ai.getUnit().getFacing(), ai.getUnit().getCoordinates(), c) == UnitEnums.FACING_SINGLE.IN_FRONT) {
-//            mod += 35;
-//        }
-//        if (FacingMaster
-//                .getSingleFacing(ai.getUnit().getFacing(), ai.getUnit().getCoordinates(), c) == UnitEnums.FACING_SINGLE.BEHIND) {
-//            mod += -50;
-//        }
-//        if (PositionMaster.inLine(ai.getUnit().getCoordinates(), c)) {
-//            if (ai.getType() == AiEnums.AI_TYPE.BRUTE) {
-//                mod += 25;
-//            }
-//            mod += 35;
-//        }
+        //        if (FacingMaster
+        //                .getSingleFacing(ai.getUnit().getFacing(), ai.getUnit().getCoordinates(), c) == UnitEnums.FACING_SINGLE.IN_FRONT) {
+        //            mod += 35;
+        //        }
+        //        if (FacingMaster
+        //                .getSingleFacing(ai.getUnit().getFacing(), ai.getUnit().getCoordinates(), c) == UnitEnums.FACING_SINGLE.BEHIND) {
+        //            mod += -50;
+        //        }
+        //        if (PositionMaster.inLine(ai.getUnit().getCoordinates(), c)) {
+        //            if (ai.getType() == AiEnums.AI_TYPE.BRUTE) {
+        //                mod += 25;
+        //            }
+        //            mod += 35;
+        //        }
         return mod;
     }
 
@@ -348,8 +347,9 @@ public class AtomicAi extends AiHandler {
     public boolean checkAtomicActionCaseAny(UnitAI ai) {
         boolean canAttack = getSituationAnalyzer().canAttackNow(ai);
         for (ATOMIC_LOGIC_CASE C : ATOMIC_LOGIC_CASE.values()) {
-            if (C != ATOMIC_LOGIC_CASE.PREPARE)
-                if (canAttack)
+            if (canAttack)
+                if (C != ATOMIC_LOGIC_CASE.PREPARE)
+                    //if can attack immediately, ATOMIC can only be used to force REST/..
                     continue;
             try {
                 if (checkAtomicActionCase(C, ai)) {
@@ -386,9 +386,9 @@ public class AtomicAi extends AiHandler {
         boolean result = false;
         if (!ai.getType().isCaster()
         ) {
-//          FacingMaster.getOptimalFacingTowardsUnits()
+            //          FacingMaster.getOptimalFacingTowardsUnits()
             BattleFieldObject enemy = getAnalyzer().getClosestEnemy(ai.getUnit());
-//            for (BattleFieldObject enemy : Analyzer.getVisibleEnemies(ai))
+            //            for (BattleFieldObject enemy : Analyzer.getVisibleEnemies(ai))
             FACING_DIRECTION facing = ai.getUnit().getFacing();
             FACING_SINGLE relative = FacingMaster.getSingleFacing(facing, ai.getUnit(), enemy);
             if (relative == FACING_SINGLE.BEHIND) {
@@ -432,8 +432,8 @@ public class AtomicAi extends AiHandler {
                     return true;
             }
         }
-//        if (ai.isMinion())
-//            return false;
+        //        if (ai.isMinion())
+        //            return false;
 
         if (!Analyzer.getAdjacentEnemies(getUnit(), false).isEmpty())
             return false;
@@ -446,10 +446,10 @@ public class AtomicAi extends AiHandler {
             dst *= 1.25f;
         if (v != VisionEnums.UNIT_VISION.IN_PLAIN_SIGHT) if (v != VisionEnums.UNIT_VISION.IN_SIGHT) {
             if (PositionMaster.getExactDistance(ai.getUnit(), Eidolons.getMainHero()) > dst) {
-//           TODO      game.getVisionMaster().getVisionController().getPlayerVisionMapper().getVar(ai.getUnit().getOwner(),
-//                        Eidolons.getMainHero());
-//                game.getVisionMaster().getVisionController().getDetectionMapper().getVar(ai.getUnit().getOwner(),
-//                        Eidolons.getMainHero());
+                //           TODO      game.getVisionMaster().getVisionController().getPlayerVisionMapper().getVar(ai.getUnit().getOwner(),
+                //                        Eidolons.getMainHero());
+                //                game.getVisionMaster().getVisionController().getDetectionMapper().getVar(ai.getUnit().getOwner(),
+                //                        Eidolons.getMainHero());
                 return true;
             }
         }
@@ -480,24 +480,14 @@ public class AtomicAi extends AiHandler {
                             .getOrCreateAttackActions(), PARAMS.RANGE).getIntParam(PARAMS.RANGE);
         }
         int maxDistance = getConstInt(AiConst.ATOMIC_APPROACH_DEFAULT_DISTANCE);
-//if only one enemy
-        // if unit is weak
-
-//        if (!ai.getUnit().getActionMap().getVar(ACTION_TYPE.SPECIAL_MOVE).isEmpty()) {
-//            maxDistance--;
-//        }
-//
-//        if (ai.checkMod(AI_MODIFIERS.TRUE_BRUTE)) {
-//            maxDistance++;
-//        }
-//        if (ai.getType() == AI_TYPE.BRUTE) {
-//            maxDistance++;
-//        }
 
         return maxDistance;
     }
 
+    //Check if the unit is close enough to JUST GO IN
     public boolean checkAtomicActionApproach(UnitAI ai) {
+        if (ai.getType()== AI_TYPE.SNEAK )
+                return false; //AI Review
         if (ai.getCurrentOrder() != null)
             if (ai.getCurrentOrder().getStrictPriority() != ORDER_PRIORITY_MODS.ATTACK
                     && ai.getCurrentOrder().getStrictPriority() != ORDER_PRIORITY_MODS.APPROACH)
@@ -514,16 +504,13 @@ public class AtomicAi extends AiHandler {
         if (minDistance < 0) {
             return false;
         }
-
-        minDistance -= new Float(Analyzer.getVisibleEnemies(ai).size()) / 2;
-        minDistance += new Float(ai.getGroup().getMembers().size()) / 2;
-
-        Double average = ai.getGroup().getMembers().stream().collect(
-                Collectors.averagingInt((t) -> t.getIntParam(PARAMS.POWER)));
-        Integer p = ai.getUnit().getIntParam(PARAMS.POWER);
-        minDistance -= p / average;
-        minDistance += average / p;
-
+        // minDistance -= new Float(Analyzer.getVisibleEnemies(ai).size()) / 2;
+        // minDistance += new Float(ai.getGroup().getMembers().size()) / 2;
+        // Double average = ai.getGroup().getMembers().stream().collect(
+        //         Collectors.averagingInt((t) -> t.getIntParam(PARAMS.POWER)));
+        // Integer p = ai.getUnit().getIntParam(PARAMS.POWER);
+        // minDistance -= p / average;
+        // minDistance += average / p;
 
         return minDistance > maxDistance;
     }

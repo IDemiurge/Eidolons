@@ -309,7 +309,9 @@ public abstract class DataModel {
     }
 
     public Integer getIntParam(PARAMETER param, boolean base) {
-
+        if (param == null) {
+            return 0;
+        }
         Integer result = null;
         if (integerCacheOn) {
             if (base)

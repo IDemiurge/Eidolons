@@ -7,7 +7,6 @@ import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
@@ -626,7 +625,6 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     public static void playDamageSound(GenericEnums.DAMAGE_TYPE damageType) {
-       if (!EidolonsGame.DUEL)
          playRandomSoundVariant(PathFinder.getSoundsetsPath() + "damage/" + damageType.getName(), true);
     }
 

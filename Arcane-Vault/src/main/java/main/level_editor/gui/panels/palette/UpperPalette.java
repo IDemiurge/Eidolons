@@ -47,7 +47,7 @@ public class UpperPalette extends TablePanelX {
 
         Group tableContainer= container;
         if (isScrolled(value)) {
-            tableContainer = new ScrollPaneX(container);
+            tableContainer = new ScrollPaneX(table);
         }
         add(split = new VisSplitPane(tableContainer, treeScroll, false, style)).fill().size(650, 750);
         container.setBackground(NinePatchFactory.getLightPanelFilledDrawable());

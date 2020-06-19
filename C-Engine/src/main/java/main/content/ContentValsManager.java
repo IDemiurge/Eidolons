@@ -1,17 +1,17 @@
 package main.content;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.values.G_ValueInitializer;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.Param;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
-import main.data.ConcurrentMap;
 import main.data.xml.XML_Reader;
 import main.entity.Entity;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -40,72 +40,65 @@ public class ContentValsManager {
     public static final String RESTORATION = "_RESTORATION";
     private static final String MASTERY = "_MASTERY";
     private static final boolean LOWER_CASE_CACHED = true;
-    private static Map<String, List<String>> valueNamesMap = new ConcurrentMap<>();
+    private static final ObjectMap<String, List<String>> valueNamesMap = new ObjectMap<>();
 
-    private static Map<String, List<String>> valueNamesMapAV = new ConcurrentMap<>();
+    private static final ObjectMap<String, List<String>> valueNamesMapAV = new ObjectMap<>();
 
     private static List<PROPERTY> props;
     private static List<PARAMETER> params;
     private static List<String> sprops;
     private static List<String> sparams;
-    private static final Map<String, List<String>> spropListsMap = new ConcurrentMap<>(
+    private static final ObjectMap<String, List<String>> spropListsMap = new ObjectMap<>(
             400, 0.75f);
-    private static final Map<String, List<String>> sparamListsMap = new ConcurrentMap<>(
+    private static final ObjectMap<String, List<String>> sparamListsMap = new ObjectMap<>(
             400, 0.75f);
 
-    private static final Map<String, List<String>> spropListsMapAV = new ConcurrentMap<>();
-    private static final Map<String, List<String>> sparamListsMapAV = new ConcurrentMap<>();
+    private static final ObjectMap<String, List<String>> spropListsMapAV = new ObjectMap<>();
+    private static final ObjectMap<String, List<String>> sparamListsMapAV = new ObjectMap<>();
 
-    private static final Map<String, List<PROPERTY>> propListsMap = new ConcurrentMap<>(
+    private static final ObjectMap<String, List<PROPERTY>> propListsMap = new ObjectMap<>(
             400, 0.75f);
-    private static final Map<String, List<PARAMETER>> paramListsMap = new ConcurrentMap<>(400, 0.75f);
-    private static final Map<String, List<VALUE>> valueListsMap = new ConcurrentMap<>();
-    private static final Map<String, List<VALUE>> valueListsMapAV = new ConcurrentMap<>();
+    private static final ObjectMap<String, List<PARAMETER>> paramListsMap = new ObjectMap<>(400, 0.75f);
+    private static final ObjectMap<String, List<VALUE>> valueListsMap = new ObjectMap<>();
+    private static final ObjectMap<String, List<VALUE>> valueListsMapAV = new ObjectMap<>();
 
-    private static final Map<String, List<PROPERTY>> propListsMapAV = new ConcurrentMap<>();
-    private static final Map<String, List<PARAMETER>> paramListsMapAV = new ConcurrentMap<>();
+    private static final ObjectMap<String, List<PROPERTY>> propListsMapAV = new ObjectMap<>();
+    private static final ObjectMap<String, List<PARAMETER>> paramListsMapAV = new ObjectMap<>();
 
-    private static final List<VALUE> lowPriorityValues = new ArrayList<>();
-
-    private static final List<String> highPriorityValues = new ArrayList<>();
-    private static final List<VALUE> superLowPriorityValues = new ArrayList<>();
     private static final List<PARAMETER> attributes = new ArrayList<>();
     private static final List<PARAMETER> masteries = new ArrayList<>();
     private static final List<PARAMETER> masteryScores = new ArrayList<>();
 
-    private static Map<String, List<VALUE>> AV_IgnoredValues;
-    private static List<PARAMETER> unitParameters;
-    private static ArrayList<PARAMETER> filteredUnitParameters;
-    private static ArrayList<PARAMETER> charParameters;
-    private static ArrayList<PARAMETER> filteredCharParameters;
+    private static ObjectMap<String, List<VALUE>> AV_IgnoredValues;
     private static ArrayList<PARAMETER> perLevelParams = new ArrayList<>();
     private static Class<?>[] propEnumClasses;
     private static Class<?>[] paramEnumClasses;
     private static List<PARAMETER> finalAttributes;
-    private static Map<String, PARAMETER> paramCache;// = new ConcurrentMap<>();
-    private static Map<String, PROPERTY> propCache;// = new ConcurrentMap<>();
+    private static ObjectMap<String, PARAMETER> paramCache;// = new  ObjectMap<>();
+    private static ObjectMap<String, PROPERTY> propCache;// = new  ObjectMap<>();
     private static List<VALUE> values;
     private static Set<VALUE> excludedValueSet;
-    private static TypeMaster typeMaster;
     private static ContentValsManager instance;
-    private static final Map<PARAMETER, PARAMETER> currentCache = new HashMap<>();
-    private static final Map<PARAMETER, PARAMETER> regenCache = new HashMap<>();
-    private static final Map<PARAMETER, PARAMETER> percCache = new HashMap<>();
-    private Map<String, VALUE> commons;
-    private Map<String, Map<String, VALUE>> maps;
+    private static final ObjectMap<PARAMETER, PARAMETER> currentCache = new ObjectMap<>();
+    private static final ObjectMap<PARAMETER, PARAMETER> regenCache = new ObjectMap<>();
+    private static final ObjectMap<PARAMETER, PARAMETER> percCache = new ObjectMap<>();
 
     public ContentValsManager() {
         instance = this;
     }
 
-    public static void init(ArrayList<PROPERTY> propz, ArrayList<PARAMETER> paramz) {
+    static {
+        G_ValueInitializer.init();
+    }
 
+    public static void init(ArrayList<PROPERTY> propz, ArrayList<PARAMETER> paramz) {
+// Core Fix - Optimization fix - init objectMaps here with size!
         props = propz;
         params = paramz;
         sparams = new ArrayList<>(params.size());
         sprops = new ArrayList<>(props.size());
 
-        propCache = new HashMap<>(props.size() * 3 / 2);
+        propCache = new ObjectMap<>(props.size() * 3 / 2);
         for (PROPERTY p : props) {
             String name = p.getName();
             sprops.add(name);
@@ -116,7 +109,7 @@ public class ContentValsManager {
 
 
         }
-        paramCache = new HashMap<>(params.size() * 3 / 2);
+        paramCache = new ObjectMap<>(params.size() * 3 / 2);
         for (PARAMETER p : params) {
             String name = p.getName();
             sparams.add(name);
@@ -176,7 +169,7 @@ public class ContentValsManager {
     }
     //  TODO refactor?
     //  public static PARAMETER getParameterVersion(PARAMETER param, String versionId) {
-    //        Map<PARAMETER, PARAMETER> cache = getCache(versionId);
+    //        ObjectMap<PARAMETER, PARAMETER> cache = getCache(versionId);
     //    }
 
     public static PARAMETER getPercentageParam(PARAMETER param) {
@@ -224,67 +217,6 @@ public class ContentValsManager {
         return regenParam;
     }
 
-    public static PARAMETER getRandomUnitParameter() {
-        if (unitParameters == null || filteredUnitParameters == null) {
-            initUnitParams();
-        }
-        int i = RandomWizard.getRandomIntBetween(0, unitParameters.size());
-        return filteredUnitParameters.get(i);
-    }
-
-    public static PARAMETER getRandomCharParameter() {
-        if (charParameters == null || filteredCharParameters == null) {
-            initCharParams();
-        }
-        int i = RandomWizard.getRandomIntBetween(0, charParameters.size());
-        return filteredCharParameters.get(i);
-    }
-
-    private static void initCharParams() {
-        charParameters = new ArrayList<>(getParamList().size());
-        for (PARAMETER p : getParamList()) {
-            if (p.getEntityType().equals(DC_TYPE.CHARS.getName())) {
-                charParameters.add(p);
-                continue;
-            }
-            if (Arrays.asList(p.getEntityTypes()).contains((DC_TYPE.CHARS.getName()))) {
-                charParameters.add(p);
-            }
-        }
-
-        filteredCharParameters = new ArrayList<>(charParameters.size());
-        for (PARAMETER p : charParameters) {
-            if (!p.isDynamic()) {
-                if (!p.isLowPriority()) {
-                    filteredCharParameters.add(p);
-                }
-            }
-        }
-    }
-
-    private static void initUnitParams() {
-        unitParameters = new ArrayList<>(getParamList().size());
-        for (PARAMETER p : getParamList()) {
-            if (p.getEntityType().equals(DC_TYPE.UNITS.getName())) {
-                unitParameters.add(p);
-                continue;
-            }
-            if (Arrays.asList(p.getEntityTypes()).contains((DC_TYPE.UNITS.getName()))) {
-                unitParameters.add(p);
-            }
-        }
-
-        filteredUnitParameters = new ArrayList<>(unitParameters.size());
-        for (PARAMETER p : unitParameters) {
-            if (!p.isDynamic()) {
-                if (!p.isLowPriority()) {
-                    filteredUnitParameters.add(p);
-                }
-            }
-        }
-    }
-
-
     public static PARAMETER getPARAM(String valueName) {
         if (StringMaster.isEmpty(valueName)) {
             return null;
@@ -292,9 +224,6 @@ public class ContentValsManager {
         if (LOWER_CASE_CACHED)
             valueName = valueName.toLowerCase();
         PARAMETER param = paramCache.get(valueName);
-//        if (param == G_PARAMS.EMPTY_PARAMETER) {
-//            return null;
-//        }
 
         if (param != null) {
             return param;
@@ -702,12 +631,7 @@ public class ContentValsManager {
         }
         valueNames = new ArrayList<>();
         appendLast(valueNames, getParamNames(objType, !av));
-        // appendLast(valueNames, masteries);
-        // appendFirst(valueNames, attributes);
         appendFirst(valueNames, getPropNames(objType, !av));
-        // appendFirst(valueNames, highPriorityValues);
-        appendLast(valueNames, lowPriorityValues, objType);
-        appendLast(valueNames, superLowPriorityValues, objType);
         if (av) {
             if (getAV_IgnoredValues() != null) {
                 if (getAV_IgnoredValues().get(objType) != null) {
@@ -759,11 +683,11 @@ public class ContentValsManager {
         return DEFAULT_EMPTY_VALUE;
     }
 
-    public static Map<String, List<VALUE>> getAV_IgnoredValues() {
+    public static ObjectMap<String, List<VALUE>> getAV_IgnoredValues() {
         return AV_IgnoredValues;
     }
 
-    public static void setAV_IgnoredValues(Map<String, List<VALUE>> aV_IgnoredValues) {
+    public static void setAV_IgnoredValues(ObjectMap<String, List<VALUE>> aV_IgnoredValues) {
         AV_IgnoredValues = aV_IgnoredValues;
     }
 
@@ -799,15 +723,7 @@ public class ContentValsManager {
         return findMastery(type.getProperty(G_PROPS.SPELL_GROUP));
     }
 
-    public static PARAMETER getSpellMasteryScoreForSpell(Entity type) {
-        return getMasteryScore(type.getProperty(G_PROPS.SPELL_GROUP));
-    }
-
     public static OBJ_TYPE getOBJ_TYPE(String typeName) {
-        if (typeMaster != null) {
-            return typeMaster.getOBJ_TYPE(typeName);
-        }
-
         OBJ_TYPE type = null;
 
         type = DC_TYPE.getType(typeName);
@@ -829,14 +745,6 @@ public class ContentValsManager {
         return type;
     }
 
-    public static TypeMaster getTypeMaster() {
-        return typeMaster;
-    }
-
-    public static void setTypeMaster(TypeMaster typeMaster) {
-        ContentValsManager.typeMaster = typeMaster;
-    }
-
     public static int getTypeCode(String typeName) {
 
         return getOBJ_TYPE(typeName).getCode();
@@ -846,20 +754,12 @@ public class ContentValsManager {
         return getOBJ_TYPE(tabName).getImage();
     }
 
-    public static Map<String, List<String>> getValueNamesMap() {
+    public static ObjectMap<String, List<String>> getValueNamesMap() {
         return valueNamesMap;
     }
 
-    public static void setValueNamesMap(Map<String, List<String>> valueNamesMap) {
-        ContentValsManager.valueNamesMap = valueNamesMap;
-    }
-
-    public static Map<String, List<String>> getValueNamesMapAV() {
+    public static ObjectMap<String, List<String>> getValueNamesMapAV() {
         return valueNamesMapAV;
-    }
-
-    public static void setValueNamesMapAV(Map<String, List<String>> valueNamesMapAV) {
-        ContentValsManager.valueNamesMapAV = valueNamesMapAV;
     }
 
     public static PARAMETER getPerLevelValue(String string) {
@@ -871,13 +771,13 @@ public class ContentValsManager {
         if (TYPE == null)
             return false;
         if (p.getEntityType() != null)
-        if (p.getEntityType().equalsIgnoreCase("all")) {
-            if (instance == null) {
-                return true;
+            if (p.getEntityType().equalsIgnoreCase("all")) {
+                if (instance == null) {
+                    return true;
+                }
+                return instance.checkAllApplies(p, TYPE);
             }
-            return instance.checkAllApplies(p, TYPE);
-        }
-        Boolean override =getInstance().getValueForTypeOverride(TYPE, p);
+        Boolean override = getInstance().getValueForTypeOverride(TYPE, p);
         if (override != null) {
             return override;
         }
@@ -990,18 +890,6 @@ public class ContentValsManager {
 
     public static void setExcludedValueSet(Set<VALUE> set) {
         excludedValueSet = set;
-    }
-
-    public static boolean isBase(PARAMETER param) {
-        return param.name().startsWith(StringMaster.BASE);
-    }
-
-    public static String getMasteryGroup(PARAMETER mastery) {
-        return getMasteryGroup(mastery, "");
-    }
-
-    public static String getFormattedValue(VALUE v, String value) {
-        return instance.getFormattedVal(v, value);
     }
 
     public static String getMasteryGroup(PARAMETER mastery, String masteryGroup) {

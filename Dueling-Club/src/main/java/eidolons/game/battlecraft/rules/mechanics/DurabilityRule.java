@@ -7,8 +7,8 @@ import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import main.ability.effects.Effects;
 import main.ability.effects.container.ConditionalEffect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
@@ -127,7 +127,7 @@ public class DurabilityRule extends DC_RuleImpl {
     public static int damageDealt(int blocked, DC_HeroSlotItem armorObj, boolean spell,
                                   DAMAGE_TYPE damage_type, DC_WeaponObj weapon, int damage,
                                   BattleFieldObject target) {
-        if (!RuleKeeper.isRuleOn(RULE.DURABILITY))
+        if (!RuleKeeper.isRuleOn(RuleEnums.RULE.DURABILITY))
             return 0;
         if (!checkDamageType(damage_type))
             return 0;

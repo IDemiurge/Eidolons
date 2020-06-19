@@ -16,7 +16,6 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.netherflame.main.IntroLauncher;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.particles.ambi.Ambience;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.VFX_TEMPLATE;
 import eidolons.libgdx.particles.ambi.ParticleManager;
@@ -29,7 +28,6 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.TimeMaster;
 import main.system.datatypes.WeightMap;
-import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 
@@ -81,13 +79,14 @@ public class LoadingStage extends Stage {
         if (fogOn)
             addFog();
 
-        if (ScenarioLauncher.running) {
-            missionName = new Label(data.getName()
-                    , StyleHolder.getSizedLabelStyle(FONT.AVQ, 24));
-            missionName.setPosition(GdxMaster.centerWidth(missionName),
-                    GdxMaster.getTopY(missionName));
-            addActor(missionName);
-        }
+        //Tester Check loading screen is important..
+        // if (ScenarioLauncher.running) {
+        //     missionName = new Label(data.getName()
+        //             , StyleHolder.getSizedLabelStyle(FONT.AVQ, 24));
+        //     missionName.setPosition(GdxMaster.centerWidth(missionName),
+        //             GdxMaster.getTopY(missionName));
+        //     addActor(missionName);
+        // }
     }
 
     protected String getBackgroundImagePath() {

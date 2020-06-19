@@ -74,8 +74,6 @@ public interface PriorityManager {
 
     int getStealthPriority(Action action);
 
-    int getDangerFactorByMemory(Unit unit2); //TODO
-
     int getZoneSpellPriority(Action action, boolean damage);
 
     int getSearchPriority(ActionSequence as);

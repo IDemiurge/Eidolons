@@ -5,8 +5,8 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
@@ -29,7 +29,7 @@ public class CleaveRule {
     private Integer jumpsRemaining;
     private DC_ActiveObj action;
     private Attack attack;
-    private DC_Game game;
+    private final DC_Game game;
 
     // can I make it work as a ChainRule as well? Perhaps extend...
     // Slashing Criticals should add Cleave params and dmg_type upon crit!
@@ -48,7 +48,7 @@ public class CleaveRule {
     }
 
     public void apply(Ref ref, Attack attack) {
-        if (!RuleKeeper.isRuleOn(RULE.CLEAVE)) {
+        if (!RuleKeeper.isRuleOn(RuleEnums.RULE.CLEAVE)) {
             return;
         }
         this.attack = attack;

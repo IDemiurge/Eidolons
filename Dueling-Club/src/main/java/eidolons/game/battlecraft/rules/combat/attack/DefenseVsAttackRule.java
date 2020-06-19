@@ -4,8 +4,9 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleEnums;
+import eidolons.game.battlecraft.rules.RuleEnums.RULE;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.perk.FlyingRule;
 import eidolons.game.core.EUtils;
@@ -212,7 +213,7 @@ public class DefenseVsAttackRule {
 
         chance = Math.min(100, chance);
         if (action.getGame().getCombatMaster().isChancesOff()) {
-            RULE rule = (critOrDodge) ? RULE.CRITICAL_ATTACK : RULE.DODGE;
+            RULE rule = (critOrDodge) ? RuleEnums.RULE.CRITICAL_ATTACK : RuleEnums.RULE.DODGE;
             if (RuleKeeper.isRuleTestOn(rule) || chance > 50)
                 chance = 100;
             else chance = 0;

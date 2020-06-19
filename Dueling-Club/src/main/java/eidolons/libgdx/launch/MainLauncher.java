@@ -9,7 +9,6 @@ import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.test.TestMasterContent;
 import main.data.filesys.PathFinder;
-import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
@@ -29,27 +28,6 @@ public class MainLauncher extends GenericLauncher {
     public static String BG;
     private static final String LAST_CHOICE_FILE = "xml/last dc.xml";
     public static Integer HERO_INDEX = -1;
-    private static final String FOOTAGE_SEQUENCE =
-                    "ready/ship.xml;" +
-                    "ready/graveyard.xml;" +
-                    "ready/wood.xml;" +
-                    "crawl/cavern.xml;" +
-                    "crawl/Guild Dungeon.xml;" +
-                    "crawl/hell.xml;" +
-                    "crawl/Underdark.xml;" +
-                    "ready/dark castle.xml;" +
-                    "ready/the fortress.xml;" +
-                    "crawl/Ancient Ruins.xml;" +
-                    "crawl/Ravenguard Dungeon.xml;" +
-                    "crawl/Dwarven Halls.xml;" +
-                    "ready/ravenguard sanctum.xml;" +
-
-                    "ready/spire.xml;" +
-                    "ready/mix.xml;" +
-                    "footage/demon circle.xml;" +
-                    "footage/serpentium.xml;" +
-                    "levels/underworld.xml;" +
-                    "modules/bastion.xml;";
     public static String levelPath;
     private static Stack<String> lastChoiceStack;
     public static boolean presetNumbersOn;
@@ -65,10 +43,6 @@ public class MainLauncher extends GenericLauncher {
         Flags.setIggDemo(true);
         Flags.setMainGame(true);
         Flags.setDialogueTest(true);
-//        EidolonsGame.BRIDGE = true;
-//        CoreEngine.setGraphicTestMode(args.length > 0);
-//        CoreEngine.setActiveTestMode(args.length > 0);
-//        CoreEngine.setReverseExit(args.length > 0);
         if (args.length > 0) {
             PathFinder.init();
             if (args[0].contains("town")) {
@@ -77,20 +51,6 @@ public class MainLauncher extends GenericLauncher {
             CoreEngine.TEST_LAUNCH = args[0].contains(";test");
             Flags.setFastMode(CoreEngine.TEST_LAUNCH);
 
-            if (args[0].contains("selectfootage")) {
-                CoreEngine.swingOn = true;
-                CoreEngine.systemInit();
-//                int i = DialogMaster.inputInt(0);
-                String level = ListChooser.chooseString(ContainerUtils.openContainer(FOOTAGE_SEQUENCE));
-                args[0] = args[0] + ";" + level;
-
-//                int i = DialogMaster.optionChoice("", FOOTAGE_SEQUENCE.split(";"));
-//                if (i==-1) {
-//                    EidolonsGame.SELECT_SCENARIO=true;
-//                } else
-//                    args[0] = args[0] + "." + i;
-
-            }
             if (args[0].contains("selecthero")) {
                 HERO_INDEX = DialogMaster.inputInt(0);
                 if (HERO_INDEX == -1) {
@@ -187,10 +147,6 @@ public class MainLauncher extends GenericLauncher {
                             EidolonsGame.setVar(p[0], Boolean.valueOf(p[1]));
                         } else {
                             if (command.contains(".") || command.contains("::")) {
-                                if (command.length() < 3) {
-                                    command = FOOTAGE_SEQUENCE.split(";")
-                                            [Integer.valueOf(command.replace(".", ""))];
-                                }
                                 String replace = command.replace("_", " ");
                                 levelPath=replace;
                                 setCustomLaunch(new CustomLaunch(replace));

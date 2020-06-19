@@ -5,7 +5,8 @@ import eidolons.ability.conditions.special.AttackCondition;
 import eidolons.ability.conditions.special.RollCondition;
 import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
+import eidolons.game.battlecraft.rules.RuleEnums;
+import eidolons.game.battlecraft.rules.RuleEnums.RULE;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.InstantDeathEffect;
 import main.content.enums.GenericEnums;
@@ -24,7 +25,7 @@ public class TrampleRule extends DC_RuleImpl {
 
 
     protected RULE getRuleEnum() {
-        return RULE.TRAMPLE;
+        return RuleEnums.RULE.TRAMPLE;
     }
 
     @Override

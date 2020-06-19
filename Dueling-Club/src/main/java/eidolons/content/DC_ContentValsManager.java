@@ -1,5 +1,6 @@
 package eidolons.content;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.entity.Deity;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
@@ -37,9 +38,10 @@ import static main.content.enums.entity.HeroEnums.BACKGROUND.*;
 
 public class DC_ContentValsManager extends ContentValsManager {
 
-    private static Map<OBJ_TYPE, Set<VALUE>> overrideCache = new HashMap<>();
+    private static final ObjectMap<OBJ_TYPE, Set<VALUE>> overrideCache = new ObjectMap<>();
 
     static {
+        ValueInitializer.init();
         initCaches();
         Arrays.stream(PARAMS.values()).forEach(param -> {
             if (param.isDynamic()) {
@@ -433,9 +435,11 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     private static String getDefaultValueSpecial(Entity entity, VALUE v) {
-        if (v.getSpecialDefault(entity.getOBJ_TYPE_ENUM()) != null) {
-            return v.getSpecialDefault(entity.getOBJ_TYPE_ENUM()).toString();
-        }
+        // if (v.getSpecialDefault(entity.getOBJ_TYPE_ENUM()) != null) {
+        //     return v.getSpecialDefault(entity.getOBJ_TYPE_ENUM()).toString();
+        // }
+        // Core Review - this is too heavy and brutish, do we even need it really?
+
         return null;
     }
 

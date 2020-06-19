@@ -39,7 +39,7 @@ import main.system.launch.Flags;
 
 import java.util.List;
 
-import static eidolons.game.battlecraft.rules.RuleKeeper.RULE.SOULFORCE;
+import static eidolons.game.battlecraft.rules.RuleEnums.RULE.SOULFORCE;
 
 /**
  * Created by JustMe on 3/31/2017.

@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.rules;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.controls.Controller;
@@ -17,14 +16,14 @@ import java.util.Map;
 
 public class RuleKeeper implements Controller {
 
-    private static final RULE[] RULES_BEING_TESTED = {
+    private static final RuleEnums.RULE[] RULES_BEING_TESTED = {
 //            RULE.PARRYING,
 //            RULE.SHIELD,
     };
     static Map<Object, Boolean> overrideMap = new HashMap<>();
-    private static final Map<RULE, Boolean> map = new XLinkedMap<>();
-    private static final Map<RULE, Boolean> mapTest = new XLinkedMap<>();
-    private static RULE_SCOPE scope = RULE_SCOPE.BASIC;
+    private static final Map<RuleEnums.RULE, Boolean> map = new XLinkedMap<>();
+    private static final Map<RuleEnums.RULE, Boolean> mapTest = new XLinkedMap<>();
+    private static RuleEnums.RULE_SCOPE scope = RuleEnums.RULE_SCOPE.BASIC;
     private static RuleKeeper instance;
 
     private RuleKeeper() {
@@ -37,28 +36,28 @@ public class RuleKeeper implements Controller {
 
     public static void init() {
         try {
-            scope = new EnumMaster<RULE_SCOPE>().retrieveEnumConst(RULE_SCOPE.class,
+            scope = new EnumMaster<RuleEnums.RULE_SCOPE>().retrieveEnumConst(RuleEnums.RULE_SCOPE.class,
                     OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.RULES_SCOPE));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        for (RULE r : RULE.values()) {
+        for (RuleEnums.RULE r : RuleEnums.RULE.values()) {
             Boolean on = checkStatus(getScopeForRule(r));
             map.put(r, on);
-            if (getScope() == RULE_SCOPE.TEST) {
-                if (getScopeForRule(r) == RULE_SCOPE.TEST) {
+            if (getScope() == RuleEnums.RULE_SCOPE.TEST) {
+                if (getScopeForRule(r) == RuleEnums.RULE_SCOPE.TEST) {
                     mapTest.put(r, true);
                 }
             }
         }
         if (Flags.isIDE())
             if (Flags.isLiteLaunch())
-                for (RULE r : RULES_BEING_TESTED) {
+                for (RuleEnums.RULE r : RULES_BEING_TESTED) {
                     mapTest.put(r, true);
                 }
     }
 
-    private static Boolean checkStatus(RULE_SCOPE statusForRule) {
+    private static Boolean checkStatus(RuleEnums.RULE_SCOPE statusForRule) {
         switch (statusForRule) {
             case EIDOLON:
                 return true;
@@ -96,46 +95,46 @@ public class RuleKeeper implements Controller {
         return false;
     }
 
-    public static boolean checkRuleGroupIsOn(RULE_GROUP group) {
+    public static boolean checkRuleGroupIsOn(RuleEnums.RULE_GROUP group) {
         if (overrideMap.containsKey(group)) {
             return overrideMap.get(group);
         }
         return checkStatus(getScopeForRuleGroup(group));
     }
 
-    public static RULE_SCOPE getScopeForRuleGroup(RULE_GROUP r) {
+    public static RuleEnums.RULE_SCOPE getScopeForRuleGroup(RuleEnums.RULE_GROUP r) {
         switch (r) {
 //            case EXTRA_ATTACKS:
 //                return RULE_SCOPE.TEST;
         }
-        return RULE_SCOPE.BASIC;
+        return RuleEnums.RULE_SCOPE.BASIC;
     }
 
-    public static RULE_SCOPE getScopeForRule(RULE r) {
+    public static RuleEnums.RULE_SCOPE getScopeForRule(RuleEnums.RULE r) {
         if (r.scope != null) {
             return r.scope;
         }
         switch (r) {
             case INJURY:
-                return RULE_SCOPE.TEST;
+                return RuleEnums.RULE_SCOPE.TEST;
             case ATTACK_OF_OPPORTUNITY:
             case INSTANT_ATTACK:
             case FORCE:
-                return RULE_SCOPE.FULL;
+                return RuleEnums.RULE_SCOPE.FULL;
             case TRAMPLE:
-                return RULE_SCOPE.ADVANCED;
+                return RuleEnums.RULE_SCOPE.ADVANCED;
 
         }
-        return RULE_SCOPE.BASIC;
+        return RuleEnums.RULE_SCOPE.BASIC;
         // UNCONSCIOUS, FOCUS, MORALE, MORALE_KILL, STAMINA, WOUNDS, BLEEDING,
         // WEIGHT,
     }
 
-    public static void setRuleIsOn(Boolean on, RULE rule) {
+    public static void setRuleIsOn(Boolean on, RuleEnums.RULE rule) {
         map.put(rule, on);
     }
 
-    public static void setRuleTestIsOn(Boolean on, RULE rule) {
+    public static void setRuleTestIsOn(Boolean on, RuleEnums.RULE rule) {
         mapTest.put(rule, on);
     }
 
@@ -144,7 +143,7 @@ public class RuleKeeper implements Controller {
         return true;
     }
 
-    public static boolean isRuleOnInExploreMode(RULE rule) {
+    public static boolean isRuleOnInExploreMode(RuleEnums.RULE rule) {
         switch (rule) {
             case CHANNELING:
             case ATTACK_OF_OPPORTUNITY:
@@ -156,13 +155,13 @@ public class RuleKeeper implements Controller {
         return true;
     }
 
-    public static boolean isRuleTestOn(RULE rule) {
+    public static boolean isRuleTestOn(RuleEnums.RULE rule) {
         if (Eidolons.getGame().isDebugMode())
             return false;
         return Bools.isTrue(mapTest.get(rule));
     }
 
-    public static boolean isRuleOn(RULE rule) {
+    public static boolean isRuleOn(RuleEnums.RULE rule) {
         if (CoreEngine.TEST_LAUNCH){
             switch (rule) {
                 case DURABILITY:
@@ -181,7 +180,7 @@ public class RuleKeeper implements Controller {
 
     }
 
-    public static boolean checkFeature(FEATURE feature) {
+    public static boolean checkFeature(RuleEnums.FEATURE feature) {
         // if (hardFeatures.contains(feature))
         // return true;
         // if (featureLevel < feature.getFeatureLevel().getValue())
@@ -220,107 +219,11 @@ public class RuleKeeper implements Controller {
         return true;
     }
 
-    public static void applyCompensation(Unit unit) {
-
-    }
-
-    public static String getRuleLogText(TURN_RULES rule, int amount) {
-        switch (rule) {
-            case MORALE:
-                // if (amount > 0)
-                // return " regains " + amount + " Morale!";
-                // return " calms down, giving up " + amount + " Morale";
-                if (amount > 0) {
-                    return "'s Fright subsides, " + amount + " Morale regained!";
-                }
-                return "'s Inspiration subsides, Morale reduced by " + amount;
-            case FOCUS:
-                if (amount > 0) {
-                    return "'s Dizziness subsides, " + amount + " Focus regained!";
-                }
-                return "'s Sharpness subsides, Focus reduced by " + amount;
-
-            case BLEEDING:
-                if (amount != 0) {
-                    return " suffers " + amount + " damage from bleeding!";
-                }
-                return " is bleeding!";
-            case DISEASE:
-                if (amount != 0) {
-                    return " suffers " + amount + " damage from disease!";
-                }
-                return " is diseased!";
-            case POISON:
-                if (amount != 0) {
-                    return " suffers " + amount + " damage from poison!";
-                }
-                return " is poisoned!";
-            default:
-                break;
-
-        }
-        return null;
-
-    }
-
-    public static String getRuleLogText(COMBAT_RULES rule, int level) {
-        switch (rule) {
-            case FOCUS:
-                if (level == 2) {
-                    return "'s focus is razorsharp!";
-                }
-                if (level == 1) {
-                    return " is dizzy!";
-                }
-                if (level == 0) {
-                    return " is confused!";
-                }
-            case MORALE:
-                if (level == 2) {
-                    return " takes heart!";
-                }
-                if (level == 1) {
-                    return " loses heart!";
-                }
-                if (level == 0) {
-                    return " panics!";
-                }
-            case STAMINA:
-                if (level == 2) {
-                    return " is full of energy!";
-                }
-                if (level == 1) {
-                    return " is fatigued!";
-                }
-                if (level == 0) {
-                    return " is exhausted!";
-                }
-            case WEIGHT:
-                if (level == 1) {
-                    return " is encumbered!";
-                }
-                if (level == 0) {
-                    return " is overburdened!";
-                }
-            case WOUNDS:
-                if (level == 1) {
-                    return " is wounded!";
-                }
-                if (level == 0) {
-                    return " is critically wounded!";
-                }
-            default:
-                break;
-
-        }
-        return null;
-    }
-
-    public static RULE_SCOPE getScope() {
+    public static RuleEnums.RULE_SCOPE getScope() {
         return scope;
     }
 
-    public static void setScope(RULE_SCOPE scope) {
+    public static void setScope(RuleEnums.RULE_SCOPE scope) {
         RuleKeeper.scope = scope;
     }
 
@@ -340,7 +243,7 @@ public class RuleKeeper implements Controller {
     public boolean charTyped(char c) {
         switch (c) {
             case 's':
-                RULE_SCOPE scope = new EnumMaster<RULE_SCOPE>().selectEnum(RULE_SCOPE.class);
+                RuleEnums.RULE_SCOPE scope = new EnumMaster<RuleEnums.RULE_SCOPE>().selectEnum(RuleEnums.RULE_SCOPE.class);
                 if (scope != null) {
                     setScope(scope);
                 }
@@ -349,12 +252,12 @@ public class RuleKeeper implements Controller {
                 clearOverrides();
             case 'f':
             case 'n':
-                RULE rule = new EnumMaster<RULE>().selectEnum(RULE.class);
+                RuleEnums.RULE rule = new EnumMaster<RuleEnums.RULE>().selectEnum(RuleEnums.RULE.class);
                 setOverride(rule, c == 'n');
                 return true;
             case 'F':
             case 'N':
-                RULE_GROUP group = new EnumMaster<RULE_GROUP>().selectEnum(RULE_GROUP.class);
+                RuleEnums.RULE_GROUP group = new EnumMaster<RuleEnums.RULE_GROUP>().selectEnum(RuleEnums.RULE_GROUP.class);
                 setOverride(group, c == 'N');
                 return true;
         }
@@ -374,92 +277,5 @@ public class RuleKeeper implements Controller {
         return false;
     }
 
-    public enum COMBAT_RULES {
-        UNCONSCIOUS, FOCUS, MORALE, MORALE_KILL, STAMINA, WOUNDS, BLEEDING, WEIGHT,
-    }
-
-    public enum COUNTER_RULES {
-        BLEEDING, BLAZE, FREEZE, POISON, DISEASE,
-    }
-
-    public enum FEATURE {
-        USE_INVENTORY, WATCH, FLEE, DIVINATION, TOSS_ITEM, PICK_UP,
-        ENTER, DUAL_ATTACKS,
-        VISIBILITY, ORDERS, GUARD_MODE, THROW_WEAPON, TOGGLE_WEAPON_SET;
-        int featureLevel;
-    }
-
-    public enum GENERAL_RULES {
-
-    }
-
-    public enum RULE {
-        SOULFORCE(RULE_SCOPE.EIDOLON),
-        FORCE(RULE_SCOPE.BASIC),
-        CHANNELING(RULE_SCOPE.TEST),
-        ATTACK_OF_OPPORTUNITY(RULE_SCOPE.BASIC),
-        INSTANT_ATTACK(RULE_SCOPE.BASIC),
-        COUNTER_ATTACK(RULE_SCOPE.BASIC),
-        TIME(RULE_SCOPE.BASIC),
-        VISIBILITY(RULE_SCOPE.BASIC),
-        CLEAR_SHOT(RULE_SCOPE.BASIC),
-        PARRYING(RULE_SCOPE.BASIC),
-        SHIELD(RULE_SCOPE.BASIC),
-        STEALTH(RULE_SCOPE.BASIC),
-        // C
-        DURABILITY(RULE_SCOPE.BASIC),
-        UNCONSCIOUS(RULE_SCOPE.BASIC),
-        FOCUS(RULE_SCOPE.BASIC),
-        MORALE(RULE_SCOPE.BASIC),
-        MORALE_KILL(RULE_SCOPE.BASIC),
-        STAMINA(RULE_SCOPE.BASIC),
-        WOUNDS(RULE_SCOPE.BASIC),
-        BLEEDING(RULE_SCOPE.BASIC),
-        WEIGHT(RULE_SCOPE.BASIC),
-        INJURY(RULE_SCOPE.FULL),
-        CRITICAL_ATTACK(RULE_SCOPE.BASIC),
-        DODGE(), GUARD(), MISSED_ATTACK_REDIRECTION(RULE_SCOPE.BASIC),
-        TRAMPLE((RULE_SCOPE.ADVANCED)), WATCH(RULE_SCOPE.ADVANCED),
-        CLEAVE(RULE_SCOPE.BASIC), HEARING(RULE_SCOPE.FULL), INTENTS(RULE_SCOPE.ADVANCED);
-
-        String tooltip;
-        RULE_SCOPE scope;
-
-        RULE(RULE_SCOPE scope) {
-            this.scope = scope;
-        }
-
-        RULE() {
-//scope = RULE_SCOPE.BASIC; TODO
-        }
-
-        RULE(String tooltip) {
-            this.tooltip = tooltip;
-        }
-
-        public String getTooltip() {
-            return tooltip;
-        }
-
-        public void setTooltip(String tooltip) {
-            this.tooltip = tooltip;
-        }
-    }
-
-    public enum RULE_GROUP {
-        BUFF_RULES, PARAM_RULES, PARAM_BUFF_RULES, COUNTER_RULES, EXTRA_ATTACKS,
-    }
-
-    public enum RULE_SCOPE {
-        TEST, BASIC, FULL, ADVANCED, EIDOLON,
-    }
-
-    public enum SPELLCASTING_RULES {
-
-    }
-
-    public enum TURN_RULES {
-        BLEEDING, POISON, DISEASE, FOCUS, MORALE,
-    }
 
 }

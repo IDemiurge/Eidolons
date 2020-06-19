@@ -6,10 +6,9 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.VoidHandler;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.round.WaterRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
@@ -98,7 +97,7 @@ public class StackingRule implements ActionRule {
     }
 
     public static void actionMissed(DC_ActiveObj action) {
-        if (RuleKeeper.isRuleOn(RULE.MISSED_ATTACK_REDIRECTION))
+        if (RuleKeeper.isRuleOn(RuleEnums.RULE.MISSED_ATTACK_REDIRECTION))
             return;
         Ref ref = action.getRef();
         Obj target = ref.getTargetObj();
@@ -190,10 +189,6 @@ public class StackingRule implements ActionRule {
                 //                    units.addCast(!u.isDead() ? u.getType() : u);
             }
         }
-        if (!EidolonsGame.DUEL)
-            if (unit != null)
-                if (EntityCheckMaster.isImmaterial(unit))
-                    return true;
         if (unit == null) {
             // unit = DataManager.getType(HeroCreator.BASE_HERO, DC_TYPE.CHARS);
             // instead, just empty type with 0 girth!

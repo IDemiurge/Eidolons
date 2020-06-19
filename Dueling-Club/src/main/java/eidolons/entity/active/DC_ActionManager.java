@@ -7,8 +7,8 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.FEATURE;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.ExtraAttacksRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.Trap;
@@ -535,7 +535,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     protected boolean checkAddThrowAction(Unit unit, DC_WeaponObj weapon) {
-        if (!RuleKeeper.checkFeature(FEATURE.THROW_WEAPON))
+        if (!RuleKeeper.checkFeature(RuleEnums.FEATURE.THROW_WEAPON))
             return false;
         if (weapon == null) {
             return false;

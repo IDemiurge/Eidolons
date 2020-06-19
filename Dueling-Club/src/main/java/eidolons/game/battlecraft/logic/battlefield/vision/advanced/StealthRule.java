@@ -10,8 +10,8 @@ import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
@@ -245,7 +245,7 @@ public class StealthRule implements ActionRule {
 //    }
 
     private boolean isOn() {
-        return RuleKeeper.isRuleOn(RULE.STEALTH);
+        return RuleKeeper.isRuleOn(RuleEnums.RULE.STEALTH);
     }
 
     // ++ SEARCH ACTION!

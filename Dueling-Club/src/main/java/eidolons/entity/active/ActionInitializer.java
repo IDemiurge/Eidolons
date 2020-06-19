@@ -4,6 +4,7 @@ import eidolons.ability.ActionGenerator;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.battlecraft.rules.combat.attack.dual.DualAttackMaster;
@@ -96,7 +97,7 @@ public class ActionInitializer extends DC_ActionManager {
 
     public static boolean isActionNotBlocked(DC_ActiveObj activeObj, boolean exploreMode) {
         if (activeObj.getOwnerUnit() == Eidolons.getMainHero())
-            if (EidolonsGame.DUEL) {
+            if (EidolonsGame.TUTORIAL) {
                 if (EidolonsGame.TURNS_DISABLED)
                     if (activeObj.isTurn())
                         return false;
@@ -217,7 +218,7 @@ public class ActionInitializer extends DC_ActionManager {
             addOffhandActions(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK), unit);
         }
 
-        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.DUAL_ATTACKS))
+        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.DUAL_ATTACKS))
             if (UnitAnalyzer.checkDualWielding(unit)) {
                 try {
                     actives.addAll(DualAttackMaster.getDualAttacks(unit));
@@ -228,29 +229,29 @@ public class ActionInitializer extends DC_ActionManager {
                 // TODO should add all dual actions
             }
 
-        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.USE_INVENTORY)) {
+        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.USE_INVENTORY)) {
             if (unit.canUseItems()) {
                 actives.add(getOrCreateAction(ActionEnums.USE_INVENTORY, unit));
             }
         }
 
-        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.TOGGLE_WEAPON_SET)) {
+        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.TOGGLE_WEAPON_SET)) {
             if (unit.getReserveOffhandWeapon() != null ||
                     unit.getReserveMainWeapon() != null) {
                 actives.add(getOrCreateAction(ActionEnums.TOGGLE_WEAPON_SET, unit));
             }
         }
-        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.WATCH)) {
+        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.WATCH)) {
             actives.add(getOrCreateAction(ActionEnums.STD_SPEC_ACTIONS.Watch.name(), unit));
         }
 
 
-        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.FLEE)) {
+        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.FLEE)) {
             if (FleeRule.isFleeAllowed()) {
                 actives.add(getOrCreateAction(ActionEnums.FLEE, unit));
             }
         }
-        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.PICK_UP)) {
+        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.PICK_UP)) {
             try {
                 if (unit.getGame().getDroppedItemManager().checkHasItemsBeneath(unit)) {
                     actives.add(getOrCreateAction(ActionEnums.PICK_UP, unit));
@@ -259,12 +260,12 @@ public class ActionInitializer extends DC_ActionManager {
                 // main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.DIVINATION)) {
+        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.DIVINATION)) {
             if (unit.canDivine()) {
                 actives.add(getOrCreateAction(ActionEnums.DIVINATION, unit));
             }
         }
-        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.TOSS_ITEM)) {
+        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.TOSS_ITEM)) {
             if (ListMaster.isNotEmpty(unit.getQuickItems())) {
                 actives.add(getOrCreateAction(ActionEnums.TOSS_ITEM, unit));
             }
@@ -275,7 +276,7 @@ public class ActionInitializer extends DC_ActionManager {
 
         //  TODO condition?      if (unit.isHero())
 
-        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.GUARD_MODE))
+        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.GUARD_MODE))
             actives.add(getOrCreateAction(StringMaster.getWellFormattedString(
                     ActionEnums.STD_SPEC_ACTIONS.Guard_Mode.name()), unit));
 
@@ -324,7 +325,7 @@ public class ActionInitializer extends DC_ActionManager {
                 }
             }
 
-        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.ORDERS))
+        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.ORDERS))
             actives.addAll(getOrderActions(unit));
         // checkDual(unit);
         // checkInv(unit);

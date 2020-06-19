@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.misc.ChargeRule;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
@@ -184,7 +184,7 @@ public class GameLoop {
                 VisionHelper.refresh();
                 started = true;
             }
-            if (RuleKeeper.isRuleOn(RuleKeeper.RULE.INTENTS))
+            if (RuleKeeper.isRuleOn(RuleEnums.RULE.INTENTS))
                 try {
                     getGame().getAiManager().getActionManager().initIntents();
                 } catch (Exception e) {
@@ -341,7 +341,7 @@ public class GameLoop {
         if (aiAction == null)
             failed = true;
         else if (!aiAction.getActive().isChanneling())
-            if (!aiAction.getSource().isBoss() || EidolonsGame.DUEL || aiAction.isOrder()) //TODO boss fix
+            if ( aiAction.isOrder()) //TODO AI check
                 if (!aiAction.canBeTargeted()) {
                     {
                         LogMaster.log(1, "**************** AI CANNOT TARGET THE activatingAction!!! " + activatingAction);

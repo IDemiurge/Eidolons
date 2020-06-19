@@ -5,20 +5,18 @@ import com.badlogic.gdx.InputAdapter;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaDataManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.game.DC_GameObjMaster;
 import eidolons.game.core.state.DC_StateManager;
-import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.libgdx.launch.GenericLauncher;
-import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenMaster;
@@ -57,7 +55,6 @@ public class Eidolons {
 
     public static EidolonsGame mainGame;
 
-    private static String selectedMainHero;
     private static Unit mainHero;
     public static Unit MAIN_HERO;
     private static Party party;
@@ -85,27 +82,9 @@ public class Eidolons {
         return mainGame;
     }
 
-    //    public static void init(){
-    //
-    //    }
     public static DC_Game getGame() {
         return game;
     }
-
-    public static void initDemoMeta() {
-        initScenario(new ScenarioMetaMaster(ScenarioLauncher.DEFAULT));
-        CharacterCreator.setGame(getGame());
-        CharacterCreator.init();
-    }
-
-    public static String getSelectedMainHero() {
-        return selectedMainHero;
-    }
-
-    public static void setSelectedMainHero(String selectedMainHero) {
-        Eidolons.selectedMainHero = selectedMainHero;
-    }
-
 
     public static void setMainHero(Unit mainHero) {
         Eidolons.mainHero = mainHero;
@@ -236,7 +215,7 @@ public class Eidolons {
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
                 new ScreenData(SCREEN_TYPE.MAIN_MENU, "Loading..."));
 
-        ScenarioLauncher.missionIndex = 0;
+        ScenarioMetaDataManager.missionIndex = 0;
     }
 
     public static void activateMainHeroAction(String action) {

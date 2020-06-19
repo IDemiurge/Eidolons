@@ -6,13 +6,11 @@ import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
 import eidolons.system.text.DescriptionTooltips;
 import main.content.C_OBJ_TYPE;
-import main.content.DC_TYPE;
 import main.content.Metainfo;
 import main.content.OBJ_TYPE;
 import main.content.text.Descriptions;
 import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.StringMaster;
-import main.system.graphics.ColorManager;
 import main.system.math.MathMaster;
 
 import java.awt.*;
@@ -803,161 +801,7 @@ could have other params - sf discounts,
     , GRID_HEIGHT(null, "", false, 1, "boss")
     ;
 
-    static {
-        COUNTER_MOD.addSpecialDefault(DC_TYPE.ACTIONS, 75);
-        FOCUS_RECOVER_REQ.addSpecialDefault(DC_TYPE.UNITS, UnconsciousRule.DEFAULT_FOCUS_REQ_UNIT);
 
-        C_TOUGHNESS.setColor(ColorManager.TOUGHNESS);
-        C_ENDURANCE.setColor(ColorManager.ENDURANCE);
-        C_STAMINA.setColor(ColorManager.STAMINA);
-        C_FOCUS.setColor(ColorManager.FOCUS);
-        C_MORALE.setColor(ColorManager.MORALE);
-        C_ESSENCE.setColor(ColorManager.ESSENCE);
-        TOUGHNESS.setColor(ColorManager.TOUGHNESS);
-        ENDURANCE.setColor(ColorManager.ENDURANCE);
-        STAMINA.setColor(ColorManager.STAMINA);
-        FOCUS.setColor(ColorManager.FOCUS);
-        MORALE.setColor(ColorManager.MORALE);
-        ESSENCE.setColor(ColorManager.ESSENCE);
-
-        GLORY.setDynamic(true);
-        XP.setWriteToType(true);
-        GLORY.setWriteToType(true);
-        GOLD.setWriteToType(true);
-        ATTR_POINTS.setWriteToType(true);
-        MASTERY_POINTS.setWriteToType(true);
-        IDENTITY_POINTS.setWriteToType(true);
-
-        DC_TYPE.ARMOR.setParam(PARAMS.GOLD);
-        DC_TYPE.JEWELRY.setParam(PARAMS.GOLD);
-        DC_TYPE.ITEMS.setParam(PARAMS.GOLD);
-        DC_TYPE.WEAPONS.setParam(PARAMS.GOLD);
-        DC_TYPE.UNITS.setParam(PARAMS.GOLD);
-        DC_TYPE.SKILLS.setParam(PARAMS.XP);
-        DC_TYPE.SPELLS.setParam(PARAMS.XP);
-        DC_TYPE.CLASSES.setParam(PARAMS.XP);
-
-        LEVEL.setHighPriority(true);
-        CIRCLE.setHighPriority(true);
-        XP_COST.setHighPriority(true);
-
-        STAMINA_PENALTY.setSuperLowPriority(true);
-        FOCUS_PENALTY.setSuperLowPriority(true);
-        ESSENCE_PENALTY.setSuperLowPriority(true);
-        AP_PENALTY.setSuperLowPriority(true);
-
-        ENCHANTMENT_CAPACITY.setSuperLowPriority(true);
-        QUANTITY.setSuperLowPriority(true);
-        // RANGE.setSuperLowPriority(true);
-
-        STRENGTH.setAttr(true);
-        VITALITY.setAttr(true);
-        AGILITY.setAttr(true);
-        DEXTERITY.setAttr(true);
-
-        WILLPOWER.setAttr(true);
-        INTELLIGENCE.setAttr(true);
-        SPELLPOWER.setAttr(true);
-        KNOWLEDGE.setAttr(true);
-
-        WISDOM.setAttr(true);
-        CHARISMA.setAttr(true);
-
-        BASE_STRENGTH.setAttr(true);
-        BASE_VITALITY.setAttr(true);
-        BASE_AGILITY.setAttr(true);
-        BASE_DEXTERITY.setAttr(true);
-
-        BASE_WILLPOWER.setAttr(true);
-        BASE_INTELLIGENCE.setAttr(true);
-        BASE_SPELLPOWER.setAttr(true);
-        BASE_KNOWLEDGE.setAttr(true);
-
-        BASE_WISDOM.setAttr(true);
-        BASE_CHARISMA.setAttr(true);
-
-        // STRENGTH_PER_LEVEL.setLowPriority(true);
-        // VITALITY_PER_LEVEL.setLowPriority(true);
-        // AGILITY_PER_LEVEL.setLowPriority(true);
-        // DEXTERITY_PER_LEVEL.setLowPriority(true);
-        //
-        // WILLPOWER_PER_LEVEL.setLowPriority(true);
-        // INTELLIGENCE_PER_LEVEL.setLowPriority(true);
-        // SPELLPOWER_PER_LEVEL.setLowPriority(true);
-        // KNOWLEDGE_PER_LEVEL.setLowPriority(true);
-        //
-        // WISDOM_PER_LEVEL.setLowPriority(true);
-        // CHARISMA_PER_LEVEL.setLowPriority(true);
-
-        WATER_MASTERY.initMastery();
-        AIR_MASTERY.initMastery();
-        EARTH_MASTERY.initMastery();
-        FIRE_MASTERY.initMastery();
-        WARCRY_MASTERY.initMastery();
-        TACTICS_MASTERY.initMastery();
-        LEADERSHIP_MASTERY.initMastery();
-        MARKSMANSHIP_MASTERY.initMastery();
-        ITEM_MASTERY.initMastery();
-        SHADOW_MASTERY.initMastery();
-        WITCHERY_MASTERY.initMastery();
-
-        BENEDICTION_MASTERY.initMastery();
-        CELESTIAL_MASTERY.initMastery();
-
-        SORCERY_MASTERY.initMastery();
-        // ANTI_MAGIC_MASTERY.initMastery();
-        // TRANSMUTATION_MASTERY.initMastery();
-        CONJURATION_MASTERY.initMastery();
-
-        DEMONOLOGY_MASTERY.initMastery();
-
-        REDEMPTION_MASTERY.initMastery();
-        PSYCHIC_MASTERY.initMastery();
-        ENCHANTMENT_MASTERY.initMastery();
-        WARP_MASTERY.initMastery();
-        NECROMANCY_MASTERY.initMastery();
-        SAVAGE_MASTERY.initMastery();
-        DESTRUCTION_MASTERY.initMastery();
-
-        AFFLICTION_MASTERY.initMastery();
-        BLOOD_MAGIC_MASTERY.initMastery();
-
-        ELEMENTAL_MASTERY.initMastery();
-        SYLVAN_MASTERY.initMastery();
-        BLADE_MASTERY.initMastery();
-        BLUNT_MASTERY.initMastery();
-        // AXE_MASTERY.initMastery();
-        // THROWING_MASTERY.initMastery();
-        // MARKSMANSHIP_MASTERY.initMastery();
-
-        SHIELD_MASTERY.initMastery();
-
-        MOBILITY_MASTERY.initMastery();
-        ATHLETICS_MASTERY.initMastery();
-        MEDITATION_MASTERY.initMastery();
-        DISCIPLINE_MASTERY.initMastery();
-        // MAGICAL_ITEM_MASTERY.initMastery();
-
-        // SUMMONER_MASTERY.initMastery();
-        // ENCHANTER_MASTERY.initMastery();
-        // SORCERER_MASTERY.initMastery();
-        WIZARDRY_MASTERY.initMastery();
-        SPELLCRAFT_MASTERY.initMastery();
-        DIVINATION_MASTERY.initMastery();
-
-        DETECTION_MASTERY.initMastery();
-        ARMORER_MASTERY.initMastery();
-        DEFENSE_MASTERY.initMastery();
-        STEALTH_MASTERY.initMastery();
-
-        DUAL_WIELDING_MASTERY.initMastery();
-        AXE_MASTERY.initMastery();
-        POLEARM_MASTERY.initMastery();
-        TWO_HANDED_MASTERY.initMastery();
-        UNARMED_MASTERY.initMastery();
-        // HEAVY_ARMOR_MASTERY.initMastery();
-
-    }
 
     boolean writeToType;
     Color color;
@@ -972,7 +816,7 @@ could have other params - sf discounts,
     private int defaultValue;
     private boolean dynamic = false;
     private Metainfo metainfo;
-    private boolean lowPriority = false;
+    private final boolean lowPriority = false;
     private boolean attr = false;
     private boolean superLowPriority;
     private boolean mastery;
@@ -981,6 +825,7 @@ could have other params - sf discounts,
     private String iconPath;
     private Map<OBJ_TYPE, Object> defaultValuesMap;
     private boolean mod;
+    private boolean devOnly;
 
     PARAMS(String shortName, String descr, boolean dynamic, int defaultValue, C_OBJ_TYPE type,
            OBJ_TYPE... types) {
@@ -1069,23 +914,11 @@ could have other params - sf discounts,
         return defaultValuesMap;
     }
 
-    @Override
-    public void addSpecialDefault(OBJ_TYPE type, Object value) {
-        getDefaultValuesMap().put(type, value);
-
-    }
-
-    @Override
-    public Object getSpecialDefault(OBJ_TYPE type) {
-        return getDefaultValuesMap().get(type);
-
-    }
-
-    private void initNonMasteryDescription() {
+    public void initNonMasteryDescription() {
         setDescr(DescriptionMaster.getNonMasteryDescription(this));
     }
 
-    private void initMastery() {
+    public void initMastery() {
         setMastery(true);
         setDescr(DescriptionMaster.getMasteryDescription(this));
     }
@@ -1156,24 +989,6 @@ could have other params - sf discounts,
     }
 
     @Override
-    public boolean isHighPriority() {
-        return highPriority;
-    }
-
-    @Override
-    public void setHighPriority(boolean highPriority) {
-        this.highPriority = highPriority;
-    }
-
-    public boolean isLowPriority() {
-        return lowPriority;
-    }
-
-    public void setLowPriority(boolean lowPriority) {
-        this.lowPriority = lowPriority;
-    }
-
-    @Override
     public boolean isMastery() {
         return this.mastery;
     }
@@ -1191,17 +1006,6 @@ could have other params - sf discounts,
     public void setAttr(boolean attr) {
         this.attr = attr;
     }
-
-    @Override
-    public boolean isSuperLowPriority() {
-        return superLowPriority;
-    }
-
-    @Override
-    public void setSuperLowPriority(boolean superLowPriority) {
-        this.superLowPriority = superLowPriority;
-    }
-
 
     public String getShortName() {
         return shortName;
@@ -1240,5 +1044,15 @@ could have other params - sf discounts,
 
     public void setMod(boolean mod) {
         this.mod = mod;
+    }
+
+    @Override
+    public void setDevOnly(boolean devOnly) {
+        this.devOnly= devOnly;
+    }
+
+    @Override
+    public boolean isDevOnly() {
+        return devOnly;
     }
 }

@@ -142,7 +142,6 @@ public class NF_PartyManager extends ScenarioPartyManager {
         hero.setMainHero(true);
         hero.setPale(false);
         party.setProperty(PROPS.PARTY_MAIN_HERO, hero.getName());
-        Eidolons.setSelectedMainHero(hero.getName());
         Eidolons.setMainHero(hero);
         getGame().getObjMaster().objAdded(hero);
         getGame().getManager().reset();

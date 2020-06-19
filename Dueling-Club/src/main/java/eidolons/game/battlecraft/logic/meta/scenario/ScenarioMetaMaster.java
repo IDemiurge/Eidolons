@@ -7,7 +7,6 @@ import eidolons.game.battlecraft.logic.mission.quest.QuestMissionMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.netherflame.main.death.NF_DefeatHandler;
-import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
 import main.system.GuiEventManager;
@@ -57,7 +56,7 @@ public class ScenarioMetaMaster<T extends ScenarioMeta> extends MetaGameMaster<T
                 }
 
                 super.next(outcome);
-                ScenarioLauncher.missionIndex++;
+                ScenarioMetaDataManager.missionIndex++;
 
             }
         getMetaDataManager().setMissionName(null);

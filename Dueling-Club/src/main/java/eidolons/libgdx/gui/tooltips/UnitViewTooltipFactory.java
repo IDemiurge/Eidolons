@@ -13,8 +13,8 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
 import eidolons.game.netherflame.main.death.ShadowMaster;
@@ -292,7 +292,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             }
 
             //            if (VisionManager.isVisibilityOn()){
-            if (RuleKeeper.isRuleOn(RULE.VISIBILITY) || Eidolons.game.isDebugMode()) {
+            if (RuleKeeper.isRuleOn(RuleEnums.RULE.VISIBILITY) || Eidolons.game.isDebugMode()) {
                 addParamStringToValues(object, PARAMS.LIGHT_EMISSION);
                 addParamStringToValues(object, PARAMS.ILLUMINATION);
                 addParamStringToValues(object, PARAMS.CONCEALMENT);

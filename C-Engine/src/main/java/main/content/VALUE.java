@@ -3,17 +3,15 @@ package main.content;
 import java.io.Serializable;
 
 /**
- * Top level interface for Entity Parameters and Properties. Requirements:
- * ArcaneVault integration: meta-info, classMap for Ability Constr. Easy
- * extension Rigorous Classifications Convenience Methods Enumeration utilities
- * - nomenclature lookup, class loading
+ * Top level interface for Entity Parameters and Properties. Requirements: ArcaneVault integration: meta-info, classMap
+ * for Ability Constr. Easy extension Rigorous Classifications Convenience Methods Enumeration utilities - nomenclature
+ * lookup, class loading
  * <portrait>
  * Potential Issues: Namespace overshadowing Return type - int, string, or what?
  * <portrait>
  * <portrait>
- * VALUE must provide: structural info (group, tags...), metainfo, optionally -
- * list of values (Races)? a lot of parameters must be given to each VALUE type
- * what is the best way of maintaining and expanding the system?
+ * VALUE must provide: structural info (group, tags...), metainfo, optionally - list of values (Races)? a lot of
+ * parameters must be given to each VALUE type what is the best way of maintaining and expanding the system?
  *
  * @author JustMe
  */
@@ -30,7 +28,7 @@ public interface VALUE extends Serializable { //TODO test serializable is needed
 
     String getEntityType();
 
-    default String getDisplayedName(){
+    default String getDisplayedName() {
         return getName();
     }
 
@@ -38,36 +36,24 @@ public interface VALUE extends Serializable { //TODO test serializable is needed
 
     String getDefaultValue();
 
-    boolean isLowPriority();
-
-    void setLowPriority(boolean lowPriority);
-
-    boolean isSuperLowPriority();
-
-    void setSuperLowPriority(boolean lowPriority);
-
-    boolean isHighPriority();
-
-    void setHighPriority(boolean highPriority);
-
     boolean isDynamic();
 
     boolean isWriteToType();
 
     void setWriteToType(boolean writeToType);
 
-    void addSpecialDefault(OBJ_TYPE type, Object value);
-
-    Object getSpecialDefault(OBJ_TYPE type);
-
-    INPUT_REQ getInputReq();
+    INPUT_REQ getInputReq(); // Core Review - is this better than TableMouseListener crap?
 
     default void setIconPath(String path) {
 
     }
 
+    void setDevOnly(boolean devOnly);
+
+    boolean isDevOnly();
+
     default String getIconPath() {
-        return null ;
+        return null;
     }
 
     enum INPUT_REQ {

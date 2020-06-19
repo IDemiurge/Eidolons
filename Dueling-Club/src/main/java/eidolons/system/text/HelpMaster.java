@@ -1,7 +1,7 @@
 package eidolons.system.text;
 
+import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaDataManager;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.launch.ScenarioLauncher;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
@@ -54,7 +54,7 @@ public class HelpMaster {
     }
 
     public static boolean isDefaultTextOn() {
-        if (ScenarioLauncher.missionIndex > 0)
+        if (ScenarioMetaDataManager.missionIndex > 0)
             return false;
         return false;
     }

@@ -3,7 +3,8 @@ package eidolons.game.battlecraft.rules.buff;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
 import eidolons.content.ValuePages;
-import eidolons.game.battlecraft.rules.RuleKeeper.COMBAT_RULES;
+import eidolons.game.battlecraft.rules.RuleEnums;
+import eidolons.game.battlecraft.rules.RuleEnums.COMBAT_RULES;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.content.VALUE;
@@ -98,7 +99,7 @@ public class WeightBuffRule extends DC_BuffRule {
 
     @Override
     protected COMBAT_RULES getCombatRuleEnum() {
-        return COMBAT_RULES.WEIGHT;
+        return RuleEnums.COMBAT_RULES.WEIGHT;
     }
 
 }

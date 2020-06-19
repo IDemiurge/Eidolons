@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.rules.action;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
@@ -29,7 +30,7 @@ import static main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL.*;
 public class HearingRule implements ActionRule {
     DC_Game game;
     private boolean playerWasHeard;
-    private Map<Unit, DIRECTION> map = new HashMap<>();
+    private final Map<Unit, DIRECTION> map = new HashMap<>();
 
     public HearingRule(DC_Game game) {
         this.game = game;
@@ -133,7 +134,7 @@ public class HearingRule implements ActionRule {
     }
 
     private boolean isOn() {
-        return RuleKeeper.isRuleOn(RuleKeeper.RULE.HEARING);
+        return RuleKeeper.isRuleOn(RuleEnums.RULE.HEARING);
     }
 
     @Override

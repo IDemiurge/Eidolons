@@ -7,8 +7,8 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.perk.AlertRule;
@@ -35,11 +35,11 @@ import java.util.Set;
 
 public class InstantAttackRule {
     public static boolean checkInstantAttacksInterrupt(DC_ActiveObj action) {
-        if (!RuleKeeper.isRuleOn(RULE.INSTANT_ATTACK)) {
+        if (!RuleKeeper.isRuleOn(RuleEnums.RULE.INSTANT_ATTACK)) {
             return false;
         }
         Boolean retreat_passage_none = canMakeInstantAttackAgainst(action);
-        if (RuleKeeper.isRuleTestOn(RULE.INSTANT_ATTACK)) {
+        if (RuleKeeper.isRuleTestOn(RuleEnums.RULE.INSTANT_ATTACK)) {
             retreat_passage_none = true;
         }
         if (!retreat_passage_none) {

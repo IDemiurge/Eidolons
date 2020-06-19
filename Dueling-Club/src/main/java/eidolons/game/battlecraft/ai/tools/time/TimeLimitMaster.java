@@ -100,10 +100,9 @@ public class TimeLimitMaster {
     }
 
     public static boolean checkTimeLimitForAi(UnitAI ai) {
-        if (OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.AI_DEBUG)) {
-        // if (CoreEngine.TEST_LAUNCH) {
+        if (OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.AI_DEBUG)
+                || CoreEngine.TEST_LAUNCH)
             return true;
-        }
         if (getTimeLimitForAi(ai) > getMarkForAi(ai))
             return true;
         LogMaster.log(1, "*********** TIME ELAPSED FOR  "

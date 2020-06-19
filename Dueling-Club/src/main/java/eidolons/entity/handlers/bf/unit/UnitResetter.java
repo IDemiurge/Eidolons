@@ -12,8 +12,8 @@ import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.action.EngagedRule;
 import eidolons.game.battlecraft.rules.combat.damage.ResistMaster;
 import eidolons.game.battlecraft.rules.rpg.IntegrityRule;
@@ -110,7 +110,7 @@ public class UnitResetter extends EntityResetter<Unit> {
         // Chronos.mark(toString() + "to base (values)");
         getEntity().setMode(null);
         if (getEntity().isUnconscious()) {
-            GuiEventManager.triggerWithParams(SHOW_MODE_ICON, this, STD_MODES.UNCONSCIOUS.getImagePath());
+            GuiEventManager.triggerWithParams(SHOW_MODE_ICON, getEntity(), STD_MODES.UNCONSCIOUS.getImagePath());
             // return; will break construct() !
         }
         if (getEntity().getSpecialEffects() != null) {
@@ -501,7 +501,7 @@ public class UnitResetter extends EntityResetter<Unit> {
         if (!getGame().getRules().getWeightRule().apply(getEntity())) {
             getEntity().setInfiniteValue(PARAMS.CARRYING_CAPACITY, 2);
         }
-        if (RuleKeeper.isRuleOn(RULE.WATCH))
+        if (RuleKeeper.isRuleOn(RuleEnums.RULE.WATCH))
             getGame().getRules().getWatchRule().updateWatchStatus(getEntity());
         getGame().getRules().getWoundsRule().apply(getEntity());
     }

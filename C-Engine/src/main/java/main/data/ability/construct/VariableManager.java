@@ -512,28 +512,6 @@ public class VariableManager {
                 return ContentValsManager.getAttributes().get(index).getName();
             }
         },
-        RANDOM_PARAMETER {
-            public Object evaluate(Entity obj, String s) {
-                if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.CHARS) {
-                    return ContentValsManager.getRandomCharParameter().getName();
-                } else {
-                    return ContentValsManager.getRandomUnitParameter().getName();
-                }
-
-            }
-        },
-        RANDOM_UNIT_PARAMETER {
-            public Object evaluate(Entity obj, String s) {
-                return obj.getIntParam(ContentValsManager.getRandomUnitParameter());
-
-            }
-        },
-        RANDOM_CHAR_PARAMETER {
-            public Object evaluate(Entity obj, String s) {
-                return obj.getIntParam(ContentValsManager.getRandomCharParameter());
-
-            }
-        },
         DAMAGE_TYPE,
         TOP_DEAD_UNIT_INT {
             public Object evaluate(Entity obj, String s) {

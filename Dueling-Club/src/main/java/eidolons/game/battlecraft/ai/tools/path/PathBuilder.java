@@ -194,8 +194,8 @@ public class PathBuilder extends AiHandler {
                         .map(ch->ch.getCoordinates()).collect(Collectors.toList());
 
                 DC_MovementManager.playerDestination=path.getTargetCoordinates();
-                WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.INPUT);
                 GdxMaster.onInputGdx(()-> WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.INPUT, true));
+                WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.INPUT);
                 }
                 // mark removed???
             }

@@ -3,7 +3,8 @@ package eidolons.game.battlecraft.rules.buff;
 import eidolons.ability.conditions.shortcut.StdPassiveCondition;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.game.battlecraft.rules.RuleKeeper.COMBAT_RULES;
+import eidolons.game.battlecraft.rules.RuleEnums;
+import eidolons.game.battlecraft.rules.RuleEnums.COMBAT_RULES;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
@@ -104,7 +105,7 @@ public class StaminaBuffRule extends DC_BuffRule {
     @Override
     protected COMBAT_RULES getCombatRuleEnum() {
         // TODO Auto-generated method stub
-        return COMBAT_RULES.STAMINA;
+        return RuleEnums.COMBAT_RULES.STAMINA;
     }
 
 }

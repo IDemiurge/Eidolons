@@ -4,7 +4,8 @@ import eidolons.ability.conditions.shortcut.StdPassiveCondition;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.continuous.BehaviorModeEffect;
 import eidolons.content.PARAMS;
-import eidolons.game.battlecraft.rules.RuleKeeper.COMBAT_RULES;
+import eidolons.game.battlecraft.rules.RuleEnums;
+import eidolons.game.battlecraft.rules.RuleEnums.COMBAT_RULES;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
@@ -78,7 +79,7 @@ public class WoundsBuffRule extends DC_BuffRule {
 
     @Override
     protected COMBAT_RULES getCombatRuleEnum() {
-        return COMBAT_RULES.WOUNDS;
+        return RuleEnums.COMBAT_RULES.WOUNDS;
     }
 
     @Override

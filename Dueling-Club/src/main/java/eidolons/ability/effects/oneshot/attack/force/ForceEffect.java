@@ -2,8 +2,8 @@ package eidolons.ability.effects.oneshot.attack.force;
 
 import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
 import main.ability.effects.OneshotEffect;
 import main.data.ability.AE_ConstrArgs;
@@ -11,7 +11,7 @@ import main.system.math.Formula;
 
 public class ForceEffect extends DC_Effect implements OneshotEffect {
 
-    private Boolean attack;
+    private final Boolean attack;
 
     @AE_ConstrArgs(argNames = {
      "formula", "attack"
@@ -24,7 +24,7 @@ public class ForceEffect extends DC_Effect implements OneshotEffect {
 
     @Override
     public boolean applyThis() {
-        if (!RuleKeeper.isRuleOn(RULE.FORCE)) return false;
+        if (!RuleKeeper.isRuleOn(RuleEnums.RULE.FORCE)) return false;
         int force = getFormula().getInt(ref);
         ForceRule.applyForceEffects(force, (DC_ActiveObj) ref.getActive());
         Boolean result = null;

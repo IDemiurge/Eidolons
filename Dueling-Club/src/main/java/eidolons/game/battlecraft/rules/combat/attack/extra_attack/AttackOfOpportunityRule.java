@@ -9,8 +9,8 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.mechanics.InterruptRule;
 import eidolons.game.core.game.DC_Game;
@@ -222,7 +222,7 @@ public class AttackOfOpportunityRule {
     }
 
     public static boolean isOff() {
-        return !RuleKeeper.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY);
+        return !RuleKeeper.isRuleTestOn(RuleEnums.RULE.ATTACK_OF_OPPORTUNITY);
     }
 
     private static int getAoOMaxDistance(Unit unit, DC_ActiveObj active) {

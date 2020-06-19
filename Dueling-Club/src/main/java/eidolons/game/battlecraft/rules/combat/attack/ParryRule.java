@@ -4,8 +4,8 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.libgdx.anims.std.sprite.CustomSpriteAnim;
@@ -35,7 +35,7 @@ public class ParryRule {
     protected boolean tryParry(Attack attack) {
         // TODO could return and Integer for dmg reduction or -1 if all
         // absorbed!
-        if (!RuleKeeper.isRuleTestOn(RULE.PARRYING)) {
+        if (!RuleKeeper.isRuleTestOn(RuleEnums.RULE.PARRYING)) {
             if (!canParry(attack)) {
                 return false;
             }
@@ -57,7 +57,7 @@ public class ParryRule {
              + " from " + attack.getAttacker().getNameIfKnown()
              + StringMaster.wrapInParenthesis(chanceRounded + "%"));
             game.getLogManager().doneLogEntryNode();
-            if (!RuleKeeper.isRuleTestOn(RULE.PARRYING)) {
+            if (!RuleKeeper.isRuleTestOn(RuleEnums.RULE.PARRYING)) {
                 return false;
             }
 

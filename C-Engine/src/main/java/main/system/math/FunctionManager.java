@@ -91,13 +91,7 @@ public class FunctionManager {
     }
 
     public static int getSum(String s, Set<Obj> objs) {
-        Formula formula = new Formula("{SOURCE_" + s + "}");
-        int result = 0;
-        for (Obj obj : objs) {
-            result += formula.getInt(obj.getRef());
-        }
-        return result;
-
+        return new FuncMaster<Obj>().total(objs, obj -> obj.getIntParam(s));
     }
 
     public static Collection<FUNCTIONS> getFunctionList() {
@@ -319,7 +313,8 @@ public class FunctionManager {
             public Object evaluate(String s_arg, Ref ref) {
                 return s_arg;
             }
-        }, COORDINATE{
+        },
+        COORDINATE{
             public Object evaluate(String s_arg, Ref ref) {
                 return new Coordinates(s_arg);
             }

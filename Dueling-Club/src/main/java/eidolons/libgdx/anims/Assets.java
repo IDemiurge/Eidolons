@@ -598,12 +598,6 @@ public class Assets {
     }
 
     private static GAME_SCOPE getScope() {
-        if (EidolonsGame.DUEL) {
-            return GAME_SCOPE.DUEL;
-        }
-        if (EidolonsGame.PUZZLES) {
-            return GAME_SCOPE.PUZZLES;
-        }
         return GAME_SCOPE.DEFAULT;
     }
 

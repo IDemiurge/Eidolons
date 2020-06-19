@@ -585,11 +585,6 @@ public class AnimMaster3d {
             return getOrCreateAtlas(p, true);
         } catch (Exception e) {
             printStackTrace(e);
-            try {
-                return new SmartTextureAtlas(path);
-            } catch (Exception e1) {
-                printStackTrace(e1);
-            }
         }
         return null;
     }

@@ -219,10 +219,6 @@ public class MusicMaster {
         if (VideoMaster.player!=null )
         if (VideoMaster.player.isPlaying())
             return false;
-        if (getInstance().scope!=MUSIC_SCOPE.MENU)
-        if (EidolonsGame.DUEL) {
-            return false;
-        }
         if (getInstance().scope!=MUSIC_SCOPE.MENU && DialogueManager.isRunning()) {
             return false;
         }

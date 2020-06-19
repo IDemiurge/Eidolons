@@ -11,6 +11,7 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.attack.DefenseVsAttackRule;
 import eidolons.game.battlecraft.rules.combat.attack.ShieldMaster;
@@ -32,16 +33,13 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.function.Supplier;
 
+//  DC Revamp - 2 armor layers and more digestible code
 public class ArmorMaster {
-    // is the damage already reduced by defense/... ?
-    // natural resistances/armor should not reduce it in advance! so it's early
-    // TODO use with natural missile spells too
-    // return penetrated! TODO
 
     boolean simulation;
     private final DC_Game game;
 
-    public static final  boolean isCodeReady() {
+    public static final boolean isCodeReady() {
         return false;
     }
 
@@ -188,10 +186,10 @@ public class ArmorMaster {
 
     public Integer getShieldBlockValue(int amount, DC_WeaponObj shield, BattleFieldObject attacked,
                                        BattleFieldObject attacker, DC_WeaponObj weapon, DC_ActiveObj action, boolean zone) {
-       if (!isCodeReady()){
-           return shield.getIntParam(PARAMS.DAMAGE_BONUS);
-       }
-       //ToDo-Cleanup
+        if (!isCodeReady()) {
+            return shield.getIntParam(PARAMS.DAMAGE_BONUS);
+        }
+        //ToDo-Cleanup
         DAMAGE_TYPE dmg_type = action.getDamageType();
         if (dmg_type == null) {
             if (weapon == null) {
@@ -215,7 +213,7 @@ public class ArmorMaster {
 
     public boolean checkCanShieldBlock(DC_ActiveObj active, BattleFieldObject targetObj) {
         // if (active.isMissile())
-        if (RuleKeeper.isRuleTestOn(RuleKeeper.RULE.SHIELD))
+        if (RuleKeeper.isRuleTestOn(RuleEnums.RULE.SHIELD))
             return true;
         if (targetObj.getActiveWeapon(true) != null) {
             return targetObj.getActiveWeapon(true).isShield();
@@ -247,7 +245,7 @@ public class ArmorMaster {
         }
         DC_WeaponObj shield = (DC_WeaponObj) attacked.getRef().getObj(KEYS.OFFHAND);
 
-        boolean testOn = !simulation && RuleKeeper.isRuleTestOn(RuleKeeper.RULE.SHIELD);
+        boolean testOn = !simulation && RuleKeeper.isRuleTestOn(RuleEnums.RULE.SHIELD);
         if (testOn) {
             if (shield == null) {
                 shield = (DC_WeaponObj) attacked.getRef().getObj(KEYS.WEAPON);
@@ -269,7 +267,7 @@ public class ArmorMaster {
                             + attacked.getName() + " fails to use " + shield.getName()
                             + " to block " + action.getName()
                             + StringMaster.wrapInParenthesis(chance + "%");
-                   game.getLogManager().log(LOG.GAME_INFO, message, ENTRY_TYPE.DAMAGE);
+                    game.getLogManager().log(LOG.GAME_INFO, message, ENTRY_TYPE.DAMAGE);
                     return 0;
                 }
             }

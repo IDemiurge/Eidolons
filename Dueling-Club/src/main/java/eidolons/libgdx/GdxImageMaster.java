@@ -29,6 +29,7 @@ import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,6 +60,9 @@ public class GdxImageMaster extends LwjglApplication {
         return TiledNinePatchGenerator.getOrCreateNinePatch(ninePatch, background, w, h);
     }
 
+    public static void genAtlas(Collection<TextureRegion> regions) {
+
+    }
     public static void main(String[] args) {
         new GdxImageMaster();
     }

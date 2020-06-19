@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxColorMaster;
@@ -157,18 +156,6 @@ public class UnitViewOptions {
 
         if (obj.isMine()) {
             altColor = !obj.isPlayerCharacter();
-        } else {
-            if (EidolonsGame.DUEL) {
-                altColor = false;
-            } else {
-                altColor = !obj.getName().contains("Carnifex");
-                if (obj.getName().contains("Igor"))
-                    altColor = false;
-                if (obj.getName().contains("Hollow Reaper"))
-                    altColor = false;
-                if (obj.getName().contains("Hollow Defiler"))
-                    altColor = false;
-            }
         }
 
         if (obj.getOwner() != null)

@@ -743,14 +743,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getDangerFactorByMemory(Unit unit2) {
-        // for (DC_HeroObj enemy: Analyzer.getEnemies(unit2, false)){
-        // memoryMaps.getOrCreate(unit_ai).getOrCreate(enemy);TODO
-        // }
-        return 0;
-    }
-
-    @Override
     public int getZoneSpellPriority(Action action, boolean damage) {
         int base_priority = 0;
         DC_ActiveObj active = action.getActive();
@@ -1173,7 +1165,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         if (targetObj.isNeutral()) {
             addMultiplier(-90, "Neutral");
         }
-        if (EidolonsGame.DUEL){
+        if (EidolonsGame.FOOTAGE){
             priority = priority * RandomWizard.getRandomIntBetween(50, 100) / 100;
         }
         return priority;

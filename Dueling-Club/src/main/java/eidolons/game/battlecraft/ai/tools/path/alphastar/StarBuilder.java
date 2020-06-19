@@ -18,7 +18,7 @@ public class StarBuilder extends AiHandler implements IPathHandler {
 
     public StarBuilder(AiMaster master) {
         super(master);
-        pathingManager= new PathingManager(getGame().getGrid(), this);
+        pathingManager= new PathingManager( this);
     }
 
     public ActionPath getPath(Coordinates c, Coordinates c2){

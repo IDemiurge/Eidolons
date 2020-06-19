@@ -4,7 +4,6 @@ package eidolons.game.battlecraft.ai.elements.actions;
 import eidolons.content.ContentConsts;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
@@ -100,7 +99,7 @@ public class ActionManager extends AiHandler {
 
     public Action chooseAction(boolean intent) {
         UnitAI ai = getMaster().getUnitAI();
-        if (ai.checkStandingOrders(EidolonsGame.DUEL)) {
+        if (ai.checkStandingOrders(false)) {
             getUnitAi().getCombatAI().setLastSequence(ai.getStandingOrders());
             Action ordered = ai.getStandingOrders().popNextAction();
             ordered.setOrder(true);

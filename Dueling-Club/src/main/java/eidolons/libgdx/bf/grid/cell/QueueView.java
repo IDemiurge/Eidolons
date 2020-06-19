@@ -176,6 +176,7 @@ public class QueueView extends UnitView {
     }
 
     public void setActive(boolean active) {
+        //gdx review - why is this getting called more than one?
         if (this.active==active) {
             return;
         }

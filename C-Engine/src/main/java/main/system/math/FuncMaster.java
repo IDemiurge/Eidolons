@@ -4,6 +4,7 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.system.SortMaster;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
@@ -41,7 +42,7 @@ public class FuncMaster<T> {
     }
 
     public Integer total
-     (List<? extends T> list, ToIntFunction<T> function) {
+     (Collection<? extends T> list, ToIntFunction<T> function) {
         return list.stream().mapToInt(wrapFunction(function)).sum();
     }
 

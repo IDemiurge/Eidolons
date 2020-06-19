@@ -10,8 +10,8 @@ import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.attack.GuardRule;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.enums.system.AiEnums;
@@ -210,7 +210,7 @@ public class TaskManager extends AiHandler {
                     targets = Analyzer.getWaitUnits(ai);
                 break;
             case PROTECT:
-                if (RuleKeeper.isRuleOn(RULE.GUARD))
+                if (RuleKeeper.isRuleOn(RuleEnums.RULE.GUARD))
                     if (GuardRule.on)
                         targets = Analyzer.getProtectCells(ai);
                 break;

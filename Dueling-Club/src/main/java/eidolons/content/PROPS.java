@@ -398,74 +398,25 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     PLACEHOLDER_SYMBOL(null, false, "units", "bf obj"),
     LINKED_UNIT(null, false, "units", "bf obj");
 
-    static {
-        FAVORED_SPELL_GROUPS.setContainer(true);
-        NATURAL_WEAPON.setDefaultValue("Average Fist");
-        // OFFHAND_NATURAL_WEAPON.setDefaultValue("Average Fist");
-        SPELL_UPGRADES.setDynamic(true);
-
-        HINTS.setDynamic(true);
-        LAST_SEEN.setDynamic(true);
-        UPKEEP_FAIL_ACTION.setDynamic(true);
-        DROPPED_ITEMS.setDynamic(true);
-        // QUICK_ITEMS.setDynamic(true);
-        // INVENTORY.setDynamic(true);
-        // JEWELRY.setDynamic(true);
-        // VERBATIM_SPELLS.setDynamic(true);
-        // MEMORIZED_SPELLS.setDynamic(true);
-        DIVINED_SPELLS.setDynamic(true);
-        // KNOWN_SPELLS.setDynamic(true);
-        // LEARNED_SPELLS.setDynamic(true);
-
-        FACING_DIRECTION.setDynamic(true);
-        VISIBILITY_STATUS.setDynamic(true);
-        DETECTION_STATUS.setDynamic(true);
-        PERCEPTION_STATUS_PLAYER.setDynamic(true);
-        PERCEPTION_STATUS.setDynamic(true);
-
-        DC_TYPE.SPELLS.setUpgradeRequirementProp(KNOWN_SPELLS);
-        DC_TYPE.CLASSES.setUpgradeRequirementProp(CLASSES);
-        DC_TYPE.SKILLS.setUpgradeRequirementProp(SKILLS);
-
-        // DYNAMIC CONTAINERS
-
-        DEFAULT_COUNTER_ATTACK_ACTION.setLowPriority(true);
-        DEFAULT_ATTACK_OF_OPPORTUNITY_ACTION.setLowPriority(true);
-        SPELLBOOK.setLowPriority(true);
-        VERBATIM_SPELLS.setLowPriority(true);
-        MEMORIZED_SPELLS.setLowPriority(true);
-        PREPARED_SPELLS.setLowPriority(true);
-
-        ON_BEING_HIT.setLowPriority(true);
-        ON_HIT.setLowPriority(true);
-        ON_ACTIVATE.setLowPriority(true);
-        ON_KILL.setLowPriority(true);
-
-        VISION_MODE.setLowPriority(true);
-
-        XP_PLAN.setSuperLowPriority(true);
-        XP_PLAN.setLowPriority(true);
-        ATTRIBUTE_PROGRESSION.setSuperLowPriority(true);
-        ATTRIBUTE_PROGRESSION.setLowPriority(true);
-    }
 
     boolean writeToType;
     INPUT_REQ inputReq;
-    private String name;
+    private final String name;
     private String descr;
     private String entityType;
     private boolean dynamic;
     private String defaultValue;
-    private int AV_ID;
+    private final int AV_ID;
     private boolean lowPriority = false;
     private String[] entityTypes;
     private boolean container;
-    private boolean superLowPriority = false;
+    private final boolean superLowPriority = false;
     private boolean highPriority;
     private String fullName;
     private String shortName;
     private Map<OBJ_TYPE, Object> defaultValuesMap;
     private String iconPath;
+    private boolean devOnly;
 
     PROPS(String shortName, boolean container, C_OBJ_TYPE entityType) {
         this(shortName, container, Arrays.stream(entityType.getTypes())
@@ -589,20 +540,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
         this.defaultValue = defaultValue;
     }
 
-    /**
-     * @return the aV_ID
-     */
-    public int getAV_ID() {
-        return AV_ID;
-    }
-
-    /**
-     * @param aV_ID the aV_ID to set
-     */
-    public void setAV_ID(int aV_ID) {
-        AV_ID = aV_ID;
-    }
-
     @Override
     public String getDescription() {
         // TODO Auto-generated method stub
@@ -625,33 +562,10 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
         this.container = container;
     }
 
-    public boolean isLowPriority() {
-        return lowPriority;
-    }
-
     public void setLowPriority(boolean lowPriority) {
         this.lowPriority = lowPriority;
     }
 
-    @Override
-    public boolean isSuperLowPriority() {
-        return superLowPriority;
-    }
-
-    @Override
-    public void setSuperLowPriority(boolean superLowPriority) {
-        this.superLowPriority = superLowPriority;
-    }
-
-    @Override
-    public boolean isHighPriority() {
-        return highPriority;
-    }
-
-    @Override
-    public void setHighPriority(boolean highPriority) {
-        this.highPriority = highPriority;
-    }
 
     public boolean isPrinciple() {
         for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
@@ -689,17 +603,14 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     }
 
     @Override
-    public void addSpecialDefault(OBJ_TYPE type, Object value) {
-        getDefaultValuesMap().put(type, value);
-
+    public void setDevOnly(boolean devOnly) {
+        this.devOnly = devOnly;
     }
 
     @Override
-    public Object getSpecialDefault(OBJ_TYPE type) {
-        return getDefaultValuesMap().get(type);
-
+    public boolean isDevOnly() {
+        return devOnly;
     }
-
     @Override
     public String getIconPath() {
         return iconPath;

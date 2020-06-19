@@ -10,8 +10,8 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE_GROUP;
 import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.ExtraAttacksRule;
@@ -464,9 +464,9 @@ public class Executor extends ActiveHandler {
     }
 
     protected boolean checkExtraAttacksDoNotInterrupt(ENTRY_TYPE entryType) {
-        if (EidolonsGame.DUEL)
+        if (EidolonsGame.FOOTAGE)
             return true;
-        if (RuleKeeper.checkRuleGroupIsOn(RULE_GROUP.EXTRA_ATTACKS)) {
+        if (RuleKeeper.checkRuleGroupIsOn(RuleEnums.RULE_GROUP.EXTRA_ATTACKS)) {
             try {
                 return !ExtraAttacksRule.checkInterrupted(getAction(), entryType);
             } catch (Exception e) {

@@ -1,7 +1,6 @@
 package eidolons.system.options;
 
-import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.INFO_LEVEL;
@@ -11,7 +10,7 @@ import main.system.text.LogManager;
 public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
 
     static {
-        GAMEPLAY_OPTION.RULES_SCOPE.setDefaultValue(RULE_SCOPE.BASIC);
+        GAMEPLAY_OPTION.RULES_SCOPE.setDefaultValue(RuleEnums.RULE_SCOPE.BASIC);
         GAMEPLAY_OPTION.GAME_DIFFICULTY.setDefaultValue(GenericEnums.DIFFICULTY.NOVICE);
         GAMEPLAY_OPTION.INFO_DETAIL_LEVEL.setDefaultValue(INFO_LEVEL.NORMAL);
 
@@ -40,7 +39,7 @@ static {
 //    GAMEPLAY_OPTION.LOG_DETAIL_LEVEL.defaultValue= LOG_DETAIL_LEVEL.verbose
 }
     public enum GAMEPLAY_OPTION implements Options.OPTION {
-        RULES_SCOPE(RuleKeeper.RULE_SCOPE.values()),
+        RULES_SCOPE(RuleEnums.RULE_SCOPE.values()),
         GAME_DIFFICULTY(GenericEnums.DIFFICULTY.values()),
 
         //        AI_SPEED,

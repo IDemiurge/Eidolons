@@ -142,7 +142,7 @@ public class LogMaster {
     public static boolean EVENT_DEBUG_ON = false;
     public static boolean EFFECT_DEBUG_ON = false;
     public static boolean TRIGGER_DEBUG_ON = true;
-    public static boolean PATHING_DEBUG_ON = false;
+    public static boolean PATHING_DEBUG_ON = true;
     public static boolean COMBAT_DEBUG_ON = false;
     public static boolean MAP_GENERATION_DEBUG_ON = false;
     public static boolean CONDITION_DEBUG_ON = false;

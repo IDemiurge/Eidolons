@@ -479,6 +479,7 @@ public class DC_GridPanel extends GridPanel {
                 GuiEventManager.trigger(UPDATE_SHADOW_MAP);
                 //                GuiEventManager.trigger(BLACKOUT_OUT, 5f);
             }
+            // Tester check - when to welcome?
             if (HelpMaster.isDefaultTextOn())
                 if (!welcomeInfoShown) {
                     new Thread(() -> {

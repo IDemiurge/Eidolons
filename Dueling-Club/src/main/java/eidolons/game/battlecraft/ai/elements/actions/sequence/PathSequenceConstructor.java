@@ -95,7 +95,7 @@ public class PathSequenceConstructor extends AiHandler {
     }
 
     private boolean isStar() {
-        return true;
+        return false;
     }
 
     private boolean isPathCacheOn() {

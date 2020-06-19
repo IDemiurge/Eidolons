@@ -38,7 +38,7 @@ import static main.content.enums.GenericEnums.DAMAGE_TYPE;
 
 public class DC_LogManager extends LogManager {
 
-
+    //EA check - use images in log more
     public static final String ALIGN_CENTER = "<center>";
     public static final String IMAGE_SEPARATOR = "[img==]";
     public static final String UNIT_TURN_PREFIX = "Active: ";

@@ -33,6 +33,7 @@ public class CustomSpriteBatch extends ShaderBatch {
     public CustomSpriteBatch() {
     }
 
+
     public static CustomSpriteBatch getMainInstance() {
         if (instance == null) {
             instance = new CustomSpriteBatch();

@@ -9,6 +9,8 @@ import main.system.math.PositionMaster;
 import java.util.LinkedList;
 import java.util.List;
 
+import static eidolons.game.core.Eidolons.getGame;
+
 /**
  * not thread safe!
  *
@@ -17,13 +19,11 @@ import java.util.List;
 public class PathingManager {
     public static final double NO_PATH = -1;
     A_StarAlgorithm alg;
-    private BattleFieldGrid grid; // set on game init()
     private PathNode[][] nodeGrid;
     private List<PathNode> nodeList = new LinkedList<>();
     IPathHandler handler;
 
-    public PathingManager(BattleFieldGrid grid, IPathHandler handler) {
-        this.grid = grid;
+    public PathingManager(  IPathHandler handler) {
         this.handler = handler;
     }
 
@@ -40,7 +40,7 @@ public class PathingManager {
 
     private void initNodeGrid() {
         nodeGrid = new PathNode[handler.getWidth()][handler.getHeight()];
-        for (Coordinates c : grid.getCoordinatesList()) {
+        for (Coordinates c : getGrid().getCoordinatesList()) {
             PathNode node = new PathNode(c);
             nodeGrid[c.x][c.y] = node;
             getNodeList().add(node);
@@ -136,11 +136,7 @@ public class PathingManager {
     }
 
     public BattleFieldGrid getGrid() {
-        return grid;
-    }
-
-    public void setGrid(BattleFieldGrid grid) {
-        this.grid = grid;
+        return getGame().getGrid();
     }
 
     public PathNode[][] getNodeGrid() {
