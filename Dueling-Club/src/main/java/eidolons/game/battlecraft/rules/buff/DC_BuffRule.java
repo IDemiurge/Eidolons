@@ -123,12 +123,12 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
                 return ENTRY_TYPE.BLEEDING_RULE;
             case FOCUS:
                 return ENTRY_TYPE.FOCUS_RULE;
-            case MORALE:
+            case ESSENCE:
                 return ENTRY_TYPE.MORALE_RULE;
-            case MORALE_KILL:
+            case ESSENCE_KILL:
                 return ENTRY_TYPE.MORALE_KILL_RULE;
-            case STAMINA:
-                return ENTRY_TYPE.STAMINA_RULE;
+            case TOUGHNESS:
+                return ENTRY_TYPE.TOUGHNESS_RULE;
             case UNCONSCIOUS:
                 return ENTRY_TYPE.UNCONSCIOUS;
             case WEIGHT:

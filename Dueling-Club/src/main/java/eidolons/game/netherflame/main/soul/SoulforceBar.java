@@ -12,6 +12,7 @@ import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.ScissorMaster;
 import eidolons.libgdx.shaders.ShaderDrawer;
+import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -74,7 +75,7 @@ public class SoulforceBar extends SuperActor {
         floatAction.setTarget(this);
 
         addActor(barBg = new FadeImageContainer("ui/components/dc/soulforce/bar frame.png"));
-        addActor(barBgSprite = new SpriteX("sprites/ui/soulforce bar bg.txt"){
+        addActor(barBgSprite = new SpriteX(Sprites.SOULFORCE_BAR_BG){
             @Override
             public void draw(Batch batch, float parentAlpha) {
                 if (parentAlpha!= ShaderDrawer.SUPER_DRAW) {
@@ -85,7 +86,7 @@ public class SoulforceBar extends SuperActor {
             }
 
         });
-        addActor(barSprite = new SpriteX("sprites/ui/soulforce bar.txt"){
+        addActor(barSprite = new SpriteX(Sprites.SOULFORCE_BAR){
             @Override
             public void draw(Batch batch, float parentAlpha) {
                 if (parentAlpha!= ShaderDrawer.SUPER_DRAW) {

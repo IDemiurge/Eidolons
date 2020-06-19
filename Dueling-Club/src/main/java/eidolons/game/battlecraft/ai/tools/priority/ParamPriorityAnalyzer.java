@@ -46,15 +46,11 @@ public class ParamPriorityAnalyzer extends AiHandler {
             case ATTACK:
             case DEFENSE:
             case CONCEALMENT:
-            case C_MORALE:
             case C_TOUGHNESS:
                 return 3;
             case TOUGHNESS:
-            case MORALE:
             case ARMOR:
                 return 5;
-            case C_STAMINA:
-                return 8;
             case C_FOCUS:
                 return 6;
             case C_ESSENCE:
@@ -69,8 +65,6 @@ public class ParamPriorityAnalyzer extends AiHandler {
                 return 2.5f;
             case DAMAGE_MOD:
                 return 2.5f;
-            case STAMINA:
-                return 12;
             case FOCUS:
                 return 9;
             case ESSENCE:
@@ -115,9 +109,7 @@ public class ParamPriorityAnalyzer extends AiHandler {
             case ATTACK_MOD:
             case DEFENSE_MOD:
                 return 75;
-            case C_STAMINA:
             case C_FOCUS:
-            case C_MORALE:
             case C_ESSENCE:
                 return 25;
 
@@ -141,19 +133,9 @@ public class ParamPriorityAnalyzer extends AiHandler {
     public static boolean isParamIgnored(PARAMETER param, DC_Obj target) {
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
-                case C_STAMINA:
-                    if (target instanceof Unit) {
-                        return ParamAnalyzer.isStaminaIgnore((Unit) target);
-                    }
-                    return false;
                 case C_FOCUS:
                     if (target instanceof Unit) {
                         return ParamAnalyzer.isFocusIgnore((Unit) target);
-                    }
-                    return false;
-                case C_MORALE:
-                    if (target instanceof Unit) {
-                        return ParamAnalyzer.isMoraleIgnore((Unit) target);
                     }
                     return false;
                 case C_ESSENCE:

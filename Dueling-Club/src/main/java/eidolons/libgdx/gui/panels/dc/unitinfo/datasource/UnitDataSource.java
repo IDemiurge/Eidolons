@@ -40,7 +40,7 @@ public class UnitDataSource implements
  MainAttributesSource, ResistSource, StatsDataSource,
  ArmorDataSource {
     private static List<VALUE> values;
-    private Unit unit;
+    private final Unit unit;
 
     public UnitDataSource(Unit unit) {
         this.unit = unit;
@@ -157,20 +157,6 @@ public class UnitDataSource implements
     }
 
     @Override
-    public String getStamina() {
-        int c = unit.getIntParam(PARAMS.C_STAMINA);
-        int m = unit.getIntParam(PARAMS.STAMINA);
-        return c + "/" + m;
-    }
-
-    @Override
-    public String getMorale() {
-        int c = unit.getIntParam(PARAMS.C_MORALE);
-        int m = unit.getIntParam(PARAMS.MORALE);
-        return c + "/" + m;
-    }
-
-    @Override
     public String getEssence() {
         int c = unit.getIntParam(PARAMS.C_ESSENCE);
         int m = unit.getIntParam(PARAMS.ESSENCE);
@@ -187,8 +173,6 @@ public class UnitDataSource implements
     @Override
     public String getParam(PARAMS param) {
         switch (param) {
-            case STAMINA:
-                return getStamina();
             case FOCUS:
                 return getFocus();
             case TOUGHNESS:
@@ -197,8 +181,6 @@ public class UnitDataSource implements
                 return getEndurance();
             case ESSENCE:
                 return getEssence();
-            case MORALE:
-                return getMorale();
         }
         return null;
     }
@@ -307,18 +289,20 @@ public class UnitDataSource implements
     }
 
     @Override
-    public List<ValueContainer> getBuffs() {
+    public List<ValueContainer> getBuffs(boolean body) {
         return unit.getBuffs().stream()
          .filter(obj -> obj.isDisplayed())
+                .filter(obj -> obj.isPhysical()==body)
          .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
          .map(AttackTooltipFactory.getObjValueContainerMapper())
          .collect(Collectors.toList());
     }
 
     @Override
-    public List<ValueContainer> getAbilities() {
+    public List<ValueContainer> getAbilities(boolean body) {
         return unit.getPassives().stream()
          .filter(obj -> obj.isDisplayed())
+         .filter(obj -> obj.isPhysical()==body)
          .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
          .map(AttackTooltipFactory.getObjValueContainerMapper())
          .collect(Collectors.toList());

@@ -26,16 +26,6 @@ public class ResourceSourceImpl implements ResourceSource {
     }
 
     @Override
-    public String getStamina() {
-        return getParam(PARAMS.STAMINA);
-    }
-
-    @Override
-    public String getMorale() {
-        return getParam(PARAMS.MORALE);
-    }
-
-    @Override
     public String getEssence() {
         return getParam(PARAMS.ESSENCE);
     }
@@ -67,8 +57,7 @@ public class ResourceSourceImpl implements ResourceSource {
         if (obj.isDead())
             return false;
         if (!obj.isMine())
-            if (!isDetectedByPlayer())
-                return false;
+            return isDetectedByPlayer();
         return true;
     }
 

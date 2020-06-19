@@ -216,9 +216,6 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                             add(getValueContainer(object, PARAMS.C_FOCUS, PARAMS.FOCUS));
                             container.row();
                             add(getValueContainer(object, PARAMS.C_ENDURANCE, PARAMS.ENDURANCE));
-                            add(getValueContainer(object, PARAMS.C_MORALE, PARAMS.MORALE));
-                            container.row();
-                            add(getValueContainer(object, PARAMS.C_STAMINA, PARAMS.STAMINA));
                             add(getValueContainer(object, PARAMS.C_ESSENCE, PARAMS.ESSENCE));
                             container.row();
                             wrap = true;

@@ -555,7 +555,7 @@ public class AnimMaster3d {
     public static TextureAtlas getOrCreateAtlas(String path) {
         try {
             if (Flags.isIDE())
-                if (isUseOneFrameVersions()) {
+                if (isUseOneFrameVersion(path)) {
                     String p = getOneFramePath(path);
                     if (new FileHandle(p).exists()) {
                         // log(1, "One-frame atlas used:\n" + p);
@@ -563,7 +563,7 @@ public class AnimMaster3d {
                     }
                 }
             TextureAtlas atlas = getOrCreateAtlas(path, true);
-            if (!isUseOneFrameVersions()) {
+            if (!isUseOneFrameVersion(path)) {
                 return atlas;
             }
             //TODO we could also do something like halving frames, in the future...
@@ -589,7 +589,10 @@ public class AnimMaster3d {
         return null;
     }
 
-    private static boolean isUseOneFrameVersions() {
+    private static boolean isUseOneFrameVersion(String path) {
+        if (path.contains("soulforce")) {
+            return false;
+        }
         return !CellDecorLayer.spriteTest && !MaskTest.spriteMaskTest && CoreEngine.TEST_LAUNCH;
     }
 

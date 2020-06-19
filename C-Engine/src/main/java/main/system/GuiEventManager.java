@@ -9,10 +9,8 @@ import main.system.launch.Flags;
 import java.util.Arrays;
 
 /**
- * Created with IntelliJ IDEA.
- * Date: 04.11.2016
- * Time: 17:18
- * To change this template use File | Settings | File Templates.
+ * Created with IntelliJ IDEA. Date: 04.11.2016 Time: 17:18 To change this template use File | Settings | File
+ * Templates.
  */
 public class GuiEventManager {
     private static boolean vertx;
@@ -25,7 +23,7 @@ public class GuiEventManager {
         GuiEventManager.vertx = vertx;
     }
 
-   static GenericGuiEventManager manager;
+    static GenericGuiEventManager manager;
 
     public static void setManager(GenericGuiEventManager manager) {
         GuiEventManager.manager = manager;
@@ -108,7 +106,7 @@ public class GuiEventManager {
 
         } else {
             if (event.getType().name().startsWith("PARAM_MODIFIED")) {
-                return isParamEventAlwaysFired(event.getType().getArg());
+                return isBarParam(event.getType().getArg());
 
             }
         }
@@ -119,14 +117,27 @@ public class GuiEventManager {
     public static EventType getEvent(String s) {
         return new EnumMaster<GuiEventType>().retrieveEnumConst(GuiEventType.class, s);
     }
-
-    public static boolean isParamEventAlwaysFired(String param) {
+    public static boolean isBarParam(String param) {
+        return isSoulParam(param) || isBodyParam(param);
+    }
+        public static boolean isSoulParam(String param) {
         switch (param) {
+            case "Essence":
+            case "C Essence":
+            case "Focus":
+            case "C Focus":
+                return true;
+        }
+        return false;
+    }
+
+    public static boolean isBodyParam(String param) {
+        switch (param) {
+
             case "Endurance":
             case "C Endurance":
             case "Toughness":
             case "C Toughness":
-                //            case "Illumination":
                 return true;
         }
         return false;

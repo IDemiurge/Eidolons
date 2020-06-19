@@ -91,16 +91,11 @@ public class ParamAnalyzer extends AiHandler {
     }
 
     public static boolean checkStatus(boolean low_critical, Unit unit, PARAMETER p) {
-        if (p == PARAMS.C_STAMINA) {
+        if (p == PARAMS.C_TOUGHNESS) {
             return checkStatus(low_critical, unit, unit.getGame().getRules().getStaminaRule());
-
         }
         if (p == PARAMS.C_FOCUS) {
             return checkStatus(low_critical, unit, unit.getGame().getRules().getFocusBuffRule());
-
-        }
-        if (p == PARAMS.C_MORALE) {
-            return checkStatus(low_critical, unit, unit.getGame().getRules().getMoraleBuffRule());
 
         }
         if (p == PARAMS.C_ESSENCE) {
@@ -117,18 +112,12 @@ public class ParamAnalyzer extends AiHandler {
     }
 
     private static boolean isScared(Unit unit) {
-        return checkStatus(true, unit, unit.getGame().getRules().getMoraleBuffRule());
+        return checkStatus(true, unit, unit.getGame().getRules().getEssenceBuffRule());
     }
 
     public static boolean isParamIgnored(Unit unit, PARAMETER p) {
-        if (p == PARAMS.C_STAMINA) {
-            return isStaminaIgnore(unit);
-        }
         if (p == PARAMS.C_FOCUS) {
             return isStaminaIgnore(unit);
-        }
-        if (p == PARAMS.C_MORALE) {
-            return isMoraleIgnore(unit);
         }
         if (p == PARAMS.C_ESSENCE) {
             return isEssenceIgnore(unit);
@@ -142,7 +131,7 @@ public class ParamAnalyzer extends AiHandler {
     }
 
     public static boolean isMoraleIgnore(Unit unit) {
-        return !unit.getGame().getRules().getMoraleBuffRule().check(unit);
+        return !unit.getGame().getRules().getEssenceBuffRule().check(unit);
     }
 
     public static boolean isStaminaIgnore(Unit unit) {
@@ -160,7 +149,6 @@ public class ParamAnalyzer extends AiHandler {
             switch (p) {
                 case C_FOCUS:
                 case C_ESSENCE:
-                case C_STAMINA:
                     return 0;
 
             }
@@ -245,12 +233,6 @@ public class ParamAnalyzer extends AiHandler {
         // return -100;
         // }
         int base_priority = 0;
-        if (p == PARAMS.C_STAMINA) {
-            if (ParamAnalyzer.isStaminaIgnore(unit)) {
-                return 0;
-            }
-            return 125; // actions
-        }
         if (p == PARAMS.C_ATB) {
             return 150;
         }

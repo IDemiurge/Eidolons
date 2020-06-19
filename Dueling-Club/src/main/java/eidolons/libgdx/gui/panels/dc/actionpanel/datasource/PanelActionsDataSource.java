@@ -36,8 +36,6 @@ public class PanelActionsDataSource implements
     @Override
     public String getParam(PARAMS param) {
         switch (param) {
-            case STAMINA:
-                return getStamina();
             case FOCUS:
                 return getFocus();
             case TOUGHNESS:
@@ -46,8 +44,6 @@ public class PanelActionsDataSource implements
                 return getEndurance();
             case ESSENCE:
                 return getEssence();
-            case MORALE:
-                return getMorale();
         }
         return null;
     }
@@ -124,15 +120,6 @@ public class PanelActionsDataSource implements
         };
     }
 
-    @Override
-    public List<ValueContainer> getBuffs() {
-        return unitDataSource.getBuffs();
-    }
-
-    @Override
-    public List<ValueContainer> getAbilities() {
-        return unitDataSource.getAbilities();
-    }
 
     @Override
     public String getToughness() {
@@ -142,16 +129,6 @@ public class PanelActionsDataSource implements
     @Override
     public String getEndurance() {
         return unitDataSource.getEndurance();
-    }
-
-    @Override
-    public String getStamina() {
-        return unitDataSource.getStamina();
-    }
-
-    @Override
-    public String getMorale() {
-        return unitDataSource.getMorale();
     }
 
     @Override
@@ -202,5 +179,15 @@ public class PanelActionsDataSource implements
     @Override
     public List<ValueContainer> getNaturalMainWeaponDetailInfo() {
         return null;
+    }
+
+    @Override
+    public List<ValueContainer> getBuffs(boolean body) {
+        return unitDataSource.getBuffs(body);
+    }
+
+    @Override
+    public List<ValueContainer> getAbilities(boolean body) {
+        return unitDataSource.getAbilities(body);
     }
 }

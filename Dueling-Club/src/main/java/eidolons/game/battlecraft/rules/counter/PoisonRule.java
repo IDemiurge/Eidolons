@@ -24,7 +24,7 @@ public class PoisonRule extends DamageCounterRule implements TimedRule{
     private static final String HALLUNICATE = MetaEnums.STD_BUFF_NAME.Hallucinogetic_Poison.getName();
     private static final String HALLUNICATE_FOCUS_PER_COUNTER = "(-0.2)";
     private static final String WEAKEN = MetaEnums.STD_BUFF_NAME.Weakening_Poison.getName();
-    private static final String WEAKEN_STAMINA_PER_COUNTER = Constants.WEAKEN_STAMINA_PER_COUNTER;
+    private static final String WEAKEN_TOUGHNESS_PER_COUNTER = Constants.WEAKEN_STAMINA_PER_COUNTER;
     private static final String PARALYZING = MetaEnums.STD_BUFF_NAME.Paralyzing_Poison.getName();
     private static final String PARALYZING_INITIATIVE_PER_COUNTER = "(-2.5)";
     private static final Integer REDUCTION_FACTOR = 5;
@@ -50,8 +50,8 @@ public class PoisonRule extends DamageCounterRule implements TimedRule{
              getNumberOfCounters(object) + " * " + HALLUNICATE_FOCUS_PER_COUNTER));
         }
         if (object.getBuff(WEAKEN) != null) {
-            specialRoundEffects.add(new ModifyValueEffect(PARAMS.C_STAMINA, MOD.MODIFY_BY_CONST,
-             getNumberOfCounters(object) + " * " + WEAKEN_STAMINA_PER_COUNTER));
+            specialRoundEffects.add(new ModifyValueEffect(PARAMS.C_TOUGHNESS, MOD.MODIFY_BY_CONST,
+             getNumberOfCounters(object) + " * " + WEAKEN_TOUGHNESS_PER_COUNTER));
         }
         //TODO paralyzing poisan?!
         return specialRoundEffects;

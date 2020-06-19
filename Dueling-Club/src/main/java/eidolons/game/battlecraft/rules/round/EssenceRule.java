@@ -1,20 +1,27 @@
 package eidolons.game.battlecraft.rules.round;
 
-import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.core.game.DC_Game;
 import main.content.values.parameters.PARAMETER;
 
-public class MoraleRule extends RetainRestoreRule {
+import static eidolons.content.PARAMS.ESSENCE;
+import static eidolons.content.PARAMS.STARTING_ESSENCE;
 
-    public MoraleRule(DC_Game game) {
+public class EssenceRule extends RetainRestoreRule {
+
+    public EssenceRule(DC_Game game) {
         super(game);
     }
 
     @Override
     protected PARAMETER getBaseParameter() {
-        return PARAMS.MORALE;
+        return  ESSENCE;
+    }
+
+    @Override
+    public PARAMETER getMaxParam() {
+        return STARTING_ESSENCE;
     }
 
     @Override

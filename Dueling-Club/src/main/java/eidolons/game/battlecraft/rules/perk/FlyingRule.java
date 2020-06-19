@@ -27,7 +27,7 @@ public class FlyingRule {
             return false;
         }
 
-        ownerObj.modifyParamByPercent(PARAMS.MOVE_STA_PENALTY, MOVE_STA_COST_REDUCTION);
+        ownerObj.modifyParamByPercent(PARAMS.MOVE_TOU_PENALTY, MOVE_STA_COST_REDUCTION);
         ownerObj.modifyParamByPercent(PARAMS.MOVE_AP_PENALTY, MOVE_AP_COST_REDUCTION);
 
         return true;

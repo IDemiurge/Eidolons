@@ -138,7 +138,7 @@ public class DivinationMaster {
         if (hero.checkPassive(UnitEnums.STANDARD_PASSIVES.HOLY_PRAYER)) {
             Ref ref = Ref.getSelfTargetingRefCopy(hero);
             ref.setID(KEYS.SPELL, spell.getId());
-            new ModifyValueEffect(PARAMS.C_MORALE, MOD.MODIFY_BY_CONST,
+            new ModifyValueEffect(PARAMS.C_ESSENCE, MOD.MODIFY_BY_CONST,
              DC_Formulas.HOLY_PRAYER_MORALE).apply(ref);
             // ++ REMOVE COOLDOWN FROM SPELL?
         }
@@ -150,7 +150,7 @@ public class DivinationMaster {
           MOD.MODIFY_BY_PERCENT, "-25"),
          new ModifyValueEffect(PARAMS.FOC_COST,
           MOD.MODIFY_BY_PERCENT, "-25"),
-         new ModifyValueEffect(PARAMS.STA_COST,
+         new ModifyValueEffect(PARAMS.TOU_COST,
           MOD.MODIFY_BY_PERCENT, "-25"),
          new ModifyValueEffect(PARAMS.SPELLPOWER_MOD,
           MOD.MODIFY_BY_PERCENT, "25")));

@@ -41,7 +41,7 @@ public class ChannelingRule {
     };
     private static final PARAMS[] costParamsActivate = {
             PARAMS.AP_COST,
-            PARAMS.STA_COST,
+            PARAMS.TOU_COST,
             PARAMS.FOC_COST,
     };
     static boolean testMode;

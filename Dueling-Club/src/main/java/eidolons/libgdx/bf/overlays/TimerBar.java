@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf.overlays;
 
+import com.badlogic.gdx.graphics.Color;
 import eidolons.entity.obj.BattleFieldObject;
 import main.system.EventType;
 import main.system.GuiEventManager;
@@ -31,6 +32,11 @@ public class TimerBar extends ValueBar {
     }
 
     @Override
+    protected String getBarBgPath() {
+        return null;
+    }
+
+    @Override
     protected void setValues() {
 
     }
@@ -38,5 +44,10 @@ public class TimerBar extends ValueBar {
     @Override
     protected void resetLabel() {
 
+    }
+
+    @Override
+    protected Color getColor(boolean over) {
+        return null;
     }
 }

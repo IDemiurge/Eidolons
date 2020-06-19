@@ -145,7 +145,7 @@ public class Obj extends Entity {
     @Override
     public boolean setParam(PARAMETER param, String value, boolean quiety) {
         boolean result = super.setParam(param, value, quiety);
-        if (GuiEventManager.isParamEventAlwaysFired(param.getName())) quiety = false;
+        if (GuiEventManager.isBarParam(param.getName())) quiety = false;
         if (!quiety && game.isStarted()) {
             fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED);
 

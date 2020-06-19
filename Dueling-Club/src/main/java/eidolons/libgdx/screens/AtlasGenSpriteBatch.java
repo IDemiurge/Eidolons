@@ -11,7 +11,7 @@ import eidolons.libgdx.GdxImageMaster;
 import java.util.Set;
 
 public class AtlasGenSpriteBatch extends CustomSpriteBatch {
-
+// Gdx revamp - use this to put ALL textures in 3-4 atlases
     public enum ATLAS {
     ui,
 

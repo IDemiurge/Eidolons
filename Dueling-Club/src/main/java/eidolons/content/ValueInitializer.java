@@ -42,25 +42,6 @@ public class ValueInitializer {
         DC_TYPE.SKILLS.setUpgradeRequirementProp(SKILLS);
 
         // DYNAMIC CONTAINERS
-
-        DEFAULT_COUNTER_ATTACK_ACTION.setLowPriority(true);
-        DEFAULT_ATTACK_OF_OPPORTUNITY_ACTION.setLowPriority(true);
-        SPELLBOOK.setLowPriority(true);
-        VERBATIM_SPELLS.setLowPriority(true);
-        MEMORIZED_SPELLS.setLowPriority(true);
-        PREPARED_SPELLS.setLowPriority(true);
-
-        ON_BEING_HIT.setLowPriority(true);
-        ON_HIT.setLowPriority(true);
-        ON_ACTIVATE.setLowPriority(true);
-        ON_KILL.setLowPriority(true);
-
-        VISION_MODE.setLowPriority(true);
-
-        XP_PLAN.setSuperLowPriority(true);
-        XP_PLAN.setLowPriority(true);
-        ATTRIBUTE_PROGRESSION.setSuperLowPriority(true);
-        ATTRIBUTE_PROGRESSION.setLowPriority(true);
     }
     public static void initParams(){
         // COUNTER_MOD.addSpecialDefault(DC_TYPE.ACTIONS, 75);
@@ -68,15 +49,11 @@ public class ValueInitializer {
 
         C_TOUGHNESS.setColor(ColorManager.TOUGHNESS);
         C_ENDURANCE.setColor(ColorManager.ENDURANCE);
-        C_STAMINA.setColor(ColorManager.STAMINA);
         C_FOCUS.setColor(ColorManager.FOCUS);
-        C_MORALE.setColor(ColorManager.MORALE);
         C_ESSENCE.setColor(ColorManager.ESSENCE);
         TOUGHNESS.setColor(ColorManager.TOUGHNESS);
         ENDURANCE.setColor(ColorManager.ENDURANCE);
-        STAMINA.setColor(ColorManager.STAMINA);
         FOCUS.setColor(ColorManager.FOCUS);
-        MORALE.setColor(ColorManager.MORALE);
         ESSENCE.setColor(ColorManager.ESSENCE);
 
         GLORY.setDynamic(true);

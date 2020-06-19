@@ -370,10 +370,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     public float calculateCapacity(Unit unit) {
         float capacity;
         float sta_factor = 1;
-        if (!ParamAnalyzer.isStaminaIgnore(unit)) {
-            sta_factor = new Float(unit.getIntParam(PARAMS.STAMINA_PERCENTAGE))
-                    / MathMaster.PERCENTAGE;
-        }
         float foc_factor = 1;
         if (!ParamAnalyzer.isFocusIgnore(unit)) {
             foc_factor = new Float(unit.getIntParam(PARAMS.FOCUS_PERCENTAGE))
@@ -729,8 +725,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             mod = 150;
         }
         // 10/spirit
-        if (coward.getIntParam(PARAMS.C_MORALE) < 0) {
-            mod += -coward.getIntParam(PARAMS.C_MORALE);
+        if (coward.getIntParam(PARAMS.C_ESSENCE) < 0) {
+            mod += -coward.getIntParam(PARAMS.C_ESSENCE);
         }
         if (coward.checkAiMod(AI_MODIFIERS.COWARD)) {
             mod = mod * 3 / 2;

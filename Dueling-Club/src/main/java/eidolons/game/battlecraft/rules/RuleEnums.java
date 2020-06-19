@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules;
 
 public class RuleEnums {
     public enum COMBAT_RULES {
-        UNCONSCIOUS, FOCUS, MORALE, MORALE_KILL, STAMINA, WOUNDS, BLEEDING, WEIGHT,
+        UNCONSCIOUS, FOCUS, ESSENCE, ESSENCE_KILL, TOUGHNESS, WOUNDS, BLEEDING, WEIGHT,
     }
 
     public enum COUNTER_RULES {

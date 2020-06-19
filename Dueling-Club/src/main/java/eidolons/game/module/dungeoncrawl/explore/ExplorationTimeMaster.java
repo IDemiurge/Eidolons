@@ -12,7 +12,6 @@ import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.battlecraft.rules.round.RoundRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbController;
-import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -239,8 +238,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             guiDirtyFlag = false;
         }
 
-        GuiEventManager.trigger(ACTION_PANEL_UPDATE, //DC Review
-                new PanelActionsDataSource(Eidolons.getMainHero()));
+        GuiEventManager.trigger(ACTION_PANEL_UPDATE );
     }
 
     private boolean isResetIgnoreSetterOn() {
@@ -398,7 +396,6 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     private float getRegenModifier(PARAMETER param) {
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
-                case STAMINA:
                 case ESSENCE:
                     return 1f;
                 case FOCUS:
@@ -411,7 +408,6 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     private float getRegenBonus(PARAMETER param) {
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
-                case STAMINA:
                 case ESSENCE:
                     return 1f;
             }

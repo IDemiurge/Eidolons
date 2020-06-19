@@ -45,16 +45,41 @@ public class XML_Transformer {
 
     public static void main(String[] args) {
         //TODO planned routines via ARGS!
-        for (String arg : args) {
-            SPECIAL_ROUTINES special_routines = SPECIAL_ROUTINES.valueOf(arg);
-            // doRoutine(special_routines, argList);
-        }
+        // for (String arg : args) {
+        //     SPECIAL_ROUTINES special_routines = SPECIAL_ROUTINES.valueOf(arg);
+        //     // doRoutine(special_routines, argList);
+        // }
         main = true;
         GuiManager.init();
+        if (DialogMaster.confirm("Special routine?")) {
+            routine();
+            return;
+        }
         if (DialogMaster.confirm("Overwrite backup?")) {
             backUp();
         }
         showTransformDialog();
+    }
+
+    private static void routine() {
+        renameValue("STA_COST", PARAMS.TOU_COST.getName());
+        renameValue("STAMINA_PENALTY", PARAMS.TOUGHNESS_PENALTY.getName());
+        renameValue("AOO_STAMINA_PENALTY", PARAMS.AOO_TOUGH_PENALTY.getName());
+        renameValue("COUNTER_STAMINA_PENALTY", PARAMS.COUNTER_TOUGH_PENALTY.getName());
+        renameValue("INSTANT_STAMINA_PENALTY", PARAMS.INSTANT_TOUGH_PENALTY.getName());
+        renameValue("MOVE_STA_PENALTY", PARAMS.MOVE_TOU_PENALTY.getName());
+
+
+        renameValue("MORALE_RESTORATION", PARAMS.ESSENCE_RESTORATION.getName());
+        renameValue("MORALE_RETAINMENT", PARAMS.ESSENCE_RETAINMENT.getName());
+        // renameValue("FOCUS_RESTORATION", PARAMS.FOCUS_RESTORATION.getName());
+        // renameValue("FOCUS_RETAINMENT", PARAMS.FOCUS_RETAINMENT.getName());
+
+
+        // renameValue("", PARAMS.FOCUS_REGEN.getName());
+        // removeValue(  PARAMS.STA_COST.getName());
+        // renameValue("", PARAMS.FOCUS_RECOVER_REQ.getName());
+
     }
 
     public static void showTransformDialog() {

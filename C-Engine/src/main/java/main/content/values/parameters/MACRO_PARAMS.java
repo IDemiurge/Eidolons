@@ -1,7 +1,6 @@
 package main.content.values.parameters;
 
 import main.content.Metainfo;
-import main.content.OBJ_TYPE;
 import main.system.auxiliary.StringMaster;
 
 import java.awt.*;
@@ -223,68 +222,34 @@ public enum MACRO_PARAMS implements PARAMETER {
     }
 
     @Override
-    public boolean isSuperLowPriority() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public void setSuperLowPriority(boolean lowPriority) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public String getShortName() {
-        // TODO Auto-generated method stub
+        
         return null;
     }
 
-    @Override
-    public boolean isHighPriority() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public void setHighPriority(boolean highPriority) {
-        // TODO Auto-generated method stub
-
-    }
 
     @Override
     public boolean isWriteToType() {
-        // TODO Auto-generated method stub
+        
         return false;
     }
 
     @Override
     public void setWriteToType(boolean writeToType) {
-        // TODO Auto-generated method stub
+        
 
     }
 
     @Override
     public boolean isMastery() {
-        // TODO Auto-generated method stub
+        
         return false;
     }
-
-    @Override
-    public void addSpecialDefault(OBJ_TYPE type, Object value) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public Object getSpecialDefault(OBJ_TYPE type) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+ 
 
     @Override
     public boolean isMod() {
-        // TODO Auto-generated method stub
+        
         return false;
     }
 
@@ -292,6 +257,16 @@ public enum MACRO_PARAMS implements PARAMETER {
     @Override
     public INPUT_REQ getInputReq() {
         return null;
+    }
+
+    @Override
+    public void setDevOnly(boolean devOnly) {
+        
+    }
+
+    @Override
+    public boolean isDevOnly() {
+        return false;
     }
 
 }

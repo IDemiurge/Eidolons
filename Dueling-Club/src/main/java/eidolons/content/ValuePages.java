@@ -80,13 +80,11 @@ public class ValuePages {
             WEIGHT,
     };
     public static final PARAMETER[] UNIT_PARAMETERS = {
-            TOUGHNESS, ENDURANCE, STAMINA, ESSENCE, FOCUS,
-            MORALE,
+            TOUGHNESS, ENDURANCE,   ESSENCE, FOCUS,
             DAMAGE, OFF_HAND_DAMAGE,
 
             ARMOR, ATTACK, DEFENSE, INITIATIVE, N_OF_COUNTERS,
             STARTING_FOCUS, SPIRIT, RESISTANCE, SPELL_ARMOR,
-            C_ATB,
             ATB_START_MOD, ATB_START_PRESET,
 
             BASE_DAMAGE,
@@ -100,36 +98,31 @@ public class ValuePages {
             ARMOR_PENETRATION, ARMOR_MOD, CONCEALMENT, DETECTION,
             STEALTH,
             UNIT_LEVEL, //
-            QUICK_SLOTS, // HEROLT
-            STAMINA_PENALTY, ESSENCE_PENALTY, AP_PENALTY,
+            QUICK_SLOTS,
+            TOUGHNESS_PENALTY, ESSENCE_PENALTY, AP_PENALTY,
             FOCUS_PENALTY,};
     public static final PARAMETER[] UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT = {
             C_N_OF_COUNTERS,
             C_ATB,
             C_ENDURANCE,
             C_TOUGHNESS,
-            C_STAMINA,
             C_FOCUS,
             C_ESSENCE,
-            C_MORALE,
     };
     public static final PARAMS[] UNIT_DYNAMIC_PARAMETERS_RESTORABLE = {
-            C_STAMINA,
             C_FOCUS,
             C_ESSENCE,
     };
     public static final PARAMETER[] UNIT_DYNAMIC_PARAMETERS_CORE = {
             ENDURANCE,
             TOUGHNESS,
-            STAMINA,
             FOCUS,
             ESSENCE,
-            MORALE,
             N_OF_COUNTERS,
     };
     public static final PARAMETER[] UNIT_DYNAMIC_PARAMETERS = {
-            C_ATB, C_ENDURANCE, C_TOUGHNESS, C_STAMINA,
-            C_FOCUS, C_ESSENCE, C_MORALE,
+            C_ATB, C_ENDURANCE, C_TOUGHNESS,
+            C_FOCUS, C_ESSENCE,
             C_CARRYING_WEIGHT,
 
     };
@@ -169,7 +162,7 @@ public class ValuePages {
 
     };
     public static final PARAMETER[] UPKEEP_PARAMETERS = {ESS_UPKEEP, AP_UPKEEP,
-            END_UPKEEP, FOC_UPKEEP, STA_UPKEEP,};
+            END_UPKEEP, FOC_UPKEEP,  };
     public static final VALUE[] ATTRIBUTES_VAL = {STRENGTH, VITALITY,
             AGILITY, DEXTERITY, WILLPOWER, INTELLIGENCE, WISDOM,
             KNOWLEDGE, SPELLPOWER, CHARISMA,};
@@ -504,7 +497,7 @@ public class ValuePages {
 
     };
     public static final VALUE[] QUICK_ITEM_PARAMETERS = {CHARGES, COOLDOWN,
-            AP_COST, STA_COST, ESS_COST, FOC_COST, FOC_REQ,
+            AP_COST, TOU_COST, ESS_COST, FOC_COST, FOC_REQ,
             ENDURANCE_COST, DURATION, RANGE, RADIUS,
             // SPELLPOWER_BONUS,
             // SPELLPOWER_MOD,
@@ -527,11 +520,11 @@ public class ValuePages {
             PROPS.TARGETING_MODIFIERS, PROPS.DAMAGE_TYPE, G_PROPS.SPELL_UPGRADE_GROUPS,
 
             G_PROPS.SOUNDSET, G_PROPS.CUSTOM_SOUNDSET, G_PROPS.IMPACT_SPRITE};
-    public static final PARAMETER[] COSTS = {AP_COST, STA_COST, ESS_COST,
+    public static final PARAMETER[] COSTS = {AP_COST, TOU_COST, ESS_COST,
             FOC_COST, FOC_REQ, ENDURANCE_COST, CP_COST,
 
     };
-    public static final VALUE[] UPKEEP_PARAMS = {AP_UPKEEP, STA_UPKEEP,
+    public static final VALUE[] UPKEEP_PARAMS = {AP_UPKEEP,
             ESS_UPKEEP, FOC_UPKEEP, END_UPKEEP,
 
     };
@@ -575,11 +568,11 @@ public class ValuePages {
 
     };
     public static final PARAMETER[] PENALTIES_MAIN = {
-            STAMINA_PENALTY, AP_PENALTY,
+            TOUGHNESS_PENALTY, AP_PENALTY,
             FOCUS_PENALTY, ESSENCE_PENALTY,
     };
     public static final PARAMETER[] PENALTIES_MOVE = {
-            MOVE_STA_PENALTY,
+            MOVE_TOU_PENALTY,
             MOVE_AP_PENALTY,
     };
     public static final PARAMETER[] PENALTIES_ATK = {
@@ -587,13 +580,13 @@ public class ValuePages {
             ATTACK_AP_PENALTY,
     };
     public static final PARAMETER[] PENALTIES_SPELL = {
-            SPELL_STA_PENALTY, SPELL_ESS_PENALTY,
+             SPELL_ESS_PENALTY,
             SPELL_FOC_PENALTY, SPELL_AP_PENALTY,
     };
-    public static final PARAMETER[] PENALTIES = {STAMINA_PENALTY, AP_PENALTY,
+    public static final PARAMETER[] PENALTIES = {TOUGHNESS_PENALTY, AP_PENALTY,
             FOCUS_PENALTY, ESSENCE_PENALTY, ATTACK_STA_PENALTY,
-            ATTACK_AP_PENALTY, SPELL_STA_PENALTY, SPELL_ESS_PENALTY,
-            SPELL_FOC_PENALTY, SPELL_AP_PENALTY, MOVE_STA_PENALTY,
+            ATTACK_AP_PENALTY,  SPELL_ESS_PENALTY,
+            SPELL_FOC_PENALTY, SPELL_AP_PENALTY, MOVE_TOU_PENALTY,
             MOVE_AP_PENALTY,
 
     };
@@ -763,7 +756,7 @@ public class ValuePages {
 
     private static final VALUE[] DC_SPELL_PARAMETERS = {
 
-            AP_COST, STA_COST, ESS_COST, ENDURANCE_COST, FOC_COST,
+            AP_COST, TOU_COST, ESS_COST, ENDURANCE_COST, FOC_COST,
             FOC_REQ, RANGE, RADIUS, SPELLPOWER_MOD,
             DURATION, COOLDOWN, C_COOLDOWN,
 

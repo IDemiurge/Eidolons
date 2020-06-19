@@ -165,7 +165,7 @@ public class RuleKeeper implements Controller {
         if (CoreEngine.TEST_LAUNCH){
             switch (rule) {
                 case DURABILITY:
-                case SOULFORCE:
+                // case SOULFORCE:
                     return false;
             }
         }

@@ -2,7 +2,6 @@ package main.content.values.properties;
 
 import main.content.ContentValsManager;
 import main.content.Metainfo;
-import main.content.OBJ_TYPE;
 import main.system.auxiliary.StringMaster;
 
 public enum MACRO_PROPS implements PROPERTY {
@@ -145,7 +144,7 @@ public enum MACRO_PROPS implements PROPERTY {
     private boolean dynamic;
     private String defaultValue;
 
-    private boolean lowPriority = false;
+    private final boolean lowPriority = false;
     private String[] entityTypes;
     private boolean container;
 
@@ -223,38 +222,12 @@ public enum MACRO_PROPS implements PROPERTY {
         return String.valueOf(defaultValue);
     }
 
-    public boolean isLowPriority() {
-        return lowPriority;
-    }
-
-    public void setLowPriority(boolean lowPriority) {
-        this.lowPriority = lowPriority;
-    }
 
     @Override
     public boolean isContainer() {
         return container;
     }
 
-    public Metainfo getMetainfo() {
-        return metainfo;
-    }
-
-    public void setMetainfo(Metainfo metainfo) {
-        this.metainfo = metainfo;
-    }
-
-    @Override
-    public boolean isSuperLowPriority() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public void setSuperLowPriority(boolean lowPriority) {
-        // TODO Auto-generated method stub
-
-    }
 
     @Override
     public String getShortName() {
@@ -262,42 +235,28 @@ public enum MACRO_PROPS implements PROPERTY {
     }
 
     @Override
-    public boolean isHighPriority() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public void setHighPriority(boolean highPriority) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public boolean isWriteToType() {
-        // TODO Auto-generated method stub
+        
         return false;
     }
 
     @Override
     public void setWriteToType(boolean writeToType) {
-        // TODO Auto-generated method stub
+        
 
-    }
-
-    @Override
-    public void addSpecialDefault(OBJ_TYPE type, Object value) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public Object getSpecialDefault(OBJ_TYPE type) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    } 
 
     public INPUT_REQ getInputReq() {
         return null;
+    }
+
+    @Override
+    public void setDevOnly(boolean devOnly) {
+        
+    }
+
+    @Override
+    public boolean isDevOnly() {
+        return false;
     }
 }

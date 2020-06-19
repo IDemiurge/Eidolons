@@ -124,7 +124,7 @@ public class WaterRule extends RoundRule implements ActionRule {
     }
 
     public static int getWaterMoveStaMod(Unit unit) {
-        return Math.round(waterObj.getIntParam(PARAMS.MOVE_STA_PENALTY) * getSubmergedFactor(unit));
+        return Math.round(waterObj.getIntParam(PARAMS.MOVE_TOU_PENALTY) * getSubmergedFactor(unit));
 
     }
 

@@ -28,10 +28,10 @@ public class CombatOptionsPanel extends TablePanelX {
 
     public static final OPTION[] DEV_OPTIONS = {
             GameplayOptions.GAMEPLAY_OPTION.IMMORTALITY,
-            GameplayOptions.GAMEPLAY_OPTION.MANUAL_CONTROL,
             GameplayOptions.GAMEPLAY_OPTION.GHOST_MODE,
-            GameplayOptions.GAMEPLAY_OPTION.DEBUG_MODE,
             GameplayOptions.GAMEPLAY_OPTION.AI_DEBUG,
+            GameplayOptions.GAMEPLAY_OPTION.DEBUG_MODE,
+            GameplayOptions.GAMEPLAY_OPTION.MANUAL_CONTROL,
 //            GameplayOptions.TESTING_OPTION.DEBUG_MODE,
 //            GameplayOptions.TESTING_OPTION.DEBUG_MODE,
     };

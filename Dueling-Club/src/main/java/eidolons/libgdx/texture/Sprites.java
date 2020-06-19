@@ -67,6 +67,9 @@ public class Sprites {
     public static final String BOSS_HARVESTER =  "sprites/boss/reaper/atlas.txt";
     public static final String BOSS_KNIGHT = "sprites/boss/knight/knight.txt";
     public static final String BOSS_KNIGHT_ATTACK = "sprites/boss/knight/main atk.txt";
+    public static final String SOULFORCE_BAR_BG = "sprites/ui/soulforce bar bg.txt";
+    public static final String SOULFORCE_BAR = "sprites/ui/soulforce bar.txt";
+    public static final String SOULFORCE_CORE = "sprites/ui/soulforce core.txt";
 
     private static final Map<String, String> spriteMap;
 

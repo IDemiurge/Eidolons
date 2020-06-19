@@ -406,12 +406,8 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     private String entityType;
     private boolean dynamic;
     private String defaultValue;
-    private final int AV_ID;
-    private boolean lowPriority = false;
     private String[] entityTypes;
     private boolean container;
-    private final boolean superLowPriority = false;
-    private boolean highPriority;
     private String fullName;
     private String shortName;
     private Map<OBJ_TYPE, Object> defaultValuesMap;
@@ -452,7 +448,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
         this.entityType = entityType;
         this.dynamic = dynamic;
         this.defaultValue = defaultValue;
-        this.AV_ID = AV_ID;
     }
 
     @Override
@@ -560,10 +555,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     public void setContainer(boolean container) {
         this.container = container;
-    }
-
-    public void setLowPriority(boolean lowPriority) {
-        this.lowPriority = lowPriority;
     }
 
 

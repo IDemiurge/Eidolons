@@ -17,12 +17,13 @@ import main.entity.Ref.KEYS;
 import main.game.core.game.GenericGame;
 import main.system.auxiliary.StringMaster;
 
-public class StaminaBuffRule extends DC_BuffRule {
-    public static final String[] buffNames = {MetaEnums.STD_BUFF_NAME.Exhausted.getName(),
+public class ToughnessBuffRule extends DC_BuffRule {
+    public static final String[] buffNames = {
      MetaEnums.STD_BUFF_NAME.Fatigued.getName(), MetaEnums.STD_BUFF_NAME.Energized.getName()};
-    public static final String[] formulas = {"1", "10", "150",};
+    public static final String[] formulas = {  "20", "50",};
+    //TODO into PERCENTAGE!!!
 
-    public StaminaBuffRule(GenericGame game) {
+    public ToughnessBuffRule(GenericGame game) {
         super(game);
     }
 
@@ -33,16 +34,13 @@ public class StaminaBuffRule extends DC_BuffRule {
 
     protected Effect getEffect(int level) {
         switch (level) {
-            case 0: {
-                return new Effects(getEffect(1)
-//         TODO won't work via buff, need oneshot mechanic
-//        , new ModeEffect(STD_MODES.RESTING)
-                );
-            }
             case 1:
-            case 2: {
-                return new ModifyValueEffect(PARAMS.INITIATIVE, MOD.MODIFY_BY_PERCENT,
-                 getEffectFormula());
+            case 0: {
+                return new Effects(
+                        new ModifyValueEffect(PARAMS.SPELLPOWER_MOD, MOD.MODIFY_BY_PERCENT,
+                                getEffectFormula()),
+                        new ModifyValueEffect(PARAMS.DAMAGE_MOD, MOD.MODIFY_BY_PERCENT,
+                 getEffectFormula()));
             }// ++ Endurance regen?
         }
 
@@ -52,13 +50,12 @@ public class StaminaBuffRule extends DC_BuffRule {
     @Override
     protected String getEffectFormula(Integer level) {
         switch (level) {
-            case 0:
-            case 1: {
+            case 0: {
                 return "(" + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[1]
                  + ")*5";
                 //-5% ATB for each point of Stamina below 10
             }
-            case 2: {
+            case 1: {
                 // "5*sqrt(" +
                 return StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[2];
                 // + ")";
@@ -84,12 +81,12 @@ public class StaminaBuffRule extends DC_BuffRule {
 
     @Override
     public Integer getMaxLevel() {
-        return 2;
+        return 1;
     }
 
     @Override
     protected VALUE getValue() {
-        return PARAMS.C_STAMINA;
+        return PARAMS.C_TOUGHNESS;
     }
 
     protected String[] getConditionFormulas() {
@@ -104,8 +101,7 @@ public class StaminaBuffRule extends DC_BuffRule {
 
     @Override
     protected COMBAT_RULES getCombatRuleEnum() {
-        // TODO Auto-generated method stub
-        return RuleEnums.COMBAT_RULES.STAMINA;
+        return RuleEnums.COMBAT_RULES.TOUGHNESS;
     }
 
 }

@@ -26,15 +26,6 @@ public class RestEffect extends DC_Effect {
     @Override
     public boolean applyThis() {
         //whole party!
-        /*
-        add regen and wait()
-        interrupt?
-         remove buff?
-         or rely on reset() ?
-
-         block actions
-         add shader
-         */
 
         if (!ExplorationMaster.isExplorationOn()){
             ref.getActive().setCancelled(true);
@@ -61,8 +52,6 @@ public class RestEffect extends DC_Effect {
                 sub.removeBuff("Sleeping");
                 Ref REF = sub.getRef().getTargetingRef(sub);
                 getRestedBuffEffect().apply(REF);
-                new ModifyValueEffect(PARAMS.C_MORALE,
-                 MOD.MODIFY_BY_PERCENT, "15").apply(REF);
             }
         }
         return true;
@@ -70,7 +59,6 @@ public class RestEffect extends DC_Effect {
 
     private Effect getRestedBuffEffect() {
         Effects effects = new Effects();
-        effects.add(new ModifyValueEffect(PARAMS.STAMINA, MOD.MODIFY_BY_PERCENT, "25"));
         effects.add(new ModifyValueEffect(PARAMS.ESSENCE, MOD.MODIFY_BY_PERCENT, "25"));
         effects.add(new ModifyValueEffect(PARAMS.WILLPOWER, MOD.MODIFY_BY_PERCENT, "25"));
 

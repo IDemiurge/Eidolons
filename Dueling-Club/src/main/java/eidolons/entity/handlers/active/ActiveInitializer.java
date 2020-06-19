@@ -141,24 +141,24 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
         if (getHandler().isCounterMode()) {
             ap = ownerObj.getIntParam(PARAMS.COUNTER_CP_PENALTY);
             sta = ownerObj
-                    .getIntParam(PARAMS.COUNTER_STAMINA_PENALTY);
+                    .getIntParam(PARAMS.COUNTER_TOUGH_PENALTY);
         }
         if (getHandler().isInstantMode()) {
             ap = ownerObj.getIntParam(PARAMS.INSTANT_CP_PENALTY);
             sta = ownerObj
-                    .getIntParam(PARAMS.INSTANT_STAMINA_PENALTY);
+                    .getIntParam(PARAMS.INSTANT_TOUGH_PENALTY);
         }
         if (getHandler().isAttackOfOpportunityMode()) {
             ap = ownerObj.getIntParam(PARAMS.AOO_CP_PENALTY);
             sta = ownerObj
-                    .getIntParam(PARAMS.AOO_STAMINA_PENALTY);
+                    .getIntParam(PARAMS.AOO_TOUGH_PENALTY);
         }
         if (ap != 0)
             if (costs.getCost(PARAMS.AP_COST) != null)
                 costs.getCost(PARAMS.AP_COST).getPayment().getAmountFormula().applyModifier(ap);
         if (sta != 0)
-            if (costs.getCost(PARAMS.STA_COST) != null) {
-                costs.getCost(PARAMS.STA_COST).getPayment().getAmountFormula().applyModifier(sta);
+            if (costs.getCost(PARAMS.TOU_COST) != null) {
+                costs.getCost(PARAMS.TOU_COST).getPayment().getAmountFormula().applyModifier(sta);
             }
     }
 

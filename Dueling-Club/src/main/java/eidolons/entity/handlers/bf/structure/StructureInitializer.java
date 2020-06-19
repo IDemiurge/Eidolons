@@ -28,8 +28,6 @@ public class StructureInitializer extends BfObjInitializer<Structure> {
 
         getType().addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.LEAVES_NO_CORPSE.toString());
 
-        setParam(PARAMS.C_MORALE, 0);
-        setParam(PARAMS.C_STAMINA, 0);
         setParam(PARAMS.C_FOCUS, 0);
         setParam(PARAMS.C_ESSENCE, 0);
     }

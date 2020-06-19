@@ -2,16 +2,12 @@ package eidolons.ability;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.battlecraft.rules.round.FocusRule;
-import eidolons.game.core.Eidolons;
 import eidolons.system.DC_ConditionMaster;
 import main.elements.conditions.NumericCondition;
 import main.elements.conditions.Requirement;
 import main.elements.costs.*;
 import main.entity.Entity;
-import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.Obj;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
@@ -58,21 +54,14 @@ public class DC_CostsFactory {
         if (cost != null) {
             costs.add(cost);
         }
-        cost = getCost(spell, PARAMS.STA_COST, PARAMS.C_STAMINA);
+        cost = getCost(spell, PARAMS.TOU_COST, PARAMS.C_TOUGHNESS);
         if (cost != null) {
             costs.add(cost);
         }
-        if (FocusRule.isFatigueOn()) {
-            cost = getCost(spell, PARAMS.FOC_COST, PARAMS.FOCUS_FATIGUE, true);
-            if (cost != null) {
-                costs.add(cost);
-            }
-        } else {
             cost = getCost(spell, PARAMS.FOC_COST, PARAMS.C_FOCUS);
             if (cost != null) {
                 costs.add(cost);
             }
-        }
         cost = getCost(spell, PARAMS.ENDURANCE_COST, PARAMS.C_ENDURANCE);
         if (cost != null) {
             costs.add(cost);
@@ -140,27 +129,7 @@ public class DC_CostsFactory {
         formula = new Formula(amount + "");
         var = false;
 
-        Cost cost =
-                (pay_param != PARAMS.FOCUS_FATIGUE) ? new CostImpl(new Payment(pay_param, formula)) :
-                        new CostImpl(new Payment(pay_param, formula) {
-                            @Override
-                            public boolean pay(Obj payee, Ref ref) {
-                                if (add) {
-                                    if (payee == Eidolons.getMainHero()) {
-                                        payee.getGame().getLogManager().log(payee + "'s " +
-                                                pay_param.getName() + " is now " +
-                                                payee.getIntParam(PARAMS.FOCUS_FATIGUE));
-                                    }
-                                }
-                                return super.pay(payee, ref);
-                            }
-                        }, cost_param) {
-                            @Override
-                            public boolean canBePaid(Ref REF, boolean noAlt) {
-                                return true;
-                            }
-
-                        };
+        Cost cost = new CostImpl(new Payment(pay_param, formula) , cost_param)  ;
         cost.setVariable(var);
         return cost;
     }

@@ -53,7 +53,6 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.event.Event;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.EventCallback;
 import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
@@ -66,6 +65,7 @@ import main.system.threading.WaitMaster;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static main.game.logic.event.Event.STANDARD_EVENT_TYPE.*;
 import static main.system.GuiEventType.*;
 
 /**
@@ -562,71 +562,80 @@ public class GridRenderHelper {
 
             boolean caught = false;
 
-            if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED) {
+            Event.EVENT_TYPE type = event.getType();
+            if (type == EFFECT_HAS_BEEN_APPLIED) {
                 GuiEventManager.trigger(EFFECT_APPLIED, event.getRef().getEffect());
                 caught = true;
-            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
-                    || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE) {
+            } else if (type == UNIT_HAS_CHANGED_FACING
+                    || type == UNIT_HAS_TURNED_CLOCKWISE
+                    || type == UNIT_HAS_TURNED_ANTICLOCKWISE) {
                 if ((ref.getObj(KEYS.TARGET) instanceof BattleFieldObject)) {
                     BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET);
-//                if (hero.isMainHero()) TODO this is an experiment (insane) feature...
-//                    if (hero.isMine()) {
-//                        turnField(event.getType());
-//                    }
                     BaseView view = getViewMap().get(hero);
                     if (view != null && view instanceof UnitGridView) {
                         UnitGridView unitView = ((UnitGridView) view);
                         unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
-//                    SoundController.getCustomEventSound(SOUND_EVENT.UNIT_TURNS, );
                         if (hero instanceof Unit)
                             DC_SoundMaster.playTurnSound(hero);
                     }
                 }
                 caught = true;
-            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS
+            } else if (type == UNIT_HAS_FALLEN_UNCONSCIOUS
             ) {
                 GuiEventManager.trigger(UNIT_GREYED_OUT_ON, ref.getSourceObj());
-            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS) {
+            } else if (type == UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS) {
                 GuiEventManager.trigger(UNIT_GREYED_OUT_OFF, ref.getSourceObj());
-            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
+            } else if (type == UNIT_HAS_BEEN_KILLED) {
                 GuiEventManager.trigger(UNIT_GREYED_OUT_OFF, ref.getSourceObj());
                 if (!DeathAnim.isOn() || ref.isDebug()) {
                     GuiEventManager.trigger(DESTROY_UNIT_MODEL, ref.getTargetObj());
                 }
                 caught = true;
-            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
-                if (!MoveAnimation.isOn()) //|| AnimMaster.isAnimationOffFor(ref.getSourceObj(), viewMap.getVar(ref.getSourceObj())))
-                    panel.removeUnitView((BattleFieldObject) ref.getSourceObj());
-                caught = true;
+            } else {
 
-                if (event.getRef().getActive() instanceof Spell) {
-                    unitBeingMoved((BattleFieldObject) ref.getSourceObj());
-                }
+                BattleFieldObject object = (BattleFieldObject) ref.getSourceObj();
 
-            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
-                unitMoved(event.getRef().getSourceObj());
+                if (type == UNIT_BEING_MOVED) {
+                    if (!MoveAnimation.isOn())
+                        panel.removeUnitView(object);
+                    caught = true;
 
-                if (event.getRef().getActive() instanceof Spell) {
-                    unitMovedForced((BattleFieldObject) ref.getSourceObj(), (Spell) event.getRef().getActive());
+                    if (event.getRef().getActive() instanceof Spell) {
+                        unitBeingMoved(object);
+                    }
+
+                } else if (type == UNIT_FINISHED_MOVING) {
+                    unitMoved(object);
+
+                    if (event.getRef().getActive() instanceof Spell) {
+                        unitMovedForced(object, (Spell) event.getRef().getActive());
+                    }
+                    caught = true;
+                } else if (type.name().startsWith("PARAM_BEING_MODIFIED")) {
+                    caught = true;
+                } else if (type.name().startsWith("PROP_")) {
+                    caught = true;
+                } else if (type.name().startsWith("ABILITY_")) {
+                    caught = true;
+                } else if (type.name().startsWith("EFFECT_")) {
+                    caught = true;
+                } else if (type.name().startsWith("PARAM_MODIFIED")) {
+                    if (!HpBar.isResetOnLogicThread()) {
+                        if (GuiEventManager.isBodyParam(type.getArg())) {
+                            checkHpBarReset(object);
+                            if (object.isPlayerCharacter()){
+                                checkBodyBarReset(object);
+                            }
+                        }
+                        if (GuiEventManager.isSoulParam(type.getArg())) {
+                            checkHpBarReset(object);
+                            checkSoulBarReset(object);
+                        }
+                    }
+                    caught = true;
                 }
-                caught = true;
-            } else if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
-                caught = true;
-            } else if (event.getType().name().startsWith("PROP_")) {
-                caught = true;
-            } else if (event.getType().name().startsWith("ABILITY_")) {
-                caught = true;
-            } else if (event.getType().name().startsWith("EFFECT_")) {
-                caught = true;
-            } else if (event.getType().name().startsWith("PARAM_MODIFIED")) {
-                if (GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())) {
-                    if (!HpBar.isResetOnLogicThread())
-                        checkHpBarReset(event.getRef().getSourceObj());
-                }
-                caught = true;
             }
-            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE) {
+            if (type == UNIT_HAS_BEEN_DEALT_PURE_DAMAGE) {
                 if (!HpBar.isResetOnLogicThread())
                     checkHpBarReset(event.getRef().getTargetObj());
                 caught = true;
@@ -677,6 +686,13 @@ public class GridRenderHelper {
         view.fadeOut();
 //        new MoveAnimation()
 
+    }
+    private void checkBodyBarReset(BattleFieldObject object) {
+        GuiEventManager.trigger(UPDATE_MAIN_HERO);
+    }
+
+    private void checkSoulBarReset(BattleFieldObject object) {
+        GuiEventManager.trigger(UPDATE_MAIN_HERO);
     }
     public void checkHpBarReset(Obj obj) {
         HpBarView view = (HpBarView) getViewMap().get(obj);

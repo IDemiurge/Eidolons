@@ -377,7 +377,7 @@ public class DC_ContentValsManager extends ContentValsManager {
     public static PARAMETER[] getArmorWeightPenaltyParams() {
         return new PARAMETER[]{
          // PARAMS.DEFENSE_MOD,
-         PARAMS.MOVE_STA_PENALTY, PARAMS.MOVE_AP_PENALTY, PARAMS.SPELL_STA_PENALTY,
+         PARAMS.MOVE_TOU_PENALTY, PARAMS.MOVE_AP_PENALTY,
          PARAMS.SPELL_ESS_PENALTY,};
     }
 
@@ -428,9 +428,9 @@ public class DC_ContentValsManager extends ContentValsManager {
     private static List<VALUE> getDefaultValuesToReset() {
         return new ArrayList<>(Arrays
          .asList(
-          PARAMS.COUNTER_STAMINA_PENALTY,
-          PARAMS.AOO_STAMINA_PENALTY,
-          PARAMS.INSTANT_STAMINA_PENALTY,
+          PARAMS.COUNTER_TOUGH_PENALTY,
+          PARAMS.AOO_TOUGH_PENALTY,
+          PARAMS.INSTANT_TOUGH_PENALTY,
           PARAMS.COUNTER_MOD));
     }
 
@@ -554,9 +554,6 @@ public class DC_ContentValsManager extends ContentValsManager {
         }
         if (param == PARAMS.FOC_UPKEEP) {
             return PARAMS.C_FOCUS;
-        }
-        if (param == PARAMS.STA_UPKEEP) {
-            return PARAMS.C_STAMINA;
         }
 
         return null;
@@ -840,8 +837,8 @@ public class DC_ContentValsManager extends ContentValsManager {
         switch (costParam) {
             case ESS_COST:
                 return PARAMS.C_ESSENCE;
-            case STA_COST:
-                return PARAMS.C_STAMINA;
+            case TOU_COST:
+                return PARAMS.C_TOUGHNESS;
             case FOC_COST:
                 return PARAMS.C_FOCUS;
             case ENDURANCE_COST:

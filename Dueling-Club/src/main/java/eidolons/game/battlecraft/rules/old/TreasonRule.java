@@ -22,11 +22,11 @@ public class TreasonRule extends DC_RuleImpl {
 
     private static final Condition CONDITION = new NumericCondition(TREASON,
      "{TARGET_C_MORALE}");
-    private static final String MORALE = PARAMS.C_MORALE.name();
+    private static final String MORALE = PARAMS.C_ESSENCE.name();
 
     private static final Condition CONDITION0 = new NotCondition(
      new StatusCheckCondition(Ref.KEYS.TARGET.name(), UnitEnums.STATUS.CHARMED));
-    private String buffTypeName = "Treason";
+    private final String buffTypeName = "Treason";
 
     private Conditions retain_conditions;
 

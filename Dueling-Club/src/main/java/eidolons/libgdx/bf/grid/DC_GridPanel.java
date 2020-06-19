@@ -35,7 +35,6 @@ import eidolons.libgdx.bf.grid.cell.*;
 import eidolons.libgdx.bf.grid.moving.PlatformCell;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.gui.generic.GroupX;
-import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.GrayscaleShader;
@@ -468,7 +467,7 @@ public class DC_GridPanel extends GridPanel {
             view.setActive(true);
             if (hero.isMine()) {
                 GuiEventManager.trigger(SHOW_TEAM_COLOR_BORDER, view);
-                GuiEventManager.trigger(ACTION_PANEL_UPDATE, new PanelActionsDataSource((Unit) hero));
+                GuiEventManager.trigger(ACTION_PANEL_UPDATE);
             } else {
                 GuiEventManager.trigger(SHOW_TEAM_COLOR_BORDER, view);
                 GuiEventManager.trigger(ACTION_PANEL_UPDATE, null);

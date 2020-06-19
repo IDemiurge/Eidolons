@@ -589,7 +589,7 @@ public class DC_GameManager extends GameManager {
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED_COMBAT ||
 
                     event.getType().name().startsWith("PARAM_MODIFIED")
-                            && GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())) {
+                            && GuiEventManager.isBarParam(event.getType().getArg())) {
 
                 try {
                     ScreenMaster.getDungeonGrid().getGridManager().

@@ -15,7 +15,6 @@ public class ResurrectEffect extends DC_Effect implements OneshotEffect {
     private Formula endFormula;
     private Formula essFormula;
     private Formula focFormula;
-    private Formula moraleFormula;
     private Formula actFormula;
 
     public ResurrectEffect() {
@@ -34,7 +33,6 @@ public class ResurrectEffect extends DC_Effect implements OneshotEffect {
         target.setParam(PARAMS.C_TOUGHNESS, endFormula.getInt(ref));
         target.setParam(PARAMS.C_ESSENCE, essFormula.getInt(ref));
         target.setParam(PARAMS.C_FOCUS, focFormula.getInt(ref));
-        target.setParam(PARAMS.C_MORALE, moraleFormula.getInt(ref));
 
         return false;
     }

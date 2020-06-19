@@ -20,8 +20,6 @@ public class ContentConsts {
     public static final PARAMETER[] DYNAMIC_PARAMETERS = {
      PARAMS.C_TOUGHNESS,
      PARAMS.C_ENDURANCE,
-     PARAMS.C_STAMINA,
-     PARAMS.C_MORALE,
             PARAMS.C_ESSENCE,
      PARAMS.C_FOCUS,
     };
@@ -39,18 +37,18 @@ public class ContentConsts {
 
     };
     public static final PARAMS[] COST_PARAMS = {PARAMS.ESS_COST, PARAMS.ENDURANCE_COST,
-     PARAMS.FOC_COST, PARAMS.STA_COST, PARAMS.AP_COST,};
+     PARAMS.FOC_COST, PARAMS.TOU_COST, PARAMS.AP_COST,};
     public static final PARAMS[] PAY_PARAMS = {PARAMS.C_ESSENCE, PARAMS.C_ENDURANCE,
-     PARAMS.C_FOCUS, PARAMS.C_STAMINA ,};
+     PARAMS.C_FOCUS  ,};
     final static PARAMETER[] ARMOR_MODIFYING_PARAMS = {PARAMS.NOISE, PARAMS.QUICK_SLOTS,
       PARAMS.ARMOR, PARAMS.DEFENSE, PARAMS.TOUGHNESS, PARAMS.ENDURANCE,
       PARAMS.SIDE_SIGHT_PENALTY, PARAMS.SIGHT_RANGE, PARAMS.STEALTH, PARAMS.DETECTION,
-      PARAMS.STAMINA_PENALTY, PARAMS.FOCUS_PENALTY, PARAMS.AP_PENALTY,
-      PARAMS.ESSENCE_PENALTY, PARAMS.SPELL_STA_PENALTY, PARAMS.SPELL_FOC_PENALTY,
+      PARAMS.TOUGHNESS_PENALTY, PARAMS.FOCUS_PENALTY, PARAMS.AP_PENALTY,
+      PARAMS.ESSENCE_PENALTY,  PARAMS.SPELL_FOC_PENALTY,
       PARAMS.SPELL_AP_PENALTY, PARAMS.SPELL_ESS_PENALTY,
       // PARAMS.ATTACK_AP_PENALTY, PARAMS.ATTACK_STA_PENALTY, //TODO
       // OFFHAND?!
-      PARAMS.MOVE_AP_PENALTY, PARAMS.MOVE_STA_PENALTY,
+      PARAMS.MOVE_AP_PENALTY, PARAMS.MOVE_TOU_PENALTY,
 
      };
     static final DC_TYPE[] BF_OBJ_TYPES = {DC_TYPE.CHARS, DC_TYPE.BF_OBJ,
@@ -66,7 +64,7 @@ public class ContentConsts {
     static final String DEFAULT_WEAPON = "Petty Fist";
     public static PARAMETER[] REGENERATED_PARAMS = {
      PARAMS.ENDURANCE, PARAMS.FOCUS,
-     PARAMS.ESSENCE, PARAMS.STAMINA
+     PARAMS.ESSENCE
      //   ,PARAMS.ENERGY
     };
     public static PARAMETER[] headerUnitParams2 = {PARAMS.C_N_OF_COUNTERS ,
@@ -77,9 +75,9 @@ public class ContentConsts {
     };
     // next page => Masteries
     // another page => Modifiers (+sneak)
-    private static PARAMETER[] headerCharParams = null;
+    private static final PARAMETER[] headerCharParams = null;
     public static PARAMETER[] headerUnitParams = {PARAMS.BASE_DAMAGE, PARAMS.ARMOR,
-     PARAMS.DEFENSE, PARAMS.ATTACK, PARAMS.C_MORALE, PARAMS.RESISTANCE, PARAMS.SPELL_ARMOR,
+     PARAMS.DEFENSE, PARAMS.ATTACK,  PARAMS.RESISTANCE, PARAMS.SPELL_ARMOR,
      PARAMS.SIGHT_RANGE,
     };
     public final static PARAMETER[][] headerParams = {headerUnitParams, headerCharParams,};
@@ -91,7 +89,7 @@ public class ContentConsts {
      PARAMS.COOLDOWN_MOD, PARAMS.BLOCK_CHANCE, PARAMS.PARRY_CHANCE,
 
     }; // also
-    private static VALUE[] excludedValuesFromAll = {G_PARAMS.POS_X, G_PARAMS.POS_Y,
+    private static final VALUE[] excludedValuesFromAll = {G_PARAMS.POS_X, G_PARAMS.POS_Y,
      G_PROPS.BF_OBJECT_TYPE, G_PROPS.IMAGE, G_PROPS.TYPE, G_PROPS.LORE, G_PROPS.DEITY,
      G_PROPS.DESCRIPTION, G_PROPS.GROUP, G_PROPS.SOUNDSET, PARAMS.QUANTITY};
     static VALUE[][] excludedValues = {
@@ -107,7 +105,7 @@ public class ContentConsts {
     static Map<String, Deity> deities;
     static List<PARAMS> masteries;
     static List<PARAMETER> ARMOR_MODIFYING_PARAMS_FULL;
-    private static HashMap<OBJ_TYPE, List<VALUE>> defaultValues = new HashMap<>();
+    private static final HashMap<OBJ_TYPE, List<VALUE>> defaultValues = new HashMap<>();
     static Map<String, EDITOR> editorMap;
     static List<VALUE> backgroundValues;
     static List<PARAMETER> backgroundDynamicParams;
@@ -124,14 +122,14 @@ public class ContentConsts {
     };
     static PARAMETER[] WEAPON_MODIFYING_PARAMS = {
 
-     PARAMS.ARMOR, PARAMS.DEFENSE, PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.STAMINA_PENALTY,
+     PARAMS.ARMOR, PARAMS.DEFENSE, PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.TOUGHNESS_PENALTY,
      PARAMS.FOCUS_PENALTY, PARAMS.AP_PENALTY, PARAMS.ESSENCE_PENALTY,
-     PARAMS.SPELL_STA_PENALTY, PARAMS.SPELL_FOC_PENALTY, PARAMS.SPELL_AP_PENALTY,
+            PARAMS.SPELL_FOC_PENALTY, PARAMS.SPELL_AP_PENALTY,
      PARAMS.SPELL_ESS_PENALTY,
      // PARAMS.ATTACK_AP_PENALTY, PARAMS.ATTACK_STA_PENALTY,
-     PARAMS.MOVE_AP_PENALTY, PARAMS.MOVE_STA_PENALTY,};
-    private static PROPERTY[] headerUnitProps = {G_PROPS.ASPECT, G_PROPS.DEITY, G_PROPS.STATUS,
+     PARAMS.MOVE_AP_PENALTY, PARAMS.MOVE_TOU_PENALTY,};
+    private static final PROPERTY[] headerUnitProps = {G_PROPS.ASPECT, G_PROPS.DEITY, G_PROPS.STATUS,
      G_PROPS.MODE};
-    private static PROPERTY[] headerCharProps = {G_PROPS.RACE, G_PROPS.RANK,};
+    private static final PROPERTY[] headerCharProps = {G_PROPS.RACE, G_PROPS.RANK,};
     public final static PROPERTY[][] headerProps = {headerUnitProps, headerCharProps,};
 }

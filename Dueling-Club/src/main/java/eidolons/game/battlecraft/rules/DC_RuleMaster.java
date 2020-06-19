@@ -83,7 +83,7 @@ public class DC_RuleMaster {
                 if (level == 0) {
                     return " is confused!";
                 }
-            case MORALE:
+            case ESSENCE:
                 if (level == 2) {
                     return " takes heart!";
                 }
@@ -93,7 +93,7 @@ public class DC_RuleMaster {
                 if (level == 0) {
                     return " panics!";
                 }
-            case STAMINA:
+            case TOUGHNESS:
                 if (level == 2) {
                     return " is full of energy!";
                 }

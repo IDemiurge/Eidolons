@@ -19,7 +19,6 @@ import eidolons.game.battlecraft.rules.combat.damage.ResistMaster;
 import eidolons.game.battlecraft.rules.rpg.IntegrityRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.system.DC_Formulas;
 import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;
 import main.content.mode.STD_MODES;
@@ -170,7 +169,6 @@ public class UnitResetter extends EntityResetter<Unit> {
                 if (game.isDummyMode()) {
                     if (getGame().isDummyPlus()) {
                         getEntity().resetDynamicParam(PARAMS.C_N_OF_COUNTERS);
-                        resetParam(PARAMS.C_STAMINA);
                         resetParam(PARAMS.C_FOCUS);
                         resetParam(PARAMS.C_ESSENCE);
                         resetParam(PARAMS.C_FOCUS);
@@ -415,16 +413,21 @@ public class UnitResetter extends EntityResetter<Unit> {
         if (ParamAnalyzer.isMoraleIgnore(getEntity())) {
             return;
         }
-        if (getIntParam(PARAMS.BATTLE_SPIRIT) == 0) {
+        Integer intParam = getIntParam(PARAMS.BATTLE_SPIRIT);
+        if (intParam == 0) {
             if (getRef().getObj(KEYS.PARTY) == null) {
                 getEntity().setParam(PARAMS.BATTLE_SPIRIT, 100);
             }
+            return;
         }
-        getEntity().setParam(PARAMS.MORALE, getIntParam(PARAMS.SPIRIT) * DC_Formulas.MORALE_PER_SPIRIT
-                * getIntParam(PARAMS.BATTLE_SPIRIT) / 100);
+        if (intParam == 100) {
+            return;
+        }
+        getEntity().setParam(PARAMS.ESSENCE, getIntParam(PARAMS.ESSENCE)
+                * intParam / 100);
         // the C_ value cannot be changed, but the PERCENTAGE
-        getEntity().setParam(PARAMS.C_MORALE, getIntParam(PARAMS.C_MORALE), true);
-
+        // getEntity().setParam(PARAMS.C_MORALE, getIntParam(PARAMS.C_MORALE), true);
+        getEntity().resetPercentage(PARAMS.ESSENCE);
     }
 
     public void regenerateToughness() {
@@ -489,14 +492,9 @@ public class UnitResetter extends EntityResetter<Unit> {
     }
 
     public void applyBuffRules() {
-        if (!getGame().getRules().getStaminaRule().apply(getEntity())) {
-            getEntity().setInfiniteValue(PARAMS.STAMINA, 0.2f);
-        }
+        //Param revamp - toughness rule, and new essence rule
         if (!getGame().getRules().getFocusBuffRule().apply(getEntity())) {
             getEntity().setInfiniteValue(PARAMS.FOCUS, 1);
-        }
-        if (!getGame().getRules().getMoraleBuffRule().apply(getEntity())) {
-            getEntity().setInfiniteValue(PARAMS.MORALE, 0.5f);
         }
         if (!getGame().getRules().getWeightRule().apply(getEntity())) {
             getEntity().setInfiniteValue(PARAMS.CARRYING_CAPACITY, 2);

@@ -182,7 +182,4 @@ public class UnitCalculator extends EntityCalculator<Unit> {
         return (DC_Game) super.getGame();
     }
 
-    public Integer getFocusRecoveryRequirement() {
-        return getEntity().getIntParam(PARAMS.FOCUS_RECOVER_REQ);
-    }
 }

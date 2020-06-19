@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface EffectsAndAbilitiesSource {
 
-    List<ValueContainer> getBuffs();
+    List<ValueContainer> getBuffs(boolean body);
 
-    List<ValueContainer> getAbilities();
+    List<ValueContainer> getAbilities(boolean body);
+
 }

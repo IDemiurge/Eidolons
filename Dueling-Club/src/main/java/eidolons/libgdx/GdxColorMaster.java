@@ -127,14 +127,10 @@ public class GdxColorMaster {
     public static Color getParamColor(PARAMETER param) {
         if (param instanceof PARAMS) {
             switch (((PARAMS) param)) {
-                case C_MORALE:
-                    return MORALE;
                 case C_FOCUS:
                     return FOCUS;
                 case C_ENDURANCE:
                     return ENDURANCE;
-                case C_STAMINA:
-                    return STAMINA;
                 case C_ESSENCE:
                     return ESSENCE;
                 case C_TOUGHNESS:

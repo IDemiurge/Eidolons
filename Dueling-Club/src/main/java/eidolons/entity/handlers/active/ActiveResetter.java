@@ -130,7 +130,8 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
         }
 
         Unit ownerObj = getOwnerObj();
-        Integer sta = ownerObj.getIntParam(PARAMS.STAMINA_PENALTY);
+        //param revamp
+        Integer sta = ownerObj.getIntParam(PARAMS.TOUGHNESS_PENALTY);
         Integer ap = ownerObj.getIntParam(PARAMS.AP_PENALTY);
         Integer ess = ownerObj.getIntParam(PARAMS.ESSENCE_PENALTY);
         Integer foc = ownerObj.getIntParam(PARAMS.FOCUS_PENALTY);
@@ -138,17 +139,17 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
         if (getHandler().isCounterMode()) {
             ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.COUNTER_CP_PENALTY));
             sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.COUNTER_STAMINA_PENALTY));
+             .getIntParam(PARAMS.COUNTER_TOUGH_PENALTY));
         }
         if (getHandler().isInstantMode()) {
             ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.INSTANT_CP_PENALTY));
             sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.INSTANT_STAMINA_PENALTY));
+             .getIntParam(PARAMS.INSTANT_TOUGH_PENALTY));
         }
         if (getHandler().isAttackOfOpportunityMode()) {
             ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.AOO_CP_PENALTY));
             sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.AOO_STAMINA_PENALTY));
+             .getIntParam(PARAMS.AOO_TOUGH_PENALTY));
         }
         switch (getEntity().getActionGroup()) {
             case ATTACK:
@@ -171,7 +172,7 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
             case MOVE:
                 FlyingRule.checkAddMoveCostReductions(ownerObj);
                 TerrainRule.addMoveCost(getEntity());
-                sta += ownerObj.getIntParam(PARAMS.MOVE_STA_PENALTY, false);
+                sta += ownerObj.getIntParam(PARAMS.MOVE_TOU_PENALTY, false);
                 ap += ownerObj.getIntParam(PARAMS.MOVE_AP_PENALTY, false);
                 break;
             case SPELL:
@@ -191,7 +192,7 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
 
         }
         getEntity().modifyParamByPercent(PARAMS.CP_COST, cp, true);
-        getEntity().modifyParamByPercent(PARAMS.STA_COST, sta, true);
+        getEntity().modifyParamByPercent(PARAMS.TOU_COST, sta, true);
         getEntity().modifyParamByPercent(PARAMS.AP_COST, ap, true);
         getEntity().modifyParamByPercent(PARAMS.ESS_COST, ess, true);
         if (foc!=0)

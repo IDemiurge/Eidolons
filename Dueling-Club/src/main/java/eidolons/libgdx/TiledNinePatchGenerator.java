@@ -111,7 +111,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
          backgroundNinePatch.name().toLowerCase() + " " +
          maxWidth + " " + maxHeight + ".png";
     }
-
+//Gdx revamp - try to pass a batch and just draw, maybe make a Drawable class like this - worthy of libgdx contrib!
     public static Texture generate(
 
      Texture top,

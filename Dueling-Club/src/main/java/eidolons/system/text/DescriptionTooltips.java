@@ -217,8 +217,6 @@ public class DescriptionTooltips {
         switch (params) {
             case C_ENDURANCE:
             case C_FOCUS:
-            case C_MORALE:
-            case C_STAMINA:
             case C_TOUGHNESS:
                 return ContentValsManager.getBaseParameterFromCurrent(params).getDisplayedName();
             case INITIATIVE:

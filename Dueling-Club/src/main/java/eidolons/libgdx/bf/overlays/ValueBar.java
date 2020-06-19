@@ -16,43 +16,34 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.graphics.FontMaster;
 
 public abstract class ValueBar extends SuperActor {
-    protected final int innerWidth;
-    protected final Image barBg;
-    protected final Image barBg2;
-    protected final Label label2;
-    protected final Label label1;
+    protected  int innerWidth;
+    protected  Image barBg;
+    protected  Image barBg2;
+    protected  Label label2;
+    protected  Label label1;
     protected float fullLengthPerc = 1f;
-    protected TextureRegion barRegion; //TODO can it be static?
+    protected TextureRegion barBgRegion; //TODO can it be static?
     protected float height;
     protected boolean dirty;
-    protected TextureRegion primaryBarRegion;
-    protected TextureRegion secondaryBarRegion;
+    protected TextureRegion overBarRegion;
+    protected TextureRegion underBarRegion;
     protected Color secondaryColor;
     protected Color primaryColor;
-    float displayedPrimaryPerc = 1f;
-    float displayedSecondaryPerc = 1f;
-    FloatActionLimited primaryAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
-    FloatActionLimited secondaryAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
-    boolean labelsDisplayed = true;
-    private Float primaryPerc = 1f;
-    private Float secondaryPerc = 1f;
-    private Float previousPrimaryPerc = 1f;
-    private Float previousSecondaryPerc = 1f;
-    private Float lastOfferedPrimary;
-    private Float lastOfferedSecondary;
-    private float offsetX;
+    protected  float displayedPrimaryPerc = 1f;
+    protected  float displayedSecondaryPerc = 1f;
+    protected  FloatActionLimited primaryAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
+    protected  FloatActionLimited secondaryAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
+    protected  boolean labelsDisplayed = true;
+    protected Float primaryPerc = 1f;
+    protected Float secondaryPerc = 1f;
+    protected Float previousPrimaryPerc = 1f;
+    protected Float previousSecondaryPerc = 1f;
+    protected Float lastOfferedPrimary;
+    protected Float lastOfferedSecondary;
+    protected float offsetX;
 
     public ValueBar() {
-        primaryBarRegion = TextureCache.getOrCreateR(getBarImagePath());
-        secondaryBarRegion = TextureCache.getOrCreateR(getBarImagePath());
-        barRegion = TextureCache.getOrCreateR(StrPathBuilder.build("ui", "components",
-                "dc", "unit", "hp bar empty.png"));
-        barBg = new Image(barRegion);
-        addActor(barBg);
-
-        barBg2 = new Image(barRegion);
-        addActor(barBg2);
-        barBg2.setY(-barBg.getHeight() - 1);
+        initRegions();
         label2 = new Label("", StyleHolder.
                 getSizedLabelStyle(FontMaster.FONT.AVQ, getFontSize(false)));
         label1 = new Label("", StyleHolder.
@@ -60,11 +51,28 @@ public abstract class ValueBar extends SuperActor {
         addActor(label1);
         addActor(label2);
 
-        height = barRegion.getRegionHeight();
-        innerWidth = secondaryBarRegion.getRegionWidth();
-        offsetX = barRegion.getRegionWidth() - primaryBarRegion.getRegionWidth();
+        initSizes();
 
     }
+
+    protected void initRegions() {
+        overBarRegion = TextureCache.getOrCreateR(getBarImagePath(true));
+        underBarRegion = TextureCache.getOrCreateR(getBarImagePath(false));
+        barBgRegion = TextureCache.getOrCreateR(getBarBgPath());
+        barBg = new Image(barBgRegion);
+        addActor(barBg);
+
+        barBg2 = new Image(barBgRegion);
+        addActor(barBg2);
+        barBg2.setY(-barBg.getHeight() - 1);
+    }
+    protected void initSizes() {
+        height = barBgRegion.getRegionHeight();
+        innerWidth = underBarRegion.getRegionWidth();
+        offsetX = barBgRegion.getRegionWidth() - overBarRegion.getRegionWidth();
+    }
+
+    protected abstract String getBarBgPath();
 
     protected Integer getFontSize(boolean prime) {
         return 18;
@@ -173,6 +181,17 @@ public abstract class ValueBar extends SuperActor {
                 getScaleY() * region.getRegionHeight());
     }
 
+    protected void initColors() {
+        secondaryColor =
+                getColor(false);
+        primaryColor =
+                getColor(true);
+        label2.setColor(secondaryColor);
+        label1.setColor(primaryColor);
+    }
+
+    protected abstract Color getColor(boolean over);
+
     @Override
     protected boolean isIgnored() {
         if (isDisplayedAlways())
@@ -192,7 +211,7 @@ public abstract class ValueBar extends SuperActor {
 
     }
 
-    protected String getBarImagePath() {
+    protected String getBarImagePath(boolean over) {
         return StrPathBuilder.build("ui", "components",
                 "dc", "unit", "hp bar.png");
     }

@@ -164,7 +164,9 @@ public class ContentValsManager {
             return param;
         }
         baseParam = getPARAM(param.getFullName().replace(StringMaster.CURRENT, ""), true);
-        currentCache.put(baseParam, param);
+        if (baseParam != null) {
+            currentCache.put(baseParam, param);
+        }
         return baseParam;
     }
     //  TODO refactor?

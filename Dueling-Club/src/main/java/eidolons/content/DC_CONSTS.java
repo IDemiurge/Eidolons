@@ -15,7 +15,7 @@ public class DC_CONSTS {
 
     public enum AMMO_LEVEL {
         NORMAL(1), DOUBLE(2), TRIPPLE(3);
-        private int charges;
+        private final int charges;
 
         AMMO_LEVEL(int charges) {
             this.charges = (charges);
@@ -36,9 +36,9 @@ public class DC_CONSTS {
         NORMAL(100, 100, "1", ItemEnums.QUALITY_LEVEL.NORMAL),
         POTENT(200, 300, "2", ItemEnums.QUALITY_LEVEL.SUPERIOR),;
         private int mod;
-        private String imgCode;
-        private int cost;
-        private QUALITY_LEVEL quality;
+        private final String imgCode;
+        private final int cost;
+        private final QUALITY_LEVEL quality;
 
         CONCOCTION_LEVEL(int mod, int cost, String imgCode,
                          QUALITY_LEVEL quality) {
@@ -86,7 +86,6 @@ public class DC_CONSTS {
         // ESSENCE_REGENERATION(10, "", 5, 12, 25, 60, 150, "Magic Ring",
         // PARAMS.ESSENCE_REGEN),
         ENDURANCE_REGENERATION(12, "", 6, 20, 40, 80, 200, "Signet;Pendant", PARAMS.ENDURANCE_REGEN),
-        STAMINA(5, "", 5, 12, 25, 50, 110, "Signet", PARAMS.STAMINA),
         ENDURANCE(4, "", 30, 75, 200, 500, 1250, "Bracer", PARAMS.ENDURANCE),
         TOUGHNESS(4, "", 15, 35, 80, 200, 550, "Bone Ring", PARAMS.TOUGHNESS),
         DEFENSE(4, "", 10, 18, 30, 50, 100, "Signet", PARAMS.DEFENSE),
@@ -119,11 +118,11 @@ public class DC_CONSTS {
 
         ;
         Integer cost_mod;        // *amount?
-        private Integer[] integers;
-        private PARAMETER[] params;
-        private String imageVariant;
-        private int costBase;
-        private String jewelryTypes;
+        private final Integer[] integers;
+        private final PARAMETER[] params;
+        private final String imageVariant;
+        private final int costBase;
+        private final String jewelryTypes;
         private boolean doubleAmulet;
 
         JEWELRY_ITEM_TRAIT(int costBase, String letter, Integer l1, Integer l2,
@@ -183,15 +182,15 @@ public class DC_CONSTS {
         PHANTOMS(400, true, UnitEnums.STANDARD_PASSIVES.IMMATERIAL, "_b", "", "Pendant"),
         VIGILANCE(400, true, UnitEnums.STANDARD_PASSIVES.VIGILANCE, "_d", "", "Pendant"),
         VAMPIRISM(15, true, "Life Steal", 15, 25, 50, 75, 100, "_c", "", "Pendant"),;
-        private String iconLetter;
-        private String iconNumber;
+        private final String iconLetter;
+        private final String iconNumber;
         private boolean leveled;
-        private boolean ring;
+        private final boolean ring;
         private Integer[] integers;
-        private int costBase;
+        private final int costBase;
         private PROPERTY prop;
         private String value;
-        private String itemTypes;
+        private final String itemTypes;
 
         JEWELRY_PASSIVE_ENCHANTMENT(int costBase, boolean ring,
                                     STANDARD_PASSIVES value, String iconLetter, String iconNumber,
@@ -269,9 +268,9 @@ public class DC_CONSTS {
         LEGENDARY(500,4, 300, "");
 
         private final int power;
-        private int level;
-        private int costFactor;
-        private String iconSuffix;
+        private final int level;
+        private final int costFactor;
+        private final String iconSuffix;
 
         ITEM_LEVEL(int power, int n, int costFactor, String iconSuffix) {
             this.costFactor = costFactor;
@@ -316,10 +315,10 @@ public class DC_CONSTS {
         AVERAGE(2, 225, "1", ItemEnums.QUALITY_LEVEL.NORMAL),
         GREATER(3, 400, "2", ItemEnums.QUALITY_LEVEL.SUPERIOR);
 
-        private int charges;
-        private String imgCode;
-        private int cost;
-        private QUALITY_LEVEL quality;
+        private final int charges;
+        private final String imgCode;
+        private final int cost;
+        private final QUALITY_LEVEL quality;
 
         POTION_LEVEL(int charges, int cost, String imgCode,
                      QUALITY_LEVEL quality) {

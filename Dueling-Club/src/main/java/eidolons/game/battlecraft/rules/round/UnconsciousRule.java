@@ -8,7 +8,6 @@ import eidolons.ability.effects.oneshot.rule.UnconsciousFallEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.atb.AtbController;
 import eidolons.game.core.game.DC_Game;
@@ -40,7 +39,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     public static final Integer DEFAULT_TOUGHNESS_RECOVER = 50;
     public static final Integer DEFAULT_INITIATIVE_PENALTY = 75;
-    public static final int DEFAULT_ATB_FALL_TO = (int) (-20* AtbController.TIME_LOGIC_MODIFIER);
+    public static final int DEFAULT_ATB_FALL_TO = (int) (-20 * AtbController.TIME_LOGIC_MODIFIER);
     public static final int DEFAULT_FOCUS_REQ_UNIT = 0;
     public static final int DEFAULT_FOCUS_REQ = 0;
 
@@ -48,7 +47,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         super(game);
     }
 
-    public   void unitRecovers(Unit unit) {
+    public void unitRecovers(Unit unit) {
         // unit.removeBuff(BUFF_NAME);
         unit.getGame().
                 fireEvent(new Event(
@@ -101,7 +100,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
 
     public static boolean checkUnitDies(Unit unit) {
-        return checkUnitDies(unit.getIntParam(PARAMS.C_TOUGHNESS),
+        return checkUnitDies(unit.getIntParam(PARAMS.C_FOCUS),unit.getIntParam(PARAMS.C_TOUGHNESS),
                 unit.getIntParam(PARAMS.C_ENDURANCE),
                 unit
         );
@@ -117,13 +116,12 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return endurance <= -unit.getIntParam(PARAMS.ENDURANCE) / 2;
     }
 
-    public static boolean checkUnitDies(Integer toughness, Integer endurance, Unit unit
+    public static boolean checkUnitDies(Integer focus,Integer toughness, Integer endurance, Unit unit
     ) {
-        if (EidolonsGame.getVar("ENDURANCE") || !unit.isPlayerCharacter())
-            if (endurance <= 0) {
-                return true;
-            }
-        if (toughness > 0) {
+        if (endurance <= 0) {
+            return true;
+        }
+        if (focus > 0 && toughness > 0) {
             return false;
         }
         if (!canFallUnconscious(unit)) {
@@ -137,19 +135,18 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
             return false;
         }
         return false;
-
     }
 
     public static boolean checkFallsUnconscious(Unit unit) {
-        return checkFallsUnconscious(unit, unit.getIntParam(PARAMS.C_TOUGHNESS));
+        return checkFallsUnconscious(unit, unit.getIntParam(PARAMS.C_TOUGHNESS), unit.getIntParam(PARAMS.C_FOCUS));
     }
 
-    public static boolean checkFallsUnconscious(Unit unit, int toughness) {
+    public static boolean checkFallsUnconscious(Unit unit, int toughness, int  focus) {
         if (unit.isUnconscious())
             return false;
         if (!canFallUnconscious(unit))
             return false;
-        return toughness <= 0;
+        return toughness <= 0 || focus <= 0 ;
     }
 
     private static boolean canBeAnnihilated(Unit unit) {

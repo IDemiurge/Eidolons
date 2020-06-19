@@ -20,7 +20,7 @@ import main.content.values.parameters.PARAMETER;
  * Created by JustMe on 4/15/2018.
  */
 public class HqParamPanel extends HqElement{
-    private   PARAMETER[] params;
+    private final PARAMETER[] params;
     private   HorizontalGroup group;
     Array<ValueContainer> containers;
 
@@ -97,7 +97,6 @@ public class HqParamPanel extends HqElement{
                 case C_TOUGHNESS:
 //                case C_MORALE:
                 case C_ESSENCE:
-                case C_STAMINA:
 //                case C_FOCUS:
                     return true;
             }

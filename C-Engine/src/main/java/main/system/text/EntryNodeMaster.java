@@ -122,7 +122,7 @@ public class EntryNodeMaster {
         FOCUS_RULE,
         MORALE_RULE,
         MORALE_KILL_RULE,
-        STAMINA_RULE,
+        TOUGHNESS_RULE,
         WEIGHT_RULE,
         WOUNDS_RULE,
 

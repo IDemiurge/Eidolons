@@ -199,7 +199,7 @@ public class DamageCalculator {
             return
              unconscious ?
               UnconsciousRule.checkFallsUnconscious((Unit) targetObj,
-               targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage)
+               targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage,  targetObj.getIntParam(PARAMS.C_FOCUS) )
               : UnconsciousRule.checkUnitAnnihilated(
               targetObj.getIntParam(PARAMS.C_ENDURANCE) - damage, (Unit) targetObj );
         }

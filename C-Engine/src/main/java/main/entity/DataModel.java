@@ -641,7 +641,7 @@ public abstract class DataModel {
             LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
                     + param.getName() + " by " + amount);
         if (isFiringValueEvents())
-            if (!quietly || GuiEventManager.isParamEventAlwaysFired(param.getName()))
+            if (!quietly || GuiEventManager.isBarParam(param.getName()))
                 if (!fireParamEvent(param, String.valueOf(amount),
                         CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
                     return true; // false?
@@ -830,7 +830,7 @@ public abstract class DataModel {
         if (getGame().isSimulation() || this instanceof ObjType) {
             return false;
         }
-        return GuiEventManager.isParamEventAlwaysFired(param);
+        return GuiEventManager.isBarParam(param);
     }
 
     public boolean fireParamEvent(PARAMETER param, String amount, CONSTRUCTED_EVENT_TYPE event_type) {
@@ -928,7 +928,7 @@ public abstract class DataModel {
         //            return false;
         //        }
         if (getGame() == null)
-            if (GuiEventManager.isParamEventAlwaysFired(param.getName()) || !quiety)
+            if (GuiEventManager.isBarParam(param.getName()) || !quiety)
                 if (isFiringValueEvents())
                     if (Game.game != null)
                         return false;

@@ -17,11 +17,11 @@ import java.util.List;
  * Created by JustMe on 9/10/2017.
  */
 public class ExplorationActionHandler extends ExplorationHandler {
-    private static List<PARAMETER> ignoredCosts = Arrays.asList(new PARAMETER[]{
+    private static final List<PARAMETER> ignoredCosts = Arrays.asList(new PARAMETER[]{
      PARAMS.AP_COST,
     });
-    private static String STA_MODIFIER = "0.5";
-    private static String FOC_MODIFIER = "0.5";
+    private static final String STA_MODIFIER = "0.5";
+    private static final String FOC_MODIFIER = "0.5";
 
     public ExplorationActionHandler(ExplorationMaster master) {
         super(master);
@@ -46,7 +46,7 @@ public class ExplorationActionHandler extends ExplorationHandler {
 //            sub.getPayment().getAmountFormula().append("*"+modifier);
 //        }
 
-        Cost sub = costs.getCost(PARAMS.STA_COST);
+        Cost sub = costs.getCost(PARAMS.TOU_COST);
         if (sub != null)
             sub.getPayment().getAmountFormula().append("*" + STA_MODIFIER);
         sub = costs.getCost(PARAMS.FOC_COST);

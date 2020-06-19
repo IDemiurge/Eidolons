@@ -51,13 +51,6 @@ public class ExploreCleaner extends ExplorationHandler {
                         unit.removeFromGame();
                     }
                 }
-                if (unit.isPlayerCharacter()) {
-                    if (unit.getIntParam(PARAMS.FOCUS_FATIGUE)>0) {
-                        unit.  getGame().getLogManager().log(unit+ "'s focus fatigue is reset "+
-                                unit.getIntParam(PARAMS.FOCUS_FATIGUE) );
-                    }
-                }
-                unit.setParam(PARAMS.FOCUS_FATIGUE, 0);
                 removeMode(unit);
                 BuffObj buff = unit.getBuff(StealthRule.SPOTTED);
                 if (buff != null)

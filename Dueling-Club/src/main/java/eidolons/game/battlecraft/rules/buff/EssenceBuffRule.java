@@ -20,28 +20,18 @@ import main.entity.Ref.KEYS;
 import main.game.core.game.GenericGame;
 import main.system.auxiliary.StringMaster;
 
-public class MoraleBuffRule extends DC_BuffRule {
+public class EssenceBuffRule extends DC_BuffRule {
     public static final String[] buffNames = {
      MetaEnums.STD_BUFF_NAME.Panic.getName(),
      MetaEnums.STD_BUFF_NAME.Fearful.getName(),
      MetaEnums.STD_BUFF_NAME.Inspired.getName()
     };
-    public static final String[] formulas = {"1", "10", "100",};
-
-    public static final PARAMS[] PARAMETERS = {PARAMS.SPIRIT, PARAMS.RESISTANCE, PARAMS.INITIATIVE,};
-
+    public static final String[] formulas = {"1", "20", "200",};
 
     public static final String parameterString = PARAMS.SPIRIT.getName()
-     + StringMaster.VERTICAL_BAR
-     + PARAMS.INITIATIVE.getName() + StringMaster.VERTICAL_BAR
-     + PARAMS.RESISTANCE.getName();
+    + StringMaster.VERTICAL_BAR     + PARAMS.RESISTANCE.getName();
 
-    public static final String parameterStringPanic = PARAMS.SPIRIT.getName() +
-     StringMaster.VERTICAL_BAR
-     + PARAMS.RESISTANCE.getName();
-
-    // reverse means MORE THAN {THIS} and
-    public MoraleBuffRule(GenericGame game) {
+    public EssenceBuffRule(GenericGame game) {
         super(game);
     }
 
@@ -56,7 +46,7 @@ public class MoraleBuffRule extends DC_BuffRule {
                 return new ConditionalEffect(new NotCondition(new StdPassiveCondition(
                  UnitEnums.STANDARD_PASSIVES.FEARLESS)),
 
-                 new Effects(new ModifyValueEffect(parameterStringPanic,
+                 new Effects(new ModifyValueEffect(parameterString,
                   MOD.MODIFY_BY_PERCENT, "("
                   + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
                   + formulas[1] + ")*2"), new BehaviorModeEffect(
@@ -101,7 +91,7 @@ public class MoraleBuffRule extends DC_BuffRule {
 
     @Override
     protected VALUE getValue() {
-        return PARAMS.C_MORALE;
+        return PARAMS.C_ESSENCE;
     }
 
     protected String[] getConditionFormulas() {
@@ -116,7 +106,7 @@ public class MoraleBuffRule extends DC_BuffRule {
 
     @Override
     protected COMBAT_RULES getCombatRuleEnum() {
-        return RuleEnums.COMBAT_RULES.MORALE;
+        return RuleEnums.COMBAT_RULES.ESSENCE;
     }
 
 }

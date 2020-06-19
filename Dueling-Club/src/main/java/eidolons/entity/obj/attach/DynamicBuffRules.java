@@ -48,10 +48,6 @@ public class DynamicBuffRules {
                     "% mastery) - use Radial for Dual Attacks");
 
         }
-        if (unit.getIntParam(PARAMS.FOCUS_FATIGUE) > 0) {
-            addDynamicBuff("Focus Fatigue", unit, StringMaster.wrapInParenthesis(unit.getIntParam(PARAMS.FOCUS_FATIGUE) + "")
-                    , "Base Focus is reduced by ^VAR. Focus always shifts towards Base value over time.");
-        }
 
         for (AbilityObj passive : unit.getPassives()) {
             checkAddPassiveBuff(passive, unit);

@@ -26,11 +26,11 @@ public class PanicRule extends DC_RuleImpl {
      "{TARGET_C_MORALE}");
     private static final Condition CONDITION2 = new NumericCondition(
      "{TARGET_C_MORALE}", TreasonRule.TREASON);
-    private static final String MORALE = PARAMS.C_MORALE.name();
+    private static final String MORALE = PARAMS.C_ESSENCE.name();
     private static final Condition CONDITION0 = new NotCondition(
      new StatusCheckCondition(Ref.KEYS.TARGET.name(), UnitEnums.STATUS.IMMOBILE));
 
-    private String buffTypeName = "Panic";
+    private final String buffTypeName = "Panic";
     private Conditions retain_conditions;
 
     // put a conditional continuous effect

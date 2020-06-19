@@ -12,10 +12,6 @@ public class FocusRule extends RetainRestoreRule {
         super(game);
     }
 
-    public static boolean isFatigueOn() {
-        return true;
-    }
-
     @Override
     protected PARAMETER getBaseParameter() {
         return PARAMS.FOCUS;
@@ -32,40 +28,9 @@ public class FocusRule extends RetainRestoreRule {
 
     @Override
     protected PARAMETER getFatigueParam() {
-        return PARAMS.FOCUS_FATIGUE;
+        // return PARAMS.FOCUS_FATIGUE;
+        return null;
     }
 
-    public void onReset(Unit unit){
-        int amountGained;
-        /*
-        for every 5 points of focus you gain in combat above your Base Focus, you will receive
 
-        Perhaps actions that 'cost' focus should apply focus fatigue!!!
-         */
-
-    }
-
-    @Override
-    protected void paramLost(int amount, Unit unit) {
-        super.paramLost(amount, unit);
-//        unit.addParam(PARAMS.FOCUS_FATIGUE, amount);
-//        if (amount > 0)
-//            if (unit.isPlayerCharacter()) {
-//                game.getLogManager().log(unit + "'s focus fatigue is now " +
-//                        unit.getIntParam(PARAMS.FOCUS_FATIGUE));
-//            }
-//        unit.addOrProlongBuff("Focus Fatigue", )
-        // do it via new parameter! FOCUS_FATIGUE => used perhaps in the same rule here?
-    }
-
-    @Override
-    protected void paramGained(int amount, Unit unit) {
-        super.paramGained(amount, unit);
-        unit.addParam(PARAMS.FOCUS_FATIGUE, -amount/2);
-        if (amount > 0)
-            if (unit.isPlayerCharacter()) {
-                game.getLogManager().log(unit + "'s focus fatigue is now " +
-                        unit.getIntParam(PARAMS.FOCUS_FATIGUE));
-            }
-    }
 }

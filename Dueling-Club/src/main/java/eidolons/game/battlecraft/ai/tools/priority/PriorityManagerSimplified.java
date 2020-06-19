@@ -29,10 +29,6 @@ public class PriorityManagerSimplified extends PriorityManagerImpl {
         return super.getCowardiceFactor(coward);
     }
 
-    @Override
-    public int getDangerFactorByMemory(Unit unit2) {
-        return super.getDangerFactorByMemory(unit2);
-    }
 
     @Override
     public int getSearchPriority(ActionSequence as) {

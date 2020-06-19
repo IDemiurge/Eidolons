@@ -25,7 +25,6 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
-import main.system.launch.Flags;
 import main.utilities.hotkeys.AV_KeyListener;
 import main.utilities.music.MuseCore;
 import main.utilities.workspace.WorkspaceManager;
@@ -103,7 +102,7 @@ public class ArcaneVault {
          types=AV_Utils.selectiveLaunch();
         }
 
-        Flags.setReflectionMapDisabled(!types.contains("abils"));
+        CoreEngine.setReflectionMapDisabled(!types.contains("abils"));
 
         ItemGenerator.setGenerationOn(!ENABLE_ITEM_GENERATION);
         LogMaster.PERFORMANCE_DEBUG_ON = showTime;

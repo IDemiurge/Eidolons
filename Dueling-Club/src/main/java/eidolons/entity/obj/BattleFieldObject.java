@@ -13,7 +13,6 @@ import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.SeenMapper;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.module.dungeoncrawl.objects.Door;
-import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
@@ -48,7 +47,6 @@ import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
-import main.system.math.MathMaster;
 
 import java.util.Arrays;
 import java.util.List;
@@ -290,7 +288,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public void addDynamicValues() {
         setParam(G_PARAMS.POS_X, x, true);
         setParam(G_PARAMS.POS_Y, y, true);
-        setParam(PARAMS.C_MORALE, getIntParam(PARAMS.SPIRIT) * DC_Formulas.MORALE_PER_SPIRIT, true);
 
         setParam(PARAMS.C_ENDURANCE, getIntParam(PARAMS.ENDURANCE), true);
         setParam(PARAMS.C_TOUGHNESS, getIntParam(PARAMS.TOUGHNESS), true);
@@ -299,7 +296,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
         setParam(PARAMS.C_FOCUS, DC_MathManager.getStartingFocus(this), true);
         setParam(PARAMS.C_ESSENCE, getGame().getMathManager().getStartingEssence(this), true);
-        setParam(PARAMS.C_STAMINA, getIntParam(PARAMS.STAMINA), true);
 
 
     }
@@ -359,10 +355,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         }
         Integer regen = getIntParam(ContentValsManager.getRegenParam(p));
         if (regen != 0) {
-            //TODO DC Review
-            if (p == PARAMS.STAMINA) {
-                regen = MathMaster.getMinMax(regen, 5, getIntParam("stamina")/2);
-            }
             modifyParameter(ContentValsManager.getCurrentParam(p), regen, getIntParam(p));
         }
 
@@ -380,9 +372,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             return false;
         }
         if (getIntParam(PARAMS.C_FOCUS) < getIntParam(PARAMS.FOCUS)) {
-            return false;
-        }
-        if (getIntParam(PARAMS.C_STAMINA) < getIntParam(PARAMS.STAMINA)) {
             return false;
         }
         if (getIntParam(PARAMS.C_ESSENCE) < getIntParam(PARAMS.ESSENCE)) {

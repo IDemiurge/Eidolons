@@ -69,7 +69,7 @@ public class DC_ArmorObj extends DC_HeroSlotItem {
          // //original
          , true);
         modifyParameter(PARAMS.MOVE_AP_PENALTY, penalty_reduction, 0, true);
-        modifyParameter(PARAMS.MOVE_STA_PENALTY, penalty_reduction, 0, true);
+        modifyParameter(PARAMS.MOVE_TOU_PENALTY, penalty_reduction, 0, true);
 
         penalty_reduction = -getHero().getIntParam(PARAMS.WILLPOWER);
         modifyParameter(PARAMS.SPELL_STA_PENALTY, penalty_reduction, 0, true);

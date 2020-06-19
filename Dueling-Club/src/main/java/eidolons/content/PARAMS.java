@@ -1,7 +1,6 @@
 package eidolons.content;
 
 import eidolons.game.battlecraft.rules.action.StackingRule;
-import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
 import eidolons.system.text.DescriptionTooltips;
@@ -103,8 +102,6 @@ public enum PARAMS implements PARAMETER {
     C_TOUGHNESS(null, "", true, 0, "units", "chars", "perks", "bf obj"),
     ENDURANCE(null, "", false, 0, "units", "chars", "perks", "bf obj"),
     C_ENDURANCE(null, "", true, 0, "units", "chars", "perks", "bf obj"),
-    MORALE(null, "MORALE", false, 30, "units", "chars", "perks"),
-    C_MORALE(null, "", true, 30, "units", "chars", "perks"),
     STAMINA(null, "STAMINA", false, 5, "units", "chars", "perks"),
     C_STAMINA(null, "STAMINA", true, 5, "units", "chars", "perks"),
     FOCUS(null, "FOCUS", false, 100, "units", "chars", "perks"),
@@ -114,6 +111,12 @@ public enum PARAMS implements PARAMETER {
     N_OF_COUNTERS("Extra Attacks", "", false, 0, "units", "chars", "perks"),
     C_N_OF_COUNTERS("Extra Attacks", "", true, 2, "units", "chars", "perks"),
 
+    TOUGHNESS_RECOVERY(null, "", false, 25, "bf obj", "units", "chars", "perks"),
+    TOUGHNESS_RETAINMENT(null, "", false, 25, "bf obj", "units", "chars", "perks"),
+    FOCUS_RESTORATION(null, "", false, 0, "units", "chars", "perks"),
+    FOCUS_RETAINMENT(null, "", false, 0, "units", "chars", "perks"),
+    ESSENCE_RESTORATION(null, "", false, 0, "units", "chars", "perks"),
+    ESSENCE_RETAINMENT(null, "", false, 0, "units", "chars", "perks"),
 
     INITIATIVE("Initiative", "", false, 4, "units", "chars", "perks", "bf obj"),
     ATB_START_MOD("ATB_START_PRESET", "", false, 0, "units", "chars", "perks", "bf obj"),
@@ -176,7 +179,7 @@ public enum PARAMS implements PARAMETER {
     ESSENCE_REGEN("Ess. Regen", "ESSENCE_REGEN", false, 0, "units", "chars", "perks"),
     FOCUS_REGEN(null, "FOCUS_REGEN", false, 0, "units", "chars", "perks"),
     STARTING_FOCUS("Start foc", "FOCUS", false, 0, "units", "chars", "perks"),
-    FOCUS_FATIGUE("Focus Fatigue", "Focus Fatigue", true, 0, "units", "chars"),
+    STARTING_ESSENCE("Start foc", "FOCUS", false, 0, "units", "chars", "perks"),
     BASE_DAMAGE("Base Damage", "", false, 0, "units", "chars", "perks"),
     DAMAGE("Damage", "", false, 0, "units", "chars", "perks"),
     MIN_DAMAGE("Min Damage", "", false, 0, "units", "chars", "perks"),
@@ -472,7 +475,7 @@ public enum PARAMS implements PARAMETER {
     AP_COST("ATB Cost", " Cost in ATB", false, 1, "actions", "items"),
     ESS_COST("ESS Cost", " Cost in Essence", false, 0, "actions", "items"),
     FOC_COST("FOC Cost", " Cost in Focus", false, 0, "actions", "items"),
-    STA_COST("STA Cost", " Cost in Stamina", false, 0, "actions", "items"),
+    TOU_COST("STA Cost", " Cost in Stamina", false, 0, "actions", "items"),
     ENDURANCE_COST("END Cost", " Cost in Endurance", false, 0, "actions", "items"),
     SF_COST("Soulforce Cost", " Cost in Soulforce", false, 0, "actions", "items"),
     CP_COST("CP Cost", "Cost in Counter Points", false, 0, "actions"),
@@ -481,7 +484,6 @@ public enum PARAMS implements PARAMETER {
     AP_UPKEEP(null, " UPKEEP in AP", false, 0, "units", "items"),
     ESS_UPKEEP(null, " UPKEEP in Essence", false, 0, "units", "items"),
     FOC_UPKEEP(null, " UPKEEP in Focus", false, 0, "units", "items"),
-    STA_UPKEEP(null, " UPKEEP in Stamina", false, 0, "units", "items"),
 
     FOC_REQ("Focus Req.", " Focus Requirement", false, 0, "actions", "items"),
     COOLDOWN_MOD(true, "Cooldown modifier", " Cooldown modifier", false, 0, "units", "chars", "perks"),
@@ -619,23 +621,21 @@ public enum PARAMS implements PARAMETER {
     TOUGHNESS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
     ESSENCE_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
     FOCUS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
-    STAMINA_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
-    MORALE_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
     N_OF_ACTIONS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
     N_OF_COUNTERS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
 
-    STAMINA_PENALTY(null, "", false, 0, "units", "chars", "perks"),
+    TOUGHNESS_PENALTY(null, "", false, 0, "units", "chars", "perks"),
     ESSENCE_PENALTY(null, "", false, 0, "units", "chars", "perks"),
     FOCUS_PENALTY(null, "", false, 0, "units", "chars", "perks"),
     AP_PENALTY(null, "", false, 0, "units", "chars", "perks"),
     CP_PENALTY(null, "", false, 0, "units", "chars", "perks"),
 
     EXTRA_ATTACKS_POINT_COST_MOD(true, "Extra Attacks Cost Mod", "", false, 50, "units", "chars", "perks"),
-    INSTANT_STAMINA_PENALTY(null, "", false, -50, "units", "chars", "perks"),
+    INSTANT_TOUGH_PENALTY(null, "", false, -50, "units", "chars", "perks"),
     INSTANT_CP_PENALTY(null, "", false, 0, "units", "chars", "perks"),
-    AOO_STAMINA_PENALTY(null, "", false, -50, "units", "chars", "perks"),
+    AOO_TOUGH_PENALTY(null, "", false, -50, "units", "chars", "perks"),
     AOO_CP_PENALTY(null, "", false, 0, "units", "chars", "perks"),
-    COUNTER_STAMINA_PENALTY(null, "", false, -50, "units", "chars", "perks"),
+    COUNTER_TOUGH_PENALTY(null, "", false, -50, "units", "chars", "perks"),
     COUNTER_CP_PENALTY(null, "", false, 0, "units", "chars", "perks"),
 
     SPELL_STA_PENALTY("Spell STA pen.", "", false, 0, "units", "chars", "perks"),
@@ -649,12 +649,12 @@ public enum PARAMS implements PARAMETER {
     OFFHAND_ATTACK_STA_PENALTY(null, "", false, 0, "units", "chars", "perks"),
     OFFHAND_ATTACK_AP_PENALTY(null, "", false, 0, "units", "chars", "perks"),
 
-    MOVE_STA_PENALTY("Move STA pen.", "", false, 0, "units", "chars", "perks"),
+    MOVE_TOU_PENALTY("Move STA pen.", "", false, 0, "units", "chars", "perks"),
     MOVE_AP_PENALTY("Move AP pen.", "", false, 0, "units", "chars", "perks"),
 
     EVASION(null, "", false, 0, "units", "chars", "perks"),
     ACCURACY(null, "", false, 0, "actions", "units", "chars", "perks"),
-    TOUGHNESS_RECOVERY(null, "", false, 25, "bf obj", "units", "chars", "perks"),
+
     VIGILANCE_MOD(true, null, "", false, 0, "units", "chars", "perks"),
     TOUGHNESS_DEATH_BARRIER_MOD(null, "", false, 100, "bf obj", "units", "chars", "perks"),
     ARMOR_BLOCK_DEFENSE_MOD(true, null, "", false, 0, "units", "chars", "perks"),
@@ -665,11 +665,7 @@ public enum PARAMS implements PARAMETER {
     PARRY_PENETRATION(null, "", false, 0, "units", "chars", "perks"),
     CRITICAL_REDUCTION("Crit. reduction", "", false, 0, "units", "chars", "perks", "bf obj"),
     CRITICAL_MOD(true, "Crit. modifier", "", false, 0, "actions", "units", "chars", "perks", "bf obj"),
-    FOCUS_RESTORATION(null, "", false, 0, "units", "chars", "perks"),
-    FOCUS_RETAINMENT(null, "", false, 0, "units", "chars", "perks"),
-    FOCUS_RECOVER_REQ(null, "", false, UnconsciousRule.DEFAULT_FOCUS_REQ, "units", "chars", "perks"),
-    MORALE_RESTORATION(null, "", false, 0, "units", "chars", "perks"),
-    MORALE_RETAINMENT(null, "", false, 0, "units", "chars", "perks"),
+
 
     RANGED_PENALTY_MOD(true, "", "", false, 100, "units", "chars", "perks"),
 

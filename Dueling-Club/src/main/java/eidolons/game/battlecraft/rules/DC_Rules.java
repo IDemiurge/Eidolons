@@ -34,17 +34,17 @@ public class DC_Rules implements GameRules {
     protected DequeImpl<DC_BuffRule> buffRules = new DequeImpl<>();
     protected DequeImpl<DamageCounterRule> damageRules = new DequeImpl<>();
     private DC_Game game;
-    private DequeImpl<DC_CounterRule> counterRules = new DequeImpl<>();
-    private DequeImpl<RoundRule> roundRules = new DequeImpl<>();
-    private DequeImpl<ActionRule> actionRules = new DequeImpl<>();
-    private DequeImpl<DC_RuleImpl> triggerRules = new DequeImpl<>();
+    private final DequeImpl<DC_CounterRule> counterRules = new DequeImpl<>();
+    private final DequeImpl<RoundRule> roundRules = new DequeImpl<>();
+    private final DequeImpl<ActionRule> actionRules = new DequeImpl<>();
+    private final DequeImpl<DC_RuleImpl> triggerRules = new DequeImpl<>();
 
     private WatchRule watchRule;
     private FocusRule focusRule;
-    private MoraleRule moraleRule;
+    private EssenceRule essenceRule;
     private UpkeepRule upkeepRule;
-    private MoraleBuffRule moraleBuffRule;
-    private StaminaBuffRule staminaRule;
+    private EssenceBuffRule essenceBuffRule;
+    private ToughnessBuffRule staminaRule;
     private WeightBuffRule weightRule;
     private FocusBuffRule focusBuffRule;
     private DurabilityRule durabilityRule;
@@ -77,7 +77,7 @@ public class DC_Rules implements GameRules {
     private SuffocationRule suffocationRule;
     private AshAnnihilationRule ashAnnihilationRule;
     private IlluminationRule illuminationRule;
-    private DC_RuleMaster master;
+    private final DC_RuleMaster master;
     private Map<DamageCounterRule, TimedRule> timedRules;
     private DynamicBuffRules dynamicBuffRules;
 
@@ -117,9 +117,9 @@ public class DC_Rules implements GameRules {
         cleaveRule = new CleaveRule(getGame());
 
         focusRule = new FocusRule(getGame());
-        moraleRule = new MoraleRule(getGame());
+        essenceRule = new EssenceRule(getGame());
         roundRules.add(focusRule);
-        roundRules.add(moraleRule);
+        roundRules.add(essenceRule);
 //        roundRules.add( upkeepRule = new UpkeepRule(getGame()) );
 //        roundRules.add( scoutingRule = new ScoutingRule(getGame()));
         roundRules.add(unconsciousRule);
@@ -165,9 +165,9 @@ public class DC_Rules implements GameRules {
         counterRules.add(encaseRule);
         counterRules.add(greaseRule);
 
-        moraleBuffRule = new MoraleBuffRule(getGame());
-        this.buffRules.add(moraleBuffRule);
-        staminaRule = new StaminaBuffRule(getGame());
+        essenceBuffRule = new EssenceBuffRule(getGame());
+        this.buffRules.add(essenceBuffRule);
+        staminaRule = new ToughnessBuffRule(getGame());
         this.buffRules.add(staminaRule);
         weightRule = new WeightBuffRule(getGame());
         this.buffRules.add(weightRule);
@@ -241,8 +241,8 @@ public class DC_Rules implements GameRules {
         return focusRule;
     }
 
-    public MoraleRule getMoraleRule() {
-        return moraleRule;
+    public EssenceRule getEssenceRule() {
+        return essenceRule;
     }
 
     public SuffocationRule getSuffocationRule() {
@@ -257,11 +257,11 @@ public class DC_Rules implements GameRules {
         return upkeepRule;
     }
 
-    public MoraleBuffRule getMoraleBuffRule() {
-        return moraleBuffRule;
+    public EssenceBuffRule getEssenceBuffRule() {
+        return essenceBuffRule;
     }
 
-    public StaminaBuffRule getStaminaRule() {
+    public ToughnessBuffRule getStaminaRule() {
         return staminaRule;
     }
 
@@ -396,7 +396,7 @@ public class DC_Rules implements GameRules {
     public DC_BuffRule getBuffRule(BUFF_RULE rule) {
         switch (rule) {
             case MORALE:
-                return moraleBuffRule;
+                return essenceBuffRule;
             case FOCUS:
                 return focusBuffRule;
             case STAMINA:

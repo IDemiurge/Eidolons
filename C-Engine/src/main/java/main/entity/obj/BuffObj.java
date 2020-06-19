@@ -446,4 +446,8 @@ return ;
     public boolean isDynamic() {
         return dynamic;
     }
+
+    public boolean isPhysical() {
+        return true;
+    }
 }
