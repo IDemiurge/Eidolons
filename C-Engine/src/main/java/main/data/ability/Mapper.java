@@ -51,9 +51,9 @@ public class Mapper {
     static Map<String, Map<List<Argument>, AE_Item>> caches = new HashMap<>();
 
 
-    private static Map<Argument, List<AE_Item>> map = new HashMap<>();
-    private static Map<String, AE_Item> itemMap = new HashMap<>();
-    private static Map<ARGS, AE_Item> primitiveItems = new HashMap<>();
+    private static final Map<Argument, List<AE_Item>> map = new HashMap<>();
+    private static final Map<String, AE_Item> itemMap = new HashMap<>();
+    private static final Map<ARGS, AE_Item> primitiveItems = new HashMap<>();
     private static List<Argument> args;
     private static boolean initialized;
 
@@ -222,8 +222,9 @@ public class Mapper {
 
                 }
                 if (!constructAE_Item(CLASS)) {
-                    LogMaster.log(1, CLASS + " in " + "" + packageName
-                            + " failed to construct!");
+                    //Core Review
+                    // LogMaster.log(1, CLASS + " in " + "" + packageName
+                    //         + " failed to construct!");
                 }
             }
         }

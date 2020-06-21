@@ -34,27 +34,27 @@ public enum PARAMS implements PARAMETER {
     BATTLE_SPIRIT(null, "", true, 100, "units", "chars", "perks", "party"),
     PRINCIPLE_CLASHES(null, "", true, 0, "units", "chars", "perks", "party"),
     PRINCIPLE_CLASHES_REDUCTION(null, "", true, 0, "units", "chars", "perks", "party"),
-    WAR_ALIGNMENT(StringMaster.getWellFormattedString("WAR_ALIGNMENT"), null, false, 0, "units", "chars"),
-    PEACE_ALIGNMENT(StringMaster.getWellFormattedString("PEACE AL."), null, false, 0, "units", "chars"),
-    HONOR_ALIGNMENT(StringMaster.getWellFormattedString("HONOR AL."), null, false, 0, "units", "chars"),
-    TREACHERY_ALIGNMENT(StringMaster.getWellFormattedString("TREACHERY AL."), null, false, 0, "units", "chars"),
-    LAW_ALIGNMENT(StringMaster.getWellFormattedString("LAW_ALIGNMENT"), null, false, 0, "units", "chars"),
-    FREEDOM_ALIGNMENT(StringMaster.getWellFormattedString("FREEDOM AL."), null, false, 0, "units", "chars"),
-    CHARITY_ALIGNMENT(StringMaster.getWellFormattedString("CHARITY AL."), null, false, 0, "units", "chars"),
-    AMBITION_ALIGNMENT(StringMaster.getWellFormattedString("AMBITION AL."), null, false, 0, "units", "chars"),
-    TRADITION_ALIGNMENT(StringMaster.getWellFormattedString("TRADITION AL."), null, false, 0, "units", "chars"),
-    PROGRESS_ALIGNMENT(StringMaster.getWellFormattedString("PROGRESS AL."), null, false, 0, "units", "chars"),
+    WAR_ALIGNMENT(StringMaster.format("WAR_ALIGNMENT"), null, false, 0, "units", "chars"),
+    PEACE_ALIGNMENT(StringMaster.format("PEACE AL."), null, false, 0, "units", "chars"),
+    HONOR_ALIGNMENT(StringMaster.format("HONOR AL."), null, false, 0, "units", "chars"),
+    TREACHERY_ALIGNMENT(StringMaster.format("TREACHERY AL."), null, false, 0, "units", "chars"),
+    LAW_ALIGNMENT(StringMaster.format("LAW_ALIGNMENT"), null, false, 0, "units", "chars"),
+    FREEDOM_ALIGNMENT(StringMaster.format("FREEDOM AL."), null, false, 0, "units", "chars"),
+    CHARITY_ALIGNMENT(StringMaster.format("CHARITY AL."), null, false, 0, "units", "chars"),
+    AMBITION_ALIGNMENT(StringMaster.format("AMBITION AL."), null, false, 0, "units", "chars"),
+    TRADITION_ALIGNMENT(StringMaster.format("TRADITION AL."), null, false, 0, "units", "chars"),
+    PROGRESS_ALIGNMENT(StringMaster.format("PROGRESS AL."), null, false, 0, "units", "chars"),
 
-    WAR_IDENTITY(StringMaster.getWellFormattedString("WAR_IDENTITY"), null, false, 0, "units", "chars"),
-    PEACE_IDENTITY(StringMaster.getWellFormattedString("PEACE id."), null, false, 0, "units", "chars"),
-    HONOR_IDENTITY(StringMaster.getWellFormattedString("HONOR id."), null, false, 0, "units", "chars"),
-    TREACHERY_IDENTITY(StringMaster.getWellFormattedString("TREACHERY id."), null, false, 0, "units", "chars"),
-    LAW_IDENTITY(StringMaster.getWellFormattedString("LAW_IDENTITY"), null, false, 0, "units", "chars"),
-    FREEDOM_IDENTITY(StringMaster.getWellFormattedString("FREEDOM id."), null, false, 0, "units", "chars"),
-    CHARITY_IDENTITY(StringMaster.getWellFormattedString("CHARITY id."), null, false, 0, "units", "chars"),
-    AMBITION_IDENTITY(StringMaster.getWellFormattedString("AMBITION id."), null, false, 0, "units", "chars"),
-    TRADITION_IDENTITY(StringMaster.getWellFormattedString("TRADITION id."), null, false, 0, "units", "chars"),
-    PROGRESS_IDENTITY(StringMaster.getWellFormattedString("PROGRESS id."), null, false, 0, "units", "chars"),
+    WAR_IDENTITY(StringMaster.format("WAR_IDENTITY"), null, false, 0, "units", "chars"),
+    PEACE_IDENTITY(StringMaster.format("PEACE id."), null, false, 0, "units", "chars"),
+    HONOR_IDENTITY(StringMaster.format("HONOR id."), null, false, 0, "units", "chars"),
+    TREACHERY_IDENTITY(StringMaster.format("TREACHERY id."), null, false, 0, "units", "chars"),
+    LAW_IDENTITY(StringMaster.format("LAW_IDENTITY"), null, false, 0, "units", "chars"),
+    FREEDOM_IDENTITY(StringMaster.format("FREEDOM id."), null, false, 0, "units", "chars"),
+    CHARITY_IDENTITY(StringMaster.format("CHARITY id."), null, false, 0, "units", "chars"),
+    AMBITION_IDENTITY(StringMaster.format("AMBITION id."), null, false, 0, "units", "chars"),
+    TRADITION_IDENTITY(StringMaster.format("TRADITION id."), null, false, 0, "units", "chars"),
+    PROGRESS_IDENTITY(StringMaster.format("PROGRESS id."), null, false, 0, "units", "chars"),
 
     IDENTITY_POINTS(null, "", true, 0, "chars", "classes", "deities"),
     STARTING_IDENTITY_POINTS(null, "", false, 3, "chars"),
@@ -870,7 +870,7 @@ could have other params - sf discounts,
 
     PARAMS(String entityType, String shortName, String descr, boolean dynamic, int defaultValue,
            int AV_ID) {
-        this.name = StringMaster.getWellFormattedString(name());
+        this.name = StringMaster.format(name());
         this.fullName = name();
         if (shortName == null) {
             setShortName(name);
@@ -885,7 +885,7 @@ could have other params - sf discounts,
     }
 
     PARAMS() {
-        this.name = StringMaster.getWellFormattedString(name());
+        this.name = StringMaster.format(name());
     }
 
     PARAMS(boolean attr) {

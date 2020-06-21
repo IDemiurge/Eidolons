@@ -33,8 +33,8 @@ import main.system.launch.CoreEngine;
 public class PlatformCell extends GridCellContainer {
     PlatformController controller;
     DIRECTION direction; //WHERE WE ENTER
-    private int originalX;
-    private int originalY;
+    private final int originalX;
+    private final int originalY;
 
 
     public PlatformCell(TextureRegion region, int gridX, int gridY, DIRECTION direction) {
@@ -158,7 +158,7 @@ public class PlatformCell extends GridCellContainer {
     }
 
     @Override
-    protected boolean isWithinCamera() {
+    public boolean isWithinCamera() {
         return true;
     }
 }

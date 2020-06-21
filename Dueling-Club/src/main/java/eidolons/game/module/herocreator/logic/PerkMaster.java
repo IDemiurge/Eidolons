@@ -113,11 +113,8 @@ public class PerkMaster {
         CLASS_PERK_GROUP group =
          new EnumMaster<CLASS_PERK_GROUP>().retrieveEnumConst(CLASS_PERK_GROUP.class,
           heroClass.getProperty(PROPS.CLASS_PERK_GROUP));
-        if (substring.contains(StringMaster.getWellFormattedString(
-         group.toString()).toLowerCase())) {
-            return true;
-        }
-        return false;
+        return substring.contains(StringMaster.format(
+                group.toString()).toLowerCase());
     }
 
     public static List<Perk> getPerks(Unit hero, int tier) {

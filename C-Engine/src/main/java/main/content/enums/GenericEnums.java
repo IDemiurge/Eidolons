@@ -141,7 +141,7 @@ public class GenericEnums {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public String getResistanceName() {
@@ -259,7 +259,7 @@ public class GenericEnums {
 
         ROLL_TYPES(String s) {
             if (StringMaster.isEmpty(s)) {
-                s = StringMaster.getWellFormattedString(name());
+                s = StringMaster.format(name());
             }
             this.name = s;
         }
@@ -491,10 +491,10 @@ public class GenericEnums {
         LEAVES_LARGE("woods", "leaves large"),
         FALLING_LEAVES_WINDY("woods", "falling leaves windy2"),
 
-        BLACK_MIST_white_mist_wind("black mist", StringMaster.getWellFormattedString("white_mist_wind")),
-        BLACK_MIST_clouds_wind("black mist", StringMaster.getWellFormattedString("clouds_wind")),
-        BLACK_MIST_clouds_gravity("black mist", StringMaster.getWellFormattedString("clouds_gravity")),
-        BLACK_MIST_clouds_antigravity("black mist", StringMaster.getWellFormattedString("clouds_antigravity")),
+        BLACK_MIST_white_mist_wind("black mist", StringMaster.format("white_mist_wind")),
+        BLACK_MIST_clouds_wind("black mist", StringMaster.format("clouds_wind")),
+        BLACK_MIST_clouds_gravity("black mist", StringMaster.format("clouds_gravity")),
+        BLACK_MIST_clouds_antigravity("black mist", StringMaster.format("clouds_antigravity")),
 
         MIST_WHITE("mist", "conceal west wind"),
         MIST_WHITE2("mist", "conceal west wind2"),

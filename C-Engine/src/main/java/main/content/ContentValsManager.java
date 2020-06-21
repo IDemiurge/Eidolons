@@ -474,7 +474,7 @@ public class ContentValsManager {
         if (sprops.contains(name)) {
             return true;
         }
-        return sprops.contains(StringMaster.getWellFormattedString(name));
+        return sprops.contains(StringMaster.format(name));
     }
 
     public static boolean isPropertyExtendedSearch(String name) {
@@ -489,7 +489,7 @@ public class ContentValsManager {
         if (sparams.contains(name)) {
             return true;
         }
-        return sparams.contains(StringMaster.getWellFormattedString(name));
+        return sparams.contains(StringMaster.format(name));
     }
 
     public static List<PARAMETER> getHeroStatsTabValueList() {

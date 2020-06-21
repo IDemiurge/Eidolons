@@ -116,7 +116,7 @@ public abstract class DC_Obj extends MicroObj {
             // if (getOutlineType()==)
             // getToolTip();
             {
-                return StringMaster.getWellFormattedString(getOutlineType().toString());
+                return StringMaster.format(getOutlineType().toString());
             }
         }
 

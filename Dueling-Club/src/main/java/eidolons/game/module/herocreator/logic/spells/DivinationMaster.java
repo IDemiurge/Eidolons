@@ -192,7 +192,7 @@ public class DivinationMaster {
         List<ObjType> types = DataManager.toTypeList(
          DataManager
           .getTypesSubGroupNames(DC_TYPE.SPELLS, StringMaster
-           .getWellFormattedString(chosenGroup.name())),
+           .format(chosenGroup.name())),
          DC_TYPE.SPELLS);
         FilterMaster.filterOut(types, sdCondition);
         Collections.sort(types, getComparator());

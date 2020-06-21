@@ -33,9 +33,9 @@ public class EmitterPresetMaster {
     public static String value_separator = ": ";
     private static EmitterPresetMaster instance;
     private static boolean spriteEmitterTest;
-    private static Map<EmitterActor, String> mods = new HashMap<>();
-    private Map<String, String> map = new HashMap<>();
-    private String lowHighMinMax = "lowMin lowMax highMin highMax";
+    private static final Map<EmitterActor, String> mods = new HashMap<>();
+    private final Map<String, String> map = new HashMap<>();
+    private final String lowHighMinMax = "lowMin lowMax highMin highMax";
 
     public EmitterPresetMaster() {
         instance = this;
@@ -291,8 +291,7 @@ public class EmitterPresetMaster {
             if (lowHighMinMax.contains(p.getKey())) {
                 double newValue = NumberUtils.getDouble(p.getValue()) + offset;
                 text = text.replace(p.getKey() + value_separator + p.getValue(),
-                        p.getKey() + value_separator + String.valueOf(
-                                newValue));
+                        p.getKey() + value_separator + newValue);
             }
         }
         data = data.replace(getGroupText(data, group), text);
@@ -422,10 +421,10 @@ public class EmitterPresetMaster {
         PremultipliedAlpha,
         Percentage_Of_Lagging_Particles, Image_Paths, Options;
         private boolean container;
-        private String name;
+        private final String name;
 
         EMITTER_VALUE_GROUP() {
-            name = StringMaster.getWellFormattedString(name());
+            name = StringMaster.format(name());
         }
 
         EMITTER_VALUE_GROUP(Boolean container) {

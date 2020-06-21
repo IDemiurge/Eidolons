@@ -18,8 +18,8 @@ import java.util.Vector;
 
 public class OptionsPanelSwing<T extends Enum<T>> extends G_Panel implements ActionListener {
     OptionsMaster master;
-    private Map<OPTION, Component> map = new HashMap<>();
-    private G_TabbedPanel tabs;
+    private final Map<OPTION, Component> map = new HashMap<>();
+    private final G_TabbedPanel tabs;
 
     public OptionsPanelSwing(Map<OPTIONS_GROUP, Options> optionsMap) {
         super(("flowy "));
@@ -42,7 +42,7 @@ public class OptionsPanelSwing<T extends Enum<T>> extends G_Panel implements Act
                 subpanel.add(comp, "sg comps");
 
             }
-            tabs.addTab(subpanel, StringMaster.getWellFormattedString(group.toString()));
+            tabs.addTab(subpanel, StringMaster.format(group.toString()));
             // subpanel.setPanelSize(size);
         }
         add(tabs, "x 100");

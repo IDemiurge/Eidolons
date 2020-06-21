@@ -141,9 +141,9 @@ public class SkillMaster {
                                              MASTERY mastery1, MASTERY mastery2) {
         List<ObjType> list = new ArrayList<>();
         list.addAll(DataManager.getTypesSubGroup(DC_TYPE.SKILLS,
-                StringMaster.getWellFormattedString(mastery1.toString())));
+                StringMaster.format(mastery1.toString())));
         list.addAll(DataManager.getTypesSubGroup(DC_TYPE.SKILLS,
-                StringMaster.getWellFormattedString(mastery2.toString())));
+                StringMaster.format(mastery2.toString())));
 
         list.removeIf(type -> type.getIntParam(PARAMS.CIRCLE) != tier);
         list.removeIf(type -> isSkillProhibited(type, hero));

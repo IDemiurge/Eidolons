@@ -81,7 +81,7 @@ public class Loader {
         Node node = XmlNodeMaster.findNode(xmlDoc, Saver.HERO_NODE);
         ObjType loadedType = TypeBuilder.buildType(node.getFirstChild(),
          DataManager.getType(
-          StringMaster.getWellFormattedString(
+          StringMaster.format(
            node.getFirstChild().getNodeName()), DC_TYPE.CHARS));
         //        hero.applyType(loadedType);
         //overload type?
@@ -94,7 +94,7 @@ public class Loader {
             for (Node sub : XmlNodeMaster.getNodeList(propNode)) {
                 Node typeNode = sub.getFirstChild();
                 int id = NumberUtils.getIntParse(StringMaster.getLastPart(sub.getNodeName(), "_"));
-                String name = StringMaster.getWellFormattedString(sub.getNodeName().replace("" + id, ""));
+                String name = StringMaster.format(sub.getNodeName().replace("" + id, ""));
                 OBJ_TYPE TYPE = DC_ContentValsManager.getTypeForProperty(prop);
                 ObjType type = DataManager.getType(name, TYPE);
 

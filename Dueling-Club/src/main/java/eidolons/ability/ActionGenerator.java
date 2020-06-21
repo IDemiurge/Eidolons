@@ -51,10 +51,10 @@ public class ActionGenerator {
         }
         ActionType offHandType = new ActionType(type);
         offHandType.addProperty(G_PROPS.ACTION_TAGS, StringMaster
-                .getWellFormattedString(ActionEnums.ACTION_TAGS.OFF_HAND + ""));
+                .format(ActionEnums.ACTION_TAGS.OFF_HAND + ""));
         offHandType.removeProperty(G_PROPS.ACTION_TAGS,
 
-                StringMaster.getWellFormattedString(ActionEnums.ACTION_TAGS.MAIN_HAND + ""));
+                StringMaster.format(ActionEnums.ACTION_TAGS.MAIN_HAND + ""));
         //
         offHandType.setName(getOffhandActionName(type.getName()));
         offHandType.addProperty(G_PROPS.ACTION_TAGS, getOffhandActionName(type.getName()));
@@ -79,7 +79,7 @@ public class ActionGenerator {
     }
 
     public static String getOffhandActionName(String name) {
-        return StringMaster.getWellFormattedString(ActionEnums.ACTION_TAGS.OFF_HAND + "") + " " + name;
+        return StringMaster.format(ActionEnums.ACTION_TAGS.OFF_HAND + "") + " " + name;
     }
 
 }

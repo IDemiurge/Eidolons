@@ -266,6 +266,18 @@
             <artifactId>gdx-video-desktop</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.tommyettinger/colorful -->
+        <dependency>
+            <groupId>com.github.tommyettinger</groupId>
+            <artifactId>colorful</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.tommyettinger/libgdx-utils -->
+        <dependency>
+            <groupId>com.github.tommyettinger</groupId>
+            <artifactId>libgdx-utils</artifactId>
+            <version>0.13.6</version>
+        </dependency>
 
 
         <!--<dependency>-->

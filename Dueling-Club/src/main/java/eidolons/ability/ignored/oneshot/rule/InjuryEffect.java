@@ -55,7 +55,7 @@ public class InjuryEffect extends DC_Effect implements OneshotEffect {
         }
         // preCheck applicable
         getTarget().addProperty(PROPS.INJURIES,
-         StringMaster.getWellFormattedString(injury.toString()));
+         StringMaster.format(injury.toString()));
         Effects effects = EffectFinder.initParamModEffects(injury.getModString(), ref);
         // TODO ++ PROPS
         if (mod != 100) {

@@ -106,7 +106,7 @@ public class ListMaster<E> {
                     }
                 }
                 if (wellFormatted) {
-                    string = StringMaster.getWellFormattedString(string);
+                    string = StringMaster.format(string);
                 }
                 list.add(string);
             }

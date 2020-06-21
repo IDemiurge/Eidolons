@@ -129,7 +129,7 @@ public class CharacterCreator {
         } else {
             newType.setGroup(getFilterGroup(), false);
             newType.setProperty(G_PROPS.CUSTOM_HERO_GROUP, StringMaster
-             .getWellFormattedString(getDefaultSpecGroup().name()));
+             .format(getDefaultSpecGroup().name()));
             newType.setWorkspaceGroup(getDoneWorkspaceGroup());
             // automatic ?
         }

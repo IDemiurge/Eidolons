@@ -64,7 +64,7 @@ public class SpeedControlPanel extends TablePanelX {
         });
         slider.addListener(new DynamicTooltip(()->"Adjust speed; current = " + getSpeed()).getController());
 
-        addActor(checkBox = new VisCheckBox(StringMaster.getWellFormattedString(
+        addActor(checkBox = new VisCheckBox(StringMaster.format(
                 GameplayOptions.GAMEPLAY_OPTION.INPUT_BETWEEN_TURNS.getName())));
         checkBox.addListener(new ChangeListener() {
             @Override
@@ -83,7 +83,7 @@ public class SpeedControlPanel extends TablePanelX {
 
 
 
-        addActor(checkBox2 = new VisCheckBox(StringMaster.getWellFormattedString(
+        addActor(checkBox2 = new VisCheckBox(StringMaster.format(
                 GameplayOptions.GAMEPLAY_OPTION.SPACE_BETWEEN_TURNS.getName())));
         checkBox2.addListener(new ChangeListener() {
             @Override

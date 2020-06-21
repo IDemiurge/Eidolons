@@ -190,7 +190,7 @@ public enum STD_MODES implements MODE {
         if (buffName != null) {
             return buffName;
         }
-        return StringMaster.getWellFormattedString(name());
+        return StringMaster.format(name());
     }
 
     @Override
@@ -336,7 +336,7 @@ public enum STD_MODES implements MODE {
 
     public String getName() {
 
-        return StringMaster.getWellFormattedString(name());
+        return StringMaster.format(name());
     }
 
     @Override

@@ -11,12 +11,15 @@ import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
-import main.data.types.AV_Assembler;
 import main.entity.type.ObjType;
 import main.gui.builders.EditViewPanel;
 import main.gui.components.table.TableMouseListener;
+import main.handlers.AvManager;
+import main.handlers.mod.AvModelHandler;
+import main.handlers.mod.AvSaveHandler;
+import main.handlers.types.SimulationHandler;
 import main.launch.ArcaneVault;
-import main.simulation.SimulationManager;
+import main.launch.AvConsts;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.panels.G_ButtonPanel;
@@ -68,7 +71,17 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 
     public AV_ButtonPanel() {
         super(commands);
-        setPanelSize(new Dimension(ArcaneVault.WIDTH, 47));
+        setPanelSize(new Dimension(AvConsts.WIDTH, 47));
+    }
+
+    @Override
+    public int getWrap() {
+        return 2;
+    }
+
+    @Override
+    public boolean isHorizontal() {
+        return false;
     }
 
     @Override
@@ -87,20 +100,20 @@ public class AV_ButtonPanel extends G_ButtonPanel {
             case "Info":
                 //
             case "Preview":
-                SimulationManager.refreshType(ArcaneVault.getSelectedType());
+                SimulationHandler.refreshType(ArcaneVault.getSelectedType());
                 break;
             case "Apply":
-                AV_Assembler.applyPrev();
+                ArcaneVault.getManager().getAssembler().applyType();
                 break;
             case "Level Up":
             case "Clone":
-                ModelManager.add(false);
+                AvModelHandler.add(false);
                 break;
             case "New":
-                ModelManager.add(null);
+                AvModelHandler.add(null);
                 break;
             case "Upgrade": {
-                ModelManager.add(true);
+                AvModelHandler.add(true);
                 break;
             }
             case "Copy":
@@ -150,7 +163,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
             }
             case "WS Add": {
 
-                ModelManager.addToWorkspace(alt);
+                AvModelHandler.addToWorkspace(alt);
                 break;
             }
             case "Toggle": {
@@ -162,12 +175,12 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                     break;
                 }
                 EditViewPanel panel = ArcaneVault.getMainBuilder().getEditViewPanel();
-                ModelManager.toggle();
+                AvManager.toggle();
                 break;
             }
 
             case "Backup": {
-                ModelManager.fullBackUp();
+                AvSaveHandler.fullBackUp();
                 break;
             }
             case RENAME_SELECTED_TYPE: {
@@ -185,7 +198,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 
             }
             case DEFAULTS:
-                ModelManager.addDefaultValues(alt);
+                AvModelHandler.addDefaultValues(alt);
                 break;
             case "Test":
                 if (alt)
@@ -207,31 +220,31 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 if (alt) {
                     // while()
                 }
-                ModelManager.undo();
+                AvModelHandler.undo();
                 break;
             }
 
             case "Remove": {
-                ModelManager.remove();
+                AvModelHandler.remove();
                 break;
             }
             case "Reload": {
                 Weaver.inNewThread(new Runnable() {
                     public void run() {
-                        ModelManager.saveAll();
-                        ModelManager.reload();
+                        AvSaveHandler.saveAll();
+                        AvModelHandler.reload();
                         TableMouseListener.configureEditors();
                     }
                 });
             }
             case "Save": {
-                ModelManager.save();
+                AvSaveHandler.save();
                 break;
             }
 
             case "Save all": {
 
-                ModelManager.saveAll();
+                AvSaveHandler.saveAll();
                 return;
             }
         }

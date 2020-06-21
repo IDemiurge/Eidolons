@@ -635,7 +635,7 @@ public class FloatingTextMaster {
         GOLD,
         LEVEL_UP;
         public boolean atOrigin;
-        String name = StringMaster.getWellFormattedString(name());
+        String name = StringMaster.format(name());
         private Producer<Event, Object[]> argProducer;
 
         TEXT_CASES() {
@@ -654,7 +654,7 @@ public class FloatingTextMaster {
         public Object[] getArgs(Event e) {
             if (argProducer == null) {
                 return new Object[]{
-                        StringMaster.getWellFormattedString(e.getType().toString())
+                        StringMaster.format(e.getType().toString())
                 };
             }
             return argProducer.produce(e);

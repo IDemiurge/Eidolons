@@ -1,9 +1,9 @@
 package main.gui.components.tree;
 
+import eidolons.content.PARAMS;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
-import eidolons.content.PARAMS;
 import main.content.enums.system.MetaEnums;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
@@ -33,34 +33,13 @@ import java.util.*;
 public class AV_Tree extends G_Panel {
     private static boolean fullNodeStructureOn;
     Workspace workspace;
-    private JTree tree;
+    private final JTree tree;
     private OBJ_TYPE type;
     private boolean colorsInverted = true;
     private AV_TreeCellRenderer renderer;
     private boolean simpleTree;
     private DefaultMutableTreeNode parent;
     private int i;
-
-    // final DefaultTreeModel model = new DefaultTreeModel(root) {
-    //
-    // @Override
-    // public boolean isLeaf(Object node) {
-    // if (isRoot(node)) {
-    // return false;
-    // }
-    // return super.isLeaf(node);
-    // }
-    //
-    // private boolean isRoot(Object node) {
-    // return node != null && node == getRoot();
-    // }
-    //
-    // };
-
-    public AV_Tree(List<String> typesDoc, String group, String type) {
-        this(typesDoc, group, type, true);
-
-    }
 
     public AV_Tree(Workspace workspace) {
         this.workspace = workspace;

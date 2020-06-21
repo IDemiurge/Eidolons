@@ -61,7 +61,7 @@ public class DC_CONSTS {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public String getImgCode() {
@@ -148,7 +148,7 @@ public class DC_CONSTS {
         }
 
         public String toString() {
-            return StringMaster.getWellFormattedString(super.toString());
+            return StringMaster.format(super.toString());
         }
 
         public PARAMETER[] getParams() {
@@ -219,7 +219,7 @@ public class DC_CONSTS {
         }
 
         public String toString() {
-            return StringMaster.getWellFormattedString(super.toString());
+            return StringMaster.format(super.toString());
         }
 
         public String getIconVersionNumber() {
@@ -292,7 +292,7 @@ public class DC_CONSTS {
         }
 
         public String toString() {
-            return StringMaster.getWellFormattedString(super.toString());
+            return StringMaster.format(super.toString());
         }
     }
 
@@ -339,7 +339,7 @@ public class DC_CONSTS {
         public String getName() {
             // if (this == AVERAGE)
             // return "";
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
 
         }
 

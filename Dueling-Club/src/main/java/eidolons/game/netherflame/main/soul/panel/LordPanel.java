@@ -113,8 +113,8 @@ public class LordPanel extends GroupX implements Blocking {
                 TiledNinePatchGenerator.BACKGROUND_NINE_PATCH.TRANSPARENT, 1920, 1050);
         addActor(new NoHitImage(frame));
 
-        tabsLeft.tabSelected(StringMaster.getWellFormattedString(SOUL_TABS.SOULS.name()));
-        tabsRight.tabSelected(StringMaster.getWellFormattedString(SOUL_TABS.CHAIN.name()));
+        tabsLeft.tabSelected(StringMaster.format(SOUL_TABS.SOULS.name()));
+        tabsRight.tabSelected(StringMaster.format(SOUL_TABS.CHAIN.name()));
 //        backgroundSprite.centerOnParent();
         initialized = true;
     }

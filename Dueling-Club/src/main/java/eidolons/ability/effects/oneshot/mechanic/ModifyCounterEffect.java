@@ -106,7 +106,7 @@ public class ModifyCounterEffect extends MicroEffect implements OneshotEffect, R
         return
                 StringMaster.getModifierString(formula
                         .getInt(getRef())) + " " +
-                        StringMaster.getFirstItem(StringMaster.getWellFormattedString(counterName), " ") + " counters";
+                        StringMaster.getFirstItem(StringMaster.format(counterName), " ") + " counters";
     }
 
     public String getCounterName() {

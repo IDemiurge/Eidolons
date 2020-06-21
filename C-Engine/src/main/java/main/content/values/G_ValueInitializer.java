@@ -7,6 +7,9 @@ public class G_ValueInitializer {
 
     public static void init(){
         VERSION.setDevOnly(true);
+        DEV_NOTES.setDevOnly(true);
+        TIMESTAMP.setDevOnly(true);
+        UNIQUE_ID.setDevOnly(true);
 
         NAME.setInputReq(VALUE.INPUT_REQ.STRING);
         // MAIN_HAND_ITEM.setDynamic(true);

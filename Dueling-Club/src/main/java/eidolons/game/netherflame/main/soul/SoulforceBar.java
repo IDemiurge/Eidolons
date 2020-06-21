@@ -75,7 +75,7 @@ public class SoulforceBar extends SuperActor {
         floatAction.setTarget(this);
 
         addActor(barBg = new FadeImageContainer("ui/components/dc/soulforce/bar frame.png"));
-        addActor(barBgSprite = new SpriteX(Sprites.SOULFORCE_BAR_BG){
+        addActor(barBgSprite = new SpriteX(Sprites.SOULFORCE_BAR_BG_WHITE){
             @Override
             public void draw(Batch batch, float parentAlpha) {
                 if (parentAlpha!= ShaderDrawer.SUPER_DRAW) {
@@ -86,7 +86,7 @@ public class SoulforceBar extends SuperActor {
             }
 
         });
-        addActor(barSprite = new SpriteX(Sprites.SOULFORCE_BAR){
+        addActor(barSprite = new SpriteX(Sprites.SOULFORCE_BAR_WHITE){
             @Override
             public void draw(Batch batch, float parentAlpha) {
                 if (parentAlpha!= ShaderDrawer.SUPER_DRAW) {
@@ -107,6 +107,8 @@ public class SoulforceBar extends SuperActor {
         addActor(f = new Fluctuating(GenericEnums.ALPHA_TEMPLATE.SOULFORCE));
         innerWidth = barSprite.getWidth();
         height = barSprite.getHeight();
+
+
 
     }
 

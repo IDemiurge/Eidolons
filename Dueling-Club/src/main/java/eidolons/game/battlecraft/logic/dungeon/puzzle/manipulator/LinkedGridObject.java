@@ -32,7 +32,7 @@ public class LinkedGridObject extends CinematicGridObject {
             createAdditionalObjects(object.additionalObjects);
         }
 
-        setKey(StringMaster.getWellFormattedString(object.toString()));
+        setKey(StringMaster.format(object.toString()));
     }
 
     protected void createAdditionalObjects(String[] additionalObjects) {

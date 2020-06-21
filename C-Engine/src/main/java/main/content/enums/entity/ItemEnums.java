@@ -84,7 +84,7 @@ public class ItemEnums {
         // RING_2(G_PROPS.OFF_HAND_ITEM)
         ;
 
-        private PROPERTY prop;
+        private final PROPERTY prop;
 
         ITEM_SLOT(PROPERTY prop) {
             this.prop = prop;
@@ -234,12 +234,12 @@ public static final float GLOBAL_DURABILITY_MODIFIER = 1.75f;
         private ITEM_MATERIAL_GROUP group;
         private int code;
         private Color color;
-        private String name;
-        private int modifier;
-        private double weight;
+        private final String name;
+        private final int modifier;
+        private final double weight;
         private int hardness;
-        private int enchantmentCapacity;
-        private int cost;
+        private final int enchantmentCapacity;
+        private final int cost;
         private DAMAGE_TYPE dmg_type;
         private Map<DAMAGE_TYPE, RESIST_GRADE> selfDamageGradeMap;
         private Map<DAMAGE_TYPE, RESIST_GRADE> resistGradeMap;
@@ -266,7 +266,7 @@ public static final float GLOBAL_DURABILITY_MODIFIER = 1.75f;
         }
 
         MATERIAL(int modifier, double weight, int cost, int magic, int code) {
-            this.name = StringMaster.getWellFormattedString(name());
+            this.name = StringMaster.format(name());
             this.modifier = modifier;
             this.weight = weight;
             this.cost = cost;
@@ -384,7 +384,7 @@ public static final float GLOBAL_DURABILITY_MODIFIER = 1.75f;
         }
 
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public int getDurabilityMod() {
@@ -404,7 +404,7 @@ public static final float GLOBAL_DURABILITY_MODIFIER = 1.75f;
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 

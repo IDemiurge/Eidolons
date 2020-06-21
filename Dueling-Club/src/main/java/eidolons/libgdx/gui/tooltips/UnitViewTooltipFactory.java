@@ -135,14 +135,13 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                             if (object.getGame().isStarted())
                                 if (object.getUnitVisionStatus() != null) {
                                     final ValueContainer valueContainer =
-                                            new ValueContainer(StringMaster.getWellFormattedString(object.getUnitVisionStatus().name()), "");
+                                            new ValueContainer(StringMaster.format(object.getUnitVisionStatus().name()), "");
                                     valueContainer.setNameAlignment(Align.center);
                                     add(valueContainer);
                                 }
                             String text = object.getGame().getVisionMaster().getHintMaster().getHintsString(object);
                             TextureRegion texture = TextureCache.getOrCreateR(VISUALS.QUESTION.getImgPath());
                             final ValueContainer hintsContainer = new ValueContainer(texture, text);
-                            hintsContainer.setNameAlignment(Align.left);
                             hintsContainer.setValueAlignment(Align.right);
                             add(hintsContainer);
 
@@ -168,7 +167,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                     PartyTooltip.THREAT_LEVEL threat = ThreatAnalyzer.getThreatLevel(object);
                     Color color = threat.color;
                     Label.LabelStyle style = StyleHolder.getSizedColoredLabelStyle(FontMaster.FONT.AVQ, 24, color);
-                    super.addStyledContainer(style, "             ", StringMaster.getWellFormattedString(threat.toString()));
+                    super.addStyledContainer(style, "             ", StringMaster.format(threat.toString()));
                 } else {
                     Label.LabelStyle style = StyleHolder.getSizedColoredLabelStyle(FontMaster.FONT.AVQ, 24,
                             object.getOwner().isNeutral() ? GdxColorMaster.BRONZE : GdxColorMaster.CYAN);
@@ -271,7 +270,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             }
             if (object.getCustomParamMap() != null) {
                 for (String counter : object.getCustomParamMap().keys()) {
-                    final String name = StringMaster.getWellFormattedString(counter);
+                    final String name = StringMaster.format(counter);
                     String img = CounterMaster.getImagePath(counter);
                     if (img != null) {
 
@@ -300,13 +299,13 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             if (object.getGame().isDebugMode()) {
 
                 final ValueContainer outlineContainer =
-                        new ValueContainer(StringMaster.getWellFormattedString
+                        new ValueContainer(StringMaster.format
                                 (object.getOutlineTypeForPlayer() + ""), "");
                 outlineContainer.setNameAlignment(Align.left);
                 add(outlineContainer);
 
                 final ValueContainer outlineContainer2 =
-                        new ValueContainer(StringMaster.getWellFormattedString
+                        new ValueContainer(StringMaster.format
                                 (object.getVisibilityLevel() + ""), "");
                 outlineContainer.setNameAlignment(Align.left);
                 add(outlineContainer);

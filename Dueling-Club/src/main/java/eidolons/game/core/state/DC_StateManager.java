@@ -171,12 +171,12 @@ public class DC_StateManager extends StateManager {
 
     private void resetAll() {
         Ref ref = new Ref(game);
-        DC_ActiveObj active=null ;
+        DC_ActiveObj active = null;
         if (getGame().getLoop().getLastAction() != null) {
-            if ( getGame().getLoop().getLastAction()==null ){
-                ref.setObj(KEYS.ACTIVE, active=getGame().getLoop().getLastActionEvent());
+            if (getGame().getLoop().getLastAction() == null) {
+                ref.setObj(KEYS.ACTIVE, active = getGame().getLoop().getLastActionEvent());
             } else {
-                getGame().getLoop().setLastActionEvent( active= getGame().getLoop().getLastAction());
+                getGame().getLoop().setLastActionEvent(active = getGame().getLoop().getLastAction());
                 getGame().getLoop().setLastAction(null);
             }
         }
@@ -222,14 +222,13 @@ public class DC_StateManager extends StateManager {
             if (active instanceof Spell) {
                 Spell s = (Spell) active;
                 if (s.isChanneling())
-                if (!s.isChannelingNow())
-                {
-                    for (AbilityObj passive : s.getPassives()) {
-                        passive.activatedOn(ref);
+                    if (!s.isChannelingNow()) {
+                        for (AbilityObj passive : s.getPassives()) {
+                            passive.activatedOn(ref);
+                        }
+                        ref.setObj(KEYS.ACTIVE, active);
+                        game.fireEvent(new Event(STANDARD_EVENT_TYPE.CHANNELING_DONE, ref));
                     }
-                    ref.setObj(KEYS.ACTIVE, active);
-                    game.fireEvent(new Event(STANDARD_EVENT_TYPE.CHANNELING_DONE, ref));
-                }
             }
         }
         game.fireEvent(new Event(STANDARD_EVENT_TYPE.RESET_DONE, ref));
@@ -493,10 +492,10 @@ public class DC_StateManager extends StateManager {
         //        getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.NEW_ROUND, state.getRound());
 
         if (!ExplorationMaster.isExplorationOn()) {
-            if (getState().getRound()>0){
-            GuiEventManager.trigger(GuiEventType.SHOW_LARGE_TEXT,
-                    ImmutableList.of("Round "+getState().getRoundDisplayedNumber(), "Fight on!" , 3f));
-            //really just some flavor text there? no useful info?
+            if (getState().getRound() > 0) {
+                GuiEventManager.trigger(GuiEventType.SHOW_LARGE_TEXT,
+                        ImmutableList.of("Round " + getState().getRoundDisplayedNumber(), "Fight on!", 3f));
+                //really just some flavor text there? no useful info?
                 // stats, reinf. status, total power remaining
             }
         }
@@ -582,23 +581,26 @@ public class DC_StateManager extends StateManager {
         if (obj == null) {
             return;
         }
+        Map<Integer, Obj> map = state.getObjMaps().get(obj.getOBJ_TYPE_ENUM());
+        if (map != null) {
+            map.remove(id);
+        }
         if (obj instanceof BattleFieldObject) {
             if (obj instanceof Structure) {
                 getGame().getStructures().remove(obj);
             }
             if (obj instanceof Unit) {
-                unitsToReset.remove(obj);
+                getGame().getUnits().remove(obj);
                 removeAttachedObjects((Unit) obj);
+                if (unitsToReset != null) {
+                    unitsToReset.remove(obj);
+                }
             }
-        }
-        Map<Integer, Obj> map = state.getObjMaps().get(obj.getOBJ_TYPE_ENUM());
-        if (map != null) {
-            map.remove(id);
         }
         //        super.removeObject(id);
     }
 
-    public void removeObject(Integer id , OBJ_TYPE TYPE) {
+    public void removeObject(Integer id, OBJ_TYPE TYPE) {
         removeObject(id);
     }
 

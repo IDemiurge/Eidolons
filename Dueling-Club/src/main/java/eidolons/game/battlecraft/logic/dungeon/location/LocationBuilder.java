@@ -12,15 +12,15 @@ import java.util.List;
 
 public class LocationBuilder extends DungeonBuilder {
 
-    public static final String BLOCKS_NODE = StringMaster.getWellFormattedString(RngXmlMaster.BLOCKS_NODE);
-    public static final String COORDINATES_NODE = StringMaster.getWellFormattedString(RngXmlMaster.COORDINATES_NODE);
-    public static final String OBJ_NODE = StringMaster.getWellFormattedString(RngXmlMaster.OBJECTS_NODE);
-    public static final String ZONES_NODE = StringMaster.getWellFormattedString(RngXmlMaster.ZONES_NODE);
+    public static final String BLOCKS_NODE = StringMaster.format(RngXmlMaster.BLOCKS_NODE);
+    public static final String COORDINATES_NODE = StringMaster.format(RngXmlMaster.COORDINATES_NODE);
+    public static final String OBJ_NODE = StringMaster.format(RngXmlMaster.OBJECTS_NODE);
+    public static final String ZONES_NODE = StringMaster.format(RngXmlMaster.ZONES_NODE);
     public static final String META_DATA_NODE = "Named_Coordinate_Points";
 
     private Location location;
 
-    private List<Node> lazyInitZones = new ArrayList<>();
+    private final List<Node> lazyInitZones = new ArrayList<>();
 
     public LocationBuilder() {
         super(null);

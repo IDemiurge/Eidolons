@@ -191,7 +191,8 @@ public abstract class SelectionPanel extends TablePanelX {
             if (Flags.isMacro()
              || ListMaster.isNotEmpty(MainLauncher.presetNumbers)) {
                 listPanel.updateAct(0);
-                tryDone();
+                Eidolons.onNonGdxThread( () ->
+                tryDone());
             }
     }
 

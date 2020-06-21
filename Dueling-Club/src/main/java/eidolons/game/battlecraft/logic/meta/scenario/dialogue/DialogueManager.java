@@ -12,8 +12,6 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.options.OptionsMaster;
-import eidolons.system.options.SystemOptions;
 import main.content.CONTENT_CONSTS;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -48,7 +46,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     public DialogueManager(MetaGameMaster master) {
         super(master);
 //        SKIP_INTRO = OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.TESTER_VERSION);
-        PARSE_ON_INIT = !OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.TESTER_VERSION);
+        PARSE_ON_INIT = Flags.isDialogueTest() || Flags.isFullVersion();
 
         if (PARSE_ON_INIT)
             DialogueLineFormatter.fullUpdate();

@@ -77,7 +77,7 @@ public class SlotItemTooltip extends ValueTooltip {
         if (source.item!=null )
         if (source.item.getCustomParamMap() != null) {
             source.item.getCustomParamMap().keys().forEach(counter -> {
-                final String name = StringMaster.getWellFormattedString(counter);
+                final String name = StringMaster.format(counter);
                 String img = CounterMaster.getImagePath(counter);
                 if (img != null) {
 

@@ -15,7 +15,7 @@ public class SoulTabs extends TabbedPanel {
 //        addActor(background = new Image(TextureCache.getOrCreate(Images.COLUMNS_AND_TREE_BG)));
 //        background.setPosition();
         for (LordPanel.SOUL_TABS tab : tabs) {
-            addTab(createTab(tab), StringMaster.getWellFormattedString(tab.toString()));
+            addTab(createTab(tab), StringMaster.format(tab.toString()));
         }
     }
 

@@ -8,7 +8,7 @@ import main.system.auxiliary.StringMaster;
 public interface OBJ_TYPE_ENUM {
 
     default String getName() {
-            return StringMaster.getWellFormattedString(
+            return StringMaster.format(
         // XML_Formatter.restoreXmlNodeName(
              toString());
     }

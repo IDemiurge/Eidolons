@@ -175,7 +175,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     @Override
     public String getTooltip() {
         String arg = getArgString();
-        return StringMaster.getWellFormattedString(getClass().getSimpleName(), true) + arg;
+        return StringMaster.format(getClass().getSimpleName(), true) + arg;
     }
 
     private String getArgString() {

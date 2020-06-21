@@ -87,7 +87,7 @@ public class SortMaster<T> {
         return new Comparator<Entity>() {
             protected int checkHeroSubList(Entity o1, Entity o2) {
 
-                String prop = StringMaster.getWellFormattedString(enumClass.getName());
+                String prop = StringMaster.format(enumClass.getName());
                 Object e1 = EnumMaster.getEnumConst(enumClass, o1.getProp(prop));
                 Object e2 = EnumMaster.getEnumConst(enumClass, o2.getProp(prop));
 

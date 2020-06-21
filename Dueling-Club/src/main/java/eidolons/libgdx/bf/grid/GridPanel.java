@@ -156,7 +156,7 @@ it sort of broke at some point - need to investigate!
     }
 
     protected boolean isCustomHit() {
-        return false;
+        return true;
     }
 
     public void setModule(Module module) {

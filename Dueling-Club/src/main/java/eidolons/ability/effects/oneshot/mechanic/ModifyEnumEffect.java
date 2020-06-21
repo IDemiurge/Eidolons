@@ -9,9 +9,9 @@ import main.system.auxiliary.StringMaster;
 public class ModifyEnumEffect extends DC_Effect implements OneshotEffect {
 
     boolean set;
-    private String name;
-    private String prop;
-    private int mod;
+    private final String name;
+    private final String prop;
+    private final int mod;
 
     public ModifyEnumEffect(String name, int mod) {
         this.name = name;
@@ -25,7 +25,7 @@ public class ModifyEnumEffect extends DC_Effect implements OneshotEffect {
         String prevValue = getTarget().getProperty(prop);
         int index = EnumMaster.getEnumConstIndex(clazz, prevValue);
         int newIndex = index + mod;
-        String value = StringMaster.getWellFormattedString(clazz.getEnumConstants()[newIndex]
+        String value = StringMaster.format(clazz.getEnumConstants()[newIndex]
          .toString());
         getTarget().setProperty(prop, value);
 

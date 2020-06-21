@@ -19,7 +19,6 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
-import java.awt.*;
 import java.util.List;
 
 // a tree for each tab 
@@ -51,39 +50,29 @@ public class TreeViewBuilder extends Builder {
 
     @Override
     public void init() {
+
         if (workspace == null) {
             tree = new AV_Tree(types, sub, type, ArcaneVault.isColorsInverted());
         } else {
             tree = new AV_Tree(workspace);
         }
+        JTree jTree = getTree();
+        jTree.expandRow(0);
+        // G_Panel container = new G_Panel();
 
-        tree.getTree().expandRow(0);
-        // List<DefaultMutableTreeNode> nodes = TreeMaster
-        // .getChildren((DefaultMutableTreeNode) tree.getTree().getModel()
-        // .getRoot());
-        // nodes = TreeMaster.getChildren(nodes.getOrCreate(0));
         if (comp == null) {
-            Dimension dimension = new Dimension(ArcaneVault.TREE_WIDTH, ArcaneVault.TREE_HEIGHT);
-            JScrollPane scrollPane = new JScrollPane(getTree());
-            // comp = new G_Panel();
-            // scrollPane.setSize(dimension);
-            // scrollPane.setPreferredSize(dimension);
-            // scrollPane.setMaximumSize(dimension);
+            // Dimension dimension = new Dimension(AvConsts.TREE_WIDTH, AvConsts.TREE_HEIGHT);
+            JScrollPane scrollPane = new JScrollPane(jTree);
             comp = scrollPane;
-
-            // getTree().setSize(dimension);
-            // getTree().setPreferredSize(dimension);
-            // getTree().setMaximumSize(dimension);
-            // comp.add(scrollPane);
             scrollPane.getVerticalScrollBar().setUnitIncrement(VERTICAL_SCROLL_BAR_UNIT_INCREMENT);
         }
-        getTree().addTreeSelectionListener(new AV_TreeSelectionListener(tree.getTree()));
-        getTree().addMouseListener(new NodeMaster(getTree(), false)); // add
+        jTree.addTreeSelectionListener(new AV_TreeSelectionListener(this.tree.getTree()));
+        jTree.addMouseListener(new NodeMaster(jTree, false)); // add
         // workspace
         // listener?
 
         if (ArcaneVault.isColorsInverted()) {
-            getTree().setBackground(ColorManager.BACKGROUND); // getOrCreate ws
+            jTree.setBackground(ColorManager.BACKGROUND); // getOrCreate ws
         }
         // background
     }

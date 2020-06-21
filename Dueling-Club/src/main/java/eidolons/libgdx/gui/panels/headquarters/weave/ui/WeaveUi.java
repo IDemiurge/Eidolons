@@ -60,10 +60,10 @@ public class WeaveUi extends GuiStage {
          */
     public VisSelectBox<String> createViewModeBox() {
         String[] strings  = Arrays.stream(WEAVE_VIEW_MODE.values())
-         .map(mode -> StringMaster.getWellFormattedString(mode.name()))
+         .map(mode -> StringMaster.format(mode.name()))
          .collect(Collectors.toList())
          .toArray(new String[WEAVE_VIEW_MODE.values().length]);
-        String selected = StringMaster.getWellFormattedString(
+        String selected = StringMaster.format(
          WEAVE_VIEW_MODE.DEFAULT.name());
 
         final VisSelectBox<String> selectBox = new VisSelectBox<>();

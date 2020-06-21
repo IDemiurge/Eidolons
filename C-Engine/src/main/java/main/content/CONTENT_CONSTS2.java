@@ -119,7 +119,7 @@ public class CONTENT_CONSTS2 {
 
         @Override
         public String toString() {
-            return StringMaster.getWellFormattedString(super.toString());
+            return StringMaster.format(super.toString());
         }
 
         public String getUnits() {
@@ -448,11 +448,11 @@ public class CONTENT_CONSTS2 {
         ALERT,
         INTENSE;
         public List<ACTION_TYPE_GROUPS> defaultActionGroups;
-        private String description;
-        private Map<String, String> addPropMap;
-        private Map<String, String> setPropMap;
-        private Map<String, String> paramModMap;
-        private Map<String, String> paramBonusMap;
+        private final String description;
+        private final Map<String, String> addPropMap;
+        private final Map<String, String> setPropMap;
+        private final Map<String, String> paramModMap;
+        private final Map<String, String> paramBonusMap;
 
         STD_ACTION_MODES() {
             this("", "", "", "", "", "", "", "", "");
@@ -479,7 +479,7 @@ public class CONTENT_CONSTS2 {
         }
 
         public String getPrefix() {
-            return StringMaster.getWellFormattedString(name()) + " ";
+            return StringMaster.format(name()) + " ";
         }
 
         public String getDescription() {

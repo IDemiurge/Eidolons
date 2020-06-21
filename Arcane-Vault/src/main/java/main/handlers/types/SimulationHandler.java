@@ -1,4 +1,4 @@
-package main.simulation;
+package main.handlers.types;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimulationManager {
+public class SimulationHandler {
 
     private static final String[] unitTypes = {DC_TYPE.UNITS.getName(),
             DC_TYPE.BF_OBJ.getName(), DC_TYPE.CHARS.getName(),};
@@ -28,9 +28,9 @@ public class SimulationManager {
         createUnit(type);
     }
 
-    public static void createUnit(ObjType type) {
+    public static Unit createUnit(ObjType type) {
         if (unitMap.containsKey(type)) {
-            return;
+            return null;
         }
         Unit unit = new Unit(type, 0, 0, DC_Player.NEUTRAL, getGame(), new Ref(
                 getGame()));
@@ -41,7 +41,7 @@ public class SimulationManager {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         unitMap.put(type, unit);
-
+        return unit;
     }
 
     private static void resetUnit(Unit unit) {
@@ -78,7 +78,7 @@ public class SimulationManager {
     public static void refreshType(ObjType type) {
         Unit unit = unitMap.get(type);
         if (unit == null) {
-            createUnit(type);
+            unit= createUnit(type);
         }
         try {
             resetUnit(unit);

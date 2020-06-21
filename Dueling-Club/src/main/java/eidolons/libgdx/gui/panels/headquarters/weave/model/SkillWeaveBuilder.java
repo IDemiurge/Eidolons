@@ -58,7 +58,7 @@ public class SkillWeaveBuilder extends WeaveModelBuilder {
     @Override
     protected String[] getWeaveGroups() {
         List<String> list = Arrays.stream(SKILL_GROUP.values()).filter(group -> checkFilter(group)).map
-         (group -> StringMaster.getWellFormattedString(group.name())).
+         (group -> StringMaster.format(group.name())).
          collect(Collectors.toList());
         return list.toArray(new String[0]);
     }

@@ -235,7 +235,7 @@ public class EidolonImbuer {
 //        map.sortByWeight();
 
         return ContainerUtils.constructStringContainer(map.keySet().stream().map(
-                a -> StringMaster.getWellFormattedString(a.toString()) + StringMaster.wrapInParenthesis(map.get(a) + "")
+                a -> StringMaster.format(a.toString()) + StringMaster.wrapInParenthesis(map.get(a) + "")
         ).collect(Collectors.toList()), " ");
     }
 

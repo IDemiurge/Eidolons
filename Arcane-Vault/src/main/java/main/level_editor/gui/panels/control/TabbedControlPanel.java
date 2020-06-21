@@ -49,7 +49,7 @@ public class TabbedControlPanel extends TabbedPane implements TabbedPaneListener
     }
 
     public static String getTitleFromClass(Class clazz) {
-        String title = StringMaster.getWellFormattedString(clazz.getSimpleName(), true);
+        String title = StringMaster.format(clazz.getSimpleName(), true);
         title = StringMaster.cropFirstSegment(title.trim(), " ");
         title = StringMaster.cropLastSegment(title, " ");
         return title;

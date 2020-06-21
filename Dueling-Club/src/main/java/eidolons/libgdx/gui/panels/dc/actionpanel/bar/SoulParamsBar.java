@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.texture.Sprites;
 import main.content.values.parameters.PARAMETER;
 
 import java.util.function.Supplier;
@@ -15,23 +16,31 @@ public class SoulParamsBar extends SpriteParamBar {
     }
 
     @Override
-    protected String getBarImagePath(boolean b) {
-        return super.getBarImagePath(b);
+    protected Color getColor(boolean over) {
+        if (!isColored())
+            return GdxColorMaster.WHITE;
+        return over ? GdxColorMaster.CYAN : GdxColorMaster.PURPLE;
     }
 
-    ////TODO we will need different for over/under!
+    private boolean isColored() {
+        return false;
+    }
 
     @Override
-    protected Color getColor(boolean over) {
-        return over? GdxColorMaster.CYAN : GdxColorMaster.PURPLE;
+    protected String getBarImagePath(boolean over) {
+        if (!isColored())
+            return over ? Sprites.SOULFORCE_BAR : Sprites.SOULFORCE_BAR_BG;
+        return over ? Sprites.SOULFORCE_BAR_WHITE : Sprites.SOULFORCE_BAR_BG_WHITE;
     }
+
+
     @Override
     protected PARAMETER getOverParam(boolean current) {
-        return current? PARAMS.C_FOCUS : PARAMS.FOCUS;
+        return current ? PARAMS.C_FOCUS : PARAMS.FOCUS;
     }
 
     @Override
     protected PARAMETER getUnderParam(boolean current) {
-        return current? PARAMS.C_ESSENCE : PARAMS.ESSENCE;
+        return current ? PARAMS.C_ESSENCE : PARAMS.ESSENCE;
     }
 }

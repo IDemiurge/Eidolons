@@ -62,11 +62,11 @@ public class DC_ActionManager implements ActionManager {
         stdObjTypes = new ArrayList<>();
         for (STD_ACTIONS name : STD_ACTIONS.values()) {
             if (!(DataManager.getType(StringMaster
-                    .getWellFormattedString(name.name()), DC_TYPE.ACTIONS) instanceof ObjType)) {
+                    .format(name.name()), DC_TYPE.ACTIONS) instanceof ObjType)) {
                 continue;
             }
             ObjType type = DataManager.getType(StringMaster
-                    .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
+                    .format(name.name()), DC_TYPE.ACTIONS);
 
             stdObjTypes.add(type);
         }
@@ -74,7 +74,7 @@ public class DC_ActionManager implements ActionManager {
         modeObjTypes = new ArrayList<>();
         for (STD_MODE_ACTIONS name : STD_MODE_ACTIONS.values()) {
             ObjType type = DataManager.getType(StringMaster
-                    .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
+                    .format(name.name()), DC_TYPE.ACTIONS);
 
             modeObjTypes.add(type);
         }
@@ -82,14 +82,14 @@ public class DC_ActionManager implements ActionManager {
         orderObjTypes = new ArrayList<>();
         for (STD_ORDER_ACTIONS type : STD_ORDER_ACTIONS.values()) {
             ObjType actionType = DataManager.getType(StringMaster
-                    .getWellFormattedString(type.toString()), DC_TYPE.ACTIONS);
+                    .format(type.toString()), DC_TYPE.ACTIONS);
             orderObjTypes.add(actionType);
         }
 
         hiddenActions = new ArrayList<>();
         for (HIDDEN_ACTIONS name : HIDDEN_ACTIONS.values()) {
             ObjType type = DataManager.getType(StringMaster
-                    .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
+                    .format(name.name()), DC_TYPE.ACTIONS);
 
             hiddenActions.add(type);
         }
@@ -371,7 +371,7 @@ public class DC_ActionManager implements ActionManager {
             }
         }
         return action.getProperty(PROPS.ACTION_MODES).contains(
-                StringMaster.getWellFormattedString(mode.toString()));
+                StringMaster.format(mode.toString()));
 
     }
 

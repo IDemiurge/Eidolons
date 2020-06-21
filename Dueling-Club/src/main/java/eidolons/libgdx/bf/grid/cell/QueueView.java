@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -177,6 +178,9 @@ public class QueueView extends UnitView {
 
     public void setActive(boolean active) {
         //gdx review - why is this getting called more than one?
+        if (ExplorationMaster.isExplorationOn()) {
+            return; //quick fix..
+        }
         if (this.active==active) {
             return;
         }

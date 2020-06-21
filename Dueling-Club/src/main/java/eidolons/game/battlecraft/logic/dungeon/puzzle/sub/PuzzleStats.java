@@ -59,7 +59,7 @@ public class PuzzleStats extends DataUnit<PuzzleStats.PUZZLE_STAT> {
         String s="";
         for (PUZZLE_STAT value : PUZZLE_STAT.values()) {
             if (value.displayed ) {
-                s += StringMaster.getWellFormattedString(value.toString())
+                s += StringMaster.format(value.toString())
                         + ": " +
                         getValue(value) +
                         "\n";

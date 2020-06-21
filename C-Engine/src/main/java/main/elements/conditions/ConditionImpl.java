@@ -47,7 +47,7 @@ public abstract class ConditionImpl implements Condition {
     @Override
     public String getTooltip() {
         return StringMaster.cropByLength(MAX_TOOLTIP_LENGTH, StringMaster
-         .getWellFormattedString(toString()));
+         .format(toString()));
     }
 
     public void setGame(Game game) {

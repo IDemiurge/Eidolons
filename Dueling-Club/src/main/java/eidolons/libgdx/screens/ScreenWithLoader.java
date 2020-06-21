@@ -292,7 +292,8 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     public void blackout(float dur, float to, boolean back) {
         if (back)
             blackoutBack = back;
-        main.system.auxiliary.log.LogMaster.dev(toString() + " BlackoutOld to " + to);
+        //gdx Review
+        // main.system.auxiliary.log.LogMaster.dev(toString() + " BlackoutOld to " + to);
         blackoutAction.setDuration(dur);
         if (!whiteout)
             blackoutAction.setInterpolation(Interpolation.fade);

@@ -40,7 +40,7 @@ public class PlaceholderGenerator {
     private static final String ROOM_CELL_PLACEHOLDER = "Bf Placeholder";
 
     public static String getPlaceholderName(GeneratorEnums.ROOM_CELL cell) {
-        String name = StringMaster.getWellFormattedString(cell.name());
+        String name = StringMaster.format(cell.name());
         return name + " "+ ObjCreator.PLACEHOLDER ;
     }
     public static void generateForRoomCells() {
@@ -50,7 +50,7 @@ public class PlaceholderGenerator {
         ObjType baseType =new ObjType(ROOM_CELL_PLACEHOLDER, DC_TYPE.BF_OBJ);
         for (GeneratorEnums.ROOM_CELL cell : placeholder_cells) {
             ObjType type = new ObjType(baseType);
-            String name = StringMaster.getWellFormattedString(cell.name());
+            String name = StringMaster.format(cell.name());
             type.setName(getPlaceholderName(cell));
             PROPERTY groupsProp = PROPS.PLACEHOLDER_DATA;
             type.setProperty(groupsProp, getSubgroupsForCell(cell));

@@ -4,10 +4,10 @@ import main.ability.utilities.NodeMaster;
 import main.ability.utilities.TemplateManager;
 import main.data.ability.AE_Item;
 import main.data.ability.Argument;
-import main.launch.ArcaneVault;
+import main.launch.AvConsts;
 import main.swing.generic.components.G_Panel;
-import main.system.graphics.ColorManager;
 import main.system.auxiliary.log.LogMaster;
+import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
 
@@ -22,7 +22,7 @@ public class AE_EditPanel extends G_Panel {
     private AE_MainPanel mainPanel;
     private NodeMaster nodeMaster;
     private AE_Item item;
-    private List<AE_Element> elements = new ArrayList<>();
+    private final List<AE_Element> elements = new ArrayList<>();
     private int pos = 0;
     private Argument expandArg;
     // private G_Panel scrollable;
@@ -34,8 +34,8 @@ public class AE_EditPanel extends G_Panel {
         this.nodeMaster = mainPanel.getNodeMaster();
         this.mainPanel = mainPanel;
         createGUI();
-        panelSize = new Dimension(ArcaneVault.AE_WIDTH * 3 / 2,
-                ArcaneVault.AE_HEIGHT);
+        panelSize = new Dimension(AvConsts.AE_WIDTH * 3 / 2,
+                AvConsts.AE_HEIGHT);
         setBackground(ColorManager.OBSIDIAN);
         // item.getARG_List();
     }
@@ -45,7 +45,7 @@ public class AE_EditPanel extends G_Panel {
 
     public Dimension getMinimumSize() {
         if (minSize == null) {
-            minSize = new Dimension(100, ArcaneVault.AE_HEIGHT);
+            minSize = new Dimension(100, AvConsts.AE_HEIGHT);
         }
         return minSize;
         // return super.getMinimumSize();

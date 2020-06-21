@@ -671,7 +671,7 @@ public class RadialManager {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 }

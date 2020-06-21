@@ -1,86 +1,60 @@
-package main.gui.components.controls;
+package main.handlers.mod;
 
 import eidolons.ability.ActionGenerator;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.content.ValuePages;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.rpg.PrincipleMaster;
-import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.HeroCreator;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.DC_Formulas;
-import eidolons.system.content.BfObjPropGenerator;
 import eidolons.system.content.ContentGenerator;
 import eidolons.system.math.DC_MathManager;
 import main.AV_DataManager;
 import main.ability.AE_Manager;
-import main.content.CONTENT_CONSTS2.FACTION;
-import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.ItemEnums.ITEM_RARITY;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
-import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
-import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
-import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.gui.builders.TabBuilder;
+import main.handlers.AvManager;
+import main.handlers.control.AvSelectionHandler;
+import main.handlers.gen.AvGenHandler;
+import main.handlers.types.SimulationHandler;
 import main.launch.ArcaneVault;
-import main.simulation.SimulationManager;
-import main.system.auxiliary.*;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.TimerTaskMaster;
-import main.system.threading.WaitMaster;
-import main.system.threading.Weaver;
 import main.utilities.search.TypeFinder;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class ModelManager {
-
-    private static final long BACK_UP_PERIOD = 300000;
-    private static final long RELOAD_PERIOD = 20000;
-    private static final int WAIT_PERIOD = 2000;
+public class AvModelHandler {
 
     private static AV_DataManager manager;
-    private static boolean auto;
-    private static boolean saving;
-    private static boolean autoSaveOff;
     private static int classId;
     private static final List<ObjType> idSet = new ArrayList<>();
-    private static boolean backupOnLaunch;
-    private static final List<String> masteriesToCleanUp = Arrays.asList("Spellcraft",
-            "Spellcraft", "Spellcraft", "Affliction");
-    private static boolean autoAdjust;
-
-    public static void addParent() {
-        add(false);
-
-    }
+    public static boolean autoAdjust;
 
     public static void addUpgrade() {
         add(true);
@@ -91,83 +65,11 @@ public class ModelManager {
         if (type == null) {
             return;
         }
-        adjustTreeTabSelection(type);
-    }
-
-    public static void adjustTreeTabSelection(ObjType type) {
-        adjustTreeTabSelection(type, true);
-    }
-
-    public static void generateFactions() {
-        for (FACTION u : FACTION.values()) {
-            ObjType newType = new ObjType();
-            ArcaneVault.getGame().initType(newType);
-            newType.setProperty(G_PROPS.NAME, u.toString());
-            newType.setProperty(G_PROPS.TYPE, MACRO_OBJ_TYPES.FACTIONS.toString());
-            newType.setImage(u.getImage());
-            // newType.setProperty(PROPS.ALLY_FACTIONS, u.getAllyFactions());
-            newType.setProperty(G_PROPS.FACTION_GROUP, u.getGroup());
-            newType.setProperty(G_PROPS.GROUP, u.getGroup());
-            DataManager.addType(u.toString(), MACRO_OBJ_TYPES.FACTIONS, newType);
-
-        }
-    }
-
-    public static void adjustTreeTabSelection(ObjType type, boolean select) {
-        int code =
-                // type.getOBJ_TYPE_ENUM().getCode();
-                ListMaster.getIndexString(new ArrayList<>(ArcaneVault.getMainBuilder().getTabBuilder()
-                        .getTabNames()), type.getOBJ_TYPE(), true);
-
-        ArcaneVault.getMainBuilder().getTabBuilder().getTabbedPane().setSelectedIndex(code);
-        // ArcaneVault.getMainBuilder().getEditViewPanel().selectType(type);
-
-        // Class<?> ENUM_CLASS =
-        // EnumMaster.findEnumClass(type.getOBJ_TYPE_ENUM().getGroupingKey().getName());
-        List<String> list = EnumMaster.findEnumConstantNames(type.getOBJ_TYPE_ENUM()
-                .getGroupingKey().getName());
-        int index = ListMaster.getIndexString(list, type.getGroupingKey(), true);
-        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS) {
-            if (index > 5) {
-                index--;
-            }
-        }
-        TabBuilder tb = ArcaneVault.getMainBuilder().getTabBuilder().getSubTabs(code);
-        tb.getTabbedPane().setSelectedIndex(index);
-        // getOrCreate path for node? I could keep some map from type to path...
-        if (!select) {
-            if (tb.getTree().getTreeSelectionListeners().length != 1) {
-                return;
-            }
-            TreeSelectionListener listener = tb.getTree().getTreeSelectionListeners()[0];
-            tb.getTree().removeTreeSelectionListener(listener);
-            try {
-                TreeMaster.collapseTree(tb.getTree());
-                DefaultMutableTreeNode node = TreeMaster.findNode(tb.getTree(), type.getName());
-                if (node == null) {
-                    //                    tb.getTabbedPane().setSelectedIndex(prevIndex);
-                    return;
-                }
-                tb.getTree().setSelectionPath(new TreePath(node.getPath()));
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            } finally {
-                tb.getTree().addTreeSelectionListener(listener);
-            }
-            return;
-        }
-
-        TreeMaster.collapseTree(tb.getTree());
-        DefaultMutableTreeNode node = TreeMaster.findNode(tb.getTree(), type.getName());
-        tb.getTree().setSelectionPath(new TreePath(node.getPath()));
+        AvSelectionHandler.adjustTreeTabSelection(type);
     }
 
     public static void add() {
         add(null);
-    }
-
-    public static void save(ObjType type, String valName) {
-        getAV_Manager().save(type);
     }
 
     public static void back(ObjType type) {
@@ -201,72 +103,14 @@ public class ModelManager {
         ArcaneVault.setDirty(true);
     }
 
-    public static void toggle() {
-        autoAdjust = !autoAdjust;
-        setAutoSaveOff(!isAutoSaveOff());
-        ArcaneVault.setSimulationOn(!ArcaneVault.isSimulationOn());
-        ArcaneVault.getMainBuilder().getEditViewPanel().AE_VIEW_TOGGLING = !ArcaneVault
-                .getMainBuilder().getEditViewPanel().AE_VIEW_TOGGLING;
-
-    }
-
-    public static void edit() {
-
-        setAutoSaveOff(!isAutoSaveOff());
-
-        if (!ArcaneVault.isSimulationOn()) {
-            ArcaneVault.setSimulationOn(true);
-            return;
-        }
-
-        CharacterCreator.addHero(SimulationManager.getUnit(new ObjType(ArcaneVault
-                .getSelectedType())));
-        ArcaneVault.setSimulationOn(false);
-
-    }
-
     public static void backUp() {
-        fullBackUp();
-    }
-
-    public static void save(OBJ_TYPE obj_type) {
-
-        if (obj_type.isTreeEditType() || obj_type == DC_TYPE.ABILS) {
-            AE_Manager.saveTreesIntoXML();
-        }
-        if (!auto) {
-            checkTypeModifications(obj_type);
-        } else {
-            if (obj_type == DC_TYPE.CHARS) {
-                XML_Reader.checkHeroesAdded();
-            }
-        }
-        try {
-            XML_Writer.writeXML_ForTypeGroup(obj_type);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-            SoundMaster.playStandardSound(STD_SOUNDS.FAIL);
-            return;
-        }
-
-    }
-
-    private static void generateNewArmorParams() {
-        for (ObjType type : DataManager.getTypes(DC_TYPE.ARMOR)) {
-            ContentGenerator.generateArmorParams(type);
-        }
+        AvSaveHandler.fullBackUp();
     }
 
     private static void updateSpells() {
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             ContentGenerator.generateSpellParams(type);
 
-        }
-    }
-
-    private static void generateNewWeaponParams() {
-        for (ObjType type : DataManager.getTypes(DC_TYPE.WEAPONS)) {
-            ContentGenerator.generateWeaponParams(type);
         }
     }
 
@@ -289,7 +133,7 @@ public class ModelManager {
         }
     }
 
-    private static void checkTypeModifications(OBJ_TYPE obj_type) {
+    protected static void checkTypeModifications(OBJ_TYPE obj_type) {
         if (obj_type == DC_TYPE.CHARS || obj_type == DC_TYPE.BF_OBJ
                 || obj_type == DC_TYPE.UNITS) {
 
@@ -319,9 +163,9 @@ public class ModelManager {
             updateSpells();
         }
         if (obj_type == DC_TYPE.ARMOR) {
-            generateNewArmorParams();
+            AvGenHandler.generateNewArmorParams();
         } else if (obj_type == DC_TYPE.WEAPONS) {
-            generateNewWeaponParams();
+            AvGenHandler.generateNewWeaponParams();
         } else if (obj_type == DC_TYPE.DEITIES) {
             for (ObjType type : DataManager.getTypes(obj_type))
             // if (type.getGroup().equals("Background"))
@@ -372,7 +216,7 @@ public class ModelManager {
             }
         }
         if (obj_type == DC_TYPE.BF_OBJ) {
-            generateBfObjProps();
+            AvGenHandler.generateBfObjProps();
         }
         if (obj_type.isTreeEditType() || obj_type == DC_TYPE.CHARS || obj_type == DC_TYPE.UNITS) {
 
@@ -396,7 +240,7 @@ public class ModelManager {
                     }
                     if (ArcaneVault.isSimulationOn()) {
                         int girth = 0;
-                        Unit unit = SimulationManager.getUnit(type);
+                        Unit unit = SimulationHandler.getUnit(type);
                         RACE race = unit.getRace();
                         if (race != null) {
                             switch (race) {
@@ -472,7 +316,7 @@ public class ModelManager {
 
     private static void initRarity(ObjType type) {
         if (type.getProperty(PROPS.ITEM_RARITY).isEmpty()) {
-            type.setProperty(PROPS.ITEM_RARITY, StringMaster.getWellFormattedString(ITEM_RARITY.COMMON.name()));
+            type.setProperty(PROPS.ITEM_RARITY, StringMaster.format(ITEM_RARITY.COMMON.name()));
         }
     }
 
@@ -490,33 +334,6 @@ public class ModelManager {
                 //                PrincipleMaster.processPrincipleValues(type);
             }
         }
-
-    }
-
-    private static void generateBfObjProps() {
-        for (ObjType t : DataManager.getTypes(DC_TYPE.BF_OBJ)) {
-            BfObjPropGenerator.generateBfObjProps(t);
-            if (t.getProperty(G_PROPS.BF_OBJECT_GROUP).equalsIgnoreCase("water")) {
-                for (PARAMETER resistance : ValuePages.RESISTANCES) {
-                    if (resistance == PARAMS.FIRE_RESISTANCE)
-                        t.setParam(resistance, 20);
-                    else if (resistance == PARAMS.SONIC_RESISTANCE)
-                        t.setParam(resistance, 30);
-                    else if (resistance == PARAMS.ACID_RESISTANCE)
-                        t.setParam(resistance, 40);
-                    else
-                        t.setParam(resistance, 100);
-                    //TODO freeze to ice?
-                }
-                //                BfObjPropGenerator.generateBfObjStatProps(t);
-            }
-        }
-    }
-
-    private static void generateBfObjParams() {
-        // for (ObjType t : DataManager.getTypes(OBJ_TYPES.BF_OBJ)) {
-        // ContentGenerator.generateBfObjParams(t);
-        // }
 
     }
 
@@ -752,22 +569,6 @@ public class ModelManager {
         return autoAdjust;
     }
 
-    public static void save() {
-        if (ArcaneVault.getSelectedOBJ_TYPE() == DC_TYPE.ABILS) {
-            VariableManager.setVariableInputRequesting(JOptionPane.showConfirmDialog(null,
-                    "Do you want to set variables manually?") == JOptionPane.YES_OPTION);
-        }
-        Weaver.inNewThread(new Runnable() {
-            @Override
-            public void run() {
-                save(ArcaneVault.getSelectedOBJ_TYPE());
-            }
-        });
-        VariableManager.setVariableInputRequesting(false);
-        return;
-
-    }
-
     public static void remove() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -790,70 +591,6 @@ public class ModelManager {
 
     }
 
-    public static void saveAllIfDirty() {
-        if (!isAutoSaveOff()) {
-            if (ArcaneVault.isDirty()) {
-                auto = true;
-                try {
-                    saveAll();
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                } finally {
-                    auto = false;
-                }
-            }
-        }
-
-    }
-
-    public static void saveAll() {
-        ArcaneVault.setDirty(true);
-        SoundMaster.playStandardSound(STD_SOUNDS.DONE);
-        Weaver.inNewThread(new Runnable() {
-            public void run() {
-                saveAllTypes();
-            }
-        });
-
-    }
-
-
-    private static void saveAllTypes() {
-        ArcaneVault.getWorkspaceManager().save();
-        if (saving) {
-            return;
-        }
-        saving = true;
-        try {
-            if (ArcaneVault.isMacroMode()) {
-
-                for (String type : XML_Reader.getTypeMaps().keySet()) {
-                    save(ContentValsManager.getOBJ_TYPE(type));
-
-                }
-            } else {
-                for (String type : XML_Reader.getTypeMaps().keySet()) {
-                    OBJ_TYPE objType = ContentValsManager.getOBJ_TYPE(type);
-                    if (auto) {
-                        if (objType == DC_TYPE.PARTY) {
-                            continue;
-                        }
-                    }
-                    save(objType);
-                    if (auto) {
-                        WaitMaster.WAIT(WAIT_PERIOD);
-                    }
-                }
-            }
-
-            SoundMaster.playStandardSound(STD_SOUNDS.CHECK);
-            ArcaneVault.setDirty(false);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        } finally {
-            saving = false;
-        }
-    }
 
     public static void checkReload() {
         if (ArcaneVault.isDirty()) {
@@ -868,25 +605,7 @@ public class ModelManager {
     }
 
     public static void startReloading() {
-        TimerTaskMaster.newTimer(new ModelManager(), "checkReload", null, null, RELOAD_PERIOD);
-
-    }
-
-    public static void startSaving() {
-        if (backupOnLaunch) {
-            Weaver.inNewThread(true, new Runnable() {
-                @Override
-                public void run() {
-                    backUp();
-                }
-            });
-        }
-
-        TimerTaskMaster.newTimer(new ModelManager(), "saveAllIfDirty", null, null, BACK_UP_PERIOD);
-    }
-
-    public static void startBackingUp() {
-        TimerTaskMaster.newTimer(new ModelManager(), "backUp", null, null, BACK_UP_PERIOD);
+        TimerTaskMaster.newTimer(new AvModelHandler(), "checkReload", null, null, AvSaveHandler.RELOAD_PERIOD);
 
     }
 
@@ -898,15 +617,7 @@ public class ModelManager {
     }
 
     public static void setManager(AV_DataManager manager) {
-        ModelManager.manager = manager;
-    }
-
-    public static boolean isAutoSaveOff() {
-        return autoSaveOff;
-    }
-
-    public static void setAutoSaveOff(boolean autoSaveOff) {
-        ModelManager.autoSaveOff = autoSaveOff;
+        AvModelHandler.manager = manager;
     }
 
     public static void addToWorkspace() {
@@ -934,12 +645,8 @@ public class ModelManager {
         if (selectedType != null) {
             back(selectedType);
         }
-        refresh();
+        AvManager.refresh();
 
-    }
-
-    public static void refresh() {
-        ArcaneVault.getMainBuilder().getTree().getTreeSelectionListeners()[0].valueChanged(null);
     }
 
     public static void addDefaultValues(boolean alt) {
@@ -947,13 +654,7 @@ public class ModelManager {
             DC_ContentValsManager.addDefaultValues(sub);
         }
         if (!alt)
-            saveAll();
+            AvSaveHandler.saveAll();
     }
 
-    public static void fullBackUp() {
-        //entire freaking directory? :)
-        String dir = PathFinder.getTYPES_PATH();
-        String newPath= PathFinder.getXML_PATH()+"/"+PathFinder.MICRO_MODULE_NAME+"/"+"types backup";
-        FileManager.copyDir(dir, newPath);
-    }
 }

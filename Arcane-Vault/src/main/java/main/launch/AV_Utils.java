@@ -6,8 +6,8 @@ import eidolons.system.file.ResourceMaster;
 import eidolons.system.utils.JsonToType;
 import main.content.DC_TYPE;
 import main.data.filesys.PathFinder;
-import main.gui.components.controls.ModelManager;
 import main.gui.components.tree.AV_Tree;
+import main.handlers.mod.AvSaveHandler;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -23,7 +23,7 @@ public class AV_Utils {
     private static final boolean imgPathUpdate = false;
 
     public static void launched() {
-        ModelManager.startSaving();
+        AvSaveHandler.startSaving();
 
         if (ArcaneVault.getTypes().contains("encounters")) {
             //            String input = DialogMaster.inputText("Input 'json' (baseType = name:val;... || baseType2 = ...)");

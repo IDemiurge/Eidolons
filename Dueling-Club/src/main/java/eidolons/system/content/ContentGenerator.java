@@ -251,7 +251,7 @@ public class ContentGenerator {
 
     public static void generatePlaces() {
         for (PLACE_SUBTYPE sub : PLACE_SUBTYPE.values()) {
-            String name = StringMaster.getWellFormattedString(sub.name());
+            String name = StringMaster.format(sub.name());
             ObjType type = new ObjType(name, MACRO_OBJ_TYPES.PLACE);
             type.setProperty(MACRO_PROPS.DUNGEON_TYPES, getDUNGEON_TYPES(sub));
             type.setProperty(MACRO_PROPS.PLACE_TYPE, getPLACE_TYPE(sub));
@@ -487,7 +487,7 @@ public class ContentGenerator {
 
     public static void generateRngScenarios() {
         for (LOCATION_TYPE type : LOCATION_TYPE.values()) {
-            ObjType newType = new ObjType(StringMaster.getWellFormattedString(type.name()),
+            ObjType newType = new ObjType(StringMaster.format(type.name()),
                     DC_TYPE.SCENARIOS);
             newType.setGroup("Random", true);
             switch (type) {
@@ -808,7 +808,7 @@ public class ContentGenerator {
     }
 
     public static String getNaturalArmorTypeForUnit(BattleFieldObject attacked) {
-        return StringMaster.getWellFormattedString(getObjectArmorTypeForUnit(attacked).toString());
+        return StringMaster.format(getObjectArmorTypeForUnit(attacked).toString());
     }
 
     public static OBJECT_ARMOR_TYPE getObjectArmorTypeForUnit(BattleFieldObject attacked) {

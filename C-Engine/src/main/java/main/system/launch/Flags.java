@@ -48,6 +48,7 @@ public class Flags {
     static boolean dungeonTool;
     static boolean testerVersion;
     static boolean superLite;
+    private static boolean fullVersion;
 
     public static boolean isLogicTest() {
         return logicTest;
@@ -435,5 +436,13 @@ public class Flags {
             }
             e.printStackTrace();
         }
+    }
+
+    public static boolean isFullVersion() {
+        return fullVersion;
+    }
+
+    public static void setFullVersion(boolean fullVersion) {
+        Flags.fullVersion = fullVersion;
     }
 }

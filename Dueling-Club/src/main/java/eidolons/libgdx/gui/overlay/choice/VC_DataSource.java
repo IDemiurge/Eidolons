@@ -65,7 +65,7 @@ public class VC_DataSource {
             this.title = title;
         }
 
-        private String title;
+        private final String title;
 
         public String getTitle() {
             return title;
@@ -119,7 +119,7 @@ public class VC_DataSource {
 
         VC_OPTION() {
             // img = PathFinder.getArtFolder()+"choices/"+ toString()+".png";
-            img = "ui\\components\\generic\\vc/" + StringMaster.getWellFormattedString(toString()) + ".png";
+            img = "ui\\components\\generic\\vc/" + StringMaster.format(toString()) + ".png";
 
         }
 

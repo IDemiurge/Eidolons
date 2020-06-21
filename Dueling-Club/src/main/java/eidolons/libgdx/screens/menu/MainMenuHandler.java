@@ -97,7 +97,7 @@ public class MainMenuHandler {
 
     public static List<ObjType> getScenarioTypes(String scenarioGroup) {
         return DataManager.getTypesGroup(DC_TYPE.SCENARIOS,
-         StringMaster.getWellFormattedString(scenarioGroup));
+         StringMaster.format(scenarioGroup));
     }
 
     private void startDemo() {

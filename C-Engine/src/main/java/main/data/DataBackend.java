@@ -108,7 +108,7 @@ public class DataBackend {
         if (type == null) {
             if (C_OBJ_TYPE.ITEMS.equals(obj_type))
                 try {
-                    return Game.game.getItemGenerator().generateItemType(StringMaster.getWellFormattedString(
+                    return Game.game.getItemGenerator().generateItemType(StringMaster.format(
                             typeName), obj_type);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
@@ -224,7 +224,7 @@ public class DataBackend {
         //        if (typeName.contains(" ")) {
         LogMaster.log(log, "Type getWellFormattedString: " + TYPE
                 + ":" + typeName);
-        return getType(StringMaster.getWellFormattedString(typeName), TYPE, false);
+        return getType(StringMaster.format(typeName), TYPE, false);
         //        }
 
     }

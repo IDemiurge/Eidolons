@@ -240,7 +240,7 @@ public class InvItemActor extends ItemActor {
         if (model == null) {
             if (cellType != null)
                 addListener(new ValueTooltip(
-                 StringMaster.getWellFormattedString(cellType.toString()) +
+                 StringMaster.format(cellType.toString()) +
                   " slot").getController());
         } else {
             String vals = InventoryFactory.getTooltipsVals(model);

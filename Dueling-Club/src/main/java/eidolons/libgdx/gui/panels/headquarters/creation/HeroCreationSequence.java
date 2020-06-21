@@ -109,9 +109,7 @@ public class HeroCreationSequence extends ItemListPanel {
         if (dif <= 0)
             return false;
         if (dif == 1)
-            if (HeroCreationMaster.isCurrentItemDone()) {
-                return false;
-            }
+            return !HeroCreationMaster.isCurrentItemDone();
         return true;
     }
 
@@ -144,7 +142,7 @@ public class HeroCreationSequence extends ItemListPanel {
 
         @Override
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public String[] getSubItems() {

@@ -45,13 +45,13 @@ public class HcSubracePanel extends SelectionImageTable {
 
         BACKGROUND[] subraces = DC_ContentValsManager.getSubraces(race);
         for (BACKGROUND sub : subraces) {
-            String typename=StringMaster.getWellFormattedString(sub.name());
+            String typename=StringMaster.format(sub.name());
             if (sub==BACKGROUND.MAN_OF_EAST_EMPIRE)
                 typename = "Easterling";
             if (sub==BACKGROUND.MAN_OF_KINGS_REALM)
                 typename = "Man of King's Realm";
             ObjType entity = DataManager.getType(typename, DC_TYPE.CHARS);
-            String name = StringMaster.getWellFormattedString(sub.name().replace("MAN_OF", "")).trim();
+            String name = StringMaster.format(sub.name().replace("MAN_OF", "")).trim();
             if (entity==null )
                 continue;
             String imagePath = entity.getImagePath();

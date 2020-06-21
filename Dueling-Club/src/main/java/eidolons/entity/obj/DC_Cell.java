@@ -223,21 +223,21 @@ public class DC_Cell extends DC_Obj implements Cell {
 //        super.toBase();
         name = getProp("Name")
                 + StringMaster.wrapInParenthesis(StringMaster
-                .getWellFormattedString(getProperty(PROPS.VISIBILITY_STATUS)));
+                .format(getProperty(PROPS.VISIBILITY_STATUS)));
     }
 
     public String getToolTip() {
         String text = "";
         if (getIntParam(PARAMS.LIGHT_EMISSION) != 0) {
-            text += StringMaster.getWellFormattedString("LIGHT_EMISSION - ")
+            text += StringMaster.format("LIGHT_EMISSION - ")
                     + getParam(PARAMS.LIGHT_EMISSION);
         }
         if (getIntParam(PARAMS.ILLUMINATION) != 0) {
-            text += StringMaster.getWellFormattedString(", ILLUMINATION - ")
+            text += StringMaster.format(", ILLUMINATION - ")
                     + getParam(PARAMS.ILLUMINATION);
         }
         if (getIntParam(PARAMS.CONCEALMENT) != 0) {
-            text += StringMaster.getWellFormattedString(", CONCEALMENT - ")
+            text += StringMaster.format(", CONCEALMENT - ")
                     + getParam(PARAMS.CONCEALMENT);
         }
 

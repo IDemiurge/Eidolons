@@ -48,7 +48,7 @@ public class HcBackgroundPanel extends SelectionImageTable {
         List<SelectableItemData> filtered = new ArrayList<>();
         List<ObjType> types = DataManager.getFilteredTypes(
          DC_TYPE.CHARS,
-         StringMaster.getWellFormattedString(type.getProperty(G_PROPS.BACKGROUND)), G_PROPS.BACKGROUND);
+         StringMaster.format(type.getProperty(G_PROPS.BACKGROUND)), G_PROPS.BACKGROUND);
         for (ObjType sub : types) {
             if (sub.getProperty(G_PROPS.GROUP).equalsIgnoreCase("background")) {
                 SelectableItemData

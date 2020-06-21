@@ -122,7 +122,7 @@ public class ActionPanel extends GroupX {
         offhand.setPosition(mainHand.getX() + 272 + 146- 112,
                 mainHand.getY()  );
 
-        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 + 12,
+        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2  ,
                 bodyParamsBar.getY() + 52);
 
 
@@ -131,9 +131,9 @@ public class ActionPanel extends GroupX {
                 , bodyParamsBar.getY());
         buffPanelSoul.setPosition(soulParamsBar.getX() + 35, IMAGE_SIZE + 25);
 
-        invBtn.setPosition(bodyParamsBar.getX() + bodyParamsBar.getWidth() / 2 + 61,
+        invBtn.setPosition(bodyParamsBar.getX() + bodyParamsBar.getWidth() / 2 + 74,
                 getHeight() - 90);
-        spellbookBtn.setPosition(soulParamsBar.getX() + soulParamsBar.getWidth() / 2 + 62,
+        spellbookBtn.setPosition(soulParamsBar.getX() + soulParamsBar.getWidth() / 2 + 74,
                 invBtn.getY());
 
     }

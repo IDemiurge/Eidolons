@@ -1,11 +1,11 @@
 package eidolons.macro.global.time;
 
-import eidolons.macro.global.time.GameDate.TIME_UNITS;
 import eidolons.libgdx.screens.map.ui.time.MapTimePanel.MOON;
+import eidolons.macro.global.time.GameDate.TIME_UNITS;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
 
 import static eidolons.libgdx.screens.map.ui.time.MapTimePanel.MOON.*;
@@ -24,7 +24,7 @@ public class GameDate extends DataUnit<TIME_UNITS> {
     private MONTH month=HUMAN_MONTHS.ARDENT;
     private int day;
     private int hour;
-    private boolean humanMonthsDisplayed = true;
+    private final boolean humanMonthsDisplayed = true;
     private DAY_TIME dayTime;
 
 
@@ -150,12 +150,12 @@ public class GameDate extends DataUnit<TIME_UNITS> {
             }
         },;
 
-        private int n;
-        private int days;
-        private String prevName;
-        private String nextName;
-        private String name;
-        private boolean last;
+        private final int n;
+        private final int days;
+        private final String prevName;
+        private final String nextName;
+        private final String name;
+        private final boolean last;
 
         ELEDARI_MONTHS(int n, int days, String name, String nextName,
                        String prevName) {
@@ -231,9 +231,9 @@ public class GameDate extends DataUnit<TIME_UNITS> {
         // BRIGHTSTAR,   ICESTORM,
         ;
 
-        private MOON[] moons;
-        private boolean nightly;
-        private int days;
+        private final MOON[] moons;
+        private final boolean nightly;
+        private final int days;
 
         HUMAN_MONTHS(int days, boolean nightly, MOON... moons) {
             this.days = days;
@@ -261,7 +261,7 @@ public class GameDate extends DataUnit<TIME_UNITS> {
 
         @Override
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         @Override

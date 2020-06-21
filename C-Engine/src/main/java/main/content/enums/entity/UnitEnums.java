@@ -64,7 +64,7 @@ public final class UnitEnums {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public boolean isDisplayed() {
@@ -135,7 +135,7 @@ public final class UnitEnums {
         private COUNTER up;
         private final String imagePath;
         private final String name =
-         StringMaster.getWellFormattedString(name()) + StringMaster.COUNTER;
+         StringMaster.format(name()) + StringMaster.COUNTER;
 
         COUNTER() {
             imagePath = ImageManager.getValueIconsPath() + "counters/" + toString() + ".png";
@@ -251,7 +251,7 @@ public final class UnitEnums {
         CLEAVE("CLEAVE"),
         TRUE_STRIKE("True Strike"),
         INDESTRUCTIBLE("Indestructible"),
-        INVULNERABLE(StringMaster.getWellFormattedString("INVULNERABLE")),
+        INVULNERABLE(StringMaster.format("INVULNERABLE")),
 
         // NEW
         UNLIMITED_RETALIATION("Unlimited Retaliation"),
@@ -316,7 +316,7 @@ public final class UnitEnums {
 
         public String getName() {
             if (name == null) {
-                name = StringMaster.getWellFormattedString(name());
+                name = StringMaster.format(name());
             }
 
             return name;
@@ -412,7 +412,7 @@ public final class UnitEnums {
 
 
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 
@@ -432,7 +432,7 @@ public final class UnitEnums {
         WRAITH_MONSTROCITY,;
 
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
     }

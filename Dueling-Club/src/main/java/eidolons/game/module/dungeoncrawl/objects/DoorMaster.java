@@ -136,7 +136,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
     @Override
     public DC_UnitAction createAction(DOOR_ACTION sub, Unit unit, DungeonObj obj) {
         return super.createAction(sub, unit,
-         StringMaster.getWellFormattedString(sub.name()) + " Door",
+         StringMaster.format(sub.name()) + " Door",
          obj);
     }
 

@@ -8,8 +8,8 @@ import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.values.parameters.PARAMETER;
 import main.entity.type.ObjType;
 import main.system.EventType;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
 import java.util.List;
@@ -74,7 +74,7 @@ public class MasteryRankSlot extends HtNode {
     protected String getTextPrefix() {
         if (data == null)
             return "Mastery Slot, Rank " + NumberUtils.getRoman(tier+1);
-        return StringMaster.getWellFormattedString(data.name()) + " Rank " + NumberUtils.getRoman(tier+1);
+        return StringMaster.format(data.name()) + " Rank " + NumberUtils.getRoman(tier+1);
     }
     @Override
     protected EventType getSelectionEvent() {

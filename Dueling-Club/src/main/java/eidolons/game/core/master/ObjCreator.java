@@ -162,26 +162,27 @@ public class ObjCreator extends Master {
                                            Ref ref) {
         BF_OBJECT_GROUP group = new EnumMaster<BF_OBJECT_GROUP>().retrieveEnumConst(BF_OBJECT_GROUP.class,
                 type.getProperty(G_PROPS.BF_OBJECT_GROUP));
-        if (group != null) {
-            switch (group) {
-                case DUNGEON:
-                    break;
+        if (!CoreEngine.isLevelEditor())
+            if (group != null) {
+                switch (group) {
+                    case DUNGEON:
+                        break;
 
-                case KEY:
-                case HANGING:
-                    return new InteractiveObj(type, x, y);
-                case DOOR:
-                    return new Door(type, x, y, owner, getGame(), ref);
-                case LOCK:
-                    return new LockObj(type, x, y, owner, getGame(), ref);
-                case TREASURE:
-                case CONTAINER:
-                case GRAVES:
-                case REMAINS:
-                case INTERIOR:
-                    return new ContainerObj(type, x, y);
+                    case KEY:
+                    case HANGING:
+                        return new InteractiveObj(type, x, y);
+                    case DOOR:
+                        return new Door(type, x, y, owner, getGame(), ref);
+                    case LOCK:
+                        return new LockObj(type, x, y, owner, getGame(), ref);
+                    case TREASURE:
+                    case CONTAINER:
+                    case GRAVES:
+                    case REMAINS:
+                    case INTERIOR:
+                        return new ContainerObj(type, x, y);
+                }
             }
-        }
 
         return new Structure(type, x, y, owner, getGame(), ref);
     }

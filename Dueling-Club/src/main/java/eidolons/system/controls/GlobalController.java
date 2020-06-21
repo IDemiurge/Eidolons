@@ -31,6 +31,7 @@ import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.GuiStage;
+import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.utils.GdxDialogMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
@@ -171,7 +172,7 @@ public class GlobalController implements Controller {
                 GuiEventManager.trigger(GuiEventType.DISPOSE_SCOPE, "DIALOGUE");
                 break;
             case Keys.END:
-                //                GuiEventManager.trigger(GuiEventType.LOG_DIAGNOSTICS);
+                TextureCache.getInstance().logDiagnostics();
                 break;
             case Keys.F9:
                 Eidolons.onNonGdxThread(() -> {

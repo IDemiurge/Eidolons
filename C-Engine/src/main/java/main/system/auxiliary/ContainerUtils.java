@@ -46,7 +46,7 @@ public class ContainerUtils {
                     delimiter = delimiter.toLowerCase();
                 }
                 if (!containerString.contains(delimiter)) {
-                    delimiter = StringMaster.getWellFormattedString(delimiter);
+                    delimiter = StringMaster.format(delimiter);
                 }
             }
         }
@@ -102,7 +102,7 @@ public class ContainerUtils {
         int i = 0;
         for (String item : listData) {
 
-            listData.set(i, StringMaster.getWellFormattedString(item));
+            listData.set(i, StringMaster.format(item));
             i++;
         }
     }

@@ -21,7 +21,7 @@ import java.util.Set;
 public class HintMaster {
 
     Map<BattleFieldObject, Map<OUTLINE_IMAGE, String>> cache = new HashMap<>();
-    private VisionMaster master;
+    private final VisionMaster master;
 
     public HintMaster(VisionMaster visionMaster) {
         master = visionMaster;
@@ -82,7 +82,7 @@ public class HintMaster {
 
         }
         for (OUTLINE_HINT hint : set) {
-            hintString += StringMaster.getWellFormattedString(hint.toString()) + " ";
+            hintString += StringMaster.format(hint.toString()) + " ";
         }
         return hintString;
     }
@@ -141,7 +141,7 @@ public class HintMaster {
 
     public String getTooltipForUnit(Unit unit) {
         String hintString = getHintsString(unit);
-        String tooltip = StringMaster.getWellFormattedString(unit.getOutlineType().toString()) + " of something "
+        String tooltip = StringMaster.format(unit.getOutlineType().toString()) + " of something "
          + hintString;
         Unit activeUnit = DC_Game.game.getManager().getActiveObj();
         if (unit.getOwner().equals(activeUnit.getOwner())) {
@@ -168,7 +168,7 @@ public class HintMaster {
          getHints(unit, img);
         StringBuilder hintStringBuilder = new StringBuilder(hintString);
         for (OUTLINE_HINT hint : hints) {
-            hintStringBuilder.append(StringMaster.getWellFormattedString(hint.toString())).append(" ");
+            hintStringBuilder.append(StringMaster.format(hint.toString())).append(" ");
         }
         hintString = hintStringBuilder.toString();
         map.put(img, hintString);

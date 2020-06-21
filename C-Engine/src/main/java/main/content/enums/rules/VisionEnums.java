@@ -41,7 +41,7 @@ public class VisionEnums {
 
         @Override
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 
@@ -59,7 +59,7 @@ public class VisionEnums {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(toString());
+            return StringMaster.format(toString());
         }
 
         public Image getImage() {

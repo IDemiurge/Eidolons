@@ -155,7 +155,7 @@ public class MetaEnums {
         Channeling, Disabled;
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 

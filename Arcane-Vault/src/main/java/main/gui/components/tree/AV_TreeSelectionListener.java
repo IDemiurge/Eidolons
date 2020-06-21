@@ -6,8 +6,8 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.gui.builders.EditViewPanel;
 import main.gui.builders.TabBuilder;
+import main.handlers.types.SimulationHandler;
 import main.launch.ArcaneVault;
-import main.simulation.SimulationManager;
 import main.swing.SwingMaster;
 import main.swing.generic.components.G_Panel;
 import main.utilities.workspace.Workspace;
@@ -22,8 +22,8 @@ import java.util.List;
 
 public class AV_TreeSelectionListener implements TreeSelectionListener {
 
-    private EditViewPanel panel;
-    private JTree tree;
+    private final EditViewPanel panel;
+    private final JTree tree;
 
     public AV_TreeSelectionListener(JTree tree) {
             panel = ArcaneVault.getMainBuilder().getEditViewPanel();
@@ -72,9 +72,9 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
         // DataManager.getType(name)
         // .getProperty(PROPS.SOUNDSET));
 
-        if (SimulationManager.isUnitType(tab) && ArcaneVault.isSimulationOn()) {
+        if (SimulationHandler.isUnitType(tab) && ArcaneVault.isSimulationOn()) {
             try {
-                SimulationManager.initUnitObj(name);
+                SimulationHandler.initUnitObj(name);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

@@ -120,7 +120,7 @@ public class TypeBuilder {
             if ((type) instanceof XmlHoldingType) {
 
 
-                if (StringMaster.getWellFormattedString(child.getNodeName()).equals(
+                if (StringMaster.format(child.getNodeName()).equals(
                         ((XmlHoldingType) (type)).getXmlProperty()
                                 .getName())
                 ) {

@@ -508,7 +508,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
                 return null;
         }
         return new ValueTooltip(StringMaster.
-                getWellFormattedString(overlay.name()));
+                format(overlay.name()));
     }
 
     protected boolean isHpTooltipOn() {

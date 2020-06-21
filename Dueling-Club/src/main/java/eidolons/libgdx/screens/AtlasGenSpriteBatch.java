@@ -15,6 +15,34 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatch {
     public enum ATLAS {
     ui,
 
+    /*
+    depending on our draw order!
+
+    bg
+
+    grid
+    > cells (emblems, arrow, border,
+    > shadows, walls,
+    > Overlays (hp,
+    > emitters
+    > anims
+
+    ui
+    > atb views
+
+    what else prevents us from creating 'super huge atlas'?
+    > if we load ALL units, that's a bit much!
+    > create atlas per level - could work at first!
+
+    > different shard versions
+    > cell img
+    > emitters split
+
+
+    How big an atlas can we make? If we at least create the freaking img folders,
+    it's trivial - use some other pc if you got to
+
+     */
     }
 
     ATLAS atlas;

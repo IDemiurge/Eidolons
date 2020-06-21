@@ -79,7 +79,7 @@ public class ShadowMap extends GroupX implements GridElement {
         if (userObject instanceof DC_Obj) {
             DC_Obj obj = (DC_Obj) userObject;
             CONTENT_CONSTS.COLOR_THEME colorTheme = null;
-            if (userObject != null &&  !obj.getProperty
+            if (userObject != null && !obj.getProperty
                     (PROPS.COLOR_THEME).isEmpty()) {
                 colorTheme = new EnumMaster<CONTENT_CONSTS.COLOR_THEME>().
                         retrieveEnumConst(CONTENT_CONSTS.COLOR_THEME.class, obj.getProperty
@@ -89,8 +89,8 @@ public class ShadowMap extends GroupX implements GridElement {
             if (colorTheme == null) {
                 LevelStruct lowestStruct = obj.getGame().getDungeonMaster().getStructMaster().
                         getLowestStruct(obj.getCoordinates());
-                colorTheme=
-                lowestStruct.getColorTheme();
+                colorTheme =
+                        lowestStruct.getColorTheme();
 
             }
 
@@ -160,7 +160,8 @@ public class ShadowMap extends GroupX implements GridElement {
                             addShadowMapElement(cell, x, y, type.defaultAlpha);
                         }
                     } else {
-
+                        if (!isLightEmittersOn())
+                            continue;
                         if (emitters[x][y] == null) {
                             emitters[x][y] = new ArrayList<>();
                         }
@@ -197,6 +198,10 @@ public class ShadowMap extends GroupX implements GridElement {
         }
         //        update();
 
+    }
+
+    private boolean isLightEmittersOn() {
+        return false;
     }
 
     private void addShadowMapElement(Group element, int x, int y, float defaultAlpha) {

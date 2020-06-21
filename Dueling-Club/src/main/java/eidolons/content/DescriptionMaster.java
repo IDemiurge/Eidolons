@@ -78,7 +78,7 @@ public class DescriptionMaster {
                 }
 
         }// You are of Character.is
-        return "You have a rank of " + StringMaster.getWellFormattedString(rank.name()) + " in "
+        return "You have a rank of " + StringMaster.format(rank.name()) + " in "
          + param.getName();
 
     }

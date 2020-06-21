@@ -93,7 +93,7 @@ public class AttackTooltipFactory {
 
     private static ValueContainer createContainer(AttackDataSource.ATTACK_CASE value) {
         String pic="";
-        String text = StringMaster.getWellFormattedString(value.toString())+ " Attack";
+        String text = StringMaster.format(value.toString())+ " Attack";
         String tooltip=text + " modificators will apply";
         Color color = null;
         switch (value) {

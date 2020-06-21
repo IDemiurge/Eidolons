@@ -67,8 +67,10 @@ public class Sprites {
     public static final String BOSS_HARVESTER =  "sprites/boss/reaper/atlas.txt";
     public static final String BOSS_KNIGHT = "sprites/boss/knight/knight.txt";
     public static final String BOSS_KNIGHT_ATTACK = "sprites/boss/knight/main atk.txt";
-    public static final String SOULFORCE_BAR_BG = "sprites/ui/soulforce bar bg.txt";
-    public static final String SOULFORCE_BAR = "sprites/ui/soulforce bar.txt";
+    public static final String SOULFORCE_BAR_BG_WHITE = "sprites/ui/soulforce bar bg.txt";
+    public static final String SOULFORCE_BAR_WHITE = "sprites/ui/soulforce bar.txt";
+    public static final String SOULFORCE_BAR_BG = "sprites/ui/soulforce bar bg purple.txt";
+    public static final String SOULFORCE_BAR = "sprites/ui/soulforce bar purple.txt";
     public static final String SOULFORCE_CORE = "sprites/ui/soulforce core.txt";
 
     private static final Map<String, String> spriteMap;
@@ -77,7 +79,7 @@ public class Sprites {
         spriteMap = new HashMap<>();
         for (Field field : Sprites.class.getFields()) {
             try {
-                spriteMap.put(StringMaster.getWellFormattedString(field.getName()).toLowerCase(),
+                spriteMap.put(StringMaster.format(field.getName()).toLowerCase(),
                         field.get(null).toString());
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -87,7 +89,7 @@ public class Sprites {
     }
 
     public static String substituteKey(String key) {
-        key = StringMaster.getWellFormattedString(key).toLowerCase();
+        key = StringMaster.format(key).toLowerCase();
         if (spriteMap.containsKey(key))
             return spriteMap.get(key);
         return key;

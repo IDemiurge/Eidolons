@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.libgdx.bf.overlays.ValueBar;
 import eidolons.libgdx.gui.ScissorMaster;
+import eidolons.libgdx.texture.Textures;
 import main.content.values.parameters.PARAMETER;
 import main.system.math.MathMaster;
 
@@ -74,6 +75,26 @@ public abstract class DualParamBar extends ValueBar {
         super.draw(batch, parentAlpha);
         float p = MathMaster.minMax(displayedSecondaryPerc, 0, 1);
         float y = getY();
+        if (isGradientMask()){
+            if (p<1) {
+            float x = getX() - (innerWidth * (1 - p));
+            ScissorMaster.drawWithAlphaMask(this, batch, x, y, innerWidth, height,
+                    ()->   drawBar(underBarRegion, batch, secondaryColor, y),
+                    Textures.HOR_GRADIENT_72);
+            } else {
+                drawBar(underBarRegion, batch, secondaryColor, y);
+            }
+            p = Math.min(p, displayedPrimaryPerc);
+            if (p<1) {
+                float x = getX() - (innerWidth * (1 - p));
+                ScissorMaster.drawWithAlphaMask(this, batch, x, y, innerWidth, height,
+                        ()->   drawBar(overBarRegion, batch, primaryColor, y),
+                        Textures.HOR_GRADIENT_72);
+            } else {
+                drawBar(overBarRegion, batch, primaryColor, y);
+            }
+            return;
+        }
         //UNDER
         ScissorMaster.drawInRectangle(this, batch, getX(),
                 y,
@@ -84,8 +105,12 @@ public abstract class DualParamBar extends ValueBar {
         ScissorMaster.drawInRectangle(this, batch, getX(),
                 y, innerWidth * Math.min(p, displayedPrimaryPerc),
                 height, () ->
-                        drawBar(overBarRegion, batch, primaryColor, getY()));
+                        drawBar(overBarRegion, batch, primaryColor, y));
 
+    }
+
+    private boolean isGradientMask() {
+        return false;
     }
 
     @Override

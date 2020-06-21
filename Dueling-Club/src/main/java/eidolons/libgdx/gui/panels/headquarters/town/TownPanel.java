@@ -254,7 +254,7 @@ public class TownPanel extends TabbedPanel {
 
         @Override
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 

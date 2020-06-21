@@ -79,8 +79,9 @@ public class StyleHolder {
             hieroStyleMap.put(font, new ObjectMap<>());
             String path = getHieroPath(font);
             for (File file : FileManager.getFilesFromDirectory(path, false)) {
-                String size = StringMaster.cropFormat(file.getName().replace(StringMaster.getStringBeforeNumerals(file.getName()), "")).trim();
-                list.add(NumberUtils.getIntParse(size));
+                String size = StringMaster.cropFormat(file.getName().replace(
+                        StringMaster.getStringBeforeNumerals(file.getName()), "")).trim();
+                list.add(NumberUtils.getInt(size));
             }
 
         }

@@ -27,7 +27,7 @@ public class MenuPanel extends MenuBar {
             if (value.subFuncs.length == 0) {
                 continue;
             }
-            Menu menu = new Menu(StringMaster.getWellFormattedString(value.name()), style);
+            Menu menu = new Menu(StringMaster.format(value.name()), style);
 
             addMenu(menu);
             for (LE_MenuHandler.FUNCTION_BUTTONS subFunc : value.subFuncs) {
@@ -97,7 +97,7 @@ public class MenuPanel extends MenuBar {
             Menu menu = new Menu(TabbedControlPanel.getTitleFromClass(panel.getClazz()), style);
             addMenu(menu);
             for (Method method : panel.getClazz().getMethods()) {
-                MenuItem item = new MenuItem(StringMaster.getWellFormattedString(method.getName()));
+                MenuItem item = new MenuItem(StringMaster.format(method.getName()));
                 item.addListener(createItemListener(item, method, panel.getHandler()));
                 menu.addItem(item);
                 item.setStyle(btnStyle);
@@ -145,7 +145,7 @@ public class MenuPanel extends MenuBar {
     }
 
     private MenuItem createMenuItem(LE_MenuHandler.FUNCTION_BUTTONS subFunc) {
-        MenuItem item = new MenuItem( StringMaster.getWellFormattedString(subFunc.name()));
+        MenuItem item = new MenuItem( StringMaster.format(subFunc.name()));
         return item;
     }
 

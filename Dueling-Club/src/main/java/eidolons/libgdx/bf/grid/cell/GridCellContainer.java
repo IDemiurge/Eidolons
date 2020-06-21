@@ -78,15 +78,6 @@ public class GridCellContainer extends GridCell implements Hoverable {
         info.padBottom(12);
         info.setVisible(false);
 
-        if (isGraveyardOn()) {
-            graveyard = new GraveyardView();
-            addActor(graveyard);
-            graveyard.setWidth(getWidth());
-            graveyard.setHeight(getHeight());
-        }
-        //        setUserObject(new GridCellDataSource(
-        //                Coordinates.get(getGridX(), getGridY())
-        //        ));
         return this;
     }
 
@@ -425,7 +416,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
             GenericGridView view = (GenericGridView) actor;
 
             if (isAnimated()) {
-                ActionMaster.addFadeInAction(actor, getFadeDuration() );
+                ActionMaster.addFadeInAction(actor, getFadeDuration());
             }
             //recalc all
             indexMap.put(view, getZIndexForView(view));
@@ -522,7 +513,17 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     public void updateGraveyard() {
+        if (graveyard == null) {
+            initGraveyard();
+        }
         graveyard.updateGraveyard();
+    }
+
+    private void initGraveyard() {
+        addActor(graveyard = new GraveyardView());
+        graveyard.setWidth(getWidth());
+        graveyard.setHeight(getHeight());
+        graveyard.setUserObject(new GridCellDataSource(Coordinates.get(getGridX(), getGridY())));
     }
 
     public int getUnitViewCount() {
@@ -577,7 +578,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         return sorter;
     }
 
-    protected boolean isWithinCamera() {
+    protected boolean isWithinCameraCheck() {
         float expandHeight = 0;
         float expandWidth = 0;
         if (visibleViews != null)

@@ -44,13 +44,13 @@ public class WorkspaceManager {
     private static final boolean LAYER_DOWN = false;
     private static final String METADATA = "METADATA: ";
     public static boolean ADD_WORKSPACE_TAB_ON_INIT = false;
-    private static List<Workspace> workspaces = new ArrayList<>();
+    private static final List<Workspace> workspaces = new ArrayList<>();
     private Workspace activeWorkspace;
 
     private boolean defaultTypeWorkspacesOn = true;
     private boolean defaultGroupWorkspacesOn = true;
-    private boolean autosave = true;
-    private Boolean macro;
+    private final boolean autosave = true;
+    private final Boolean macro;
 
     public WorkspaceManager(Boolean macro, Game game) {
         this.macro = macro;
@@ -273,7 +273,7 @@ public class WorkspaceManager {
                     }
 
                     selectedType.setProperty(G_PROPS.WORKSPACE_GROUP, StringMaster
-                            .getWellFormattedString("" + MetaEnums.WORKSPACE_GROUP.values()[option]));
+                            .format("" + MetaEnums.WORKSPACE_GROUP.values()[option]));
                 }
             }
         }
@@ -373,7 +373,7 @@ public class WorkspaceManager {
         ENCOUNTERS(DC_TYPE.ENCOUNTERS),
 
         MISC;
-        private OBJ_TYPE[] types;
+        private final OBJ_TYPE[] types;
 
         DEFAULT_TYPE_WORKSPACES(OBJ_TYPE... types) {
             this.types = types;
@@ -384,7 +384,7 @@ public class WorkspaceManager {
         }
 
         public String getWorkspaceName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public OBJ_TYPE[] getTypes() {

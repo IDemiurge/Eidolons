@@ -185,6 +185,8 @@ public class Shard extends SuperActor {
         if (getUserObject() == null || parentAlpha == ShaderDrawer.SUPER_DRAW
             //         || batch.getShader() == GrayscaleShader.getGrayscaleShader()
         ) {
+            if (isIgnored())
+                return;
             super.draw(batch, 1);
         } else {
             if (isIgnored())

@@ -395,19 +395,19 @@ public class TextParser {
     }
 
     private static String formatString(String replacement) {
-        return StringMaster.getWellFormattedString(replacement).replace(";", "");
+        return StringMaster.format(replacement).replace(";", "");
     }
 
     public static String formatRequirements(String requirements) {
         return "Requirements: "
-         + StringMaster.getWellFormattedString(requirements.replace("=", " ")).replace("Or",
+         + StringMaster.format(requirements.replace("=", " ")).replace("Or",
          "or").replace("Principles", "Principle -");
 
     }
 
     public static String formatFormula(String formula) {
         // TODO {} -> (); CAPS -> Caps; + -> " " + " "
-        return StringMaster.getWellFormattedString(formula)
+        return StringMaster.format(formula)
 
          .replace("Source ", "").replace("source ", "").replace("av", "").replace("(mastery)",
           "mastery").replace("Min(", "(Max ").replace("min(", "(Max ").replace(",", ") ")

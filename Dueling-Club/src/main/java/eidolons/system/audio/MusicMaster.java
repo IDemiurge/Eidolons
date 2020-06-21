@@ -212,7 +212,7 @@ public class MusicMaster {
     }
 
     public static boolean isMusicPreloadOn() {
-        return true; //!CoreEngine.isIDE();//!mainThemePlayed;
+        return !Flags.isIDE();
     }
 
     public static boolean isOn() {
@@ -624,10 +624,10 @@ public class MusicMaster {
         }
         StrPathBuilder builder = new StrPathBuilder(PathFinder.getMusicPath());
         if (scope != null)
-            builder.append(StringMaster.getWellFormattedString(
+            builder.append(StringMaster.format(
                     scope.toString()));
         if (theme != null)
-            builder.append(StringMaster.getWellFormattedString(
+            builder.append(StringMaster.format(
                     theme.toString()));
         return builder.toString();
     }
@@ -944,7 +944,7 @@ public class MusicMaster {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public String getFullPath() {

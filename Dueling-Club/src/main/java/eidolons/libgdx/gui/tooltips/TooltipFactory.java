@@ -60,7 +60,7 @@ public abstract class TooltipFactory<T, A extends Actor> {
             return;
         }
         value = value.replace(";", ", ");
-        value = StringMaster.getWellFormattedString(value);
+        value = StringMaster.format(value);
         final ValueContainer valueContainer =
                 new ValueContainer(showName ? v.getDisplayedName() : "", value);
 

@@ -9,9 +9,9 @@ import main.system.auxiliary.StringMaster;
  */
 public class ActionEnums {
     public static final String OFFHAND_ATTACK = StringMaster
-            .getWellFormattedString(STD_SPEC_ACTIONS.OFFHAND_ATTACK.name());
+            .format(STD_SPEC_ACTIONS.OFFHAND_ATTACK.name());
     public static final String DUAL_ATTACK = StringMaster
-            .getWellFormattedString(STD_SPEC_ACTIONS.DUAL_ATTACK.name());
+            .format(STD_SPEC_ACTIONS.DUAL_ATTACK.name());
     public static final G_PROPS ACTIVES = G_PROPS.ACTIVES;
     public static final String ATTACK = (STD_ACTIONS.Attack
             .name());
@@ -33,7 +33,7 @@ public class ActionEnums {
     public static final String UNLOCK = "Unlock";
     public static final String DUMMY_ACTION = "Dummy Action";
     public static final String USE_INVENTORY = StringMaster
-            .getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.toString());
+            .format(STD_SPEC_ACTIONS.Use_Inventory.toString());
     public static final String DIVINATION = "Divination";
     public static final String PICK_UP = "Pick Up Items";
     public static ObjType DUMMY_ACTION_TYPE;
@@ -65,7 +65,7 @@ public class ActionEnums {
 
         public String toString() {
             if (string == null)
-                string = StringMaster.getWellFormattedString(name());
+                string = StringMaster.format(name());
             return string;
         }
 
@@ -110,7 +110,7 @@ public class ActionEnums {
         MOVE_LEFT, MOVE_RIGHT, MOVE_BACK, CLUMSY_LEAP;
 
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 
@@ -121,7 +121,7 @@ public class ActionEnums {
         Stumble_About;
 
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 
@@ -129,7 +129,7 @@ public class ActionEnums {
         Attack, Turn_Anticlockwise, Turn_Clockwise, Move;
 
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 
@@ -137,7 +137,7 @@ public class ActionEnums {
         Defend, Camp, Concentrate, Rest, Meditate, On_Alert;
 
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 
@@ -151,13 +151,13 @@ public class ActionEnums {
         Cancel_Order {
             @Override
             public String toString() {
-                return StringMaster.getWellFormattedString(name());
+                return StringMaster.format(name());
             }
         },
         ;
 
         public String toString() {
-            return "Order: " + StringMaster.getWellFormattedString(name() +
+            return "Order: " + StringMaster.format(name() +
                     "!");
         }
 
@@ -227,7 +227,7 @@ public class ActionEnums {
         ;
 
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
     }

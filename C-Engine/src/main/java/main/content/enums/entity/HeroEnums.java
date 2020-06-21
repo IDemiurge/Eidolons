@@ -84,7 +84,7 @@ public class HeroEnums {
 
         @Override
         public String toString() {
-            return StringMaster.getWellFormattedString(super.toString());
+            return StringMaster.format(super.toString());
         }
 
         public BACKGROUND getFemale() {
@@ -135,7 +135,7 @@ public class HeroEnums {
         MULTICLASS,;
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 
@@ -225,8 +225,8 @@ public class HeroEnums {
 
         // ++ quiet =))
         ;
-        private Boolean female;
-        private String path;
+        private final Boolean female;
+        private final String path;
 
         HERO_SOUNDSET(String path, Boolean female) {
             this.path = path;
@@ -238,12 +238,12 @@ public class HeroEnums {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name().replace("W_", ""));
+            return StringMaster.format(name().replace("W_", ""));
         }
 
         @Override
         public String toString() {
-            return StringMaster.getWellFormattedString(name().replace("W_", "")).toUpperCase();
+            return StringMaster.format(name().replace("W_", "")).toUpperCase();
         }
 
         public boolean isFemale() {
@@ -388,7 +388,7 @@ public class HeroEnums {
 
         @Override
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public String getDescription() {

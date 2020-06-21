@@ -90,7 +90,7 @@ public class Harvester extends BossModel {
         ;
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 }

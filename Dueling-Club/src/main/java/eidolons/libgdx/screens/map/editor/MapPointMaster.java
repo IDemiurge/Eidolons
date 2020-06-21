@@ -102,7 +102,7 @@ public class MapPointMaster {
              Coordinates.get(true, VariableManager.getVar(substring)));
         }
         for (MAP_POINTS sub : MAP_POINTS.values()) {
-            map.put(StringMaster.getWellFormattedString(sub.name()),
+            map.put(StringMaster.format(sub.name()),
              Coordinates.get(true, sub.x, sub.y));
         }
     }

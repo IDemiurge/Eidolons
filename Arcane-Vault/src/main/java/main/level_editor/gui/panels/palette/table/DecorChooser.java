@@ -3,6 +3,7 @@ package main.level_editor.gui.panels.palette.table;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
+import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.headquarters.creation.selection.SelectableImageItem;
 import eidolons.libgdx.gui.panels.headquarters.creation.selection.SelectionImageTable;
 import eidolons.libgdx.gui.tooltips.Tooltip;
@@ -25,10 +26,16 @@ public class DecorChooser extends SelectionImageTable {
     public void setUserObject(Object userObject) {
         files = (List<GraphicData>) userObject;
         size = files.size();
-        initSize(6, size);
+        initSize(5, size);
         super.setUserObject(userObject);
+        setFixedSize(true);
+        if (getParent() instanceof TablePanel) {
+            TablePanel parent = ((TablePanel) getParent());
+            remove();
+            parent.add(this);
+            parent.setSize(getPrefWidth(), getPrefHeight());
+        }
     }
-
 
     private Tooltip createTooltip(ItemListPanel.SelectableItemData datum) {
         return new ValueTooltip(datum.getDescription());

@@ -11,13 +11,15 @@ import main.data.DataManager;
 import main.data.TableDataManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.gui.components.controls.ModelManager;
 import main.gui.components.menu.AV_Menu;
 import main.gui.components.table.AV_TableCellRenderer;
 import main.gui.components.table.TableMouseListener;
-import main.handlers.AV_VersionHandler;
+import main.handlers.control.AvSelectionHandler;
+import main.handlers.mod.AvSaveHandler;
+import main.handlers.mod.AvVersionHandler;
+import main.handlers.types.SimulationHandler;
 import main.launch.ArcaneVault;
-import main.simulation.SimulationManager;
+import main.launch.AvConsts;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.G_Table;
 import main.system.auxiliary.data.ListMaster;
@@ -166,7 +168,7 @@ public class EditViewPanel implements TableModelListener {
                 sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, ae_view);
             }
             sp.setDividerLocation(0.5);
-            getPanel().add(sp, "pos 0 menu.y2 " + getWidth() * 5 / 3 + " " + ArcaneVault.AE_HEIGHT);
+            getPanel().add(sp, "pos 0 menu.y2 " + getWidth() * 5 / 3 + " " + AvConsts.AE_HEIGHT);
 
             LogMaster.log(1, "AE added!");
         } else {
@@ -192,11 +194,11 @@ public class EditViewPanel implements TableModelListener {
     }
 
     protected int getHeight() {
-        return ArcaneVault.TABLE_HEIGHT;
+        return AvConsts.TABLE_HEIGHT;
     }
 
     protected int getWidth() {
-        return ArcaneVault.TABLE_WIDTH;
+        return AvConsts.TABLE_WIDTH;
     }
 
     protected void setWidth(JTable table) {
@@ -234,6 +236,7 @@ public class EditViewPanel implements TableModelListener {
         getTable().setRowHeight(TableDataManager.IMG_ROW, TableDataManager.ROW_HEIGHT * 2);
         getModel().addTableModelListener(this);
 
+        getTable().getColumnModel().getColumn(0).setWidth(200);
         secondTableMode = false;
 
         scrollPane = new JScrollPane(table);
@@ -335,7 +338,7 @@ public class EditViewPanel implements TableModelListener {
             return;
         }
         try {
-            ModelManager.save(type, valName);
+            AvSaveHandler.save(type, valName);
         } catch (Exception ex) {
             main.system.ExceptionMaster.printStackTrace(ex);
         }
@@ -386,24 +389,24 @@ public class EditViewPanel implements TableModelListener {
                     //                        } else
                     {
                         t.setValue(valName, newValue);
-                        t.setProperty(G_PROPS.VERSION, AV_VersionHandler.getVersion(t));
+                        t.setProperty(G_PROPS.VERSION, AvVersionHandler.getVersion(t));
                     }
                 }
             } else {
                 type.setValue(valName, newValue);
-                type.setProperty(G_PROPS.VERSION,  AV_VersionHandler.getVersion(type));
+                type.setProperty(G_PROPS.VERSION,  AvVersionHandler.getVersion(type));
 
             }
         }
         if (C_OBJ_TYPE.BF_OBJ.equals(type.getOBJ_TYPE_ENUM())
-                || SimulationManager.isUnitType(grpName)) {
+                || SimulationHandler.isUnitType(grpName)) {
             type.setParam(PARAMS.LEVEL,
                     // DC_MathManager.getLevelForPower(type.getIntParam(PARAMS.POWER))
                     DC_Formulas.getLevelForXp((type.getIntParam(PARAMS.POWER) + 1)
                             * DC_Formulas.POWER_XP_FACTOR));
             if (ArcaneVault.isSimulationOn()) {
-                SimulationManager.getUnit(type).setValue(valName, newValue);
-                SimulationManager.refreshType(type);
+                SimulationHandler.getUnit(type).setValue(valName, newValue);
+                SimulationHandler.refreshType(type);
 
                 // SimulationManager.getUnit(type).resetDefaultAttrs(); in
                 // save() instead!
@@ -503,7 +506,7 @@ public class EditViewPanel implements TableModelListener {
         ArcaneVault.setSelectedType(type);
         if (fromHT) {
             try {
-                ModelManager.adjustTreeTabSelection(type, false);
+                AvSelectionHandler.adjustTreeTabSelection(type, false);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

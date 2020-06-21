@@ -29,10 +29,10 @@ import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.elements.targeting.Targeting;
 import main.elements.triggers.Trigger;
 import main.entity.Ref;
-import main.game.bf.directions.DIRECTION;
-import main.game.bf.directions.UNIT_DIRECTION;
 import main.game.bf.MovementManager.MOVE_MODIFIER;
 import main.game.bf.MovementManager.MOVE_TEMPLATES;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.UNIT_DIRECTION;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -165,7 +165,7 @@ public enum ARGS implements Argument {
 
     ARGS(Class<?> c) {
         this.container = Arrays.asList(Mapper.CONTAINER_CLASSES).contains(coreClass);
-        String name = StringMaster.getWellFormattedString(name());
+        String name = StringMaster.format(name());
         this.coreClass = c;
         setPrimitive(false);
         this.ELEMENT_TYPE = AE_ELEMENT_TYPE.ITEM_CHOOSING;

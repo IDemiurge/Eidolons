@@ -166,13 +166,7 @@ public class LE_GridCell extends GridCellContainer {
         return !isWithinCamera();
     }
 
-    @Override
-    protected boolean isWithinCamera() {
-        return super.isWithinCamera();
-    }
-
-
-    protected boolean isShadersSupported() {
+    protected boolean isShadingSupported() {
         return false;
     }
 }

@@ -61,7 +61,7 @@ public class XLinkedMap<E, T> extends LinkedHashMap<E, T> {
                         t = super.get(string.toLowerCase());
                     }
                     if (t == null) {
-                        String wellFormattedString = StringMaster.getWellFormattedString(string);
+                        String wellFormattedString = StringMaster.format(string);
                         t = super.get(wellFormattedString);
 
                         // s.replace(" ", "")

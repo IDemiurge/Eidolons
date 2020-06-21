@@ -183,7 +183,7 @@ public class IGG_Demo {
         }
 
         public String getScenarioName() {
-            return StringMaster.getWellFormattedString(name().split("__")[0]);
+            return StringMaster.format(name().split("__")[0]);
         }
         IGG_MISSION(String xmlLevelName, String missionName, int act, int mission) {
             this.xmlLevelName = xmlLevelName;

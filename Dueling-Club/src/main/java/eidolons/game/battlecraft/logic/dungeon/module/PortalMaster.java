@@ -40,15 +40,17 @@ public class PortalMaster extends DungeonHandler {
         GuiEventManager.bind(GuiEventType.PORTAL_OPEN, p -> {
             Coordinates c = (Coordinates) p.get();
             boolean done = false;
+            boolean oneWay = false;
             for (Portal portal : portalMap.keySet()) {
                 if (portal.getCoordinates().equals(c)) {
                     portal.open = true;
                     done = true;
+                    oneWay = portal.oneWay;
                     break;
                 }
             }
             if (!done) {
-                Portal portal = new Portal(FACING_DIRECTION.NORTH, c, PORTAL_TYPE.DARK);
+                Portal portal = new Portal(FACING_DIRECTION.NORTH, c, PORTAL_TYPE.DARK, oneWay);
                 portalMap.put(portal, portal);
                 portal.open = true;
             }
@@ -74,12 +76,12 @@ public class PortalMaster extends DungeonHandler {
         if (to == null) {
             return;
         }
-            portal.used = true;
+        portal.used = true;
         if (portal.oneWay)
             portal.open = false;
         GuiEventManager.trigger(GuiEventType.UNIT_FADE_OUT_AND_BACK, unit);
 
-        GraphicData data = new GraphicData("x:" +  portal.getOffsetX() + ";y:" +                 portal.getOffsetY());
+        GraphicData data = new GraphicData("x:" + portal.getOffsetX() + ";y:" + portal.getOffsetY());
         AnimMaster.onCustomAnim(data,
                 "",
                 getCloseAnim(portal, to), () -> {
@@ -98,7 +100,7 @@ public class PortalMaster extends DungeonHandler {
                             GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, unit);
 
                         if (portal.oneWay)
-                            to.open=false;
+                            to.open = false;
                     });
                 });
     }
@@ -126,7 +128,9 @@ public class PortalMaster extends DungeonHandler {
         FACING_DIRECTION facing = null;
         Coordinates to = null;
         FACING_DIRECTION facing2 = null;
+        Boolean oneWay = null;
         for (String substring : ContainerUtils.openContainer(data, ",")) {
+            substring = substring.trim();
             if (to == null) {
                 to = Coordinates.get(substring);
                 continue;
@@ -139,116 +143,126 @@ public class PortalMaster extends DungeonHandler {
                 facing2 = FacingMaster.getFacing(substring);
                 continue;
             }
-        }
-        addPortal(from, to, facing, facing2);
-        return true;
-    }
 
-    private void addPortal(Coordinates from, Coordinates to, FACING_DIRECTION facing, FACING_DIRECTION facing2) {
-        Portal enter = createPortal(from);
-        Portal exit;
-        portalMap.put(enter, exit = createPortal(to));
-        portalMap.put(exit, enter);
-        enter.open = true;
-        enter.exitFacing = facing;
-        exit.exitFacing = facing2;
-    }
-
-    private Portal createPortal(Coordinates from) {
-        Portal p = new Portal(null, from, PORTAL_TYPE.DARK);
-        GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, p);
-        return p;
-    }
-
-
-    private boolean isConfirm() {
-        return false;
-    }
-
-    private String getCloseAnim(Portal portal, Portal to) {
-        return Sprites.PORTAL_CLOSE;
-    }
-
-    private String getOpenAnim(Portal portal, Portal to) {
-        return Sprites.PORTAL_OPEN;
-    }
-
-    public void init(Map<Coordinates, CellScriptData> textDataMap) {
-        for (Coordinates c : textDataMap.keySet()) {
-            String data = textDataMap.get(c).getValue(CellScriptData.CELL_SCRIPT_VALUE.portals);
-            if (!data.isEmpty()) {
-                addPortal(c, data);
+            if (oneWay == null) {
+                oneWay = new Boolean(substring);
+                continue;
             }
-        }
-    }
-
-    public enum PORTAL_TYPE {
-        OBLIVION, LIGHT, DARK
-    }
-
-    private static class Portal extends GridObject {
-        public boolean oneWay=true; //TODO
-        FACING_DIRECTION exitFacing;
-        Coordinates coordinates;
-        PORTAL_TYPE type;
-
-        boolean open = false;
-        boolean used;
-        boolean facingDependent;
-
-        public Portal(FACING_DIRECTION exitFacing, Coordinates coordinates, PORTAL_TYPE type) {
-            super(coordinates, Sprites.PORTAL);
-            this.exitFacing = exitFacing;
-            this.coordinates = coordinates;
-            this.type = type;
-        }
-
-        @Override
-        public float getOffsetY() {
-            return  0;//-sprite.getHeight() / 2;
-        }
-
-        @Override
-        protected void init() {
-            super.init();
-            sprite.setBlending(GenericEnums.BLENDING.SCREEN);
-        }
-
-        public FACING_DIRECTION getExitFacing() {
-            return exitFacing;
-        }
-
-        @Override
-        public boolean checkVisible() {
-            if (!open) {
-                return false;
             }
-            return super.checkVisible();
+            if (oneWay == null) {
+                oneWay = false;
+            }
+            addPortal(from, to, facing, facing2, oneWay);
+            return true;
         }
 
-        @Override
-        protected boolean isClearshotRequired() {
+        private void addPortal (Coordinates from, Coordinates to, FACING_DIRECTION facing, FACING_DIRECTION facing2
+        , Boolean oneWay){
+            Portal enter = createPortal(from,oneWay);
+            Portal exit;
+            portalMap.put(enter, exit = createPortal(to,oneWay));
+            portalMap.put(exit, enter);
+            enter.open = true;
+            enter.exitFacing = facing;
+            exit.exitFacing = facing2;
+        }
+
+        private Portal createPortal(Coordinates from, Boolean oneWay){
+            Portal p = new Portal(null, from, PORTAL_TYPE.DARK, oneWay);
+            GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, p);
+            return p;
+        }
+
+
+        private boolean isConfirm () {
             return false;
         }
 
-        @Override
-        protected float getFadeInDuration() {
-            return 1.1f;
+        private String getCloseAnim (Portal portal, Portal to){
+            return Sprites.PORTAL_CLOSE;
         }
 
-        @Override
-        protected float getFadeOutDuration() {
-            return 2.3f;
+        private String getOpenAnim (Portal portal, Portal to){
+            return Sprites.PORTAL_OPEN;
         }
 
-        @Override
-        protected double getDefaultVisionRange() {
-            return 8;
+        public void init (Map < Coordinates, CellScriptData > textDataMap){
+            for (Coordinates c : textDataMap.keySet()) {
+                String data = textDataMap.get(c).getValue(CellScriptData.CELL_SCRIPT_VALUE.portals);
+                if (!data.isEmpty()) {
+                    addPortal(c, data);
+                }
+            }
         }
 
-        @Override
-        protected int getFps() {
-            return 14;
+        public enum PORTAL_TYPE {
+            OBLIVION, LIGHT, DARK
+        }
+
+        private static class Portal extends GridObject {
+            public boolean oneWay = false; //TODO
+            FACING_DIRECTION exitFacing;
+            Coordinates coordinates;
+            PORTAL_TYPE type;
+
+            boolean open = false;
+            boolean used;
+            boolean facingDependent;
+
+            public Portal(FACING_DIRECTION exitFacing, Coordinates coordinates, PORTAL_TYPE type, boolean oneWay) {
+                super(coordinates, Sprites.PORTAL);
+                this.exitFacing = exitFacing;
+                this.coordinates = coordinates;
+                this.type = type;
+                this.oneWay =  oneWay;
+            }
+
+            @Override
+            public float getOffsetY() {
+                return 0;//-sprite.getHeight() / 2;
+            }
+
+            @Override
+            protected void init() {
+                super.init();
+                sprite.setBlending(GenericEnums.BLENDING.SCREEN);
+            }
+
+            public FACING_DIRECTION getExitFacing() {
+                return exitFacing;
+            }
+
+            @Override
+            public boolean checkVisible() {
+                if (!open) {
+                    return false;
+                }
+                return super.checkVisible();
+            }
+
+            @Override
+            protected boolean isClearshotRequired() {
+                return false;
+            }
+
+            @Override
+            protected float getFadeInDuration() {
+                return 1.1f;
+            }
+
+            @Override
+            protected float getFadeOutDuration() {
+                return 2.3f;
+            }
+
+            @Override
+            protected double getDefaultVisionRange() {
+                return 8;
+            }
+
+            @Override
+            protected int getFps() {
+                return 14;
+            }
         }
     }
-}

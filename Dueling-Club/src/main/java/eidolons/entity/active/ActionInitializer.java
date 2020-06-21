@@ -277,7 +277,7 @@ public class ActionInitializer extends DC_ActionManager {
         //  TODO condition?      if (unit.isHero())
 
         if (RuleKeeper.checkFeature(RuleEnums.FEATURE.GUARD_MODE))
-            actives.add(getOrCreateAction(StringMaster.getWellFormattedString(
+            actives.add(getOrCreateAction(StringMaster.format(
                     ActionEnums.STD_SPEC_ACTIONS.Guard_Mode.name()), unit));
 
         // for (Entity e : LockMaster.getObjectsToUnlock(unit)) {

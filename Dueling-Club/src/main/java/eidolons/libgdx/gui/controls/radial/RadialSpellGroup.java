@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  */
 public class RadialSpellGroup implements RADIAL_ITEM {
 
-    private SPELL_GROUP group;
+    private final SPELL_GROUP group;
 
     public RadialSpellGroup(SPELL_GROUP g) {
         this.group = g;
@@ -42,6 +42,6 @@ public class RadialSpellGroup implements RADIAL_ITEM {
     @Override
     public String getTexturePath() {
         return ImageManager.getValueIconsPath() + "masteries/"
-         + StringMaster.getWellFormattedString(group.toString()) + ".png";
+         + StringMaster.format(group.toString()) + ".png";
     }
 }

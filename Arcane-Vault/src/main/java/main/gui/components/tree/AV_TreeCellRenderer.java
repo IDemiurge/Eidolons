@@ -4,7 +4,7 @@ import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.launch.ArcaneVault;
+import main.launch.AvConsts;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.ListItem;
 import main.system.auxiliary.log.LogMaster;
@@ -47,7 +47,7 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
             public Rectangle getNodeDimensions(Object value, int row, int depth, boolean expanded,
                                                Rectangle rect) {
                 Rectangle dimensions = super.getNodeDimensions(value, row, depth, expanded, rect);
-                dimensions.setSize(ArcaneVault.TREE_WIDTH, size);
+                dimensions.setSize(AvConsts.TREE_WIDTH, size);
 
                 return dimensions;
             }

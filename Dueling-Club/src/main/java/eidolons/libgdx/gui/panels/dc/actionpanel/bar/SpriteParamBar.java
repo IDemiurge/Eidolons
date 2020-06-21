@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 public abstract class SpriteParamBar extends DualParamBar {
 
-    private static final float FPS = 12;
+    private static final float FPS = 14;
     SpriteAnimation overSprite;
     SpriteAnimation underSprite;
 
@@ -23,19 +23,19 @@ public abstract class SpriteParamBar extends DualParamBar {
 
     @Override
     protected String getBarImagePath(boolean over) {
-        return over? Sprites.SOULFORCE_BAR : Sprites.SOULFORCE_BAR_BG;
+        return over? Sprites.SOULFORCE_BAR_WHITE : Sprites.SOULFORCE_BAR_BG_WHITE;
     }
 
     @Override
     protected void initRegions() {
-        overSprite = SpriteAnimationFactory.getSpriteAnimation(getBarImagePath(true));
-        underSprite = SpriteAnimationFactory.getSpriteAnimation(getBarImagePath(false));
+        overSprite = SpriteAnimationFactory.getSpriteAnimation(getBarImagePath(true), false, false);
+        underSprite = SpriteAnimationFactory.getSpriteAnimation(getBarImagePath(false), false, false);
         overSprite.setCustomAct(true);
         underSprite.setCustomAct(true);
         overSprite.setFps(FPS);
         underSprite.setFps(FPS);
         underSprite.setPlayMode(Animation.PlayMode.LOOP);
-        overSprite.setPlayMode(Animation.PlayMode.LOOP);
+        overSprite.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
     }
 
     @Override

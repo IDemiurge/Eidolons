@@ -4,7 +4,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -13,6 +16,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
@@ -20,25 +24,22 @@ import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
+import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.BlockableGroup;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
-import eidolons.libgdx.shaders.DarkShader;
-import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.system.controls.GlobalController;
 import main.game.bf.Coordinates;
-import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 
 import static main.system.GuiEventType.*;
 
 public class GridCell extends BlockableGroup implements Borderable {
-    protected static boolean spriteCacheOn;
     protected Image backImage;
     protected Image overlayTexture;
+    FadeImageContainer overlay;
     protected TextureRegion backTexture;
-    //    protected TextureRegion overlay;
     protected float overlayRotation;
     protected Image border = null;
     protected int gridX;
@@ -47,16 +48,8 @@ public class GridCell extends BlockableGroup implements Borderable {
     protected Actor cordsText;
     protected Label infoText;
 
-    FadeImageContainer overlay;
     private boolean voidAnimHappened;
-
-    // some creatures can walk there?
-
-    /**
-     * so we do create cells, but hide them... fade in
-     * <p>
-     * check if void - via prop
-     */
+    private boolean withinCamera;
 
     public GridCell(TextureRegion backTexture, int gridX, int gridY) {
         this.backTexture = backTexture;
@@ -66,16 +59,8 @@ public class GridCell extends BlockableGroup implements Borderable {
     }
 
 
-    public static void setSpriteCacheOn(boolean spriteCacheOn) {
-        GridCell.spriteCacheOn = spriteCacheOn;
-    }
-
     public Image getBackImage() {
         return backImage;
-    }
-
-    public TextureRegion getBackTexture() {
-        return backTexture;
     }
 
     public void setVoid(boolean VOID, boolean animated) {
@@ -92,7 +77,7 @@ public class GridCell extends BlockableGroup implements Borderable {
 
     public GridCell init() {
         backImage = new Image(backTexture);
-        backImage.getColor().a=getCellImgAlpha();
+        backImage.getColor().a = getCellImgAlpha();
 
         backImage.setFillParent(true);
         addActor(backImage);
@@ -122,7 +107,7 @@ public class GridCell extends BlockableGroup implements Borderable {
     }
 
     public float getCellImgAlpha() {
-        return      0.8f   ;
+        return 0.8f;
         //TODO derive alpha from somewhere
     }
 
@@ -154,16 +139,6 @@ public class GridCell extends BlockableGroup implements Borderable {
             }
 
             @Override
-            public boolean handle(Event e) {
-                return super.handle(e);
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return super.touchDown(event, x, y, pointer, button);
-            }
-
-            @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 DC_Obj dc_cell = Eidolons.gameMaster.getCellByCoordinate(Coordinates.get(getGridX(), getGridY()));
                 if (button == Input.Buttons.RIGHT && !event.isHandled()) {
@@ -175,21 +150,13 @@ public class GridCell extends BlockableGroup implements Borderable {
                 if (button == Input.Buttons.LEFT) {
                     event.handle();
                     if (isEmpty())
-                        if (isAlt() || isShift() || isControl()
-                            //|| ExplorationMaster.isExplorationOn()
-                        )
-                            try {
+                        if (isAlt() || isShift() || isControl()                        )
                                 if (DefaultActionHandler.
                                         leftClickCell(isShift(), isControl(), getGridX(), getGridY()))
                                     return;
-                            } catch (Exception e) {
-                                ExceptionMaster.printStackTrace(e);
-                            }
                     GuiEventManager.trigger(TARGET_SELECTION, GridCell.this);
-
                     GuiEventManager.trigger(RADIAL_MENU_CLOSE);
                 }
-                //                super.touchUp(event, x, y, pointer, button);
             }
         };
     }
@@ -203,28 +170,17 @@ public class GridCell extends BlockableGroup implements Borderable {
         if (!isWithinCamera()) {
             return;
         }
-
-        if (!isShadersSupported() || parentAlpha == ShaderDrawer.SUPER_DRAW
-        ) {
-            super.draw(batch, 1);
-        } else {
-            ShaderDrawer.drawWithCustomShader(this,
-                    batch,
-                    !getUserObject().isPlayerHasSeen() ?
-                            DarkShader.getDarkShader()
-                            : null, true);
-        }
-
+        if (isShadingSupported() && !getUserObject().isPlayerHasSeen()) {
+            setColor(GdxColorMaster.LIGHT_GREY);
+        } else
+            setColor(GdxColorMaster.WHITE);
+        super.draw(batch, 1);
     }
 
-    protected boolean isShadersSupported() {
+    protected boolean isShadingSupported() {
         return true;
     }
 
-    protected boolean isWithinCamera() {
-        return DungeonScreen.getInstance().controller.isWithinCamera
-                (this);
-    }
 
     @Override
     public DC_Cell getUserObject() {
@@ -242,12 +198,27 @@ public class GridCell extends BlockableGroup implements Borderable {
             getChildren().forEach(ch -> ch.setUserObject(userObject));
     }
 
+    public boolean isWithinCamera() {
+        if (voidAnimHappened) {
+            return true; //quick hack
+        }
+        if (!InputController.cameraMoved)
+            return withinCamera;
+        withinCamera = isWithinCameraCheck();
+        return withinCamera;
+
+    }
+
+    protected boolean isWithinCameraCheck() {
+        return DungeonScreen.getInstance().controller.isWithinCamera
+                (this);
+    }
+
     @Override
     public void act(float delta) {
-        //        if (!DungeonScreen.getInstance().controller.isWithinCamera((this))
-        //         ) {
-        //            return;
-        //        }
+        if (!isWithinCamera()) {
+            return;
+        }
         super.act(delta);
         if (isCoordinatesShown()) {
             //            DC_Cell cell = getUserObject();

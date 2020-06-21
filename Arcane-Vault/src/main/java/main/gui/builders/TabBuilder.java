@@ -13,7 +13,9 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_File;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
+import main.handlers.util.TypeFilter;
 import main.launch.ArcaneVault;
+import main.launch.AvConsts;
 import main.swing.generic.components.Builder;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
@@ -28,7 +30,6 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 import main.system.launch.CoreEngine;
-import main.utilities.filter.TypeFilter;
 import main.utilities.workspace.Workspace;
 import main.utilities.workspace.WorkspaceManager;
 
@@ -46,8 +47,8 @@ public class TabBuilder extends Builder implements ChangeListener {
     private static Class<?> TOP_ENUM_CLASS = DC_TYPE.class;
     int specialTabsAdded = 0;
     private List<String> tabNames;
-    private boolean top;
-    private String type;
+    private final boolean top;
+    private final String type;
     private PROPERTY groupingKey;
     private XLinkedMap<String, Component> tabmap;
     private boolean dirty = true;
@@ -252,8 +253,8 @@ public class TabBuilder extends Builder implements ChangeListener {
     }
 
     public void addSearchTopTab() {
-        searchTab = new G_TabbedPanel(new Dimension(ArcaneVault.TREE_WIDTH,
-         ArcaneVault.TABLE_HEIGHT - ArcaneVault.TREE_HEIGHT / 20));
+        searchTab = new G_TabbedPanel(new Dimension(AvConsts.TREE_WIDTH,
+         AvConsts.TABLE_HEIGHT - AvConsts.TREE_HEIGHT / 20));
         searchTab.getTabs().addChangeListener(this);
         try {
             getTabbedPane().insertTab("", ImageManager.STD_IMAGES.SEARCH.getIcon(),
@@ -266,8 +267,8 @@ public class TabBuilder extends Builder implements ChangeListener {
 
     public void addWorkspaceTopTab() {
         // workspace.getGroup()
-        workspaceTab = new G_TabbedPanel(new Dimension(ArcaneVault.TREE_WIDTH,
-         ArcaneVault.TABLE_HEIGHT - ArcaneVault.TREE_HEIGHT / 20));
+        workspaceTab = new G_TabbedPanel(new Dimension(AvConsts.TREE_WIDTH,
+         AvConsts.TABLE_HEIGHT - AvConsts.TREE_HEIGHT / 20));
         workspaceTab.getTabs().addChangeListener(this);
         getTabbedPane().insertTab("", new ImageIcon(STD_IMAGES.CROSS.getImage()), workspaceTab,
          "Workspaces", getTabbedPane().getTabCount());
@@ -276,15 +277,15 @@ public class TabBuilder extends Builder implements ChangeListener {
 
     public void addAutoWorkspaceTab(Workspace ws) {
         // workspace.getGroup()
-        autoWorkspaceTab = new G_TabbedPanel(new Dimension(ArcaneVault.TREE_WIDTH,
-         ArcaneVault.TABLE_HEIGHT - ArcaneVault.TREE_HEIGHT / 20));
+        autoWorkspaceTab = new G_TabbedPanel(new Dimension(AvConsts.TREE_WIDTH,
+         AvConsts.TABLE_HEIGHT - AvConsts.TREE_HEIGHT / 20));
         autoWorkspaceTab.getTabs().addChangeListener(this);
         ws.setTabComp(autoWorkspaceTab);
         getTabbedPane().insertTab("", new ImageIcon(VISUALS.GEARS.getImage()), autoWorkspaceTab,
          "Auto Workspaces", getTabbedPane().getTabCount());
 
-        autoWorkspaceTab.add(generateWorkspaceTree(ws), "pos 0 0 " + ArcaneVault.TREE_WIDTH + " "
-         + ArcaneVault.TABLE_HEIGHT + "-" + ArcaneVault.TREE_HEIGHT + "/20");
+        autoWorkspaceTab.add(generateWorkspaceTree(ws), "pos 0 0 " + AvConsts.TREE_WIDTH + " "
+         + AvConsts.TABLE_HEIGHT + "-" + AvConsts.TREE_HEIGHT + "/20");
 
     }
 
@@ -315,8 +316,8 @@ public class TabBuilder extends Builder implements ChangeListener {
             addWorkspaceTopTab();
         }
         G_Panel tabComp = new G_Panel();
-        tabComp.add(generateWorkspaceTree(workspace), "pos 0 0 " + ArcaneVault.TREE_WIDTH + " "
-         + ArcaneVault.TABLE_HEIGHT + "-" + ArcaneVault.TREE_HEIGHT + "/20");
+        tabComp.add(generateWorkspaceTree(workspace), "pos 0 0 " + AvConsts.TREE_WIDTH + " "
+         + AvConsts.TABLE_HEIGHT + "-" + AvConsts.TREE_HEIGHT + "/20");
         (workspace.isSearch() ? searchTab : workspaceTab).addTab(tabComp, workspace.getName());
         workspace.setTabComp(tabComp);
     }
@@ -327,8 +328,8 @@ public class TabBuilder extends Builder implements ChangeListener {
         if (workspace != null) {
             tabComp.removeAll();
             Component generateWorkspaceTree = generateWorkspaceTree(workspace);
-            tabComp.add(generateWorkspaceTree, "pos 0 0 " + ArcaneVault.TREE_WIDTH + " "
-             + ArcaneVault.TABLE_HEIGHT + "-" + ArcaneVault.TREE_HEIGHT + "/20");
+            tabComp.add(generateWorkspaceTree, "pos 0 0 " + AvConsts.TREE_WIDTH + " "
+             + AvConsts.TABLE_HEIGHT + "-" + AvConsts.TREE_HEIGHT + "/20");
             tabComp.revalidate();
 
             workspace.setDirty(false);

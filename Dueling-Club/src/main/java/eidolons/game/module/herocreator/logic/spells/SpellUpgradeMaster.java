@@ -205,11 +205,11 @@ public class SpellUpgradeMaster {
             if (!remove) {
                 if (first_last) {
                     spell.appendProperty(G_PROPS.DESCRIPTION, "Upgrades: "
-                     + StringMaster.getWellFormattedString(ug.toString()));
+                     + StringMaster.format(ug.toString()));
                 }
             } else if (!first_last) {
                 spell.removeFromProperty(G_PROPS.DESCRIPTION, "Upgrades: "
-                 + StringMaster.getWellFormattedString(ug.toString()));
+                 + StringMaster.format(ug.toString()));
             }
         }
         // upgrades = spell.getProperty(PROPS.SPELL_UPGRADES);
@@ -299,7 +299,7 @@ public class SpellUpgradeMaster {
         // switch per spell logic?
         // type.appendProperty(G_PROPS.DESCRIPTION, ug.getDescription());
         type.appendProperty(G_PROPS.DESCRIPTION, " "
-         + StringMaster.getWellFormattedString(ug.toString()));
+         + StringMaster.format(ug.toString()));
         type.setName(SpellGenerator.generateName(type));
 
         LogMaster.log(1, type.getModifierMaps() + " ");

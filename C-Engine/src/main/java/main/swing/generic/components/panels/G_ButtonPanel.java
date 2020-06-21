@@ -16,7 +16,6 @@ public abstract class G_ButtonPanel extends G_Panel implements ActionListener {
     protected int C_WIDTH = 0;
 
     protected int columns;
-    protected int maxRows = Integer.MAX_VALUE;
     protected boolean horizontal = true;
 
     public G_ButtonPanel(String[] commands) {
@@ -28,21 +27,16 @@ public abstract class G_ButtonPanel extends G_Panel implements ActionListener {
         setInts();
         // setLayout(new MigLayout());
         setLayout(new MigLayout("wrap, " + (isHorizontal() ? "flowy" : "")));
-        if (columns == 1 && maxRows == Integer.MAX_VALUE) {
-
-            int i = 0;
+        if (columns == 1 && getWrap() == Integer.MAX_VALUE) {
             for (String command : commands) {
                 addButton(command, BASE_CONSTRAINT);
-                // (horizontal) ? (BASE_CONSTRAINT + i + " 0")
-                // : (BASE_CONSTRAINT + "0 " + i));
-                i++;
             }
         } else {
             int rows;
             if (columns != 1) {
                 rows = commands.size() / columns + 1;
             } else {
-                rows = Math.min(commands.size(), maxRows);
+                rows = Math.min(commands.size(), getWrap());
                 columns = commands.size() / rows + 1;
             }
             Iterator<String> iterator = commands.iterator();
@@ -103,4 +97,7 @@ public abstract class G_ButtonPanel extends G_Panel implements ActionListener {
         columns = getColumns();
     }
 
+    public int getWrap() {
+        return Integer.MAX_VALUE;
+    }
 }

@@ -94,7 +94,7 @@ public class ItemTraitNamer {
                 //find custom name!
                 break;
         }
-        return StringMaster.getWellFormattedString(prefix + " " + base + " " + suffix).trim()
+        return StringMaster.format(prefix + " " + base + " " + suffix).trim()
                 .replace("Of", "of");
     }
 
@@ -177,7 +177,7 @@ public class ItemTraitNamer {
 
                 TextBuilder.wrapInColor(
                         getColorForTrait(trait.template),
-                        StringMaster.getWellFormattedString(trait.template.toString()))
+                        StringMaster.format(trait.template.toString()))
                         + StringMaster.wrapInParenthesis(
                         TextBuilder.wrapInColor(
                                 getColorForLevel(trait.level),

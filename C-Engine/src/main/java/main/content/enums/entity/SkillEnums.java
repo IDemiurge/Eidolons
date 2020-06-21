@@ -99,7 +99,7 @@ public class SkillEnums {
         EXPERT(30),
         MASTER(40),
         GRAND_MASTER(50),;
-        private int masteryReq;
+        private final int masteryReq;
 
         MASTERY_RANK(int masteryReq) {
             this.masteryReq = masteryReq;
@@ -110,7 +110,7 @@ public class SkillEnums {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(toString());
+            return StringMaster.format(toString());
         }
     }
 

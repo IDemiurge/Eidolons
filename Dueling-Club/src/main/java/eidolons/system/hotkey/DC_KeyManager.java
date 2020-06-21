@@ -118,7 +118,7 @@ public class DC_KeyManager
         customActionKeyMap.put("p", ActionEnums.STD_SPEC_ACTIONS.Push.toString());
         customActionKeyMap.put("u", ActionEnums.STD_SPEC_ACTIONS.Pull.toString());
         customActionKeyMap.put("g",
-                StringMaster.getWellFormattedString(
+                StringMaster.format(
                         ActionEnums.STD_SPEC_ACTIONS.Toggle_Weapon_Set.toString()));
         customActionKeyMap.put("h", ActionEnums.STD_SPEC_ACTIONS.Search_Mode.toString());
     }

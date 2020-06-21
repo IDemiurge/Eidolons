@@ -1,12 +1,12 @@
-package main.utilities.filter;
+package main.handlers.util;
 
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.ContentValsManager;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.elements.conditions.Conditions;
 import main.entity.Ref.KEYS;
 import main.launch.ArcaneVault;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 import main.system.entity.ConditionMaster.CONDITION_TEMPLATES;

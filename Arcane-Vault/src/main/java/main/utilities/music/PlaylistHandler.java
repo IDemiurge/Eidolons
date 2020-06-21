@@ -6,7 +6,6 @@ import main.system.auxiliary.data.ListMaster;
 
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,16 +31,21 @@ public class PlaylistHandler {
     }
 
     public static void playRandom(PLAYLIST_TYPE type) {
-        List<File> fileList = cache.get(type);
-        if (!ListMaster.isNotEmpty(fileList)) {
-            String path = ROOT_PATH_PICK + type;
-            fileList = FileManager.getFilesFromDirectory(path, false);
-            cache.put(type, new ArrayList<>(fileList));
+        for (int i = 0; i < 10; i++) {
+            List<File> fileList = cache.get(type);
+            if (!ListMaster.isNotEmpty(fileList)) {
+                String path = ROOT_PATH_PICK + type;
+                fileList = FileManager.getFilesFromDirectory(path, false);
+                cache.put(type, new ArrayList<>(fileList));
+            }
+            if (playRandom(fileList)) {
+                return;
+            }
         }
-        playRandom(fileList);
     }
 
-    private static void playRandom(List<File> fileList) { int randomIndex = RandomWizard.getRandomIndex(fileList);
+    private static boolean playRandom(List<File> fileList) {
+        int randomIndex = RandomWizard.getRandomIndex(fileList);
         try {
             File file = fileList.remove(randomIndex);
             File properFile = FileManager.getFile(ROOT_PATH + file.getName());
@@ -49,9 +53,11 @@ public class PlaylistHandler {
             System.out.println("-- Playing" +
                     properFile.getPath() +
                     " --");
-        } catch (IOException e) {
+            return true;
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
+        return false;
     }
 }

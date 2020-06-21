@@ -47,7 +47,7 @@ public class BriefMusic {
         ;
 
         public String getPath() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 }

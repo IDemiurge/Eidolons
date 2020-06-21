@@ -116,7 +116,7 @@ public class StringMaster {
     public static final String PREFIX_SEPARATOR = "::";
     static Pattern pattern_ = Pattern.compile("_");
     static Pattern pattern_space = Pattern.compile(" ");
-    public static final String UPGRADE = getWellFormattedString("UPGRADE");
+    public static final String UPGRADE = format("UPGRADE");
 
     public static boolean compare(String string, String string2) {
         return compare(string, string2, false);
@@ -148,13 +148,13 @@ public class StringMaster {
         if (strict) {
             return false;
         }
-        if (getWellFormattedString(string).contains(string2)) {
+        if (format(string).contains(string2)) {
             return true;
         }
-        if (string.contains(getWellFormattedString(string2))) {
+        if (string.contains(format(string2))) {
             return true;
         }
-        return getWellFormattedString(string).contains(getWellFormattedString(string2));
+        return format(string).contains(format(string2));
 
     }
 
@@ -363,20 +363,20 @@ public class StringMaster {
             return "";
         }
 
-        return getWellFormattedString(o.toString());
+        return format(o.toString());
     }
 
-    public static String getWellFormattedString(String s) {
-        return StringMaster.getWellFormattedString(s, false);
+    public static String format(String s) {
+        return StringMaster.format(s, false);
     }
 
     public static String getCamelCase(String name) {
-        String formatted = StringMaster.getWellFormattedString(name);
+        String formatted = StringMaster.format(name);
         return formatted.substring(0, 1).toLowerCase()
                 + formatted.substring(1).replace(" ", "");
     }
 
-    public static String getWellFormattedString(String s, boolean insertSpaceAfterCapitals) {
+    public static String format(String s, boolean insertSpaceAfterCapitals) {
         if (isEmpty(s)) {
             return "";
         }
@@ -386,7 +386,7 @@ public class StringMaster {
             StringBuilder builder = new StringBuilder(s.length() + 5);
             s = s.trim();
             for (String str : pattern_space.split(s)) {
-                builder.append(getWellFormattedString(str)).append(" ");
+                builder.append(format(str)).append(" ");
             }
             string = builder.toString();
             string = string.substring(0, string.length() - 1);
@@ -395,7 +395,7 @@ public class StringMaster {
         if (s.contains("_")) {
             StringBuilder builder = new StringBuilder(s.length() + 5);
             for (String str : pattern_.split(s)) {
-                builder.append(getWellFormattedString(str)).append(" ");
+                builder.append(format(str)).append(" ");
             }
             string = builder.toString();
             string = string.substring(0, string.length() - 1);
@@ -455,7 +455,7 @@ public class StringMaster {
     }
 
     public static String getFormattedEnumString(String name) {
-        return getWellFormattedString(name);
+        return format(name);
     }
 
     public static String getCoordinatesSeparator() {
@@ -533,7 +533,7 @@ public class StringMaster {
     }
 
     public static String getObjTypeName(String name) {
-        return getWellFormattedString(name).toLowerCase();
+        return format(name).toLowerCase();
     }
 
     public static String toEnumFormat(String name) {
@@ -826,7 +826,7 @@ public class StringMaster {
         }
         if (index == -1) {
             index = (last) ? string.lastIndexOf(regex) : string
-                    .indexOf(getWellFormattedString(regex));
+                    .indexOf(format(regex));
         }
         if (index == -1) {
             return string;
@@ -839,7 +839,7 @@ public class StringMaster {
     public static String replace(boolean all, String string, String regex, String replacement) {
         if (all) {
             try {
-                return string.replace(regex, replacement).replace(getWellFormattedString(regex),
+                return string.replace(regex, replacement).replace(format(regex),
                         replacement).replace(regex.toLowerCase(), replacement).replace(
                         regex.toUpperCase(), replacement);
             } catch (Exception e) {

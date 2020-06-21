@@ -1,25 +1,29 @@
-package main.utilities.hotkeys;
+package main.handlers.control;
 
 import eidolons.content.ValueHelper;
 import eidolons.game.core.game.DC_Game;
-import main.gui.components.controls.ModelManager;
+import main.handlers.AvHandler;
+import main.handlers.AvManager;
+import main.handlers.mod.AvModelHandler;
+import main.handlers.util.FilterMaster;
 import main.launch.ArcaneVault;
-import main.utilities.filter.FilterMaster;
 import main.utilities.search.SearchMaster;
 import main.utilities.search.TypeFinder;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class AV_KeyListener implements KeyListener {
+public class AvKeyHandler extends AvHandler implements KeyListener {
 
     private static final char DELETE_HOTKEY_CHAR = 'w';
     private static final char COPY_VALUES_HOTKEY_CHAR = 'c';
     private final DC_Game game;
 
-    public AV_KeyListener(DC_Game game) {
-        this.game = game;
+    public AvKeyHandler(AvManager manager) {
+        super(manager);
+        game = DC_Game.game;
     }
+
 
     private void copyValues() {
         ArcaneVault.getMainBuilder().getEditViewPanel().copySelectedValues();
@@ -28,10 +32,16 @@ public class AV_KeyListener implements KeyListener {
 
     private boolean checkCustomHotkey(KeyEvent e) {
         char keyChar = ("" + e.getKeyChar()).toLowerCase().charAt(0);
-        if (!e.isShiftDown()) {
-            return false;
-        }
 
+        if ( e.isControlDown()){
+            switch (keyChar) {
+                case 'v':
+                    return manager.getTableHandler().paste();
+                case 'c':
+                    return manager.getTableHandler().copy(); //value, type, ..?
+        }
+        }
+            if ( e.isShiftDown())
         switch (keyChar) {
             case 'w':
                 toggleWorkspace();
@@ -88,7 +98,7 @@ public class AV_KeyListener implements KeyListener {
     }
 
     private void runTypeFinder() {
-        ModelManager.findType();
+        AvModelHandler.findType();
     }
 
     private void runValueHelper() {

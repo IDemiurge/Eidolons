@@ -105,7 +105,7 @@ public class SpellRadialManager {
              .map(el -> createNodeBranch(el, source, target))
              .collect(Collectors.toList()));
 
-            String tooltip = StringMaster.getWellFormattedString(object.getContents().toString());
+            String tooltip = StringMaster.format(object.getContents().toString());
             addSimpleTooltip(valueContainer, tooltip);
         }
         return valueContainer;

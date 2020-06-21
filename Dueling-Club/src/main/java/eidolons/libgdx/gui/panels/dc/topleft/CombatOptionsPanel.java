@@ -12,6 +12,7 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.system.options.ControlOptions;
 import eidolons.system.options.GameplayOptions;
+import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.Options.OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -31,6 +32,8 @@ public class CombatOptionsPanel extends TablePanelX {
             GameplayOptions.GAMEPLAY_OPTION.GHOST_MODE,
             GameplayOptions.GAMEPLAY_OPTION.AI_DEBUG,
             GameplayOptions.GAMEPLAY_OPTION.DEBUG_MODE,
+            GraphicsOptions.GRAPHIC_OPTION.SHADOW_MAP_OFF,
+            GraphicsOptions.GRAPHIC_OPTION.SHARDS_OFF,
             GameplayOptions.GAMEPLAY_OPTION.MANUAL_CONTROL,
 //            GameplayOptions.TESTING_OPTION.DEBUG_MODE,
 //            GameplayOptions.TESTING_OPTION.DEBUG_MODE,

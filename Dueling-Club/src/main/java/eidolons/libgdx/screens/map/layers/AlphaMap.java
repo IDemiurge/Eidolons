@@ -26,12 +26,12 @@ public class AlphaMap {
 
     public static String getPath(ALPHA_MAP sub) {
         return PathFinder.getImagePath() + PathFinder.getMapLayersPath()
-         + StringMaster.getWellFormattedString(sub.name()) + ".png";
+         + StringMaster.format(sub.name()) + ".png";
     }
 
     public static String getPointsPath(ALPHA_MAP sub) {
         return PathFinder.getImagePath() + PathFinder.getMapLayersPath()
-         + StringMaster.getWellFormattedString(sub.name()) + ".txt";
+         + StringMaster.format(sub.name()) + ".txt";
     }
 
     private boolean isWritePoints(ALPHA_MAP sub) {

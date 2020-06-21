@@ -350,7 +350,7 @@ public class SpellEnums {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(toString());
+            return StringMaster.format(toString());
         }
 
         public String getDescription() {
@@ -360,7 +360,7 @@ public class SpellEnums {
         public Image getGlyphImageSelected() {
             if (glyphImageSelected == null) {
                 glyphImageSelected = ImageManager.getImage(PathFinder.getSpellUpgradeGlyphsFolder()
-                 + StringMaster.getWellFormattedString(name()) + " s.png");
+                 + StringMaster.format(name()) + " s.png");
             }
             if (!ImageManager.isValidImage(glyphImageSelected)) {
                 return glyphImage;
@@ -371,7 +371,7 @@ public class SpellEnums {
         public Image getGlyphImageActive() {
             if (glyphImageActive == null) {
                 glyphImageActive = ImageManager.getImage(PathFinder.getSpellUpgradeGlyphsFolder()
-                 + StringMaster.getWellFormattedString(name()) + " a.png");
+                 + StringMaster.format(name()) + " a.png");
             }
             if (!ImageManager.isValidImage(glyphImageSelected)) {
                 return glyphImage;
@@ -382,7 +382,7 @@ public class SpellEnums {
         public Image getGlyphImage() {
             if (glyphImage == null) {
                 glyphImage = ImageManager.getImage(PathFinder.getSpellUpgradeGlyphsFolder()
-                 + StringMaster.getWellFormattedString(name()) + ".png");
+                 + StringMaster.format(name()) + ".png");
             }
             return glyphImage;
         }

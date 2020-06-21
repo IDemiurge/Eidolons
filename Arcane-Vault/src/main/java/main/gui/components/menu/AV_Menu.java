@@ -1,8 +1,10 @@
 package main.gui.components.menu;
 
 import main.system.auxiliary.StringMaster;
+import sun.swing.UIAction;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 public class AV_Menu {
     AV_MenuHandler handler = new AV_MenuHandler();
@@ -40,7 +42,12 @@ public class AV_Menu {
                 menuItem.addActionListener(handler);
                 menu.addMenuListener(handler);
             } else {
-                JMenuItem menuItem = new JMenuItem(sub.getName());
+                JMenuItem menuItem = new JMenuItem(new UIAction(sub.getName()) {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        handler.actionPerformed(e);
+                    }
+                });
                 menuItem.setActionCommand(i.getName());
                 menuItem.addActionListener(handler);
 
@@ -78,14 +85,14 @@ public class AV_Menu {
         TEST(MENU_ITEMS.DC, MENU_ITEMS.HC),
         TEXT(MENU_ITEMS.GENERATE_MISSING_DESCRIPTIONS);
         // ++ AE MENU?
-        private MENU_ITEMS[] items;
+        private final MENU_ITEMS[] items;
 
         MENUS(MENU_ITEMS... items) {
             this.items = items;
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public MENU_ITEMS[] getItems() {
@@ -159,7 +166,7 @@ public class AV_Menu {
         REMOVE_VALUE,
         // AE
         SAVE_TEMPLATE,;
-        private MENU_ITEMS[] items;
+        private final MENU_ITEMS[] items;
 
         // boolean customGeneratedItems
         MENU_ITEMS(MENU_ITEMS... items) {
@@ -175,7 +182,7 @@ public class AV_Menu {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public MENU_ITEMS[] getItems() {

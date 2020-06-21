@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.content.DescriptionMaster;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
@@ -57,12 +59,20 @@ public abstract class ItemListPanel extends TablePanel {
         //        setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
 
         if (getNinePatch() != null) {
-            TextureRegion generated = new TextureRegion(
-                    TiledNinePatchGenerator.getOrCreateNinePatch(getNinePatch(),
-                            getNinePatchBackground(),
-                            getDefaultWidth()
-                            , getDefaultHeight()));
-            setSize(generated.getRegionWidth(), generated.getRegionHeight());
+            Drawable generated =
+                    TiledNinePatchGenerator.isUseDynamicDrawable()
+                            ?
+                            TiledNinePatchGenerator.getDrawable(getNinePatch(),
+                                    getNinePatchBackground(),
+                                    getDefaultWidth()
+                                    , getDefaultHeight())
+                            : new TextureRegionDrawable(
+                            new TextureRegion(
+                                    TiledNinePatchGenerator.getOrCreateNinePatch(getNinePatch(),
+                                            getNinePatchBackground(),
+                                            getDefaultWidth()
+                                            , getDefaultHeight())));
+            setSize(generated.getMinWidth(), generated.getMinHeight());
             setFixedSize(true);
             addActor(new Image(generated));
         } else {

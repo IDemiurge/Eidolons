@@ -124,7 +124,7 @@ public class PathSequenceConstructor extends AiHandler {
             return new ListMaster<Coordinates>().getList(targetAction.getTarget().getCoordinates());
         }
         if (targetAction.getActive().getName().equalsIgnoreCase(
-         StringMaster.getWellFormattedString(ActionEnums.STD_SPEC_ACTIONS.Guard_Mode.toString()))) {
+         StringMaster.format(ActionEnums.STD_SPEC_ACTIONS.Guard_Mode.toString()))) {
             return new ListMaster<Coordinates>().toList_(targetAction.getTask().getObjArg().getCoordinates());
         }
         Boolean fastPickClosestToTargetOrSelf = null;

@@ -1,6 +1,6 @@
-package main.data.types;
+package main.handlers.types;
 
-public interface AvAssembler {
+public interface IAvAssembler {
     void applyType();
 
     void construct(); //from other types

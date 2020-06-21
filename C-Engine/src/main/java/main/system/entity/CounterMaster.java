@@ -28,9 +28,9 @@ public class CounterMaster {
         COUNTER c = getCounter(valueName, strict);
         if (c != null)
             return c.getName().toUpperCase();
-        valueName = StringMaster.getWellFormattedString(valueName);
+        valueName = StringMaster.format(valueName);
         if (!valueName.contains(StringMaster.COUNTER)) {
-            valueName = StringMaster.getWellFormattedString(valueName.trim())
+            valueName = StringMaster.format(valueName.trim())
              + StringMaster.COUNTER;
         }
 

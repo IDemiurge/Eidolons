@@ -108,7 +108,7 @@ header for the party?
             ValueContainer subname = new ValueContainer(new LabelX(text, style));
             text = party.getMemberRank(hero);
             ValueContainer rank = new ValueContainer(new LabelX(text, style));
-            text = StringMaster.getWellFormattedString(party.getStatus(hero).toString());
+            text = StringMaster.format(party.getStatus(hero).toString());
             ValueContainer status = new ValueContainer(new LabelX(text, style));
             TablePanel tablePanel = new TablePanel().initDefaultBackground();
             tablePanel.add(name);//.maxWidth(getMainWidth()-128);

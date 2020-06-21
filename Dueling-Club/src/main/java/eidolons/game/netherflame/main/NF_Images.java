@@ -79,7 +79,7 @@ public class NF_Images {
         }
 
         MAIN_ART() {
-            path = StringMaster.getWellFormattedString(name()) + ".jpg";
+            path = StringMaster.format(name()) + ".jpg";
         }
     }
 
@@ -94,7 +94,7 @@ public class NF_Images {
         }
 
         PROMO_ART() {
-            path = StringMaster.getWellFormattedString(name()) + ".png";
+            path = StringMaster.format(name()) + ".png";
         }
 
         PROMO_ART(String path) {
@@ -120,7 +120,7 @@ public class NF_Images {
         }
 
         BRIEF_ART() {
-            path = StringMaster.getWellFormattedString(name()) + ".png";
+            path = StringMaster.format(name()) + ".png";
         }
 
         BRIEF_ART(String path) {
@@ -135,7 +135,7 @@ public class NF_Images {
         ;
 
         public String getPath() {
-            return "demo/heroes/" + StringMaster.getWellFormattedString(name())+".png";
+            return "demo/heroes/" + StringMaster.format(name())+".png";
         }
     }
 }

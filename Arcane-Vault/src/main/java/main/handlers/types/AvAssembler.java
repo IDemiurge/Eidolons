@@ -1,21 +1,23 @@
-package main.data.types;
+package main.handlers.types;
 
 import eidolons.entity.TypeCombiner;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import main.content.DC_TYPE;
 import main.entity.type.ObjType;
 import main.handlers.AvHandler;
-import main.simulation.SimulationManager;
+import main.handlers.AvManager;
 import main.system.auxiliary.ContainerUtils;
 import main.system.data.DataUnit;
 
-public class AV_Assembler extends AvHandler implements AvAssembler {
-/*
-what other handlers?
- */
-    public static void applyPrev() {
-        new AV_Assembler().applyType();
+public class AvAssembler extends AvHandler implements IAvAssembler {
+
+    public AvAssembler(AvManager manager) {
+        super(manager);
     }
+
+    /*
+    what other handlers?
+     */
 
     public void applyType() {
         ObjType type = getSelected();
@@ -49,7 +51,7 @@ what other handlers?
 
     @Override
     public void preview() {
-        SimulationManager.refreshType(getSelected());
+        SimulationHandler.refreshType(getSelected());
     }
 
     public class TypeAssemblyData extends DataUnit<TEMPLATE_TYPE> {

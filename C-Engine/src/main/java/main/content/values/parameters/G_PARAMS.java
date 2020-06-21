@@ -40,7 +40,7 @@ public enum G_PARAMS implements PARAMETER {
     private String iconPath;
 
     G_PARAMS(String description, boolean dynamic, String... s) {
-        this.setName(StringMaster.getWellFormattedString(name()));
+        this.setName(StringMaster.format(name()));
         this.fullName = name();
         this.shortName = name;
         this.description = description;

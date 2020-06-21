@@ -5,6 +5,6 @@ import main.system.auxiliary.StringMaster;
 public interface BOSS_ACTION {
 
     default String getName() {
-        return StringMaster.getWellFormattedString(toString());
+        return StringMaster.format(toString());
     }
 }

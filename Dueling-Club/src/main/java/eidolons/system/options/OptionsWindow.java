@@ -236,7 +236,7 @@ public class OptionsWindow extends VisWindow {
 
         public OptionsTab(OPTIONS_GROUP group) {
             super(false, false);
-            this.title = StringMaster.getWellFormattedString(group.toString());
+            this.title = StringMaster.format(group.toString());
             Options options = optionsMap.get(group);
             content = new Table();
             content.defaults().pad(GdxMaster.adjustSize(8));

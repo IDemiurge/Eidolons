@@ -19,19 +19,18 @@ import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.gui.builders.MainBuilder;
 import main.gui.builders.TabBuilder;
-import main.simulation.SimulationManager;
+import main.handlers.AvManager;
+import main.handlers.types.SimulationHandler;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
-import main.utilities.hotkeys.AV_KeyListener;
 import main.utilities.music.MuseCore;
 import main.utilities.workspace.WorkspaceManager;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
-import javax.swing.tree.TreeNode;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,43 +39,27 @@ import static main.system.auxiliary.log.LogMaster.log;
 
 public class ArcaneVault {
 
-    public static final String ICON_PATH = "UI/Forge4.png";
-    public static final int AE_WIDTH = 500;
-    public static final int AE_HEIGHT = 800;
-    public static final int WIDTH = 1680;
-    public static final int HEIGHT = 999;
-    public static final int TREE_WIDTH = 415;
-    public static final int TREE_HEIGHT = HEIGHT * 11 / 12;
-    public static final int TABLE_WIDTH = (WIDTH - TREE_WIDTH) / 2;
-    public static final int TABLE_HEIGHT = TREE_HEIGHT * 19 / 20;
-    public final static String presetTypes =
-            "units;bf obj;chars;party;missions;scenarios;" +
-            "abils;spells;skills;weapons;armor;items;buffs;classes;perks;lord;actions;" ;
+    private static String title = "Arcane Vault";
+    static MainBuilder mainBuilder;
+    private static JFrame window;
+    private static final Dimension size = new Dimension(AvConsts.WIDTH, AvConsts.HEIGHT);
 
     private static final boolean ENABLE_ITEM_GENERATION = true;
-    // public final static boolean defaultTypesGenerateOn = false;
     public static boolean selectiveInit = true;
     public static boolean selectiveLaunch = true;
-    static MainBuilder mainBuilder;
-    private static boolean testMode = false;
-    private static String title = "Arcane Vault";
-    private static JFrame window;
-    private static final Dimension size = new Dimension(WIDTH, HEIGHT);
-    private static boolean dirty = false;
-    private static boolean macroMode;
-    private static DC_Game microGame;
-    private static final boolean showTime = true;
+    public final static String presetTypes =
+            "units;bf obj;chars;party;missions;scenarios;" +
+                    "abils;spells;skills;weapons;armor;items;buffs;classes;perks;lord;actions;" ;
+    private static String types;
     private static ObjType previousSelectedType;
     private static ObjType selectedType;
-    private static boolean simulationOn = false;
-    private static boolean colorsInverted = true;
-    private static WorkspaceManager workspaceManager;
-    private static boolean altPressed;
     private static List<ObjType> selectedTypes;
     private static List<TabBuilder> additionalTrees;
-    private static String types;
+
+    private static DC_Game game;
+    private static WorkspaceManager workspaceManager;
     private static ContentValsManager contentValsManager;
-    private static boolean dialogueMode = true;
+    private static AvManager manager;
 
     public static void main(String[] args) {
         CoreEngine.setSwingOn(true);
@@ -105,7 +88,7 @@ public class ArcaneVault {
         CoreEngine.setReflectionMapDisabled(!types.contains("abils"));
 
         ItemGenerator.setGenerationOn(!ENABLE_ITEM_GENERATION);
-        LogMaster.PERFORMANCE_DEBUG_ON = showTime;
+        LogMaster.PERFORMANCE_DEBUG_ON = AvFlags.showTime;
 
         //TODO BANNER!
         log(3, "Welcome to Arcane Vault! \nBrace yourself to face the darkest mysteries of Edalar...");
@@ -114,8 +97,8 @@ public class ArcaneVault {
         AV_Utils.launched();
 
         mainBuilder = new MainBuilder();
-        mainBuilder.setKeyListener(new AV_KeyListener(getGame()));
-        showAndCreateGUI();
+        mainBuilder.setKeyListener(manager.getKeyHandler());
+        createWindow();
 
     }
 
@@ -129,19 +112,19 @@ public class ArcaneVault {
         AV_DataManager.init();
 
         CoreEngine.systemInit();
-        CoreEngine.dataInit(macroMode);
+        CoreEngine.dataInit(AvFlags.macroMode);
 
-        workspaceManager = new WorkspaceManager(macroMode, getGame());
+        manager = new AvManager();
+        workspaceManager = new WorkspaceManager(AvFlags.macroMode, getGame());
 
         if (XML_Reader.getTypeMaps().keySet().size() + 3 < DC_TYPE.values().length) {
-            testMode = true;
+            AvFlags.testMode = true;
         }
-
         // if (!testMode)
-        Simulation.init(testMode);
-        microGame = Simulation.getGame();
-        if (!testMode) {
-            SimulationManager.init();
+        Simulation.init(AvFlags.testMode);
+        game = Simulation.getGame();
+        if (!AvFlags.testMode) {
+            SimulationHandler.init();
         }
 
         if (DataManager.isTypesRead(DC_TYPE.BF_OBJ)) {
@@ -158,12 +141,12 @@ public class ArcaneVault {
     }
 
     public static DC_Game getGame() {
-        return microGame;
+        return game;
 
     }
 
-    private static void showAndCreateGUI() {
-        title += ((macroMode) ? " (macro)" : " (micro)");
+    private static void createWindow() {
+        title += ((AvFlags.macroMode) ? " (macro)" : " (micro)");
         window = new JFrame(title);
         window.setLayout(new MigLayout("insets 0 0 0 0"));
         window.setSize(size);
@@ -174,6 +157,7 @@ public class ArcaneVault {
         window.addWindowListener(new AV_WindowListener(window));
         setArcaneVaultIcon();
 
+        manager.setMainBuilder(mainBuilder);
     }
 
     public static MainBuilder getMainBuilder() {
@@ -181,8 +165,8 @@ public class ArcaneVault {
     }
 
     private static void setArcaneVaultIcon() {
-        ImageIcon img = ImageManager.getIcon(ICON_PATH);
-        if (macroMode) {
+        ImageIcon img = ImageManager.getIcon(AvConsts.ICON_PATH);
+        if (AvFlags.macroMode) {
             img = ImageManager.getIcon("UI\\" + "spellbook" + ".png");
         }
 
@@ -200,14 +184,6 @@ public class ArcaneVault {
         ArcaneVault.previousSelectedType = previousSelectedType;
     }
 
-    // public static void selectedType() {
-    // DefaultMutableTreeNode node = getMainBuilder().getSelectedNode();
-    // if (node == null)
-    // return null;
-    // selectedType = DataManager
-    // .getType((String) node.getUserObject(), getMainBuilder()
-    // .getSelectedTabName());
-    // }
     public static ObjType getSelectedType() {
         return selectedType;
     }
@@ -222,21 +198,21 @@ public class ArcaneVault {
 
     // TODO macro types?
     public static OBJ_TYPE getSelectedOBJ_TYPE() {
-        if (macroMode) {
+        if (AvFlags.macroMode) {
             MACRO_OBJ_TYPES.getType(getMainBuilder().getSelectedTabName());
         }
         return ContentValsManager.getOBJ_TYPE(getMainBuilder().getSelectedTabName());
     }
 
     public static boolean isDirty() {
-        return dirty;
+        return AvFlags.dirty;
     }
 
     public static void setDirty(boolean dirty) {
         if (window == null) {
             return;
         }
-        ArcaneVault.dirty = dirty;
+        AvFlags.dirty = dirty;
         if (dirty) {
             window.setTitle(title + "*");
         } else {
@@ -244,41 +220,29 @@ public class ArcaneVault {
         }
     }
 
-    public static void reloadTree(TreeNode node) {
-        mainBuilder.getTreeBuilder().reload(node);
-        mainBuilder.getEditViewPanel().refresh();
-    }
 
     public static boolean isMacroMode() {
-        return macroMode;
+        return AvFlags.macroMode;
     }
 
     public static void setMacroMode(boolean macroMode) {
-        ArcaneVault.macroMode = macroMode;
-    }
-
-    public static DC_Game getMicroGame() {
-        return microGame;
-    }
-
-    public static void setMicroGame(DC_Game microGame) {
-        ArcaneVault.microGame = microGame;
+        AvFlags.macroMode = macroMode;
     }
 
     public static boolean isSimulationOn() {
-        return simulationOn;
+        return AvFlags.simulationOn;
     }
 
     public static void setSimulationOn(boolean simulationOn) {
-        ArcaneVault.simulationOn = simulationOn;
+        AvFlags.simulationOn = simulationOn;
     }
 
     public static boolean isColorsInverted() {
-        return colorsInverted;
+        return AvFlags.colorsInverted;
     }
 
     public static void setColorsInverted(boolean b) {
-        colorsInverted = b;
+        AvFlags.colorsInverted = b;
     }
 
     public static WorkspaceManager getWorkspaceManager() {
@@ -286,11 +250,11 @@ public class ArcaneVault {
     }
 
     public static boolean isAltPressed() {
-        return altPressed;
+        return AvFlags.altPressed;
     }
 
     public static void setAltPressed(boolean altPressed) {
-        ArcaneVault.altPressed = altPressed;
+        AvFlags.altPressed = altPressed;
     }
 
     public static List<ObjType> getSelectedTypes() {
@@ -337,11 +301,11 @@ public class ArcaneVault {
     }
 
     public static boolean isDialogueMode() {
-        return dialogueMode;
+        return AvFlags.dialogueMode;
     }
 
     public static void setDialogueMode(boolean dialogueMode) {
-        ArcaneVault.dialogueMode = dialogueMode;
+        AvFlags.dialogueMode = dialogueMode;
     }
 
     public enum WORKSPACE_TEMPLATE {
@@ -357,7 +321,7 @@ public class ArcaneVault {
 
         @Override
         public String toString() {
-            return StringMaster.getWellFormattedString(super.toString());
+            return StringMaster.format(super.toString());
         }
 
         public String getTypes() {
@@ -370,4 +334,7 @@ public class ArcaneVault {
 
     }
 
+    public static AvManager getManager() {
+        return manager;
+    }
 }

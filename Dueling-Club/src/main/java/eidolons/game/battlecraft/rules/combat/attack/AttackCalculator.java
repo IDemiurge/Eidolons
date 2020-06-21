@@ -763,7 +763,7 @@ public class AttackCalculator {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
     }

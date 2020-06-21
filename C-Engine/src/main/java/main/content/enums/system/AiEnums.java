@@ -88,7 +88,7 @@ public class AiEnums {
         public STD_MODES mode;
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public boolean isDisableCounters() {

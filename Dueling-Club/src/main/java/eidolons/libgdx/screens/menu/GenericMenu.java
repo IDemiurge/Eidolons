@@ -167,7 +167,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
             if (sub.toString().equalsIgnoreCase("Back")) {
                 button = getBackButton();
             } else
-                button = getButton((T) sub, StringMaster.getWellFormattedString(sub.toString()));
+                button = getButton((T) sub, StringMaster.format(sub.toString()));
             add(button).top().pad(10, 10, 10, 10);
             buttons.add(button);
             row();

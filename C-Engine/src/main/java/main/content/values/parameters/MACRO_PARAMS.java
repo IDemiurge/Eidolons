@@ -150,7 +150,7 @@ public enum MACRO_PARAMS implements PARAMETER {
 
     MACRO_PARAMS(String entityType, String fullName, String descr, boolean dynamic,
                  int defaultValue, int AV_ID) {
-        this.shortName = StringMaster.getWellFormattedString(name());
+        this.shortName = StringMaster.format(name());
         if (fullName == null) {
             fullName = shortName;
         }

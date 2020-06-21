@@ -17,7 +17,7 @@ import main.data.xml.*;
 import main.elements.conditions.*;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
-import main.gui.components.controls.ModelManager;
+import main.handlers.mod.AvSaveHandler;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
@@ -102,7 +102,7 @@ public class XML_Transformer {
 
 
     private static void backUp() {
-        ModelManager.fullBackUp(); // new reserve?
+        AvSaveHandler.fullBackUp(); // new reserve?
     }
 
     private static void transformStringsToNormal() {
@@ -121,8 +121,8 @@ public class XML_Transformer {
     }
 
     public static void renameValue(String name, String newName) {
-        name = StringMaster.getWellFormattedString(name);
-        newName = StringMaster.getWellFormattedString(newName);
+        name = StringMaster.format(name);
+        newName = StringMaster.format(newName);
         log(1, "Renaming value " +
                 name + " to " + newName);
         for (XML_File xmlFile : getXmlFiles()) {
@@ -143,7 +143,7 @@ public class XML_Transformer {
                 newContents = newContents.replace(name, newName);
                 newContents = newContents.replace(name.toLowerCase(), newName);
                 newContents = newContents.replace(name.toUpperCase(), newName);
-                newContents = newContents.replace(StringMaster.getWellFormattedString(name), newName);
+                newContents = newContents.replace(StringMaster.format(name), newName);
             }
             xmlFile.setContents(newContents);
             log(1, xmlFile + "-New length: " + xmlFile.getContents().length());
@@ -156,7 +156,7 @@ public class XML_Transformer {
         for (ObjType t : DataManager.getTypes(DC_TYPE.BUFFS)) {
             if (StringMaster.contains(t.getProperty(G_PROPS.BUFF_TYPE), "buff")) {
                 t.setProperty(G_PROPS.BUFF_TYPE, StringMaster
-                        .getWellFormattedString(GenericEnums.BUFF_TYPE.SPELL.name()));
+                        .format(GenericEnums.BUFF_TYPE.SPELL.name()));
             }
         }
     }

@@ -161,9 +161,9 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         // return true;
         // }
         return checkProperty(G_PROPS.WEAPON_CLASS, StringMaster
-                .getWellFormattedString(ItemEnums.WEAPON_CLASS.DOUBLE.name()))
+                .format(ItemEnums.WEAPON_CLASS.DOUBLE.name()))
                 || checkProperty(G_PROPS.WEAPON_CLASS, StringMaster
-                .getWellFormattedString(ItemEnums.WEAPON_CLASS.TWO_HANDED.name()));
+                .format(ItemEnums.WEAPON_CLASS.TWO_HANDED.name()));
     }
 
     public void applyUnarmedMasteryBonus() {
@@ -206,7 +206,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     private boolean isDouble() {
         return checkProperty(G_PROPS.WEAPON_CLASS, StringMaster
-                .getWellFormattedString(ItemEnums.WEAPON_CLASS.DOUBLE.name()));
+                .format(ItemEnums.WEAPON_CLASS.DOUBLE.name()));
     }
 
     private PARAMETER getMastery() {

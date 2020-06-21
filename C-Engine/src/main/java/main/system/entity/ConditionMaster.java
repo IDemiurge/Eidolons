@@ -59,7 +59,7 @@ public class ConditionMaster {
 
     public static Condition getNotDeadCondition() {
         return new NotCondition(getStatusMatchCondition(StringMaster
-                .getWellFormattedString(UnitEnums.STATUS.DEAD.name())));
+                .format(UnitEnums.STATUS.DEAD.name())));
     }
 
     public static Condition getAliveAndConsciousFilterCondition() {

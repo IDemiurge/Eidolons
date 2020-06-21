@@ -44,7 +44,7 @@ public class SpellGenerator {
             }
             for (SPELL_UPGRADE ug : SpellEnums.SPELL_UPGRADE.values()) {
 
-                if (!groups.contains(StringMaster.getWellFormattedString(ug.toString()))) {
+                if (!groups.contains(StringMaster.format(ug.toString()))) {
                     continue;
                 }
                 try {

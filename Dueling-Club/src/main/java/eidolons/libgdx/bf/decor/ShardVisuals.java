@@ -23,9 +23,11 @@ import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Bools;
 
 import java.util.*;
@@ -46,6 +48,8 @@ public class ShardVisuals extends GroupX implements GridElement {
 
     private static final SHARD_TYPE DEFAULT_TYPE = SHARD_TYPE.CHAINS;
     private static final SHARD_TYPE DEFAULT_TYPE_ALT = SHARD_TYPE.ROCKS;
+    private static final int BASE_PASS_CHANCE = 33;
+    private static boolean on=true;
     protected int cols;
     protected int rows;
     private int x1, x2, y1, y2;
@@ -56,6 +60,7 @@ public class ShardVisuals extends GroupX implements GridElement {
     private final GridPanel grid;
     private final Map<Coordinates, Shard> map = new XLinkedMap<>();
     private final Function<Coordinates, SHARD_TYPE> typeFunc;
+    private int passed;
 
     public ShardVisuals(GridPanel grid) {
         this.grid = grid;
@@ -73,12 +78,20 @@ public class ShardVisuals extends GroupX implements GridElement {
         };
     }
 
+    public static void setOn(boolean on) {
+        ShardVisuals.on = on;
+    }
+
+    public static boolean getOn() {
+        return on;
+    }
+
     private boolean checkAltShard(Coordinates c) {
         return RandomWizard.chance(33);
     }
 
     public static ALPHA_TEMPLATE getTemplateForOverlay(SHARD_OVERLAY overlay) {
-        return GenericEnums.ALPHA_TEMPLATE.SHARD_OVERLAY;
+        return ALPHA_TEMPLATE.SHARD_OVERLAY;
     }
 
     public static GenericEnums.VFX[] getEmitters(SHARD_OVERLAY overlay, SHARD_SIZE size) {
@@ -180,6 +193,9 @@ public class ShardVisuals extends GroupX implements GridElement {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (!on) {
+            return ;
+        }
         if (batch instanceof CustomSpriteBatch) {
             ((CustomSpriteBatch) batch).resetBlending();
         }
@@ -200,7 +216,7 @@ public class ShardVisuals extends GroupX implements GridElement {
         try {
             init();
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
     }
 
@@ -223,8 +239,10 @@ public class ShardVisuals extends GroupX implements GridElement {
                 Object direction = null;
                 Integer degrees = getDirectionForShards(x, y);
                 if (degrees == null) {
+                    passed++;
                     continue;
                 }
+                passed =0;
                 if (degrees < 0) {
                     direction = ""; //isle
                 } else {
@@ -322,9 +340,9 @@ public class ShardVisuals extends GroupX implements GridElement {
                         last.remove(0);
                     }
                     map.put(c, shard);
-                    main.system.auxiliary.log.LogMaster.log(1, c + " has shard with direction " + direction);
+                    LogMaster.log(1, c + " has shard with direction " + direction);
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    ExceptionMaster.printStackTrace(e);
                 }
             }
         }
@@ -458,11 +476,6 @@ public class ShardVisuals extends GroupX implements GridElement {
     private Integer getDirectionForShards(int x, int y) {
 
         Coordinates c = Coordinates.get(true, x, y);
-        if (c.x > 26) {
-            if (c.y < 35) {
-                c.getAdjacentCoordinates();
-            }
-        }
         List<DIRECTION> adj = new ArrayList<>();
         int n = 0;
         for (DIRECTION d : DIRECTION.clockwise) {
@@ -511,6 +524,10 @@ public class ShardVisuals extends GroupX implements GridElement {
             if (RandomWizard.chance(getIsleChanceEmpty())) {
                 return -1;
             }
+            return null;
+        }
+        if (RandomWizard.chance(BASE_PASS_CHANCE - passed)){
+            passed++;
             return null;
         }
         Collections.shuffle(adj);

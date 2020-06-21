@@ -27,7 +27,7 @@ public class DC_Attributes {
 
     private void applyAttr(ATTRIBUTE attr) {
         int amount = getAttrValue(attr);
-        String modifierKey = StringMaster.getWellFormattedString(attr.toString());
+        String modifierKey = StringMaster.format(attr.toString());
         switch (attr) {
             case STRENGTH:
                 if (hero.isHero()) {

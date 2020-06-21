@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class GearCluster extends GroupX {
     public static final int DEFAULT_SIZE = 100;
-    private ArrayList<GEAR> gearPool;
+    private final ArrayList<GEAR> gearPool;
     List<GearActor> gears = new ArrayList<>();
     float defaultSpeed = 1;
     Float speed = defaultSpeed;
@@ -43,7 +43,7 @@ public class GearCluster extends GroupX {
             GEAR.GEAR_4,
             GEAR.GEAR_5,
     };
-    private boolean allSmall;
+    private final boolean allSmall;
 
     public GearCluster(int gearCount, float scale, Boolean dark_light_both) {
         this(false, gearCount, scale, dark_light_both);
@@ -227,7 +227,7 @@ public class GearCluster extends GroupX {
 
         public String getImagePath(boolean small) {
             String path = StrPathBuilder.build(PathFinder.getComponentsPath(),
-                    "dc", "clock", StringMaster.getWellFormattedString(toString()) + ".png");
+                    "dc", "clock", StringMaster.format(toString()) + ".png");
             if (small) {
                 return StringMaster.getAppendedFile(path, " small");
             }

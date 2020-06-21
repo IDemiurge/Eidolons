@@ -142,7 +142,7 @@ public class MissionStatManager<E extends DungeonSequence> extends MissionHandle
     }
 
     protected String getStatName(STANDARD_EVENT_TYPE eventType) {
-        return StringMaster.getWellFormattedString(eventType.name());
+        return StringMaster.format(eventType.name());
     }
 
     protected Integer getStatAmount(Event event, STANDARD_EVENT_TYPE eventType) {

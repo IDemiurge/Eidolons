@@ -11,7 +11,6 @@ import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.entity.ConditionMaster;
 
 import java.util.ArrayList;
@@ -138,9 +137,10 @@ public class ReasonMaster {
             Boolean result = c.isTrue();
             if (result==null || !useConditionResultCache) {
                 result = c.preCheck(REF);
-            } else {
-               LogMaster.log(1, c + " reason uses cached result: " + result+ " on " + REF);
             }
+            // else {
+            //    LogMaster.log(1, c + " reason uses cached result: " + result+ " on " + REF);
+            // }
             if (!result) {
                 if (reason != null) {
                     reasons.add(reason);

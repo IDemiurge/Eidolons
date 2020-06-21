@@ -56,7 +56,7 @@ public class DC_LogManager extends LogManager {
 
     public void logCounterModified(DataModel entity, String name, int modValue) {
         Integer value = entity.getCounter(name);
-        name = StringMaster.getWellFormattedString(name);
+        name = StringMaster.format(name);
         LOGGING_DETAIL_LEVEL detail = LOGGING_DETAIL_LEVEL.ESSENTIAL;
         if (!entity.isMine()) {
             if (entity instanceof BattleFieldObject) {

@@ -114,11 +114,11 @@ public abstract class Builder implements GameGUI {
         }
     }
 
-    private void add(JComponent newComp, String info) {
+    protected void add(JComponent newComp, String info) {
         getComp().add(newComp, info);
         if (getKeyListener() != null) {
             if (newComp instanceof G_Component) {
-                ((G_Component) newComp).setKeyManager(keyListener);
+                ((G_Component) newComp).setKeyManager(getKeyListener());
             } else {
                 newComp.addKeyListener(getKeyListener());
             }
@@ -183,23 +183,6 @@ public abstract class Builder implements GameGUI {
     @Override
     public void refresh() {
 
-//        if (!isDirty())
-//            return;
-//        for (Refreshable r : compArray) {
-//            try {
-//                r.refresh();
-//            } catch (Exception e) {
-//                main.system.ExceptionMaster.printStackTrace(e);
-//            }
-//        }
-//        for (Refreshable r : builderArray) {
-//            try {
-//                r.refresh();
-//            } catch (Exception e) {
-//                main.system.ExceptionMaster.printStackTrace(e);
-//            }
-//        }
-
     }
 
     public boolean isDirty() {
@@ -219,7 +202,7 @@ public abstract class Builder implements GameGUI {
         //c.dataChanged();
     }
 
-    private KeyListener getKeyListener() {
+    protected KeyListener getKeyListener() {
         return keyListener;
     }
 

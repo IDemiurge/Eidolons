@@ -59,6 +59,7 @@ public class GdxColorMaster {
     public static final Color METEORITE = getColor(175, 115, 25, 1f);
     public static final Color COLD_IRON = getColor(175, 115, 25, 1f);
     public static final Color GREY = getColor(115, 115, 125, 1f);
+    public static final Color LIGHT_GREY = getColor(155, 155, 155, 1f);
     public static final Color BACKGROUND_TRANSPARENT = getColor(0, 0, 0, 208);
     public static final Color BACKGROUND_MORE_TRANSPARENT = getColor(0, 0, 0, 158);
     public static final Color STANDARD_TEXT = PALE_GOLD;

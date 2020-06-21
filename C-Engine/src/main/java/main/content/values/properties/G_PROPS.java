@@ -3,11 +3,12 @@ package main.content.values.properties;
 import main.system.auxiliary.StringMaster;
 
 public enum G_PROPS implements PROPERTY {
-    LAST_EDITOR("meta", null),
     VERSION("all", null),
     WORKSPACE_GROUP("all", null),
     DEV_NOTES("all", null),
-    GAME_VERSION("meta", null),
+    TIMESTAMP("all", null),
+
+
     NAME("all", "Name"),
     DISPLAYED_NAME("all", "Name"),
     ID("all", "Id"),
@@ -185,9 +186,9 @@ public enum G_PROPS implements PROPERTY {
         this.shortName = shortName;
         this.fullName = name();
         if (StringMaster.isEmpty(shortName)) {
-            this.shortName = StringMaster.getWellFormattedString(name());
+            this.shortName = StringMaster.format(name());
         }
-        this.name = StringMaster.getWellFormattedString(name());
+        this.name = StringMaster.format(name());
         this.container = false;
         defaultValue = "";
     }

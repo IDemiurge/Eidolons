@@ -34,7 +34,7 @@ public class HungItemMaster extends DungeonObjMaster<HUNG_ITEM_ACTION> {
 
     private static final String SPRITE = " sprite";
     static ObjType dummyHungObjType;
-    private static String typeName = "Dummy Hung Obj";
+    private static final String typeName = "Dummy Hung Obj";
 
     public HungItemMaster(DungeonMaster dungeonMaster) {
         super(dungeonMaster);
@@ -113,7 +113,7 @@ potions
         DC_UnitAction action = null;
         for (HUNG_ITEM_ACTION sub : HUNG_ITEM_ACTION.values()) {
             if (checkAction(unit, (HungItem) obj, sub)) {
-                String name = StringMaster.getWellFormattedString(sub.name()) + " Door";
+                String name = StringMaster.format(sub.name()) + " Door";
                 action = unit.getAction(name);
                 if (action == null)
                     action = createAction(sub, unit, name, obj);

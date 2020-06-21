@@ -47,7 +47,7 @@ public class ItemTrait {
     //some templates are put before level!
     @Override
     public String toString() {
-        return StringMaster.getWellFormattedString(template.toString()) + " " +
+        return StringMaster.format(template.toString()) + " " +
                 StringMaster.wrapInParenthesis(level.toString());
     }
 }

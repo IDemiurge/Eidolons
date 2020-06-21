@@ -613,7 +613,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         }
 
         public String getTexturePath() {
-            return StrPathBuilder.build(getMainPath(), StringMaster.getWellFormattedString(name()) + ".png");
+            return StrPathBuilder.build(getMainPath(), StringMaster.format(name()) + ".png");
         }
 
         //AlphaFluctuation fluctuation;

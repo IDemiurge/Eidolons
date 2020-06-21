@@ -78,7 +78,7 @@ public class HearingRule implements ActionRule {
             String quality = true ? "quietly" : "noisily"; //audibly
 
             String logged = listener +
-                    " hears something " + StringMaster.wrapInBraces(StringMaster.getWellFormattedString(descriptor)) +
+                    " hears something " + StringMaster.wrapInBraces(StringMaster.format(descriptor)) +
                     " " +
                     type +
                     " " +

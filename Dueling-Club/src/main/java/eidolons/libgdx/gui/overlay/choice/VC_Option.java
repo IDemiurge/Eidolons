@@ -17,7 +17,7 @@ public class VC_Option {
 
     public VC_Option(VC_DataSource.VC_OPTION type) {
         this.arg = type;
-        this.title = StringMaster.getWellFormattedString(type.toString());
+        this.title = StringMaster.format(type.toString());
         image = (type.img);
         //TODO localize
         tooltip = "Choose " + title;
