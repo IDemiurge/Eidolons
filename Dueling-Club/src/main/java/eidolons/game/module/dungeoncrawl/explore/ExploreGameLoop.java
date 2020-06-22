@@ -243,7 +243,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     //Gdx Review
     protected boolean isMustWaitForAnim(ActionInput action) {
-        return ScreenMaster.getDungeonGrid()
+        return ScreenMaster.getGrid()
                 .getViewMap().get(activeUnit).getActions().size > 0 || AnimMaster.getInstance().isDrawingPlayer();
     }
 

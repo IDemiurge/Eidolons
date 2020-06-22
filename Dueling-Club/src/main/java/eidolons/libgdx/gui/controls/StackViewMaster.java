@@ -148,7 +148,7 @@ public class StackViewMaster {
             return;
         //TODO review this
         Coordinates c = object.getUserObject().getCoordinates();
-        GridCellContainer cell = ScreenMaster.getDungeonGrid().getCells()[c.x][
+        GridCellContainer cell = ScreenMaster.getGrid().getCells()[c.x][
                 PositionMaster.getLogicalY(c.y)];
 
 

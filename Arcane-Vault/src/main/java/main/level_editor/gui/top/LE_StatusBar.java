@@ -115,7 +115,7 @@ last
 
 
         DC_BattleFieldGrid grid = DC_Game.game.getGrid();
-        if (LE_GridCell.hoveredCell.getParent() != ScreenMaster.getDungeonGrid()) {
+        if (LE_GridCell.hoveredCell.getParent() != ScreenMaster.getGrid()) {
             LE_GridCell.hoveredCell=null;
             return;
         }

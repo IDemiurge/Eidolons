@@ -10,7 +10,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class AvTypeHandler extends AvHandler {
-    SmartBackend backend;
+    SmartBackend backend= new SmartBackend();
 
     public AvTypeHandler(AvManager manager) {
         super(manager);

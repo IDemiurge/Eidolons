@@ -465,7 +465,7 @@ public class DamageDealer {
 
         if (!CoreEngine.isGraphicsOff())
             if (HpBar.isResetOnLogicThread())
-                ScreenMaster.getDungeonGrid().getGridManager().
+                ScreenMaster.getGrid().getGridManager().
                         checkHpBarReset(attacked);
 
         return damageDealt;

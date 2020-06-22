@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.art;
 
 import eidolons.entity.obj.DC_Cell;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleActions;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
@@ -18,11 +17,11 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 
-public class ArtSetup extends PuzzleSetup {
+public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
 
     private final String[] mutatorArgs;
 
-    public ArtSetup(Puzzle puzzle, PuzzleData data, String... mutatorArgs) {
+    public ArtSetup(ArtPuzzle puzzle, PuzzleData data, String... mutatorArgs) {
         super(puzzle, data);
         this.mutatorArgs = mutatorArgs;
     }
@@ -32,6 +31,10 @@ public class ArtSetup extends PuzzleSetup {
 
     }
 
+    @Override
+    public Object reset() {
+        return null;
+    }
     @Override
     public void started() {
         for (String mutatorArg : mutatorArgs) {
@@ -71,8 +74,9 @@ public class ArtSetup extends PuzzleSetup {
         }
     }
 
+
     @Override
     public ArtPuzzle getPuzzle() {
-        return (ArtPuzzle) super.getPuzzle();
+        return super.getPuzzle();
     }
 }

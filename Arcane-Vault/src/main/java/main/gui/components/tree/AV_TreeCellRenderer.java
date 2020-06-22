@@ -2,7 +2,6 @@ package main.gui.components.tree;
 
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
-import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.launch.AvConsts;
 import main.swing.generic.components.G_Panel;
@@ -65,81 +64,59 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
         String typeName = node.toString();
         ObjType type = null;
-        String parent = null;
-        try {
-            parent = ((DefaultMutableTreeNode) node.getParent()).getUserObject().toString();
-        } catch (Exception e) {
 
-        }
-        try {
-            if (workspace != null) {
-                type = DataManager.getType(typeName, workspace.getOBJ_TYPE(typeName, parent));
-            } else {
-                type = DataManager.getType(typeName, TYPE);
-            }
-            if (type == null) {
-                if (node.isLeaf()) {
-                    LogMaster.log(1, "No such type: " + " " + typeName);
-                }
-                return getDefaultComp(tree, value, selected, expanded, leaf, row, hasFocus);
-            }
-            Image img = ImageManager.getImage(type.getImagePath());
-            if (img == null) {
-                Component treeCellRendererComponent = null;
-                if (type.getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
-                    switch (((DC_TYPE) type.getOBJ_TYPE_ENUM())) {
-                        case UNITS:
-                        case CHARS:
-                        case BF_OBJ:
-                            treeCellRendererComponent = defRendererLarge.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-                            break;
-                        default:
-                            treeCellRendererComponent = defRenderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-
-                    }
-                }
-                // main.system.auxiliary.LogMaster.log(1, "NULL img!" + " " +
-                // typeName);
-                if (colorsInverted) {
-                    Color c = ColorManager.ALLY_COLOR;
-                    Color c2 = ColorManager.GOLDEN_WHITE;
-                    treeCellRendererComponent.setBackground(c);
-                    treeCellRendererComponent.setForeground(c2);
-                }
-            }
-            if (img == null) {
-                size = 32;
-            } else
-                size = Math.min(getMaxTreeIconSize(type.getOBJ_TYPE_ENUM()), img.getWidth(null));
-            G_Panel comp = new G_Panel();
-            ListItem<ObjType> item = new ListItem<>(type, selected, hasFocus, size);
-            item.setSize(size, size);
-            comp.add(item, "id item, pos 0 0");
-
-            JLabel lbl = new JLabel(typeName);
-            if (selected || hasFocus) {
-                Color aspectColor = ColorManager.getAspectColor(type);
-                Color bgColor = ColorManager.OBSIDIAN;
-                // if (colorsInverted) {
-                // bgColor = ColorManager.PALE_GOLD;
-                // aspectColor = ColorManager.getDarkerColor(aspectColor, 50);
-                // }
-                lbl.setForeground(aspectColor);
-                lbl.setBackground(bgColor);
-            } else if (colorsInverted) {
-                lbl.setForeground(ColorManager.GOLDEN_WHITE);
-            }
-
-            comp.add(lbl, "pos item.x2+" + FontMaster.SIZE / 4 + " item.y2/2-" + FontMaster.SIZE
-                    / 2 + "");
-
-            return comp;
-
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+        if (node.getUserObject() instanceof ObjType) {
+            type = (ObjType) node.getUserObject();
+            typeName = type.getName();
+        } else {
             return getDefaultComp(tree, value, selected, expanded, leaf, row, hasFocus);
-
         }
+        Image img = ImageManager.getImage(type.getImagePath());
+        if (img == null) {
+            Component treeCellRendererComponent = null;
+            if (type.getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
+                switch (((DC_TYPE) type.getOBJ_TYPE_ENUM())) {
+                    case UNITS:
+                    case CHARS:
+                    case BF_OBJ:
+                        treeCellRendererComponent = defRendererLarge.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+                        break;
+                    default:
+                        treeCellRendererComponent = defRenderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+
+                }
+            }
+            if (colorsInverted) {
+                Color c = ColorManager.ALLY_COLOR;
+                Color c2 = ColorManager.GOLDEN_WHITE;
+                treeCellRendererComponent.setBackground(c);
+                treeCellRendererComponent.setForeground(c2);
+            }
+        }
+        if (img == null) {
+            size = 32;
+        } else
+            size = Math.min(getMaxTreeIconSize(type.getOBJ_TYPE_ENUM()), img.getWidth(null));
+        G_Panel comp = new G_Panel();
+        ListItem<ObjType> item = new ListItem<>(type, selected, hasFocus, size);
+        item.setSize(size, size);
+        comp.add(item, "id item, pos 0 0");
+
+        JLabel lbl = new JLabel(typeName);
+        if (selected || hasFocus) {
+            Color aspectColor = ColorManager.getAspectColor(type);
+            Color bgColor = ColorManager.OBSIDIAN;
+            lbl.setForeground(aspectColor);
+            lbl.setBackground(bgColor);
+        } else if (colorsInverted) {
+            lbl.setForeground(ColorManager.GOLDEN_WHITE);
+        }
+
+        comp.add(lbl, "pos item.x2+" + FontMaster.SIZE / 4 + " item.y2/2-" + FontMaster.SIZE
+                / 2 + "");
+
+        return comp;
+
 
     }
 

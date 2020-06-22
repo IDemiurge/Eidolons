@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.art;
 
+import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.ManipulatorPuzzle;
 import eidolons.libgdx.shaders.post.PostFxUpdater;
@@ -7,6 +8,11 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 public class ArtPuzzle extends ManipulatorPuzzle {
+
+    @Override
+    protected PuzzleHandler createHandler() {
+        return null ;//TODO
+    }
 
     @Override
     public void setup(PuzzleSetup... setups) {

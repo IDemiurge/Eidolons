@@ -10,6 +10,7 @@ import main.swing.generic.components.G_Panel;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,16 @@ public class MainBuilder extends Builder {
     private boolean nodesDirty;
 
     public MainBuilder() {
-        comp = new JSplitPane();
+        if (isSplitPane()){
+            comp = new JSplitPane();
+            comp.setLayout(new GridLayout());
+        } else {
+            comp = new G_Panel();
+        }
+    }
+
+    private boolean isSplitPane() {
+        return false;
     }
 
     @Override
@@ -63,11 +73,12 @@ public class MainBuilder extends Builder {
 
         };
 
-        compArray = new G_Component[]{buttonPanel, tableBuilder.getPanel()};
+        compArray = new JComponent[]{buttonPanel, tableBuilder.getPanel()};
         cInfoArray = new String[]{
                 "id bp, pos "
                         + (ArcaneVault.selectiveInit ? AvConsts.TREE_WIDTH + " "
-                        + AvConsts.TREE_HEIGHT : "0 tree.y2") + " table.x2 pref",
+                        + AvConsts.TREE_HEIGHT : "0 tree.y2") + " table.x2 " +
+                        AvConsts.HEIGHT,
 
                 "id table, pos tree.x2 0 ",
 

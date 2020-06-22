@@ -15,7 +15,7 @@ public class TipMessageSource {
     String soundPath;
     Runnable[] btnRun;
     private boolean optional;
-    private boolean nonGdxThread;
+    private boolean nonGdxThread=true;
     float width = GdxMaster.getWidth() / 3;
     float height = GdxMaster.getHeight() / 3;
 

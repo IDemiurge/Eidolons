@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.dungeon.puzzle.maze;
+package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.sub;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.module.generator.model.RoomModel;

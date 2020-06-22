@@ -51,7 +51,7 @@ public class UnitViewTooltip extends ValueTooltip {
             GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, getView());
         }
         if (getView().getPortrait().getScreenOverlay() <= 0.01f) {
-            ScreenMaster.getDungeonGrid().getGridViewAnimator().animate(getView(),
+            ScreenMaster.getGrid().getGridViewAnimator().animate(getView(),
                     GridViewAnimator.VIEW_ANIM.screen);
         }
         super.onMouseEnter(event, x, y, pointer, fromActor);

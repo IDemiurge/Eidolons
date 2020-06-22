@@ -178,7 +178,7 @@ public class BattleGuiStage extends GuiStage {
     public void outsideClick() {
         setDraggedEntity(null);
         super.outsideClick();
-        setScrollFocus(ScreenMaster.getDungeonGrid());
+        setScrollFocus(ScreenMaster.getGrid());
 
         if (combatInventory.isVisible()) {
             //            combatInventory.close(ExplorationMaster.isExplorationOn());

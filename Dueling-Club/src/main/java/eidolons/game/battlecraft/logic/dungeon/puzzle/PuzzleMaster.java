@@ -45,7 +45,7 @@ public class PuzzleMaster {
 
     public void playerActionDone(DC_ActiveObj action) {
         for (Puzzle activePuzzle : activePuzzles) {
-            activePuzzle.playerActionDone(action);
+            activePuzzle.getHandler().playerActionDone(action);
         }
     }
         public void processEvent(Event event) {

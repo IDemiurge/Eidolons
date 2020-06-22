@@ -107,9 +107,9 @@ public class LE_DisplayHandler extends LE_Handler implements IDisplayHandler {
             Eidolons.onGdxThread(() ->
             {
                 try {
-                    ScreenMaster.getDungeonGrid().resetZIndices();
-                    ScreenMaster.getDungeonGrid().getShadowMap().setModule(finalM);
-                    ScreenMaster.getDungeonGrid().getShadowMap().update();
+                    ScreenMaster.getGrid().resetZIndices();
+                    ScreenMaster.getGrid().getShadowMap().setModule(finalM);
+                    ScreenMaster.getGrid().getShadowMap().update();
                     //TODO
                     // ScreenMaster.getDungeonGrid().getShards().setModule(finalM);
                 } catch (Exception e) {

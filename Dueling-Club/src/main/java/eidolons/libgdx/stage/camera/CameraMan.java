@@ -50,8 +50,8 @@ public class CameraMan {
     OrthographicCamera cam;
 
     private FloatAction zoomAction;
-    private Set<CameraMotion> motions = new LinkedHashSet<>();
-    private ActTimer cameraTimer;
+    private final Set<CameraMotion> motions = new LinkedHashSet<>();
+    private final ActTimer cameraTimer;
     private boolean mustFinish;
     private BattleFieldObject pendingPanTarget;
 
@@ -228,7 +228,7 @@ public class CameraMan {
         if (!Eidolons.getGame().isDebugMode())
             if (motions.isEmpty())
                 if (followObj != null) {
-                    BaseView baseView = ScreenMaster.getDungeonGrid().getViewMap().get(followObj);
+                    BaseView baseView = ScreenMaster.getGrid().getViewMap().get(followObj);
                     if (baseView instanceof UnitGridView) {
                         if (baseView.getParent() instanceof PlatformCell)
                             if (((UnitGridView) baseView).getPlatformController() != null) {

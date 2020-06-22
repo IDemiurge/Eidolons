@@ -3,6 +3,7 @@ package main.gui.builders;
 import eidolons.game.Simulation;
 import main.ability.utilities.NodeMaster;
 import main.content.ContentValsManager;
+import main.content.OBJ_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -29,16 +30,16 @@ public class TreeViewBuilder extends Builder {
 
     private String sub;
 
-    private List<String> types;
+    private List<ObjType> types;
 
-    private String type = "units";
+    private OBJ_TYPE TYPE;
 
     private AV_Tree tree;
 
     private Workspace workspace;
 
-    public TreeViewBuilder(List<String> typesDoc, String sub, String type) {
-        this.type = type;
+    public TreeViewBuilder(List<ObjType> typesDoc, OBJ_TYPE TYPE, String sub) {
+        this.TYPE = TYPE;
         this.types = typesDoc;
         this.sub = sub;
 
@@ -52,7 +53,7 @@ public class TreeViewBuilder extends Builder {
     public void init() {
 
         if (workspace == null) {
-            tree = new AV_Tree(types, sub, type, ArcaneVault.isColorsInverted());
+            tree = new AV_Tree(types, TYPE, sub, ArcaneVault.isColorsInverted());
         } else {
             tree = new AV_Tree(workspace);
         }
@@ -79,6 +80,7 @@ public class TreeViewBuilder extends Builder {
 
     // TODO
     public void reload() {
+        tree.reload();
         // types = DataManager.getTypesGroupNames(OBJ_TYPES.getType(type), generic);
         // init();
         // ((JScrollPane) comp).setViewportView(getTree());

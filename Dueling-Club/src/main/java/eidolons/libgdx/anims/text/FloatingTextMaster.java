@@ -462,7 +462,7 @@ public class FloatingTextMaster {
     }
 
     public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity) {
-        if (ScreenMaster.getDungeonGrid() == null) {
+        if (ScreenMaster.getGrid() == null) {
             main.system.auxiliary.log.LogMaster.dev("Cannot do float text w/o grid: " + arg);
             return;
         }
@@ -567,7 +567,7 @@ public class FloatingTextMaster {
         if (obj == null)
             obj = active.getRef().getSourceObj();
         if (obj != null) {
-            BaseView view = ScreenMaster.getDungeonGrid().getViewMap().get(obj);
+            BaseView view = ScreenMaster.getGrid().getViewMap().get(obj);
             if (view != null) {
                 Vector2 v = view.localToStageCoordinates(new Vector2(view.getX(), view.getY()));
                 text.setPosition(v.x, v.y);

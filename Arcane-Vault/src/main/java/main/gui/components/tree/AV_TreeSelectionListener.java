@@ -5,7 +5,6 @@ import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.gui.builders.EditViewPanel;
-import main.gui.builders.TabBuilder;
 import main.handlers.types.SimulationHandler;
 import main.launch.ArcaneVault;
 import main.swing.SwingMaster;
@@ -26,7 +25,7 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
     private final JTree tree;
 
     public AV_TreeSelectionListener(JTree tree) {
-            panel = ArcaneVault.getMainBuilder().getEditViewPanel();
+        panel = ArcaneVault.getMainBuilder().getEditViewPanel();
         this.tree = tree;
         // tree.setSelectionPath(path);
         // DefaultMutableTreeNode node = ArcaneVault.getMainBuilder()
@@ -51,11 +50,18 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
         if (node == null) {
             return;
         }
+        ObjType type = null;
+        String name = null;
+        if (node.getUserObject() instanceof ObjType) {
+            type = (ObjType) node.getUserObject();
+            name = type.getName();
+        } else {
+            name = node.getUserObject().toString();
+        }
 
-        String name = (String) node.getUserObject();
         String tab;
 
-            tab = ArcaneVault.getMainBuilder().getSelectedTabName();
+        tab = ArcaneVault.getMainBuilder().getSelectedTabName();
         if (tab == null) {
             Workspace workspace = ArcaneVault.getWorkspaceManager().getWorkspaceByTab(
                     (G_Panel) SwingMaster.getParentOfClass(tree, G_Panel.class));
@@ -68,10 +74,7 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
             }
         }
 
-        // SoundManager.playEffectSound(SOUNDS.WHAT,
-        // DataManager.getType(name)
-        // .getProperty(PROPS.SOUNDSET));
-
+        //AV revamp - default preview?
         if (SimulationHandler.isUnitType(tab) && ArcaneVault.isSimulationOn()) {
             try {
                 SimulationHandler.initUnitObj(name);
@@ -80,18 +83,17 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
             }
         }
 
-        ObjType type = DataManager.getType(name, tab);
-        if (type == null) {
-            for (TabBuilder t : ArcaneVault.getAdditionalTrees()) {
-                type = DataManager.getType(name, t.getSelectedTabName());
-                if (type != null) {
-                    break;
-                }
-            }
-        }
-        if (type == null) {
-            type = DataManager.getType(name);
-        }
+        // if (type == null) {
+        //     for (TabBuilder t : ArcaneVault.getAdditionalTrees()) {
+        //         type = DataManager.getType(name, t.getSelectedTabName());
+        //         if (type != null) {
+        //             break;
+        //         }
+        //     }
+        // }
+        // if (type == null) {
+        //     type = DataManager.getType(name);
+        // }
         if (type == null) {
             return;
         }

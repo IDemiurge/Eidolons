@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
+package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy;
 
 import com.google.inject.internal.util.ImmutableList;
 import eidolons.entity.obj.BattleFieldObject;
@@ -6,16 +6,15 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.bf.grid.DC_GridPanel;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.GridCell;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.CONTENT_CONSTS;
-import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.game.logic.event.Event;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
 import main.system.sound.SoundMaster;
@@ -61,7 +60,7 @@ Accelerating collapse
 
 
  */
-public class VoidHandler {
+public abstract class VoidHandler {
 
     public static boolean TEST_MODE = false;
     GridPanel gridPanel;
@@ -75,7 +74,7 @@ public class VoidHandler {
     private boolean raiseOneMax;
     private final boolean collapseDown = true;
 
-    public VoidHandler(GridPanel gridPanel) {
+    public VoidHandler(DC_GridPanel gridPanel) {
         this.gridPanel = gridPanel;
     }
 
@@ -205,19 +204,19 @@ public class VoidHandler {
                 continue; //TODO smarter check!
             }
             cell.getUserObject().setObjectsModified(true);
-            period += 0.2f;
+            period += getDelayBetweenAnims();
             // WaitMaster.WAIT(period);
             animate(period, raiseOrCollapse, cell, speed, from);
-            Ref ref=Eidolons.getMainHero().getRef();
-            Eidolons.onNonGdxThread(() ->
-                    cell.getUserObject().getGame().getDungeonMaster().getPuzzleMaster().processEvent(
-                            //this is kind of a hack
-                            new Event(Event.STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE,
-                                    ref
-                            )));
+            Eidolons.onNonGdxThread(() -> onAnimate(cell));
         }
 
     }
+
+    private float getDelayBetweenAnims() {
+        return 0.2f;
+    }
+
+    protected abstract void onAnimate(GridCell cell);
 
     private void animateRaise(float waitPeriod, GridCell cell, float speed, DIRECTION from) {
         animate(waitPeriod, true, cell, speed, from);
@@ -228,7 +227,8 @@ public class VoidHandler {
     }
 
     private void animate(float waitPeriod, boolean raiseOrCollapse, GridCell cell, float speed, DIRECTION from) {
-        cell.setVoidAnimHappened(true);
+        if (isDisableGhostsAfterAnim())
+            cell.setVoidAnimHappened(true);
         //TODO fade void shadecell overlay!
         float dur = 1 * speed;
         float x = cell.getGridX() * 128;
@@ -257,26 +257,36 @@ public class VoidHandler {
             offsetX = from.growX ? -64 : 64;
         }
 
-        float scale = raiseOrCollapse ? 0.01f : cell.getCellImgAlpha();
+        float scale = 1f;
+        float scaleX;
+        float scaleY;
+        if (isScaleOn()) {
+            scale = raiseOrCollapse ? 0.01f : 1;
+            scaleX = isVertScale() ? 0.01f : scale;
+            scaleY = scale;
+            cell.setScale(scaleX, scaleY);
+        }
+
         if (raiseOrCollapse) {
             cell.setPosition(x + offsetX, y + offsetY);
         } else
             cell.setPosition(x, y);
-        // cell.setScale(scale);
         cell.getBackImage().setVisible(true);
         if (raiseOrCollapse) {
             cell.getColor().a = 0;
         }
 
         ActionMaster.addWaitAction(cell, waitPeriod);
-        ActionMaster.addCustomAction(cell, () -> DC_SoundMaster.playStandardSound(raiseOrCollapse ?
-                SoundMaster.STD_SOUNDS.NEW__TAB
-                : SoundMaster.STD_SOUNDS.CHAIN));
+        ActionMaster.addCustomAction(cell, () -> playAnimSound(raiseOrCollapse));
 
         ActionMaster.addAlphaAction(cell, dur, !raiseOrCollapse);
-        // if (isScaleOn()) {
-        // scale = raiseOrCollapse ? 1f : 0.01f;
-        // ActionMaster.addScaleActionCentered(cell.getBackImage(), scale,scale, dur+waitPeriod);
+
+        if (isScaleOn()) {
+            scale = raiseOrCollapse ? 1f : 0.01f;
+            scaleX =  isVertScale() ? 100*scale : scale;
+            scaleY = scale;
+            ActionMaster.addScaleActionCentered(cell.getBackImage(), scaleX, scaleY, dur + waitPeriod);
+        }
         if (raiseOrCollapse) {
             ActionMaster.addMoveToAction(cell, x, y, dur);
         } else
@@ -295,6 +305,20 @@ public class VoidHandler {
                 cell.setPosition(x, y);
             }
         });
+    }
+
+    protected abstract boolean isVertScale();
+
+    protected abstract boolean isScaleOn();
+
+    protected void playAnimSound(boolean raiseOrCollapse) {
+        DC_SoundMaster.playStandardSound(raiseOrCollapse ?
+                SoundMaster.STD_SOUNDS.NEW__TAB
+                : SoundMaster.STD_SOUNDS.CHAIN);
+    }
+
+    protected boolean isDisableGhostsAfterAnim() {
+        return false;
     }
 
     public void setCollapsePeriod(float collapsePeriod) {

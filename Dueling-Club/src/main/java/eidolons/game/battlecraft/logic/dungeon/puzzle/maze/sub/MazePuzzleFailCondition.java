@@ -1,6 +1,7 @@
-package eidolons.game.battlecraft.logic.dungeon.puzzle.maze;
+package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.sub;
 
 import eidolons.ability.conditions.DC_Condition;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 

@@ -25,6 +25,7 @@ import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.decor.CellDecorLayer;
+import eidolons.libgdx.gui.panels.dc.actionpanel.bar.SpriteParamBar;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TexturePackerLaunch;
@@ -590,6 +591,7 @@ public class AnimMaster3d {
     }
 
     private static boolean isUseOneFrameVersion(String path) {
+        if (SpriteParamBar.TEST)
         if (path.contains("soulforce")) {
             return false;
         }

@@ -123,14 +123,14 @@ public class MoveAnimation extends ActionAnim {
         if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
          MoveEffect.class)))
             unit = (Unit) getRef().getTargetObj();
-        UnitGridView actor = (UnitGridView) ScreenMaster.getDungeonGrid().getViewMap()
+        UnitGridView actor = (UnitGridView) ScreenMaster.getGrid().getViewMap()
          .get(unit);
 
         if (actor.isStackView()) {
             DungeonScreen.getInstance().getGuiStage().getTooltips().getStackMaster().stackOff();
         }
 
-        if (!ScreenMaster.getDungeonGrid().detachUnitView(unit)) {
+        if (!ScreenMaster.getGrid().detachUnitView(unit)) {
             return;
         }
 
@@ -142,8 +142,8 @@ public class MoveAnimation extends ActionAnim {
         action.setTarget(actor);
 
 if (isGhostMoveOn()){
-    ScreenMaster.getDungeonGrid().showMoveGhostOnCell(unit);
-    ScreenMaster.getDungeonGrid().resetCell(unit.getLastCoordinates());
+    ScreenMaster.getGrid().showMoveGhostOnCell(unit);
+    ScreenMaster.getGrid().resetCell(unit.getLastCoordinates());
 }
 //        GuiEventManager.trigger(GuiEventType.CELL_SHOW_MOVE_GHOST, unit);
     }
@@ -217,7 +217,7 @@ if (isGhostMoveOn()){
     @Override
     public void finished() {
         super.finished();
-        ScreenMaster.getDungeonGrid().unitViewMoved((BaseView) getActor());
+        ScreenMaster.getGrid().unitViewMoved((BaseView) getActor());
 
 
     }

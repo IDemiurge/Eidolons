@@ -139,6 +139,9 @@ public class SpeechExecutor {
         if (container != null) {
             handler = container.getHandler();
         }
+        if (handler == null) {
+            handler= new FauxDialogueHandler();
+        }
         value = value.trim().toLowerCase();
         String full = value;
         List<String> vars = VariableManager.getVarList(value);
@@ -956,7 +959,7 @@ public class SpeechExecutor {
                     GridObject x;
                     obj = new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, value);
                     if (speechAction == LINKED_OBJ) {
-                        BaseView view = ScreenMaster.getDungeonGrid().getViewMap().get(unit);
+                        BaseView view = ScreenMaster.getGrid().getViewMap().get(unit);
                         x = new LinkedGridObject(view, obj, c);
                         x.setUnder(under);
                         GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, x);

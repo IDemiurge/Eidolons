@@ -57,15 +57,15 @@ public class GridMaster {
                                                  boolean center,
                                                  boolean camera) {
         return getVectorForCoordinate(sourceCoordinates, center, camera, false,
-                ScreenMaster.getDungeonGrid());
+                ScreenMaster.getGrid());
     }
 
     public static float invertGdxY(float y) {
-        return ScreenMaster.getDungeonGrid().getHeight() - y;
+        return ScreenMaster.getGrid().getHeight() - y;
     }
 
     public static Coordinates invertGdxY(Coordinates c) {
-        return new Coordinates(c.x, ScreenMaster.getDungeonGrid().getFullRows() - 1 - c.getY());
+        return new Coordinates(c.x, ScreenMaster.getGrid().getFullRows() - 1 - c.getY());
     }
 
     public static Vector2 getVectorForCoordinate(Coordinates sourceCoordinates,
@@ -201,7 +201,7 @@ public class GridMaster {
     }
 
     public static Coordinates getClosestCoordinate(float x, float y) {
-        GridPanel grid = ScreenMaster.getDungeonGrid();
+        GridPanel grid = ScreenMaster.getGrid();
         return
                 Coordinates.getLimited((Math.round(x / CELL_W)),
                         grid.getGdxY_ForModule(Math.round(y / CELL_H)));

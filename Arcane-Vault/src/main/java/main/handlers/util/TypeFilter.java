@@ -2,7 +2,6 @@ package main.handlers.util;
 
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
-import main.data.DataManager;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
@@ -11,7 +10,6 @@ import main.gui.builders.TreeViewBuilder;
 import main.launch.ArcaneVault;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,10 +35,9 @@ public class TypeFilter {
 
     public static void filter(Filter<ObjType> filter, VALUE groupingValue) {
 
-        List<String> typeList = DataManager
-                .toStringList(new ArrayList<>(filter.getTypes()));
-        treeBuilder = new TreeViewBuilder(typeList, sub, filter.getTYPE()
-                .getName());
+        List<ObjType> typeList =  filter.getTypes();
+        treeBuilder = new TreeViewBuilder(typeList, filter.getTYPE(), sub
+                );
         tree = treeBuilder.build();
         setFiltering(true);
         filterN++;

@@ -17,10 +17,9 @@ import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
 import main.elements.conditions.standard.LambdaCondition;
 import main.elements.conditions.standard.PositionCondition;
+import main.elements.triggers.Trigger;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.entity.ConditionMaster;
@@ -108,8 +107,6 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
     }
 
     protected void initSetup() {
-        PuzzleSetup setup = new PuzzleSetup(puzzle, puzzleData);
-        puzzle.setup(setup);
 
     }
 
@@ -168,19 +165,20 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         }
         if (!puzzle.isFailed() && !puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP).isEmpty()) {
             TipMessageMaster.tip(puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP),
-                    () -> afterTipAction());
+                    () -> getHandler().afterTipAction());
         } else {
-            afterTipAction();
+            Eidolons.onNonGdxThread(() -> getHandler().afterTipAction());
         }
         puzzle.activate();
     }
 
-    protected void afterTipAction() {
-        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, puzzle.getCenterCoordinates());
+    private PuzzleHandler getHandler() {
+        return puzzle.getHandler();
     }
 
+
     protected void initExitTrigger() {
-        puzzle.createTriggerGlobal(PuzzleTrigger.PUZZLE_TRIGGER.EXIT,
+        createTriggerGlobal(PuzzleTrigger.PUZZLE_TRIGGER.EXIT,
                 ConditionsUtils.join(new LambdaCondition(ref -> puzzle.active),
                         ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
                         getPuzzleExitConditions()),
@@ -189,6 +187,10 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         );
     }
 
+    public void createTriggerGlobal(PuzzleTrigger.PUZZLE_TRIGGER type, Condition checks, Runnable action, Event.EVENT_TYPE event) {
+        Trigger trigger = new PuzzleTrigger(puzzle, type, event, checks, action);
+        Eidolons.getGame().getManager().addTrigger(trigger);
+    }
     private void exited() {
         //TODO isApplyPunishment()
         if (isPointExit())
@@ -199,7 +201,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
     }
 
     protected void initEnterTrigger() {
-        puzzle.createTriggerGlobal(PuzzleTrigger.PUZZLE_TRIGGER.ENTER,
+         createTriggerGlobal(PuzzleTrigger.PUZZLE_TRIGGER.ENTER,
                 ConditionsUtils.join(new LambdaCondition(ref -> !puzzle.active && (!puzzle.solved || isReplayable())),
                         ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
                         getPuzzleEnterConditions()),

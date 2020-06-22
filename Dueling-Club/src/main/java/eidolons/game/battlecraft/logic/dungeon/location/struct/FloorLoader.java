@@ -318,7 +318,7 @@ public class FloorLoader extends DungeonHandler {
     }
 
     protected void initDecor(Map<Coordinates, DecorData> decorMap) {
-        GridPanel dungeonGrid = ScreenMaster.getDungeonGrid();
+        GridPanel dungeonGrid = ScreenMaster.getGrid();
         if (dungeonGrid != null)
             Eidolons.onGdxThread(() -> {
                 dungeonGrid.initDecor(decorMap);

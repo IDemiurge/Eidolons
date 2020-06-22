@@ -18,6 +18,8 @@ import main.elements.conditions.*;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.handlers.mod.AvSaveHandler;
+import main.launch.ArcaneVault;
+import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
@@ -29,6 +31,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import java.util.*;
 
 import static main.system.auxiliary.log.LogMaster.log;
@@ -394,6 +398,7 @@ run comparison based on current valueTypePairs
             for (OBJ_TYPE key : ContentValsManager.getOBJ_TYPEsForValue(prop)) {
                 for (ObjType objType : DataManager.getTypes(key)) {
                     String value = objType.getProperty(prop);
+                    // Core REvamp - maybe if we used >name< that would be more reliable, otherwise too fuzzy
                     value = value.replaceAll(type.getName(), newName);
                     objType.setProperty(prop, value);
                 }
@@ -403,21 +408,6 @@ run comparison based on current valueTypePairs
         type.setName(newName);
         XML_Writer.writeXML_ForType(type, type.getOBJ_TYPE_ENUM());
 
-        // XML_File file = getFile(type.getOBJ_TYPE_ENUM());
-        // String newContents = file
-        // .getContents()
-        // .replaceAll(XML_Converter.openXML(type.getName()), XML_Converter
-        // .openXML(newName));
-        // newContents =
-        // file.getContents().replaceAll(XML_Converter.closeXML(type
-        // .getName()), XML_Converter.closeXML(newName));
-        // String nameOpen = XML_Converter.openXML(type.getName());
-        // String nameClose = XML_Converter.closeXML(type.getName());
-        // newContents = file.getContents().replaceFirst(nameOpen +
-        // type.getName()
-        // + nameClose, nameOpen + newName + nameClose);
-        // file.setContents(newContents);
-        // XML_Writer.write(file);
     }
 
     private static List<XML_File> getXmlFiles(OBJ_TYPE key) {
@@ -441,63 +431,63 @@ run comparison based on current valueTypePairs
             XML_Reader.readTypes(true);
         }
         return XML_Reader.getFiles();
-        // if (files != null) // ++ refresh by setting to null
-        // return files;
-        // files = new HashMap<>();
-        // Map<String, String> xmlMap = XML_Reader.getXmlMap();
-        // if (xmlMap.isEmpty())
-        // XML_Reader.readTypes(macro);
-        // for (String type : xmlMap.keySet()) {
-        // OBJ_TYPES TYPE = OBJ_TYPES.getType(type);
-        // XML_File file = new XML_File(TYPE, TYPE.getName(), null, macro,
-        // XML_Reader.getXmlMap().getOrCreate(type));
-        // files.put(TYPE, file);
-        // }
-        // return files;
     }
 
+    private void cleanUp_() {
 
-    //    public static void transformResistances() {
-    //        for (ObjType t : DataManager.getTypes()) {
-    //            DAMAGE_TYPE dmg_type = new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(
-    //                    DAMAGE_TYPE.class, t.getProperty(PROPS.DAMAGE_TYPE));
-    //            if (dmg_type != null) {
-    //                switch (dmg_type) {
-    //                    // case BLUDGEONING
-    //                }
-    //            }
-    //
-    //            int earth = t.getIntParam(PARAMS.EARTH_RESISTANCE);
-    //            int water = t.getIntParam(PARAMS.WATER_RESISTANCE);
-    //            int air = t.getIntParam(PARAMS.AIR_RESISTANCE);
-    //            int arcane = t.getIntParam(PARAMS.ARCANE_RESISTANCE);
-    //            int dark = t.getIntParam(PARAMS.SHADOW_RESISTANCE);
-    //            int chaos = t.getIntParam(PARAMS.CHAOS_RESISTANCE);
-    //            int holy = t.getIntParam(PARAMS.HOLY_RESISTANCE);
-    //            int acid = earth / 2 + water / 3;
-    //            int sonic = air / 3 + earth / 2;
-    //            int light = air / 3 + holy * 2 / 3; // ++ %5
-    //            int lightning = air * 2 / 3;
-    //            int cold = water * 2 / 3;
-    //            int psionic = chaos / 2 + dark / 2 + arcane / 2;
-    //            int death = dark / 2 + earth / 2;
-    //
-    //            if (t.checkProperty(G_PROPS.CLASSIFICATIONS, UnitEnums.CLASSIFICATIONS.CONSTRUCT.toString())) {
-    //                psionic = Math.min(100, psionic + 50);
-    //                death = Math.min(100, death + 50);
-    //                cold = Math.min(100, cold + 25);
-    //                lightning = Math.max(0, lightning - 25);
-    //                acid = Math.max(0, acid - 25);
-    //            }
-    //
-    //            t.setParam(PARAMS.ACID_RESISTANCE, acid);
-    //            t.setParam(PARAMS.SONIC_RESISTANCE, sonic);
-    //            t.setParam(PARAMS.LIGHT_RESISTANCE, light);
-    //            t.setParam(PARAMS.LIGHTNING_RESISTANCE, lightning);
-    //            t.setParam(PARAMS.COLD_RESISTANCE, cold);
-    //            t.setParam(PARAMS.PSIONIC_RESISTANCE, psionic);
-    //            t.setParam(PARAMS.DEATH_RESISTANCE, death);
-    //        }
-    //    }
+        String string = "What do I clean up now?..";
+        String TRUE = "Group";
+        String FALSE = "Subgroup";
+        String NULL = "XML";
+        Boolean result = DialogMaster.askAndWait(string, TRUE, FALSE, NULL);
+        if (result == null) {
+            XML_Transformer.cleanUp();
+            return;
+        }
+        OBJ_TYPE TYPE = ArcaneVault.getSelectedOBJ_TYPE();
+        String subgroup = (result) ? ArcaneVault.getSelectedType().getGroupingKey() : ArcaneVault
+                .getSelectedType().getSubGroupingKey();
+        List<String> types = (result) ? DataManager.getTypesGroupNames(TYPE, subgroup)
+                : DataManager.getTypesSubGroupNames(TYPE, subgroup);
+        List<String> retained = ContainerUtils.openContainer(new ListChooser(ListChooser.SELECTION_MODE.MULTIPLE,
+                types, TYPE).choose());
+        for (String t : types) {
+            if (retained.contains(t)) {
+                continue;
+            }
+            DataManager.removeType(t, TYPE.getName());
+        }
+        ArcaneVault.getMainBuilder().getTreeBuilder().reload();
+
+        int n = ArcaneVault.getMainBuilder().getTree().getRowCount();
+        ArcaneVault.getMainBuilder().getTree().setSelectionRow(Math.min(1, n));
+        ArcaneVault.getMainBuilder().getTree().getListeners(TreeSelectionListener.class)[0]
+                .valueChanged(new TreeSelectionEvent(ArcaneVault.getMainBuilder().getTree(), null,
+                        null, null, null));
+        ArcaneVault.getMainBuilder().getEditViewPanel().refresh();
+
+        // reset tree
+
+    }
+
+    private void renameType(ObjType type) {
+        if (type == null) {
+            return;
+        }
+        String input = ListChooser.chooseEnum(PROPERTY.class, ListChooser.SELECTION_MODE.MULTIPLE);
+
+        if (StringMaster.isEmpty(input)) {
+            return;
+        }
+
+        List<PROPERTY> propList = new ListMaster<>(PROPERTY.class).toList(input);
+
+        String newName = JOptionPane.showInputDialog("Enter new name");
+        if (StringMaster.isEmpty(newName)) {
+            return;
+        }
+        XML_Transformer.renameType(type, newName, propList.toArray(new PROPERTY[propList.size()]));
+    }
+
 
 }

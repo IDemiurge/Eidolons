@@ -6,7 +6,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.VoidHandler;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidHandler;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.round.WaterRule;
@@ -304,11 +304,11 @@ public class StackingRule implements ActionRule {
     }
 
     private Boolean checkPlatform(Entity unit, Coordinates c) {
-        if (ScreenMaster.getDungeonGrid() == null) {
+        if (ScreenMaster.getGrid() == null) {
             return null;
         }
         PlatformController platformController =
-                ScreenMaster.getDungeonGrid().getPlatformHandler().get(c);
+                ScreenMaster.getGrid().getPlatformHandler().get(c);
         if (platformController != null)
             if (platformController.canEnter(unit)) {
                 return true;

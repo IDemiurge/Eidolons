@@ -30,7 +30,7 @@ public class DoorAnimation extends Anim {
     public void start() {
         setDuration(1);
         Obj door = getRef().getTargetObj();
-        BaseView actor = ScreenMaster.getDungeonGrid().getViewMap().get(
+        BaseView actor = ScreenMaster.getGrid().getViewMap().get(
          door);
 //        ActorMaster.addFadeInOrOut(actor.getPortrait(), getDuration());
         if (open) {

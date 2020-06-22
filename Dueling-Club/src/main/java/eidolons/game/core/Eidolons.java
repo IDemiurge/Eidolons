@@ -93,25 +93,26 @@ public class Eidolons {
 
     public static Coordinates getPlayerCoordinates() {
         if (CoreEngine.isLevelEditor()) {
-          return GridMaster.getCameraCenter();
+            return GridMaster.getCameraCenter();
         } else {
             return getMainHero().getCoordinates();
         }
     }
-        public static Unit getMainHero() {
+
+    public static Unit getMainHero() {
         if (mainHero == null) {
             if (game == null)
                 return null;
             try {
                 mainHero = game.getMetaMaster().getPartyManager().getParty().getLeader();
             } catch (Exception e) {
-//                e.printStackTrace();
+                //                e.printStackTrace();
             }
             if (mainHero == null) {
                 try {
                     mainHero = (Unit) game.getPlayer(true).getHeroObj();
                 } catch (Exception e) {
-//                    main.system.ExceptionMaster.printStackTrace(e);
+                    //                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
             MAIN_HERO = mainHero;
@@ -272,9 +273,11 @@ public class Eidolons {
                 }
             });
         } else
+            onNewThread(o);
+    }
+
+    public static void onNewThread(Runnable o) {
         new Thread(o, "single task thread " + customThreadsUsed++).start();
-
-
     }
 
     public static SCOPE getScope() {

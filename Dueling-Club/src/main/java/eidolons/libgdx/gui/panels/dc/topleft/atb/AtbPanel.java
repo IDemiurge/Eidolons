@@ -139,13 +139,13 @@ public class AtbPanel extends GroupX {
                 if (view != null)
                     view.setZIndex(Integer.MAX_VALUE - 1);
             }
-            ScreenMaster.getDungeonGrid().resetZIndices();
+            ScreenMaster.getGrid().resetZIndices();
         });
         GuiEventManager.bind(GuiEventType.GRID_OBJ_HOVER_OFF, obj -> {
             if (!isRealTime()) {
                 resetZIndices();
             }
-            ScreenMaster.getDungeonGrid().resetZIndices();
+            ScreenMaster.getGrid().resetZIndices();
 
         });
         GuiEventManager.bind(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, obj -> {
@@ -246,7 +246,7 @@ public class AtbPanel extends GroupX {
         DequeImpl<Unit> displayedUnitQueue = DC_Game.game.getTurnManager().getDisplayedUnitQueue();
         viewsShown = DC_Game.game.getTurnManager().getDisplayedUnitQueue().size();
         displayedUnitQueue.stream().forEach(unit -> {
-            Object o = ScreenMaster.getDungeonGrid().getViewMap().get(unit);
+            Object o = ScreenMaster.getGrid().getViewMap().get(unit);
             if (o instanceof UnitGridView) {
                 UnitGridView view = ((UnitGridView) o);
                 views.add(view.getInitiativeQueueUnitView());

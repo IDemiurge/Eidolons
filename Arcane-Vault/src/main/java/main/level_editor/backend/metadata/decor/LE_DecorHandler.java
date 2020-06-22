@@ -260,8 +260,8 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
     protected void init() {
         //now via floorloader
 
-        if (ScreenMaster.getDungeonGrid() != null)
-            if (ScreenMaster.getDungeonGrid().isDecorInitialized()) {
+        if (ScreenMaster.getGrid() != null)
+            if (ScreenMaster.getGrid().isDecorInitialized()) {
                 return;
             }
         for (Coordinates coordinates : getMap().keySet()) {

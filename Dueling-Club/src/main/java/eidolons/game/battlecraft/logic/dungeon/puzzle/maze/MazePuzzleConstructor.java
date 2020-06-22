@@ -3,8 +3,8 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.maze;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.sub.MazePuzzleFailCondition;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
-import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.elements.conditions.Condition;
 import main.game.bf.Coordinates;
@@ -72,11 +72,6 @@ public class MazePuzzleConstructor extends PuzzleConstructor<MazePuzzle> {
         return true;
     }
 
-    @Override
-    protected void afterTipAction() {
-        super.afterTipAction();
-        Eidolons.onNonGdxThread(()->         puzzle.resetAndGlimpseMaze());
-    }
 
     @Override
     protected Condition getPuzzleEnterConditions() {

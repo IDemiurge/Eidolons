@@ -311,7 +311,7 @@ public class GlobalController implements Controller {
 
     private boolean tab() {
         List<GenericGridView> list = new ArrayList<>();
-        UnitGridView hovered = ScreenMaster.getDungeonGrid().getHoverObj();
+        UnitGridView hovered = ScreenMaster.getGrid().getHoverObj();
         GridCellContainer cell = null;
         if (hovered != null) {
             cell = (GridCellContainer) hovered.getParent();
@@ -377,7 +377,7 @@ public class GlobalController implements Controller {
         if (DC_Game.game.getManager().isSelecting()
             //         ScreenMaster.getDungeonGrid().isSelecting()
         ) {
-            ScreenMaster.getDungeonGrid().clearSelection();
+            ScreenMaster.getGrid().clearSelection();
             return true;
         }
         if (ScreenMaster.getScreen().getGuiStage() instanceof GuiStage) {

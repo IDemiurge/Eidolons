@@ -3,6 +3,8 @@ package main.handlers;
 import eidolons.game.module.herocreator.CharacterCreator;
 import main.entity.type.ObjType;
 import main.gui.builders.MainBuilder;
+import main.gui.tree.AvTreeBuilder;
+import main.handlers.control.AvButtonHandler;
 import main.handlers.control.AvKeyHandler;
 import main.handlers.control.AvSelectionHandler;
 import main.handlers.control.AvTableHandler;
@@ -38,12 +40,14 @@ public class AvManager {
     AvInfoHandler infoHandler;
     AvTableHandler tableHandler;
     private MainBuilder mainBuilder;
+    AvTreeBuilder treeBuilder;
+    AvButtonHandler buttonHandler;
 
     public AvManager() {
-        // handlers.add(checkHandler = new AvCheckHandler(this));
+        handlers.add(checkHandler = new AvCheckHandler(this));
         // handlers.add(assembler = new AvAssembler(this));
         // handlers.add(simulationHandler = new SimulationHandler(this));
-        // handlers.add(typeHandler = new AvTypeHandler(this));
+        handlers.add(typeHandler = new AvTypeHandler(this));
         // handlers.add(modelHandler = new AvModelHandler(this));
         // handlers.add(selectionHandler = new AvSelectionHandler(this));
         // handlers.add(genHandler = new AvGenHandler(this));
@@ -52,6 +56,8 @@ public class AvManager {
         // handlers.add(versionHandler = new AvVersionHandler(this));
         // handlers.add(infoHandler = new AvInfoHandler(this));
         // handlers.add(tableHandler = new AvTableHandler(this));
+        handlers.add(treeBuilder = new AvTreeBuilder(this));
+        handlers.add(buttonHandler = new AvButtonHandler(this));
 
         handlers.forEach(handler -> handler.init());
         handlers.forEach(handler -> handler.afterInit());
@@ -83,6 +89,14 @@ public class AvManager {
 
     public static void refresh() {
         ArcaneVault.getMainBuilder().getTree().getTreeSelectionListeners()[0].valueChanged(null);
+    }
+
+    public AvButtonHandler getButtonHandler() {
+        return buttonHandler;
+    }
+
+    public AvTreeBuilder getTreeBuilder() {
+        return treeBuilder;
     }
 
     public Set<AvHandler> getHandlers() {
@@ -144,4 +158,5 @@ public class AvManager {
     public MainBuilder getMainBuilder() {
         return mainBuilder;
     }
+
 }

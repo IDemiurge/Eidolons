@@ -39,11 +39,11 @@ import java.util.Random;
  */
 public class ShadeLightCell extends SuperContainer {
 
-    private static boolean alphaFluctuation = true;
+    private static final boolean alphaFluctuation = true;
     private final float width;
     private final float height;
     FloatActionLimited alphaAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
-    private SHADE_CELL type;
+    private final SHADE_CELL type;
     private Float originalX;
     private Float originalY;
     private boolean voidCell;
@@ -313,7 +313,7 @@ public class ShadeLightCell extends SuperContainer {
                             //so if 2+ overlays, will be centered between them...
                         } else {
 
-                            BaseView view = ScreenMaster.getDungeonGrid().getViewMap().get(sub);
+                            BaseView view = ScreenMaster.getGrid().getViewMap().get(sub);
                             offsetX += view.getX() * 3;
                             offsetY += view.getY() * 3;
                             if (view.getParent() instanceof GridCellContainer) {

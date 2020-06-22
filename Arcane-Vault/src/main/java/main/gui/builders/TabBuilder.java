@@ -4,6 +4,7 @@ import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -41,6 +42,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static main.system.ExceptionMaster.printStackTrace;
 
 public class TabBuilder extends Builder implements ChangeListener {
 
@@ -104,7 +107,7 @@ public class TabBuilder extends Builder implements ChangeListener {
                     tabNames = TableDataManager.getTreeTabSubGroups(type);
                 } catch (Exception e) {
                     LogMaster.log(1, "Tab Sub Groups failed for " + type);
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    printStackTrace(e);
                     // throw new RuntimeException();
                     return;
                 }
@@ -121,15 +124,16 @@ public class TabBuilder extends Builder implements ChangeListener {
                     LogMaster.log(1, "sortBySubgroupEnum SUCCESS on "
                      + tabNames + " by " + groupingKey.getName());
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    printStackTrace(e);
                     LogMaster.log(1, "sortBySubgroupEnum FAILED on "
                      + tabNames + " by " + groupingKey.getName());
                 }
             }
             for (String sub : tabNames) {
-                List<String> types = DataManager.getFilteredTypeNameList(sub, ContentValsManager
-                 .getOBJ_TYPE(type), groupingKey);
-                list.add(new TreeViewBuilder(types, sub, type));
+                OBJ_TYPE TYPE = ContentValsManager
+                        .getOBJ_TYPE(type);
+                List<ObjType> types = DataManager.getTypesGroup(TYPE, sub);
+                list.add(new TreeViewBuilder(types, TYPE, sub));
 
             }
         }
@@ -175,7 +179,7 @@ public class TabBuilder extends Builder implements ChangeListener {
                 try {
                     code = ContentValsManager.getTypeCode(infoArray[i]);
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    printStackTrace(e);
                 }
                 if (code == -1) {
                     continue;
@@ -261,7 +265,7 @@ public class TabBuilder extends Builder implements ChangeListener {
 
              searchTab, "Searches", getTabbedPane().getTabCount());
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            printStackTrace(e);
         }
     }
 
@@ -415,7 +419,7 @@ public class TabBuilder extends Builder implements ChangeListener {
             // workspace
             return name;
         } catch (Exception ex) {
-            main.system.ExceptionMaster.printStackTrace(ex);
+            printStackTrace(ex);
             return "";
         }
     }

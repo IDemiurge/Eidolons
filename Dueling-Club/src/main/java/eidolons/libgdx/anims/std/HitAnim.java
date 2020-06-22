@@ -290,7 +290,7 @@ public class HitAnim extends ActionAnim {
 
     @Override
     public Actor getActor() {
-        return ScreenMaster.getDungeonGrid().getViewMap()
+        return ScreenMaster.getGrid().getViewMap()
                 .get(getRef().getTargetObj());
     }
 

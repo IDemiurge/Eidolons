@@ -64,7 +64,7 @@ public class LE_TreeView extends TreeX<StructNode> {
         LayeredData nodeData = node.getData();
         if (nodeData instanceof LevelBlock) {
             if (((LevelBlock) nodeData).getRoomType() == LocationBuilder.ROOM_TYPE.PLATFORM) {
-                PlatformController controller = ScreenMaster.getDungeonGrid().getPlatformHandler().findByName(
+                PlatformController controller = ScreenMaster.getGrid().getPlatformHandler().findByName(
                         ((LevelBlock) nodeData).getName());
                 ((LE_GuiStage) getStage()).getPlatformDialog().edit((PlatformData) controller.getData());
                 //confirm
@@ -284,7 +284,7 @@ public class LE_TreeView extends TreeX<StructNode> {
             actor.getImageContainer().getActor().setColor(c);
         }
 
-        if (actor.getImageContainer().getActor() != null) {
+        if (actor.getImageContainer() != null) {
             actor.getImageContainer().size(w, h);
             actor.getImageContainer().getActor().setSize(w, h);
         }

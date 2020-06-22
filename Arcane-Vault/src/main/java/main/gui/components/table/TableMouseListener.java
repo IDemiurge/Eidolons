@@ -101,7 +101,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
         int row = table.getSelectedRow();
         int column = table.getColumn(EditViewPanel.NAME).getModelIndex();
 
-        if (table.getSelectedColumn() != column) {
+        if (table.getSelectedColumn() == column) {
             if (isIgnoreHeaderClick()) {
                 return;
             }

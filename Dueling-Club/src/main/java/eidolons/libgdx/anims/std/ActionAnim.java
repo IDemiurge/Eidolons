@@ -92,7 +92,7 @@ public class ActionAnim extends Anim {
     }
 
     public Actor getActor() {
-        return ScreenMaster.getDungeonGrid().getViewMap()
+        return ScreenMaster.getGrid().getViewMap()
          .get(getActive().getOwnerUnit());
     }
 

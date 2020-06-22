@@ -373,7 +373,7 @@ public abstract class DataModel {
     public String getProperty(String prop) {
         PROPERTY property = ContentValsManager.getPROP(prop);
         if (property == null) {
-            return null;
+            return "";
         } else {
             return getProperty(property);
         }

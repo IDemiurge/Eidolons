@@ -5,7 +5,6 @@ import eidolons.system.DC_Formulas;
 import main.ability.AE_Manager;
 import main.ability.gui.AE_MainPanel;
 import main.content.C_OBJ_TYPE;
-import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.TableDataManager;
@@ -60,6 +59,7 @@ public class EditViewPanel implements TableModelListener {
     Map<String, JTable> tableMap = new HashMap<>();
     Vector<String> names = new Vector<>();
     private boolean dirty = true;
+    private boolean reload;
 
     // protected HeroTabs heroTabs;
 
@@ -261,11 +261,11 @@ public class EditViewPanel implements TableModelListener {
         Vector<?> oldData = getModel().getDataVector();
         if (!quietly) {
             if (secondModel != null) {
-                secondTableMode=true;
+                secondTableMode = true;
                 secondModel.setDataVector(oldData, names);
             }
         }
-        secondTableMode=false;
+        secondTableMode = false;
         getModel().setDataVector(data, names);
         refresh();
     }
@@ -309,46 +309,79 @@ public class EditViewPanel implements TableModelListener {
                 type = ArcaneVault.getPreviousSelectedType();
             }
         }
-        if (e.getFirstRow()<0) {
-            return ;
+        if (e.getFirstRow() < 0) {
+            return;
         }
-        if (e.getColumn()<0) {
-            return ;
+        if (e.getColumn() < 0) {
+            return;
         }
         String newValue = (String) getTable().getValueAt(e.getFirstRow(), e
                 .getColumn());
         for (int row : getTable().getSelectedRows()) {
             modify(row, e.getColumn(), newValue, type);
         }
-        if (getTable().getSelectedRows().length>1) {
+        if (getTable().getSelectedRows().length > 1) {
             resetData(type);
+        }
+
+        if (reload) {
+            ArcaneVault.getMainBuilder().getTreeBuilder().reload();
+            reload = false;
         }
     }
 
     public void modify(int row, int col, String newValue, ObjType type) {
         String valName = (String) getTable().getValueAt(row, col - 1);
-        String typeName = type.getName();
+        if (isLevelEditor())
+            return;
         if (!modified(type, valName, newValue)) {
             return;
         }
-        if (isLevelEditor())
-        // grpName =
-        // LevelEditor.getSimulation().getSelectedEntity().getOBJ_TYPE();
-        {
-            return;
-        }
-        try {
-            AvSaveHandler.save(type, valName);
-        } catch (Exception ex) {
-            main.system.ExceptionMaster.printStackTrace(ex);
-        }
+
+        //for UNDO
+        AvSaveHandler.save(type, valName);
+
         String grpName = (secondTableMode) ? ArcaneVault.getPreviousSelectedType()
                 .getOBJ_TYPE() : ArcaneVault.getMainBuilder().getSelectedTabName();
-        LogMaster.log(0, valName + " = " + newValue + " for " + grpName
-                + "." + typeName);
 
-        if (valName.equals(G_PROPS.BASE_TYPE.getName())) {
-            ArcaneVault.getMainBuilder().getTreeBuilder().reload();
+        if (ListMaster.isNotEmpty(ArcaneVault.getSelectedTypes())) {
+            if ((ArcaneVault.getSelectedTypes()).size() > 1) {
+                for (ObjType t : ArcaneVault.getSelectedTypes()) {
+                    t.setValue(valName, newValue);
+                    t.setProperty(G_PROPS.VERSION, AvVersionHandler.getVersion(t));
+                }
+            } else {
+                type.setValue(valName, newValue);
+                type.setProperty(G_PROPS.VERSION, AvVersionHandler.getVersion(type));
+
+            }
+        }
+        if (C_OBJ_TYPE.BF_OBJ.equals(type.getOBJ_TYPE_ENUM())
+                || SimulationHandler.isUnitType(grpName)) {
+
+            //TODO SIMULATION HANDLER
+            type.setParam(PARAMS.LEVEL,
+                    // DC_MathManager.getLevelForPower(type.getIntParam(PARAMS.POWER))
+                    DC_Formulas.getLevelForXp((type.getIntParam(PARAMS.POWER) + 1)
+                            * DC_Formulas.POWER_XP_FACTOR));
+            if (ArcaneVault.isSimulationOn()) {
+                SimulationHandler.getUnit(type).setValue(valName, newValue);
+                SimulationHandler.refreshType(type);
+                resetData(true, type);
+            }
+
+        }
+        // ?
+        secondTableMode = false;
+    }
+
+    protected boolean modified(ObjType type, String valName, String newValue) {
+        if (valName.equalsIgnoreCase(type.getOBJ_TYPE_ENUM().getSubGroupingKey().getName())) {
+            reload = true;
+        } else if (valName.equalsIgnoreCase(type.getOBJ_TYPE_ENUM().getGroupingKey().getName())) {
+            reload = true;
+        } else if (valName.equals(G_PROPS.BASE_TYPE.getName())) {
+            reload = true;
         } else if (valName.equals(G_PROPS.NAME.getName())) {
             String oldName = type.getName();
             DataManager.renameType(type, newValue);
@@ -371,62 +404,6 @@ public class EditViewPanel implements TableModelListener {
             }
         }
 
-        if (ListMaster.isNotEmpty(ArcaneVault.getSelectedTypes())) {
-            if ((ArcaneVault.getSelectedTypes()).size() > 1) {
-                for (ObjType t : ArcaneVault.getSelectedTypes()) {
-                    //                        if (alt) {
-                    //                            if (ContentManager.isParameter(valName)) {
-                    //                                int amount = Integer.valueOf(newValue);
-                    //                                t.modifyParameter(ContentManager.getPARAM(valName), amount);
-                    //
-                    //                                t.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
-                    //                                t.setProperty(G_PROPS.LAST_EDITOR, System.getProperty("user.name"));
-                    //                            } else {
-                    //                                t.addProperty(ContentManager.getPROP(valName), newValue);
-                    //
-                    //                                t.setProperty(G_PROPS.VERSION, CoreEngine.VERSION);
-                    //                            }
-                    //                        } else
-                    {
-                        t.setValue(valName, newValue);
-                        t.setProperty(G_PROPS.VERSION, AvVersionHandler.getVersion(t));
-                    }
-                }
-            } else {
-                type.setValue(valName, newValue);
-                type.setProperty(G_PROPS.VERSION,  AvVersionHandler.getVersion(type));
-
-            }
-        }
-        if (C_OBJ_TYPE.BF_OBJ.equals(type.getOBJ_TYPE_ENUM())
-                || SimulationHandler.isUnitType(grpName)) {
-            type.setParam(PARAMS.LEVEL,
-                    // DC_MathManager.getLevelForPower(type.getIntParam(PARAMS.POWER))
-                    DC_Formulas.getLevelForXp((type.getIntParam(PARAMS.POWER) + 1)
-                            * DC_Formulas.POWER_XP_FACTOR));
-            if (ArcaneVault.isSimulationOn()) {
-                SimulationHandler.getUnit(type).setValue(valName, newValue);
-                SimulationHandler.refreshType(type);
-
-                // SimulationManager.getUnit(type).resetDefaultAttrs(); in
-                // save() instead!
-                resetData(true, type);
-            }
-        } else if (type.getOBJ_TYPE_ENUM() == DC_TYPE.SPELLS) {
-            if (type.getIntParam(PARAMS.XP_COST) == 0) {
-                if (type.getGroup().equals("Standard"))
-                // type.setParam(PARAMS.XP_COST,
-                // DC_MathManager.getSpellXpCost(type));
-
-                {
-                    secondTableMode = false;
-                }
-            }
-        }
-        secondTableMode = false;
-    }
-
-    protected boolean modified(ObjType type, String valName, String newValue) {
         return true;
     }
 

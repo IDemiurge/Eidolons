@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.portal;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.PortalSlotsCondition;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
@@ -18,7 +19,7 @@ import main.system.auxiliary.EnumMaster;
 
 import java.util.Map;
 
-public class PortalPuzzle extends Puzzle {
+public   class PortalPuzzle extends Puzzle {
 
     Map<Coordinates, POWER_SLOT> slots = new XLinkedMap<>();
 
@@ -27,6 +28,11 @@ public class PortalPuzzle extends Puzzle {
      * <p>
      * step onto a slot to use your own Soulforce?
      */
+
+    @Override
+    protected PuzzleHandler createHandler() {
+        return null;
+    }
 
     public enum POWER_SLOT {
         sphere(false, "Eldritch Sphere"),
@@ -47,6 +53,7 @@ public class PortalPuzzle extends Puzzle {
     public Map<Coordinates, POWER_SLOT> getSlots() {
         return slots;
     }
+
 
     @Override
     public void setup(PuzzleSetup... setups) {

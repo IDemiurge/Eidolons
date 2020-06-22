@@ -527,7 +527,7 @@ public class ToolTipManager extends TablePanel {
         stackMaster.checkShowStack(object);
 
 
-        ScreenMaster.getDungeonGrid().setUpdateRequired(true);
+        ScreenMaster.getGrid().setUpdateRequired(true);
         hoveredList.add(object);
         hovered = object;
 
@@ -583,7 +583,7 @@ public class ToolTipManager extends TablePanel {
 
         hoverOff = true;
         stackMaster.checkStackOff(object);
-        ScreenMaster.getDungeonGrid().setUpdateRequired(true);
+        ScreenMaster.getGrid().setUpdateRequired(true);
         hoveredList.remove(object);
 
     }

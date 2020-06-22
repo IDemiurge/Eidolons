@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 
 public abstract class SpriteParamBar extends DualParamBar {
 
+    public static final boolean TEST = false; 
     private static final float FPS = 14;
     SpriteAnimation overSprite;
     SpriteAnimation underSprite;
