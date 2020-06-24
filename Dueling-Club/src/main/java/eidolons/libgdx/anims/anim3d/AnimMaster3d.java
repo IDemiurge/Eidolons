@@ -595,6 +595,10 @@ public class AnimMaster3d {
         if (path.contains("soulforce")) {
             return false;
         }
+
+        if (path.contains("dust")) {
+            return false;
+        }
         return !CellDecorLayer.spriteTest && !MaskTest.spriteMaskTest && CoreEngine.TEST_LAUNCH;
     }
 

@@ -130,7 +130,8 @@ public abstract class Puzzle {
     }
 
     public boolean isPale() {
-        return data.getBooleanValue(PuzzleData.PUZZLE_VALUE.PALE);
+        // return data.getBooleanValue(PuzzleData.PUZZLE_VALUE.PALE);
+        return false;
     }
 
     public void setEnterVeil(Veil veil) {
@@ -287,5 +288,13 @@ public abstract class Puzzle {
 
     public PuzzleHandler getHandler() {
         return handler;
+    }
+
+    public int getTipDelay() {
+        return 0;
+    }
+
+    public String getEnterCinematicScriptKey() {
+        return null;
     }
 }

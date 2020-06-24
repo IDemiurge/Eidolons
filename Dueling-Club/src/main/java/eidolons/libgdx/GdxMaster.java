@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -17,6 +18,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.libgdx.bf.mouse.GlobalInputController;
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.screens.AtlasGenSpriteBatch;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions;
@@ -34,6 +37,7 @@ public class GdxMaster {
     public static final float fontSizeAdjustCoef = 0.15f;
     public static final float sizeAdjustCoef = 0.25f;
     public static final boolean FULLHD_ONLY = false;
+    public static final boolean WRITE_ATLAS_IMAGES = true;
     public static boolean CUSTOM_RESOLUTION;
     private static final int DEFAULT_WIDTH = 1500;
     private static final int DEFAULT_HEIGHT = 900;
@@ -55,6 +59,7 @@ public class GdxMaster {
     private static boolean stackRunnables;
     private static Runnable stackRunnable;
     private static CURSOR cursor;
+    private static Batch batch;
 
     public static List<Group> getAncestors(Actor actor) {
         List<Group> list = new ArrayList<>();
@@ -574,6 +579,20 @@ public class GdxMaster {
     public static void setWindowName(String s) {
         Gdx.app.postRunnable(() ->
                 Gdx.graphics.setTitle(s));
+    }
+
+    public static Batch createBatchInstance(AtlasGenSpriteBatch.ATLAS ui) {
+        if (WRITE_ATLAS_IMAGES){
+            return new AtlasGenSpriteBatch();
+        }
+        return new CustomSpriteBatch();
+    }
+
+    public static Batch getMainBatch() {
+        if (batch == null) {
+            batch =  createBatchInstance(AtlasGenSpriteBatch.ATLAS.grid);
+        }
+        return batch;
     }
 
     public enum CURSOR {

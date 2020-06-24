@@ -194,7 +194,8 @@ public class FlyingObjs extends GroupX {
                 x = x - xSide;
                 //TODO  - w?
             }
-            float offset = RandomWizard.getRandomFloatBetween(-10, 10); //slight random in vector then
+            float offset = RandomWizard.getRandomFloatBetween(
+                    -getRandomizeAngleRange(), getRandomizeAngleRange()); //slight random in vector then
             return horizontal ? new Vector2(x, y + offset) : new Vector2(x + offset, y);
         } else {
 /*
@@ -203,6 +204,10 @@ public class FlyingObjs extends GroupX {
  */
         }
         return null;
+    }
+
+    private float getRandomizeAngleRange() {
+        return 0;
     }
 
     private double getScreenX(float x) {

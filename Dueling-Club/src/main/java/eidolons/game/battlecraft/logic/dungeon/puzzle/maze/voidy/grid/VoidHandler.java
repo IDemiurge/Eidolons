@@ -1,15 +1,13 @@
-package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy;
+package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid;
 
 import com.google.inject.internal.util.ImmutableList;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.GridCell;
-import eidolons.system.audio.DC_SoundMaster;
 import main.content.CONTENT_CONSTS;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -17,7 +15,6 @@ import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
-import main.system.sound.SoundMaster;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -63,20 +60,25 @@ Accelerating collapse
 public abstract class VoidHandler {
 
     public static boolean TEST_MODE = false;
-    GridPanel gridPanel;
-    Set<BattleFieldObject> autoRaise = new LinkedHashSet<>();
-    private final Map<GridCell, DIRECTION> raised = new LinkedHashMap<>();
-    private final Map<GridCell, DIRECTION> collapsed = new LinkedHashMap<>();
-    private float collapsePeriod;
-    private float collapseDelay;
-    private boolean canDropHero;
-    private boolean unmark;
-    private boolean raiseOneMax;
-    private final boolean collapseDown = true;
+    protected  GridPanel gridPanel;
+    protected  Set<BattleFieldObject> autoRaise = new LinkedHashSet<>();
+    protected final Map<GridCell, DIRECTION> raised = new LinkedHashMap<>();
+    protected final Map<GridCell, DIRECTION> collapsed = new LinkedHashMap<>();
+    protected float collapsePeriod;
+    protected float collapseDelay;
+    protected boolean canDropHero;
+    protected boolean unmark;
+    protected boolean raiseOneMax;
+    protected final boolean collapseDown = true;
+    protected VoidAnimator animator;
+
 
     public VoidHandler(DC_GridPanel gridPanel) {
         this.gridPanel = gridPanel;
+        animator = createAnimator();
     }
+
+    protected abstract VoidAnimator createAnimator();
 
     public void toggleAuto() {
         toggleAuto(Eidolons.getMainHero());
@@ -91,7 +93,6 @@ public abstract class VoidHandler {
     }
 
     public void toggleAuto(Unit obj) {
-
         if (autoRaise.contains(obj)) {
             autoRaise.remove(obj);
         } else
@@ -102,10 +103,10 @@ public abstract class VoidHandler {
     public void act(float delta) {
         if (collapsePeriod != 0) {
             if (!raised.isEmpty()) {
-                collapseDelay -= delta;
+                collapseDelay += delta;
 
-                if (collapseDelay <= 0) {
-                    collapseDelay = collapsePeriod;
+                if (collapseDelay >= collapsePeriod) {
+                    collapseDelay = 0;
                     GridCell gridCell = raised.keySet().iterator().next();
                     raised.keySet().remove(gridCell);
                     DC_Cell cell = gridCell.getUserObject();
@@ -126,10 +127,9 @@ public abstract class VoidHandler {
             for (BattleFieldObject object : autoRaise) {
                 autoRaiseFor(object);
             }
-
     }
 
-    private void autoRaiseFor(BattleFieldObject object) {
+    protected void autoRaiseFor(BattleFieldObject object) {
         DIRECTION direction = null;
         if (object instanceof Unit) {
             FACING_DIRECTION facing = object.getFacing();
@@ -150,10 +150,9 @@ public abstract class VoidHandler {
             }
         }
 
-
     }
 
-    private boolean checkRaise(BattleFieldObject object, DIRECTION direction) {
+    protected boolean checkRaise(BattleFieldObject object, DIRECTION direction) {
         List<Coordinates> list = new ArrayList<>();
         Coordinates coordinate = object.getCoordinates().getAdjacentCoordinate(direction);
         DC_Cell cell = object.getGame().getCellByCoordinate(coordinate);
@@ -167,7 +166,7 @@ public abstract class VoidHandler {
     }
 
 
-    private boolean checkMarked(DC_Cell cell) {
+    protected boolean checkMarked(DC_Cell cell) {
         return cell.getMarks().contains(CONTENT_CONSTS.MARK.togglable);
     }
 
@@ -189,7 +188,7 @@ public abstract class VoidHandler {
         }
     }
 
-    private boolean isInLine(DIRECTION direction, Coordinates origin, Coordinates c) {
+    protected boolean isInLine(DIRECTION direction, Coordinates origin, Coordinates c) {
         return DirectionMaster.getRelativeDirection(origin, c) == direction;
     }
 
@@ -204,122 +203,16 @@ public abstract class VoidHandler {
                 continue; //TODO smarter check!
             }
             cell.getUserObject().setObjectsModified(true);
-            period += getDelayBetweenAnims();
+            period +=animator.getDelayBetweenAnims();
             // WaitMaster.WAIT(period);
-            animate(period, raiseOrCollapse, cell, speed, from);
+            animator.animate(period, raiseOrCollapse, cell, speed, from);
             Eidolons.onNonGdxThread(() -> onAnimate(cell));
         }
 
     }
 
-    private float getDelayBetweenAnims() {
-        return 0.2f;
-    }
-
     protected abstract void onAnimate(GridCell cell);
 
-    private void animateRaise(float waitPeriod, GridCell cell, float speed, DIRECTION from) {
-        animate(waitPeriod, true, cell, speed, from);
-    }
-
-    private void animateCollapse(float waitPeriod, GridCell cell, float speed, DIRECTION from) {
-        animate(waitPeriod, false, cell, speed, from);
-    }
-
-    private void animate(float waitPeriod, boolean raiseOrCollapse, GridCell cell, float speed, DIRECTION from) {
-        if (isDisableGhostsAfterAnim())
-            cell.setVoidAnimHappened(true);
-        //TODO fade void shadecell overlay!
-        float dur = 1 * speed;
-        float x = cell.getGridX() * 128;
-        float y =
-                gridPanel.getGdxY_ForModule(cell.getGridY()) * 128;
-        // float x1 = x - (scale - actor.getScaleX()) * actor.getWidth() / 2;
-        // float y1 = y - (scale - actor.getScaleY()) * actor.getHeight() / 2;
-        //TODO IDEA: Maybe scaling from SLICE could look nice? basically, scaling only on one axis. Depending on facing...
-        float offsetX = 0;
-        float offsetY = 0;
-        if (!raiseOrCollapse) {
-            from = from.flip();
-            if (collapseDown) {
-                if (from.growX == null) {
-                    from = DIRECTION.DOWN;
-                } else {
-                    from = from.growX ? DIRECTION.DOWN_RIGHT : DIRECTION.DOWN_LEFT;
-                }
-            }
-        }
-        //cell will move in a way to 'arrive' at where we are raising 'from'
-        if (from.growY != null) {
-            offsetY = from.growY ? -64 : 64;
-        }
-        if (from.growX != null) {
-            offsetX = from.growX ? -64 : 64;
-        }
-
-        float scale = 1f;
-        float scaleX;
-        float scaleY;
-        if (isScaleOn()) {
-            scale = raiseOrCollapse ? 0.01f : 1;
-            scaleX = isVertScale() ? 0.01f : scale;
-            scaleY = scale;
-            cell.setScale(scaleX, scaleY);
-        }
-
-        if (raiseOrCollapse) {
-            cell.setPosition(x + offsetX, y + offsetY);
-        } else
-            cell.setPosition(x, y);
-        cell.getBackImage().setVisible(true);
-        if (raiseOrCollapse) {
-            cell.getColor().a = 0;
-        }
-
-        ActionMaster.addWaitAction(cell, waitPeriod);
-        ActionMaster.addCustomAction(cell, () -> playAnimSound(raiseOrCollapse));
-
-        ActionMaster.addAlphaAction(cell, dur, !raiseOrCollapse);
-
-        if (isScaleOn()) {
-            scale = raiseOrCollapse ? 1f : 0.01f;
-            scaleX =  isVertScale() ? 100*scale : scale;
-            scaleY = scale;
-            ActionMaster.addScaleActionCentered(cell.getBackImage(), scaleX, scaleY, dur + waitPeriod);
-        }
-        if (raiseOrCollapse) {
-            ActionMaster.addMoveToAction(cell, x, y, dur);
-        } else
-            ActionMaster.addMoveToAction(cell, x + offsetX, y + offsetY, dur);
-
-        DIRECTION direction = from;
-        ActionMaster.addAfter(cell, () -> {
-
-            cell.getUserObject().setVOID(!raiseOrCollapse);
-            if (raiseOrCollapse) {
-                raised.put(cell, direction);
-                collapsed.remove(cell);
-            } else {
-                collapsed.put(cell, direction);
-                raised.remove(cell);
-                cell.setPosition(x, y);
-            }
-        });
-    }
-
-    protected abstract boolean isVertScale();
-
-    protected abstract boolean isScaleOn();
-
-    protected void playAnimSound(boolean raiseOrCollapse) {
-        DC_SoundMaster.playStandardSound(raiseOrCollapse ?
-                SoundMaster.STD_SOUNDS.NEW__TAB
-                : SoundMaster.STD_SOUNDS.CHAIN);
-    }
-
-    protected boolean isDisableGhostsAfterAnim() {
-        return false;
-    }
 
     public void setCollapsePeriod(float collapsePeriod) {
         this.collapsePeriod = collapsePeriod;
@@ -346,5 +239,9 @@ public abstract class VoidHandler {
             toggle(false, map.get(direction),
                     2f, direction);
         }
+    }
+
+    public boolean isLogged() {
+        return true;
     }
 }

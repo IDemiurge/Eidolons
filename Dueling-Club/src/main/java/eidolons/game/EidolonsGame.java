@@ -44,6 +44,9 @@ public class EidolonsGame {
     private static final Map<String, Boolean> varMap = new StringMap<>();
     private static final Map<String, Boolean> actionMap = new StringMap<>();
 
+    //convenience fields
+    public static String lvlPath;
+
     public static final void reset() {
     }
 

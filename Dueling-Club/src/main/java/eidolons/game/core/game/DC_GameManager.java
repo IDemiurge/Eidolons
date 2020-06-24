@@ -592,7 +592,7 @@ public class DC_GameManager extends GameManager {
                             && GuiEventManager.isBarParam(event.getType().getArg())) {
 
                 try {
-                    ScreenMaster.getGrid().getGridManager().
+                    ScreenMaster.getGrid().getGridManager().getEventHandler().
                             checkHpBarReset(event.getRef().getSourceObj());
                 } catch (NullPointerException e) {
                 } catch (Exception e) {

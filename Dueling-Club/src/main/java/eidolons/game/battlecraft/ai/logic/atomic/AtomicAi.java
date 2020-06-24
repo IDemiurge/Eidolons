@@ -109,6 +109,9 @@ public class AtomicAi extends AiHandler {
     private Coordinates getDoorCoordinates(UnitAI ai) {
         Coordinates coordinates = ai.getUnit().getCoordinates();
         for (Coordinates c : coordinates.getAdjacentCoordinates()) {
+            if (c == null) {
+                continue;
+            }
             if (FacingMaster.getSingleFacing(ai.getUnit().getFacing(), coordinates, c) != FACING_SINGLE.IN_FRONT) {
                 continue;
             }

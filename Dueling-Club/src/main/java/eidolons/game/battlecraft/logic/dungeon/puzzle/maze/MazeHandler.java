@@ -17,7 +17,7 @@ public class MazeHandler<T extends MazePuzzle> extends PuzzleHandler<T> {
 
     public List<Coordinates> markedCells;
 
-    public MazeHandler(T mazePuzzle ) {
+    public MazeHandler(T mazePuzzle) {
         super(mazePuzzle);
     }
 
@@ -29,6 +29,14 @@ public class MazeHandler<T extends MazePuzzle> extends PuzzleHandler<T> {
     public void afterTipAction() {
         super.afterTipAction();
         resetAndGlimpseMaze();
+    }
+
+    @Override
+    protected void beforeTip() {
+        setup.reset();
+        if (isFirstAttempt()) {
+            GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, getExitCoordinates());
+        }
     }
 
     public void showMaze() {

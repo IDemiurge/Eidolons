@@ -8,28 +8,32 @@ import java.util.Map;
 
 public class ScriptLib {
     public static final Map<String, String> scriptMap = new HashMap<>();
+
     //parameterized?
     public static String get(SCRIPT script) {
         return get(script.name().replace("_", " ").trim().toLowerCase());
     }
-        public static String get(String scriptKey) {
+
+    public static String get(String scriptKey) {
         return Texts.getScript(scriptKey);
         // return scriptMap.get(scriptKey.toLowerCase());
     }
+
     /*
     what else can it do?
      */
-    public static void init(){
+    public static void init() {
         // FileManager.readFile("");
         // for(String substring: ContainerUtils.openContainer( string )){ }
     }
 
     public static void execute(String key) {
-        String script=get(key);
+        String script = get(key);
+        main.system.auxiliary.log.LogMaster.log(1, "Script by key: " + key);
         DC_Game.game.getMetaMaster().getDialogueManager().getSpeechExecutor().execute(script);
     }
 
-    public enum SCRIPT{
+    public enum SCRIPT {
         black_hole,
         mini_explosion,
         white_shake,

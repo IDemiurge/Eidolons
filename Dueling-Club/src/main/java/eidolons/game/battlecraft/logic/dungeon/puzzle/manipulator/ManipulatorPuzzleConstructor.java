@@ -1,7 +1,10 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 
-import eidolons.game.battlecraft.logic.dungeon.puzzle.*;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleConstructor;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleRules;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
@@ -28,7 +31,7 @@ public abstract class ManipulatorPuzzleConstructor<T extends ManipulatorPuzzle> 
     }
 
     protected PuzzleRules createRules(PuzzleData puzzleData) {
-        PuzzleMaster.PUZZLE_ACTION_BASE base = puzzleData.getCounterActionBase();
+        PuzzleEnums.PUZZLE_ACTION_BASE base = puzzleData.getCounterActionBase();
         int n =getBaseCounters(base);
         if (isCountDown()) {
             n= Math.round(n / puzzle.getDifficultyCoef());
@@ -46,7 +49,7 @@ public abstract class ManipulatorPuzzleConstructor<T extends ManipulatorPuzzle> 
         return true;
     }
 
-    protected abstract int getBaseCounters(PuzzleMaster.PUZZLE_ACTION_BASE base);
+    protected abstract int getBaseCounters(PuzzleEnums.PUZZLE_ACTION_BASE base);
 
 
     protected void initManipulator(Puzzle puzzle,

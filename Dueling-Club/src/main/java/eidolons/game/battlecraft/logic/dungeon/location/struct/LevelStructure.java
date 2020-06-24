@@ -16,7 +16,7 @@ public class LevelStructure {
         text,
         number,
         none,
-        enum_const,
+        enum_const, dataUnit,
         multi_enum_const,
         image,
         objType,
@@ -121,7 +121,7 @@ public class LevelStructure {
         },
         ;
 
-        private EDIT_VALUE_TYPE type;
+        private final EDIT_VALUE_TYPE type;
 
         ZONE_VALUE(EDIT_VALUE_TYPE type) {
             this.type = type;

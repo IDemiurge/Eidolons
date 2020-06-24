@@ -247,7 +247,8 @@ public class ShadeLightCell extends SuperContainer {
             return;
         }
         super.act(delta);
-        if (alphaAction.getTime() < alphaAction.getDuration()) {
+        if (alphaAction.getTime() <= alphaAction.getDuration()
+        ||  (getColor().a==0&&alphaAction.getValue()>0)) {
             getColor().a = alphaAction.getValue();
             fluctuatingAlpha = alphaAction.getValue();
         }

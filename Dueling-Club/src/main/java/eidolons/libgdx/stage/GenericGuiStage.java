@@ -21,7 +21,7 @@ import eidolons.libgdx.gui.overlay.LargeText;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import eidolons.libgdx.gui.tooltips.CursorDecorator;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
-import eidolons.libgdx.screens.CustomSpriteBatch;
+import eidolons.libgdx.screens.AtlasGenSpriteBatch;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.utils.TextInputPanel;
 import main.content.enums.GenericEnums;
@@ -60,7 +60,7 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
                         GdxMaster.getHeight(), new OrthographicCamera())
                         : viewport,
                 batch == null
-                        ? new CustomSpriteBatch()
+                        ?  GdxMaster.createBatchInstance(AtlasGenSpriteBatch.ATLAS.ui)
                         : batch);
 
         initTooltipsAndMisc();

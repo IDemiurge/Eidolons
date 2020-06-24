@@ -6,10 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.grid.GridViewAnimator;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.OverlayView;
 import eidolons.libgdx.bf.grid.cell.UnitGridView;
+import eidolons.libgdx.bf.grid.handlers.GridAnimHandler;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -51,8 +51,8 @@ public class UnitViewTooltip extends ValueTooltip {
             GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, getView());
         }
         if (getView().getPortrait().getScreenOverlay() <= 0.01f) {
-            ScreenMaster.getGrid().getGridViewAnimator().animate(getView(),
-                    GridViewAnimator.VIEW_ANIM.screen);
+            ScreenMaster.getGrid().getGridManager().getAnimHandler().animate(getView(),
+                    GridAnimHandler.VIEW_ANIM.screen);
         }
         super.onMouseEnter(event, x, y, pointer, fromActor);
 

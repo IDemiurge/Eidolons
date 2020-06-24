@@ -163,6 +163,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     //To-Cleanup - some old stuff here
     protected void playerAction(ActionInput playerAction) {
+        //TODO - quick fix for firstMove in void maze..
+        getGame().getDungeonMaster().getPuzzleMaster().playerActionDone(playerAction.getAction());
 
         activateAction(playerAction);
         waitForAnimations(playerAction);
@@ -171,9 +173,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         master.getTimeMaster().setGuiDirtyFlag(true);
         master.getPartyMaster().leaderActionDone(playerAction); //for members to follow or so..
         getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().killVisibilityResetTimer(); //still relevant?
-        if (result) {
-            getGame().getDungeonMaster().getPuzzleMaster().playerActionDone(playerAction.getAction());
-        }
 
     }
 

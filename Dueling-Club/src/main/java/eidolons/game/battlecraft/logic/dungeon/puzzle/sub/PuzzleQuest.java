@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.sub;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.module.dungeoncrawl.quest.QuestReward;
 import eidolons.game.module.dungeoncrawl.quest.advanced.ChainQuest;
 import main.system.GuiEventManager;
@@ -10,7 +9,7 @@ import main.system.auxiliary.StringMaster;
 
 public class PuzzleQuest extends ChainQuest {
     private int counter;
-    private int originalCounter;
+    private final int originalCounter;
     Puzzle puzzle;
     PuzzleData data;
     private QuestReward reward;
@@ -30,7 +29,7 @@ public class PuzzleQuest extends ChainQuest {
         return  "";
     }
 
-    private String getFriendlyTooltip(PuzzleMaster.PUZZLE_ACTION_BASE value) {
+    private String getFriendlyTooltip(PuzzleEnums.PUZZLE_ACTION_BASE value) {
         switch (value) {
             case MOVE:
             case MOVE_AFTER:
@@ -82,9 +81,7 @@ public class PuzzleQuest extends ChainQuest {
         counter--;
 
         GuiEventManager.trigger(GuiEventType.QUEST_UPDATE, this);
-        if (counter <= 0)
-            return false;
-        return true;
+        return counter > 0;
     }
 
     public void complete() {

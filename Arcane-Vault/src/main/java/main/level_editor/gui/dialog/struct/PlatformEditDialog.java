@@ -7,7 +7,7 @@ import main.system.threading.WaitMaster;
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.PLATFORM_EDIT_DONE;
 
 public class PlatformEditDialog extends DataEditDialog<PlatformData.PLATFORM_VALUE, PlatformData> {
-    public static final WaitMaster.WAIT_OPERATIONS  EDIT_DONE = PLATFORM_EDIT_DONE;
+    public static final WaitMaster.WAIT_OPERATIONS EDIT_DONE = PLATFORM_EDIT_DONE;
 
     public PlatformEditDialog() {
         super(1);
@@ -20,13 +20,18 @@ public class PlatformEditDialog extends DataEditDialog<PlatformData.PLATFORM_VAL
     @Override
     public void cancel() {
         super.cancel();
-        WaitMaster.receiveInput(EDIT_DONE, false);
+        WaitMaster.receiveInput(getWaitOperation(), false);
+    }
+
+    @Override
+    protected WaitMaster.WAIT_OPERATIONS getWaitOperation() {
+        return EDIT_DONE;
     }
 
     @Override
     public void ok() {
         super.ok();
-        WaitMaster.receiveInput(EDIT_DONE, true);
+        WaitMaster.receiveInput(getWaitOperation(), true);
     }
 
     @Override

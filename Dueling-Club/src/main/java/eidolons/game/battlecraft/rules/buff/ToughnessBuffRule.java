@@ -51,13 +51,13 @@ public class ToughnessBuffRule extends DC_BuffRule {
     protected String getEffectFormula(Integer level) {
         switch (level) {
             case 0: {
-                return "(" + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[1]
+                return "(" + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[0]
                  + ")*5";
                 //-5% ATB for each point of Stamina below 10
             }
             case 1: {
                 // "5*sqrt(" +
-                return StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[2];
+                return StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[1];
                 // + ")";
                 //+1% ATB for each point of Stamina above 150
             }

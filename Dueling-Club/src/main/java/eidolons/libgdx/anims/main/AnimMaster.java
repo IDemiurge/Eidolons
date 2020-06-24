@@ -31,6 +31,7 @@ import main.ability.effects.Effect;
 import main.content.enums.entity.ActionEnums;
 import main.entity.Ref;
 import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -377,12 +378,7 @@ public class AnimMaster extends Group {
         });
         GuiEventManager.bind(GuiEventType.CUSTOM_ANIMATION, p -> {
             CustomSpriteAnim anim = (CustomSpriteAnim) p.get();
-            try {
-                anim.startAsSingleAnim();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                anim.getOnDone().call(anim.getCallbackParam());
-            }
+            customAnimation(anim);
 
         });
         GuiEventManager.bind(GuiEventType.EFFECT_APPLIED, p -> {
@@ -399,6 +395,15 @@ public class AnimMaster extends Group {
         );
 
 
+    }
+
+    public void customAnimation(CustomSpriteAnim anim) {
+        try {
+            anim.startAsSingleAnim();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            anim.getOnDone().call(anim.getCallbackParam());
+        }
     }
 
     @Override
@@ -498,4 +503,10 @@ public class AnimMaster extends Group {
         drawer.addAttached(a);
     }
 
+    public CustomSpriteAnim spriteAnim(String path, Coordinates coordinates) {
+        CustomSpriteAnim anim = new CustomSpriteAnim(null, path);
+        anim.setOrigin(coordinates);
+        customAnimation(anim);
+        return anim;
+    }
 }

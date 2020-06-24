@@ -7,12 +7,11 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.libgdx.bf.decor.DecorData;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.GridSubParts;
-import eidolons.libgdx.bf.grid.GridViewAnimator;
 import eidolons.libgdx.bf.grid.cell.*;
+import eidolons.libgdx.bf.grid.handlers.GridAnimHandler;
 import eidolons.libgdx.bf.grid.moving.PlatformCell;
 import eidolons.libgdx.bf.grid.moving.PlatformData;
 import eidolons.libgdx.bf.grid.moving.PlatformDecor;
-import eidolons.libgdx.bf.grid.moving.PlatformHandler;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.obj.Obj;
@@ -34,7 +33,7 @@ import static main.system.GuiEventType.*;
 public class LE_BfGrid extends GridPanel {
 
     private final TextureRegion selectionBorder;
-    GridViewAnimator gridViewAnimator = new LE_GridAnimTester(this);
+    GridAnimHandler gridAnimHandler = new LE_GridAnimTester(this);
 
     public LE_BfGrid(int cols, int rows, int moduleCols, int moduleRows) {
         super(cols, rows, moduleCols, moduleRows);
@@ -53,15 +52,10 @@ public class LE_BfGrid extends GridPanel {
     }
 
     @Override
-    public PlatformDecor addPlatform(List<PlatformCell> cells, PlatformData data) {
-        PlatformDecor platformDecor = super.addPlatform(cells, data);
+    public PlatformDecor addPlatform(List<PlatformCell> cells, PlatformData data, PlatformDecor visuals) {
+        PlatformDecor platformDecor = super.addPlatform(cells, data, visuals);
         resetZIndices();
         return platformDecor;
-    }
-
-    @Override
-    protected PlatformHandler createPlatformHandler() {
-        return new LE_PlatformHandler(this);
     }
 
     @Override

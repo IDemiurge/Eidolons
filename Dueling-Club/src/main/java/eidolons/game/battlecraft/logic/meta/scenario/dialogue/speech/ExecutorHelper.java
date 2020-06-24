@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Awakener;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidHandler;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid.VoidHandler;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
 import eidolons.libgdx.screens.ScreenMaster;

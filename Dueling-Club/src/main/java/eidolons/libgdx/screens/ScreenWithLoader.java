@@ -394,9 +394,10 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public CustomSpriteBatch getBatch() {
         if (batch == null) {
-            batch = CustomSpriteBatch.getMainInstance();
+            batch = (CustomSpriteBatch) GdxMaster.getMainBatch();
         }
-        return batch;
+        //Gdx revamp - if we want colorful, need an interface..
+        return   batch;
     }
 
     protected float getTooltipPeriod() {

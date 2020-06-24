@@ -235,6 +235,18 @@ public class TextParser {
 
             }
         }
+        if (id == null) {
+            if (ref_substring.contains("_")) {
+                String result = new Property(true, ref_substring).getStr(ref);
+                if (StringMaster.isEmpty(result)) {
+                    ref_substring = new Parameter(ref_substring).getInt(ref) + "";
+                }
+                if (!StringMaster.isEmpty(result)) {
+                    return result;
+                }
+            }
+        }
+        String replacement = ref_substring;
         Game game = ref.getGame();
 //        if (id == 0) {
 //            if (game.isRunning()) {
@@ -243,7 +255,6 @@ public class TextParser {
 //        }
         // else if (CharacterCreator.isRunning())
 
-        String replacement = ref_substring;
         Entity entity = ref.getInfoEntity();
         if (entity == null) {
             if (ref.getSourceObj()==null) {

@@ -23,7 +23,7 @@ import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.stage.GenericGuiStage;
-import eidolons.libgdx.stage.StageX;
+import eidolons.libgdx.stage.GridStage;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.options.GraphicsOptions;
@@ -43,7 +43,7 @@ import static main.system.GuiEventType.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public abstract class GenericDungeonScreen extends GameScreen {
-    protected StageX gridStage;
+    protected GridStage gridStage;
     protected GridPanel gridPanel;
     protected ParticleManager particleManager;
     private String bgPath;

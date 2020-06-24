@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.maze;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleConstructor;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.sub.MazePuzzleFailCondition;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.sub.MazeMarkCondition;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.elements.conditions.Condition;
 import main.game.bf.Coordinates;
@@ -33,7 +33,7 @@ public class MazePuzzleConstructor extends PuzzleConstructor<MazePuzzle> {
         PuzzleResolution resolution = new PuzzleResolution(puzzle) {
             @Override
             protected Condition getFailConditions() {
-                return new MazePuzzleFailCondition((MazePuzzle) puzzle);
+                return new MazeMarkCondition((MazePuzzle) puzzle);
             }
         };
         // DIRECTION d= DIRECTION.LEFT;// TODO
@@ -43,8 +43,8 @@ public class MazePuzzleConstructor extends PuzzleConstructor<MazePuzzle> {
     }
 
     @Override
-    protected PuzzleMaster.PUZZLE_SOLUTION getSolution() {
-        return PuzzleMaster.PUZZLE_SOLUTION.GET_TO_EXIT;
+    protected PuzzleEnums.PUZZLE_SOLUTION getSolution() {
+        return PuzzleEnums.PUZZLE_SOLUTION.GET_TO_EXIT;
     }
 
     @Override
@@ -57,7 +57,6 @@ public class MazePuzzleConstructor extends PuzzleConstructor<MazePuzzle> {
                 PuzzleData.PUZZLE_VALUE.PUNISHMENT,
                 PuzzleData.PUZZLE_VALUE.RESOLUTION,
                 PuzzleData.PUZZLE_VALUE.TIP,
-                PuzzleData.PUZZLE_VALUE.PALE,
 
         };
     }

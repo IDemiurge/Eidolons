@@ -1,6 +1,6 @@
 package main.level_editor.backend.handlers.operation;
 
-import eidolons.libgdx.bf.grid.GridViewAnimator;
+import eidolons.libgdx.bf.grid.handlers.GridAnimHandler;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.gui.screen.LE_Screen;
@@ -38,7 +38,7 @@ public class LE_HandlerDelegate extends LE_Handler implements IHandlerDelegate {
 
     @Override
     public void gridAnim() {
-        GridViewAnimator.VIEW_ANIM view_anim = LE_Screen.getInstance().getGuiStage().getEnumChooser().chooseEnum(GridViewAnimator.VIEW_ANIM.class);
+        GridAnimHandler.VIEW_ANIM view_anim = LE_Screen.getInstance().getGuiStage().getEnumChooser().chooseEnum(GridAnimHandler.VIEW_ANIM.class);
         GuiEventManager.trigger(GuiEventType.CHOOSE_GRID_ANIM, view_anim);
     }
 

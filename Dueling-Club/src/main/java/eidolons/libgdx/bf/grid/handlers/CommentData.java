@@ -1,4 +1,4 @@
-package eidolons.libgdx.bf.grid.comment;
+package eidolons.libgdx.bf.grid.handlers;
 
 import main.system.data.DataUnit;
 

@@ -79,8 +79,8 @@ public class AvKeyHandler extends AvHandler implements KeyListener {
     }
 
     private void toggleWorkspace() {
-        new Thread(() -> ArcaneVault.getMainBuilder().getButtonPanel().handleButtonClick(false,
-                 "WS Add"), "WS_TOGGLE thread").start();
+        // new Thread(() -> ArcaneVault.getMainBuilder().getButtonPanel().handleButtonClick(false,
+        //          "WS Add"), "WS_TOGGLE thread").start();
     }
 
     private void delete() {

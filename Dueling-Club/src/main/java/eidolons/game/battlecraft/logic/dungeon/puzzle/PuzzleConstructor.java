@@ -1,15 +1,15 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
 import eidolons.ability.conditions.AreaCondition;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution.PUZZLE_PUNISHMENT;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution.PUZZLE_RESOLUTION;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Veil;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums.PUZZLE_PUNISHMENT;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums.PUZZLE_RESOLUTION;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.game.netherflame.main.event.TipMessageMaster;
-import eidolons.game.netherflame.main.pale.PaleAspect;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.system.ConditionsUtils;
 import main.content.enums.GenericEnums;
 import main.data.ability.construct.VariableManager;
@@ -54,7 +54,8 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
 
         initEnterTrigger();
         initExitTrigger();
-        boolean pale = puzzleData.getBooleanValue(PuzzleData.PUZZLE_VALUE.PALE);
+        preloadAssets();
+        boolean pale =false;// puzzleData.getBooleanValue(PuzzleData.PUZZLE_VALUE.PALE);
         {
             Veil veil;
             Coordinates c = puzzle.getEntranceCoordinates();
@@ -72,6 +73,12 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         }
 
         return puzzle;
+    }
+
+    private void preloadAssets() {
+        if (puzzle.getOverrideBackground() != null) {
+            SpriteAnimationFactory.getSpriteAnimation(puzzle.getOverrideBackground());
+        }
     }
 
 
@@ -100,7 +107,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         return resolution;
     }
 
-    protected abstract PuzzleMaster.PUZZLE_SOLUTION getSolution();
+    protected abstract PuzzleEnums.PUZZLE_SOLUTION getSolution();
 
     protected PuzzleResolution createResolution() {
         return new PuzzleResolution(puzzle);
@@ -111,20 +118,21 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
     }
 
     protected PuzzleData createData(String text) {
-        PuzzleData data = new PuzzleData();
-
-        PuzzleData.PUZZLE_VALUE[] values = getRelevantValues();
-        int i = 0;
-        for (String substring : ContainerUtils.openContainer(text, ",")) {
-            data.setValue(values[i++], substring);
+        PuzzleData data =null ;
+        if (!text.contains("=")) {
+            data = new PuzzleData();
+            PuzzleData.PUZZLE_VALUE[] values = getRelevantValues();
+            int i = 0;
+            for (String substring : ContainerUtils.openContainer(text, ",")) {
+                data.setValue(values[i++], substring);
+            }
+            int coef = getDifficultyCoef(Eidolons.getGame().getMissionMaster().getOptionManager().getDifficulty());
+            data.setValue(PuzzleData.PUZZLE_VALUE.DIFFICULTY_COEF, coef);
+            int reward = puzzle.getSoulforceBase() * coef / 100;
+            data.setValue(PuzzleData.PUZZLE_VALUE.SOULFORCE_REWARD, reward);
+        } else {
+            data = new PuzzleData(text);
         }
-        int coef = getDifficultyCoef(Eidolons.getGame().getMissionMaster().getOptionManager().getDifficulty());
-        //        if () TODO disable by option
-        //            coef=100;
-        data.setValue(PuzzleData.PUZZLE_VALUE.DIFFICULTY_COEF, coef);
-
-        int reward = puzzle.getSoulforceBase() * coef / 100;
-        data.setValue(PuzzleData.PUZZLE_VALUE.SOULFORCE_REWARD, reward);
         return data;
     }
 
@@ -153,24 +161,10 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
                 PuzzleData.PUZZLE_VALUE.PUNISHMENT,
                 PuzzleData.PUZZLE_VALUE.RESOLUTION,
                 PuzzleData.PUZZLE_VALUE.TIP,
-                PuzzleData.PUZZLE_VALUE.PALE,
         };
     }
 
     protected abstract T createPuzzle();
-
-    protected void entered() {
-        if (puzzle.isPale()) {
-            PaleAspect.enterPale();
-        }
-        if (!puzzle.isFailed() && !puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP).isEmpty()) {
-            TipMessageMaster.tip(puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP),
-                    () -> getHandler().afterTipAction());
-        } else {
-            Eidolons.onNonGdxThread(() -> getHandler().afterTipAction());
-        }
-        puzzle.activate();
-    }
 
     private PuzzleHandler getHandler() {
         return puzzle.getHandler();
@@ -205,7 +199,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
                 ConditionsUtils.join(new LambdaCondition(ref -> !puzzle.active && (!puzzle.solved || isReplayable())),
                         ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
                         getPuzzleEnterConditions()),
-                () -> entered(), Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING
+                () -> puzzle.getHandler().entered(), Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING
         );
 
     }

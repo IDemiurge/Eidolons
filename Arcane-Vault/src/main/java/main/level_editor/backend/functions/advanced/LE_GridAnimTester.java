@@ -2,12 +2,12 @@ package main.level_editor.backend.functions.advanced;
 
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.bf.grid.GridViewAnimator;
+import eidolons.libgdx.bf.grid.handlers.GridAnimHandler;
 import main.level_editor.LevelEditor;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
-public class LE_GridAnimTester extends GridViewAnimator {
+public class LE_GridAnimTester extends GridAnimHandler {
     public LE_GridAnimTester(GridPanel panel) {
         super(panel);
 

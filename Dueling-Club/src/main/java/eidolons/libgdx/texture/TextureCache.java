@@ -245,6 +245,9 @@ public class TextureCache {
             name = name.substring(0, name.length() - 1);
 
             if (!overrideNoAtlas) {
+                //TODO gdx revamp
+                // support last-atlas for custom UNIT_VIEW with same bits (emblem/ border/..) packed there,
+                // and yield the right one for univView ui!
                 if (getInstance().uiAtlas != null) {
                     region = getInstance().uiAtlas.findRegion(name);
                 }
@@ -271,6 +274,9 @@ public class TextureCache {
         region = new TextureRegion(getInstance()._getOrCreate(path));
         if (region.getTexture() != missingTexture)
             regionCache.put(path, region);
+
+
+
         return region;
     }
 

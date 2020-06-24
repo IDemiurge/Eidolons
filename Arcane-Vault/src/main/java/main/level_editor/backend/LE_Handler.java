@@ -65,6 +65,8 @@ public abstract class LE_Handler {
     protected LE_Manager.LE_LAYER getLayer() {
         return manager.getLayer();
     }
+
+
     public <T extends Enum<T>> void editData(DataUnit<T> data) {
         getEditHandler().editDataUnit(data);
     }

@@ -623,11 +623,18 @@ public class Anim extends Group implements Animation {
     }
 
     public Coordinates getOriginCoordinates() {
-
         return getRef().getSourceObj().getCoordinates();
 
     }
 
+    public void setOrigin(Vector2 origin) {
+        this.origin = origin;
+    }
+
+    public void setOrigin(Coordinates origin) {
+        this.origin = GridMaster
+                .getCenteredPos(origin);
+    }
     public Coordinates getDestinationCoordinates() {
         if (forcedDestination != null) {
             return forcedDestination;

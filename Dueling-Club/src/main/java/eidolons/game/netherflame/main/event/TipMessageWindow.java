@@ -93,18 +93,17 @@ public class TipMessageWindow extends TablePanelX implements OverlayingUI {
             Runnable runnable = source.btnRun[i++];
             Cell cell = btnsTable.add(new SmartButton(button, ButtonStyled.STD_BUTTON.MENU,
                     () -> {
-                        if (source.isNonGdxThread()) {
-                            Eidolons.onThisOrNonGdxThread(() -> {
-                                runnable.run();
-                                close();
-                                WaitMaster.receiveInput(source.msgChannel, button);
-                            });
-                        } else {
+                        if (!source.isNonGdxThread())
+                        {
                             runnable.run();
-                            close();
                             WaitMaster.receiveInput(source.msgChannel, button);
                         }
-
+                        else
+                            Eidolons.onThisOrNonGdxThread(() -> {
+                                runnable.run();
+                                WaitMaster.receiveInput(source.msgChannel, button);
+                            });
+                        close();
                     }) {
                 @Override
                 public boolean isIgnoreConfirmBlock() {

@@ -42,6 +42,7 @@ import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.quest.QuestJournal;
 import eidolons.libgdx.gui.panels.quest.QuestProgressPanel;
+import eidolons.libgdx.screens.AtlasGenSpriteBatch;
 import eidolons.libgdx.screens.Blackout;
 import eidolons.libgdx.screens.map.town.navigation.PlaceNavigationPanel;
 import eidolons.libgdx.texture.TextureCache;
@@ -253,6 +254,11 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
     @Override
     public void draw() {
+        if (GdxMaster.WRITE_ATLAS_IMAGES) {
+            if (getBatch() instanceof AtlasGenSpriteBatch) {
+                ((AtlasGenSpriteBatch) getBatch()).setAtlas(AtlasGenSpriteBatch.ATLAS.ui);
+            }
+        }
         //can we just pass if in 'cinematic mode'?
 
         //        if (Cinematics.ON) TODO could it be useful?

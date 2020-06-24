@@ -11,12 +11,15 @@ import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.components.DataTable;
+import main.level_editor.gui.dialog.struct.DataEditDialog;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.data.DataUnit;
 
 public class LE_EditHandler extends LE_Handler {
+
+    private Coordinates editCoordinates;
 
     public LE_EditHandler(LE_Manager manager) {
         super(manager);
@@ -42,7 +45,11 @@ public class LE_EditHandler extends LE_Handler {
       return LE_Screen.getInstance().getGuiStage().getEnumChooser().chooseEnum(c);
     }
     public <T extends Enum<T>> void editDataUnit(DataUnit<T> dataUnit) {
-        LE_Screen.getInstance().getGuiStage().getEditDialog(dataUnit).edit(dataUnit);
+        getEditDialog(dataUnit).edit(dataUnit);
+    }
+
+    public  <T extends Enum<T>> DataEditDialog<T, DataUnit<T>> getEditDialog(DataUnit<T> dataUnit) {
+        return  LE_Screen.getInstance().getGuiStage().getEditDialog(dataUnit);
     }
 
     public static DataTable.DataPair[] getDataPairs(Entity editEntity) {
@@ -61,9 +68,18 @@ public class LE_EditHandler extends LE_Handler {
     }
 
     public void editCell(Coordinates c) {
+        setEditCoordinates(c);
         if (manager.getLayer() == LE_Manager.LE_LAYER.decor) {
             getEditHandler().getDecorHandler().editData(c);
         } else
             getEditHandler().getScriptHandler().editScriptData(c);
+    }
+
+    public Coordinates getEditCoordinates() {
+        return editCoordinates;
+    }
+
+    public void setEditCoordinates(Coordinates editCoordinates) {
+        this.editCoordinates = editCoordinates;
     }
 }

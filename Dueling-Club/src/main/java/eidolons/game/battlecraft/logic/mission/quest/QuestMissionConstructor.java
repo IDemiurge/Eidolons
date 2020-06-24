@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.mission.quest;
 
 import eidolons.content.PROPS;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.mission.universal.MissionConstructor;
@@ -38,6 +39,8 @@ public class QuestMissionConstructor extends MissionConstructor<QuestMission> {
 
         }
         // levelPath = "crawl\\evarinath catacombs.xml";
+
+        EidolonsGame.lvlPath = levelPath;
         getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH,
                 levelPath);
         Floor mission = new Floor(type);

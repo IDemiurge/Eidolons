@@ -20,6 +20,12 @@ public class VoidMazeSetup extends MazeSetup<VoidPuzzle> {
         super(puzzle );
     }
 
+    @Override
+    public void ended() {
+        super.ended();
+        template = null;
+    }
+
     public RoomModel reset () {
         if ( template != null) {
             return template;
@@ -28,7 +34,6 @@ public class VoidMazeSetup extends MazeSetup<VoidPuzzle> {
         if (puzzle.isTransform()) {
             transformMaze();
         }
-        puzzle.getHandler().resetHandler();
         puzzle. falseExits = new ArrayList<>();
         for (int i = 0; i < template.getCells().length; i++) {
             for (int j = 0; j < template.getCells()[0].length; j++) {
@@ -44,6 +49,12 @@ public class VoidMazeSetup extends MazeSetup<VoidPuzzle> {
             Eidolons.getGame().getCellByCoordinate(getAbsoluteCoordinate(markedCell)).
                     getMarks().add(CONTENT_CONSTS.MARK.togglable);
         }
+        if (puzzle.isMarkAroundEntrance()){
+            for (Coordinates c : getEntranceCoordinates().getAdjacent()) {
+                Eidolons.getGame().getCellByCoordinate(c).
+                        getMarks().add(CONTENT_CONSTS.MARK.togglable);
+            }
+        }
         puzzle. getHandler(). markedCells.removeAll(puzzle.falseExits);
         puzzle.falseExits= filterExits(puzzle.falseExits);
         int i = RandomWizard.getRandomIndex(puzzle.falseExits);
@@ -58,9 +69,9 @@ public class VoidMazeSetup extends MazeSetup<VoidPuzzle> {
 
     private List<Coordinates> filterExits(List<Coordinates> falseExits) {
         Coordinates c = getEntranceCoordinates();
-        falseExits.removeIf(exit -> getAbsoluteCoordinate(exit).dst(c) < getMinExitDst());
+        falseExits.removeIf(exit -> getAbsoluteCoordinate(exit).dst(c) < puzzle.getMinExitDst());
         Collections.shuffle(falseExits);
-        falseExits = falseExits.stream().limit(getMaxExits()).collect(Collectors.toList());
+        falseExits = falseExits.stream().limit(puzzle.getMaxExits()).collect(Collectors.toList());
         return falseExits; 
     }
 
@@ -74,13 +85,6 @@ public class VoidMazeSetup extends MazeSetup<VoidPuzzle> {
     }
 
 
-    private int getMinExitDst() {
-        return 8;
-    }
-
-    private long getMaxExits() {
-        return RandomWizard.getRandomIntBetween(3, 4);
-    }
 
 
 }

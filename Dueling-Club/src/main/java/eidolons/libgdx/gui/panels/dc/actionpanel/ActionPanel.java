@@ -38,6 +38,7 @@ public class ActionPanel extends GroupX {
     private static final float OFFSET_X = 100 + EMPTY_OFFSET;
     private static final float QUICK_SLOTS_OFFSET_X = 20;
     private static final float SPELL_OFFSET_X = 70;
+    private static final float PUZZLE_OFFSET_Y =  -60;
     private final Vector2 spellsPos = new Vector2();
 
     private final ImageContainer bottomOverlay;
@@ -197,10 +198,14 @@ public class ActionPanel extends GroupX {
         });
 
         GuiEventManager.bind(GuiEventType.PUZZLE_STARTED, p -> {
-            ActionMaster.addMoveToAction(this, getX(), -64, 1.4f);
+            ActionMaster.addMoveToAction(this, getX(), PUZZLE_OFFSET_Y, 1.4f);
+            soulParamsBar.fadeOut();
+            bodyParamsBar.fadeOut();
         });
         GuiEventManager.bind(GuiEventType.PUZZLE_FINISHED, p -> {
             ActionMaster.addMoveToAction(this, getX(), 0, 1.4f);
+            soulParamsBar.fadeIn();
+            bodyParamsBar.fadeIn();
         });
 
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED_OFF, p -> {

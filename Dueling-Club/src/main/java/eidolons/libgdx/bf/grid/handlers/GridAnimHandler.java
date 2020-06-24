@@ -1,4 +1,4 @@
-package eidolons.libgdx.bf.grid;
+package eidolons.libgdx.bf.grid.handlers;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
@@ -11,16 +11,23 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.datasource.GraphicData;
+import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.UnitGridView;
+import eidolons.libgdx.bf.grid.cell.UnitView;
 import eidolons.libgdx.gui.generic.GroupX;
+import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
 import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
+import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static main.system.GuiEventType.ACTOR_SPEAKS;
 
 /**
  * independent graphical events
@@ -34,29 +41,73 @@ import java.util.List;
  * ++ via emitters as well!
  * :: leveraging the Animation framework
  */
-public class GridViewAnimator {
-
+public class GridAnimHandler extends GridHandler{
 
     protected   GroupX animated;
-    protected GridPanel gridPanel;
 
+    public GridAnimHandler(GridPanel panel) {
+        super(panel);
+    }
 
-    public GridViewAnimator(GridPanel panel) {
-        this.gridPanel = panel;
+    @Override
+    protected void bindEvents() {
         for (VIEW_ANIM value : VIEW_ANIM.values()) {
             GuiEventManager.bind(value.event, p -> {
                 if (p.get() instanceof List) {
                     handleAnim((GroupX) ((List) p.get()).get(0), value,
                             ((List) p.get()).get(1));
                 } else
-                  handleAnim(animated, value, p.get());
+                    handleAnim(animated, value, p.get());
                 main.system.auxiliary.log.LogMaster.dev("Grid Anim: " + value.toString() + " \n" + p.get());
             });
         }
         GuiEventManager.bind(GuiEventType.GRID_SET_VIEW, p -> {
             animated = findView(p.get());
         });
+        GuiEventManager.bind(ACTOR_SPEAKS, p -> {
+            if (p.get() == null) {
+                return;
+            }
+            BattleFieldObject unit = (BattleFieldObject) p.get();
+            UnitView view = getUnitView(unit);
+            main.system.auxiliary.log.LogMaster.dev("ACTOR_SPEAKS: " + unit);
+
+            unit.getGame().getManager().setHighlightedObj(unit);
+
+            //            for (BaseView value : viewMap.values()) {
+            //                if (value==view) {
+
+            //                    GuiEventManager.trigger(GuiEventType.SCALE_UP_VIEW, view);
+            view.highlight();
+            GraphicData data = new GraphicData("alpha::0.8f");
+            animate(view, GridAnimHandler.VIEW_ANIM.screen, data);
+            WaitMaster.doAfterWait(4000, () -> {
+                //                        if (!DialogueManager.isRunning())
+                {
+                    main.system.auxiliary.log.LogMaster.dev("hl off: " + unit);
+                    view.highlightOff();
+                    unit.getGame().getManager().setHighlightedObj(null);
+                }
+            });
+        });
+
+        GuiEventManager.bind(GuiEventType.GRID_OBJ_ANIM, p -> {
+            List list = (List) p.get();
+            GraphicData data = (GraphicData) list.get(2);
+            if (list.get(1) instanceof Coordinates) {
+                String key = (String) list.get(0);
+                Coordinates c = (Coordinates) list.get(1);
+                GridObject gridObj = findGridObj(key, c);
+                animate(gridObj, data);
+            } else {
+                animate( getView((Obj) list.get(1)),
+                        (GridAnimHandler.VIEW_ANIM) list.get(0), data);
+            }
+
+        });
     }
+
+
 
     protected void handleAnim(GroupX animated, VIEW_ANIM value, Object o) {
         List args = new ArrayList<>();
@@ -205,7 +256,7 @@ public class GridViewAnimator {
             return ((UnitGridView) arg).getPortrait();
         }
         if (arg instanceof BattleFieldObject) {
-            return   gridPanel.getUnitView((BattleFieldObject) arg).getPortrait();
+            return   getViewMap().get((BattleFieldObject) arg).getPortrait();
         }
         return null;
     }

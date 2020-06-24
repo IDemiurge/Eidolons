@@ -1,21 +1,21 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.portal;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleConstructor;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import main.elements.conditions.Condition;
 
 public class PortalPuzzleConstructor extends PuzzleConstructor<PortalPuzzle> {
     @Override
-    protected PuzzleMaster.PUZZLE_SOLUTION getSolution() {
-        return PuzzleMaster.PUZZLE_SOLUTION.SLOTS;
+    protected PuzzleEnums.PUZZLE_SOLUTION getSolution() {
+        return PuzzleEnums.PUZZLE_SOLUTION.SLOTS;
     }
 
     @Override
     protected PuzzleResolution createResolution() {
         PuzzleResolution res = super.createResolution();
-        res.addResolutions(PuzzleResolution.PUZZLE_RESOLUTION.open_portal,
+        res.addResolutions(PuzzleEnums.PUZZLE_RESOLUTION.open_portal,
                 puzzleData.getValue(PuzzleData.PUZZLE_VALUE.ARG));
         return res;
     }
@@ -32,13 +32,6 @@ public class PortalPuzzleConstructor extends PuzzleConstructor<PortalPuzzle> {
         };
     }
 
-    @Override
-    protected void entered() {
-        super.entered();
-        /**
-         *
-         */
-    }
 
     @Override
     protected Condition getPuzzleEnterConditions() {

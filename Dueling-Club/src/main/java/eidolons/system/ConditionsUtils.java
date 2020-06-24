@@ -1,11 +1,10 @@
 package eidolons.system;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzleCondition;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.sub.MazePuzzleFailCondition;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.sub.MazeMarkCondition;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.OrConditions;
@@ -28,7 +27,7 @@ public class ConditionsUtils {
         return DC_ConditionMaster.getInstance().getConditionFromTemplate(template);
     }
 
-    public static Condition forPuzzleSolution(PuzzleMaster.PUZZLE_SOLUTION solution, Puzzle puzzle) {
+    public static Condition forPuzzleSolution(PuzzleEnums.PUZZLE_SOLUTION solution, Puzzle puzzle) {
         Condition condition = puzzle.createSolutionCondition();
         if (condition == null)
             switch (solution) {
@@ -46,8 +45,8 @@ public class ConditionsUtils {
         return condition;
     }
 
-    public static Condition forPuzzlePunishment(Puzzle puzzle, Set<PuzzleResolution.PUZZLE_PUNISHMENT> punishments) {
-        for (PuzzleResolution.PUZZLE_PUNISHMENT punishment : punishments) {
+    public static Condition forPuzzlePunishment(Puzzle puzzle, Set<PuzzleEnums.PUZZLE_PUNISHMENT> punishments) {
+        for (PuzzleEnums.PUZZLE_PUNISHMENT punishment : punishments) {
             switch (punishment) {
 
                 case battle:
@@ -59,7 +58,7 @@ public class ConditionsUtils {
 
         }
         if (puzzle instanceof MazePuzzle){
-            return new MazePuzzleFailCondition((MazePuzzle) puzzle);
+            return new MazeMarkCondition((MazePuzzle) puzzle);
         }
         return null ;
     }

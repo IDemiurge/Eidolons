@@ -5,7 +5,7 @@ import eidolons.libgdx.bf.decor.DecorData;
 import main.system.threading.WaitMaster;
 
 public class DecorEditor extends DataEditDialog< DecorData.DECOR_LEVEL , DecorData> {
-    public static final WaitMaster.WAIT_OPERATIONS OPERATION = WaitMaster.WAIT_OPERATIONS.DATA_EDIT;
+    public static final WaitMaster.WAIT_OPERATIONS OPERATION = WaitMaster.WAIT_OPERATIONS.DECOR_DATA_EDIT;
 
     public DecorEditor( ) {
         super(2);
@@ -19,7 +19,7 @@ public class DecorEditor extends DataEditDialog< DecorData.DECOR_LEVEL , DecorDa
     @Override
     public void ok() {
         super.ok();
-        WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.DATA_EDIT, selected);
+        WaitMaster.receiveInput(getWaitOperation(), selected);
     }
 
     protected boolean isSaveForUndo() {
@@ -28,6 +28,11 @@ public class DecorEditor extends DataEditDialog< DecorData.DECOR_LEVEL , DecorDa
     @Override
     protected Object getArg(DecorData.DECOR_LEVEL enumConst) {
         return null;
+    }
+
+    @Override
+    protected WaitMaster.WAIT_OPERATIONS getWaitOperation() {
+        return OPERATION;
     }
 
     @Override

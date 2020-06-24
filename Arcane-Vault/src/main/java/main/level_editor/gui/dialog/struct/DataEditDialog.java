@@ -1,10 +1,13 @@
 package main.level_editor.gui.dialog.struct;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.libgdx.gui.utils.FileChooserX;
 import eidolons.libgdx.utils.GdxDialogMaster;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
+import main.level_editor.backend.handlers.LE_EditHandler;
 import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.components.DataTable;
 import main.level_editor.gui.components.EditValueContainer;
@@ -13,14 +16,19 @@ import main.level_editor.gui.screen.LE_Screen;
 import main.system.PathUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnit;
+import main.system.threading.WaitMaster;
 
 public abstract class DataEditDialog<S extends Enum<S>, T extends DataUnit<S>> extends EditDialog<DataTable.DataPair> {
 
     protected T data;
     protected T cached;
+    private boolean nested;
 
     public DataEditDialog(int size) {
         super(size);
+    }
+
+    public DataEditDialog() {
     }
 
     @Override
@@ -31,12 +39,36 @@ public abstract class DataEditDialog<S extends Enum<S>, T extends DataUnit<S>> e
         if (type == null) {
             type = LevelStructure.EDIT_VALUE_TYPE.text;
         }
+        if (Gdx.input.isButtonPressed(Input.Keys.ALT_LEFT)) {
+            type = LevelStructure.EDIT_VALUE_TYPE.text;
+        }
         switch (type) {
+            case dataUnit:
+                if (actor.getEdit_arg() instanceof DataUnit) {
+                    DataUnit edit_arg = (DataUnit) actor.getEdit_arg();
+                    if (data.getValue(item.name) != null) {
+                        edit_arg.setData(data.getValue(item.name));
+                    }
+                    LE_EditHandler editHandler = LevelEditor.getManager().getEditHandler();
+                    DataEditDialog editDialog = editHandler.getEditDialog(edit_arg);
+                    WaitMaster.WAIT_OPERATIONS event = editDialog.getWaitOperation();
+                    editDialog.setNested(true);
+                    editHandler.editData(edit_arg);
+                    value = WaitMaster.waitForInput(event) + "";
+                    editDialog.setNested(false);
+                    //reset?
+                }
+
+                break;
             case script:
                 value = inputScript(item);
                 break;
             case coordinates:
                 value = pickCoordinate();
+                if (value != null)
+                    if (actor.getEdit_arg() != null) {
+                        value = ((Coordinates) value).getOffset(LevelEditor.getManager().getEditHandler().getEditCoordinates());
+                    }
                 break;
             case enum_const:
                 value = enumConst(value, actor.getEdit_arg());
@@ -77,6 +109,7 @@ public abstract class DataEditDialog<S extends Enum<S>, T extends DataUnit<S>> e
     private Object input(DataTable.DataPair item) {
         return GdxDialogMaster.inputText("Set value " + item.name, item.stringValue);
     }
+
     private String inputScript(DataTable.DataPair item) {
         return GdxDialogMaster.inputScript("Set script for " + item.name, item.stringValue);
     }
@@ -134,15 +167,20 @@ public abstract class DataEditDialog<S extends Enum<S>, T extends DataUnit<S>> e
         show();
     }
 
+    protected WaitMaster.WAIT_OPERATIONS getWaitOperation() {
+        return WaitMaster.WAIT_OPERATIONS.DATA_EDIT;
+    }
+
     @Override
     public void ok() {
-        if (isSaveForUndo()){
-        LevelEditor.getManager().getOperationHandler().operation(Operation.LE_OPERATION.SAVE_STRUCTURE,
-                cached, data);
-        LevelEditor.getManager().getOperationHandler().execute(Operation.LE_OPERATION.MODIFY_STRUCTURE,
-                data);
+        if (isSaveForUndo()) {
+            LevelEditor.getManager().getOperationHandler().operation(Operation.LE_OPERATION.SAVE_STRUCTURE,
+                    cached, data);
+            LevelEditor.getManager().getOperationHandler().execute(Operation.LE_OPERATION.MODIFY_STRUCTURE,
+                    data);
         }
         super.ok();
+        WaitMaster.receiveInput(getWaitOperation(), getUserObject());
     }
 
     protected boolean isSaveForUndo() {
@@ -165,5 +203,13 @@ public abstract class DataEditDialog<S extends Enum<S>, T extends DataUnit<S>> e
 
     public void edit(T data) {
         setUserObject(data);
+    }
+
+    public void setNested(boolean nested) {
+        this.nested = nested;
+    }
+
+    public boolean isNested() {
+        return nested;
     }
 }

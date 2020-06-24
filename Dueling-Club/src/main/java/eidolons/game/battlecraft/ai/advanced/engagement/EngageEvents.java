@@ -5,7 +5,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent.ENGAGE_EVENT;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.bf.grid.GridViewAnimator;
+import eidolons.libgdx.bf.grid.handlers.GridAnimHandler;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.ENGAGEMENT_LEVEL;
 import main.system.auxiliary.RandomWizard;
@@ -147,7 +147,7 @@ public class EngageEvents extends ExplorationHandler {
 
     public void detected(Unit source, BattleFieldObject object) {
         if (source.isMine()) {
-            processNow(new EngageEvent(source, object, GridViewAnimator.VIEW_ANIM.screen));
+            processNow(new EngageEvent(source, object, GridAnimHandler.VIEW_ANIM.screen));
         } else {
             // if (isPrecombat())
             // addEvent(new EngageEvent(source, object, ENGAGE_EVENT.precombat));

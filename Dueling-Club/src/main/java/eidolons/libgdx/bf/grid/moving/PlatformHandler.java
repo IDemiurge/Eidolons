@@ -3,6 +3,7 @@ package eidolons.libgdx.bf.grid.moving;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.UnitGridView;
+import eidolons.libgdx.bf.grid.handlers.GridHandler;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -14,7 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public class PlatformHandler {
+public class PlatformHandler extends GridHandler {
     /*
     defining in LE:
     special type of BLOCK?
@@ -27,7 +28,6 @@ does it hold and wait for a while between it cycles?
 in the most crazy variant, we could have a pendulum/circular rotation
      */
     Set<PlatformController> platforms = new LinkedHashSet<>();
-    GridPanel grid;
 
     public PlatformController findByName(String name) {
         for (PlatformController platform : platforms) {
@@ -48,8 +48,12 @@ in the most crazy variant, we could have a pendulum/circular rotation
     }
 
     public PlatformHandler(GridPanel grid) {
+        super(grid);
         //module cache? what about grid ?
-        this.grid = grid;
+    }
+
+    @Override
+    protected void bindEvents() {
         GuiEventManager.bind(GuiEventType.PLATFORM_CREATE, p -> {
             createPlatform((PlatformData) p.get());
         });
@@ -110,7 +114,9 @@ in the most crazy variant, we could have a pendulum/circular rotation
             cells.add(cell);
             cell.setUserObject(DC_Game.game.getCellByCoordinate(c));
         }
-        PlatformDecor visuals = grid.addPlatform(cells, data);
+
+        PlatformDecor visuals = createCellVisuals(cells, data);
+         grid.addPlatform(cells, data, visuals);
         platforms.add(new PlatformController(data, cells, visuals));
 
     }

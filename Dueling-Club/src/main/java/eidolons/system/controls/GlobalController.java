@@ -15,6 +15,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.netherflame.main.soul.EidolonLord;
 import eidolons.game.netherflame.main.soul.panel.LordPanel;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.grid.cell.GenericGridView;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
@@ -24,6 +25,7 @@ import eidolons.libgdx.gui.overlay.choice.VC_DataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
+import eidolons.libgdx.screens.AtlasGenSpriteBatch;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.screens.menu.MainMenu;
@@ -168,11 +170,17 @@ public class GlobalController implements Controller {
 
     private boolean doTest(int keyCode) {
         switch (keyCode) {
-            case Keys.ENTER:
-                GuiEventManager.trigger(GuiEventType.DISPOSE_SCOPE, "DIALOGUE");
-                break;
+
             case Keys.END:
                 TextureCache.getInstance().logDiagnostics();
+                break;
+            case Keys.HOME:
+                if (GdxMaster.getMainBatch() instanceof AtlasGenSpriteBatch) {
+                    ((AtlasGenSpriteBatch) GdxMaster.getMainBatch()).writeAtlases();
+                }
+                break;
+            case Keys.ENTER:
+                GuiEventManager.trigger(GuiEventType.DISPOSE_SCOPE, "DIALOGUE");
                 break;
             case Keys.F9:
                 Eidolons.onNonGdxThread(() -> {

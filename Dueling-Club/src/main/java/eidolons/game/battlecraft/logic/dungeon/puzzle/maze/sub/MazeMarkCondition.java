@@ -5,10 +5,10 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 
-public class MazePuzzleFailCondition extends DC_Condition {
+public class MazeMarkCondition extends DC_Condition {
     MazePuzzle puzzle;
 
-    public MazePuzzleFailCondition(MazePuzzle puzzle ) {
+    public MazeMarkCondition(MazePuzzle puzzle ) {
         this.puzzle = puzzle;
     }
 

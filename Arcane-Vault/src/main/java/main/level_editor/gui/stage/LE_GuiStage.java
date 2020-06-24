@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.battlecraft.logic.mission.encounter.EncounterData;
 import eidolons.game.core.Eidolons;
@@ -75,6 +76,7 @@ public class LE_GuiStage extends GenericGuiStage {
     private final AiEditDialog aiEditor;
     private final CellDataEditor cellDataEditor;
     private final DecorEditor decorEditor;
+    private final PuzzleEditor puzzleEditor;
 
     LE_StatusBar statusBar;
     FloorTabs tabs = new FloorTabs();
@@ -118,6 +120,7 @@ public class LE_GuiStage extends GenericGuiStage {
         addActor(cellDataEditor = new CellDataEditor());
         addActor(platformEditDialog = new PlatformEditDialog());
         addActor(decorEditor = new DecorEditor());
+        addActor(puzzleEditor = new PuzzleEditor());
         addActor(editTable = new DataTable(2, 50));
 
         addActor(statusBar = new LE_StatusBar());
@@ -381,6 +384,11 @@ public class LE_GuiStage extends GenericGuiStage {
         return decorEditor;
     }
 
+    public PuzzleEditor getPuzzleEditor() {
+        dialog = puzzleEditor;
+        return puzzleEditor;
+    }
+
     public PlatformEditDialog getPlatformDialog() {
         dialog = platformEditDialog;
         return platformEditDialog;
@@ -399,6 +407,9 @@ public class LE_GuiStage extends GenericGuiStage {
     DataEditDialog<S, T> getEditDialog(DataUnit<S> dataUnit) {
         if (dataUnit instanceof PlatformData) {
             return (DataEditDialog<S, T>) getPlatformDialog();
+        }
+        if (dataUnit instanceof PuzzleData) {
+            return (DataEditDialog<S, T>) getPuzzleEditor();
         }
         if (dataUnit instanceof DecorData) {
             return (DataEditDialog<S, T>) getDecorEditor();

@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -23,13 +24,13 @@ public class PuzzleRules extends PuzzleElement {
     }
 
     PUZZLE_RULE_ACTION action;
-    PuzzleMaster.PUZZLE_ACTION_BASE base;
+    PuzzleEnums.PUZZLE_ACTION_BASE base;
 
     public PuzzleRules(Puzzle puzzle) {
         super(puzzle);
        }
 
-    public PuzzleRules(Puzzle puzzle, PUZZLE_RULE_ACTION action, PuzzleMaster.PUZZLE_ACTION_BASE base) {
+    public PuzzleRules(Puzzle puzzle, PUZZLE_RULE_ACTION action, PuzzleEnums.PUZZLE_ACTION_BASE base) {
         super(puzzle);
         this.action = action;
         this.base = base;
@@ -81,11 +82,11 @@ public class PuzzleRules extends PuzzleElement {
         this.action = action;
     }
 
-    public PuzzleMaster.PUZZLE_ACTION_BASE getBase() {
+    public PuzzleEnums.PUZZLE_ACTION_BASE getBase() {
         return base;
     }
 
-    public void setBase(PuzzleMaster.PUZZLE_ACTION_BASE base) {
+    public void setBase(PuzzleEnums.PUZZLE_ACTION_BASE base) {
         this.base = base;
     }
 

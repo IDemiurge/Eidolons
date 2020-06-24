@@ -150,10 +150,10 @@ public class GridCell extends BlockableGroup implements Borderable {
                 if (button == Input.Buttons.LEFT) {
                     event.handle();
                     if (isEmpty())
-                        if (isAlt() || isShift() || isControl()                        )
-                                if (DefaultActionHandler.
-                                        leftClickCell(isShift(), isControl(), getGridX(), getGridY()))
-                                    return;
+                        if (isAlt() || isShift() || isControl())
+                            if (DefaultActionHandler.
+                                    leftClickCell(isShift(), isControl(), getGridX(), getGridY()))
+                                return;
                     GuiEventManager.trigger(TARGET_SELECTION, GridCell.this);
                     GuiEventManager.trigger(RADIAL_MENU_CLOSE);
                 }
@@ -171,9 +171,13 @@ public class GridCell extends BlockableGroup implements Borderable {
             return;
         }
         if (isShadingSupported() && !getUserObject().isPlayerHasSeen()) {
-            setColor(GdxColorMaster.LIGHT_GREY);
+            getColor().set(GdxColorMaster.LIGHT_GREY.r,
+                    GdxColorMaster.LIGHT_GREY.g,
+                    GdxColorMaster.LIGHT_GREY.b,
+                    getColor().a);
         } else
-            setColor(GdxColorMaster.WHITE);
+            getColor().set(1, 1, 1,
+                    getColor().a);
         super.draw(batch, 1);
     }
 

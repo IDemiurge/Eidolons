@@ -11,9 +11,8 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidHandler;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid.VoidHandler;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -30,7 +29,6 @@ import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.TargetRunnable;
-import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.grid.cell.*;
 import eidolons.libgdx.bf.grid.moving.PlatformCell;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
@@ -101,7 +99,6 @@ public class DC_GridPanel extends GridPanel {
         super.initObjects(objects);
         addActor(animMaster = AnimMaster.getInstance());
         animMaster.bindEvents();
-        manager = new GridRenderHelper(this);
         addActor(overlayManager);
 
         return this;
@@ -329,55 +326,8 @@ public class DC_GridPanel extends GridPanel {
             FloatingTextMaster.getInstance().
                     createAndShowParamModText(p.get());
         });
-        GuiEventManager.bind(ACTOR_SPEAKS, p -> {
-            if (p.get() == null) {
-                return;
-            }
-            BattleFieldObject unit = (BattleFieldObject) p.get();
-            UnitView view = getUnitView(unit);
-            main.system.auxiliary.log.LogMaster.dev("ACTOR_SPEAKS: " + unit);
 
-            unit.getGame().getManager().setHighlightedObj(unit);
 
-            //            for (BaseView value : viewMap.values()) {
-            //                if (value==view) {
-
-            //                    GuiEventManager.trigger(GuiEventType.SCALE_UP_VIEW, view);
-            view.highlight();
-            GraphicData data = new GraphicData("alpha::0.8f");
-            gridViewAnimator.animate(view, GridViewAnimator.VIEW_ANIM.screen, data);
-            WaitMaster.doAfterWait(4000, () -> {
-                //                        if (!DialogueManager.isRunning())
-                {
-                    main.system.auxiliary.log.LogMaster.dev("hl off: " + unit);
-                    view.highlightOff();
-                    unit.getGame().getManager().setHighlightedObj(null);
-                }
-            });
-            //                } else
-            //                {
-            //                    value.highlightOff();
-            //                    GuiEventManager.trigger(GRID_OBJ_HOVER_OFF, view);
-            //                }
-            //            }
-        });
-        GuiEventManager.bind(GuiEventType.CUSTOM_VIEW_ANIM, p -> {
-
-        });
-        GuiEventManager.bind(GuiEventType.GRID_OBJ_ANIM, p -> {
-            List list = (List) p.get();
-            GraphicData data = (GraphicData) list.get(2);
-            if (list.get(1) instanceof Coordinates) {
-                String key = (String) list.get(0);
-                Coordinates c = (Coordinates) list.get(1);
-                GridObject gridObj = findGridObj(key, c);
-                gridViewAnimator.animate(gridObj, data);
-            } else {
-                gridViewAnimator.animate(viewMap.get((Obj) list.get(1)),
-                        (GridViewAnimator.VIEW_ANIM) list.get(0), data);
-            }
-
-        });
 
         GuiEventManager.bind(HIDE_MAZE, p -> {
             initMaze(true, (MazePuzzle.MazeData) p.get());

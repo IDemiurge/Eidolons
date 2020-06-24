@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.advanced.engagement;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.bf.datasource.GraphicData;
-import eidolons.libgdx.bf.grid.GridViewAnimator;
+import eidolons.libgdx.bf.grid.handlers.GridAnimHandler;
 import main.content.enums.rules.VisionEnums;
 import main.data.xml.XmlStringBuilder;
 import main.entity.obj.Obj;
@@ -22,7 +22,7 @@ public class EngageEvent {
     protected String logMsg, soundPath, popupText;
     protected GraphicData graphicData;
     protected Coordinates c;
-    protected GridViewAnimator.VIEW_ANIM anim;
+    protected GridAnimHandler.VIEW_ANIM anim;
     protected VisionEnums.PLAYER_STATUS status;
     // normally we'd only have one of these, DO NOT cluster stuff
 
@@ -42,8 +42,8 @@ public class EngageEvent {
                 this.level = (VisionEnums.ENGAGEMENT_LEVEL) o;
             } else if (o instanceof VisionEnums.PLAYER_STATUS) {
                 this.status = (VisionEnums.PLAYER_STATUS) o;
-            } else if (o instanceof GridViewAnimator.VIEW_ANIM) {
-                this.anim = (GridViewAnimator.VIEW_ANIM) o;
+            } else if (o instanceof GridAnimHandler.VIEW_ANIM) {
+                this.anim = (GridAnimHandler.VIEW_ANIM) o;
             } else if (o instanceof ENGAGE_EVENT) {
                 this.type = (ENGAGE_EVENT) o;
             } else if (o instanceof Event.EVENT_TYPE) {

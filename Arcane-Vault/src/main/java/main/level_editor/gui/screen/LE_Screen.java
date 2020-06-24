@@ -15,7 +15,7 @@ import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.screens.ScreenWithLoader;
 import eidolons.libgdx.screens.dungeon.GenericDungeonScreen;
 import eidolons.libgdx.stage.GenericGuiStage;
-import eidolons.libgdx.stage.StageX;
+import eidolons.libgdx.stage.GridStage;
 import main.level_editor.backend.handlers.structure.FloorManager;
 import main.level_editor.backend.struct.level.LE_Floor;
 import main.level_editor.gui.grid.LE_BfGrid;
@@ -84,7 +84,7 @@ public class LE_Screen extends GenericDungeonScreen {
         });
         WaitMaster.unmarkAsComplete(WaitMaster.WAIT_OPERATIONS.GUI_READY);
 
-        gridStage = new StageX(viewPort, getBatch()) {
+        gridStage = new GridStage(viewPort, getBatch()) {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 return super.touchDown(screenX, screenY, pointer, button);

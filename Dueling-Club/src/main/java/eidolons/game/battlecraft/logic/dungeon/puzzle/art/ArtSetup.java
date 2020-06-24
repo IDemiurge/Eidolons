@@ -2,9 +2,9 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.art;
 
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleActions;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.game.core.Eidolons;
 import eidolons.system.ConditionsUtils;
@@ -42,10 +42,10 @@ public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
                 case "facing":
                     puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION, Event.STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE,
                             ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
-                            PuzzleActions.action(PuzzleMaster.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_CLOCKWISE));
+                            PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_CLOCKWISE));
                     puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION, Event.STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE,
                             ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
-                            PuzzleActions.action(PuzzleMaster.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_ANTICLOCKWISE));
+                            PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_ANTICLOCKWISE));
                     break;
             }
 

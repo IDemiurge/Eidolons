@@ -1,51 +1,38 @@
 package eidolons.libgdx.bf.overlays;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
-import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
+import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager.STD_IMAGES;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by JustMe on 9/12/2017.
  */
-public class WallMap extends SuperActor {
+public class WallMap extends OverlayMap {
     private static final String INDESTRUCTIBLE = " Indestructible";
     private static final String STRANGE_WALL = " Marked";
-    private static boolean on = true;
-    private Map<Coordinates, List<DIRECTION>> wallMap;
-    private Map<Coordinates, List<DIRECTION>> diagonalJoints;
-    private boolean updateRequired;
-    private Map<Coordinates, DOOR_STATE> doorMap;
+    public static boolean on;
+    private ObjectMap<Coordinates, List<DIRECTION>> diagonalJoints;
+    private ObjectMap<Coordinates, DOOR_STATE> doorMap;
 
     public WallMap() {
-        bindEvents();
         setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.DOORS);
-    }
-
-    public static boolean isOn() {
-        return on;
-    }
-
-    public static void setOn(boolean on) {
-        WallMap.on = on;
     }
 
     private static STD_IMAGES getWallImageFromSide(DIRECTION side) {
@@ -88,27 +75,16 @@ public class WallMap extends SuperActor {
         return indestructible_nullForSecret ? WallMap.INDESTRUCTIBLE : "";
     }
 
-    private void bindEvents() {
+    protected void bindEvents() {
+        super.bindEvents();
         GuiEventManager.bind(GuiEventType.UPDATE_DOOR_MAP, p -> {
-            doorMap = new XLinkedMap<>(
-             (Map<Coordinates, DOOR_STATE>) p.get());
-            updateRequired = true;
-        });
-        GuiEventManager.bind(GuiEventType.UPDATE_WALL_MAP, p -> {
-            wallMap = new XLinkedMap<>(
-             (Map<Coordinates, List<DIRECTION>>) p.get());
-            updateRequired = true;
+            doorMap = new ObjectMap<>(
+                    (ObjectMap<Coordinates, DOOR_STATE>) p.get());
         });
         GuiEventManager.bind(GuiEventType.UPDATE_DIAGONAL_WALL_MAP, p -> {
-            diagonalJoints = new XLinkedMap<>(
-             (Map<Coordinates, List<DIRECTION>>) p.get());
-            updateRequired = true;
+            diagonalJoints = new ObjectMap<>(
+                    (ObjectMap<Coordinates, List<DIRECTION>>) p.get());
         });
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
     }
 
     @Override
@@ -117,212 +93,177 @@ public class WallMap extends SuperActor {
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha) {
-        batch.setColor(new Color(1, 1, 1, 1));
-        if (wallMap == null)
-            return;
-        Set<Coordinates> set = wallMap.keySet();
-        for (Coordinates coordinates : set) {
-            if (checkCoordinateIgnored(coordinates))
-                continue;
+    protected EventType getUpdateEvent() {
+        return GuiEventType.UPDATE_WALL_MAP;
+    }
 
-            List<DIRECTION> list = wallMap.get(coordinates);
-            boolean hasVertical = false;
-            boolean hasHorizontal = false;
-            boolean hasDiagonal = false;
-            boolean drawCorner = true;
-            boolean diagonalCorner = false;
-            boolean round = false;
-            boolean diamond = false;
-            boolean mesh = false;
 
-            Vector2 v = GridMaster.getVectorForCoordinate(coordinates, false, false, true ,
-                    ScreenMaster.getGrid());
-            v.set(v.x, v.y - 128);
-            boolean darken = false;// obj.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT;
-            String suffix = darken ? "dark" : null;
-            if (list == null) {
-                diamond = true;
-            } else {
-                for (DIRECTION side : list) {
-                    TextureRegion image = getRegion(getWallImageFromSide(side), suffix);
+    @Override
+    protected void fillDrawMap(Batch batch, Coordinates coordinates, List<DIRECTION> list, Vector2 v) {
 
-                    if (side.isDiagonal()) {
-                        if (list.size() == 1) {
-                            round = true;
-                        }
+        boolean hasVertical = false;
+        boolean hasHorizontal = false;
+        boolean hasDiagonal = false;
+        boolean drawCorner = true;
+        boolean diagonalCorner = false;
+        boolean round = false;
+        boolean diamond = false;
+        boolean mesh = false;
 
-                        drawCorner = true;
-                        if (diagonalCorner) // doens't do anything?
-                        {
-                            diagonalCorner = false;
-                        } else if (hasDiagonal) {
-                            diagonalCorner = true;
-                        } else {
-                            hasDiagonal = true;
-                        }
-                    } else {
-                        if (list.size() > 1) {
-                            mesh = true;
-                        }
 
-                        if (side.isVertical()) {
-                            if (hasVertical) {
-                                drawCorner = false;
-                            }
-                            hasVertical = true;
-                        } else {
-                            if (hasHorizontal) {
-                                drawCorner = false;
-                            }
-                            hasHorizontal = true;
-                        }
+        // boolean darken = false;// obj.getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT;
+        // String suffix = darken ? "dark" : null;
+        String suffix = null;
+        if (list == null) {
+            diamond = true;
+        } else {
+            for (DIRECTION side : list) {
+                TextureRegion image = getRegion(getWallImageFromSide(side), suffix);
+
+                if (side.isDiagonal()) {
+                    if (list.size() == 1) {
+                        round = true;
                     }
 
-                    DOOR_STATE doorState = doorMap.get(coordinates);
-                    if (doorState != null) {
-                        Color color = batch.getColor();
-                        batch.setColor(new Color(1, 1, 1, fluctuatingAlpha));
-                        batch.draw(image, v.x, v.y);
-                        batch.setColor(color);
+                    drawCorner = true;
+                    if (diagonalCorner) // doens't do anything?
+                    {
+                        diagonalCorner = false;
+                    } else if (hasDiagonal) {
+                        diagonalCorner = true;
                     } else {
-                        batch.draw(image, v.x, v.y);
+                        hasDiagonal = true;
                     }
-                }
-            }
-
-            if (hasHorizontal && hasVertical) {
-                drawCorner = true;
-            }
-            if (diagonalCorner) {
-                drawCorner = false;
-                Boolean x = null;
-                Boolean y = null;
-                boolean vertical = false;
-                for (DIRECTION side : list) {
-                    if (!side.isDiagonal()) {
-                        drawCorner = true;
+                } else {
+                    if (list.size() > 1) {
                         mesh = true;
-                    } else {
-                        if (y != null) {
-                            if (y == side.growY) {
-                                vertical = true;
-                                break;
-                            } else {
-                                if (x == side.growX) {
-                                    break;
-                                }
-                                mesh = true;
-                                continue;
-                                //TODO
-                            }
+                    }
+
+                    if (side.isVertical()) {
+                        if (hasVertical) {
+                            drawCorner = false;
                         }
-                        y = side.growY;
-                        x = side.growX;
+                        hasVertical = true;
+                    } else {
+                        if (hasHorizontal) {
+                            drawCorner = false;
+                        }
+                        hasHorizontal = true;
                     }
                 }
 
-                if (!mesh) {
-                    TextureRegion image = getRegion(
-                     vertical ? STD_IMAGES.WALL_CORNER_ALMOND_V :
-                      STD_IMAGES.WALL_CORNER_ALMOND_H, suffix);
-                    batch.draw(image, v.x
-                     + (128 - image.getRegionWidth()) / 2, v.y
-                     + (128 - image.getRegionHeight()) / 2);
-                }
-            }
-            if (drawCorner) {
-                TextureRegion image = getRegion(STD_IMAGES.WALL_CORNER, suffix);
-                if (diamond) {
-                    image = getRegion(STD_IMAGES.WALL_CORNER_DIAMOND, suffix);
-                } else if (mesh && hasDiagonal) {
-                    image = getRegion(STD_IMAGES.WALL_CORNER_MESH, suffix);
-                } else if (round) {
-                    image = getRegion(STD_IMAGES.WALL_CORNER_ROUND, suffix);
-                }
-                //
-                batch.draw(image, v.x
-                 + (128 - image.getRegionWidth()) / 2, v.y
-                 + (128 - image.getRegionHeight()) / 2);
-
+                drawMap.add(new ImmutablePair<>(new Vector2(v.x,
+                        v.y), image));
+                // DOOR_STATE doorState = doorMap.get(coordinates);
+                // if (doorState != null) {
+                //     Color color = batch.getColor();
+                //     //optimization
+                //     batch.setColor(new Color(1, 1, 1, fluctuatingAlpha));
+                //     batch.draw(image, v.x, v.y);
+                //     batch.setColor(color);
+                // }
             }
         }
-        drawDiagonalJoints(batch, set);
+
+        if (hasHorizontal && hasVertical) {
+            drawCorner = true;
+        }
+        if (diagonalCorner) {
+            drawCorner = false;
+            Boolean x = null;
+            Boolean y = null;
+            boolean vertical = false;
+            for (DIRECTION side : list) {
+                if (!side.isDiagonal()) {
+                    drawCorner = true;
+                    mesh = true;
+                } else {
+                    if (y != null) {
+                        if (y == side.growY) {
+                            vertical = true;
+                            break;
+                        } else {
+                            if (x == side.growX) {
+                                break;
+                            }
+                            mesh = true;
+                            continue;
+                            //TODO
+                        }
+                    }
+                    y = side.growY;
+                    x = side.growX;
+                }
+            }
+
+            if (!mesh) {
+                TextureRegion image = getRegion(
+                        vertical ? STD_IMAGES.WALL_CORNER_ALMOND_V :
+                                STD_IMAGES.WALL_CORNER_ALMOND_H, suffix);
+                drawMapOver.put(new Vector2(v.x
+                        + (128 - image.getRegionWidth()) / 2,v.y+ (128 - image.getRegionHeight()) / 2), image);
+            }
+        }
+        if (drawCorner) {
+            TextureRegion image = getRegion(STD_IMAGES.WALL_CORNER, suffix);
+            if (diamond) {
+                image = getRegion(STD_IMAGES.WALL_CORNER_DIAMOND, suffix);
+            } else if (mesh && hasDiagonal) {
+                image = getRegion(STD_IMAGES.WALL_CORNER_MESH, suffix);
+            } else if (round) {
+                image = getRegion(STD_IMAGES.WALL_CORNER_ROUND, suffix);
+            }
+            //
+            drawMapOver.put(new Vector2(v.x
+                    + (128 - image.getRegionWidth()) / 2, v.y+ (128 - image.getRegionHeight()) / 2), image);
+
+        }
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
     }
-
-    @Override
-    public boolean isAlphaFluctuationOn() {
-        return super.isAlphaFluctuationOn();
+    protected void fillOverlayMap(Coordinates c, ObjectMap<Vector2, TextureRegion> drawMapOver) {
+        fillDiagonalJoint(c, drawMapOver);
     }
-
-    @Override
-    protected float getAlphaFluctuationPerDelta() {
-        return super.getAlphaFluctuationPerDelta();
-    }
-
-    @Override
-    protected float getAlphaFluctuationMin() {
-        return super.getAlphaFluctuationMin();
-    }
-
-    @Override
-    protected float getAlphaFluctuationMax() {
-        return super.getAlphaFluctuationMax();
-    }
-
-    private void drawDiagonalJoints(Batch batch, Set<Coordinates> set) {
+    private void fillDiagonalJoint(Coordinates c, ObjectMap<Vector2, TextureRegion> drawMapOver) {
         if (diagonalJoints == null)
             return;
-        for (Coordinates c : set) {
-            List<DIRECTION> list = diagonalJoints.get(c);
-            if (!ListMaster.isNotEmpty(list))
-                continue;
-            if (checkCoordinateIgnored(c))
-                continue;
-            int h = GridMaster.CELL_H;
-            int w = GridMaster.CELL_W;
-            for (DIRECTION side : list) {
-
-                Vector2 v = GridMaster.getVectorForCoordinate(c, false, false , true ,
-                        ScreenMaster.getGrid());
-
-                float x1 = v.x;
-                float y1 = v.y;
-                boolean flipped = false;
-                if (side == DIRECTION.DOWN_LEFT) {
-                    y1 -= h;
-                } else if (side == DIRECTION.DOWN_RIGHT) {
-                    x1 += w;
-                    y1 -= h;
-                    flipped = true;
-                } else if (side == DIRECTION.UP_LEFT) {
-                    flipped = true;
-                } else if (side == DIRECTION.UP_RIGHT) {
-                    x1 += w;
-                }
-
-                String suffix = flipped ? " flipped" : null;
-                TextureRegion image = getRegion(STD_IMAGES.WALL_CORNER_ALMOND, suffix);
-                //            if (flipped) {
-                //            // TODO      image = ImageTransformer.flipHorizontally(ImageManager.getBufferedImage(image));
-                //            }
-
-
-                batch.draw(image, x1 - image.getRegionWidth() / 2, y1 - image.getRegionHeight() / 2);
+        List<DIRECTION> list = diagonalJoints.get(c);
+        if (!ListMaster.isNotEmpty(list))
+            return;
+        int h = GridMaster.CELL_H;
+        int w = GridMaster.CELL_W;
+        Vector2 v = GridMaster.getVectorForCoordinate(c, false, false, true,
+                ScreenMaster.getGrid());
+        for (DIRECTION side : list) {
+            float x1 = v.x;
+            float y1 = v.y;
+            boolean flipped = false;
+            if (side == DIRECTION.DOWN_LEFT) {
+                y1 -= h;
+            } else if (side == DIRECTION.DOWN_RIGHT) {
+                x1 += w;
+                y1 -= h;
+                flipped = true;
+            } else if (side == DIRECTION.UP_LEFT) {
+                flipped = true;
+            } else if (side == DIRECTION.UP_RIGHT) {
+                x1 += w;
             }
+
+            String suffix = flipped ? " flipped" : null;
+            TextureRegion image = getRegion(STD_IMAGES.WALL_CORNER_ALMOND, suffix);
+            //            if (flipped) {
+            //            // TODO      image = ImageTransformer.flipHorizontally(ImageManager.getBufferedImage(image));
+            //            }
+
+            drawMapOver.put(new Vector2(x1 - image.getRegionWidth() / 2,
+                    y1 - image.getRegionHeight() / 2), image);
         }
     }
 
-    private boolean checkCoordinateIgnored(Coordinates coordinates) {
-        Vector2 v = GridMaster.getVectorForCoordinate(coordinates, false, false, true ,
-                ScreenMaster.getGrid());
-        v.set(v.x, v.y - 128);
-        float offsetX = v.x;
-        float offsetY = v.y;
-        return !ScreenMaster.getScreen().controller.
-         isWithinCamera(getX() + offsetX, getY() + offsetY, 128, 128);
-    }
 
     public enum WALL_STYLE {
         STONE,

@@ -23,7 +23,6 @@ import java.util.Set;
  */
 public class CustomSpriteBatch extends ShaderBatch {
 
-    private static CustomSpriteBatch instance;
     PostProcessController controller;
     private BLENDING blending;
     private final Set<FluctuatingShader> shaders = new HashSet<>();
@@ -34,12 +33,6 @@ public class CustomSpriteBatch extends ShaderBatch {
     }
 
 
-    public static CustomSpriteBatch getMainInstance() {
-        if (instance == null) {
-            instance = new CustomSpriteBatch();
-        }
-        return instance;
-    }
     BlackSprite blackSprite= new BlackSprite();
 
     public void  drawBlack(float alpha, boolean whiteout) {

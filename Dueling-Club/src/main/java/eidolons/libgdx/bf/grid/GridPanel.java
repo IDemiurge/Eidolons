@@ -38,6 +38,7 @@ import eidolons.libgdx.bf.decor.DecorData.DECOR_LEVEL;
 import eidolons.libgdx.bf.decor.Pillars;
 import eidolons.libgdx.bf.decor.ShardVisuals;
 import eidolons.libgdx.bf.grid.cell.*;
+import eidolons.libgdx.bf.grid.handlers.GridManager;
 import eidolons.libgdx.bf.grid.moving.PlatformCell;
 import eidolons.libgdx.bf.grid.moving.PlatformData;
 import eidolons.libgdx.bf.grid.moving.PlatformDecor;
@@ -45,6 +46,7 @@ import eidolons.libgdx.bf.grid.moving.PlatformHandler;
 import eidolons.libgdx.bf.grid.sub.GridElement;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
+import eidolons.libgdx.bf.overlays.BorderMap;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.bf.overlays.WallMap;
@@ -77,6 +79,7 @@ public abstract class GridPanel extends Group {
     protected final int square;
     protected final int full_rows;
     protected final int full_cols;
+    private final GridManager gridManager;
     protected int moduleCols;
     protected int moduleRows;
     protected int x1, x2, y1, y2;
@@ -87,6 +90,7 @@ public abstract class GridPanel extends Group {
 
     protected ShadowMap shadowMap;
     protected WallMap wallMap;
+    protected BorderMap borderMap;
     protected ShardVisuals shards;
     protected Pillars pillars;
 
@@ -103,14 +107,11 @@ public abstract class GridPanel extends Group {
     protected List<OverlayView> overlays = new ArrayList<>();
     protected Set<BossVisual> bossVisuals = new LinkedHashSet<>();
 
-    protected GridRenderHelper manager;
     protected GridOverlaysManager overlayManager;
     FlightHandler flightHandler;
 
     protected Coordinates offset;
     protected Map<Module, GridSubParts> containerMap = new HashMap<>();
-    protected GridViewAnimator gridViewAnimator = new GridViewAnimator(this);
-    protected PlatformHandler platformHandler;
     protected List<PlatformCell> platforms = new LinkedList<>();
     protected Set<PlatformDecor> platformDecor = new LinkedHashSet();
     protected final ObjectMap<DECOR_LEVEL, CellDecorLayer> decorMap = new ObjectMap<>(4);
@@ -123,11 +124,12 @@ public abstract class GridPanel extends Group {
         this.full_rows = rows;
         this.full_cols = cols;
         initFullGrid();
-        platformHandler = createPlatformHandler(); //platforms between modules?..
         flightHandler = new FlightHandler();
         addActor(flightHandler.getObjsOver());
         addActor(flightHandler.getObjsUnder());
         addActor(flightHandler.getObjsVfx());
+
+        gridManager = new GridManager(this);
 
         for (DECOR_LEVEL level : DECOR_LEVEL.values()) {
             CellDecorLayer cellDecorLayer;
@@ -274,6 +276,7 @@ it sort of broke at some point - need to investigate!
             addActor(shadowMap = new ShadowMap(this));
         }
         addActor(wallMap = new WallMap());
+        addActor(borderMap = new BorderMap());
 
         bindEvents();
 
@@ -365,7 +368,7 @@ it sort of broke at some point - need to investigate!
         return (UnitView) viewMap.get(battleFieldObject);
     }
 
-    protected GridObject findGridObj(String key, Coordinates c) {
+    public GridObject findGridObj(String key, Coordinates c) {
         for (GridObject gridObject : gridObjects) {
             if (gridObject.getKey().equalsIgnoreCase(key)) {
                 if (c == null || gridObject.getCoordinates().equals(c)) {
@@ -616,7 +619,7 @@ it sort of broke at some point - need to investigate!
             uv.setVisible(false);
     }
 
-    protected BaseView removeUnitView(BattleFieldObject obj) {
+    public BaseView removeUnitView(BattleFieldObject obj) {
         BaseView uv = viewMap.get(obj);
         if (obj.isOverlaying()) {
             return removeOverlay(obj);
@@ -716,7 +719,7 @@ it sort of broke at some point - need to investigate!
 
         decorMap.get(DECOR_LEVEL.OVER_CELLS).setZIndex(Integer.MAX_VALUE);
 
-        wallMap.setVisible(WallMap.isOn());
+        borderMap.setZIndex(Integer.MAX_VALUE);
         wallMap.setZIndex(Integer.MAX_VALUE);
 
         if (shadowMap != null) {
@@ -796,9 +799,8 @@ it sort of broke at some point - need to investigate!
         return customOverlayingObjects;
     }
 
-    public GridRenderHelper getGridManager() {
-        return manager;
-
+    public GridManager getGridManager() {
+        return gridManager;
     }
 
     public DC_Cell getCell(int i, int i1) {
@@ -1091,7 +1093,7 @@ it sort of broke at some point - need to investigate!
         }
         return true;
     }
-
+//ToDo-Cleanup
     protected void checkAddBorder(int x, int y) {
         Boolean hor = null;
         Boolean vert = null;
@@ -1200,10 +1202,6 @@ it sort of broke at some point - need to investigate!
         return offsetY;
     }
 
-    public GridViewAnimator getGridViewAnimator() {
-        return gridViewAnimator;
-    }
-
     public GridCellContainer getGridCell(int x, int y) {
         if (x >= cells.length || y < 0) {
             return null;
@@ -1214,14 +1212,8 @@ it sort of broke at some point - need to investigate!
         return cells[x][y];
     }
 
-
-    protected PlatformHandler createPlatformHandler() {
-        return new PlatformHandler(this);
-    }
-
-    public PlatformDecor addPlatform(List<PlatformCell> cells, PlatformData data) {
+    public PlatformDecor addPlatform(List<PlatformCell> cells, PlatformData data, PlatformDecor visuals) {
         for (PlatformCell cell : cells) {
-
             int x = cell.getGridX();
             int y = cell.getGridY();
             addActor(cell.init());
@@ -1229,20 +1221,14 @@ it sort of broke at some point - need to investigate!
             cell.setX(x * GridMaster.CELL_W);
             platforms.add(cell);
         }
-        PlatformDecor visuals = platformHandler.createCellVisuals(cells, data);
-        //z?
         platformDecor.add(visuals);
         addActor(visuals);
         return visuals;
-        //z-index TODO
-        // what would need to be ABOVE platforms?
-        // anims, vfx, possibly shadowMap (or not, if it's void)
-        // we don't want it to be above light emitters, but those need a revamp anyway
-        // between modules - perhaps a handler per one?
     }
 
+
     public PlatformHandler getPlatformHandler() {
-        return platformHandler;
+        return getGridManager().getPlatformHandler();
     }
 
     public GridCell getGridCell(Coordinates coordinate) {
@@ -1263,6 +1249,29 @@ it sort of broke at some point - need to investigate!
 
     public void setDecorInitialized(boolean decorInitialized) {
         this.decorInitialized = decorInitialized;
+    }
+
+    public int getX1() {
+        return x1;
+    }
+
+    public int getX2() {
+        return x2;
+    }
+
+    public int getY1() {
+        return y1;
+    }
+
+    public int getY2() {
+        return y2;
+    }
+
+    public List<GroupX> getCommentSprites() {
+        return null ;
+    }
+    public List<GroupX> getActiveCommentSprites() {
+        return null ;
     }
 }
 

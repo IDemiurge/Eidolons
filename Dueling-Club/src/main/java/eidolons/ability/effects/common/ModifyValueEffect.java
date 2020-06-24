@@ -108,6 +108,9 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         this(sparam, code, new Formula(formula));
     }
 
+    public ModifyValueEffect(String sparam, MOD code, String formula, String max) {
+        this(sparam, code, new Formula(formula), new Formula(max));
+    }
     @OmittedConstructor
     public ModifyValueEffect() {
     }
@@ -117,6 +120,8 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         this(p, mod, formula);
         setValueOverMax(valueOverMax);
     }
+
+
 
     private static boolean checkPercentOrConst(String percOrConst) {
         return StringMaster.contains(percOrConst, "mod");

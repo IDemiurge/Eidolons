@@ -12,12 +12,14 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.RandomWizard;
 import main.system.launch.CoreEngine;
 
 import java.util.List;
 
 /**
- * failed when hero's cell becomes void 'wall' cells are MARKED
+ * failed when hero's cell becomes void
+ * 'wall' cells are MARKED
  * <p>
  * FALSE EXITS! E.g., there are 3 in the template, and only one random is TRUE. Veil vs <?>
  */
@@ -35,7 +37,7 @@ public class VoidPuzzle extends MazePuzzle {
     }
 
     public boolean isTransform() {
-        return false;
+        return true;
     }
 
     @Override
@@ -57,7 +59,8 @@ public class VoidPuzzle extends MazePuzzle {
 
 
     protected String getFirstMoveScriptKey() {
-        return "void maze start";
+        // return "void maze start";
+        return null;
     }
 
 
@@ -107,6 +110,12 @@ public class VoidPuzzle extends MazePuzzle {
     }
 
     @Override
+    public int getTipDelay() {
+        //only first time //TODO
+        return 4000;
+    }
+
+    @Override
     protected String getDefaultTitle() {
         return "Soul Maze";
     }
@@ -149,5 +158,21 @@ public class VoidPuzzle extends MazePuzzle {
         //getData().getValue() construct!
         // return new FlightData(s);
         return new FlightData(FlightHandler.FLIGHT_ENVIRON.astral.data);
+    }
+
+    public int getMinExitDst() {
+        return 8;
+    }
+
+    public long getMaxExits() {
+        return RandomWizard.getRandomIntBetween(3, 4);
+    }
+
+    public boolean isAutoStart() {
+        return false;
+    }
+
+    public boolean isMarkAroundEntrance() {
+        return true;
     }
 }

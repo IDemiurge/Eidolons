@@ -11,6 +11,7 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.netherflame.main.event.TipMessageMaster;
 import eidolons.game.netherflame.main.event.TipMessageSource;
+import eidolons.game.netherflame.main.pale.PaleAspect;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnimDataSource;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.system.audio.MusicMaster;
@@ -34,30 +35,33 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         setup = createSetup();
     }
 
-    protected abstract PuzzleSetup<T,?> createSetup();
+    protected abstract PuzzleSetup<T, ?> createSetup();
 
     public void afterTipAction() {
         GuiEventManager.trigger(CAMERA_PAN_TO_COORDINATE, puzzle.getCenterCoordinates());
     }
+
     public void glimpse() {
         GuiEventManager.trigger(SHOW_FULLSCREEN_ANIM,
                 new FullscreenAnimDataSource(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH,
                         1, FACING_DIRECTION.NONE, GenericEnums.BLENDING.SCREEN));
     }
+
     protected void updateQuest() {
         GuiEventManager.trigger(QUEST_UPDATE, puzzle.quest);
     }
+
     protected abstract void playerActionDone(DC_ActiveObj action);
 
     public void activate() {
         puzzle.active = true;
-        puzzle. failed = false;
-        puzzle. triggers.clear();
+        puzzle.failed = false;
+        puzzle.triggers.clear();
         if (puzzle.setups != null)
-        for (PuzzleSetup setup : puzzle.setups) {
-            setup.started();
-        }
-        if (setup  != null)
+            for (PuzzleSetup setup : puzzle.setups) {
+                setup.started();
+            }
+        if (setup != null)
             setup.started();
 
         puzzle.resolutions.forEach(r -> r.started());
@@ -65,7 +69,7 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         getMaster().activated(puzzle);
         GuiEventManager.trigger(PLAYER_STATUS_CHANGED,
                 new PlayerStatus(VisionEnums.PLAYER_STATUS.PUZZLE,
-                        puzzle. stats.getIntValue(PuzzleStats.PUZZLE_STAT.TIMES_FAILED)));
+                        puzzle.stats.getIntValue(PuzzleStats.PUZZLE_STAT.TIMES_FAILED)));
         puzzle.quest = initQuest(puzzle.data);
         puzzle.stats.started();
         log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle Activated: " + this);
@@ -82,7 +86,7 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         }
 
     }
-    
+
     public void finished() {
         log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle finished: " + this);
         //        resolutions.forEach(r -> r.finished());
@@ -98,8 +102,8 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         cinematicWin();
         WaitMaster.WAIT(puzzle.getWaitTimeBeforeEndMsg(false));
         if (!isTestMode()) {
-            puzzle. quest.complete();
-            puzzle. stats.complete();
+            puzzle.quest.complete();
+            puzzle.stats.complete();
             puzzle.solved = true;
             String text = puzzle.getCompletionText();
             TipMessageSource src = new TipMessageSource(
@@ -119,16 +123,16 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
     }
 
     public void failed() {
-        if (puzzle. isFailed())
+        if (puzzle.isFailed())
             return;
         log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle failed: " + this);
         MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.FALL);
 
         EUtils.showInfoText(true, "Mystery fades: " + puzzle.getTitle());
         puzzle.stats.failed();
-        puzzle. quest.failed();
+        puzzle.quest.failed();
 
-        puzzle. failed = true;
+        puzzle.failed = true;
 
         String text = puzzle.getFailText();
 
@@ -142,6 +146,7 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         TipMessageMaster.tip(src);
         ended();
     }
+
     public void ended() {
         if (puzzle.isMinimizeUI())
             GuiEventManager.trigger(MINIMIZE_UI_OFF);
@@ -166,10 +171,40 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
             ScriptLib.execute(puzzle.getFailCinematicScriptKey());
         }
     }
+
     protected void cinematicWin() {
         if (puzzle.getWinCinematicScriptKey() != null) {
             ScriptLib.execute(puzzle.getWinCinematicScriptKey());
         }
     }
 
+    protected void entered() {
+        if (puzzle.isPale()) {
+            PaleAspect.enterPale();
+        }
+        if (puzzle.getEnterCinematicScriptKey() != null) {
+            ScriptLib.execute(puzzle.getEnterCinematicScriptKey());
+            //just zoom out? need to center cam on exits..
+        }
+        beforeTip(); //TODO pause/disable things ! enter cinematic mode or something
+        if (puzzle.getTipDelay() > 0) {
+            WaitMaster.WAIT(puzzle.getTipDelay());
+        }
+
+        if (isFirstAttempt() && !puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP).isEmpty()) {
+            TipMessageMaster.tip(puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP),
+                    () -> afterTipAction());
+        } else {
+            Eidolons.onNonGdxThread(() -> afterTipAction());
+        }
+        puzzle.activate();
+    }
+
+    protected boolean isFirstAttempt() {
+        return !puzzle.isFailed() || PuzzleMaster.TEST_MODE;
+    }
+
+    protected void beforeTip() {
+
+    }
 }

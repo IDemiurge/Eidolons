@@ -1,4 +1,4 @@
-package eidolons.libgdx.bf.grid;
+package eidolons.libgdx.bf.grid.handlers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -7,32 +7,22 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.ObjectMap;
-import eidolons.entity.active.Spell;
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.DummyUnit;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.WaitAction;
-import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
-import eidolons.libgdx.anims.std.DeathAnim;
-import eidolons.libgdx.anims.std.MoveAnimation;
 import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.BaseView;
-import eidolons.libgdx.bf.grid.cell.HpBarView;
-import eidolons.libgdx.bf.grid.cell.UnitGridView;
-import eidolons.libgdx.bf.grid.comment.CommentData;
-import eidolons.libgdx.bf.overlays.HpBar;
-import eidolons.libgdx.bf.overlays.HpBarManager;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.NoHitGroup;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.TextBuilder;
@@ -41,19 +31,14 @@ import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
-import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.ControlOptions;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.Texts;
 import main.content.enums.GenericEnums;
-import main.entity.Ref;
-import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.game.logic.event.Event;
-import main.system.EventCallback;
 import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -65,35 +50,35 @@ import main.system.threading.WaitMaster;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static main.game.logic.event.Event.STANDARD_EVENT_TYPE.*;
 import static main.system.GuiEventType.*;
 
 /**
  * Created by JustMe on 5/2/2018.
  */
-public class GridRenderHelper {
+public class GridCommentHandler extends GridHandler{
     private static final String SEQUENTIAL = "=SEQ=";
     private static final String COMMENT_WAIT_KEY = "[COMMENT_WAIT]";
-    public static GridRenderHelper instance;
+    public static GridCommentHandler instance;
 
     FACING_DIRECTION f = FACING_DIRECTION.NORTH;
-    DC_GridPanel panel;
     private Integer waitCounter = 0;
-    private Coordinates c;
     private final List<Runnable> commentRunnables =    new ArrayList<>() ;
 
-    public GridRenderHelper(DC_GridPanel panel) {
-        instance = this;
-        this.panel = panel;
-        GuiEventManager.bind(INGAME_EVENT_TRIGGERED, onIngameEvent());
+    public GridCommentHandler(GridPanel panel) {
+        super(panel);
+        instance = this; //ToDo-Cleanup
 
+    }
+
+    @Override
+    protected void bindEvents() {
         GuiEventManager.bind(CLEAR_COMMENTS, p -> {
             for (Runnable commentRunnable : commentRunnables) {
                 commentRunnable.run();
             }
             commentRunnables.clear();
         });
-            GuiEventManager.bind(SHOW_COMMENT_PORTRAIT, p -> {
+        GuiEventManager.bind(SHOW_COMMENT_PORTRAIT, p -> {
             List list = (List) p.get();
             comment(list);
         });
@@ -130,7 +115,7 @@ public class GridRenderHelper {
     }
 
     public ObjectMap<Obj, BaseView> getViewMap() {
-        return panel.getViewMap();
+        return grid.getViewMap();
     }
 
 
@@ -442,7 +427,7 @@ public class GridRenderHelper {
             }
             floatingText.fadeOut();
 
-            panel.getActiveCommentSprites().remove(commentGroup);
+            grid.getActiveCommentSprites().remove(commentGroup);
 //       this will be a mess!     GdxMaster.inputPass();
 
             ActionMaster.addAction(finalCommentBgSprite, new WaitAction(delta -> Eidolons.getGame().isPaused()));
@@ -494,8 +479,8 @@ public class GridRenderHelper {
         float time = 1200 + text.length() * 42; //HALF TIME! minimum to wait
 
         //wait if seq already showing?
-        panel.setName(seq ? "seq" : "");
-        if (panel.getActiveCommentSprites().size() > 0) {
+        grid.setName(seq ? "seq" : "");
+        if (grid.getActiveCommentSprites().size() > 0) {
 //            Eidolons.onNonGdxThread(() -> {
 //                WaitMaster.waitForCondition(max -> panel.getActiveCommentSprites().size() == 0
 ////                        stream().filter(d->d.getName().contains("seq")).count()==0
@@ -509,10 +494,10 @@ public class GridRenderHelper {
     }
 
     private void addAndQueueRemoval(GroupX commentGroup, boolean seq, boolean onInput, float time, Runnable r) {
-        panel.addActor(commentGroup);
-        panel.getCommentSprites().add(commentGroup);
+        grid.addActor(commentGroup);
+        grid.getCommentSprites().add(commentGroup);
         if (seq) {
-            panel.getActiveCommentSprites().add(commentGroup);
+            grid.getActiveCommentSprites().add(commentGroup);
         }
         commentRunnables.add(r);
 //        commentMap.put(co)
@@ -554,157 +539,6 @@ public class GridRenderHelper {
             }
         };
     }
-
-    private EventCallback onIngameEvent() {
-        return param -> {
-            Event event = (Event) param.get();
-            Ref ref = event.getRef();
-
-            boolean caught = false;
-
-            Event.EVENT_TYPE type = event.getType();
-            if (type == EFFECT_HAS_BEEN_APPLIED) {
-                GuiEventManager.trigger(EFFECT_APPLIED, event.getRef().getEffect());
-                caught = true;
-            } else if (type == UNIT_HAS_CHANGED_FACING
-                    || type == UNIT_HAS_TURNED_CLOCKWISE
-                    || type == UNIT_HAS_TURNED_ANTICLOCKWISE) {
-                if ((ref.getObj(KEYS.TARGET) instanceof BattleFieldObject)) {
-                    BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET);
-                    BaseView view = getViewMap().get(hero);
-                    if (view != null && view instanceof UnitGridView) {
-                        UnitGridView unitView = ((UnitGridView) view);
-                        unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
-                        if (hero instanceof Unit)
-                            DC_SoundMaster.playTurnSound(hero);
-                    }
-                }
-                caught = true;
-            } else if (type == UNIT_HAS_FALLEN_UNCONSCIOUS
-            ) {
-                GuiEventManager.trigger(UNIT_GREYED_OUT_ON, ref.getSourceObj());
-            } else if (type == UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS) {
-                GuiEventManager.trigger(UNIT_GREYED_OUT_OFF, ref.getSourceObj());
-            } else if (type == UNIT_HAS_BEEN_KILLED) {
-                GuiEventManager.trigger(UNIT_GREYED_OUT_OFF, ref.getSourceObj());
-                if (!DeathAnim.isOn() || ref.isDebug()) {
-                    GuiEventManager.trigger(DESTROY_UNIT_MODEL, ref.getTargetObj());
-                }
-                caught = true;
-            } else {
-
-                BattleFieldObject object = (BattleFieldObject) ref.getSourceObj();
-
-                if (type == UNIT_BEING_MOVED) {
-                    if (!MoveAnimation.isOn())
-                        panel.removeUnitView(object);
-                    caught = true;
-
-                    if (event.getRef().getActive() instanceof Spell) {
-                        unitBeingMoved(object);
-                    }
-
-                } else if (type == UNIT_FINISHED_MOVING) {
-                    unitMoved(object);
-
-                    if (event.getRef().getActive() instanceof Spell) {
-                        unitMovedForced(object, (Spell) event.getRef().getActive());
-                    }
-                    caught = true;
-                } else if (type.name().startsWith("PARAM_BEING_MODIFIED")) {
-                    caught = true;
-                } else if (type.name().startsWith("PROP_")) {
-                    caught = true;
-                } else if (type.name().startsWith("ABILITY_")) {
-                    caught = true;
-                } else if (type.name().startsWith("EFFECT_")) {
-                    caught = true;
-                } else if (type.name().startsWith("PARAM_MODIFIED")) {
-                    if (!HpBar.isResetOnLogicThread()) {
-                        if (GuiEventManager.isBodyParam(type.getArg())) {
-                            checkHpBarReset(object);
-                            if (object.isPlayerCharacter()){
-                                checkBodyBarReset(object);
-                            }
-                        }
-                        if (GuiEventManager.isSoulParam(type.getArg())) {
-                            checkHpBarReset(object);
-                            checkSoulBarReset(object);
-                        }
-                    }
-                    caught = true;
-                }
-            }
-            if (type == UNIT_HAS_BEEN_DEALT_PURE_DAMAGE) {
-                if (!HpBar.isResetOnLogicThread())
-                    checkHpBarReset(event.getRef().getTargetObj());
-                caught = true;
-            }
-
-            if (!caught) {
-                /*      System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
-                 */
-            }
-        };
-    }
-
-    public void unitMoved(Obj sourceObj) {
-        if (!MoveAnimation.isOn() || AnimMaster.isAnimationOffFor(sourceObj,
-                getViewMap().get(sourceObj))
-                || sourceObj.getGame().getManager().getActiveObj() != sourceObj)
-            //TODO EA check...
-            //what about COUNTER ATTACK?!
-
-            //move immediately
-            panel.unitMoved((BattleFieldObject) sourceObj);
-    }
-
-    public void unitMovedForced(BattleFieldObject sourceObj, Spell active) {
-        Coordinates c = sourceObj.getCoordinates();
-        if (active.getName().contains("1Projection")) {
-            sourceObj.setCoordinates(sourceObj.getLastCoordinates());
-        }
-        int n=1765;
-        if (active.getName().contains("Projection")) {
-             n=2765;
-        }
-        WaitMaster.doAfterWait(n, () -> {
-            Gdx.app.postRunnable(() -> {
-                if (active.getName().contains("1Projection")) {
-                    sourceObj.setCoordinates(c);
-                }
-                panel.unitMoved(sourceObj);
-                BaseView view = panel.getViewMap().get(sourceObj);
-                view.fadeIn();
-            });
-        });
-    }
-        public void unitBeingMoved(BattleFieldObject sourceObj) {
-//              c = sourceObj.getCoordinates();
-//            sourceObj.setCoordinates(sourceObj.getLastCoordinates());
-        BaseView view = panel.getViewMap().get(sourceObj);
-        view.fadeOut();
-//        new MoveAnimation()
-
-    }
-    private void checkBodyBarReset(BattleFieldObject object) {
-        GuiEventManager.trigger(UPDATE_MAIN_HERO);
-    }
-
-    private void checkSoulBarReset(BattleFieldObject object) {
-        GuiEventManager.trigger(UPDATE_MAIN_HERO);
-    }
-    public void checkHpBarReset(Obj obj) {
-        HpBarView view = (HpBarView) getViewMap().get(obj);
-        if (view != null)
-            if (view.getActor().isVisible())
-                if (view.getHpBar() != null)
-                    if (
-                            !ExplorationMaster.isExplorationOn()
-                                    || HpBarManager.canHpBarBeVisible((BattleFieldObject) view.getActor().getUserObject()))
-                        view.resetHpBar();
-    }
-
 
     public Integer getWaitCounter() {
         return waitCounter;

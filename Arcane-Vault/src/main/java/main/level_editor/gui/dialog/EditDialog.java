@@ -15,6 +15,11 @@ public abstract  class EditDialog<T > extends ChooserDialog<T, EditValueContaine
     public EditDialog(int size) {
         super(2, size);
     }
+
+    public EditDialog( ) {
+        this( 0);
+    }
+
     @Override
     protected EditValueContainer createElement_(T datum) {
 

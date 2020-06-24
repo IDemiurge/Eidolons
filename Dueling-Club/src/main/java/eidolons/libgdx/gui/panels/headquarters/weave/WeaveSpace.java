@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.headquarters.weave.model.WeaveModelBuilder;
-import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.stage.StageX;
 
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class WeaveSpace extends StageX {
     private GroupX currentView;
 
     public WeaveSpace(Camera cam) {
-        super(new ScreenViewport(cam), CustomSpriteBatch.getMainInstance());
+        super(new ScreenViewport(cam), GdxMaster.getMainBatch());
         //emitters!
 //        addActor(ambience =new WeaveAmbience());
         refresh();

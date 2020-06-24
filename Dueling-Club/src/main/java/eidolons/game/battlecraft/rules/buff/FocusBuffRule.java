@@ -36,7 +36,7 @@ public class FocusBuffRule extends DC_BuffRule {
                 return new Effects(new ModifyValueEffect(true, PARAMS.DEFENSE_MOD,
                         MOD.MODIFY_BY_PERCENT, "("
                         + getValueRef() + "-"
-                        + formulas[1] + ")*10"),
+                        + formulas[0] + ")*10"),
 
 //                        new ModifyValueEffect(true, PARAMS.ACCURACY, MOD.MODIFY_BY_CONST,
 //                                "-(" + formulas[1] + " - " + getValueRef()+")* 10"),
@@ -52,7 +52,7 @@ public class FocusBuffRule extends DC_BuffRule {
                 return new Effects(new ModifyValueEffect(true, PARAMS.DEFENSE_MOD,
                         MOD.MODIFY_BY_PERCENT, "("
                         + getValueRef() + "-"
-                        + formulas[2] + ")* 2"),
+                        + formulas[1] + ")* 2"),
 
 //                        new ModifyValueEffect(true, PARAMS.ACCURACY, MOD.MODIFY_BY_CONST,
 //                                "(" + getValueRef() + " - " +formulas[2] +")* 2"),
