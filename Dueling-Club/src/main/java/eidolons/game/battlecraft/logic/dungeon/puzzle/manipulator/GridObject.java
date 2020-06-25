@@ -15,6 +15,8 @@ import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
@@ -284,5 +286,13 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
 
     public Boolean getUnder() {
         return under;
+    }
+
+    public void removeFromGrid() {
+        GuiEventManager.trigger(GuiEventType.REMOVE_GRID_OBJ, this);
+    }
+
+    public void addToGrid() {
+        GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, this);
     }
 }

@@ -58,10 +58,10 @@ public class TexturePackerLaunch {
     };
 
     static String[] mainFolders = {
-//            "", //root
+            //            "", //root
             //     "gen",
             "ui",
-//                 "main",
+            //                 "main",
     };
 
     static String[] mainFoldersExceptions = {
@@ -73,8 +73,13 @@ public class TexturePackerLaunch {
     };
     private static final float cullPercentage = 0.33f;
     private static Settings settings;
+    private static boolean atlasGen;
 
     public static void main(String[] args) {
+        if (DialogMaster.confirm("Gen Atlases?")) {
+            generateAtlases();
+            return;
+        }
         if (DialogMaster.confirm("Custom pack?")) {
             customPack();
             return;
@@ -103,6 +108,7 @@ public class TexturePackerLaunch {
         packWeaponSprites(chosen);
     }
 
+
     private static void cullImages(float percentage, boolean subdirs, String... folders) {
         int denominator = Math.round(1 / percentage);
         for (String folder : folders) {
@@ -113,8 +119,8 @@ public class TexturePackerLaunch {
                 if (i % denominator == 0)
                     imageFile.delete();
 
-//                java.nio.file.Files.isSymbolicLink()
-//                java.nio.file.Files.readSymbolicLink()
+                //                java.nio.file.Files.isSymbolicLink()
+                //                java.nio.file.Files.readSymbolicLink()
                 i++;
             }
         }
@@ -142,9 +148,23 @@ public class TexturePackerLaunch {
         }
     }
 
+    public static final String[] atlases = {
+            "ui",
+            // "grid",
+    };
+
+    private static void generateAtlases() {
+        atlasGen = true;
+        for (String name : atlases) {
+            String input = PathFinder.getAtlasImgPath() + name;
+            String output = PathFinder.getAtlasGenPath();
+            pack(input, output, name);
+        }
+    }
+
     public static Settings getWorstSettings() {
         Settings settings = getSettings();
-//        settings.format = Format.RGBA8888;
+        //        settings.format = Format.RGBA8888;
         settings.format = Format.RGBA4444;
         settings.jpegQuality = 0.55f;
         if (DialogMaster.confirm("Jpg?")) {
@@ -185,31 +205,30 @@ public class TexturePackerLaunch {
         if (settings != null)
             return settings;
         settings = new Settings();
-        settings.combineSubdirectories = DialogMaster.confirm("Is combine Subdirectories ?");
+        settings.combineSubdirectories = atlasGen || DialogMaster.confirm("Is combine Subdirectories ?");
 
-//        Float f = new Float(DialogMaster.inputInt("Scale?", 100)) / 100;
-//        if (f != 0) {
-//            settings.scale = new float[]{f};
-//        }
+        //        Float f = new Float(DialogMaster.inputInt("Scale?", 100)) / 100;
+        //        if (f != 0) {
+        //            settings.scale = new float[]{f};
+        //        }
 
         settings.maxHeight = (int) Math.pow(2, 12);
         settings.maxWidth = (int) Math.pow(2, 12);
-//        settings.maxHeight = (int) Math.pow(2, 13);
-//        settings.maxWidth = (int) Math.pow(2, 13);
+        //        settings.maxHeight = (int) Math.pow(2, 13);
+        //        settings.maxWidth = (int) Math.pow(2, 13);
         settings.atlasExtension = ATLAS_EXTENSION;
-        boolean TRIM = DialogMaster.confirm("Trip empty space?");
+        boolean TRIM = atlasGen || DialogMaster.confirm("Trip empty space?");
         settings.stripWhitespaceY = TRIM;
         settings.stripWhitespaceX = TRIM;
         settings.square = false;
         settings.format = Format.RGBA8888;
         // settings.limitMemory = false;
         settings.jpegQuality = 0.7f;
-
-        if (DialogMaster.confirm("Jpg?"))
-        {
-            settings.outputFormat = "jpg";
-            settings.format = Format.RGB888;
-        }
+        if (!atlasGen)
+            if (DialogMaster.confirm("Jpg?")) {
+                settings.outputFormat = "jpg";
+                settings.format = Format.RGB888;
+            }
         return settings;
     }
 
@@ -243,16 +262,17 @@ public class TexturePackerLaunch {
         }
 
     }
+
     private static void customizeSettings(Settings settings) {
         boolean bool = DialogMaster.confirm("Half scale?");
         if (bool) {
-            settings.scale=new float[]{
+            settings.scale = new float[]{
                     0.5f
             };
         }
         bool = DialogMaster.confirm("Low quality?");
         if (bool) {
-            settings.format=Format.RGBA4444;
+            settings.format = Format.RGBA4444;
         }
 
 
@@ -260,8 +280,9 @@ public class TexturePackerLaunch {
 
     public static void pack(String inputDir, String outputDir, String packFileName) {
         Settings settings = getSettings();
-
-        if (DialogMaster.confirm("Customize Settings?")) {
+        if (atlasGen)
+            settings = getBestSettings();
+        else if (DialogMaster.confirm("Customize Settings?")) {
             customizeSettings(settings);
         } else {
             settings =

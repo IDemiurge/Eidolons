@@ -107,16 +107,42 @@ public class ShadowMap extends GroupX implements GridElement {
         if (!on)
             return;
         setTransform(false);
-        super.draw(batch, parentAlpha);
+        if (grid.isCustomDraw()) {
+            for (ShadeLightCell[][] value : cells.values()) {
+                for (int x = grid.drawX1; x < grid.drawX2; x++) {
+                    for (int y = grid.drawY1; y < grid.drawY2; y++) {
+                        ShadeLightCell cell = value[x][grid.getGdxY_ForModule(y)];
+                        if (cell != null) {
+                            cell.draw(batch, 1);
+                        }
+                    }
+                }
+            }
+        } else
+            super.draw(batch, parentAlpha);
     }
 
     @Override
     public void act(float delta) {
         if (!on)
             return;
-        super.act(delta);
 
-        setY(-(y1) * 128);
+        setY(-(y1) * 128); //ToDo-Cleanup
+
+        if (grid.isCustomDraw()) {
+            for (ShadeLightCell[][] value : cells.values()) {
+                for (int x = grid.drawX1; x < grid.drawX2; x++) {
+                    for (int y = grid.drawY1; y < grid.drawY2; y++) {
+                        ShadeLightCell cell = value[x][grid.getGdxY_ForModule(y)];
+                        if (cell != null) {
+                            cell.act(delta);
+                        }
+                    }
+                }
+            }
+        } else
+            super.act(delta);
+
         //TODO module fix - only act from x1 to x2
     }
 

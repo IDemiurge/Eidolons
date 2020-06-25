@@ -75,9 +75,9 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         return puzzle;
     }
 
-    private void preloadAssets() {
+    protected void preloadAssets() {
         if (puzzle.getOverrideBackground() != null) {
-            SpriteAnimationFactory.getSpriteAnimation(puzzle.getOverrideBackground());
+            SpriteAnimationFactory.preload(puzzle.getOverrideBackground());
         }
     }
 

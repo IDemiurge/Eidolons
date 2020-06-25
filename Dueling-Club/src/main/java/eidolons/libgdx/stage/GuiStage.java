@@ -580,7 +580,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     public boolean keyUp(int keyCode) {
         if (overlayPanel != null)
             if (!overlayPanel.keyUp(keyCode))
-            return true;
+                return true;
         String c = Keys.toString(keyCode);
         // if (Analystics.inOn())
         //     FileLogManager.streamInput("Key Up: " + c);
@@ -593,8 +593,8 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     @Override
     public boolean keyDown(int keyCode) {
         if (overlayPanel != null)
-        if (!overlayPanel.keyDown(keyCode))
-            return true;
+            if (!overlayPanel.keyDown(keyCode))
+                return true;
         FileLogManager.streamInput("Key Down: " + Keys.toString(keyCode));
         if (DC_Game.game == null) {
             return false;
@@ -614,10 +614,13 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
     @Override
     public boolean keyTyped(char character) {
-
+        if (GdxMaster.isVisibleEffectively(textInputPanel)) {
+            textInputPanel.keyTyped(character);
+            return true;
+        }
         if (overlayPanel != null)
             if (!overlayPanel.keyTyped(character))
-            return true;
+                return true;
         if ((int) character == 0)
             return false;
         FileLogManager.streamInput("Key Typed: " + character);

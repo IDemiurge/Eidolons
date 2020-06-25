@@ -1081,7 +1081,9 @@ public class SpeechExecutor {
                     return false;
                 }
                 return true;
-
+            case GUI_EVENT:
+                GuiEventManager.trigger(value);
+                break;
         }
         return true;
     }

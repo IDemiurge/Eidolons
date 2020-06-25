@@ -42,7 +42,7 @@ public class VoidPuzzleHandler extends MazeHandler<VoidPuzzle> {
         if (isFirstAttempt()) {
 
         Object c1 = RandomWizard.getRandomListObject(puzzle.falseExits);
-        List<Coordinates> c = CoordinatesMaster.getCoordinatesBetween((Coordinates) c1, getExitCoordinates());
+        List<Coordinates> c = CoordinatesMaster.getCoordinatesBetween(getAbsoluteCoordinate((Coordinates) c1), getExitCoordinates());
         GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, c);
         }
     }
@@ -184,13 +184,13 @@ public class VoidPuzzleHandler extends MazeHandler<VoidPuzzle> {
         }
         // VoidHandler.TEST_MODE = true;
         //TODO collapse all?
-        voidHandler.collapseAll();
-        voidHandler.setCollapsePeriod(0);
+        voidHandler.cleanUp();
         collapsing = false;
         //shakes?
         for (GridObject hole : holes) {
             GuiEventManager.trigger(GuiEventType.REMOVE_GRID_OBJ, hole);
         }
+
 
         voidHandler.toggleAutoOff(Eidolons.getMainHero());
     }

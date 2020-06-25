@@ -147,6 +147,7 @@ public class FlyingObjs extends GroupX {
             ((EmitterActor) obj.actor).getEffect().
                     scaleEffect(RandomWizard.getRandomFloatBetween(0.5f, 1f));
             ((EmitterActor) obj.actor).start();
+            obj.actor.act(RandomWizard.getRandomFloat()*5);
         }
     }
 
@@ -158,9 +159,7 @@ public class FlyingObjs extends GroupX {
         //this is completely up to me! Depends on TYPE? Or also intensity?
         float i = RandomWizard.getRandomFloatBetween(3, 5);
         float base = cinematic ? i : i * getGridSizeFactor();
-        return (float) (base *
-                type.speedFactor
-                * (1 / Math.sqrt(intensity)));
+        return  (base *                type.speedFactor               );
     }
 
     private float getGridSizeFactor() {
@@ -169,7 +168,7 @@ public class FlyingObjs extends GroupX {
 
     private Vector2 getPosForNew() {
         boolean hor = RandomWizard.random();
-        float offset = (hor ? h : w) * RandomWizard.getRandomFloatBetween(0.31f, 0.68f);
+        float offset = (hor ? h : w) * RandomWizard.getRandomFloatBetween(0.41f, 0.68f);
         //angle should affect - we want diagonal more? or maybe true random..
         return hor
                 ? new Vector2(cam_x - w / 2 * getDirectionX(), cam_y + offset * getDirectionY() - h / 2 * getDirectionY() + 1)

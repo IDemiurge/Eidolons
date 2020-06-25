@@ -169,6 +169,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SCRIPT> {
         PRELOAD_MUSIC, UNLOAD_SCOPE, LOAD_SCOPE, AMBI_VFX,
         VIDEO,
         OPTION_SOUND, OPTION_GRAPHICS, OPTION_GAMEPLAY, OPTION_ANIM,
+        GUI_EVENT,
         //make templates mapped by name?
     }
 

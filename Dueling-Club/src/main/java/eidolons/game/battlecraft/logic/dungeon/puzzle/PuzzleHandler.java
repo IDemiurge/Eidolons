@@ -182,6 +182,7 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         if (puzzle.isPale()) {
             PaleAspect.enterPale();
         }
+        Eidolons.onNonGdxThread(() -> {
         if (puzzle.getEnterCinematicScriptKey() != null) {
             ScriptLib.execute(puzzle.getEnterCinematicScriptKey());
             //just zoom out? need to center cam on exits..
@@ -190,14 +191,14 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         if (puzzle.getTipDelay() > 0) {
             WaitMaster.WAIT(puzzle.getTipDelay());
         }
-
         if (isFirstAttempt() && !puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP).isEmpty()) {
             TipMessageMaster.tip(puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP),
                     () -> afterTipAction());
         } else {
-            Eidolons.onNonGdxThread(() -> afterTipAction());
+            afterTipAction();
         }
         puzzle.activate();
+        });
     }
 
     protected boolean isFirstAttempt() {

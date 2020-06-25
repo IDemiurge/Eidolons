@@ -65,6 +65,9 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
         ActionMaster.addFadeOutAction(this, 0.25f);
         ActionMaster.addRemoveAfter(this);
     }
+    public void keyTyped(  char c) {
+        keyTyped(tf, c);
+    }
 
     @Override
     public void keyTyped(TextField textField, char c) {

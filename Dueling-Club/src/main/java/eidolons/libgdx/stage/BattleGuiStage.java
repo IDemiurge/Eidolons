@@ -192,6 +192,11 @@ public class BattleGuiStage extends GuiStage {
 
     @Override
     public boolean keyTyped(char character) {
+        if (GdxMaster.isVisibleEffectively(textInputPanel)) {
+            //TODO exit?!
+            textInputPanel.keyTyped(character);
+            return true;
+        }
         if (Flags.isIDE()) {
             GuiEventManager.trigger(GuiEventType.KEY_TYPED, (int) character);
         }

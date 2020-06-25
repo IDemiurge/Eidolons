@@ -1,11 +1,14 @@
 package main.content.values;
 
 import main.content.VALUE;
+import main.content.enums.entity.BfObjEnums;
 
 import static main.content.values.properties.G_PROPS.*;
 public class G_ValueInitializer {
 
     public static void init(){
+        BfObjEnums.init();
+
         VERSION.setDevOnly(true);
         DEV_NOTES.setDevOnly(true);
         TIMESTAMP.setDevOnly(true);

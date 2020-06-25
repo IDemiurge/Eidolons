@@ -16,6 +16,9 @@ public class FlightHandler extends GroupX {
         astral("objs_over:mist(20),comet_bright(10),comet_pale(20),mist(10),;" +
                 "objs_under:stars(15);" +
                 "angle:30;"),
+        voidmaze("objs_over:cloud(80),comet_bright(10),comet_pale(10),mist(10),;" +
+                "objs_under:stars(15);" +
+                "angle:30;"),
         ;
         public String data;
 

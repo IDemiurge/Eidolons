@@ -157,7 +157,7 @@ public class VoidPuzzle extends MazePuzzle {
         // String s = "";
         //getData().getValue() construct!
         // return new FlightData(s);
-        return new FlightData(FlightHandler.FLIGHT_ENVIRON.astral.data);
+        return new FlightData(FlightHandler.FLIGHT_ENVIRON.voidmaze.data);
     }
 
     public int getMinExitDst() {

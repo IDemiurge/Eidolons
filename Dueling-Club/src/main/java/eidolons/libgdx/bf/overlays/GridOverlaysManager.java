@@ -251,8 +251,10 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
     }
 
     protected void drawOverlays(Batch batch) {
-        for (int x = x1; x < x2; x++) {
-            for (int y = y2 - 1; y >= y1; y--) {
+        // if (GridManager.isCustomDraw()){
+        // }
+        for (int x = gridPanel.drawX1; x < gridPanel.drawX2; x++) {
+            for (int y = gridPanel.drawY2 - 1; y >= gridPanel.drawY1; y--) {
                 GridCellContainer cell = cells[x][y];
                 if (cell.visibleViews != null)
                     for (Actor c : cell.visibleViews) {
@@ -341,7 +343,9 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
         float xPos = 0, yPos = 0;
         if (overlay == INFO_TEXT) {
             Label label = (Label) getOverlayActor(parent, overlay);
-            label.setText(getInfoText(obj));
+            label.setText(getInfoText(obj)+"\n" +
+                   parent.getX()+ ":"+parent.getY());
+
         }
         if (overlay.alignment != null) {
             Vector2 v = GdxMaster.getAlignedPos(parent, overlay.alignment,

@@ -16,7 +16,7 @@ public class BfObjEnums {
 //    createEmitter("unit/black soul bleed 3", -64, 64);
 //    createEmitter("unit/chaotic dark", 32, 32);
 //    createEmitter("unit/chaotic dark", -32, 32);
-static {
+public static void init(){
     CUSTOM_OBJECT.BLACKNESS.vfxOver = GenericEnums.VFX.darkness.path + "(-132, -32);";
     CUSTOM_OBJECT.BLACKNESS.vfxOver += GenericEnums.VFX.darkness.path + "(-132, -32);";
     CUSTOM_OBJECT.BLACKNESS.vfxUnder = GenericEnums.VFX.soul_bleed.path + "(-132, -64);";

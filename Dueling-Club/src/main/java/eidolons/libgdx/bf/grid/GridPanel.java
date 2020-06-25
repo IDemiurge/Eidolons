@@ -46,6 +46,7 @@ import eidolons.libgdx.bf.grid.moving.PlatformHandler;
 import eidolons.libgdx.bf.grid.sub.GridElement;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
+import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.bf.overlays.BorderMap;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
@@ -53,6 +54,7 @@ import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.gui.generic.GroupWithEmitters;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
+import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.options.GraphicsOptions;
@@ -80,6 +82,7 @@ public abstract class GridPanel extends Group {
     protected final int full_rows;
     protected final int full_cols;
     private final GridManager gridManager;
+    public int drawX1, drawX2, drawY1, drawY2;
     protected int moduleCols;
     protected int moduleRows;
     protected int x1, x2, y1, y2;
@@ -102,7 +105,8 @@ public abstract class GridPanel extends Group {
     protected List<GroupX> customOverlayingObjects = new ArrayList<>();
     protected List<GroupX> customOverlayingObjectsTop = new ArrayList<>();
     protected List<GroupX> customOverlayingObjectsUnder = new ArrayList<>(100);
-    protected Array<GroupWithEmitters> emitterGroups = new Array <>(125);
+    protected Array<GroupWithEmitters> emitterGroups = new Array<>(125);
+    protected Array<Actor> actList = new Array<>(425);
 
     protected List<OverlayView> overlays = new ArrayList<>();
     protected Set<BossVisual> bossVisuals = new LinkedHashSet<>();
@@ -149,6 +153,9 @@ it sort of broke at some point - need to investigate!
             return super.hit(x, y, touchable);
         int gridX = (int) (x / 128);
         int gridY = getGdxY_ForModule((int) (y / 128));
+        if (gridX < 0 || gridY < 0) {
+            return null;
+        }
         GridCellContainer child = getGridCell(gridX, gridY);
         if (child == null) {
             return super.hit(x, y, touchable);
@@ -331,6 +338,9 @@ it sort of broke at some point - need to investigate!
 
     @Override
     public void act(float delta) {
+        if (isCustomDraw()) {
+            customAct(delta);
+        }
         if (HqPanel.getActiveInstance() != null) {
             if (HqPanel.getActiveInstance().getColor().a == 1)
                 return;
@@ -339,6 +349,22 @@ it sort of broke at some point - need to investigate!
             resetVisible();
         }
         super.act(delta);
+    }
+
+    private void customAct(float delta) {
+        InputController controller = ScreenMaster.getScreen().getController();
+        drawX1 = controller.getGridDrawX1();
+        drawY1 = (controller.getGridDrawY1());
+        drawX2 = controller.getGridDrawX2();
+        drawY2 = (controller.getGridDrawY2());
+        for (int x = drawX1; x < drawX2; x++) {
+            for (int y = drawY1; y < drawY2; y++) {
+                cells[x][y].act(delta);
+            }
+        }
+        for (Actor actor : actList) {
+            actor.act(delta);
+        }
     }
 
 
@@ -362,6 +388,25 @@ it sort of broke at some point - need to investigate!
         if (actor instanceof GroupWithEmitters) {
             emitterGroups.add((GroupWithEmitters) actor);
         }
+        if (isCustomDraw())
+            if (!(actor instanceof GridCellContainer)) {
+                actList.add(actor);
+            }
+
+    }
+
+    @Override
+    public boolean removeActor(Actor actor) {
+        if (isCustomDraw())
+            actList.removeValue(actor, true);
+        return super.removeActor(actor);
+    }
+
+    @Override
+    public boolean removeActor(Actor actor, boolean unfocus) {
+        if (isCustomDraw())
+            actList.removeValue(actor, true);
+        return super.removeActor(actor, unfocus);
     }
 
     protected UnitView getUnitView(BattleFieldObject battleFieldObject) {
@@ -1028,7 +1073,7 @@ it sort of broke at some point - need to investigate!
         for (Coordinates coordinates : decorMap.keySet()) {
             createDecor(coordinates, decorMap.get(coordinates));
         }
-        decorInitialized=true;
+        decorInitialized = true;
     }
 
     protected void createDecor(Object o) {
@@ -1093,7 +1138,8 @@ it sort of broke at some point - need to investigate!
         }
         return true;
     }
-//ToDo-Cleanup
+
+    //ToDo-Cleanup
     protected void checkAddBorder(int x, int y) {
         Boolean hor = null;
         Boolean vert = null;
@@ -1268,10 +1314,15 @@ it sort of broke at some point - need to investigate!
     }
 
     public List<GroupX> getCommentSprites() {
-        return null ;
+        return null;
     }
+
     public List<GroupX> getActiveCommentSprites() {
-        return null ;
+        return null;
+    }
+
+    public boolean isCustomDraw() {
+        return GridManager.isCustomDraw();
     }
 }
 

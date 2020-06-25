@@ -14,23 +14,18 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class LinkedGridObject extends CinematicGridObject {
 
     protected final BaseView linked;
-    private List<LinkedGridObject> additional;
     private Fluctuating fluctuating;
 
 
     public LinkedGridObject(BaseView view, CUSTOM_OBJECT object, Coordinates c) {
         super(c, object);
         linked = view;
-        this.object = object;
         visionRange = getDefaultVisionRange();
-        if (object.additionalObjects.length > 0) {
-            createAdditionalObjects(object.additionalObjects);
-        }
+
 
         setKey(StringMaster.format(object.toString()));
     }
@@ -60,9 +55,9 @@ public class LinkedGridObject extends CinematicGridObject {
             if (i++ % 2 == 0) {
                 obj.setFlipX(true);
             }
-//            if (i>1) {
-//
-//            }
+            //            if (i>1) {
+            //
+            //            }
             addActor(obj);
             additional.add(obj);
         }
@@ -95,19 +90,11 @@ public class LinkedGridObject extends CinematicGridObject {
             setInvertScreen(true);
         }
         if (additional != null)
-            for (LinkedGridObject linkedGridObject : additional) {
+            for (CinematicGridObject linkedGridObject : additional) {
                 linkedGridObject.act(RandomWizard.getRandomFloat());
 
             }
     }
-
-    @Override
-    protected void initEmitter(EmitterActor emitter, int offsetX, int offsetY) {
-        super.initEmitter(emitter, offsetX, offsetY);
-        emitter.setSpeed(object.getVfxSpeed());
-        emitter.act(RandomWizard.getRandomFloat());
-    }
-
     protected boolean isIgnored() {
 //    TODO     return !Eidolons.getScreen().controller.isWithinCamera(linked.getX(), linked.getY(),
 //                2*linked.getWidth(),2* linked.getHeight());
@@ -130,19 +117,6 @@ public class LinkedGridObject extends CinematicGridObject {
     @Override
     protected int getFps() {
         return object.fps;
-    }
-
-    @Override
-    protected void createEmittersUnder() {
-        createEmittersFromString(object.vfxUnder, object.vfxUnderMirrorX, object.vfxUnderMirrorY, object.vfxChance);
-        createEmittersFromFolder(object.vfxFolderUnder, object.vfxChance, object.maxEmitters);
-    }
-
-
-    @Override
-    protected void createEmittersOver() {
-        createEmittersFromString(object.vfxOver, object.vfxOverMirrorX, object.vfxOverMirrorY, object.vfxChance);
-        createEmittersFromFolder(object.vfxFolderOver, object.vfxChance, object.maxEmitters);
     }
 
     @Override

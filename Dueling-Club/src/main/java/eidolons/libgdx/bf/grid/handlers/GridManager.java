@@ -37,6 +37,10 @@ public class GridManager {
         //wall map seems too often updated
     }
 
+    public static boolean isCustomDraw() {
+        return true;
+    }
+
     public void reset() {
         //TODO move various crap-functions into these handlers!
         /*

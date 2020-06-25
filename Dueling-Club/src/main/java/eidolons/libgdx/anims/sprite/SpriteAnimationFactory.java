@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.anim3d.AnimMaster3d;
@@ -221,4 +222,7 @@ public class SpriteAnimationFactory {
         cache.remove(path);
     }
 
+    public static void preload(String s) {
+        Eidolons.onGdxThread(() -> getSpriteAnimation(TextureCache.getTexturePath(s)));
+    }
 }

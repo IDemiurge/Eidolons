@@ -186,23 +186,18 @@ public class CoreEngine {
     public static void setGraphicsOff(boolean graphicsOff) {
         CoreEngine.graphicsOff = graphicsOff;
         if (graphicsOff) {
-
             WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
         }
     }
     public static void dataInit(boolean macro) {
-
         Chronos.mark("TYPES INIT");
 
         XML_Reader.readTypes(macro);
         WaitMaster.receiveInput(WAIT_OPERATIONS.XML_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.XML_READY);
-        //         if (dialogueDataRequired){
-        //             classFolders.add( "main.data.dialogue" );
-        //             classFolders.add(  "main.game.battlecraft.logic.meta.scenario.dialogue.speech" );
-        //         }
 
         Chronos.logTimeElapsedForMark("TYPES INIT");
+
         if (isCompileReflectionMap())
             compileReflectionMap();
 

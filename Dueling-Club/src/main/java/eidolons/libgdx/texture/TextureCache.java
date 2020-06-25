@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
 import static main.system.auxiliary.log.LogMaster.important;
 
 public class TextureCache {
-    private static final boolean atlasesOn = false;
+    private static final boolean atlasesOn = true;
     private static final Boolean uiAtlasesOn = false;
     private static final boolean tryCompressedFormat = true;
     private static TextureCache instance;
@@ -95,9 +95,13 @@ public class TextureCache {
         return getRegion(GdxImageMaster.getFlippedPath(path, x, y), texture);
     }
 
+    public static String getTexturePath(String s) {
+        return GdxImageMaster.appendImagePath(s);
+    }
+
     public void loadAtlases() {
-        uiAtlas = new SmartTextureAtlas(imagePath + "/ui/ui.txt");
-        //        mainAtlas = new SmartTextureAtlas(imagePath + "/main//main.txt");
+        uiAtlas = new SmartTextureAtlas(imagePath + "/gen/atlas/ui.txt");
+               mainAtlas = new SmartTextureAtlas(imagePath + "/gen/atlas/grid.txt");
         //            genAtlas = new SmartTextureAtlas(imagePath + "/gen//gen.txt");
     }
 

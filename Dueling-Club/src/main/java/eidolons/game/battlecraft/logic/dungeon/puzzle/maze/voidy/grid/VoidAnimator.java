@@ -1,6 +1,8 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.CinematicGridObject;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
@@ -9,16 +11,21 @@ import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.libgdx.anims.std.sprite.CustomSpriteAnim;
 import eidolons.libgdx.bf.grid.cell.GridCell;
 import eidolons.system.audio.DC_SoundMaster;
+import main.content.enums.entity.BfObjEnums;
+import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.sound.SoundMaster;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
 public class VoidAnimator {
     VoidHandler handler;
+    private final Set<GridObject> gridObjects = new LinkedHashSet<>();
 
     public VoidAnimator(VoidHandler handler) {
         this.handler = handler;
@@ -81,7 +88,8 @@ public class VoidAnimator {
             float finalOffsetX = offsetX;
             float finalOffsetY = offsetY;
 
-            anim.setOrigin(cell.getUserObject().getCoordinates());
+            Coordinates c = cell.getUserObject().getCoordinates();
+            anim.setOrigin(c);
 
             anim.setOnDone(b -> {
                 int times = 3;
@@ -90,6 +98,11 @@ public class VoidAnimator {
                     anim.setOffsetX(finalOffsetX / times * counter.get() * 2);
                     anim.setOffsetY(finalOffsetY / times * counter.get() * 2);
                     AnimMaster.getInstance().customAnimation(anim);
+                } else {
+                    CinematicGridObject flames;
+                    gridObjects.add(flames = new CinematicGridObject(c, BfObjEnums.CUSTOM_OBJECT.flames));
+                    flames.fadeIn();
+                    flames.addToGrid();
                 }
             });
             AnimMaster.getInstance().customAnimation(anim);
@@ -160,5 +173,12 @@ public class VoidAnimator {
 
     protected boolean isDisableGhostsAfterAnim() {
         return true;
+    }
+
+    public void cleanUp() {
+        for (GridObject gridObject : gridObjects) {
+            gridObject.removeFromGrid();
+        }
+        gridObjects.clear();
     }
 }

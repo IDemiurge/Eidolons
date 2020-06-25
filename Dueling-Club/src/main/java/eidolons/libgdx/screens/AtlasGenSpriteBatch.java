@@ -72,15 +72,21 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatch {
         // but we will need ATLAS PER LEVEL in many cases! which is loaded on DUNGEON SCREEN INIT when we've selected
         //
         //in some cases we might wanna add more textures?
-        for (ATLAS key : map.keys()) {
+        for (ATLAS atlas : map.keys()) {
             if (atlas == ATLAS.ui) {
                 if (CoreEngine.isLevelEditor()) {
                     continue;
                 }
             }
-            for (Texture texture : map.get(key)) {
+            if (atlas == ATLAS.grid) {
+                continue;
+            }
+            for (Texture texture : map.get(atlas)) {
                 if (texture.getTextureData() instanceof FileTextureData) {
                     String path = ((FileTextureData) texture.getTextureData()).getFileHandle().file().getPath();
+                   if (checkIgnoreTexture(path, texture)){
+                       continue;
+                   }
                     path = getOutputPath(path, atlas);
                     main.system.auxiliary.log.LogMaster.log(1, atlas + " texture output to: " + path);
                     FileHandle handle = new FileHandle(path);
@@ -97,11 +103,18 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatch {
         }
     }
 
+    private boolean checkIgnoreTexture(String path, Texture texture) {
+        if (texture.getWidth()>2000) {
+            return true;
+        }
+        return texture.getHeight() > 2000;
+    }
+
     private String getOutputPath(String path, ATLAS atlas) {
         if (atlas == ATLAS.grid) {
             String lvlPath = EidolonsGame.lvlPath;
             return PathFinder.getImagePath() + "atlas img/" + atlas +
-                    lvlPath + "/" + "/" +
+                    "/" +lvlPath + "/" +
                     GdxImageMaster.cropImagePath(path);
         }
         return PathFinder.getImagePath() + "atlas img/" + atlas + "/" +

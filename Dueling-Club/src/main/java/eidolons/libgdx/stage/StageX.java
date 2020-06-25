@@ -22,7 +22,7 @@ public class StageX extends Stage {
     }
 
     public StageX(Viewport viewport, Batch batch) {
-        super(viewport, batch);
+        super(viewport, GdxMaster.getMainBatch());
     }
 
     public CustomSpriteBatch getCustomSpriteBatch() {

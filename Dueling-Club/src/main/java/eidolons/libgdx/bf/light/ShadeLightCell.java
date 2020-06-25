@@ -17,6 +17,7 @@ import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
+import eidolons.libgdx.bf.grid.handlers.GridManager;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
@@ -87,6 +88,9 @@ public class ShadeLightCell extends SuperContainer {
     }
 
     private static TextureRegion getTexture(SHADE_CELL type) {
+        if (!isUseAtlas()) {
+            return TextureCache.getOrCreateR(getTexturePath(type));
+        }
         TextureAtlas.AtlasRegion texture = getShadowMapAtlas().findRegionFromFullPath(
                 (getTexturePath(type)));
         if (texture == null) {
@@ -95,6 +99,10 @@ public class ShadeLightCell extends SuperContainer {
             return TextureCache.getOrCreateR(getTexturePath(type));
         }
         return texture;
+    }
+
+    private static boolean isUseAtlas() {
+        return false;
     }
 
     private static String getTexturePath(SHADE_CELL type) {
@@ -194,6 +202,9 @@ public class ShadeLightCell extends SuperContainer {
     @Override
     public boolean isIgnored() {
         // check cell is visible TODO
+        if (GridManager.isCustomDraw()) {
+            return false;
+        }
         if (!InputController.cameraMoved)
             return !withinCamera;
         withinCamera = getController().isWithinCamera(this);

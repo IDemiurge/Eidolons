@@ -555,4 +555,10 @@ public class PathFinder {
         return getSoundPath() + "moments/cues/";
     }
 
+    public static String getAtlasImgPath() {
+        return getImagePath()+"atlas img/";
+    }
+    public static String getAtlasGenPath() {
+        return getImagePath()+"gen/atlas/";
+    }
 }
