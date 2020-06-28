@@ -21,6 +21,10 @@ public abstract class GridHandler {
         bindEvents();
     }
 
+    public GridManager getManager() {
+        return grid.getGridManager();
+    }
+
     protected void bindEvents() {
     }
 

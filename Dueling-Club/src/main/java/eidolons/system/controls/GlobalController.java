@@ -170,13 +170,17 @@ public class GlobalController implements Controller {
 
     private boolean doTest(int keyCode) {
         switch (keyCode) {
+            case Keys.PAGE_UP:
+                ScreenMaster.getDungeonGrid().
+                        resetMaps();
+                break;
 
             case Keys.END:
                 TextureCache.getInstance().logDiagnostics();
                 break;
             case Keys.HOME:
                 if (GdxMaster.getMainBatch() instanceof AtlasGenSpriteBatch) {
-                    ((AtlasGenSpriteBatch) GdxMaster.getMainBatch()).writeAtlases();
+                    Eidolons.onGdxThread(() -> ((AtlasGenSpriteBatch) GdxMaster.getMainBatch()).writeAtlases());
                 }
                 break;
             case Keys.ENTER:

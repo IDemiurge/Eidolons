@@ -12,6 +12,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
+import main.content.CONTENT_CONSTS;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
@@ -26,7 +27,7 @@ import java.util.Map;
 public class GammaMaster {
 
     public static final boolean DEBUG_MODE = false;
-    private static final Float CELL_GAMMA_MODIFIER = 0.004F;
+    private static final Float CELL_GAMMA_MODIFIER = 0.006F;
     private static final Float UNIT_GAMMA_MODIFIER = 5F;
     private static final Float LIGHT_EMITTER_ALPHA_FACTOR = 0.02f;
     private static final Float CONCEALMENT_ALPHA_FACTOR = 0.02f;
@@ -58,6 +59,13 @@ public class GammaMaster {
 
     public static void resetCaches(int w, int h) {
         voidAlphaCache = new Float[w][h];
+    }
+
+    public static float getGammaForPillar(Integer gamma) {
+        if (gamma == null) {
+            return 0.3f;
+        }
+        return 0.5f + gamma/200;
     }
 
     public int getGamma(Unit source, DC_Obj target) {
@@ -215,8 +223,12 @@ public class GammaMaster {
 
 
     private float getVoidAlpha(int x, int y) {
+        if (master.getGame().getCellByCoordinate(Coordinates.get(x, y)).hasMark(CONTENT_CONSTS.MARK.undecorated)) {
+            return 0;
+        }
         if (isVoidAlphaStatic())
             return 0.7f;
+        //ToDo-Cleanup
         if (EidolonsGame.BOSS_FIGHT)
             return 0.6f;
         Float alpha = voidAlphaCache[x][y];
@@ -341,9 +353,13 @@ public class GammaMaster {
 
 
         //        Unit unit =  master.getSeeingUnit();
-        return CELL_GAMMA_MODIFIER * (float)
+        return getModifier() * (float)
                 cell.getGamma();
         //        return new Random().nextInt(50)/100 + 0.5f;
+    }
+
+    private float getModifier() {
+        return CELL_GAMMA_MODIFIER;
     }
 
     private boolean isBlockedGammaOn() {

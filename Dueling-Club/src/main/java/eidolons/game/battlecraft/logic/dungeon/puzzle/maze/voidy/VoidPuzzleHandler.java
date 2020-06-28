@@ -18,10 +18,8 @@ import main.content.enums.entity.BfObjEnums;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.RandomWizard;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 public class VoidPuzzleHandler extends MazeHandler<VoidPuzzle> {
@@ -41,9 +39,9 @@ public class VoidPuzzleHandler extends MazeHandler<VoidPuzzle> {
         setup.reset();
         if (isFirstAttempt()) {
 
-        Object c1 = RandomWizard.getRandomListObject(puzzle.falseExits);
-        List<Coordinates> c = CoordinatesMaster.getCoordinatesBetween(getAbsoluteCoordinate((Coordinates) c1), getExitCoordinates());
-        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, c);
+        // Object c1 = RandomWizard.getRandomListObject(puzzle.falseExits);
+        // List<Coordinates> c = CoordinatesMaster.getCoordinatesBetween(getAbsoluteCoordinate((Coordinates) c1), getExitCoordinates());
+        // GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, c);
         }
     }
 

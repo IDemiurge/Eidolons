@@ -21,6 +21,7 @@ public class PathFinder {
     public static String MICRO_MODULE_NAME = "duel-club";
     private static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + "/" +
             "templates";
+    public static final String SKIN_NAME = "neutralizer-ui" ;
     private static String XML_PATH;
     private static String ROOT_PATH;
     private static String IMG_PATH;
@@ -417,7 +418,8 @@ public class PathFinder {
                 "ui",
                 "components",
                 "skin",
-                "neutralizer-ui.json");
+                SKIN_NAME +
+                        ".json");
     }
 
     public static String getPerkImagePath() {
@@ -560,5 +562,9 @@ public class PathFinder {
     }
     public static String getAtlasGenPath() {
         return getImagePath()+"gen/atlas/";
+    }
+
+    public static String getPillarsPath() {
+        return  "ui/cells/pillars/";
     }
 }

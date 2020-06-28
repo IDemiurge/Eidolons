@@ -82,9 +82,9 @@ public class LE_BfGrid extends GridPanel {
     public void setModule(Module module) {
         x2 = full_cols;
         y2 = full_rows;
-        GridSubParts container = new GridSubParts();
+        GridSubParts container = new GridSubParts(full_cols, full_rows);
         viewMap = container.viewMap;
-        customOverlayingObjectsUnder = container.customOverlayingObjects;
+        customOverlayingObjects = container.customOverlayingObjects;
         customOverlayingObjectsTop = container.customOverlayingObjectsTop;
         customOverlayingObjectsUnder = container.customOverlayingObjectsUnder;
         emitterGroups = container.emitterGroups;

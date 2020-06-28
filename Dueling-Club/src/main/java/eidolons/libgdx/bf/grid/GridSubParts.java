@@ -14,14 +14,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GridSubParts {
+//cached per module
 
     public ObjectMap<Obj, BaseView> viewMap= new ObjectMap<>(500);
-    public List<Manipulator> manipulators = new ArrayList<>();
-    public List<GridObject> gridObjects = new ArrayList<>();
-    public List<GroupX> customOverlayingObjects = new ArrayList<>();
-    public List<GroupX> customOverlayingObjectsTop = new ArrayList<>();
-    public List<GroupX> customOverlayingObjectsUnder = new ArrayList<>(100);
     public Array<GroupWithEmitters> emitterGroups = new Array<>(true, 125);
     public List<OverlayView> overlays = new ArrayList<>();
+    public Manipulator[][] manipulators;
+    public GridObject[][] gridObjects ;
+    public GroupX[][] customOverlayingObjects;
+    public GroupX[][] customOverlayingObjectsTop;
+    public GroupX[][] customOverlayingObjectsUnder;
 
+    public GridSubParts(int width  , int height) {
+        manipulators=new Manipulator[width][height];
+        gridObjects =new GridObject[width][height]  ;
+        customOverlayingObjects =new GroupX[width][height] ;
+        customOverlayingObjectsTop=new GroupX[width][height] ;
+        customOverlayingObjectsUnder =new GroupX[width][height] ;
+    }
 }

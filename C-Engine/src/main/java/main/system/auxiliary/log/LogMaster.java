@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
+import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import org.apache.log4j.Priority;
 
@@ -199,7 +200,7 @@ public class LogMaster {
     }
 
     private static boolean isConsoleLogging() {
-        return !Flags.isExe();
+        return CoreEngine.TEST_LAUNCH && !Flags.isExe();
     }
 
     //TODO do these categories!

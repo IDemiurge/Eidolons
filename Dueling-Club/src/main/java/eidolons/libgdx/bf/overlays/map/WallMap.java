@@ -1,8 +1,9 @@
-package eidolons.libgdx.bf.overlays;
+package eidolons.libgdx.bf.overlays.map;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import eidolons.libgdx.bf.GridMaster;
@@ -18,6 +19,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager.STD_IMAGES;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
@@ -58,7 +60,7 @@ public class WallMap extends OverlayMap {
     }
 
 
-    private static TextureRegion getRegion(STD_IMAGES images, String suffix) {
+    protected TextureRegion getRegion(STD_IMAGES images, String suffix) {
         if (!StringMaster.isEmpty(suffix)) {
             String path = StringMaster.cropFormat(images.getPath());
             path += suffix + ".png";
@@ -99,7 +101,7 @@ public class WallMap extends OverlayMap {
 
 
     @Override
-    protected void fillDrawMap(Batch batch, Coordinates coordinates, List<DIRECTION> list, Vector2 v) {
+    protected void fillDrawMap(Array<Pair<Vector2, TextureRegion>> batch, Coordinates coordinates, List<DIRECTION> list, Vector2 v) {
 
         boolean hasVertical = false;
         boolean hasHorizontal = false;
@@ -218,6 +220,10 @@ public class WallMap extends OverlayMap {
                     + (128 - image.getRegionWidth()) / 2, v.y+ (128 - image.getRegionHeight()) / 2), image);
 
         }
+    }
+    @Override
+    protected boolean isCustomDraw() {
+        return false;
     }
 
     @Override

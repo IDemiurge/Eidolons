@@ -18,7 +18,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
-import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.bf.overlays.bar.HpBar;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;

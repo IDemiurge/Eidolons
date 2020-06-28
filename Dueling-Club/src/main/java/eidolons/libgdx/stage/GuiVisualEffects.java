@@ -5,8 +5,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.decor.ShardVisuals;
-import eidolons.libgdx.bf.decor.ShardVisuals.SHARD_SIZE;
+import eidolons.libgdx.bf.decor.shard.ShardEnums;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
@@ -50,7 +49,7 @@ public class GuiVisualEffects extends GroupX {
              VignetteShader.createVignetteActor());
         }
         //        initEmitters();
-        addActor(lightLayer = new LightLayer(true));
+        // addActor(lightLayer = new LightLayer(true));
 
         GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
             //                getEmitterData((DAY_TIME) p.getVar());
@@ -261,7 +260,7 @@ public class GuiVisualEffects extends GroupX {
             }
             if (!RandomWizard.chance(chance*2)) {
                 try {
-                    preset_ = ShardVisuals.getEmitters(null , SHARD_SIZE.NORMAL)[0];
+                    preset_ = ShardEnums.getEmitters(null , ShardEnums.SHARD_SIZE.NORMAL)[0];
                 } catch (Exception e) {
                     continue;
                 }

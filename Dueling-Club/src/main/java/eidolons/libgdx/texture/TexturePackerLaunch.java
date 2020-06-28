@@ -149,8 +149,8 @@ public class TexturePackerLaunch {
     }
 
     public static final String[] atlases = {
-            "ui",
-            // "grid",
+            // "ui",
+            "grid/main",
     };
 
     private static void generateAtlases() {
@@ -217,7 +217,9 @@ public class TexturePackerLaunch {
         //        settings.maxHeight = (int) Math.pow(2, 13);
         //        settings.maxWidth = (int) Math.pow(2, 13);
         settings.atlasExtension = ATLAS_EXTENSION;
-        boolean TRIM = atlasGen || DialogMaster.confirm("Trip empty space?");
+        boolean TRIM = false;
+        if (!atlasGen)
+            TRIM = DialogMaster.confirm("Trip empty space?");
         settings.stripWhitespaceY = TRIM;
         settings.stripWhitespaceX = TRIM;
         settings.square = false;

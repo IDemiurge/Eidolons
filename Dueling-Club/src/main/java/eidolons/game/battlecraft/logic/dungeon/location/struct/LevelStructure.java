@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.netherflame.dungeons.QD_Enums;
-import eidolons.libgdx.bf.decor.ShardVisuals;
+import eidolons.libgdx.bf.decor.shard.ShardEnums;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.Soundscape;
@@ -110,13 +110,13 @@ public class LevelStructure {
         shard_type(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return ShardVisuals.SHARD_TYPE.class;
+                return ShardEnums.SHARD_TYPE.class;
             }
         },
         shard_type_alt(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return ShardVisuals.SHARD_TYPE.class;
+                return ShardEnums.SHARD_TYPE.class;
             }
         },
         ;
@@ -221,13 +221,13 @@ public class LevelStructure {
         shard_type(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return ShardVisuals.SHARD_TYPE.class;
+                return ShardEnums.SHARD_TYPE.class;
             }
         },
         shard_type_alt(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return ShardVisuals.SHARD_TYPE.class;
+                return ShardEnums.SHARD_TYPE.class;
             }
         },
         ;
@@ -349,13 +349,13 @@ public class LevelStructure {
         shard_type(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return ShardVisuals.SHARD_TYPE.class;
+                return ShardEnums.SHARD_TYPE.class;
             }
         },
         shard_type_alt(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return ShardVisuals.SHARD_TYPE.class;
+                return ShardEnums.SHARD_TYPE.class;
             }
         },
         start_module,
@@ -490,13 +490,13 @@ public class LevelStructure {
         shard_type(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return ShardVisuals.SHARD_TYPE.class;
+                return ShardEnums.SHARD_TYPE.class;
             }
         },
         shard_type_alt(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return ShardVisuals.SHARD_TYPE.class;
+                return ShardEnums.SHARD_TYPE.class;
             }
         },
 

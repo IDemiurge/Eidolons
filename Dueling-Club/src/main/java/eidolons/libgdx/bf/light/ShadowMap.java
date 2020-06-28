@@ -111,7 +111,7 @@ public class ShadowMap extends GroupX implements GridElement {
             for (ShadeLightCell[][] value : cells.values()) {
                 for (int x = grid.drawX1; x < grid.drawX2; x++) {
                     for (int y = grid.drawY1; y < grid.drawY2; y++) {
-                        ShadeLightCell cell = value[x][grid.getGdxY_ForModule(y)];
+                        ShadeLightCell cell = value[x][y];
                         if (cell != null) {
                             cell.draw(batch, 1);
                         }
@@ -133,7 +133,7 @@ public class ShadowMap extends GroupX implements GridElement {
             for (ShadeLightCell[][] value : cells.values()) {
                 for (int x = grid.drawX1; x < grid.drawX2; x++) {
                     for (int y = grid.drawY1; y < grid.drawY2; y++) {
-                        ShadeLightCell cell = value[x][grid.getGdxY_ForModule(y)];
+                        ShadeLightCell cell = value[x][y];
                         if (cell != null) {
                             cell.act(delta);
                         }

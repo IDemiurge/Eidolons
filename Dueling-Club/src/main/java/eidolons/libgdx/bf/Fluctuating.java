@@ -28,7 +28,7 @@ public class Fluctuating extends GroupX {
     protected float fluctuatingAlphaRandomness;
     protected float fluctuatingAlphaMin;
     protected float fluctuatingAlphaMax;
-    GenericEnums.ALPHA_TEMPLATE alphaTemplate;
+    protected GenericEnums.ALPHA_TEMPLATE alphaTemplate;
     private int fluctuatingAlphaPeriod;
     public static int fluctuatingAlphaPeriodGlobal = 1;
 

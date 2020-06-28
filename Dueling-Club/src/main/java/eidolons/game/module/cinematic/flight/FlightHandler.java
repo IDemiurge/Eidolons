@@ -1,5 +1,6 @@
 package eidolons.game.module.cinematic.flight;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.screens.CustomSpriteBatch;
@@ -16,8 +17,8 @@ public class FlightHandler extends GroupX {
         astral("objs_over:mist(20),comet_bright(10),comet_pale(20),mist(10),;" +
                 "objs_under:stars(15);" +
                 "angle:30;"),
-        voidmaze("objs_over:cloud(80),comet_bright(10),comet_pale(10),mist(10),;" +
-                "objs_under:stars(15);" +
+        voidmaze("objs_over:comet_bright(10),comet_pale(10),;" +
+                "objs_under:cloud(980),thunder(12),thunder3(5);hue:cloud;" +
                 "angle:30;"),
         ;
         public String data;
@@ -76,9 +77,9 @@ public class FlightHandler extends GroupX {
         CinematicPlatform platform = new CinematicPlatform(data.getFloatValue(FlightData.FLIGHT_VALUE.angle));
 
         String value = data.getValue(FlightData.FLIGHT_VALUE.objs_under);
-        initObjsMap(platform, value, true, cinematic);
+        initObjsMap(platform, value, true, cinematic, data.getHue());
         value = data.getValue(FlightData.FLIGHT_VALUE.objs_over);
-        initObjsMap(platform, value, false, cinematic);
+        initObjsMap(platform, value, false, cinematic, data.getHue());
 
         if (cinematic) {
             /*
@@ -92,12 +93,13 @@ shakes,
         //transit between flights?
     }
 
-    private void initObjsMap(CinematicPlatform platform, String data, boolean under, boolean cinematic) {
+    private void initObjsMap(CinematicPlatform platform, String data, boolean under, boolean cinematic, Color hue) {
         WeightMap<FlyingObjs.FLY_OBJ_TYPE> map = new WeightMap<>(data, FlyingObjs.FLY_OBJ_TYPE.class);
 
         for (FlyingObjs.FLY_OBJ_TYPE type : map.keySet()) {
             int intensity = map.get(type);
             FlyingObjs obj = new FlyingObjs(type, platform, intensity, cinematic);
+            obj.setHue(hue);
             objs.add(obj);
             obj.reset();
             if (type.vfx != null) {

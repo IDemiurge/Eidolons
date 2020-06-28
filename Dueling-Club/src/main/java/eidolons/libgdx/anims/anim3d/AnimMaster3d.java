@@ -24,6 +24,7 @@ import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.decor.CellDecorLayer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.bar.SpriteParamBar;
 import eidolons.libgdx.texture.SmartTextureAtlas;
@@ -54,9 +55,7 @@ import main.system.launch.Flags;
 import main.system.math.PositionMaster;
 import main.system.threading.WaitMaster;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static eidolons.libgdx.anims.sprite.SpriteAnimationFactory.fps30;
@@ -119,9 +118,14 @@ public class AnimMaster3d {
     private static ObjectMap<String, String> substituteMap;
     private static Boolean off;
     private static float fps = fps30;
+    private static final Map<String, TextureAtlas> atlasMap = new LinkedHashMap<>();
 
     static {
         init();
+    }
+
+    public static Map<String, TextureAtlas> getAtlasMap() {
+        return atlasMap;
     }
 
     public static void init() {
@@ -591,6 +595,14 @@ public class AnimMaster3d {
     }
 
     private static boolean isUseOneFrameVersion(String path) {
+        if (CoreEngine.isLevelEditor()) {
+            return true;
+        }
+        if (!path.contains("soulforce"))
+            if ( path.contains("fly"))
+        if (SpriteX.TEST_MODE) {
+            return false;
+        }
         if (SpriteParamBar.TEST)
         if (path.contains("soulforce")) {
             return false;
@@ -712,7 +724,7 @@ public class AnimMaster3d {
             }
         }
         if (cache) {
-            //            atlasMap.put(path, atlas);
+                       atlasMap.put(path, atlas);
         }
         return atlas;
 

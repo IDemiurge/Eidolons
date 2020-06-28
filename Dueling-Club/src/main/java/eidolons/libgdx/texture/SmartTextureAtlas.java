@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import main.system.PathUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ import java.util.Map;
  * Created by JustMe on 11/15/2017.
  */
 public class SmartTextureAtlas extends TextureAtlas {
-    private static Map<String, SmartTextureAtlas> cache = new HashMap<>();
+    private static final Map<String, SmartTextureAtlas> cache = new HashMap<>();
     private String path;
 
     @Override
@@ -93,6 +94,16 @@ public class SmartTextureAtlas extends TextureAtlas {
             }
         }
         return sprite;
+    }
+
+    @Override
+    public AtlasRegion findRegion(String name) {
+        name = FileManager.formatPath(name, true, true);
+        Array<AtlasRegion> regions = getRegions();
+        for (int i = 0, n = regions.size; i < n; i++)
+            if (FileManager.formatPath( regions.get(i).name, true, true)
+                    . equals(name)) return regions.get(i);
+        return null;
     }
 
     @Override

@@ -21,7 +21,7 @@ import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.TargetRunnable;
-import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.bf.overlays.bar.HpBar;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;

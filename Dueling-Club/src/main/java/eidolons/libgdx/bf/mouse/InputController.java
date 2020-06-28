@@ -582,10 +582,10 @@ public abstract class InputController implements InputProcessor {
         setZoom(defaultZoom);
     }
 
-    public int getGridDrawY1() {
+    public int getGridDrawY2() {
         return (int) Math.max(0, ((camera.position.y - halfHeight) / 128-1));
     }
-    public int getGridDrawY2() {
+    public int getGridDrawY1() {
         return (int)  ((camera.position.y + halfHeight) / 128 +1 );
     }
     public int getGridDrawX1() {

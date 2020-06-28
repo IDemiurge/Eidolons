@@ -9,7 +9,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster;
 import eidolons.libgdx.GdxImageMaster;
-import eidolons.libgdx.bf.overlays.WallMap;
+import eidolons.libgdx.bf.overlays.map.WallMap;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.file.ResourceMaster;

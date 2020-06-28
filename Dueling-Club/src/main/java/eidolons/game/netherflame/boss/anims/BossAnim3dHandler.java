@@ -1,16 +1,12 @@
 package eidolons.game.netherflame.boss.anims;
 
 import com.badlogic.gdx.Input;
-import eidolons.game.netherflame.boss.BOSS_PART;
 import eidolons.game.netherflame.boss.BossHandler;
 import eidolons.game.netherflame.boss.BossManager;
 import eidolons.game.netherflame.boss.BossModel;
-import eidolons.game.netherflame.boss.anims.old.BossAnimData;
 import eidolons.game.netherflame.boss.anims.old.BossPart;
 import eidolons.game.netherflame.boss.anims.old.PartAnim;
-import eidolons.game.netherflame.boss.anims.old.PartAnimSprite;
 import eidolons.game.netherflame.boss.logic.BossCycle;
-import main.data.filesys.PathFinder;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -63,7 +59,7 @@ public abstract class BossAnim3dHandler<T extends BossModel> extends BossHandler
 
     @Override
     public void animate(BossPart part, BossAnims.BOSS_ANIM animType) {
-        part.addAnim(createAnim(part.getType(), animType));
+        // part.addAnim(createAnim(part.getType(), animType));
     }
 
     @Override
@@ -75,14 +71,14 @@ public abstract class BossAnim3dHandler<T extends BossModel> extends BossHandler
         //DEATH - re-appear
     }
 
-    private PartAnim createAnim(BOSS_PART type, BossAnims.BOSS_ANIM animType) {
-        String atlasFormat = ".txt";
-        String path = PathFinder.getBossSpritesPath() + getModel().getName() +
-                atlasFormat;
-
-
-        PartAnimSprite sprite = new PartAnimSprite(path);
-        BossAnimData data = null;
-        return new PartAnim(data, sprite);
-    }
+    // private PartAnim createAnim(BOSS_PART type, BossAnims.BOSS_ANIM animType) {
+    //     String atlasFormat = ".txt";
+    //     String path = PathFinder.getBossSpritesPath() + getModel().getName() +
+    //             atlasFormat;
+    //
+    //
+    //     PartAnimSprite sprite = new PartAnimSprite(path);
+    //     BossAnimData data = null;
+    //     return new PartAnim(data, sprite);
+    // }
 }

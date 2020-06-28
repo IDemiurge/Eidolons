@@ -13,7 +13,7 @@ import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
-import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.bf.overlays.bar.HpBar;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.container.SpecialTargetingEffect;

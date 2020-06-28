@@ -40,15 +40,6 @@ public class SpriteAnimationFactory {
         }
     }
 
-    //    public static SpriteAnimation getSpriteFromAtlas(String key, String atlasPath) {
-    //        //TODO
-    //        return getSpriteAnimation(key, true);
-    //    }
-
-    private static String getSingleFrameSpritePath(String key) {
-        return SingleSpriteGenerator.getPath(key);
-    }
-
 
     public static SpriteAnimation getSpriteAnimation(String key) {
         return getSpriteAnimation(key, true, true);
@@ -71,9 +62,6 @@ public class SpriteAnimationFactory {
         }
         if (!Assets.checkSprite(key)) {
             return getDefaultSprite(key);
-        }
-        if (singleFrameSpriteMode) {
-            key = getSingleFrameSpritePath(key);
         }
 
         if (!key.contains(".")) {
@@ -104,27 +92,37 @@ public class SpriteAnimationFactory {
                 texturePath = Assets.getKtxAtlasPath(texturePath);
             }
             TextureAtlas atlas = null;
-            try {
-                atlas = AnimMaster3d.getOrCreateAtlas(texturePath);
-                //TODO so now this guys is actually managing ATLAS sprites?!
-
-            } catch (Exception e) {
-                printStackTrace(e);
-                important("CRITICAL: No atlas for path - " + key);
-                important("Setting Lite Mode... ");
-                Flags.setLiteLaunch(true);
-                //          TODO really?
-                //           OptionsMaster.getGraphicsOptions().setValue(GraphicsOptions.GRAPHIC_OPTION.LITE_MODE, true);
-                //                OptionsMaster.saveOptions();
-                return getDefaultSprite(key);
+            SpriteAnimation a = null;
+            if (isAtlasesFromMain()) {
+                Array<AtlasRegion> regions = TextureCache.getAtlasRegions(texturePath);
+                if (regions != null)
+                    if (regions.size > 0) {
+                        a = new SpriteAnimation(fps30, true, regions);
+                    }
             }
-            if (atlas == null  ) {
-                important("CRITICAL: No atlas for path - " + key);
-                return getDefaultSprite(key);
-            }
-            SpriteAnimation a =null ;
             if (a == null) {
-              a = new SpriteAnimation(fps30, false, atlas);
+
+                try {
+                    atlas = AnimMaster3d.getOrCreateAtlas(texturePath);
+                    //TODO so now this guys is actually managing ATLAS sprites?!
+
+                } catch (Exception e) {
+                    printStackTrace(e);
+                    important("CRITICAL: No atlas for path - " + key);
+                    important("Setting Lite Mode... ");
+                    Flags.setLiteLaunch(true);
+                    //          TODO really?
+                    //           OptionsMaster.getGraphicsOptions().setValue(GraphicsOptions.GRAPHIC_OPTION.LITE_MODE, true);
+                    //                OptionsMaster.saveOptions();
+                    return getDefaultSprite(key);
+                }
+                if (atlas == null) {
+                    important("CRITICAL: No atlas for path - " + key);
+                    return getDefaultSprite(key);
+                }
+                if (a == null) {
+                    a = new SpriteAnimation(fps30, false, atlas);
+                }
             }
             cache.put(
                     key.toLowerCase(), a);
@@ -141,6 +139,10 @@ public class SpriteAnimationFactory {
         SpriteAnimation a = new SpriteAnimation(texturePath, true);
         cache.put(key.toLowerCase(), a);
         return a;
+    }
+
+    private static boolean isAtlasesFromMain() {
+        return TextureCache.atlasesOn;
     }
 
     public static SpriteAnimation getDefaultSprite(String key) {

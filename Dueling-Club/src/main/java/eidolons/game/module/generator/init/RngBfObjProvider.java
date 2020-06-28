@@ -1,7 +1,7 @@
 package eidolons.game.module.generator.init;
 
 import eidolons.game.module.generator.GeneratorEnums.ROOM_CELL;
-import eidolons.libgdx.bf.overlays.WallMap;
+import eidolons.libgdx.bf.overlays.map.WallMap;
 import eidolons.libgdx.particles.ambi.AttachEmitterManager;
 import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;

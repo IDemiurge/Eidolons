@@ -17,7 +17,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.moving.PlatformController;
-import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.bf.overlays.bar.HpBar;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
@@ -36,7 +36,7 @@ public class UnitGridView extends GenericGridView {
 
     protected QueueView initiativeQueueUnitView;
     private LabelX debugInfo;
-    private float scaleResetPeriod = 4;
+    private final float scaleResetPeriod = 4;
     private float scaleResetTimer = scaleResetPeriod;
 
     OverlayView attachedObj;

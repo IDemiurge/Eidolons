@@ -6,7 +6,6 @@ import eidolons.game.module.cinematic.flight.FlightData;
 import eidolons.game.module.cinematic.flight.FlightHandler;
 import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.model.RoomModel;
-import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -112,7 +111,7 @@ public class VoidPuzzle extends MazePuzzle {
     @Override
     public int getTipDelay() {
         //only first time //TODO
-        return 4000;
+        return 1000;
     }
 
     @Override
@@ -145,7 +144,7 @@ public class VoidPuzzle extends MazePuzzle {
 
     @Override
     public String getOverrideBackground() {
-        return Sprites.BG_DEFAULT;
+        return null ;//Sprites.BG_DEFAULT;
     }
 
     protected int getWaitTimeBeforeEndMsg(boolean failed) {

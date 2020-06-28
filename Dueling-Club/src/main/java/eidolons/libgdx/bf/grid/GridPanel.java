@@ -35,8 +35,7 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.decor.CellDecorLayer;
 import eidolons.libgdx.bf.decor.DecorData;
 import eidolons.libgdx.bf.decor.DecorData.DECOR_LEVEL;
-import eidolons.libgdx.bf.decor.Pillars;
-import eidolons.libgdx.bf.decor.ShardVisuals;
+import eidolons.libgdx.bf.decor.shard.ShardVisuals;
 import eidolons.libgdx.bf.grid.cell.*;
 import eidolons.libgdx.bf.grid.handlers.GridManager;
 import eidolons.libgdx.bf.grid.moving.PlatformCell;
@@ -47,10 +46,11 @@ import eidolons.libgdx.bf.grid.sub.GridElement;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.mouse.InputController;
-import eidolons.libgdx.bf.overlays.BorderMap;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
-import eidolons.libgdx.bf.overlays.WallMap;
+import eidolons.libgdx.bf.overlays.map.BorderMap;
+import eidolons.libgdx.bf.overlays.map.PillarMap;
+import eidolons.libgdx.bf.overlays.map.WallMap;
 import eidolons.libgdx.gui.generic.GroupWithEmitters;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
@@ -95,17 +95,19 @@ public abstract class GridPanel extends Group {
     protected WallMap wallMap;
     protected BorderMap borderMap;
     protected ShardVisuals shards;
-    protected Pillars pillars;
+    protected PillarMap pillars;
 
     protected GridCellContainer[][] cells;
     //    protected GridCellContainer[][] removedCells;
     protected ObjectMap<Obj, BaseView> viewMap;
-    protected List<Manipulator> manipulators = new ArrayList<>();
-    protected List<GridObject> gridObjects = new ArrayList<>();
-    protected List<GroupX> customOverlayingObjects = new ArrayList<>();
-    protected List<GroupX> customOverlayingObjectsTop = new ArrayList<>();
-    protected List<GroupX> customOverlayingObjectsUnder = new ArrayList<>(100);
-    protected Array<GroupWithEmitters> emitterGroups = new Array<>(125);
+
+    protected Manipulator[][] manipulators;
+    protected GridObject[][] gridObjects;
+    protected GroupX[][] customOverlayingObjects;
+    protected GroupX[][] customOverlayingObjectsTop;
+    protected GroupX[][] customOverlayingObjectsUnder;
+    protected Array<GroupWithEmitters> emitterGroups;
+
     protected Array<Actor> actList = new Array<>(425);
 
     protected List<OverlayView> overlays = new ArrayList<>();
@@ -117,9 +119,11 @@ public abstract class GridPanel extends Group {
     protected Coordinates offset;
     protected Map<Module, GridSubParts> containerMap = new HashMap<>();
     protected List<PlatformCell> platforms = new LinkedList<>();
+    protected List<UnitGridView> detached = new LinkedList<>();
     protected Set<PlatformDecor> platformDecor = new LinkedHashSet();
     protected final ObjectMap<DECOR_LEVEL, CellDecorLayer> decorMap = new ObjectMap<>(4);
     private boolean decorInitialized;
+    private boolean init;
 
     public GridPanel(int cols, int rows, int moduleCols, int moduleRows) {
         this.square = rows * cols;
@@ -169,6 +173,7 @@ it sort of broke at some point - need to investigate!
     }
 
     public void setModule(Module module) {
+        init=false;
         offset = module.getOrigin();
         x1 = offset.x;
         y1 = offset.y;
@@ -181,7 +186,7 @@ it sort of broke at some point - need to investigate!
         y2 = moduleRows + offset.y;
         GridSubParts container = containerMap.get(module);
         if (container == null) {
-            container = new GridSubParts();
+            container = new GridSubParts(moduleCols, moduleRows);
             containerMap.put(module, container);
         }
         if (viewMap != null)
@@ -194,21 +199,24 @@ it sort of broke at some point - need to investigate!
             }
 
         viewMap = container.viewMap;
-        customOverlayingObjectsUnder = container.customOverlayingObjects;
-        customOverlayingObjectsTop = container.customOverlayingObjectsTop;
-        customOverlayingObjectsUnder = container.customOverlayingObjectsUnder;
         emitterGroups = container.emitterGroups;
-        gridObjects = container.gridObjects;
         manipulators = container.manipulators;
-        overlays = container.overlays;
+        customOverlayingObjectsUnder = container.customOverlayingObjectsUnder;
+        customOverlayingObjectsTop = container.customOverlayingObjectsTop;
+        customOverlayingObjects = container.customOverlayingObjects;
+        gridObjects = container.gridObjects;
+        gridObjects = container.gridObjects;
+
         //for others too?
 
         initModuleGrid();
+        resetMaps();
         for (GridElement gridElement : getGridElements()) {
             if (gridElement != null) {
                 gridElement.setModule(module);
             }
         }
+        init=true;
     }
 
     protected GridElement[] getGridElements() {
@@ -219,8 +227,11 @@ it sort of broke at some point - need to investigate!
 
     protected void initModuleGrid() {
 
-        for (int x = 0; x < cells.length; x++) {
-            for (int y = 0; y < cells[0].length; y++) {
+        int width = cells.length;
+        int height = cells[0].length;
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(x,
                         y));
                 if (y < y2 && y >= y1
@@ -232,6 +243,9 @@ it sort of broke at some point - need to investigate!
                     TextureRegion image = TextureCache.getOrCreateR(cell.getImagePath());
                     GridCellContainer gridCell = null;
                     cells[x][y] = gridCell = createGridCell(image, x, y);
+
+                    gridCell.setColorFunc( coord ->  getGridManager().getColor(coord));
+                    gridCell.setLightnessFunc( coord->  getGridManager().getLightness(coord));
                     //setVoid(x, y, false);
                     addActor(gridCell.init());
                     gridCell.setUserObject(cell);
@@ -313,7 +327,7 @@ it sort of broke at some point - need to investigate!
                     ExceptionMaster.printStackTrace(e);
                 }
             if (isPillarsOn())
-                addActor(pillars = new Pillars(this));
+                addActor(pillars = new PillarMap());
         }
     }
 
@@ -327,20 +341,9 @@ it sort of broke at some point - need to investigate!
         return GridMaster.emptyCellPathFloor;
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, 1);
-        if (isShowGridEmitters())
-            if (isDrawEmittersOnTop())
-                drawEmitters(batch);
-    }
-
 
     @Override
     public void act(float delta) {
-        if (isCustomDraw()) {
-            customAct(delta);
-        }
         if (HqPanel.getActiveInstance() != null) {
             if (HqPanel.getActiveInstance().getColor().a == 1)
                 return;
@@ -348,15 +351,18 @@ it sort of broke at some point - need to investigate!
         if (resetVisibleRequired) {
             resetVisible();
         }
-        super.act(delta);
+        if (isCustomDraw()) {
+            customAct(delta);
+        } else
+            super.act(delta);
     }
 
     private void customAct(float delta) {
         InputController controller = ScreenMaster.getScreen().getController();
         drawX1 = controller.getGridDrawX1();
-        drawY1 = (controller.getGridDrawY1());
-        drawX2 = controller.getGridDrawX2();
-        drawY2 = (controller.getGridDrawY2());
+        drawY1 = Math.max(0, getGdxY_ForModule(controller.getGridDrawY1()));
+        drawX2 = Math.min(moduleCols, controller.getGridDrawX2());
+        drawY2 = Math.max(moduleRows - 1, getGdxY_ForModule((controller.getGridDrawY2())));
         for (int x = drawX1; x < drawX2; x++) {
             for (int y = drawY1; y < drawY2; y++) {
                 cells[x][y].act(delta);
@@ -367,9 +373,20 @@ it sort of broke at some point - need to investigate!
         }
     }
 
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (isCustomDraw()) {
+            customDraw(batch);
+        } else
+            super.draw(batch, 1);
+        if (isShowGridEmitters())
+            if (isDrawEmittersOnTop())
+                drawEmitters(batch);
+    }
+
 
     protected boolean isPillarsOn() {
-        return false;
+        return true;
     }
 
     protected boolean isShardsOn() {
@@ -388,24 +405,33 @@ it sort of broke at some point - need to investigate!
         if (actor instanceof GroupWithEmitters) {
             emitterGroups.add((GroupWithEmitters) actor);
         }
-        if (isCustomDraw())
+        if (isCustomDraw()) {
+            if ((actor instanceof UnitGridView)) {
+                detached.add((UnitGridView) actor);
+            }
             if (!(actor instanceof GridCellContainer)) {
                 actList.add(actor);
             }
+        }
 
     }
 
     @Override
     public boolean removeActor(Actor actor) {
-        if (isCustomDraw())
+        if (isCustomDraw()) {
             actList.removeValue(actor, true);
+            detached.remove(actor);
+        }
         return super.removeActor(actor);
     }
 
     @Override
     public boolean removeActor(Actor actor, boolean unfocus) {
-        if (isCustomDraw())
+        if (isCustomDraw()) {
             actList.removeValue(actor, true);
+            detached.remove(actor);
+        }
+
         return super.removeActor(actor, unfocus);
     }
 
@@ -414,15 +440,18 @@ it sort of broke at some point - need to investigate!
     }
 
     public GridObject findGridObj(String key, Coordinates c) {
-        for (GridObject gridObject : gridObjects) {
-            if (gridObject.getKey().equalsIgnoreCase(key)) {
-                if (c == null || gridObject.getCoordinates().equals(c)) {
+        if (c != null) {
+            return gridObjects[c.x][c.y];
+        }
+        for (GridObject[] array : gridObjects)
+            for (GridObject gridObject : array) {
+                if (gridObject.getKey().equalsIgnoreCase(key)) {
                     return gridObject;
                 }
             }
-        }
         return null;
     }
+
 
     protected GridCellContainer createGridCell(TextureRegion emptyImage, int x, int y) {
         return new GridCellContainer(emptyImage, x, y);
@@ -433,12 +462,21 @@ it sort of broke at some point - need to investigate!
                 cells[x][(y)];
         cell.setVoid(false, animated);
         cell.getUserObject().setVOID(false);
+
+        resetMaps();
+    }
+
+    public void resetMaps() {
+            gridManager.getPillarManager().reset();
     }
 
     public void setVoid(int x, int y, boolean animated) {
         GridCellContainer cell = cells[x][(y)];
         cell.setVoid(true, animated);
         cell.getUserObject().setVOID(true);
+        if (init){
+            resetMaps();
+        }
     }
 
     protected void setVisible(BattleFieldObject sub, boolean visible) {
@@ -597,6 +635,8 @@ it sort of broke at some point - need to investigate!
 
         WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.GUI_READY, true);
         WaitMaster.markAsComplete(WaitMaster.WAIT_OPERATIONS.GUI_READY);
+
+        resetMaps();
     }
 
     protected boolean isShadowMapOn() {
@@ -719,6 +759,29 @@ it sort of broke at some point - need to investigate!
     }
 
     public void resetZIndices() {
+        if (isCustomDraw()) {
+            if (hoverObj != null) {
+                if (hoverObj.getParent() instanceof GridCellContainer) {
+                    ((GridCellContainer) hoverObj.getParent()).setHovered(false);
+                }
+            }
+            for (int x = drawX1; x < drawX2; x++) {
+                for (int y = drawY1; y < drawY2; y++) {
+                    GridCellContainer cell = cells[x][y];
+                    cell.setHovered(false);
+                    List<GenericGridView> views = cell.getUnitViewsVisible();
+                    for (GenericGridView sub : views) {
+                        if (sub.isHovered() && sub instanceof UnitGridView
+                        ) {
+                            setHoverObj((UnitGridView) sub);
+                            cell.setHovered(true);
+                        }
+                    }
+                }
+            }
+            return;
+        }
+
         for (PlatformDecor platform : platformDecor) {
             platform.setZIndex(Integer.MAX_VALUE);
             //if we had over and under... we could setPos for them on act?
@@ -758,10 +821,7 @@ it sort of broke at some point - need to investigate!
                 }
             }
         }
-        customOverlayingObjectsUnder.forEach(obj -> {
-            obj.setZIndex(Integer.MAX_VALUE);
-        });
-
+        resetZ(customOverlayingObjectsUnder);
         decorMap.get(DECOR_LEVEL.OVER_CELLS).setZIndex(Integer.MAX_VALUE);
 
         borderMap.setZIndex(Integer.MAX_VALUE);
@@ -773,23 +833,15 @@ it sort of broke at some point - need to investigate!
         for (PlatformCell platform : platforms) {
             platform.setZIndex(Integer.MAX_VALUE);
         }
-
-        customOverlayingObjects.forEach(obj -> {
-            obj.setZIndex(Integer.MAX_VALUE);
-        });
+        resetZ(customOverlayingObjects);
 
         decorMap.get(DECOR_LEVEL.OVER_MAPS).setZIndex(Integer.MAX_VALUE);
         for (GridCellContainer cell : topCells) {
             cell.setZIndex(Integer.MAX_VALUE);
         }
         /////////////////
-
-        customOverlayingObjectsTop.forEach(obj -> {
-            obj.setZIndex(Integer.MAX_VALUE);
-        });
-        manipulators.forEach(manipulator -> {
-            manipulator.setZIndex(Integer.MAX_VALUE);
-        });
+        resetZ(customOverlayingObjectsTop);
+        resetZ(manipulators);
         overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
 
         overlayManager.setZIndex(Integer.MAX_VALUE);
@@ -797,12 +849,103 @@ it sort of broke at some point - need to investigate!
         flightHandler.getObjsVfx().setZIndex(Integer.MAX_VALUE);
 
         decorMap.get(DECOR_LEVEL.TOP).setZIndex(Integer.MAX_VALUE);
-
         for (BossVisual visual : bossVisuals) {
             visual.setZIndex(Integer.MAX_VALUE);
             visual.setPosition(visual.getCoordinates().getX() * 128,
                     getGdxY_ForModule(visual.getCoordinates().getY()) * 128);
         }
+    }
+
+    private void customDraw(Batch batch) {
+        flightHandler.getObjsUnder().draw(batch, 1f);
+        pillars.draw(batch, 1f);
+        for (PlatformDecor platform : platformDecor) {
+            platform.draw(batch, 1);
+        }
+        decorMap.get(DECOR_LEVEL.BOTTOM).draw(batch, 1);
+        List<GridCellContainer> topCells = new ArrayList<>(5);
+        for (int x = drawX1; x < drawX2; x++) {
+            for (int y = drawY1; y < drawY2; y++) {
+                if (isTopCell(cells[x][y])) {
+                    topCells.add(cells[x][y]);
+                } else
+                    cells[x][y].draw(batch, 1);
+            }
+        }
+        draw(customOverlayingObjectsUnder, batch);
+        decorMap.get(DECOR_LEVEL.OVER_CELLS).draw(batch, 1f);
+
+        borderMap.draw(batch, 1f);
+        wallMap.draw(batch, 1f);
+        if (shards != null) {
+            shards.draw(batch,1f);
+        }
+        if (shadowMap != null) {
+            shadowMap.draw(batch, 1f);
+        }
+        for (PlatformCell platform : platforms) {
+            platform.draw(batch, 1f);
+        }
+        draw(customOverlayingObjects, batch);
+
+        decorMap.get(DECOR_LEVEL.OVER_MAPS).draw(batch, 1f);
+        for (GridCellContainer cell : topCells) {
+            cell.draw(batch, 1f);
+        }
+        for (UnitGridView unitGridView : detached) {
+            unitGridView.draw(batch, 1);
+
+        }
+        /////////////////
+        draw(customOverlayingObjectsTop, batch);
+        draw(manipulators, batch);
+        overlays.forEach(overlayView -> overlayView.draw(batch, 1f));
+
+        overlayManager.draw(batch, 1f);
+        flightHandler.getObjsOver().draw(batch, 1f);
+        flightHandler.getObjsVfx().draw(batch, 1f);
+
+        decorMap.get(DECOR_LEVEL.TOP).draw(batch, 1f);
+        for (BossVisual visual : bossVisuals)
+            visual.draw(batch, 1f);
+    }
+
+    private boolean isTopCell(GridCellContainer gridCellContainer) {
+        return gridCellContainer.isHovered() || gridCellContainer.isMainHero();
+    }
+
+    Array<Actor> screenObjs = new Array<>(50);
+
+    private void drawScreen(Batch batch) {
+        // ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
+        for (Actor actor : screenObjs) {
+            actor.draw(batch, 1);
+        }
+        screenObjs.clear();
+    }
+
+    private void draw(Actor[][] array, Batch batch) {
+        for (int x = 0; x < moduleCols; x++)
+            for (int y = 0; y < moduleRows; y++) {
+                Actor actor = array[x][y];
+                if (actor instanceof GridObject) {
+                    if (((GridObject) actor).isScreen()) {
+                        screenObjs.add(actor);
+                        continue;
+                    }
+                }
+                if (actor != null)
+                    actor.draw(batch, 1);
+            }
+        drawScreen(batch);
+    }
+
+    private void resetZ(Actor[][] array) {
+        for (int x = 0; x < moduleCols; x++)
+            for (int y = 0; y < moduleRows; y++)
+                if (array[x][y] != null)
+                    array[x][y].setZIndex(Integer.MAX_VALUE);
+
     }
 
     public void addOverlay(OverlayView view) {
@@ -840,7 +983,7 @@ it sort of broke at some point - need to investigate!
         return moduleRows;
     }
 
-    public List<GroupX> getCustomOverlayingObjects() {
+    public GroupX[][] getCustomOverlayingObjects() {
         return customOverlayingObjects;
     }
 
@@ -924,12 +1067,14 @@ it sort of broke at some point - need to investigate!
         });
         GuiEventManager.bind(removePrevious, REMOVE_GRID_OBJ, p -> {
             GridObject gridObj;
+            Coordinates c;
             if (p.get() instanceof GridObject) {
                 gridObj = ((GridObject) p.get());
+                c = gridObj.getCoordinates();
             } else {
                 List list = (List) p.get();
                 String key = (String) list.get(0);
-                Coordinates c = (Coordinates) list.get(1);
+                c = (Coordinates) list.get(1);
                 gridObj = findGridObj(key, c);
                 if (gridObj == null) {
                     LogMaster.dev("No grid obj to remove: " + key + c);
@@ -937,42 +1082,43 @@ it sort of broke at some point - need to investigate!
                 }
             }
             gridObj.fadeOut(true);
-            customOverlayingObjectsUnder.remove(gridObj);
-            customOverlayingObjects.remove(gridObj);
-            customOverlayingObjectsTop.remove(gridObj);
-            gridObjects.remove(gridObj);
+            customOverlayingObjectsUnder[c.x][c.y] = null;
+            customOverlayingObjects[c.x][c.y] = null;
+            customOverlayingObjectsTop[c.x][c.y] = null;
+            gridObjects[c.x][c.y] = null;
         });
 
         GuiEventManager.bind(removePrevious, ADD_GRID_OBJ, p -> {
             GridObject object = (GridObject) p.get();
             addActor(object);
 
-            gridObjects.add(object);
             Boolean under = object.getUnder();
+            Coordinates c = object.getCoordinates();
+            gridObjects[c.x][c.y] = (object);
             if (under != null) {
-                (under ? customOverlayingObjectsUnder : customOverlayingObjectsTop).add(object);
+                (under ? customOverlayingObjectsUnder : customOverlayingObjectsTop)[c.x][c.y] = (object);
                 return;
             }
             if (object instanceof LinkedGridObject) {
                 if (((LinkedGridObject) object).getLinked() instanceof OverlayView) {
-                    customOverlayingObjectsTop.add(object);
+                    customOverlayingObjectsTop[c.x][c.y] = (object);
                     return;
                 } else {
                     if (((LinkedGridObject) object).getLinked().getUserObject() instanceof Structure) {
                         if (((Structure) ((LinkedGridObject) object).getLinked().getUserObject()).isWater()) {
-                            customOverlayingObjectsUnder.add(object);
+                            customOverlayingObjectsUnder[c.x][c.y] = (object);
                             return;
                         }
                     }
                 }
             }
-            getCustomOverlayingObjects().add(object);
+            getCustomOverlayingObjects()[c.x][c.y] = (object);
         });
         GuiEventManager.bind(removePrevious, INIT_MANIPULATOR, (obj) -> {
             Manipulator manipulator = (Manipulator) obj.get();
             addActor(manipulator);
-            manipulators.add(manipulator);
             Coordinates c = manipulator.getCoordinates();
+            manipulators[c.x][c.y] = (manipulator);
             manipulator.setPosition(c.x * 128,
                     ((c.y * 128)));
         });
@@ -1110,7 +1256,7 @@ it sort of broke at some point - need to investigate!
     }
 
     public static boolean isShowGridEmitters() {
-        return GridPanel.showGridEmitters;
+        return false;// GridPanel.showGridEmitters;
     }
 
     public static boolean isDrawEmittersOnTop() {
@@ -1323,6 +1469,10 @@ it sort of broke at some point - need to investigate!
 
     public boolean isCustomDraw() {
         return GridManager.isCustomDraw();
+    }
+
+    public PillarMap getPillars() {
+        return pillars;
     }
 }
 

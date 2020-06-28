@@ -6,7 +6,7 @@ import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.grid.cell.QueueView;
 import eidolons.libgdx.bf.grid.cell.UnitViewOptions;
-import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.bf.overlays.bar.HpBar;
 
 public class BossQueueView extends QueueView {
     private final BossVisual parent;

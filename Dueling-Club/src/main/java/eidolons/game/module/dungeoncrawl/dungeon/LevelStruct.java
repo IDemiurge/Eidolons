@@ -4,7 +4,7 @@ import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.libgdx.bf.decor.CellDecorLayer.CELL_PATTERN;
-import eidolons.libgdx.bf.decor.ShardVisuals.SHARD_TYPE;
+import eidolons.libgdx.bf.decor.shard.ShardEnums.SHARD_TYPE;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.VFX_TEMPLATE;
 import eidolons.libgdx.particles.ambi.StructAmbiData;
 import eidolons.system.audio.MusicMaster.AMBIENCE;

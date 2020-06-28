@@ -1,19 +1,20 @@
-package eidolons.libgdx.bf.overlays;
+package eidolons.libgdx.bf.overlays.map;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.EventType;
 import main.system.GuiEventType;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
 public class BorderMap extends OverlayMap {
 
     @Override
-    protected void fillDrawMap(Batch batch, Coordinates coordinates, List<DIRECTION> list, Vector2 v) {
+    protected void fillDrawMap(Array<Pair<Vector2, TextureRegion>> batch, Coordinates coordinates, List<DIRECTION> list, Vector2 v) {
         for (DIRECTION d : list) {
         float x = v.x;
         float y = v.y;
@@ -22,7 +23,6 @@ public class BorderMap extends OverlayMap {
 
         //ideally, we'd do flip/rotate too
         TextureRegion region=getRegion(d);
-        batch.draw(region, x, y);
 
         }
     }

@@ -4,7 +4,7 @@ import eidolons.content.PROPS;
 import eidolons.game.core.master.ObjCreator;
 import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.init.RngBfObjProvider;
-import eidolons.libgdx.bf.overlays.WallMap;
+import eidolons.libgdx.bf.overlays.map.WallMap;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.GenericEnums;

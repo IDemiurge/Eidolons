@@ -29,6 +29,7 @@ import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.TargetRunnable;
+import eidolons.libgdx.bf.decor.shard.ShardVisuals;
 import eidolons.libgdx.bf.grid.cell.*;
 import eidolons.libgdx.bf.grid.moving.PlatformCell;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
@@ -124,9 +125,9 @@ public class DC_GridPanel extends GridPanel {
             animMaster.setVisible(false);
 
             super.draw(batch, 1);
-            if (isShowGridEmitters())
-                if (isDrawEmittersOnTop())
-                    drawEmitters(batch);
+            // if (isShowGridEmitters()) already done
+            //     if (isDrawEmittersOnTop())
+            //         drawEmitters(batch);
             drawComments(batch);
             animMaster.setVisible(true);
             animMaster.draw(batch, 1f);
@@ -159,7 +160,8 @@ public class DC_GridPanel extends GridPanel {
                         for (int i = 0, visibleLength = visible.length; i < visibleLength; i++) {
                             BattleFieldObject sub = visible[i];
                             setVisible(viewMap.get(sub), true);
-                            GridMaster.validateVisibleUnitView(viewMap.get(sub));
+                            // if (!isCustomDraw())
+                                GridMaster.validateVisibleUnitView(viewMap.get(sub));
                             if (sub.isPlayerCharacter()) {
                                 if (ExplorationMaster.isExplorationOn()) {
                                     UnitGridView view = (UnitGridView) viewMap.get(sub);
@@ -246,6 +248,9 @@ public class DC_GridPanel extends GridPanel {
     }
 
     protected boolean isShardsOn() {
+        if (ShardVisuals.TEST_MODE) {
+            return true;
+        }
         if (!CoreEngine.TEST_LAUNCH) {
             return true;
         }

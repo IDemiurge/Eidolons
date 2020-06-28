@@ -235,12 +235,12 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             }
         }
         if (overlap.size() > 0) {
-        if (EUtils.waitConfirm("Remove " +
-                overlap.size() +
-                " overlapping coordinates?")) {
-            coordinates.removeAll(overlap);
-            return ;
-        }
+            if (EUtils.waitConfirm("Remove " +
+                    overlap.size() +
+                    " overlapping coordinates?")) {
+                coordinates.removeAll(overlap);
+                return;
+            }
             //remove from others
             for (Coordinates c : coordinates) {
                 LevelStruct lowestStruct = getStructureMaster().getLowestStruct(c);
@@ -553,11 +553,13 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
                         obj.setImage(wallType.getImagePath());
                         wallObjs.add(obj);
                     }
-                    if (name
-                            .equalsIgnoreCase(PaletteHandlerImpl.ALT_WALL_PLACEHOLDER)) {
-                        obj.setImage(altWallType.getImagePath());
-                        //objsToReset.add(obj);
-                        wallObjs.add(obj);
+                    if (altWallType != null) {
+                        if (name
+                                .equalsIgnoreCase(PaletteHandlerImpl.ALT_WALL_PLACEHOLDER)) {
+                            obj.setImage(altWallType.getImagePath());
+                            //objsToReset.add(obj);
+                            wallObjs.add(obj);
+                        }
                     }
                 }
             }

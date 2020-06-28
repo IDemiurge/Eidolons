@@ -202,6 +202,7 @@ public class LE_KeyHandler extends LE_Handler {
                     case Input.Keys.F8:
                     case Input.Keys.F7:
                     case Input.Keys.TAB:
+                    case Input.Keys.HOME:
                         globalController.keyDown(keyCode);
                         return;
                 }

@@ -38,6 +38,8 @@ public class VoidAnimator {
     protected void animate(float waitPeriod, boolean raiseOrCollapse, GridCell cell, float speed, DIRECTION from) {
         if (isDisableGhostsAfterAnim())
             cell.setVoidAnimHappened(true);
+        Coordinates c = cell.getUserObject().getCoordinates();
+
         //TODO fade void shadecell overlay!
         float dur = 1 * speed;
         float x = cell.getGridX() * 128;
@@ -88,7 +90,6 @@ public class VoidAnimator {
             float finalOffsetX = offsetX;
             float finalOffsetY = offsetY;
 
-            Coordinates c = cell.getUserObject().getCoordinates();
             anim.setOrigin(c);
 
             anim.setOnDone(b -> {
@@ -124,11 +125,12 @@ public class VoidAnimator {
         } else
             ActionMaster.addMoveToAction(cell, x + offsetX, y + offsetY, dur);
 
-        ActionMaster.addDelayedAction(cell, dur / 2, new Action() {
+        float delay =raiseOrCollapse?  dur / 5 : 0.01f;
+        ActionMaster.addDelayedAction(cell, delay, new Action() {
             @Override
             public boolean act(float delta) {
-                handler.gridPanel.getGridManager();
                 cell.getUserObject().setVOID(!raiseOrCollapse);
+                updatePillar(c);
                 if (handler.isLogged())
                     log(1, cell + " toggled void to " + cell.getUserObject().isVOID());
                 return true;
@@ -136,6 +138,7 @@ public class VoidAnimator {
         });
 
         DIRECTION direction = from;
+
         ActionMaster.addAfter(cell, () -> {
 
             if (raiseOrCollapse) {
@@ -153,7 +156,13 @@ public class VoidAnimator {
                     log(1, cell.getUserObject().getNameAndCoordinate() +
                             cell.getColor().a + " had collapsed and been reset; collapsed cells: " + handler.collapsed.size());
             }
+
+
         });
+    }
+
+    private void updatePillar(Coordinates  c) {
+        handler.gridPanel.getGridManager().getPillarManager().updateDynamicPillars(c);
     }
 
 

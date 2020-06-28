@@ -14,7 +14,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.bf.overlays.bar.HpBar;
 import eidolons.libgdx.gui.generic.NoHitGroup;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
@@ -35,7 +35,7 @@ public class GenericGridView extends UnitView {
     public FadeImageContainer torch;
     private boolean stackView;
     private boolean invisible;
-    private Label infoText = new Label("", StyleHolder.getDebugLabelStyle());
+    private final Label infoText = new Label("", StyleHolder.getDebugLabelStyle());
 
     public GenericGridView(BattleFieldObject obj, UnitViewOptions o) {
         super(o);

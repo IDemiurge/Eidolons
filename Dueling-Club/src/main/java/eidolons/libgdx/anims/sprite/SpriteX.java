@@ -1,22 +1,23 @@
 package eidolons.libgdx.anims.sprite;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
-import eidolons.libgdx.bf.Fluctuating;
+import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.Flippable;
-import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.shaders.ShaderMaster;
 import main.content.enums.GenericEnums;
+import main.system.auxiliary.RandomWizard;
 
 
-public class SpriteX extends GroupX implements Flippable {
+public class SpriteX extends SuperActor implements Flippable {
 
+    public static final boolean TEST_MODE = true;
     SpriteAnimation sprite;
-    Fluctuating f;
 
     float acceleration;
     float pauseAfterCycle;
@@ -40,16 +41,22 @@ public class SpriteX extends GroupX implements Flippable {
 
     public SpriteX(SPRITE_TEMPLATE template, GenericEnums.ALPHA_TEMPLATE alphaTemplate, SpriteAnimation sprite
     ) {
-        this(null, template, alphaTemplate);
+        this(null, template, alphaTemplate, GenericEnums.BLENDING.NORMAL);
         this.sprite = sprite;
         initSprite();
 
     }
 
-    public SpriteX(String path, SPRITE_TEMPLATE template, GenericEnums.ALPHA_TEMPLATE alphaTemplate) {
+    public SpriteX(String path, GenericEnums.BLENDING blending, GenericEnums.ALPHA_TEMPLATE alpha) {
+        this(path, null, alpha, blending);
+    }
+
+    public SpriteX(String path, SPRITE_TEMPLATE template,
+                   GenericEnums.ALPHA_TEMPLATE alphaTemplate, GenericEnums.BLENDING blending) {
         if (alphaTemplate != null) {
-            f = new Fluctuating(alphaTemplate);
+            setAlphaTemplate(alphaTemplate);
         }
+        boolean reverse = false;
         if (template != null) {
             acceleration = template.acceleration;
             pauseAfterCycle = template.pauseAfterCycle;
@@ -57,18 +64,33 @@ public class SpriteX extends GroupX implements Flippable {
             offsetRangeY = template.offsetRangeY;
             scaleRange = template.scaleRange;
             speedRandomness = template.speedRandomness;
+            if (template.canBeReverse)
+                reverse = RandomWizard.random();
         }
         if (path != null) {
             sprite = SpriteAnimationFactory.getSpriteAnimation(path, true, false);
+            sprite.setBlending(blending);
+            if (reverse)
+                sprite.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
             initSprite();
         }
+        if (template != null) {
+            float s = RandomWizard.getRandomFloatBetween(1 - scaleRange, 1);
+            setScale(s);
+            if (template.fps > 0) {
+                sprite.setFps(template.fps);
+            }
+        }
     }
+
 
     private void initSprite() {
         sprite.setCustomAct(true);
         sprite.setLoops(0);
         sprite.setLooping(true);
         setOrigin(Align.center);
+
+        sprite.setPauseBetweenCycles(pauseAfterCycle);
     }
 
     @Override
@@ -98,8 +120,18 @@ public class SpriteX extends GroupX implements Flippable {
         if (sprite == null) {
             return;
         }
+        if (isAlphaFluctuationOn()) {
+            alphaFluctuation(this , delta);
+            sprite.setAlpha(getColor().a);
+        }
+        setTransform(false);
         sprite.act(delta);
         super.act(delta);
+    }
+
+    @Override
+    public boolean isAlphaFluctuationOn() {
+        return alphaTemplate != null;
     }
 
     @Override
@@ -126,7 +158,8 @@ public class SpriteX extends GroupX implements Flippable {
         sprite.setFlipX(flipX);
         sprite.setFlipY(flipY);
         sprite.setColor(getColor());
-        sprite.setAlpha(parentAlpha);
+        if (!isAlphaFluctuationOn())
+            sprite.setAlpha(parentAlpha);
 
         done = !sprite.draw(batch);
         //        sprite.setFlipX(true);
@@ -223,8 +256,20 @@ public class SpriteX extends GroupX implements Flippable {
 
     public enum SPRITE_TEMPLATE {
         //        WITCH_FLAME,
-
+        THUNDER(11f, 0.35f, true, 22),
+        THUNDER2(11f, 0.23f, false, 32),
         ;
+
+        SPRITE_TEMPLATE(float pauseAfterCycle) {
+            this.pauseAfterCycle = pauseAfterCycle;
+        }
+
+        SPRITE_TEMPLATE(float pauseAfterCycle, float scaleRange, boolean reverse, int fps) {
+            this.pauseAfterCycle = pauseAfterCycle;
+            this.scaleRange = scaleRange;
+            this.canBeReverse = reverse;
+            this.fps = fps;
+        }
 
         SPRITE_TEMPLATE(float pauseAfterCycle, float speedRandomness, float acceleration, float offsetRangeX, float offsetRangeY, float scaleRange) {
             this.pauseAfterCycle = pauseAfterCycle;
@@ -235,12 +280,11 @@ public class SpriteX extends GroupX implements Flippable {
             this.scaleRange = scaleRange;
         }
 
+        public boolean canBeReverse;
+        public int fps;
         float pauseAfterCycle;
-
         float speedRandomness;
-
         float acceleration;
-
         float offsetRangeX;
         float offsetRangeY;
         float scaleRange;

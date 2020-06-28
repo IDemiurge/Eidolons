@@ -1,10 +1,18 @@
 package eidolons.game.module.cinematic.flight;
 
+import com.badlogic.gdx.graphics.Color;
+import eidolons.libgdx.GdxColorMaster;
 import main.system.data.DataUnit;
+
+import static eidolons.game.module.cinematic.flight.FlightData.FLIGHT_VALUE.hue;
 
 public class FlightData extends DataUnit<FlightData.FLIGHT_VALUE> {
     public FlightData(String text) {
         super(text);
+    }
+
+    public Color getHue() {
+        return GdxColorMaster.getColorByName(getValue(hue));
     }
 
     /**
@@ -16,11 +24,11 @@ public class FlightData extends DataUnit<FlightData.FLIGHT_VALUE> {
         camera_shake,
         camera_displace,
         soundscape,
-        trail,
+        trail, hue,
         trail_omni, //water waves
         angle, //
         objs_under, //weightmap via simple text?
-background,
+        background,
         fixed_duration,
         angle_delta, objs_over,//can do a  bit of turning randomly?
     }

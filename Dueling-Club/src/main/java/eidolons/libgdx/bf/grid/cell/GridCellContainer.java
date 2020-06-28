@@ -54,7 +54,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
     protected SortMaster<GenericGridView> sorter;
     public List<GenericGridView> visibleViews;
     protected List<GenericGridView> allViews;
-    protected boolean main;
+    protected boolean mainHero;
     protected int n;
 
     public GridCellContainer(TextureRegion backTexture, int gridX, int gridY) {
@@ -63,6 +63,10 @@ public class GridCellContainer extends GridCell implements Hoverable {
 
     public GridCellContainer(GridCell parent) {
         super(parent.backTexture, parent.getGridX(), parent.getGridY());
+    }
+
+    public boolean isMainHero() {
+        return mainHero;
     }
 
     @Override
@@ -101,7 +105,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
     protected boolean isViewCacheOn() {
         if (checkIgnored())
             return false;
-        return !main;
+        return !mainHero;
     }
 
     @Override
@@ -115,14 +119,14 @@ public class GridCellContainer extends GridCell implements Hoverable {
 
         if (isViewCacheOn())
             if (visibleOnly) {
-                if (visibleViews != null && !main)
+                if (visibleViews != null && !mainHero)
                     return visibleViews;
             } else {
-                if (allViews != null && !main)
+                if (allViews != null && !mainHero)
                     return allViews;
             }
         List<GenericGridView> list = new ArrayList<>();
-        main = false;
+        mainHero = false;
         for (Actor actor : getChildren()) {
             if (visibleOnly)
                 if (!actor.isVisible())
@@ -134,7 +138,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
             if (actor instanceof GenericGridView) {
                 list.add((GenericGridView) actor);
                 if (actor.getUserObject() == Eidolons.MAIN_HERO) {
-                    main = true;
+                    mainHero = true;
                 }
             }
         }
@@ -215,11 +219,19 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     public final float getViewX(UnitGridView view) {
-        return getViewX(visibleViews.indexOf(view));
+        int i = 0;
+        if (visibleViews != null) {
+            i = visibleViews.indexOf(view);
+        }
+        return getViewX(i);
     }
 
     public final float getViewY(UnitGridView view) {
-        return getViewY(visibleViews.indexOf(view), getUnitViewCount());
+        int i = 0;
+        if (visibleViews != null) {
+            i = visibleViews.indexOf(view);
+        }
+        return getViewY(i, getUnitViewCount());
     }
 
     public final float getViewX(int i) {
@@ -427,7 +439,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
 
             if (actor.getUserObject() == Eidolons.MAIN_HERO
                     || actor.getUserObject() instanceof Entrance)
-                main = true;
+                mainHero = true;
         }
     }
 
@@ -451,7 +463,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
 
     public boolean removeActor(Actor actor) {
         if (actor.getUserObject() == Eidolons.MAIN_HERO)
-            main = false;
+            mainHero = false;
         return removeActor(actor, true);
     }
 
@@ -466,7 +478,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
             ((GenericGridView) actor).sizeChanged();
 
             if (actor.getUserObject() == Eidolons.MAIN_HERO)
-                main = false;
+                mainHero = false;
         }
 
         return result;

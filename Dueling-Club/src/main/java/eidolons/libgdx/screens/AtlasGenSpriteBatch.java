@@ -2,13 +2,17 @@ package eidolons.libgdx.screens;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.game.EidolonsGame;
 import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.LinkedHashSet;
@@ -78,48 +82,115 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatch {
                     continue;
                 }
             }
-            if (atlas == ATLAS.grid) {
-                continue;
-            }
             for (Texture texture : map.get(atlas)) {
                 if (texture.getTextureData() instanceof FileTextureData) {
                     String path = ((FileTextureData) texture.getTextureData()).getFileHandle().file().getPath();
-                   if (checkIgnoreTexture(path, texture)){
-                       continue;
-                   }
-                    path = getOutputPath(path, atlas);
-                    main.system.auxiliary.log.LogMaster.log(1, atlas + " texture output to: " + path);
-                    FileHandle handle = new FileHandle(path);
-                    if (handle.exists()) {
-                        if (!overwrite) {
-                            continue;
-                        }
+                    if (checkIgnoreTexture(path, texture)) {
+                        continue;
                     }
-                    GdxImageMaster.writeImage(handle, texture);
+
+                    path = getOutputPath(path, atlas == ATLAS.grid ? "main/" : "", atlas);
+                    write(path, texture, atlas);
+                    if (atlas == ATLAS.grid) {
+                        path = getOutputPath(path, EidolonsGame.lvlPath + "/", atlas);
+                        write(path, texture, atlas);
+                    }
+
                 }
             }
             // if (pack)
             //     TexturePackerLaunch.pack(input, output, atlas.name() , settings);
+
+            for (String s : AnimMaster3d.getAtlasMap().keySet()) {
+                ATLAS type = checkAtlas(s);
+                if (type != null) {
+                    writeSubAtlasImages(s, type);
+                }
+
+            }
         }
+    }
+
+    private ATLAS checkAtlas(String path) {
+        if (path.contains("weapons3d"))
+            return null;
+        if (path.contains("background"))
+            return null;
+        if (path.contains("fullscreen"))
+            return null;
+        if (path.contains("potions"))
+            return null;
+        if (path.contains("ui"))
+            return ATLAS.ui;
+        return ATLAS.grid;
+    }
+
+    private String getOutputPath(String path, String suffix, ATLAS atlas) {
+        return PathFinder.getImagePath() + "atlas img/" + atlas +
+                "/" + suffix + GdxImageMaster.cropImagePath(path);
+
+    }
+
+    private void writeSubAtlasImages(String path, ATLAS type) {
+        TextureAtlas atlas = AnimMaster3d.getOrCreateAtlas(path);
+        path = StringMaster.cropFormat(path);
+        int i = 0;
+        for (TextureAtlas.AtlasRegion region : atlas.getRegions()) {
+            String frame = "_" + NumberUtils.getFormattedTimeString(i++, 5);
+            String outputPath = getOutputPath(path + frame + ".png", "", type);
+            FileHandle handle = new FileHandle(outputPath);
+            if (!handle.exists()) {
+                try {
+                    GdxImageMaster.writeImage(handle, region);
+                    main.system.auxiliary.log.LogMaster.log(1, atlas + " atlas region texture output to: \n" + path);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            }
+
+        }
+
+    }
+
+    private void write(String path, Texture texture, ATLAS atlas) {
+        FileHandle handle = new FileHandle(path);
+        if (handle.exists()) {
+            if (!overwrite) {
+                return;
+            }
+        }
+        try {
+            GdxImageMaster.writeImage(handle, texture);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        main.system.auxiliary.log.LogMaster.log(1, atlas + " texture output to: " + path);
     }
 
     private boolean checkIgnoreTexture(String path, Texture texture) {
-        if (texture.getWidth()>2000) {
+        if (texture.getWidth() > 1800) {
             return true;
         }
-        return texture.getHeight() > 2000;
-    }
-
-    private String getOutputPath(String path, ATLAS atlas) {
-        if (atlas == ATLAS.grid) {
-            String lvlPath = EidolonsGame.lvlPath;
-            return PathFinder.getImagePath() + "atlas img/" + atlas +
-                    "/" +lvlPath + "/" +
-                    GdxImageMaster.cropImagePath(path);
+        if (texture.getHeight() > 1800) {
+            return true;
         }
-        return PathFinder.getImagePath() + "atlas img/" + atlas + "/" +
-                GdxImageMaster.cropImagePath(path);
-
+        if (path.contains("level_editor")) {
+            return true;
+        }
+        if (path.contains("background")) {
+            return true;
+        }
+        if (path.contains("fonts")) {
+            return true;
+        }
+        if (path.contains("sprites")) {
+            if (!path.contains("hanging"))
+                return true;
+        }
+        if (path.contains(PathFinder.SKIN_NAME)) {
+            return true;
+        }
+        return path.contains("atlas");
     }
 
     @Override

@@ -16,13 +16,13 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
+import eidolons.libgdx.bf.grid.handlers.GridManager;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -32,6 +32,8 @@ import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.controls.GlobalController;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
+
+import java.util.function.Function;
 
 import static main.system.GuiEventType.*;
 
@@ -50,6 +52,9 @@ public class GridCell extends BlockableGroup implements Borderable {
 
     private boolean voidAnimHappened;
     private boolean withinCamera;
+    private FadeImageContainer pillar;
+    private Function<Coordinates, Float> lightnessFunc;
+    private Function<Coordinates, Color> colorFunc;
 
     public GridCell(TextureRegion backTexture, int gridX, int gridY) {
         this.backTexture = backTexture;
@@ -107,7 +112,8 @@ public class GridCell extends BlockableGroup implements Borderable {
     }
 
     public float getCellImgAlpha() {
-        return 0.8f;
+        return 1.0f;
+        // return 0.8f;
         //TODO derive alpha from somewhere
     }
 
@@ -170,17 +176,25 @@ public class GridCell extends BlockableGroup implements Borderable {
         if (!isWithinCamera()) {
             return;
         }
-        if (isShadingSupported() && !getUserObject().isPlayerHasSeen()) {
-            getColor().set(GdxColorMaster.LIGHT_GREY.r,
-                    GdxColorMaster.LIGHT_GREY.g,
-                    GdxColorMaster.LIGHT_GREY.b,
-                    getColor().a);
-        } else
-            getColor().set(1, 1, 1,
-                    getColor().a);
+        resetColor();
+        // if (isShadingSupported() && !getUserObject().isPlayerHasSeen()) {
+        //     getColor().set(GdxColorMaster.LIGHT_GREY.r,
+        //             GdxColorMaster.LIGHT_GREY.g,
+        //             GdxColorMaster.LIGHT_GREY.b,
+        //             getColor().a);
+        // } else
+        //     getColor().set(1, 1, 1,
+        //             getColor().a);
         super.draw(batch, 1);
     }
 
+    protected void resetColor() {
+        Coordinates coord = getUserObject().getCoordinates();
+        Color c=colorFunc.apply(coord);
+        float min =getUserObject().isPlayerHasSeen()? 0.5f : 0.2f;
+        float light = Math.max(min, lightnessFunc.apply(coord)*1.5f);
+        backImage.setColor(c.r*light,c.g*light,c.b* light,  backImage.getColor().a );
+    }
     protected boolean isShadingSupported() {
         return true;
     }
@@ -203,6 +217,9 @@ public class GridCell extends BlockableGroup implements Borderable {
     }
 
     public boolean isWithinCamera() {
+        if (GridManager.isCustomDraw()) {
+            return true;
+        }
         if (voidAnimHappened) {
             return true; //quick hack
         }
@@ -339,6 +356,30 @@ public class GridCell extends BlockableGroup implements Borderable {
 
     public boolean getVoidAnimHappened() {
         return voidAnimHappened;
+    }
+
+    public void addPillar(FadeImageContainer pillar) {
+        removePillar();
+        addActor(this.pillar = pillar);
+        pillar.setZIndex(0);
+        pillar.setVisible(true); //fades in with the cell ...
+        main.system.auxiliary.log.LogMaster.log(1,"Added pillar to " + getUserObject().getNameAndCoordinate() );
+    }
+
+    public void removePillar() {
+        if (pillar != null) {
+            pillar.fadeOut();
+            ActionMaster.addRemoveAfter(pillar);
+            main.system.auxiliary.log.LogMaster.log(1,"Fading pillar from " + getUserObject().getNameAndCoordinate() );
+        }
+    }
+
+    public void setColorFunc(Function<Coordinates, Color> colorFunc) {
+        this.colorFunc = colorFunc;
+    }
+
+    public void setLightnessFunc(Function<Coordinates, Float> lightnessFunc) {
+        this.lightnessFunc = lightnessFunc;
     }
 }
 

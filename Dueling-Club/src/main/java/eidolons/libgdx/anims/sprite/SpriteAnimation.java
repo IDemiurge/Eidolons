@@ -56,6 +56,8 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private Runnable onCycle;
     private int lastCycle;
     private SpriteData data;
+    private float pauseBetweenCycles;
+    private float pauseTimer;
 
     public void setBackAndForth(boolean backAndForth) {
         this.backAndForth = backAndForth;
@@ -142,6 +144,10 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public void act(float delta) {
+        if (pauseTimer>0) {
+            pauseTimer-=delta;
+            return ;
+        }
         stateTime += delta;
     }
 
@@ -158,9 +164,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
         boolean resetBlending = false;
         if (blending != null)
-//            if (batch instanceof CustomSpriteBatch)
+        //            if (batch instanceof CustomSpriteBatch)
         {
-//                if ((((CustomSpriteBatch) batch).getBlending() != blending))
+            //                if ((((CustomSpriteBatch) batch).getBlending() != blending))
             {
                 ((CustomSpriteBatch) batch).setBlending(blending);
                 resetBlending = true;
@@ -169,7 +175,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         boolean result = drawThis(batch);
 
         if (resetBlending)
-//            if (batch instanceof CustomSpriteBatch)
+        //            if (batch instanceof CustomSpriteBatch)
         {
             ((CustomSpriteBatch) batch).resetBlending();
         }
@@ -177,6 +183,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public boolean drawThis(Batch batch) {
+        if (pauseTimer>0) {
+            return false;
+        }
         float lifecycleDuration = getLifecycleDuration();
         if (lifecycleDuration != 0) {
             checkReverse();
@@ -185,6 +194,10 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             if (checkCycle()) {
                 if (onCycle != null) {
                     onCycle.run();
+                }
+                if (pauseBetweenCycles>0){
+                    pauseTimer = pauseBetweenCycles;
+                    return false;
                 }
             }
             lifecycle = stateTime % lifecycleDuration / lifecycleDuration; //% of completion!
@@ -268,13 +281,12 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
         sprite.setAlpha(alpha);
         sprite.setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
-        if (getScale() != null){
+        if (getScale() != null) {
             sprite.setScale(getScale());
-            sprite.setPosition((int) (x + offsetX - getScale()*currentFrame.getRegionWidth() / 2), y
+            sprite.setPosition((int) (x + offsetX - getScale() * currentFrame.getRegionWidth() / 2), y
                     + (int) (offsetY
-                    - getScale()*currentFrame.getRegionHeight() / 2));
-        }
-        else {
+                    - getScale() * currentFrame.getRegionHeight() / 2));
+        } else {
             sprite.setPosition((int) (x + offsetX - currentFrame.getRegionWidth() / 2), y
                     + (int) (offsetY
                     - currentFrame.getRegionHeight() / 2));
@@ -282,14 +294,14 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         sprite.setRotation(rotation);
         sprite.setOrigin(originX, originY);
 
-//        if (color != null)
+        //        if (color != null)
         sprite.setColor(color);
         if (!batch.isDrawing()) {
             batch.begin();
         }
-//        if (batch instanceof CustomSpriteBatch) {
-//            ((CustomSpriteBatch) batch).setBlending(blending);
-//        }
+        //        if (batch instanceof CustomSpriteBatch) {
+        //            ((CustomSpriteBatch) batch).setBlending(blending);
+        //        }
         sprite.draw(batch);
 
     }
@@ -311,7 +323,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
                 case playMode:
                     break;
                 case blending:
-                    setBlending( new EnumMaster<BLENDING>().retrieveEnumConst(BLENDING.class, data.getValue(spriteValue)));
+                    setBlending(new EnumMaster<BLENDING>().retrieveEnumConst(BLENDING.class, data.getValue(spriteValue)));
                     break;
                 case fps:
                     setFps(f);
@@ -435,7 +447,12 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public TextureRegion getCurrentFrame() {
-        return getKeyFrame(stateTime, looping);
+        if (regions.size < 0)
+            return null;
+        // if (getKeyFrames().length > 0) { //TODO
+            return getKeyFrame(stateTime, looping);
+        // }
+        // return null;
     }
 
     public int getCurrentFrameNumber() {
@@ -596,6 +613,17 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         return 0;
     }
 
+    @Override
+    public TextureRegion[] getKeyFrames() {
+        if (regions == null) {
+            return new TextureRegion[0];
+        }
+        if (regions.size == 0) {
+            return new TextureRegion[0];
+        }
+        return super.getKeyFrames();
+    }
+
     public void centerOnScreen() {
         setOffsetX((GdxMaster.getWidth() - getWidth()) / 2 + getWidth() / 2);
         setOffsetY((GdxMaster.getHeight() - getHeight()) / 2 + getHeight() / 2);
@@ -604,7 +632,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     public void centerOnParent(Actor actor) {
         Vector2 pos = new Vector2(actor.getX(), actor.getY());
         actor.localToStageCoordinates(pos);
-//        pos2= actor.getStage().stageToScreenCoordinates(pos2);
+        //        pos2= actor.getStage().stageToScreenCoordinates(pos2);
         setX(pos.x);
         setY(pos.y);
         setOffsetX(Math.abs(actor.getWidth() - getWidth()) / 2 + getWidth() / 2);
@@ -649,13 +677,11 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         return onCycle;
     }
 
-
-
-    public enum SPRITE_BEHAVIOR {
-        FREEZE_WHEN_LOOPS_DONE,
-    }
-
     public TextureAtlas getAtlas() {
         return atlas;
+    }
+
+    public void setPauseBetweenCycles(float pauseBetweenCycles) {
+        this.pauseBetweenCycles = pauseBetweenCycles;
     }
 }

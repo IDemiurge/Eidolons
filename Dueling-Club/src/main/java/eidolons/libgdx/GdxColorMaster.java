@@ -7,6 +7,7 @@ import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.HeroEnums.CLASS_GROUP;
 import main.content.enums.entity.SkillEnums.SKILL_GROUP;
 import main.content.values.parameters.PARAMETER;
+import main.system.auxiliary.RandomWizard;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
 /**
@@ -59,7 +60,7 @@ public class GdxColorMaster {
     public static final Color METEORITE = getColor(175, 115, 25, 1f);
     public static final Color COLD_IRON = getColor(175, 115, 25, 1f);
     public static final Color GREY = getColor(115, 115, 125, 1f);
-    public static final Color LIGHT_GREY = getColor(155, 155, 155, 1f);
+    public static final Color LIGHT_GREY = getColor(185, 185, 185, 1f);
     public static final Color BACKGROUND_TRANSPARENT = getColor(0, 0, 0, 208);
     public static final Color BACKGROUND_MORE_TRANSPARENT = getColor(0, 0, 0, 158);
     public static final Color STANDARD_TEXT = PALE_GOLD;
@@ -70,6 +71,7 @@ public class GdxColorMaster {
     public static final Color DARK_BLUE = getColor(35, 45, 155, 1f);
     public static final Color MAGENTA = getColor(195, 55, 225, 1f);
     public static final Color PSYCHIC = getColor(195, 55, 225, 1f);
+    public static final Color CLOUD = getColor(43, 33, 61, 1f);
 
     public static Color getColorByName(String value) {
         try {
@@ -79,15 +81,15 @@ public class GdxColorMaster {
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
-        return null;
+        return null ;
     }
 
     public static Color getColor(java.awt.Color c) {
         return new Color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, 1);
     }
 
-    public static Color getColor(int r, int g, int b, float a) {
-        return new Color(r / 100, g / 100, b / 100, a);
+    public static Color getColor(float r, float g, float b, float a) {
+        return new Color(r / 255, g / 255, b / 255, a);
     }
 
     public static Color getDamageTypeColor(DAMAGE_TYPE dmgType) {
@@ -283,4 +285,10 @@ public class GdxColorMaster {
 
     }
 
+    public static void randomize(Color color, float maxRange) {
+        color.r = color.r * (1 + RandomWizard.getRandomFloatBetween(-maxRange, maxRange));
+        color.g = color.g * (1 + RandomWizard.getRandomFloatBetween(-maxRange, maxRange));
+        color.b = color.b * (1 + RandomWizard.getRandomFloatBetween(-maxRange, maxRange));
+        //TODO
+    }
 }

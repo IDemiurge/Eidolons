@@ -1,11 +1,13 @@
 package eidolons.game.module.cinematic.flight;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.Flippable;
 import eidolons.libgdx.bf.generic.ImageContainer;
@@ -21,6 +23,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Stack;
 
+import static eidolons.game.module.cinematic.flight.FlyingObjs.FLY_OBJ_TYPE.cloud;
+import static eidolons.libgdx.anims.sprite.SpriteX.SPRITE_TEMPLATE;
 import static main.content.enums.GenericEnums.*;
 import static main.system.auxiliary.log.LogMaster.log;
 
@@ -43,6 +47,9 @@ public class FlyingObjs extends GroupX {
     Set<FlyingObj> objects = new LinkedHashSet<>(); //might want to *STOP* them or change their ANGLE
     Stack<FlyingObj> pool = new Stack<>();
     private boolean stopping;
+    private Color hue;
+    //new Color(0.4f, 0.3f, 0.5f, 0.5f)
+
 
     public FlyingObjs(FLY_OBJ_TYPE type, CinematicPlatform platform, int intensity, boolean cinematic) {
         this.type = type;
@@ -57,11 +64,11 @@ public class FlyingObjs extends GroupX {
     }
 
     private float getMaxDelay(FLY_OBJ_TYPE type, int intensity) {
-        return 5 * 10 / new Float(intensity);
+        return 50 / new Float(intensity);
     }
 
     private float getMinDelay(FLY_OBJ_TYPE type, int intensity) {
-        return 2 * 10 / new Float(intensity);
+        return 20 / new Float(intensity);
     }
 
 
@@ -119,7 +126,7 @@ public class FlyingObjs extends GroupX {
         Vector2 dest = getDestination(obj, cinematic);
         float dur = getDuration(obj, cinematic);
         MoveToAction action = ActionMaster.addMoveToAction(obj, dest.x, dest.y, dur);
-        action.setInterpolation(Interpolation.sine);
+        // action.setInterpolation(Interpolation.sine);
         // action = ActionMaster.addMoveByActionReal(obj, 0, dest.y - obj.getY(), dur);
         // action.setInterpolation(Interpolation.circleOut);
 
@@ -147,7 +154,7 @@ public class FlyingObjs extends GroupX {
             ((EmitterActor) obj.actor).getEffect().
                     scaleEffect(RandomWizard.getRandomFloatBetween(0.5f, 1f));
             ((EmitterActor) obj.actor).start();
-            obj.actor.act(RandomWizard.getRandomFloat()*5);
+            obj.actor.act(RandomWizard.getRandomFloat() * 5);
         }
     }
 
@@ -159,7 +166,7 @@ public class FlyingObjs extends GroupX {
         //this is completely up to me! Depends on TYPE? Or also intensity?
         float i = RandomWizard.getRandomFloatBetween(3, 5);
         float base = cinematic ? i : i * getGridSizeFactor();
-        return  (base *                type.speedFactor               );
+        return (base / type.speedFactor);
     }
 
     private float getGridSizeFactor() {
@@ -184,6 +191,11 @@ public class FlyingObjs extends GroupX {
             if (obj.getY() == 0 || obj.getY() == getMaxY()) {
                 horizontal = true; //angle sticks to the hor axis
             }
+            float angle = this.angle;
+            float range = getRandomizeAngleRange();
+            if (range > 0)
+                angle += RandomWizard.getRandomFloatBetween(
+                        -range, range);
             double tan = Math.tan(Math.toRadians(horizontal ? angle : 90 - angle));
             if (horizontal) {
                 float ySide = (float) (tan * getScreenX(obj.getX()));
@@ -193,8 +205,9 @@ public class FlyingObjs extends GroupX {
                 x = x - xSide;
                 //TODO  - w?
             }
-            float offset = RandomWizard.getRandomFloatBetween(
-                    -getRandomizeAngleRange(), getRandomizeAngleRange()); //slight random in vector then
+            float offset = 0;
+            // RandomWizard.getRandomFloatBetween(
+            //         -range, range); //slight random in vector then
             return horizontal ? new Vector2(x, y + offset) : new Vector2(x + offset, y);
         } else {
 /*
@@ -206,7 +219,7 @@ public class FlyingObjs extends GroupX {
     }
 
     private float getRandomizeAngleRange() {
-        return 0;
+        return type.angleRange;
     }
 
     private double getScreenX(float x) {
@@ -269,10 +282,22 @@ public class FlyingObjs extends GroupX {
             case comet_pale:
                 actor = new EmitterActor(path);
                 break;
+            case thunder:
+            case thunder2:
+            case thunder3:
+                actor = new SpriteX(path, type.spriteTemplate, type.alpha, BLENDING.SCREEN);
+                break;
             default:
                 actor = new ImageContainer(path);
         }
-        // actor.setColor(type.getHue());
+
+        if (hue != null)
+            if (type.isHued()) {
+                actor.setColor(new Color(hue)); //randomize a bit? fluct period ?
+                actor.setBaseAlpha(type.getBaseAlpha());
+                GdxColorMaster.randomize(actor.getColor(), 0.33f);
+            }
+        actor.setFluctuatingAlphaPeriod(1);
         // actor.getColor().mul(getHue());
         if (type.alpha != null) {
             actor.setAlphaTemplate(type.alpha);
@@ -288,9 +313,17 @@ public class FlyingObjs extends GroupX {
         return actor;
     }
 
+    static {
+        cloud.setBaseAlpha(0.75f);
+        cloud.angleRange = 12;
+    }
 
     public enum FLY_OBJ_TYPE {
-        cloud(0.3f, ALPHA_TEMPLATE.CLOUD, true, false, 0f),
+        cloud(0.03f, ALPHA_TEMPLATE.CLOUD, true, false, 0f),
+        thunder(0.03f, ALPHA_TEMPLATE.THUNDER, true, true, 0f, true, SPRITE_TEMPLATE.THUNDER),
+        thunder2(0.03f, ALPHA_TEMPLATE.THUNDER, false, false, 0f, true, SPRITE_TEMPLATE.THUNDER2),
+        thunder3(0.03f, ALPHA_TEMPLATE.THUNDER, false, false, 0f, true, SPRITE_TEMPLATE.THUNDER2),
+        //linked with texture?
         isle(0.5f, ALPHA_TEMPLATE.CLOUD, true, false, 0f),
         stars(2.5f, ALPHA_TEMPLATE.SUN, true, true, 0f),
         wraith(0.2f, ALPHA_TEMPLATE.CLOUD, true, false, 0f),
@@ -308,13 +341,15 @@ public class FlyingObjs extends GroupX {
 
         debris(0.4f, ALPHA_TEMPLATE.CLOUD, true, false, 0f),
         light(0.3f, ALPHA_TEMPLATE.CLOUD, true, false, 0f), //sprite?
-
         ;
 
+        public float angleRange;
         private String path;
         BLENDING blending;
         boolean scaling;
         VFX[] vfx;
+        private Color hue;
+        private float baseAlpha;
 
         FLY_OBJ_TYPE(float speedFactor, VFX... vfx) {
             this.vfx = vfx;
@@ -323,16 +358,24 @@ public class FlyingObjs extends GroupX {
 
         FLY_OBJ_TYPE(float speedFactor, ALPHA_TEMPLATE alpha,
                      boolean flipX, boolean flipY, float weightFactor) {
-            path = PathFinder.getFlyObjPath() + name() + ".png";
+            this(speedFactor, alpha, flipX, flipY, weightFactor, false, null);
+        }
+
+        FLY_OBJ_TYPE(float speedFactor, ALPHA_TEMPLATE alpha,
+                     boolean flipX, boolean flipY, float weightFactor, boolean sprite, SPRITE_TEMPLATE template) {
+            path = sprite ? PathFinder.getFlyObjPath() + "sprites/" + name() + ".txt"
+                    : PathFinder.getFlyObjPath() + name() + ".png";
             this.speedFactor = speedFactor;
             this.alpha = alpha;
             this.flipX = flipX;
             this.flipY = flipY;
             this.weightFactor = weightFactor;
+            spriteTemplate = template;
         }
 
         public float speedFactor;
         public ALPHA_TEMPLATE alpha;
+        public SPRITE_TEMPLATE spriteTemplate;
         boolean flipX;
         boolean flipY;
         float weightFactor;
@@ -341,11 +384,31 @@ public class FlyingObjs extends GroupX {
             if (vfx != null) {
                 return vfx[RandomWizard.getRandomInt(vfx.length)].getPath();
             }
+            if (path.endsWith(".txt")) {
+                return path;
+                // return FileManager.getRandomFilePathVariant(
+                //         PathFinder.getImagePath() +
+                //                 path, ".txt", false);
+            }
             return FileManager.getRandomFilePathVariant(
                     PathFinder.getImagePath() +
                             path, ".png", false);
         }
+
+        public boolean isHued() {
+            return baseAlpha != 0f;
+        }
+
+        public float getBaseAlpha() {
+            return baseAlpha;
+        }
+
+        public void setBaseAlpha(float baseAlpha) {
+            this.baseAlpha = baseAlpha;
+        }
     }
 
-
+    public void setHue(Color hue) {
+        this.hue = hue;
+    }
 }

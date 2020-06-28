@@ -1,4 +1,4 @@
-package eidolons.libgdx.bf.overlays;
+package eidolons.libgdx.bf.overlays.bar;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;

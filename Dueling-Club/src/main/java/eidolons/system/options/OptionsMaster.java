@@ -17,7 +17,7 @@ import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.bf.decor.ShardVisuals;
+import eidolons.libgdx.bf.decor.shard.ShardVisuals;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;

@@ -2,6 +2,7 @@ package main.level_editor.backend.handlers.structure;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -25,6 +26,7 @@ import main.system.GuiEventType;
 import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.sound.SoundMaster;
 
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class FloorManager {
     public static LE_Floor current;
     public static Campaign campaign;
     public static BossDungeon dungeon;
-    private static List<LE_Floor> floors = new ArrayList<>();
+    private static final List<LE_Floor> floors = new ArrayList<>();
     private static LE_Floor cached;
     /*
     TEMPLATE
@@ -107,6 +109,9 @@ public class FloorManager {
         current = floor;
         Eidolons.game = floor.getGame();
         DC_Game.game = floor.getGame();
+        EidolonsGame.lvlPath = FileManager.formatPath(
+                DC_Game. game.getMetaMaster().getMetaDataManager().getSoloDungeonPath(),true,true).
+                replace(PathFinder.getDungeonLevelFolder().toLowerCase(), "");
         SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.CLICK_ACTIVATE);
         main.system.auxiliary.log.LogMaster.log(1, "floorSelected: " + floor.getName());
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(SCREEN_TYPE.EDITOR, floor));

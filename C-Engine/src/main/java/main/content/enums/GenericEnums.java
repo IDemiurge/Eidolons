@@ -614,7 +614,8 @@ public class GenericEnums {
         LIGHT(0.28f, 4, 0.8f, 2.6f, 0.1f, 0.4f),
 
         MOONLIGHT(0.4f, 5, 0.5F, 0.6f, 0.1f, 0.9f),
-        CLOUD(0.2f, 0, 2, 0.2f, 0.05f, 1f),
+        CLOUD(0.1f, 3, 2, 0.12f, 0.45f, 1f),
+        THUNDER(0.3f, 10, 0.3f, 0.5f, 0.05f, 1f),
         HIGHLIGHT(0.15f, 0, 1, 0.1f, 0.15f, 1f),
         HIGHLIGHT_MAP(0.1f, 0, 1, 0.4f, 0.75f, 1f),
         HIGHLIGHT_SPEAKER(0.25f, 0, 1, 0.1f, 0.535f, 1f),

@@ -1,4 +1,4 @@
-package eidolons.libgdx.bf.overlays;
+package eidolons.libgdx.bf.overlays.bar;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;

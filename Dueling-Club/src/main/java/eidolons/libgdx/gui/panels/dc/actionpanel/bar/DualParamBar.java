@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.libgdx.bf.overlays.ValueBar;
+import eidolons.libgdx.bf.overlays.bar.ValueBar;
 import eidolons.libgdx.gui.ScissorMaster;
 import eidolons.libgdx.texture.Textures;
 import main.content.values.parameters.PARAMETER;

@@ -218,11 +218,15 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static void writeImage(FileHandle handle, Texture texture) {
-        PixmapIO.writePNG(handle, getPixmap(texture));
+        Pixmap pixMap;
+        PixmapIO.writePNG(handle,pixMap= getPixmap(texture));
+        pixMap.dispose();
     }
 
     public static void writeImage(FileHandle handle, TextureRegion region) {
-        PixmapIO.writePNG(handle, getPixMapFromRegion(region));
+        Pixmap pixMap;
+        PixmapIO.writePNG(handle,pixMap= getPixMapFromRegion(region));
+        pixMap.dispose();
     }
 
     public static TextureRegion getSizeTemplate(String root) {

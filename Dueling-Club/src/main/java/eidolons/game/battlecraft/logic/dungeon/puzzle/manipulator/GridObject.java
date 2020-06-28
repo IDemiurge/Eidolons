@@ -11,6 +11,7 @@ import eidolons.libgdx.gui.generic.GroupWithEmitters;
 import eidolons.libgdx.particles.DummyEmitterActor;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.EmitterPools;
+import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
@@ -248,6 +249,12 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
                 }
             });
         }
+    }
+    public boolean isScreen() {
+        if (sprite == null) {
+            return !emitters.isEmpty();
+        }
+        return sprite.getSprite().getBlending()== GenericEnums.BLENDING.SCREEN;
     }
 
     protected boolean isHideWhenFade() {

@@ -1,7 +1,7 @@
 package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.bf.overlays.bar.HpBar;
 
 /**
  * Created by JustMe on 11/17/2018.

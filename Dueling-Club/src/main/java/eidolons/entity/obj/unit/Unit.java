@@ -793,6 +793,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             }
         }
         if (item != null) {
+            if (inventory != null) //ToDo-Cleanup
             if (inventory.contains(item) ||
                     item.getContainer() == CONTAINER.INVENTORY) {
                 removeFromInventory(item);

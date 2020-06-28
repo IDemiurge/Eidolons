@@ -51,7 +51,6 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     private Set<MARK> marks;
 
-    DIRECTION pillar;
 
     @Override
     protected void preInit(Game game, ObjType type, Player owner, Ref ref) {
@@ -366,11 +365,10 @@ public class DC_Cell extends DC_Obj implements Cell {
         this.objectsModified = objectsModified;
     }
 
-    public DIRECTION getPillar() {
-        return pillar;
-    }
-
-    public void setPillar(DIRECTION pillar) {
-        this.pillar = pillar;
+    public boolean hasMark(MARK mark) {
+        if (marks == null) {
+            return false;
+        }
+        return marks.contains(mark);
     }
 }
