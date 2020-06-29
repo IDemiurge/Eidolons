@@ -11,7 +11,6 @@ import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import main.content.enums.rules.VisionEnums;
 import main.entity.Entity;
-import main.entity.EntityCheckMaster;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldManager;
 import main.game.bf.Coordinates;
@@ -97,14 +96,17 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         doorMap.clear();
         wallObjects = new ArrayList<>();
         ObjectMap<Coordinates, BattleFieldObject> wallMap = new ObjectMap<>();
-        // game.getGrid().getWallCache()
+        // Boolean[][] wallCache = game.getGrid().getWallCache();
+
         Module module = game.getModule();
         for (Obj obj : game.getStructures()) {
             if (obj.getModule()!=module) {
                 continue;
             }
             BattleFieldObject bfObj = (BattleFieldObject) obj;
-            if (EntityCheckMaster.isWall(bfObj)) {
+
+            if (game.getGrid().isWallCoordinate(obj.getCoordinates())) { //fill the cache
+            // if (EntityCheckMaster.isWall(bfObj)) {
                 wallObjects.add(bfObj);
                 wallMap.put(bfObj.getCoordinates(), bfObj);
             }

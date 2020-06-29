@@ -25,6 +25,7 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.Hoverable;
 import eidolons.libgdx.bf.datasource.GridCellDataSource;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
+import eidolons.libgdx.bf.overlays.map.WallMap;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.game.bf.Coordinates;
@@ -180,21 +181,24 @@ public class GridCellContainer extends GridCell implements Hoverable {
             float y = getViewY(offset, index,
                     getUnitViewCountEffective());
             float x = getViewX(offset, index);
+            if (actor.getUserObject().isWall()) {
+                y+= WallMap.getOffsetY();
+            }
+            actor.setPosition(x, y);
             if (isAnimated()) {
-
-                actor.setPosition(x, y);
                 ActionMaster.addScaleAction(actor,
                         scaleX, scaleY, 0.25f);
-                actor.sizeChanged();
             } else {
-                actor.setPosition(x, y);
                 actor.setScale(scaleX, scaleY);
-                actor.sizeChanged();
             }
+            actor.sizeChanged();
             actor.setScaledHeight(scaleY);
             actor.setScaledWidth(scaleX);
 
             recalcImagesPos(actor, offset, offset, index++);
+            if (actor.getUserObject().isWall()) {
+                actor.setPosition(x, y);
+            }
             if (actor.getY() + actor.getHeight() > maxY) {
                 maxY = actor.getY() + actor.getHeight();
             }

@@ -114,9 +114,9 @@ public class UnitViewOptions {
             if (obj.isLandscape()) {
                 cellBackground = true;
             }
-            if (obj.isWall()) {
-                cellBackground = true;
-            }
+            // if (obj.isWall()) {
+            //     cellBackground = true;
+            // }
             if (obj instanceof Entrance) {
                 cellBackground = true;
             }

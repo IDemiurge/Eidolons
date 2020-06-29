@@ -96,6 +96,7 @@ public abstract class GridPanel extends Group {
     protected BorderMap borderMap;
     protected ShardVisuals shards;
     protected PillarMap pillars;
+    protected PillarMap wallPillars;
 
     protected GridCellContainer[][] cells;
     //    protected GridCellContainer[][] removedCells;
@@ -327,7 +328,11 @@ it sort of broke at some point - need to investigate!
                     ExceptionMaster.printStackTrace(e);
                 }
             if (isPillarsOn())
-                addActor(pillars = new PillarMap());
+            {
+                addActor(pillars = new PillarMap(false));
+                addActor(wallPillars = new PillarMap(true));
+            }
+
         }
     }
 
@@ -875,6 +880,7 @@ it sort of broke at some point - need to investigate!
         draw(customOverlayingObjectsUnder, batch);
         decorMap.get(DECOR_LEVEL.OVER_CELLS).draw(batch, 1f);
 
+        wallPillars.draw(batch, 1f);
         borderMap.draw(batch, 1f);
         wallMap.draw(batch, 1f);
         if (shards != null) {
@@ -1473,6 +1479,10 @@ it sort of broke at some point - need to investigate!
 
     public PillarMap getPillars() {
         return pillars;
+    }
+
+    public PillarMap getWallPillars() {
+        return wallPillars;
     }
 }
 

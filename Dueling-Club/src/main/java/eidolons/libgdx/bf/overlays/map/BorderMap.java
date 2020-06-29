@@ -2,7 +2,6 @@ package eidolons.libgdx.bf.overlays.map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.EventType;
@@ -14,7 +13,7 @@ import java.util.List;
 public class BorderMap extends OverlayMap {
 
     @Override
-    protected void fillDrawMap(Array<Pair<Vector2, TextureRegion>> batch, Coordinates coordinates, List<DIRECTION> list, Vector2 v) {
+    protected void fillDrawMap(List<Pair<Vector2, TextureRegion>> batch, Coordinates coordinates, List<DIRECTION> list, Vector2 v) {
         for (DIRECTION d : list) {
         float x = v.x;
         float y = v.y;

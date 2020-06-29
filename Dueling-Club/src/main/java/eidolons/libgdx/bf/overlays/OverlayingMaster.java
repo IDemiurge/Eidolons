@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.bf.grid.cell.OverlayView;
+import eidolons.libgdx.bf.overlays.map.WallMap;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -23,7 +24,7 @@ public class OverlayingMaster {
 //    int diff = direction.getDegrees() - direction1.getDegrees();
 //        int middle = (direction.getDegrees() + direction1.getDegrees()) / 2;
         int x = dim2     .width - dim1.width;
-        int y = dim2.height - dim1.height;
+        int y = dim2.height - dim1.height+40;
 
 //        if (Math.abs(diff) == 45) {
 ////        int dist = Math
@@ -141,7 +142,7 @@ public class OverlayingMaster {
             calcXOffset += x;
             calcYOffset += y;
         }
-        return new Dimension(calcXOffset, calcYOffset);
+        return new Dimension(calcXOffset, calcYOffset+ WallMap.getOffsetY());
     }
 
 }

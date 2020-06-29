@@ -162,7 +162,7 @@ public class VoidAnimator {
     }
 
     private void updatePillar(Coordinates  c) {
-        handler.gridPanel.getGridManager().getPillarManager().updateDynamicPillars(c);
+        handler.gridPanel.getGridManager().getPillarManager().updateDynamicPillars(c, false);
     }
 
 

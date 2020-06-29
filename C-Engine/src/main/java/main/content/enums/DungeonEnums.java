@@ -16,6 +16,9 @@ public class DungeonEnums {
     }
 
     public enum CELL_IMAGE {
+        crypt,
+        garden,
+        ossuary,
         tiles,
         diamond,
         circle("cr"),

@@ -27,9 +27,12 @@ import static main.game.bf.directions.DIRECTION.*;
 public class PillarManager extends GridHandler {
 
     ObjectMap<Coordinates, Set<DIRECTION>> voidAdjacency;
+    ObjectMap<Coordinates, Set<DIRECTION>> wallAdjacency;
     ObjectMap<Coordinates, Set<DIRECTION>> bordersMap;
     ObjectMap<Coordinates, DIRECTION> shardMap; //plain in addition to default shards? which now must be RARE...
     ObjectMap<Coordinates, Object> pillarMap;
+    ObjectMap<Coordinates, Object> wallPillarMap;
+    private boolean wall;
 
     public PillarManager(GridPanel panel) {
         super(panel);
@@ -41,7 +44,7 @@ public class PillarManager extends GridHandler {
         DC_Cell cell = DC_Game.game.getCellByCoordinate(coord);
         a = a * a * 5;
         a = Math.max(0.2f, a);
-        return new Color(c.r * a, c.g * a, c.b * a, 1).mul( ShadowMap.getLightColor(cell) );
+        return new Color(c.r * a, c.g * a, c.b * a, 1).mul(ShadowMap.getLightColor(cell));
 
         // float a = 1 - GammaMaster.getGammaForPillar(cell.getGamma());
         // return new Color(c.r - a, c.g - a, c.b - a, 1);
@@ -55,17 +58,19 @@ public class PillarManager extends GridHandler {
 
     public void updateVisuals() {
         grid.getPillars().update(pillarMap);
+        grid.getWallPillars().update(wallPillarMap);
         // GuiEventManager.trigger(GuiEventType.BORDER_MAP_UPDATE, bordersMap);
     }
 
     public void reset() {
         firstPass();
-        secondPass();
+        pillarMap = secondPass(voidAdjacency, false);
+        wallPillarMap = secondPass(wallAdjacency, true);
         thirdPass();
         updateVisuals();
         grid.getPillars().setColorFunc(c -> getColor(c));
+        grid.getWallPillars().setColorFunc(c -> getColor(c));
     }
-
 
     private void firstPass() {
         voidAdjacency = new ObjectMap<>();
@@ -75,20 +80,50 @@ public class PillarManager extends GridHandler {
                 processAdjacency(c);
             }
         }
+        ObjectMap<Coordinates, List<DIRECTION>> wallMap = DC_Game.game.getBattleFieldManager().getWallMap();
+        wallAdjacency = new ObjectMap<>();
+        // for (Coordinates key : wallMap.keys()) {
+        //     Set<DIRECTION> set = new LinkedHashSet<>(Arrays.asList(clockwise));
+        //     set.removeIf(d -> wallMap.containsKey(key.getAdjacentCoordinate(d))); //real void too?
+        //     wallAdjacency.put(key, set);
+        // }
+        Boolean[][] wallCache = DC_Game.game.getGrid().getWallCache();
+        for (int x = 0; x < wallCache.length; x++) {
+            for (int y = 0; y < wallCache[0].length; y++) {
+                if (wallCache[x][y] == Boolean.TRUE) {
+                Coordinates key = Coordinates.get(x, y);
+                if (!wallMap.containsKey(key)) {
+                    wallAdjacency.put(key, new LinkedHashSet<>());
+                    continue;
+                }
+                Set<DIRECTION> set = new LinkedHashSet<>(Arrays.asList(clockwise));
+                set.removeIf(d -> wallMap.containsKey(key.getAdjacentCoordinate(d))); //real void too?
+                wallAdjacency.put(key, set);
+                }
+
+            }
+        }
+
         return;
     }
 
-    private void secondPass() {
-        pillarMap = new ObjectMap<>();
+    private ObjectMap<Coordinates, Object> secondPass(ObjectMap<Coordinates, Set<DIRECTION>> voidAdjacency, boolean wall) {
+        ObjectMap pillarMap = new ObjectMap<>();
         for (Coordinates c : voidAdjacency.keys()) {
             Set<DIRECTION> set = voidAdjacency.get(c);
-            Object d = getPillarForCell(set);
+            Object d = getPillarForCell(set, wall);
             if (d != NO_PILLAR) {
                 pillarMap.put(c, d);
             }
-
+            // Set<DIRECTION> borders = new LinkedHashSet<>();
+            // if (!direction.isDiagonal()) {
+            //     borders.add(direction);
+            //perhaps we will want some CORNER overlays sometime
+            // }
+            // bordersMap.put(c, borders);
             // shardMap
         }
+        return pillarMap;
     }
 
     private void thirdPass() {
@@ -100,24 +135,18 @@ public class PillarManager extends GridHandler {
             return;
         }
         Set<DIRECTION> empty = new LinkedHashSet<>();
-        Set<DIRECTION> borders = new LinkedHashSet<>();
         for (DIRECTION direction : clockwise) {
             Coordinates c1 = c.getAdjacentCoordinate(direction);
             if (c1 == null || grid.isVoid(c1.x, c1.y)) {
                 empty.add(direction);
-                // if (!direction.isDiagonal()) {
-                //     borders.add(direction);
-                //perhaps we will want some CORNER overlays sometime
-                // }
             }
         }
         if (!empty.isEmpty()) {
             voidAdjacency.put(c, empty);
         }
-        // bordersMap.put(c, borders);
     }
 
-    public void updateDynamicPillars(Coordinates c1) {
+    public void updateDynamicPillars(Coordinates c1, boolean wall) {
         List<Coordinates> list = new ArrayList<>(Arrays.asList(c1.getAdjacent()));
         list.add(c1);
         for (Coordinates c : list) {
@@ -127,14 +156,14 @@ public class PillarManager extends GridHandler {
             Set<DIRECTION> voidAdjacent = voidAdjacency.get(c);
             if (voidAdjacent != null) { //TODO might need to create it!
                 GridCellContainer container = grid.getCells()[c.x][c.y];
-                Object d = getPillarForCell(voidAdjacent);
+                Object d = getPillarForCell(voidAdjacent, wall);
                 if (d == NO_PILLAR) {
                     container.removePillar();
                     continue;
                 }
                 DIRECTION direction = (DIRECTION) d;
                 DungeonEnums.CELL_IMAGE type = grid.getCell(c.x, c.y).getCellType();
-                if (!isPillarType(type)){
+                if (!isPillarType(type)) {
                     type = DEFAULT_PILLAR;
                 }
                 TextureRegion region = TextureCache.getOrCreateR(getPillarPath(type, direction));
@@ -148,42 +177,29 @@ public class PillarManager extends GridHandler {
     }
 
     private boolean isPillarType(DungeonEnums.CELL_IMAGE type) {
-        if (type== DungeonEnums.CELL_IMAGE.bare) return true;
-        if (type== DungeonEnums.CELL_IMAGE.mossy) return true;
+        if (type == DungeonEnums.CELL_IMAGE.bare) return true;
+        if (type == DungeonEnums.CELL_IMAGE.mossy) return true;
         return type == DungeonEnums.CELL_IMAGE.iron;
     }
 
-    public Object getPillarForCell(Set<DIRECTION> voidAdjacent) {
+    public Object getPillarForCell(Set<DIRECTION> voidAdjacent, boolean wall) {
         Set<DIRECTION> inverted = new LinkedHashSet<>();
         for (DIRECTION direction : clockwise) {
             if (!voidAdjacent.contains(direction)) {
                 inverted.add(direction);
             }
         }
-        return getPillar(inverted);
+        return getPillar(inverted, wall);
     }
 
 
-    private boolean checkSingle(Set<DIRECTION> cellsAdjacent, boolean vert) {
-
-        if (cellsAdjacent.size() == 7) {
-            //revamp!
-            return !cellsAdjacent.contains((vert ? prefHor : prefVert));
-        }
-        return false;
-    }
-
-
-    public Object getPillar(Set<DIRECTION> adj) {
-        //check straight pillar no skew
-        // if (checkSingle(adj, true)) {
-        //     return getPillarDIRECTION(false, false );
-        // }
-        // if (checkSingle(adj, false)) {
-        //     return getPillarDIRECTION(false, prefHor != DIRECTION.RIGHT);
-        // }
+    public Object getPillar(Set<DIRECTION> adj, boolean wall) {
         //CORNER
-
+        if (wall) {
+            if (adj.size()==8) {
+                  return getPillarDIRECTION(false, null);
+            }
+        }
         if (!adj.contains(prefVert)) {
             if (!adj.contains(prefHor)) {
 
@@ -193,6 +209,9 @@ public class PillarManager extends GridHandler {
                         return getCorner(false);
                 if (!adj.contains(UP)) {
                     if (adj.contains(DOWN_LEFT)) {
+                        if (wall) {
+                            return getCorner(true);
+                        }
                         return getDefault();
                     }
                     if (adj.contains(LEFT)) {
@@ -222,6 +241,10 @@ public class PillarManager extends GridHandler {
                 if (adj.contains(DOWN_LEFT))
                     return getPillarDIRECTION(false, false);
                 return getPillarDIRECTION(false, false);
+            }
+            if (wall) {
+                if (adj.contains(UP) || adj.contains(UP_RIGHT))
+                    return getPillarDIRECTION(false, null);
             }
             return getDefault();
         }
