@@ -4,13 +4,13 @@ import com.badlogic.gdx.graphics.Color;
 
 public class LightHandler {
     public static Color applyNegative(Color c, float negative) {
-       float add =  negative / 3;
-       float mult = (0.85f + add);
+       float add =  -negative / 3;
+       float mult = (0.95f + add);
         return new Color(c.r * mult+add, c.g * mult+add, c.b * mult+add, 1);
     }
     public static Color applyAdd(Color c, float screen) {
        float add =   screen / 3;
-        float mult = (0.3f + add );
+        float mult = (1.0f + add );
         return new Color(c.r * mult+add, c.g * mult+add, c.b *mult+add, 1);
     }
 

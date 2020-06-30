@@ -51,8 +51,9 @@ public class PillarManager extends GridHandler {
         lerp.a = Math.max(LightConsts.MIN_LIGHTNESS,
                 wall ? lerp.a * LightConsts.PILLAR_WALL_COEF_LIGHT
                         : lerp.a * LightConsts.PILLAR_COEF_LIGHT);
-
-        return LightHandler.applyLightnessToColor(lerp.clamp());
+        c1 =LightHandler.applyLightnessToColor(lerp.clamp());
+        c1.a=1;
+        return c1;
     }
 
     @Override

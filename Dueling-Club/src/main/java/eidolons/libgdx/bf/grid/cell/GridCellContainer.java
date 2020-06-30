@@ -32,6 +32,7 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
+import main.system.auxiliary.RandomWizard;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -102,17 +103,19 @@ public class GridCellContainer extends GridCell implements Hoverable {
         cellImgContainer.setColor(c.r, c.g, c.b, cellImgContainer.getColor().a);
 
         for (GenericGridView unitView : getUnitViews(true)) {
+            float a = unitView.getPortrait().getContent().getColor().a;
             unitView.getPortrait().getContent().getColor().lerp(cellImgContainer.getColor(), 0.35f);
+            unitView.getPortrait().getContent().getColor().a=a;
             // unitView.getPortrait().getContent().setColor(GdxColorMaster.WHITE);
             if (screen > LightConsts.MIN_SCREEN) {
                 unitView.setScreenOverlay(screen);
             } else unitView.setScreenOverlay(0);
 
-            c = GdxColorMaster.WHITE;
-            if (negative > 0) {
-                c = LightHandler.applyNegative(c, negative);
-            }
-            unitView.getPortrait().setColor(c);
+            // c = GdxColorMaster.WHITE;
+            // if (negative > 0) {
+            //     c = LightHandler.applyNegative(c, negative);
+            // }
+            // unitView.getPortrait().setColor(c);
         }
     }
 
@@ -443,6 +446,11 @@ public class GridCellContainer extends GridCell implements Hoverable {
                     calc.offsetY = WallMap.getOffsetY();
                 }
                 wall = true;
+                if (isRotation()) {
+                    int n = RandomWizard.getRandomIntBetween(0, 4);
+                    actor.setRotation(90 * n);
+                    actor.setOrigin(64, 64);
+                }
             }
             if (userObject.isLightEmitter()) {
                 lightEmitter = true;

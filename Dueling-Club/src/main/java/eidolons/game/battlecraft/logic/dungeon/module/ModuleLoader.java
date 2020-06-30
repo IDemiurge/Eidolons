@@ -46,9 +46,10 @@ public class ModuleLoader extends DungeonHandler {
      */
     public ModuleLoader(DungeonMaster master) {
         super(master);
-        GuiEventManager.bind(GuiEventType.GRID_RESET, p -> {
-            loadGdxGrid((Module) p.get());
-        });
+        //ToDo-Cleanup
+        // GuiEventManager.bind(GuiEventType.GRID_RESET, p -> {
+        //     loadGdxGrid((Module) p.get());
+        // });
     }
 
     public void loadGdxGrid(Module module) {

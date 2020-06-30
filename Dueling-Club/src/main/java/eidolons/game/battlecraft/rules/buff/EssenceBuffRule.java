@@ -52,7 +52,7 @@ public class EssenceBuffRule extends DC_BuffRule {
                  new Effects(new ModifyValueEffect(parameterString,
                   MOD.MODIFY_BY_PERCENT, "("
                   + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
-                  + formulas[1] + ")*2"), new BehaviorModeEffect(
+                  + formulas[level] + ")*2"), new BehaviorModeEffect(
                   AiEnums.BEHAVIOR_MODE.PANIC)));
                 // return new OwnershipChangeEffect();
             }
@@ -61,13 +61,13 @@ public class EssenceBuffRule extends DC_BuffRule {
                  UnitEnums.STANDARD_PASSIVES.FEARLESS)), new Effects(new ModifyValueEffect(
                  parameterString, MOD.MODIFY_BY_PERCENT, "("
                  + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
-                 + formulas[1] + ")*2")));
+                 + formulas[level] + ")*2")));
             }
             case 2: {
                 return new Effects(new ModifyValueEffect(parameterString,
                  MOD.MODIFY_BY_PERCENT, "("
                  + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
-                 + formulas[2] + ")/4", maxFormula));
+                 + formulas[level] + ")/4", maxFormula));
 
             }
         }

@@ -64,6 +64,8 @@ public class ColorMap {
         // for (Coordinates c : base.keySet()) {
         //     output.get(c).a= base.get(c).a;
         // }
+        update();
+
         if (emitters != null)
             for (Light key : emitters) {
                 fluctuate(key, delta);
@@ -90,10 +92,11 @@ public class ColorMap {
                 orig.set(base.get(c));
 
             float lerp = key.lerp.get(c);
-            if (!GdxColorMaster.WHITE.equals(key.baseColor) && GdxColorMaster.isHued(key.color)) {
-                GdxColorMaster.modify(orig, key.color, 0.2f + lerp * lerp + lerp);
-                orig.lerp(key.color, lerp * lerp + 0.2f).clamp();
-                orig.a  = lerp * key.lightness*1.4f;
+            if (!GdxColorMaster.WHITE.equals(key.baseColor)) {
+                // GdxColorMaster.modify(orig, key.color, 0.2f + lerp * lerp+lerp );
+                Color color = GdxColorMaster.lighter(key.color, 0.33f);
+                orig.lerp( color, lerp * lerp  ).clamp();
+                orig.a  += lerp *lerp * key.lightness/2;
             } else {
                 orig.a += lerp  /3 ;
             }

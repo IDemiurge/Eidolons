@@ -31,6 +31,7 @@ import eidolons.system.controls.GlobalController;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.RandomWizard;
 
 import java.util.function.Function;
 
@@ -82,10 +83,18 @@ public class GridCell extends BlockableGroup implements Borderable, Colored {
         }
     }
 
+    public static boolean isRotation() {
+        return true;
+    }
+
     public GridCell init() {
         cellImgContainer = new ImageContainer(new Image(backTexture));
         cellImgContainer.getColor().a = getCellImgAlpha();
-
+        if (isRotation()) {
+            int n = RandomWizard.getRandomIntBetween(0, 4);
+            cellImgContainer.setRotation(90 * n);
+            cellImgContainer.setOrigin(64, 64);
+        }
         addActor(cellImgContainer);
         //        addActor(overlay = new SpriteX());
         addActor(overlayTexture = new Image());
@@ -111,6 +120,7 @@ public class GridCell extends BlockableGroup implements Borderable, Colored {
 
         return this;
     }
+
 
     public float getCellImgAlpha() {
         return 1.0f;
