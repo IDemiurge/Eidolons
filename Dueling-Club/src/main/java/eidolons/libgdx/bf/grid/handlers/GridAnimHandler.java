@@ -141,9 +141,9 @@ public class GridAnimHandler extends GridHandler{
     private GraphicData getDefaultData(VIEW_ANIM value) {
         switch (value) {
             case displace:
-                return new GraphicData("dur:1f;y:40;x:24");
+                return new GraphicData("dur=1f,y=40,x=24");
             case screen:
-                return new GraphicData("dur:1f;alpha:1f");
+                return new GraphicData("dur=1f,alpha=1f");
         }
         return null;
     }

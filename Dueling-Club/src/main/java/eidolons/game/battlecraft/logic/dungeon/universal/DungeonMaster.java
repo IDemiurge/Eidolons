@@ -1,7 +1,10 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
+import com.badlogic.gdx.graphics.Color;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMap;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightConsts;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.TransitHandler;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.LayerManager;
@@ -19,14 +22,17 @@ import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.battlecraft.logic.mission.universal.*;
 import eidolons.game.battlecraft.logic.mission.universal.stats.MissionStatManager;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
+import eidolons.libgdx.GdxColorMaster;
 import main.game.bf.Coordinates;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.launch.Flags;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -54,7 +60,7 @@ public abstract class DungeonMaster {
     private final LayerManager layerManager;
     private final StructMaster structMaster;
     private final FloorLoader floorLoader;
-    private  Awakener awakener;
+    private Awakener awakener;
 
     private Map<DataMap, Map<Integer, String>> dataMaps;
     private final DC_ObjInitializer objInitializer;
@@ -62,6 +68,7 @@ public abstract class DungeonMaster {
     private final ModuleLoader moduleLoader;
     private final PlaceholderResolver placeholderResolver;
     private final TransitHandler transitHandler;
+    private ColorMap colorMap;
 
 
     public DungeonMaster(DC_Game game) {
@@ -142,29 +149,27 @@ public abstract class DungeonMaster {
 
     }
 
-    public void setFloorWrapper(Location floorWrapper) {
-        this.floorWrapper = floorWrapper;
+    protected void initColorMap() {
+        Map<Coordinates, Color> map = new HashMap<>(game.getModule().getCoordinatesSet().size() + 10, 0.991f);
+        for (Coordinates coordinate : game.getModule().getCoordinatesSet()) {
+            //ambient light here
+            LevelStruct struct = getStructMaster().getLowestStruct(coordinate);
+            int light = Math.max(LightConsts.MIN_AMBIENT_LIGHT, struct.getIlluminationValue());
+            float a=light / 100f;
+            Color c;
+            if (struct.getColorTheme() != null) {
+                c = GdxColorMaster.getColorForTheme(struct.getColorTheme());
+                c= new Color(c.r, c.g, c.b, a).lerp(GdxColorMaster.GREY, 0.5f);
+            } else {
+                c= GdxColorMaster.DARK_GREY;
+            }
+            map.put(coordinate, new Color(c.r, c.g, c.b, a));
+        }
+        colorMap = new ColorMap(map);
     }
 
-    protected void processCoordinateMap(String data, DataMap type) {
-        switch (type) {
-
-        }
-        //        getDungeonLevel().initUnitFacingMap(dataMap);
-        //        getDungeonLevel().initCellTypeMap(dataMap);
-
-        //    TODO     for (String coordinate : dataMap.keySet()) {
-        //            String data = dataMap.get(coordinate);
-        //            data = BridgeMaster.processMetaData(data);
-        //
-        //            if (portalMaster.addPortal(coordinate, data)) {
-        //                continue;
-        //            }
-        //            if (KeyMaster.addCustomKey(coordinate, data)) {
-        //                continue;
-        //            }
-        //anything else?
-        //        }
+    public void setFloorWrapper(Location floorWrapper) {
+        this.floorWrapper = floorWrapper;
     }
 
     protected Location initDungeon() {
@@ -357,5 +362,14 @@ public abstract class DungeonMaster {
 
     public Awakener getAwakener() {
         return awakener;
+    }
+
+    public ColorMap getColorMap() {
+        return colorMap;
+    }
+
+    public void loadingDone() {
+        getFloorLoader().loadingDone();
+        initColorMap();
     }
 }

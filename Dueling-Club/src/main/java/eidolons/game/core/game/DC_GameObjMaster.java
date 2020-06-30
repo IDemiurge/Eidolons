@@ -12,6 +12,8 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.core.game.GameObjMaster;
 import main.game.logic.battle.player.Player;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -33,10 +35,10 @@ public class DC_GameObjMaster extends GameObjMaster {
     protected Set<Unit> units;
     protected Set<Structure> structures;
     private Map<Coordinates, Set<Unit>> unitMap;
-    private Map<Coordinates, Set<Unit>> unitCache = new HashMap<>();
-    private Map<Coordinates, Set<BattleFieldObject>> objCache = new HashMap<>();
-    private Map<Coordinates, Set<BattleFieldObject>> noOverlayingCache = new HashMap<>();
-    private Map<Coordinates, Set<BattleFieldObject>> overlayingCache = new HashMap<>();
+    private final Map<Coordinates, Set<Unit>> unitCache = new HashMap<>();
+    private final Map<Coordinates, Set<BattleFieldObject>> objCache = new HashMap<>();
+    private final Map<Coordinates, Set<BattleFieldObject>> noOverlayingCache = new HashMap<>();
+    private final Map<Coordinates, Set<BattleFieldObject>> overlayingCache = new HashMap<>();
     private Unit[] unitsArray;
     private Structure[] structuresArray;
 
@@ -310,6 +312,9 @@ public class DC_GameObjMaster extends GameObjMaster {
             getUnits().add((Unit) obj);
         } else if (obj instanceof Structure) {
             getStructures().add((Structure) obj);
+            if (((BattleFieldObject) obj).isWall()) {
+                GuiEventManager.trigger(GuiEventType.GRID_RESET);
+            }
         }
     }
 

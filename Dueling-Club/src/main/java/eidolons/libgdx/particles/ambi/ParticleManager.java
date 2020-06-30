@@ -24,7 +24,7 @@ import java.util.List;
  * Created by JustMe on 1/8/2017.
  */
 public class ParticleManager extends GroupX {
-    private static final boolean TEST = false;
+    private static final boolean TEST = true;
     private static boolean ambienceOn = OptionsMaster.getGraphicsOptions().getBooleanValue(
             GRAPHIC_OPTION.AMBIENCE_VFX);
     private static boolean ambienceMoveOn;

@@ -595,6 +595,9 @@ public class AnimMaster3d {
     }
 
     private static boolean isUseOneFrameVersion(String path) {
+        if (path.contains("light")){
+            return false;
+        }
         if (CoreEngine.isLevelEditor()) {
             return true;
         }

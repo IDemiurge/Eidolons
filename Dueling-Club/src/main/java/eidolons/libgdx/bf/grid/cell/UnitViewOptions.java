@@ -31,6 +31,7 @@ public class UnitViewOptions {
     private int clockValue;
     private Color teamColor;
     private boolean mainHero;
+    private boolean wall;
     private String name;
     private boolean hoverResponsive;
     private String portraitPath;
@@ -111,7 +112,10 @@ public class UnitViewOptions {
         this.mainHero = obj.isMine() && obj.isMainHero();
 
         if (obj instanceof Structure) {
-            if (obj.isLandscape()) {
+
+            if (obj.isWall())
+                wall = true;
+            else if (obj.isLandscape()) {
                 cellBackground = true;
             }
             // if (obj.isWall()) {
@@ -203,5 +207,9 @@ public class UnitViewOptions {
 
     public void setHoverResponsive(boolean hoverResponsive) {
         this.hoverResponsive = hoverResponsive;
+    }
+
+    public boolean isWall() {
+        return wall;
     }
 }

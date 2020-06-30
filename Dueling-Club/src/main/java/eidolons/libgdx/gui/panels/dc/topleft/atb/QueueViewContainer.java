@@ -10,8 +10,6 @@ import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.grid.cell.QueueView;
-import eidolons.libgdx.screens.CustomSpriteBatch;
-import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 
@@ -93,11 +91,11 @@ class QueueViewContainer extends Container<QueueView> {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         ShaderProgram shader = batch.getShader();
-        if (immobilized) {
-            if (batch instanceof CustomSpriteBatch) {
-                ((CustomSpriteBatch) batch).setFluctuatingShader(DarkShader.getInstance());
-            }
-        }
+        // if (immobilized) {
+        //     if (batch instanceof CustomSpriteBatch) {
+        //         ((CustomSpriteBatch) batch).setFluctuatingShader(DarkShader.getInstance());
+        //     }
+        // }
 //            if (intentIconSprite != null) {
 //                intentIconSprite.centerOnParent(getActor());
 //                intentIconSprite.setOffsetY(intentIconSprite.getOffsetY()-500);

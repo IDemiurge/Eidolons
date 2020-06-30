@@ -507,33 +507,20 @@ public class DC_GridPanel extends GridPanel {
         shadowMap.update();
         updateTorches();
         updateRequired = false;
-
     }
 
-    //gdx Review
+    //Light revamp - this could do with box2d
     private void updateTorches() {
         for (Obj object : viewMap.keys()) {
             if (!(object instanceof Unit)) {
                 continue;
             }
-            float alpha = DC_Game.game.getVisionMaster().
-                    getGammaMaster().getLightEmitterAlpha(object, 0);
-
+            float alpha =0; //TODO
             GenericGridView view = (GenericGridView) viewMap.get(object);
 
             if (Math.abs(view.torch.getBaseAlpha() - alpha) > 0.1f)
                 view.torch.setBaseAlpha(alpha);
         }
-    }
-
-    public UnitGridView getMainHeroView() {
-        if (PaleAspect.ON) {
-            return mainHeroViewPale;
-        }
-        if (ShadowMaster.isShadowAlive()) {
-            return mainHeroViewShadow;
-        }
-        return mainHeroView;
     }
 
     public VoidHandler getVoidHandler() {

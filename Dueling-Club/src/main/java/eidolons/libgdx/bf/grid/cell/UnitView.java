@@ -70,7 +70,7 @@ public class UnitView extends BaseView implements HpBarView {
         setTeamColor(o.getTeamColor());
         this.name = o.getName();
         this.flip = o.getFlip();
-        init( o.getPortraitPath());
+        init(o.getPortraitPath());
         addActor(this.modeImage = new FadeImageContainer());
 
         try {
@@ -105,7 +105,7 @@ public class UnitView extends BaseView implements HpBarView {
 
             modeImage.setImage("ui/really empty 32.png");
             if (modeImage.getContent() != null) {
-//                ActorMaster.addFadeOutAction(modeImage, 0.5f);
+                //                ActorMaster.addFadeOutAction(modeImage, 0.5f);
             }
             return;
         }
@@ -138,7 +138,7 @@ public class UnitView extends BaseView implements HpBarView {
         if (!visible)
             if (isVisible()) {
                 if (isResetOutlineOnHide())
-//                if (getUserObject().isResetOutlineOnHide())
+                    //                if (getUserObject().isResetOutlineOnHide())
                     if (getUserObject() instanceof Unit) {
                         if (!isMainHero())
                             setPortraitTextureImmediately(TextureCache.getOrCreateR(
@@ -259,10 +259,10 @@ public class UnitView extends BaseView implements HpBarView {
 
     public TextureRegion processPortraitTexture(String path) {
         if (flip == CONTENT_CONSTS.FLIP.HOR) {
-            return   TextureCache.getFlippedRegion(true, false, path);
+            return TextureCache.getFlippedRegion(true, false, path);
         }
         if (flip == CONTENT_CONSTS.FLIP.VERT) {
-            return   TextureCache.getFlippedRegion(false,true,  path);
+            return TextureCache.getFlippedRegion(false, true, path);
         }
         return TextureCache.getOrCreateR(path);
     }
@@ -304,6 +304,7 @@ public class UnitView extends BaseView implements HpBarView {
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
     }
+
     public int getCurId() {
         return curId;
     }
@@ -407,13 +408,19 @@ public class UnitView extends BaseView implements HpBarView {
         if (flickering)
             if (alphaFluctuationOn)
                 alphaFluctuation(this, delta / 4); //TODO fix speed
-//                ActorMaster.addFadeInOrOutIfNoActions(this, 5);
+                //                ActorMaster.addFadeInOrOutIfNoActions(this, 5);
             else if (getColor().a == 0)
                 getColor().a = 1;
 
         checkResetOutline(delta);
 
     }
+
+    @Override
+    public void setScreenOverlay(float screenOverlay) {
+        getPortrait().setScreenOverlay(screenOverlay);
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
@@ -423,7 +430,7 @@ public class UnitView extends BaseView implements HpBarView {
         ShaderDrawer.drawWithCustomShader(this, batch,
                 greyedOut ?
                         GrayscaleShader.getGrayscaleShader()
-//          GrayscaleShader.getGrayscaleShader()
+                        //          GrayscaleShader.getGrayscaleShader()
                         : null, true);
     }
 }

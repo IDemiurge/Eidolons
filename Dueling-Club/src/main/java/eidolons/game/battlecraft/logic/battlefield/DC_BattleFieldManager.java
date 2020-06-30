@@ -9,8 +9,10 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
+import eidolons.libgdx.bf.overlays.map.WallMap;
 import main.content.enums.rules.VisionEnums;
 import main.entity.Entity;
+import main.entity.EntityCheckMaster;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldManager;
 import main.game.bf.Coordinates;
@@ -66,6 +68,8 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
 
     public void resetWallMap() {
+        if (!WallMap.on)
+            return ;
         resetWalls();
         resetVisibleWallMap();
         GuiEventManager.trigger(GuiEventType.UPDATE_DOOR_MAP, this.doorMap);
@@ -92,7 +96,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         }
     }
 
-    private void resetWalls() {
+    public void resetWalls() {
         doorMap.clear();
         wallObjects = new ArrayList<>();
         ObjectMap<Coordinates, BattleFieldObject> wallMap = new ObjectMap<>();
@@ -105,8 +109,9 @@ public class DC_BattleFieldManager extends BattleFieldManager {
             }
             BattleFieldObject bfObj = (BattleFieldObject) obj;
 
-            if (game.getGrid().isWallCoordinate(obj.getCoordinates())) { //fill the cache
-            // if (EntityCheckMaster.isWall(bfObj)) {
+            if (EntityCheckMaster.isWall(bfObj)) {
+                Coordinates c = bfObj.getCoordinates();
+             game.getGrid().getWallCache()[c.x][c.y]=true;
                 wallObjects.add(bfObj);
                 wallMap.put(bfObj.getCoordinates(), bfObj);
             }

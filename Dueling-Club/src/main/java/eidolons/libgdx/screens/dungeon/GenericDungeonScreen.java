@@ -237,7 +237,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
         Gdx.gl20.glEnable(GL_POLYGON_SMOOTH);
         Gdx.gl20.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 
-        getBatch().shaderFluctuation(delta);
+        // getBatch().shaderFluctuation(delta);
         if (speed != null) {
             delta = delta * speed;
         }

@@ -1,7 +1,5 @@
 package eidolons.libgdx.bf.decor.shard;
 
-import com.badlogic.gdx.utils.ObjectMap;
-import eidolons.entity.obj.DC_Cell;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
@@ -12,7 +10,6 @@ import main.content.CONTENT_CONSTS;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
-import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.secondary.Bools;
 
@@ -173,8 +170,9 @@ public class ShardBuilder {
 
         Coordinates c = Coordinates.get(true, x, y);
         List<DIRECTION> adj = new ArrayList<>();
-        DC_Cell dcCell = grid.getCell(x, y);
-        if (dcCell.hasMark(CONTENT_CONSTS.MARK.undecorated)) {
+        GridCellContainer gridCell = grid.getGridCell(x, y);
+        if (gridCell != null)
+        if (gridCell.getUserObject().hasMark(CONTENT_CONSTS.MARK.undecorated)) {
             return -1;
         }
         int n = 0;
@@ -239,7 +237,7 @@ public class ShardBuilder {
         return typeFunc.apply(new AbstractCoordinates(true, x, y));
     }
 
-    public void init(ObjectMap<Coordinates, DIRECTION> map, int x1, int x2, int y1, int y2) {
+    public void init( Map<Coordinates, DIRECTION> map, int x1, int x2, int y1, int y2) {
         builtShards = new Object[x2 - x1 + 2][y2 - y1 + 2];
 
 
@@ -252,25 +250,29 @@ public class ShardBuilder {
                                 continue;
                             }
                     }
-                Coordinates c = new AbstractCoordinates(true, x, y);
-                if (map.containsKey(c)) {
+                // Coordinates c = new AbstractCoordinates(true, x, y);
+                    x+=1;
+                    y+=1;
+                // if (!c.isInvalid())
+                if (map.containsKey(Coordinates.get(true, x, y))) {
                     //pass all adjacent too?
-                    builtShards[x][y] = map.get(c);
+                    builtShards[x][y] = map.get(Coordinates.get(x, y));
                     continue;
                 }
-                Object direction = null;
-                Integer degrees = getDirectionForShards(x, y);
-                if (degrees == null) {
-                    passed++;
-                    continue;
-                }
-                passed = 0;
-                if (degrees < 0) {
-                    direction = ""; //isle
-                } else {
-                    direction = DirectionMaster.getDirectionByDegree(degrees);
-                }
-                builtShards[x + 1][y + 1] = direction;
+                //ToDo-Cleanup
+                // Object direction = null;
+                // Integer degrees = getDirectionForShards(x, y);
+                // if (degrees == null) {
+                //     passed++;
+                //     continue;
+                // }
+                // passed = 0;
+                // if (degrees < 0) {
+                //     direction = ""; //isle
+                // } else {
+                //     direction = DirectionMaster.getDirectionByDegree(degrees);
+                // }
+                // builtShards[x  ][y  ] = direction;
             }
         }
     }

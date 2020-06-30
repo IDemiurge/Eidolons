@@ -251,6 +251,8 @@ public class VisionRule {
     }
 
     public PLAYER_VISION playerVision(Unit source, BattleFieldObject object) {
+        if (object.isWall())
+            return PLAYER_VISION.DETECTED;
 
         VISIBILITY_LEVEL visibilityLevel = controller.getVisibilityLevelMapper().
                 get(source, object);
@@ -265,17 +267,11 @@ public class VisionRule {
                 return PLAYER_VISION.KNOWN;
             case BLOCKED:
                 if (source.isMine())
-                    if (object.isWall()) {
-                        if (object.isDetectedByPlayer()) {
-                            return PLAYER_VISION.KNOWN;
-                        } else {
                             if (PositionMaster.getExactDistance(object, source) <= 3) {
                                 object.setDetectedByPlayer(true);
                                 return PLAYER_VISION.UNKNOWN;
                             }
-                        }
                         break;
-                    } // else same as unseen
             case UNSEEN:
                 hide(source, object);
                 return PLAYER_VISION.INVISIBLE;
@@ -360,6 +356,9 @@ public class VisionRule {
 
     public OUTLINE_TYPE outline(Unit source, BattleFieldObject object) {
         if (object.getGame().isSimulation() || object.getGame().isDebugMode()) {
+            return null;
+        }
+        if (object.isWall()) {
             return null;
         }
         if (object instanceof Entrance) {

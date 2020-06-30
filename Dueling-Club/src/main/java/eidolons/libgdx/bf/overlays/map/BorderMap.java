@@ -12,6 +12,10 @@ import java.util.List;
 
 public class BorderMap extends OverlayMap {
 
+    public static boolean on;
+    public boolean isOn() {
+        return on;
+    }
     @Override
     protected void fillDrawMap(List<Pair<Vector2, TextureRegion>> batch, Coordinates coordinates, List<DIRECTION> list, Vector2 v) {
         for (DIRECTION d : list) {

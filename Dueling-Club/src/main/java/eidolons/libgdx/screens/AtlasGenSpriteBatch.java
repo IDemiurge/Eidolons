@@ -46,7 +46,7 @@ How big an atlas can we make? If we at least create the freaking img folders,
 it's trivial - use some other pc if you got to
 
  */
-public class AtlasGenSpriteBatch extends CustomSpriteBatch {
+public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
     private final boolean overwrite = false;
 
     // Gdx revamp - use this to put ALL textures in 3-4 atlases

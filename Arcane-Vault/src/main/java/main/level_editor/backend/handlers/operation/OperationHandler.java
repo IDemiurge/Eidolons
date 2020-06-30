@@ -95,6 +95,7 @@ public class OperationHandler extends LE_Handler {
                 GuiEventManager.trigger(
                         !isVoid ||set ? GuiEventType.CELL_SET_VOID
                                 : GuiEventType.CELL_RESET_VOID, c);
+                GuiEventManager.trigger(GuiEventType.GRID_RESET);
                 break;
             case MASS_RESET_VOID:
             case MASS_SET_VOID:

@@ -33,6 +33,13 @@ public class LE_DungeonMaster extends LocationMaster {
 //    protected Positioner createPositioner() {
 //        return Mockito.mock(Positioner.class);
 //    }
+
+
+    @Override
+    public void loadingDone() {
+        initColorMap();
+    }
+
     @Override
     protected FloorLoader createFloorLoader() {
         return new LE_FloorLoader(this);

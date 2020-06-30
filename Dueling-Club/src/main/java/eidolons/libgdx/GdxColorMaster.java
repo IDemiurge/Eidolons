@@ -60,10 +60,12 @@ public class GdxColorMaster {
     public static final Color METEORITE = getColor(175, 115, 25, 1f);
     public static final Color COLD_IRON = getColor(175, 115, 25, 1f);
     public static final Color GREY = getColor(115, 115, 125, 1f);
+    public static final Color DARK_GREY = getColor(45, 45, 45, 1f);
     public static final Color LIGHT_GREY = getColor(185, 185, 185, 1f);
     public static final Color BACKGROUND_TRANSPARENT = getColor(0, 0, 0, 208);
     public static final Color BACKGROUND_MORE_TRANSPARENT = getColor(0, 0, 0, 158);
     public static final Color STANDARD_TEXT = PALE_GOLD;
+    public static final Color NULL_COLOR = new Color(1,1,1, 0.5f);
     private static final Color LIGHT_YELLOW = getColor(195, 205, 125, 1f);
     public static final Color COPPER = LIGHT_YELLOW;
     public static final Color BROWN = getColor(165, 155, 45, 1f);
@@ -182,12 +184,18 @@ public class GdxColorMaster {
 
     public static Color darker(Color color, float perc) {
         perc = 1 - perc;
-        return new Color(color.r * perc, color.g * perc, color.b * perc, 1);
+        return new Color(color.r * perc, color.g * perc, color.b * perc, 1).clamp();
     }
+
+    public static Color modify(Color output,Color color, float perc) {
+        output.set(color.r * perc, color.g * perc, color.b * perc, 1);
+        return output.clamp();
+    }
+
 
     public static Color lighter(Color color, float perc) {
         perc = 1 + perc;
-        return new Color(color.r * perc, color.g * perc, color.b * perc, 1);
+        return new Color(color.r * perc, color.g * perc, color.b * perc, 1).clamp();
     }
 
     public static Color darker(Color color) {
@@ -290,5 +298,15 @@ public class GdxColorMaster {
         color.g = color.g * (1 + RandomWizard.getRandomFloatBetween(-maxRange, maxRange));
         color.b = color.b * (1 + RandomWizard.getRandomFloatBetween(-maxRange, maxRange));
         //TODO
+    }
+
+    public static boolean isHued(Color color) {
+        if (color.r!=1f) {
+            return true;
+        }
+        if (color.g!=1f) {
+            return true;
+        }
+        return color.b != 1f;
     }
 }

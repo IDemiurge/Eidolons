@@ -1,7 +1,6 @@
 package eidolons.ability.conditions.special;
 
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.system.math.DC_PositionMaster;
 import main.elements.conditions.MicroCondition;
@@ -23,14 +22,12 @@ import java.util.Map;
 
 public class ClearShotCondition extends MicroCondition {
 
-    public static final float SIGHT_RANGE_FACTOR = 2.5f;
     static Map<DC_Obj, Map<Obj, Boolean>> cache = new HashMap<>();
-    private static boolean unitTestBreakMode;
     boolean showVisuals;
     private boolean vision;
-    private String str1;
-    private String str2;
-    private int log_priority = 1;
+    private final String str1;
+    private final String str2;
+    private final int log_priority = 1;
     private boolean wallObstruction;
 
     public ClearShotCondition() {
@@ -51,21 +48,6 @@ public class ClearShotCondition extends MicroCondition {
         return cache;
     }
 
-    public static double getMaxCheckDistance(Unit activeUnit, DC_Obj unit) {
-        return getMaxCheckDistance(activeUnit, unit.getCoordinates());
-    }
-
-    public static double getMaxCheckDistance(Unit activeUnit, Coordinates coordinates) {
-        return SIGHT_RANGE_FACTOR * activeUnit.getSightRangeTowards(coordinates);
-    }
-
-    public static boolean isUnitTestBreakMode() {
-        return unitTestBreakMode;
-    }
-
-    public static void setUnitTestBreakMode(boolean unitTestBreakMode) {
-        eidolons.ability.conditions.special.ClearShotCondition.unitTestBreakMode = unitTestBreakMode;
-    }
 
     public static final boolean isOverlayingWithinSightAngle(DC_Obj target,
                                                              DC_Obj source) {

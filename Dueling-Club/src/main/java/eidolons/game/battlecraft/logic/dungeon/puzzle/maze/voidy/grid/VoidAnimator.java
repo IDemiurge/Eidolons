@@ -72,7 +72,7 @@ public class VoidAnimator {
             cell.setPosition(x + offsetX, y + offsetY);
         } else
             cell.setPosition(x, y);
-        cell.getBackImage().setVisible(true);
+        cell.getCellImage().setVisible(true);
         if (raiseOrCollapse) {
             cell.getColor().a = 0;
         }
@@ -118,7 +118,7 @@ public class VoidAnimator {
             scale = raiseOrCollapse ? 1f : 0.01f;
             scaleX = isVertScale() ? 100 * scale : scale;
             scaleY = scale;
-            ActionMaster.addScaleActionCentered(cell.getBackImage(), scaleX, scaleY, dur + waitPeriod);
+            ActionMaster.addScaleActionCentered(cell.getCellImage(), scaleX, scaleY, dur + waitPeriod);
         }
         if (raiseOrCollapse) {
             ActionMaster.addMoveToAction(cell, x, y, dur);

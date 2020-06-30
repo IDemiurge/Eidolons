@@ -505,8 +505,8 @@ public class GenericEnums {
         MIST_SAND_WIND("mist", "sand wind"),
 
         MIST_BLACK("ambient", "MIST ARCANE"), //"black mist","clouds wind light2"),
-        MIST_TRUE("mist", "MIST TRUE"),
-        MIST_TRUE2("mist", "MIST TRUE2"),
+        MIST_TRUE("mist", "TRUE MIST"),
+        MIST_TRUE2("mist", "TRUE MIST2"),
         MIST_ARCANE("ambient", "MIST ARCANE"),
         MIST_NEW("ambient", "MIST NEW2"),
         THUNDER_CLOUDS("ambient", "THUNDER CLOUDS"),
@@ -604,6 +604,8 @@ public class GenericEnums {
     }
 
     public enum ALPHA_TEMPLATE {
+
+        GRID_LIGHT(0.15f, 3, 2, 0.85f, 0.7f, 1f),
 
         HQ_HERO_SPRITE(0.08f, 0.5f, 0.2f, 0.4f, 0.6f, 1f),
         HQ_SPRITE(0.05f, 0.5f, 0.2f, 0, 0.2f, 0.7f),

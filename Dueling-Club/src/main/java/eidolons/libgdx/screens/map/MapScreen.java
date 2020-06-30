@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.GridCreateData;
 import eidolons.libgdx.bf.grid.GridPanel;
@@ -207,13 +206,13 @@ public class MapScreen extends GameScreenWithTown {
 
     protected void resetShader() {
 
-        if (batch.getShader() != DarkShader.getDarkShader()) {
-            bufferedShader = batch.getShader();
-            if (isBlocked() || ExplorationMaster.isWaiting()) {
-                batch.setFluctuatingShader(DarkShader.getInstance());
-            } else {
-            }
-        }
+        // if (batch.getShader() != DarkShader.getDarkShader()) {
+            // bufferedShader = batch.getShader();
+            // if (isBlocked() || ExplorationMaster.isWaiting()) {
+            //     batch.setFluctuatingShader(DarkShader.getInstance());
+            // } else {
+            // }
+        // }
 
     }
 

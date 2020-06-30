@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.mouse.InputController;
-import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.gui.generic.ContainerGroup;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.ScreenMaster;
@@ -17,7 +17,7 @@ import main.system.launch.CoreEngine;
 /*
 visibility from cell - ideally separate for vfx/textures
  */
-public class CellDecor extends GroupX {
+public class CellDecor extends ContainerGroup {
     Actor actor;
     private final int sightRange; //TODO we actually need to DARKEN it if...
     private final DC_Cell cell; //can we place it on a platform?..

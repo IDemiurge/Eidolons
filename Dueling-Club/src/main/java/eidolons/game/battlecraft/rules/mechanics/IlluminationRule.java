@@ -1,29 +1,36 @@
 package eidolons.game.battlecraft.rules.mechanics;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMap;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.GdxColorMaster;
 import main.content.enums.GenericEnums;
 import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class IlluminationRule {
     private static final boolean BASE_ILLUMINATION = true;
     private static boolean applied;
     private final Map<Obj, LightEmittingEffect> effectCache = new HashMap<>();
-
+    private ColorMap.Light heroLight;
 
     public IlluminationRule() {
     }
@@ -38,15 +45,43 @@ public class IlluminationRule {
             return;
         }
 
+        Set<ColorMap.Light> set = new LinkedHashSet<>();
         for (Obj obj : DC_Game.game.getStructures()) {
             if (isOutsideBoundaries(obj))
                 continue;
             LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
             if (effect != null) {
                 //                effect.setFormula(new Formula(getLightEmission((DC_Obj) obj) + ""));
-                effect.apply();
+                set.add(effect.createAndApplyLight());
             }
         }
+        //Light revamp - HERO LIGHT
+        ObjectMap<Coordinates, Float> lerp = null;
+        if (heroLight == null) {
+            heroLight = new ColorMap.Light(GdxColorMaster.WHITE, lerp = new ObjectMap<>(), GenericEnums.ALPHA_TEMPLATE.GRID_LIGHT);
+        } else {
+            lerp = heroLight.lerp;
+        }
+        DIRECTION direction = Eidolons.getMainHero().getFacing().getDirection();
+        Coordinates coordinates = Eidolons.getPlayerCoordinates();
+        for (DIRECTION d : DIRECTION.clockwise) {
+            Coordinates c = coordinates. getAdjacentCoordinate(d);
+            Float value = lerp.get(c);
+            float def = 0.55f;
+            if (d == direction) {
+                def = 0.88f;
+            }
+            if (value == null) {
+                value = def;
+            } else {
+                value = def * 1 / (1 + c.dst(coordinates)); //TODO facing
+            }
+            lerp.put(c, value);
+        }
+        lerp.put(coordinates, 0.9f);
+        set.add(heroLight);
+
+        DC_Game.game.getColorMap().setEmitters(set);
         applied = true;
     }
 
@@ -60,7 +95,7 @@ public class IlluminationRule {
 
         // if (struct != struct2) {
         ////TODO Review !
-            return c.dst(Eidolons.getPlayerCoordinates()) > 10;
+        return c.dst(Eidolons.getPlayerCoordinates()) > 10;
         // }
         // return false;
     }
@@ -112,7 +147,10 @@ public class IlluminationRule {
                     circular = false;
                 }
             }
-            effect = new LightEmittingEffect(("" + value), circular);
+            Color color = GdxColorMaster.getColorForTheme(source.getColorTheme());
+
+            GenericEnums.ALPHA_TEMPLATE flicker = GenericEnums.ALPHA_TEMPLATE.GRID_LIGHT;
+            effect = new LightEmittingEffect(("" + value), circular, color, flicker);
             effect.setRef(new Ref(source));
             effectCache.put(source, effect);
         } else

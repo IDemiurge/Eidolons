@@ -137,10 +137,6 @@ public class PlatformCell extends GridCellContainer {
         }
     }
 
-    @Override
-    protected boolean isGraveyardOn() {
-        return false;
-    }
 
     @Override
     protected boolean isViewCacheOn() {

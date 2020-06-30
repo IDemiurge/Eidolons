@@ -90,7 +90,7 @@ public class DungeonScreen extends GameScreenWithTown {
             particleManager = new ParticleManager();
             final GridCreateData param = ((GridCreateData) p.get());
             createAndInitModuleGrid(param);
-            gridStage.addActor(particleManager);
+            gridPanel.setParticleManager(particleManager);
         });
     }
 
@@ -303,7 +303,7 @@ public class DungeonScreen extends GameScreenWithTown {
         if (batch.getShader() != DarkShader.getDarkShader())
             if (isBlocked() || ExplorationMaster.isWaiting()) {
                 bufferedShader = batch.getShader();
-                batch.setFluctuatingShader(DarkShader.getInstance());
+                // batch.setFluctuatingShader(DarkShader.getInstance());
                 guiStage.getCustomSpriteBatch().setShader(GrayscaleShader.getGrayscaleShader());
             }
     }

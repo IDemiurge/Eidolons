@@ -28,12 +28,16 @@ import java.util.List;
 public class WallMap extends OverlayMap {
     private static final String INDESTRUCTIBLE = " Indestructible";
     private static final String STRANGE_WALL = " Marked";
-    public static boolean on;
     private ObjectMap<Coordinates, List<DIRECTION>> diagonalJoints;
     private ObjectMap<Coordinates, DOOR_STATE> doorMap;
 
     public WallMap() {
         setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.DOORS);
+    }
+
+    public static boolean on;
+    public boolean isOn() {
+        return on;
     }
 
     private static STD_IMAGES getWallImageFromSide(DIRECTION side) {
@@ -58,11 +62,12 @@ public class WallMap extends OverlayMap {
         return null;
     }
 
+    public static int getOffsetX() {
+        return -40;
+    }
+
     public static int getOffsetY() {
-        // if (){
-        //
-        // } else
-            return 40;
+        return 40;
     }
 
     private TextureRegion get3dTexture(DIRECTION side, boolean skewed) {
@@ -124,7 +129,7 @@ public class WallMap extends OverlayMap {
         if (isCustomWall())
             v.set(v.x, v.y - 64);
         else {
-            v.set(v.x, v.y - 128+getOffsetY());
+            v.set(v.x + WallMap.getOffsetX(), v.y - 128 + getOffsetY());
         }
         return v;
     }
@@ -233,7 +238,7 @@ public class WallMap extends OverlayMap {
                         vertical ? STD_IMAGES.WALL_CORNER_ALMOND_V :
                                 STD_IMAGES.WALL_CORNER_ALMOND_H, suffix);
                 drawMapOver.put(new Vector2(v.x
-                        + (128 - image.getRegionWidth()) / 2, v.y + (128 - image.getRegionHeight()) / 2  ), image);
+                        + (128 - image.getRegionWidth()) / 2, v.y + (128 - image.getRegionHeight()) / 2), image);
             }
         }
         if (drawCorner) {
@@ -353,7 +358,7 @@ public class WallMap extends OverlayMap {
                 ScreenMaster.getGrid());
         for (DIRECTION side : list) {
             float x1 = v.x;
-            float y1 = v.y+40;
+            float y1 = v.y + 40;
 
             if (isCustomWall())
                 y1 += 64;

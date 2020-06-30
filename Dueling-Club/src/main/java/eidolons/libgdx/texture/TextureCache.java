@@ -290,10 +290,10 @@ public class TextureCache {
                     }
                 }
                 if (region == null) {
-                    System.out.println("No img in atlases: "+name);
+                    // System.out.println("No img in atlases: "+name);
                     atlasMissingTextures.add(path);
                 } else {
-                    System.out.println("Img in atlas: "+name);
+                    // System.out.println("Img in atlas: "+name);
                 }
             } else {
                 if (getInstance().uiAtlas != null) {

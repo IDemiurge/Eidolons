@@ -40,6 +40,11 @@ public class ImageContainer extends SuperContainer  implements Flippable{
 
     }
 
+    @Override
+    public void setColor(Color color) {
+        getContent().setColor(color);
+    }
+
     public ImageContainer() {
         super();
     }

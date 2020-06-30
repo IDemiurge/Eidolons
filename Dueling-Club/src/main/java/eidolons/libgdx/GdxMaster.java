@@ -19,7 +19,8 @@ import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.libgdx.bf.mouse.GlobalInputController;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.screens.AtlasGenSpriteBatch;
-import eidolons.libgdx.screens.CustomSpriteBatch;
+import eidolons.libgdx.screens.ColorBatch;
+import eidolons.libgdx.screens.CustomSpriteBatchImpl;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions;
@@ -38,6 +39,7 @@ public class GdxMaster {
     public static final float sizeAdjustCoef = 0.25f;
     public static final boolean FULLHD_ONLY = false;
     public static final boolean WRITE_ATLAS_IMAGES = true;
+    private static final boolean COLORFUL = false;
     public static boolean CUSTOM_RESOLUTION;
     private static final int DEFAULT_WIDTH = 1500;
     private static final int DEFAULT_HEIGHT = 900;
@@ -582,10 +584,13 @@ public class GdxMaster {
     }
 
     public static Batch createBatchInstance(AtlasGenSpriteBatch.ATLAS ui) {
+        if (COLORFUL){
+            return new ColorBatch();
+        }
         if (WRITE_ATLAS_IMAGES){
             return new AtlasGenSpriteBatch();
         }
-        return new CustomSpriteBatch();
+        return new CustomSpriteBatchImpl();
     }
 
     public static Batch getMainBatch() {

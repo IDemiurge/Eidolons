@@ -2,7 +2,9 @@ package eidolons.libgdx.bf.grid.handlers;
 
 import com.badlogic.gdx.graphics.Color;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.decor.pillar.PillarManager;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.HpBarView;
@@ -14,6 +16,7 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -34,18 +37,30 @@ public class GridManager {
         if (gridPanel.getShadowMap().getCells(ShadowMap.SHADE_CELL.GAMMA_SHADOW) == null) {
             return 1f;
         }
+
         ShadeLightCell cell = gridPanel.getShadowMap().getCells(ShadowMap.SHADE_CELL.GAMMA_SHADOW)[c.x][c.y];
         if (cell == null) {
             return 0f;
         }
-        return 1-cell.getColor().a;
+        return 1 - cell.getColor().a;
     }
 
     public Color getColor(Coordinates c) {
-        return ShadowMap.getLightColor(gridPanel.getCell(c.x,c.y));
+        if (!DC_Game.game.getColorMap().getOutput().containsKey(c)) {
+            return GdxColorMaster.NULL_COLOR;
+        }
+        if (CoreEngine.isLevelEditor()) {
+            return GdxColorMaster.NULL_COLOR;
+        }
+        return DC_Game.game.getColorMap().getOutput().get(c);
         // return cell.getColor();
     }
 
+    public void act(float delta) {
+        if (DC_Game.game.getColorMap() != null) {
+            DC_Game.game.getColorMap().act(delta);
+        }
+    }
 
     public GridManager(GridPanel gridPanel) {
         this.gridPanel = gridPanel;
@@ -131,4 +146,5 @@ public class GridManager {
     public Set<GridHandler> getHandlers() {
         return handlers;
     }
+
 }

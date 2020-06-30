@@ -48,9 +48,6 @@ public class LE_GridCell extends GridCellContainer {
         addListener(new LE_GridCellHighlighter(this).getController());
     }
 
-    protected boolean isGraveyardOn() {
-        return false;
-    }
 
     @Override
     public void setHovered(boolean hovered) {

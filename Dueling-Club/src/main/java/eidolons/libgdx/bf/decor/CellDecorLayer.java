@@ -1,40 +1,59 @@
 package eidolons.libgdx.bf.decor;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.bf.datasource.GraphicData;
+import eidolons.libgdx.bf.grid.GridLayer;
 import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.gui.generic.GroupX;
 import main.game.bf.Coordinates;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-public class CellDecorLayer extends GroupX {
+public class CellDecorLayer extends GridLayer {
 
-    public static boolean spriteTest= CoreEngine.isLevelEditor();
-    GridPanel gridPanel;
-    Map<Coordinates, List<Actor>> map = new LinkedHashMap<>();
+    public static boolean spriteTest = CoreEngine.isLevelEditor();
+    List<Actor>[][] map;
 
-    public CellDecorLayer(GridPanel gridPanel) {
-        this.gridPanel = gridPanel;
+    public CellDecorLayer(GridPanel grid) {
+        super(grid);
+        map = new List[grid.getModuleCols()][grid.getModuleRows()];
     }
+
 
     @Override
     public void act(float delta) {
         super.act(delta);
     }
 
+    @Override
+    protected void act(int x, int y, float delta) {
+        if (map[x][y] != null) {
+            for (Actor actor : map[x][y]) {
+                actor.act(delta);
+            }
+        }
+    }
+
+    @Override
+    protected void draw(int x, int y, Batch batch, float parentAlpha) {
+        if (map[x][y] != null) {
+            for (Actor actor : map[x][y]) {
+                setColor(actor, x, y);
+                actor.draw(batch, parentAlpha);
+            }
+        }
+    }
+
     public void add(Coordinates c, List<GraphicData> graphicData) {
-            remove(c);
+        remove(c);
         List<Actor> list = new ArrayList<>();
         for (GraphicData graphicDatum : graphicData) {
             Actor decor = DecorFactory.createDecor(c, graphicDatum);
             addActor(decor);
             int x = c.x * 128;
-            int y = gridPanel.getGdxY_ForModule(c.y) * 128;
+            int y = grid.getGdxY_ForModule(c.y) * 128;
             ////TODO centered?
             decor.setPosition(x + graphicDatum.getIntValue(GraphicData.GRAPHIC_VALUE.x),
                     y + graphicDatum.getIntValue(GraphicData.GRAPHIC_VALUE.y));
@@ -42,14 +61,16 @@ public class CellDecorLayer extends GroupX {
             list.add(decor);
         }
 
-        map.put(c, list);
+        map[c.x][c.y] = list;
+
     }
 
     public void remove(Coordinates c) {
-        List<Actor> list = map.get(c);
-        if (list != null) {
-        for (Actor noHitImage : list) noHitImage.remove();
-        }
+        List<Actor> list = map[c.x][c.y];
+        if (list != null)
+            for (Actor noHitImage : list) {
+                noHitImage.remove();
+            }
     }
 
 

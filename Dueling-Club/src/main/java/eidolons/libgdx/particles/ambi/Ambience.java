@@ -44,8 +44,7 @@ public class Ambience extends EmitterActor {
                  isWithinCamera(getX(), getY(), getWidth() * 2, getHeight() * 2)) {
                     return;
                 }
-
-        super.act(delta);
+        // super.act(delta); not needed
         if (!isMoveOn()) {
             return;
         }
@@ -106,13 +105,13 @@ public class Ambience extends EmitterActor {
         if (modifyParticles) {
             getEffect().modifyParticles();
         }
-        try {
+        // try {
             super.draw(spriteBatch, delta);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-            main.system.auxiliary.log.LogMaster.log(1, "AMBIENCE_VFX FAILED: " + getPath());
-            blocked = true;
-        }
+        // } catch (Exception e) {
+        //     main.system.ExceptionMaster.printStackTrace(e);
+        //     main.system.auxiliary.log.LogMaster.log(1, "AMBIENCE_VFX FAILED: " + getPath());
+        //     blocked = true;
+        // }
     }
 
     protected boolean isCullingOn() {

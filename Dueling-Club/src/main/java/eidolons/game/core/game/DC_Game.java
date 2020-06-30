@@ -19,6 +19,7 @@ import eidolons.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.DroppedItemManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMap;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -304,7 +305,7 @@ public class DC_Game extends GenericGame {
         droppedItemManager.init();
 
         getDungeonMaster().getModuleLoader().loadInitial();
-        getDungeonMaster().getFloorLoader().loadingDone();
+        getDungeonMaster().loadingDone();
         getMetaMaster().loadingDone();
         if (AI_ON) {
             aiManager.init();
@@ -510,6 +511,9 @@ public class DC_Game extends GenericGame {
     public void remove(Obj obj) {
         super.remove(obj);
         if (obj instanceof BattleFieldObject) {
+            if (((BattleFieldObject) obj).isWall()) {
+                GuiEventManager.trigger(GuiEventType.GRID_RESET);
+            }
             softRemove((BattleFieldObject) obj);
         }
     }
@@ -927,7 +931,9 @@ public class DC_Game extends GenericGame {
         this.bossFight = bossFight;
     }
 
-
+    public ColorMap getColorMap() {
+        return dungeonMaster.getColorMap();
+    }
 
     public enum GAME_MODES {
         ARENA, SIMULATION, DUEL, ENCOUNTER, DUNGEON_CRAWL, ARENA_ARCADE

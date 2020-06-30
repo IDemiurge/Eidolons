@@ -54,6 +54,7 @@ import eidolons.libgdx.bf.overlays.map.WallMap;
 import eidolons.libgdx.gui.generic.GroupWithEmitters;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
+import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
@@ -97,6 +98,7 @@ public abstract class GridPanel extends Group {
     protected ShardVisuals shards;
     protected PillarMap pillars;
     protected PillarMap wallPillars;
+    protected ParticleManager particleManager;
 
     protected GridCellContainer[][] cells;
     //    protected GridCellContainer[][] removedCells;
@@ -174,7 +176,7 @@ it sort of broke at some point - need to investigate!
     }
 
     public void setModule(Module module) {
-        init=false;
+        init = false;
         offset = module.getOrigin();
         x1 = offset.x;
         y1 = offset.y;
@@ -217,7 +219,7 @@ it sort of broke at some point - need to investigate!
                 gridElement.setModule(module);
             }
         }
-        init=true;
+        init = true;
     }
 
     protected GridElement[] getGridElements() {
@@ -245,8 +247,8 @@ it sort of broke at some point - need to investigate!
                     GridCellContainer gridCell = null;
                     cells[x][y] = gridCell = createGridCell(image, x, y);
 
-                    gridCell.setColorFunc( coord ->  getGridManager().getColor(coord));
-                    gridCell.setLightnessFunc( coord->  getGridManager().getLightness(coord));
+                    gridCell.setColorFunc(coord -> getGridManager().getColor(coord));
+                    gridCell.setLightnessFunc(coord -> getGridManager().getLightness(coord));
                     //setVoid(x, y, false);
                     addActor(gridCell.init());
                     gridCell.setUserObject(cell);
@@ -327,8 +329,7 @@ it sort of broke at some point - need to investigate!
                 } catch (Exception e) {
                     ExceptionMaster.printStackTrace(e);
                 }
-            if (isPillarsOn())
-            {
+            if (isPillarsOn()) {
                 addActor(pillars = new PillarMap(false));
                 addActor(wallPillars = new PillarMap(true));
             }
@@ -349,6 +350,7 @@ it sort of broke at some point - need to investigate!
 
     @Override
     public void act(float delta) {
+        gridManager.act(delta);
         if (HqPanel.getActiveInstance() != null) {
             if (HqPanel.getActiveInstance().getColor().a == 1)
                 return;
@@ -367,7 +369,7 @@ it sort of broke at some point - need to investigate!
         drawX1 = controller.getGridDrawX1();
         drawY1 = Math.max(0, getGdxY_ForModule(controller.getGridDrawY1()));
         drawX2 = Math.min(moduleCols, controller.getGridDrawX2());
-        drawY2 = Math.max(moduleRows - 1, getGdxY_ForModule((controller.getGridDrawY2())));
+        drawY2 = Math.min(moduleRows - 1, getGdxY_ForModule((controller.getGridDrawY2())));
         for (int x = drawX1; x < drawX2; x++) {
             for (int y = drawY1; y < drawY2; y++) {
                 cells[x][y].act(delta);
@@ -375,6 +377,9 @@ it sort of broke at some point - need to investigate!
         }
         for (Actor actor : actList) {
             actor.act(delta);
+        }
+        if (particleManager != null) {
+            particleManager.act(delta);
         }
     }
 
@@ -472,14 +477,14 @@ it sort of broke at some point - need to investigate!
     }
 
     public void resetMaps() {
-            gridManager.getPillarManager().reset();
+        gridManager.getPillarManager().reset();
     }
 
     public void setVoid(int x, int y, boolean animated) {
         GridCellContainer cell = cells[x][(y)];
         cell.setVoid(true, animated);
         cell.getUserObject().setVOID(true);
-        if (init){
+        if (init) {
             resetMaps();
         }
     }
@@ -861,6 +866,9 @@ it sort of broke at some point - need to investigate!
         }
     }
 
+    List<GridCellContainer> topCells = new ArrayList<>(5);
+    List<GridCellContainer> overCells = new ArrayList<>(25);
+
     private void customDraw(Batch batch) {
         flightHandler.getObjsUnder().draw(batch, 1f);
         pillars.draw(batch, 1f);
@@ -868,23 +876,38 @@ it sort of broke at some point - need to investigate!
             platform.draw(batch, 1);
         }
         decorMap.get(DECOR_LEVEL.BOTTOM).draw(batch, 1);
-        List<GridCellContainer> topCells = new ArrayList<>(5);
+        topCells.clear();
+        overCells.clear();
         for (int x = drawX1; x < drawX2; x++) {
             for (int y = drawY1; y < drawY2; y++) {
-                if (isTopCell(cells[x][y])) {
-                    topCells.add(cells[x][y]);
+                GridCellContainer container = cells[x][y];
+                if (isTopCell(container)) {
+                    topCells.add(container);
+                } else if (isOverCell(container)) {
+                    {
+                        container.drawCell(batch);
+                        overCells.add(container);
+                    }
                 } else
-                    cells[x][y].draw(batch, 1);
+                    container.draw(batch, 1);
             }
         }
         draw(customOverlayingObjectsUnder, batch);
         decorMap.get(DECOR_LEVEL.OVER_CELLS).draw(batch, 1f);
-
+        if (particleManager != null) {
+            particleManager.draw(batch, 1f);
+        }
         wallPillars.draw(batch, 1f);
+
+
+        for (GridCellContainer cell : overCells) {
+            cell.drawWithoutCell(batch);
+        }
+
         borderMap.draw(batch, 1f);
-        wallMap.draw(batch, 1f);
+        // wallMap.draw(batch, 1f);
         if (shards != null) {
-            shards.draw(batch,1f);
+            shards.draw(batch, 1f);
         }
         if (shadowMap != null) {
             shadowMap.draw(batch, 1f);
@@ -914,6 +937,10 @@ it sort of broke at some point - need to investigate!
         decorMap.get(DECOR_LEVEL.TOP).draw(batch, 1f);
         for (BossVisual visual : bossVisuals)
             visual.draw(batch, 1f);
+    }
+
+    private boolean isOverCell(GridCellContainer container) {
+        return container.isWall();
     }
 
     private boolean isTopCell(GridCellContainer gridCellContainer) {
@@ -1141,14 +1168,14 @@ it sort of broke at some point - need to investigate!
             container.setOverlayRotation(cell.getOverlayRotation());
 
 
-            container.getBackImage().setDrawable(new TextureRegionDrawable(region));
+            container.getCellImage().setDrawable(new TextureRegionDrawable(region));
         });
         GuiEventManager.bind(removePrevious, CELL_RESET, obj -> {
             try {
                 DC_Cell cell = (DC_Cell) obj.get();
                 GridCellContainer container = cells[cell.getX()][(cell.getY())];
                 //overlays
-                container.getBackImage().setDrawable(
+                container.getCellImage().setDrawable(
                         new TextureRegionDrawable(TextureCache.getOrCreateR(cell.getImagePath())));
 
                 container.setOverlayRotation(cell.getOverlayRotation());
@@ -1483,6 +1510,20 @@ it sort of broke at some point - need to investigate!
 
     public PillarMap getWallPillars() {
         return wallPillars;
+    }
+
+    public boolean isDrawn(Coordinates c) {
+        if (c.x > drawX2)
+            return false;
+        if (c.x < drawX1)
+            return false;
+        if (c.y > drawY2)
+            return false;
+        return c.y >= drawY1;
+    }
+
+    public void setParticleManager(ParticleManager particleManager) {
+        this.particleManager = particleManager;
     }
 }
 

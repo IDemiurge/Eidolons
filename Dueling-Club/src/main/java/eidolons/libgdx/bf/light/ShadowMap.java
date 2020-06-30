@@ -326,26 +326,7 @@ public class ShadowMap extends GroupX implements GridElement {
                                 getGammaMaster().getAlphaForShadowMapCell(x, y, type);
                         if (Math.abs(cell.getBaseAlpha() - alpha) > 0.1f) {
                             cell.setBaseAlpha(alpha);
-
-                            //                        if (type == LIGHT_EMITTER)
-                            //                            cell.setColor(1, 1, 1, alpha); //was this the reason for the light-glitches?
                         }
-                    }
-                    if (type == SHADE_CELL.LIGHT_EMITTER) {
-                        //                        cell.adjustPosition(x, y);
-                        List<LightEmitter> list = emitters[x][y];
-                        if (list == null)
-                            continue; //for void
-                        for (LightEmitter lightEmitter : list) {
-                            float alpha = DC_Game.game.getVisionMaster().
-                                    getGammaMaster().getLightEmitterAlpha(x + x1, (y) + y1);
-                            if (Math.abs(lightEmitter.getBaseAlpha() - alpha) > 0.1f)
-                                lightEmitter.setBaseAlpha(alpha);
-
-                            lightEmitter.update();
-                        }
-
-
                     }
 
                 }
@@ -379,8 +360,6 @@ public class ShadowMap extends GroupX implements GridElement {
     public static final SHADE_CELL[] SHADE_CELL_VALUES = {
             VOID,
             GAMMA_SHADOW,
-            GAMMA_LIGHT,
-            LIGHT_EMITTER,
             BLACKOUT,
             HIGHLIGHT
     };

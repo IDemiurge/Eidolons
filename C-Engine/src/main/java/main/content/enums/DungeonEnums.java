@@ -16,6 +16,9 @@ public class DungeonEnums {
     }
 
     public enum CELL_IMAGE {
+        // checker, bone, astral,skull, roots2,smooth2,
+        pirate, hard,
+        smooth,  roots,
         crypt,
         garden,
         ossuary,
@@ -248,4 +251,11 @@ red_stone,
         COMMON, PRE_BOSS, BOSS, SECRET, TRANSIT, FALSE_LEVEL
     }
 
+    public enum PILLAR_TYPE {
+        crypt, bare, mossy, iron, garden,
+        ossuary, checker, bone, astral, pirate, skull, hard,
+        smooth, smooth2, roots, roots2
+
+
+    }
 }

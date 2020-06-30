@@ -1,7 +1,5 @@
 package eidolons.libgdx.bf.light;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -106,15 +104,15 @@ public class ShadeLightCell extends SuperContainer {
     }
 
     private static String getTexturePath(SHADE_CELL type) {
-    String variant = null;
-    switch (type) {
+        String variant = null;
+        switch (type) {
             //                    TODO varied enough already?
-        case VOID:
-            variant=   getRandomVariant(7);
-            break;
-        // case GAMMA_SHADOW:
-        //     variant=   getRandomVariant(3);
-        //     break;
+            case VOID:
+                variant = getRandomVariant(7);
+                break;
+            // case GAMMA_SHADOW:
+            //     variant=   getRandomVariant(3);
+            //     break;
         }
         if (variant != null) {
             return FileManager.formatPath(PathFinder.getImagePath() +
@@ -186,17 +184,7 @@ public class ShadeLightCell extends SuperContainer {
     public void draw(Batch batch, float parentAlpha) {
         if (isIgnored())
             return;
-        if (getBaseAlpha() < getMinAlpha())
-            return;
-        //        if (isBlendingOn())
-        //        storeBlendingFuncData(batch);
-        //        initBlending(batch);
         super.draw(batch, parentAlpha);
-        //        restoreBlendingFuncData(batch);
-    }
-
-    private float getMinAlpha() {
-        return 0.05f;
     }
 
     @Override
@@ -259,7 +247,7 @@ public class ShadeLightCell extends SuperContainer {
         }
         super.act(delta);
         if (alphaAction.getTime() <= alphaAction.getDuration()
-        ||  (getColor().a==0&&alphaAction.getValue()>0)) {
+                || (getColor().a == 0 && alphaAction.getValue() > 0)) {
             getColor().a = alphaAction.getValue();
             fluctuatingAlpha = alphaAction.getValue();
         }
@@ -274,29 +262,7 @@ public class ShadeLightCell extends SuperContainer {
         super.setPosition(x, y);
     }
 
-    private void initBlending(Batch batch) {
-        GenericEnums.BLENDING mode = null;
-        switch (type) {
-            case GAMMA_LIGHT:
-            case LIGHT_EMITTER:
-
-                mode = (!Gdx.input.isButtonPressed(Keys.SHIFT_LEFT))
-                        ? GenericEnums.BLENDING.OVERLAY
-                        : GenericEnums.BLENDING.SATURATE;
-                break;
-            case CONCEALMENT:
-            case GAMMA_SHADOW:
-                mode = (!Gdx.input.isButtonPressed(Keys.SHIFT_LEFT))
-                        ? GenericEnums.BLENDING.OVERLAY
-                        : GenericEnums.BLENDING.MULTIPLY;
-            case BLACKOUT:
-            case HIGHLIGHT:
-                break;
-        }
-        if (mode != null)
-            batch.setBlendFunction(mode.blendSrcFunc, mode.blendDstFunc);
-    }
-
+    //If I ever remake the Light emitter overlays...
     public void adjustPosition(int x, int y) {
         float offsetX = 0;
         float offsetY = 0;

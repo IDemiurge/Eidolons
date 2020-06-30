@@ -101,7 +101,7 @@ public class GridMaster {
     public static Coordinates getCameraCenter() {
         int x = Math.round((ScreenMaster.getScreen().getController().getXCamPos()) / 128);
         int y = Math.round(invertGdxY(ScreenMaster.getScreen().getController().getYCamPos()) / 128);
-        return  (Coordinates.get(true, x, y));
+        return (Coordinates.get(true, x, y));
     }
 
     public static Vector2 getMouseCoordinates() {
@@ -152,10 +152,11 @@ public class GridMaster {
                 if (view.getParent() instanceof GridCellContainer) {
                     GridCellContainer cell = ((GridCellContainer) view.getParent());
                     if (!cell.isStackView())
-                        if (view.getX() != cell.getViewX(view) ||
-                                view.getY() != cell.getViewY(view)) {
-                            cell.recalcUnitViewBounds();
-                        }
+                        if (!cell.isWall())
+                            if (view.getX() != cell.getViewX(view) ||
+                                    view.getY() != cell.getViewY(view)) {
+                                cell.recalcUnitViewBounds();
+                            }
 
                 } else {
                     //TODO detach bug

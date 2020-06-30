@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.DC_Cell;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightHandler;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.decor.shard.ShardEnums.SHARD_OVERLAY;
@@ -116,14 +117,15 @@ public class Shard extends SuperActor {
     }
 
     protected void resetColor() {
-        Color c = colorFunc.apply(coord);
-        float a = Math.max(0.3f, lightnessFunc.apply(coord) * 3);
+        //same as pillars?
+        Color c = LightHandler.applyLightnessToColor(  colorFunc.apply(coord));
+        // float a = Math.max(0.3f, lightnessFunc.apply(coord) * 3);
         if (background.getContent() == null) {
             return;
         }
-        background.setColor(c.r * a, c.g * a, c.b * a, 1);
+        background.setColor(c );
         if (foreground != null) {
-            foreground.getColor().set(c.r * a, c.g * a, c.b * a, foreground.getColor().a);
+            foreground.getColor().set(c.r  , c.g  , c.b  , foreground.getColor().a);
         }
     }
 

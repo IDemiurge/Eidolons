@@ -2,18 +2,15 @@ package eidolons.libgdx.bf.decor.shard;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.entity.obj.DC_Cell;
-import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.grid.GridLayer;
 import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.bf.grid.handlers.GridManager;
 import eidolons.libgdx.bf.grid.sub.GridElement;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.particles.EmitterActor;
-import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
@@ -39,21 +36,20 @@ import java.util.Map;
  * <p>
  * placement should be a bit smarter too
  */
-public class ShardVisuals extends GroupX implements GridElement {
+public class ShardVisuals extends GridLayer implements GridElement {
 
-    public static final boolean TEST_MODE = false;
+    public static final boolean TEST_MODE = true;
     private static boolean on = true;
     private final ShardBuilder builder;
     protected int cols;
     protected int rows;
     private int x1, x2, y1, y2;
-    private final GridPanel grid;
     Map<Shard, List<EmitterActor>> emittersMap = new XLinkedMap<>();
     GroupX emitterLayer = new GroupX();
     private Shard[][] shards;
 
     public ShardVisuals(GridPanel grid) {
-        this.grid = grid;
+        super(grid);
         setTouchable(Touchable.disabled);
         addActor(emitterLayer);
         builder = new ShardBuilder(grid);
@@ -73,52 +69,29 @@ public class ShardVisuals extends GroupX implements GridElement {
         if (!on || shards==null) {
             return;
         }
-        if (GridManager.isCustomDraw()) {
-            customDraw(batch);
-            return;
-        }
-        if (batch instanceof CustomSpriteBatch) {
-            ((CustomSpriteBatch) batch).resetBlending();
-        }
         super.draw(batch, parentAlpha);
-        if (batch instanceof CustomSpriteBatch) {
-            ((CustomSpriteBatch) batch).resetBlending();
-        }
-    }
-
-    private void customDraw(Batch batch) {
-        for (int x = grid.drawX1; x < grid.drawX2; x++) {
-            for (int y = grid.drawY1; y < grid.drawY2; y++) {
-                if (shards[x+1][y+1] != null) {
-                    shards[x+1][y+1].draw(batch, 1);
-                }
-            }
-        }
-    }
-
-    private void customAct(float d) {
-        for (int x = grid.drawX1; x < grid.drawX2; x++) {
-            for (int y = grid.drawY1; y < grid.drawY2; y++) {
-                if (shards[x+1][y+1] != null) {
-                    shards[x+1][y+1].act(d);
-                }
-            }
-        }
     }
 
     @Override
     public void act(float delta) {
-        if (!on) {
-            return;
-        }
-        if (GridManager.isCustomDraw()) {
-            if (shards == null) {
-                return;
-            }
-            customAct(delta);
+        if (!on || shards==null ) {
             return;
         }
         super.act(delta);
+    }
+
+    @Override
+    protected void act(int x, int y, float delta) {
+        if (shards[x+1][y+1] != null) {
+            shards[x+1][y+1].act(delta);
+        }
+    }
+
+    @Override
+    protected void draw(int x, int y, Batch batch, float parentAlpha) {
+        if (shards[x+1][y+1] != null) {
+            shards[x+1][y+1].draw(batch,parentAlpha);
+        }
     }
 
     @Override
@@ -142,7 +115,7 @@ public class ShardVisuals extends GroupX implements GridElement {
         shards = new Shard[grid.getModuleCols() + 2][grid.getModuleRows() + 2];
 
 
-        ObjectMap<Coordinates, DIRECTION> map = grid.getGridManager().getPillarManager().getShardMap();
+        Map<Coordinates, DIRECTION> map = grid.getGridManager().getPillarManager().getShardMap();
         //buffer by 1
         builder.init(map, x1, x2, y1, y2);
         for (int x = x1 - 1; x - 1 < x2; x++) {
@@ -173,8 +146,8 @@ public class ShardVisuals extends GroupX implements GridElement {
                     Coordinates c1 =Coordinates.get(x+1, y+1);
                     shard.setColorFunc( coord -> grid.getGridManager().getColor(c1));
                     shard.setLightnessFunc( coord-> {
-                        return GammaMaster.getGammaForPillar(shard.getUserObject().getGamma());
-                        // return grid.getGridManager().getLightness(c1);
+                        // return GammaMaster.getGammaForPillar(shard.getUserObject().getGamma());
+                        return grid.getGridManager().getLightness(c1);
                     });
 
 

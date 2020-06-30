@@ -15,6 +15,7 @@ import main.content.enums.DungeonEnums;
 import main.data.tree.LayeredData;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
@@ -158,6 +159,13 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
         return getPropagatedValue("illumination");
     }
 
+    public Integer getIlluminationValue() {
+        String illumination = getPropagatedValue("illumination");
+        if (StringMaster.isEmpty(illumination)) {
+            return 0;
+        }
+        return NumberUtils.getInt(illumination);
+    }
     @Override
     public void setIllumination(int globalIllumination) {
         getData().setValue("illumination", "" + globalIllumination);

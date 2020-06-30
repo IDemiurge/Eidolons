@@ -32,7 +32,7 @@ public class GlobalVfxMap extends GroupX {
     private DAY_TIME time;
     float updatePeriod = 3f;
     float updateTimer;
-    private final VFX_TEMPLATE DEFAULT_TEMPLATE=VFX_TEMPLATE.POISON;
+    private final VFX_TEMPLATE DEFAULT_TEMPLATE=VFX_TEMPLATE.DEEP_MIST;
 
     public GlobalVfxMap(Module module) {
         initModuleVfx(module);

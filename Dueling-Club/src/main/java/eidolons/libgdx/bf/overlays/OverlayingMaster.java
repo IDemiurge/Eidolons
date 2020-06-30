@@ -5,6 +5,9 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.bf.grid.cell.OverlayView;
 import eidolons.libgdx.bf.overlays.map.WallMap;
+import main.entity.EntityCheckMaster;
+import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -20,17 +23,17 @@ public class OverlayingMaster {
         Dimension dim1 = getOffsetsForOverlaying(direction, 64, 64);
         Dimension dim2 = getOffsetsForOverlaying(direction2, 64, 64);
 
-//    a graceful mathematical solution was coming...
-//    int diff = direction.getDegrees() - direction1.getDegrees();
-//        int middle = (direction.getDegrees() + direction1.getDegrees()) / 2;
-        int x = dim2     .width - dim1.width;
-        int y = dim2.height - dim1.height+40;
+        //    a graceful mathematical solution was coming...
+        //    int diff = direction.getDegrees() - direction1.getDegrees();
+        //        int middle = (direction.getDegrees() + direction1.getDegrees()) / 2;
+        int x = dim2.width - dim1.width;
+        int y = dim2.height - dim1.height;
 
-//        if (Math.abs(diff) == 45) {
-////        int dist = Math
-//            if (middle>180){
-//        }
-//        }
+        //        if (Math.abs(diff) == 45) {
+        ////        int dist = Math
+        //            if (middle>180){
+        //        }
+        //        }
 
         return new Vector2(x, y);
     }
@@ -38,56 +41,56 @@ public class OverlayingMaster {
     public static void moveOverlaying(BattleFieldObject target, Unit source, boolean push) {
         Boolean clockwise = true;
         DIRECTION d = target.getDirection();
-        DIRECTION relative = DirectionMaster.getRelativeDirection(target, source  );
+        DIRECTION relative = DirectionMaster.getRelativeDirection(target, source);
         FACING_DIRECTION facing = source.getFacing();
         if (d == null) {
-            clockwise=null;
+            clockwise = null;
         } else
-        switch (relative) {
-            case UP:
-                if (d.isDiagonal()) {
-                    clockwise = d.isGrowX();
-                } else
-                    clockwise = null;
-                break;
-            case UP_RIGHT:
-            case DOWN_LEFT:
-                if (!facing.isVertical()) {
-                    clockwise = false;
-                }
-                break;
-            case UP_LEFT:
-            case DOWN_RIGHT:
-                if (facing.isVertical()) {
-                    clockwise = false;
-                }
-                break;
+            switch (relative) {
+                case UP:
+                    if (d.isDiagonal()) {
+                        clockwise = d.isGrowX();
+                    } else
+                        clockwise = null;
+                    break;
+                case UP_RIGHT:
+                case DOWN_LEFT:
+                    if (!facing.isVertical()) {
+                        clockwise = false;
+                    }
+                    break;
+                case UP_LEFT:
+                case DOWN_RIGHT:
+                    if (facing.isVertical()) {
+                        clockwise = false;
+                    }
+                    break;
 
-            case DOWN:
-                if (d.isDiagonal()) {
-                    clockwise = !d.isGrowX();
-                } else
-                    clockwise = null;
-                break;
+                case DOWN:
+                    if (d.isDiagonal()) {
+                        clockwise = !d.isGrowX();
+                    } else
+                        clockwise = null;
+                    break;
 
-            case LEFT:
-                if (d.isDiagonal()) {
-                    clockwise = !d.isGrowY();
-                } else
-                    clockwise = null;
-                break;
-            case RIGHT:
-                if (d.isDiagonal()) {
-                    clockwise =  d.isGrowY();
-                } else
-                    clockwise = null;
-                break;
-        }
+                case LEFT:
+                    if (d.isDiagonal()) {
+                        clockwise = !d.isGrowY();
+                    } else
+                        clockwise = null;
+                    break;
+                case RIGHT:
+                    if (d.isDiagonal()) {
+                        clockwise = d.isGrowY();
+                    } else
+                        clockwise = null;
+                    break;
+            }
         if (clockwise == null) {
-            if (d==null ){
+            if (d == null) {
                 d = facing.getDirection();
                 if (!push) {
-                    d= d.flip();
+                    d = d.flip();
                 }
             } else {
                 if (push) {
@@ -96,8 +99,7 @@ public class OverlayingMaster {
                     //try to take/break?
                 }
             }
-        } else
-        {
+        } else {
             if (!push) {
                 clockwise = !clockwise;
             }
@@ -116,6 +118,17 @@ public class OverlayingMaster {
 
     public static Dimension getOffsetsForOverlaying(DIRECTION direction,
                                                     int width, int height, OverlayView view) {
+        Coordinates c = view.getUserObject().getCoordinates();
+        Obj wall = view.getUserObject().getGame().getObjectByCoordinate(c, false);
+        boolean isWall = false;
+        if (wall != null) {
+            isWall = EntityCheckMaster.isWall(wall);
+        }
+        return getOffsetsForOverlaying(direction, width, height, view, isWall);
+    }
+
+    public static Dimension getOffsetsForOverlaying(DIRECTION direction,
+                                                    int width, int height, OverlayView view, boolean wall) {
 
         float scale = view == null ? 0.5f : view.getScale();
         int w = (int) (width / scale);
@@ -142,7 +155,15 @@ public class OverlayingMaster {
             calcXOffset += x;
             calcYOffset += y;
         }
-        return new Dimension(calcXOffset, calcYOffset+ WallMap.getOffsetY());
+        if (!wall) {
+            return new Dimension(calcXOffset, calcYOffset);
+        }
+        if (direction.growY != null) {
+            return new Dimension(calcXOffset + WallMap.getOffsetX(), calcYOffset);
+        } else if (direction.growX != null) {
+            return new Dimension(calcXOffset, calcYOffset + WallMap.getOffsetY());
+        }
+        return new Dimension(calcXOffset + WallMap.getOffsetX(), calcYOffset + WallMap.getOffsetY());
     }
 
 }

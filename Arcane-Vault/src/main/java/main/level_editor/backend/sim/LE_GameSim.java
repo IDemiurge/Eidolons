@@ -139,6 +139,7 @@ public class LE_GameSim extends ScenarioGame {
 //        grid = new DC_BattleFieldGrid(getModule());
         battleFieldManager = new DC_BattleFieldManager(this, getModule().getId(), getModule().getEffectiveWidth(), getModule().getEffectiveHeight());
 
+        dungeonMaster.loadingDone();
 //        Coordinates c = Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
 //        dummyPC = (Unit) createObject(getDummyType(), c.x, c.y, getPlayer(true),
 //                new Ref(LE_GameSim.this));

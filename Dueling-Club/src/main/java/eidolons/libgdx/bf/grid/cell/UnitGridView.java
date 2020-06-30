@@ -34,6 +34,7 @@ import java.util.function.Supplier;
 
 public class UnitGridView extends GenericGridView {
 
+    private final boolean wall;
     protected QueueView initiativeQueueUnitView;
     private LabelX debugInfo;
     private final float scaleResetPeriod = 4;
@@ -44,9 +45,6 @@ public class UnitGridView extends GenericGridView {
 
     @Override
     protected boolean isIgnored() {
-        if (getUserObject() instanceof Unit) {
-
-        }
         return super.isIgnored();
     }
 
@@ -58,6 +56,7 @@ public class UnitGridView extends GenericGridView {
     public UnitGridView(BattleFieldObject bfObj, UnitViewOptions options) {
         super(bfObj, options);
         initQueueView(options);
+        this.wall = options.isWall();
         if (AiBehaviorManager.TEST_MODE)
             addActor(debugInfo = new LabelX(
                     "", StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, Color.RED)) {
@@ -359,7 +358,22 @@ public class UnitGridView extends GenericGridView {
         this.platformController = platformController;
     }
 
+    public boolean isWall() {
+        return wall;
+    }
 
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+    }
+
+    @Override
+    public boolean isVisible() {
+        if (wall) {
+            return true;
+        }
+        return super.isVisible();
+    }
     //    @Override
 //    public void highlightOff() {
 ////        screenOverlay=0;

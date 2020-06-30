@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.ObjectMap;
 import com.google.inject.internal.util.ImmutableList;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.GridMaster;
@@ -18,21 +17,18 @@ import main.system.EventType;
 import main.system.GuiEventManager;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 public abstract class OverlayMap extends SuperActor {
 
-    protected ObjectMap<Coordinates, Object> map;
-    protected Function<Coordinates, Color
-            > colorFunc;
-    protected boolean on = true;
+    protected Map<Coordinates, Object> map;
+    protected Function<Coordinates, Color> colorFunc;
     protected List<Pair<Vector2, TextureRegion>> drawMap;
-    protected ObjectMap<Vector2, TextureRegion> drawMapOver;
+    protected Map<Vector2, TextureRegion> drawMapOver;
 
     protected boolean screen;
-    protected ObjectMap<Coordinates, TextureRegion> drawMapAlt;
+    protected Map<Coordinates, TextureRegion> drawMapAlt;
 
     public OverlayMap() {
         bindEvents();
@@ -40,12 +36,11 @@ public abstract class OverlayMap extends SuperActor {
 
     protected void bindEvents() {
         GuiEventManager.bind(getUpdateEvent(), p -> {
-            update((ObjectMap<Coordinates, Object>) p.get());
+            update((Map<Coordinates, Object>) p.get());
 
         });
     }
-
-    public void update(ObjectMap<Coordinates, Object> m) {
+    public void update(Map<Coordinates, Object> m) {
         map = m;
         drawMap = null;
         drawMapOver = null;
@@ -59,7 +54,7 @@ public abstract class OverlayMap extends SuperActor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (!on)
+        if (!isOn())
             return;
         if (!screen) {
             // if (isDrawScreen()) {
@@ -73,8 +68,8 @@ public abstract class OverlayMap extends SuperActor {
             if (map == null)
                 return;
             if (drawMapOver == null) {
-                drawMapOver = new ObjectMap<>(map.size * 2);
-                for (Coordinates c : map.keys()) {
+                drawMapOver = new HashMap<>();
+                for (Coordinates c : map.keySet()) {
                     fillOverlayMap(c, drawMapOver);
                 }
             }
@@ -89,53 +84,59 @@ public abstract class OverlayMap extends SuperActor {
         if (drawMap != null)
             for (Pair<Vector2, TextureRegion> pair : drawMap) {
                 Vector2 v = pair.getKey();
-                if (isBlack())
-                    batch.setColor(GdxColorMaster.OBSIDIAN); //TODO fuck that fix
                 batch.draw(pair.getRight(), v.x, v.y);
             }
         if (drawMapOver != null)
-            for (Vector2 key : drawMapOver.keys()) {
+            for (Vector2 key : drawMapOver.keySet()) {
                 // if (!checkCoordinateIgnored(key))
                 batch.draw(drawMapOver.get(key), key.x, key.y);
             }
         if (drawMapAlt != null) {
             GridPanel grid = ScreenMaster.getGrid();
-            for (int x = grid.drawX1; x < grid.drawX2; x++) {
-                for (int y = grid.drawY1; y < grid.drawY2; y++) {
-                    Coordinates c = Coordinates.get(x, y);
-                    TextureRegion r = drawMapAlt.get(c);
-                    if (r == null) {
-                        continue;
-                    }
-                    initColor(c, screen, batch);
-                    drawAlt(batch, c, r);
-
+            for (Coordinates c : drawMapAlt.keySet()) {
+                if (!grid.isDrawn(c)) {
+                    continue;
                 }
-
+                TextureRegion r = drawMapAlt.get(c);
+                initColor(c, screen, batch);
+                drawAlt(batch, c, r);
             }
+
             batch.setColor(GdxColorMaster.WHITE);
 
         }
     }
 
-    protected boolean isBlack() {
-        return false;
-    }
+    protected abstract boolean isOn();
+
 
     protected boolean isAlt() {
         return false;
     }
 
     protected void fillMapAlt() {
-        drawMapAlt = new ObjectMap<>();
-        for (Coordinates coordinates : map.keys()) {
-            fillDrawMapAlt(drawMapAlt, coordinates, map.get(coordinates));
+        drawMapAlt = new LinkedHashMap<>();
+        //sort it for Z!
+
+        for (Coordinates coordinates : map.keySet()) {
+            Object o = map.get(coordinates);
+            if (isUnder(coordinates, o))
+                fillDrawMapAlt(drawMapAlt, coordinates, o);
         }
+        for (Coordinates coordinates : map.keySet()) {
+            Object o = map.get(coordinates);
+            if (!isUnder(coordinates, o))
+                fillDrawMapAlt(drawMapAlt, coordinates, o);
+        }
+    }
+
+    protected boolean isUnder(Coordinates coordinates, Object o) {
+        return false;
     }
 
     protected void fillMap() {
         drawMap = new LinkedList<>();
-        for (Coordinates coordinates : map.keys()) {
+        for (Coordinates coordinates : map.keySet()) {
             List<DIRECTION> list = null;
             if (map.get(coordinates) instanceof DIRECTION) {
                 DIRECTION d = (DIRECTION) map.get(coordinates);
@@ -180,12 +181,12 @@ public abstract class OverlayMap extends SuperActor {
         return false;
     }
 
-    protected void fillOverlayMap(Coordinates c, ObjectMap<Vector2, TextureRegion> drawMapOver) {
+    protected void fillOverlayMap(Coordinates c, Map<Vector2, TextureRegion> drawMapOver) {
     }
 
     protected abstract void fillDrawMap(List<Pair<Vector2, TextureRegion>> batch, Coordinates coordinates, List<DIRECTION> list, Vector2 v);
 
-    protected void fillDrawMapAlt(ObjectMap<Coordinates, TextureRegion> draw,
+    protected void fillDrawMapAlt(Map<Coordinates, TextureRegion> draw,
                                   Coordinates coordinates, Object arg) {
 
     }
@@ -197,13 +198,6 @@ public abstract class OverlayMap extends SuperActor {
     protected abstract EventType getUpdateEvent();
 
 
-    public boolean isOn() {
-        return on;
-    }
-
-    public void setOn(boolean on) {
-        this.on = on;
-    }
 
     protected boolean checkCoordinateIgnored(Coordinates coordinates) {
         Vector2 v = GridMaster.getVectorForCoordinate(coordinates, false, false, true,
@@ -216,10 +210,6 @@ public abstract class OverlayMap extends SuperActor {
         float offsetY = v.y;
         return !ScreenMaster.getScreen().controller.
                 isWithinCamera(offsetX, offsetY - 128, 128, 128);
-    }
-
-    public ObjectMap<Coordinates, TextureRegion> getDrawMapAlt() {
-        return drawMapAlt;
     }
 
 }

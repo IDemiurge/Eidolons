@@ -1,9 +1,13 @@
 package eidolons.ability.effects.common;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMap;
 import main.ability.effects.Effect;
 import main.ability.effects.EffectImpl;
 import main.ability.effects.Effects;
+import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
@@ -13,9 +17,17 @@ public class LightEmittingEffect extends SpectrumEffect {
     private static final String REDUCTION_FOR_DISTANCE_MODIFIER = "/2.5";//"*2";
     boolean debug;
     private Coordinates lastCoordinates;
+    private ObjectMap<Coordinates, Float> map;
+    private final GenericEnums.ALPHA_TEMPLATE flicker;
+    private final Color color;
+    private ColorMap.Light light;
 
-    public LightEmittingEffect(String formula, Boolean circular) {
+    public LightEmittingEffect(String formula, Boolean circular, Color color,
+                               GenericEnums.ALPHA_TEMPLATE flicker
+    ) {
         super(null);
+        this.flicker = flicker;
+        this.color = color;
         this.formula = new Formula(formula);
         this.circular = circular;
         rangeFormula = "5";
@@ -30,41 +42,42 @@ public class LightEmittingEffect extends SpectrumEffect {
         lastCoordinates = Coordinates.get(0, 0);
     }
 
-    public LightEmittingEffect(String formula) {
-        this(formula, true);
-    }
 
     @Override
     protected boolean isCoordinatesCached() {
         return true;
     }
 
+    public ColorMap.Light createAndApplyLight() {
+        if (light == null) {
+            light = new ColorMap.Light(color, map = new ObjectMap<>(), flicker);
+        }
+        apply();
+        return light;
+    }
+    //Light revamp
     private Effect createEffect() {
         return new EffectImpl() {
             @Override
             public boolean applyThis() {
                 if (getAmount() == 0 ||
-                 PositionMaster.getDistance(lastCoordinates, ref.getSourceObj().getCoordinates()
-                 ) != (PositionMaster.getDistance(ref.getTargetObj().getCoordinates(),
-                  ref.getSourceObj().getCoordinates()))) {
+                        PositionMaster.getDistance(lastCoordinates, ref.getSourceObj().getCoordinates()
+                        ) != (PositionMaster.getDistance(ref.getTargetObj().getCoordinates(),
+                                ref.getSourceObj().getCoordinates()))) {
                     setAmount(getFormula().getInt(ref));
                 }
 
-                int plus=getAmount();
+                int plus = getAmount();
                 Integer light = ref.getTargetObj().getIntParam(PARAMS.ILLUMINATION);
-                if (light>0) {
-                    plus =plus/3*2;// (int) Math.round(math.sqrt(plus));
+                if (light > 0) {
+                    plus = plus / 3 * 2; //if there is already illumination...
                 }
                 ref.getTargetObj().modifyParameter(PARAMS.ILLUMINATION, plus, true);
-                if (ref.getTargetObj() != null)
-                    lastCoordinates = ref.getTargetObj().getCoordinates();
-                // if (ref.getTargetObj() instanceof DC_Cell) {
-                //     main.system.auxiliary.log.LogMaster.log(1,ref.getTargetObj()+" added gamma for cell: "+plus );
-                // }
-//             if (game.isDebugMode())
-//                 main.system.auxiliary.log.LogMaster.log(1, ref.getTargetObj()+"'s ILLUMINATION: +" + getAmount()
-//                  + "="+ ref.getTargetObj().getIntParam(PARAMS.ILLUMINATION));
-                return true;//addLight(ref);
+                lastCoordinates = ref.getTargetObj().getCoordinates();
+
+                map.put(ref.getTargetObj().getCoordinates(), plus*plus / 2500f);
+
+                return true;
             }
 
             @Override
@@ -76,21 +89,6 @@ public class LightEmittingEffect extends SpectrumEffect {
 
     @Override
     public boolean applyThis() {
-        // packaged into PassiveAbil
-        // on self?
-//        int reflectionMod = 0;
-//        for (Coordinates c : ref.getSourceObj().getCoordinates().getAdjacentCoordinates()) {
-//            for (BattleFieldObject obj : getGame().getMaster().getObjectsOnCoordinate(c,
-//             false)) {
-//                if (obj.isWall()) {
-//                    reflectionMod += REFLECTION_BONUS_PER_ADJACENT_WALL;
-//                    break;
-//                }
-//            }
-//        }
-//        if (reflectionMod > 0) {
-//            reduction_for_distance_modifier  += ("+" + reflectionMod);
-//        } 11-10, 11-9, 11-8, 11-11, 11-12, 10-10, 10-11, 9-10, 12-9, 12-8, 12-7, 12-11, 12-12, 12-13, 12-10]
         return super.applyThis();
     }
 

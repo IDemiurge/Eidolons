@@ -342,9 +342,9 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
 
         float xPos = 0, yPos = 0;
         if (overlay == INFO_TEXT) {
-            Label label = (Label) getOverlayActor(parent, overlay);
-            label.setText(getInfoText(obj)+"\n" +
-                   parent.getX()+ ":"+parent.getY());
+            // Label label = (Label) getOverlayActor(parent, overlay);
+            // label.setText(getInfoText(obj)+"\n" +
+            //        parent.getX()+ ":"+parent.getY());
 
         }
         if (overlay.alignment != null) {
@@ -532,7 +532,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
         switch (overlay) {
             case INFO_TEXT: {
                 if (parent instanceof GridCell) {
-                    return ((GridCell) parent).getInfoText();
+                    return ((GridCell) parent).getInfoTextLabel();
                 }
                 GenericGridView view = (GenericGridView) parent;
                 return view.getInfoText();
