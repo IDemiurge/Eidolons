@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ObjectMap;
-import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightConsts;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightHandler;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
@@ -16,10 +16,9 @@ import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.DungeonEnums;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static eidolons.libgdx.bf.decor.pillar.Pillars.*;
 import static main.game.bf.directions.DIRECTION.*;
@@ -36,29 +35,28 @@ public class PillarManager extends GridHandler {
     public PillarManager(GridPanel panel) {
         super(panel);
     }
-
+// Light revamp - get average between some adjacent cells ...
     public Color getColor(Coordinates coord, Object o, boolean wall) {
-        Color c = getManager().getColor(coord);
         PILLAR type = Pillars.getPillar(o);
-        DIRECTION d = Pillars.getAdjacent(type, wall);
-        coord = coord.getAdjacentCoordinate(d);
-        Color c1 = getManager().getColor(coord);
+        DIRECTION[] adj = Pillars.getAdjacent(type, wall);
+        Set<Color> collect = Arrays.stream(adj).map(d -> getManager().getColor(d==null ? coord : coord.getAdjacentCoordinate(d))).collect(Collectors.toSet());
 
-        Color lerp = new Color(c).lerp(c1, wall
-                ?1- LightConsts.PILLAR_COLOR_LERP
-                : LightConsts.PILLAR_COLOR_LERP);
+        Color lerp = GdxColorMaster.getAverage(collect);
 
-        lerp.a = Math.max(LightConsts.MIN_LIGHTNESS,
-                wall ? lerp.a * LightConsts.PILLAR_WALL_COEF_LIGHT
-                        : lerp.a * LightConsts.PILLAR_COEF_LIGHT);
-        c1 =LightHandler.applyLightnessToColor(lerp.clamp());
+        // Color lerp = new Color(c).lerp(c1, wall
+        //         ?1- LightConsts.PILLAR_COLOR_LERP
+        //         : LightConsts.PILLAR_COLOR_LERP);
+        //
+        // lerp.a = Math.max(LightConsts.MIN_LIGHTNESS,
+        //         wall ? lerp.a * LightConsts.PILLAR_WALL_COEF_LIGHT
+        //                 : lerp.a * LightConsts.PILLAR_COEF_LIGHT);
+        Color c1 =LightHandler.applyLightnessToColor(lerp.clamp());
         c1.a=1;
         return c1;
     }
 
     @Override
     protected void bindEvents() {
-        GuiEventManager.bind(GuiEventType.CELL_MAP_RESET, p -> reset());
     }
 
 

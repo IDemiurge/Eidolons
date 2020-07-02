@@ -69,9 +69,9 @@ public class SpriteMaster {
             }
             s.setOrigin(0, s.getHeight() / 2);
             if (obj.isOverlaying()) {
-                // s.setScale(0.5f);
-                s.setWidth(s.getWidth()/2);
-                s.setHeight(s.getHeight()/2);
+                s.setScale(0.5f);
+                // s.setWidth(s.getWidth()/2);
+                // s.setHeight(s.getHeight()/2);
             }
             s.act(RandomWizard.getRandomFloatBetween(0, 3));
             if (!obj.isOverlaying())

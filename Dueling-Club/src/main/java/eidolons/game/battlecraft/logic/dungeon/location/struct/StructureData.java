@@ -1,5 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.data.tree.LayeredData;
 import main.system.auxiliary.StringMaster;
@@ -20,6 +22,13 @@ public abstract class StructureData<T extends Enum<T>, S extends LayeredData> ex
 
     @Override
     public String[] getRelevantValues() {
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+            return getValueConsts();
+        }
+        return getValuesCropped();
+    }
+
+    protected String[] getValuesCropped() {
         return getValueConsts();
     }
 

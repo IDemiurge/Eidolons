@@ -258,7 +258,7 @@ public class StyleHolder {
     }
 
     public static BitmapFont getHieroFontMagic() {
-        TextureRegion tex = new TextureRegion(new Texture(PathFinder.getFontPath() + "hiero/magic/magic 20.png"));
+        TextureRegion tex = TextureCache.getOrCreateR(PathFinder.getFontPath() + "hiero/magic/magic 20.png");
         return new BitmapFont(GDX.file(PathFinder.getFontPath() + "hiero/magic/magic 20.fnt"), tex);
     }
 

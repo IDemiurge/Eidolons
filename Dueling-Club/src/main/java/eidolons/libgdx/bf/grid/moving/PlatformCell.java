@@ -2,6 +2,7 @@ package eidolons.libgdx.bf.grid.moving;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -20,6 +21,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
 
+import java.util.function.Function;
+
 /*
     could it be slightly larger? or just decor?
     shading and overlays
@@ -37,8 +40,9 @@ public class PlatformCell extends GridCellContainer {
     private final int originalY;
 
 
-    public PlatformCell(TextureRegion region, int gridX, int gridY, DIRECTION direction) {
-        super(region , gridX, gridY);
+    public PlatformCell(TextureRegion region, int gridX, int gridY, DIRECTION direction ,
+                        Function<Coordinates, Color> colorFunction) {
+        super(region , gridX, gridY, colorFunction);
         originalX = gridX;
         originalY = gridY;
         this.direction = direction;

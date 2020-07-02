@@ -66,6 +66,9 @@ public class IlluminationRule {
         Coordinates coordinates = Eidolons.getPlayerCoordinates();
         for (DIRECTION d : DIRECTION.clockwise) {
             Coordinates c = coordinates. getAdjacentCoordinate(d);
+            if (c == null) {
+                continue;
+            }
             Float value = lerp.get(c);
             float def = 0.55f;
             if (d == direction) {

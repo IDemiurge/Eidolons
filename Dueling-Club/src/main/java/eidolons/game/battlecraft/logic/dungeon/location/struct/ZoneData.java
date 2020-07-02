@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 public class ZoneData extends StructureData<LevelStructure.ZONE_VALUE, LevelZone> {
 
+
     public ZoneData(LevelZone structure) {
         super(structure);
     }
@@ -17,16 +18,20 @@ public class ZoneData extends StructureData<LevelStructure.ZONE_VALUE, LevelZone
         setData(s);
     }
 
+    private static String[] cropped;
     @Override
-    public String[] getRelevantValues() {
-        List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
-                collect(Collectors.toList());
-        list.remove(LevelStructure.ZONE_VALUE.height.toString());
-        list.remove(LevelStructure.ZONE_VALUE.width.toString());
-        list.remove(LevelStructure.ZONE_VALUE.id.toString());
-        list.remove(LevelStructure.ZONE_VALUE.illumination.toString());
-        list.remove(LevelStructure.ZONE_VALUE.origin.toString());
-        return list.toArray(new String[0]);
+    public String[] getValuesCropped() {
+        if (cropped == null) {
+            List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
+                    collect(Collectors.toList());
+            list.remove(LevelStructure.ZONE_VALUE.height.toString());
+            list.remove(LevelStructure.ZONE_VALUE.width.toString());
+            list.remove(LevelStructure.ZONE_VALUE.id.toString());
+            list.remove(LevelStructure.ZONE_VALUE.illumination.toString());
+            list.remove(LevelStructure.ZONE_VALUE.origin.toString());
+            cropped = list.toArray(new String[0]);
+        }
+        return cropped;
     }
 
     protected void init() {

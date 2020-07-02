@@ -33,7 +33,6 @@ import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
-import main.level_editor.backend.functions.palette.PaletteHandlerImpl;
 import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.GuiEventManager;
@@ -527,44 +526,17 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     }
 
     public void initWall(Coordinates c) {
-        LevelStruct block = getStructureMaster().getLowestStruct(c);
-        resetWalls(block, ImmutableSet.of(c));
+        resetWalls(ImmutableSet.of(c));
     }
-
 
     public void resetWalls(LevelStruct<LevelStruct, LevelStruct> subPart) {
-        resetWalls(subPart, subPart.getCoordinatesSet());
+        resetWalls(subPart.getCoordinatesSet());
     }
 
-    public void resetWalls(LevelStruct<LevelStruct, LevelStruct> subPart, Collection<Coordinates> coordinatesSet) {
-        ObjType wallType = null;
-        ObjType altWallType = null;
-        if (subPart.getData() != null) {
-            wallType = DataManager.getType(subPart.getWallType(), DC_TYPE.BF_OBJ);
-            altWallType = DataManager.getType(subPart.getWallTypeAlt(), DC_TYPE.BF_OBJ);
-        }
-        Set<BattleFieldObject> wallObjs = new HashSet<>();
-        if (wallType != null)
-            for (Coordinates coordinates : coordinatesSet) {
-                for (BattleFieldObject obj : getGame().getObjectsOnCoordinateNoOverlaying(coordinates)) {
-                    String name = obj.getType().getName().replace("Indestructible", "").trim();
-                    if (name
-                            .equalsIgnoreCase(PaletteHandlerImpl.WALL_PLACEHOLDER)) {
-                        obj.setImage(wallType.getImagePath());
-                        wallObjs.add(obj);
-                    }
-                    if (altWallType != null) {
-                        if (name
-                                .equalsIgnoreCase(PaletteHandlerImpl.ALT_WALL_PLACEHOLDER)) {
-                            obj.setImage(altWallType.getImagePath());
-                            //objsToReset.add(obj);
-                            wallObjs.add(obj);
-                        }
-                    }
-                }
-            }
-        GuiEventManager.trigger(GuiEventType.RESET_VIEW, wallObjs);
+    private void resetWalls(Set<Coordinates> coordinatesSet) {
+        getGame().getBattleFieldManager().resetWalls(coordinatesSet);
     }
+
 
     private void resetCells(LevelStruct<LevelStruct, LevelStruct> layer) {
         DungeonEnums.CELL_IMAGE type = layer.getCellType();

@@ -25,6 +25,7 @@ import main.level_editor.backend.metadata.options.LE_OptionsMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.math.MathMaster;
 
 import java.util.List;
 
@@ -38,12 +39,35 @@ public class LE_BfGrid extends GridPanel {
     public LE_BfGrid(int cols, int rows, int moduleCols, int moduleRows) {
         super(cols, rows, moduleCols, moduleRows);
         selectionBorder = TextureCache.getOrCreateR(CellBorderManager.teamcolorPath);
-
     }
 
     @Override
+    public int getModuleCols() {
+        return getFullCols();
+    }
+    @Override
+    public int getModuleRows() {
+        return getFullRows();
+    }
+
+    @Override
+    public int getGdxY_ForModule(int y) {
+        return getFullRows()-y  ; // buffer?
+    }
+
+    @Override
+    public boolean isDrawn(Coordinates c) {
+        return super.isDrawn(c);
+    }
+
+    @Override
+    protected int getDrawY(int y) {
+        // return MathMaster.getMinMax(  y, 0, full_rows - 1);
+        return MathMaster.getMinMax( full_rows-y, 0, full_rows - 1);
+    }
+    @Override
     protected boolean isCustomHit() {
-        return false;
+        return true;
     }
 
     @Override
@@ -118,7 +142,7 @@ public class LE_BfGrid extends GridPanel {
 
     @Override
     protected GridCellContainer createGridCell(TextureRegion emptyImage, int x, int y) {
-        return new LE_GridCell(emptyImage, x, y);
+        return new LE_GridCell(emptyImage, x, y,  coord -> getGridManager().getColor(coord));
     }
 
     @Override

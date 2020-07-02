@@ -407,8 +407,7 @@ public class UnitView extends BaseView implements HpBarView {
         }
         if (flickering)
             if (alphaFluctuationOn)
-                alphaFluctuation(this, delta / 4); //TODO fix speed
-                //                ActorMaster.addFadeInOrOutIfNoActions(this, 5);
+                alphaFluctuation(this, delta / 4);
             else if (getColor().a == 0)
                 getColor().a = 1;
 
@@ -428,9 +427,16 @@ public class UnitView extends BaseView implements HpBarView {
             return;
         }
         ShaderDrawer.drawWithCustomShader(this, batch,
-                greyedOut ?
-                        GrayscaleShader.getGrayscaleShader()
-                        //          GrayscaleShader.getGrayscaleShader()
+                greyedOut
+                        ? GrayscaleShader.getGrayscaleShader()
                         : null, true);
+    }
+
+    public void drawScreen(Batch batch) {
+        getPortrait().setScreenEnabled(true);
+        getPortrait().setPosition(getX(), getY());
+        getPortrait().draw(batch,1f);
+        getPortrait().setPosition(0, 0);
+        getPortrait().setScreenEnabled(false);
     }
 }

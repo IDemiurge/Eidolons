@@ -34,10 +34,17 @@ public abstract class GridLayer extends GroupX {
 
     protected abstract void draw(int x, int y, Batch batch, float parentAlpha);
 
-    protected void setColor(Actor actor, int x, int y){
+    protected void setColor(Actor actor, int x, int y) {
         // Color c = DC_Game.game.getColorMap().getOutput()[x][y];
-        Color c = DC_Game.game.getColorMap().getOutput().get(Coordinates.get(x,y));
-        actor.setColor(new Color(c.r,c.g,c.b, 1));
+        if (actor == null) {
+            return;
+        }
+        Color c = DC_Game.game.getColorMap().getOutput().get(Coordinates.get(x, y));
+        if (c == null) {
+            // c = GdxColorMaster.get(GdxColorMaster.NULL_COLOR);
+            return;
+        }
+        actor.setColor(new Color(c.r, c.g, c.b, 1));
         applyLightness(actor, c.a, x, y);
     }
 
@@ -45,7 +52,7 @@ public abstract class GridLayer extends GroupX {
         //assuming the batch has colorful shader...
         float light = a - 0.5f;
         Color c = actor.getColor();
-        actor.setColor(new Color(c.r+light,c.g+light,c.b+light, 1));
+        actor.setColor(new Color(c.r + light, c.g + light, c.b + light, 1));
 
     }
 }

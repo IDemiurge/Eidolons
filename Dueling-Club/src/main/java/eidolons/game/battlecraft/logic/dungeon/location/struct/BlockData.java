@@ -22,17 +22,26 @@ public class BlockData extends StructureData<BLOCK_VALUE,  LevelBlock> {
         setData(s);
     }
 
+
+    private static String[] cropped;
+
     @Override
-    public String[] getRelevantValues() {
-        List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
-                collect(Collectors.toList());
-        list.remove(LevelStructure.BLOCK_VALUE.height.toString());
-        list.remove(LevelStructure.BLOCK_VALUE.width.toString());
-        list.remove(LevelStructure.BLOCK_VALUE.id.toString());
-        list.remove(BLOCK_VALUE.music_theme.toString());
-        list.remove(BLOCK_VALUE.origin.toString());
-        return list.toArray(new String[0]);
+    public String[] getValuesCropped() {
+        if (cropped == null) {
+            List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
+                    collect(Collectors.toList());
+            list.remove(BLOCK_VALUE.height.toString());
+            list.remove(BLOCK_VALUE.width.toString());
+            list.remove(BLOCK_VALUE.id.toString());
+            list.remove(BLOCK_VALUE.music_theme.toString());
+            list.remove(BLOCK_VALUE.origin.toString());
+            list.remove(BLOCK_VALUE.pillar_type.toString());
+            cropped = list.toArray(new String[0]);
+        }
+        return cropped;
     }
+
+
     @Override
     public BlockData setData(String data) {
         return (BlockData) super.setData(data);

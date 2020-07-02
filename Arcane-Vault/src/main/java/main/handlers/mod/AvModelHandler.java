@@ -583,8 +583,9 @@ public class AvModelHandler {
             if (selectedType.getOBJ_TYPE_ENUM() == DC_TYPE.ABILS) {
                 AE_Manager.typeRemoved(ArcaneVault.getSelectedType());
             }
-            ArcaneVault.getMainBuilder().getTreeBuilder().remove();
+            DataManager.removeType(selectedType);
         }
+        ArcaneVault.getMainBuilder().getTreeBuilder().remove();
         ArcaneVault.setDirty(true);
 
         SoundMaster.playStandardSound(STD_SOUNDS.ERASE);

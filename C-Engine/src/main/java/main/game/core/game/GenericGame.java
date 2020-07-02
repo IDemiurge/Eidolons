@@ -125,4 +125,8 @@ public abstract class GenericGame extends Game {
 
 
     public abstract BattleFieldGrid getGrid();
+
+    public boolean isWall(Coordinates c) {
+        return false;
+    }
 }

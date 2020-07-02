@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.Assets;
+import eidolons.libgdx.bf.grid.handlers.GridManager;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.game.bf.BattleFieldManager;
@@ -83,7 +84,7 @@ public class ModuleLoader extends DungeonHandler {
         }
         module.setFirstInit(false);
 
-        GuiEventManager.trigger(GuiEventType.GRID_RESET, module);
+        GridManager.reset();
         GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
     }
 

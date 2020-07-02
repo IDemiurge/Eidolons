@@ -10,6 +10,7 @@ import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
 import main.game.core.game.Game;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 import org.w3c.dom.Node;
 
 import javax.swing.*;
@@ -214,6 +215,14 @@ public class ObjType extends Entity {
     public ParamMap getParamMap() {
         checkBuild();
         return super.getParamMap();
+    }
+
+    @Override
+    public String toString() {
+        if (CoreEngine.isArcaneVault()) {
+            return getName();
+        }
+        return super.toString();
     }
 
     @Override

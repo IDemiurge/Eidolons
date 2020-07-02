@@ -122,7 +122,8 @@ in the most crazy variant, we could have a pendulum/circular rotation
     }
 
     protected PlatformCell create(Coordinates c, PlatformData data) {
-        return new PlatformCell(data.getType().getTexture(), c.x, c.y, data.getDirection());
+        return new PlatformCell(data.getType().getTexture(), c.x, c.y, data.getDirection(),
+                coord -> getManager().getColor(coord));
     }
 
     public void act(float delta) {

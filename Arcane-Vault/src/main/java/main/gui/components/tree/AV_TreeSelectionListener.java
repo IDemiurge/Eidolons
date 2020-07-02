@@ -2,7 +2,6 @@ package main.gui.components.tree;
 
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
-import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.gui.builders.EditViewPanel;
 import main.handlers.types.SimulationHandler;
@@ -73,7 +72,6 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
                 }
             }
         }
-
         //AV revamp - default preview?
         if (SimulationHandler.isUnitType(tab) && ArcaneVault.isSimulationOn()) {
             try {
@@ -82,48 +80,18 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-
-        // if (type == null) {
-        //     for (TabBuilder t : ArcaneVault.getAdditionalTrees()) {
-        //         type = DataManager.getType(name, t.getSelectedTabName());
-        //         if (type != null) {
-        //             break;
-        //         }
-        //     }
-        // }
-        // if (type == null) {
-        //     type = DataManager.getType(name);
-        // }
         if (type == null) {
             return;
         }
         selectType(type, tab);
         List<ObjType> types = new ArrayList<>();
-        int length = 1;
-        try {
-            length = e1.getPaths().length;
-        } catch (Exception e) {
-
-        }
-        if (length > 2) { // TODO
-            try {
-                for (TreePath p : e1.getPaths()) {
+                for (TreePath p :  tree.getSelectionPaths()) {
                     node = (DefaultMutableTreeNode) p.getLastPathComponent();
                     if (node == null) {
                         continue;
                     }
-                    name = (String) node.getUserObject();
-                    type = DataManager.getType(name, tab);
-                    if (type != null) {
-                        types.add(type);
-                    }
+                        types.add((ObjType) node.getUserObject());
                 }
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        } else {
-            types.add(type);
-        }
         ArcaneVault.setSelectedTypes(types);
         ArcaneVault.setDirty(dtFlag);
 

@@ -15,6 +15,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.gui.LabelX;
+import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.display.LE_DisplayMode;
 import main.system.auxiliary.log.LogMaster;
@@ -22,6 +23,7 @@ import main.system.graphics.FontMaster;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 public class LE_GridCell extends GridCellContainer {
 
@@ -33,8 +35,8 @@ public class LE_GridCell extends GridCellContainer {
     LabelX decorLabel;
     public static LE_GridCell hoveredCell;
 
-    public LE_GridCell(TextureRegion backTexture, int gridX, int gridY) {
-        super(backTexture, gridX, gridY);
+    public LE_GridCell(TextureRegion backTexture, int gridX, int gridY, Function<Coordinates, Color> colorFunc) {
+        super(backTexture, gridX, gridY, colorFunc);
         addActor(scriptsLabel = new LabelX("", StyleHolder.getSizedColoredLabelStyle(FontMaster.FONT.NYALA,
                 12, GdxColorMaster.PURPLE)));
         addActor(aiLabel = new LabelX("", StyleHolder.getSizedColoredLabelStyle(FontMaster.FONT.NYALA,
@@ -48,6 +50,13 @@ public class LE_GridCell extends GridCellContainer {
         addListener(new LE_GridCellHighlighter(this).getController());
     }
 
+    @Override
+    public void applyColor(float lightness, Color c) {
+        if (!getDisplayMode().isGameView()) {
+            super.applyColor(0, c);
+        }
+          else super.applyColor(lightness, c);
+    }
 
     @Override
     public void setHovered(boolean hovered) {

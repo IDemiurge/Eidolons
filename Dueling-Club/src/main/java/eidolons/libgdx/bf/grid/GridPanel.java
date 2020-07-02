@@ -55,11 +55,13 @@ import eidolons.libgdx.gui.generic.GroupWithEmitters;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.particles.ambi.ParticleManager;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
+import main.content.enums.GenericEnums;
 import main.data.ability.construct.VariableManager;
 import main.entity.EntityCheckMaster;
 import main.entity.obj.Obj;
@@ -70,6 +72,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.math.MathMaster;
 import main.system.threading.WaitMaster;
 
 import java.awt.*;
@@ -247,8 +250,6 @@ it sort of broke at some point - need to investigate!
                     GridCellContainer gridCell = null;
                     cells[x][y] = gridCell = createGridCell(image, x, y);
 
-                    gridCell.setColorFunc(coord -> getGridManager().getColor(coord));
-                    gridCell.setLightnessFunc(coord -> getGridManager().getLightness(coord));
                     //setVoid(x, y, false);
                     addActor(gridCell.init());
                     gridCell.setUserObject(cell);
@@ -258,7 +259,7 @@ it sort of broke at some point - need to investigate!
                         setVoid(x, y, false);
                     }
 
-                    gridCell.setY(getGdxY_ForModule(y) * GridMaster.CELL_H);
+                    gridCell.setY(getDrawY(y) * GridMaster.CELL_H);
                     gridCell.setX(x * GridMaster.CELL_W);
                 } else {
                     //OR do it via distance from main hero?
@@ -366,10 +367,10 @@ it sort of broke at some point - need to investigate!
 
     private void customAct(float delta) {
         InputController controller = ScreenMaster.getScreen().getController();
-        drawX1 = controller.getGridDrawX1();
-        drawY1 = Math.max(0, getGdxY_ForModule(controller.getGridDrawY1()));
-        drawX2 = Math.min(moduleCols, controller.getGridDrawX2());
-        drawY2 = Math.min(moduleRows - 1, getGdxY_ForModule((controller.getGridDrawY2())));
+        drawX1 = controller.getGridDrawX1(getWidth());
+        drawY1 = getDrawY(controller.getGridDrawY1(0));
+        drawX2 = Math.min(getModuleCols(), controller.getGridDrawX2(getWidth()));
+        drawY2 = getDrawY(controller.getGridDrawY2(0));
         for (int x = drawX1; x < drawX2; x++) {
             for (int y = drawY1; y < drawY2; y++) {
                 cells[x][y].act(delta);
@@ -381,6 +382,10 @@ it sort of broke at some point - need to investigate!
         if (particleManager != null) {
             particleManager.act(delta);
         }
+    }
+
+    protected int getDrawY(int y) {
+        return MathMaster.getMinMax(getGdxY_ForModule(y), 0, moduleRows - 1);
     }
 
     @Override
@@ -464,7 +469,12 @@ it sort of broke at some point - need to investigate!
 
 
     protected GridCellContainer createGridCell(TextureRegion emptyImage, int x, int y) {
-        return new GridCellContainer(emptyImage, x, y);
+        return new GridCellContainer(emptyImage, x, y, coord -> {
+            if (DC_Game.game.isWall(coord)) {
+
+            }
+            return getGridManager().getColor(coord);
+        });
     }
 
     public void restoreVoid(int x, int y, boolean animated) {
@@ -477,7 +487,7 @@ it sort of broke at some point - need to investigate!
     }
 
     public void resetMaps() {
-        gridManager.getPillarManager().reset();
+        Eidolons.onNonGdxThread(() -> gridManager.getPillarManager().reset());
     }
 
     public void setVoid(int x, int y, boolean animated) {
@@ -868,6 +878,8 @@ it sort of broke at some point - need to investigate!
 
     List<GridCellContainer> topCells = new ArrayList<>(5);
     List<GridCellContainer> overCells = new ArrayList<>(25);
+    List<GridCellContainer> screenCells = new ArrayList<>(65);
+    List<GridCellContainer> overScreenCells = new ArrayList<>(45);
 
     private void customDraw(Batch batch) {
         flightHandler.getObjsUnder().draw(batch, 1f);
@@ -878,6 +890,7 @@ it sort of broke at some point - need to investigate!
         decorMap.get(DECOR_LEVEL.BOTTOM).draw(batch, 1);
         topCells.clear();
         overCells.clear();
+        screenCells.clear();
         for (int x = drawX1; x < drawX2; x++) {
             for (int y = drawY1; y < drawY2; y++) {
                 GridCellContainer container = cells[x][y];
@@ -889,9 +902,22 @@ it sort of broke at some point - need to investigate!
                         overCells.add(container);
                     }
                 } else
+                {
                     container.draw(batch, 1);
+                    if (isScreenCell(container))
+                        screenCells.add(container);
+                }
             }
         }
+        //wtf will happen with stacking?..
+
+        ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
+        for (GridCellContainer cell : screenCells) {
+            cell.drawScreen(batch);
+        }
+        ((CustomSpriteBatch) batch).resetBlending();
+
+
         draw(customOverlayingObjectsUnder, batch);
         decorMap.get(DECOR_LEVEL.OVER_CELLS).draw(batch, 1f);
         if (particleManager != null) {
@@ -899,10 +925,17 @@ it sort of broke at some point - need to investigate!
         }
         wallPillars.draw(batch, 1f);
 
-
+        screenCells.clear();
         for (GridCellContainer cell : overCells) {
             cell.drawWithoutCell(batch);
+            if (isScreenCell(cell))
+                screenCells.add(cell);
         }
+        ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
+        for (GridCellContainer cell : screenCells) {
+            cell.drawScreen(batch);
+        }
+        ((CustomSpriteBatch) batch).resetBlending();
 
         borderMap.draw(batch, 1f);
         // wallMap.draw(batch, 1f);
@@ -918,12 +951,23 @@ it sort of broke at some point - need to investigate!
         draw(customOverlayingObjects, batch);
 
         decorMap.get(DECOR_LEVEL.OVER_MAPS).draw(batch, 1f);
+
+
+        screenCells.clear();
         for (GridCellContainer cell : topCells) {
             cell.draw(batch, 1f);
+            if (isScreenCell(cell))
+                screenCells.add(cell);
         }
+        ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
+        for (GridCellContainer cell : screenCells) {
+            cell.drawScreen(batch);
+        }
+        ((CustomSpriteBatch) batch).resetBlending();
+
         for (UnitGridView unitGridView : detached) {
             unitGridView.draw(batch, 1);
-
+            unitGridView.drawScreen(batch);
         }
         /////////////////
         draw(customOverlayingObjectsTop, batch);
@@ -937,6 +981,10 @@ it sort of broke at some point - need to investigate!
         decorMap.get(DECOR_LEVEL.TOP).draw(batch, 1f);
         for (BossVisual visual : bossVisuals)
             visual.draw(batch, 1f);
+    }
+
+    private boolean isScreenCell(GridCellContainer container) {
+        return container.isScreen();
     }
 
     private boolean isOverCell(GridCellContainer container) {
@@ -1042,13 +1090,6 @@ it sort of broke at some point - need to investigate!
                     getGdxY_ForModule(visual.getCoordinates().getY()) * 128);
             //centering?
             // CellDecorLayer layer = decorMap.get(level);
-        });
-        GuiEventManager.bind(removePrevious, RESET_VIEW, obj -> {
-            BattleFieldObject object = (BattleFieldObject) obj.get();
-            UnitView unitView = getUnitView(object);
-            unitView.setPortraitTexture(TextureCache.getOrCreateR(object.getImagePath()));
-            //            main.system.auxiliary.log.LogMaster.log(1,object.getNameAndCoordinate()+
-            //                    " RESET_VIEW: " +object.getImagePath());
         });
 
         GuiEventManager.bind(removePrevious, CELL_RESET_VOID, obj -> {

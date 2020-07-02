@@ -15,20 +15,24 @@ public class ModuleData extends StructureData<MODULE_VALUE, Module> {
         super(structure);
     }
 
-    @Override
-    public String[] getRelevantValues() {
-        List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
-                collect(Collectors.toList());
-        list.remove(MODULE_VALUE.assets.toString());
-        list.remove(MODULE_VALUE.id.toString());
-        list.remove(MODULE_VALUE.illumination.toString());
-        list.remove(MODULE_VALUE.tile_map.toString());
-        list.remove(MODULE_VALUE.width_buffer.toString());
-        list.remove(MODULE_VALUE.height_buffer.toString());
-        list.remove(MODULE_VALUE.border_width.toString());
-        return list.toArray(new String[0]);
-    }
+    private static String[] cropped;
 
+    @Override
+    public String[] getValuesCropped() {
+        if (cropped == null) {
+            List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
+                    collect(Collectors.toList());
+            list.remove(MODULE_VALUE.assets.toString());
+            list.remove(MODULE_VALUE.id.toString());
+            list.remove(MODULE_VALUE.illumination.toString());
+            list.remove(MODULE_VALUE.tile_map.toString());
+            list.remove(MODULE_VALUE.width_buffer.toString());
+            list.remove(MODULE_VALUE.height_buffer.toString());
+            list.remove(MODULE_VALUE.border_width.toString());
+            cropped = list.toArray(new String[0]);
+        }
+        return cropped;
+    }
     protected void init() {
         if (getStructure() == null) {
             return;

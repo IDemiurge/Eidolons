@@ -9,14 +9,32 @@ import main.system.auxiliary.StrPathBuilder;
  */
 public class DungeonEnums {
 
-    public enum DUNGEON_GROUP {
-        UNDERWORLD, ARCANE, UNDEAD, HUMAN, MISC,
 
+    public enum PILLAR_TYPE {
+        dia_skull,
+        crypt, bare, mossy, iron, garden,
+        ossuary, checker, bone, astral, pirate, skull, hard,
+        smooth, smooth2, roots, roots2
 
     }
 
+    public enum WALL_TYPE {
+        cross, diamond, normal, corner
+    }
+
+    public enum WALL_SET {
+        crypt, astral, nether, castle, rune, cave,
+        pirate,
+        hell,
+        ruins, dia_skull, heretic,
+        dark
+
+    }
     public enum CELL_IMAGE {
         // checker, bone, astral,skull, roots2,smooth2,
+     dia_skull,
+        decor_rough,
+
         pirate, hard,
         smooth,  roots,
         crypt,
@@ -219,43 +237,5 @@ red_stone,
         }
 
     }
-//brush?
-    public enum MAP_FILL_TEMPLATE {
-        FOREST("Tree Sapling(2);Oak(2);Shrub(3);", "Forest Crags(1);Mossy Rocks(1);Fallen Tree(1);Mossy Boulder(1);Sleek Rock(1);"),
-        SWAMP("Dead Tree(3);Forest Crags(1);Mossy Rocks(1);Tree Sapling(1); Shrub(1);", "Forest Crags(1);Mossy Rocks(1);Fallen Tree(1);Mossy Boulder(1);Sleek Rock(1);"),
-        DARK_FOREST("Dead Tree(2);Tree Sapling(1);Oak(2);Shrub(3);", "Forest Crags(2);Mossy Rocks(1);Fallen Tree(2);Mossy Boulder(1);Sleek Rock(2);"),
-        DEAD_FOREST("Dead Tree(3);Tree Sapling(1);Oak(1);Shrub(1);", "Forest Crags(1);Mossy Rocks(1);Tree Stump(2);Fallen Tree(2);Mossy Boulder(1);Sleek Rock(3);"),
-        // RUINS("Tree Sapling(2);Oak(2);Shrub(3);",
-        // "Fallen Tree(1);Mossy Boulder(1);Sleek Rock(1);"),
-        // ROCKS("Tree Sapling(2);Oak(2);Shrub(3);",
-        // "Fallen Tree(1);Mossy Boulder(1);Sleek Rock(1);"),
-        ;
-        private final String centerObjects;
-        private final String peripheryObjects;
 
-        MAP_FILL_TEMPLATE(String centerObjects, String peripheryObjects) {
-            this.centerObjects = centerObjects;
-            this.peripheryObjects = peripheryObjects;
-        }
-
-        public String getCenterObjects() {
-            return centerObjects;
-        }
-
-        public String getPeripheryObjects() {
-            return peripheryObjects;
-        }
-    }
-
-    public enum SUBLEVEL_TYPE {
-        COMMON, PRE_BOSS, BOSS, SECRET, TRANSIT, FALSE_LEVEL
-    }
-
-    public enum PILLAR_TYPE {
-        crypt, bare, mossy, iron, garden,
-        ossuary, checker, bone, astral, pirate, skull, hard,
-        smooth, smooth2, roots, roots2
-
-
-    }
 }

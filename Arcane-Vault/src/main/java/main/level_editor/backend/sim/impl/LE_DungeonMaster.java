@@ -37,7 +37,7 @@ public class LE_DungeonMaster extends LocationMaster {
 
     @Override
     public void loadingDone() {
-        initColorMap();
+        initColorMap(game.getCoordinates());
     }
 
     @Override

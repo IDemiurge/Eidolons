@@ -265,6 +265,14 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
                 getPropagatedValue("SOUNDSCAPE"));
     }
 
+    public DungeonEnums.WALL_SET getWallSetAlt() {
+        return new EnumMaster<DungeonEnums.WALL_SET>().retrieveEnumConst(DungeonEnums.WALL_SET.class,
+                getWallTypeAlt());
+    }
+    public DungeonEnums.WALL_SET getWallSet() {
+        return new EnumMaster<DungeonEnums.WALL_SET>().retrieveEnumConst(DungeonEnums.WALL_SET.class,
+                getWallType());
+    }
     @Override
     public String getName() {
         if (name == null) {

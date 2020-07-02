@@ -605,7 +605,7 @@ public class GenericEnums {
 
     public enum ALPHA_TEMPLATE {
 
-        GRID_LIGHT(0.15f, 3, 2, 0.85f, 0.7f, 1f),
+        GRID_LIGHT(0.15f, 3, 2, 0.85f, 0.38f, 0.57f),
 
         HQ_HERO_SPRITE(0.08f, 0.5f, 0.2f, 0.4f, 0.6f, 1f),
         HQ_SPRITE(0.05f, 0.5f, 0.2f, 0, 0.2f, 0.7f),
@@ -640,7 +640,11 @@ public class GenericEnums {
 
         BLOOM(0.1f, 0F, 0.0F, 0.88f, 0.3f, 1f),
         POST_PROCESS(0.1f, 0F, 0.0F, 0.88f, 0.3f, 1f),
-        SOULFORCE(0.125f, 1.25F, 0.5F, 0.5f, 0.2f, 0.8f);
+        WATER(0.1f, 0.5F, 0.5F, 0.88f, 0.6f, 8f),
+        SOULFORCE(0.125f, 1.25F, 0.5F, 0.5f, 0.2f, 0.8f),
+
+
+        ;
         public float alphaStep;
         public float fluctuatingAlphaPauseDuration;
         public float fluctuatingFullAlphaDuration;

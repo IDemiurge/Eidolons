@@ -5,10 +5,10 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
-import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
+import eidolons.libgdx.bf.decor.wall.WallMaster;
 import eidolons.libgdx.bf.overlays.map.WallMap;
 import main.content.enums.rules.VisionEnums;
 import main.entity.Entity;
@@ -23,10 +23,7 @@ import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Supposed to provide all Grid-relevant data and methods for changing it TODO extract gameManager into here!
@@ -37,8 +34,8 @@ public class DC_BattleFieldManager extends BattleFieldManager {
     private ObjectMap<Coordinates, List<DIRECTION>> wallDirectionMap;
     private List<BattleFieldObject> wallObjects;
     private ObjectMap<Coordinates, List<DIRECTION>> diagonalJoints;
-    private ObjectMap<Coordinates, List<DIRECTION>> visibleWallMap= new ObjectMap<>();
-    private ObjectMap<Coordinates, List<DIRECTION>> visibleDiagonalJoints= new ObjectMap<>();
+    private ObjectMap<Coordinates, List<DIRECTION>> visibleWallMap = new ObjectMap<>();
+    private ObjectMap<Coordinates, List<DIRECTION>> visibleDiagonalJoints = new ObjectMap<>();
     private final ObjectMap<Coordinates, DOOR_STATE> doorMap = new ObjectMap<>();
 
     public DC_BattleFieldManager(DC_Game game, Integer id, int w, int h) {
@@ -69,7 +66,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
     public void resetWallMap() {
         if (!WallMap.on)
-            return ;
+            return;
         resetWalls();
         resetVisibleWallMap();
         GuiEventManager.trigger(GuiEventType.UPDATE_DOOR_MAP, this.doorMap);
@@ -79,8 +76,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
 
     private void resetVisibleWallMap() {
-        if (CoreEngine.isLevelEditor())
-        {
+        if (CoreEngine.isLevelEditor()) {
             visibleWallMap = wallDirectionMap;
             visibleDiagonalJoints = diagonalJoints;
             return;
@@ -88,30 +84,43 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         visibleWallMap.clear();
         visibleDiagonalJoints.clear();
         for (BattleFieldObject wall : wallObjects) {
-                    if (wall.getPlayerVisionStatus()
-                            != VisionEnums.PLAYER_VISION.INVISIBLE) {
-                        visibleWallMap.put(wall.getCoordinates(), wallDirectionMap.get(wall.getCoordinates()));
-                        visibleDiagonalJoints.put(wall.getCoordinates(), diagonalJoints.get(wall.getCoordinates()));
+            if (wall.getPlayerVisionStatus()
+                    != VisionEnums.PLAYER_VISION.INVISIBLE) {
+                visibleWallMap.put(wall.getCoordinates(), wallDirectionMap.get(wall.getCoordinates()));
+                visibleDiagonalJoints.put(wall.getCoordinates(), diagonalJoints.get(wall.getCoordinates()));
             }
         }
     }
 
+    public void resetWalls(Set<Coordinates> coordinatesSet) {
+        resetWalls(coordinatesSet, false);
+    }
+
     public void resetWalls() {
+        if (CoreEngine.isLevelEditor()) {
+            game.getMetaMaster().getModuleMaster().getModules().forEach(m -> {
+                resetWalls(m.getCoordinatesSet(), true);
+            });
+        } else
+            resetWalls(game.getModule().getCoordinatesSet(), true);
+    }
+
+    public void resetWalls(Set<Coordinates> coordinatesSet, boolean full) {
         doorMap.clear();
         wallObjects = new ArrayList<>();
-        ObjectMap<Coordinates, BattleFieldObject> wallMap = new ObjectMap<>();
-        // Boolean[][] wallCache = game.getGrid().getWallCache();
+        Map<Coordinates, BattleFieldObject> wallMap = new HashMap<>(game.getStructures().size());
 
-        Module module = game.getModule();
         for (Obj obj : game.getStructures()) {
-            if (obj.getModule()!=module) {
+            if (!coordinatesSet.contains(obj.getCoordinates()))
                 continue;
-            }
+            // if (obj.getModule() != module) {
+            //     continue;
+            // }
             BattleFieldObject bfObj = (BattleFieldObject) obj;
 
             if (EntityCheckMaster.isWall(bfObj)) {
                 Coordinates c = bfObj.getCoordinates();
-             game.getGrid().getWallCache()[c.x][c.y]=true;
+                game.getGrid().getWallCache()[c.x][c.y] = true;
                 wallObjects.add(bfObj);
                 wallMap.put(bfObj.getCoordinates(), bfObj);
             }
@@ -124,20 +133,14 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         }
         wallDirectionMap.clear();
         for (BattleFieldObject wall : wallObjects) {
-            if (wall.isDead()) {
-                continue;
-            }
-
+            if (wall.isDead()) continue;
             List<DIRECTION> list = new ArrayList<>();
-
             Coordinates coordinate = wall.getCoordinates();
             for (Coordinates c : coordinate.getAdjacent(false)) {
                 BattleFieldObject adjWall = wallMap.get(c);
-                if (adjWall != null) {
-                    if (adjWall.isWall() && !adjWall.isDead()) {
-                        DIRECTION side = DirectionMaster.getRelativeDirection(coordinate, c);
-                        list.add(side);
-                    }
+                if (adjWall != null && adjWall.isWall() && !adjWall.isDead()) {
+                    DIRECTION side = DirectionMaster.getRelativeDirection(coordinate, c);
+                    list.add(side);
                 }
             }
             adjacent:
@@ -165,13 +168,13 @@ public class DC_BattleFieldManager extends BattleFieldManager {
                     }
                 }
             }
-            if (!list.isEmpty()) {
-                if (coordinate == null)
-                    continue;
+            if (full)
                 wallDirectionMap.put(coordinate, list);
-            }
+            WallMaster.resetWall(wall, list);
         }
 
+        if (!full)
+            return;
         if (diagonalJoints == null) {
             diagonalJoints = new ObjectMap<>();
         }
@@ -209,6 +212,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
                 }
             }
         }
+
     }
 
     public ObjectMap<Coordinates, List<DIRECTION>> getWallMap() {

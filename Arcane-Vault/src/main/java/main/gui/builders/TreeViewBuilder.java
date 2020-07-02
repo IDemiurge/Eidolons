@@ -153,13 +153,13 @@ public class TreeViewBuilder extends Builder {
         if (empty) {
             newType = getEmptyType(TYPE, newName);
             newNode = new DefaultMutableTreeNode(newName, true);
-            newNode.setUserObject(newType.getName());
+            newNode.setUserObject(newType);
         } else {
-            objType = DataManager.getType(node.getUserObject().toString(), TYPE);
+            objType = (ObjType) node.getUserObject();
             newType = CloneMaster.getTypeCopy(objType, newName, ArcaneVault.getGame(), TYPE);
             newType.setGenerated(false);
             newNode = (DefaultMutableTreeNode) CloneMaster.deepCopy(node);
-            newNode.setUserObject(newName);
+            newNode.setUserObject(newType);
         }
 
         DefaultMutableTreeNode parent = ((DefaultMutableTreeNode) getTree().getSelectionPath()
@@ -203,9 +203,6 @@ public class TreeViewBuilder extends Builder {
         }
         for (DefaultMutableTreeNode selectedNode : ArcaneVault.getMainBuilder().getSelectedNodes()) {
             selectedNode.removeFromParent();
-            String selected = ArcaneVault.getMainBuilder().getSelectedTabName();
-            DataManager.removeType((String) selectedNode
-                    .getUserObject(), selected);
         }
         refresh();
 
@@ -218,15 +215,8 @@ public class TreeViewBuilder extends Builder {
         // getTree().updateUI();
     }
 
-    public boolean nameChanged(String oldName, String newValue) {
-        DefaultMutableTreeNode selectedNode = ArcaneVault.getMainBuilder().getSelectedNode();
-        if (!selectedNode.getUserObject().toString().equals(oldName)) {
-            return false;
-        }
-        selectedNode.setUserObject(newValue);
-
+    public void update( ) {
         getTree().updateUI();
-        return true;
     }
 
 }

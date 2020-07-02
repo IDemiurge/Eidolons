@@ -30,6 +30,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
 
@@ -42,7 +43,7 @@ public class ShadowMap extends GroupX implements GridElement {
 
     protected int cols;
     protected int rows;
-    private int x1, x2, y1, y2;
+    private int x1,  y1 ;
 
     private static final Color DEFAULT_COLOR = new Color(1, 0.9f, 0.7f, 1);
     private static boolean on = true;
@@ -148,19 +149,19 @@ public class ShadowMap extends GroupX implements GridElement {
 
     @Override
     public void setModule(Module module) {
+        if (!CoreEngine.isLevelEditor()){
         x1 = module.getOrigin().x;
         y1 = module.getOrigin().y;
+        }
         cols = module.getEffectiveWidth();
         rows = module.getEffectiveHeight();
-        x2 = cols + module.getOrigin().x;
-        y2 = rows + module.getOrigin().y;
         //cache cells/emitters for modules?
         try {
             init();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        offset(x1 * 128, grid.getGdxY_ForModule(y1) * 128); //TODO is that right?
+        offset(x1 * 128, grid.getGdxY_ForModule(y1-1) * 128); //TODO is that right?
     }
 
     private void init() {
@@ -169,7 +170,7 @@ public class ShadowMap extends GroupX implements GridElement {
             getCells().put(type, new ShadeLightCell[grid.getModuleCols()][grid.getModuleRows()]);
             emitters = new List[grid.getModuleCols()][grid.getModuleRows()];
 
-            for (int x = 0; x < grid.getModuleCols(); x++) {
+            for (int x = 0; x < grid.getModuleCols() ; x++) {
                 for (int y = 0; y < grid.getModuleRows(); y++) {
                     DC_Cell cellObj = grid.getCells()[x1 + x][y1 + y].getUserObject();
                     if (cellObj.isVOID()) {

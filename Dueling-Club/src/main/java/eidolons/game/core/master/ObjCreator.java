@@ -54,9 +54,8 @@ public class ObjCreator extends Master {
                 }
             }
         }
-        if (!CoreEngine.isLevelEditor())
-            if (!CoreEngine.isArcaneVault())
-                type = checkTypeSubstitution(type, ref);
+        if (!CoreEngine.isArcaneVault())
+            type = checkTypeSubstitution(type, ref);
 
         BattleFieldObject obj = null;
 
@@ -136,20 +135,26 @@ public class ObjCreator extends Master {
     }
 
     private ObjType checkTypeSubstitution(ObjType type, Ref ref) {
+        if (CoreEngine.isLevelEditor()) {
+            if (type.getName().contains("Wall Placeholder")) {
+                if (type.getName().contains("Alt"))
+                    return DataManager.getType("Wall Alt", DC_TYPE.BF_OBJ);
+                return DataManager.getType("Wall", DC_TYPE.BF_OBJ);
+            }
+            return type;
+        }
         if (!type.getName().split(" ")[0].equalsIgnoreCase(PLACEHOLDER)) {
             return type;
         }
         String unitGroup = type.getProperty(
-                type.getOBJ_TYPE_ENUM().getSubGroupingKey()
-                //         G_PROPS.UNIT_GROUP
-        );
+                type.getOBJ_TYPE_ENUM().getSubGroupingKey());
         List<ObjType> list = DataManager.getTypesSubGroup(type.getOBJ_TYPE_ENUM(), unitGroup);
 
         String group = type.getGroup();
         if (!group.isEmpty()) {
             list.removeIf(t -> !t.getGroup().equalsIgnoreCase(group));
         }
-        //power constraints
+        //power constraints?
 
         if (list.isEmpty())
             return type;

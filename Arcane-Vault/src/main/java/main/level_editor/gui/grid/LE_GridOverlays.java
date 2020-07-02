@@ -18,6 +18,7 @@ import eidolons.libgdx.bf.grid.moving.PlatformController;
 import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
+import main.level_editor.backend.display.LE_DisplayMode;
 import main.system.math.PositionMaster;
 
 import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.*;
@@ -47,8 +48,8 @@ public class LE_GridOverlays extends GridOverlaysManager {
         }
         for (PlatformController platform : gridPanel.getPlatformHandler().getPlatforms()) {
             Coordinates c = platform.getDestination();
-            GridCellContainer cell =  cells[c.x][c.y];
-            drawOverlay(cell,  SPOTTED , batch, cell.getUserObject(),
+            GridCellContainer cell = cells[c.x][c.y];
+            drawOverlay(cell, SPOTTED, batch, cell.getUserObject(),
                     cell.getGridX(), cell.getGridY());
         }
     }
@@ -61,11 +62,21 @@ public class LE_GridOverlays extends GridOverlaysManager {
     @Override
     protected void drawOverlaysForCell(GridCellContainer container, int x, int y, Batch batch) {
         DC_Cell cell = container.getUserObject();
-
-        if (LevelEditor.getModel().getDisplayMode().isShowGamma()) {
-            if (getOverlayActor(container, INFO_TEXT) instanceof Label) {
-                ((Label) getOverlayActor(container, INFO_TEXT)).setText(getInfoText(cell));
+        LE_DisplayMode mode = LevelEditor.getModel().getDisplayMode();
+        if (getOverlayActor(container, INFO_TEXT) instanceof Label) {
+            StringBuilder builder = new StringBuilder();
+            if (mode.isShowCoordinates()) {
+                builder.append("[").append((int) container.getX()).append(" : ").
+                        append((int) container.getY()).append("]");
             }
+            if (LevelEditor.getModel().getDisplayMode().isShowGamma()) {
+                builder.append("\n").append((gridPanel.getGridManager().getColor(cell.getCoordinates())));
+                builder.append("\n").append((gridPanel.getGridManager().getBaseColor(cell.getCoordinates())));
+                builder.append("\n").append((gridPanel.getGridManager().getOrigColor(cell.getCoordinates())));
+            }
+
+            ((Label) getOverlayActor(container, INFO_TEXT)).setText(
+                    builder.toString());
             drawOverlay(container, INFO_TEXT, batch, cell, x, y);
         }
         if (LevelEditor.getManager().getSelectionHandler().isSelected(cell)) {
@@ -107,11 +118,12 @@ public class LE_GridOverlays extends GridOverlaysManager {
 
     protected String getInfoText(DC_Obj obj) {
         StringBuilder builder = new StringBuilder();
-                // builder.append(ListMaster.toStringList(((DC_Cell) obj).getMarks())).append("\n");
+        // builder.append(ListMaster.toStringList(((DC_Cell) obj).getMarks())).append("\n");
         builder.append("Gamma: ").append(obj.getGame().getVisionMaster()
                 .getGammaMaster().getGamma(Eidolons.getMainHero(), obj)).append("\n");
         return builder.toString();
     }
+
     private void checkDrawForStruct(Batch batch, GridCellContainer container, DC_Cell cell, LevelStruct struct) {
         if (struct.getCoordinatesSet().contains(cell.getCoordinates())) {
             boolean block = struct instanceof LevelBlock;
@@ -131,9 +143,9 @@ public class LE_GridOverlays extends GridOverlaysManager {
                 batch.setColor(new Color(1, 1, 1, 1));
         }
     }
-//        if (zone){
-//            drawOverlay(container, OVERLAY.IN_SIGHT, batch,cell, x, y);
-//        }  }
+    //        if (zone){
+    //            drawOverlay(container, OVERLAY.IN_SIGHT, batch,cell, x, y);
+    //        }  }
 
     protected void initOverlayColor(Batch batch, DC_Obj obj, OVERLAY overlay) {
         if (overlay == IN_PLAIN_SIGHT) {

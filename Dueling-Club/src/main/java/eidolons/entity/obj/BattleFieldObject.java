@@ -12,6 +12,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.SeenMapper;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.system.math.DC_MathManager;
 import main.ability.AbilityObj;
@@ -684,5 +685,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     public CONTENT_CONSTS.FLIP getFlip() {
         return flip;
+    }
+
+    public LevelStruct getStruct() {
+        return getGame().getDungeonMaster().getStructMaster().getLowestStruct(getCoordinates());
     }
 }

@@ -388,20 +388,18 @@ public class EditViewPanel implements TableModelListener {
             if (type.getOBJ_TYPE_ENUM().isTreeEditType()) {
                 AE_Manager.typeRename(newValue, oldName);
             }
-            if (!ArcaneVault.getMainBuilder().getTreeBuilder().nameChanged(oldName, newValue)) {
-                for (TabBuilder t : ArcaneVault.getAdditionalTrees()) {
-                    if (t.getTreeBuilder().nameChanged(oldName, newValue)) {
-                        break;
-                    }
-                }
-            }
-            // ArcaneVault.getMainBuilder().getTree().setSelectionPath(path);
+
+            ArcaneVault.getMainBuilder().getTreeBuilder().update();
+
         } else if (valName.equalsIgnoreCase(G_PROPS.WORKSPACE_GROUP.getName())) {
             if (ArcaneVault.getWorkspaceManager().isDefaultTypeWorkspacesOn()) {
                 if (ArcaneVault.getWorkspaceManager().getActiveWorkspace() != null) {
                     ArcaneVault.getWorkspaceManager().getActiveWorkspace().setDirty(true);
                 }
             }
+        }
+        if (valName.equals(G_PROPS.IMAGE.getName())) {
+            ArcaneVault.getMainBuilder().getTreeBuilder().update();
         }
 
         return true;

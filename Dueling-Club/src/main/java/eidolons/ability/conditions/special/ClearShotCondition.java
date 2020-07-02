@@ -14,10 +14,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.math.PositionMaster;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class ClearShotCondition extends MicroCondition {
@@ -253,6 +250,38 @@ public class ClearShotCondition extends MicroCondition {
         }
         return true;
     }
+
+    private Set<Coordinates> checkWallObstructionAlt(Coordinates coordinates, Set<Coordinates> full) {
+        //let's try to quickly cut some coords
+/*
+diagonal adjacent walls will remove whole directions..
+
+ */
+
+        for (DIRECTION direction : DIRECTION.DIAGONAL) {
+            Coordinates c = coordinates.getAdjacentCoordinate(direction.rotate45(true));
+            Coordinates c2 = coordinates.getAdjacentCoordinate(direction.rotate45(false));
+            if (game.isWall(c) && game.isWall(c2)){
+                full.removeIf(coord-> checkRemove(coord, coordinates, direction));
+            }
+        }
+        return full;
+    }
+
+    private boolean checkRemove(Coordinates coord, Coordinates c, DIRECTION direction) {
+        switch (direction) {
+            case UP_LEFT:
+                return coord.x<c.x && coord.y<c.y;
+            case UP_RIGHT:
+                return coord.x>c.x && coord.y<c.y;
+            case DOWN_RIGHT:
+                return coord.x>c.x && coord.y>c.y;
+            case DOWN_LEFT:
+                return coord.x<c.x && coord.y>c.y;
+        }
+        return false;
+    }
+
 
     /**
      * Checks if there is a diagonal wall block that obstructs clearshot between source and target

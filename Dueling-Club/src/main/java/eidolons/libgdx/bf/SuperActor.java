@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.mouse.InputController;
-import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.content.enums.GenericEnums;
 
@@ -34,6 +33,7 @@ public abstract class SuperActor extends Fluctuating implements
     // private boolean normalDrawDisabled;
     protected float screenOverlay;
     protected Color customColor;
+    private boolean screenEnabled;
 
 
     @Override
@@ -65,31 +65,27 @@ public abstract class SuperActor extends Fluctuating implements
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//     TODO EA Check
-//      if (!customDrawParams)
-//            super.draw(batch, parentAlpha);
-//        else {
-//            if (!normalDrawDisabled)
-        super.draw(batch, parentAlpha);
-
-        if (screenOverlay > 0.01f) {
-            Color c = getColor();
-            if (customColor != null) {
-                setColor(customColor);
-            }
+        //     TODO EA Check
+        //      if (!customDrawParams)
+        //            super.draw(batch, parentAlpha);
+        //        else {
+        //            if (!normalDrawDisabled)
+        if (!screenEnabled)
+            super.draw(batch, parentAlpha);
+        else if (screenOverlay > 0.01f) {
+            // Color c = getColor();
+            // if (customColor != null) {
+            //     setColor(customColor);
+            // }
             float a = getColor().a;
             getColor().a = screenOverlay;
-            try {
-                ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN); //could do other blends too
-                super.draw(batch, parentAlpha);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+            // ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN); //could do other blends too
+            super.draw(batch, parentAlpha);
             getColor().a = a;
-            ((CustomSpriteBatch) batch).resetBlending();
-            setColor(c);
+            // ((CustomSpriteBatch) batch).resetBlending();
+            // setColor(c);
         }
-//        }
+        //        }
     }
 
     public SuperActor() {
@@ -172,20 +168,20 @@ public abstract class SuperActor extends Fluctuating implements
             super.addAction(action);
     }
 
-//    protected void restoreBlendingFuncData(Batch batch) {
-//        batch.setBlendFunctionSeparate(
-//         blendSrcFunc,
-//         blendDstFunc,
-//         blendSrcFuncAlpha,
-//         blendDstFuncAlpha);
-//    }
-//
-//    protected void storeBlendingFuncData(Batch batch) {
-//        blendDstFunc = batch.getBlendDstFunc();
-//        blendSrcFunc = batch.getBlendSrcFunc();
-//        blendDstFuncAlpha = batch.getBlendDstFuncAlpha();
-//        blendSrcFuncAlpha = batch.getBlendSrcFuncAlpha();
-//    }
+    //    protected void restoreBlendingFuncData(Batch batch) {
+    //        batch.setBlendFunctionSeparate(
+    //         blendSrcFunc,
+    //         blendDstFunc,
+    //         blendSrcFuncAlpha,
+    //         blendDstFuncAlpha);
+    //    }
+    //
+    //    protected void storeBlendingFuncData(Batch batch) {
+    //        blendDstFunc = batch.getBlendDstFunc();
+    //        blendSrcFunc = batch.getBlendSrcFunc();
+    //        blendDstFuncAlpha = batch.getBlendDstFuncAlpha();
+    //        blendSrcFuncAlpha = batch.getBlendSrcFuncAlpha();
+    //    }
 
 
     public void setActionManger(Runnable actionManger) {
@@ -259,6 +255,10 @@ public abstract class SuperActor extends Fluctuating implements
 
     public void setHoverResponsive(boolean hoverResponsive) {
         this.hoverResponsive = hoverResponsive;
+    }
+
+    public void setScreenEnabled(boolean screenEnabled) {
+        this.screenEnabled = screenEnabled;
     }
 
 }

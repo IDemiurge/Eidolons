@@ -567,4 +567,8 @@ public class PathFinder {
     public static String getPillarsPath() {
         return  "ui/cells/pillars/";
     }
+
+    public static String getWallSetsFolder() {
+        return "main/bf/walls/sets/";
+    }
 }

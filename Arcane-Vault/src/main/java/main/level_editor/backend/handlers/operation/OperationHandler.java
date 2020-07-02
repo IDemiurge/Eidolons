@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.libgdx.bf.decor.DecorData;
+import eidolons.libgdx.bf.grid.handlers.GridManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -38,13 +39,13 @@ public class OperationHandler extends LE_Handler {
         DIRECTION d = null;
         main.system.auxiliary.log.LogMaster.log(1, "operation: " + operation + " args:" + ListMaster.toStringList(args));
 
-        EventType event=null ;
+        EventType event = null;
         switch (operation) {
             case CELL_DECOR_CHANGE:
                 event = GuiEventType.CELL_DECOR_RESET;
                 c = (Coordinates) args[0];
                 DecorData data = (DecorData) args[1];
-                if (data==null) {
+                if (data == null) {
                     data = new DecorData("");
                 }
                 if (data.getData().isEmpty()) {
@@ -53,13 +54,13 @@ public class OperationHandler extends LE_Handler {
                     getFloorWrapper().getDecorMap().put(c, data);
                 }
                 GuiEventManager.triggerWithParams(
-                        event, c, data );
+                        event, c, data);
                 break;
             case CELL_SCRIPT_CHANGE:
-                event=GuiEventType.LE_CELL_SCRIPTS_LABEL_UPDATE;
+                event = GuiEventType.LE_CELL_SCRIPTS_LABEL_UPDATE;
                 c = (Coordinates) args[0];
                 CellScriptData scriptData = (CellScriptData) args[1];
-                if (scriptData==null || scriptData.getData().isEmpty()) {
+                if (scriptData == null || scriptData.getData().isEmpty()) {
                     getFloorWrapper().getTextDataMap().remove(c);
                 } else {
                     getFloorWrapper().getTextDataMap().put(c, scriptData);
@@ -80,7 +81,7 @@ public class OperationHandler extends LE_Handler {
                 block.getZone().getSubParts().remove(block);
                 break;
             case VOID_SET:
-                 set = true;
+                set = true;
             case VOID_TOGGLE:
                 c = (Coordinates) args[0];
                 DC_Cell cell = manager.getGame().getCellByCoordinate(c);
@@ -93,9 +94,10 @@ public class OperationHandler extends LE_Handler {
                     if (isVoid)
                         return null;
                 GuiEventManager.trigger(
-                        !isVoid ||set ? GuiEventType.CELL_SET_VOID
+                        !isVoid || set ? GuiEventType.CELL_SET_VOID
                                 : GuiEventType.CELL_RESET_VOID, c);
-                GuiEventManager.trigger(GuiEventType.GRID_RESET);
+                if (!set)
+                    GridManager.reset();
                 break;
             case MASS_RESET_VOID:
             case MASS_SET_VOID:
@@ -147,7 +149,7 @@ public class OperationHandler extends LE_Handler {
                     args = new BattleFieldObject[]{unit};
                 } else {
                     args = new BattleFieldObject[]{unit};
-//                    getStructureHandler().updateTree(); //too much hassle, leave it
+                    //                    getStructureHandler().updateTree(); //too much hassle, leave it
                 }
 
                 break;
@@ -179,10 +181,10 @@ public class OperationHandler extends LE_Handler {
 
                 getStructureHandler().reset(sdata.getLevelStruct());
                 getStructureHandler().updateTree();
-//                if (data instanceof BlockData) {
-//                    getStructureManager().blockReset(((BlockData) data).getBlock());
-//                    getStructureManager().updateTree();
-//                }
+                //                if (data instanceof BlockData) {
+                //                    getStructureManager().blockReset(((BlockData) data).getBlock());
+                //                    getStructureManager().updateTree();
+                //                }
                 break;
             case MODIFY_DATA:
                 DataUnit dataUnit = (DataUnit) args[0];
@@ -233,7 +235,7 @@ public class OperationHandler extends LE_Handler {
     }
 
     private boolean revert(Operation op, boolean redo) {
-        main.system.auxiliary.log.LogMaster.log(1,"Reverting " +op);
+        main.system.auxiliary.log.LogMaster.log(1, "Reverting " + op);
         if (op.operation.bulkEnd) {
             Operation rev = operations.pop();
             while (!operations.empty()) {

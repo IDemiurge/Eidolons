@@ -10,9 +10,11 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.EnumMaster;
 
+import static main.game.bf.directions.DIRECTION.*;
+
 public class Pillars {
-    public static final DIRECTION prefHor = DIRECTION.RIGHT;
-    public static final DIRECTION prefVert = DIRECTION.DOWN;
+    public static final DIRECTION prefHor = RIGHT;
+    public static final DIRECTION prefVert = DOWN;
     public static final int size = 40;
     public static final Integer NO_PILLAR = 0;
     public static final DungeonEnums.CELL_IMAGE DEFAULT_PILLAR = DungeonEnums.CELL_IMAGE.bare;
@@ -20,21 +22,21 @@ public class Pillars {
     public static DIRECTION getPillarD(PILLAR hor) {
         switch (hor) {
             case HOR:
-                return DIRECTION.UP;
+                return UP;
             case VERT:
-                return DIRECTION.DOWN;
+                return DOWN;
             case HOR_RIGHT:
-                return DIRECTION.DOWN_RIGHT;
+                return DOWN_RIGHT;
             case HOR_LEFT:
-                return DIRECTION.DOWN_LEFT;
+                return DOWN_LEFT;
             case VERT_UP:
-                return DIRECTION.UP_RIGHT;
+                return UP_RIGHT;
             case VERT_DOWN:
-                return DIRECTION.UP_LEFT;
+                return UP_LEFT;
             case SINGLE:
                 return getDefault(false);
             case CORNER_SKEWED:
-                return DIRECTION.LEFT;
+                return LEFT;
         }
         return null;
     }
@@ -48,7 +50,7 @@ public class Pillars {
             // name = DC_Game.game.getCellByCoordinate(c).getCellType().name();
         }
         // else
-            name = DC_Game.game.getCellByCoordinate(c).getCellType().name();
+        name = DC_Game.game.getCellByCoordinate(c).getCellType().name();
         PILLAR_TYPE type = new EnumMaster<PILLAR_TYPE>().retrieveEnumConst(PILLAR_TYPE.class, name);
         if (type == null) {
             LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(c);
@@ -67,7 +69,7 @@ public class Pillars {
     }
 
     public static PILLAR getPillar(Object o) {
-        if (o==getCorner(false)) {
+        if (o == getCorner(false)) {
             return PILLAR.CORNER;
         }
         DIRECTION d = (DIRECTION) o;
@@ -92,22 +94,40 @@ public class Pillars {
         return null;
     }
 
-    public static DIRECTION getAdjacent(PILLAR type, boolean wall) {
+    public static DIRECTION[] getAdjacent(PILLAR type, boolean wall) {
+        if (wall){
+            switch (type) {
+                case HOR:
+                case SINGLE:
+                    return new DIRECTION[]{DOWN};
+                case VERT:
+                    return new DIRECTION[]{RIGHT};
+                case HOR_RIGHT:
+                    return new DIRECTION[]{DOWN_RIGHT, DOWN};
+                case VERT_UP:
+                    return new DIRECTION[]{RIGHT, UP_RIGHT};
+                case HOR_LEFT:
+                    return new DIRECTION[]{DOWN_LEFT, DOWN};
+                case CORNER:
+                case CORNER_SKEWED:
+                    return new DIRECTION[]{DOWN_RIGHT, DOWN, RIGHT}; //TODO const
+                case VERT_DOWN:
+                    return new DIRECTION[]{RIGHT, DOWN_RIGHT};
+            }
+        }
         switch (type) {
             case HOR:
             case SINGLE:
-                return DIRECTION.DOWN;
-            case VERT:
-                return DIRECTION.RIGHT;
-            case HOR_RIGHT:
-                return DIRECTION.DOWN_LEFT;
-            case VERT_UP:
             case HOR_LEFT:
+            case HOR_RIGHT:
+                return new DIRECTION[]{null ,DOWN};
+            case VERT:
+            case VERT_UP:
+            case VERT_DOWN:
+                return new DIRECTION[]{null ,RIGHT};
             case CORNER:
             case CORNER_SKEWED:
-                return DIRECTION.DOWN_RIGHT;
-            case VERT_DOWN:
-                return DIRECTION.UP_RIGHT;
+                return new DIRECTION[]{null ,DOWN_RIGHT, DOWN, RIGHT};
         }
         return null;
     }
@@ -126,11 +146,11 @@ public class Pillars {
         if (wall) {
             return getCorner(true);
         }
-        return DIRECTION.RIGHT;
+        return RIGHT;
     }
 
     public static DIRECTION getCorner(boolean skewed) {
-        return skewed ? DIRECTION.LEFT : null;
+        return skewed ? LEFT : null;
     }
 
     public static final Vector2 getOffset(DIRECTION direction) {
@@ -145,7 +165,7 @@ public class Pillars {
         }
         boolean vert = direction.growY == true;
         if (vert) {
-            return new Vector2(prefHor == DIRECTION.RIGHT ? 128 : -128, 0);
+            return new Vector2(prefHor == RIGHT ? 128 : -128, 0);
         } else {
             return new Vector2(0, -size);
         }
@@ -157,10 +177,10 @@ public class Pillars {
             return prefHor;
         }
         if (skewRightLeftNone == null) {
-            return vert ? DIRECTION.DOWN : DIRECTION.UP;
+            return vert ? DOWN : UP;
         }
-        return vert ? (skewRightLeftNone ? DIRECTION.DOWN_RIGHT : DIRECTION.DOWN_LEFT)
-                : (skewRightLeftNone ? DIRECTION.UP_RIGHT : DIRECTION.UP_LEFT);
+        return vert ? (skewRightLeftNone ? DOWN_RIGHT : DOWN_LEFT)
+                : (skewRightLeftNone ? UP_RIGHT : UP_LEFT);
     }
 
     public static String getPillarPath(DungeonEnums.PILLAR_TYPE cell, DIRECTION direction) {

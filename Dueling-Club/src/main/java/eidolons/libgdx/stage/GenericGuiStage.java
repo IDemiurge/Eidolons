@@ -276,6 +276,13 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
 
     }
 
+    @Override
+    public boolean keyDown(int keyCode) {
+        if (keyCode== Input.Keys.ENTER) {
+        }
+        return super.keyDown(keyCode);
+    }
+
     public ToolTipManager getTooltips() {
         return tooltips;
     }

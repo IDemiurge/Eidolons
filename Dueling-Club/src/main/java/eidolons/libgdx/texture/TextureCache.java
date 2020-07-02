@@ -45,13 +45,10 @@ import static main.system.auxiliary.log.LogMaster.important;
 public class TextureCache {
     public static final boolean atlasesOn = !CoreEngine.TEST_LAUNCH;
     private static final Boolean uiAtlasesOn = false;
-    private static final boolean tryCompressedFormat = true;
     private static TextureCache instance;
     private static final Lock creationLock = new ReentrantLock();
     private static final AtomicInteger counter = new AtomicInteger(0);
-    private static boolean altTexturesOn = true;
     private static Texture missingTexture;
-    private static Texture empty;
 
     private static final ObjectMap<String, TextureRegion> regionCache = new ObjectMap<>(1300);
     private static final ObjectMap<TextureRegion, TextureRegionDrawable> drawableMap = new ObjectMap<>(1300);
@@ -65,7 +62,7 @@ public class TextureCache {
     private SmartTextureAtlas uiAtlas;
     private SmartTextureAtlas mainAtlas;
     private SmartTextureAtlas genAtlas;
-    private final Pattern pattern;
+    private final Pattern atlasPattern;
     private boolean silent;
     private static final boolean stats = Flags.isIDE();
     private static final Map<String, Integer> statMap = new LinkedHashMap<>();
@@ -107,26 +104,25 @@ public class TextureCache {
         texturePath =
                 GdxImageMaster.cropImagePath(StringMaster.cropFormat(texturePath));
         Array<TextureAtlas.AtlasRegion> regions = getInstance().mainAtlas.findRegions(texturePath);
-        if (regions.size==0) {
-            regions =   getInstance().uiAtlas.findRegions(texturePath);
+        if (regions.size == 0) {
+            regions = getInstance().uiAtlas.findRegions(texturePath);
         }
-        if (regions.size>0)
-            System.out.println(regions.size+ " Atlas regions found: " + texturePath);
+        if (regions.size > 0)
+            System.out.println(regions.size + " Atlas regions found: " + texturePath);
         else
             System.out.println("No atlas regions found: " + texturePath);
-        return regions ;
+        return regions;
     }
 
     public void loadAtlases() {
         uiAtlas = new SmartTextureAtlas(imagePath + "/gen/atlas/ui.txt");
-               mainAtlas = new SmartTextureAtlas(imagePath + "/gen/atlas/grid/main.txt");
+        mainAtlas = new SmartTextureAtlas(imagePath + "/gen/atlas/grid/main.txt");
         //            genAtlas = new SmartTextureAtlas(imagePath + "/gen//gen.txt");
     }
 
     private TextureCache() {
-        //            uiAtlasesOn = CoreEngine.isJarlike() || !CoreEngine.isIDE() ;
-
         this.imagePath = PathFinder.getImagePath();
+        this.atlasPattern = Pattern.compile("[///]([a-z _/-0-9]*)/..*$");
         this.cache = new ObjectMap<>(1300);
         this.greyscaleCache = new ObjectMap<>(100);
         if (atlasesOn) {
@@ -136,9 +132,6 @@ public class TextureCache {
                 uiAtlas = new SmartTextureAtlas(imagePath + "/ui/ui.txt");
             }
         }
-
-        pattern = Pattern.compile("^.*[///]([a-z _/-0-9]*)/..*$");
-
         GuiEventManager.bind(GuiEventType.DISPOSE_TEXTURES, p -> {
             dispose();
         });
@@ -152,13 +145,13 @@ public class TextureCache {
         }
         important(
                 "atlasMissingTextures.size " + atlasMissingTextures.size() +
-                "\nmissingTextures.size " + missingTextures.size() +
-                "\ncache.size " + cache.size +
+                        "\nmissingTextures.size " + missingTextures.size() +
+                        "\ncache.size " + cache.size +
                         "\nregionCache.size " + regionCache.size +
                         "\ndrawableMap.size " + drawableMap.size +
                         "\ngreyscaleCache.size " + greyscaleCache.size
         );
-        important("atlasMissingTextures:"+atlasMissingTextures);
+        important("atlasMissingTextures:" + atlasMissingTextures);
 
         if (GdxMaster.getMainBatch() instanceof AtlasGenSpriteBatch) {
             // ((AtlasGenSpriteBatch) GdxMaster.getMainBatch()).writeAtlases();
@@ -245,14 +238,14 @@ public class TextureCache {
         if (stats) {
             MapMaster.addToIntegerMap(statMap, path, 1);
         }
-        if (path.contains(":")) {
-            try {
-                return getOrCreateR(path.split("img")[1]);
-            } catch (Exception e) {
-                main.system.auxiliary.log.LogMaster.log(1, "invalid  TEXTURE  path ! " + path);
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        }
+        // if (path.contains(":")) { full path will be handled later by exists() check
+        //     try {
+        //         return getOrCreateR(path.split("img")[1]);
+        //     } catch (Exception e) {
+        //         main.system.auxiliary.log.LogMaster.log(1, "invalid  TEXTURE  path ! " + path);
+        //         main.system.ExceptionMaster.printStackTrace(e);
+        //     }
+        // }
         if (path == null) {
             main.system.auxiliary.log.LogMaster.log(1, "EMPTY TEXTURE REGION REQUEST!");
             return new TextureRegion(missingTexture);
@@ -262,16 +255,9 @@ public class TextureCache {
         if (region != null)
             return region;
 
-        final Matcher matcher = getInstance().pattern.matcher(path);
-
+        final Matcher matcher = getInstance().atlasPattern.matcher(path);
         if (matcher.matches()) {
             String name = StringMaster.cropFormat(path);
-            //         //          1+path.indexOf(StringMaster.getPathSeparator())
-            //         3
-            //         , path.lastIndexOf("."));// matcher.group(1);
-            // name = ContainerUtils.constructStringContainer
-            //         (PathUtils.getPathSegments(name), "/");
-            // name = name.substring(0, name.length() - 1);
 
             if (!overrideNoAtlas) {
                 //TODO gdx revamp
@@ -315,7 +301,6 @@ public class TextureCache {
             regionCache.put(path, region);
 
 
-
         return region;
     }
 
@@ -342,33 +327,11 @@ public class TextureCache {
         return false;
     }
 
-    private static boolean checkAltTexture(String path) {
-        if (altTexturesOn) {
-            return path.contains(StrPathBuilder.build("gen"));
-        }
-        return false;
-    }
-
-    public static TextureRegion getOrCreateGrayscaleR(String path) {
-        return new TextureRegion(getOrCreateGrayscale(path));
-    }
-
-    public static void setAltTexturesOn(boolean altTexturesOn) {
-        TextureCache.altTexturesOn = altTexturesOn;
-    }
-
     public static Texture getMissingTexture() {
         if (missingTexture == null)
             missingTexture = new Texture(getMissingPath());
 
         return missingTexture;
-    }
-
-    public static Texture getEmptyTexture() {
-        if (empty == null)
-            empty = new Texture(getMissingPath());
-
-        return empty;
     }
 
     public static String getMissingPath() {
@@ -383,22 +346,12 @@ public class TextureCache {
                         Images.REALLY_EMPTY_32;
     }
 
-    public static Texture createTexture(String path) {
-        return createTexture(path, true);
-    }
-
-    public static Texture createTexture(String path, boolean putIntoCache) {
-
-        return getInstance()._createTexture(path, putIntoCache);
-    }
-
     public static TextureRegionDrawable getOrCreateTextureRegionDrawable(TextureRegion originalTexture) {
         TextureRegionDrawable drawable = drawableMap.get(originalTexture);
         if (drawable == null) {
             drawable = new TextureRegionDrawable(originalTexture);
             drawableMap.put(originalTexture, drawable);
         }
-
         return drawable;
     }
 
@@ -564,48 +517,42 @@ public class TextureCache {
     }
 
     public Texture _createTexture(String path, boolean putIntoCache, boolean recursion) {
-        Path p = Paths.get(imagePath, path);
-        String filePath = p.toString();
+        String filePath = null;
+        FileHandle fullPath = GDX.file(path);
+        if (!fullPath.exists()) {
+            Path p = Paths.get(imagePath, path);
+            filePath = p.toString();
+        } else
+            filePath = path;
         Texture t = null;
-        if (checkAltTexture(filePath)) //TODO remove this already
+        fullPath = GDX.file(filePath);
+        if (fullPath.exists())
             try {
-                t = new Texture(GDX.file(getAltTexturePath(filePath)),
-                        Pixmap.Format.RGBA8888, false);
-                if (putIntoCache)
+                t = new Texture(fullPath, Pixmap.Format.RGBA8888, false);
+                if (putIntoCache) {
                     cache.put(path, t);
+                }
             } catch (Exception e) {
-
             }
         if (t == null) {
-            FileHandle fullPath = GDX.file(filePath);
-            if (fullPath.exists())
-                try {
-                    t = new Texture(fullPath, Pixmap.Format.RGBA8888, false);
-                    if (putIntoCache) {
-                        cache.put(path, t);
-                    }
-                } catch (Exception e) {
-                }
-            if (t == null) {
-                if (!recursion) {
-                    if (path.contains(".png"))
-                        return _createTexture(path.replace(".png", ".jpg"), putIntoCache, true);
-                    if (path.contains(".jpg"))
-                        return _createTexture(path.replace(".jpg", ".png"), putIntoCache, true);
-                }
-                if (!silent)
-                    main.system.auxiliary.log.LogMaster.verbose("No texture for " + fullPath);
-                if (!isReturnEmptyOnFail())
-                    return null;
-                if (!cache.containsKey(getMissingPath())) {
-                    if (putIntoCache)
-                        cache.put(getMissingPath(), getMissingTexture());
-                    missingTextures.add(path);
-                    return getMissingTexture();
-                }
-                return cache.get(getMissingPath());
-
+            if (!recursion) {
+                if (path.contains(".png"))
+                    return _createTexture(path.replace(".png", ".jpg"), putIntoCache, true);
+                if (path.contains(".jpg"))
+                    return _createTexture(path.replace(".jpg", ".png"), putIntoCache, true);
             }
+            if (!silent)
+                main.system.auxiliary.log.LogMaster.verbose("No texture for " + fullPath);
+            if (!isReturnEmptyOnFail())
+                return null;
+            if (!cache.containsKey(getMissingPath())) {
+                if (putIntoCache)
+                    cache.put(getMissingPath(), getMissingTexture());
+                missingTextures.add(path);
+                return getMissingTexture();
+            }
+            return cache.get(getMissingPath());
+
         }
         return t;
     }

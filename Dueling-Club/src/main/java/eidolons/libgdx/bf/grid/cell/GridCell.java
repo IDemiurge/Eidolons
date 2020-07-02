@@ -53,13 +53,13 @@ public class GridCell extends BlockableGroup implements Borderable, Colored {
     protected boolean voidAnimHappened;
     protected boolean withinCamera;
     protected FadeImageContainer pillar;
-    protected Function<Coordinates, Float> lightnessFunc;
     protected Function<Coordinates, Color> colorFunc;
 
-    public GridCell(TextureRegion backTexture, int gridX, int gridY) {
+    public GridCell(TextureRegion backTexture, int gridX, int gridY, Function<Coordinates, Color> colorFunc) {
         this.backTexture = backTexture;
         this.gridX = gridX;
         this.gridY = gridY;
+        this.colorFunc = colorFunc;
         setTransform(false);
     }
 
@@ -355,7 +355,7 @@ public class GridCell extends BlockableGroup implements Borderable, Colored {
         this.colorFunc = colorFunc;
     }
 
-    public void setLightnessFunc(Function<Coordinates, Float> lightnessFunc) {
-        this.lightnessFunc = lightnessFunc;
+    public Function<Coordinates, Color> getColorFunc() {
+        return colorFunc;
     }
 }

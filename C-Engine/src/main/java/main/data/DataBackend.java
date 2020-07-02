@@ -388,7 +388,7 @@ public class DataBackend {
     }
 
     public   void renameType(ObjType type, String newName) {
-        XML_Reader.getTypeMaps().get(type.getProperty(G_PROPS.TYPE)).remove(type.getName());
+        ObjType prev = XML_Reader.getTypeMaps().get(type.getProperty(G_PROPS.TYPE)).remove(type.getName());
         XML_Reader.getTypeMaps().get(type.getProperty(G_PROPS.TYPE)).put(newName, type);
 
     }

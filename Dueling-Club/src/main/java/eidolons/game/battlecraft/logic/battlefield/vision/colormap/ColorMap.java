@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.Fluctuating;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.system.datatypes.DequeImpl;
@@ -14,14 +15,20 @@ import java.util.Set;
 
 public class ColorMap {
 
-    Map<Coordinates, Color> base; //from ambient light only? more or less static then?
+    Map<Coordinates, Color> original; //from ambient light only? more or less static then?
+    Map<Coordinates, Color> base;
     Map<Coordinates, Color> output; //perhaps alpha will be our lightness?
     DequeImpl<Coordinates> updated = new DequeImpl<>();
     Set<Light> emitters;
 
-    public ColorMap(Map<Coordinates, Color> base) {
-        this.base = base;
-        output = new HashMap<>(base);
+    public ColorMap(Map<Coordinates, Color> original) {
+        this.original = original;
+        output = new HashMap<>();
+        base = new HashMap<>( );
+    }
+
+    public Map<Coordinates, Color> getOriginal() {
+        return original;
     }
 
     public static class Light {
@@ -43,12 +50,21 @@ public class ColorMap {
 
         public void act(float delta) {
             fluctuating.fluctuate(delta);
-            lightness = fluctuating.getColor().a;
+            lightness = fluctuating.getColor().a  ;
         }
+    }
+
+    public Map<Coordinates, Color> getBase() {
+        return base;
     }
 
     public void setEmitters(Set<Light> emitters) {
         this.emitters = emitters;
+        for (Light emitter : emitters) {
+            for (ObjectMap.Entry<Coordinates, Float> entry : emitter.lerp) {
+                base.put(entry.key, emitter.baseColor);
+            }
+        }
         update();
     }
 
@@ -81,24 +97,27 @@ public class ColorMap {
         if (key.color == null) {
             key.color = new Color();
         }
-        GdxColorMaster.modify(key.color, key.baseColor, key.lightness - 0.15f);
+        GdxColorMaster.modify(key.color, key.baseColor, Math.min(1, key.lightness*2) );
 
         for (Coordinates c : key.lerp.keys()) {
-            Color orig = output.get(c);
-            if (orig == null) {
+            if (!ScreenMaster.getGrid().isDrawn(c)) {
                 continue;
             }
-            if (!updated(c))
-                orig.set(base.get(c));
+            Color orig = output.get(c);
+            if (orig == null) {
+                output.put(c, orig =new Color(original.get(c)));
+            } else if (!updated(c))
+                orig.set(original.get(c));
 
             float lerp = key.lerp.get(c);
             if (!GdxColorMaster.WHITE.equals(key.baseColor)) {
                 // GdxColorMaster.modify(orig, key.color, 0.2f + lerp * lerp+lerp );
-                Color color = GdxColorMaster.lighter(key.color, 0.33f);
-                orig.lerp( color, lerp * lerp  ).clamp();
-                orig.a  += lerp *lerp * key.lightness/2;
+                // Color color = GdxColorMaster.lighter(key.color, 0.33f);
+                orig.lerp( key.color, lerp * lerp  ).clamp();
+                orig.a  += lerp *key.lightness * key.lightness*1.35f;
             } else {
-                orig.a += lerp  /3 ;
+                // orig.a += lerp  /3 ;
+                orig.a  += lerp *key.lightness * key.lightness*0.85f;
             }
             if (orig.a>1) {
                 orig.a=1;

@@ -5,6 +5,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.libgdx.bf.grid.handlers.GridManager;
 import io.vertx.core.impl.ConcurrentHashSet;
 import main.data.XList;
 import main.entity.Ref;
@@ -12,8 +13,6 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.core.game.GameObjMaster;
 import main.game.logic.battle.player.Player;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -44,6 +43,7 @@ public class DC_GameObjMaster extends GameObjMaster {
 
     boolean paleAspect;
     private Boolean unitFindSequential = true;
+
     public DC_GameObjMaster(DC_Game game, boolean paleAspect) {
         this(game);
         this.paleAspect = paleAspect;
@@ -107,9 +107,9 @@ public class DC_GameObjMaster extends GameObjMaster {
             set = new HashSet<>();
 
             for (BattleFieldObject object : getGame().getStructures()) {
-//                if (object.isPale() != paleAspect) {
-//                    continue;
-//                }
+                //                if (object.isPale() != paleAspect) {
+                //                    continue;
+                //                }
                 if (overlayingIncluded_Not_Only != null) {
                     if (!overlayingIncluded_Not_Only)
                         if (object.isOverlaying())
@@ -211,15 +211,15 @@ public class DC_GameObjMaster extends GameObjMaster {
 
     public Collection<Unit> getUnitsForCoordinates(Set<Coordinates> coordinates) {
         return getUnits().stream().filter(unit -> coordinates.contains(unit.getCoordinates())).collect(Collectors.toList());
-//        Collection<Unit> list = new HashSet<>();
-//        for (Coordinates c : coordinates) {
-//            for (Unit unit : getUnits()) {
-//                if (unit.getCoordinates().equals(c)) {
-//                    list.add(unit);
-//                }
-//            }
-//        }
-//        return list; // TODO z-coordinate?
+        //        Collection<Unit> list = new HashSet<>();
+        //        for (Coordinates c : coordinates) {
+        //            for (Unit unit : getUnits()) {
+        //                if (unit.getCoordinates().equals(c)) {
+        //                    list.add(unit);
+        //                }
+        //            }
+        //        }
+        //        return list; // TODO z-coordinate?
     }
 
     public Set<DC_Cell> getCellsForCoordinates(Set<Coordinates> coordinates) {
@@ -235,10 +235,10 @@ public class DC_GameObjMaster extends GameObjMaster {
     public Obj getObjectById(Integer id) {
         Obj obj = super.getObjectById(id);
         if (obj == null) {
-//            if (Eidolons.getMainHero() != null) { this is madness... main hero must be added to state!
-//                if (Eidolons.getMainHero().getId().equals(id))
-//                    return Eidolons.getMainHero();
-//            }
+            //            if (Eidolons.getMainHero() != null) { this is madness... main hero must be added to state!
+            //                if (Eidolons.getMainHero().getId().equals(id))
+            //                    return Eidolons.getMainHero();
+            //            }
             return obj;
         }
         return obj;
@@ -312,8 +312,10 @@ public class DC_GameObjMaster extends GameObjMaster {
             getUnits().add((Unit) obj);
         } else if (obj instanceof Structure) {
             getStructures().add((Structure) obj);
-            if (((BattleFieldObject) obj).isWall()) {
-                GuiEventManager.trigger(GuiEventType.GRID_RESET);
+            if (game.isStarted()) {
+                if (((BattleFieldObject) obj).isWall()) {
+                    GridManager.reset();
+                }
             }
         }
     }

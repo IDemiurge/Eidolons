@@ -31,6 +31,7 @@ import main.game.bf.Coordinates;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.launch.Flags;
+import main.system.math.MathMaster;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -149,23 +150,44 @@ public abstract class DungeonMaster {
 
     }
 
-    protected void initColorMap() {
-        Map<Coordinates, Color> map = new HashMap<>(game.getModule().getCoordinatesSet().size() + 10, 0.991f);
-        for (Coordinates coordinate : game.getModule().getCoordinatesSet()) {
+    protected void initColorMap(Set<Coordinates> set) {
+        Map<Coordinates, Color> map = new HashMap<>(set.size() + 10, 0.991f);
+        //TODO do it per struct instead !
+        for (Coordinates coordinate : set) {
             //ambient light here
             LevelStruct struct = getStructMaster().getLowestStruct(coordinate);
-            int light = Math.max(LightConsts.MIN_AMBIENT_LIGHT, struct.getIlluminationValue());
+            int light =LightConsts.MIN_AMBIENT_LIGHT;
+            Coordinates center = struct.getCenterCoordinate();
+            if (struct.getIlluminationValue()> light) {
+                light =  struct.getIlluminationValue();
+            }
+            int size = struct.getCoordinatesSet().size();
             float a=light / 100f;
             Color c;
+            Color c2 = GdxColorMaster.getColorForTheme(struct.getAltColorTheme());
+            if (c2 == null) {
+                c2=GdxColorMaster.LIGHT_GREY;
+            }
             if (struct.getColorTheme() != null) {
                 c = GdxColorMaster.getColorForTheme(struct.getColorTheme());
-                c= new Color(c.r, c.g, c.b, a).lerp(GdxColorMaster.GREY, 0.5f);
+                //lerp based on how far from center
+                float lerp=getLerp(size, center.dst(coordinate));
+                c= new Color(c2.r, c2.g, c2.b, a).lerp(c, lerp);
             } else {
-                c= GdxColorMaster.DARK_GREY;
+                c= GdxColorMaster.LIGHT_GREY;
+            }
+            if (a>0.9f) {
+                map.put(coordinate, new Color(c.r, c.g, c.b, a));
             }
             map.put(coordinate, new Color(c.r, c.g, c.b, a));
         }
         colorMap = new ColorMap(map);
+    }
+
+    private float getLerp(int size, int dst) {
+        //max dst from center is about 1/3 of size for rectangular
+        // Math.sqrt()
+        return MathMaster.minMax( new Float(size)/(dst+4)/10, 0.12f, 0.8f);
     }
 
     public void setFloorWrapper(Location floorWrapper) {
@@ -370,6 +392,6 @@ public abstract class DungeonMaster {
 
     public void loadingDone() {
         getFloorLoader().loadingDone();
-        initColorMap();
+        initColorMap(game.getModule().getCoordinatesSet());
     }
 }

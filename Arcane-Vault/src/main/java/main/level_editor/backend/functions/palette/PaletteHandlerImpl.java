@@ -46,8 +46,8 @@ import java.util.stream.Collectors;
 
 public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
-    public static final String WALL_PLACEHOLDER = "Wall Placeholder";
-    public static final String ALT_WALL_PLACEHOLDER = "Alt Wall Placeholder";
+    public static final String WALL_PLACEHOLDER = "Wall";
+    public static final String ALT_WALL_PLACEHOLDER = "Alt Wall";
     private Map<String, List<ObjType>> workspaceTypeMap;
 
     public PaletteHandlerImpl(LE_Manager manager) {

@@ -496,6 +496,12 @@ public abstract class InputController implements InputProcessor {
     public float getXCamPos() {
         return camera.position.x;
     }
+    public float getAbsoluteCursorX () {
+        return camera.position.x +  Gdx.input.getX() - halfWidth;
+    }
+    public float getAbsoluteCursorY () {
+        return camera.position.y +  Gdx.input.getY() - halfHeight;
+    }
 
     public float getYCamPos() {
         return camera.position.y;
@@ -582,16 +588,16 @@ public abstract class InputController implements InputProcessor {
         setZoom(defaultZoom);
     }
 
-    public int getGridDrawY2() {
-        return (int) Math.max(0, ((camera.position.y - halfHeight) / 128-1));
+    public int getGridDrawY2(float height) {
+        return (int) Math.max(0, ((height/2+camera.position.y - halfHeight) / 128-2));
     }
-    public int getGridDrawY1() {
-        return (int)  ((camera.position.y + halfHeight) / 128 +1 );
+    public int getGridDrawY1(float height) {
+        return (int)  (( height /2+camera.position.y + halfHeight) / 128 +2 );
     }
-    public int getGridDrawX1() {
+    public int getGridDrawX1(float width) {
         return (int) Math.max(0, ((camera.position.x - halfWidth) / 128 -1));
     }
-    public int getGridDrawX2() {
+    public int getGridDrawX2(float width) {
         return (int) ((camera.position.x+halfWidth)/128+1);
     }
 }

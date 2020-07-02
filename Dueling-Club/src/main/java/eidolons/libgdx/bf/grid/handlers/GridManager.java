@@ -7,16 +7,17 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.decor.pillar.PillarManager;
 import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.HpBarView;
 import eidolons.libgdx.bf.grid.moving.PlatformHandler;
 import eidolons.libgdx.bf.light.ShadeLightCell;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.overlays.bar.HpBarManager;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -37,7 +38,6 @@ public class GridManager {
         if (gridPanel.getShadowMap().getCells(ShadowMap.SHADE_CELL.GAMMA_SHADOW) == null) {
             return 1f;
         }
-
         ShadeLightCell cell = gridPanel.getShadowMap().getCells(ShadowMap.SHADE_CELL.GAMMA_SHADOW)[c.x][c.y];
         if (cell == null) {
             return 0f;
@@ -45,14 +45,24 @@ public class GridManager {
         return 1 - cell.getColor().a;
     }
 
+    public Color getBaseColor(Coordinates c) {
+        if (DC_Game.game.getColorMap().getBase().get(c) == null) {
+            return GdxColorMaster.get(Color.BLACK);
+        }
+        return GdxColorMaster.get(DC_Game.game.getColorMap().getBase().get(c));
+    }
+    public Color getOrigColor(Coordinates c) {
+        return GdxColorMaster.get(DC_Game.game.getColorMap().getOriginal().get(c));
+    }
     public Color getColor(Coordinates c) {
         if (!DC_Game.game.getColorMap().getOutput().containsKey(c)) {
-            return GdxColorMaster.NULL_COLOR;
+            return DC_Game.game.getColorMap().getOriginal().get(c);
+            // return GdxColorMaster.get(GdxColorMaster.NULL_COLOR);
         }
-        if (CoreEngine.isLevelEditor()) {
-            return GdxColorMaster.NULL_COLOR;
-        }
-        return DC_Game.game.getColorMap().getOutput().get(c);
+        // if (CoreEngine.isLevelEditor()) {
+        //     return GdxColorMaster.get(GdxColorMaster.NULL_COLOR);
+        // }
+        return GdxColorMaster.get(DC_Game.game.getColorMap().getOutput().get(c));
         // return cell.getColor();
     }
 
@@ -71,24 +81,42 @@ public class GridManager {
         handlers.add(eventHandler = new GridEventHandler(gridPanel));
         handlers.add(platformHandler = new PlatformHandler(gridPanel));
 
-        GuiEventManager.bind(GuiEventType.GRID_RESET, p -> reset());
+        GuiEventManager.bind(GuiEventType.BF_OBJ_RESET, p -> reset((BattleFieldObject) p.get()));
         // GuiEventManager.bind(GuiEventType.UPDATE_WALL_MAP , p-> reset());
         //wall map seems too often updated
+    }
+
+    private void reset(BattleFieldObject object) {
+        BaseView baseView = gridPanel.getViewMap().get(object);
+        baseView.getPortrait().setImage(object.getImagePath());
     }
 
     public static boolean isCustomDraw() {
         return customDraw;
     }
 
-    public void reset() {
+    public static void reset() {
+        if (isGridInitialized()){
+        getInstance().resetMaps();
+        }
         //TODO move various crap-functions into these handlers!
         /*
         what cases?
         voidHandler toggles a cell
-
         when do we update walls?
          */
+    }
+
+    private static boolean isGridInitialized() {
+        return ScreenMaster.getGrid() != null;
+    }
+
+    private void resetMaps() {
         pillarManager.reset();
+    }
+
+    private static GridManager getInstance() {
+        return ScreenMaster.getGrid().getGridManager();
     }
 
 

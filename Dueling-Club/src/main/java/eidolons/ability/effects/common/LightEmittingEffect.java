@@ -64,7 +64,7 @@ public class LightEmittingEffect extends SpectrumEffect {
                         PositionMaster.getDistance(lastCoordinates, ref.getSourceObj().getCoordinates()
                         ) != (PositionMaster.getDistance(ref.getTargetObj().getCoordinates(),
                                 ref.getSourceObj().getCoordinates()))) {
-                    setAmount(getFormula().getInt(ref));
+                    setAmount(getFormula().getInt(ref)); //recalc
                 }
 
                 int plus = getAmount();
@@ -75,7 +75,8 @@ public class LightEmittingEffect extends SpectrumEffect {
                 ref.getTargetObj().modifyParameter(PARAMS.ILLUMINATION, plus, true);
                 lastCoordinates = ref.getTargetObj().getCoordinates();
 
-                map.put(ref.getTargetObj().getCoordinates(), plus*plus / 2500f);
+                float lerp=plus*plus / 2500f;
+                map.put(ref.getTargetObj().getCoordinates(), lerp);
 
                 return true;
             }

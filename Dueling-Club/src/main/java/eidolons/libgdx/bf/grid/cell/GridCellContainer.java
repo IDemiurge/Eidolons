@@ -30,6 +30,7 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.map.WallMap;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.screens.ScreenMaster;
+import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
@@ -55,13 +57,16 @@ public class GridCellContainer extends GridCell implements Hoverable {
     protected List<GenericGridView> allViews;
     protected GenericGridView topUnitView;
     protected boolean mainHero, hasBackground, wall, lightEmitter;
+    private boolean screen;
+    private boolean water;
 
-    public GridCellContainer(TextureRegion backTexture, int gridX, int gridY) {
-        super(backTexture, gridX, gridY);
+    public GridCellContainer(TextureRegion backTexture, int gridX, int gridY, Function<Coordinates, Color> colorFunc) {
+        super(backTexture, gridX, gridY, colorFunc);
     }
 
     public GridCellContainer(GridCell parent) {
-        super(parent.backTexture, parent.getGridX(), parent.getGridY());
+        super(parent.backTexture, parent.getGridX(), parent.getGridY(),
+                parent.getColorFunc());
     }
 
     public boolean isMainHero() {
@@ -86,7 +91,10 @@ public class GridCellContainer extends GridCell implements Hoverable {
     public void applyColor() {
         Coordinates coord = getUserObject().getCoordinates();
         Color c = colorFunc.apply(coord);
-        float min = getUserObject().isPlayerHasSeen() ? 0.5f : 0.2f;
+
+        float min = getUserObject().isPlayerHasSeen()
+                ?  LightConsts.MIN_LIGHTNESS_CELL_SEEN
+                :  LightConsts.MIN_LIGHTNESS_CELL_UNSEEN;
         //TODO for units too?
         if (c == null) {
             c = GdxColorMaster.NULL_COLOR;
@@ -94,28 +102,32 @@ public class GridCellContainer extends GridCell implements Hoverable {
         float light = Math.max(min, c.a);
         float screen = LightConsts.getScreen(light);
         float negative = LightConsts.getNegative(light);
-        if (screen > LightConsts.MIN_SCREEN) {
-            cellImgContainer.setScreenOverlay(screen);
-        }
         if (negative > 0) {
             c = LightHandler.applyNegative(c, negative);
         }
-        cellImgContainer.setColor(c.r, c.g, c.b, cellImgContainer.getColor().a);
+        applyColor(screen, c);
+    }
 
+    public void applyColor(float lightness, Color c) {
+        if (lightness > LightConsts.MIN_SCREEN && cellImgContainer.getColor().a>0) {
+            screen=true;
+            cellImgContainer.setScreenOverlay(lightness);
+        } else
+        {
+            cellImgContainer.setScreenOverlay(0);
+            screen=false;
+        }
+
+        cellImgContainer.setColor(c.r, c.g, c.b, cellImgContainer.getColor().a);
         for (GenericGridView unitView : getUnitViews(true)) {
             float a = unitView.getPortrait().getContent().getColor().a;
-            unitView.getPortrait().getContent().getColor().lerp(cellImgContainer.getColor(), 0.35f);
-            unitView.getPortrait().getContent().getColor().a=a;
-            // unitView.getPortrait().getContent().setColor(GdxColorMaster.WHITE);
-            if (screen > LightConsts.MIN_SCREEN) {
-                unitView.setScreenOverlay(screen);
-            } else unitView.setScreenOverlay(0);
+            unitView.getPortrait().getContent().getColor().lerp(c, LightConsts.UNIT_VIEW_COLOR_LERP);
+            unitView.getPortrait().getContent().getColor().a = a;
+            if (lightness > LightConsts.MIN_SCREEN) {
+                unitView.setScreenOverlay(lightness);
+            } else
+                unitView.setScreenOverlay(0);
 
-            // c = GdxColorMaster.WHITE;
-            // if (negative > 0) {
-            //     c = LightHandler.applyNegative(c, negative);
-            // }
-            // unitView.getPortrait().setColor(c);
         }
     }
 
@@ -139,6 +151,28 @@ public class GridCellContainer extends GridCell implements Hoverable {
         cellImgContainer.setVisible(true);
     }
 
+    public void drawScreen(Batch batch) {
+        if (visibleViews.isEmpty()) {
+        cellImgContainer.setScreenEnabled(true);
+        // SnapshotArray<Actor> children = getChildren();
+        // clearChildren();
+        // draw(batch, 1f);
+        cellImgContainer.setPosition(getX(), getY());
+        cellImgContainer. draw(batch, 1f);
+        cellImgContainer.setPosition(0, 0);
+        }
+
+        cellImgContainer.setScreenEnabled(false);
+        for (GenericGridView visibleView : visibleViews) {
+            float x = visibleView.getX();
+            float y = visibleView.getY();
+            visibleView.setPosition(x+getX(), y +getY());
+            visibleView.drawScreen(batch);
+            visibleView.setPosition(x, y);
+        }
+        // super.draw(batch, 1f);
+
+    }
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
@@ -236,7 +270,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
             float x = calc.getViewX(offset, index);
             actor.setPosition(x, y);
             //Gdx hack
-            if (Math.abs(1-actor.getScaleX())<0.5f &&  isAnimated()) {
+            if (Math.abs(1 - actor.getScaleX()) < 0.5f && isAnimated()) {
                 ActionMaster.addScaleAction(actor,
                         scaleX, scaleY, 0.25f);
             } else {
@@ -451,7 +485,15 @@ public class GridCellContainer extends GridCell implements Hoverable {
                     actor.setRotation(90 * n);
                     actor.setOrigin(64, 64);
                 }
+            }else {
+                if (userObject.isWater()) {
+                    water=true;
+                    cellImgContainer.fadeOut(); //editor?!
+                    view.getPortrait().setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.WATER );
+                }
             }
+
+
             if (userObject.isLightEmitter()) {
                 lightEmitter = true;
             }
@@ -480,8 +522,16 @@ public class GridCellContainer extends GridCell implements Hoverable {
     public boolean removeActor(Actor actor) {
         if (actor.getUserObject() == Eidolons.MAIN_HERO)
             mainHero = false;
-        wall = false;
         lightEmitter = false;
+        if (wall){
+        wall = false;
+        calc.offsetX = 0;
+        calc.offsetY = 0;
+        }
+        if (water){
+            water = false;
+            cellImgContainer.fadeIn();
+        }
         return removeActor(actor, true);
     }
 
@@ -677,4 +727,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         return indexMap;
     }
 
+    public boolean isScreen() {
+        return screen;
+    }
 }

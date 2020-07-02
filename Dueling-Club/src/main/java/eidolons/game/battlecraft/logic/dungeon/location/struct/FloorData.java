@@ -20,23 +20,30 @@ public class FloorData extends StructureData<FLOOR_VALUES, Location> {
         super(structure);
     }
 
+    private static String[] cropped;
+
     @Override
-    public String[] getRelevantValues() {
-        List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
-                collect(Collectors.toList());
-        list.remove(FLOOR_VALUES.height.toString());
-        list.remove(FLOOR_VALUES.width.toString());
-        list.remove(FLOOR_VALUES.id.toString());
-        list.remove(FLOOR_VALUES.illumination.toString());
-        list.remove(FLOOR_VALUES.soundscape.toString());
-        list.remove(FLOOR_VALUES.ambience.toString());
-        list.remove(FLOOR_VALUES.vfx_template.toString());
-        list.remove(FLOOR_VALUES.wall_type.toString());
-        list.remove(FLOOR_VALUES.alt_wall_type.toString());
-        list.remove(FLOOR_VALUES.module_grid.toString());
-        list.remove(FLOOR_VALUES.cell_spans.toString());
-        return list.toArray(new String[0]);
+    public String[] getValuesCropped() {
+        if (cropped == null) {
+            List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
+                    collect(Collectors.toList());
+            list.remove(FLOOR_VALUES.height.toString());
+            list.remove(FLOOR_VALUES.width.toString());
+            list.remove(FLOOR_VALUES.id.toString());
+            list.remove(FLOOR_VALUES.illumination.toString());
+            list.remove(FLOOR_VALUES.soundscape.toString());
+            list.remove(FLOOR_VALUES.ambience.toString());
+            list.remove(FLOOR_VALUES.vfx_template.toString());
+            list.remove(FLOOR_VALUES.wall_type.toString());
+            list.remove(FLOOR_VALUES.alt_wall_type.toString());
+            list.remove(FLOOR_VALUES.module_grid.toString());
+            list.remove(FLOOR_VALUES.cell_spans.toString());
+            list.remove(FLOOR_VALUES.pillar_type.toString());
+            cropped = list.toArray(new String[0]);
+        }
+        return cropped;
     }
+
     @Override
     public void apply() {
         //sink thru to DUNGEON?

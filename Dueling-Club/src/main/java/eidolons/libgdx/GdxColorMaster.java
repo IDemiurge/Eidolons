@@ -10,10 +10,13 @@ import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.RandomWizard;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
+import java.util.Set;
+
 /**
  * Created by JustMe on 1/23/2017.
  */
 public class GdxColorMaster {
+    private static final Color temp= new Color();
     public static final Color OBSIDIAN = getColor(21, 11, 42, 1f);
     public static final Color NEUTRAL = getColor(100, 100, 120, 1f);
     public static final Color ALLY_COLOR = getColor(50, 150, 100, 1f);
@@ -21,7 +24,7 @@ public class GdxColorMaster {
     // new Color(55, 215, 65)
     public static final Color HEALTH = getColor(210, 100, 110, 1f);
     public static final Color ENDURANCE = getColor(240, 60, 115, 1f);
-    public static final Color TOUGHNESS = getColor(100 , 245, 5, 1f);
+    public static final Color TOUGHNESS = getColor(100, 245, 5, 1f);
     public static final Color STAMINA = getColor(180, 150, 45, 1f);
     public static final Color ESSENCE = getColor(80, 30, 225, 1f);
     public static final Color FOCUS = getColor(10, 175, 200, 1f);
@@ -39,7 +42,7 @@ public class GdxColorMaster {
     public static final Color BLUE = getColor(25, 25, 255, 1f);
     public static final Color YELLOW = getColor(165, 185, 55, 1f);
     public static final Color DARK_ORANGE = getColor(195, 105, 25, 1f);
-    public static final Color ORANGE = Color.ORANGE ;
+    public static final Color ORANGE = Color.ORANGE;
     public static final Color FIRE = getColor(255, 115, 75, 1f);
     public static final Color WHITE = new Color(1, 1, 1, 1f);
     public static final Color PALE_GOLD = getColor(252, 238, 210, 1f);
@@ -65,7 +68,7 @@ public class GdxColorMaster {
     public static final Color BACKGROUND_TRANSPARENT = getColor(0, 0, 0, 208);
     public static final Color BACKGROUND_MORE_TRANSPARENT = getColor(0, 0, 0, 158);
     public static final Color STANDARD_TEXT = PALE_GOLD;
-    public static final Color NULL_COLOR = new Color(1,1,1, 0.5f);
+    public static final Color NULL_COLOR = new Color(1, 1, 1, 0.5f);
     private static final Color LIGHT_YELLOW = getColor(195, 205, 125, 1f);
     public static final Color COPPER = LIGHT_YELLOW;
     public static final Color BROWN = getColor(165, 155, 45, 1f);
@@ -83,7 +86,7 @@ public class GdxColorMaster {
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
-        return null ;
+        return null;
     }
 
     public static Color getColor(java.awt.Color c) {
@@ -152,34 +155,34 @@ public class GdxColorMaster {
         if (flagColor == null)
             return Color.BROWN;
         return getColor(flagColor.getColor());
-//        switch (flagColor) {
-//            case BLUE:
-//                return Color.BLUE;
-//            case CYAN:
-//                return Color.CYAN;
-//            case GREEN:
-//                return Color.GREEN;
-//            case DARK_GREEN:
-//                return DARK_GREEN;
-//            case PURPLE:
-//                return PURPLE;
-//            case RED:
-//                return Color.RED;
-//            case CRIMSON:
-//                return CRIMSON;
-//            case YELLOW:
-//                return Color.YELLOW;
-//            case BROWN:
-//                return Color.BROWN;
-//            case ORANGE:
-//                return Color.ORANGE;
-//            case BLACK:
-//                return Color.BLACK;
-//            case GRAY:
-//                return Color.GRAY;
-//            case WHITE:
-//                return Color.WHITE;
-//        }
+        //        switch (flagColor) {
+        //            case BLUE:
+        //                return Color.BLUE;
+        //            case CYAN:
+        //                return Color.CYAN;
+        //            case GREEN:
+        //                return Color.GREEN;
+        //            case DARK_GREEN:
+        //                return DARK_GREEN;
+        //            case PURPLE:
+        //                return PURPLE;
+        //            case RED:
+        //                return Color.RED;
+        //            case CRIMSON:
+        //                return CRIMSON;
+        //            case YELLOW:
+        //                return Color.YELLOW;
+        //            case BROWN:
+        //                return Color.BROWN;
+        //            case ORANGE:
+        //                return Color.ORANGE;
+        //            case BLACK:
+        //                return Color.BLACK;
+        //            case GRAY:
+        //                return Color.GRAY;
+        //            case WHITE:
+        //                return Color.WHITE;
+        //        }
     }
 
     public static Color darker(Color color, float perc) {
@@ -187,7 +190,7 @@ public class GdxColorMaster {
         return new Color(color.r * perc, color.g * perc, color.b * perc, 1).clamp();
     }
 
-    public static Color modify(Color output,Color color, float perc) {
+    public static Color modify(Color output, Color color, float perc) {
         output.set(color.r * perc, color.g * perc, color.b * perc, 1);
         return output.clamp();
     }
@@ -212,11 +215,11 @@ public class GdxColorMaster {
         }
         switch (color) {
             case BLUE:
-                return new Color(0.7f, 0.8f, 1f, 1);
+                return new Color(0.76f, 0.88f, 1f, 1);
             case GREEN:
-                return new Color(0.7f, 0.9f, 0.7f, 1);
+                return new Color(0.75f, 0.95f, 0.75f, 1);
             case RED:
-                return new Color(1f, 0.7f, 0.7f, 1);
+                return new Color(1f, 0.75f, 0.75f, 1);
             case DARK:
                 return new Color(0.6f, 0.5f, 0.7f, 1);
             case LIGHT:
@@ -224,17 +227,17 @@ public class GdxColorMaster {
             case YELLOW:
                 return new Color(1, 0.9f, 0.7f, 1);
             case SALAD:
-                return new Color(0.73f, 0.87f, 0.62f, 1);
+                return new Color(0.83f, 0.97f, 0.72f, 1);
             case PURPLE:
-                return new Color(0.8f, 0.7f, 0.9f, 1);
+                return new Color(0.85f, 0.74f, 0.96f, 1);
             case ORANGE:
-                return new Color(1, 0.8f, 0.6f, 1);
+                return new Color(1, 0.86f, 0.65f, 1);
             case PINK:
                 return new Color(0.8f, 0.2f, 0.6f, 1);
             case CRIMSON:
-                return new Color(0.87f, 0.15f, 0.74f, 1);
+                return new Color(0.97f, 0.35f, 0.84f, 1);
             case CYAN:
-                return new Color(0.5f, 0.8f, 0.8f, 1);
+                return new Color(0.59f, 0.89f, 0.89f, 1);
         }
         return null;
     }
@@ -293,6 +296,17 @@ public class GdxColorMaster {
 
     }
 
+    public static Color getAverage(Set<Color> collect) {
+        float size = collect.size();
+        if (size == 1) {
+            return collect.iterator().next();
+        }
+    return new Color((float) collect.stream().mapToDouble(c -> c.r).sum() / size,
+                (float) collect.stream().mapToDouble(c -> c.g).sum() / size,
+                (float) collect.stream().mapToDouble(c -> c.b).sum() / size,
+                (float) collect.stream().mapToDouble(c -> c.a).sum() / size );
+    }
+
     public static void randomize(Color color, float maxRange) {
         color.r = color.r * (1 + RandomWizard.getRandomFloatBetween(-maxRange, maxRange));
         color.g = color.g * (1 + RandomWizard.getRandomFloatBetween(-maxRange, maxRange));
@@ -301,12 +315,16 @@ public class GdxColorMaster {
     }
 
     public static boolean isHued(Color color) {
-        if (color.r!=1f) {
+        if (color.r != 1f) {
             return true;
         }
-        if (color.g!=1f) {
+        if (color.g != 1f) {
             return true;
         }
         return color.b != 1f;
+    }
+
+    public static Color get(Color color) {
+        return temp.set(color);
     }
 }

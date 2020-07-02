@@ -12,6 +12,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
+import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -23,6 +24,8 @@ import main.level_editor.backend.handlers.model.EditorModel;
 import main.level_editor.gui.grid.LE_GridCell;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+
+import static main.system.auxiliary.NumberUtils.formatFloat;
 
 public class LE_StatusBar extends TablePanelX {
     /*
@@ -105,7 +108,11 @@ last
     public void act(float delta) {
         super.act(delta);
         layerInfo.setValueText(LevelEditor.getManager().getLayer().toString());
-        zoomInfo.setValueText(ScreenMaster.getScreen().controller.getZoom()*100+"%");
+        InputController controller = ScreenMaster.getScreen().controller;
+        zoomInfo.setValueText(formatFloat(0, controller.getZoom()*100) +"%; " +
+                formatFloat(0, controller.getAbsoluteCursorX()  ) +
+                ":"+ formatFloat(0, controller.getAbsoluteCursorY() ));
+
         if (LE_GridCell.hoveredCell == null) {
             return;
         }
@@ -131,6 +138,9 @@ last
         if (shift) {
             // wall or module end
             Module module = DC_Game.game.getMetaMaster().getModuleMaster().getModule(c);
+            if (module == null) {
+                return;
+            }
             int left = c.x - module.getX();
             int right = module.getWidth() - left - 1;
             int top = c.y - module.getY();

@@ -30,7 +30,7 @@ import java.util.function.Function;
 
 public class LE_ObjHandler extends LE_Handler {
 
-    private static final String DEFAULT_TYPE = "Wall Placeholder Indestructible";
+    private static final String DEFAULT_TYPE = "Wall";
     private BattleFieldObject lastAdded;
     private Coordinates lastCoordinates;
     private ObjType defaultPaletteType;
