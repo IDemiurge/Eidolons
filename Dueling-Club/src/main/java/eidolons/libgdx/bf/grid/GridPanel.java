@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -369,10 +370,12 @@ it sort of broke at some point - need to investigate!
 
     protected void customAct(float delta) {
         InputController controller = ScreenMaster.getScreen().getController();
-        drawX1 = controller.getGridDrawX1(getWidth());
-        drawY1 = getDrawY(controller.getGridDrawY1(0));
-        drawX2 = Math.min(getModuleCols(), controller.getGridDrawX2(getWidth()));
-        drawY2 = getDrawY(controller.getGridDrawY2(0));
+         {
+            drawX1 = controller.getGridDrawX1(getWidth());
+            drawY1 = getDrawY(controller.getGridDrawY1(0));
+            drawX2 = Math.min(getModuleCols(), controller.getGridDrawX2(getWidth()));
+            drawY2 = getDrawY(controller.getGridDrawY2(0));
+        }
         for (int x = drawX1; x < drawX2; x++) {
             for (int y = drawY1; y < drawY2; y++) {
                 cells[x][y].act(delta);
@@ -437,7 +440,9 @@ it sort of broke at some point - need to investigate!
     public boolean removeActor(Actor actor) {
         if (isCustomDraw()) {
             actList.removeValue(actor, true);
-            detached.remove(actor);
+            if (detached.remove(actor)) {
+                isCustomDraw();
+            }
         }
         return super.removeActor(actor);
     }
@@ -490,8 +495,8 @@ it sort of broke at some point - need to investigate!
 
     public void resetMaps() {
         if (gridManager.isResetting())
-            return ;
-        Eidolons.onNonGdxThread(() -> gridManager.getPillarManager().reset());
+            return;
+        Eidolons.onNonGdxThread(() -> GridManager.reset());
     }
 
     public void setVoid(int x, int y, boolean animated) {
@@ -601,7 +606,7 @@ it sort of broke at some point - need to investigate!
     }
 
     protected Function<Coordinates, Color> getColorFunction() {
-        return coord-> getGridManager().getColor(coord);
+        return coord -> getGridManager().getColor(coord);
     }
 
     protected void createUnitsViews(DequeImpl<BattleFieldObject> units) {
@@ -663,8 +668,11 @@ it sort of broke at some point - need to investigate!
 
         WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.GUI_READY, true);
         WaitMaster.markAsComplete(WaitMaster.WAIT_OPERATIONS.GUI_READY);
+        gridManager.afterLoaded();
+    }
 
-        resetMaps();
+    public FlightHandler getFlightHandler() {
+        return flightHandler;
     }
 
     protected boolean isShadowMapOn() {
@@ -978,6 +986,18 @@ it sort of broke at some point - need to investigate!
             unitGridView.draw(batch, 1);
             unitGridView.drawScreen(batch);
         }
+        if (flightHandler.isOn()) {
+            UnitView baseView = (UnitView) viewMap.get(Eidolons.getMainHero());
+            float x = baseView.getX();
+            float y = baseView.getY();
+            if ( baseView.getParent() instanceof PlatformCell) {
+                baseView.setPosition(baseView.getParent().getX(), baseView.getParent().getY());
+            }
+            baseView.getColor().a=1f;
+            baseView.draw(batch, 1);
+            baseView.setPosition(x, y);
+            baseView.drawScreen(batch);
+        }
         /////////////////
         draw(customOverlayingObjectsTop, batch);
         draw(manipulators, batch);
@@ -990,7 +1010,7 @@ it sort of broke at some point - need to investigate!
         overlays.forEach(overlayView -> {
             if (overlayView.isScreen()) {
                 overlayView.draw(batch, 1f);
-                overlayView.drawScreen(batch );
+                overlayView.drawScreen(batch);
             }
         });
         ((CustomSpriteBatch) batch).resetBlending();
@@ -1333,8 +1353,12 @@ it sort of broke at some point - need to investigate!
             if (data == null) {
                 cellDecorLayer.remove(c);
             } else
-                cellDecorLayer.add(c, data.getGraphicData(level));
+                cellDecorLayer.add(c, data.getGraphicData(level), createDecorListener(c));
         }
+    }
+
+    protected EventListener createDecorListener(Coordinates c) {
+        return null;
     }
 
     public BaseView getOverlay(Obj object) {

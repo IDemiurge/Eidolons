@@ -14,18 +14,17 @@ import eidolons.libgdx.texture.Images;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
 
 public class DecorFactory {
 
     private static final int DEFAULT_SIGHT_RANGE = 12;
 
-    public static Actor createDecor(Coordinates c, GraphicData data) {
+    public static CellDecor createDecor(Coordinates c, GraphicData data) {
         Actor actor;
-        if (!CoreEngine.isLevelEditor())
-        if (data.getBooleanValue(GraphicData.GRAPHIC_VALUE.editor)) {
-            return new NoHitImageX(Images.REALLY_EMPTY_32);
-        }
+        // if (!CoreEngine.isLevelEditor())
+        // if (data.getBooleanValue(GraphicData.GRAPHIC_VALUE.editor)) {
+        //     return new NoHitImageX(Images.REALLY_EMPTY_32);
+        // }
         String path = data.getTexturePath();
         if (path == null) {
             path = data.getSpritePath();
@@ -48,8 +47,6 @@ public class DecorFactory {
             ((Flippable) actor).setFlipX(x);
             ((Flippable) actor).setFlipY(y);
         }
-
-        actor.setColor(data.getColor());
 
         float alpha = data.getFloatValue(GraphicData.GRAPHIC_VALUE.alpha);
         if (alpha != 0)
@@ -78,8 +75,11 @@ public class DecorFactory {
             return new CellDecor(new EmitterActor(value),
                     actor, DEFAULT_SIGHT_RANGE, DC_Game.game.getCellByCoordinate(c), sprite);
         }
-        return new CellDecor(actor, DEFAULT_SIGHT_RANGE, DC_Game.game.getCellByCoordinate(c), sprite);
+        CellDecor decor = new CellDecor(actor, DEFAULT_SIGHT_RANGE, DC_Game.game.getCellByCoordinate(c), sprite);
+        decor.setBaseColor(data.getColor());
+        return decor;
     }
+
 
     private static void initSprite(SpriteX actor, GraphicData data) {
         actor.getSprite().setData(new SpriteData(data.getData()));

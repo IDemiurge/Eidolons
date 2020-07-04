@@ -2,6 +2,9 @@ package main.level_editor.gui.grid;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.libgdx.bf.decor.DecorData;
@@ -17,6 +20,7 @@ import eidolons.libgdx.texture.TextureCache;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
+import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.display.LE_DisplayMode;
 import main.level_editor.backend.functions.advanced.LE_GridAnimTester;
 import main.level_editor.backend.handlers.selection.LE_Selection;
@@ -69,7 +73,7 @@ public class LE_BfGrid extends GridPanel {
 
     @Override
     protected boolean isCustomHit() {
-        return true;
+        return false;
     }
 
     @Override
@@ -213,6 +217,23 @@ public class LE_BfGrid extends GridPanel {
         super.createDecor(c, data);
         resetZIndices();
         updateCellLabel(c, data.getData(), null);
+    }
+
+    protected   EventListener createDecorListener(Coordinates c) {
+        return new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if (LevelEditor.getManager().getLayer() == LE_Manager.LE_LAYER.decor) {
+                    LevelEditor.getManager().getEditHandler().editCell(c);
+                }
+            }
+
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                super.touchDragged(event, x, y, pointer);//TODO
+            }
+        };
     }
 
     private void updateCellLabel(List list, Boolean aiOrScriptsOrDecor) {

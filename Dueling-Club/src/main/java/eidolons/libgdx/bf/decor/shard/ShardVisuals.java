@@ -36,7 +36,7 @@ import java.util.Map;
  * <p>
  * placement should be a bit smarter too
  */
-public class ShardVisuals extends GridLayer implements GridElement {
+public class ShardVisuals extends GridLayer<Shard> implements GridElement {
 
     public static final boolean TEST_MODE = true;
     private static boolean on = true;

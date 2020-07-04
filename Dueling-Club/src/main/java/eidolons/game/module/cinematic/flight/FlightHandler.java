@@ -12,8 +12,22 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class FlightHandler extends GroupX {
+    public static final boolean TEST = false;
+    private boolean on;
 
-    public enum FLIGHT_ENVIRON{
+    public void test() {
+        startFlight(TEST_DATA, true);
+    }
+
+    public boolean isOn() {
+        return on;
+    }
+
+    public void setOn(boolean on) {
+        this.on = on;
+    }
+
+    public enum FLIGHT_ENVIRON {
         astral("objs_over:mist(20),comet_bright(10),comet_pale(20),mist(10),;" +
                 "objs_under:stars(15);" +
                 "angle:30;"),
@@ -27,6 +41,7 @@ public class FlightHandler extends GroupX {
             this.data = data;
         }
     }
+
     public static final String TEST_DATA =
             "objs_over:cinders(10),cloud(20),wraith(30),;" +
                     "objs_under:mist(20),stars(5),isle(10),cloud(10),;" +
@@ -44,10 +59,9 @@ public class FlightHandler extends GroupX {
     };
 
     public FlightHandler() {
-        GuiEventManager.bind(GuiEventType.FLIGHT_START, p -> initFlight(p.get().toString(), true));
+        GuiEventManager.bind(GuiEventType.FLIGHT_START, p -> startFlight(p.get().toString(), true));
         GuiEventManager.bind(GuiEventType.FLIGHT_END, p -> endFlight(1f));
     }
-
     public GroupX getObjsOver() {
         return objsOver;
     }
@@ -70,9 +84,10 @@ public class FlightHandler extends GroupX {
         for (FlyingObjs obj : objs) {
             obj.stop(maxDelay);
         }
+        on=false;
     }
 
-    public void initFlight(String s, boolean cinematic) {
+    public void startFlight(String s, boolean cinematic) {
         this.data = new FlightData(s);
         CinematicPlatform platform = new CinematicPlatform(data.getFloatValue(FlightData.FLIGHT_VALUE.angle));
 
@@ -82,6 +97,7 @@ public class FlightHandler extends GroupX {
         initObjsMap(platform, value, false, cinematic, data.getHue());
 
         if (cinematic) {
+            act(10f);
             /*
 shakes,
              */
@@ -90,6 +106,7 @@ shakes,
             // value = data.getValue(FlightData.FLIGHT_VALUE.camera_displace);
             // value = data.getValue(FlightData.FLIGHT_VALUE.trail);
         }
+        on=true;
         //transit between flights?
     }
 

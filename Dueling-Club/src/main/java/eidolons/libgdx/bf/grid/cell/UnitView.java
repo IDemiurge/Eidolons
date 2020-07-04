@@ -13,6 +13,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
+import eidolons.libgdx.bf.grid.moving.PlatformCell;
 import eidolons.libgdx.bf.overlays.bar.HpBar;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.shaders.GrayscaleShader;
@@ -434,8 +435,11 @@ public class UnitView extends BaseView implements HpBarView {
 
     public void drawScreen(Batch batch) {
         getPortrait().setScreenEnabled(true);
-        getPortrait().setPosition(getX(), getY());
-        getPortrait().draw(batch,1f);
+        if (getParent() instanceof PlatformCell) {
+            getPortrait().setPosition(getParent().getX(), getParent().getY());
+        } else
+            getPortrait().setPosition(getX(), getY());
+        getPortrait().draw(batch, 1f);
         getPortrait().setPosition(0, 0);
         getPortrait().setScreenEnabled(false);
     }

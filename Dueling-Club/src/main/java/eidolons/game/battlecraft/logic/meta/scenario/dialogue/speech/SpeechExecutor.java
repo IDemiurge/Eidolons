@@ -16,11 +16,9 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaste
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
-import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor;
 import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
-import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.generator.model.AbstractCoordinates;
@@ -76,7 +74,9 @@ import main.system.threading.TimerTaskMaster;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -372,39 +372,39 @@ public class SpeechExecutor {
             case ADD:
             case BF_OBJ:
                 c = getCoordinate(vars.get(0));
-            case NAMED_COORDINATES_ADD:
-                if (speechAction == NAMED_COORDINATES_ADD) {
-                    coordinatesList = new ArrayList<>();
-                    Map<String, String> map = master.getGame().getDungeon().getCustomDataMap(
-                            CellScriptData.CELL_SCRIPT_VALUE.dialogue);
-                    for (String s : map.keySet()) {
-                        if (map.get(s).equalsIgnoreCase(value)) {
-                            coordinatesList.add(Coordinates.get(s));
-                        }
-                    }
-                }
-                ObjType bfType = DataManager.getType(value,
-                        C_OBJ_TYPE.BF_OBJ);
-                if (coordinatesList != null) {
-                    int chance = 100;
-                    if (vars.size() > 2) {
-                        chance = Integer.valueOf(vars.get(2));
-                    }
-                    for (Coordinates coordinates : coordinatesList) {
-                        if (!RandomWizard.chance(chance)) {
-                            continue;
-                        }
-                        master.getGame().createObject(bfType, coordinates,
-                                speechAction == ADD ? master.getGame().getPlayer(false)
-                                        : DC_Player.NEUTRAL);
-                    }
-                    break;
-                }
-
-                master.getGame().createObject(bfType, c,
-                        speechAction == ADD ? master.getGame().getPlayer(false)
-                                : DC_Player.NEUTRAL);
-                break;
+            case NAMED_COORDINATES_ADD: //TODO
+                // if (speechAction == NAMED_COORDINATES_ADD) {
+                //     coordinatesList = new ArrayList<>();
+                //     Map<String, String> map = master.getGame().getDungeon().getCustomDataMap(
+                //             CellScriptData.CELL_SCRIPT_VALUE.dialogue);
+                //     for (String s : map.keySet()) {
+                //         if (map.get(s).equalsIgnoreCase(value)) {
+                //             coordinatesList.add(Coordinates.get(s));
+                //         }
+                //     }
+                // }
+                // ObjType bfType = DataManager.getType(value,
+                //         C_OBJ_TYPE.BF_OBJ);
+                // if (coordinatesList != null) {
+                //     int chance = 100;
+                //     if (vars.size() > 2) {
+                //         chance = Integer.valueOf(vars.get(2));
+                //     }
+                //     for (Coordinates coordinates : coordinatesList) {
+                //         if (!RandomWizard.chance(chance)) {
+                //             continue;
+                //         }
+                //         master.getGame().createObject(bfType, coordinates,
+                //                 speechAction == ADD ? master.getGame().getPlayer(false)
+                //                         : DC_Player.NEUTRAL);
+                //     }
+                //     break;
+                // }
+                //
+                // master.getGame().createObject(bfType, c,
+                //         speechAction == ADD ? master.getGame().getPlayer(false)
+                //                 : DC_Player.NEUTRAL);
+                // break;
 
             case TIP:
                 master.getMissionMaster().getScriptManager().execute(COMBAT_SCRIPT_FUNCTION.TIP, new Ref(), value);

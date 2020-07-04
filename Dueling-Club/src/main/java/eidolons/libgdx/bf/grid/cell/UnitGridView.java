@@ -163,6 +163,7 @@ public class UnitGridView extends GenericGridView {
             super.draw(batch, parentAlpha);
             return;
         }
+        //light revamp - what is this, old screen logic?!
         portrait.setZIndex(999999);
         if (spritesContainersUnder != null)
             spritesContainersUnder.setVisible(false);

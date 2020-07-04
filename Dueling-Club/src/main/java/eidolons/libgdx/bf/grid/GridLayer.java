@@ -7,7 +7,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.game.bf.Coordinates;
 
-public abstract class GridLayer extends GroupX {
+public abstract class GridLayer<T extends Actor> extends GroupX {
     protected GridPanel grid;
 
     public GridLayer(GridPanel grid) {
@@ -15,6 +15,15 @@ public abstract class GridLayer extends GroupX {
     }
 
     public void draw(Batch batch, float parentAlpha) {
+        //tester fix
+        if (true){
+            for (int x = 0; x < grid.getModuleCols(); x++) {
+                for (int y = 0; y < grid.getModuleRows(); y++) {
+                    draw(x, y, batch, parentAlpha);
+                }
+            }
+            return;
+        }
         for (int x = grid.drawX1; x < grid.drawX2; x++) {
             for (int y = grid.drawY1; y < grid.drawY2; y++) {
                 draw(x, y, batch, parentAlpha);
@@ -34,7 +43,7 @@ public abstract class GridLayer extends GroupX {
 
     protected abstract void draw(int x, int y, Batch batch, float parentAlpha);
 
-    protected void setColor(Actor actor, int x, int y) {
+    protected void setColor(T actor, int x, int y) {
         // Color c = DC_Game.game.getColorMap().getOutput()[x][y];
         if (actor == null) {
             return;
@@ -48,7 +57,7 @@ public abstract class GridLayer extends GroupX {
         applyLightness(actor, c.a, x, y);
     }
 
-    protected void applyLightness(Actor actor, float a, int x, int y) {
+    protected void applyLightness(T actor, float a, int x, int y) {
         //assuming the batch has colorful shader...
         float light = a - 0.5f;
         Color c = actor.getColor();

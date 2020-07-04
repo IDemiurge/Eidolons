@@ -2,6 +2,8 @@ package eidolons.libgdx.bf.decor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.grid.GridLayer;
 import eidolons.libgdx.bf.grid.GridPanel;
@@ -11,10 +13,10 @@ import main.system.launch.CoreEngine;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CellDecorLayer extends GridLayer {
+public class CellDecorLayer extends GridLayer<CellDecor> {
 
     public static boolean spriteTest = CoreEngine.isLevelEditor();
-    List<Actor>[][] map;
+    List<CellDecor>[][] map;
 
     public CellDecorLayer(GridPanel grid) {
         super(grid);
@@ -39,24 +41,27 @@ public class CellDecorLayer extends GridLayer {
     @Override
     protected void draw(int x, int y, Batch batch, float parentAlpha) {
         if (map[x][y] != null) {
-            for (Actor actor : map[x][y]) {
+            for (CellDecor actor : map[x][y]) {
                 setColor(actor, x, y);
                 actor.draw(batch, parentAlpha);
             }
         }
     }
 
-    public void add(Coordinates c, List<GraphicData> graphicData) {
+    public void add(Coordinates c, List<GraphicData> graphicData, EventListener listener) {
         remove(c);
-        List<Actor> list = new ArrayList<>();
+        List<CellDecor> list = new ArrayList<>();
         for (GraphicData graphicDatum : graphicData) {
-            Actor decor = DecorFactory.createDecor(c, graphicDatum);
+            CellDecor decor = DecorFactory.createDecor(c, graphicDatum);
             addActor(decor);
             int x = c.x * 128;
             int y = grid.getGdxY_ForModule(c.y) * 128;
             ////TODO centered?
             decor.setPosition(x + graphicDatum.getIntValue(GraphicData.GRAPHIC_VALUE.x),
                     y + graphicDatum.getIntValue(GraphicData.GRAPHIC_VALUE.y));
+            if (listener != null) {
+            decor.addListener( listener );
+            }
 
             list.add(decor);
         }
@@ -65,11 +70,19 @@ public class CellDecorLayer extends GridLayer {
 
     }
 
+    @Override
+    protected void setColor(CellDecor actor, int x, int y) {
+        if (actor.getBaseColor()!=null && !actor.getBaseColor().equals(GdxColorMaster.WHITE)) {
+            return;
+        }
+        super.setColor(actor, x, y);
+    }
+
     public void remove(Coordinates c) {
-        List<Actor> list = map[c.x][c.y];
+        List<CellDecor> list = map[c.x][c.y];
         if (list != null)
-            for (Actor noHitImage : list) {
-                noHitImage.remove();
+            for (CellDecor cellDecor : list) {
+                cellDecor.remove();
             }
     }
 

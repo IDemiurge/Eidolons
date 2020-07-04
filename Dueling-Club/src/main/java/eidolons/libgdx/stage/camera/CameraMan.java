@@ -232,8 +232,8 @@ public class CameraMan {
                     if (baseView instanceof UnitGridView) {
                         if (baseView.getParent() instanceof PlatformCell)
                             if (((UnitGridView) baseView).getPlatformController() != null) {
-                                Vector2 v = new Vector2(baseView.getX(), baseView.getY());
-                                v = baseView.localToStageCoordinates(v);
+                                Vector2 v = new Vector2(baseView.getParent(). getX(), baseView.getParent().getY());
+                                // v = baseView.localToStageCoordinates(v);
                                 // baseView.localToParentCoordinates(v);
                                 getCam().position.x = v.x;
                                 getCam().position.y = v.y;
@@ -241,6 +241,7 @@ public class CameraMan {
                                     main.system.auxiliary.log.LogMaster.dev(LOG_CHANNEL.CAMERA, " Following: " + v);
                                 }
                                 getController().cameraPosChanged();
+                                getController().resetZoom();
                                 return;
                             }
                     }

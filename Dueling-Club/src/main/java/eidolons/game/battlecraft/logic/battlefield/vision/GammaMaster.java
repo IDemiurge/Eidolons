@@ -131,7 +131,7 @@ public class GammaMaster {
             return 0;
         }
         //TODO Light revamp - those cobwebs need a new idea
-        return 0.7f;
+        return 0.4f;
     }
 
     protected float getHiglightAlpha(int x, int y) {

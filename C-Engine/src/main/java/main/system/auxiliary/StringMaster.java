@@ -1218,11 +1218,15 @@ public class StringMaster {
         return cropFormat(PathUtils.getLastPathSegment(path));
     }
 
-
-    public enum STD_DEITY_TYPE_NAMES {
-        Faithless
-
+    public static int countChar(String value, String r) {
+        int i=0;
+        for (char c : value.toCharArray()) {
+            if (r.equalsIgnoreCase(""+c))
+                i++;
+        }
+        return i;
     }
+
 
     public enum STD_TYPE_NAMES {
         Cell

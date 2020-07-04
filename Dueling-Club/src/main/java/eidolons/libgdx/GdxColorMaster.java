@@ -7,7 +7,9 @@ import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.HeroEnums.CLASS_GROUP;
 import main.content.enums.entity.SkillEnums.SKILL_GROUP;
 import main.content.values.parameters.PARAMETER;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
 import java.util.Set;
@@ -69,7 +71,7 @@ public class GdxColorMaster {
     public static final Color BACKGROUND_MORE_TRANSPARENT = getColor(0, 0, 0, 158);
     public static final Color STANDARD_TEXT = PALE_GOLD;
     public static final Color NULL_COLOR = new Color(1, 1, 1, 0.5f);
-    private static final Color LIGHT_YELLOW = getColor(195, 205, 125, 1f);
+    public static final Color LIGHT_YELLOW = getColor(195, 205, 125, 1f);
     public static final Color COPPER = LIGHT_YELLOW;
     public static final Color BROWN = getColor(165, 155, 45, 1f);
     public static final Color DARK_GREEN = getColor(35, 155, 45, 1f);
@@ -82,11 +84,37 @@ public class GdxColorMaster {
         try {
             return (Color) GdxColorMaster.class.getField(value.replace(" ", "_").toUpperCase().trim()).get(null);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
         } catch (NoSuchFieldException e) {
-            e.printStackTrace();
         }
-        return null;
+        COLOR_THEME color = new EnumMaster<COLOR_THEME>().
+                retrieveEnumConst(COLOR_THEME.class, value);
+        if (color == null) {
+            return getColorFromString(value);
+        }
+        return getColorForTheme(color);
+    }
+
+    private static Color getColorFromString(String value) {
+        float r = new Float(StringMaster.countChar(value, "r"));
+        float g = new Float(StringMaster.countChar(value, "g"));
+        float b = new Float(StringMaster.countChar(value, "b"));
+        // MathMaster.getMax
+        if (r>=g && r>=b){
+            g=r/g;
+            b=r/b;
+            r=1;
+        }
+        if (r>=g && r>=b){
+            g=r/g;
+            b=r/b;
+            r=1;
+        }
+        if (r>=g && r>=b){
+            g=r/g;
+            b=r/b;
+            r=1;
+        }
+        return new Color(r,g,b , 1f);
     }
 
     public static Color getColor(java.awt.Color c) {
@@ -228,7 +256,7 @@ public class GdxColorMaster {
             case YELLOW:
                 return new Color(1, 0.9f, 0.7f, 1);
             case SALAD:
-                return new Color(0.83f, 0.97f, 0.72f, 1);
+                return new Color(0.8f, 1f, 0.72f, 1);
             case PURPLE:
                 return new Color(0.85f, 0.74f, 0.96f, 1);
             case ORANGE:

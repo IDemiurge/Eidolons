@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf.decor;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -27,6 +28,7 @@ public class CellDecor extends ContainerGroup {
     private boolean hidden;
     private ShaderProgram shader;
     private EmitterActor emitterActor;
+    private Color baseColor;
 
     public CellDecor(Actor actor, int sightRange, DC_Cell cell, boolean hideOrDarken) {
         addActor(this.actor = actor);
@@ -40,6 +42,7 @@ public class CellDecor extends ContainerGroup {
         if (y2 < actor.getY() + actor.getHeight()) y2 = actor.getY() + actor.getHeight();
         if (x1 > actor.getX()) x1 = actor.getX();
         if (y1 > actor.getY()) y1 = actor.getY();
+
     }
 
     public CellDecor(EmitterActor emitterActor, Actor actor, int defaultSightRange,
@@ -69,6 +72,15 @@ public class CellDecor extends ContainerGroup {
         if (emitterActor != null) {
             emitterActor.allowFinish();
         }
+    }
+
+    public void setBaseColor(Color baseColor) {
+        this.baseColor = baseColor;
+        actor.setColor(new Color(baseColor));
+    }
+
+    public Color getBaseColor() {
+        return baseColor;
     }
 
     @Override

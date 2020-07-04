@@ -203,7 +203,9 @@ public class GlobalController implements Controller {
                 return true;
             case Keys.F8:
 
-                GuiEventManager.trigger(GuiEventType.FLIGHT_START, FlightHandler.TEST_DATA);
+                GuiEventManager.trigger(GuiEventType.FLIGHT_START,
+                        FlightHandler.FLIGHT_ENVIRON.voidmaze.data +
+                                "angle:120;");
 
                 // if (CoreEngine.isIDE()) {
                 //     EidolonLord.lord.soulforceGained(110);

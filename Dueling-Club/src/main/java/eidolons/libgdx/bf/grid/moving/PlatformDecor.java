@@ -18,7 +18,6 @@ import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.RandomWizard;
-import main.system.launch.CoreEngine;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -85,14 +84,17 @@ public class PlatformDecor extends NoHitGroup {
 
         switch (type) {
             case vessel:
+                Image actor;
+                container.addActor(actor = new Image(TextureCache.getOrCreateR(Images.PLATFORM_VESSEL)));
+                actor.setY(-40);
                 // addRotating(angle, Images.PLATFORM_HORN);
-                int n = 1;
-                int align = getAlignment(n, tipDirection);
-                container.addActor(gears = new GearCluster(1f), align);
-                align = getAlignment(n, tipDirection);
-                container.addActor(gears2 = new GearCluster(1f), align);
-                gears.setSpeed(0);
-                gears2.setSpeed(0);
+                // int n = 1;
+                // int align = getAlignment(n, tipDirection);
+                // container.addActor(gears = new GearCluster(1f), align);
+                // align = getAlignment(n, tipDirection);
+                // container.addActor(gears2 = new GearCluster(1f), align);
+                // gears.setSpeed(0);
+                // gears2.setSpeed(0);
                 break;
             case boat:
                 break;
@@ -113,14 +115,14 @@ public class PlatformDecor extends NoHitGroup {
         // light.setRotation(90);
         // GdxMaster.center(light);        // light.setPosition( );
         GdxMaster.center(trail);
-        if (CoreEngine.TEST_LAUNCH) {
-            debugAll();
-        }
+        // if (CoreEngine.TEST_LAUNCH) {
+        //     debugAll();
+        // }
     }
 
     @Override
     public void act(float delta) {
-        super.act(delta);
+        super.act(delta); setDebug(false,true);
     }
 
     private int getAlignment(int n, DIRECTION tipDirection) {
