@@ -605,7 +605,7 @@ public class GenericEnums {
 
     public enum ALPHA_TEMPLATE {
 
-        GRID_LIGHT(0.15f, 3, 2, 0.85f, 0.38f, 0.57f),
+        GRID_LIGHT(0.19f, 1.32f, 1, 0.55f, 0.32f, 0.62f),
 
         HQ_HERO_SPRITE(0.08f, 0.5f, 0.2f, 0.4f, 0.6f, 1f),
         HQ_SPRITE(0.05f, 0.5f, 0.2f, 0, 0.2f, 0.7f),

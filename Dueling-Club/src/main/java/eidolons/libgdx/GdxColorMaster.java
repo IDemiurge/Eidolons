@@ -209,13 +209,14 @@ public class GdxColorMaster {
         return new Color(color.r * 1.2f, color.g * 1.2f, color.b * 1.2f, 1);
     }
 
+    // Light revamp - into constants! and make sure they are good
     public static Color getColorForTheme(COLOR_THEME color) {
         if (color == null) {
             return Color.WHITE;
         }
         switch (color) {
             case BLUE:
-                return new Color(0.76f, 0.88f, 1f, 1);
+                return new Color(0.76f, 0.78f, 1f, 1);
             case GREEN:
                 return new Color(0.75f, 0.95f, 0.75f, 1);
             case RED:

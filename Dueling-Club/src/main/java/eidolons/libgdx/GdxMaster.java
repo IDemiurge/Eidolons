@@ -62,6 +62,7 @@ public class GdxMaster {
     private static Runnable stackRunnable;
     private static CURSOR cursor;
     private static Batch batch;
+    private static boolean keyInputBlocked;
 
     public static List<Group> getAncestors(Actor actor) {
         List<Group> list = new ArrayList<>();
@@ -74,6 +75,10 @@ public class GdxMaster {
             actor = actor.getParent();
         }
         return list;
+    }
+
+    public static void setKeyInputBlocked(boolean keyInputBlocked) {
+        GdxMaster.keyInputBlocked = keyInputBlocked;
     }
 
     public static float adjustPos(boolean x, float pos) {
@@ -598,6 +603,12 @@ public class GdxMaster {
             batch =  createBatchInstance(AtlasGenSpriteBatch.ATLAS.grid);
         }
         return batch;
+    }
+
+    public static boolean isKeyPressed(int keyPressed) {
+        if (keyInputBlocked)
+            return false;
+        return Gdx.input.isKeyPressed(keyPressed);
     }
 
     public enum CURSOR {

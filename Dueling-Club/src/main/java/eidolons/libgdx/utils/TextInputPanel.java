@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import com.kotcrab.vis.ui.VisUI;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -20,8 +21,8 @@ import eidolons.libgdx.stage.StageWithClosable;
  * Created by JustMe on 2/22/2018.
  */
 public class TextInputPanel extends TablePanelX implements Blocking, TextFieldListener, TextField.TextFieldFilter {
-    protected  String title, text, hint;
-    protected  TextInputListener textInputListener;
+    protected String title, text, hint;
+    protected TextInputListener textInputListener;
     protected TextField tf;
 
     public TextInputPanel(String title, String text, String hint, TextInputListener textInputListener) {
@@ -29,7 +30,7 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
         this.text = text;
         this.hint = hint;
         this.textInputListener = textInputListener;
-//StyleHolder.getTextButtonStyle()
+        //StyleHolder.getTextButtonStyle()
         add(new LabelX(title)).top().row();
         add(tf = new TextField(text, VisUI.getSkin())).width(600).height(330).row();
         tf.setTextFieldListener(this);
@@ -52,11 +53,17 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
     public void close() {
         fadeOut();
         textInputListener.canceled();
+        GdxMaster.setKeyInputBlocked(true);
     }
 
     public void ok() {
         fadeOut();
         textInputListener.input(tf.getText());
+    }
+
+    public void setText(String text) {
+        this.text = text;
+        tf.setText(text);
     }
 
     @Override
@@ -65,7 +72,8 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
         ActionMaster.addFadeOutAction(this, 0.25f);
         ActionMaster.addRemoveAfter(this);
     }
-    public void keyTyped(  char c) {
+
+    public void keyTyped(char c) {
         keyTyped(tf, c);
     }
 
@@ -86,9 +94,10 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
     public void open() {
         fadeIn();
         getStage().setKeyboardFocus(tf);
-//        if (tf.getText().isEmpty()) {
-//            tf.setText("Input something...");
-//        }
+        GdxMaster.setKeyInputBlocked(true);
+        //        if (tf.getText().isEmpty()) {
+        //            tf.setText("Input something...");
+        //        }
     }
 
     @Override

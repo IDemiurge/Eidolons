@@ -86,7 +86,7 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
 
     protected abstract Class<T> getClazz();
 
-    protected    int getWrap(){return 4;}
+    protected    int getWrap(){return 3;}
 
     protected abstract float getSpace() ;
 

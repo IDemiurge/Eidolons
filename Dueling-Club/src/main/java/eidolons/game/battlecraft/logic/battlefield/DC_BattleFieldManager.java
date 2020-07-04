@@ -133,6 +133,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         }
         wallDirectionMap.clear();
         for (BattleFieldObject wall : wallObjects) {
+            if (wall==null ) continue;
             if (wall.isDead()) continue;
             List<DIRECTION> list = new ArrayList<>();
             Coordinates coordinate = wall.getCoordinates();
@@ -172,7 +173,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
                 wallDirectionMap.put(coordinate, list);
             WallMaster.resetWall(wall, list);
         }
-
+        GuiEventManager.trigger(GuiEventType.BF_OBJ_RESET, wallObjects);
         if (!full)
             return;
         if (diagonalJoints == null) {

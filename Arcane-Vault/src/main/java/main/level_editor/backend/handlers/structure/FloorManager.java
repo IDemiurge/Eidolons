@@ -61,9 +61,11 @@ public class FloorManager {
         //from modules too
         if (StringMaster.isEmpty(templatePath)) {
             templatePath = LevelEditor.readLast();
-        } else
-            LevelEditor.saveLastLvlPath(templatePath);
+        }
+
         newFloorSelected(templatePath, false);
+
+        LevelEditor.saveLastLvlPath(templatePath);
     }
 
     public static void cloneFloor() {

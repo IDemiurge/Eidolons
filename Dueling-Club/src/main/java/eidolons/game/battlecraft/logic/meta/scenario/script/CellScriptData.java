@@ -23,12 +23,12 @@ public class CellScriptData extends DataUnit<CellScriptData.CELL_SCRIPT_VALUE> {
         keys,
         portals,
 
-        cell_type,
+        cell_set,
         puzzles,
         facing,
         named_point,
 
-        platform_block, flip, marks,
+        platform_block, flip, marks, flight
 //        traps,
     }
 }

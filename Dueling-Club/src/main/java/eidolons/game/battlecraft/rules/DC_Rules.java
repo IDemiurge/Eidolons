@@ -19,7 +19,6 @@ import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
 import eidolons.game.battlecraft.rules.counter.timed.TimedRule;
 import eidolons.game.battlecraft.rules.mechanics.AshAnnihilationRule;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
-import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
 import eidolons.game.battlecraft.rules.mechanics.WaitRule;
 import eidolons.game.battlecraft.rules.round.*;
 import eidolons.game.core.game.DC_Game;
@@ -76,7 +75,6 @@ public class DC_Rules implements GameRules {
     private LavaRule lavaRule;
     private SuffocationRule suffocationRule;
     private AshAnnihilationRule ashAnnihilationRule;
-    private IlluminationRule illuminationRule;
     private final DC_RuleMaster master;
     private Map<DamageCounterRule, TimedRule> timedRules;
     private DynamicBuffRules dynamicBuffRules;
@@ -96,7 +94,6 @@ public class DC_Rules implements GameRules {
         RuleKeeper.init();
         WaitRule.reset();
         dynamicBuffRules = new DynamicBuffRules(game);
-        illuminationRule = new IlluminationRule();
         unconsciousRule = new UnconsciousRule(game);
         watchRule = new WatchRule();
         engagedRule = new EngagedRule(getGame());
@@ -375,14 +372,6 @@ public class DC_Rules implements GameRules {
 
     public DequeImpl<DC_RuleImpl> getTriggerRules() {
         return triggerRules;
-    }
-
-    public IlluminationRule getIlluminationRule() {
-        return illuminationRule;
-    }
-
-    public void setIlluminationRule(IlluminationRule illuminationRule) {
-        this.illuminationRule = illuminationRule;
     }
 
     public void timePassed(Float time) {

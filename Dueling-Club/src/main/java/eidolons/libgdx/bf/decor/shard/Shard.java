@@ -118,7 +118,7 @@ public class Shard extends SuperActor {
 
     protected void resetColor() {
         //same as pillars?
-        Color c = LightHandler.applyLightnessToColor(  colorFunc.apply(coord));
+        Color c = LightHandler.applyLightnessToColor(  colorFunc.apply(coord), false);
         // float a = Math.max(0.3f, lightnessFunc.apply(coord) * 3);
         if (background.getContent() == null) {
             return;

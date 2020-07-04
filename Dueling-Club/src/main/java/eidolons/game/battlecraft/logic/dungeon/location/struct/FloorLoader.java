@@ -309,6 +309,7 @@ public class FloorLoader extends DungeonHandler {
     protected void processTextMap(Location location) {
         getMaster().getPortalMaster().init(location.getTextDataMap());
         getMaster().initPuzzles(location.getTextDataMap());
+        getBattleMaster().getScriptManager().parseDungeonScripts(location.getTextDataMap());
 
     }
 

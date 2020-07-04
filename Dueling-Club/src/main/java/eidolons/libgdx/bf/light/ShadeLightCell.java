@@ -268,7 +268,7 @@ public class ShadeLightCell extends SuperContainer {
         float offsetY = 0;
         setScale(1f, 1f);
         setVisible(true);
-        for (Obj sub : DC_Game.game.getRules().getIlluminationRule().getEffectCache().keySet()) {
+        for (Obj sub : DC_Game.game.getVisionMaster().getIllumination().getEffectCache().keySet()) {
             if (sub instanceof Unit)
                 continue; //TODO illuminate some other way for units...
 

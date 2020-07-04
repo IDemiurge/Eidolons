@@ -5,15 +5,10 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.PortalSlotsCondition;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
-import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.texture.TextureCache;
-import main.content.enums.DungeonEnums;
 import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.Condition;
 import main.game.bf.Coordinates;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 
@@ -62,10 +57,9 @@ public   class PortalPuzzle extends Puzzle {
         for (Coordinates coordinates : slots.keySet()) {
             POWER_SLOT type = slots.get(coordinates);
 
-            DungeonEnums.CELL_IMAGE t = getCellType(type);
-            int v = getCellVariant(type);
-            GuiEventManager.trigger(GuiEventType.INIT_CELL_OVERLAY,
-                    TextureCache.getOrCreateR(GridMaster.getImagePath(t, v)));
+            // int v = getCellVariant(type);
+            // GuiEventManager.trigger(GuiEventType.INIT_CELL_OVERLAY,
+            //         TextureCache.getOrCreateR(GridMaster.getImagePath(t, v)));
         }
 
     }
@@ -77,22 +71,6 @@ public   class PortalPuzzle extends Puzzle {
     @Override
     public Condition createSolutionCondition() {
         return new PortalSlotsCondition(this);
-    }
-
-    private DungeonEnums.CELL_IMAGE getCellType(POWER_SLOT type) {
-        switch (type) {
-            case sphere:
-                return DungeonEnums.CELL_IMAGE.circle;
-            case diamond:
-                return DungeonEnums.CELL_IMAGE.diamond;
-            case any:
-                return DungeonEnums.CELL_IMAGE.octagonal;
-            case any_self:
-                return DungeonEnums.CELL_IMAGE.star;
-            case self:
-                return DungeonEnums.CELL_IMAGE.cross;
-        }
-        return null;
     }
 
     public void init() {

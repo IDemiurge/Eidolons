@@ -5,14 +5,16 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.google.inject.internal.util.ImmutableList;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightConsts;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.handlers.GridManager;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.ScreenMaster;
+import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.DIRECTION;
 import main.system.EventType;
 import main.system.GuiEventManager;
 import org.apache.commons.lang3.tuple.Pair;
@@ -20,7 +22,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.*;
 import java.util.function.Function;
 
-public abstract class OverlayMap extends SuperActor {
+public abstract class OverlayMap<T> extends SuperActor {
 
     protected Map<Coordinates, Object> map;
     protected Function<Coordinates, Color> colorFunc;
@@ -29,6 +31,7 @@ public abstract class OverlayMap extends SuperActor {
 
     protected boolean screen;
     protected Map<Coordinates, TextureRegion> drawMapAlt;
+    private boolean resetRequired;
 
     public OverlayMap() {
         bindEvents();
@@ -40,11 +43,10 @@ public abstract class OverlayMap extends SuperActor {
 
         });
     }
+
     public void update(Map<Coordinates, Object> m) {
         map = m;
-        drawMap = null;
-        drawMapOver = null;
-        drawMapAlt = null;
+        resetRequired = true;
     }
 
 
@@ -52,33 +54,33 @@ public abstract class OverlayMap extends SuperActor {
 
     }
 
+    public void drawScreen(Batch batch) {
+        screen = true;
+        ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
+        draw(batch, 1);
+        screen = false;
+        ((CustomSpriteBatch) batch).resetBlending();
+        // batch.setColor(new Color(1, 1, 1, 1));
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (!isOn())
             return;
         if (!screen) {
-            // if (isDrawScreen()) {
-            //     screen = true;
-            //     ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
-            //     draw(batch, parentAlpha);
-            //     screen = false;
-            //     ((CustomSpriteBatch) batch).resetBlending();
-            // }
-            // batch.setColor(new Color(1, 1, 1, 1));
             if (map == null)
                 return;
-            if (drawMapOver == null) {
+            if (resetRequired) {
                 drawMapOver = new HashMap<>();
                 for (Coordinates c : map.keySet()) {
                     fillOverlayMap(c, drawMapOver);
                 }
-            }
-            if (drawMap == null && drawMapAlt == null) {
                 if (isAlt()) {
                     fillMapAlt();
                 } else {
                     fillMap();
                 }
+                resetRequired = false;
             }
         }
         if (drawMap != null)
@@ -98,8 +100,8 @@ public abstract class OverlayMap extends SuperActor {
                     continue;
                 }
                 TextureRegion r = drawMapAlt.get(c);
-                initColor(c, screen, batch);
-                drawAlt(batch, c, r);
+                if (initColor(c, screen, batch))
+                    drawAlt(batch, c, r);
             }
 
             batch.setColor(GdxColorMaster.WHITE);
@@ -137,12 +139,14 @@ public abstract class OverlayMap extends SuperActor {
     protected void fillMap() {
         drawMap = new LinkedList<>();
         for (Coordinates coordinates : map.keySet()) {
-            List<DIRECTION> list = null;
-            if (map.get(coordinates) instanceof DIRECTION) {
-                DIRECTION d = (DIRECTION) map.get(coordinates);
+            List<T> list = null;
+            if (map.get(coordinates) !=null) //TODO was supposed to check more..
+            {
+                T d = (T) map.get(coordinates);
                 list = ImmutableList.of(d);
-            } else {
-                list = (List<DIRECTION>) map.get(coordinates);
+            }
+            else {
+                list = (List<T>) map.get(coordinates);
             }
             Vector2 v = getV(coordinates, map.get(coordinates));
             fillDrawMap(drawMap, coordinates, list, v);
@@ -160,16 +164,24 @@ public abstract class OverlayMap extends SuperActor {
         return GridManager.isCustomDraw();
     }
 
-    protected void initColor(Coordinates c, boolean screen, Batch batch) {
+    protected boolean initColor(Coordinates c, boolean screen, Batch batch) {
         if (colorFunc == null) {
-            return;
+            return true;
         }
         Color color = colorFunc.apply(c);
+
         //can we store a function of color from time?
         if (color == null) {
             color = GdxColorMaster.WHITE;
+        } else if (!screen)
+            color.a = 1;
+        else {
+            color.a = LightConsts.getScreen(color.a);
+            if (color.a <= 0)
+                return false;
         }
         batch.setColor(color);
+        return true;
 
     }
 
@@ -184,7 +196,7 @@ public abstract class OverlayMap extends SuperActor {
     protected void fillOverlayMap(Coordinates c, Map<Vector2, TextureRegion> drawMapOver) {
     }
 
-    protected abstract void fillDrawMap(List<Pair<Vector2, TextureRegion>> batch, Coordinates coordinates, List<DIRECTION> list, Vector2 v);
+    protected abstract void fillDrawMap(List<Pair<Vector2, TextureRegion>> batch, Coordinates coordinates, List<T> list, Vector2 v);
 
     protected void fillDrawMapAlt(Map<Coordinates, TextureRegion> draw,
                                   Coordinates coordinates, Object arg) {
@@ -196,7 +208,6 @@ public abstract class OverlayMap extends SuperActor {
     }
 
     protected abstract EventType getUpdateEvent();
-
 
 
     protected boolean checkCoordinateIgnored(Coordinates coordinates) {

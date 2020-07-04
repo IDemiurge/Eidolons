@@ -10,7 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
-public class BorderMap extends OverlayMap {
+public class BorderMap extends OverlayMap<DIRECTION> {
 
     public static boolean on;
     public boolean isOn() {

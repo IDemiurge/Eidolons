@@ -7,7 +7,6 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
-import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.netherflame.main.death.ShadowMaster;
@@ -382,7 +381,7 @@ public class VisionRule {
             if (ConcealmentRule.isConcealed(source, object)) {
                 return OUTLINE_TYPE.DEEPER_DARKNESS;
             }
-            if (IlluminationRule.isConcealed(source, object)) {
+            if (Illumination.isConcealed(source, object)) {
                 return OUTLINE_TYPE.BLINDING_LIGHT;
             }
             return null;

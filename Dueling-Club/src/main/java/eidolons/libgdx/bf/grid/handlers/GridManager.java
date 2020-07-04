@@ -33,6 +33,7 @@ public class GridManager {
     protected GridAnimHandler animHandler;
     protected PlatformHandler platformHandler;
     Set<GridHandler> handlers = new LinkedHashSet<>();
+    private boolean resetting;
 
     public Float getLightness(Coordinates c) {
         if (gridPanel.getShadowMap().getCells(ShadowMap.SHADE_CELL.GAMMA_SHADOW) == null) {
@@ -51,9 +52,11 @@ public class GridManager {
         }
         return GdxColorMaster.get(DC_Game.game.getColorMap().getBase().get(c));
     }
+
     public Color getOrigColor(Coordinates c) {
         return GdxColorMaster.get(DC_Game.game.getColorMap().getOriginal().get(c));
     }
+
     public Color getColor(Coordinates c) {
         if (!DC_Game.game.getColorMap().getOutput().containsKey(c)) {
             return DC_Game.game.getColorMap().getOriginal().get(c);
@@ -96,8 +99,8 @@ public class GridManager {
     }
 
     public static void reset() {
-        if (isGridInitialized()){
-        getInstance().resetMaps();
+        if (isGridInitialized()) {
+            getInstance().resetMaps();
         }
         //TODO move various crap-functions into these handlers!
         /*
@@ -112,7 +115,13 @@ public class GridManager {
     }
 
     private void resetMaps() {
-        pillarManager.reset();
+        try {
+            setResetting(true);
+            pillarManager.reset();
+            setResetting(false);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     private static GridManager getInstance() {
@@ -175,4 +184,11 @@ public class GridManager {
         return handlers;
     }
 
+    public boolean isResetting() {
+        return resetting;
+    }
+
+    public void setResetting(boolean resetting) {
+        this.resetting = resetting;
+    }
 }

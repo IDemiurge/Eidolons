@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -34,6 +35,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.launch.Flags;
 
 import java.util.Map;
+import java.util.function.Function;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
@@ -54,8 +56,8 @@ public class UnitViewFactory {
         return getInstance().create(battleFieldObject);
     }
 
-    public static OverlayView doCreateOverlay(BattleFieldObject bfObj) {
-        return getInstance().createOverlay(bfObj);
+    public static OverlayView doCreateOverlay(BattleFieldObject bfObj, Function<Coordinates, Color> colorFunction) {
+        return getInstance().createOverlay(bfObj, colorFunction);
     }
 
     public UnitGridView create(BattleFieldObject bfObj) {
@@ -263,9 +265,9 @@ public class UnitViewFactory {
         view.addListener(UnitViewFactory.doCreateListener(bfObj));
     }
 
-    public OverlayView createOverlay(BattleFieldObject bfObj) {
+    public OverlayView createOverlay(BattleFieldObject bfObj, Function<Coordinates, Color> colorFunction) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
-        OverlayView view = new OverlayView(options, bfObj);
+        OverlayView view = new OverlayView(options, colorFunction);
         addOverlayingListener(view, bfObj);
 
         Map<Coordinates, Map<BattleFieldObject, DIRECTION>> directionMap = DC_Game.game.getDirectionMap();

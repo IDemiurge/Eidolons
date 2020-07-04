@@ -194,14 +194,18 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
 
 
     @Override
-    public DungeonEnums.CELL_IMAGE getCellType() {
-        return new EnumMaster<DungeonEnums.CELL_IMAGE>().retrieveEnumConst(DungeonEnums.CELL_IMAGE.class,
-                getPropagatedValue("cell_type"));
+    public DungeonEnums.CELL_SET getCellSet() {
+        return new EnumMaster<DungeonEnums.CELL_SET>().retrieveEnumConst(DungeonEnums.CELL_SET.class,
+                getPropagatedValue("cell_set"));
     }
 
     @Override
-    public void setCellType(DungeonEnums.CELL_IMAGE cellType) {
-        setValue("cell_type", cellType.toString());
+    public int getCellSetVariant() {
+        Integer cell_variant = NumberUtils.getInt(getPropagatedValue("cell_variant"));
+        if (cell_variant==0) {
+            return 1;
+        }
+        return cell_variant;
     }
 
     @Override

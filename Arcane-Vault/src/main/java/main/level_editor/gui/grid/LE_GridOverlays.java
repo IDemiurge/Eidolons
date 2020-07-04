@@ -1,6 +1,5 @@
 package main.level_editor.gui.grid;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -12,6 +11,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.bf.grid.moving.PlatformController;
@@ -86,14 +86,14 @@ public class LE_GridOverlays extends GridOverlaysManager {
             if (container == LE_GridCell.hoveredCell) {
                 drawOverlay(container, IN_SIGHT, batch, cell, x, y);
             } else {
-                boolean keyPressed = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
+                boolean keyPressed = GdxMaster.isKeyPressed(Input.Keys.SHIFT_LEFT);
                 if (keyPressed) {
                     if (LE_GridCell.hoveredCell.getGridX() == x
                             || LE_GridCell.hoveredCell.getGridY() == y) {
                         drawOverlay(container, IN_SIGHT, batch, cell, x, y);
                     }
                 }
-                keyPressed = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT);
+                keyPressed = GdxMaster.isKeyPressed(Input.Keys.ALT_LEFT);
                 if (keyPressed) {
                     if (PositionMaster.inLineDiagonally(cell.getCoordinates(),
                             Coordinates.get(LE_GridCell.hoveredCell.getGridX(), LE_GridCell.hoveredCell.getGridY()))) {

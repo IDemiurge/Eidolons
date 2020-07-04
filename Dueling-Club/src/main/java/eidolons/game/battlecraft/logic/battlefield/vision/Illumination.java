@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.rules.mechanics;
+package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -26,13 +26,13 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class IlluminationRule {
+public class Illumination {
     private static final boolean BASE_ILLUMINATION = true;
     private static boolean applied;
     private final Map<Obj, LightEmittingEffect> effectCache = new HashMap<>();
     private ColorMap.Light heroLight;
 
-    public IlluminationRule() {
+    public Illumination() {
     }
 
     public static boolean isConcealed(Unit source, BattleFieldObject object) {

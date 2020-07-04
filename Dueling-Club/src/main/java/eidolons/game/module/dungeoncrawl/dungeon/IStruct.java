@@ -55,9 +55,7 @@ public interface IStruct {
 
     void setWallTypeAlt(String wallType);
 
-    DungeonEnums.CELL_IMAGE getCellType();
-
-    void setCellType(DungeonEnums.CELL_IMAGE cellType);
+    DungeonEnums.CELL_SET getCellSet();
 
     void setValue(String value, String string);
 
@@ -94,6 +92,8 @@ public interface IStruct {
     void setAltColorTheme(CONTENT_CONSTS.COLOR_THEME c);
 
     void setColorTheme(CONTENT_CONSTS.COLOR_THEME c);
+
+    int getCellSetVariant();
 
     int getId();
 

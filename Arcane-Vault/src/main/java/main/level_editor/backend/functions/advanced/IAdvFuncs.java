@@ -18,6 +18,8 @@ public interface IAdvFuncs extends ControlButtonHandler {
 
     void replace();
 
+    void platform();
+
     void repeat();
 
 

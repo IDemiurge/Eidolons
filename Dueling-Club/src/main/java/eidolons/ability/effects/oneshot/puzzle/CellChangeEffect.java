@@ -6,16 +6,16 @@ import main.content.CONTENT_CONSTS;
 import main.content.enums.DungeonEnums;
 
 public class CellChangeEffect extends DC_Effect {
-    private DungeonEnums.CELL_IMAGE type;
+    private DungeonEnums.CELL_SET type;
     private Integer variant;
     private CONTENT_CONSTS.COLOR_THEME color;
 
-    public CellChangeEffect(DungeonEnums.CELL_IMAGE type, Integer variant, CONTENT_CONSTS.COLOR_THEME color) {
+    public CellChangeEffect(DungeonEnums.CELL_SET type, Integer variant, CONTENT_CONSTS.COLOR_THEME color) {
         this.type = type;
         this.variant = variant;
         this.color = color;
     }
-    public CellChangeEffect(DungeonEnums.CELL_IMAGE type ) {
+    public CellChangeEffect(DungeonEnums.CELL_SET type ) {
         this.type = type;
     }
     public CellChangeEffect(Integer variant) {

@@ -63,7 +63,15 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
     public void toggleVoid() {
 
         operation(CLEAR_START);
-        for (Coordinates c : getSelectionHandler().getSelection().getCoordinates()) {
+        Set<Coordinates> coordinates = getSelectionHandler().getSelection().getCoordinates();
+        if (coordinates. size()>10) {
+            if (getGame().getCellByCoordinate(coordinates.iterator().next()).isVOID()) {
+                operation(MASS_RESET_VOID, coordinates);
+            }else
+                operation(MASS_SET_VOID, coordinates);
+            return;
+        }
+        for (Coordinates c : coordinates) {
             operation(VOID_TOGGLE, c);
         }
         operation(CLEAR_END);
@@ -169,6 +177,10 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
             }
         }
         operation(FILL_END);
+    }
+    @Override
+    public void platform() {
+        getPlatformHandler().platform();
     }
 
     @Override

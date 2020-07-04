@@ -34,11 +34,8 @@ public class FloorData extends StructureData<FLOOR_VALUES, Location> {
             list.remove(FLOOR_VALUES.soundscape.toString());
             list.remove(FLOOR_VALUES.ambience.toString());
             list.remove(FLOOR_VALUES.vfx_template.toString());
-            list.remove(FLOOR_VALUES.wall_type.toString());
-            list.remove(FLOOR_VALUES.alt_wall_type.toString());
             list.remove(FLOOR_VALUES.module_grid.toString());
             list.remove(FLOOR_VALUES.cell_spans.toString());
-            list.remove(FLOOR_VALUES.pillar_type.toString());
             cropped = list.toArray(new String[0]);
         }
         return cropped;

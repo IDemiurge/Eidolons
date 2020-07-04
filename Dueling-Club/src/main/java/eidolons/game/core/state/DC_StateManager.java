@@ -125,19 +125,6 @@ public class DC_StateManager extends StateManager {
 
                         }
                     }
-                    //                    objectsToReset=getGame().getBfObjects().stream().filter(obj -> {
-                    //                        if (!obj.isOutsideCombat())
-                    //                            return true;
-                    //                        return  getGame().getVisionMaster().getVisionRule().
-                    //                         isResetRequiredSafe(Eidolons.getMainHero(), obj) ;
-                    //                    }).collect(Collectors.toCollection(()-> new LinkedHashSet<>()));
-                    //
-                    //                    unitsToReset= getGame().getUnits().stream().filter(obj -> {
-                    //                        if (!obj.isOutsideCombat())
-                    //                            return true;
-                    //                        return  getGame().getVisionMaster().getVisionRule().
-                    //                         isResetRequiredSafe(Eidolons.getMainHero(), obj) ;
-                    //                    }).collect(Collectors.toCollection(()-> new LinkedHashSet<>()));
                 }
 
                 log(1, objectsToReset.size() + " objects To Reset   ");
@@ -522,8 +509,8 @@ public class DC_StateManager extends StateManager {
             resetAllSynchronized();
             game.setStarted(true);
             if (!VisionMaster.isNewVision()) {
-                getGame().getRules().getIlluminationRule().resetIllumination();
-                getGame().getRules().getIlluminationRule().applyLightEmission();
+                getGame().getVisionMaster().getIllumination().resetIllumination();
+                getGame().getVisionMaster().getIllumination().applyLightEmission();
             }
             game.getTurnManager().newRound();
             //            getGameManager().refreshAll();

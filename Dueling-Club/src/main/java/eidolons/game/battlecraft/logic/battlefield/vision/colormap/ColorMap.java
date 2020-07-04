@@ -104,10 +104,14 @@ public class ColorMap {
                 continue;
             }
             Color orig = output.get(c);
+            Color color = original.get(c);
+            if (color == null) {
+                continue;
+            }
             if (orig == null) {
-                output.put(c, orig =new Color(original.get(c)));
+                output.put(c, orig =new Color(color));
             } else if (!updated(c))
-                orig.set(original.get(c));
+                orig.set(color);
 
             float lerp = key.lerp.get(c);
             if (!GdxColorMaster.WHITE.equals(key.baseColor)) {

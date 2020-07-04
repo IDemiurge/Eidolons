@@ -21,6 +21,7 @@ import eidolons.game.module.generator.model.RoomModel;
 import eidolons.game.module.generator.model.RoomTemplateMaster;
 import eidolons.game.module.generator.tilemap.TilesMaster;
 import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.bf.grid.handlers.GridManager;
 import eidolons.libgdx.utils.GdxDialogMaster;
 import eidolons.system.text.NameMaster;
 import main.content.CONTENT_CONSTS;
@@ -523,6 +524,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         for (LevelStruct subPart : layer.getSubParts()) {
             reset(subPart);
         }
+        GridManager.reset();
     }
 
     public void initWall(Coordinates c) {
@@ -539,14 +541,19 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
 
 
     private void resetCells(LevelStruct<LevelStruct, LevelStruct> layer) {
-        DungeonEnums.CELL_IMAGE type = layer.getCellType();
+        DungeonEnums.CELL_SET type = layer.getCellSet();
         CONTENT_CONSTS.COLOR_THEME theme = layer.getColorTheme();
+        if (type == null) {
+            type = DungeonEnums.CELL_SET.beige;
+        }
         if (type != null) {
             Set<DC_Cell> set = new LinkedHashSet<>();
             for (Coordinates coordinates : layer.getCoordinatesSet()) {
                 DC_Cell cell = getGame().getCellByCoordinate(coordinates);
                 if (cell != null) //TODO without buffer!
-                    if (cell.getCellType() != type) {
+                    // if (cell.getCellType() != type || layer.getCellVersion()!= cell.getCellVariant())
+                {
+                        cell.setCellVariant(layer.getCellSetVariant());
                         set.add(cell);
                         cell.setCellType(type);
                         cell.resetCell(false);

@@ -35,7 +35,6 @@ public class BlockData extends StructureData<BLOCK_VALUE,  LevelBlock> {
             list.remove(BLOCK_VALUE.id.toString());
             list.remove(BLOCK_VALUE.music_theme.toString());
             list.remove(BLOCK_VALUE.origin.toString());
-            list.remove(BLOCK_VALUE.pillar_type.toString());
             cropped = list.toArray(new String[0]);
         }
         return cropped;

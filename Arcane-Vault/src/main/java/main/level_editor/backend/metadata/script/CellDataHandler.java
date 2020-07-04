@@ -120,7 +120,7 @@ public abstract class CellDataHandler<T extends DataUnit> extends LE_Handler {
     }
 
     public void editData(Coordinates c, Consumer<T> editAction, WaitMaster.WAIT_OPERATIONS editOperation) {
-
+        getEditHandler().setEditCoordinates(c);
         T data = getMap().get(c);
         T prev = data == null
                 ? createData("")

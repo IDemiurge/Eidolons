@@ -37,7 +37,7 @@ import java.util.function.Function;
 
 import static main.system.GuiEventType.*;
 
-public class GridCell extends BlockableGroup implements Borderable, Colored {
+public abstract class GridCell extends BlockableGroup implements Borderable, Colored {
     protected ImageContainer cellImgContainer;
     protected Image overlayTexture;
     FadeImageContainer overlay;
@@ -187,21 +187,9 @@ public class GridCell extends BlockableGroup implements Borderable, Colored {
         if (!isWithinCamera()) {
             return;
         }
-        applyColor();
-        // if (isShadingSupported() && !getUserObject().isPlayerHasSeen()) {
-        //     getColor().set(GdxColorMaster.LIGHT_GREY.r,
-        //             GdxColorMaster.LIGHT_GREY.g,
-        //             GdxColorMaster.LIGHT_GREY.b,
-        //             getColor().a);
-        // } else
-        //     getColor().set(1, 1, 1,
-        //             getColor().a);
         super.draw(batch, 1);
     }
 
-    @Override
-    public void applyColor() {
-    }
 
     @Override
     public DC_Cell getUserObject() {
@@ -349,10 +337,6 @@ public class GridCell extends BlockableGroup implements Borderable, Colored {
             ActionMaster.addRemoveAfter(pillar);
             main.system.auxiliary.log.LogMaster.log(1, "Fading pillar from " + getUserObject().getNameAndCoordinate());
         }
-    }
-
-    public void setColorFunc(Function<Coordinates, Color> colorFunc) {
-        this.colorFunc = colorFunc;
     }
 
     public Function<Coordinates, Color> getColorFunc() {

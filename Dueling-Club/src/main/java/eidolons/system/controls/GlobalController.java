@@ -178,6 +178,9 @@ public class GlobalController implements Controller {
             case Keys.END:
                 TextureCache.getInstance().logDiagnostics();
                 break;
+            case Keys.PAGE_DOWN:
+                TextureCache.getInstance().clearCache();
+                break;
             case Keys.HOME:
                 if (GdxMaster.getMainBatch() instanceof AtlasGenSpriteBatch) {
                     Eidolons.onGdxThread(() -> ((AtlasGenSpriteBatch) GdxMaster.getMainBatch()).writeAtlases());

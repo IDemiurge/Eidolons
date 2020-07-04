@@ -90,6 +90,8 @@ public class LevelEditor {
         }
         if (StringMaster.isEmpty(toOpen)) {
             toOpen = readLast();
+        } else {
+            LevelEditor.saveLastLvlPath(toOpen);
         }
         LE_MetaMaster meta;
         if (toOpen.contains("campaigns")) {

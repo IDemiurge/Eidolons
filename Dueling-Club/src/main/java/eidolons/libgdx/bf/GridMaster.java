@@ -12,8 +12,6 @@ import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.gui.CursorPosVector2;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
-import main.content.enums.DungeonEnums;
-import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StrPathBuilder;
 
@@ -179,12 +177,6 @@ public class GridMaster {
                     view.validateArrowRotation();
 
         }
-    }
-
-    public static String getImagePath(DungeonEnums.CELL_IMAGE cellType, int cellVariant) {
-        String suffix = getCellImgSuffix(cellVariant);
-
-        return StrPathBuilder.build(PathFinder.getCellImagesPath(), cellType + suffix + ".png");
     }
 
     private static String getCellImgSuffix(int cellVariant) {

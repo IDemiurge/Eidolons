@@ -45,6 +45,7 @@ public class LE_BfGrid extends GridPanel {
     public int getModuleCols() {
         return getFullCols();
     }
+
     @Override
     public int getModuleRows() {
         return getFullRows();
@@ -52,7 +53,7 @@ public class LE_BfGrid extends GridPanel {
 
     @Override
     public int getGdxY_ForModule(int y) {
-        return getFullRows()-y  ; // buffer?
+        return getFullRows() - y; // buffer?
     }
 
     @Override
@@ -63,8 +64,9 @@ public class LE_BfGrid extends GridPanel {
     @Override
     protected int getDrawY(int y) {
         // return MathMaster.getMinMax(  y, 0, full_rows - 1);
-        return MathMaster.getMinMax( full_rows-y, 0, full_rows - 1);
+        return MathMaster.getMinMax(full_rows - y, 0, full_rows - 1);
     }
+
     @Override
     protected boolean isCustomHit() {
         return true;
@@ -118,13 +120,13 @@ public class LE_BfGrid extends GridPanel {
         //for others too?
 
         initModuleGrid();
-
+        init = true;
         //visual split
-//        for (int x = 0; x <  getWidth(); x++) {
-//            for (int y = 0; y < getHeight(); y++) {
-//                checkAddBorder(x, y);
-//            }
-//        }
+        //        for (int x = 0; x <  getWidth(); x++) {
+        //            for (int y = 0; y < getHeight(); y++) {
+        //                checkAddBorder(x, y);
+        //            }
+        //        }
     }
 
     @Override
@@ -137,12 +139,12 @@ public class LE_BfGrid extends GridPanel {
     }
 
     protected OverlayView doCreateOverlay(BattleFieldObject battleFieldObject) {
-        return LE_UnitViewFactory.doCreateOverlay(battleFieldObject);
+        return LE_UnitViewFactory.doCreateOverlay(battleFieldObject, getColorFunction());
     }
 
     @Override
     protected GridCellContainer createGridCell(TextureRegion emptyImage, int x, int y) {
-        return new LE_GridCell(emptyImage, x, y,  coord -> getGridManager().getColor(coord));
+        return new LE_GridCell(emptyImage, x, y, coord -> getGridManager().getColor(coord));
     }
 
     @Override
@@ -184,17 +186,17 @@ public class LE_BfGrid extends GridPanel {
             List list = (List) obj.get();
             UnitView v = getUnitView((BattleFieldObject) list.get(0));
             if (v instanceof LE_UnitView) {
-                ((LE_UnitView) v).getAiLabel().setText((String) list.get(1) );
+                ((LE_UnitView) v).getAiLabel().setText((String) list.get(1));
             }
         });
         GuiEventManager.bind(LE_CELL_SCRIPTS_LABEL_UPDATE, obj -> {
-            updateCellLabel( (List) obj.get(), false);
+            updateCellLabel((List) obj.get(), false);
         });
         GuiEventManager.bind(LE_CELL_AI_LABEL_UPDATE, obj -> {
-            updateCellLabel( (List) obj.get(), true);
+            updateCellLabel((List) obj.get(), true);
         });
-            GuiEventManager.bind(LE_DISPLAY_MODE_UPDATE, obj -> {
-                LE_DisplayMode mode = (LE_DisplayMode) obj.get();
+        GuiEventManager.bind(LE_DISPLAY_MODE_UPDATE, obj -> {
+            LE_DisplayMode mode = (LE_DisplayMode) obj.get();
             for (GridCellContainer[] col : cells) {
                 for (GridCellContainer container : col) {
                     if (container instanceof LE_GridCell) {
@@ -210,21 +212,21 @@ public class LE_BfGrid extends GridPanel {
     protected void createDecor(Coordinates c, DecorData data) {
         super.createDecor(c, data);
         resetZIndices();
-        updateCellLabel(c, data.getData(), null );
+        updateCellLabel(c, data.getData(), null);
     }
 
     private void updateCellLabel(List list, Boolean aiOrScriptsOrDecor) {
         Coordinates c = (Coordinates) list.get(0);
-        String data =  list.get(1).toString();
+        String data = list.get(1).toString();
         updateCellLabel(c, data, aiOrScriptsOrDecor);
     }
-        private void updateCellLabel(Coordinates c , String data, Boolean aiOrScriptsOrDecor) {
-        GridCellContainer container = cells[c.x][ (c.y)];
+
+    private void updateCellLabel(Coordinates c, String data, Boolean aiOrScriptsOrDecor) {
+        GridCellContainer container = cells[c.x][(c.y)];
         if (aiOrScriptsOrDecor == null) {
-            data= data.replace(";", StringMaster.NEW_LINE);
+            data = data.replace(";", StringMaster.NEW_LINE);
             ((LE_GridCell) container).getDecorLabel().setText(data);
-        } else
-        if (aiOrScriptsOrDecor) {
+        } else if (aiOrScriptsOrDecor) {
             ((LE_GridCell) container).getAiLabel().setText(data);
         } else {
             ((LE_GridCell) container).getScriptsLabel().setText(data);

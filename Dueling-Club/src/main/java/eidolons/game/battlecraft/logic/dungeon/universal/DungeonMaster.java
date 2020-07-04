@@ -150,7 +150,7 @@ public abstract class DungeonMaster {
 
     }
 
-    protected void initColorMap(Set<Coordinates> set) {
+    public void resetColorMap(Set<Coordinates> set) {
         Map<Coordinates, Color> map = new HashMap<>(set.size() + 10, 0.991f);
         //TODO do it per struct instead !
         for (Coordinates coordinate : set) {
@@ -392,6 +392,6 @@ public abstract class DungeonMaster {
 
     public void loadingDone() {
         getFloorLoader().loadingDone();
-        initColorMap(game.getModule().getCoordinatesSet());
+        resetColorMap(game.getModule().getCoordinatesSet());
     }
 }

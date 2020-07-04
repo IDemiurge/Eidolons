@@ -6,6 +6,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.bf.decor.DecorData;
 import eidolons.libgdx.bf.grid.handlers.GridManager;
 import main.entity.type.ObjType;
@@ -96,8 +97,7 @@ public class OperationHandler extends LE_Handler {
                 GuiEventManager.trigger(
                         !isVoid || set ? GuiEventType.CELL_SET_VOID
                                 : GuiEventType.CELL_RESET_VOID, c);
-                if (!set)
-                    GridManager.reset();
+
                 break;
             case MASS_RESET_VOID:
             case MASS_SET_VOID:
@@ -114,10 +114,8 @@ public class OperationHandler extends LE_Handler {
                     GuiEventManager.trigger(GuiEventType.CELLS_MASS_RESET_VOID, collection);
                 } else
                     GuiEventManager.trigger(GuiEventType.CELLS_MASS_SET_VOID, collection);
-                break;
-            case MODIFY_STRUCTURE_START:
-                break;
-            case MODIFY_STRUCTURE_END:
+
+                GridManager.reset();
                 break;
             case MOVE_OBJ:
                 obj = (BattleFieldObject) args[0];
@@ -178,6 +176,11 @@ public class OperationHandler extends LE_Handler {
             case MODIFY_STRUCTURE:
                 StructureData sdata = (StructureData) args[0];
                 sdata.apply();
+                Object levelLayer = sdata.getStructure().getLevelLayer();
+                if (levelLayer instanceof LevelStruct) {
+                    getGame().getDungeonMaster().resetColorMap(((LevelStruct) levelLayer).getCoordinatesSet());
+
+                }
 
                 getStructureHandler().reset(sdata.getLevelStruct());
                 getStructureHandler().updateTree();
@@ -251,6 +254,12 @@ public class OperationHandler extends LE_Handler {
 
         }
         switch (op.operation) {
+            case MASS_SET_VOID:
+                execute(Operation.LE_OPERATION.MASS_RESET_VOID, op.args[0] );
+                break;
+            case MASS_RESET_VOID:
+                execute(Operation.LE_OPERATION.MASS_SET_VOID, op.args[0] );
+                break;
             case CELL_DECOR_CHANGE:
                 execute(Operation.LE_OPERATION.CELL_DECOR_CHANGE, op.args[0],
                         op.args[2],

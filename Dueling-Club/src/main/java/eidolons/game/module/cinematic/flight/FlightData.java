@@ -21,16 +21,17 @@ public class FlightData extends DataUnit<FlightData.FLIGHT_VALUE> {
      * Save as x;y;..
      */
     public enum FLIGHT_VALUE {
+        objs_over,   objs_under,
+        angle, //
+        background,
         camera_shake,
         camera_displace,
         soundscape,
         trail, hue,
         trail_omni, //water waves
-        angle, //
-        objs_under, //weightmap via simple text?
-        background,
+       //weightmap via simple text?
         fixed_duration,
-        angle_delta, objs_over,//can do a  bit of turning randomly?
+        angle_delta, //can do a  bit of turning randomly?
     }
 
 }

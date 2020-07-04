@@ -579,5 +579,9 @@ public class TextureCache {
     public void setSilent(boolean silent) {
         this.silent = silent;
     }
+
+    public void clearCache() {
+        cache.clear();
+    }
 }
 

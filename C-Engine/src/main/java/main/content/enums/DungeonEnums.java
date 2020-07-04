@@ -9,17 +9,11 @@ import main.system.auxiliary.StrPathBuilder;
  */
 public class DungeonEnums {
 
-
-    public enum PILLAR_TYPE {
-        dia_skull,
-        crypt, bare, mossy, iron, garden,
-        ossuary, checker, bone, astral, pirate, skull, hard,
-        smooth, smooth2, roots, roots2
+    public enum CELL_IMAGE {
 
     }
-
-    public enum WALL_TYPE {
-        cross, diamond, normal, corner
+    public enum CELL_SET {
+        beige,
     }
 
     public enum WALL_SET {
@@ -29,50 +23,6 @@ public class DungeonEnums {
         ruins, dia_skull, heretic,
         dark
 
-    }
-    public enum CELL_IMAGE {
-        // checker, bone, astral,skull, roots2,smooth2,
-     dia_skull,
-        decor_rough,
-
-        pirate, hard,
-        smooth,  roots,
-        crypt,
-        garden,
-        ossuary,
-        tiles,
-        diamond,
-        circle("cr"),
-        star,
-        cross,
-        natural,
-        ornate,
-        octagonal("oct"),
-        iron,
-        rock,
-        mossy,
-        bare,
-        ancient,
-        carved,
-        dark_star,
-red_stone,
-        //wood
-        //bridge
-        ;
-        String name;
-
-        CELL_IMAGE() {
-            name = name();
-        }
-
-        CELL_IMAGE(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
     }
     /**
      * Encapsulates Ambience, decor, illumination
@@ -238,4 +188,7 @@ red_stone,
 
     }
 
+    public enum SUBLEVEL_TYPE {
+        COMMON, PRE_BOSS, BOSS, SECRET, TRANSIT, FALSE_LEVEL
+    }
 }

@@ -13,12 +13,10 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightConsts;
-import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightHandler;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.libgdx.GDX;
-import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
@@ -52,13 +50,12 @@ public class GridCellContainer extends GridCell implements Hoverable {
     protected int n;
     protected float maxY;
     protected boolean dirty, secondCheck, hovered, stackView;
+    private boolean screen;
     protected SortMaster<GenericGridView> sorter;
     public List<GenericGridView> visibleViews;
     protected List<GenericGridView> allViews;
     protected GenericGridView topUnitView;
-    protected boolean mainHero, hasBackground, wall, lightEmitter;
-    private boolean screen;
-    private boolean water;
+    protected boolean mainHero, hasBackground, wall, lightEmitter,water;
 
     public GridCellContainer(TextureRegion backTexture, int gridX, int gridY, Function<Coordinates, Color> colorFunc) {
         super(backTexture, gridX, gridY, colorFunc);
@@ -91,21 +88,14 @@ public class GridCellContainer extends GridCell implements Hoverable {
     public void applyColor() {
         Coordinates coord = getUserObject().getCoordinates();
         Color c = colorFunc.apply(coord);
+        applyColor(c);
+    }
 
-        float min = getUserObject().isPlayerHasSeen()
+
+     public float getMinLightness() {
+       return getUserObject().isPlayerHasSeen()
                 ?  LightConsts.MIN_LIGHTNESS_CELL_SEEN
                 :  LightConsts.MIN_LIGHTNESS_CELL_UNSEEN;
-        //TODO for units too?
-        if (c == null) {
-            c = GdxColorMaster.NULL_COLOR;
-        }
-        float light = Math.max(min, c.a);
-        float screen = LightConsts.getScreen(light);
-        float negative = LightConsts.getNegative(light);
-        if (negative > 0) {
-            c = LightHandler.applyNegative(c, negative);
-        }
-        applyColor(screen, c);
     }
 
     public void applyColor(float lightness, Color c) {
@@ -435,6 +425,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
             recalcUnitViewBounds();
             dirty = false;
         }
+        applyColor();
         // if (wall) {
         //     recalcUnitViewBounds();
         // }
@@ -520,19 +511,23 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     public boolean removeActor(Actor actor) {
+        removed(actor);
+        return removeActor(actor, true);
+    }
+
+    private void removed(Actor actor) {
         if (actor.getUserObject() == Eidolons.MAIN_HERO)
-            mainHero = false;
+        mainHero = false;
         lightEmitter = false;
         if (wall){
-        wall = false;
-        calc.offsetX = 0;
-        calc.offsetY = 0;
+            wall = false;
+            calc.offsetX = 0;
+            calc.offsetY = 0;
         }
         if (water){
             water = false;
             cellImgContainer.fadeIn();
         }
-        return removeActor(actor, true);
     }
 
     public boolean removeActor(Actor actor, boolean unfocus) {
@@ -544,12 +539,8 @@ public class GridCellContainer extends GridCell implements Hoverable {
                 ActionMaster.addFadeOutAction(actor, getFadeDuration());
             //            recalcUnitViewBounds();
             ((GenericGridView) actor).sizeChanged();
-
-            if (actor.getUserObject() == Eidolons.MAIN_HERO)
-                mainHero = false;
         }
-        wall = false;
-        lightEmitter = false;
+        removed(actor);
         return result;
     }
 

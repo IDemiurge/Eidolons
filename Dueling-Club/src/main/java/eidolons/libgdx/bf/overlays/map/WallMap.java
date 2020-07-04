@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Created by JustMe on 9/12/2017.
  */
-public class WallMap extends OverlayMap {
+public class WallMap extends OverlayMap<DIRECTION> {
     private static final String INDESTRUCTIBLE = " Indestructible";
     private static final String STRANGE_WALL = " Marked";
     private ObjectMap<Coordinates, List<DIRECTION>> diagonalJoints;

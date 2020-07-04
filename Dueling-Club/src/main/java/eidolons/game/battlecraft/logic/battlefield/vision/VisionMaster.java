@@ -30,6 +30,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class VisionMaster implements GenericVisionManager {
 
     protected final VisionRule visionRule;
+    private final Illumination illumination;
     ConcurrentLinkedDeque<BattleFieldObject> visibleList = new ConcurrentLinkedDeque<>();
     ConcurrentLinkedDeque<BattleFieldObject> invisibleList = new ConcurrentLinkedDeque<>();
     protected SightMaster sightMaster;
@@ -58,13 +59,14 @@ public class VisionMaster implements GenericVisionManager {
         hintMaster = new HintMaster(this);
         visionController = new VisionController(this);
         visionRule = new VisionRule(this);
-
+        illumination = new Illumination();
     }
 
     @Override
     public boolean isVisionTest() {
         return false;
     }
+
     public static boolean isNewVision() {
         return true;
     }
@@ -87,16 +89,16 @@ public class VisionMaster implements GenericVisionManager {
             LogMaster.log(1, "***********null active activeUnit for visibility!");
             return;
         }
-//        resetForActiveUnit();
+        //        resetForActiveUnit();
 
         if (ExplorationMaster.isExplorationOn() &&
                 getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
             LogMaster.verbose("Vision reset skipped by period; time left: " +
                     getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().getVisibilityResetTimer());
-
-            getGame().getRules().getIlluminationRule().applyLightEmission(); } else {
-            getGame().getRules().getIlluminationRule().resetIllumination();
-            getGame().getRules().getIlluminationRule().applyLightEmission();
+            illumination.applyLightEmission();
+        } else {
+            illumination.resetIllumination();
+            illumination.applyLightEmission();
         }
 
         visionRule.fullReset(getGame().getObjMaster().getUnitsArray());
@@ -107,9 +109,9 @@ public class VisionMaster implements GenericVisionManager {
         getActiveUnit().setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
 
         resetLastKnownCoordinates();
-//        for (Unit sub : game.getUnits()) {
-//            sightMaster.resetSightStatuses(sub);
-//        }
+        //        for (Unit sub : game.getUnits()) {
+        //            sightMaster.resetSightStatuses(sub);
+        //        }
         for (Object sub : getGame().getDungeonMaster().getPlayerManager().getPlayers()) {
             DC_Player player = (DC_Player) sub;
             resetPlayerVision(player);
@@ -117,10 +119,10 @@ public class VisionMaster implements GenericVisionManager {
         triggerGuiEvents();
 
         firstResetDone = true;
-//        visionController.log(getActiveUnit());
+        //        visionController.log(getActiveUnit());
 
-//    try{    getVisionController().logAll();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
-//        getVisionController().log(getActiveUnit(), visibleList.toArray(new DC_Obj[visibleList.size()]));
+        //    try{    getVisionController().logAll();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
+        //        getVisionController().log(getActiveUnit(), visibleList.toArray(new DC_Obj[visibleList.size()]));
         Chronos.logTimeElapsedForMark("VISIBILITY REFRESH", true);
     }
 
@@ -153,11 +155,11 @@ public class VisionMaster implements GenericVisionManager {
 
     protected void resetLastKnownCoordinates() {
         //   TODO must communicate with GridPanel
-//        for (Unit u : game.getUnits()) {
-//            if (checkVisible(u)) {
-//                u.setLastKnownCoordinates(u.getCoordinates());
-//            }
-//        }
+        //        for (Unit u : game.getUnits()) {
+        //            if (checkVisible(u)) {
+        //                u.setLastKnownCoordinates(u.getCoordinates());
+        //            }
+        //        }
     }
 
     public void triggerGuiEvents() {
@@ -170,18 +172,18 @@ public class VisionMaster implements GenericVisionManager {
                 visibleList.add(sub);
             else invisibleList.add(sub);
         }
-//        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
+        //        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
         if (LOG_CHANNEL.VISIBILITY_DEBUG.isOn()) {
             LogMaster.log(1, ">>>>>> visibleList  = " + visibleList);
             LogMaster.log(1, ">>>>>> invisibleList  = " + invisibleList);
             String string = "";
-//            for (BattleFieldObject sub : visibleList) {
-//                string += sub + ": \n";
-//                string += "getVisibilityLevelForPlayer= " + sub.getVisibilityLevelForPlayer() + "\n";
-//                string += "getVisibilityLevel= " + sub.getVisibilityLevel() + "\n";
-//                string += "getPlayerVisionStatus= " + sub.getPlayerVisionStatus(true) + "\n";
-//                string += "getGamma= " + sub.getGamma() + "\n";
-//            }
+            //            for (BattleFieldObject sub : visibleList) {
+            //                string += sub + ": \n";
+            //                string += "getVisibilityLevelForPlayer= " + sub.getVisibilityLevelForPlayer() + "\n";
+            //                string += "getVisibilityLevel= " + sub.getVisibilityLevel() + "\n";
+            //                string += "getPlayerVisionStatus= " + sub.getPlayerVisionStatus(true) + "\n";
+            //                string += "getGamma= " + sub.getGamma() + "\n";
+            //            }
 
             LogMaster.log(1, "***********" +
                     "" + string);
@@ -333,5 +335,14 @@ public class VisionMaster implements GenericVisionManager {
 
     public EngagementHandler getEngagementHandler() {
         return game.getDungeonMaster().getExplorationMaster().getEngagementHandler();
+    }
+
+    public void applyLight() {
+        illumination.resetIllumination();
+        illumination.applyLightEmission();
+    }
+
+    public Illumination getIllumination() {
+        return illumination;
     }
 }

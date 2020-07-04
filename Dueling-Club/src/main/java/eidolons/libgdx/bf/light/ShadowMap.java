@@ -205,7 +205,7 @@ public class ShadowMap extends GroupX implements GridElement {
                                 continue;
                             LightEmittingEffect effect = null;
                             try {
-                                effect = DC_Game.game.getRules().getIlluminationRule().
+                                effect = DC_Game.game.getVisionMaster().getIllumination().
                                         getLightEmissionEffect(obj);
                             } catch (Exception e) {
                                 main.system.ExceptionMaster.printStackTrace(e);

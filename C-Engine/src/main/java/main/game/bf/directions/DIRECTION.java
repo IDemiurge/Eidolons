@@ -1,8 +1,5 @@
 package main.game.bf.directions;
 
-/**
- * Created by Giskard on 6/9/2018.
- */
 public enum DIRECTION {
     UP(false, 90, true, null, false),
     DOWN(false, 270, true, null, true),
@@ -25,7 +22,7 @@ public enum DIRECTION {
     };
     public Boolean growX;
     public Boolean growY;
-    private boolean vertical;
+    private final boolean vertical;
     private boolean diagonal;
     private int degrees;
 

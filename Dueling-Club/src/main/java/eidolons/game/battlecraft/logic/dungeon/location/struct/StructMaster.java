@@ -178,12 +178,12 @@ public class StructMaster extends DungeonHandler {
         return false;
     }
 
-    public DungeonEnums.CELL_IMAGE getCellType(int i, int j) {
+    public DungeonEnums.CELL_SET getCellType(int i, int j) {
         LevelStruct struct = getLowestStruct(Coordinates.get(i, j));
         if (struct == null) {
-            return DungeonEnums.CELL_IMAGE.tiles;
+            return DungeonEnums.CELL_SET.beige;
         }
-        return struct.getCellType();
+        return struct.getCellSet();
     }
 
 }

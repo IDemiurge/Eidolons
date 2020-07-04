@@ -16,7 +16,7 @@ public class CtrlDecorPanel extends LE_ControlPanel<IDecorHandler> {
 
     @Override
     protected int getWrap() {
-        return 4;
+        return 3;
     }
 
     @Override

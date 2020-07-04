@@ -93,11 +93,10 @@ public class EditorModel {
     }
 
     public LE_DisplayMode getDisplayMode() {
+        if (displayMode == null) {
+            displayMode = new LE_DisplayMode();
+        }
         return displayMode;
-    }
-
-    public void setDisplayMode(LE_DisplayMode displayMode) {
-        this.displayMode = displayMode;
     }
 
     public LE_Selection getSelection() {

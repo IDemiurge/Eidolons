@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.logic.mission.universal;
 
-import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.*;
 import main.data.ability.construct.VariableManager;
 import main.elements.triggers.Trigger;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,18 +28,25 @@ public abstract class ScriptManager<T extends DungeonSequence, E> extends Missio
         return "";
     }
 
-    public void parseDungeonScripts(Floor floor) {
+    public void parseDungeonScripts(Map<Coordinates, CellScriptData> map) {
         List<String> scriptList = new ArrayList<>();
-        Map<String, String> map = master.getGame().getDungeon().getCustomDataMap(CellScriptData.CELL_SCRIPT_VALUE.script);
 
-        for (String s : map.keySet()) {
-            String dungeonScript = checkDungeonScript(s,map.get(s));
+        for (Coordinates s : map.keySet()) {
+            String dungeonScript = checkDungeonScript(s,map.get(s).
+                    getValue(CellScriptData.CELL_SCRIPT_VALUE.script));
+            if (dungeonScript != null) {
+                scriptList.add(dungeonScript);
+            }
+
+              dungeonScript = checkFlightScript(s,map.get(s).
+                    getValue(CellScriptData.CELL_SCRIPT_VALUE.flight));
             if (dungeonScript != null) {
                 scriptList.add(dungeonScript);
             }
         }
         parseScripts(scriptList);
     }
+
 
     public void parseScripts(String scripts) {
         List<String> scriptList = ContainerUtils.openContainer(scripts,
@@ -60,9 +67,18 @@ public abstract class ScriptManager<T extends DungeonSequence, E> extends Missio
         }
     }
 
-    private String checkDungeonScript(String key, String val) {
-
-        Coordinates c = new Coordinates(key);
+    private String checkFlightScript(Coordinates s, String value) {
+        if (StringMaster.isEmpty(value)) {
+            return null;
+        }
+        return "pos" +StringMaster.wrapInParenthesis(s.toString())+
+                ">main_hero()" +
+                ">flight"+StringMaster.wrapInParenthesis(value);
+    }
+    private String checkDungeonScript(Coordinates c , String val) {
+        if (StringMaster.isEmpty(val)) {
+            return null;
+        }
 
         if (val.contains(DUNGEON_SCRIPT_SEPARATOR)) {
             String type = val.split(DUNGEON_SCRIPT_SEPARATOR)[0].toLowerCase();

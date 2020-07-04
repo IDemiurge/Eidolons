@@ -22,7 +22,7 @@ import java.util.Map;
 public class FileChooserX {
 
 
-    private static Map<Stage, FileChooser> map = new HashMap<>();
+    private static final Map<Stage, FileChooser> map = new HashMap<>();
     public static final WaitMaster.WAIT_OPERATIONS waitOperation =
             WaitMaster.WAIT_OPERATIONS.FILE_SELECTION;
 
@@ -48,15 +48,14 @@ public class FileChooserX {
             }
             stage.addActor(fileChooser.fadeIn());
             map.put(stage, fileChooser);
-            fileChooser.setDirectory(folder);
             if (format != null)
                 fileChooser.setFileFilter(
                         new OrFileFilter(DirectoryFileFilter.DIRECTORY,
                                 new SuffixFileFilter("." + format)));
         } else {
             stage.addActor(fileChooser.fadeIn());
-
         }
+        fileChooser.setDirectory(folder);
         fileChooser.setSize(GdxMaster.getWidth()*3/4, GdxMaster.getHeight()*3/5);
         GdxMaster.center(fileChooser);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);

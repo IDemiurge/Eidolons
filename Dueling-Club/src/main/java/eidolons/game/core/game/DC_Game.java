@@ -290,7 +290,7 @@ public class DC_Game extends GenericGame {
         }
         ActionGenerator.init();
 
-        getRules().getIlluminationRule().clearCache();
+        getVisionMaster().getIllumination().clearCache();
         inventoryTransactionManager = new InventoryTransactionManager(this);
         inventoryManager = new DC_InventoryManager();
         missionMaster.init();

@@ -316,6 +316,11 @@ public class DC_GameObjMaster extends GameObjMaster {
                 if (((BattleFieldObject) obj).isWall()) {
                     GridManager.reset();
                 }
+                if (CoreEngine.isLevelEditor()) //otherwise will be done on state reset()
+                    if (((BattleFieldObject) obj).isLightEmitter()) {
+                        getGame().getVisionMaster().applyLight();
+                    }
+
             }
         }
     }

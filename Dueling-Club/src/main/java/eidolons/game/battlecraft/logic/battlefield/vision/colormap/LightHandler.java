@@ -14,10 +14,10 @@ public class LightHandler {
         return new Color(c.r * mult+add, c.g * mult+add, c.b *mult+add, 1);
     }
 
-    public static Color applyLightnessToColor(Color c) {
+    public static Color applyLightnessToColor(Color c, boolean allowLighter) {
 
         float screen = LightConsts.getScreen(c.a);
-        if (screen > 0) {
+        if (allowLighter && screen > 0) {
             return LightHandler.applyAdd(c, screen);
         } else {
 

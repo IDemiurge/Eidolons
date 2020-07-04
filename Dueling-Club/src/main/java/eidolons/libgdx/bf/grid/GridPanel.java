@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf.grid;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
@@ -78,6 +79,7 @@ import main.system.threading.WaitMaster;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
+import java.util.function.Function;
 
 import static main.system.GuiEventType.*;
 
@@ -85,7 +87,7 @@ public abstract class GridPanel extends Group {
     protected final int square;
     protected final int full_rows;
     protected final int full_cols;
-    private final GridManager gridManager;
+    protected final GridManager gridManager;
     public int drawX1, drawX2, drawY1, drawY2;
     protected int moduleCols;
     protected int moduleRows;
@@ -128,8 +130,8 @@ public abstract class GridPanel extends Group {
     protected List<UnitGridView> detached = new LinkedList<>();
     protected Set<PlatformDecor> platformDecor = new LinkedHashSet();
     protected final ObjectMap<DECOR_LEVEL, CellDecorLayer> decorMap = new ObjectMap<>(4);
-    private boolean decorInitialized;
-    private boolean init;
+    protected boolean decorInitialized;
+    protected boolean init;
 
     public GridPanel(int cols, int rows, int moduleCols, int moduleRows) {
         this.square = rows * cols;
@@ -365,7 +367,7 @@ it sort of broke at some point - need to investigate!
             super.act(delta);
     }
 
-    private void customAct(float delta) {
+    protected void customAct(float delta) {
         InputController controller = ScreenMaster.getScreen().getController();
         drawX1 = controller.getGridDrawX1(getWidth());
         drawY1 = getDrawY(controller.getGridDrawY1(0));
@@ -470,9 +472,9 @@ it sort of broke at some point - need to investigate!
 
     protected GridCellContainer createGridCell(TextureRegion emptyImage, int x, int y) {
         return new GridCellContainer(emptyImage, x, y, coord -> {
-            if (DC_Game.game.isWall(coord)) {
-
-            }
+            // if (DC_Game.game.isWall(coord)) {
+            //TODO ??? different colorFunc?
+            //             }
             return getGridManager().getColor(coord);
         });
     }
@@ -487,6 +489,8 @@ it sort of broke at some point - need to investigate!
     }
 
     public void resetMaps() {
+        if (gridManager.isResetting())
+            return ;
         Eidolons.onNonGdxThread(() -> gridManager.getPillarManager().reset());
     }
 
@@ -593,7 +597,11 @@ it sort of broke at some point - need to investigate!
     }
 
     protected OverlayView doCreateOverlay(BattleFieldObject battleFieldObject) {
-        return UnitViewFactory.doCreateOverlay(battleFieldObject);
+        return UnitViewFactory.doCreateOverlay(battleFieldObject, getColorFunction());
+    }
+
+    protected Function<Coordinates, Color> getColorFunction() {
+        return coord-> getGridManager().getColor(coord);
     }
 
     protected void createUnitsViews(DequeImpl<BattleFieldObject> units) {
@@ -879,9 +887,8 @@ it sort of broke at some point - need to investigate!
     List<GridCellContainer> topCells = new ArrayList<>(5);
     List<GridCellContainer> overCells = new ArrayList<>(25);
     List<GridCellContainer> screenCells = new ArrayList<>(65);
-    List<GridCellContainer> overScreenCells = new ArrayList<>(45);
 
-    private void customDraw(Batch batch) {
+    protected void customDraw(Batch batch) {
         flightHandler.getObjsUnder().draw(batch, 1f);
         pillars.draw(batch, 1f);
         for (PlatformDecor platform : platformDecor) {
@@ -901,8 +908,7 @@ it sort of broke at some point - need to investigate!
                         container.drawCell(batch);
                         overCells.add(container);
                     }
-                } else
-                {
+                } else {
                     container.draw(batch, 1);
                     if (isScreenCell(container))
                         screenCells.add(container);
@@ -924,6 +930,9 @@ it sort of broke at some point - need to investigate!
             particleManager.draw(batch, 1f);
         }
         wallPillars.draw(batch, 1f);
+
+
+        wallPillars.drawScreen(batch);
 
         screenCells.clear();
         for (GridCellContainer cell : overCells) {
@@ -972,7 +981,19 @@ it sort of broke at some point - need to investigate!
         /////////////////
         draw(customOverlayingObjectsTop, batch);
         draw(manipulators, batch);
-        overlays.forEach(overlayView -> overlayView.draw(batch, 1f));
+
+        overlays.forEach(overlayView -> {
+            if (!overlayView.isScreen()) overlayView.draw(batch, 1f);
+        });
+
+        ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
+        overlays.forEach(overlayView -> {
+            if (overlayView.isScreen()) {
+                overlayView.draw(batch, 1f);
+                overlayView.drawScreen(batch );
+            }
+        });
+        ((CustomSpriteBatch) batch).resetBlending();
 
         overlayManager.draw(batch, 1f);
         flightHandler.getObjsOver().draw(batch, 1f);
@@ -983,21 +1004,21 @@ it sort of broke at some point - need to investigate!
             visual.draw(batch, 1f);
     }
 
-    private boolean isScreenCell(GridCellContainer container) {
+    protected boolean isScreenCell(GridCellContainer container) {
         return container.isScreen();
     }
 
-    private boolean isOverCell(GridCellContainer container) {
+    protected boolean isOverCell(GridCellContainer container) {
         return container.isWall();
     }
 
-    private boolean isTopCell(GridCellContainer gridCellContainer) {
+    protected boolean isTopCell(GridCellContainer gridCellContainer) {
         return gridCellContainer.isHovered() || gridCellContainer.isMainHero();
     }
 
     Array<Actor> screenObjs = new Array<>(50);
 
-    private void drawScreen(Batch batch) {
+    protected void drawScreen(Batch batch) {
         // ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
         for (Actor actor : screenObjs) {
             actor.draw(batch, 1);
@@ -1005,7 +1026,7 @@ it sort of broke at some point - need to investigate!
         screenObjs.clear();
     }
 
-    private void draw(Actor[][] array, Batch batch) {
+    protected void draw(Actor[][] array, Batch batch) {
         for (int x = 0; x < moduleCols; x++)
             for (int y = 0; y < moduleRows; y++) {
                 Actor actor = array[x][y];
@@ -1021,7 +1042,7 @@ it sort of broke at some point - need to investigate!
         drawScreen(batch);
     }
 
-    private void resetZ(Actor[][] array) {
+    protected void resetZ(Actor[][] array) {
         for (int x = 0; x < moduleCols; x++)
             for (int y = 0; y < moduleRows; y++)
                 if (array[x][y] != null)

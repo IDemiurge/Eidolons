@@ -11,6 +11,7 @@ import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_TAGS;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.values.properties.G_PROPS;
+import main.data.ability.construct.VariableManager;
 import main.entity.LightweightEntity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
@@ -18,15 +19,12 @@ import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Floor extends LightweightEntity {
     private String levelFilePath;
     private LOCATION_TYPE dungeonSubtype;
     private Location location;
 
-    public Floor(ObjType type ) {
+    public Floor(ObjType type) {
         super(type);
         setRef(new Ref());
     }
@@ -60,7 +58,7 @@ public class Floor extends LightweightEntity {
 
     private boolean isDaytime() {
         return !isNight();
-//        return getGame().getState().getRound()/roundsPerCycle%2==0;
+        //        return getGame().getState().getRound()/roundsPerCycle%2==0;
     }
 
     public String getLevelFilePath() {
@@ -74,29 +72,26 @@ public class Floor extends LightweightEntity {
     public int getCellVariant(int i, int j) {
         return getGame().getDungeonMaster().getStructMaster().getCellVariant(i, j);
     }
-    public DungeonEnums.CELL_IMAGE getCellType(int i, int j) {
+
+    public DungeonEnums.CELL_SET getCellType(int i, int j) {
         CellScriptData cellScriptData = location.getTextDataMap().get(Coordinates.get(i, j));
         if (cellScriptData != null) {
-            String value = cellScriptData.getValue(CellScriptData.CELL_SCRIPT_VALUE.cell_type);
+            String value = cellScriptData.getValue(CellScriptData.CELL_SCRIPT_VALUE.cell_set);
             if (!value.isEmpty()) {
-                return DungeonEnums.CELL_IMAGE.valueOf(value.toLowerCase());
+                return DungeonEnums.CELL_SET.valueOf(value.toLowerCase());
             }
         }
-        return  getGame().getDungeonMaster().getStructMaster().getCellType(i, j);
+        return getGame().getDungeonMaster().getStructMaster().getCellType(i, j);
     }
 
-    public Map<String, String> getCustomDataMap(CellScriptData.CELL_SCRIPT_VALUE value) {
-        return new HashMap<>(); //TODO
-    }
-    public Map<Coordinates, CellScriptData> getCustomDataMap() {
-        return getLocation().getTextDataMap();
-    }
 
     public Coordinates getCoordinateByName(String value) {
-        Map<String, String> map = getCustomDataMap(CellScriptData.CELL_SCRIPT_VALUE.named_point);
-        for (String s : map.keySet()) {
-            if (map.get(s).trim().equalsIgnoreCase(value)) {
-                return Coordinates.get(s);
+        for (Coordinates s : location.getTextDataMap().keySet()) {
+            CellScriptData data = location.getTextDataMap().get(s);
+
+            String val = data.getValue(CellScriptData.CELL_SCRIPT_VALUE.named_point).trim();
+            if (VariableManager.removeVarPart(val).equalsIgnoreCase(value)) {
+                return Coordinates.get(VariableManager.getVar(val));
             }
         }
         return null;
@@ -113,6 +108,7 @@ public class Floor extends LightweightEntity {
     public CONTENT_CONSTS.COLOR_THEME getColorTheme() {
         return location.getColorTheme();
     }
+
     public CONTENT_CONSTS.COLOR_THEME getAltColorTheme() {
         return location.getAltColorTheme();
     }

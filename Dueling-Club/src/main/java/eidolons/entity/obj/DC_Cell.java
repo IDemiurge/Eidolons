@@ -5,7 +5,7 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.decor.wall.WallMaster;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
@@ -37,7 +37,7 @@ public class DC_Cell extends DC_Obj implements Cell {
     private boolean playerHasSeen;
     private boolean VOID;
 
-    private DungeonEnums.CELL_IMAGE cellType;
+    private DungeonEnums.CELL_SET cellType;
     private int cellVariant;
     private  COLOR_THEME colorTheme;
 
@@ -80,7 +80,7 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
     public String getDefaultImgPath() {
-        return GridMaster.getImagePath(getCellType(), getCellVariant());
+        return WallMaster.getCellImage(getCoordinates(), getCellVariant());
     }
 
     public void resetCell() {
@@ -95,7 +95,7 @@ public class DC_Cell extends DC_Obj implements Cell {
         }
 
     }
-    public void setCellType(DungeonEnums.CELL_IMAGE cellType) {
+    public void setCellType(DungeonEnums.CELL_SET cellType) {
         this.cellType = cellType;
     }
 
@@ -124,7 +124,7 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
 
-    public DungeonEnums.CELL_IMAGE getCellType() {
+    public DungeonEnums.CELL_SET getCellType() {
         return cellType;
     }
 

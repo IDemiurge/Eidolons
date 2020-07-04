@@ -31,7 +31,7 @@ public class ExplorationResetHandler extends ExplorationHandler {
 //        master.getGame().getStateManager().checkTriggers();
 
         //position-based effects?
-        master.getGame().getRules().getIlluminationRule().resetIllumination();
+        master.getGame().getVisionMaster().getIllumination().resetIllumination();
 //        IlluminationRule.applyLightEmission(master.game);
 
 //        checkCounterRules();

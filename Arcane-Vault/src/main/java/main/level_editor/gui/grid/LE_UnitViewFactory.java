@@ -52,19 +52,11 @@ public class LE_UnitViewFactory extends UnitViewFactory {
         return getInstance().create(battleFieldObject);
     }
 
-    public static OverlayView doCreateOverlay(BattleFieldObject bfObj) {
-        return getInstance().createOverlay(bfObj);
-    }
-
     @Override
     public UnitGridView create(BattleFieldObject battleFieldObject) {
         return super.create(battleFieldObject);
     }
 
-    @Override
-    public OverlayView createOverlay(BattleFieldObject battleFieldObject) {
-        return super.createOverlay(battleFieldObject);
-    }
 
     protected UnitGridView createView(BattleFieldObject bfObj, UnitViewOptions options) {
         return

@@ -1,6 +1,5 @@
 package eidolons.entity.active;
 
-import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
@@ -9,6 +8,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManagerImpl;
+import eidolons.game.battlecraft.logic.battlefield.ClearshotMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
@@ -337,7 +337,7 @@ public class DefaultActionHandler {
     private static boolean doDebugStuffCell(Unit source, Coordinates c) {
         Ref ref = new Ref(source);
         ref.setMatch(source.getGame().getCellByCoordinate(c).getId());
-        ClearShotCondition.clearCache();
+        ClearshotMaster.clearCache();
         source.getGame().getVisionMaster().getSightMaster().getClearShotCondition().preCheck(ref);
         DC_Obj target = source.getGame().getCellByCoordinate(c);
         int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(source, target);

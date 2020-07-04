@@ -68,7 +68,6 @@ public class LE_EditHandler extends LE_Handler {
     }
 
     public void editCell(Coordinates c) {
-        setEditCoordinates(c);
         if (manager.getLayer() == LE_Manager.LE_LAYER.decor) {
             getEditHandler().getDecorHandler().editData(c);
         } else

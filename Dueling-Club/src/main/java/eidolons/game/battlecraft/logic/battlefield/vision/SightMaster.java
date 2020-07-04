@@ -6,6 +6,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battlefield.ClearshotMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.content.enums.entity.UnitEnums;
@@ -27,10 +28,10 @@ import java.util.*;
  * Created by JustMe on 2/22/2017.
  */
 public class SightMaster {
-    private VisionMaster master;
+    private final VisionMaster master;
     private ClearShotCondition clearShotCondition;
-    private Map<DC_Obj, DequeImpl<Coordinates>> cache = new HashMap<>();
-    private Map<DC_Obj, DequeImpl<Coordinates>> cacheSecondary = new HashMap<>();
+    private final Map<DC_Obj, DequeImpl<Coordinates>> cache = new HashMap<>();
+    private final Map<DC_Obj, DequeImpl<Coordinates>> cacheSecondary = new HashMap<>();
 
     public DequeImpl<Coordinates> getCachedSpectrumCoordinates(DC_Obj obj) {
         if (!cache.containsKey(obj)) {
@@ -115,7 +116,7 @@ public class SightMaster {
             if (!extended)
                 list.addAll(getSpectrumCoordinates(range, 0, back_bonus, source, vision, facing.flip(), true));
         } else {
-            Collection<Coordinates> blocked = getBlockedList(list, source, facing);
+            Collection<Coordinates> blocked = getBlockedList(list, source );
             list.removeAll(blocked);
         }
         list.add(source.getCoordinates());
@@ -124,9 +125,9 @@ public class SightMaster {
 
 
     // TODO
-    private Collection<Coordinates> getBlockedList(DequeImpl<Coordinates> list, BattleFieldObject source,
-                                                   FACING_DIRECTION facing) {
+    private Collection<Coordinates> getBlockedList(DequeImpl<Coordinates> list, BattleFieldObject source ) {
         Collection<Coordinates> removeList = new ArrayList<>();
+        ClearshotMaster.filterWallObstructed(source.getCoordinates(), list);
         for (Coordinates c : list) {
             DC_Cell cell = master.getGame().getObjMaster().getCellByCoordinate(c);
             if (cell == null)

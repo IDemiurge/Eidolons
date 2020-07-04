@@ -231,12 +231,12 @@ public class LE_GuiStage extends GenericGuiStage {
             super.textInput(script, textInputListener, title, text, hint);
             return;
         }
+        textInputPanel.setText(text);
         addActor(textInputPanel);
         textInputPanel.setPosition(GdxMaster.centerWidth(textInputPanel),
                 GdxMaster.centerHeight(textInputPanel));
         textInputPanel.open();
         setKeyboardFocus(textInputPanel);
-
     }
 
     @Override

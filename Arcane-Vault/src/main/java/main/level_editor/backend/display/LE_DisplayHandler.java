@@ -93,8 +93,8 @@ public class LE_DisplayHandler extends LE_Handler implements IDisplayHandler {
             }
             Module finalM = m;
 
-            getGame().getRules().getIlluminationRule().resetIllumination();
-            getGame().getRules().getIlluminationRule().applyLightEmission();
+            getGame().getVisionMaster().getIllumination().resetIllumination();
+            getGame().getVisionMaster().getIllumination().applyLightEmission();
             for (DC_Cell cell : getGame().getCells()) {
                 int gamma = getGame().getVisionMaster()
                         .getGammaMaster().getGamma(getGame().getManager().getActiveObj(), cell);
