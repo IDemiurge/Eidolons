@@ -14,7 +14,7 @@ import eidolons.libgdx.gui.datasource.FullUnitDataSource;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
@@ -44,8 +44,8 @@ public class FacingPanel extends TablePanel {
     //     "FACE_BACKGROUND.png");
     //    private final ImageContainer faceBackground;
 
-    private final SmartButton btnTurnClockwise;
-    private final SmartButton btnTurnAntiClockwise;
+    private final SymbolButton btnTurnClockwise;
+    private final SymbolButton btnTurnAntiClockwise;
     boolean sneaking;
 
 
@@ -87,10 +87,10 @@ public class FacingPanel extends TablePanel {
             }
         });
         background.addActor(btnTurnClockwise =
-                new SmartButton(ButtonStyled.STD_BUTTON.UP, () -> turn(true)));
+                new SymbolButton(ButtonStyled.STD_BUTTON.UP, () -> turn(true)));
         btnTurnClockwise.setNoClickCheck(true);
         btnTurnClockwise.setFlipY(true);
-        background.addActor(btnTurnAntiClockwise = new SmartButton(ButtonStyled.STD_BUTTON.UP, () -> turn(false)));
+        background.addActor(btnTurnAntiClockwise = new SymbolButton(ButtonStyled.STD_BUTTON.UP, () -> turn(false)));
         btnTurnAntiClockwise.setNoClickCheck(true);
         float center = GdxMaster.centerWidth(btnTurnAntiClockwise);
         float top = background.getHeight() - btnTurnAntiClockwise.getHeight();

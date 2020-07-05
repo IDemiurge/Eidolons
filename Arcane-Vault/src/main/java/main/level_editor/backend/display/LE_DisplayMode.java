@@ -23,6 +23,7 @@ public class LE_DisplayMode  implements Serializable {
 
     private boolean gameView;
     private boolean showGamma;
+    private boolean lightingOn;
 
     /*
     can we just have shadowmap/vfx here same way?
@@ -138,9 +139,13 @@ public class LE_DisplayMode  implements Serializable {
     public void toggleScripts( ) {
         this.showScripts = !showScripts;
     }
+    public void toggleLighting( ) {
+        this.lightingOn = !lightingOn;
+    }
 
     public void setGameView(boolean gameView) {
         this.gameView = gameView;
+        lightingOn= gameView;
     }
 
     public void setShowDecorText(boolean showDecorText) {
@@ -203,5 +208,13 @@ public class LE_DisplayMode  implements Serializable {
 
     public void setShowGamma(boolean showGamma) {
         this.showGamma = showGamma;
+    }
+
+    public boolean isLightingOn() {
+        return lightingOn;
+    }
+
+    public void setLightingOn(boolean lightingOn) {
+        this.lightingOn = lightingOn;
     }
 }

@@ -48,8 +48,16 @@ public class FontMaster {
         if (style == 0) {
             style = Font.PLAIN;
         }
-        // if (f.font==null )
-        // return PrismFontFactory.getSystemFont(null);
+        if (f.font == null) {
+            try {
+                f.font = Font.createFont(Font.TRUETYPE_FONT, FileManager.getFile(
+                        (PathFinder.getFontPath() + f.path)));
+            } catch (FontFormatException e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            } catch (IOException e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
         return f.font.deriveFont(style, size);
     }
 
@@ -65,22 +73,6 @@ public class FontMaster {
         if (!CoreEngine.isArcaneVault()) {
             System.setProperty("awt.useSystemAAFontSettings", "on");
             System.setProperty("swing.aatext", "true");
-        }
-        String path = PathFinder.getFontPath();
-
-
-        for (FONT F : FONT.values()) {
-            try {
-                F.font = Font.createFont(Font.TRUETYPE_FONT, FileManager.getFile(
-                (path + F.path)));
-            } catch (FontFormatException e) {
-                // TODO Auto-generated catch block
-                main.system.ExceptionMaster.printStackTrace(e);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-
         }
 
         initialized = true;

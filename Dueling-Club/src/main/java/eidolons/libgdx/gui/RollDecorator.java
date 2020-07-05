@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -35,10 +35,10 @@ public class RollDecorator {
     }
 
     public static class RollableGroup extends GroupX {
-        private TablePanel table;
-        private Actor arrow;
-        private Actor contents;
-        private FACING_DIRECTION direction;
+        private final TablePanel table;
+        private final Actor arrow;
+        private final Actor contents;
+        private final FACING_DIRECTION direction;
         private float origX;
         private float origY;
 
@@ -145,17 +145,17 @@ public class RollDecorator {
         }
 
 
-        private SmartButton initArrow(ButtonStyled.STD_BUTTON style) {
+        private SymbolButton initArrow(ButtonStyled.STD_BUTTON style) {
             if (style == null) {
                 style = ButtonStyled.STD_BUTTON.ARROW;
             }
-            SmartButton arrow = new SmartButton(style, () -> {
+            SymbolButton arrow = new SymbolButton(style, () -> {
                 if (getActions().size > 0)
                     return;
                 toggle();
             }){
                 @Override
-                protected boolean isCheckClickArea() {
+                public boolean isCheckClickArea() {
                     return false;
                 }
             };

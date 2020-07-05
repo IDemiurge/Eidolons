@@ -44,22 +44,22 @@ public class PostProcessController {
     static PostProcessController instance;
     private final PostFxUpdater updater;
     private final Actor actor;
-    private Map<PostProcessorEffect, Fluctuating> effectMap = new LinkedHashMap<>();
-    private PostProcessing main;
+    private final Map<PostProcessorEffect, Fluctuating> effectMap = new LinkedHashMap<>();
+    private final PostProcessing main;
 
-    private LensFlare2 lens2;
-    private LensFlare  lens1;
-    private Zoomer zoomer;
-    private SaturateFx saturate;
-    private Bloom bloom;
-    private BloomFx bloomBright;
-    private Vignette vignette;
-    private Nfaa nfaa;
-    private BlurFx blur;
-    private MotionBlur motionBlur;
-    private  Curvature curvature;
-    private  CrtMonitor discolor;
-    private CustomPostEffect darken;
+    private final LensFlare2 lens2;
+    private final LensFlare  lens1;
+    private final Zoomer zoomer;
+    private final SaturateFx saturate;
+    private final Bloom bloom;
+    private final BloomFx bloomBright;
+    private final Vignette vignette;
+    private final Nfaa nfaa;
+    private final BlurFx blur;
+    private final MotionBlur motionBlur;
+    private final Curvature curvature;
+    private final CrtMonitor discolor;
+    private final CustomPostEffect darken;
 
     LocalFxProcessor localFxProcessor;
     private boolean off;
@@ -178,8 +178,8 @@ public class PostProcessController {
                         POST_PROCESSING_OPTIONS.SHADOW_EFFECT_OFF);
 
 
-        if (OptionsMaster.getPostProcessingOptions().getBooleanValue(
-                PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF)){
+        if (!OptionsMaster.getPostProcessingOptions().getBooleanValue(
+                PostProcessingOptions.POST_PROCESSING_OPTIONS.ENABLED)){
             for (PostProcessorEffect effect : effectMap.keySet()) {
                 effect.setEnabled(false);
             }

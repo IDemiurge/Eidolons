@@ -12,12 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class FlightHandler extends GroupX {
-    public static final boolean TEST = false;
     private boolean on;
-
-    public void test() {
-        startFlight(TEST_DATA, true);
-    }
 
     public boolean isOn() {
         return on;

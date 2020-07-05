@@ -13,7 +13,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
@@ -35,12 +35,12 @@ import main.system.images.ImageManager;
 public class HqStatElement extends HqElement {
 
     private final ValueContainer container;
-    private final SmartButton button;
+    private final SmartTextButton button;
     private final Runnable modifyRunnable;
     boolean mastery;
     boolean editable;
     PARAMS displayedParam;
-    private boolean leftToRight;
+    private final boolean leftToRight;
     private PARAMETER modifyParam;
     private boolean disabled;
 
@@ -63,7 +63,7 @@ public class HqStatElement extends HqElement {
         else
             container.getValueContainer().right();
 
-        button = new SmartButton(STD_BUTTON.STAT);
+        button = new SmartTextButton(STD_BUTTON.STAT);
         button.setVisible(false);
         button.addListener(getListener());
         button.setFixedSize(true);

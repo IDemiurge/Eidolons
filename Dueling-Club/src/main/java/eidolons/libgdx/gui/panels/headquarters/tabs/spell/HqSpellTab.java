@@ -6,7 +6,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.ScrollPaneX;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
@@ -16,8 +16,8 @@ import eidolons.libgdx.texture.Images;
  * Created by JustMe on 3/14/2018.
  */
 public class HqSpellTab extends HqElement {
-    private final SmartButton infoBtn;
-    private final SmartButton visBtn;
+    private final SymbolButton infoBtn;
+    private final SymbolButton visBtn;
     private ScrollPaneX scroll;
     SpellbookContainer spellbook;
     VerbatimContainer verbatim;
@@ -47,8 +47,8 @@ public class HqSpellTab extends HqElement {
         setFixedSize(true);
         setSize(GDX.size(HqMaster.TAB_WIDTH),
                 GDX.size(HqMaster.TAB_HEIGHT));
-        addActor(infoBtn = new SmartButton(ButtonStyled.STD_BUTTON.HELP, () -> showHelpInfo()));
-        addActor(visBtn = new SmartButton(ButtonStyled.STD_BUTTON.EYE, () -> toggleFilters()));
+        addActor(infoBtn = new SymbolButton(ButtonStyled.STD_BUTTON.HELP, () -> showHelpInfo()));
+        addActor(visBtn = new SymbolButton(ButtonStyled.STD_BUTTON.EYE, () -> toggleFilters()));
 
         infoBtn.setY(GdxMaster.centerHeight(infoBtn));
         visBtn.setY(GdxMaster.getTopY(visBtn));

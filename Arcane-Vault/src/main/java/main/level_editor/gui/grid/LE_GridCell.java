@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -51,14 +52,6 @@ public class LE_GridCell extends GridCellContainer {
     }
 
     @Override
-    public void applyColor(float lightness, Color c) {
-        if (!getDisplayMode().isGameView()) {
-            super.applyColor(0, c);
-        }
-          else super.applyColor(lightness, c);
-    }
-
-    @Override
     public void setHovered(boolean hovered) {
         super.setHovered(hovered);
         if (hovered) {
@@ -88,7 +81,13 @@ public class LE_GridCell extends GridCellContainer {
 
     @Override
     public void act(float delta) {
-        super.act(delta);
+        if (DC_Game.game.getColorMap() == null) {
+            return;
+        }
+        try {
+            super.act(delta);
+        } catch (Exception e) {
+        }
         GdxMaster.right(aiLabel);
         GdxMaster.center(scriptsLabel);
         scriptsLabel.setY(GdxMaster.getTopY(scriptsLabel) - 15);
@@ -97,6 +96,14 @@ public class LE_GridCell extends GridCellContainer {
         decorLabel.setVisible(getDisplayMode().isShowDecorText());
         aiLabel.setZIndex(Integer.MAX_VALUE);
         scriptsLabel.setZIndex(Integer.MAX_VALUE);
+    }
+
+    @Override
+    public void applyColor() {
+        if (!getDisplayMode().isLightingOn()) {
+            applyColor(0, GdxColorMaster.NULL_COLOR);
+        } else
+            super.applyColor();
     }
 
     public LabelX getScriptsLabel() {

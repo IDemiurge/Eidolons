@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.utils.TextInputPanel;
 import main.level_editor.backend.LE_Manager;
@@ -35,7 +35,7 @@ public class ScriptInputHelper extends TextInputPanel {
         row();
         add(controlPanel);
         for (String cmd : cmds) {
-            controlPanel.add(new SmartButton(cmd, ButtonStyled.STD_BUTTON.MENU, () ->
+            controlPanel.add(new SmartTextButton(cmd, ButtonStyled.STD_BUTTON.MENU, () ->
                     Eidolons.onNonGdxThread(() ->
                             command(cmd))));
         }

@@ -2,7 +2,6 @@ package eidolons.libgdx.bf.decor.wall;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.bf.decor.DecorData;
 import eidolons.libgdx.bf.decor.pillar.Pillars;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -71,7 +70,7 @@ public class WallMaster {
     }
 
     private static CELL_SET getSet(Coordinates c) {
-        DecorData data = DC_Game.game.getDungeonMaster().getFloorWrapper().getDecorMap().get(c);
+        // DecorData data = DC_Game.game.getDungeonMaster().getFloorWrapper().getDecorMap().get(c);
         // data.
         // check custom set - from script map?
         return DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(c).getCellSet();

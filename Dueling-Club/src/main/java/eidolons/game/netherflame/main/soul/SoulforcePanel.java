@@ -5,15 +5,15 @@ import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 public class SoulforcePanel extends GroupX {
     private final FadeImageContainer bg;
-    private final SmartButton lordBtn;
-    private final SmartButton paleBtn;
+    private final SymbolButton lordBtn;
+    private final SymbolButton paleBtn;
     private final SoulCounter soulCounter;
     SoulforceBar bar;
 
@@ -21,8 +21,8 @@ public class SoulforcePanel extends GroupX {
         addActor(soulCounter = new SoulCounter());
         addActor(bg = new FadeImageContainer("ui/components/dc/soulforce/background.png"));
         addActor(bar = new SoulforceBar( ));
-        addActor(lordBtn = new SmartButton(ButtonStyled.STD_BUTTON.LORD_BTN, ()-> leftButton()));
-        addActor(paleBtn = new SmartButton(ButtonStyled.STD_BUTTON.PALE_BTN, ()-> rightButton()));
+        addActor(lordBtn = new SymbolButton(ButtonStyled.STD_BUTTON.LORD_BTN, ()-> leftButton()));
+        addActor(paleBtn = new SymbolButton(ButtonStyled.STD_BUTTON.PALE_BTN, ()-> rightButton()));
 
         bar.addListener(new DynamicTooltip(() ->  SoulforceMaster.getTooltip()).getController());
 //        bar.addListener(new DynamicTooltip(() -> "Current Soulforce: " + bar.getTooltip()).getController());

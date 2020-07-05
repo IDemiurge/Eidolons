@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.creation.selection.misc;
 
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.headquarters.creation.HcElement;
 import eidolons.libgdx.gui.panels.headquarters.creation.HcHeroModel;
@@ -41,9 +41,9 @@ public class HcFinalizePanel extends HcElement{
 
 //        add(new TextButtonX("Change Name", STD_BUTTON.MENU, () -> HeroCreationMaster.rename()));
         row();
-        add(new SmartButton("Export", STD_BUTTON.MENU, () -> HeroCreationMaster.export()));
+        add(new SmartTextButton("Export", STD_BUTTON.MENU, () -> HeroCreationMaster.export()));
         row();
-        add(new SmartButton("Done", STD_BUTTON.MENU, () -> HeroCreationMaster.done()));
+        add(new SmartTextButton("Done", STD_BUTTON.MENU, () -> HeroCreationMaster.done()));
     }
 
     private String getPreviewTwo(HcHeroModel model) {

@@ -5,27 +5,27 @@ import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import main.level_editor.LevelEditor;
 
 public class LE_ButtonStripe extends HorizontalFlowGroup {
 
-    SmartButton controlPanel;
-    SmartButton palettePanel;
-    SmartButton structurePanel;
-    SmartButton brushes;
-    SmartButton viewModes;
-    SmartButton save;
-    SmartButton saveV;
+    SymbolButton controlPanel;
+    SymbolButton palettePanel;
+    SymbolButton structurePanel;
+    SymbolButton brushes;
+    SymbolButton viewModes;
+    SymbolButton save;
+    SymbolButton saveV;
 
-    SmartButton undo;
+    SymbolButton undo;
 
     public LE_ButtonStripe() {
         super(10);
         setHeight(80);
         setWidth(900);
-        addActor(undo = new SmartButton(ButtonStyled.STD_BUTTON.LE_UNDO, () ->
+        addActor(undo = new SymbolButton(ButtonStyled.STD_BUTTON.LE_UNDO, () ->
                 Eidolons.onGdxThread(() -> {
                     try {
                         LevelEditor.getCurrent().getManager().getOperationHandler().undo();
@@ -44,25 +44,25 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
         container.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
         addActor(container);
         container.add(
-                save = new SmartButton(ButtonStyled.STD_BUTTON.REPAIR, () ->
+                save = new SymbolButton(ButtonStyled.STD_BUTTON.REPAIR, () ->
                         Eidolons.onNonGdxThread(() -> LevelEditor.getCurrent().getManager().getDataHandler().saveFloor()))).top();
         container.add(
-                saveV = new SmartButton(ButtonStyled.STD_BUTTON.CHEST, () ->
+                saveV = new SymbolButton(ButtonStyled.STD_BUTTON.CHEST, () ->
                         Eidolons.onGdxThread(() -> LevelEditor.getCurrent().getManager().
                                 getDataHandler().saveVersion()))).top();
         //        addActor(new TablePanelX<>(40, getHeight()));
-        addActor(controlPanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_CTRL, null));
-        addActor(palettePanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_PALETTE, null));
-        addActor(structurePanel = new SmartButton(ButtonStyled.STD_BUTTON.LE_STRUCT, null));
+        addActor(controlPanel = new SymbolButton(ButtonStyled.STD_BUTTON.LE_CTRL, null));
+        addActor(palettePanel = new SymbolButton(ButtonStyled.STD_BUTTON.LE_PALETTE, null));
+        addActor(structurePanel = new SymbolButton(ButtonStyled.STD_BUTTON.LE_STRUCT, null));
 
-        addActor(brushes = new SmartButton(ButtonStyled.STD_BUTTON.LE_BRUSH, () -> {
+        addActor(brushes = new SymbolButton(ButtonStyled.STD_BUTTON.LE_BRUSH, () -> {
             boolean b = LevelEditor.getModel().isBrushMode();
             LevelEditor.getModel().setBrushMode(!b);
             //            if (getStage() instanceof LE_GuiStage) {
             //                ((LE_GuiStage) getStage()).toggleUiVisible();
             //            }
         }));
-        addActor(viewModes = new SmartButton(ButtonStyled.STD_BUTTON.LE_VIEWS, () -> {
+        addActor(viewModes = new SymbolButton(ButtonStyled.STD_BUTTON.LE_VIEWS, () -> {
             LevelEditor.getModel().getDisplayMode().toggleAll();
         }));
     }
@@ -74,23 +74,23 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
         brushes.setChecked(LevelEditor.getModel().isBrushMode());
     }
 
-    public SmartButton getControlPanel() {
+    public SymbolButton getControlPanel() {
         return controlPanel;
     }
 
-    public SmartButton getPalettePanel() {
+    public SymbolButton getPalettePanel() {
         return palettePanel;
     }
 
-    public SmartButton getStructurePanel() {
+    public SymbolButton getStructurePanel() {
         return structurePanel;
     }
 
-    public SmartButton getBrushes() {
+    public SymbolButton getBrushes() {
         return brushes;
     }
 
-    public SmartButton getViewModes() {
+    public SymbolButton getViewModes() {
         return viewModes;
     }
 }

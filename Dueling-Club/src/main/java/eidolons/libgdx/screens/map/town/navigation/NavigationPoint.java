@@ -3,7 +3,7 @@ package eidolons.libgdx.screens.map.town.navigation;
 import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.screens.map.town.navigation.data.Navigable;
 
 /**
@@ -19,8 +19,8 @@ import eidolons.libgdx.screens.map.town.navigation.data.Navigable;
 public class NavigationPoint extends HorizontalFlowGroup{
     Navigable navigable;
 FadeImageContainer icon;
-    SmartButton body;
-    SmartButton action; //text?
+    SmartTextButton body;
+    SmartTextButton action; //text?
 
     @Override
     public void act(float delta) {
@@ -31,7 +31,7 @@ FadeImageContainer icon;
     public NavigationPoint(Navigable navigable) {
         this.navigable = navigable;
         addActor(icon = new FadeImageContainer(navigable.getIconPath()));
-        addActor(body = new SmartButton(navigable.getName(),
+        addActor(body = new SmartTextButton(navigable.getName(),
          STD_BUTTON.TAB_HIGHLIGHT, () -> navigable.interact()));
         //is disabled
 

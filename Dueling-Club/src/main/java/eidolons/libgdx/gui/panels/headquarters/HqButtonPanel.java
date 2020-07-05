@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -15,29 +15,29 @@ import main.system.launch.Flags;
 public class HqButtonPanel extends HqElement {
     public HqButtonPanel() {
         if (!Flags.isJar()) {
-            add(new SmartButton("Level Up", STD_BUTTON.MENU, () -> {
+            add(new SmartTextButton("Level Up", STD_BUTTON.MENU, () -> {
                 levelUp();
             }));
-            add(new SmartButton("Save Type", STD_BUTTON.MENU, () -> {
+            add(new SmartTextButton("Save Type", STD_BUTTON.MENU, () -> {
                 saveType();
             }));
-            add(new SmartButton("Save as New", STD_BUTTON.MENU, () -> {
+            add(new SmartTextButton("Save as New", STD_BUTTON.MENU, () -> {
                 saveTypeNew();
             }));
         }
 
-            add(new SmartButton("View Info", STD_BUTTON.MENU, () -> {
+            add(new SmartTextButton("View Info", STD_BUTTON.MENU, () -> {
                 viewInfo();
             }));
 
 
         if (!HqDataMaster.isSimulationOff())
-        add(new SmartButton("Undo All", STD_BUTTON.MENU, () -> {
+        add(new SmartTextButton("Undo All", STD_BUTTON.MENU, () -> {
             undoAll();
         }));
 
 
-        add(new SmartButton("Done", STD_BUTTON.MENU, () -> {
+        add(new SmartTextButton("Done", STD_BUTTON.MENU, () -> {
             saveAndExit();
         }));
     }
