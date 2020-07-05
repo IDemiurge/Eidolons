@@ -2,12 +2,12 @@ package main.level_editor.gui.dialog;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import main.system.threading.WaitMaster;
 
 import java.util.Collection;
 
-public class EnumChooser extends ChooserDialog<Object, SmartButton> {
+public class EnumChooser extends ChooserDialog<Object, SmartTextButton> {
 
     public static final WaitMaster.WAIT_OPERATIONS OPERATION = WaitMaster.WAIT_OPERATIONS.
             DIALOG_SELECTION_ENUM;
@@ -23,8 +23,8 @@ public class EnumChooser extends ChooserDialog<Object, SmartButton> {
     }
 
     @Override
-    protected SmartButton createElement_(Object datum) {
-        return new SmartButton(datum.toString(), StyleHolder.getHqTextButtonStyle(14));
+    protected SmartTextButton createElement_(Object datum) {
+        return new SmartTextButton(datum.toString(), StyleHolder.getHqTextButtonStyle(14));
     }
 
     @Override
@@ -61,8 +61,8 @@ public class EnumChooser extends ChooserDialog<Object, SmartButton> {
     }
 
     @Override
-    protected SmartButton[] initActorArray() {
-        return new SmartButton[consts.length];
+    protected SmartTextButton[] initActorArray() {
+        return new SmartTextButton[consts.length];
     }
 
     @Override

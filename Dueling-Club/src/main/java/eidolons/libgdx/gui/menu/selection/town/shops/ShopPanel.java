@@ -20,7 +20,7 @@ import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.NoHitGroup;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.panels.TablePanel;
@@ -57,10 +57,10 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
     public static final int ROWS_DEFAULT = 8;
     private final TablePanelX header;
     private final StashPanel stashPanel;
-    private SmartButton help;
-    private GroupX stashContainer;
+    private final SymbolButton help;
+    private final GroupX stashContainer;
     private boolean stashOpen;
-    private SmartButton repairButton;
+    private SymbolButton repairButton;
     private ValueContainer debtLabel;
 
     public ShopPanel() {
@@ -92,7 +92,7 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
          "[Alt-Click]: equip weapon in quick slot \n" +
          "[Ctrl-Click]: sell or unequip \n";
         if (true) {
-            help = new SmartButton(STD_BUTTON.HELP, () -> {
+            help = new SymbolButton(STD_BUTTON.HELP, () -> {
                 EUtils.onConfirm(
                  info, false, () -> {
                  });
@@ -203,7 +203,7 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
         rightMost.add(debtLabel);
         rightMost.row();
         rightMost.add(repairButton =
-         new SmartButton(STD_BUTTON.REPAIR, () -> getUserObject().getHandler().askRepair()));
+         new SymbolButton(STD_BUTTON.REPAIR, () -> getUserObject().getHandler().askRepair()));
         //selective repair => hammer cursor!
         table.getActor().add(rightMost);
         return table;

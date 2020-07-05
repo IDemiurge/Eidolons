@@ -13,6 +13,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 
     public AV_ButtonPanel() {
         super(AvButtonHandler.commands);
+        setSize(1400, 82);
     }
 
     @Override

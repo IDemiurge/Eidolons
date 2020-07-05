@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.weave.ui;
 
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveMaster;
@@ -14,8 +14,8 @@ public class WeaveButtonPanel extends TablePanelX{
 
 
     public WeaveButtonPanel(){
-        add (new SmartButton("Undo", STD_BUTTON.MENU, ()->undo()));
-        add (new SmartButton("Toggle", STD_BUTTON.MENU, ()->toggle()));
+        add (new SmartTextButton("Undo", STD_BUTTON.MENU, ()->undo()));
+        add (new SmartTextButton("Toggle", STD_BUTTON.MENU, ()->toggle()));
     }
 
     private void toggle() {

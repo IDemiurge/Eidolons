@@ -10,7 +10,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.AdjustingVerticalGroup;
 import eidolons.libgdx.gui.panels.dc.actionpanel.BuffPanelSimple;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
@@ -65,7 +65,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
     private final AdjustingVerticalGroup right;
     private final HqVerticalValueTable mainInfoPanel;
     private final UnitStatTabs tabs;
-    private final SmartButton btn;
+    private final SymbolButton btn;
     private final UnitInfoTabs infoTabs;
 
     AvatarPanel avatarPanel;
@@ -99,7 +99,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         super();
         setSize(WIDTH, HEIGHT);
         setBackground(NinePatchFactory.getHqDrawable());
-        addActor(btn =new SmartButton(ButtonStyled.STD_BUTTON.CANCEL, ()->{
+        addActor(btn =new SymbolButton(ButtonStyled.STD_BUTTON.CANCEL, ()->{
             close(); }));
         btn.setPosition(getWidth()-64, getHeight()-64);
         black = new ImageContainer(BlackoutOld.path);

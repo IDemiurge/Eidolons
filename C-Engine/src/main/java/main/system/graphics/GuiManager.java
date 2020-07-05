@@ -21,7 +21,9 @@ public class GuiManager {
 
     public static void init() {
 
-        UIManager.put("ScrollBar.width", SCROLL_BAR_WIDTH);
+        if (CoreEngine.isSwingOn()) {
+         UIManager.put("ScrollBar.width", SCROLL_BAR_WIDTH);
+        }
 
 //        FontMaster.setUIFont();
 //

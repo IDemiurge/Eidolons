@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightHandler;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
@@ -91,7 +90,7 @@ public class PillarManager extends GridHandler {
             }
         }
         DC_Game.game.getBattleFieldManager().resetWalls();
-        ObjectMap<Coordinates, List<DIRECTION>> wallMap = DC_Game.game.getBattleFieldManager().getWallMap();
+         Map<Coordinates, List<DIRECTION>> wallMap = DC_Game.game.getBattleFieldManager().getWallMap();
         wallAdjacency = new ConcurrentHashMap<>();
         // for (Coordinates key : wallMap.keys()) {
         //     Set<DIRECTION> set = new LinkedHashSet<>(Arrays.asList(clockwise));

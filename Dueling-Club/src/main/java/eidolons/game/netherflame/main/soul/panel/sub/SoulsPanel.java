@@ -16,7 +16,7 @@ import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.VerticalValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.shaders.DarkShader;
@@ -33,11 +33,11 @@ public class SoulsPanel extends SoulTab {
     private final LabelX soulforce;
     private final LabelX trapped;
     private final TablePanelX souls;
-    private ImbuePanel imbuePanel;
+    private final ImbuePanel imbuePanel;
     TablePanelX infoHeader = new TablePanelX();
     TablePanelX headerButtons = new TablePanelX();
     private ButtonGroup<Button> btnGroup;
-    private List<SoulActor> soulActors=    new ArrayList<>()  ;
+    private final List<SoulActor> soulActors=    new ArrayList<>()  ;
 
     public SoulsPanel() {
         imbuePanel = new ImbuePanel();
@@ -49,7 +49,7 @@ public class SoulsPanel extends SoulTab {
         infoHeader.add(soulforce = new LabelX("Soulforce: ")).row();
         infoHeader.add(trapped = new LabelX("Souls Trapped: ")).row();
 
-        headerButtons.add(new SmartButton("Imbue", ButtonStyled.STD_BUTTON.TAB_HIGHLIGHT_COLUMN, () -> toggleImbuePanel()));
+        headerButtons.add(new SmartTextButton("Imbue", ButtonStyled.STD_BUTTON.TAB_HIGHLIGHT_COLUMN, () -> toggleImbuePanel()));
 
         header.add(infoHeader);
         header.add(headerButtons);
@@ -103,7 +103,7 @@ public class SoulsPanel extends SoulTab {
 
     public class SoulActor extends TablePanelX {
         private final TablePanelX<Actor> table;
-        private   SmartButton btn;
+        private final SmartTextButton btn;
         private  ShaderProgram shader;
         Soul soul;
 
@@ -138,7 +138,7 @@ public class SoulsPanel extends SoulTab {
             VerticalValueContainer aspects = new VerticalValueContainer(aspects1, aspects2);
             table.add(aspects).center().row();
 
-                  btn = new SmartButton("Consume", ButtonStyled.STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
+                  btn = new SmartTextButton("Consume", ButtonStyled.STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
                     () -> {
 
                         if (imbuePanel.isVisible()) {

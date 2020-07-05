@@ -8,7 +8,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -21,7 +21,7 @@ public class BriefText extends TablePanelX {
     private int i = 0;
     LabelX mainText;
     // fade text; new passage on continue - better than rolling it down?
-    SmartButton continueBtn;
+    SmartTextButton continueBtn;
     private boolean done;
     private boolean started;
 
@@ -35,7 +35,7 @@ public class BriefText extends TablePanelX {
                 FontMaster.FONT.AVQ, 22));
         mainText.setWidth(width*2);
 
-        addActor(continueBtn = new SmartButton("Continue", StyleHolder.getTextButtonStyle(ButtonStyled.STD_BUTTON.MENU,
+        addActor(continueBtn = new SmartTextButton("Continue", StyleHolder.getTextButtonStyle(ButtonStyled.STD_BUTTON.MENU,
                 FontMaster.FONT.DARK, GdxColorMaster.getDefaultTextColor(), 20)));
         continueBtn.pack();
         continueBtn.setPosition(GdxMaster.centerWidth(continueBtn), 0);

@@ -12,7 +12,7 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.OverlayPanel;
 import eidolons.libgdx.texture.Images;
@@ -33,13 +33,13 @@ public class VisualChoice extends TablePanelX implements OverlayPanel {
     GroupX choicePanel;
     FadeImageContainer staticBackground, moveBtn, bottomHeader, decor;
     LabelX title, descr;
-    SmartButton ok;
+    SymbolButton ok;
     //light_ray
 
-    private List<VC_Item> items = new ArrayList<>();
+    private final List<VC_Item> items = new ArrayList<>();
     private VC_Option selected;
-    private int itemWidth=250;
-    private TablePanelX descrContainer;
+    private final int itemWidth=250;
+    private final TablePanelX descrContainer;
 
     public VisualChoice() {
        addActor(background = new SpriteX(Sprites.BG_DEFAULT));
@@ -55,7 +55,7 @@ public class VisualChoice extends TablePanelX implements OverlayPanel {
         descrContainer. addActor(descr = new LabelX("", StyleHolder.getHqLabelStyle(19)));
         addActor(moving = new TablePanelX());
         moving.addBackgroundActor(moveBtn = new FadeImageContainer(ButtonStyled.STD_BUTTON.MENU.getPath()));
-        moving.addActor(ok = new SmartButton(ButtonStyled.STD_BUTTON.OK, () -> {
+        moving.addActor(ok = new SymbolButton(ButtonStyled.STD_BUTTON.OK, () -> {
             WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.VISUAL_CHOICE, selected.arg);
             done();
         }

@@ -21,6 +21,7 @@ import eidolons.libgdx.bf.grid.cell.GenericGridView;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.overlay.choice.VC_DataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
@@ -263,7 +264,7 @@ public class GlobalController implements Controller {
     private boolean space() {
         if (activeButton != null) {
             if (!activeButton.isChecked())
-                ActionMaster.click(activeButton);
+                ActionMaster.click(activeButton.getActor());
             activeButton = null;
             return true;
         }
@@ -295,7 +296,7 @@ public class GlobalController implements Controller {
     private boolean enter() {
         if (activeButton != null) {
             if (!activeButton.isChecked())
-                ActionMaster.click(activeButton);
+                ActionMaster.click(activeButton.getActor());
             activeButton = null;
             return true;
         }
@@ -322,7 +323,7 @@ public class GlobalController implements Controller {
 
     static SmartButton activeButton;
 
-    public static void setActiveButton(SmartButton activeButton) {
+    public static void setActiveButton(SmartTextButton activeButton) {
         GlobalController.activeButton = activeButton;
     }
 
@@ -381,7 +382,7 @@ public class GlobalController implements Controller {
 
         if (activeButton != null) {
             if (!activeButton.isChecked())
-                ActionMaster.click(activeButton);
+                ActionMaster.click(activeButton.getActor());
             activeButton = null;
             return true;
         }

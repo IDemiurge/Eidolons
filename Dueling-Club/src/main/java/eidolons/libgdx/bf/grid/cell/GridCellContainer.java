@@ -99,7 +99,10 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     public void applyColor(float lightness, Color c) {
-        if (lightness > LightConsts.MIN_SCREEN && cellImgContainer.getColor().a>0) {
+        float a1 = cellImgContainer.getColor().a;
+        if (a1>0) {
+            cellImgContainer.setVisible(true);
+        if (lightness > LightConsts.MIN_SCREEN && a1 >0) {
             screen=true;
             cellImgContainer.setScreenOverlay(lightness);
         } else
@@ -107,8 +110,8 @@ public class GridCellContainer extends GridCell implements Hoverable {
             cellImgContainer.setScreenOverlay(0);
             screen=false;
         }
-
-        cellImgContainer.setColor(c.r, c.g, c.b, cellImgContainer.getColor().a);
+        cellImgContainer.setColor(c.r, c.g, c.b, a1);
+        }
         for (GenericGridView unitView : getUnitViews(true)) {
             float a = unitView.getPortrait().getContent().getColor().a;
             unitView.getPortrait().getContent().getColor().lerp(c, LightConsts.UNIT_VIEW_COLOR_LERP);

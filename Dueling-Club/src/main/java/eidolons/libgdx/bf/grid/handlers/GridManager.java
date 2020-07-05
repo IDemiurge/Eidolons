@@ -3,7 +3,6 @@ package eidolons.libgdx.bf.grid.handlers;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.cinematic.flight.FlightHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.decor.pillar.PillarManager;
@@ -117,16 +116,11 @@ public class GridManager {
     }
 
     public void afterLoaded() {
-        if (!CoreEngine.isLevelEditor())
-            if (FlightHandler.TEST) {
-                try {
-                    gridPanel.getFlightHandler()    . test();
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-            }
+        if (CoreEngine.isLevelEditor())
+            return;
         resetMaps();
     }
+
     private void resetMaps() {
         try {
             setResetting(true);

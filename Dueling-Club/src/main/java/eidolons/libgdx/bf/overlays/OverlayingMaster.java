@@ -158,6 +158,7 @@ public class OverlayingMaster {
         if (!wall) {
             return new Dimension(calcXOffset, calcYOffset);
         }
+        if (direction != null)
         if (direction.growY != null) {
             return new Dimension(calcXOffset + WallMap.getOffsetX(), calcYOffset);
         } else if (direction.growX != null) {

@@ -107,7 +107,7 @@ public class StyleHolder {
     }
 
     public static LabelStyle getSizedColoredLabelStyle(FONT fontStyle,
-                                                             Integer size, Color color) {
+                                                       Integer size, Color color) {
         return getSizedColoredLabelStyle(SMART_FONT_SIZE_COEF, fontStyle, size, color);
     }
 
@@ -117,20 +117,21 @@ public class StyleHolder {
     }
 
     public static LabelStyle getDebugLabelStyleLarge() {
-        return getSizedColoredLabelStyle( FONT.MAIN, 28, GdxColorMaster.PALE_GOLD);
+        return getSizedColoredLabelStyle(FONT.MAIN, 28, GdxColorMaster.PALE_GOLD);
     }
+
     public static LabelStyle getDebugLabelStyle() {
-        return getSizedColoredLabelStyle( FONT.MAIN, 18, GdxColorMaster.PALE_GOLD);
+        return getSizedColoredLabelStyle(FONT.MAIN, 18, GdxColorMaster.PALE_GOLD);
     }
 
     public static LabelStyle getSizedColoredLabelStyle(float adjustSizeCoef,
-                                                             FONT fontStyle,
-                                                             Integer size, Color color) {
+                                                       FONT fontStyle,
+                                                       Integer size, Color color) {
         if (size > 100)
             size = size / 100;
         else //quick fix to enable static size
             if (adjustSizeCoef > 0)
-                if (GdxMaster.getFontSizeMod() != 1) {
+                if (GdxMaster.getFontSizeMod() != 1 && GdxMaster.getFontSizeMod() != 0) {
                     int mod = Math.round(size * (GdxMaster.getFontSizeMod() - 1) * adjustSizeCoef);
                     size += mod;
                 }
@@ -140,7 +141,7 @@ public class StyleHolder {
 
         if (!map.containsKey(pair)) {
             LabelStyle style = new LabelStyle
-             (getFont(fontStyle, color, size), color);
+                    (getFont(fontStyle, color, size), color);
             style.font.getData().markupEnabled = true;
             map.put(pair, style);
         }
@@ -170,7 +171,7 @@ public class StyleHolder {
         ObjectMap<Color, LabelStyle> map = getLabelStyleMap(font, color);
         if (!map.containsKey(color)) {
             LabelStyle style = new LabelStyle
-             (getFont(font, DEFAULT_COLOR, getDefaultSize()), color);
+                    (getFont(font, DEFAULT_COLOR, getDefaultSize()), color);
             style.font.getData().markupEnabled = true;
             map.put(color, style);
         }
@@ -191,6 +192,9 @@ public class StyleHolder {
     }
 
     private static BitmapFont getFont(FONT font, Color color, int size) {
+        if (font == null) {
+            return null;
+        }
         //        Integer i = getHieroClosestSize(font, size);
         //        boolean hiero = i != null && font.isHieroSupported() && HIERO_ON;
         //        if (hiero) {
@@ -227,15 +231,15 @@ public class StyleHolder {
 
     private static BitmapFont getFont(String fontpath, Color color, int size, boolean hiero) {
         String path = (hiero ? fontpath
-         : PathFinder.getFontPath()
+                : PathFinder.getFontPath()
         ) + fontpath;
         if (hiero) {
             path =
-             StringMaster.cropFormat(path) + ".fnt";
+                    StringMaster.cropFormat(path) + ".fnt";
         }
         final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(GDX.file(path));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter =
-         new FreeTypeFontGenerator.FreeTypeFontParameter();
+                new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         parameter.color = color;
         parameter.size = size;
@@ -245,7 +249,7 @@ public class StyleHolder {
             FreeTypeBitmapFontData data = new FreeTypeBitmapFontData();
             data.fontFile = GDX.file(path);
             data.imagePaths = new String[]{
-             StringMaster.cropFormat(path) + ".png"
+                    StringMaster.cropFormat(path) + ".png"
             };
             BitmapFont bitmapFont = new BitmapFont(data, tex, true);
 
@@ -277,15 +281,16 @@ public class StyleHolder {
             return getFont(font, GdxColorMaster.getDefaultTextColor(), fontSize);
         }
         TextureRegion tex = new TextureRegion(new Texture(getHieroPath(font, size) +
-         ".png"));
+                ".png"));
         return new BitmapFont(GDX.file(getHieroPath(font, size) +
-         ".fnt"), tex);
+                ".fnt"), tex);
 
     }
 
     public static BitmapFont getHugeHieroFont() {
         return getHieroFont(FONT.HUGE, 46);
     }
+
     public static LabelStyle getDefaultLabelStyle() {
         return getDefaultLabelStyle(DEFAULT_COLOR);
     }
@@ -310,25 +315,25 @@ public class StyleHolder {
     }
 
     public static TextButtonStyle getHqTextButtonStyle(
-     int size) {
+            int size) {
         return getTextButtonStyle(FONT.METAMORPH, DEFAULT_COLOR, size);
     }
 
     public static TextButtonStyle getTextButtonStyle(
-     FONT FONT, Color color, int size) {
+            FONT FONT, Color color, int size) {
         return getTextButtonStyle(STD_BUTTON.EMPTY, FONT, color, size);
     }
 
     public static TextButtonStyle getMenuTextButtonStyle(
-     int size) {
+            int size) {
         return getTextButtonStyle(STD_BUTTON.MENU,
-         FONT.METAMORPH, DEFAULT_COLOR, size);
+                FONT.METAMORPH, DEFAULT_COLOR, size);
     }
 
     public static TextButtonStyle getButtonStyle(
-     STD_BUTTON button) {
-        return getTextButtonStyle(button, FONT.AVQ, GdxColorMaster.getDefaultTextColor(),
-         20);
+            STD_BUTTON button, FONT font) {
+        return getTextButtonStyle(button, font, GdxColorMaster.getDefaultTextColor(),
+                20);
     }
 
     public static TextButtonStyle getTextButtonStyle(TextButtonStyle style, STD_BUTTON btnStyle) {
@@ -336,10 +341,15 @@ public class StyleHolder {
         initBtnStyle(style, btnStyle);
         return style;
     }
+
     public static TextButtonStyle getTextButtonStyle(
-     STD_BUTTON button, FONT FONT, Color color, int size) {
+            STD_BUTTON button, FONT FONT, Color color, int size) {
         ObjectMap<LabelStyle, TextButtonStyle> map = textButtonStyleMap.get(button);
-        LabelStyle labelStyle = getSizedColoredLabelStyle(FONT, size, color);
+        LabelStyle labelStyle = null;
+        if (FONT == null) {
+            labelStyle = new LabelStyle();
+        } else
+            labelStyle = getSizedColoredLabelStyle(FONT, size, color);
         TextButtonStyle style = null;
         if (map != null) {
             style = map.get(labelStyle);
@@ -354,6 +364,9 @@ public class StyleHolder {
         initBtnStyle(style, button);
         if (style.font == null)
             style.font = getFont(FONT, color, size);
+
+        if (style.font == null)
+            return style;
         style.fontColor = new Color(color);
         style.disabledFontColor = new Color(color);
         style.checkedFontColor = new Color(color);
@@ -414,7 +427,7 @@ public class StyleHolder {
 
     public static TextButtonStyle getHqTabStyle() {
         TextButtonStyle style = getTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
-         FONT.METAMORPH, GdxColorMaster.GOLDEN_GRAY, 20);
+                FONT.METAMORPH, GdxColorMaster.GOLDEN_GRAY, 20);
         return style;
     }
 
@@ -423,6 +436,7 @@ public class StyleHolder {
                 FONT.METAMORPH, GdxColorMaster.GOLDEN_GRAY, 20);
         return style;
     }
+
     public static TextButtonStyle getDefaultTabStyle() {
         if (defaultTabStyle == null)
             defaultTabStyle = getTabStyle(getDefaultTextButtonStyle());
@@ -445,12 +459,12 @@ public class StyleHolder {
     public static ScrollPaneStyle getScrollStyle() {
         if (scrollStyle == null) {
             scrollStyle = new ScrollPaneStyle(
-             null,
-             //             NinePatchFactory.getLightDecorPanelFilledDrawable(),
-             NinePatchFactory.getScrollH(),
-             NinePatchFactory.getScrollKnobH(),
-             NinePatchFactory.getScrollV(),
-             NinePatchFactory.getScrollKnobV()
+                    null,
+                    //             NinePatchFactory.getLightDecorPanelFilledDrawable(),
+                    NinePatchFactory.getScrollH(),
+                    NinePatchFactory.getScrollKnobH(),
+                    NinePatchFactory.getScrollV(),
+                    NinePatchFactory.getScrollKnobV()
             );
         }
         return scrollStyle;
@@ -458,7 +472,7 @@ public class StyleHolder {
 
     public static TextButtonStyle getDialogueReplyStyle() {
         if (dialogueReplyStyle == null)
-            dialogueReplyStyle =getTextButtonStyle(STD_BUTTON.HIGHLIGHT_ALT, FONT.MAIN, GdxColorMaster.PALE_GOLD, 20);
+            dialogueReplyStyle = getTextButtonStyle(STD_BUTTON.HIGHLIGHT_ALT, FONT.MAIN, GdxColorMaster.PALE_GOLD, 20);
 
         //TODO old... anything useful?
         if (dialogueReplyStyle == null) {
@@ -487,8 +501,8 @@ public class StyleHolder {
     }
 
     public static LabelStyle getDefaultHiero() {
-        if (defaultHiero==null)
-            defaultHiero=  new LabelStyle(getHieroFontHigh(), GdxColorMaster.getDefaultTextColor());
+        if (defaultHiero == null)
+            defaultHiero = new LabelStyle(getHieroFontHigh(), GdxColorMaster.getDefaultTextColor());
         return defaultHiero;
     }
 
@@ -498,6 +512,7 @@ public class StyleHolder {
         }
         return defaultInfoStyle;
     }
+
     public static LabelStyle getHugeStyle() {
         if (hugeStyle == null) {
             hugeStyle = getDefaultLabelStyle(Color.WHITE);
@@ -510,7 +525,7 @@ public class StyleHolder {
         return getSizedColoredLabelStyle(style.font, style.size, style.color);
     }
 
-    public static LabelStyle newStyle(LabelStyle  style) {
+    public static LabelStyle newStyle(LabelStyle style) {
         return new LabelStyle(style);
     }
 
@@ -527,22 +542,22 @@ public class StyleHolder {
     public static Menu.MenuStyle getMenuStyle() {
         if (menuStyle == null) {
             menuStyle = new Menu.MenuStyle(VisUI.getSkin().get(Menu.MenuStyle.class));
-            TextButtonStyle s =getMenuBtnStyle();
-            menuStyle.openButtonStyle.font= s.font;
-//            =new VisTextButton.VisTextButtonStyle(
-//                    s.up,
-//                    s.down,
-//                    s.checked,
-//                    s.font
-//            );
+            TextButtonStyle s = getMenuBtnStyle();
+            menuStyle.openButtonStyle.font = s.font;
+            //            =new VisTextButton.VisTextButtonStyle(
+            //                    s.up,
+            //                    s.down,
+            //                    s.checked,
+            //                    s.font
+            //            );
         }
         return menuStyle;
     }
 
     public static MenuItem.MenuItemStyle getMenuBtnStyle() {
         MenuItem.MenuItemStyle menuItemStyle = new MenuItem.MenuItemStyle(VisUI.getSkin().get(MenuItem.MenuItemStyle.class));
-        menuItemStyle.font = getButtonStyle(STD_BUTTON.MENU).font;
-        return  menuItemStyle;
+        menuItemStyle.font = getButtonStyle(STD_BUTTON.MENU, FONT.MAGIC).font;
+        return menuItemStyle;
     }
 
 }
