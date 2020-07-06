@@ -80,7 +80,6 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
             }
         } else {
             cellImgContainer.setVisible(!VOID);
-            cellImgContainer.getColor().a=0;
         }
     }
 

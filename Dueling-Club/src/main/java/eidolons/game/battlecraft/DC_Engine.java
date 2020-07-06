@@ -50,7 +50,7 @@ public class DC_Engine extends CoreEngine {
     }
 
     public static void systemInit() {
-        systemInit(!CoreEngine.isLevelEditor());
+        systemInit(true);
 
     }
 

@@ -9,7 +9,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SymbolButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
@@ -70,8 +70,8 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
 
         addNormalSize(new ImageContainer(Images.SEPARATOR_NARROW)).center().colspan(2).padBottom(10);
         row();
-        addNormalSize(new SymbolButton(ButtonStyled.STD_BUTTON.OK, () -> ok())).left();
-        addNormalSize(new SymbolButton(ButtonStyled.STD_BUTTON.CANCEL, () -> cancel())).right();
+        addNormalSize(new SmartButton(ButtonStyled.STD_BUTTON.OK, () -> ok())).left();
+        addNormalSize(new SmartButton(ButtonStyled.STD_BUTTON.CANCEL, () -> cancel())).right();
     }
 
     protected abstract T1 createElement_(T datum);

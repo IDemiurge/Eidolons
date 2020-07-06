@@ -832,11 +832,11 @@ public class OptionsMaster {
     }
 
     public static GraphicsOptions getGraphicsOptions() {
-        return (GraphicsOptions) getOptions(OPTIONS_GROUP.GRAPHICS);
+        return (GraphicsOptions) (getInstance().getOptionsMap()).get(OPTIONS_GROUP.GRAPHICS);
     }
 
     public static GameplayOptions getGameplayOptions() {
-        return (GameplayOptions) getOptions(OPTIONS_GROUP.GAMEPLAY);
+        return (GameplayOptions) (getInstance().getOptionsMap()).get(OPTIONS_GROUP.GAMEPLAY);
     }
 
     public Options getOptions(OPTION group) {
@@ -856,11 +856,7 @@ public class OptionsMaster {
     }
 
     public static Options getOptions(OPTIONS_GROUP group) {
-        Options options = (getInstance().getOptionsMap()).get(group);
-        if (options == null) {
-            options = getInstance().createOptions(group);
-        }
-        return options;
+        return (getInstance().getOptionsMap()).get(group);
     }
 
     protected Options generateDefaultOptions(OPTIONS_GROUP group) {
@@ -962,7 +958,7 @@ public class OptionsMaster {
     }
 
     public static PostProcessingOptions getPostProcessingOptions() {
-        return (PostProcessingOptions) getOptions(OPTIONS_GROUP.POST_PROCESSING);
+        return (PostProcessingOptions) (getInstance().getOptionsMap()).get(OPTIONS_GROUP.POST_PROCESSING);
     }
 
 

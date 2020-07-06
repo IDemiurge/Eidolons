@@ -77,8 +77,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         if (Flags.isIggDemo()) {
             return;
         }
-            if (!OptionsMaster.getPostProcessingOptions().getBooleanValue(
-                    PostProcessingOptions.POST_PROCESSING_OPTIONS.ENABLED))
+        if (Flags.isLiteLaunch() || !Flags.isIDE())
+            if (OptionsMaster.getPostProcessingOptions().getBooleanValue(
+                    PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF))
                 return;
 
         try {
@@ -86,8 +87,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             FileLogManager.streamMain("Shader loader failed!");
-            OptionsMaster.getPostProcessingOptions().setValue(
-                    PostProcessingOptions.POST_PROCESSING_OPTIONS.ENABLED, false);
+            OptionsMaster.getPostProcessingOptions().setValue(PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF, true);
             OptionsMaster.saveOptions();
         }
 

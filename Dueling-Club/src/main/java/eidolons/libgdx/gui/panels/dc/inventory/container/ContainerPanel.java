@@ -20,7 +20,7 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.AdjustingVerticalGroup;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -55,7 +55,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
     protected InventorySlotsPanel containerSlotsPanel;
     protected FadeImageContainer portrait;
     protected FadeImageContainer container;
-    protected SmartTextButton mainButton;
+    protected SmartButton mainButton;
     protected LabelX heroLabel;
     protected LabelX containerLabel;
     protected ValueContainer weightLabel;
@@ -208,7 +208,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
         lower.add(lowerRight).right();
         if (isButtonRequired()) {
             lower.row();
-            mainButton = new SmartTextButton(
+            mainButton = new SmartButton(
              getButtonText(), StyleHolder.getHqTextButtonStyle(20), () -> mainButton(), STD_BUTTON.MENU);
             lower.add(mainButton).colspan(2).right().fillX().growX();
         }
@@ -220,7 +220,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
 
         TablePanelX filters = new TablePanelX<>();
         for (ITEM_FILTERS filter : ITEM_FILTERS.values()) {
-            filters.add(new SmartTextButton(getButtonStyle(filter),
+            filters.add(new SmartButton(getButtonStyle(filter),
              () -> {
                  EUtils.showInfoText("Filters are under construction...");
                  //                 try {

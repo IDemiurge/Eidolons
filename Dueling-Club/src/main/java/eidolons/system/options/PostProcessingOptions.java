@@ -15,7 +15,7 @@ static {
 //    TEST_MODE.setDevOnly(true);
 }
     public   enum POST_PROCESSING_OPTIONS implements Options.OPTION {
-        ENABLED(false),
+        ALL_OFF(false),
         HERO_EFFECTS_OFF(true),
         SHADOW_EFFECT_OFF(false),
 

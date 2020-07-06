@@ -20,7 +20,7 @@ import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.RollDecorator;
 import eidolons.libgdx.gui.RollDecorator.RollableGroup;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import main.entity.Entity;
@@ -115,11 +115,11 @@ public abstract class ItemListPanel extends TablePanel {
         TextButton button = getCache().get(sub);
 
         if (button == null || sub == null) {
-            button = new SmartTextButton((sub.name),
+            button = new SmartButton((sub.name),
                     StyleHolder.getTextButtonStyle(getButtonStyle(),
                             getFontStyle(), getFontColor(), getFontSize())) {
                 @Override
-                public BUTTON_SOUND_MAP getSoundMap() {
+                protected BUTTON_SOUND_MAP getSoundMap() {
                     return getButtonSoundMap();
                 }
 

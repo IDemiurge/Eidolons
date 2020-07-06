@@ -11,7 +11,7 @@ import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import main.content.enums.GenericEnums;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -26,7 +26,7 @@ public class ImbuePanel extends TablePanelX {
             "Each trait is linked to Eidolon Aspects, so the more value the chosen souls have in its Aspects, the more likely your item is to receive it. \n" +
             "Experiment to find out how they are linked! \n" +
             "You can destroy imbued items to gain Soulforce - 80% of that you would gain if you Consumed the souls used in its creation.";
-    private final SmartTextButton imbueBtn;
+    private final SmartButton imbueBtn;
     private final EidolonImbuer imbuer;
     ImbueSoulSlots soulSlots;
     ImbueItems items;
@@ -43,7 +43,7 @@ public class ImbuePanel extends TablePanelX {
 
         table.add( soulSlots = new ImbueSoulSlots(this)).center().row();
         table.add(traitsInfo = new ImbueTraitsInfo()).center().row();
-        table.add(imbueBtn = new SmartTextButton("Imbue", ButtonStyled.STD_BUTTON.MENU, () ->
+        table.add(imbueBtn = new SmartButton("Imbue", ButtonStyled.STD_BUTTON.MENU, () ->
         {
              imbuer.imbue(getSelectedItem(), getSouls());
             GuiEventManager.trigger(GuiEventType.SHOW_FULLSCREEN_ANIM,

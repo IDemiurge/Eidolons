@@ -7,7 +7,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.utils.TextInputPanel;
 import main.content.enums.GenericEnums;
@@ -40,7 +40,7 @@ public class DecorInputHelper extends TextInputPanel {
         add(controlPanel);
             int i=0;
         for (String cmd : cmds) {
-            controlPanel.add(new SmartTextButton(cmd, ButtonStyled.STD_BUTTON.MENU, () ->
+            controlPanel.add(new SmartButton(cmd, ButtonStyled.STD_BUTTON.MENU, () ->
                     Eidolons.onNonGdxThread(() ->
                             command(cmd))));
             if (i++>=cmds.length/2){

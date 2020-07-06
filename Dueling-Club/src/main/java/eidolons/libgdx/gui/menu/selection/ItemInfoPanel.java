@@ -13,7 +13,7 @@ import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -36,7 +36,7 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
     protected FadeImageContainer fullsizePortrait;
     protected Label title;
     protected SelectableItemData item;
-    protected SmartTextButton startButton;
+    protected SmartButton startButton;
 
     public ItemInfoPanel(SelectableItemData item) {
         //bg
@@ -244,9 +244,9 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
     }
 
     public void initStartButton(String text, Runnable runnable) {
-        addActor(startButton = new SmartTextButton(text, STD_BUTTON.MENU, () -> runnable.run()) {
+        addActor(startButton = new SmartButton(text, STD_BUTTON.MENU, () -> runnable.run()) {
             @Override
-            public BUTTON_SOUND_MAP getSoundMap() {
+            protected BUTTON_SOUND_MAP getSoundMap() {
                 return BUTTON_SOUND_MAP.ENTER;
             }
         });

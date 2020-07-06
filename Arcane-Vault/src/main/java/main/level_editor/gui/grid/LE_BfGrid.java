@@ -90,7 +90,7 @@ public class LE_BfGrid extends GridPanel {
 
     @Override
     public void setVoid(int x, int y, boolean animated) {
-        super.setVoid(x, y, animated); //can't have visible==false
+        super.setVoid(x, y, true); //can't have visible==false
     }
 
     @Override

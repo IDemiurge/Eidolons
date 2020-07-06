@@ -19,7 +19,7 @@ import eidolons.libgdx.bf.decor.DecorData;
 import eidolons.libgdx.bf.grid.moving.PlatformData;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SymbolButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.stage.GenericGuiStage;
@@ -52,7 +52,7 @@ import main.system.data.DataUnit;
 public class LE_GuiStage extends GenericGuiStage {
 
     public static boolean dialogActive;
-    private final SymbolButton open;
+    private final SmartButton open;
     private final TablePanelX<Actor> floorsTable;
     private TopPanel topPanel;
     private LE_ButtonStripe buttons;
@@ -99,7 +99,7 @@ public class LE_GuiStage extends GenericGuiStage {
         initButtons();
         initTable();
 
-        open = new SymbolButton(ButtonStyled.STD_BUTTON.UP, () -> Eidolons.onNonGdxThread(() -> FloorManager.addFloor()));
+        open = new SmartButton(ButtonStyled.STD_BUTTON.UP, () -> Eidolons.onNonGdxThread(() -> FloorManager.addFloor()));
 
         floorsTable = new TablePanelX<>(300, 40);
         //        floorsTable.add(open);

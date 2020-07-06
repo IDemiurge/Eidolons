@@ -1642,7 +1642,6 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
     @Override
     public void toBase() {
-        if (!CoreEngine.isLevelEditor())
         if (getAI().isOutsideCombat()) {
             return;
         }

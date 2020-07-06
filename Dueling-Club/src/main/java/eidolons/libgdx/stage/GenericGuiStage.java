@@ -169,6 +169,10 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
     protected void initTooltipsAndMisc() {
 
         addActor(cursorDecorator);
+        textPanel = new OverlayTextPanel();
+        addActor(textPanel);
+        textPanel.setPosition(GdxMaster.centerWidth(textPanel),
+                GdxMaster.centerHeight(textPanel));
 
         addActor(tooltips = createToolTipManager( ));
 
@@ -252,24 +256,14 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
 
     protected void showText(String s) {
         if (s == null) {
-            getTextPanel().close();
+            textPanel.close();
             return;
         }
-        getTextPanel().setText(s);
-        getTextPanel().open();
+        textPanel.setText(s);
+        textPanel.open();
     }
 
-    public OverlayTextPanel getTextPanel() {
-        if (textPanel == null) {
-            textPanel = new OverlayTextPanel();
-            addActor(textPanel);
-            textPanel.setPosition(GdxMaster.centerWidth(textPanel),
-                    GdxMaster.centerHeight(textPanel));
-        }
-        return textPanel;
-    }
-
-    public void textInput(Input.TextInputListener textInputListener,
+    public void textInput( Input.TextInputListener textInputListener,
                           String title, String text, String hint) {
         textInput(false,textInputListener, title, text, hint);
     }

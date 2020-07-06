@@ -524,9 +524,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         for (LevelStruct subPart : layer.getSubParts()) {
             reset(subPart);
         }
-        if (isLoaded()) {
-            GridManager.reset();
-        }
+        GridManager.reset();
     }
 
     public void initWall(Coordinates c) {
@@ -553,14 +551,14 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             for (Coordinates coordinates : layer.getCoordinatesSet()) {
                 DC_Cell cell = getGame().getCellByCoordinate(coordinates);
                 if (cell != null) //TODO without buffer!
-                // if (cell.getCellType() != type || layer.getCellVersion()!= cell.getCellVariant())
+                    // if (cell.getCellType() != type || layer.getCellVersion()!= cell.getCellVariant())
                 {
-                    cell.setCellVariant(layer.getCellSetVariant());
-                    set.add(cell);
-                    cell.setCellType(type);
-                    cell.resetCell(false);
-                    cell.setColorTheme(theme);
-                }
+                        cell.setCellVariant(layer.getCellSetVariant());
+                        set.add(cell);
+                        cell.setCellType(type);
+                        cell.resetCell(false);
+                        cell.setColorTheme(theme);
+                    }
             }
             GuiEventManager.trigger(GuiEventType.CELL_RESET, set);
             log(1, type + " cell type from " + layer.getName() +

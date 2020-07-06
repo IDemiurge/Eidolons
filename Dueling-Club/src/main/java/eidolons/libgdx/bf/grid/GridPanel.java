@@ -503,7 +503,7 @@ it sort of broke at some point - need to investigate!
         GridCellContainer cell = cells[x][(y)];
         cell.setVoid(true, animated);
         cell.getUserObject().setVOID(true);
-        if (animated && init) {
+        if (init) {
             resetMaps();
         }
     }
@@ -1159,9 +1159,8 @@ it sort of broke at some point - need to investigate!
         GuiEventManager.bind(removePrevious, CELLS_MASS_SET_VOID, obj -> {
             Collection<Coordinates> c = (Collection<Coordinates>) obj.get();
             for (Coordinates coordinates : c) {
-                setVoid(coordinates.x, coordinates.y, false);
+                setVoid(coordinates.x, coordinates.y, true);
             }
-            resetMaps();
         });
 
         GuiEventManager.bind(removePrevious, MOVE_OVERLAYING, obj -> {

@@ -16,7 +16,7 @@ import eidolons.libgdx.bf.grid.cell.QueueView;
 import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.GroupX;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.topleft.ClockPanel;
 import eidolons.libgdx.screens.ScreenMaster;
@@ -56,7 +56,7 @@ public class AtbPanel extends GroupX {
     ClockPanel clock;
 
     QueueStackPanel stackPanel;
-    SmartTextButton stackButton; //rotate it?!
+    SmartButton stackButton; //rotate it?!
     boolean stacked;
     private ImageContainer horizontal;
     private Image background;

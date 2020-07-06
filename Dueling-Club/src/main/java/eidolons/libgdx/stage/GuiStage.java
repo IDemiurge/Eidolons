@@ -32,10 +32,11 @@ import eidolons.libgdx.gui.controls.radial.RadialContainer;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SymbolButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.ExtendableLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.FullLogPanel;
+import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -79,7 +80,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     protected RadialMenu radial;
     protected ContainerPanel containerPanel;
     protected GameMenu gameMenu;
-    protected SymbolButton menuButton;
+    protected SmartButton menuButton;
 
     protected HqPanel hqPanel;
     protected boolean blackoutIn;
@@ -230,7 +231,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         ));
         menuButton.setSize(btnBg.getImageWidth(), btnBg.getImageHeight());
         menuButton.addActor(btnBg);
-        this.menuButton = new SymbolButton(STD_BUTTON.OPTIONS, () ->
+        this.menuButton = new SmartButton(STD_BUTTON.OPTIONS, () ->
                 gameMenu.toggle());
         this.menuButton.setPosition(-4, 13);
         menuButton.addActor(this.menuButton);
@@ -400,7 +401,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
                     return true;
         return
                 LordPanel.visibleNotNull() ||
-                        confirmationPanel.isVisible() || GdxMaster.isVisibleEffectively(textPanel) ||
+                        confirmationPanel.isVisible() || textPanel.isVisible() ||
                         HqPanel.getActiveInstance() != null || OptionsWindow.isActive()
                         || GameMenu.menuOpen;
     }
@@ -679,12 +680,15 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         return containerPanel;
     }
 
+    public OverlayTextPanel getTextPanel() {
+        return textPanel;
+    }
 
     public GameMenu getGameMenu() {
         return gameMenu;
     }
 
-    public SymbolButton getMenuButton() {
+    public SmartButton getMenuButton() {
         return menuButton;
     }
 

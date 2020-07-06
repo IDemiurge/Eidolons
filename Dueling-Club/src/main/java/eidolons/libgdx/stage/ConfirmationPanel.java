@@ -10,7 +10,6 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
-import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.ShaderDrawer;
@@ -40,12 +39,12 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         TablePanel<Actor> btns = new TablePanel<>();
         add(btns)
                 .center().colspan(2).fill().minWidth(400);
-        btns.addNormalSize((Actor) (cancel = new SymbolButton(STD_BUTTON.CANCEL, () -> {
-                    cancel();
-                }))).left();
-        btns.addNormalSize((Actor) (ok = new SymbolButton(STD_BUTTON.OK, () -> {
-                    ok();
-                }))).right();
+        btns.addNormalSize(cancel = new SmartButton(STD_BUTTON.CANCEL, () -> {
+            cancel();
+        })).left();
+        btns.addNormalSize(ok = new SmartButton(STD_BUTTON.OK, () -> {
+            ok();
+        })).right();
         ok.setIgnoreConfirmBlock(true);
         cancel.setIgnoreConfirmBlock(true);
         setVisible(false);
@@ -91,7 +90,7 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
     public void open() {
         setSize(600, 300);
         getStageWithClosable().openClosable(this);
-        cancel.getActor().setVisible(canCancel);
+        cancel.setVisible(canCancel);
         String wrapped = text;
         //        if (!wrapped.contains("\n")) {
         //            wrapped = TextWrapper.wrapWithNewLine(text,

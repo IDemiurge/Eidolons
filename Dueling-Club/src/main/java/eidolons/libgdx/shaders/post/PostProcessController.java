@@ -178,8 +178,8 @@ public class PostProcessController {
                         POST_PROCESSING_OPTIONS.SHADOW_EFFECT_OFF);
 
 
-        if (!OptionsMaster.getPostProcessingOptions().getBooleanValue(
-                PostProcessingOptions.POST_PROCESSING_OPTIONS.ENABLED)){
+        if (OptionsMaster.getPostProcessingOptions().getBooleanValue(
+                PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF)){
             for (PostProcessorEffect effect : effectMap.keySet()) {
                 effect.setEnabled(false);
             }

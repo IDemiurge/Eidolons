@@ -11,7 +11,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.macro.MacroGame;
@@ -69,10 +69,10 @@ public class MapTimePanel extends GroupX {
     PointX speedUpBtnPoint = new PointX(178, 59);
     PointX speedDownBtnPoint = new PointX(110, 59);
     PointX controlsPoint = new PointX(71, 23);
-    SmartTextButton pauseButton;
+    SmartButton pauseButton;
     MoonActor activeMoon;
-    private SmartTextButton speedUpBtn;
-    private SmartTextButton speedDownBtn;
+    private SmartButton speedUpBtn;
+    private SmartButton speedDownBtn;
     private Image labelBg;
 
     public MapTimePanel() {
@@ -92,17 +92,17 @@ public class MapTimePanel extends GroupX {
                 , (203));
 
         speedUpBtn =
-                new SmartTextButton(
+                new SmartButton(
                         "", STD_BUTTON.SPEED_UP, () -> {
                     MacroGame.getGame().getLoop().getTimeMaster().speedUp();
                 });
         speedDownBtn =
-                new SmartTextButton(
+                new SmartButton(
                         "", STD_BUTTON.SPEED_DOWN, () -> {
                     MacroGame.getGame().getLoop().getTimeMaster().speedDown();
                 });
         pauseButton =
-                new SmartTextButton(
+                new SmartButton(
                         "", STD_BUTTON.PAUSE, () -> {
                     MacroGame.getGame().getLoop().togglePaused();
                     MacroGame.getGame().getLoop().getTimeMaster().resetSpeed();

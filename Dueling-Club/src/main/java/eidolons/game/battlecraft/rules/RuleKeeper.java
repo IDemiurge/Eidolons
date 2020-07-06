@@ -36,8 +36,8 @@ public class RuleKeeper implements Controller {
 
     public static void init() {
         try {
-            setScope(new EnumMaster<RuleEnums.RULE_SCOPE>().retrieveEnumConst(RuleEnums.RULE_SCOPE.class,
-                    OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.RULES_SCOPE)));
+            scope = new EnumMaster<RuleEnums.RULE_SCOPE>().retrieveEnumConst(RuleEnums.RULE_SCOPE.class,
+                    OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.RULES_SCOPE));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -224,9 +224,7 @@ public class RuleKeeper implements Controller {
     }
 
     public static void setScope(RuleEnums.RULE_SCOPE scope) {
-        if (scope != null) {
-            RuleKeeper.scope = scope;
-        }
+        RuleKeeper.scope = scope;
     }
 
     public static RuleKeeper getInstance() {

@@ -4,12 +4,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SymbolButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 
 /**
  * Created by JustMe on 10/10/2018.
  */
-public class HideButton extends SymbolButton {
+public class HideButton extends SmartButton {
 
 
     public HideButton(GroupX group) {

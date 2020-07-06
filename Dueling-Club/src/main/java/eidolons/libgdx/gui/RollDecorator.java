@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SymbolButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -145,17 +145,17 @@ public class RollDecorator {
         }
 
 
-        private SymbolButton initArrow(ButtonStyled.STD_BUTTON style) {
+        private SmartButton initArrow(ButtonStyled.STD_BUTTON style) {
             if (style == null) {
                 style = ButtonStyled.STD_BUTTON.ARROW;
             }
-            SymbolButton arrow = new SymbolButton(style, () -> {
+            SmartButton arrow = new SmartButton(style, () -> {
                 if (getActions().size > 0)
                     return;
                 toggle();
             }){
                 @Override
-                public boolean isCheckClickArea() {
+                protected boolean isCheckClickArea() {
                     return false;
                 }
             };

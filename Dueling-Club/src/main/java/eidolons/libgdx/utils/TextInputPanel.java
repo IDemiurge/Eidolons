@@ -12,7 +12,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SymbolButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
@@ -40,8 +40,8 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
         table.setBackground(NinePatchFactory.getLightPanelFilledSmallDrawable());
         setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
 
-        table.add(new SymbolButton(ButtonStyled.STD_BUTTON.OK, () -> ok())).left().bottom();
-        table.add(new SymbolButton(ButtonStyled.STD_BUTTON.CANCEL, () -> close())).right().bottom();
+        table.add(new SmartButton(ButtonStyled.STD_BUTTON.OK, () -> ok())).left().bottom();
+        table.add(new SmartButton(ButtonStyled.STD_BUTTON.CANCEL, () -> close())).right().bottom();
     }
 
     @Override

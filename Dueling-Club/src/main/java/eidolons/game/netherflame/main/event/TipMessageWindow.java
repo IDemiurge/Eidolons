@@ -14,7 +14,7 @@ import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.OverlayingUI;
@@ -29,7 +29,7 @@ public class TipMessageWindow extends TablePanelX implements OverlayingUI {
     private boolean large;
     FadeImageContainer imageContainer;
     LabelX label;
-    SmartTextButton[] btns;
+    SmartButton[] btns;
     TipMessageSource source;
     private Runnable onClose;
 
@@ -91,7 +91,7 @@ public class TipMessageWindow extends TablePanelX implements OverlayingUI {
         int i = 0;
         for (String button : source.getButtons()) {
             Runnable runnable = source.btnRun[i++];
-            Cell cell = btnsTable.add(new SmartTextButton(button, ButtonStyled.STD_BUTTON.MENU,
+            Cell cell = btnsTable.add(new SmartButton(button, ButtonStyled.STD_BUTTON.MENU,
                     () -> {
                         if (!source.isNonGdxThread())
                         {

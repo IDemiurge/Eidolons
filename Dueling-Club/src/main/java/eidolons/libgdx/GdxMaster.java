@@ -41,10 +41,10 @@ public class GdxMaster {
     public static final boolean WRITE_ATLAS_IMAGES = true;
     private static final boolean COLORFUL = false;
     public static boolean CUSTOM_RESOLUTION;
-    private static final int DEFAULT_WIDTH = 1824;
-    private static final int DEFAULT_HEIGHT = 972;
-    private static final int DEFAULT_WIDTH_FULLSCREEN = 1920;
-    private static final int DEFAULT_HEIGHT_FULLSCREEN = 1080;
+    private static final int DEFAULT_WIDTH = 1500;
+    private static final int DEFAULT_HEIGHT = 900;
+    private static final int DEFAULT_WIDTH_FULLSCREEN = 1600;
+    private static final int DEFAULT_HEIGHT_FULLSCREEN = 960;
     private static int width;
     private static int height;
     private static Float fontSizeMod;
@@ -419,9 +419,6 @@ public class GdxMaster {
     public static Float getUserFontScale() {
         if (userFontScale == null) {
             userFontScale = OptionsMaster.getGraphicsOptions().getFloatValue(GraphicsOptions.GRAPHIC_OPTION.FONT_SIZE) / 100;
-            if (userFontScale==0) {
-                userFontScale=1f;
-            }
         }
         return userFontScale;
     }

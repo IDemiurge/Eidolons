@@ -52,9 +52,6 @@ public class LE_MenuHandler extends LE_Handler {
             case meta_info:
                 getModel().getDisplayMode().toggleScripts();
                 break;
-            case lighting:
-                getModel().getDisplayMode().toggleLighting();
-                break;
             case ai_info:
                 getModel().getDisplayMode().toggleAi();
                 break;
@@ -88,7 +85,7 @@ public class LE_MenuHandler extends LE_Handler {
 
     boolean showAllColors
          */
-        toggle_all, lighting, colors, coordinates, meta_info, ai_info, decor_info,
+        toggle_all, colors, coordinates, meta_info, ai_info, decor_info,
         view(toggle_all, colors, coordinates, meta_info, ai_info, decor_info),
         //        edit(),
 //        layer(),

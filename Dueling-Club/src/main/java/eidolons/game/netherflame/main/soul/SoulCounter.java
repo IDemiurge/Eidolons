@@ -9,7 +9,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.system.audio.DC_SoundMaster;
@@ -20,7 +20,7 @@ import main.system.GuiEventType;
 
 public class SoulCounter extends SuperActor {
     private final TablePanelX<Actor> table;
-    SmartTextButton btn;
+    SmartButton btn;
     LabelX counter;
     int souls = 3;
 

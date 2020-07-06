@@ -2,7 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters.creation.selection.misc;
 
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
 import eidolons.libgdx.gui.panels.headquarters.creation.selection.SelectionTable;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Created by JustMe on 7/4/2018.
  */
-public class HcPersonalityPanel extends SelectionTable<SmartTextButton> {
+public class HcPersonalityPanel extends SelectionTable<SmartButton> {
 
 
     public HcPersonalityPanel() {
@@ -46,7 +46,7 @@ public class HcPersonalityPanel extends SelectionTable<SmartTextButton> {
     public void init() {
         super.init();
         if (selectedData!=null )
-        for (SmartTextButton actor : actors) {
+        for (SmartButton actor : actors) {
             if (selectedData.getName().equalsIgnoreCase((actor.getText().toString()))) {
                 actor.setChecked(true);
             }
@@ -59,8 +59,8 @@ public class HcPersonalityPanel extends SelectionTable<SmartTextButton> {
     }
 
     @Override
-    protected SmartTextButton createElement(SelectableItemData datum) {
-        return new SmartTextButton(datum.getName(), StyleHolder.getHqTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT, 24),
+    protected SmartButton createElement(SelectableItemData datum) {
+        return new SmartButton(datum.getName(), StyleHolder.getHqTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT, 24),
          () -> {
 
              selectedData=datum;
@@ -71,7 +71,7 @@ public class HcPersonalityPanel extends SelectionTable<SmartTextButton> {
     }
 
     @Override
-    protected SmartTextButton[] initActorArray() {
-        return new SmartTextButton[size];
+    protected SmartButton[] initActorArray() {
+        return new SmartButton[size];
     }
 }

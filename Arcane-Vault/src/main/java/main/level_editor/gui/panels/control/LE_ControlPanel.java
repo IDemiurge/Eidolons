@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Manager;
@@ -27,7 +27,7 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
 
     private boolean initialized;
     private int i;
-    private SmartTextButton[] buttons;
+    private SmartButton[] buttons;
 
     public LE_ControlPanel(){
         super(300, 800);
@@ -37,7 +37,7 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
         int j=0;
         List<Method> sorted = Arrays.asList(clazz.getMethods());
         sorted.sort(getSorter());
-        buttons = new SmartTextButton[sorted.size()];
+        buttons = new SmartButton[sorted.size()];
         for (Method method : sorted) {
             if (method.getAnnotation(getIgnoreAnnotation()) != null) {
                 continue;
@@ -94,11 +94,11 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
         return IgnoredCtrlMethod.class;
     }
 
-    protected SmartTextButton createButton(Method method, T handler) {
+    protected SmartButton createButton(Method method, T handler) {
         i++;
         String name =// StringMaster.wrapInBraces(i+"")+
                 StringMaster.format(method.getName(), true);
-        return new SmartTextButton(name, getButtonTextStyle(), () -> {
+        return new SmartButton(name, getButtonTextStyle(), () -> {
             Eidolons.onNonGdxThread(() -> {
                 try {
                     method.invoke(handler);

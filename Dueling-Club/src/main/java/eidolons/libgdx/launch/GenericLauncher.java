@@ -73,7 +73,7 @@ public abstract class GenericLauncher extends Game {
         GenericLauncher.firstInitDone = firstInitDone;
     }
 
-    public abstract String getOptionsPath();
+    public abstract String  getOptionsPath();
 
     @Override
     public void create() {
@@ -92,25 +92,25 @@ public abstract class GenericLauncher extends Game {
         //        }
         screenInit();
 
-        //          profiler = new GLProfiler(Gdx.graphics);
-        //          profiler.enable();
-        //         GuiEventManager.bind(GuiEventType.TOGGLE_LOG_GL_PROFILER, p-> {
-        //             logProfiler=!logProfiler;
-        //         });
-        //        GuiEventManager.bind(GuiEventType.LOG_DIAGNOSTICS, p-> {
-        //            logProfiler();
-        //            TextureCache.getInstance().logDiagnostics();
-        //        });
+//          profiler = new GLProfiler(Gdx.graphics);
+//          profiler.enable();
+//         GuiEventManager.bind(GuiEventType.TOGGLE_LOG_GL_PROFILER, p-> {
+//             logProfiler=!logProfiler;
+//         });
+//        GuiEventManager.bind(GuiEventType.LOG_DIAGNOSTICS, p-> {
+//            logProfiler();
+//            TextureCache.getInstance().logDiagnostics();
+//        });
     }
 
     private void logProfiler() {
         System.out.println(
-                "  Drawcalls: " + profiler.getDrawCalls() +
-                        ", Calls: " + profiler.getCalls() +
-                        ", TextureBindings: " + profiler.getTextureBindings() +
-                        ", ShaderSwitches:  " + profiler.getShaderSwitches() +
-                        "vertexCount: " + profiler.getVertexCount().value
-        );
+            "  Drawcalls: " + profiler.getDrawCalls() +
+                    ", Calls: " + profiler.getCalls() +
+                    ", TextureBindings: " + profiler.getTextureBindings() +
+                    ", ShaderSwitches:  " + profiler.getShaderSwitches() +
+                    "vertexCount: " + profiler.getVertexCount().value
+    );
         profiler.reset();
     }
 
@@ -120,8 +120,7 @@ public abstract class GenericLauncher extends Game {
             return;
         ScreenMaster.setApplication(new LwjglApplication(this,
                 getConf()));
-        if (!CoreEngine.isLevelEditor())
-            OptionsMaster.applyGraphicsOptions();
+        OptionsMaster.applyGraphicsOptions();
         //must always do real gdx operations on gdx thread!
         Eidolons.setLauncher(this);
     }
@@ -163,11 +162,12 @@ public abstract class GenericLauncher extends Game {
     }
 
     protected boolean isStopOnInactive() {
-        //        return CoreEngine.isIDE() && !EidolonsGame.BOSS_FIGHT;//CoreEngine.isLiteLaunch();
+//        return CoreEngine.isIDE() && !EidolonsGame.BOSS_FIGHT;//CoreEngine.isLiteLaunch();
         return Flags.isMe();
     }
 
     public LwjglApplicationConfiguration getConf() {
+        //        Eidolons. getApplication().getGraphics().setFullscreenMode();
         conf = new LwjglApplicationConfiguration();
         conf.title = getTitle();
         //if (Gdx.graphics.isGL30Available())
@@ -175,8 +175,7 @@ public abstract class GenericLauncher extends Game {
         conf.resizable = false;
         conf.samples = 4;
         conf.fullscreen = false;
-        if (!CoreEngine.isLevelEditor())
-            fullscreen = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
+        fullscreen = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
         if (Flags.isGraphicTestMode()) {
             fullscreen = true;
         }
@@ -185,7 +184,7 @@ public abstract class GenericLauncher extends Game {
             conf.backgroundFPS = isStopOnInactive() ? 1 : FRAMERATE;
         else
             conf.backgroundFPS = isStopOnInactive() ? -1 : FRAMERATE;
-        // conf.vSyncEnabled = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VSYNC);
+        conf.vSyncEnabled = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VSYNC);
         initResolution(conf);
         initIcon(conf);
 
@@ -201,7 +200,7 @@ public abstract class GenericLauncher extends Game {
 
         try {
             if (CoreEngine.isLevelEditor()) {
-                //                conf.addIcon(PathFinder.getImagePath() + Images.LOGO_EDITOR_32, FileType.Absolute);
+//                conf.addIcon(PathFinder.getImagePath() + Images.LOGO_EDITOR_32, FileType.Absolute);
                 conf.addIcon(PathFinder.getImagePath() + Images.LOGO_EDITOR_64, FileType.Absolute);
                 conf.addIcon(PathFinder.getImagePath() + Images.LOGO_EDITOR_32, FileType.Absolute);
             } else {
@@ -224,15 +223,13 @@ public abstract class GenericLauncher extends Game {
             System.out.println("resolution width " + conf.width);
             System.out.println("resolution height " + conf.height);
         } else {
-            conf.width = 1920;
-            conf.height = 1080;
+            conf.width = 1600;
+            conf.height = 900;
             try {
                 RESOLUTION resolution =
                         new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class,
                                 OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
-                if (resolution == null) {
-                    resolution = RESOLUTION._1920x1080;
-                }
+                if (resolution != null) {
                     Dimension dimension = ScreenMaster.getResolutionDimensions(resolution, fullscreen);
                     Integer w = (int)
                             dimension.getWidth();
@@ -244,7 +241,7 @@ public abstract class GenericLauncher extends Game {
                         conf.useGL30 = false;
                     System.out.println("resolution width " + w);
                     System.out.println("resolution height " + h);
-
+                }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -262,6 +259,7 @@ public abstract class GenericLauncher extends Game {
         DC_Engine.systemInit();
     }
 
+
     @Override
     public void resize(int width, int height) {
         if (viewport == null)
@@ -275,25 +273,23 @@ public abstract class GenericLauncher extends Game {
             VideoMaster.player.resize(width, height);
         }
     }
-
     public static void setGraphicsMode() {
-        //        switch (getString(OptionConstant.DISPLAY_MODE)) {
-        //            case "windowed borderless":
-        //                System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
-        //                break;
-        //            case "windowed":
-        //                System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //        Gdx.graphics.setWindowedMode(getInt(OptionConstant.RESOLUTION_X) + 1,
-        //                getInt(OptionConstant.RESOLUTION_Y));
+//        switch (getString(OptionConstant.DISPLAY_MODE)) {
+//            case "windowed borderless":
+//                System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+//                break;
+//            case "windowed":
+//                System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
+//                break;
+//            default:
+//                break;
+//        }
+//        Gdx.graphics.setWindowedMode(getInt(OptionConstant.RESOLUTION_X) + 1,
+//                getInt(OptionConstant.RESOLUTION_Y));
 
 
-        //                Gdx.graphics.setWindowedMode(
+//                Gdx.graphics.setWindowedMode(
     }
-
     @Override
     public void render() {
         if (!Assets.get().getManager().update()) {
@@ -310,7 +306,7 @@ public abstract class GenericLauncher extends Game {
                 VideoMaster.player.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             }
         }
-        //        if (CoreEngine.isIDE()) {
+//        if (CoreEngine.isIDE()) {
         try {
             render_();
         } catch (Exception e) {
@@ -323,8 +319,8 @@ public abstract class GenericLauncher extends Game {
         if (logProfiler) {
             logProfiler();
         }
-        //        } else
-        //            render_();
+//        } else
+//            render_();
     }
 
     public void render_() {
@@ -349,7 +345,7 @@ public abstract class GenericLauncher extends Game {
         ScreenMaster.screenSet(meta.getType());
         final Screen oldScreen = getScreen();
 
-        //        oldScreen.getPostProcessing().end();
+//        oldScreen.getPostProcessing().end();
         final ScreenWithLoader newScreen = factory.get();
 
         newScreen.setupPostProcessing();
@@ -425,16 +421,16 @@ public abstract class GenericLauncher extends Game {
     }
 
     protected void trySwitchScreen(EventCallbackParam param) {
-        //        if (CoreEngine.isIDE()) {
-        //            try {
-        //                screenSwitcher((ScreenData) param.get());
-        //            } catch (Exception e) {
-        //                main.system.ExceptionMaster.printStackTrace(e);
-        //                screenSwitcher( new ScreenData(
-        //                        Eidolons.getPreviousScreenType(), "") );
-        //            }
-        //        } else
-        screenSwitcher((ScreenData) param.get());
+//        if (CoreEngine.isIDE()) {
+//            try {
+//                screenSwitcher((ScreenData) param.get());
+//            } catch (Exception e) {
+//                main.system.ExceptionMaster.printStackTrace(e);
+//                screenSwitcher( new ScreenData(
+//                        Eidolons.getPreviousScreenType(), "") );
+//            }
+//        } else
+            screenSwitcher((ScreenData) param.get());
 
     }
 
@@ -477,7 +473,8 @@ public abstract class GenericLauncher extends Game {
     private void onScreenLoadDone(EventCallbackParam param) {
         if (getScreen() == null) {
             //TODO
-        } else {
+            }
+        else {
             ((ScreenWithLoader) getScreen()).loadDone(param);
         }
     }

@@ -5,7 +5,7 @@ import eidolons.game.netherflame.main.NF_Images;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioInfoPanel;
@@ -93,9 +93,9 @@ public class IggActChoicePanel extends ScenarioSelectionPanel {
             }
 
             public void initStartButton(String text, Runnable runnable) {
-                addActor(startButton = new SmartTextButton(text, ButtonStyled.STD_BUTTON.MENU, () -> runnable.run()) {
+                addActor(startButton = new SmartButton(text, ButtonStyled.STD_BUTTON.MENU, () -> runnable.run()) {
                     @Override
-                    public SoundMaster.BUTTON_SOUND_MAP getSoundMap() {
+                    protected SoundMaster.BUTTON_SOUND_MAP getSoundMap() {
                         return SoundMaster.BUTTON_SOUND_MAP.ENTER;
                     }
                 });

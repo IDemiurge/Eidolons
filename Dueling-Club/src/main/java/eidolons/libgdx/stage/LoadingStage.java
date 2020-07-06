@@ -40,49 +40,65 @@ public class LoadingStage extends Stage {
     protected ScreenData data;
     private final boolean fogOn = false;//!CoreEngine.isLiteLaunch();
     private boolean engineInit = true;
-    private Image fullscreenImage;
+    private final Image fullscreenImage;
     private final List<Ambience> fogList = new ArrayList<>();
 
-    private Label underText;
+    Group vfxLayer;
+    private Label missionName;
+    private final Label underText;
+    private final float counter = 0;
 
     public LoadingStage(ScreenData data) {
         this.data = data;
         if (data.equals("Loading...")) {
             engineInit = true;
         }
+        underText = new Label(getBottomText(), StyleHolder.getHqLabelStyle(17));
 
-        if (isBgImageOn()) {
+        underText.addListener(TipMaster.getListener(underText));
+        //TODO click to show next tip
+        underText.setPosition(GdxMaster.centerWidth(underText), 0);
 
-            underText = new Label(getBottomText(), StyleHolder.getHqLabelStyle(17));
+        final TextureRegion fullscreenTexture =
+                getOrCreateR(getBackgroundImagePath());
+        fullscreenImage = new Image(fullscreenTexture);
 
-            underText.addListener(TipMaster.getListener(underText));
-            //TODO click to show next tip
-            underText.setPosition(GdxMaster.centerWidth(underText), 0);
-            final TextureRegion fullscreenTexture =
-                    getOrCreateR(getBackgroundImagePath());
-            fullscreenImage = new Image(fullscreenTexture);
-
-            float x = new Float(GdxMaster.getWidth()) / 1920;
-            float y = new Float(GdxMaster.getHeight()) / 1080;
-            float s = MathUtils.lerp(1, Math.max(x, y), 0.5f);
-            fullscreenImage.setScale(s);
-            addActor(fullscreenImage);
-            addActor(underText);
-            if (fogOn)
-                addFog();
+        float x = new Float(GdxMaster.getWidth())/1920;
+        float y =  new Float(GdxMaster.getHeight())/1080;
+        float s = MathUtils.lerp(1, Math.max(x, y), 0.5f);
+        fullscreenImage.setScale(s);
+        addActor(fullscreenImage);
+        if (!Flags.isCombatGame()){
+            fullscreenImage.setVisible(false);
         }
-    }
+//        fullscreenImage.setPosition(GdxMaster.centerWidth(fullscreenImage),
+//         GdxMaster.centerHeight(fullscreenImage));
 
-    protected boolean isBgImageOn() {
-        return Flags.isCombatGame();
+
+        addActor(underText);
+        if (fogOn)
+            addFog();
+
+        //Tester Check loading screen is important..
+        // if (ScenarioLauncher.running) {
+        //     missionName = new Label(data.getName()
+        //             , StyleHolder.getSizedLabelStyle(FONT.AVQ, 24));
+        //     missionName.setPosition(GdxMaster.centerWidth(missionName),
+        //             GdxMaster.getTopY(missionName));
+        //     addActor(missionName);
+        // }
     }
 
     protected String getBackgroundImagePath() {
-        return (engineInit) ? "main/art/MAIN_MENU.jpg"
-                : "ui/main/moe loading screen.png";
+        return                (engineInit) ? "main/art/MAIN_MENU.jpg"
+                        : "ui/main/moe loading screen.png";
     }
 
     public static String getBottomText() {
+//        return "Tip: " +
+//         TipMaster.getTip()
+//         + "(click to show next tip)";
+
         if (EidolonsGame.TESTER_VERSION) {
             return "Eidolons: Netherflame v" + CoreEngine.VERSION + " [" +
                     CoreEngine.VERSION_NAME +
@@ -106,12 +122,13 @@ public class LoadingStage extends Stage {
                 if (RandomWizard.chance(30)) {
                     continue;
                 }
+
                 //local time?!
                 VFX_TEMPLATE template =
                         new EnumMaster<VFX_TEMPLATE>().retrieveEnumConst(VFX_TEMPLATE.class,
                                 new WeightMap<>().
-                                        //                        chain(AMBIENCE_TEMPLATE.COLD, 10).
-                                                chain(VFX_TEMPLATE.CAVE, 10).
+//                        chain(AMBIENCE_TEMPLATE.COLD, 10).
+        chain(VFX_TEMPLATE.CAVE, 10).
                                         chain(VFX_TEMPLATE.DEEP_MIST, 10).
                                         chain(VFX_TEMPLATE.CRYPT, 10).
                                         getRandomByWeight().toString());
@@ -149,12 +166,10 @@ public class LoadingStage extends Stage {
         for (Ambience sub : fogList) {
             sub.act(delta);
         }
-        if (underText != null) {
-            if (IntroLauncher.INTRO_RUNNING) {
-                underText.setVisible(false);
-            } else
-        underText.setVisible(!(ScreenMaster.getScreen() instanceof DungeonScreen));
-        }
+        if (IntroLauncher.INTRO_RUNNING) {
+            underText.setVisible(false);
+        } else
+            underText.setVisible(!(ScreenMaster.getScreen() instanceof DungeonScreen));
 
     }
 

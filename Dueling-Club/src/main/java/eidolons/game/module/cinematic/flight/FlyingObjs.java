@@ -363,7 +363,7 @@ public class FlyingObjs extends GroupX {
 
         FLY_OBJ_TYPE(float speedFactor, ALPHA_TEMPLATE alpha,
                      boolean flipX, boolean flipY, float weightFactor, boolean sprite, SPRITE_TEMPLATE template) {
-            path = sprite ? PathFinder.getSpritesPath() + "fly objs/" + name() + ".txt"
+            path = sprite ? PathFinder.getFlyObjPath() + "sprites/" + name() + ".txt"
                     : PathFinder.getFlyObjPath() + name() + ".png";
             this.speedFactor = speedFactor;
             this.alpha = alpha;

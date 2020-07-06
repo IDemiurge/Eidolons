@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SymbolButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -17,7 +17,7 @@ public class ExtendableLogPanel extends LogPanel {
 
     public ExtendableLogPanel(boolean top) {
         this.top = top;
-        extendButton = new SymbolButton(STD_BUTTON.PULL);
+        extendButton = new SmartButton(STD_BUTTON.PULL);
         addActor(extendButton);
         extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2 - 1,
                 top ? -11 : getHeight() + 5);

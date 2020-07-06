@@ -5,7 +5,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
@@ -26,8 +26,8 @@ import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 public class QuestInfoPanel extends ItemInfoPanel {
     public static final int WIDTH = 920;
     public static final int HEIGHT = 720;
-    private final SmartTextButton accept;
-    private final SmartTextButton cancel;
+    private final SmartButton accept;
+    private final SmartButton cancel;
     private boolean disabled;
     private SelectableItemData chosen;
 
@@ -38,17 +38,17 @@ public class QuestInfoPanel extends ItemInfoPanel {
     public QuestInfoPanel(SelectableItemData o) {
         super(o);
         row();
-        addActor(accept = new SmartTextButton("Accept Quest",
+        addActor(accept = new SmartButton("Accept Quest",
          STD_BUTTON.MENU, () -> accept()) {
             @Override
-            public BUTTON_SOUND_MAP getSoundMap() {
+            protected BUTTON_SOUND_MAP getSoundMap() {
                 return BUTTON_SOUND_MAP.OK;
             }
         });
-        addActor(cancel = new SmartTextButton("Cancel Quest",
+        addActor(cancel = new SmartButton("Cancel Quest",
          STD_BUTTON.MENU, () -> cancel()) {
             @Override
-            public BUTTON_SOUND_MAP getSoundMap() {
+            protected BUTTON_SOUND_MAP getSoundMap() {
                 return BUTTON_SOUND_MAP.CANCEL;
             }
         });

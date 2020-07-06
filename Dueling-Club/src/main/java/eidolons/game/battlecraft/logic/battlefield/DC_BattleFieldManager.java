@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.battlefield;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
@@ -30,12 +31,12 @@ import java.util.*;
 public class DC_BattleFieldManager extends BattleFieldManager {
 
     private final DC_Game game;
-    private  Map<Coordinates, List<DIRECTION>> wallDirectionMap;
+    private ObjectMap<Coordinates, List<DIRECTION>> wallDirectionMap;
     private List<BattleFieldObject> wallObjects;
-    private Map<Coordinates, List<DIRECTION>> diagonalJoints;
-    private Map<Coordinates, List<DIRECTION>> visibleWallMap = new HashMap<>();
-    private Map<Coordinates, List<DIRECTION>> visibleDiagonalJoints = new HashMap<>();
-    private final Map<Coordinates, DOOR_STATE> doorMap = new HashMap<>();
+    private ObjectMap<Coordinates, List<DIRECTION>> diagonalJoints;
+    private ObjectMap<Coordinates, List<DIRECTION>> visibleWallMap = new ObjectMap<>();
+    private ObjectMap<Coordinates, List<DIRECTION>> visibleDiagonalJoints = new ObjectMap<>();
+    private final ObjectMap<Coordinates, DOOR_STATE> doorMap = new ObjectMap<>();
 
     public DC_BattleFieldManager(DC_Game game, Integer id, int w, int h) {
         super(game, id, w, h);
@@ -128,7 +129,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
             }
         }
         if (wallDirectionMap == null) {
-            wallDirectionMap = new HashMap<>();
+            wallDirectionMap = new ObjectMap<>();
         }
         wallDirectionMap.clear();
         for (BattleFieldObject wall : wallObjects) {
@@ -176,11 +177,11 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         if (!full)
             return;
         if (diagonalJoints == null) {
-            diagonalJoints = new HashMap<>();
+            diagonalJoints = new ObjectMap<>();
         }
         diagonalJoints.clear();
         loop:
-        for (Coordinates c : wallDirectionMap.keySet()) {
+        for (Coordinates c : wallDirectionMap.keys()) {
             for (DIRECTION s : wallDirectionMap.get(c)) {
                 if (s.isDiagonal()) {
                     // for (Coordinates c :
@@ -215,18 +216,18 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
     }
 
-    public  Map<Coordinates, List<DIRECTION>> getWallMap() {
+    public ObjectMap<Coordinates, List<DIRECTION>> getWallMap() {
         if (wallDirectionMap == null) {
             resetWalls();
         }
         return wallDirectionMap;
     }
 
-    public Map<Coordinates, DOOR_STATE> getDoorMap() {
+    public ObjectMap<Coordinates, DOOR_STATE> getDoorMap() {
         return doorMap;
     }
 
-    public Map<Coordinates, List<DIRECTION>> getDiagonalJoints() {
+    public ObjectMap<Coordinates, List<DIRECTION>> getDiagonalJoints() {
         if (diagonalJoints == null) {
             resetWalls();
         }

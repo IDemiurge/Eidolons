@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.OverlayingUI;
@@ -200,7 +200,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
     protected TextButton getButton(T sub, String name) {
         TextButton button = getCache().get(sub);
         if (button == null || sub == null) {
-            button = new SmartTextButton((name),
+            button = new SmartButton((name),
                     StyleHolder.getTextButtonStyle(getButtonStyle(),
                             getFontStyle(), getFontColor(), getFontSize()), getClickRunnable(sub), STD_BUTTON.MENU);
             getCache().put(sub, button);

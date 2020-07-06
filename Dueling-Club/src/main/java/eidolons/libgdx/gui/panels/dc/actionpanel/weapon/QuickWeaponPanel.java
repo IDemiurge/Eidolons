@@ -14,7 +14,7 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.controls.Clicker;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SymbolButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.SlotItemTooltip;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
@@ -41,7 +41,7 @@ public class QuickWeaponPanel extends TablePanelX {
     protected ImageContainer background;
     protected WeaponDataSource dataSource;
     protected WeaponDataSource dataSourceAlt;
-    protected SymbolButton toggleUnarmed;
+    protected SmartButton toggleUnarmed;
     protected boolean unarmed;
     protected QuickAttackRadial radial;
     protected boolean offhand;
@@ -70,7 +70,7 @@ public class QuickWeaponPanel extends TablePanelX {
         background.setPosition(10, 10);
         weapon.setPosition(WEAPON_POS_X, 0);
         weapon.setFadeDuration(0.2f);
-        addActor(toggleUnarmed = new SymbolButton(STD_BUTTON.UNARMED));
+        addActor(toggleUnarmed = new SmartButton(STD_BUTTON.UNARMED));
         toggleUnarmed.setVisible(false);
         //TODO useless for now?
         pack();

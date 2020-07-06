@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,7 +103,7 @@ public class TabbedPanel<T extends Actor> extends TablePanelX {
     }
 
     public void addTab(T actor, String tabName) {
-        TextButton b = new SmartTextButton(tabName, getTabStyle(), () -> tabSelected(tabName), STD_BUTTON.TAB_HIGHLIGHT);
+        TextButton b = new SmartButton(tabName, getTabStyle(), () -> tabSelected(tabName), STD_BUTTON.TAB_HIGHLIGHT);
 
         if (tabTable == null) {
             initContainer();

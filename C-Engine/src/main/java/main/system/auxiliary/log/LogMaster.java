@@ -1,5 +1,6 @@
 package main.system.auxiliary.log;
 
+import lombok.extern.slf4j.Slf4j;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
@@ -9,6 +10,7 @@ import org.apache.log4j.Priority;
 
 import java.util.logging.Level;
 
+@Slf4j
 public class LogMaster {
     public static final int PRIORITY_VERBOSE = -1;
     public static final int PRIORITY_INFO = 0;

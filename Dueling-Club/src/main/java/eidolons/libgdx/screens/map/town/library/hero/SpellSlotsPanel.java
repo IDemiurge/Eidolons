@@ -1,6 +1,6 @@
 package eidolons.libgdx.screens.map.town.library.hero;
 
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.ScrollPaneX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 
@@ -13,7 +13,7 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 public class SpellSlotsPanel extends TablePanelX{
 
     SpellSorter sorter;
-    SmartTextButton fullscreen;
+    SmartButton fullscreen;
 
     ScrollPaneX scroll;
 

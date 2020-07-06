@@ -12,7 +12,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
@@ -120,14 +120,14 @@ public class DialogueView extends TablePanelX implements Scene {
         int i = 0;
         for (String option : data.getResponses()) {
 //process text, color, ..
-            SmartTextButton response;
+            SmartButton response;
             final int i_ = i++;
             if (option.equals(SpeechDataSource.DEFAULT_RESPONSE)) {
-                response = new SmartTextButton("Continue", StyleHolder.getDialogueReplyStyle(),
+                response = new SmartButton("Continue", StyleHolder.getDialogueReplyStyle(),
                         () -> respond(option, i_), STD_BUTTON.HIGHLIGHT_ALT);
 //                response = new SmartButton(STD_BUTTON.OK, () -> respond(option, i_));
             } else
-                response = new SmartTextButton(option, StyleHolder.getDialogueReplyStyle(),
+                response = new SmartButton(option, StyleHolder.getDialogueReplyStyle(),
                         () -> respond(option, i_), STD_BUTTON.HIGHLIGHT_ALT);
 
             replyBox.add(response).left().row();

@@ -14,7 +14,7 @@ import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.gui.generic.BlockableGroup;
 import eidolons.libgdx.gui.generic.GearCluster;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.particles.EmitterActor;
 import main.system.auxiliary.ClassMaster;
 import main.system.auxiliary.StringMaster;
@@ -384,8 +384,8 @@ public class ActionMaster {
     public static void click(Actor actor) {
         Array<com.badlogic.gdx.scenes.scene2d.EventListener> listeners = actor.getListeners();
         for (int i = 0; i < listeners.size; i++) {
-            if (listeners.get(i) instanceof SmartTextButton) {
-                SmartTextButton clickListener = (SmartTextButton) listeners.get(i);
+            if (listeners.get(i) instanceof SmartButton) {
+                SmartButton clickListener = (SmartButton) listeners.get(i);
                 InputEvent e = new InputEvent();
                 e.setListenerActor(actor);
                 e.setPointer(-1);

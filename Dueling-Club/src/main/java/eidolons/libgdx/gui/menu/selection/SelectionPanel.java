@@ -13,7 +13,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SymbolButton;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -38,7 +38,8 @@ import java.util.List;
 public abstract class SelectionPanel extends TablePanelX {
     protected ItemListPanel listPanel;
     protected SelectableItemDisplayer infoPanel;
-    protected SymbolButton backButton;
+    protected SmartButton backButton;
+    protected SmartButton startButton;
     protected SelectionInputListener listener;
     protected Label title;
     protected Object data;
@@ -58,7 +59,7 @@ public abstract class SelectionPanel extends TablePanelX {
         infoPanel = createInfoPanel();
         title = new Label(getTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 20));
         listPanel.setInfoPanel(infoPanel);
-        backButton = new SymbolButton(STD_BUTTON.CANCEL, () -> cancel(true));
+        backButton = new SmartButton(STD_BUTTON.CANCEL, () -> cancel(true));
 
         row();
 
