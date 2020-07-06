@@ -34,6 +34,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.decor.CellDecor;
 import eidolons.libgdx.bf.decor.CellDecorLayer;
 import eidolons.libgdx.bf.decor.DecorData;
 import eidolons.libgdx.bf.decor.DecorData.DECOR_LEVEL;
@@ -1347,21 +1348,6 @@ it sort of broke at some point - need to investigate!
 
     }
 
-    protected void createDecor(Coordinates c,
-                               DecorData data) {
-        for (DECOR_LEVEL level : decorMap.keys()) {
-            CellDecorLayer cellDecorLayer = decorMap.get(level);
-            if (data == null) {
-                cellDecorLayer.remove(c);
-            } else
-                cellDecorLayer.add(c, data.getGraphicData(level), createDecorListener(c));
-        }
-    }
-
-    protected EventListener createDecorListener(Coordinates c) {
-        return null;
-    }
-
     public BaseView getOverlay(Obj object) {
         for (OverlayView overlay : overlays) {
             if (overlay.getUserObject() == object) {
@@ -1611,6 +1597,25 @@ it sort of broke at some point - need to investigate!
 
     public void setParticleManager(ParticleManager particleManager) {
         this.particleManager = particleManager;
+    }
+
+
+    protected void createDecor(Coordinates c,
+                               DecorData data) {
+        for (DECOR_LEVEL level : decorMap.keys()) {
+            CellDecorLayer cellDecorLayer = decorMap.get(level);
+            if (data == null) {
+                cellDecorLayer.remove(c);
+            } else
+                cellDecorLayer.add(c, data.getGraphicData(level), createDecorListener(c));
+        }
+    }
+
+    protected EventListener createDecorListener(Coordinates c) {
+        return null;
+    }
+    public void addDecor(Coordinates c, CellDecor decor, DECOR_LEVEL overMaps) {
+        decorMap.get(overMaps).add(c, decor, 0, 0);
     }
 }
 

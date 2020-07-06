@@ -69,7 +69,7 @@ public class WallMaster {
         return DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(c).getCellSetVariant();
     }
 
-    private static CELL_SET getSet(Coordinates c) {
+    public static CELL_SET getSet(Coordinates c) {
         // DecorData data = DC_Game.game.getDungeonMaster().getFloorWrapper().getDecorMap().get(c);
         // data.
         // check custom set - from script map?

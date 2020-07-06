@@ -85,7 +85,7 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
     }
 
     public static boolean isRotation() {
-        return true;
+        return false;
     }
 
     public GridCell init() {

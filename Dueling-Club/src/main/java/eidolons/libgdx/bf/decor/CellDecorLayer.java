@@ -48,21 +48,24 @@ public class CellDecorLayer extends GridLayer<CellDecor> {
         }
     }
 
+    public void add(Coordinates c, CellDecor decor, int x1, int y1) {
+        addActor(decor);
+        int x = c.x * 128;
+        int y = grid.getGdxY_ForModule(c.y) * 128;
+        decor.setPosition(x + x1, y + y1);
+    }
+
     public void add(Coordinates c, List<GraphicData> graphicData, EventListener listener) {
         remove(c);
         List<CellDecor> list = new ArrayList<>();
         for (GraphicData graphicDatum : graphicData) {
             CellDecor decor = DecorFactory.createDecor(c, graphicDatum);
-            addActor(decor);
-            int x = c.x * 128;
-            int y = grid.getGdxY_ForModule(c.y) * 128;
-            ////TODO centered?
-            decor.setPosition(x + graphicDatum.getIntValue(GraphicData.GRAPHIC_VALUE.x),
-                    y + graphicDatum.getIntValue(GraphicData.GRAPHIC_VALUE.y));
-            if (listener != null) {
-            decor.addListener( listener );
-            }
+            add(c, decor, graphicDatum.getIntValue(GraphicData.GRAPHIC_VALUE.x),
+                    graphicDatum.getIntValue(GraphicData.GRAPHIC_VALUE.y));
 
+            if (listener != null) {
+                decor.addListener(listener);
+            }
             list.add(decor);
         }
 
@@ -70,9 +73,10 @@ public class CellDecorLayer extends GridLayer<CellDecor> {
 
     }
 
+
     @Override
     protected void setColor(CellDecor actor, int x, int y) {
-        if (actor.getBaseColor()!=null && !actor.getBaseColor().equals(GdxColorMaster.WHITE)) {
+        if (actor.getBaseColor() != null && !actor.getBaseColor().equals(GdxColorMaster.WHITE)) {
             return;
         }
         super.setColor(actor, x, y);

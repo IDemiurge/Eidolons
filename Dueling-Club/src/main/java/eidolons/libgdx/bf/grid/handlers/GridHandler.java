@@ -87,4 +87,8 @@ public abstract class GridHandler {
     public int getY2() {
         return grid.getY2();
     }
+
+    public void afterLoaded() {
+
+    }
 }

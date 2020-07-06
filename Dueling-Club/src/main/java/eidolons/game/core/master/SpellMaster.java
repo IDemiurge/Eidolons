@@ -51,7 +51,6 @@ public class SpellMaster extends Master {
 //                if (!HqMaster.isContentDisplayable(type)) {
 //                    continue;
 //                }
-
             if (SkillMaster.isMasteryUnlocked(entity, mastery)) {
                 Spell spell = globalSpellCache.get(type);
                 if (spell == null) {

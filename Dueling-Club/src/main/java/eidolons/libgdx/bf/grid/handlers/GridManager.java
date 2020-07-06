@@ -4,14 +4,12 @@ import com.badlogic.gdx.graphics.Color;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.decor.pillar.PillarManager;
+import eidolons.libgdx.bf.decor.woods.Woods;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.HpBarView;
 import eidolons.libgdx.bf.grid.moving.PlatformHandler;
-import eidolons.libgdx.bf.light.ShadeLightCell;
-import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.overlays.bar.HpBarManager;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.entity.obj.Obj;
@@ -29,45 +27,29 @@ public class GridManager {
     private final PillarManager pillarManager;
     private final GridCommentHandler commentHandler;
     private final GridEventHandler eventHandler;
+    private final ColorHandler colorHandler;
     private final GridPanel gridPanel;
     private static final boolean customDraw = true;
+    private final Woods woods;
     protected GridAnimHandler animHandler;
     protected PlatformHandler platformHandler;
     Set<GridHandler> handlers = new LinkedHashSet<>();
     private boolean resetting;
 
     public Float getLightness(Coordinates c) {
-        if (gridPanel.getShadowMap().getCells(ShadowMap.SHADE_CELL.GAMMA_SHADOW) == null) {
-            return 1f;
-        }
-        ShadeLightCell cell = gridPanel.getShadowMap().getCells(ShadowMap.SHADE_CELL.GAMMA_SHADOW)[c.x][c.y];
-        if (cell == null) {
-            return 0f;
-        }
-        return 1 - cell.getColor().a;
+        return colorHandler.getLightness(c);
     }
 
     public Color getBaseColor(Coordinates c) {
-        if (DC_Game.game.getColorMap().getBase().get(c) == null) {
-            return GdxColorMaster.get(Color.BLACK);
-        }
-        return GdxColorMaster.get(DC_Game.game.getColorMap().getBase().get(c));
+        return colorHandler.getBaseColor(c);
     }
 
     public Color getOrigColor(Coordinates c) {
-        return GdxColorMaster.get(DC_Game.game.getColorMap().getOriginal().get(c));
+        return colorHandler.getOrigColor(c);
     }
 
     public Color getColor(Coordinates c) {
-        if (!DC_Game.game.getColorMap().getOutput().containsKey(c)) {
-            return DC_Game.game.getColorMap().getOriginal().get(c);
-            // return GdxColorMaster.get(GdxColorMaster.NULL_COLOR);
-        }
-        // if (CoreEngine.isLevelEditor()) {
-        //     return GdxColorMaster.get(GdxColorMaster.NULL_COLOR);
-        // }
-        return GdxColorMaster.get(DC_Game.game.getColorMap().getOutput().get(c));
-        // return cell.getColor();
+        return colorHandler.getColor(c);
     }
 
     public void act(float delta) {
@@ -80,6 +62,8 @@ public class GridManager {
         this.gridPanel = gridPanel;
         // customDraw = !CoreEngine.isLevelEditor();
         handlers.add(pillarManager = new PillarManager(gridPanel));
+        handlers.add(colorHandler = new ColorHandler(gridPanel));
+        handlers.add(woods = new Woods(gridPanel));
         handlers.add(commentHandler = new GridCommentHandler(gridPanel));
         handlers.add(animHandler = new GridAnimHandler(gridPanel));
         handlers.add(eventHandler = new GridEventHandler(gridPanel));
@@ -118,6 +102,9 @@ public class GridManager {
     public void afterLoaded() {
         if (CoreEngine.isLevelEditor())
             return;
+        for (GridHandler handler : handlers) {
+            handler.afterLoaded();
+        }
         resetMaps();
     }
 

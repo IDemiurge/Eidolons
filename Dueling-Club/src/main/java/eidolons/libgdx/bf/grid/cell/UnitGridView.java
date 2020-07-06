@@ -15,6 +15,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.bf.decor.CellDecor;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.moving.PlatformController;
 import eidolons.libgdx.bf.overlays.bar.HpBar;
@@ -30,6 +31,8 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.FontMaster.FONT;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class UnitGridView extends GenericGridView {
@@ -42,6 +45,15 @@ public class UnitGridView extends GenericGridView {
 
     OverlayView attachedObj;
     private PlatformController platformController;
+    List<CellDecor> linkedDecor;
+
+
+    public List<CellDecor> getLinkedDecor() {
+        if (linkedDecor == null) {
+            linkedDecor = new ArrayList<>();
+        }
+        return linkedDecor;
+    }
 
     @Override
     protected boolean isIgnored() {
@@ -80,7 +92,7 @@ public class UnitGridView extends GenericGridView {
         view.setDirection(getUserObject().getDirection());
 
         addActor(view);
-//        arrow.getVar
+        //        arrow.getVar
 
         //TODO  will we keep it as normal overlaying obj?
         // So basically maybe all we do really is change its position dynamically?
@@ -89,7 +101,7 @@ public class UnitGridView extends GenericGridView {
          *
          */
 
-//        OverlayingMaster.getOffsetsForOverlaying()
+        //        OverlayingMaster.getOffsetsForOverlaying()
     }
 
     @Override
@@ -147,8 +159,8 @@ public class UnitGridView extends GenericGridView {
             }
         }
         if (Cinematics.ON)
-        if (!getColor().equals(GdxColorMaster.WHITE))
-            portrait.setColor(getColor());
+            if (!getColor().equals(GdxColorMaster.WHITE))
+                portrait.setColor(getColor());
 
         if (screenOverlay > 0.01f) { //TODO need a flag instead
             emblemLighting.setVisible(false);
@@ -159,7 +171,7 @@ public class UnitGridView extends GenericGridView {
                 arrow.fadeOut();
             }
         }
-        if (!(screenOverlay>0.01f)) {
+        if (!(screenOverlay > 0.01f)) {
             super.draw(batch, parentAlpha);
             return;
         }
@@ -235,7 +247,7 @@ public class UnitGridView extends GenericGridView {
             } else {
                 initiativeQueueUnitView.highlight();
             }
-//            initiativeQueueUnitView.setBorder(texture);
+            //            initiativeQueueUnitView.setBorder(texture);
         }
     }
 
@@ -368,6 +380,9 @@ public class UnitGridView extends GenericGridView {
         super.setVisible(visible);
     }
 
+    public void addLinkedDecor(CellDecor decor) {
+        getLinkedDecor().add(decor);
+    }
     @Override
     public boolean isVisible() {
         if (wall) {
@@ -376,7 +391,7 @@ public class UnitGridView extends GenericGridView {
         return super.isVisible();
     }
     //    @Override
-//    public void highlightOff() {
-////        screenOverlay=0;
-//    }
+    //    public void highlightOff() {
+    ////        screenOverlay=0;
+    //    }
 }
