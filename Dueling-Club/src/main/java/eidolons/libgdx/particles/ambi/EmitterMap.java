@@ -4,12 +4,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.utils.Pool;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.particles.EmitterActor;
+import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -26,25 +27,19 @@ import java.util.Map;
 /**
  * Created by JustMe on 1/9/2017.
  */
-public class EmitterMap extends Group {
+public class EmitterMap extends GroupX {
 
     private static final boolean HIDE_SMOKE_AROUND_MAIN_HERO = true;
-    private boolean hideAroundPC = HIDE_SMOKE_AROUND_MAIN_HERO;
-    private static float MIN_DISTANCE_BETWEEN_FOG = 2;
+    private final boolean hideAroundPC = HIDE_SMOKE_AROUND_MAIN_HERO;
+    private static final float MIN_DISTANCE_BETWEEN_FOG = 2;
 
     private static Boolean on;
     private static Integer globalShowChanceCoef;
-    Map<Coordinates, Ambience> map = new LinkedHashMap<>();
+    Map<Coordinates, EmitterActor> map = new LinkedHashMap<>();
     String presetPath;
-    private final Pool<Ambience> ambiencePool = new Pool<Ambience>() {
-        @Override
-        protected Ambience newObject() {
-            return new Ambience(presetPath);
-        }
-    };
     private int showChance;
     private Color color;
-    private float minDistance = MIN_DISTANCE_BETWEEN_FOG;
+    private final float minDistance = MIN_DISTANCE_BETWEEN_FOG;
     private boolean hidden;
     private int activeCount;
 
@@ -113,7 +108,7 @@ public class EmitterMap extends Group {
     }
 
     private void show(Coordinates c) {
-        Ambience ambience = map.get(c);
+        EmitterActor ambience = map.get(c);
         if (ambience == null) {
             tryAdd(c);
         } else
@@ -125,14 +120,14 @@ public class EmitterMap extends Group {
     }
 
     private void hide(Coordinates c) {
-        Ambience ambience = map.get(c);
+        EmitterActor ambience = map.get(c);
         if (ambience == null) {
             return;
         }
-        if (ambience.isIgnored()) {
-            return;
-        }
-
+        EmitterPools.freeActor(ambience);
+        // if (ambience.isIgnored()) {
+        //     return;
+        // }
         ambience.clearActions();
         ambience.hide();
         activeCount--;
@@ -147,17 +142,17 @@ public class EmitterMap extends Group {
 
         Vector2 v = GridMaster.
                 getCenteredPos(c);
-        Ambience ambience = ambiencePool.obtain();
+        EmitterActor ambience = EmitterPools.getEmitterActor(presetPath);
         if (color != null)
             ambience.setColor(color);
         ambience.setTarget(c);
         map.put(c, ambience);
-        int maxOffset = getMaxOffset(ambience);
+        int maxOffset = getMaxOffset( );
         int offsetX = RandomWizard.getRandomIntBetween(-maxOffset, maxOffset);
         int offsetY = RandomWizard.getRandomIntBetween(-maxOffset, maxOffset);
         v.add(offsetX, offsetY);
         ambience.setPosition(v.x, v.y);
-        ambience.added();
+        // ambience.added();
 
         if (RandomWizard.random())
             if (color != null)
@@ -202,7 +197,7 @@ public class EmitterMap extends Group {
         EmitterMap.on = on;
     }
 
-    private int getMaxOffset(Ambience ambience) {
+    private int getMaxOffset( ) {
         return 42;
     }
 

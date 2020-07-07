@@ -36,13 +36,12 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static main.system.auxiliary.log.LogMaster.important;
 
 public class TextureCache {
-    public static final boolean atlasesOn = false;//!CoreEngine.TEST_LAUNCH;
+    public static final boolean atlasesOn = true;//!CoreEngine.TEST_LAUNCH;
     private static final Boolean uiAtlasesOn = false;
     private static TextureCache instance;
     private static final Lock creationLock = new ReentrantLock();
@@ -121,7 +120,9 @@ public class TextureCache {
 
     private TextureCache() {
         this.imagePath = PathFinder.getImagePath();
-        this.atlasPattern = Pattern.compile("[///]([a-z _/-0-9]*)/..*$");
+        // this.atlasPattern = Pattern.compile("[///]([a-z _/-0-9]*)/..*$");
+        this.atlasPattern = Pattern.compile("^.*[///]([a-z _/-0-9]*)/..*$");
+
         this.cache = new ObjectMap<>(1300);
         this.greyscaleCache = new ObjectMap<>(100);
         if (atlasesOn) {
@@ -251,18 +252,35 @@ public class TextureCache {
         }
 
         TextureRegion region = regionCache.get(path);
-        if (region != null)
-            return region;
 
-        final Matcher matcher = getInstance().atlasPattern.matcher(path);
-        if (matcher.matches()) {
-            String name = StringMaster.cropFormat(path);
+
+        if (region != null) {
+            if (atlasesOn && Flags.isIDE()) {
+                if (!missingTextures.contains(path))
+                    if (!(region instanceof TextureAtlas.AtlasRegion)) {
+                        missingTextures.add(path);
+                        getInstance();
+                    }
+            }
+            return region;
+        }
+        //was this doing anything good?
+        // final Matcher matcher = getInstance().atlasPattern.matcher(path);
+        // if (!matcher.matches())
+        // {
+        //     main.system.auxiliary.log.LogMaster.log(1,"Does not match atlasPattern: " +path);
+        // }
+        // else
+        {
+            //TODO optimization
+            String name = GdxImageMaster.cropImagePath(StringMaster.cropFormat(path));
 
             if (!overrideNoAtlas) {
                 //TODO gdx revamp
                 // support last-atlas for custom UNIT_VIEW with same bits (emblem/ border/..) packed there,
                 // and yield the right one for univView ui!
                 if (getInstance().uiAtlas != null) {
+                    region = getInstance().uiAtlas.findRegion(name);
                     // regionUI = getInstance().uiAtlas.findRegion(name);
                 }
                 /*
@@ -517,12 +535,15 @@ public class TextureCache {
 
     public Texture _createTexture(String path, boolean putIntoCache, boolean recursion) {
         String filePath = null;
-        FileHandle fullPath = GDX.file(path);
-        if (!fullPath.exists()) {
-            Path p = Paths.get(imagePath, path);
+        FileHandle fullPath = null;
+        Path p = null;
+        try {
+            p = Paths.get(imagePath, path);
             filePath = p.toString();
-        } else
+        } catch (Exception e) {
             filePath = path;
+        }
+
         Texture t = null;
         fullPath = GDX.file(filePath);
         if (fullPath.exists())

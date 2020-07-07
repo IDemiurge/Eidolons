@@ -78,7 +78,7 @@ public class GdxColorMaster {
     public static final Color DARK_BLUE = getColor(35, 45, 155, 1f);
     public static final Color MAGENTA = getColor(195, 55, 225, 1f);
     public static final Color PSYCHIC = getColor(195, 55, 225, 1f);
-    public static final Color CLOUD = getColor(43, 33, 61, 1f);
+    public static final Color CLOUD = getColor(40, 33, 51, 1f);
 
     public static Color getColorByName(String value) {
         try {
@@ -318,9 +318,9 @@ public class GdxColorMaster {
 
     public static String toStringForLog(Color color) {
         return
-                (Integer.toHexString((int) color.r * 255)) +
-                        (Integer.toHexString((int) color.g * 255)) +
-                        (Integer.toHexString((int) color.b * 255))
+                (Integer.toHexString((int) (color.r * 255))) +
+                        (Integer.toHexString((int) (color.g * 255))) +
+                        (Integer.toHexString((int) (color.b * 255)))
                 ;
 
     }

@@ -196,7 +196,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected void done(EventCallbackParam param) {
             updateInputController();
         if (isLoaded()) {
-            main.system.auxiliary.log.LogMaster.dev(" FIX DOUBLE LOAD!!!! " + toString() + param);
+            main.system.auxiliary.log.LogMaster.devLog(" FIX DOUBLE LOAD!!!! " + toString() + param);
             return;
         }
         data.setParam(param);
@@ -204,7 +204,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         afterLoad();
         GdxMaster.setDefaultCursor();
         triggerInitialEvents();
-        main.system.auxiliary.log.LogMaster.dev(toString() +" LOADed with " +  param);
+        main.system.auxiliary.log.LogMaster.devLog(toString() +" LOADed with " +  param);
     }
 
     protected void triggerInitialEvents() {

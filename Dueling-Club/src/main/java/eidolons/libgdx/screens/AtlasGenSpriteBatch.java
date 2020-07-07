@@ -17,6 +17,7 @@ import main.system.launch.CoreEngine;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /*
 depending on our draw order!
@@ -101,13 +102,13 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
             // if (pack)
             //     TexturePackerLaunch.pack(input, output, atlas.name() , settings);
 
-            for (String s : AnimMaster3d.getAtlasMap().keySet()) {
-                ATLAS type = checkAtlas(s);
-                if (type != null) {
-                    writeSubAtlasImages(s, type);
+            if (AnimMaster3d.getAtlasMap() instanceof ConcurrentHashMap)
+                for (String s : AnimMaster3d.getAtlasMap().keySet()) {
+                    ATLAS type = checkAtlas(s);
+                    if (type != null) {
+                        writeSubAtlasImages(s, type);
+                    }
                 }
-
-            }
         }
     }
 

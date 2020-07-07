@@ -5,8 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import main.system.auxiliary.log.LOG_CHANNEL;
-
-import static main.system.auxiliary.log.LogMaster.dev;
+import main.system.auxiliary.log.LogMaster;
 
 public class CameraMotion {
 
@@ -14,7 +13,7 @@ public class CameraMotion {
     private FloatAction speedActionX;
     private final Vector2 dest;
     CameraMan cameraMan;
-    private Interpolation interpolation;
+    private final Interpolation interpolation;
     private float lastCamX = -1;
     private float lastCamY = -1;
 
@@ -33,7 +32,7 @@ public class CameraMotion {
         action.setEnd(x ? dest.x : dest.y);
         action.setDuration(duration);
         action.setInterpolation(interpolation);
-        dev(LOG_CHANNEL.CAMERA, "Camera motion to " + dest.x + " "
+        LogMaster.devLog(LOG_CHANNEL.CAMERA, "Camera motion to " + dest.x + " "
                 + dest.y + " in " + duration + " seconds");
         return action;
     }

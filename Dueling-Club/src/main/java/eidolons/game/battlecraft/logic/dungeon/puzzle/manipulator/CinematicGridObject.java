@@ -17,6 +17,7 @@ public class CinematicGridObject extends GridObject {
     protected List<CinematicGridObject> additional;
     protected float origX;
     protected float origY;
+    private Double range;
 
     public CinematicGridObject(Coordinates c,   BfObjEnums.CUSTOM_OBJECT object) {
         super(c, object.spritePath);
@@ -85,6 +86,18 @@ public class CinematicGridObject extends GridObject {
     @Override
     protected double getDefaultVisionRange() {
         return 0;
+    }
+
+    @Override
+    public double getVisionRange() {
+        if (range!=null) {
+            return range;
+        }
+        return visionRange;
+    }
+
+    public void setRange(Double range) {
+        this.range = range;
     }
 
     @Override

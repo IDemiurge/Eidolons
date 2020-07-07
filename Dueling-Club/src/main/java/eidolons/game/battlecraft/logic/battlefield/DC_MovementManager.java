@@ -157,8 +157,8 @@ public class DC_MovementManager implements MovementManager {
 
     public void cancelAutomove(Obj activeUnit) {
         pathCache.remove(activeUnit);
-        playerDestination=null;
-        playerPath=null;
+        playerDestination = null;
+        playerPath = null;
     }
 
     public List<ActionPath> buildPath(Unit unit, Coordinates coordinates) {
@@ -168,9 +168,9 @@ public class DC_MovementManager implements MovementManager {
         // return ImmutableList.of(path);
         PathBuilder builder = PathBuilder.getInstance().init
                 (moves, new Action(unit.getAction("Move")));
-        builder.simplified=true;
+        builder.simplified = true;
         List<ActionPath> paths = builder.build(new ListMaster<Coordinates>().getList(coordinates));
-        builder.simplified=false;
+        builder.simplified = false;
         if (paths.isEmpty()) {
             return null;
         }
@@ -229,28 +229,27 @@ public class DC_MovementManager implements MovementManager {
                 game.getLogManager().log("Cannot find path to " + playerDestination);
                 return false;
             }
-            Action action = null;
+            List<Action> actions = null;
             for (ActionPath path : paths) {
                 if (!checkPathStillValid(path, playerDestination)) {
                     continue;
                 }
-                action = path.getActions().remove(0);
+                actions = path.choices.remove(0).getActions();
                 playerPath = path.choices.stream().map(c -> c.getCoordinates()).collect(Collectors.toList());
                 break;
             }
-            if (action == null) {
+            if (actions == null) {
                 pathCache.remove(unit);
                 return false;
             }
-            // ActionAnimation anim = new ActionAnimation(action);
-            // anim.start();
-
-            Context context = new Context(unit.getRef());
-            if (action.getTarget() != null) {
-                context.setTarget(action.getTarget().getId());
+            for (Action action : actions) {
+                Context context = new Context(unit.getRef());
+                if (action.getTarget() != null) {
+                    context.setTarget(action.getTarget().getId());
+                }
+                unit.getGame().getGameLoop().
+                        actionInputManual(new ActionInput(action.getActive(), context));
             }
-            unit.getGame().getGameLoop().
-                    actionInput_(new ActionInput(action.getActive(), context));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             return false;

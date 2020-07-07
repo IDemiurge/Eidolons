@@ -12,9 +12,9 @@ import main.elements.conditions.OrConditions;
 import main.elements.conditions.standard.PositionCondition;
 import main.game.bf.Coordinates;
 
-public class VoidPuzzleConstructor extends MazePuzzleConstructor {
+public class VoidMazeConstructor extends MazePuzzleConstructor {
 
-    public VoidPuzzleConstructor(String... args) {
+    public VoidMazeConstructor(String... args) {
         super(args);
     }
 
@@ -41,7 +41,7 @@ public class VoidPuzzleConstructor extends MazePuzzleConstructor {
             @Override
             protected Condition getFailConditions() {
                 OrConditions conditions = new OrConditions();
-                for (Coordinates falseExit : VoidPuzzleConstructor.this.
+                for (Coordinates falseExit : VoidMazeConstructor.this.
                         getPuzzle().getFalseExits()) {
                     conditions.add(new PositionCondition(puzzle.getAbsoluteCoordinate(falseExit)));
                 }
@@ -63,13 +63,13 @@ public class VoidPuzzleConstructor extends MazePuzzleConstructor {
         return super.createRules(puzzleData);
     }
 
-    private VoidPuzzle getPuzzle() {
-        return (VoidPuzzle) puzzle;
+    private VoidMaze getPuzzle() {
+        return (VoidMaze) puzzle;
     }
 
     @Override
     protected MazePuzzle createPuzzle() {
-            return new VoidPuzzle();
+            return new VoidMaze();
     }
 
 }

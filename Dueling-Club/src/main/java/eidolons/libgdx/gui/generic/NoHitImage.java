@@ -28,7 +28,7 @@ public class NoHitImage extends Image {
 
 
     public NoHitImage(String path) {
-        this(TextureCache.getOrCreate(path));
+        this(TextureCache.getOrCreateR(path));
     }
 
     public NoHitImage(float scale, Drawable drawable) {

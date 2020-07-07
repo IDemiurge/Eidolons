@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.ai.tools;
 
 import eidolons.game.battlecraft.ai.elements.actions.Action;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.Cinematics;
 import main.elements.targeting.SelectiveTargeting;
 import main.game.logic.action.context.Context;
 

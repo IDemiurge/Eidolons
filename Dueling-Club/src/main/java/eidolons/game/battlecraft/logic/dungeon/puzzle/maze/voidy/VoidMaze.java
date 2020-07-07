@@ -22,13 +22,13 @@ import java.util.List;
  * <p>
  * FALSE EXITS! E.g., there are 3 in the template, and only one random is TRUE. Veil vs <?>
  */
-public class VoidPuzzle extends MazePuzzle {
+public class VoidMaze extends MazePuzzle {
 
     protected List<Coordinates> falseExits;
     protected Coordinates realExit;
     protected RoomModel template;
 
-    public VoidPuzzle() {
+    public VoidMaze() {
         super(MazeType.LIGHT, MazeType.DARK);
         if (!CoreEngine.TEST_LAUNCH) {
             GuiEventManager.trigger(GuiEventType.UPDATE_DUNGEON_BACKGROUND, getOverrideBackground());
@@ -40,13 +40,13 @@ public class VoidPuzzle extends MazePuzzle {
     }
 
     @Override
-    public VoidPuzzleHandler getHandler() {
-        return (VoidPuzzleHandler) super.getHandler();
+    public VoidMazeHandler getHandler() {
+        return (VoidMazeHandler) super.getHandler();
     }
 
     @Override
     protected PuzzleHandler createHandler() {
-        return new VoidPuzzleHandler(this );
+        return new VoidMazeHandler(this );
     }
 
 

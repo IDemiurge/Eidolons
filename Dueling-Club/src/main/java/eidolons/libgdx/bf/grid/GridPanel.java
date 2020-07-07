@@ -18,15 +18,14 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.LastSeenMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.cinematic.flight.FlightHandler;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.netherflame.boss.anims.generic.BossVisual;
@@ -371,12 +370,10 @@ it sort of broke at some point - need to investigate!
 
     protected void customAct(float delta) {
         InputController controller = ScreenMaster.getScreen().getController();
-         {
             drawX1 = controller.getGridDrawX1(getWidth());
             drawY1 = getDrawY(controller.getGridDrawY1(0));
             drawX2 = Math.min(getModuleCols(), controller.getGridDrawX2(getWidth()));
             drawY2 = getDrawY(controller.getGridDrawY2(0));
-        }
         for (int x = drawX1; x < drawX2; x++) {
             for (int y = drawY1; y < drawY2; y++) {
                 cells[x][y].act(delta);
@@ -698,7 +695,7 @@ it sort of broke at some point - need to investigate!
         Coordinates c = object.getCoordinates();
         GridCellContainer cell = getGridCell(c.x, c.y);
         if (cell == null) {
-            LogMaster.dev("No cell for view: " + object.getNameAndCoordinate());
+            LogMaster.devLog("No cell for view: " + object.getNameAndCoordinate());
             return;
         }
         cell.addActor(uv);
@@ -960,6 +957,7 @@ it sort of broke at some point - need to investigate!
         if (shards != null) {
             shards.draw(batch, 1f);
         }
+        if (!flightHandler.isOn())
         if (shadowMap != null) {
             shadowMap.draw(batch, 1f);
         }
@@ -987,7 +985,7 @@ it sort of broke at some point - need to investigate!
             unitGridView.draw(batch, 1);
             unitGridView.drawScreen(batch);
         }
-        if (flightHandler.isOn()) {
+        if (gridManager.getPlatformHandler().isActive()) {
             UnitView baseView = (UnitView) viewMap.get(Eidolons.getMainHero());
             float x = baseView.getX();
             float y = baseView.getY();
@@ -1194,7 +1192,7 @@ it sort of broke at some point - need to investigate!
                 c = (Coordinates) list.get(1);
                 gridObj = findGridObj(key, c);
                 if (gridObj == null) {
-                    LogMaster.dev("No grid obj to remove: " + key + c);
+                    LogMaster.devLog("No grid obj to remove: " + key + c);
                     return;
                 }
             }
@@ -1362,11 +1360,11 @@ it sort of broke at some point - need to investigate!
     }
 
     public static boolean isShowGridEmitters() {
-        return false;// GridPanel.showGridEmitters;
+        return true;// GridPanel.showGridEmitters;
     }
 
     public static boolean isDrawEmittersOnTop() {
-        return !EidolonsGame.FOOTAGE;
+        return true;
     }
 
     public void setUpdateRequired(boolean b) {
@@ -1375,7 +1373,7 @@ it sort of broke at some point - need to investigate!
     public void clearSelection() {
     }
 
-    public boolean detachUnitView(Unit unit) {
+    public boolean detachUnitView(BattleFieldObject unit) {
         return false;
     }
 
@@ -1529,7 +1527,7 @@ it sort of broke at some point - need to investigate!
         return getGridManager().getPlatformHandler();
     }
 
-    public GridCell getGridCell(Coordinates coordinate) {
+    public GridCellContainer getGridCell(Coordinates coordinate) {
         return getGridCell(coordinate.x, coordinate.y);
     }
 

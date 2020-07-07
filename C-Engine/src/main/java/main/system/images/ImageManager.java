@@ -75,21 +75,21 @@ public class ImageManager {
     public static final String BLOTCH = " blotch";
     private static String PATH;
     private static String DEFAULT;
-    private static ImageObserver observer = new ImageObserver() {
+    private static final ImageObserver observer = new ImageObserver() {
         public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
             return false;
         }
     };
-    private static Map<String, CustomImageIcon> iconCache = new HashMap<>();
-    private static Map<String, ImageIcon> sizedImageStringCache = new HashMap<>();
-    private static Map<String, Image> sizedImageCache = new HashMap<>();
+    private static final Map<String, CustomImageIcon> iconCache = new HashMap<>();
+    private static final Map<String, ImageIcon> sizedImageStringCache = new HashMap<>();
+    private static final Map<String, Image> sizedImageCache = new HashMap<>();
     private static Image DEFAULT_IMG;
     private static HashMap<BACKGROUND, List<String>> portraitMap;
     private static Map<COLOR_THEME, Map<String, String>> colorImgCache;
-    private static List<String> noColorTheme = new ArrayList<>();
+    private static final List<String> noColorTheme = new ArrayList<>();
     private static HashMap<BACKGROUND, List<String>> extendedPortraitMap;
     private static Map<Obj, Map<String, ImageIcon>> customIconCache;
-    private static Map<String, JLabel> labelCache = new HashMap<>();
+    private static final Map<String, JLabel> labelCache = new HashMap<>();
 
     public static void init() {
         setPATH(PathFinder.getImagePath());
@@ -1147,7 +1147,7 @@ public class ImageManager {
         if (isImage(getBlotchPath(StringMaster.cropFormat(PathUtils.getLastPathSegment(path))))) {
             return getBlotchPath(StringMaster.cropFormat(PathUtils.getLastPathSegment(path)));
         }
-        main.system.auxiliary.log.LogMaster.dev(" no blotch: " + getBlotchPath(StringMaster.cropFormat(PathUtils.getLastPathSegment(path))));
+        main.system.auxiliary.log.LogMaster.devLog(" no blotch: " + getBlotchPath(StringMaster.cropFormat(PathUtils.getLastPathSegment(path))));
         return e.getLargeImagePath();
 
     }

@@ -1,7 +1,6 @@
 package eidolons.libgdx.bf.generic;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.Entity;
 import main.system.auxiliary.StringMaster;
-import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 2/10/2018.
@@ -84,17 +82,17 @@ public class ImageContainer extends SuperContainer  implements Flippable{
         setImage(image);
     }
     public void setImage(String path) {
-        if (ImageManager.isImageFile(path)) {
+        if (!StringMaster.isEmpty(path)) {
             this.path = path;
-            Texture r = TextureCache.getOrCreate(path);
+            TextureRegion r = TextureCache.getOrCreateR(path);
             if (sprite != null)
-                if (sprite.getTexture().equals(r)) {
+                if (sprite.getTexture().equals(r.getTexture())) {
                     if (getContent() == null || isResetImageAlways())
                         //                     if (!getContent().getDrawable().equals(new TextureRegionDrawable(sprite)))
                         setImage(new Image(sprite));
                     return;
                 }
-            setImage(new Image(sprite = new Sprite(TextureCache.getOrCreate(path))));
+            setImage(new Image(sprite = new Sprite(TextureCache.getOrCreateR(path))));
         } else {
             setEmpty();
         }
@@ -103,9 +101,7 @@ public class ImageContainer extends SuperContainer  implements Flippable{
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (sprite != null)
-        if (sprite.getY()!=0){
-        }
+        setTransform(getRotation()!=0);
     }
 
     protected boolean isResetImageAlways() {

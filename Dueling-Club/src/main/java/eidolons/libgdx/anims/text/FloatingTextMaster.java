@@ -283,10 +283,14 @@ public class FloatingTextMaster {
     }
 
     public FloatingText getFloatingText(Entity active, TEXT_CASES CASE, Object arg) {
-
+        String text = getText(active, CASE, arg);
+        if (text == null) {
+            text="";
+        }
+        String finalText = text;
         FloatingText floatingText =
                 new FloatingText(
-                        () -> getText(active, CASE, arg).trim(), () -> getImage(active, CASE, arg)
+                        () ->  finalText.trim(), () -> getImage(active, CASE, arg)
                         , getColor(CASE, arg));
 
         floatingText.setStayFullDuration(getStayFull(CASE, arg));
@@ -463,7 +467,7 @@ public class FloatingTextMaster {
 
     public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity) {
         if (ScreenMaster.getGrid() == null) {
-            main.system.auxiliary.log.LogMaster.dev("Cannot do float text w/o grid: " + arg);
+            main.system.auxiliary.log.LogMaster.devLog("Cannot do float text w/o grid: " + arg);
             return;
         }
         if (GdxMaster.isLwjglThread()) {

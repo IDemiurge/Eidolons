@@ -6,7 +6,6 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleQuest;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleStats;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.ScriptLib;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.netherflame.main.event.TipMessageMaster;
@@ -167,26 +166,18 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
     }
 
     protected void cinematicFail() {
-        if (puzzle.getFailCinematicScriptKey() != null) {
-            ScriptLib.execute(puzzle.getFailCinematicScriptKey());
-        }
     }
-
     protected void cinematicWin() {
-        if (puzzle.getWinCinematicScriptKey() != null) {
-            ScriptLib.execute(puzzle.getWinCinematicScriptKey());
-        }
     }
-
+    protected void cinematicStart() {
+    }
     protected void entered() {
         if (puzzle.isPale()) {
             PaleAspect.enterPale();
         }
         Eidolons.onNonGdxThread(() -> {
-        if (puzzle.getEnterCinematicScriptKey() != null) {
-            ScriptLib.execute(puzzle.getEnterCinematicScriptKey());
+           cinematicStart();
             //just zoom out? need to center cam on exits..
-        }
         beforeTip(); //TODO pause/disable things ! enter cinematic mode or something
         if (puzzle.getTipDelay() > 0) {
             WaitMaster.WAIT(puzzle.getTipDelay());

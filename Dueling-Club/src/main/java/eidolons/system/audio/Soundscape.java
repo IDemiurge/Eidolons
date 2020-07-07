@@ -1,6 +1,6 @@
 package eidolons.system.audio;
 
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
+import eidolons.game.module.cinematic.Cinematics;
 import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;

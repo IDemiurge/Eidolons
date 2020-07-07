@@ -88,11 +88,11 @@ public class KtxCompressor extends GdxUtil {
     }
 
     private void toKTX(String path) {
-        main.system.auxiliary.log.LogMaster.dev("toKTX " + path);
+        main.system.auxiliary.log.LogMaster.devLog("toKTX " + path);
         try {
             KTXProcessor.convert(path, Assets.getKtxImgPath(path), false,
                     true, false);
-            main.system.auxiliary.log.LogMaster.dev("toKTX done " + path);
+            main.system.auxiliary.log.LogMaster.devLog("toKTX done " + path);
         } catch (Exception e) {
             e.printStackTrace();
         }

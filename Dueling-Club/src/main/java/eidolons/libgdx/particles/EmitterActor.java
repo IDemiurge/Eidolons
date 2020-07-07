@@ -3,7 +3,6 @@ package eidolons.libgdx.particles;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -20,7 +19,6 @@ public class EmitterActor extends SuperActor {
 
     public String path;
     protected ParticleEffectX effect;
-    protected ParticleEffectPool pool;
     protected GenericEnums.VFX sfx;
     protected Sprite sprite;
     protected boolean attached = true;
@@ -29,7 +27,6 @@ public class EmitterActor extends SuperActor {
     protected boolean test;
     protected float speed = 1;
     protected Float lastAlpha;
-
     protected boolean broken;
     boolean flipX;
     boolean flipY;

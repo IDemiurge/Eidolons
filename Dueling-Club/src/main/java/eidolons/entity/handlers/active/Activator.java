@@ -17,6 +17,7 @@ import main.content.mode.STD_MODES;
 import main.entity.Ref;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.launch.Flags;
@@ -115,17 +116,19 @@ public class Activator extends ActiveHandler {
     }
 
     public static void cannotActivate_(DC_ActiveObj e, String reason) {
-        LogMaster.log(1, "Cannot Activate " +
-                e.getName() +
-                ": " + reason);
+        TEXT_CASES CASE = TEXT_CASES.DEFAULT;
+        if (!StringMaster.isEmpty(e.getCosts().getReasonsString())) {
+            reason = e.getCosts().getReasonsString();
+            CASE = TEXT_CASES.REQUIREMENT;
+        }
+        LogMaster.log(1, "Cannot Activate " + e.getName() + ": " + reason);
         if (!e.getOwnerUnit().isMine())
             if (e.getOwnerUnit().isAiControlled())
                 return;
         EUtils.showInfoText(e.getCosts().getReasonsString());
 
         FloatingText f = FloatingTextMaster.getInstance().getFloatingText(e,
-                TEXT_CASES.REQUIREMENT,
-                e.getCosts().getReasonsString());
+                CASE,               reason);
         f.setDisplacementY(100);
         f.setDuration(3);
         Vector2 c = GridMaster.getCenteredPos(e

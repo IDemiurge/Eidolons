@@ -40,7 +40,7 @@ import eidolons.libgdx.particles.spell.SpellVfxMaster;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.post.PostFxUpdater.POST_FX_TEMPLATE;
-import eidolons.libgdx.stage.camera.CameraMan;
+import eidolons.libgdx.stage.camera.MotionData;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.Soundscape.SOUNDSCAPE;
@@ -276,9 +276,9 @@ public class SpeechExecutor {
                 break;
             case MOVE:
                 unit = getUnit(value);
-                main.system.auxiliary.log.LogMaster.dev("MOVING: " + unit.getNameAndCoordinate());
+                main.system.auxiliary.log.LogMaster.devLog("MOVING: " + unit.getNameAndCoordinate());
                 unit.setCoordinates((getCoordinate(vars.get(0))));
-                main.system.auxiliary.log.LogMaster.dev("MOVED: " + unit.getNameAndCoordinate());
+                main.system.auxiliary.log.LogMaster.devLog("MOVED: " + unit.getNameAndCoordinate());
 
                 GuiEventManager.trigger(GuiEventType.UNIT_MOVED, unit);
                 if (isVisionRefreshRequired()) {
@@ -456,13 +456,13 @@ public class SpeechExecutor {
             case WAIT_ANIMS:
                 Predicate<Float> p = delta -> {
                     if (!AnimMaster.getInstance().isDrawing()) {
-                        main.system.auxiliary.log.LogMaster.dev("Anims waiting unlocked! ");
+                        main.system.auxiliary.log.LogMaster.devLog("Anims waiting unlocked! ");
                         return true;
                     }
-                    main.system.auxiliary.log.LogMaster.dev("Anims waiting... ");
+                    main.system.auxiliary.log.LogMaster.devLog("Anims waiting... ");
                     return false;
                 };
-                main.system.auxiliary.log.LogMaster.dev("Anims wait locked! ");
+                main.system.auxiliary.log.LogMaster.devLog("Anims wait locked! ");
                 if (NumberUtils.isInteger(value)) {
                     WaitMaster.waitForCondition(p, Integer.valueOf(value));
                 } else
@@ -495,14 +495,14 @@ public class SpeechExecutor {
                 Lock lock = new ReentrantLock();
                 Condition waiting = lock.newCondition();
                 GdxMaster.onInput(() -> {
-                            main.system.auxiliary.log.LogMaster.dev("Scripts Unlocking..");
+                            main.system.auxiliary.log.LogMaster.devLog("Scripts Unlocking..");
                             lock.lock();
                             waiting.signal();
                             lock.unlock();
                         },
                         bool ? null : false, bool);
 
-                main.system.auxiliary.log.LogMaster.dev("Scripts locked!");
+                main.system.auxiliary.log.LogMaster.devLog("Scripts locked!");
                 Timer timer = TimerTaskMaster.newTimer(new TimerTask() {
                     @Override
                     public void run() {
@@ -519,7 +519,7 @@ public class SpeechExecutor {
                     e.printStackTrace();
                 }
                 timer.cancel();
-                main.system.auxiliary.log.LogMaster.dev("Scripts Unlocked!");
+                main.system.auxiliary.log.LogMaster.devLog("Scripts Unlocked!");
 
                 if (vars.size() > 1) {
                     execute(WAIT, vars.get(1));
@@ -686,7 +686,7 @@ public class SpeechExecutor {
                 COMBAT_SCRIPT_FUNCTION func = new EnumMaster<COMBAT_SCRIPT_FUNCTION>().
                         retrieveEnumConst(COMBAT_SCRIPT_FUNCTION.class, VariableManager.removeVarPart(value));
                 if (func == null) {
-                    main.system.auxiliary.log.LogMaster.dev("NO SUCH SCRIPT or function: " + value);
+                    main.system.auxiliary.log.LogMaster.devLog("NO SUCH SCRIPT or function: " + value);
                 }
                 master.getMissionMaster().getScriptManager().execute(func, Eidolons.getMainHero().getRef(),
                         vars.toArray(new String[0]));
@@ -891,7 +891,7 @@ public class SpeechExecutor {
                 //                if (vars.size() < 2) {
                 //                    vars.add("swing");
                 //                }
-                CameraMan.MotionData motion =
+                MotionData motion =
                         getMotionData(value, vars, true);
                 GuiEventManager.trigger(GuiEventType.CAMERA_ZOOM, motion);
                 break;
@@ -1246,7 +1246,7 @@ public class SpeechExecutor {
     }
 
     protected void doCamera(String value, List<String> vars, SpeechScript.SCRIPT speechAction) {
-        CameraMan.MotionData motionData = getMotionData(value, vars, false);
+        MotionData motionData = getMotionData(value, vars, false);
         if (speechAction == CAMERA_SET) {
             GuiEventManager.trigger(GuiEventType.CAMERA_SET_TO, motionData.dest);
             return;
@@ -1254,7 +1254,7 @@ public class SpeechExecutor {
         GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO, motionData);
     }
 
-    protected CameraMan.MotionData getMotionData(String value, List<String> vars, boolean zoom) {
+    protected MotionData getMotionData(String value, List<String> vars, boolean zoom) {
         Vector2 v = null;
         if (!zoom) {
             switch (value) {
@@ -1286,9 +1286,9 @@ public class SpeechExecutor {
             if (duration >= 500) {
                 duration = duration / 1000;
             }
-            return new CameraMan.MotionData(Float.valueOf(value) / 100, duration, interpolation);
+            return new MotionData(Float.valueOf(value) / 100, duration, interpolation);
         }
-        return new CameraMan.MotionData(v, duration, interpolation);
+        return new MotionData(v, duration, interpolation);
     }
 
     protected BattleFieldObject getUnit(String value) {

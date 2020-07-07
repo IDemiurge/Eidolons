@@ -416,13 +416,13 @@ public class LogMaster {
         log(PRIORITY_WARNING, PREFIX_WARNING + string);
     }
 
-    public static void dev(String string) {
+    public static void devLog(String string) {
         if (Flags.isIDE()) {
             log(PRIORITY_IMPORTANT, PREFIX_DEV + string);
         }
     }
 
-    public static void dev(LOG_CHANNEL c, String s) {
+    public static void devLog(LOG_CHANNEL c, String s) {
         if (Flags.isIDE())
             if (c.isOn()) {
                 log(c.getPrefix() + s);

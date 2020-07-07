@@ -242,7 +242,7 @@ public abstract class VoidHandler {
     }
 
     public boolean isLogged() {
-        return true;
+        return false;
     }
 
     public abstract void cleanUp();

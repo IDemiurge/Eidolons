@@ -210,11 +210,16 @@ public class ActionMaster {
 
     }
 
-    public static void addRotateByAction(Actor actor, float amount) {
-        addRotateByAction(actor, actor.getRotation(), actor.getRotation() + amount);
+    public static RotateByActionLimited addRotateAction(Actor actor, float amount, float dur) {
+        RotateByActionLimited a = addRotateByAction(actor, amount);
+        a.setDuration(dur);
+        return a;
+    }
+    public static RotateByActionLimited addRotateByAction(Actor actor, float amount) {
+       return  addRotateByAction(actor, actor.getRotation(), actor.getRotation() + amount);
     }
 
-    public static void addRotateByAction(Actor actor, float from, float to) {
+    public static RotateByActionLimited addRotateByAction(Actor actor, float from, float to) {
         if (!getActionsOfClass(actor, RotateByActionLimited.class).isEmpty()) {
             getActionsOfClass(actor, RotateByActionLimited.class).forEach(action -> {
                 if (action instanceof Action)
@@ -235,6 +240,7 @@ public class ActionMaster {
         action.setDuration(duration);
         actor.addAction(action);
         action.setTarget(actor);
+        return action;
     }
 
     public static MoveByActionLimited addMoveByActionReal(Actor actor, float x, float y, float v) {

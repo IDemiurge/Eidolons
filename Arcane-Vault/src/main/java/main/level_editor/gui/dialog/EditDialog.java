@@ -10,20 +10,20 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.NinePatchFactory;
 import main.level_editor.gui.components.EditValueContainer;
 
-public abstract  class EditDialog<T > extends ChooserDialog<T, EditValueContainer> {
+public abstract class EditDialog<T> extends ChooserDialog<T, EditValueContainer> {
 
     public EditDialog(int size) {
         super(2, size);
     }
 
-    public EditDialog( ) {
-        this( 0);
+    public EditDialog() {
+        this(0);
     }
 
     @Override
     protected EditValueContainer createElement_(T datum) {
 
-        return    new EditValueContainer(getName(datum), getVal(datum),
+        return new EditValueContainer(getName(datum), getVal(datum),
                 getArg(datum),
                 getType(datum));
     }
@@ -63,10 +63,8 @@ public abstract  class EditDialog<T > extends ChooserDialog<T, EditValueContaine
     @Override
     protected void initSize(int wrap, int size) {
         super.initSize(wrap, size);
-
         setSize(columns * (space + getElementSize().x),
-                Math.max(1, rows) * getElementSize().y
-        + 64);
+                Math.max(1, rows) * getElementSize().y + 64);
     }
 
     @Override
@@ -74,7 +72,7 @@ public abstract  class EditDialog<T > extends ChooserDialog<T, EditValueContaine
         return new Vector2(360, 64);
     }
 
-    protected   LevelStructure.EDIT_VALUE_TYPE getType(T datum){
+    protected LevelStructure.EDIT_VALUE_TYPE getType(T datum) {
         return getSpecificType(datum);
     }
 
@@ -82,7 +80,7 @@ public abstract  class EditDialog<T > extends ChooserDialog<T, EditValueContaine
         return null;
     }
 
-    protected Object getArg(T datum){
+    protected Object getArg(T datum) {
         return getSpecificArg(datum);
     }
 

@@ -55,7 +55,11 @@ import main.system.launch.Flags;
 import main.system.math.PositionMaster;
 import main.system.threading.WaitMaster;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static eidolons.libgdx.anims.sprite.SpriteAnimationFactory.fps30;
@@ -118,7 +122,7 @@ public class AnimMaster3d {
     private static ObjectMap<String, String> substituteMap;
     private static Boolean off;
     private static float fps = fps30;
-    private static final Map<String, TextureAtlas> atlasMap = new LinkedHashMap<>();
+    private static final Map<String, TextureAtlas> atlasMap = new ConcurrentHashMap<>();
 
     static {
         init();

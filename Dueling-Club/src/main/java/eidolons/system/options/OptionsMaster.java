@@ -28,11 +28,10 @@ import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.particles.ambi.EmitterMap;
 import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.libgdx.stage.GuiVisualEffects;
-import eidolons.libgdx.stage.camera.CameraMan;
+import eidolons.libgdx.stage.camera.CameraOptions;
 import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.MusicMaster;
@@ -142,6 +141,8 @@ public class OptionsMaster {
     }
 
     protected static void applyControlOptions(ControlOptions options) {
+        CameraOptions.update(options);
+
         for (Object sub : options.getValues().keySet()) {
             new EnumMaster<CONTROL_OPTION>().
                     retrieveEnumConst(CONTROL_OPTION.class,
@@ -152,7 +153,6 @@ public class OptionsMaster {
             String value = options.getValue(key);
             int intValue = options.getIntValue(key);
             boolean booleanValue = options.getBooleanValue(key);
-            float floatValue = new Float(intValue) / 100;
             switch (key) {
                 case SCROLL_SPEED:
                     ScrollPanel.setScrollAmount(intValue);
@@ -163,23 +163,8 @@ public class OptionsMaster {
                 case UNLIMITED_ZOOM:
                     InputController.setUnlimitedZoom(booleanValue);
                     break;
-                //                    case DRAG_OFF:
-                //                        InputController.setDragOff(booleanValue);
-                //                        break;
-                case CAMERA_ON_HERO:
-                    CameraMan.setCameraAutoCenteringOn(booleanValue);
-                    break;
                 case ALT_MODE_ON:
                     BattleClickListener.setAltDefault(booleanValue);
-                    break;
-                case CENTER_CAMERA_AFTER_TIME:
-                    if (DungeonScreen.getInstance() == null) {
-                        break;
-                    }
-                    DungeonScreen.getInstance().getCameraMan().setCameraTimer(intValue);
-                    break;
-                case CENTER_CAMERA_DISTANCE_MOD:
-                    CameraMan.setCameraPanMod(floatValue);
                     break;
             }
         }

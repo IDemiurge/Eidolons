@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy;
 
+import com.badlogic.gdx.math.Interpolation;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
@@ -10,6 +11,8 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid.PuzzleVoid
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid.VoidHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.ScriptLib;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.cinematic.Cinematics;
+import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.content.CONTENT_CONSTS;
@@ -18,11 +21,14 @@ import main.content.enums.entity.BfObjEnums;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.RandomWizard;
+import main.system.threading.WaitMaster;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
-public class VoidPuzzleHandler extends MazeHandler<VoidPuzzle> {
+public class VoidMazeHandler extends MazeHandler<VoidMaze> {
 
     protected VoidHandler voidHandler;
     float collapsePeriod;
@@ -30,19 +36,30 @@ public class VoidPuzzleHandler extends MazeHandler<VoidPuzzle> {
     protected final Set<GridObject> holes = new LinkedHashSet<>();
     protected boolean collapsing;
 
-    public VoidPuzzleHandler(VoidPuzzle mazePuzzle) {
+    public VoidMazeHandler(VoidMaze mazePuzzle) {
         super(mazePuzzle);
     }
 
     @Override
     protected void beforeTip() {
-        setup.reset();
+        setup.reset(); //show EXITS
         if (isFirstAttempt()) {
-
-        // Object c1 = RandomWizard.getRandomListObject(puzzle.falseExits);
-        // List<Coordinates> c = CoordinatesMaster.getCoordinatesBetween(getAbsoluteCoordinate((Coordinates) c1), getExitCoordinates());
-        // GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, c);
+            Object c1 = RandomWizard.getRandomListObject(puzzle.falseExits);
+            List<Coordinates> c = CoordinatesMaster.getCoordinatesBetween(getAbsoluteCoordinate((Coordinates) c1), getExitCoordinates());
+            GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, c);
         }
+        Cinematics.doZoom(2, 2.25f, Interpolation.fade);
+
+    }
+
+    @Override
+    public void afterTipAction() {
+        super.afterTipAction();
+        WaitMaster.WAIT(3500);
+
+        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
+        ScriptLib.execute(ScriptLib.STD_SCRIPT.mini_explosion);
+        Cinematics.doZoom(1.25f, 3.5f, Interpolation.fade);
     }
 
     @Override
@@ -79,11 +96,26 @@ public class VoidPuzzleHandler extends MazeHandler<VoidPuzzle> {
 
     protected void firstMoveDone() {
         resetHandler();
-        if (puzzle.getFirstMoveScriptKey() != null) {
-            ScriptLib.execute(puzzle.getFirstMoveScriptKey());
-        }
+        cinematicFirstMove();
         collapsing = true;
         updateQuest();
+    }
+
+    protected void cinematicStart() {
+    }
+
+    protected void cinematicFirstMove() {
+        Cinematics.doShake(Screenshake.ScreenShakeTemplate.MEDIUM, 3, null);
+        Cinematics.doZoom(1f, 2.25f, Interpolation.pow2In);
+    }
+
+    protected void cinematicFail() {
+        Cinematics.doShake(Screenshake.ScreenShakeTemplate.HARD, 2, null);
+        Cinematics.doZoom(0.1f, 2.25f, Interpolation.pow2In);
+    }
+
+    protected void cinematicWin() {
+        ScriptLib.execute(ScriptLib.STD_SCRIPT.gate_flash);
     }
 
     @Override
@@ -109,13 +141,18 @@ public class VoidPuzzleHandler extends MazeHandler<VoidPuzzle> {
                 public boolean checkVisible() {
                     visible = (Eidolons.getGame().
                             getManager().getMainHeroCoordinates().dst_(c) <= getDefaultVisionRange());
+                    //blackness revealed only when close by
+                    if (visible) {
+                        return true;
+                    }
                     return visible;
                 }
 
                 @Override
                 public void init() {
                     super.init();
-                    new Veil(getPuzzle(), c, false, false) {
+                    //this is the false exit that will disappear when we approach...
+                    holes.add(new Veil(getPuzzle(), c, false, false) {
                         @Override
                         public boolean checkVisible() {
                             if (!puzzle.isActive()) {
@@ -123,7 +160,7 @@ public class VoidPuzzleHandler extends MazeHandler<VoidPuzzle> {
                             }
                             return !visible;
                         }
-                    };
+                    });
                 }
             };
             blackhole.init();

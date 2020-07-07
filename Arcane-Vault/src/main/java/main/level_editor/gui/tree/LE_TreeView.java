@@ -29,7 +29,7 @@ import eidolons.libgdx.bf.grid.moving.PlatformController;
 import eidolons.libgdx.bf.grid.moving.PlatformData;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.stage.camera.CameraMan;
+import eidolons.libgdx.stage.camera.MotionData;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
@@ -123,7 +123,7 @@ public class LE_TreeView extends TreeX<StructNode> {
 
         }
         Vector2 v = GridMaster.getCenteredPos(c);
-        CameraMan.MotionData data = new CameraMan.MotionData(v, 0.5f, null);
+        MotionData data = new MotionData(v, 0.5f, null);
         GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, data);
 //        data =  new CameraMan.MotionData(z, 0.5f, null);
 //        GuiEventManager.trigger(GuiEventType.CAMERA_ZOOM, data);

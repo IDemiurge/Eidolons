@@ -297,7 +297,7 @@ public abstract class GenericLauncher extends Game {
     @Override
     public void render() {
         if (!Assets.get().getManager().update()) {
-            main.system.auxiliary.log.LogMaster.dev("Assets being loaded...");
+            main.system.auxiliary.log.LogMaster.devLog("Assets being loaded...");
         }
         GdxTimeMaster.act(Gdx.graphics.getDeltaTime());
         if (VideoMaster.player != null) {
@@ -331,7 +331,7 @@ public abstract class GenericLauncher extends Game {
         GuiEventManager.processEvents();
         super.render();
         if (!Assets.get().getManager().update()) {
-            main.system.auxiliary.log.LogMaster.dev("Assets being loaded after...");
+            main.system.auxiliary.log.LogMaster.devLog("Assets being loaded after...");
         }
 
     }

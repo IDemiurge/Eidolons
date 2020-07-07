@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.stage.camera.CameraMan;
+import eidolons.libgdx.stage.camera.MotionData;
 import main.entity.obj.Obj;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
@@ -30,7 +31,7 @@ public class LE_CameraHandler extends LE_Handler {
         Gdx.app.postRunnable(() ->
                 centerModule(m)
         );
-        GuiEventManager.trigger(GuiEventType.CAMERA_ZOOM, new CameraMan.MotionData(2.3f, 1f, null));
+        GuiEventManager.trigger(GuiEventType.CAMERA_ZOOM, new MotionData(2.3f, 1f, null));
     }
 
     public void centerOnSelection() {

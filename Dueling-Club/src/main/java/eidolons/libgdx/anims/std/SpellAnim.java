@@ -399,10 +399,10 @@ public class SpellAnim extends ActionAnim {
 
         if (getActive() instanceof Spell) {
             if (((Spell) getActive()).isChannelingNow()) {
-                main.system.auxiliary.log.LogMaster.dev(" ANIM FOR ChannelingNow " + getActive());
+                main.system.auxiliary.log.LogMaster.devLog(" ANIM FOR ChannelingNow " + getActive());
                 switch (getPart()) {
                     case CAST:
-                        main.system.auxiliary.log.LogMaster.dev(" ANIM FOR ChannelingNow duration =" + max);
+                        main.system.auxiliary.log.LogMaster.devLog(" ANIM FOR ChannelingNow duration =" + max);
                         if (getActive().getOwnerUnit().isPlayerCharacter()) {
                         getEmitterList().forEach(e -> e.getEffect().setAlpha(0.74f));
                         }
@@ -413,7 +413,7 @@ public class SpellAnim extends ActionAnim {
             setDuration(0);
         }
 
-        main.system.auxiliary.log.LogMaster.dev("Spell anim duration set: " + max);
+        main.system.auxiliary.log.LogMaster.devLog("Spell anim duration set: " + max);
         setDuration(
                 Math.min(DEFAULT_MAX_ANIM_DURATION, max));
     }

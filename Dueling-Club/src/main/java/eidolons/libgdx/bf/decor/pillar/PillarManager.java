@@ -38,6 +38,7 @@ public class PillarManager extends GridHandler {
 
 
     // Light revamp - get average between some adjacent cells ...
+    //TODO optimization
     public Color getColor(Coordinates coord, Object o, boolean wall) {
         if (o==null) {
             return GdxColorMaster.get(GdxColorMaster.NULL_COLOR);

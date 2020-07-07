@@ -207,10 +207,10 @@ public class DefaultActionHandler {
             return turnToMotion(source, c);
         }
         if (moveTo) {
+            if (source.getGame().isDebugMode()) {
+                return doDebugStuffCell(source, c);
+            }
             return moveToMotion(source, c);
-        }
-        if (source.getGame().isDebugMode()) {
-            return doDebugStuffCell(source, c);
         }
 
         if (EidolonsGame.MOVES_DISABLED) {

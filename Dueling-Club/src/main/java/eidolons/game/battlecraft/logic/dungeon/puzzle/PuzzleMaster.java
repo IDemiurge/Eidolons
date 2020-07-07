@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzleConstructor;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidPuzzleConstructor;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMazeConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -133,7 +133,7 @@ public class PuzzleMaster {
             case maze:
                 return new MazePuzzleConstructor(args);
             case voidmaze:
-                return new VoidPuzzleConstructor(args);
+                return new VoidMazeConstructor(args);
         }
         return null;
     }

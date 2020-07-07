@@ -2,7 +2,6 @@ package eidolons.game.battlecraft;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.active.DC_ActionManager;
-import eidolons.swing.DC_GuiManager;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.DescriptionTooltips;
@@ -59,8 +58,6 @@ public class DC_Engine extends CoreEngine {
         if (initOptions) {
             OptionsMaster.init();
         }
-        DC_GuiManager.init();
-//        TextMaster.init(locale);
     }
 
     public static void dataInit() {

@@ -159,6 +159,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         if (!isCustomAct()) {
             act(Gdx.graphics.getDeltaTime());
         }
+        if (pauseTimer>0) {
+            return false;
+        }
         if (frameNumber == 0)
             return false;
 
@@ -183,9 +186,6 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public boolean drawThis(Batch batch) {
-        if (pauseTimer>0) {
-            return false;
-        }
         float lifecycleDuration = getLifecycleDuration();
         if (lifecycleDuration != 0) {
             checkReverse();

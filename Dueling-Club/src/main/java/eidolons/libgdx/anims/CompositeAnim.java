@@ -138,7 +138,7 @@ public class CompositeAnim implements Animation {
                 if (!parallelAnim.tryDraw(batch)) {
 //                    parallelAnim.finished();
                     parallelAnims.remove(parallelAnim);
-                    main.system.auxiliary.log.LogMaster.dev("Finished parallel: " +parallelAnim);
+                    main.system.auxiliary.log.LogMaster.devLog("Finished parallel: " +parallelAnim);
                 }
 
             }

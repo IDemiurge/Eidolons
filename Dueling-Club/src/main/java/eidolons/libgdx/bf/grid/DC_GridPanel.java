@@ -477,7 +477,7 @@ public class DC_GridPanel extends GridPanel {
     }
 
 
-    public boolean detachUnitView(Unit heroObj) {
+    public boolean detachUnitView(BattleFieldObject heroObj) {
         BaseView uv = viewMap.get(heroObj);
         if (!(uv.getParent() instanceof GridCellContainer))
             return false;

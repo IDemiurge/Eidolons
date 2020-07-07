@@ -39,7 +39,7 @@ public abstract class DataEditDialog<S extends Enum<S>, T extends DataUnit<S>> e
         if (type == null) {
             type = LevelStructure.EDIT_VALUE_TYPE.text;
         }
-        if (Gdx.input.isButtonPressed(Input.Keys.ALT_LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
             type = LevelStructure.EDIT_VALUE_TYPE.text;
         }
         switch (type) {

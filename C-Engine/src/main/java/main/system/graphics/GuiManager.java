@@ -8,7 +8,6 @@ import java.awt.*;
 
 public class GuiManager {
     public static final int SCROLL_BAR_WIDTH = 12;
-    private static final double DEFAULT_WIDTH = 1680;
     private static int cellHeight;
     private static int objSize;
     private static Dimension size;
@@ -16,31 +15,15 @@ public class GuiManager {
     private static boolean fullscreen;
     private static int bfObjSize;
     private static int tinyObjSize;
-    private static Dimension portraitSize;
-    private static int cellWidth;
 
     public static void init() {
+        // DO NOT REMOVE THIS - OPEN GL RESOLUTION WILL BREAK!!!
+        UIManager.put("ScrollBar.width", SCROLL_BAR_WIDTH);
 
-        if (CoreEngine.isSwingOn()) {
-         UIManager.put("ScrollBar.width", SCROLL_BAR_WIDTH);
-        }
-
-//        FontMaster.setUIFont();
-//
-//        if (size.getWidth() > 1280) {
-//            squareCellSize = 132;
-//            setCellWidth(132);
-//            cellHeight = 113;
-//            objSize = 96;
-//            bfObjSize = 128;
-//        } else
-            {
-            // TODO update
-            cellHeight = 99;
-            objSize = 64;
-            bfObjSize = 96;
-            smallObjSize = 64;
-        }
+        cellHeight = 99;
+        objSize = 64;
+        bfObjSize = 96;
+        smallObjSize = 64;
         smallObjSize = bfObjSize / 2;
         tinyObjSize = smallObjSize / 2;
 
@@ -61,22 +44,16 @@ public class GuiManager {
                 }
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        FontMaster.setUIFont();
+            FontMaster.setUIFont();
         }
     }
 
     public static int getScreenWidthInt() {
         return size.width;
     }
+
     public static int getScreenHeightInt() {
         return size.height;
-    }
-
-    public static Dimension getPortraitSize() {
-        if (portraitSize == null) {
-            portraitSize = new Dimension(bfObjSize, bfObjSize);
-        }
-        return portraitSize;
     }
 
     public static int getFullObjSize() {
@@ -125,7 +102,6 @@ public class GuiManager {
 
     public static boolean isFullscreen() {
         return fullscreen;
-        // return true;
     }
 
     public static void setFullscreen(boolean fullscreen) {
@@ -139,10 +115,5 @@ public class GuiManager {
     public static int getTinyObjSize() {
         return tinyObjSize;
     }
-
-    public static int getCellWidth() {
-        return cellWidth;
-    }
-
 
 }

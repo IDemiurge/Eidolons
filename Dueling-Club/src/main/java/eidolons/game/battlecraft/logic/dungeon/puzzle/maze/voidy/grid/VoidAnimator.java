@@ -101,7 +101,8 @@ public class VoidAnimator {
                     AnimMaster.getInstance().customAnimation(anim);
                 } else {
                     CinematicGridObject flames;
-                    gridObjects.add(flames = new CinematicGridObject(c, BfObjEnums.CUSTOM_OBJECT.flames));
+                    gridObjects.add(flames = new CinematicGridObject(c, BfObjEnums.CUSTOM_OBJECT.hypnotic_flames_red));
+                    flames.setRange(11d);
                     flames.fadeIn();
                     flames.addToGrid();
                 }
@@ -125,7 +126,7 @@ public class VoidAnimator {
         } else
             ActionMaster.addMoveToAction(cell, x + offsetX, y + offsetY, dur);
 
-        float delay =raiseOrCollapse?  dur / 5 : 0.01f;
+        float delay = raiseOrCollapse ? dur / 5 : 0.01f;
         ActionMaster.addDelayedAction(cell, delay, new Action() {
             @Override
             public boolean act(float delta) {
@@ -133,6 +134,7 @@ public class VoidAnimator {
                 updatePillar(c);
                 if (handler.isLogged())
                     log(1, cell + " toggled void to " + cell.getUserObject().isVOID());
+                checkUnitFalls(c);
                 return true;
             }
         });
@@ -161,7 +163,11 @@ public class VoidAnimator {
         });
     }
 
-    private void updatePillar(Coordinates  c) {
+    private void checkUnitFalls(Coordinates c) {
+        handler.gridPanel.getGridManager().getAnimHandler().doFall(c);
+    }
+
+    private void updatePillar(Coordinates c) {
         handler.gridPanel.getGridManager().getPillarManager().updateDynamicPillars(c, false);
     }
 

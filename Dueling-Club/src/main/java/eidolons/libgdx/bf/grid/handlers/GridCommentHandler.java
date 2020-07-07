@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.entity.obj.unit.DummyUnit;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
@@ -27,7 +27,7 @@ import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.NoHitGroup;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.TextBuilder;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
-import eidolons.libgdx.stage.camera.CameraMan;
+import eidolons.libgdx.stage.camera.MotionData;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
@@ -127,7 +127,7 @@ public class GridCommentHandler extends GridHandler{
         text = parseColors(text);
 
         if (!isSequentialComment(text)) {
-            main.system.auxiliary.log.LogMaster.dev("NON Sequential comment: " + text);
+            main.system.auxiliary.log.LogMaster.devLog("NON Sequential comment: " + text);
 //            createFloatText(c, at, facingDirection, text, false);
             String finalText1 = text;
             Gdx.app.postRunnable(() ->
@@ -143,7 +143,7 @@ public class GridCommentHandler extends GridHandler{
             key = COMMENT_WAIT_KEY + (getWaitCounter());
             String finalKey = key;
 
-            main.system.auxiliary.log.LogMaster.dev(key + "Sequential comment: " + text);
+            main.system.auxiliary.log.LogMaster.devLog(key + "Sequential comment: " + text);
 
             Gdx.app.postRunnable(() -> commentGdx(img, facingDirection, c, textOnTop, finalText, at, finalKey, true));
 
@@ -196,7 +196,7 @@ public class GridCommentHandler extends GridHandler{
 //        }
 
         comment(portrait, unit.getFacing(), unit.getCoordinates(), textTop, text, at);
-        LogMaster.dev(text + "\n - Comment by " + unit.getNameAndCoordinate());
+        LogMaster.devLog(text + "\n - Comment by " + unit.getNameAndCoordinate());
         Eidolons.getGame().getLogManager().log(unit.getName() + ": \n" +
                 StringMaster.removeNewLines(text).trim());
     }
@@ -209,7 +209,7 @@ public class GridCommentHandler extends GridHandler{
 
         if (!Cinematics.ON && !uiStage)
             if (OptionsMaster.getControlOptions().getBooleanValue(ControlOptions.CONTROL_OPTION.CENTER_CAMERA_ON_COMMENTS))
-                GuiEventManager.trigger(CAMERA_ZOOM, new CameraMan.MotionData(-10f, 1f));
+                GuiEventManager.trigger(CAMERA_ZOOM, new MotionData(-10f, 1f));
 
         SpriteX commentBgSprite = new SpriteX(Sprites.INK_BLOTCH) {
             @Override
@@ -418,7 +418,7 @@ public class GridCommentHandler extends GridHandler{
                 return;
             }
             faded[0] = true;
-            main.system.auxiliary.log.LogMaster.dev(key + " key; fade comment   " + text);
+            main.system.auxiliary.log.LogMaster.devLog(key + " key; fade comment   " + text);
             if (key != null) {
                 if (flag != null) {
                     flag.set(true);
@@ -531,7 +531,7 @@ public class GridCommentHandler extends GridHandler{
                 if (getTapCount() == 1) {
                     return;
                 }
-                main.system.auxiliary.log.LogMaster.dev(" manual fade   " + key);
+                main.system.auxiliary.log.LogMaster.devLog(" manual fade   " + key);
                 fadeRunnable.run();
                 done = true;
 //                GdxMaster.clearPassInput();

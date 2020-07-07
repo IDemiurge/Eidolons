@@ -1,7 +1,6 @@
 package main.swing.generic.components;
 
 import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -229,20 +228,6 @@ public abstract class Builder implements GameGUI {
         public String getMiGString() {
 
             return mig;
-        }
-
-        public String getMigForBF() {
-            return getMigForBF(false);
-        }
-
-        public String getMigForBF(boolean overlaying) {
-            int X = GuiManager.getCellWidth() * x;
-            int Y = GuiManager.getCellHeight() * y;
-            if (overlaying) {
-                X += (GuiManager.getCellWidth() - GuiManager.getSmallObjSize()) / 2;
-                Y += (GuiManager.getCellHeight() - GuiManager.getSmallObjSize()) / 2;
-            }
-            return "x " + X + ", y " + Y;
         }
 
         public int getX() {

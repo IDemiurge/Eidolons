@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.netherflame.main.NF_Images;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
@@ -79,7 +79,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-            main.system.auxiliary.log.LogMaster.dev("Setting dc background " + path);
+            main.system.auxiliary.log.LogMaster.devLog("Setting dc background " + path);
             Chronos.mark("bg");
             setBackground(path);
             Chronos.logTimeElapsedForMark("bg");

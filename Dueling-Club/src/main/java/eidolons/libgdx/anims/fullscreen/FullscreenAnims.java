@@ -155,7 +155,7 @@ public class FullscreenAnims extends GroupX {
 //                PathFinder.getImagePath()+
                 dataSource.type.getSpritePath();
         if (Assets.get().getManager().isLoaded(path)){
-            main.system.auxiliary.log.LogMaster.dev("No fullscreen anim preloaded for " +path);
+            main.system.auxiliary.log.LogMaster.devLog("No fullscreen anim preloaded for " +path);
             return;
         }
         SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(path, false, false);
@@ -181,7 +181,7 @@ public class FullscreenAnims extends GroupX {
         }
         spriteList.add(sprite);
 
-        main.system.auxiliary.log.LogMaster.dev("Fullscreen anim added: " +path);
+        main.system.auxiliary.log.LogMaster.devLog("Fullscreen anim added: " +path);
         if (dataSource.type.color != null) {
             sprite.setColor(dataSource.type.color);
         }

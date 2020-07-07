@@ -7,8 +7,8 @@ import com.badlogic.gdx.files.FileHandle;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.video.VideoMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
@@ -787,7 +787,7 @@ public class MusicMaster {
     public void setScope(MUSIC_SCOPE scope) {
         if (scope != this.scope) {
             this.scope = scope;
-            main.system.auxiliary.log.LogMaster.dev("Music scope: " +scope);
+            main.system.auxiliary.log.LogMaster.devLog("Music scope: " +scope);
             switch (scope) {
                 case BATTLE:
                     tracksPlayedInScope=5;

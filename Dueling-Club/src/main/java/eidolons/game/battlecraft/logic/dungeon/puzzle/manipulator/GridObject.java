@@ -59,12 +59,16 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
 
     protected abstract double getDefaultVisionRange();
 
+    public double getVisionRange() {
+        return visionRange;
+    }
+
     public boolean checkVisible() {
         //        if (isClearshotRequired()) {
         //        }
         if (CoreEngine.isLevelEditor())
             return true;
-        return !(Eidolons.getGame().getManager().getMainHeroCoordinates().dst_(c) > visionRange);
+        return !(Eidolons.getGame().getManager().getMainHeroCoordinates().dst_(c) > getVisionRange());
     }
 
     public void setKey(String key) {
@@ -238,7 +242,9 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
 
     @Override
     public void fadeIn() {
-
+        if (sprite != null) {
+            sprite.setVisible(true);
+        }
         if (getColor().a == 0)
             super.fadeIn();
         for (EmitterActor emitterActor : emitters.keySet()) {

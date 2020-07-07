@@ -167,7 +167,7 @@ public class UnitAI {
                 orderType = ORDER_TYPE.PURSUIT;
             }
         }
-        main.system.auxiliary.log.LogMaster.dev(unit + " received orders: " + standingOrders);
+        main.system.auxiliary.log.LogMaster.devLog(unit + " received orders: " + standingOrders);
         this.standingOrders = standingOrders;
     }
 

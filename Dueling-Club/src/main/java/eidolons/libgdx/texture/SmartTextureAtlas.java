@@ -27,8 +27,8 @@ public class SmartTextureAtlas extends TextureAtlas {
 
     public SmartTextureAtlas(String path) {
         super(path);
-        this.path=path;
-        main.system.auxiliary.log.LogMaster.dev("SmartTextureAtlas created: " + path);
+        this.path = path;
+        main.system.auxiliary.log.LogMaster.devLog("SmartTextureAtlas created: " + path);
     }
 
     public SmartTextureAtlas(TextureAtlasData data) {
@@ -37,7 +37,7 @@ public class SmartTextureAtlas extends TextureAtlas {
 
     public static SmartTextureAtlas getAtlas(String path) {
         SmartTextureAtlas atlas =
-         cache.get(path.toLowerCase());
+                cache.get(path.toLowerCase());
         if (atlas != null)
             return atlas;
         atlas = new SmartTextureAtlas(path);
@@ -73,10 +73,11 @@ public class SmartTextureAtlas extends TextureAtlas {
         name = name.toLowerCase();
         for (int i = 0, n = getRegions().size; i < n; i++) {
             AtlasRegion region = getRegions().get(i);
-            if (region.name.toLowerCase(). contains(name)) matched.add(new AtlasRegion(region));
+            if (region.name.toLowerCase().contains(name)) matched.add(new AtlasRegion(region));
         }
         return matched;
     }
+
     @Override
     public Sprite createSprite(String name) {
         Sprite sprite = super.createSprite(name);
@@ -84,12 +85,10 @@ public class SmartTextureAtlas extends TextureAtlas {
             String format = StringMaster.getFormat(name);
             name = StringMaster.cropFormat(name);
             String last = StringMaster.getLastPart(name, "_");
-            if (NumberUtils.isInteger(last))
-            {
-                sprite = super.createSprite(StringMaster.cropLast(name, "_")+format);
+            if (NumberUtils.isInteger(last)) {
+                sprite = super.createSprite(StringMaster.cropLast(name, "_") + format);
             }
-            if (sprite == null)
-            {
+            if (sprite == null) {
                 sprite = super.createSprite(StringMaster.getStringBeforeNumerals(name) + format);
             }
         }
@@ -98,12 +97,27 @@ public class SmartTextureAtlas extends TextureAtlas {
 
     @Override
     public AtlasRegion findRegion(String name) {
+        return findRegion(name, false);
+    }
+
+    public AtlasRegion findRegion(String name, boolean recursion) {
         name = FileManager.formatPath(name, true, true);
         Array<AtlasRegion> regions = getRegions();
         for (int i = 0, n = regions.size; i < n; i++)
-            if (FileManager.formatPath( regions.get(i).name, true, true)
-                    . equals(name)) return regions.get(i);
+            if (FileManager.formatPath(regions.get(i).name, true, true)
+                    .equals(name)) return regions.get(i);
+
+        if (!recursion) {
+            name = formatFileName(name);
+            return findRegion(name, true);
+        }
         return null;
+    }
+
+    private String formatFileName(String name) {
+        String numericSuffix = NumberUtils.getNumericSuffix(StringMaster.cropFormat(name));
+        name = name.replace("_"+numericSuffix, "");
+        return name;
     }
 
     @Override

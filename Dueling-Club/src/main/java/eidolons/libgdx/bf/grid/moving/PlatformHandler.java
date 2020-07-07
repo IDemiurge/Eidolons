@@ -9,6 +9,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -28,6 +29,7 @@ does it hold and wait for a while between it cycles?
 in the most crazy variant, we could have a pendulum/circular rotation
      */
     Set<PlatformController> platforms = new LinkedHashSet<>();
+    private boolean active;
 
     public PlatformController findByName(String name) {
         for (PlatformController platform : platforms) {
@@ -79,6 +81,7 @@ in the most crazy variant, we could have a pendulum/circular rotation
                         if (platform != controller) {
                             controller.left(view.getUserObject());
                         }
+                    setActive(true);
                     return;
                 }
             }
@@ -86,6 +89,7 @@ in the most crazy variant, we could have a pendulum/circular rotation
             {
                 controller.left(view.getUserObject());
                 view.setPlatformController(null);
+                setActive(false);
             }
         });
     }
@@ -93,7 +97,7 @@ in the most crazy variant, we could have a pendulum/circular rotation
     private void removePlatform(String s) {
         PlatformController byName = findByName(s);
         if (byName == null) {
-            main.system.auxiliary.log.LogMaster.log(1, "No such platform to remove: " + s);
+            LogMaster.log(1, "No such platform to remove: " + s);
             return;
         }
         platforms.remove(byName);
@@ -138,5 +142,13 @@ in the most crazy variant, we could have a pendulum/circular rotation
 
     public PlatformDecor createCellVisuals(List<PlatformCell> cells, PlatformData data) {
         return new PlatformDecor(data.getType(), cells);
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

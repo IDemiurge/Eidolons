@@ -130,7 +130,7 @@ public class Assets {
             public synchronized <T> T get(String fileName, Class<T> type) {
                 fileName = FileManager.formatPath(fileName, true, true);
                 if (isKtx(fileName)) {
-                    main.system.auxiliary.log.LogMaster.dev(">>>>> returning KtxAtlas " + fileName);
+                    main.system.auxiliary.log.LogMaster.devLog(">>>>> returning KtxAtlas " + fileName);
                     return super.get(getKtxAtlasPath(fileName), type);
                 }
                 return super.get(fileName, type);
@@ -140,7 +140,7 @@ public class Assets {
             public synchronized <T> T get(String fileName) {
                 fileName = FileManager.formatPath(fileName, true, true);
                 if (isKtx(fileName)) {
-                    main.system.auxiliary.log.LogMaster.dev(">>>>> returning KtxAtlas " + fileName);
+                    main.system.auxiliary.log.LogMaster.devLog(">>>>> returning KtxAtlas " + fileName);
                     return super.get(getKtxAtlasPath(fileName));
                 }
                 return super.get(fileName);
@@ -369,7 +369,7 @@ public class Assets {
     public static void loadedKtxAtlas(String texturePath) {
         texturePath = TextureCache.formatTexturePath(texturePath);
         ktxAtlases.add(texturePath);
-        main.system.auxiliary.log.LogMaster.dev(">>>>> loadedKtxAtlas " + texturePath);
+        main.system.auxiliary.log.LogMaster.devLog(">>>>> loadedKtxAtlas " + texturePath);
     }
 
     public static boolean isKtx(String texturePath) {

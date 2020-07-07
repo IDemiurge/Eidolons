@@ -223,10 +223,10 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     protected void putParameter(PARAMETER param, String value) {
         if (getName().contains("Leviathan")) {
             if (param == PARAMS.C_TOUGHNESS) {
-                main.system.auxiliary.log.LogMaster.dev("Leviathan set C_TOUGHNESS" + value);
+                main.system.auxiliary.log.LogMaster.devLog("Leviathan set C_TOUGHNESS" + value);
             }
             if (param == PARAMS.C_ENDURANCE) {
-                main.system.auxiliary.log.LogMaster.dev("Leviathan set C_ENDURANCE" + value);
+                main.system.auxiliary.log.LogMaster.devLog("Leviathan set C_ENDURANCE" + value);
             }
         }
 
@@ -307,8 +307,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         getEntity().setBeingReset(false);
 
         if (getName().contains("Leviathan")) {
-            main.system.auxiliary.log.LogMaster.dev("Leviathan C_TOUGHNESS " + getIntParam(PARAMS.C_TOUGHNESS));
-            main.system.auxiliary.log.LogMaster.dev("Leviathan C_ENDURANCE " + getIntParam(PARAMS.C_ENDURANCE));
+            main.system.auxiliary.log.LogMaster.devLog("Leviathan C_TOUGHNESS " + getIntParam(PARAMS.C_TOUGHNESS));
+            main.system.auxiliary.log.LogMaster.devLog("Leviathan C_ENDURANCE " + getIntParam(PARAMS.C_ENDURANCE));
         }
     }
 

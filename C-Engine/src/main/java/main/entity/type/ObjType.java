@@ -186,7 +186,7 @@ public class ObjType extends Entity {
         if (!built) {
             if (node == null) {
                 built = true;
-                main.system.auxiliary.log.LogMaster.dev("Dummy unbuildable type " + this);
+                main.system.auxiliary.log.LogMaster.devLog("Dummy unbuildable type " + this);
                 return;
             }
             try {

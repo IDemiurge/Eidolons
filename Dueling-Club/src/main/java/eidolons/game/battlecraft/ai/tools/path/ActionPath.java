@@ -11,8 +11,8 @@ import java.util.List;
 
 public class ActionPath {
 
-    public List<Action> actions;
-    // public List<Coordinates> coordinates;
+    public List<Action> actions; //dynamic field - will be changed!
+
     public List<Choice> choices;
 
     private int priority;
@@ -76,7 +76,9 @@ public class ActionPath {
     }
 
     public List<Action> getActions() {
-        initActions();
+        if (actions == null) {
+            initActions();
+        }
         return actions;
     }
 

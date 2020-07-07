@@ -518,7 +518,7 @@ public class PathFinder {
     }
 
     public static String getFlyObjPath() {
-        return "main/textures/fly obj/";
+        return "main/textures/fly objs/";
     }
 
     public static String getBordersPath() {

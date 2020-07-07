@@ -157,7 +157,7 @@ public class LogPanel extends ScrollTextWrapper {
             float imageOffset = 0;
             Image img = null;
             if (image != null) {
-                img = new Image(TextureCache.getOrCreate(image));
+                img = new Image(TextureCache.getOrCreateR(image));
                 img.setSize(Math.min(img.getWidth(), 32),
                         Math.min(img.getHeight(), 32));
                 imageOffset = img.getWidth();
@@ -243,9 +243,6 @@ public class LogPanel extends ScrollTextWrapper {
             if (StringMaster.cropParenthesises(word).equalsIgnoreCase(damage_type.getName())){
                 return GdxColorMaster.getDamageTypeColor(damage_type);
             }
-        }
-        if (previous.equalsIgnoreCase("something") || word.equalsIgnoreCase("something")) {
-            return GdxColorMaster.GREY;
         }
         return GdxColorMaster.PALE_GOLD;
     }

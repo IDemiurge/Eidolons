@@ -38,7 +38,7 @@ public class ColorHandler extends GridHandler{
     public Color getOrigColor(Coordinates c) {
         return GdxColorMaster.get(DC_Game.game.getColorMap().getOriginal().get(c));
     }
-
+//TODO optimization - into array?
     public Color getColor(Coordinates c) {
         if (!DC_Game.game.getColorMap().getOutput().containsKey(c)) {
             return DC_Game.game.getColorMap().getOriginal().get(c);

@@ -105,9 +105,9 @@ public class ActionManager extends AiHandler {
             ordered.setOrder(true);
             if (ordered == ai.getStandingOrders().getLastAction()) {
                 ai.setStandingOrders(null);
-                main.system.auxiliary.log.LogMaster.dev(getUnit() + "'s last order: " + ordered);
+                main.system.auxiliary.log.LogMaster.devLog(getUnit() + "'s last order: " + ordered);
             } else {
-                main.system.auxiliary.log.LogMaster.dev(getUnit() + "'s next order: " + ordered);
+                main.system.auxiliary.log.LogMaster.devLog(getUnit() + "'s next order: " + ordered);
             }
             return ordered;
         }

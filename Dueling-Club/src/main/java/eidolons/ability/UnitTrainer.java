@@ -98,7 +98,7 @@ public class UnitTrainer {
 
     private static void learn(ObjType newSkill, Unit trainee) {
         if (getHeroManager().addItem(trainee, newSkill, DC_TYPE.SKILLS, PROPS.SKILLS)) {
-            LogMaster.dev(
+            LogMaster.devLog(
              "SKILL TRAINING: " + trainee.getName() + " learns " + newSkill.getName()
               + ", remaining xp: " + trainee.getIntParam(PARAMS.XP));
         }

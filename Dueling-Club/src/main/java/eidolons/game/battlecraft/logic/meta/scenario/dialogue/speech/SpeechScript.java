@@ -99,7 +99,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SCRIPT> {
     public DataUnit<SCRIPT> setValue(String name, String value) {
         SCRIPT c = getEnumConst(StringMaster.toEnumFormat(name.trim()));
         if (c == null) {
-            main.system.auxiliary.log.LogMaster.dev("No script command for: " + name);
+            main.system.auxiliary.log.LogMaster.devLog("No script command for: " + name);
             return null;
         }
         setValue(c, value);

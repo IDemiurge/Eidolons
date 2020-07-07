@@ -20,7 +20,7 @@ public class SystemAnalyzer {
 
     public static void analyze() {
         long memory = Runtime.getRuntime().maxMemory();
-        main.system.auxiliary.log.LogMaster.dev("SystemAnalyzer - maxMemory  " + memory);
+        main.system.auxiliary.log.LogMaster.devLog("SystemAnalyzer - maxMemory  " + memory);
         float level = 0.9f;
         if (memory > 3 * (1024e3))
             level = 3f;

@@ -51,6 +51,7 @@ public class UnitView extends BaseView implements HpBarView {
     protected Supplier<String> outlinePathSupplier;
     protected TextureRegion defaultTexture;
     protected TextureRegion defaultTextureSized;
+    private boolean portraitMode;
 
     public UnitView(UnitViewOptions o) {
         this(o, lastId.getAndIncrement());
@@ -423,6 +424,10 @@ public class UnitView extends BaseView implements HpBarView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (portraitMode) {
+            drawPortrait(batch);
+            return;
+        }
         if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
             super.draw(batch, 1);
             return;
@@ -435,12 +440,21 @@ public class UnitView extends BaseView implements HpBarView {
 
     public void drawScreen(Batch batch) {
         getPortrait().setScreenEnabled(true);
+        drawPortrait(batch);
+        getPortrait().setScreenEnabled(false);
+    }
+
+    private void drawPortrait(Batch batch) {
         if (getParent() instanceof PlatformCell) {
             getPortrait().setPosition(getParent().getX(), getParent().getY());
         } else
             getPortrait().setPosition(getX(), getY());
         getPortrait().draw(batch, 1f);
         getPortrait().setPosition(0, 0);
-        getPortrait().setScreenEnabled(false);
+
+    }
+
+    public void setPortraitMode(boolean portraitMode) {
+        this.portraitMode = portraitMode;
     }
 }

@@ -27,9 +27,17 @@ public class ParticleEffectX extends ParticleEffect {
     public static final boolean TEST_MODE = false;
     private static float globalAlpha;
     public String path;
-    private static List<String> broken = new ArrayList<>();
+    private static final List<String> broken = new ArrayList<>();
     private Float alpha = 1f;
     private boolean spell;
+    private VfxPool pool;
+
+    public ParticleEffectX(ParticleEffect effect) {
+        super(effect);
+    }
+
+    public ParticleEffectX() {
+    }
 
     public ParticleEffectX(String path) {
         this.path = path;
@@ -63,7 +71,6 @@ public class ParticleEffectX extends ParticleEffect {
 
 
     }
-
     public static void setGlobalAlpha(float globalAlpha) {
         ParticleEffectX.globalAlpha = globalAlpha;
     }
@@ -114,9 +121,6 @@ public class ParticleEffectX extends ParticleEffect {
         return new Texture(file, false);
     }
 
-    public ParticleEffectX() {
-        super();
-    }
 
     public static boolean isEmitterAtlasesOn() {
         return true;//!CoreEngine.isFastMode();
@@ -250,5 +254,15 @@ public class ParticleEffectX extends ParticleEffect {
             }
             emitter.setSprites(sprites);
         }
+    }
+    public void setPool(VfxPool pool) {
+        this.pool = pool;
+    }
+
+    public void free(){
+        if (pool == null) {
+            main.system.auxiliary.log.LogMaster.log(1,"No pull for vfx: " +this);
+        } else
+            pool.free(this);
     }
 }

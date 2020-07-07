@@ -197,7 +197,7 @@ public class TexturePackerLaunch {
         settings.jpegQuality = 0.8f;
 
         settings.maxHeight = (int) Math.pow(2, 13);
-        settings.maxWidth = (int) Math.pow(2, 13);
+        settings.maxWidth = (int) Math.pow(2, 14);
         return settings;
     }
 

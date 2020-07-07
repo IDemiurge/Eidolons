@@ -5,11 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.PARAMS;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.cinematic.flight.FlightHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.main.death.ShadowMaster;
@@ -274,7 +274,7 @@ public class GlobalController implements Controller {
         }
         if (ScreenMaster.getScreen().getController() != null)
             if (ScreenMaster.getScreen().getController().space()) {
-                main.system.auxiliary.log.LogMaster.dev("  *******SPACE CONSUMED ");
+                main.system.auxiliary.log.LogMaster.devLog("  *******SPACE CONSUMED ");
                 return true;
             }
         if (Cinematics.ON) {

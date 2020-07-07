@@ -32,6 +32,7 @@ import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -55,7 +56,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
     public List<GenericGridView> visibleViews;
     protected List<GenericGridView> allViews;
     protected GenericGridView topUnitView;
-    protected boolean mainHero, hasBackground, wall, lightEmitter,water;
+    protected boolean mainHero, hasBackground, wall, lightEmitter, water;
 
     public GridCellContainer(TextureRegion backTexture, int gridX, int gridY, Function<Coordinates, Color> colorFunc) {
         super(backTexture, gridX, gridY, colorFunc);
@@ -92,25 +93,27 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
 
-     public float getMinLightness() {
-       return getUserObject().isPlayerHasSeen()
-                ?  LightConsts.MIN_LIGHTNESS_CELL_SEEN
-                :  LightConsts.MIN_LIGHTNESS_CELL_UNSEEN;
+    public float getMinLightness() {
+        return getUserObject().isPlayerHasSeen()
+                ? LightConsts.MIN_LIGHTNESS_CELL_SEEN
+                : LightConsts.MIN_LIGHTNESS_CELL_UNSEEN;
     }
 
     public void applyColor(float lightness, Color c) {
         float a1 = cellImgContainer.getColor().a;
-        if (a1>0) {
-            cellImgContainer.setVisible(true);
-        if (lightness > LightConsts.MIN_SCREEN && a1 >0) {
-            screen=true;
-            cellImgContainer.setScreenOverlay(lightness);
-        } else
-        {
-            cellImgContainer.setScreenOverlay(0);
-            screen=false;
+        if (getActions().size > 0) {
+            a1 = getColor().a;
         }
-        cellImgContainer.setColor(c.r, c.g, c.b, a1);
+        if (a1 > 0) {
+            cellImgContainer.setVisible(true);
+            if (lightness > LightConsts.MIN_SCREEN && a1 > 0) {
+                screen = true;
+                cellImgContainer.setScreenOverlay(lightness);
+            } else {
+                cellImgContainer.setScreenOverlay(0);
+                screen = false;
+            }
+            cellImgContainer.setColor(c.r, c.g, c.b, a1);
         }
         for (GenericGridView unitView : getUnitViews(true)) {
             float a = unitView.getPortrait().getContent().getColor().a;
@@ -145,27 +148,29 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     public void drawScreen(Batch batch) {
-        if (visibleViews.isEmpty()) {
-        cellImgContainer.setScreenEnabled(true);
-        // SnapshotArray<Actor> children = getChildren();
-        // clearChildren();
-        // draw(batch, 1f);
-        cellImgContainer.setPosition(getX(), getY());
-        cellImgContainer. draw(batch, 1f);
-        cellImgContainer.setPosition(0, 0);
+        if (!ListMaster.isNotEmpty(visibleViews)) {
+            cellImgContainer.setScreenEnabled(true);
+            // SnapshotArray<Actor> children = getChildren();
+            // clearChildren();
+            // draw(batch, 1f);
+            cellImgContainer.setPosition(getX(), getY());
+            cellImgContainer.draw(batch, 1f);
+            cellImgContainer.setPosition(0, 0);
+            cellImgContainer.setScreenEnabled(false);
+            return;
         }
-
         cellImgContainer.setScreenEnabled(false);
         for (GenericGridView visibleView : visibleViews) {
             float x = visibleView.getX();
             float y = visibleView.getY();
-            visibleView.setPosition(x+getX(), y +getY());
+            visibleView.setPosition(x + getX(), y + getY());
             visibleView.drawScreen(batch);
             visibleView.setPosition(x, y);
         }
         // super.draw(batch, 1f);
 
     }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
@@ -479,11 +484,11 @@ public class GridCellContainer extends GridCell implements Hoverable {
                     actor.setRotation(90 * n);
                     actor.setOrigin(64, 64);
                 }
-            }else {
+            } else {
                 if (userObject.isWater()) {
-                    water=true;
+                    water = true;
                     cellImgContainer.fadeOut(); //editor?!
-                    view.getPortrait().setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.WATER );
+                    view.getPortrait().setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.WATER);
                 }
             }
 
@@ -520,14 +525,14 @@ public class GridCellContainer extends GridCell implements Hoverable {
 
     private void removed(Actor actor) {
         if (actor.getUserObject() == Eidolons.MAIN_HERO)
-        mainHero = false;
+            mainHero = false;
         lightEmitter = false;
-        if (wall){
+        if (wall) {
             wall = false;
             calc.offsetX = 0;
             calc.offsetY = 0;
         }
-        if (water){
+        if (water) {
             water = false;
             cellImgContainer.fadeIn();
         }

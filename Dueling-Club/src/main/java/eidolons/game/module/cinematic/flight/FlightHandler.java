@@ -7,6 +7,7 @@ import eidolons.libgdx.screens.CustomSpriteBatch;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.datatypes.WeightMap;
+import main.system.launch.Flags;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -26,8 +27,7 @@ public class FlightHandler extends GroupX {
         astral("objs_over:mist(20),comet_bright(10),comet_pale(20),mist(10),;" +
                 "objs_under:stars(15);" +
                 "angle:30;"),
-        voidmaze("objs_over:comet_bright(10),comet_pale(10),;" +
-                "objs_under:cloud(980),thunder(12),thunder3(5);hue:cloud;" +
+        voidmaze("objs_under:cloud(500),thunder(30),thunder3(10);hue:cloud;" +
                 "angle:30;"),
         ;
         public String data;
@@ -57,6 +57,7 @@ public class FlightHandler extends GroupX {
         GuiEventManager.bind(GuiEventType.FLIGHT_START, p -> startFlight(p.get().toString(), true));
         GuiEventManager.bind(GuiEventType.FLIGHT_END, p -> endFlight(1f));
     }
+
     public GroupX getObjsOver() {
         return objsOver;
     }
@@ -79,7 +80,7 @@ public class FlightHandler extends GroupX {
         for (FlyingObjs obj : objs) {
             obj.stop(maxDelay);
         }
-        on=false;
+        on = false;
     }
 
     public void startFlight(String s, boolean cinematic) {
@@ -91,17 +92,18 @@ public class FlightHandler extends GroupX {
         value = data.getValue(FlightData.FLIGHT_VALUE.objs_over);
         initObjsMap(platform, value, false, cinematic, data.getHue());
 
-        if (cinematic) {
-            act(10f);
+        if (Flags.isIDE())
+            if (cinematic) {
+                act(10f);
             /*
 shakes,
              */
-            // String value = data.getValue(FlightData.FLIGHT_VALUE.camera_shake);
-            // value = data.getValue(FlightData.FLIGHT_VALUE.soundscape);
-            // value = data.getValue(FlightData.FLIGHT_VALUE.camera_displace);
-            // value = data.getValue(FlightData.FLIGHT_VALUE.trail);
-        }
-        on=true;
+                // String value = data.getValue(FlightData.FLIGHT_VALUE.camera_shake);
+                // value = data.getValue(FlightData.FLIGHT_VALUE.soundscape);
+                // value = data.getValue(FlightData.FLIGHT_VALUE.camera_displace);
+                // value = data.getValue(FlightData.FLIGHT_VALUE.trail);
+            }
+        on = true;
         //transit between flights?
     }
 

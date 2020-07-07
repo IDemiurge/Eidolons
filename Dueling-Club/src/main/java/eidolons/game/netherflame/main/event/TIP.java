@@ -20,6 +20,12 @@ import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
 //        eidolon_raina,
 //    form_lost,
 
+    void_maze_intro("Welcome to the Void Maze. Best use double-click to quickly " +
+            "navigate the cells that appear before you"),
+    void_maze_intro2(""),
+    void_maze_win("Void Maze Completed"),
+    void_maze_defeat_first(""),
+    void_maze_defeat(""),
 
         //BRIDGE
     welcome_1(true,  Images.DEMIURGE, ""),

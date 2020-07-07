@@ -329,14 +329,12 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
         addActor(this.pillar = pillar);
         pillar.setZIndex(0);
         pillar.setVisible(true); //fades in with the cell ...
-        main.system.auxiliary.log.LogMaster.log(1, "Added pillar to " + getUserObject().getNameAndCoordinate());
     }
 
     public void removePillar() {
         if (pillar != null) {
             pillar.fadeOut();
             ActionMaster.addRemoveAfter(pillar);
-            main.system.auxiliary.log.LogMaster.log(1, "Fading pillar from " + getUserObject().getNameAndCoordinate());
         }
     }
 

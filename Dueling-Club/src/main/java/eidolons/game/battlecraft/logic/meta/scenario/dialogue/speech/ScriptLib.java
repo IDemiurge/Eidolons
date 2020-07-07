@@ -10,21 +10,17 @@ public class ScriptLib {
     public static final Map<String, String> scriptMap = new HashMap<>();
 
     //parameterized?
-    public static String get(SCRIPT script) {
+    public static String get(STD_SCRIPT script) {
         return get(script.name().replace("_", " ").trim().toLowerCase());
     }
 
     public static String get(String scriptKey) {
-        return Texts.getScript(scriptKey);
+        String script = Texts.getScript(scriptKey);
+        if (script == null) {
+            return scriptKey;
+        }
+        return script;
         // return scriptMap.get(scriptKey.toLowerCase());
-    }
-
-    /*
-    what else can it do?
-     */
-    public static void init() {
-        // FileManager.readFile("");
-        // for(String substring: ContainerUtils.openContainer( string )){ }
     }
 
     public static void execute(String key) {
@@ -33,7 +29,11 @@ public class ScriptLib {
         DC_Game.game.getMetaMaster().getDialogueManager().getSpeechExecutor().execute(script);
     }
 
-    public enum SCRIPT {
+    public static void execute(STD_SCRIPT script) {
+        execute(get(script));
+    }
+
+    public enum STD_SCRIPT {
         black_hole,
         mini_explosion,
         white_shake,

@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
@@ -180,7 +180,7 @@ public class DialogueView extends TablePanelX implements Scene {
     private boolean respond(String option, int index, boolean allowFinish) {
         autoRespond = false;
         if (getUserObject().speech.isSpoken()) {
-            main.system.auxiliary.log.LogMaster.dev("Already spoken!  " +getUserObject().speech.getFormattedText());
+            main.system.auxiliary.log.LogMaster.devLog("Already spoken!  " +getUserObject().speech.getFormattedText());
             return false;
         }
         if (container != null) {
@@ -230,7 +230,7 @@ public class DialogueView extends TablePanelX implements Scene {
                             handler.getDialogue().getTimeBetweenScriptsLengthMultiplier();
                     if (time > 0) {
 //                    disableReplies();
-                        main.system.auxiliary.log.LogMaster.dev("autoRespond = true in " + handler.getDialogue().getTimeBetweenScripts());
+                        main.system.auxiliary.log.LogMaster.devLog("autoRespond = true in " + handler.getDialogue().getTimeBetweenScripts());
                         setTime(new Float(time));
                     }
                 }

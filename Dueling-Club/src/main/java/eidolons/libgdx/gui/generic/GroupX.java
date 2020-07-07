@@ -20,10 +20,35 @@ public class GroupX extends Group {
     boolean autoSize;
 
     public GroupX(boolean autoSize) {
+        this();
         this.autoSize = autoSize;
     }
 
     public GroupX() {
+        setTransform(false);
+    }
+
+    @Override
+    public void setRotation(float degrees) {
+        super.setRotation(degrees);
+        setTransform(degrees!=0);
+        for (Group ancestor : GdxMaster.getAncestors(this)) {
+            ancestor.setTransform(degrees!=0);
+        }
+    }
+
+    @Override
+    public void rotateBy(float amountInDegrees) {
+        super.rotateBy(amountInDegrees);
+    }
+
+    @Override
+    protected void rotationChanged() {
+        super.rotationChanged();
+        setTransform(getRotation()!=0);
+        for (Group ancestor : GdxMaster.getAncestors(this)) {
+            ancestor.setTransform(getRotation()!=0);
+        }
     }
 
     public void addActor(Actor actor, int align) {

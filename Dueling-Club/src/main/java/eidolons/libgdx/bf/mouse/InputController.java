@@ -5,9 +5,9 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.GridMaster;
@@ -203,7 +203,7 @@ public abstract class InputController implements InputProcessor {
         if (onPassInput != null) {
             SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.CLICK);
 
-            main.system.auxiliary.log.LogMaster.dev("onPassInput.run() ");
+            main.system.auxiliary.log.LogMaster.devLog("onPassInput.run() ");
             onPassInput.run();
             onPassInput = null;
             return true;
@@ -221,12 +221,12 @@ public abstract class InputController implements InputProcessor {
             }
         }
         if (onInputGdx != null) {
-            main.system.auxiliary.log.LogMaster.dev("onInputGdx.run() ");
+            main.system.auxiliary.log.LogMaster.devLog("onInputGdx.run() ");
             onInputGdx.run();
             onInputGdx = null;
         }
         if (onInput != null) {
-            main.system.auxiliary.log.LogMaster.dev("onInput.run() ");
+            main.system.auxiliary.log.LogMaster.devLog("onInput.run() ");
             Eidolons.onNonGdxThread(onInput);
             onInput = null;
         }
@@ -509,12 +509,12 @@ public abstract class InputController implements InputProcessor {
 
     public void onInput(Runnable runnable) {
         onInput = runnable;
-        main.system.auxiliary.log.LogMaster.dev("onInput set ");
+        main.system.auxiliary.log.LogMaster.devLog("onInput set ");
     }
 
     public void onInputGdx(Runnable runnable) {
         onInputGdx = runnable;
-        main.system.auxiliary.log.LogMaster.dev("onInputGdx set ");
+        main.system.auxiliary.log.LogMaster.devLog("onInputGdx set ");
     }
 
     public Runnable getOnInput() {
@@ -526,7 +526,7 @@ public abstract class InputController implements InputProcessor {
     }
 
     public void onInputGdx(Boolean gdx_any_pass, Runnable runnable) {
-        main.system.auxiliary.log.LogMaster.dev(gdx_any_pass + " onInput set ");
+        main.system.auxiliary.log.LogMaster.devLog(gdx_any_pass + " onInput set ");
 
         if (isStackInput()) {
             if (gdx_any_pass == null) {

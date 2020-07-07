@@ -183,7 +183,7 @@ public class ForceAnim extends Weapon3dAnim {
         try {
             String path = PathFinder.getVfxPath() + getVfxPath();
 
-            main.system.auxiliary.log.LogMaster.dev("force anim destination: " + destination);
+            main.system.auxiliary.log.LogMaster.devLog("force anim destination: " + destination);
             shaped = VfxShaper.shape(path, VFX_SHAPE.LINE, origin, destination);
             emitterList.clear();
             emitterList.add(shaped);

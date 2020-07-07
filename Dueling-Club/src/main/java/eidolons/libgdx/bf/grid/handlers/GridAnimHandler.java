@@ -8,11 +8,14 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.RotateByActionLimited;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.datasource.GraphicData;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.BaseView;
+import eidolons.libgdx.bf.grid.cell.GenericGridView;
 import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.bf.grid.cell.UnitView;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -30,20 +33,14 @@ import java.util.List;
 import static main.system.GuiEventType.ACTOR_SPEAKS;
 
 /**
- * independent graphical events
- * :: hit-style displacement
- * :: scale up/down (‘jump’)
- * :: fade-flip
- * :: colorize / shader-ize / postfx
- * :: gridObj / unitSprite manipulation
+ * independent graphical events :: hit-style displacement :: scale up/down (‘jump’) :: fade-flip :: colorize /
+ * shader-ize / postfx :: gridObj / unitSprite manipulation
  * <p>
- * :: custom overlay anims - blood, fire, magic, ...
- * ++ via emitters as well!
- * :: leveraging the Animation framework
+ * :: custom overlay anims - blood, fire, magic, ... ++ via emitters as well! :: leveraging the Animation framework
  */
-public class GridAnimHandler extends GridHandler{
+public class GridAnimHandler extends GridHandler {
 
-    protected   GroupX animated;
+    protected GroupX animated;
 
     public GridAnimHandler(GridPanel panel) {
         super(panel);
@@ -58,7 +55,7 @@ public class GridAnimHandler extends GridHandler{
                             ((List) p.get()).get(1));
                 } else
                     handleAnim(animated, value, p.get());
-                main.system.auxiliary.log.LogMaster.dev("Grid Anim: " + value.toString() + " \n" + p.get());
+                main.system.auxiliary.log.LogMaster.devLog("Grid Anim: " + value.toString() + " \n" + p.get());
             });
         }
         GuiEventManager.bind(GuiEventType.GRID_SET_VIEW, p -> {
@@ -70,7 +67,7 @@ public class GridAnimHandler extends GridHandler{
             }
             BattleFieldObject unit = (BattleFieldObject) p.get();
             UnitView view = getUnitView(unit);
-            main.system.auxiliary.log.LogMaster.dev("ACTOR_SPEAKS: " + unit);
+            main.system.auxiliary.log.LogMaster.devLog("ACTOR_SPEAKS: " + unit);
 
             unit.getGame().getManager().setHighlightedObj(unit);
 
@@ -84,7 +81,7 @@ public class GridAnimHandler extends GridHandler{
             WaitMaster.doAfterWait(4000, () -> {
                 //                        if (!DialogueManager.isRunning())
                 {
-                    main.system.auxiliary.log.LogMaster.dev("hl off: " + unit);
+                    main.system.auxiliary.log.LogMaster.devLog("hl off: " + unit);
                     view.highlightOff();
                     unit.getGame().getManager().setHighlightedObj(null);
                 }
@@ -100,13 +97,12 @@ public class GridAnimHandler extends GridHandler{
                 GridObject gridObj = findGridObj(key, c);
                 animate(gridObj, data);
             } else {
-                animate( getView((Obj) list.get(1)),
+                animate(getView((Obj) list.get(1)),
                         (GridAnimHandler.VIEW_ANIM) list.get(0), data);
             }
 
         });
     }
-
 
 
     protected void handleAnim(GroupX animated, VIEW_ANIM value, Object o) {
@@ -149,12 +145,13 @@ public class GridAnimHandler extends GridHandler{
     }
 
     public void animate(GridObject gridObj, GraphicData data) {
-//data.getType().switch
+        //data.getType().switch
     }
 
-    public void animate(BaseView view, VIEW_ANIM value ) {
+    public void animate(BaseView view, VIEW_ANIM value) {
         animate(view.getPortrait(), value, getDefaultData(value));
     }
+
     public boolean animate(GroupX animated, VIEW_ANIM value, GraphicData data) {
 
         // main.system.auxiliary.log.LogMaster.dev(animated.toString() + "'s Grid Anim handled: " + value.toString() + " \n" + data);
@@ -164,7 +161,7 @@ public class GridAnimHandler extends GridHandler{
             case displace:
                 return doDisplace(animated, data);
             case screen:
-                return doScreen( (SuperActor) animated, data);
+                return doScreen((SuperActor) animated, data);
             case color:
                 return doColor(animated, data);
         }
@@ -179,6 +176,45 @@ public class GridAnimHandler extends GridHandler{
             doSpriteAnim(sprite, data);
         }
         return false;
+    }
+
+    public void doFall(Coordinates c) {
+        for (GenericGridView view : grid.getGridCell(c).getUnitViewsVisible()) {
+            doFall(view);
+        }
+    }
+    public boolean doFall(UnitView view) {
+        GraphicData data = new GraphicData("");
+        data.setValue(GraphicData.GRAPHIC_VALUE.dur, 2.3f);
+        return doFall(view, data);
+    }
+
+    public boolean doFall(UnitView view, GraphicData data) {
+        view.setPortraitMode(true);
+        float dur = data.getFloatValue(GraphicData.GRAPHIC_VALUE.dur);
+        FadeImageContainer portrait = view.getPortrait();
+
+        if (data.getIntValue(GraphicData.GRAPHIC_VALUE.x) != 0) {
+            float x = data.getIntValue(GraphicData.GRAPHIC_VALUE.x) * 128;
+            float y = grid.getGdxY_ForModule(data.getIntValue(GraphicData.GRAPHIC_VALUE.y)) * 128;
+            MoveToAction move = ActionMaster.addMoveToAction(view, x, y, dur);
+            move.setInterpolation(Interpolation.pow2In);
+            //destination?
+            grid.detachUnitView(view.getUserObject());
+        }
+
+        ActionMaster.addScaleAction(portrait, 0, dur * 1.25f);
+        ActionMaster.addFadeOutAction(view, dur);
+        RotateByActionLimited rotate = ActionMaster.addRotateByAction(portrait, 60, dur);
+        rotate.setInterpolation(Interpolation.swing);
+        ActionMaster.addAfter(portrait, () -> {
+            portrait.setScale(1f);
+            portrait.setRotation(0);
+            view.setPortraitMode(false);
+            grid.unitMoved(view.getUserObject());
+        });
+
+        return true;
     }
 
     protected void doSpriteAnim(SpriteX sprite, GraphicData data) {
@@ -214,23 +250,23 @@ public class GridAnimHandler extends GridHandler{
         initTemporal(data, floatAction);
         floatAction.setStart(animated.getScreenOverlay());
         floatAction.setEnd(a);
-//        SequenceAction sequence = ActionMaster.getBackSequence(floatAction);
-//        Action screen = new Action() {
-//            @Override
-//            public boolean act(float delta) {
-//                int index = new ReflectionMaster<Integer>().
-//                        getFieldValue("index", sequence, SequenceAction.class);
-//                if (sequence.getActions().size <= index) {
-//                    return true;
-//                }
-//                FloatAction current = (FloatAction) sequence.getActions().get(index);
-//                if (current.getTime() >= current.getDuration()) {
-//                    return true;
-//                }
-//                animated.setScreenOverlay(current.getValue());
-//                return false;
-//            }
-//        };
+        //        SequenceAction sequence = ActionMaster.getBackSequence(floatAction);
+        //        Action screen = new Action() {
+        //            @Override
+        //            public boolean act(float delta) {
+        //                int index = new ReflectionMaster<Integer>().
+        //                        getFieldValue("index", sequence, SequenceAction.class);
+        //                if (sequence.getActions().size <= index) {
+        //                    return true;
+        //                }
+        //                FloatAction current = (FloatAction) sequence.getActions().get(index);
+        //                if (current.getTime() >= current.getDuration()) {
+        //                    return true;
+        //                }
+        //                animated.setScreenOverlay(current.getValue());
+        //                return false;
+        //            }
+        //        };
 
         FloatAction screenNew = new FloatAction() {
             @Override
@@ -239,11 +275,11 @@ public class GridAnimHandler extends GridHandler{
                 if (percent < 0.5f) {
                     animated.setScreenOverlay(2 * getValue());
                 } else {
-                    animated.setScreenOverlay(1.5f*a- 1.5f*getValue());
+                    animated.setScreenOverlay(1.5f * a - 1.5f * getValue());
                 }
             }
         };
-        screenNew.setStart(  animated.getScreenOverlay());
+        screenNew.setStart(animated.getScreenOverlay());
         floatAction.setEnd(a);
         initTemporal(data, screenNew);
         addAction(animated, screenNew, data);
@@ -256,7 +292,7 @@ public class GridAnimHandler extends GridHandler{
             return ((UnitGridView) arg).getPortrait();
         }
         if (arg instanceof BattleFieldObject) {
-            return   getViewMap().get((BattleFieldObject) arg).getPortrait();
+            return getViewMap().get((BattleFieldObject) arg).getPortrait();
         }
         return null;
     }
@@ -300,16 +336,18 @@ public class GridAnimHandler extends GridHandler{
     }
 
 
+
     public enum VIEW_ANIM {
         displace(GuiEventType.GRID_DISPLACE),
         screen(GuiEventType.GRID_SCREEN),
         //        scale,
-//        alpha,
+        //        alpha,
         color(GuiEventType.GRID_COLOR),
+        fall(GuiEventType.GRID_FALL),
         //        shader,
-//        postfx,
-//        sprite,
-//        vfx,
+        //        postfx,
+        //        sprite,
+        //        vfx,
         attached(GuiEventType.GRID_ATTACHED);
 
         VIEW_ANIM(EventType event) {

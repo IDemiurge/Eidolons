@@ -12,11 +12,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class VoidMazeSetup extends MazeSetup<VoidPuzzle> {
+public class VoidMazeSetup extends MazeSetup<VoidMaze> {
 
     private RoomModel template;
 
-    public VoidMazeSetup(VoidPuzzle puzzle) {
+    public VoidMazeSetup(VoidMaze puzzle) {
         super(puzzle );
     }
 

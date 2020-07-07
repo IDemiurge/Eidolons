@@ -49,7 +49,7 @@ public class LE_MenuHandler extends LE_Handler {
             case coordinates:
                 getModel().getDisplayMode().toggleCoordinates();
                 break;
-            case meta_info:
+            case scripts:
                 getModel().getDisplayMode().toggleScripts();
                 break;
             case lighting:
@@ -88,8 +88,8 @@ public class LE_MenuHandler extends LE_Handler {
 
     boolean showAllColors
          */
-        toggle_all, lighting, colors, coordinates, meta_info, ai_info, decor_info,
-        view(toggle_all, colors, coordinates, meta_info, ai_info, decor_info),
+        toggle_all, lighting, colors, coordinates, scripts, ai_info, decor_info,
+        view(toggle_all, colors, lighting, coordinates, scripts, ai_info, decor_info  ),
         //        edit(),
 //        layer(),
         module(edit_module, resize, swap_modules, remove_module),

@@ -1,5 +1,7 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.handlers.active.Activator;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
@@ -16,6 +18,7 @@ import eidolons.system.options.OptionsMaster;
 import main.elements.targeting.SelectiveTargeting;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
@@ -33,6 +36,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     protected MacroTimeMaster macroTimeMaster;
     protected ExplorationMaster master;
     protected boolean resetRequired;
+    private float blockTimer;
 
     public ExploreGameLoop(DC_Game game) {
         super(game);
@@ -274,7 +278,21 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     @Override
     public void actionInputManual(ActionInput actionInput) {
         game.getMovementManager().cancelAutomove(activeUnit);
+        actionInput(actionInput);
+    }
+
+    public void actionInput(ActionInput actionInput) {
+        if (blockTimer > 0) { //override?
+            notReady(actionInput.getAction());
+            return;
+        }
         actionInput_(actionInput);
+    }
+
+    private void notReady(DC_ActiveObj action) {
+        Activator.cannotActivate_(action, "Not ready! (" +
+                NumberUtils.formatFloat(2, blockTimer) +
+                "s.)");
     }
 
     public void actionInput_(ActionInput actionInput) {
@@ -303,6 +321,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     protected void tryAddPlayerActions(ActionInput actionInput) {
         playerActionQueue.add(actionInput);
+        blockTimer = ExplorationActionHandler.calcBlockingTime(actionInput.getAction());
     }
 
 
@@ -363,6 +382,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     public void act(float delta) {
         if (isPaused())
             return;
+        if (blockTimer > 0) {
+            blockTimer -= delta;
+        }
+
         master.getTimeMaster().act(delta);
         //        macroTimeMaster.setSpeed(master.getTimeMaster().getTime());
         macroTimeMaster.act(delta); //

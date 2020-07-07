@@ -217,7 +217,7 @@ public class UnitLibrary {
         if (!result) {
             return false;
         }
-        LogMaster.dev("SPELL TRAINING: " + unit.getName() + " learns "
+        LogMaster.devLog("SPELL TRAINING: " + unit.getName() + " learns "
          + spellType.getName() + " (" + lc.toString() + "), remaining xp: "
          + unit.getIntParam(PARAMS.XP));
 

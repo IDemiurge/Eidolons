@@ -7,10 +7,10 @@ import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
@@ -644,7 +644,7 @@ public class DC_SoundMaster extends SoundMaster {
             } else
 //            new EnumMaster<SOUND_CUE>().retrieveEnumConst(SOUND_CUE.class, value);
             {
-                main.system.auxiliary.log.LogMaster.dev("Sound cue played: " + PathFinder.getSoundCuesPath() + value + ".mp3");
+                main.system.auxiliary.log.LogMaster.devLog("Sound cue played: " + PathFinder.getSoundCuesPath() + value + ".mp3");
                 String path = PathFinder.getSoundCuesPath() + value + ".mp3";
              if (random){
                  DC_SoundMaster.playRandomSoundVariant(path, true, (int) (volume * 100), 0);

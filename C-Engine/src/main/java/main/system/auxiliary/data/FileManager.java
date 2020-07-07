@@ -319,13 +319,16 @@ public class FileManager {
         return getRandomFilePathVariant("", corePath, format, underslash, recursion);
     }
 
-    public static String getRandomFilePathVariantSmart(String filename, String dir, String format) {
+    public static String getRandomFilePathVariantSmart(String filename, String dir, String format ) {
+      return   getRandomFilePathVariantSmart(filename, dir, format,false);
+    }
+    public static String getRandomFilePathVariantSmart(String filename, String dir, String format, boolean remove) {
         String key = (dir + filename).toLowerCase();
 
         List<File> filtered = variantCache.get(key);
         if (!ListMaster.isNotEmpty(filtered)) {
             String finalFilename = filename.toLowerCase();
-            List<File> files = getFilesFromDirectory(dir, false, false);
+            List<File> files = getFilesFromDirectory(dir, false, false,false);
             filtered = files.stream().filter(file
                     -> (file.getName().toLowerCase().startsWith(finalFilename))
                     && file.getName().toLowerCase().endsWith(format))
@@ -336,7 +339,9 @@ public class FileManager {
         if (index < 0) {
             return dir + "/" + filename+format;
         }
+        if (remove)
             return filtered.remove(index).getPath();
+        return filtered.get(index).getPath();
     }
 
     public static String getRandomFilePathVariant(String prefixPath, String corePath,

@@ -22,6 +22,7 @@ public class SuperContainer extends SuperActor {
     public SuperContainer(Actor content) {
         this.content = content;
         addActor(content);
+        setOrigin(getWidth()/2, getHeight()/2);
     }
 
     public SuperContainer(GenericEnums.ALPHA_TEMPLATE alphaTemplate) {

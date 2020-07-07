@@ -112,6 +112,7 @@ public class GlobalVfxMap extends GroupX {
             if (dataSourceMap == null) {
                 return;
             }
+            //gdx revamp  -- wtf is this?
             for (EmitterMap map : dataSourceMap.keySet()) {
                 if (RandomWizard.chance(10)) {
                     map.init();

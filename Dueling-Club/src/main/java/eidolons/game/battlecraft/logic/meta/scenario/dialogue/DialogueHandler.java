@@ -183,7 +183,7 @@ public class DialogueHandler {
     }
 
     public void setAutoCamera(boolean autoCamera) {
-        main.system.auxiliary.log.LogMaster.dev("autoCamera set " +autoCamera);
+        main.system.auxiliary.log.LogMaster.devLog("autoCamera set " +autoCamera);
         this.autoCamera = autoCamera;
     }
 
@@ -192,11 +192,11 @@ public class DialogueHandler {
             return;
         }
         if (linkedUnit == null) {
-            LogMaster.dev("Null unit for autocamera! "+getSpeakerLast() );
+            LogMaster.devLog("Null unit for autocamera! "+getSpeakerLast() );
             return;
         }
         if (linkedUnit.isMainHero()) {
-            LogMaster.dev("PC for autocamera! "+getSpeakerLast() );
+            LogMaster.devLog("PC for autocamera! "+getSpeakerLast() );
         }
         if (autoCamera) {
             GuiEventManager.triggerWithParams(GuiEventType.CAMERA_PAN_TO_UNIT,

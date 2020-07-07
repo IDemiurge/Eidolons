@@ -24,6 +24,7 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
+import main.system.threading.WaitMaster;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -56,7 +57,7 @@ public class PuzzleActions extends PuzzleElement {
     }
 
     public static void punishment(Puzzle puzzle, PuzzleEnums.PUZZLE_PUNISHMENT punishment, String data) {
-
+        WaitMaster.WAIT(puzzle.getWaitTimeBeforeEndMsg(true));
         switch (punishment) {
             case battle:
             case death:
