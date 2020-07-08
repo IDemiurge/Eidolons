@@ -7,7 +7,11 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.texture.Sprites;
 import main.elements.conditions.Condition;
+import main.elements.conditions.Conditions;
+import main.elements.conditions.NotCondition;
 import main.elements.conditions.OrConditions;
 import main.elements.conditions.standard.PositionCondition;
 import main.game.bf.Coordinates;
@@ -23,6 +27,12 @@ public class VoidMazeConstructor extends MazePuzzleConstructor {
         return super.createResolutions(puzzleData);
     }
 
+    protected void preloadAssets() {
+        super.preloadAssets();
+        SpriteAnimationFactory.preload(Sprites.THUNDER);
+        SpriteAnimationFactory.preload(Sprites.THUNDER3);
+        //TODO sounds too
+    }
     @Override
     public MazePuzzle create(String data, String blockData,
                              Coordinates coordinates, LevelBlock block) {
@@ -47,7 +57,9 @@ public class VoidMazeConstructor extends MazePuzzleConstructor {
                 }
                 conditions.add(new VoidCondition());
 
-                return conditions;
+                NotCondition notCondition = new NotCondition(new PositionCondition(puzzle.getEntranceCoordinates()));
+
+                return new Conditions(notCondition, conditions);
             }
 
             @Override

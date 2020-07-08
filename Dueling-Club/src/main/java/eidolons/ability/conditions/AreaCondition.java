@@ -10,7 +10,7 @@ public class AreaCondition extends DC_Condition {
     private final List<Coordinates> coordinates;
 
     public AreaCondition(Coordinates coordinates, int width, int height) {
-        this(coordinates, width, height, true);
+        this(coordinates, width, height, false);
     }
     public AreaCondition(Coordinates coordinates, int width, int height, boolean bottomToTop) {
         super();

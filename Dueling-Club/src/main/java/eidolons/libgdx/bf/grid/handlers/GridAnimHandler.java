@@ -209,7 +209,7 @@ public class GridAnimHandler extends GridHandler {
         }
 
         ActionMaster.addScaleAction(portrait, 0, dur * 1.25f);
-        ActionMaster.addFadeOutAction(view, dur);
+        ActionMaster.addFadeOutAction(portrait, dur);
         RotateByActionLimited rotate = ActionMaster.addRotateByAction(portrait, 60, dur);
         rotate.setInterpolation(Interpolation.swing);
         ActionMaster.addAfter(portrait, () -> {

@@ -201,12 +201,6 @@ public class DC_GridPanel extends GridPanel {
         setUpdateRequired(true);
     }
 
-    @Override
-    public void resetZIndices() {
-        super.resetZIndices();
-        animMaster.setZIndex(Integer.MAX_VALUE);
-    }
-
     protected GridOverlaysManager createOverlays() {
         return new GridOverlaysManager(this);
     }

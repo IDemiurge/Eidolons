@@ -45,6 +45,9 @@ public abstract class Puzzle {
     protected String title;
 
     public Puzzle() {
+    }
+
+    protected void init() {
         stats = new PuzzleStats(this);
         title = getDefaultTitle();
         handler = createHandler();
@@ -69,14 +72,29 @@ public abstract class Puzzle {
     }
 
     public int getWidth() {
-        return data.getIntValue(PuzzleData.PUZZLE_VALUE.WIDTH);
+        int width = data.getIntValue(PuzzleData.PUZZLE_VALUE.WIDTH);
+        if (width==0) {
+            return getDefaultWidth();
+        }
+        return width;
     }
 
+
     public int getHeight() {
-        return data.getIntValue(PuzzleData.PUZZLE_VALUE.HEIGHT);
+        int height = data.getIntValue(PuzzleData.PUZZLE_VALUE.HEIGHT);
+        if (height==0) {
+            return getDefaultHeight();
+        }
+        return height;
     }
     //TODO
 
+    protected int getDefaultHeight() {
+        return 0;
+    }
+    protected int getDefaultWidth() {
+        return 0;
+    }
     public void createTrigger(PuzzleTrigger.PUZZLE_TRIGGER type, Event.EVENT_TYPE event, Condition checks, Runnable action) {
         log(1, ">> Puzzle createTrigger :" + event + " " + checks);
         triggers.add(new PuzzleTrigger(this, type, event, checks, action));
@@ -148,7 +166,9 @@ public abstract class Puzzle {
 
     public void setData(PuzzleData data) {
         this.data = data;
+        init();
     }
+
 
     public void setStats(PuzzleStats stats) {
         this.stats = stats;
@@ -275,11 +295,11 @@ public abstract class Puzzle {
     }
 
     public void finished() {
-        handler.finished();
+        handler.afterEndTip();
     }
 
     public void complete() {
-        handler.complete();
+        handler.win();
     }
 
     public void failed() {

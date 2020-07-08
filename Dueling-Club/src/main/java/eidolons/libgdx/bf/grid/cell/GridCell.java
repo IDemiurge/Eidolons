@@ -299,12 +299,8 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
     }
 
     public void setOverlayTexture(TextureRegion overlay) {
-        if (getColor().a == 0 || !GdxMaster.isVisibleEffectively(this)) {
-            main.system.auxiliary.log.LogMaster.log(1, "invisible setOverlayTexture " + this);
-        }
         if (overlay == null) {
             ActionMaster.addFadeOutAction(overlayTexture, 2);
-            //            setDebug(false, true);
             return;
         }
         ActionMaster.addFadeInAction(overlayTexture, 2);
@@ -339,6 +335,10 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
             pillar.fadeOut();
             ActionMaster.addRemoveAfter(pillar);
         }
+    }
+
+    public FadeImageContainer getPillar() {
+        return pillar;
     }
 
     public Function<Coordinates, Color> getColorFunc() {

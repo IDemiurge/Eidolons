@@ -9,6 +9,7 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.CinematicLib;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.cinematic.flight.FlightHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -171,6 +172,8 @@ public class GlobalController implements Controller {
 
     private boolean doTest(int keyCode) {
         switch (keyCode) {
+
+
             case Keys.PAGE_UP:
                 ScreenMaster.getDungeonGrid().
                         resetMaps();
@@ -202,20 +205,38 @@ public class GlobalController implements Controller {
                     }
                 });
                 return true;
-            case Keys.F8:
+            case Keys.F1:
+                if (CinematicLib.TEST_ON){
+                    CinematicLib.doTest(1);
+                    return true;
+                }
+                break;
+            case Keys.F2:
+                if (CinematicLib.TEST_ON){
+                    CinematicLib.doTest(2);
+                    return true;
+                }
+                break;
+            case Keys.F3:
+                if (CinematicLib.TEST_ON){
+                    CinematicLib.doTest(3);
+                    return true;
+                }
+                new Thread(() -> {
+                    DC_Game.game.getMetaMaster().getDefeatHandler().isEnded(true, true);
+                }, " thread").start();
 
-                GuiEventManager.trigger(GuiEventType.FLIGHT_START,
-                        FlightHandler.FLIGHT_ENVIRON.voidmaze.data +
-                                "angle:120;");
-
-                // if (CoreEngine.isIDE()) {
-                //     EidolonLord.lord.soulforceGained(110);
-                // }
                 return true;
-            case Keys.F7:
-                GuiEventManager.trigger(GuiEventType.FLIGHT_END);
-                // DC_Game.game.getMetaMaster().getDialogueManager().test();
-
+            case Keys.F4:
+                if (CinematicLib.TEST_ON){
+                    CinematicLib.doTest(4);
+                    return true;
+                }
+                Eidolons.getMainHero().kill(Eidolons.getMainHero(), true, true);
+                //                WeaveMaster.openWeave();
+                return true;
+            case Keys.F5:
+                Eidolons.getMainHero().setParam(PARAMS.C_TOUGHNESS, 1, true);
                 return true;
             case Keys.F6:
                 // new Thread(() -> IntroLauncher.introBriefing(), " thread").start();
@@ -227,28 +248,14 @@ public class GlobalController implements Controller {
                             new VC_DataSource(VC_DataSource.VC_TYPE.hero_choice, o));
                 });
                 return true;
-            case Keys.F3:
-                new Thread(() -> {
-                    DC_Game.game.getMetaMaster().getDefeatHandler().isEnded(true, true);
-                }, " thread").start();
-
+            case Keys.F7:
+                GuiEventManager.trigger(GuiEventType.FLIGHT_END);
                 return true;
-            case Keys.F4:
-                Eidolons.getMainHero().kill(Eidolons.getMainHero(), true, true);
-                //                WeaveMaster.openWeave();
+            case Keys.F8:
+                GuiEventManager.trigger(GuiEventType.FLIGHT_START,
+                        FlightHandler.FLIGHT_ENVIRON.voidmaze.data +
+                                "angle:120;");
                 return true;
-            case Keys.F5:
-                Eidolons.getMainHero().setParam(PARAMS.C_TOUGHNESS, 1, true);
-
-                // new DealDamageEffect(new Formula("1000"), GenericEnums.DAMAGE_TYPE.PURE)
-                //         .apply(Ref.getSelfTargetingRefCopy(Eidolons.getMainHero()));
-                //                Eidolons.getMainHero().setParam(PARAMS.C_TOUGHNESS, 0);
-                //                 Eidolons.getMainHero().getGame().getManager().reset();
-                //                WeaveMaster.openWeave();
-                return true;
-            //            case Keys.F4: already implemented?
-            //                Eidolons.exitToMenu();
-            //                break;
         }
         return false;
     }

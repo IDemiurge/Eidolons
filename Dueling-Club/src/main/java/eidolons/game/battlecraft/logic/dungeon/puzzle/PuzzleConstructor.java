@@ -50,7 +50,6 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         //        puzzle.setup(setup);
         PuzzleRules rules = createRules(puzzleData);
         puzzle.setRules(rules);
-        initSetup();
 
         initEnterTrigger();
         initExitTrigger();
@@ -110,10 +109,6 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
 
     protected PuzzleResolution createResolution() {
         return new PuzzleResolution(puzzle);
-    }
-
-    protected void initSetup() {
-
     }
 
     protected PuzzleData createData(String text) {

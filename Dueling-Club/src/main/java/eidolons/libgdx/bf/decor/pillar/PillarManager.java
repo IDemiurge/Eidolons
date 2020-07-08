@@ -1,9 +1,7 @@
 package eidolons.libgdx.bf.decor.pillar;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightHandler;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
@@ -12,7 +10,6 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.bf.grid.handlers.GridHandler;
-import eidolons.libgdx.texture.TextureCache;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 
@@ -40,14 +37,17 @@ public class PillarManager extends GridHandler {
     // Light revamp - get average between some adjacent cells ...
     //TODO optimization
     public Color getColor(Coordinates coord, Object o, boolean wall) {
-        if (o==null) {
+        if (o == null) {
             return GdxColorMaster.get(GdxColorMaster.NULL_COLOR);
         }
         PILLAR type = (PILLAR) o;
         DIRECTION[] adj = Pillars.getAdjacent(type, wall);
-        Set<Color> collect = Arrays.stream(adj).map(d -> getManager().getColor(d == null ? coord : coord.getAdjacentCoordinate(d))).collect(Collectors.toSet());
+        Set<Color> collect = Arrays.stream(adj).map(d -> getManager().getColor(d == null
+                ? coord
+                : coord.getAdjacentCoordinate(d))).collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
         collect.removeIf(c -> c == null);
-        Color lerp = GdxColorMaster.getAverage(collect);
+        Color lerp = collect.iterator().next();
+        //GdxColorMaster.getAverage(collect);
 
         // Color lerp = new Color(c).lerp(c1, wall
         //         ?1- LightConsts.PILLAR_COLOR_LERP
@@ -91,7 +91,7 @@ public class PillarManager extends GridHandler {
             }
         }
         DC_Game.game.getBattleFieldManager().resetWalls();
-         Map<Coordinates, List<DIRECTION>> wallMap = DC_Game.game.getBattleFieldManager().getWallMap();
+        Map<Coordinates, List<DIRECTION>> wallMap = DC_Game.game.getBattleFieldManager().getWallMap();
         wallAdjacency = new ConcurrentHashMap<>();
         // for (Coordinates key : wallMap.keys()) {
         //     Set<DIRECTION> set = new LinkedHashSet<>(Arrays.asList(clockwise));
@@ -180,13 +180,27 @@ public class PillarManager extends GridHandler {
                     container.removePillar();
                     continue;
                 }
-                TextureRegion region = TextureCache.getOrCreateR(WallMaster.getPillarImage(c,
-                        p));
+                String path = WallMaster.getPillarImage(c, p);
                 Vector2 pillarV = getOffset(p);
-                FadeImageContainer pillar = new FadeImageContainer(new Image(region));
+                FadeImageContainer pillar = container.getPillar();
+
+                if (pillar == null || pillar.getParent() == null) {
+                    pillar = new FadeImageContainer(path);
+                    container.addActor(pillar);
+                    pillar.setZIndex(0);
+                } else {
+                    if (pillar.getImagePath().equalsIgnoreCase(path)) {
+                        continue;
+                    }
+                    pillar.setImage(path);
+                }
+                //check pos?
+                // MoveToAction move = ActionMaster.addMoveToAction(pillar, pillarV.x, pillarV.y, 1f);
+                // move.setInterpolation(Interpolation.pow2Out);
                 pillar.setPosition(pillarV.x, pillarV.y);
-                // pillar.setColor(getColor(c)); //will already have done it via Grid_cell?
-                container.addPillar(pillar);
+                pillar.setColor(getColor(c, p, false));
+                pillar.getColor().a=0.25f;
+                pillar.fadeIn();
             }
         }
     }
@@ -262,7 +276,7 @@ public class PillarManager extends GridHandler {
                     return PILLAR.SKEWED_CORNER_UP;
                 if (adj.contains(DOWN_LEFT))
                     return getPillarDIRECTION(false, false);
-                    return PILLAR.SKEWED_CORNER_UP;
+                return PILLAR.SKEWED_CORNER_UP;
             }
             if (adj.contains(UP))
                 return PILLAR.SKEWED_CORNER_LEFT;

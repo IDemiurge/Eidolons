@@ -9,8 +9,8 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Veil;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazeHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid.PuzzleVoidHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid.VoidHandler;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.ScriptLib;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.cinematic.CinematicLib;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
@@ -99,33 +99,26 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
     }
 
     @Override
-    public void finished() {
-        super.finished();
+    public void afterEndTip() {
+        super.afterEndTip();
         cinematicAfter();
     }
 
     private void cinematicAfter() {
-        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
-        WaitMaster.WAIT(1500);
-        Cinematics.doZoom(1.25f, 3.5f, Interpolation.fade);
-        WaitMaster.WAIT(2500);
-        ScriptLib.execute(ScriptLib.STD_SCRIPT.mini_explosion);
+        CinematicLib.run(CinematicLib.StdCinematic.VOID_MAZE_AFTER);
     }
 
     protected void cinematicFirstMove() {
-        Cinematics.doZoom(1f, 2.25f, Interpolation.pow2In);
-    }
-
-    protected void cinematicFail() {
-
-        Cinematics.doShake(Screenshake.ScreenShakeTemplate.HARD, 2, null);
-        Cinematics.doZoom(0.1f, 2.25f, Interpolation.pow2In);
-        getVoidHandler().getGridPanel().getGridManager().getAnimHandler().doFall(Eidolons.getMainHero());
+        CinematicLib.run(CinematicLib.StdCinematic.VOID_MAZE_FIRST_MOVE);
     }
 
     protected void cinematicWin() {
-        ScriptLib.execute(ScriptLib.STD_SCRIPT.gate_flash);
+        CinematicLib.run(CinematicLib.StdCinematic.VOID_MAZE_WIN);
     }
+    protected void cinematicFail() {
+        CinematicLib.run(CinematicLib.StdCinematic.VOID_MAZE_FAIL);
+      }
+
 
     @Override
     public void activate() {
@@ -151,6 +144,7 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
                             getManager().getMainHeroCoordinates().dst_(c) <= getDefaultVisionRange());
                     //blackness revealed only when close by
                     if (visible) {
+                        sprite.setVisible(true);
                         return true;
                     }
                     return visible;
@@ -171,7 +165,7 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
                     });
                 }
             };
-            blackhole.init();
+            blackhole.setInitRequired(true);
             blackhole.setUnder(true);
             GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, blackhole);
             holes.add(blackhole);

@@ -599,6 +599,9 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
     }
 
     public boolean checkOverlayForObj(OVERLAY overlay, BattleFieldObject object, GenericGridView actor) {
+        if (actor.isPortraitMode()) {
+            return false;
+        }
         switch (overlay) {
             case STEALTH:
                 if (object instanceof Unit)

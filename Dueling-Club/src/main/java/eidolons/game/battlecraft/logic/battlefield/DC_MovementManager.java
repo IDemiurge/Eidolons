@@ -41,6 +41,8 @@ import main.game.bf.directions.UNIT_DIRECTION;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -250,7 +252,7 @@ public class DC_MovementManager implements MovementManager {
                     context.setTarget(action.getTarget().getId());
                 }
                 unit.getGame().getGameLoop().
-                        actionInput(new ActionInput(action.getActive(), context));
+                        actionInput(new ActionInput(action.getActive(), context), true);
             }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -394,7 +396,7 @@ public class DC_MovementManager implements MovementManager {
             LevelStruct struct = game.getDungeonMaster().getStructMaster().getLowestStruct(obj.getCoordinates());
             String background = struct.getPropagatedValue("background");
             if (!ScreenMaster.getScreen().getBackgroundPath().equalsIgnoreCase(background)) {
-                ScreenMaster.getScreen().setBackground(background);
+                GuiEventManager.trigger(GuiEventType.UPDATE_DUNGEON_BACKGROUND, background);
             }
         }
         if ( REF.isQuiet())

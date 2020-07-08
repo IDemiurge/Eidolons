@@ -20,10 +20,6 @@ public class PortalPuzzleConstructor extends PuzzleConstructor<PortalPuzzle> {
         return res;
     }
 
-    @Override
-    protected void initSetup() {
-        super.initSetup();
-    }
 
     @Override
     protected PuzzleData.PUZZLE_VALUE[] getRelevantValues() {

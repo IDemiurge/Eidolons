@@ -108,7 +108,6 @@ public class ShadowMap extends GroupX implements GridElement {
         if (!on)
             return;
         setTransform(false);
-        if (grid.isCustomDraw()) {
             for (ShadeLightCell[][] value : cells.values()) {
                 for (int x = grid.drawX1; x < grid.drawX2; x++) {
                     for (int y = grid.drawY1; y < grid.drawY2; y++) {
@@ -119,8 +118,6 @@ public class ShadowMap extends GroupX implements GridElement {
                     }
                 }
             }
-        } else
-            super.draw(batch, parentAlpha);
     }
 
     @Override
@@ -130,7 +127,6 @@ public class ShadowMap extends GroupX implements GridElement {
 
         setY(-(y1) * 128); //ToDo-Cleanup
 
-        if (grid.isCustomDraw()) {
             for (ShadeLightCell[][] value : cells.values()) {
                 for (int x = grid.drawX1; x < grid.drawX2; x++) {
                     for (int y = grid.drawY1; y < grid.drawY2; y++) {
@@ -141,10 +137,6 @@ public class ShadowMap extends GroupX implements GridElement {
                     }
                 }
             }
-        } else
-            super.act(delta);
-
-        //TODO module fix - only act from x1 to x2
     }
 
     @Override
@@ -232,7 +224,6 @@ public class ShadowMap extends GroupX implements GridElement {
     }
 
     private void addShadowMapElement(Group element, int x, int y, float defaultAlpha) {
-        addActor(element);
         float offsetX = (GridMaster.CELL_W - element.getWidth()) / 2;
         float offsetY = (GridMaster.CELL_H - element.getHeight()) / 2;
 

@@ -174,7 +174,7 @@ public abstract class OverlayMap<T> extends SuperActor {
         if (color == null) {
             color = GdxColorMaster.WHITE;
         } else if (!screen)
-            color.a = 1;
+            color = new Color(color.r, color.g, color.b, 1);
         else {
             color.a = LightConsts.getScreen(color.a);
             if (color.a <= 0)

@@ -71,6 +71,7 @@ import main.game.bf.Coordinates;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
@@ -107,7 +108,6 @@ public abstract class GridPanel extends Group {
     protected ParticleManager particleManager;
 
     protected GridCellContainer[][] cells;
-    //    protected GridCellContainer[][] removedCells;
     protected ObjectMap<Obj, BaseView> viewMap;
 
     protected Manipulator[][] manipulators;
@@ -131,6 +131,10 @@ public abstract class GridPanel extends Group {
     protected List<UnitGridView> detached = new LinkedList<>();
     protected Set<PlatformDecor> platformDecor = new LinkedHashSet();
     protected final ObjectMap<DECOR_LEVEL, CellDecorLayer> decorMap = new ObjectMap<>(4);
+
+    List<GridCellContainer> topCells = new ArrayList<>(5);
+    List<GridCellContainer> overCells = new ArrayList<>(25);
+    List<GridCellContainer> screenCells = new ArrayList<>(65);
     protected boolean decorInitialized;
     protected boolean init;
 
@@ -802,7 +806,6 @@ it sort of broke at some point - need to investigate!
     }
 
     public void resetZIndices() {
-        if (isCustomDraw()) {
             if (hoverObj != null) {
                 if (hoverObj.getParent() instanceof GridCellContainer) {
                     ((GridCellContainer) hoverObj.getParent()).setHovered(false);
@@ -822,86 +825,7 @@ it sort of broke at some point - need to investigate!
                     }
                 }
             }
-            return;
-        }
-
-        for (PlatformDecor platform : platformDecor) {
-            platform.setZIndex(Integer.MAX_VALUE);
-            //if we had over and under... we could setPos for them on act?
-        }
-        decorMap.get(DECOR_LEVEL.BOTTOM).setZIndex(0);
-        List<GridCellContainer> topCells = new ArrayList<>();
-        loop:
-        for (int x = x1; x < x2; x++) {
-            for (int y = y1; y < y2; y++) {
-                GridCellContainer cell = cells[x][y];
-                if (cell == null) {
-                    continue;
-                }
-                cell.setHovered(false);
-                List<GenericGridView> views = cell.getUnitViewsVisible();
-                if (views.isEmpty()) {
-                    cell.setZIndex(0);
-                } else {
-                    if (!cell.getUserObject().isPlayerHasSeen()) {
-                        cell.setZIndex(x + y); //why?
-                    } else {
-                        cell.setZIndex(square + x + y);
-                    }
-                    //                TODO     cell.recalcUnitViewBounds();
-                    for (GenericGridView sub : views) {
-                        if (sub.isHovered() && sub instanceof UnitGridView
-                        ) {
-                            setHoverObj((UnitGridView) sub);
-                            topCells.add(cell);
-                            cell.setHovered(true);
-                        } else if (
-                                sub.getUserObject().isBoss() ||
-                                        sub.getUserObject().isPlayerCharacter() || sub.isStackView()) {
-                            topCells.add(cell);
-                        }
-                    }
-                }
-            }
-        }
-        resetZ(customOverlayingObjectsUnder);
-        decorMap.get(DECOR_LEVEL.OVER_CELLS).setZIndex(Integer.MAX_VALUE);
-
-        borderMap.setZIndex(Integer.MAX_VALUE);
-        wallMap.setZIndex(Integer.MAX_VALUE);
-
-        if (shadowMap != null) {
-            shadowMap.setZIndex(Integer.MAX_VALUE);
-        }
-        for (PlatformCell platform : platforms) {
-            platform.setZIndex(Integer.MAX_VALUE);
-        }
-        resetZ(customOverlayingObjects);
-
-        decorMap.get(DECOR_LEVEL.OVER_MAPS).setZIndex(Integer.MAX_VALUE);
-        for (GridCellContainer cell : topCells) {
-            cell.setZIndex(Integer.MAX_VALUE);
-        }
-        /////////////////
-        resetZ(customOverlayingObjectsTop);
-        resetZ(manipulators);
-        overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
-
-        overlayManager.setZIndex(Integer.MAX_VALUE);
-        flightHandler.getObjsOver().setZIndex(Integer.MAX_VALUE);
-        flightHandler.getObjsVfx().setZIndex(Integer.MAX_VALUE);
-
-        decorMap.get(DECOR_LEVEL.TOP).setZIndex(Integer.MAX_VALUE);
-        for (BossVisual visual : bossVisuals) {
-            visual.setZIndex(Integer.MAX_VALUE);
-            visual.setPosition(visual.getCoordinates().getX() * 128,
-                    getGdxY_ForModule(visual.getCoordinates().getY()) * 128);
-        }
     }
-
-    List<GridCellContainer> topCells = new ArrayList<>(5);
-    List<GridCellContainer> overCells = new ArrayList<>(25);
-    List<GridCellContainer> screenCells = new ArrayList<>(65);
 
     protected void customDraw(Batch batch) {
         flightHandler.getObjsUnder().draw(batch, 1f);
@@ -1226,7 +1150,9 @@ it sort of broke at some point - need to investigate!
         GuiEventManager.bind(removePrevious, ADD_GRID_OBJ, p -> {
             GridObject object = (GridObject) p.get();
             addActor(object);
-
+            if (object.isInitRequired()) {
+                object.init();
+            }
             Boolean under = object.isUnder();
             Coordinates c = object.getCoordinates();
             Set<GridObject> objs = gridObjects[c.x][c.y];
@@ -1265,16 +1191,17 @@ it sort of broke at some point - need to investigate!
             DC_Cell cell = (DC_Cell) obj.get();
             GridCellContainer container = cells[cell.getX()][(cell.getY())];
             String overlayData = cell.getOverlayData();
-
+            if (StringMaster.isEmpty(overlayData)) {
+                container.setOverlayTexture(null );
+                return;
+            }
             String path = VariableManager.removeVarPart(overlayData);
             Coordinates c = new Coordinates(VariableManager.getVars(overlayData));
             TextureRegion region = new TextureRegion(TextureCache.getOrCreateR(path),
                     c.x * 128, c.y * 128, 128, 128);
             container.setOverlayTexture(region);
             container.setOverlayRotation(cell.getOverlayRotation());
-
-
-            container.getCellImage().setDrawable(new TextureRegionDrawable(region));
+            // container.getCellImage().setDrawable(new TextureRegionDrawable(region));
         });
         GuiEventManager.bind(removePrevious, CELL_RESET, obj -> {
             try {

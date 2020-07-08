@@ -160,6 +160,9 @@ public abstract class VoidHandler {
     protected boolean checkRaise(BattleFieldObject object, DIRECTION direction) {
         List<Coordinates> list = new ArrayList<>();
         Coordinates coordinate = object.getCoordinates().getAdjacentCoordinate(direction);
+        if (coordinate == null) {
+            return false;
+        }
         DC_Cell cell = object.getGame().getCellByCoordinate(coordinate);
         if (TEST_MODE || checkMarked(cell))
             if (cell.isVOID()) {

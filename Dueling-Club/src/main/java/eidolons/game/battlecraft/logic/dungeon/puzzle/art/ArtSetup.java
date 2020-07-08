@@ -17,9 +17,13 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
 
     private final String[] mutatorArgs;
+    Set<DC_Cell> mosaic = new LinkedHashSet<>();
 
     public ArtSetup(ArtPuzzle puzzle, PuzzleData data, String... mutatorArgs) {
         super(puzzle, data);
@@ -32,14 +36,41 @@ public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
     }
 
     @Override
+    public void ended() {
+        if (puzzle.isSolved()) {
+            setup(false);
+        }
+    }
+
+    @Override
     public Object reset() {
         return null;
     }
+
+    public void setup(boolean on) {
+        for (DC_Cell cell : mosaic) {
+            if (!on) {
+                cell.setOverlayData(null);
+            } else {
+                Coordinates coordinates = cell.getCoordinates().getOffset( puzzle.getCoordinates().negative());
+                cell.setOverlayData(arg + StringMaster.wrapInParenthesis(coordinates.toString()));
+                if (RandomWizard.chance(getPuzzle().getRotateChance())) {
+                    float rotation = 90 * RandomWizard.getRandomIntBetween(0, 4);
+                    cell.setOverlayRotation(rotation);
+                } else {
+                    cell.setOverlayRotation(0);
+                }
+            }
+            GuiEventManager.trigger(GuiEventType.INIT_CELL_OVERLAY, cell);
+        }
+    }
+
     @Override
     public void started() {
         for (String mutatorArg : mutatorArgs) {
             switch (mutatorArg) {
                 case "facing":
+                default:
                     puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION, Event.STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE,
                             ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
                             PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_CLOCKWISE));
@@ -48,30 +79,21 @@ public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
                             PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_ANTICLOCKWISE));
                     break;
             }
-
         }
 
         arg = getArtPiecePath(data.getValue(PuzzleData.PUZZLE_VALUE.ARG));
-        Coordinates c = puzzle.getCoordinates().getOffsetByY(-puzzle.getHeight() + 1);
+        Coordinates c = puzzle.getCoordinates();
 
         for (int i = 0; i < puzzle.getWidth(); i++) {
             for (int j = 0; j < puzzle.getHeight(); j++) {
-//            for (int j = puzzle.getHeight()-1; j >= 0; j--) {
-
+                //            for (int j = puzzle.getHeight()-1; j >= 0; j--) {
                 Coordinates root = c.getOffsetByY(j).getOffsetByX(i);
                 DC_Cell cell = Eidolons.getGame().getCellByCoordinate(
                         root);
-                cell.setOverlayData(arg + StringMaster.wrapInParenthesis(Coordinates.get(i, j).toString()));
-                if ( RandomWizard.chance(getPuzzle().getRotateChance())) {
-                float rotation = 90 * RandomWizard.getRandomIntBetween(0, 4);
-                cell.setOverlayRotation(rotation);
-                } else {
-                    cell.setOverlayRotation(0);
-                }
-                GuiEventManager.trigger(GuiEventType.INIT_CELL_OVERLAY, cell);
+                mosaic.add(cell);
             }
-
         }
+        setup(true);
     }
 
 

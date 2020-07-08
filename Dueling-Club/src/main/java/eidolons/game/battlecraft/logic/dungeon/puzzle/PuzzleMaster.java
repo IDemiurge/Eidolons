@@ -34,13 +34,14 @@ public class PuzzleMaster {
         this.master = master;
     }
 
-    public boolean isUiMinimized(){
+    public boolean isUiMinimized() {
         if (getCurrent() == null) {
             return false;
         }
         return getCurrent().isMinimizeUI();
     }
-        public Puzzle getCurrent(){
+
+    public Puzzle getCurrent() {
         if (activePuzzles.isEmpty()) {
             return null;
         }
@@ -52,7 +53,8 @@ public class PuzzleMaster {
             activePuzzle.getHandler().playerActionDone(action);
         }
     }
-        public void processEvent(Event event) {
+
+    public void processEvent(Event event) {
         for (Puzzle activePuzzle : activePuzzles) {
             for (PuzzleTrigger trigger : activePuzzle.getTriggers()) {
                 trigger.check(event);
@@ -64,20 +66,22 @@ public class PuzzleMaster {
         for (Coordinates c : textDataMap.keySet()) {
             String s = textDataMap.get(c).getValue(CellScriptData.CELL_SCRIPT_VALUE.puzzles);
             if (!StringMaster.isEmpty(s))
-            for (String substring : ContainerUtils.openContainer(s)) {
+                for (String substring : ContainerUtils.openContainer(s)) {
                     try {
                         LevelStruct struct = master.getStructMaster().getLowestStruct(c);
+                        LevelBlock block = null;
                         if (struct instanceof LevelBlock) {
-                            LevelBlock block = ((LevelBlock) struct);
-                        Puzzle puzzle =//PuzzleConstructor.
-                                createPuzzle(textDataMap, block, substring , c);
-                        puzzles.add(puzzle);
+                            block = ((LevelBlock) struct);
                         }
+                        Puzzle puzzle =//PuzzleConstructor.
+                                createPuzzle(textDataMap, block, substring, c);
+                        puzzles.add(puzzle);
+
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
 
-            }
+                }
         }
     }
 
@@ -103,13 +107,14 @@ public class PuzzleMaster {
         String name = VariableManager.removeVarPart(dataString);
         String args = VariableManager.getVars(dataString);
         if (dataString.contains(">>")) {
-            name =  new PuzzleData(dataString).getValue(PuzzleData.PUZZLE_VALUE.TYPE);
-            args=dataString;
+            name = new PuzzleData(dataString).getValue(PuzzleData.PUZZLE_VALUE.TYPE);
+            args = dataString;
         }
 
         String setupData = "";
+        if (block != null)
         for (Coordinates c : block.getCoordinatesSet()) {
-            CellScriptData data = customDataMap.get(c );
+            CellScriptData data = customDataMap.get(c);
             if (data != null) {
                 setupData += VariableManager.getStringWithVariable(c.toString(),
                         data.getValue(CellScriptData.CELL_SCRIPT_VALUE.script)) + ";";

@@ -114,10 +114,14 @@ public class GridCellContainer extends GridCell implements Hoverable {
                 screen = false;
             }
             cellImgContainer.setColor(c.r, c.g, c.b, a1);
-            if (pillar != null) {
-                pillar.setColor(c.r, c.g, c.g, a1);
-            }
+
         }
+        // if (pillar != null) {
+        //     if (pillar.getParent() != null)
+        //         if (pillar.getActions().size == 0) {
+        //             pillar.setColor(c.r, c.g, c.g, a1);
+        //         }
+        // }
         for (GenericGridView unitView : getUnitViews(true)) {
             float a = unitView.getPortrait().getContent().getColor().a;
             unitView.getPortrait().getContent().getColor().lerp(c, LightConsts.UNIT_VIEW_COLOR_LERP);
@@ -424,8 +428,6 @@ public class GridCellContainer extends GridCell implements Hoverable {
 
     @Override
     public void act(float delta) {
-        if (checkIgnored())
-            return;
         super.act(delta);
         resetZIndices();
         if (n != nonBgUnitViewCount || secondCheck) {

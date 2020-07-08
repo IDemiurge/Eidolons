@@ -354,6 +354,7 @@ public class GdxColorMaster {
     }
 
     public static Color get(Color color) {
+     //gdx review - use POOL!
         return temp.set(color);
     }
 }

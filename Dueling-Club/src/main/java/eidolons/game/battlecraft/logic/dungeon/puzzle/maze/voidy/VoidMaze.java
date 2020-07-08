@@ -6,8 +6,6 @@ import eidolons.game.module.cinematic.flight.FlightData;
 import eidolons.game.module.cinematic.flight.FlightHandler;
 import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.model.RoomModel;
-import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -35,9 +33,6 @@ public class VoidMaze extends MazePuzzle {
         if (!CoreEngine.TEST_LAUNCH) {
             GuiEventManager.trigger(GuiEventType.UPDATE_DUNGEON_BACKGROUND, getOverrideBackground());
         }
-        SpriteAnimationFactory.preload(Sprites.THUNDER);
-        SpriteAnimationFactory.preload(Sprites.THUNDER2);
-        //TODO sounds too
     }
 
     public boolean isTransform() {
@@ -82,6 +77,11 @@ public class VoidMaze extends MazePuzzle {
     @Override
     protected String getFailCinematicScriptKey() {
         return "black hole";
+    }
+
+    @Override
+    protected String getFailText() {
+        return "Crimson shadows grasp for me in the void.\n I must retreat and try harder.";
     }
 
     @Override
@@ -178,5 +178,12 @@ public class VoidMaze extends MazePuzzle {
 
     public boolean isMarkAroundEntrance() {
         return true;
+    }
+
+    protected int getDefaultHeight() {
+        return 11;
+    }
+    protected int getDefaultWidth() {
+        return 11;
     }
 }

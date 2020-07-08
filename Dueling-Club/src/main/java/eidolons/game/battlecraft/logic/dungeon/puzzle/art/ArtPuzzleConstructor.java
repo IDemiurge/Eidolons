@@ -47,12 +47,6 @@ public class ArtPuzzleConstructor extends ManipulatorPuzzleConstructor<ArtPuzzle
 
 
 
-    @Override
-    protected void initSetup() {
-        ArtSetup setup = new ArtSetup(puzzle, puzzle.getData(), mutatorArgs);
-        puzzle.setup(setup);
-
-    }
 
     @Override
     protected PuzzleEnums.PUZZLE_SOLUTION getSolution() {

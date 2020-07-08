@@ -68,7 +68,7 @@ public class LinkedGridObject extends CinematicGridObject {
     }
 
     @Override
-    protected void init() {
+    public void init() {
         super.init();
 
         origX = linked.localToStageCoordinates(new Vector2(0, 0)).x;

@@ -411,7 +411,8 @@ public abstract class GameLoop {
 
     public  void actionInput(ActionInput actionInput) {
     }
-
+    public void actionInput(ActionInput actionInput, boolean wait) {
+    }
     public void actionInput_(ActionInput actionInput) {
     }
     public void actionInputManual(ActionInput actionInput) {
@@ -610,4 +611,5 @@ public abstract class GameLoop {
                 signal();
         }
     }
+
 }

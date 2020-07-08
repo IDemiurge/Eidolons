@@ -463,6 +463,10 @@ public class UnitView extends BaseView implements HpBarView {
 
     }
 
+    public boolean isPortraitMode() {
+        return portraitMode;
+    }
+
     public void setPortraitMode(boolean portraitMode) {
         this.portraitMode = portraitMode;
     }

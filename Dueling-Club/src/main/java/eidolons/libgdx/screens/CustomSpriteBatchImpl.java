@@ -97,9 +97,6 @@ public class CustomSpriteBatchImpl extends ShaderBatch implements CustomSpriteBa
 
     @Override
     public void setBlending(BLENDING blending) {
-        if (this.blending == blending) {
-            return;
-        }
         if (blending == null) {
             Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
         }
@@ -129,10 +126,14 @@ public class CustomSpriteBatchImpl extends ShaderBatch implements CustomSpriteBa
                 //                setBlendFunctionSeparate(GL20.GL_SRC_ALPHA, GL20.GL_ONE,
                 //                        GL20.GL_ONE_MINUS_CONSTANT_ALPHA, GL20.GL_ONE);
                 //                     setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
+                setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
                 Gdx.gl.glBlendEquation(GL20.GL_FUNC_REVERSE_SUBTRACT);
+                break;
 
             case SCREEN:
                 setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+                Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
+                break;
             case NORMAL:
                 Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
                 break;

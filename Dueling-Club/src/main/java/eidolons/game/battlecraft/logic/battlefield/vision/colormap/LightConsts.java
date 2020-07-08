@@ -12,7 +12,7 @@ public class LightConsts {
     public static final float MIN_LIGHTNESS_CELL_SEEN = 0.5f;
 
     public static float getScreen(float light) {
-        return light - 0.55f;
+        return light - 0.5f;
     }
 
     public static float getNegative(float light) {

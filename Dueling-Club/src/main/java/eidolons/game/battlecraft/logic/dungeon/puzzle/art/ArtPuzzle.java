@@ -11,7 +11,7 @@ public class ArtPuzzle extends ManipulatorPuzzle {
 
     @Override
     protected PuzzleHandler createHandler() {
-        return null ;//TODO
+        return new ArtPuzzleHandler(this);
     }
 
     @Override
@@ -22,10 +22,12 @@ public class ArtPuzzle extends ManipulatorPuzzle {
         super.setup(setups);
     }
 
-    public void init() {
-
+    protected int getDefaultHeight() {
+        return 5;
     }
-
+    protected int getDefaultWidth() {
+        return 7;
+    }
     @Override
     public void complete() {
         super.complete();

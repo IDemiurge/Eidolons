@@ -86,7 +86,7 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
 
     }
 
-    public void finished() {
+    public void afterEndTip() {
         log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle finished: " + this);
         //        resolutions.forEach(r -> r.finished());
         //        rules.forEach(r -> r.finished());
@@ -95,7 +95,7 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         getMaster().deactivated(puzzle);
     }
 
-    public void complete() {
+    public void win() {
         log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle completed: " + this);
 
         cinematicWin();
@@ -107,7 +107,7 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
             String text = puzzle.getCompletionText();
             TipMessageSource src = new TipMessageSource(
                     text, "", "Onward!", false, () -> {
-                Eidolons.onThisOrNonGdxThread(() -> finished());
+                Eidolons.onThisOrNonGdxThread(() -> afterEndTip());
             }
             );
             TipMessageMaster.tip(src);
@@ -139,7 +139,7 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         WaitMaster.WAIT(puzzle.getWaitTimeBeforeEndMsg(true));
         TipMessageSource src = new TipMessageSource(
                 text, "", "Continue", false, () -> {
-            Eidolons.onThisOrNonGdxThread(() -> finished());
+            Eidolons.onThisOrNonGdxThread(() -> afterEndTip());
         }
         );
         TipMessageMaster.tip(src);

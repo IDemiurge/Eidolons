@@ -8,7 +8,6 @@ import eidolons.libgdx.particles.EmitterActor;
 import java.util.Collection;
 
 public abstract class GroupWithEmitters<T extends EmitterActor> extends GroupX {
-    private boolean invertScreen;
 
     public abstract Collection<T> getEmitters();
 
@@ -51,7 +50,6 @@ public abstract class GroupWithEmitters<T extends EmitterActor> extends GroupX {
     }
 
     public void setInvertScreen(boolean invertScreen) {
-        this.invertScreen = invertScreen;
         for (Actor child : getChildren()) {
             if (child instanceof EmitterActor) {
                 ((EmitterActor) child).setInvert(invertScreen);

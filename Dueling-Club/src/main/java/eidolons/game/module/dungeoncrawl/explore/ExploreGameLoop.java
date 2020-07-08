@@ -282,10 +282,17 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     @Override
-    public void actionInput(ActionInput actionInput) {
+    public void actionInput(ActionInput actionInput ) {
+        actionInput(actionInput, false);
+    }
+    public void actionInput(ActionInput actionInput, boolean waitForTimer) {
         if (blockTimer > 0) { //override?
-            notReady(actionInput.getAction());
-            return;
+            if (waitForTimer)
+                WaitMaster.WAIT((int) (blockTimer * 1000));
+            else {
+                notReady(actionInput.getAction());
+                return;
+            }
         }
         actionInput_(actionInput);
     }

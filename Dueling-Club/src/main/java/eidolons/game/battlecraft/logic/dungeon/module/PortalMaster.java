@@ -224,7 +224,7 @@ public class PortalMaster extends DungeonHandler {
             }
 
             @Override
-            protected void init() {
+            public void init() {
                 super.init();
                 sprite.setBlending(GenericEnums.BLENDING.SCREEN);
             }

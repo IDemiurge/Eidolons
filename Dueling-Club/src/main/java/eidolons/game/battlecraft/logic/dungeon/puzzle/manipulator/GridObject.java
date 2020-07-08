@@ -16,6 +16,7 @@ import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.PathUtils;
@@ -39,6 +40,7 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
     String key;
     private boolean hidden;
     private Boolean under;
+    private boolean initRequired;
 
     public GridObject(Coordinates c, String spritePath) {
         this.c = c;
@@ -98,14 +100,14 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         emitter.setPosition(getWidth() / 2 + offsetX, getHeight() / 2 + offsetY);
     }
 
-    protected void init() {
+    public void init() {
         getColor().a = 0;
         createEmittersUnder();
         if (isSpriteShown())
             try {
                 sprite = new SpriteX(spritePath);
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
 
         if (sprite != null) {
@@ -307,5 +309,13 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
 
     public void addToGrid() {
         GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, this);
+    }
+
+    public boolean isInitRequired() {
+        return initRequired;
+    }
+
+    public void setInitRequired(boolean initRequired) {
+        this.initRequired = initRequired;
     }
 }

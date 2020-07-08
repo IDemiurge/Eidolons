@@ -293,7 +293,7 @@ public class TextureCache {
                         region = getInstance().mainAtlas.findRegion(name);
                     }
                 }
-                if (region == null) {
+                if (atlasesOn&& region == null) {
                     // System.out.println("No img in atlases: "+name);
                     atlasMissingTextures.add(path);
                 } else {
