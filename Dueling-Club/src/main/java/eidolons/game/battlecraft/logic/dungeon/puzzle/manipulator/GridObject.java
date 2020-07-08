@@ -297,7 +297,7 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         this.under = under;
     }
 
-    public Boolean getUnder() {
+    public Boolean isUnder() {
         return under;
     }
 

@@ -74,10 +74,12 @@ public class LE_GridOverlays extends GridOverlaysManager {
                 builder.append("\n").append((gridPanel.getGridManager().getBaseColor(cell.getCoordinates())));
                 builder.append("\n").append((gridPanel.getGridManager().getOrigColor(cell.getCoordinates())));
             }
-
+            String s = builder.toString();
+            if (!s.isEmpty()) {
             ((Label) getOverlayActor(container, INFO_TEXT)).setText(
-                    builder.toString());
+                    s);
             drawOverlay(container, INFO_TEXT, batch, cell, x, y);
+            }
         }
         if (LevelEditor.getManager().getSelectionHandler().isSelected(cell)) {
             drawOverlay(container, IN_PLAIN_SIGHT, batch, cell, x, y);

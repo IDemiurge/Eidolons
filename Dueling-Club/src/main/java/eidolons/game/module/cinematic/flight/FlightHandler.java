@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.screens.CustomSpriteBatch;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.datatypes.WeightMap;
@@ -27,7 +28,7 @@ public class FlightHandler extends GroupX {
         astral("objs_over:mist(20),comet_bright(10),comet_pale(20),mist(10),;" +
                 "objs_under:stars(15);" +
                 "angle:30;"),
-        voidmaze("objs_under:cloud(500),thunder(30),thunder3(10);hue:cloud;" +
+        voidmaze("objs_under:cloud(500),thunder3(40),thunder(11);hue:cloud;" +
                 "angle:30;"),
         ;
         public String data;
@@ -43,7 +44,19 @@ public class FlightHandler extends GroupX {
                     "angle:30;";
     Set<FlyingObjs> objs = new LinkedHashSet<>();
     private FlightData data;
-    private final GroupX objsUnder = new GroupX();
+    private final GroupX objsUnder = new GroupX() {
+        @Override
+        public void draw(Batch batch, float parentAlpha) {
+            if (parentAlpha== ShaderDrawer.SUPER_DRAW) {
+                super.draw(batch,1f);
+                return;
+            }
+            ((CustomSpriteBatch) batch).resetBlending();
+            drawScreen(batch, false);
+            drawScreen(batch, true);
+            ((CustomSpriteBatch) batch).resetBlending();
+        }
+    };
     private final GroupX objsOver = new GroupX();
     private final GroupX objsVfx = new GroupX() {
         @Override
@@ -94,10 +107,7 @@ public class FlightHandler extends GroupX {
 
         if (Flags.isIDE())
             if (cinematic) {
-                act(10f);
-            /*
-shakes,
-             */
+                // act(10f);
                 // String value = data.getValue(FlightData.FLIGHT_VALUE.camera_shake);
                 // value = data.getValue(FlightData.FLIGHT_VALUE.soundscape);
                 // value = data.getValue(FlightData.FLIGHT_VALUE.camera_displace);

@@ -111,7 +111,7 @@ public abstract class GridPanel extends Group {
     protected ObjectMap<Obj, BaseView> viewMap;
 
     protected Manipulator[][] manipulators;
-    protected GridObject[][] gridObjects;
+    protected Set<GridObject>[][] gridObjects;
     protected GroupX[][] customOverlayingObjects;
     protected GroupX[][] customOverlayingObjectsTop;
     protected GroupX[][] customOverlayingObjectsUnder;
@@ -370,10 +370,10 @@ it sort of broke at some point - need to investigate!
 
     protected void customAct(float delta) {
         InputController controller = ScreenMaster.getScreen().getController();
-            drawX1 = controller.getGridDrawX1(getWidth());
-            drawY1 = getDrawY(controller.getGridDrawY1(0));
-            drawX2 = Math.min(getModuleCols(), controller.getGridDrawX2(getWidth()));
-            drawY2 = getDrawY(controller.getGridDrawY2(0));
+        drawX1 = controller.getGridDrawX1(getWidth());
+        drawY1 = getDrawY(controller.getGridDrawY1(0));
+        drawX2 = Math.min(getModuleCols(), controller.getGridDrawX2(getWidth()));
+        drawY2 = getDrawY(controller.getGridDrawY2(0));
         for (int x = drawX1; x < drawX2; x++) {
             for (int y = drawY1; y < drawY2; y++) {
                 cells[x][y].act(delta);
@@ -398,8 +398,10 @@ it sort of broke at some point - need to investigate!
         } else
             super.draw(batch, 1);
         if (isShowGridEmitters())
-            if (isDrawEmittersOnTop())
+            if (isDrawEmittersOnTop()) {
                 drawEmitters(batch);
+                ((CustomSpriteBatch) batch).resetBlending();
+            }
     }
 
 
@@ -419,7 +421,6 @@ it sort of broke at some point - need to investigate!
 
     @Override
     public void addActor(Actor actor) {
-        super.addActor(actor);
         if (actor instanceof GroupWithEmitters) {
             emitterGroups.add((GroupWithEmitters) actor);
         }
@@ -431,6 +432,8 @@ it sort of broke at some point - need to investigate!
                 actList.add(actor);
             }
         }
+        // if (!isCustomHit())
+            super.addActor(actor);
 
     }
 
@@ -461,14 +464,20 @@ it sort of broke at some point - need to investigate!
 
     public GridObject findGridObj(String key, Coordinates c) {
         if (c != null) {
-            return gridObjects[c.x][c.y];
-        }
-        for (GridObject[] array : gridObjects)
-            for (GridObject gridObject : array) {
-                if (gridObject.getKey().equalsIgnoreCase(key)) {
-                    return gridObject;
-                }
+            try {
+                return gridObjects[c.x][c.y].iterator().next();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                return null;
             }
+        }
+        for (Set<GridObject>[] array : gridObjects)
+            for (Set<GridObject> set : array)
+                for (GridObject g : set) {
+                    if (g.getKey().equalsIgnoreCase(key)) {
+                        return g;
+                    }
+                }
         return null;
     }
 
@@ -896,6 +905,7 @@ it sort of broke at some point - need to investigate!
 
     protected void customDraw(Batch batch) {
         flightHandler.getObjsUnder().draw(batch, 1f);
+        ((CustomSpriteBatch) batch).resetBlending();
         pillars.draw(batch, 1f);
         for (PlatformDecor platform : platformDecor) {
             platform.draw(batch, 1);
@@ -933,7 +943,8 @@ it sort of broke at some point - need to investigate!
         draw(customOverlayingObjectsUnder, batch);
         decorMap.get(DECOR_LEVEL.OVER_CELLS).draw(batch, 1f);
         if (particleManager != null) {
-            particleManager.draw(batch, 1f);
+            if (!flightHandler.isOn())
+                particleManager.draw(batch, 1f);
         }
         wallPillars.draw(batch, 1f);
 
@@ -958,16 +969,17 @@ it sort of broke at some point - need to investigate!
             shards.draw(batch, 1f);
         }
         if (!flightHandler.isOn())
-        if (shadowMap != null) {
-            shadowMap.draw(batch, 1f);
-        }
+            if (shadowMap != null) {
+                shadowMap.draw(batch, 1f);
+            }
         for (PlatformCell platform : platforms) {
             platform.draw(batch, 1f);
         }
         draw(customOverlayingObjects, batch);
 
-        decorMap.get(DECOR_LEVEL.OVER_MAPS).draw(batch, 1f);
+        ((CustomSpriteBatch) batch).resetBlending();
 
+        decorMap.get(DECOR_LEVEL.OVER_MAPS).draw(batch, 1f);
 
         screenCells.clear();
         for (GridCellContainer cell : topCells) {
@@ -989,10 +1001,10 @@ it sort of broke at some point - need to investigate!
             UnitView baseView = (UnitView) viewMap.get(Eidolons.getMainHero());
             float x = baseView.getX();
             float y = baseView.getY();
-            if ( baseView.getParent() instanceof PlatformCell) {
+            if (baseView.getParent() instanceof PlatformCell) {
                 baseView.setPosition(baseView.getParent().getX(), baseView.getParent().getY());
             }
-            baseView.getColor().a=1f;
+            baseView.getColor().a = 1f;
             baseView.draw(batch, 1);
             baseView.setPosition(x, y);
             baseView.drawScreen(batch);
@@ -1002,15 +1014,17 @@ it sort of broke at some point - need to investigate!
         draw(manipulators, batch);
 
         overlays.forEach(overlayView -> {
-            if (!overlayView.isScreen()) overlayView.draw(batch, 1f);
+            if (isDrawn(overlayView.getUserObject().getCoordinates()))
+                if (!overlayView.isScreen()) overlayView.draw(batch, 1f);
         });
 
         ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
         overlays.forEach(overlayView -> {
-            if (overlayView.isScreen()) {
-                overlayView.draw(batch, 1f);
-                overlayView.drawScreen(batch);
-            }
+            if (overlayView.isScreen())
+                if (isDrawn(overlayView.getUserObject().getCoordinates())) {
+                    overlayView.draw(batch, 1f);
+                    overlayView.drawScreen(batch);
+                }
         });
         ((CustomSpriteBatch) batch).resetBlending();
 
@@ -1021,6 +1035,8 @@ it sort of broke at some point - need to investigate!
         decorMap.get(DECOR_LEVEL.TOP).draw(batch, 1f);
         for (BossVisual visual : bossVisuals)
             visual.draw(batch, 1f);
+
+        ((CustomSpriteBatch) batch).resetBlending();
     }
 
     protected boolean isScreenCell(GridCellContainer container) {
@@ -1200,16 +1216,24 @@ it sort of broke at some point - need to investigate!
             customOverlayingObjectsUnder[c.x][c.y] = null;
             customOverlayingObjects[c.x][c.y] = null;
             customOverlayingObjectsTop[c.x][c.y] = null;
-            gridObjects[c.x][c.y] = null;
+
+            Set<GridObject> objs = gridObjects[c.x][c.y];
+            if (objs != null) {
+                objs.remove(gridObj);
+            }
         });
 
         GuiEventManager.bind(removePrevious, ADD_GRID_OBJ, p -> {
             GridObject object = (GridObject) p.get();
             addActor(object);
 
-            Boolean under = object.getUnder();
+            Boolean under = object.isUnder();
             Coordinates c = object.getCoordinates();
-            gridObjects[c.x][c.y] = (object);
+            Set<GridObject> objs = gridObjects[c.x][c.y];
+            if (objs == null) {
+                gridObjects[c.x][c.y] = objs =new LinkedHashSet<>();
+            }
+            objs.add(object);
             if (under != null) {
                 (under ? customOverlayingObjectsUnder : customOverlayingObjectsTop)[c.x][c.y] = (object);
                 return;
@@ -1612,6 +1636,7 @@ it sort of broke at some point - need to investigate!
     protected EventListener createDecorListener(Coordinates c) {
         return null;
     }
+
     public void addDecor(Coordinates c, CellDecor decor, DECOR_LEVEL overMaps) {
         decorMap.get(overMaps).add(c, decor, 0, 0);
     }

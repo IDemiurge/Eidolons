@@ -186,7 +186,7 @@ public class CameraMan {
 
         doMotions(delta);
         if (zoomAction != null) {
-            if (zoomAction.getTime()<zoomAction.getDuration()) {
+            if (zoomAction.getTime() < zoomAction.getDuration()) {
                 zoomAction.act(delta);
                 getCam().zoom = zoomAction.getValue();
                 getController().cameraZoomChanged();
@@ -370,9 +370,9 @@ public class CameraMan {
             if (!Bools.isTrue(force))
                 if (!hero.isMine())
                     return;
-
-        Vector2 unitPosition = GridMaster.getCenteredPos(hero.getCoordinates());
-        cameraPan(unitPosition, force);
+        cameraPan(new MotionData(hero, 2f));
+        // Vector2 unitPosition = GridMaster.getCenteredPos(hero.getCoordinates());
+        // cameraPan(unitPosition, force);
 
 
     }

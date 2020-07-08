@@ -33,6 +33,7 @@ public class CustomSpriteBatchImpl extends ShaderBatch implements CustomSpriteBa
 
 
     BlackSprite blackSprite = new BlackSprite();
+
     @Override
     public void drawBlack(float alpha, boolean whiteout) {
         //        draw();
@@ -73,7 +74,6 @@ public class CustomSpriteBatchImpl extends ShaderBatch implements CustomSpriteBa
         }
     }
 
-
     public static class GradientSprite extends Sprite {
 
         public GradientSprite(TextureRegion white) {
@@ -90,13 +90,19 @@ public class CustomSpriteBatchImpl extends ShaderBatch implements CustomSpriteBa
             vertices[SpriteBatch.C4] = cb; //bottom right
         }
     }
-
+@Override
     public BLENDING getBlending() {
         return blending;
     }
 
     @Override
     public void setBlending(BLENDING blending) {
+        if (this.blending == blending) {
+            return;
+        }
+        if (blending == null) {
+            Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
+        }
         //                if (premultipliedAlpha) { emitters ..
         //                    batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
         //                } else if (additive) {
@@ -124,8 +130,11 @@ public class CustomSpriteBatchImpl extends ShaderBatch implements CustomSpriteBa
                 //                        GL20.GL_ONE_MINUS_CONSTANT_ALPHA, GL20.GL_ONE);
                 //                     setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
                 Gdx.gl.glBlendEquation(GL20.GL_FUNC_REVERSE_SUBTRACT);
+
             case SCREEN:
                 setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+            case NORMAL:
+                Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
                 break;
         }
         this.blending = blending;

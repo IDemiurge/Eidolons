@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.battlefield.vision.colormap;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.screens.ScreenMaster;
@@ -38,10 +37,10 @@ public class ColorMap {
 
         public Fluctuating fluctuating;
 
-        public ObjectMap<Coordinates, Float> lerp;
+        public  Map<Coordinates, Float> lerp;
         public float lightness;
 
-        public Light(Color baseColor, ObjectMap<Coordinates, Float> lerp, GenericEnums.ALPHA_TEMPLATE template) {
+        public Light(Color baseColor,  Map<Coordinates, Float> lerp, GenericEnums.ALPHA_TEMPLATE template) {
             this.baseColor = baseColor;
             this.lerp = lerp;
             this.template = template;
@@ -61,8 +60,8 @@ public class ColorMap {
     public void setEmitters(Set<Light> emitters) {
         this.emitters = emitters;
         for (Light emitter : emitters) {
-            for (ObjectMap.Entry<Coordinates, Float> entry : emitter.lerp) {
-                base.put(entry.key, emitter.baseColor);
+            for (Coordinates coordinates : emitter.lerp.keySet()) {
+                base.put(coordinates , emitter.baseColor);
             }
         }
         update();
@@ -99,7 +98,7 @@ public class ColorMap {
         }
         GdxColorMaster.modify(key.color, key.baseColor, Math.min(1, key.lightness*2) );
 
-        for (Coordinates c : key.lerp.keys()) {
+        for (Coordinates c : key.lerp.keySet()) {
             if (!ScreenMaster.getGrid().isDrawn(c)) {
                 continue;
             }

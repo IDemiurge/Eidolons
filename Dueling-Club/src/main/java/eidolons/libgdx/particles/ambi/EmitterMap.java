@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.SnapshotArray;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
@@ -69,6 +71,7 @@ public class EmitterMap extends GroupX {
                 tryAdd(coordinate);
             }
         }
+        checkRemove();
     }
 
     public void update(Coordinates mainHeroCoordinates) {
@@ -98,13 +101,27 @@ public class EmitterMap extends GroupX {
         map.values().forEach(ambience -> ambience.offsetAlpha(baseAlpha));
     }
 
-
     @Override
     public void act(float delta) {
-        super.act(delta);
+        // super.act(delta);
+        // all emitters act on draw()
+    }
+
+    public void checkRemove() {
+        // super.act(delta);
         // for (Ambience ambience : map.values()) {
         //     ambience.setVisible(true);
         // }
+        SnapshotArray<Actor> children = getChildren();
+        Actor[] actors = children.begin();
+        for (int i = 0, n = children.size; i < n; i++) {
+            EmitterActor actor = (EmitterActor) actors[i];
+            if (!actor.isVisible())
+            if (actor.isComplete() ) {
+                removeActor(actor);
+            }
+        }
+        children.end();
     }
 
     private void show(Coordinates c) {
@@ -147,7 +164,7 @@ public class EmitterMap extends GroupX {
             ambience.setColor(color);
         ambience.setTarget(c);
         map.put(c, ambience);
-        int maxOffset = getMaxOffset( );
+        int maxOffset = getMaxOffset();
         int offsetX = RandomWizard.getRandomIntBetween(-maxOffset, maxOffset);
         int offsetY = RandomWizard.getRandomIntBetween(-maxOffset, maxOffset);
         v.add(offsetX, offsetY);
@@ -197,7 +214,7 @@ public class EmitterMap extends GroupX {
         EmitterMap.on = on;
     }
 
-    private int getMaxOffset( ) {
+    private int getMaxOffset() {
         return 42;
     }
 

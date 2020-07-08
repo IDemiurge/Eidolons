@@ -6,6 +6,8 @@ import eidolons.game.module.cinematic.flight.FlightData;
 import eidolons.game.module.cinematic.flight.FlightHandler;
 import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.model.RoomModel;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -33,6 +35,9 @@ public class VoidMaze extends MazePuzzle {
         if (!CoreEngine.TEST_LAUNCH) {
             GuiEventManager.trigger(GuiEventType.UPDATE_DUNGEON_BACKGROUND, getOverrideBackground());
         }
+        SpriteAnimationFactory.preload(Sprites.THUNDER);
+        SpriteAnimationFactory.preload(Sprites.THUNDER2);
+        //TODO sounds too
     }
 
     public boolean isTransform() {
@@ -71,7 +76,7 @@ public class VoidMaze extends MazePuzzle {
                 "\n" +
                 (getHandler().collapsing ? "Path segments collapse every " + NumberUtils.formatFloat(1, getHandler().collapsePeriod) +
                         " seconds. " : "") +
-                "Beware of darkness.";
+                "\nBeware of darkness.";
     }
 
     @Override

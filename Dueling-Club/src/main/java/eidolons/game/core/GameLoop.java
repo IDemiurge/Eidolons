@@ -51,7 +51,7 @@ import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
 /**
  * Created by JustMe on 3/23/2017.
  */
-public class GameLoop {
+public abstract class GameLoop {
 
     protected Lock lock = new ReentrantLock();
     protected Condition waiting = lock.newCondition();
@@ -407,6 +407,9 @@ public class GameLoop {
 
     public void queueActionInput(ActionInput actionInput) {
         playerActionQueue.add(actionInput);
+    }
+
+    public  void actionInput(ActionInput actionInput) {
     }
 
     public void actionInput_(ActionInput actionInput) {

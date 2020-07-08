@@ -67,7 +67,8 @@ public abstract class DataEditDialog<S extends Enum<S>, T extends DataUnit<S>> e
                 value = pickCoordinate();
                 if (value != null)
                     if (actor.getEdit_arg() != null) {
-                        value = ((Coordinates) value).getOffset(LevelEditor.getManager().getEditHandler().getEditCoordinates());
+                        value = ((Coordinates) value).getOffset(
+                                LevelEditor.getManager().getEditHandler().getEditCoordinates().negative());
                     }
                 break;
             case enum_const:

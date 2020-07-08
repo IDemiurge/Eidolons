@@ -5,6 +5,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.GridCell;
@@ -101,7 +102,7 @@ public abstract class VoidHandler {
     }
 
     public void act(float delta) {
-        if (collapsePeriod != 0) {
+        if (isCollapsing()) {
             if (!raised.isEmpty()) {
                 collapseDelay += delta;
 
@@ -127,6 +128,10 @@ public abstract class VoidHandler {
             for (BattleFieldObject object : autoRaise) {
                 autoRaiseFor(object);
             }
+    }
+
+    public boolean isCollapsing() {
+        return collapsePeriod != 0;
     }
 
     protected void autoRaiseFor(BattleFieldObject object) {
@@ -205,8 +210,14 @@ public abstract class VoidHandler {
             cell.getUserObject().setObjectsModified(true);
             period +=animator.getDelayBetweenAnims();
             // WaitMaster.WAIT(period);
-            animator.animate(period, raiseOrCollapse, cell, speed, from);
-            Eidolons.onNonGdxThread(() -> onAnimate(cell));
+            if (GdxMaster.isLwjglThread()) {
+                animator.animate(period, raiseOrCollapse, cell, speed, from);
+                Eidolons.onNonGdxThread(() -> onAnimate(cell));
+            } else {
+                int finalPeriod = period;
+                Eidolons.onGdxThread(() ->  animator.animate(finalPeriod, raiseOrCollapse, cell, speed, from));
+                onAnimate(cell);
+            }
         }
 
     }
@@ -239,6 +250,10 @@ public abstract class VoidHandler {
             toggle(false, map.get(direction),
                     2f, direction);
         }
+    }
+
+    public GridPanel getGridPanel() {
+        return gridPanel;
     }
 
     public boolean isLogged() {

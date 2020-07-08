@@ -236,7 +236,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
     public void setSightInfoDisplayed(boolean sightInfoDisplayed) {
         if (sightInfoDisplayed != this.sightInfoDisplayed) {
             this.sightInfoDisplayed = sightInfoDisplayed;
-            ((GridPanel) getParent()).setUpdateRequired(true);
+            gridPanel.setUpdateRequired(true);
         }
     }
 

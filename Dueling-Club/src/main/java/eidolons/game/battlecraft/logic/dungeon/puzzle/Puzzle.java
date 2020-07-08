@@ -167,7 +167,11 @@ public abstract class Puzzle {
     }
 
     public Coordinates getExitCoordinates() {
-        return                getAbsoluteCoordinate(                        new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.EXIT)));
+        String value = data.getValue(PuzzleData.PUZZLE_VALUE.EXIT);
+        if (value.isEmpty()) {
+            return null;
+        }
+        return getAbsoluteCoordinate(new Coordinates(value));
     }
 
     public void setBlock(LevelBlock block) {
@@ -175,7 +179,7 @@ public abstract class Puzzle {
     }
 
     public Coordinates getEntranceCoordinates() {
-        return                getAbsoluteCoordinate(new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.ENTRANCE)));
+        return getAbsoluteCoordinate(new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.ENTRANCE)));
     }
 
     protected int getWaitTimeBeforeEndMsg(boolean failed) {
@@ -185,6 +189,7 @@ public abstract class Puzzle {
     protected String getFailCinematicScriptKey() {
         return null;
     }
+
     protected String getWinCinematicScriptKey() {
         return null;
     }
@@ -206,9 +211,12 @@ public abstract class Puzzle {
     }
 
 
-    public Coordinates getAbsoluteCoordinate(Coordinates wall) {
-        //PUZZLES USE BOTTOM-LEFT AS ORIGIN COORDINATE .negativeY()
-        return wall.getOffset(getCoordinates());
+    public Coordinates getAbsoluteCoordinate(Coordinates c) {
+        AbstractCoordinates coord = new AbstractCoordinates(true, c.x + getCoordinates().x, c.y + getCoordinates().y);
+        if (coord.isInvalid()) {
+            return c;
+        }
+        return coord;
     }
 
     public Coordinates getAbsoluteCoordinate(int i, int j) {

@@ -68,11 +68,12 @@ public class FlyingObjs extends GroupX {
     }
 
     private float getMaxDelay(FLY_OBJ_TYPE type, int intensity) {
-        return 50 / new Float(intensity);
+        return 3 /type.speedFactor / new Float(intensity);
     }
 
     private float getMinDelay(FLY_OBJ_TYPE type, int intensity) {
-        return 20 / new Float(intensity);
+        return 1 / type.speedFactor / new Float(intensity);
+
     }
 
 
@@ -81,8 +82,10 @@ public class FlyingObjs extends GroupX {
             initialDelay -= delta;
         if (!stopping)
             if (timer <= 0) {
+                if (objects.size()<intensity/2) {
                 timer = RandomWizard.getRandomFloatBetween(minDelay, maxDelay);
                 sendObject();
+                }
             } else {
                 timer -= delta;
             }
@@ -153,6 +156,7 @@ public class FlyingObjs extends GroupX {
                 obj.remove();
                 pool.add(obj);
             }
+                objects.remove(obj);
 
         });
 
@@ -317,10 +321,15 @@ public class FlyingObjs extends GroupX {
                 actor.setBaseAlpha(type.getBaseAlpha());
                 GdxColorMaster.randomize(actor.getColor(), 0.15f);
             }
-        actor.setFluctuatingAlphaPeriod(4);
         // actor.getColor().mul(getHue());
+        if (isAlphaFluctuationSupported())
         if (type.alpha != null) {
+            actor.setFluctuatingAlphaPeriod(4);
             actor.setAlphaTemplate(type.alpha);
+        } else {
+            if (type.baseAlpha!=0) {
+                actor.getColor().a = RandomWizard.getRandomFloatBetween(type.baseAlpha/3*2 , 1);
+            }
         }
         if (actor instanceof Flippable) {
             if (type.flipX)
@@ -330,6 +339,10 @@ public class FlyingObjs extends GroupX {
         }
         float scale = RandomWizard.getRandomFloatBetween(0.5f+ type.weightFactor, 1f);
         actor.setScale(scale);
+    }
+
+    private boolean isAlphaFluctuationSupported() {
+        return false;
     }
 
     static {

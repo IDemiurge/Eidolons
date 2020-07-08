@@ -11,6 +11,7 @@ import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.ScissorMaster;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
@@ -83,6 +84,8 @@ public class SoulforceBar extends SuperActor {
                             innerWidth *   (1-displayedPerc)   , height);
                 } else
                     super.draw(batch, parentAlpha);
+
+                ((CustomSpriteBatch) batch).resetBlending();
             }
 
         });
@@ -93,6 +96,7 @@ public class SoulforceBar extends SuperActor {
                     ScissorMaster.drawInRectangle(barSprite,batch, getX(), getY(), innerWidth * Math.min(1, displayedPerc) * getScaleX(), height);
                 } else
                 super.draw(batch, parentAlpha);
+                ((CustomSpriteBatch) batch).resetBlending();
             }
 
         });

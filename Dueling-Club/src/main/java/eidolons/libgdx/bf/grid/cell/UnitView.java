@@ -11,6 +11,7 @@ import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.moving.PlatformCell;
@@ -442,6 +443,14 @@ public class UnitView extends BaseView implements HpBarView {
         getPortrait().setScreenEnabled(true);
         drawPortrait(batch);
         getPortrait().setScreenEnabled(false);
+
+        for (SpriteX sprite : overlaySprites) {
+            float x = sprite.getX();
+            float y = sprite.getY();
+            sprite.setPosition(x+getX(), y+getY());
+            sprite.draw(batch, 1f);
+            sprite.setPosition(x , y );
+        }
     }
 
     private void drawPortrait(Batch batch) {

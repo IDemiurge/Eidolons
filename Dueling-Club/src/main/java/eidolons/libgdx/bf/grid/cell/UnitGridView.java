@@ -10,13 +10,11 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.GDX;
-import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.decor.CellDecor;
-import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.moving.PlatformController;
 import eidolons.libgdx.bf.overlays.bar.HpBar;
 import eidolons.libgdx.gui.LabelX;
@@ -26,7 +24,6 @@ import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.TextureCache;
-import main.content.enums.GenericEnums;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.FontMaster.FONT;
@@ -149,53 +146,25 @@ public class UnitGridView extends GenericGridView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (getUserObject().isPlayerCharacter()) {
-            //debug...
-            // main.system.auxiliary.log.LogMaster.log(1,getParent().getClass().getSimpleName()+ "; " + getActions()+"; "
-            //         +getColor().a + " " + getX() + ":"+getY());
-            ((CustomSpriteBatch) batch).resetBlending();
-            if (getUserObject().isHidden()) {
-                return;
+        // if (getUserObject().isPlayerCharacter()) {
+        //debug...
+        // main.system.auxiliary.log.LogMaster.log(1,getParent().getClass().getSimpleName()+ "; " + getActions()+"; "
+        //         +getColor().a + " " + getX() + ":"+getY());
+        //     ((CustomSpriteBatch) batch).resetBlending();
+        //     if (getUserObject().isHidden()) {
+        //         return;
+        //     }
+        // }
+        if (((CustomSpriteBatch) batch).getBlending() == null) {
+            for (SpriteX sprite : overlaySprites) {
+                sprite.setVisible(false);
+            }
+        } else {
+            for (SpriteX sprite : overlaySprites) {
+                sprite.setVisible(true);
             }
         }
-        if (Cinematics.ON)
-            if (!getColor().equals(GdxColorMaster.WHITE))
-                portrait.setColor(getColor());
-
-        if (screenOverlay > 0.01f) { //TODO need a flag instead
-            emblemLighting.setVisible(false);
-            if (emblemImage.getColor().a == 1) {
-                emblemImage.fadeOut();
-            }
-            if (arrow.getColor().a == 1) {
-                arrow.fadeOut();
-            }
-        }
-        if (!(screenOverlay > 0.01f)) {
-            super.draw(batch, parentAlpha);
-            return;
-        }
-        //light revamp - what is this, old screen logic?!
-        portrait.setZIndex(999999);
-        if (spritesContainersUnder != null)
-            spritesContainersUnder.setVisible(false);
-        if (spritesContainers != null)
-            spritesContainers.setVisible(false);
         super.draw(batch, parentAlpha);
-
-        ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN); //could do other blends too
-
-        float a = getColor().a;
-        getColor().a = screenOverlay;
-        super.draw(batch, parentAlpha);
-
-        if (spritesContainersUnder != null)
-            spritesContainersUnder.setVisible(true);
-        if (spritesContainers != null)
-            spritesContainers.setVisible(true);
-        portrait.setZIndex(1);
-        getColor().a = a;
-        ((CustomSpriteBatch) batch).resetBlending();
     }
 
     @Override
@@ -336,7 +305,7 @@ public class UnitGridView extends GenericGridView {
     @Override
     public void setPosition(float x, float y) {
         if (x == 0 && y == 0)
-            if (getParent() instanceof GridPanel) {
+            if (getParent()==null) {
                 return;
             }
         super.setPosition(x, y);
@@ -383,6 +352,7 @@ public class UnitGridView extends GenericGridView {
     public void addLinkedDecor(CellDecor decor) {
         getLinkedDecor().add(decor);
     }
+
     @Override
     public boolean isVisible() {
         if (wall) {

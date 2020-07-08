@@ -261,7 +261,7 @@ public class ParticleEffectX extends ParticleEffect {
 
     public void free(){
         if (pool == null) {
-            main.system.auxiliary.log.LogMaster.log(1,"No pull for vfx: " +this);
+            // main.system.auxiliary.log.LogMaster.log(1,"No pool for vfx: " +this.path);
         } else
             pool.free(this);
     }

@@ -354,7 +354,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
             } else {
                 unit.setCoordinates((Coordinates) RandomWizard.getRandomListObject(coordinates));
             }
-            game.getMovementManager().moved(unit);
+            game.getMovementManager().moved(unit, false);
         }
         for (Unit unit : members) {
             GuiEventManager.trigger(GuiEventType.UNIT_MOVED, unit);

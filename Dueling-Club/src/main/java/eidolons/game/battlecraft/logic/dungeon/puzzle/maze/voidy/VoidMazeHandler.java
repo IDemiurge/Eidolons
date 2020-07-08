@@ -16,16 +16,12 @@ import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.content.CONTENT_CONSTS;
-import main.content.enums.GenericEnums;
-import main.content.enums.entity.BfObjEnums;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.RandomWizard;
 import main.system.threading.WaitMaster;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 public class VoidMazeHandler extends MazeHandler<VoidMaze> {
@@ -41,28 +37,6 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
     }
 
     @Override
-    protected void beforeTip() {
-        setup.reset(); //show EXITS
-        if (isFirstAttempt()) {
-            Object c1 = RandomWizard.getRandomListObject(puzzle.falseExits);
-            List<Coordinates> c = CoordinatesMaster.getCoordinatesBetween(getAbsoluteCoordinate((Coordinates) c1), getExitCoordinates());
-            GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, c);
-        }
-        Cinematics.doZoom(2, 2.25f, Interpolation.fade);
-
-    }
-
-    @Override
-    public void afterTipAction() {
-        super.afterTipAction();
-        WaitMaster.WAIT(3500);
-
-        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
-        ScriptLib.execute(ScriptLib.STD_SCRIPT.mini_explosion);
-        Cinematics.doZoom(1.25f, 3.5f, Interpolation.fade);
-    }
-
-    @Override
     protected PuzzleSetup createSetup() {
         return new VoidMazeSetup(getPuzzle());
     }
@@ -70,11 +44,9 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
     protected float getTimePenalty(DC_ActiveObj action) {
         return collapsePeriod / getMaxMovesPeriod();// + getDefaultCollapsePeriod() * (0.01f + 0.0015f * actions);
     }
-
     protected float getMaxMovesPeriod() {
         return 5 + 10 * puzzle.getDifficultyCoef();
     }
-
 
     protected float getDefaultCollapsePeriod() {
         return 6 * puzzle.getDifficultyCoef();
@@ -103,15 +75,52 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
 
     protected void cinematicStart() {
     }
+    protected void cinematicFirstCollapse() {
+        Cinematics.doShake(Screenshake.ScreenShakeTemplate.MEDIUM, 2.3f, null);
+    }
+
+    protected void beforeTip() {
+        setup.reset(); //show EXITS
+        if (isFirstAttempt()) {
+            //for now, we can just assume it's somewhere ABOVE...
+            // Object c1 = RandomWizard.getRandomListObject(puzzle.falseExits);
+            // List<Coordinates> c = CoordinatesMaster.getCoordinatesBetween(getAbsoluteCoordinate((Coordinates) c1),
+            //         getExitCoordinates());
+            Coordinates c = Eidolons.getPlayerCoordinates().getOffset(0, -9);
+            GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, c);
+        }
+        Cinematics.doZoom(2, 2.25f, Interpolation.fade);
+    }
+
+    public void afterTipAction() {
+        super.afterTipAction();
+        WaitMaster.WAIT(3500);
+        cinematicAfter();
+    }
+
+    @Override
+    public void finished() {
+        super.finished();
+        cinematicAfter();
+    }
+
+    private void cinematicAfter() {
+        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
+        WaitMaster.WAIT(1500);
+        Cinematics.doZoom(1.25f, 3.5f, Interpolation.fade);
+        WaitMaster.WAIT(2500);
+        ScriptLib.execute(ScriptLib.STD_SCRIPT.mini_explosion);
+    }
 
     protected void cinematicFirstMove() {
-        Cinematics.doShake(Screenshake.ScreenShakeTemplate.MEDIUM, 3, null);
         Cinematics.doZoom(1f, 2.25f, Interpolation.pow2In);
     }
 
     protected void cinematicFail() {
+
         Cinematics.doShake(Screenshake.ScreenShakeTemplate.HARD, 2, null);
         Cinematics.doZoom(0.1f, 2.25f, Interpolation.pow2In);
+        getVoidHandler().getGridPanel().getGridManager().getAnimHandler().doFall(Eidolons.getMainHero());
     }
 
     protected void cinematicWin() {
@@ -128,8 +137,7 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
             /*
             false exits are revealed as black holes upon approach!
              */
-            Veil blackhole = new Veil(BfObjEnums.CUSTOM_OBJECT.GATE.spritePath,
-                    getPuzzle(), getAbsoluteCoordinate(c), false, true) {
+            Veil blackhole = new Veil(getPuzzle(), getAbsoluteCoordinate(c), true, true) {
                 protected boolean visible;
 
                 @Override
@@ -164,7 +172,8 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
                 }
             };
             blackhole.init();
-            blackhole.getSprite().setBlending(GenericEnums.BLENDING.INVERT_SCREEN);
+            blackhole.setUnder(true);
+            GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, blackhole);
             holes.add(blackhole);
         }
         Coordinates c = getExitCoordinates();

@@ -37,6 +37,9 @@ public class AmbienceDataSource {
     }
 
     public int getShowChance(String vfx) {
+        if (map == null) {
+            return 0;
+        }
         return map.get(vfx);
     }
 

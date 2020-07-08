@@ -100,7 +100,7 @@ public class PlatformCell extends GridCellContainer {
                 if (unitView.isMainHero()) {
                     update = true;
                     Eidolons.onNonGdxThread(() -> {
-                        DC_Game.game.getMovementManager().moved(unitView.getUserObject(), cell);
+                        DC_Game.game.getMovementManager().moved(unitView.getUserObject(), cell, false);
                         DC_Game.game.getManager().reset();
                     });
                 }

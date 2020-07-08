@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActionMaster;
@@ -182,6 +183,10 @@ public class GridAnimHandler extends GridHandler {
         for (GenericGridView view : grid.getGridCell(c).getUnitViewsVisible()) {
             doFall(view);
         }
+    }
+    public void doFall(Unit unit) {
+        UnitView view = (UnitView) grid.getViewMap().get(unit);
+        doFall(view);
     }
     public boolean doFall(UnitView view) {
         GraphicData data = new GraphicData("");

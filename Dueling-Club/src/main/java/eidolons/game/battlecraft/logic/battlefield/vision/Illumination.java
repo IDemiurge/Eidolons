@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
@@ -56,9 +55,9 @@ public class Illumination {
             }
         }
         //Light revamp - HERO LIGHT
-        ObjectMap<Coordinates, Float> lerp = null;
+         Map<Coordinates, Float> lerp = null;
         if (heroLight == null) {
-            heroLight = new ColorMap.Light(GdxColorMaster.WHITE, lerp = new ObjectMap<>(), GenericEnums.ALPHA_TEMPLATE.GRID_LIGHT);
+            heroLight = new ColorMap.Light(GdxColorMaster.WHITE, lerp = new HashMap<>(), GenericEnums.ALPHA_TEMPLATE.GRID_LIGHT);
         } else {
             lerp = heroLight.lerp;
         }

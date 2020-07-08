@@ -1,7 +1,6 @@
 package eidolons.ability.effects.common;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMap;
 import main.ability.effects.Effect;
@@ -12,12 +11,15 @@ import main.game.bf.Coordinates;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LightEmittingEffect extends SpectrumEffect {
     private static final int REFLECTION_BONUS_PER_ADJACENT_WALL = 15;
     private static final String REDUCTION_FOR_DISTANCE_MODIFIER = "/2.5";//"*2";
     boolean debug;
     private Coordinates lastCoordinates;
-    private ObjectMap<Coordinates, Float> map;
+    private Map<Coordinates, Float> map;
     private final GenericEnums.ALPHA_TEMPLATE flicker;
     private final Color color;
     private ColorMap.Light light;
@@ -50,7 +52,7 @@ public class LightEmittingEffect extends SpectrumEffect {
 
     public ColorMap.Light createAndApplyLight() {
         if (light == null) {
-            light = new ColorMap.Light(color, map = new ObjectMap<>(), flicker);
+            light = new ColorMap.Light(color, map = new HashMap<>(), flicker);
         }
         apply();
         return light;

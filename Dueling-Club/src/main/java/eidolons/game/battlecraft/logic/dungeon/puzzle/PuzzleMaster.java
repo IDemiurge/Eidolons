@@ -101,10 +101,11 @@ public class PuzzleMaster {
          */
 
         String name = VariableManager.removeVarPart(dataString);
-        if (dataString.contains("=")) {
-            name =  new PuzzleData(dataString).getValue(PuzzleData.PUZZLE_VALUE.TYPE);
-        }
         String args = VariableManager.getVars(dataString);
+        if (dataString.contains(">>")) {
+            name =  new PuzzleData(dataString).getValue(PuzzleData.PUZZLE_VALUE.TYPE);
+            args=dataString;
+        }
 
         String setupData = "";
         for (Coordinates c : block.getCoordinatesSet()) {

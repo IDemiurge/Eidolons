@@ -207,6 +207,9 @@ public class GdxMaster {
         return v2;
     }
 
+    public static boolean isGdxThread() {
+        return isLwjglThread();
+    }
     public static boolean isLwjglThread() {
         return Thread.currentThread().getName().equalsIgnoreCase("LWJGL Application");
     }

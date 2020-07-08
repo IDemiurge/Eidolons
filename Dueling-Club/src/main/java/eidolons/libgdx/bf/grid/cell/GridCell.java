@@ -80,7 +80,7 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
             }
         } else {
             cellImgContainer.setVisible(!VOID);
-            cellImgContainer.getColor().a=0;
+            cellImgContainer.getColor().a = 0;
         }
     }
 
@@ -299,6 +299,9 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
     }
 
     public void setOverlayTexture(TextureRegion overlay) {
+        if (getColor().a == 0 || !GdxMaster.isVisibleEffectively(this)) {
+            main.system.auxiliary.log.LogMaster.log(1, "invisible setOverlayTexture " + this);
+        }
         if (overlay == null) {
             ActionMaster.addFadeOutAction(overlayTexture, 2);
             //            setDebug(false, true);

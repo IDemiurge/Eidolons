@@ -12,6 +12,12 @@ public class ColorBatch extends ColorfulBatch implements CustomSpriteBatch{
     public void drawBlack(float alpha, boolean whiteout) {
 
     }
+
+    @Override
+    public GenericEnums.BLENDING getBlending() {
+        return null;
+    }
+
     public void setColorful(boolean b){
         // setShader();
 

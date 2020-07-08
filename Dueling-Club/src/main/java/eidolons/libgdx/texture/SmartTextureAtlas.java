@@ -116,8 +116,17 @@ public class SmartTextureAtlas extends TextureAtlas {
 
     private String formatFileName(String name) {
         String numericSuffix = NumberUtils.getNumericSuffix(StringMaster.cropFormat(name));
-        name = name.replace("_"+numericSuffix, "");
-        return name;
+        String croppedName = name.replace("_" + numericSuffix, "");
+        if (croppedName.equals(name)) {
+            croppedName = name.replace(" " + numericSuffix, "");
+        }
+        if (croppedName.equals(name)) {
+            croppedName = name.replace(numericSuffix, "");
+        }
+        if (croppedName.equals(name)) {
+           return name;
+        }
+        return croppedName;
     }
 
     @Override

@@ -89,6 +89,7 @@ public class PortalMaster extends DungeonHandler {
                         unit.setFacing(to.exitFacing);
                     }
                     unit.setCoordinates(to.coordinates);
+                    unit.getGame().getMovementManager().moved(unit, true);
                     to.open = true;
                     GuiEventManager.trigger(GuiEventType.UNIT_MOVED, unit);
                     AnimMaster.onCustomAnim(getOpenAnim(portal, to), () -> {

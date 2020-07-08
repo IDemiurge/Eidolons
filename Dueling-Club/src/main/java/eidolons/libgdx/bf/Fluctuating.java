@@ -94,7 +94,7 @@ public class Fluctuating extends GroupX {
             if (delta <= 0)
                 return;
         }
-        int period =1;// getFluctuatingAlphaPeriod() + 1;
+        int period = getFluctuatingAlphaPeriod() + 1;
         if (period != 1) {
             if (!GdxTimeMaster.isPeriodNow(period)) {
                 return;

@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.generic;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -10,6 +11,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.sprite.Blended;
+import eidolons.libgdx.shaders.ShaderDrawer;
 import main.system.auxiliary.ClassMaster;
 
 /**
@@ -31,9 +34,9 @@ public class GroupX extends Group {
     @Override
     public void setRotation(float degrees) {
         super.setRotation(degrees);
-        setTransform(degrees!=0);
+        setTransform(degrees != 0);
         for (Group ancestor : GdxMaster.getAncestors(this)) {
-            ancestor.setTransform(degrees!=0);
+            ancestor.setTransform(degrees != 0);
         }
     }
 
@@ -45,9 +48,9 @@ public class GroupX extends Group {
     @Override
     protected void rotationChanged() {
         super.rotationChanged();
-        setTransform(getRotation()!=0);
+        setTransform(getRotation() != 0);
         for (Group ancestor : GdxMaster.getAncestors(this)) {
-            ancestor.setTransform(getRotation()!=0);
+            ancestor.setTransform(getRotation() != 0);
         }
     }
 
@@ -59,7 +62,7 @@ public class GroupX extends Group {
 
     public void initPos(Actor actor, int align) {
         if ((align & Align.right) != 0) {
-            GdxMaster.right(actor) ;
+            GdxMaster.right(actor);
         } else if ((align & Align.left) != 0) {
             //0
         } else {
@@ -93,6 +96,7 @@ public class GroupX extends Group {
 
         setSize(maxX - minX, maxY - minY);
     }
+
     @Override
     public void addActor(Actor actor) {
         super.addActor(actor);
@@ -244,6 +248,33 @@ public class GroupX extends Group {
         } else {
             fadeIn();
         }
+    }
+
+    public void drawScreen(Batch batch, boolean screen) {
+        boolean draw = false;
+        for (Actor child : getChildren()) {
+            //set visible?
+            if (child instanceof GroupX && !(isBlendContainer())) {
+                float x = child.getX();
+                float y = child.getY();
+                child.setPosition(x +getX(), child.getY()+getY());
+                ((GroupX) child).drawScreen(batch, screen);
+                child.setPosition(x , y );
+            } else {
+                draw = true;
+                if (child instanceof Blended) {
+                    child.setVisible(((Blended) child).getBlending() != null == screen);
+                } else {
+                    child.setVisible(!screen);
+                }
+            }
+        }
+        if (draw)
+            draw(batch, ShaderDrawer.SUPER_DRAW);
+    }
+
+    protected boolean isBlendContainer() {
+        return false;
     }
 
     public void setStage_(Stage s) {

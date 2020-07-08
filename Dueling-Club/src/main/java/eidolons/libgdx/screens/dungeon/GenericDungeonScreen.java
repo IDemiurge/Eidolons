@@ -5,15 +5,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
-import eidolons.game.netherflame.main.NF_Images;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.GridCreateData;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
@@ -24,42 +21,22 @@ import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.stage.GenericGuiStage;
 import eidolons.libgdx.stage.GridStage;
-import eidolons.libgdx.texture.TextureCache;
-import eidolons.libgdx.texture.TextureManager;
-import eidolons.system.options.GraphicsOptions;
-import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
-import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 
 import static com.badlogic.gdx.graphics.GL20.GL_NICEST;
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
-import static main.system.GuiEventType.*;
+import static main.system.GuiEventType.UPDATE_GUI;
 import static org.lwjgl.opengl.GL11.*;
 
 public abstract class GenericDungeonScreen extends GameScreen {
     protected GridStage gridStage;
     protected GridPanel gridPanel;
     protected ParticleManager particleManager;
-    private String bgPath;
-    private String previousBg;
-
-    protected void preBindEvent() {
-
-        GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
-            final String path = (String) param.get();
-            setBackground(path);
-        });
-        GuiEventManager.bind(RESET_DUNGEON_BACKGROUND, param -> {
-            resetBackground();
-        });
-    }
-
     protected abstract GenericGuiStage createGuiStage();
 
     protected abstract GridPanel createGrid(GridCreateData param);
@@ -72,7 +49,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
     }
 
     protected void checkGraphicsUpdates() {
-        if (backTexture == null && backgroundSprite == null) {
+        if (background== null &&backTexture == null && backgroundSprite == null) {
             String path = null;
             try {
                 path = DC_Game.game.getDungeonMaster().getFloorWrapper().getMapBackground();
@@ -86,48 +63,17 @@ public abstract class GenericDungeonScreen extends GameScreen {
         }
     }
 
-    protected void resetBackground() {
-        setBackground(previousBg);
-    }
-
-    protected void setBackground(String path) {
-        if (path == null) {
-            return;
-        }
-        previousBg = this.bgPath;
-        this.bgPath = path.trim();
-
-        if (!TextureCache.isImage(bgPath)) {
-            if (bgPath.endsWith(".txt")) {
-                backgroundSprite = SpriteAnimationFactory.getSpriteAnimation(bgPath, false);
-            }
-            return;
-        }
-        if (!ImageManager.isImageFile(path)) {
-            return;
-        }
-        TextureRegion texture = getOrCreateR(bgPath);
-        if (texture.getTexture() != TextureCache.getMissingTexture())
-        {
-            backTexture = texture;
-            backgroundSprite=null;
-        }
-
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
-            TextureManager.initBackgroundCache(backTexture);
-        }
-    }
-
-    protected void initBackground() {
-        String path = NF_Images.getBackground();
-        setBackground(path);
-    }
 
     protected void drawBg(float delta) {
         updateBackground(delta);
-        if (backTexture != null) {
-            Batch batch = guiStage.getCustomSpriteBatch();
-            batch.begin();
+        Batch batch = guiStage.getCustomSpriteBatch();
+        batch.begin();
+        if (backgroundSprite == null && background != null) {
+            background.act(delta);
+            //scale?
+            GdxMaster.center(background);
+            background.draw(batch, 1f);
+        } else if (backTexture != null) {
             float colorBits = GdxColorMaster.WHITE.toFloatBits();
             if (batch.getColor().toFloatBits() != colorBits)
                 batch.setColor(colorBits); //gotta reset the alpha... if (backTexture == null)
@@ -144,9 +90,8 @@ public abstract class GenericDungeonScreen extends GameScreen {
                 batch.draw(backTexture, 0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
             }
 
-            batch.end();
-
         }
+        batch.end();
 
     }
 
@@ -160,7 +105,7 @@ public abstract class GenericDungeonScreen extends GameScreen {
     private void drawSpriteBg(Batch batch) {
         backgroundSprite.setOffsetY(
                 Gdx.graphics.getHeight() / 2);
-        backgroundSprite.setOffsetX( Gdx.graphics.getWidth() / 2);
+        backgroundSprite.setOffsetX(Gdx.graphics.getWidth() / 2);
         backgroundSprite.setSpeed(0.5f);
         // backgroundSprite.setOffsetY(getCam().position.y);
         // backgroundSprite.setOffsetX(getCam().position.x);

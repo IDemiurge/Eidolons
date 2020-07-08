@@ -72,6 +72,8 @@ public class Sprites {
     public static final String SOULFORCE_BAR_BG = "sprites/ui/soulforce bar bg purple.txt";
     public static final String SOULFORCE_BAR = "sprites/ui/soulforce bar purple.txt";
     public static final String SOULFORCE_CORE = "sprites/ui/soulforce core.txt";
+    public static final String THUNDER = "sprites/fly objs/thunder.txt";
+    public static final String THUNDER2 = "sprites/fly objs/thunder2.txt";
 
     private static final Map<String, String> spriteMap;
 

@@ -40,18 +40,35 @@ public abstract class SuperActor extends Fluctuating implements
     public void act(float delta) {
         //        if (isIgnored())
         //            return; do it in implementations!
-        if (isTransform()) {
-            if (isTransformDisabled())
-                setTransform(false);
-        } else {
-            if (!isTransformDisabled())
-                setTransform(true);
-        }
+        // if (isTransform()) {
+        //     if (isTransformDisabled())
+        //         setTransform(false);
+        // } else {
+        //     if (!isTransformDisabled())
+        //         setTransform(true);
+        // }
         super.act(delta);
         alphaFluctuation(delta);
 
         if (actionManger != null) {
             actionManger.run();
+        }
+    }
+
+    @Override
+    public void setFluctuatingAlphaPeriod(int fluctuatingAlphaPeriod) {
+        super.setFluctuatingAlphaPeriod(fluctuatingAlphaPeriod);
+
+    }
+
+    @Override
+    protected void sizeChanged() {
+        super.sizeChanged();
+        if (getScaleY()!=1) {
+            setTransform(true);
+        }
+        if (getScaleX()!=1) {
+            setTransform(true);
         }
     }
 
@@ -140,11 +157,11 @@ public abstract class SuperActor extends Fluctuating implements
 
     public boolean isWithinCamera() {
 
-        if (!InputController.cameraMoved)
-            return withinCamera;
         if (isCachedPosition()) {
+            if (!InputController.cameraMoved)
+                return withinCamera;
             withinCamera = isWithinCameraCheck();
-            return withinCamera;
+                 return withinCamera;
         }
         return isWithinCameraCheck();
 

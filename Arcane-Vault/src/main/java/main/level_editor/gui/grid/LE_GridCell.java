@@ -88,8 +88,8 @@ public class LE_GridCell extends GridCellContainer {
             super.act(delta);
         } catch (Exception e) {
         }
-        GdxMaster.right(aiLabel);
-        GdxMaster.center(scriptsLabel);
+        // GdxMaster.right(aiLabel);
+        // GdxMaster.center(scriptsLabel);
         scriptsLabel.setY(GdxMaster.getTopY(scriptsLabel) - 15);
         aiLabel.setVisible(getDisplayMode().isShowMetaAi());
         scriptsLabel.setVisible(getDisplayMode().isShowScripts());

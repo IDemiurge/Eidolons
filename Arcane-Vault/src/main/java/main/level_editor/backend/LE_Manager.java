@@ -60,60 +60,64 @@ public class LE_Manager {
     private final LE_ModuleHandler moduleHandler;
     private final PaletteHandlerImpl paletteHandler;
     private final LE_MapHandler mapHandler;
-    private final Set<LE_Handler> handlers= new LinkedHashSet<>();
+    private final Set<LE_Handler> handlers = new LinkedHashSet<>();
     private final LE_TransitHandler transitHandler;
     private final LE_XmlHandler xmlMaster;
     LE_DecorHandler decorHandler;
     private boolean loaded;
     private final IHandlerDelegate delegate;
-    private LE_LAYER layer=LE_LAYER.obj;
+    private LE_LAYER layer = LE_LAYER.obj;
     private int layerId;
     private final LE_DisplayHandler displayHandler;
 
     public LE_Manager(LE_Floor floor) {
-        this.floor = floor;        
-        
+        this.floor = floor;
+
         game = floor.getGame();
         idManager = game.getSimIdManager();
-        handlers.add( xmlMaster = new LE_XmlHandler(this));
-        handlers.add( platformHandler = new IPlatformHandlerImpl(this));
-        handlers.add(  entityHandler = new LE_EntityHandler(this));
-        handlers.add(  mouseHandler = new LE_MouseHandler(this));
-        handlers.add( menuHandler = new LE_MenuHandler(this));
-        handlers.add( selectionHandler = new LE_SelectionHandler(this));
-        handlers.add(  modelManager = new LE_ModelManager(this));
-        handlers.add( dataHandler = new LE_DataHandler(this));
-        handlers.add( structureManager = new LE_StructureHandler(this));
-        handlers.add( moduleHandler = new LE_ModuleHandler(this));
-        handlers.add( operationHandler = new OperationHandler(this));
-        handlers.add( objHandler = new LE_ObjHandler(this));
-        handlers.add( paletteHandler = new PaletteHandlerImpl(this));
-        handlers.add(  cameraHandler = new LE_CameraHandler(this));
-        handlers.add( editHandler = new LE_EditHandler(this));
-        handlers.add( keyHandler = new LE_KeyHandler(this));
-        handlers.add( aiHandler = new LE_AiHandler(this));
-        handlers.add( dialogHandler = new LE_DialogHandler(this));
-        handlers.add( scriptHandler = new LE_ScriptHandler(this));
+        handlers.add(xmlMaster = new LE_XmlHandler(this));
+        handlers.add(platformHandler = new IPlatformHandlerImpl(this));
+        handlers.add(entityHandler = new LE_EntityHandler(this));
+        handlers.add(mouseHandler = new LE_MouseHandler(this));
+        handlers.add(menuHandler = new LE_MenuHandler(this));
+        handlers.add(selectionHandler = new LE_SelectionHandler(this));
+        handlers.add(modelManager = new LE_ModelManager(this));
+        handlers.add(dataHandler = new LE_DataHandler(this));
+        handlers.add(structureManager = new LE_StructureHandler(this));
+        handlers.add(moduleHandler = new LE_ModuleHandler(this));
+        handlers.add(operationHandler = new OperationHandler(this));
+        handlers.add(objHandler = new LE_ObjHandler(this));
+        handlers.add(paletteHandler = new PaletteHandlerImpl(this));
+        handlers.add(cameraHandler = new LE_CameraHandler(this));
+        handlers.add(editHandler = new LE_EditHandler(this));
+        handlers.add(keyHandler = new LE_KeyHandler(this));
+        handlers.add(aiHandler = new LE_AiHandler(this));
+        handlers.add(dialogHandler = new LE_DialogHandler(this));
+        handlers.add(scriptHandler = new LE_ScriptHandler(this));
         handlers.add(layerHandler = new LayerHandlerImpl(this));
-        handlers.add(  mapHandler = new LE_MapHandler(this));
-        handlers.add(  transitHandler = new LE_TransitHandler(this));
-        handlers.add(  advFuncs = new LE_AdvFuncs(this));
-        handlers.add( decorHandler = new LE_DecorHandler(this));
-        handlers.add( displayHandler = new LE_DisplayHandler(this));
+        handlers.add(mapHandler = new LE_MapHandler(this));
+        handlers.add(transitHandler = new LE_TransitHandler(this));
+        handlers.add(advFuncs = new LE_AdvFuncs(this));
+        handlers.add(decorHandler = new LE_DecorHandler(this));
+        handlers.add(displayHandler = new LE_DisplayHandler(this));
         delegate = new LE_HandlerDelegate(this);
-//        layerHandler = new IRngHandler(this);
+        //        layerHandler = new IRngHandler(this);
     }
 
     public void load() {
         for (LE_Handler handler : handlers) {
             handler.load();
         }
-        loaded=true;
+        loaded = true;
     }
 
     public void afterLoaded() {
         for (LE_Handler handler : handlers) {
-            handler.afterLoaded();
+            try {
+                handler.afterLoaded();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
     }
 
@@ -124,6 +128,7 @@ public class LE_Manager {
     public LE_MapHandler getMapHandler() {
         return mapHandler;
     }
+
     public LE_ScriptHandler getScriptHandler() {
         return scriptHandler;
     }
@@ -199,6 +204,7 @@ public class LE_Manager {
     public StructMaster getStructureMaster() {
         return getGame().getMetaMaster().getDungeonMaster().getStructMaster();
     }
+
     public LE_ModuleHandler getModuleHandler() {
         return moduleHandler;
     }
@@ -219,7 +225,7 @@ public class LE_Manager {
         return layerHandler;
     }
 
-    public   void operation(Operation.LE_OPERATION operation, Object... args ) {
+    public void operation(Operation.LE_OPERATION operation, Object... args) {
         getOperationHandler().operation(operation, args);
     }
 
@@ -228,7 +234,7 @@ public class LE_Manager {
     }
 
     public Set<LE_Handler> getHandlers() {
-                return handlers;
+        return handlers;
     }
 
     public LE_TransitHandler getTransitHandler() {

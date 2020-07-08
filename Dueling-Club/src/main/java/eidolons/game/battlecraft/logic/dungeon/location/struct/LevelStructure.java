@@ -35,6 +35,7 @@ public class LevelStructure {
         id(EDIT_VALUE_TYPE.number),
 
         name(EDIT_VALUE_TYPE.text),
+        background(EDIT_VALUE_TYPE.text),
         origin(EDIT_VALUE_TYPE.none),
         width(EDIT_VALUE_TYPE.number),
         height(EDIT_VALUE_TYPE.number),

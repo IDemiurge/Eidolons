@@ -39,7 +39,7 @@ public class PuzzleData extends DataUnit<PuzzleData.PUZZLE_VALUE> {
     protected String getPairSeparator() {
         if (alt)
             return Pattern.quote("::");
-        return "=";
+        return ">>";
     }
     public PuzzleData(String text) {
         super(text);

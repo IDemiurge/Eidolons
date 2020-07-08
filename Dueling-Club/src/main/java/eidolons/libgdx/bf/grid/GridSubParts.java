@@ -11,7 +11,9 @@ import eidolons.libgdx.gui.generic.GroupX;
 import main.entity.obj.Obj;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GridSubParts {
 //cached per module
@@ -20,14 +22,14 @@ public class GridSubParts {
     public Array<GroupWithEmitters> emitterGroups = new Array<>(true, 125);
     public List<OverlayView> overlays = new ArrayList<>();
     public Manipulator[][] manipulators;
-    public GridObject[][] gridObjects ;
+    public Set<GridObject>[][] gridObjects ;
     public GroupX[][] customOverlayingObjects;
     public GroupX[][] customOverlayingObjectsTop;
     public GroupX[][] customOverlayingObjectsUnder;
 
     public GridSubParts(int width  , int height) {
         manipulators=new Manipulator[width][height];
-        gridObjects =new GridObject[width][height]  ;
+        gridObjects =new LinkedHashSet[width][height];
         customOverlayingObjects =new GroupX[width][height] ;
         customOverlayingObjectsTop=new GroupX[width][height] ;
         customOverlayingObjectsUnder =new GroupX[width][height] ;

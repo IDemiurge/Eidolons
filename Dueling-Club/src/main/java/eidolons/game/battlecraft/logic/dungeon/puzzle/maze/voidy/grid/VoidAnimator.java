@@ -73,9 +73,6 @@ public class VoidAnimator {
         } else
             cell.setPosition(x, y);
         cell.getCellImage().setVisible(true);
-        if (raiseOrCollapse) {
-            cell.getColor().a = 0;
-        }
 
         if (!raiseOrCollapse) {
             SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.DUST,
@@ -100,6 +97,8 @@ public class VoidAnimator {
                     anim.setOffsetY(finalOffsetY / times * counter.get() * 2);
                     AnimMaster.getInstance().customAnimation(anim);
                 } else {
+                    if (!handler.isCollapsing())
+                        return;
                     CinematicGridObject flames;
                     gridObjects.add(flames = new CinematicGridObject(c, BfObjEnums.CUSTOM_OBJECT.hypnotic_flames_red));
                     flames.setRange(11d);
@@ -110,10 +109,12 @@ public class VoidAnimator {
             AnimMaster.getInstance().customAnimation(anim);
 
         }
-
-        ActionMaster.addWaitAction(cell, waitPeriod);
+        //TODO wait mechanism for cellImage!
+        if (waitPeriod > 0)
+            ActionMaster.addWaitAction(cell, waitPeriod);
         ActionMaster.addCustomAction(cell, () -> playAnimSound(raiseOrCollapse));
-        ActionMaster.addAlphaAction(cell, dur, !raiseOrCollapse);
+        cell.getCellImgContainer().setVisible(true);
+        ActionMaster.addAlphaAction(cell.getCellImgContainer(), dur, !raiseOrCollapse);
 
         if (isScaleOn()) {
             scale = raiseOrCollapse ? 1f : 0.01f;
@@ -134,7 +135,7 @@ public class VoidAnimator {
                 updatePillar(c);
                 if (handler.isLogged())
                     log(1, cell + " toggled void to " + cell.getUserObject().isVOID());
-                checkUnitFalls(c);
+                // checkUnitFalls(c);
                 return true;
             }
         });

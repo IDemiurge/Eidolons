@@ -22,7 +22,7 @@ import java.util.Arrays;
 /**
  * Created by PC on 10.11.2016.
  */
-public class SpriteAnimation extends Animation<TextureRegion> {
+public class SpriteAnimation extends Animation<TextureRegion> implements Blended{
     final static float defaultFrameDuration = 0.025f;
     private TextureAtlas atlas;
     private float originalFps;
@@ -172,7 +172,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             //                if ((((CustomSpriteBatch) batch).getBlending() != blending))
             {
                 ((CustomSpriteBatch) batch).setBlending(blending);
-                resetBlending = true;
+                // resetBlending = blending==BLENDING.INVERT_SCREEN;
             }
         }
         boolean result = drawThis(batch);
@@ -244,6 +244,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         return cycles > lastCycle;
     }
 
+    @Override
     public BLENDING getBlending() {
         return blending;
     }

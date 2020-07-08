@@ -77,6 +77,16 @@ public class EmitterActor extends SuperActor {
     }
 
     @Override
+    public float getWidth() {
+        return 400;
+    }
+
+    @Override
+    public float getHeight() {
+        return 400;
+    }
+
+    @Override
     public void draw(Batch batch, float parentAlpha) {
         if (broken) {
             return;
@@ -84,8 +94,13 @@ public class EmitterActor extends SuperActor {
         if (effect instanceof DummyParticleEffectX) {
             broken = true;
         }
+        if (isIgnored()) {
+            return;
+        }
 //        super.draw(batch, parentAlpha);
         effect.setPosition(getX(), getY());
+
+
         float delta = Gdx.graphics.getDeltaTime() * speed;
 
         boolean reset = false;

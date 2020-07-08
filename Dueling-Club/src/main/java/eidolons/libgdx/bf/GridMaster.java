@@ -35,10 +35,6 @@ public class GridMaster {
         return v1.dst(v2);
     }
 
-    public static Vector2 getPosWithOffset(Coordinates sourceCoordinates) {
-        return getVectorForCoordinate(sourceCoordinates, false, true);
-    }
-
     public static Vector2 getCenteredPos(Coordinates sourceCoordinates) {
         return getVectorForCoordinate(sourceCoordinates, true, false);
     }
@@ -158,7 +154,7 @@ public class GridMaster {
 
                 } else {
                     //TODO detach bug
-                    if (view.getParent() instanceof GridPanel)
+                    if (view.getParent()==null)
                         if (!view.getUserObject().isDead())
                             if (view.getX() <= 128)
                                 if (view.getY() <= 128) {

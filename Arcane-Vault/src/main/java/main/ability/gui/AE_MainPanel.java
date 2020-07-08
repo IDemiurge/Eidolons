@@ -6,6 +6,7 @@ import main.ability.utilities.TemplateManager;
 import main.data.ability.AE_Item;
 import main.launch.AvConsts;
 import main.swing.generic.components.G_Panel;
+import main.system.auxiliary.TreeMaster;
 import main.system.auxiliary.log.LogMaster;
 import org.w3c.dom.Node;
 
@@ -103,6 +104,7 @@ public class AE_MainPanel extends G_Panel implements TreeSelectionListener,
     private void initComponents() {
         if (tree.getSelectionPath() == null) {
             editPanel = new AE_EditPanel();
+            TreeMaster.expandTree(tree);
         } else {
             editPanel = AE_Manager.getAE_EditPanel(this, getSelectedItem(),
                     tree.getRowForPath(tree.getSelectionPath()));
@@ -164,17 +166,12 @@ public class AE_MainPanel extends G_Panel implements TreeSelectionListener,
         return tree;
     }
 
-    public void setTree(JTree tree) {
-        this.tree = tree;
-    }
-
     public TemplateManager getTemplateManager() {
         return templateManager;
     }
 
     public void setTreeSelection(DefaultMutableTreeNode newNode) {
         TreePath path = new TreePath(newNode.getPath());
-
         tree.setSelectionPath(path);
 
     }

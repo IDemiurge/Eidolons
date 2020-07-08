@@ -39,7 +39,7 @@ public abstract class CellDataHandler<T extends DataUnit> extends LE_Handler {
 
     public void pasteData(Coordinates origin) {
         operation(PASTE_START);
-        Coordinates offset = null;
+        Coordinates offset = null ;
         for (Coordinates c : copiedData.keySet()) {
             if (copiedData.size() > 1 && offset == null) {
                 offset = c; //the first - top left object will be our offset

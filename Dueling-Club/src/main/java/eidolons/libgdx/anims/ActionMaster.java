@@ -42,6 +42,7 @@ public class ActionMaster {
             }
         });
     }
+
     public static void addCustomAction(Actor actor, Runnable runnable) {
         addAction(actor, new Action() {
             @Override
@@ -51,9 +52,14 @@ public class ActionMaster {
             }
         });
     }
-        public static void addAfter(Actor actor, Action action) {
-        if (getActionsOfClass(actor, AfterAction.class).size() > 0) {
-            return;
+
+    public static void addAfter(Actor actor, Action action) {
+        try {
+            if (getActionsOfClass(actor, AfterAction.class).size() > 0) {
+                return;
+            }
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         AfterAction aa = (AfterAction) getAction(AfterAction.class);
         aa.setAction(action);
@@ -68,10 +74,12 @@ public class ActionMaster {
         addAction(superActor, action);
 
     }
+
     public static <T extends BlockableGroup> void addBlockingAction(T a, Predicate<T> o) {
-        BlockingAction action = new BlockingAction(()-> o.evaluate(a));
+        BlockingAction action = new BlockingAction(() -> o.evaluate(a));
         addAction(a, action);
     }
+
     public static Action getAction(Class<? extends Action> aClass) {
         ActionPool pool = poolMap.get(aClass);
         if (pool == null) {
@@ -192,8 +200,8 @@ public class ActionMaster {
         action.setInterpolation(Interpolation.fade);
         if (add) {
             if (alpha == actor.getColor().a) {
-//                if (isAlphaAdjustmentAllowed())
-//                return null;
+                //                if (isAlphaAdjustmentAllowed())
+                //                return null;
                 if (alpha >= 1f)
                     actor.getColor().a = 0;
                 else
@@ -215,8 +223,9 @@ public class ActionMaster {
         a.setDuration(dur);
         return a;
     }
+
     public static RotateByActionLimited addRotateByAction(Actor actor, float amount) {
-       return  addRotateByAction(actor, actor.getRotation(), actor.getRotation() + amount);
+        return addRotateByAction(actor, actor.getRotation(), actor.getRotation() + amount);
     }
 
     public static RotateByActionLimited addRotateByAction(Actor actor, float from, float to) {
@@ -244,7 +253,7 @@ public class ActionMaster {
     }
 
     public static MoveByActionLimited addMoveByActionReal(Actor actor, float x, float y, float v) {
-        MoveByActionLimited moveBy= (MoveByActionLimited) getAction(MoveByActionLimited.class);
+        MoveByActionLimited moveBy = (MoveByActionLimited) getAction(MoveByActionLimited.class);
         moveBy.setStartPointX(actor.getX());
         moveBy.setStartPointY(actor.getY());
         moveBy.setAmountX(x);
@@ -253,7 +262,8 @@ public class ActionMaster {
         addAction(actor, moveBy);
         return moveBy;
     }
-        public static MoveToAction addMoveByAction(Actor actor, float x, float y, float v) {
+
+    public static MoveToAction addMoveByAction(Actor actor, float x, float y, float v) {
         return addMoveToAction(actor, actor.getX() + x, actor.getY() + y, v);
     }
 
@@ -334,7 +344,7 @@ public class ActionMaster {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        return  new ArrayList<>();
+        return new ArrayList<>();
     }
 
     public static void addScaleActionIfNoActions(Actor actor, float scaleX,
@@ -478,9 +488,9 @@ public class ActionMaster {
         if (action instanceof AlphaAction) {
             return getBackAlphaAction((AlphaAction) action);
         }
-//        if (action instanceof MoveToAction || action instanceof MoveByAction) {
-//            return getBackMoveByAction(action);
-//        }
+        //        if (action instanceof MoveToAction || action instanceof MoveByAction) {
+        //            return getBackMoveByAction(action);
+        //        }
         TemporalAction back = (TemporalAction) getAction(action.getClass());
         back.setInterpolation(action.getInterpolation());
         back.setDuration(action.getDuration());
@@ -492,8 +502,7 @@ public class ActionMaster {
     }
 
 
-
     //    public static boolean checkHasAction(BaseView view, Class<AlphaAction> alphaActionClass) {
-//        return false;
-//    }
+    //        return false;
+    //    }
 }

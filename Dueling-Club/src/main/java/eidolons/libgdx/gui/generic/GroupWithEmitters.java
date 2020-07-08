@@ -21,9 +21,9 @@ public abstract class GroupWithEmitters<T extends EmitterActor> extends GroupX {
     public void draw(Batch batch, float parentAlpha, boolean drawEmitters) {
         for (Actor child : getChildren()) {
             if (child instanceof EmitterActor) {
-                if (((EmitterActor) child).isWithinCamera()) {
-                    child.setVisible(false);
-                } else
+                // if (((EmitterActor) child).isWithinCamera()) {
+                //     child.setVisible(false);
+                // } else
                     child.setVisible(drawEmitters);
             } else {
                 child.setVisible(!drawEmitters);

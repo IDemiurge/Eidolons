@@ -95,8 +95,8 @@ public class DC_LogManager extends LogManager {
                 return;
             }
         if (obj == Eidolons.getMainHero()) {
-            DIRECTION relative = DirectionMaster.getRelativeDirection(Eidolons.getPlayerCoordinates(),
-                    Eidolons.getMainHero().getLastCoordinates());
+            DIRECTION relative = DirectionMaster.getRelativeDirection( Eidolons.getMainHero().getLastCoordinates()
+                    ,Eidolons.getPlayerCoordinates()                   );
             int dst = Eidolons.getPlayerCoordinates().dst(Eidolons.getMainHero().getLastCoordinates());
             String gamelog = name + " has moved [" + relative.toString().toLowerCase() + "] "
                     +StringMaster.wrapInParenthesis(""+dst);

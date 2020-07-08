@@ -47,10 +47,10 @@ public class ShaderDrawer {
     public static void drawWithCustomShader(Actor actor, Batch batch,
                                             ShaderProgram shader, boolean nullMeansOriginal
     ) {
-        if (CoreEngine.TEST_LAUNCH) {
-            actor.draw(batch, ShaderDrawer.SUPER_DRAW);
-            return;
-        }
+        // if (CoreEngine.TEST_LAUNCH) {
+        //     actor.draw(batch, ShaderDrawer.SUPER_DRAW);
+        //     return;
+        // }
         if (Flags.isIDE())
             if (shader!=null && !shader.isCompiled())
             {

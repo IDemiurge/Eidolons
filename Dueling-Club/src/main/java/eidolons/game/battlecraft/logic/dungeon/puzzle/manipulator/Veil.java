@@ -11,19 +11,19 @@ import main.system.GuiEventType;
 
 public class Veil extends GridObject {
 
-    protected final boolean pale;
+    protected final boolean black;
     protected final boolean enter;
     protected Puzzle puzzle;
 
     //link to puzzle
-    public Veil(Puzzle puzzle, Coordinates c, boolean pale, boolean enter) {
-        this(pale ? CUSTOM_OBJECT.LIGHT.spritePath : Sprites.LIGHT_VEIL, puzzle, c,
-                pale, enter);
+    public Veil(Puzzle puzzle, Coordinates c, boolean black, boolean enter) {
+        this(black ? CUSTOM_OBJECT.GATE.spritePath : Sprites.LIGHT_VEIL, puzzle, c,
+                black, enter);
     }
 
-    public Veil(String path, Puzzle puzzle, Coordinates c, boolean pale, boolean enter) {
+    public Veil(String path, Puzzle puzzle, Coordinates c, boolean black, boolean enter) {
         super(c, path);
-        this.pale = pale;
+        this.black = black;
         this.enter = enter;
         this.puzzle = puzzle;
         GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, this);
@@ -32,13 +32,16 @@ public class Veil extends GridObject {
     @Override
     public void init() {
         super.init();
-        sprite.setBlending(GenericEnums.BLENDING.SCREEN);
+        if (black)
+            sprite.setBlending(GenericEnums.BLENDING.INVERT_SCREEN);
+        else
+            sprite.setBlending(GenericEnums.BLENDING.SCREEN);
 
     }
 
     @Override
     protected int getFps() {
-        return pale ? 14 : 20;
+        return black ? 17 : 20;
     }
 
     @Override
@@ -64,7 +67,8 @@ public class Veil extends GridObject {
 
     @Override
     protected void createEmittersUnder() {
-        createEmitter("unit/black soul bleed 3", 0, 64);
+        if (black)
+            createEmitter("unit/black soul bleed 3", 0, 64);
     }
 
     @Override

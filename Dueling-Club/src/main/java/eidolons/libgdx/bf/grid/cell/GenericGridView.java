@@ -127,16 +127,10 @@ public class GenericGridView extends UnitView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//        if (batch instanceof CustomSpriteBatch) {
-//            ((CustomSpriteBatch) batch).resetBlending();
-//        }
         if (alpha != 1f) {
             parentAlpha = alpha;
         }
         super.draw(batch, parentAlpha);
-//        if (getUserObject().isPlayerCharacter()) {
-//            return;
-//        }
     }
 
     @Override

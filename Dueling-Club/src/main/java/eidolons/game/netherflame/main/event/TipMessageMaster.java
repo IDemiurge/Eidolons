@@ -80,7 +80,6 @@ public class TipMessageMaster {
     }
     public static void tip(boolean manual, TIP... tips) {
         for (TIP tip : tips) {
-
         }
         if (tips[0].done) {
             return;
@@ -100,6 +99,7 @@ public class TipMessageMaster {
         } else {
             GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, source);
         }
+            main.system.auxiliary.log.LogMaster.log(1,"Showing TIP: " +tips[0].toString());
     }
 
     public static void tip(TipMessageSource source) {

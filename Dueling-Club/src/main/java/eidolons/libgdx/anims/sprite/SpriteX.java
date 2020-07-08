@@ -14,7 +14,7 @@ import main.content.enums.GenericEnums;
 import main.system.auxiliary.RandomWizard;
 
 
-public class SpriteX extends SuperActor implements Flippable {
+public class SpriteX extends SuperActor implements Flippable, Blended {
 
     public static final boolean TEST_MODE = true;
     SpriteAnimation sprite;
@@ -251,6 +251,11 @@ public class SpriteX extends SuperActor implements Flippable {
 
     public void setOnCycle(Runnable o) {
         getSprite().setOnCycle(o);
+    }
+
+    @Override
+    public GenericEnums.BLENDING getBlending() {
+        return sprite.getBlending();
     }
 
 

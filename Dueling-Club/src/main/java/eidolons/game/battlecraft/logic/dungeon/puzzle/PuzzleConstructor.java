@@ -55,19 +55,18 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
         initEnterTrigger();
         initExitTrigger();
         preloadAssets();
-        boolean pale =false;// puzzleData.getBooleanValue(PuzzleData.PUZZLE_VALUE.PALE);
         {
             Veil veil;
             Coordinates c = puzzle.getEntranceCoordinates();
 
             if (!isAreaEnter()) {
-                puzzle.setEnterVeil(new Veil(puzzle, c, pale, true));
+                puzzle.setEnterVeil(new Veil(puzzle, c, false, true));
             }
             if (isPointExit())
                 if (!puzzleData.getValue(PuzzleData.PUZZLE_VALUE.EXIT).isEmpty()) {
                     c = puzzle.getExitCoordinates();
                     if (c != null) {
-                        puzzle.setExitVeil(new Veil(puzzle, c, pale, false));
+                        puzzle.setExitVeil(new Veil(puzzle, c, false, false));
                     }
                 }
         }
@@ -119,7 +118,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
 
     protected PuzzleData createData(String text) {
         PuzzleData data =null ;
-        if (!text.contains("=")) {
+        if (!text.contains(">>")) {
             data = new PuzzleData();
             PuzzleData.PUZZLE_VALUE[] values = getRelevantValues();
             int i = 0;
@@ -221,9 +220,14 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
 
     protected Condition getPuzzleEnterConditions() {
         if (isAreaEnter()) {
-            return ConditionsUtils.or(new PositionCondition(
-                            puzzle.getExitCoordinates()),
-                    new AreaCondition(puzzle.getCoordinates(), puzzle.getWidth(), puzzle.getHeight()));
+            AreaCondition areaCondition = new AreaCondition(puzzle.getCoordinates(), puzzle.getWidth(), puzzle.getHeight());
+            if (puzzle.getExitCoordinates() == null) {
+                return areaCondition;
+            }
+            PositionCondition condition = new PositionCondition(
+                    puzzle.getExitCoordinates());
+            return ConditionsUtils.or(condition,
+                    areaCondition);
         }
         return new PositionCondition(
                 puzzle.getEntranceCoordinates());

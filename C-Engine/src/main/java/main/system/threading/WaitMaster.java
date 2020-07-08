@@ -208,7 +208,7 @@ public class WaitMaster {
     }
 
     public static WAIT_OPERATIONS getOperation(String value) {
-        return new EnumMaster<WAIT_OPERATIONS>().retrieveEnumConst(WAIT_OPERATIONS.class, value);
+        return new EnumMaster<WAIT_OPERATIONS>().retrieveEnumConst(WAIT_OPERATIONS.class, value, true, false );
     }
 
     public static void waitForCondition(Predicate<Float> p, int max) {

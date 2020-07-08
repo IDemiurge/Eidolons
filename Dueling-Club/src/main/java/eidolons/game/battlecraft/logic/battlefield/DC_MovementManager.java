@@ -21,6 +21,8 @@ import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums;
@@ -248,7 +250,7 @@ public class DC_MovementManager implements MovementManager {
                     context.setTarget(action.getTarget().getId());
                 }
                 unit.getGame().getGameLoop().
-                        actionInputManual(new ActionInput(action.getActive(), context));
+                        actionInput(new ActionInput(action.getActive(), context));
             }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -368,25 +370,36 @@ public class DC_MovementManager implements MovementManager {
         }
         obj.setCoordinates(c);
 
-        return moved(obj, cell);
+        return moved(obj, cell, false);
     }
 
-    public boolean moved(BattleFieldObject obj, DC_Cell cell) {
-        return moved(obj, cell, Ref.getSelfTargetingRefCopy(obj));
+    public boolean moved(BattleFieldObject obj, DC_Cell cell, boolean quiet) {
+        Ref ref = Ref.getSelfTargetingRefCopy(obj);
+        ref.setQuiet(quiet);
+        return moved(obj, cell, ref);
     }
 
-    public void moved(Unit unit) {
-        moved(unit, game.getCellByCoordinate(unit.getCoordinates()));
+    public void moved(Unit unit, boolean quiet) {
+        moved(unit, game.getCellByCoordinate(unit.getCoordinates()), quiet);
     }
 
     public boolean moved(BattleFieldObject obj, DC_Cell cell, Ref REF) {
-        Event event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
-
+        if (!REF.isQuiet())
         if (obj instanceof Unit) {
             game.getDungeonMaster().getTrapMaster().unitMoved((Unit) obj);
             game.getDungeonMaster().getPortalMaster().unitMoved((Unit) obj);
         }
         cell.setObjectsModified(true);
+        if (obj.isPlayerCharacter()) {
+            LevelStruct struct = game.getDungeonMaster().getStructMaster().getLowestStruct(obj.getCoordinates());
+            String background = struct.getPropagatedValue("background");
+            if (!ScreenMaster.getScreen().getBackgroundPath().equalsIgnoreCase(background)) {
+                ScreenMaster.getScreen().setBackground(background);
+            }
+        }
+        if ( REF.isQuiet())
+            return true;
+        Event event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
         return game.fireEvent(event);
     }
 
