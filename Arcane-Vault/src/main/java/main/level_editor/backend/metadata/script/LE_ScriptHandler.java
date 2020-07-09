@@ -24,6 +24,13 @@ public class LE_ScriptHandler extends CellDataHandler<CellScriptData> implements
     @Override
     public void mark() {
         MARK mark = LE_Screen.getInstance().getGuiStage().getEnumChooser().chooseEnum(MARK.class);
+        if (mark == MARK.entrance) {
+            for (Coordinates c : getGame().getCoordinates()) {
+                if (getScriptData(c) != null) {
+                    unmark(c, MARK.entrance);
+                }
+            }
+        }
         operation(Operation.LE_OPERATION.FILL_START);
         for (Coordinates coordinate : getSelectionHandler().getSelection().getCoordinates()) {
             mark(coordinate, mark);
@@ -44,6 +51,10 @@ public class LE_ScriptHandler extends CellDataHandler<CellScriptData> implements
 
     public void mark(Coordinates c, MARK mark) {
         editData(c, data -> data.addValue(CellScriptData.CELL_SCRIPT_VALUE.marks, mark.toString()), null);
+    }
+
+    public void unmark(Coordinates c, MARK mark) {
+        editData(c, data -> data.removeFromValue(CellScriptData.CELL_SCRIPT_VALUE.marks, mark.toString()), null);
     }
 
     public void editScriptData(Coordinates c) {

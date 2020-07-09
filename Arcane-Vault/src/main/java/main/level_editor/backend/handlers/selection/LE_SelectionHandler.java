@@ -195,6 +195,10 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
                         -> getIdManager().getObjectById(id).getCoordinates()).collect(Collectors.toSet())).build();
     }
 
+    public Coordinates getBottomLeft() {
+       return  CoordinatesMaster.getBottomLeft(getCoordinatesAll());
+    }
+
     public enum SELECTION_MODE {
         NONE,
         COORDINATE,

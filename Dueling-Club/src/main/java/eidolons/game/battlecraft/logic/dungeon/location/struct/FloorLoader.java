@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
+import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -362,7 +363,11 @@ public class FloorLoader extends DungeonHandler {
             String string = textDataMap.get(coordinates).getValue(CellScriptData.CELL_SCRIPT_VALUE.marks);
             for (String substring : ContainerUtils.openContainer(string)) {
                 MARK mark = new EnumMaster<MARK>().retrieveEnumConst(MARK.class, substring);
-                getGame().getCellByCoordinate(coordinates).getMarks().add(mark);
+                DC_Cell cell = getGame().getCellByCoordinate(coordinates);
+                cell.getMarks().add(mark);
+                if (mark== MARK._void) {
+                    cell.setVOID(true);
+                }
             }
         }
     }

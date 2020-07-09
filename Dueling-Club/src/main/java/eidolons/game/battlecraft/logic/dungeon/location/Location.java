@@ -178,4 +178,6 @@ public class Location extends FloorWrapper {
     public void addDecorDataMap(Map<Coordinates, DecorData> map) {
         decorMap.putAll(map);
     }
+
+
 }

@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazeSetup;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.generator.model.RoomModel;
 import main.content.CONTENT_CONSTS;
 import main.game.bf.Coordinates;
@@ -20,11 +21,19 @@ public class VoidMazeSetup extends MazeSetup<VoidMaze> {
         super(puzzle );
     }
 
+    public void cleanUp() {
+        for (Coordinates markedCell : puzzle.getMarkedCells()) {
+            DC_Game.game.getCellByCoordinate(puzzle.getAbsoluteCoordinate(markedCell)).
+                    getMarks().remove(CONTENT_CONSTS.MARK.togglable);
+        }
+    }
     @Override
     public void ended() {
         super.ended();
         template = null;
+        cleanUp();
     }
+
 
     public RoomModel reset () {
         if ( template != null) {

@@ -235,6 +235,10 @@ public class LE_BfGrid extends GridPanel {
             }
         };
     }
+    @Override
+    protected boolean isDrawShadowMap() {
+        return LevelEditor.getManager().getDisplayHandler().getDisplayMode().isGameView();
+    }
 
     private void updateCellLabel(List list, Boolean aiOrScriptsOrDecor) {
         Coordinates c = (Coordinates) list.get(0);

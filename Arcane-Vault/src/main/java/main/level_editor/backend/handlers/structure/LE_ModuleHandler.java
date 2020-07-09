@@ -10,6 +10,7 @@ import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.tilemap.TileMap;
 import eidolons.game.module.generator.tilemap.TileMapper;
 import eidolons.libgdx.gui.utils.FileChooserX;
+import eidolons.libgdx.texture.Images;
 import eidolons.system.content.PlaceholderGenerator;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -22,6 +23,8 @@ import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.screen.LE_Screen;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.FileManager;
@@ -38,7 +41,7 @@ import static main.system.auxiliary.log.LogMaster.log;
 public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
     //let's assume maximum of 4 modules, so we have a simple 2x2 grid, ok? damn, I did want to have 5 in some..
     Map<Point, Module> moduleGrid = new LinkedHashMap<>();
-    private Set<BattleFieldObject> borderObjects = new HashSet<>();
+    private final Set<BattleFieldObject> borderObjects = new HashSet<>();
 
     public LE_ModuleHandler(LE_Manager manager) {
         super(manager);
@@ -69,7 +72,7 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         }
         resetBorders();
         if (isLoaded())
-            resetBufferVoid();
+            initVoidCells();
     }
 
 
@@ -98,11 +101,19 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         return Coordinates.get(offsetX, offsetY);
     }
 
-    public void resetBufferVoid() {
+    public void initVoidCells() {
 
         Set<Coordinates> full = getGame().getMetaMaster().getModuleMaster().getAllVoidCells();
         log(LOG_CHANNEL.BUILDING, " Buffer void being reset " + full.size());
         getOperationHandler().execute(Operation.LE_OPERATION.MASS_SET_VOID, full);
+
+        for (Module module : getModules()) {
+        List<Coordinates> buffer = getBufferCoordinates(module);
+        for (Coordinates coordinates : buffer) {
+            getGame().getCellByCoordinate(coordinates).setOverlayData(Images.OVERLAY_DARK);
+        }
+        GuiEventManager.trigger(GuiEventType.INIT_CELL_OVERLAY, buffer);
+        }
     }
 
     @Override
@@ -206,7 +217,7 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
 //            getStructureHandler().resetWalls(getDungeonLevel(), borderCoords);
 //        }
         getStructureHandler().reset(getDungeonLevel());
-        resetBufferVoid();
+        initVoidCells();
     }
 
     private List<Coordinates> getBufferCoordinates(Module module) {

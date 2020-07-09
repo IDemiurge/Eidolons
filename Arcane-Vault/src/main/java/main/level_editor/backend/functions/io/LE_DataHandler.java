@@ -112,7 +112,7 @@ public class LE_DataHandler extends LE_Handler {
         }
         if (changed) {
             getModuleHandler().resetBorders();
-            getModuleHandler().resetBufferVoid();
+            getModuleHandler().initVoidCells();
             getStructureHandler().resetWalls(getDungeonLevel());
         }
         if (getModuleHandler().getModuleGrid() != null) {

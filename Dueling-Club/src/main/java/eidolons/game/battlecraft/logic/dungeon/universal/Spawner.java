@@ -215,20 +215,7 @@ public class Spawner  extends DungeonHandler  {
         return list;
     }
 
-    public enum FACING_TEMPLATE {
-        TOWARDS_CENTER,
-        OUTWARD_FROM_ORIGIN,
-        TOWARDS_PLAYER_HERO,
-        OPTIMAL_TOWARDS_ENEMIES,
-        RANDOM,
 
-    }
-
-    public enum POSITIONING_MODE {
-        ROWS_AT_SIDE,
-        LAYERS_AROUND_COORDINATE,
-
-    }
 
     //after-spawn actions -
     public enum SPAWN_MODE {

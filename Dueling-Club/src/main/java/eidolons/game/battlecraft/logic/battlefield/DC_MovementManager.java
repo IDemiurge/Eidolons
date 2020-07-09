@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.battlefield;
 
+import com.google.inject.internal.util.ImmutableList;
 import eidolons.ability.conditions.req.CellCondition;
 import eidolons.ability.conditions.shortcut.PushableCondition;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
@@ -167,9 +168,10 @@ public class DC_MovementManager implements MovementManager {
 
     public List<ActionPath> buildPath(Unit unit, Coordinates coordinates) {
         List<DC_ActiveObj> moves = getMoves(unit);
-
-        // ActionPath path = game.getAiManager().getStarBuilder().getPath(unit.getCoordinates(), coordinates);
-        // return ImmutableList.of(path);
+        if (isStarPath(unit , coordinates)) {
+            ActionPath path = game.getAiManager().getStarBuilder().getPath(unit.getCoordinates(), coordinates);
+            return ImmutableList.of(path);
+        }
         PathBuilder builder = PathBuilder.getInstance().init
                 (moves, new Action(unit.getAction("Move")));
         builder.simplified = true;
@@ -179,6 +181,10 @@ public class DC_MovementManager implements MovementManager {
             return null;
         }
         return paths;
+    }
+
+    private boolean isStarPath(Unit unit, Coordinates coordinates) {
+        return coordinates.dst(unit.getCoordinates()) > 5;
     }
 
     @Override
@@ -251,6 +257,7 @@ public class DC_MovementManager implements MovementManager {
                 if (action.getTarget() != null) {
                     context.setTarget(action.getTarget().getId());
                 }
+                log(unit.getName()+" continues to move to "+playerDestination);
                 unit.getGame().getGameLoop().
                         actionInput(new ActionInput(action.getActive(), context), true);
             }
@@ -387,10 +394,10 @@ public class DC_MovementManager implements MovementManager {
 
     public boolean moved(BattleFieldObject obj, DC_Cell cell, Ref REF) {
         if (!REF.isQuiet())
-        if (obj instanceof Unit) {
-            game.getDungeonMaster().getTrapMaster().unitMoved((Unit) obj);
-            game.getDungeonMaster().getPortalMaster().unitMoved((Unit) obj);
-        }
+            if (obj instanceof Unit) {
+                game.getDungeonMaster().getTrapMaster().unitMoved((Unit) obj);
+                game.getDungeonMaster().getPortalMaster().unitMoved((Unit) obj);
+            }
         cell.setObjectsModified(true);
         if (obj.isPlayerCharacter()) {
             LevelStruct struct = game.getDungeonMaster().getStructMaster().getLowestStruct(obj.getCoordinates());
@@ -399,7 +406,7 @@ public class DC_MovementManager implements MovementManager {
                 GuiEventManager.trigger(GuiEventType.UPDATE_DUNGEON_BACKGROUND, background);
             }
         }
-        if ( REF.isQuiet())
+        if (REF.isQuiet())
             return true;
         Event event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
         return game.fireEvent(event);

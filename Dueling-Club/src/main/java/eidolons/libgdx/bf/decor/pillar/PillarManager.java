@@ -182,17 +182,9 @@ public class PillarManager extends GridHandler {
                 }
                 String path = WallMaster.getPillarImage(c, p);
                 Vector2 pillarV = getOffset(p);
-                FadeImageContainer pillar = container.getPillar();
-
-                if (pillar == null || pillar.getParent() == null) {
-                    pillar = new FadeImageContainer(path);
-                    container.addActor(pillar);
-                    pillar.setZIndex(0);
-                } else {
-                    if (pillar.getImagePath().equalsIgnoreCase(path)) {
-                        continue;
-                    }
-                    pillar.setImage(path);
+                FadeImageContainer pillar = container.addPillar(path);
+                if (pillar == null) {
+                    continue;
                 }
                 //check pos?
                 // MoveToAction move = ActionMaster.addMoveToAction(pillar, pillarV.x, pillarV.y, 1f);

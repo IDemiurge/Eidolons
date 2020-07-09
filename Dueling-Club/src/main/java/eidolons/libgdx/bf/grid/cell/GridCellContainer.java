@@ -100,6 +100,9 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     public void applyColor(float lightness, Color c) {
+        if (overlayTexture != null) {
+
+        }
         float a1 = cellImgContainer.getColor().a;
         // if (getActions().size > 0) {
         //     a1 = getColor().a;
@@ -464,10 +467,12 @@ public class GridCellContainer extends GridCell implements Hoverable {
         setDirty(true);
         if (actor instanceof GenericGridView) {
             GenericGridView view = (GenericGridView) actor;
-
-            if (isAnimated()) {
-                ActionMaster.addFadeInAction(actor, getFadeDuration());
+            if (!getUserObject().isVOID()) {
+                if (isAnimated()) {
+                    ActionMaster.addFadeInAction(actor, getFadeDuration());
+                }
             }
+
             //recalc all
             indexMap.put(view, calc.getZIndexForView(view));
             if (actor instanceof LastSeenView) {
@@ -502,6 +507,17 @@ public class GridCellContainer extends GridCell implements Hoverable {
                 lightEmitter = true;
             }
             recalcUnitViewBounds();
+            if (getUserObject().isVOID()) {
+                actor.setVisible(false);
+            }
+        }
+    }
+
+    @Override
+    public void setVoid(boolean VOID, boolean animated) {
+        super.setVoid(VOID, animated);
+        for (GenericGridView unitView : getUnitViews(false)) {
+            unitView.fadeIn();
         }
     }
 

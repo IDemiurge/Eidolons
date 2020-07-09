@@ -17,7 +17,9 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 
+import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
@@ -52,7 +54,7 @@ public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
             if (!on) {
                 cell.setOverlayData(null);
             } else {
-                Coordinates coordinates = cell.getCoordinates().getOffset( puzzle.getCoordinates().negative());
+                Coordinates coordinates = cell.getCoordinates().getOffset(puzzle.getCoordinates().negative());
                 cell.setOverlayData(arg + StringMaster.wrapInParenthesis(coordinates.toString()));
                 if (RandomWizard.chance(getPuzzle().getRotateChance())) {
                     float rotation = 90 * RandomWizard.getRandomIntBetween(0, 4);
@@ -67,19 +69,19 @@ public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
 
     @Override
     public void started() {
-        for (String mutatorArg : mutatorArgs) {
-            switch (mutatorArg) {
-                case "facing":
-                default:
-                    puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION, Event.STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE,
-                            ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
-                            PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_CLOCKWISE));
-                    puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION, Event.STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE,
-                            ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
-                            PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_ANTICLOCKWISE));
-                    break;
-            }
-        }
+        puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION, Event.STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE,
+                ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
+                PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_CLOCKWISE));
+        puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION, Event.STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE,
+                ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
+                PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_ANTICLOCKWISE));
+
+        List<String> mutators = Arrays.asList(mutatorArgs);
+
+        if (mutators.contains("on_move"))
+            puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION, Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING,
+                    ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
+                    PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_CLOCKWISE));
 
         arg = getArtPiecePath(data.getValue(PuzzleData.PUZZLE_VALUE.ARG));
         Coordinates c = puzzle.getCoordinates();

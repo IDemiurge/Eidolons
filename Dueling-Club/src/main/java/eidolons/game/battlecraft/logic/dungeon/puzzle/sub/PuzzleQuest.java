@@ -48,7 +48,7 @@ public class PuzzleQuest extends ChainQuest {
             return puzzle.getQuestText();
         }
         return  getFriendlyTooltip(puzzle.getData().getCounterActionBase()) + " left: " +
-                StringMaster.wrapInBraces(
+                StringMaster.wrapInBrackets(
                 counter + " / " +
                         originalCounter);
     }

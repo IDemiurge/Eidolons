@@ -20,8 +20,6 @@ public class Reinforcer {
     this mechanic changes some things
     - we cannot disengage so easily
     - if we disengage, it should be an EVENT
-    -
-
      */
     Encounter encounter;
     Map<Integer, Reinforcement> reinforceMap = new LinkedHashMap<>();

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzle;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.actions.MoveByActionLimited;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
@@ -149,6 +150,9 @@ if (isGhostMoveOn()){
     }
 
     protected boolean isGhostMoveOn() {
+        if (unit.getGame().getDungeonMaster().getPuzzleMaster().getCurrent() instanceof ArtPuzzle) {
+            return false;
+        }
         return unit.isPlayerCharacter();
     }
 

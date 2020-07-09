@@ -123,4 +123,11 @@ public abstract class PartyManager extends MetaGameHandler  {
         this.partyLevel = partyLevel;
     }
 
+    public boolean deathEndsGame() {
+        return true;
+    }
+
+    public boolean heroUnconscious(Unit unit) {
+        return false;
+    }
 }

@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.logic.mission.quest.QuestMission;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.logic.mission.universal.MissionHandler;
 import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
+import main.content.enums.EncounterEnums;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.data.ListMaster;
@@ -56,6 +57,16 @@ public class EncounterSpawner extends MissionHandler<QuestMission> {
     public void spawnEncounter(EncounterData data, Encounter encounter, Coordinates coordinates) {
         log(1, "Spawning " + encounter.getName() +
                 " at " + coordinates);
+
+        EncounterEnums.SPAWN_MODE mode =
+        data.getSpawnMode();
+        if (mode != null)
+        switch (mode) {
+            case on_approach_clean_respawn:
+                //just create triggers? also set field for encounter so we know to cleanup after it
+                return;
+        }
+
         float adjustCoef = data.getFloatValue(EncounterData.ENCOUNTER_VALUE.adjust_coef);
         if (adjustCoef == 0) {
             adjustCoef = new Float(encounter.getType().getIntParam(PARAMS.ADJUST_COEF));

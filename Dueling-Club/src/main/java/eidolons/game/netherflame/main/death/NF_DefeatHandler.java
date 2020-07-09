@@ -31,8 +31,9 @@ public class NF_DefeatHandler extends DefeatHandler {
         // if (getMaster().getSoulforceMaster().isTrueForm()) {
         //     return !SoulforceMaster.getInstance().died();
         // }
-        getMaster().getPartyManager().getHeroChain().death();
-
+        if (getMaster().getPartyManager().deathEndsGame()) {
+            return true;
+        }
         //TODO deal with the corpse loot!!!
         getGame().getLoop().setPaused(true);
 

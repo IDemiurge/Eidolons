@@ -1,5 +1,7 @@
 package main.level_editor.gui.grid;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.BattleFieldObject;
@@ -8,8 +10,11 @@ import eidolons.libgdx.bf.grid.cell.OverlayView;
 import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.bf.grid.cell.UnitViewFactory;
 import eidolons.libgdx.bf.grid.cell.UnitViewOptions;
-import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.libgdx.gui.tooltips.DynamicTooltip;
+import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
+import main.system.auxiliary.StringMaster;
 
 public class LE_UnitViewFactory extends UnitViewFactory {
 
@@ -21,6 +26,7 @@ public class LE_UnitViewFactory extends UnitViewFactory {
         }
         return instance;
     }
+
 
     @Override
     public ClickListener createListener(BattleFieldObject bfObj) {
@@ -71,9 +77,18 @@ public class LE_UnitViewFactory extends UnitViewFactory {
     protected void addOutline(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
     }
 
+    public static String getTooltipText(Obj bfObj) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+            Coordinates c = LevelEditor.getManager().getSelectionHandler().getBottomLeft();
+            int x=c.x+bfObj.getX();
+            int y= c.y+bfObj.getY();
+            return StringMaster.wrapInBrackets(x + ":" + y);
+        }
+        return bfObj. getNameAndCoordinate();
+    }
     @Override
     protected void addForDC(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
-        view.setToolTip(new ValueTooltip(bfObj.getName()));
+        view.setToolTip(new DynamicTooltip(()-> getTooltipText(bfObj)));
     }
 
     @Override

@@ -32,10 +32,10 @@ import static main.system.auxiliary.log.LogMaster.log;
 
 public class NF_PartyManager extends ScenarioPartyManager {
 
-    private static final String LORD_TYPE = "Anphis Var Keserim";
-    private static final int LORD_LEVEL = 3;
-    private HeroChain chain;
-    private int deaths = 0;
+    protected static final String LORD_TYPE = "Anphis Var Keserim";
+    protected static final int LORD_LEVEL = 3;
+    protected HeroChain chain;
+    protected int deaths = 0;
 
     public HeroChain getHeroChain() {
         return chain;
@@ -45,19 +45,19 @@ public class NF_PartyManager extends ScenarioPartyManager {
         super(master);
     }
 
-    private ObjType getPartyType() {
+    protected ObjType getPartyType() {
         //TODO
         return DataManager.getType("Solo", DC_TYPE.PARTY);
     }
 
     @Override
-    public Party initPlayerParty() {
-        //??? if (getMaster().getMetaGame().getMissionIndex() > 0) {
-        //     party = Eidolons.getParty();
-        //     if (party != null)           return party;
-        //don't re-init party
-        // }
+    public boolean deathEndsGame() {
+        getHeroChain().death();
+        return false;
+    }
 
+    @Override
+    public Party initPlayerParty() {
         ObjType type = new ObjType(getPartyType());
         List<String> members = ContainerUtils.openContainer(type.getProperty(PROPS.MEMBERS));
         if (selectedHero == null)
@@ -82,14 +82,11 @@ public class NF_PartyManager extends ScenarioPartyManager {
             objType = generateLordType();
         }
         new EidolonLord(objType).setChain(chain);
-
-        //        party.setProperty(PROPS.PARTY_MISSION,
-        //                getMetaGame().getMission().getName(), true);
         return party;
 
     }
 
-    private ObjType generateLordType() {
+    protected ObjType generateLordType() {
         ObjType type = new ObjType(LORD_TYPE, DC_TYPE.LORD);
         int soulforce = DC_Formulas.getSoulforceForLordLevel(LORD_LEVEL);
         type.setParam(PARAMS.SOULFORCE, soulforce );
@@ -97,7 +94,7 @@ public class NF_PartyManager extends ScenarioPartyManager {
         return type;
     }
 
-    private void removeOldHero() {
+    protected void removeOldHero() {
         Eidolons.getMainHero().removeFromGame();
     }
 
@@ -112,7 +109,6 @@ public class NF_PartyManager extends ScenarioPartyManager {
         for (Unit unit : getGame().getUnits()) {
             unit.getAI().combatEnded(); //TODO don't do that
         }
-
         log(1, "respawning as " + newHero + "; old hero: " + Eidolons.getMainHero().getInfo());
         removeOldHero();
         selectedHero = newHero;
@@ -152,13 +148,15 @@ public class NF_PartyManager extends ScenarioPartyManager {
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, hero);
     }
 
-    private Coordinates getRespawnCoordinates(ObjType type) {
+    protected Coordinates getRespawnCoordinates(ObjType type) {
+        // getMaster().getDungeonMaster().getShrineMaster().getOfType();
+        //closest from activated? Or just last?
         //TODO shrine
         return getGame().getDungeonMaster().getFloorWrapper().getMainEntrance().getCoordinates();
     }
 
 
-    private Party createParty(ObjType type, String selectedHero) {
+    protected Party createParty(ObjType type, String selectedHero) {
         return new ChainParty(type, selectedHero);
     }
 

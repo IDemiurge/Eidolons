@@ -20,7 +20,7 @@ public class Cinematics {
         GuiEventManager.trigger(in ? GuiEventType.WHITEOUT_IN : GuiEventType.WHITEOUT_OUT, dur);
     }
 
-    public static void blackout(boolean in, float dur) {
+    public static void doBlackout(boolean in, float dur) {
         GuiEventManager.trigger(in ? GuiEventType.BLACKOUT_IN : GuiEventType.BLACKOUT_OUT, dur);
     }
 

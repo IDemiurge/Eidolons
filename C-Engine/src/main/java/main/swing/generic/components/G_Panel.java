@@ -60,7 +60,7 @@ public class G_Panel extends G_Component implements VisualComponent {
     @Override
     public String toString() {
         String string = getClass().getSimpleName();
-        string += StringMaster.wrapInBraces("" + id);
+        string += StringMaster.wrapInBrackets("" + id);
 
         string += "; Width=" + getWidth();
         string += ", Height=" + getHeight();

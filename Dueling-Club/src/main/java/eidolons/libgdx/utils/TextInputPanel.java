@@ -53,12 +53,13 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
     public void close() {
         fadeOut();
         textInputListener.canceled();
-        GdxMaster.setKeyInputBlocked(true);
+        GdxMaster.setKeyInputBlocked(false);
     }
 
     public void ok() {
         fadeOut();
         textInputListener.input(tf.getText());
+        GdxMaster.setKeyInputBlocked(false);
     }
 
     public void setText(String text) {

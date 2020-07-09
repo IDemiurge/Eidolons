@@ -124,7 +124,7 @@ public class UnitGroupMaster {
 
     private static String getNewName(String string, int level) {
         return FileManager.getUniqueFileVersion(string + " "
-                + StringMaster.wrapInBraces("" + level), getGroupFilePath(string));
+                + StringMaster.wrapInBrackets("" + level), getGroupFilePath(string));
     }
 
     private static List<ObjAtCoordinate> mapPositions(List<ObjType> list, Entity hero) {
@@ -240,7 +240,7 @@ public class UnitGroupMaster {
 
     public static String chooseGroup(Entity faction, int level) {
         File groupFile = ListChooser.chooseFile(getFactionPath(faction), StringMaster
-                .wrapInBraces("" + level), SELECTION_MODE.SINGLE);
+                .wrapInBrackets("" + level), SELECTION_MODE.SINGLE);
         if (groupFile != null) {
             return groupFile.getPath();
         }

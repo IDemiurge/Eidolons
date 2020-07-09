@@ -1,11 +1,15 @@
 package main.level_editor.gui.grid;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.stage.camera.CameraMan;
 import eidolons.libgdx.stage.camera.MotionData;
 import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
@@ -52,6 +56,13 @@ public class LE_CameraHandler extends LE_Handler {
         setCameraMode(cameraMode);
     }
 
+    public void panToEdge(DIRECTION d) {
+        Coordinates c = getFloorWrapper().getEdge(d);
+        Vector2 v = GridMaster.getCenteredPos(c);
+        MotionData data = new MotionData(v, 0.5f, null);
+        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, data);
+
+    }
     private void setCameraMode(int cameraMode) {
         switch (cameraMode) {
             case 0:
@@ -75,4 +86,5 @@ public class LE_CameraHandler extends LE_Handler {
     private CameraMan getCameraMan() {
         return ScreenMaster.getScreen().getCameraMan();
     }
+
 }

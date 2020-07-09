@@ -10,6 +10,7 @@ import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.netherflame.NF_Game;
 import eidolons.game.netherflame.main.death.NF_DefeatHandler;
 import eidolons.game.netherflame.main.event.NF_EventHandler;
+import eidolons.game.netherflame.main.solo.SoloPartyManager;
 import eidolons.game.netherflame.main.soul.SoulforceMaster;
 import eidolons.game.netherflame.main.story.IGG_TownMaster;
 
@@ -30,6 +31,7 @@ defeatHandler...
  */
 public class NF_MetaMaster extends ScenarioMetaMaster<NF_Meta> {
 
+    private static final String SOLO_LEVEL = "crawl/a flight[new].xml";
     // private final boolean boss;
     private final SoulforceMaster soulforceMaster;
 
@@ -67,7 +69,13 @@ public class NF_MetaMaster extends ScenarioMetaMaster<NF_Meta> {
 
     @Override
     protected PartyManager  createPartyManager() {
+        if (isSoloLevel())
+        return new SoloPartyManager(this);
         return new NF_PartyManager(this);
+    }
+
+    private boolean isSoloLevel() {
+        return  data.equalsIgnoreCase(SOLO_LEVEL);
     }
 
     @Override

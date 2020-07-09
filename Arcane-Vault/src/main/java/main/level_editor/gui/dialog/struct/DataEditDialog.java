@@ -175,13 +175,20 @@ public abstract class DataEditDialog<S extends Enum<S>, T extends DataUnit<S>> e
     @Override
     public void ok() {
         if (isSaveForUndo()) {
-            LevelEditor.getManager().getOperationHandler().operation(Operation.LE_OPERATION.SAVE_STRUCTURE,
+            LevelEditor.getManager().getOperationHandler().operation(getSaveOperation(),
                     cached, data);
-            LevelEditor.getManager().getOperationHandler().execute(Operation.LE_OPERATION.MODIFY_STRUCTURE,
+            LevelEditor.getManager().getOperationHandler().execute(getModifyOperation(),
                     data);
         }
         super.ok();
         WaitMaster.receiveInput(getWaitOperation(), getUserObject());
+    }
+
+    protected Operation.LE_OPERATION getModifyOperation() {
+        return Operation.LE_OPERATION.MODIFY_STRUCTURE;
+    }
+    protected Operation.LE_OPERATION getSaveOperation() {
+        return Operation.LE_OPERATION.SAVE_STRUCTURE;
     }
 
     protected boolean isSaveForUndo() {

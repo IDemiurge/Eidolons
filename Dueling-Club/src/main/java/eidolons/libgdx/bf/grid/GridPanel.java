@@ -437,7 +437,7 @@ it sort of broke at some point - need to investigate!
             }
         }
         // if (!isCustomHit())
-            super.addActor(actor);
+        super.addActor(actor);
 
     }
 
@@ -806,25 +806,25 @@ it sort of broke at some point - need to investigate!
     }
 
     public void resetZIndices() {
-            if (hoverObj != null) {
-                if (hoverObj.getParent() instanceof GridCellContainer) {
-                    ((GridCellContainer) hoverObj.getParent()).setHovered(false);
-                }
+        if (hoverObj != null) {
+            if (hoverObj.getParent() instanceof GridCellContainer) {
+                ((GridCellContainer) hoverObj.getParent()).setHovered(false);
             }
-            for (int x = drawX1; x < drawX2; x++) {
-                for (int y = drawY1; y < drawY2; y++) {
-                    GridCellContainer cell = cells[x][y];
-                    cell.setHovered(false);
-                    List<GenericGridView> views = cell.getUnitViewsVisible();
-                    for (GenericGridView sub : views) {
-                        if (sub.isHovered() && sub instanceof UnitGridView
-                        ) {
-                            setHoverObj((UnitGridView) sub);
-                            cell.setHovered(true);
-                        }
+        }
+        for (int x = drawX1; x < drawX2; x++) {
+            for (int y = drawY1; y < drawY2; y++) {
+                GridCellContainer cell = cells[x][y];
+                cell.setHovered(false);
+                List<GenericGridView> views = cell.getUnitViewsVisible();
+                for (GenericGridView sub : views) {
+                    if (sub.isHovered() && sub instanceof UnitGridView
+                    ) {
+                        setHoverObj((UnitGridView) sub);
+                        cell.setHovered(true);
                     }
                 }
             }
+        }
     }
 
     protected void customDraw(Batch batch) {
@@ -892,7 +892,7 @@ it sort of broke at some point - need to investigate!
         if (shards != null) {
             shards.draw(batch, 1f);
         }
-        if (!flightHandler.isOn())
+        if (isDrawShadowMap())
             if (shadowMap != null) {
                 shadowMap.draw(batch, 1f);
             }
@@ -961,6 +961,10 @@ it sort of broke at some point - need to investigate!
             visual.draw(batch, 1f);
 
         ((CustomSpriteBatch) batch).resetBlending();
+    }
+
+    protected boolean isDrawShadowMap() {
+        return !flightHandler.isOn();
     }
 
     protected boolean isScreenCell(GridCellContainer container) {
@@ -1050,6 +1054,10 @@ it sort of broke at some point - need to investigate!
 
     public GridManager getGridManager() {
         return gridManager;
+    }
+
+    public DC_Cell getCell(Coordinates c) {
+        return getCell(c.x, c.y);
     }
 
     public DC_Cell getCell(int i, int i1) {
@@ -1157,7 +1165,7 @@ it sort of broke at some point - need to investigate!
             Coordinates c = object.getCoordinates();
             Set<GridObject> objs = gridObjects[c.x][c.y];
             if (objs == null) {
-                gridObjects[c.x][c.y] = objs =new LinkedHashSet<>();
+                gridObjects[c.x][c.y] = objs = new LinkedHashSet<>();
             }
             objs.add(object);
             if (under != null) {
@@ -1188,18 +1196,24 @@ it sort of broke at some point - need to investigate!
                     ((c.y * 128)));
         });
         GuiEventManager.bind(removePrevious, INIT_CELL_OVERLAY, (obj) -> {
-            DC_Cell cell = (DC_Cell) obj.get();
+            DC_Cell cell;
+            if (obj.get() instanceof Coordinates) {
+                cell = getCell(((Coordinates) obj.get()));
+            } else
+                cell = (DC_Cell) obj.get();
             GridCellContainer container = cells[cell.getX()][(cell.getY())];
             String overlayData = cell.getOverlayData();
             if (StringMaster.isEmpty(overlayData)) {
-                container.setOverlayTexture(null );
+                container.setOverlayTexture(null);
                 return;
             }
             String path = VariableManager.removeVarPart(overlayData);
-            Coordinates c = new Coordinates(VariableManager.getVars(overlayData));
-            TextureRegion region = new TextureRegion(TextureCache.getOrCreateR(path),
-                    c.x * 128, c.y * 128, 128, 128);
-            container.setOverlayTexture(region);
+            TextureRegion r = TextureCache.getOrCreateR(path);
+            if (!VariableManager.getVars(overlayData).isEmpty()) {
+                Coordinates c = new Coordinates(VariableManager.getVars(overlayData));
+                r = new TextureRegion(r, c.x * 128, c.y * 128, 128, 128);
+            }
+            container.setOverlayTexture(r);
             container.setOverlayRotation(cell.getOverlayRotation());
             // container.getCellImage().setDrawable(new TextureRegionDrawable(region));
         });

@@ -13,7 +13,6 @@ public class FadeImageContainer extends ImageContainer {
     protected float fadePercentage;
     protected Image previousImage;
     protected float fadeDuration = 2f;
-    protected String imagePath;
     protected String previousPath;
     private Actor pendingContents;
     private float speedFactor=1f;
@@ -37,8 +36,8 @@ public class FadeImageContainer extends ImageContainer {
 
     @Override
     public String toString() {
-        if (imagePath != null) {
-            return super.toString() +" for " + imagePath;
+        if (path != null) {
+            return super.toString() +" for " + path;
         }
 
         return super.toString();
@@ -46,9 +45,9 @@ public class FadeImageContainer extends ImageContainer {
 
     @Override
     public void setImage(String path) {
-        previousPath = imagePath;
+        previousPath = path;
         super.setImage(path);
-        imagePath = path;
+        this.path = path;
     }
 
     public Image getPreviousImage() {
@@ -56,7 +55,7 @@ public class FadeImageContainer extends ImageContainer {
     }
 
     public String getImagePath() {
-        return imagePath;
+        return path;
     }
 
     public String getPreviousPath() {

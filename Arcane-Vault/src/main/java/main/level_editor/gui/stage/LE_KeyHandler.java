@@ -109,7 +109,7 @@ public class LE_KeyHandler extends LE_Handler {
             case Input.Keys.LEFT:
                 DIRECTION d = getDirectionForKey(keyCode, alt);
                 if (ctrl) {
-                    LevelEditor.getManager().getOperationHandler().move(d);
+                    LevelEditor.getManager().getCameraHandler().panToEdge(d);
                 } else {
                     LevelEditor.getManager().getDecorHandler().offset(d);
 

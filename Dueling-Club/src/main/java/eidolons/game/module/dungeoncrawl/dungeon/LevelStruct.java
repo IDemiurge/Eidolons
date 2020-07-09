@@ -14,6 +14,7 @@ import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.DungeonEnums;
 import main.data.tree.LayeredData;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
@@ -373,4 +374,8 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
         this.ambiData = ambiData;
     }
 
+    public Coordinates getEdge(DIRECTION d) {
+        return CoordinatesMaster.getFarmostCoordinateInDirection( (d),
+                  new ArrayList<>(   getCoordinatesSet()));
+    }
 }

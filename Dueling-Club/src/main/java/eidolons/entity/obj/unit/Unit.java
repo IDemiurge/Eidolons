@@ -74,6 +74,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.handlers.EntityMaster;
 import main.entity.obj.ActiveObj;
+import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -794,10 +795,10 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
         if (item != null) {
             if (inventory != null) //ToDo-Cleanup
-            if (inventory.contains(item) ||
-                    item.getContainer() == CONTAINER.INVENTORY) {
-                removeFromInventory(item);
-            }
+                if (inventory.contains(item) ||
+                        item.getContainer() == CONTAINER.INVENTORY) {
+                    removeFromInventory(item);
+                }
         }
         switch (slot) {
             case ARMOR:
@@ -1643,9 +1644,9 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     @Override
     public void toBase() {
         if (!CoreEngine.isLevelEditor())
-        if (getAI().isOutsideCombat()) {
-            return;
-        }
+            if (getAI().isOutsideCombat()) {
+                return;
+            }
         if (isMine()) {
             if (isShadow() || isHero()) {
                 if (EidolonLord.lord != null) {
@@ -1815,5 +1816,20 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
     public void setUnconscious(boolean b) {
         unconscious = b;
+    }
+
+    public void cleanReset() {
+        removeAllBuffs();
+        setMode(STD_MODES.NORMAL);
+        reset();
+        resetDynamicParam(PARAMS.C_TOUGHNESS);
+        resetDynamicParam(PARAMS.C_FOCUS);
+        resetDynamicParam(PARAMS.C_ESSENCE);
+    }
+
+    private void removeAllBuffs() {
+        for (BuffObj buff : new LinkedList<>(getBuffs())) {
+            buff.remove();
+        }
     }
 }

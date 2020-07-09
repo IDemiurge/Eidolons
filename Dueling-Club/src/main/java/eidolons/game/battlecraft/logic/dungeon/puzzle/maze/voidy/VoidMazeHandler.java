@@ -15,7 +15,6 @@ import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
 import eidolons.libgdx.screens.ScreenMaster;
-import main.content.CONTENT_CONSTS;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -181,7 +180,7 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
         if (voidHandler == null) {
             voidHandler = new PuzzleVoidHandler(gridPanel);
         }
-        gridPanel.setVoidHandler(voidHandler);
+        gridPanel.setCustomVoidHandler(voidHandler);
         return voidHandler;
     }
 
@@ -216,10 +215,6 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
 
     public void ended() {
         super.ended();
-        for (Coordinates markedCell : markedCells) {
-            Eidolons.getGame().getCellByCoordinate(markedCell).
-                    getMarks().remove(CONTENT_CONSTS.MARK.togglable);
-        }
         // VoidHandler.TEST_MODE = true;
         //TODO collapse all?
         voidHandler.cleanUp();
@@ -229,6 +224,7 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
             GuiEventManager.trigger(GuiEventType.REMOVE_GRID_OBJ, hole);
         }
 
+        ScreenMaster.getDungeonGrid().setCustomVoidHandler(null);
 
         voidHandler.toggleAutoOff(Eidolons.getMainHero());
     }

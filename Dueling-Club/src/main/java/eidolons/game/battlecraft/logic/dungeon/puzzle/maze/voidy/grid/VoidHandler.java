@@ -58,7 +58,7 @@ Accelerating collapse
 
 
  */
-public abstract class VoidHandler {
+public   class VoidHandler {
 
     public static boolean TEST_MODE = false;
     protected  GridPanel gridPanel;
@@ -79,7 +79,9 @@ public abstract class VoidHandler {
         animator = createAnimator();
     }
 
-    protected abstract VoidAnimator createAnimator();
+    protected VoidAnimator createAnimator() {
+        return new VoidAnimator(this);
+    }
 
     public void toggleAuto() {
         toggleAuto(Eidolons.getMainHero());
@@ -122,12 +124,16 @@ public abstract class VoidHandler {
                 }
             }
         }
-        if (TEST_MODE) {
+        if (isMainHeroMode()) {
             autoRaiseFor(Eidolons.getMainHero());
         } else
             for (BattleFieldObject object : autoRaise) {
                 autoRaiseFor(object);
             }
+    }
+
+    protected boolean isMainHeroMode() {
+        return TEST_MODE;
     }
 
     public boolean isCollapsing() {
@@ -164,7 +170,7 @@ public abstract class VoidHandler {
             return false;
         }
         DC_Cell cell = object.getGame().getCellByCoordinate(coordinate);
-        if (TEST_MODE || checkMarked(cell))
+        if (checkMarked(cell))
             if (cell.isVOID()) {
                 list.add(coordinate);
                 toggle(true, object.getCoordinates(), list, 1f);
@@ -175,7 +181,7 @@ public abstract class VoidHandler {
 
 
     protected boolean checkMarked(DC_Cell cell) {
-        return cell.getMarks().contains(CONTENT_CONSTS.MARK.togglable);
+        return TEST_MODE || cell.getMarks().contains(CONTENT_CONSTS.MARK.togglable);
     }
 
     public void toggle(boolean raiseOrCollapse, Coordinates origin,
@@ -225,9 +231,6 @@ public abstract class VoidHandler {
 
     }
 
-    protected abstract void onAnimate(GridCell cell);
-
-
     public void setCollapsePeriod(float collapsePeriod) {
         this.collapsePeriod = collapsePeriod;
     }
@@ -263,5 +266,10 @@ public abstract class VoidHandler {
         return false;
     }
 
-    public abstract void cleanUp();
+    protected   void onAnimate(GridCell cell) {
+
+    }
+    public void cleanUp() {
+
+    }
 }

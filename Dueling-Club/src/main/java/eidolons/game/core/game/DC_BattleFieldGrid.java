@@ -3,6 +3,7 @@ package eidolons.game.core.game;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import main.content.CONTENT_CONSTS;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldGrid;
 import main.game.bf.Coordinates;
@@ -23,11 +24,11 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     private int h;
     private int w;
     private Module module;
-    private Set<Coordinates> coordinates;
-    private Set<DC_Cell> cellsSet;
+    private final Set<Coordinates> coordinates;
+    private final Set<DC_Cell> cellsSet;
     DC_Cell[][] cells;
-    private Set<Module> modules = new LinkedHashSet<>();
-    private Boolean[][] wallCache;
+    private final Set<Module> modules = new LinkedHashSet<>();
+    private final Boolean[][] wallCache;
     private int x1;
     private int y1;
 
@@ -62,12 +63,16 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
             for (int i = module.getX(); i-module.getX()  < this.module.getEffectiveWidth(true); i++) {
                 for (int j = module.getY(); j-module.getY()  < this.module.getEffectiveHeight(true); j++) {
                     Coordinates o = Coordinates.get(i, j);
-                    cells[i][j].setModule(module);
-                    if (!inner.contains(o)) {
-                        cells[i][j].setVOID(true);
+                    DC_Cell cell = cells[i][j];
+                    cell.setModule(module);
+                    if (!inner.contains(o)  ) {
+                        cell.setVOID(true);
+                    } else
+                    if ( cell.getMarks().contains(CONTENT_CONSTS.MARK._void)  ) {
+                        cell.setVOID(true);
                     } else
                     if (this.module.getVoidCells().contains(o)) {
-                        cells[i][j].setVOID(true);
+                        cell.setVOID(true);
                     }
                 }
             }

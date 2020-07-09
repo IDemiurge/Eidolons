@@ -507,7 +507,7 @@ public class StringMaster {
         return "{" + arg + "}";
     }
 
-    public static String wrapInBraces(String arg) {
+    public static String wrapInBrackets(String arg) {
         return "[" + arg + "]";
     }
 
@@ -1154,7 +1154,7 @@ public class StringMaster {
         if (NumberUtils.isInteger(property)) {
             Obj obj = game.getObjectById(NumberUtils.getIntParse(property));
             if (obj == null) {
-                return wrapInBraces("invalid id " + property);
+                return wrapInBrackets("invalid id " + property);
             }
             return obj.getName();
         }

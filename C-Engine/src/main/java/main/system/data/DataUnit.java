@@ -354,6 +354,10 @@ public class DataUnit<T extends Enum<T>> implements Serializable {
         return getData(set);
     }
 
+    public void removeFromValue( T val, String s) {
+        setValue(val, getValue(val).replace(s, ""));
+    }
+
 
     public enum GAME_VALUES {
         HOST_NAME, TITLE, HOST_IP, STARTED, PLAYERS_NUMBER,

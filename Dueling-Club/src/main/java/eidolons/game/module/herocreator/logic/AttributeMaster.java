@@ -27,7 +27,7 @@ public class AttributeMaster {
             if (amount < 0) {
                 string = "-";
             }
-            string += StringMaster.wrapInBraces("" + amount) + " " + p.getName();
+            string += StringMaster.wrapInBrackets("" + amount) + " " + p.getName();
 
             list.add(string);
         }

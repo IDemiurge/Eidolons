@@ -12,10 +12,6 @@ public class PuzzleVoidHandler extends VoidHandler {
         super(gridPanel);
     }
 
-    @Override
-    protected VoidAnimator createAnimator() {
-        return new VoidAnimator(this);
-    }
 
     @Override
     protected void onAnimate(GridCell cell) {

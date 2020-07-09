@@ -18,12 +18,14 @@ import eidolons.game.netherflame.main.pale.PaleAspect;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.sprite.CustomSpriteAnim;
 import eidolons.libgdx.texture.Sprites;
+import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.EncounterEnums;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
+import main.system.sound.SoundMaster;
 import main.system.threading.WaitMaster;
 
 import java.util.LinkedHashSet;
@@ -40,12 +42,15 @@ public class PuzzleActions extends PuzzleElement {
         return () -> {
             Object arg = -1;
             switch (rotateMosaicCell) {
-
                 case ROTATE_MOSAIC_CELL_ANTICLOCKWISE:
                     arg = 1;
                 case ROTATE_MOSAIC_CELL_CLOCKWISE:
                     DC_Cell cell = DC_Game.game.getCellByCoordinate(Eidolons.getPlayerCoordinates());
                     cell.setOverlayRotation(cell.getOverlayRotation() + 90 * (int) (arg));
+
+                    if (cell.getOverlayRotation()%360==0) {
+                        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.CLICK_ACTIVATE);
+                    }
                     GuiEventManager.trigger(GuiEventType.CELL_RESET, cell);
                     break;
             }

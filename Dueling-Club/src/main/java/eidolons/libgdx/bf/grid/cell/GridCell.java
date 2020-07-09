@@ -323,11 +323,20 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
         return voidAnimHappened;
     }
 
-    public void addPillar(FadeImageContainer pillar) {
-        removePillar();
-        addActor(this.pillar = pillar);
+    public FadeImageContainer addPillar(String path) {
+        if (pillar == null ) {
+            pillar = new FadeImageContainer(path);
+        } else {
+            if (pillar.getImagePath().equalsIgnoreCase(path)) {
+                return null;
+            }
+            pillar.setImage(path);
+        }
+        if (pillar.getParent() == null) {
+        addActor(this.pillar );
+        }
         pillar.setZIndex(0);
-        pillar.setVisible(true); //fades in with the cell ...
+        return pillar;
     }
 
     public void removePillar() {

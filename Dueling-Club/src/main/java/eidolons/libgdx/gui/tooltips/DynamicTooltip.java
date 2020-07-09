@@ -13,8 +13,8 @@ import java.util.function.Supplier;
  */
 public class DynamicTooltip extends ValueTooltip {
 
-    Supplier<String> text;
-    Supplier<TextureRegion> pic;
+    protected Supplier<String> text;
+    protected Supplier<TextureRegion> pic;
 
     public DynamicTooltip(Supplier<String> text) {
         this.text = text;
@@ -37,9 +37,9 @@ public class DynamicTooltip extends ValueTooltip {
     public void act(float delta) {
         //would be better to update - maybe time could change while displayed
         setUserObject(
-         ListMaster.toList(
-         new ValueContainer(pic == null ? null : pic.get(),
-         text == null ? null : text.get())));
+                ListMaster.toList(
+                        new ValueContainer(pic == null ? null : pic.get(),
+                                text == null ? null : text.get())));
         super.act(delta);
     }
 }

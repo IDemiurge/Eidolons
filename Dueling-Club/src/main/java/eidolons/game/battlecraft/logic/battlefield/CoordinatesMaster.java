@@ -625,10 +625,17 @@ fix selection
         return Math.abs(y1 - y) + 1;
     }
 
-    public static Coordinates getUpperLeftCornerCoordinates(Set<Coordinates> coordinatesList) {
-        return getCornerCoordinates(coordinatesList).get(0);
+    public static Coordinates getUpperLeftCornerCoordinates(Set<Coordinates> list) {
+        int x = getMinX(list);
+        int y = getMinY(list);
+        return Coordinates.get(x,y);
     }
 
+    public static Coordinates getBottomLeft(Collection<Coordinates> list) {
+        int x = getMinX(list);
+        int y = getMaxY(list);
+        return Coordinates.get(x,y);
+    }
     public static float getMinDistanceBetweenGroups(Collection<Coordinates> list, Collection<Coordinates> list2,
                                                     float requiredMin) {
         float min = Integer.MAX_VALUE;

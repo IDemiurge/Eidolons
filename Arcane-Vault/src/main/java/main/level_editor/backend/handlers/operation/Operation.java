@@ -46,8 +46,10 @@ public class Operation {
         MASS_SET_VOID, MASS_RESET_VOID,
 
         MODIFY_STRUCTURE, SAVE_STRUCTURE,
-        MODIFY_ENTITY, SAVE_ENTITY_DATA, MODIFY_DATA,
-        SAVE_DATA,    VOID_SET;
+        MODIFY_ENTITY, SAVE_ENTITY_DATA,
+        MODIFY_DATA, SAVE_DATA,
+
+        VOID_SET;
 
         LE_OPERATION() {
         }

@@ -331,7 +331,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         }
 
         for (PRIORITY_FUNCS p : PRIORITY_FUNCS.values()) {
-            String text = StringMaster.wrapInBraces(p.name().toLowerCase());
+            String text = StringMaster.wrapInBrackets(p.name().toLowerCase());
             if (!property.contains(text)) {
                 continue;
             }

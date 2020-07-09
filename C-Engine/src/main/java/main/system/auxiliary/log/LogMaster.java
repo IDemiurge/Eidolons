@@ -442,7 +442,7 @@ public class LogMaster {
 
     public static void header(String string) {
         log(PRIORITY_IMPORTANT, "");
-        log(PRIORITY_IMPORTANT, PREFIX_IMPORTANT + StringMaster.wrapInBraces(string));
+        log(PRIORITY_IMPORTANT, PREFIX_IMPORTANT + StringMaster.wrapInBrackets(string));
         log(PRIORITY_IMPORTANT, "");
     }
 

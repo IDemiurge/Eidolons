@@ -12,6 +12,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid.DefVoidHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid.VoidHandler;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -20,7 +21,6 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
 import eidolons.game.netherflame.boss.anims.generic.BossVisual;
 import eidolons.game.netherflame.main.death.ShadowMaster;
-import eidolons.game.netherflame.main.pale.PaleAspect;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.main.AnimMaster;
@@ -61,11 +61,10 @@ import static main.system.GuiEventType.*;
 
 public class DC_GridPanel extends GridPanel {
 
-    private UnitGridView mainHeroViewShadow;
-    private UnitGridView mainHeroViewPale;
     protected UnitGridView mainHeroView;
     protected AnimMaster animMaster;
-    private VoidHandler voidHandler;
+    private final VoidHandler voidHandler;
+    private VoidHandler customVoidHandler;
 
     private float resetTimer;
     private final float autoResetVisibleOnInterval = 0.5f;
@@ -79,7 +78,7 @@ public class DC_GridPanel extends GridPanel {
 
     public DC_GridPanel(int paramCols, int paramRows, int cols, int rows) {
         super(paramCols, paramRows, cols, rows);
-        // voidHandler = new VoidHandler(this);
+        voidHandler = new DefVoidHandler(this);
     }
 
     @Override
@@ -142,8 +141,10 @@ public class DC_GridPanel extends GridPanel {
         super.act(delta);
         if (!DC_Game.game.isPaused()) {
             getPlatformHandler().act(delta);
-            if (voidHandler != null) {
-            voidHandler.act(delta);
+            if (customVoidHandler != null) {
+                customVoidHandler.act(delta);
+            } else {
+                voidHandler.act(delta);
             }
         }
         if (updateRequired) {
@@ -161,7 +162,7 @@ public class DC_GridPanel extends GridPanel {
                             BattleFieldObject sub = visible[i];
                             setVisible(viewMap.get(sub), true);
                             // if (!isCustomDraw())
-                                GridMaster.validateVisibleUnitView(viewMap.get(sub));
+                            GridMaster.validateVisibleUnitView(viewMap.get(sub));
                             if (sub.isPlayerCharacter()) {
                                 if (ExplorationMaster.isExplorationOn()) {
                                     UnitGridView view = (UnitGridView) viewMap.get(sub);
@@ -183,12 +184,6 @@ public class DC_GridPanel extends GridPanel {
     protected BaseView createUnitView(BattleFieldObject battleFieldObjectbj) {
         BaseView view = super.createUnitView(battleFieldObjectbj);
         if (battleFieldObjectbj.isPlayerCharacter()) {
-            if (PaleAspect.ON) {
-                mainHeroViewPale = (UnitGridView) view;
-            }
-            if (ShadowMaster.isShadowAlive()) {
-                mainHeroViewShadow = (UnitGridView) view;
-            }
             mainHeroView = (UnitGridView) view;
         }
         return view;
@@ -325,7 +320,6 @@ public class DC_GridPanel extends GridPanel {
             FloatingTextMaster.getInstance().
                     createAndShowParamModText(p.get());
         });
-
 
 
         GuiEventManager.bind(HIDE_MAZE, p -> {
@@ -509,13 +503,14 @@ public class DC_GridPanel extends GridPanel {
             if (!(object instanceof Unit)) {
                 continue;
             }
-            float alpha =0; //TODO
+            float alpha = 0; //TODO
             GenericGridView view = (GenericGridView) viewMap.get(object);
 
             if (Math.abs(view.torch.getBaseAlpha() - alpha) > 0.1f)
                 view.torch.setBaseAlpha(alpha);
         }
     }
+
 
     public VoidHandler getVoidHandler() {
         return voidHandler;
@@ -537,7 +532,7 @@ public class DC_GridPanel extends GridPanel {
         this.commentSprites = commentSprites;
     }
 
-    public void setVoidHandler(VoidHandler voidHandler) {
-        this.voidHandler = voidHandler;
+    public void setCustomVoidHandler(VoidHandler customVoidHandler) {
+        this.customVoidHandler = customVoidHandler;
     }
 }

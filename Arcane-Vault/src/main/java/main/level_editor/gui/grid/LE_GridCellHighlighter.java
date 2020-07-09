@@ -11,17 +11,20 @@ import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import main.entity.obj.Obj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 public class LE_GridCellHighlighter extends DynamicTooltip {
     Hoverable cell;
-
     public LE_GridCellHighlighter(Hoverable cell) {
-        super(() -> "" + cell.getNameAndCoordinates());
+        super(null);
+        text = ()-> {
+            Obj bfObj= cell.getUserObject();
+            return LE_UnitViewFactory.getTooltipText(bfObj);
+        };
         this.cell = cell;
     }
-
     @Override
     protected void entered() {
         showing = true;

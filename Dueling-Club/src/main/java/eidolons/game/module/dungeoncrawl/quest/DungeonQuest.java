@@ -71,7 +71,7 @@ public class DungeonQuest implements Quest {
         if (getNumberRequired() == 0) {
             return null;
         }
-        return StringMaster.wrapInBraces(
+        return StringMaster.wrapInBrackets(
                 numberAchieved + " / " +
                         numberRequired);
     }

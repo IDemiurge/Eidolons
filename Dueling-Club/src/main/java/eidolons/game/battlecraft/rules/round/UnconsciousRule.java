@@ -85,6 +85,10 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
                 return;
             }
         }
+        if (unit.getGame().getMetaMaster().getPartyManager().heroUnconscious(unit)){
+            return;
+        }
+
         getUnconsciousEffect(unit).apply();
         unit.setUnconscious(true);
         unit.getGame().

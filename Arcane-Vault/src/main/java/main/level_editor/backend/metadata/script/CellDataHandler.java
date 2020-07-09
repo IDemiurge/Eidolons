@@ -1,4 +1,4 @@
-package main.level_editor.backend.metadata.script;
+ package main.level_editor.backend.metadata.script;
 
 import main.data.xml.XmlStringBuilder;
 import main.game.bf.Coordinates;
