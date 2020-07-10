@@ -6,7 +6,6 @@ import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.std.EventAnimCreator;
-import eidolons.libgdx.anims.std.sprite.LockKeyAnimation;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.data.XLinkedMap;
 import main.game.logic.event.Event;
@@ -108,7 +107,8 @@ public class EventAnimMaster {
     }
 
     private boolean isImmediateAnim(Anim anim) {
-        return anim instanceof LockKeyAnimation;
+        return true;
+        // return anim instanceof LockKeyAnimation;
     }
 
     private CompositeAnim getEventAttachAnim(Event event, Anim anim) {

@@ -9,6 +9,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.ConditionsUtils;
 import main.elements.conditions.Condition;
+import main.elements.conditions.standard.EmptyCondition;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -54,6 +55,10 @@ public class PuzzleRules extends PuzzleElement {
     }
 
     protected Condition getActionChecks() {
+        switch (base) {
+            case ROUND:
+                return new EmptyCondition();
+        }
         return ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO);
     }
 

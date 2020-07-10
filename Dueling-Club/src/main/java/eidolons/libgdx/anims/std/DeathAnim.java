@@ -153,7 +153,6 @@ public class DeathAnim extends ActionAnim {
 //        addSfx();
         //skull / grave?
 
-        // unit = (BattleFieldObject) getRef().getTargetObj();
         if (!unit.isDead()){
             main.system.auxiliary.log.LogMaster.log(1,"Screw that Death Anim" +getRef());
             return;
