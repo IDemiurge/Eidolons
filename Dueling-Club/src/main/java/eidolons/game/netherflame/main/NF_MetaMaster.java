@@ -31,7 +31,6 @@ defeatHandler...
  */
 public class NF_MetaMaster extends ScenarioMetaMaster<NF_Meta> {
 
-    private static final String SOLO_LEVEL = "crawl/a flight[new].xml";
     // private final boolean boss;
     private final SoulforceMaster soulforceMaster;
 
@@ -69,14 +68,11 @@ public class NF_MetaMaster extends ScenarioMetaMaster<NF_Meta> {
 
     @Override
     protected PartyManager  createPartyManager() {
-        if (isSoloLevel())
-        return new SoloPartyManager(this);
+        if (isSoloLevel() || SoloPartyManager.TEST_MODE)
+            return new SoloPartyManager(this);
         return new NF_PartyManager(this);
     }
 
-    private boolean isSoloLevel() {
-        return  data.equalsIgnoreCase(SOLO_LEVEL);
-    }
 
     @Override
     protected TownMaster createTownMaster() {

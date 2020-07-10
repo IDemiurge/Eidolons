@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
@@ -39,8 +38,7 @@ import static main.system.GuiEventType.*;
 
 public abstract class GridCell extends BlockableGroup implements Borderable, Colored {
     protected ImageContainer cellImgContainer;
-    protected Image overlayTexture;
-    FadeImageContainer overlay;
+    protected FadeImageContainer overlay;
     protected TextureRegion backTexture;
     protected float overlayRotation;
     protected Image border = null;
@@ -98,7 +96,6 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
         }
         addActor(cellImgContainer);
         //        addActor(overlay = new SpriteX());
-        addActor(overlayTexture = new Image());
         setSize(GridMaster.CELL_W, GridMaster.CELL_H);
 
         cordsText = new Label(getGridX() + ":" + getGridY(),
@@ -294,20 +291,18 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
 
     public void setOverlayRotation(float overlayRotation) {
         this.overlayRotation = overlayRotation;
-        overlayTexture.setOrigin(64, 64);
-        ActionMaster.addRotateByAction(overlayTexture, overlayTexture.getRotation(), overlayRotation);
+        overlay.setOrigin(64, 64);
+        ActionMaster.addRotateByAction(overlay, overlay.getRotation(), overlayRotation);
     }
 
-    public void setOverlayTexture(TextureRegion overlay) {
-        if (overlay == null) {
-            ActionMaster.addFadeOutAction(overlayTexture, 2);
+    public void setOverlayTexture(TextureRegion region) {
+        if (region == null) {
+            ActionMaster.addFadeOutAction(overlay, 2);
             return;
         }
-        ActionMaster.addFadeInAction(overlayTexture, 2);
-        this.overlayTexture.setDrawable(new TextureRegionDrawable(overlay));
-        this.overlayTexture.setWidth(overlay.getRegionWidth());
-        this.overlayTexture.setHeight(overlay.getRegionHeight());
-        GdxMaster.center(this.overlayTexture);
+        ActionMaster.addFadeInAction(overlay, 2);
+        this.overlay.setImage(region);
+        GdxMaster.center(this.overlay);
     }
 
 

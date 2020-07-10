@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.sub;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
+import eidolons.game.core.game.DC_Game;
 import main.game.bf.Coordinates;
 
 public class PuzzleElement<T extends Puzzle> {
@@ -14,7 +15,12 @@ public class PuzzleElement<T extends Puzzle> {
 
     public void started() {
     }
+
     public void ended() {
+    }
+
+    public DC_Game getGame() {
+        return DC_Game.game;
     }
 
     public T getPuzzle() {
@@ -56,6 +62,7 @@ public class PuzzleElement<T extends Puzzle> {
     public PuzzleHandler getHandler() {
         return puzzle.getHandler();
     }
+
     public Coordinates getExitCoordinates() {
         return puzzle.getExitCoordinates();
     }

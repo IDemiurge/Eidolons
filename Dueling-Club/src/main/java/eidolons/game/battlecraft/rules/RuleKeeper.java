@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.rules;
 
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.controls.Controller;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -162,6 +163,11 @@ public class RuleKeeper implements Controller {
     }
 
     public static boolean isRuleOn(RuleEnums.RULE rule) {
+        switch (rule) {
+            case SOULFORCE:
+                return !DC_Game.game.getMetaMaster().isSoloLevel();
+        }
+
         if (CoreEngine.TEST_LAUNCH){
             switch (rule) {
                 case DURABILITY:

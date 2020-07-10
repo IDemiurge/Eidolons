@@ -3,6 +3,7 @@ package main.level_editor.gui.dialog.struct;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
+import eidolons.game.module.generator.model.AbstractCoordinates;
 import eidolons.libgdx.gui.utils.FileChooserX;
 import eidolons.libgdx.utils.GdxDialogMaster;
 import main.game.bf.Coordinates;
@@ -67,8 +68,9 @@ public abstract class DataEditDialog<S extends Enum<S>, T extends DataUnit<S>> e
                 value = pickCoordinate();
                 if (value != null)
                     if (actor.getEdit_arg() != null) {
-                        value = ((Coordinates) value).getOffset(
-                                LevelEditor.getManager().getEditHandler().getEditCoordinates().negative());
+                        Coordinates c = (Coordinates) value;
+                        Coordinates offset = LevelEditor.getManager().getEditHandler().getEditCoordinates().negative();
+                        value =new AbstractCoordinates(true,c.x+offset.x, c.y+offset.y ) ;
                     }
                 break;
             case enum_const:

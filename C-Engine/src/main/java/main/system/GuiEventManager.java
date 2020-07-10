@@ -77,7 +77,6 @@ public class GuiEventManager {
     }
 
     public static void trigger(final EventType type, Object obj) {
-
         if (CoreEngine.isGraphicsOff())
             return;
 

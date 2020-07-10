@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
@@ -20,7 +21,10 @@ public abstract class SpriteParamBar extends DualParamBar {
 
     public SpriteParamBar(Supplier<BattleFieldObject> supplier) {
         super(supplier);
+        addListener(new DynamicTooltip(()-> getTooltipText()).getController());
     }
+
+    protected abstract String getTooltipText();
 
     @Override
     protected String getBarImagePath(boolean over) {

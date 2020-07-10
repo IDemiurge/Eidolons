@@ -290,7 +290,9 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
 
     @Override
     public String toString() {
-        return x + StringMaster.getCoordinatesSeparator() + y
+        if (x<0 || y<0)
+            return x + StringMaster.COORDINATES_SEPARATOR_ALT + y;
+        return x + StringMaster.COORDINATES_SEPARATOR + y
                 // + (z != 0 ? "; sublevel (Z): " + z : "")
                 ;
     }

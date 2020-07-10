@@ -15,8 +15,8 @@ import java.util.function.Supplier;
 
 public abstract class DualParamBar extends ValueBar {
 
-    private Supplier<BattleFieldObject> supplier;
-    private BattleFieldObject dataSource;
+    protected Supplier<BattleFieldObject> supplier;
+    protected BattleFieldObject dataSource;
     protected boolean underIsGreater;
 
     public DualParamBar(BattleFieldObject dataSource) {

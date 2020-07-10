@@ -48,12 +48,14 @@ public class DeathAnim extends ActionAnim {
         unit = (BattleFieldObject) e.getRef().getTargetObj();
         template = getTemplate(getActive(), unit);
         setDuration(2);
+        setRef(e.getRef());
     }
     public DeathAnim(BattleFieldObject obj) {
         super(null, new AnimData());
         unit = obj;
         template = getTemplate(getActive(), unit);
         setDuration(2);
+        // setRef(e.getRef()); //TODO
     }
 
     private static AnimData getDeathAnimData(Event e) {
@@ -151,7 +153,7 @@ public class DeathAnim extends ActionAnim {
 //        addSfx();
         //skull / grave?
 
-        unit = (BattleFieldObject) getRef().getTargetObj();
+        // unit = (BattleFieldObject) getRef().getTargetObj();
         if (!unit.isDead()){
             main.system.auxiliary.log.LogMaster.log(1,"Screw that Death Anim" +getRef());
             return;

@@ -311,7 +311,7 @@ public abstract class Puzzle {
     }
 
     public void activate() {
-        handler.activate();
+        handler.started();
     }
 
     public PuzzleHandler getHandler() {

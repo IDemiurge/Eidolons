@@ -238,6 +238,9 @@ public class DataUnit<T extends Enum<T>> implements Serializable {
 
     }
 
+    public void addCount(T stat, int val) {
+        addCount(stat, "" + val);
+    }
     public Map<Coordinates, ObjType> buildObjCoordinateMapFromString(String string) {
 
         Map<Coordinates, ObjType> objMap = new LinkedHashMap<>();

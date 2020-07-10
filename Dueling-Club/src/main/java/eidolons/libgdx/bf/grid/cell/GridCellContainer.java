@@ -25,6 +25,7 @@ import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.Hoverable;
 import eidolons.libgdx.bf.datasource.GridCellDataSource;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
+import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.overlays.map.WallMap;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.screens.ScreenMaster;
@@ -100,23 +101,26 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     public void applyColor(float lightness, Color c) {
-        if (overlayTexture != null) {
-
+        ImageContainer imgContainer = this.cellImgContainer;
+        if (overlay != null) {
+            if (getUserObject().isArtPuzzleCell()) {
+                imgContainer = overlay;
+            }
         }
-        float a1 = cellImgContainer.getColor().a;
+        float a1 =  imgContainer. getColor().a;
         // if (getActions().size > 0) {
         //     a1 = getColor().a;
         // }
         if (a1 > 0) {
-            cellImgContainer.setVisible(true);
+            imgContainer.setVisible(true);
             if (lightness > LightConsts.MIN_SCREEN && a1 > 0) {
                 screen = true;
-                cellImgContainer.setScreenOverlay(lightness);
+                imgContainer.setScreenOverlay(lightness);
             } else {
-                cellImgContainer.setScreenOverlay(0);
+                imgContainer.setScreenOverlay(0);
                 screen = false;
             }
-            cellImgContainer.setColor(c.r, c.g, c.b, a1);
+            imgContainer.setColor(c.r, c.g, c.b, a1);
 
         }
         // if (pillar != null) {
@@ -507,9 +511,6 @@ public class GridCellContainer extends GridCell implements Hoverable {
                 lightEmitter = true;
             }
             recalcUnitViewBounds();
-            if (getUserObject().isVOID()) {
-                actor.setVisible(false);
-            }
         }
     }
 
@@ -621,7 +622,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
 
     public int getUnitViewCount() {
         //        return nonBgUnitViewCount;
-        return hasBackground ? nonBgUnitViewCount + 1 : nonBgUnitViewCount;
+        return hasBackground ? nonBgUnitViewCount - 1 : nonBgUnitViewCount;
     }
 
     public int getUnitViewCountEffective() {
@@ -750,4 +751,5 @@ public class GridCellContainer extends GridCell implements Hoverable {
     public boolean isScreen() {
         return screen;
     }
+
 }

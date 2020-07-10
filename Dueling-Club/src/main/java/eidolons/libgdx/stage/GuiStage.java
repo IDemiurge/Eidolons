@@ -69,7 +69,7 @@ import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
 /**
  * Created by JustMe on 2/9/2018.
  */
-public class GuiStage extends GenericGuiStage implements StageWithClosable {
+public abstract class GuiStage extends GenericGuiStage implements StageWithClosable {
 
     private final Blackout blackout;
     protected List<String> charsUp = new ArrayList<>();
@@ -365,6 +365,10 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
             dialogueActors.add(tipMessageWindow);
         }
         return dialogueActors;
+    }
+
+    protected void afterInit() {
+
     }
 
     protected Actor[] getDialogueActors() {

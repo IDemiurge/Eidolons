@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzleConstructor;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.encounter.EncPuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMazeConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
@@ -59,6 +60,7 @@ public class PuzzleMaster {
             for (PuzzleTrigger trigger : activePuzzle.getTriggers()) {
                 trigger.check(event);
             }
+            activePuzzle.getHandler().handleEvent(event);
         }
     }
 
@@ -140,6 +142,8 @@ public class PuzzleMaster {
                 return new MazePuzzleConstructor(args);
             case voidmaze:
                 return new VoidMazeConstructor(args);
+            case encounter:
+                return new EncPuzzleConstructor(args);
         }
         return null;
     }

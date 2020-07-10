@@ -25,6 +25,7 @@ import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.AnimContext;
 import eidolons.libgdx.anims.construct.AnimConstructor;
+import eidolons.libgdx.anims.main.ActionAnimMaster;
 import eidolons.libgdx.anims.main.AnimMaster;
 import main.ability.Ability;
 import main.content.values.properties.G_PROPS;
@@ -169,6 +170,9 @@ public class Executor extends ActiveHandler {
         if (isInterrupted()) {
             return interrupted();
         }
+        ActionInput input = new ActionInput(getAction(), animContext);
+        if (!input.getAction().isAttackAny())
+            ActionAnimMaster.animate(input);
         resolve();
         if (!Bools.isTrue(cancelled)) {
             if (getChecker().isCancellable()) {
@@ -184,13 +188,9 @@ public class Executor extends ActiveHandler {
         if (AnimMaster.isOn())
             if (!AnimConstructor.isReconstruct())
                 AnimConstructor.preconstruct(getAction());
-        ActionInput input = new ActionInput(getAction(), animContext);
 
         getEntity().getOwnerUnit().setLastAction(getEntity());
 
-        if (!input.getAction().isAttackAny())
-            GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES,
-                    input);
 
         actionComplete();
         return isResult();

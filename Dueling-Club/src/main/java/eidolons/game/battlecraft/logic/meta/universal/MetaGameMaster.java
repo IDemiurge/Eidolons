@@ -39,6 +39,7 @@ import main.system.launch.Flags;
  */
 public abstract class MetaGameMaster<E extends MetaGame> {
 
+    private static final String SOLO_LEVEL = "crawl/a flight[new].xml"; //review this
     protected String data;
     protected PartyManager partyManager;
     protected MetaInitializer<E> initializer;
@@ -348,6 +349,10 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public BossManager getBossManager() {
         return bossManager;
+    }
+
+    public boolean isSoloLevel() {
+        return  data.equalsIgnoreCase(SOLO_LEVEL);
     }
 
     public void combatStarts() {

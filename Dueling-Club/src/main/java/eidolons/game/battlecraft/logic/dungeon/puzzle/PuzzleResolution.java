@@ -79,7 +79,7 @@ public class PuzzleResolution extends PuzzleElement {
     protected Condition getSolveConditions() {
         return
                 ConditionsUtils.join(
-                        ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
+                        ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
                         ConditionsUtils.forPuzzleSolution(solution, puzzle));
     }
 

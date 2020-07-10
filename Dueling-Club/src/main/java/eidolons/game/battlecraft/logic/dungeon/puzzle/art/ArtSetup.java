@@ -56,6 +56,7 @@ public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
             } else {
                 Coordinates coordinates = cell.getCoordinates().getOffset(puzzle.getCoordinates().negative());
                 cell.setOverlayData(arg + StringMaster.wrapInParenthesis(coordinates.toString()));
+                cell.setArtPuzzleCell(true);
                 if (RandomWizard.chance(getPuzzle().getRotateChance())) {
                     float rotation = 90 * RandomWizard.getRandomIntBetween(0, 4);
                     cell.setOverlayRotation(rotation);
@@ -70,17 +71,17 @@ public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
     @Override
     public void started() {
         puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION, Event.STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE,
-                ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
+                ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
                 PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_CLOCKWISE));
         puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION, Event.STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE,
-                ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
+                ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
                 PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_ANTICLOCKWISE));
 
         List<String> mutators = Arrays.asList(mutatorArgs);
 
         if (mutators.contains("on_move"))
             puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION, Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING,
-                    ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
+                    ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
                     PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_CLOCKWISE));
 
         arg = getArtPiecePath(data.getValue(PuzzleData.PUZZLE_VALUE.ARG));

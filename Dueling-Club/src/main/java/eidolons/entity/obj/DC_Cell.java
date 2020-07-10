@@ -50,6 +50,7 @@ public class DC_Cell extends DC_Obj implements Cell {
     private boolean objectsModified;
 
     private Set<MARK> marks;
+    private boolean artPuzzleCell;
 
 
     @Override
@@ -370,5 +371,13 @@ public class DC_Cell extends DC_Obj implements Cell {
             return false;
         }
         return marks.contains(mark);
+    }
+
+    public void setArtPuzzleCell(boolean artPuzzleCell) {
+        this.artPuzzleCell = artPuzzleCell;
+    }
+
+    public boolean isArtPuzzleCell() {
+        return artPuzzleCell;
     }
 }

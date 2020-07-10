@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.generic;
 
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
@@ -24,10 +25,10 @@ public class AiGroupHandler extends AiHandler {
         super(master);
     }
 
-    public GroupAI createEncounterGroup(Encounter encounter, AiData data) {
-        GroupAI group = new GroupAI(encounter.getLeader());
+    public GroupAI createEncounterGroup(Encounter encounter, AiData data, List<Unit> units) {
+        GroupAI group = new GroupAI();
         group.setEncounter(encounter);
-        group.setMembers(new DequeImpl<>(encounter.getUnits()));
+        group.setMembers(new DequeImpl<>(units));
         if (data == null) {
             data = new AiData(true, EncounterEnums.UNIT_GROUP_TYPE.CROWD, null );
         }

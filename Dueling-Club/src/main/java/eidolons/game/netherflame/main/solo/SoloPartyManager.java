@@ -11,6 +11,8 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 
 public class SoloPartyManager extends NF_PartyManager {
+    public static final boolean TEST_MODE = true;
+
     public SoloPartyManager(MetaGameMaster master) {
         super(master);
     }

@@ -17,6 +17,7 @@ import eidolons.system.audio.MusicMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.threading.WaitMaster;
@@ -50,9 +51,11 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         GuiEventManager.trigger(QUEST_UPDATE, puzzle.quest);
     }
 
-    protected abstract void playerActionDone(DC_ActiveObj action);
+    protected void playerActionDone(DC_ActiveObj action) {
 
-    public void activate() {
+    }
+
+    public void started() {
         puzzle.active = true;
         puzzle.failed = false;
         puzzle.triggers.clear();
@@ -146,6 +149,14 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         ended();
     }
 
+    public void handleEvent(Event event) {
+
+    }
+
+    public void customAction() {
+
+    }
+
     public void ended() {
         if (puzzle.isMinimizeUI())
             GuiEventManager.trigger(MINIMIZE_UI_OFF);
@@ -175,7 +186,7 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         if (puzzle.isPale()) {
             PaleAspect.enterPale();
         }
-        Eidolons.onNonGdxThread(() -> {
+        // Eidolons.onNonGdxThread(() -> {
            cinematicStart();
             //just zoom out? need to center cam on exits..
         beforeTip(); //TODO pause/disable things ! enter cinematic mode or something
@@ -189,7 +200,7 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
             afterTipAction();
         }
         puzzle.activate();
-        });
+        // });
     }
 
     protected boolean isFirstAttempt() {

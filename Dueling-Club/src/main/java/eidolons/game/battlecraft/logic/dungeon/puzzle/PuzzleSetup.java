@@ -17,5 +17,7 @@ public abstract class PuzzleSetup<T extends Puzzle, R> extends PuzzleElement<T> 
 
     public void started() {
     }
-    public abstract R reset();
+    public   R reset() {
+        return null;
+    }
 }

@@ -22,6 +22,11 @@ public class SoulParamsBar extends SpriteParamBar {
         return over ? GdxColorMaster.CYAN : GdxColorMaster.PURPLE;
     }
 
+    @Override
+    protected String getTooltipText() {
+        // BattleFieldObject unit = supplier.get();
+        return "Focus: "+label1.getText()+"\nEssence: "+label2.getText();
+    }
     private boolean isColored() {
         return false;
     }

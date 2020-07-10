@@ -13,6 +13,7 @@ import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.game.netherflame.main.death.HeroChain;
 import eidolons.game.netherflame.main.hero.ChainParty;
 import eidolons.game.netherflame.main.soul.EidolonLord;
+import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.system.DC_Formulas;
 import main.content.DC_TYPE;
@@ -146,6 +147,8 @@ public class NF_PartyManager extends ScenarioPartyManager {
         GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, hero);
         GuiEventManager.trigger(GuiEventType.UNIT_CREATED, hero);
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, hero);
+
+        Assets.preloadHero(hero);
     }
 
     protected Coordinates getRespawnCoordinates(ObjType type) {

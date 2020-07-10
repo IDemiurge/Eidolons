@@ -2,6 +2,7 @@ package eidolons.libgdx;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.ObjectMap;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.system.*;
@@ -67,13 +68,15 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
 
     public void trigger(final EventType type, Object obj) {
         EventCallbackParam eventCallback;
-
         if (obj instanceof EventCallbackParam) {
             eventCallback = (EventCallbackParam) obj;
         } else {
             eventCallback = new EventCallbackParam(obj);
         }
 
+        if (type == GuiEventType.DESTROY_UNIT_MODEL && eventCallback.get() == Eidolons.MAIN_HERO) {
+            return;
+        }
         getInstance().trigger_(type, eventCallback);
     }
 

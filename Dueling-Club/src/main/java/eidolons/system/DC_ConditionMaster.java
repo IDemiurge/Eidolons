@@ -4,16 +4,12 @@ import eidolons.ability.conditions.*;
 import eidolons.ability.conditions.req.CellCondition;
 import eidolons.ability.conditions.req.CostCondition;
 import eidolons.ability.conditions.req.ItemCondition;
-import eidolons.ability.conditions.shortcut.PushableCondition;
-import eidolons.ability.conditions.shortcut.RangeCondition;
-import eidolons.ability.conditions.shortcut.SpaceCondition;
-import eidolons.ability.conditions.shortcut.StdPassiveCondition;
+import eidolons.ability.conditions.shortcut.*;
 import eidolons.ability.conditions.special.*;
 import eidolons.ability.conditions.special.SpellCondition.SPELL_CHECK;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.CONTENT_CONSTS.RETAIN_CONDITIONS;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
@@ -514,13 +510,8 @@ public class DC_ConditionMaster extends ConditionMaster {
                         }
                     };
 
-                case MAINHERO:
-                    return new CustomCondition() {
-                        @Override
-                        public boolean check(Ref ref) {
-                            return ref.getSourceObj() == Eidolons.getMainHero();
-                        }
-                    };
+                case MAIN_HERO:
+                    return new MainHeroCondition();
             }
         }
         if (result == null) {

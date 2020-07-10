@@ -17,6 +17,7 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.datatypes.DequeImpl;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +27,6 @@ import static main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
 public class Encounter extends DC_Obj {
 //TODO DOES NOT EXIST BEYOND SPAWNING!
     private Integer power;
-    private List<Unit> units = new LinkedList<>();
     private List<ObjType> types = new LinkedList<>();
     private ENCOUNTER_TYPE waveType;
     private EncounterSpawner.ENCOUNTER_STATUS status;
@@ -36,6 +36,7 @@ public class Encounter extends DC_Obj {
     private Reinforcer reinforcer;
     private  boolean spawned;
     private Integer origId;
+    private boolean adjustmentProhibited;
 
     public Encounter(ObjType waveType, DC_Game game, Ref ref, DC_Player player, Coordinates c) {
         super(waveType, player, game, ref);
@@ -43,8 +44,12 @@ public class Encounter extends DC_Obj {
         setCoordinates(c);
     }
 
+    public Encounter(ObjType encounterType, Coordinates coordinates) {
+        this(encounterType, DC_Game.game, new Ref(), DC_Game.game.getPlayer(false), coordinates);
+    }
+
     public void setAi(GroupAI groupAi) {
-        for (Unit unit : units) {
+        for (Unit unit : getUnits()) {
             unit.getUnitAI().setGroupAI(groupAi);
         }
     }
@@ -60,7 +65,7 @@ public class Encounter extends DC_Obj {
     @Override
     public String toString() {
         // unitMap
-        String string = getNameAndCoordinate() + " with " + units;
+        String string = getNameAndCoordinate() + " with " + getUnits();
         return string;
     }
 
@@ -86,7 +91,7 @@ public class Encounter extends DC_Obj {
     }
 
     public int getCurrentUnitNumber() {
-        return units.size();
+        return getUnits().size();
     }
     public int getUnitNumber() {
         return types.size();
@@ -142,14 +147,9 @@ public class Encounter extends DC_Obj {
                 getProperty(G_PROPS.ENCOUNTER_TYPE));
     }
 
-    public List<Unit> getUnits() {
-        return units;
+    public DequeImpl<Unit> getUnits() {
+        return groupAI.getMembers();
     }
-
-    public void setUnits(List<Unit> units) {
-        this.units = units;
-    }
-
 
     public int getPreferredPower() {
         return getIntParam(PARAMS.POWER_BASE);
@@ -164,7 +164,7 @@ public class Encounter extends DC_Obj {
     }
 
     public Unit getLeader() {
-        return units.get(0);
+        return groupAI.getLeader();
     }
 
     public void setAiData(AiData aiData) {
@@ -185,5 +185,23 @@ public class Encounter extends DC_Obj {
 
     public void setSpawned(boolean spawned) {
         this.spawned = spawned;
+    }
+
+    public void addMembers(List<Unit> units) {
+        for (Unit unit : units) {
+            groupAI.add(unit);
+        }
+    }
+
+    public void setTypes(List<ObjType> types) {
+        this.types = types;
+    }
+
+    public void setAdjustmentProhibited(boolean adjustmentProhibited) {
+        this.adjustmentProhibited = adjustmentProhibited;
+    }
+
+    public boolean isAdjustmentProhibited() {
+        return adjustmentProhibited;
     }
 }

@@ -119,11 +119,10 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
       }
 
 
-    @Override
-    public void activate() {
+    public void started() {
         VoidHandler.TEST_MODE = false;
         actions = 0;
-        super.activate();
+        super.started();
         getVoidHandler().toggleAutoOn(Eidolons.getMainHero());
         for (Coordinates c : getPuzzle().falseExits) {
             /*

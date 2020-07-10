@@ -605,7 +605,7 @@ public class ConditionMaster {
                 break;
             case NAME_TARGET:
                 return new PropCondition(G_PROPS.NAME, KEYS.TARGET, str1, true);
-            case MAINHERO:
+            case MAIN_HERO:
                 break;
             case NAME_SOURCE:
                 return new PropCondition(G_PROPS.NAME, KEYS.SOURCE, str1, true);
@@ -668,7 +668,7 @@ public class ConditionMaster {
         NUMERIC_LESS("numLess", "numeric less", "less"),
         ITEM("item", "slot"),
         INVALID_ABILITIES("item", "slot"),
-        MAINHERO("pc", "mainHero", "MAIN_HERO"),
+        MAIN_HERO("pc", "mainHero", "MAIN_HERO"),
         NAME_SOURCE("name", "source", "sourceName"),
         NAME_TARGET("target"),
         NAME_ACTIVE("active"),

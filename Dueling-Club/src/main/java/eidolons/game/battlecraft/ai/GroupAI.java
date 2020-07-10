@@ -101,7 +101,7 @@ public class GroupAI {
     }
 
     public void setLeader(Unit leader) {
-        if (this.leader == null) {
+        if (this.originalLeader == null) {
             originalLeader = leader;
         }
         this.leader = leader;
@@ -222,6 +222,9 @@ public class GroupAI {
     public void setMembers(DequeImpl<Unit> members) {
         this.members = members;
         members.forEach(member -> member.getAI().setGroupAI(this));
+        if (leader == null) {
+            setLeader(leader = members.get(0));
+        }
     }
 
     public LevelBlock getBlock() {

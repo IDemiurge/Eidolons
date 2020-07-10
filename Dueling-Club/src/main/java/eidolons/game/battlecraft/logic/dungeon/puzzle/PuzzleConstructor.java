@@ -168,7 +168,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
     protected void initExitTrigger() {
         createTriggerGlobal(PuzzleTrigger.PUZZLE_TRIGGER.EXIT,
                 ConditionsUtils.join(new LambdaCondition(ref -> puzzle.active),
-                        ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
+                        ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
                         getPuzzleExitConditions()),
                 () -> exited(),
                 Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING
@@ -191,7 +191,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
     protected void initEnterTrigger() {
          createTriggerGlobal(PuzzleTrigger.PUZZLE_TRIGGER.ENTER,
                 ConditionsUtils.join(new LambdaCondition(ref -> !puzzle.active && (!puzzle.solved || isReplayable())),
-                        ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
+                        ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
                         getPuzzleEnterConditions()),
                 () -> puzzle.getHandler().entered(), Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING
         );

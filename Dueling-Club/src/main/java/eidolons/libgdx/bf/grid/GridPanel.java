@@ -533,6 +533,14 @@ it sort of broke at some point - need to investigate!
         }
         if (view.getParent() instanceof GridCellContainer) {
             ((GridCellContainer) view.getParent()).setDirty(true);
+            if (((GridCellContainer) view.getParent()).getUserObject().isVOID()) {
+                if (visible) {
+                    if (sub instanceof Structure) {
+                        return;
+                    }
+
+                }
+            }
 
         }
 

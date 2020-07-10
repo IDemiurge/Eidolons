@@ -99,6 +99,18 @@ public class BattleGuiStage extends GuiStage {
         outcomePanel.setVisible(false);
         addActor(fullscreenAnims = new FullscreenAnims());
 
+
+        getBottomPanel().setX(GdxMaster.centerWidthScreen(getBottomPanel()));
+        if (VisualChoiceHandler.isOn()) {
+            addActor(vc = new VisualChoice());
+            vc.setVisible(false);
+        }
+        //        getBottomPanel().setX((GdxMaster.getWidth() - fullLogPanel.getWidth() - getBottomPanel().getWidth()) / 2 + 70);
+
+    }
+
+    @Override
+    protected void afterInit() {
         if (RuleKeeper.isRuleOn(SOULFORCE)) {
             //  RollDecorator.RollableGroup decorated;
             //  addActor(decorated = RollDecorator.decorate(
@@ -114,14 +126,6 @@ public class BattleGuiStage extends GuiStage {
             sbHideBtn.setX(sbHideBtn.getX() - 7);
             sbHideBtn.setY(GdxMaster.getHeight() - 73);
         }
-
-        getBottomPanel().setX(GdxMaster.centerWidthScreen(getBottomPanel()));
-        if (VisualChoiceHandler.isOn()) {
-            addActor(vc = new VisualChoice());
-            vc.setVisible(false);
-        }
-        //        getBottomPanel().setX((GdxMaster.getWidth() - fullLogPanel.getWidth() - getBottomPanel().getWidth()) / 2 + 70);
-
     }
 
     @Override

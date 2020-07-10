@@ -491,7 +491,7 @@ public class AnimMaster extends Group {
         getDrawer().add(animation);
     }
 
-    public boolean getParallelDrawing() {
+    public boolean isParallelDrawing() {
         return getDrawer().getParallelDrawing();
     }
 

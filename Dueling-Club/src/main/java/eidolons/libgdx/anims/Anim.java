@@ -222,7 +222,7 @@ public class Anim extends Group implements Animation {
         if (isDrawTexture() && getActions().size == 0) {
             draw(batch, alpha);
         }
-
+        if (sprites != null)
         sprites.forEach(s -> {
             s.draw(batch);
         });

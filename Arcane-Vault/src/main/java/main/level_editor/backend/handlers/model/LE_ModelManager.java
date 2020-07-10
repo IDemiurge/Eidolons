@@ -15,6 +15,7 @@ import main.system.SortMaster;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import static main.level_editor.backend.handlers.operation.Operation.LE_OPERATION.PASTE_END;
@@ -31,6 +32,8 @@ public class LE_ModelManager extends LE_Handler {
     EditorModel model;
     Stack<EditorModel> modelStack = new Stack<>();
     private static List<BattleFieldObject> copied;
+    private static Map<Coordinates, String> copiedScripts;
+    private static Map<Coordinates, Boolean> copiedVoid;
 
     public LE_ModelManager(LE_Manager manager) {
         super(manager);

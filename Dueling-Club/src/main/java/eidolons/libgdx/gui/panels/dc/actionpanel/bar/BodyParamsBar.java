@@ -16,6 +16,12 @@ public class BodyParamsBar extends SpriteParamBar {
     }
 
     @Override
+    protected String getTooltipText() {
+        // BattleFieldObject unit = supplier.get();
+        return "Toughness: "+label1.getText()+"\nEndurance: "+label2.getText();
+    }
+
+    @Override
     protected PARAMETER getOverParam(boolean current) {
         return current? PARAMS.C_TOUGHNESS : PARAMS.TOUGHNESS;
     }

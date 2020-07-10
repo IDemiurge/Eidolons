@@ -4,7 +4,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
-import eidolons.libgdx.shaders.post.PostFxUpdater;
 import eidolons.system.audio.MusicMaster;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -73,10 +72,5 @@ public class MazeHandler<T extends MazePuzzle> extends PuzzleHandler<T> {
 
     }
 
-    @Override
-    public void activate() {
-        super.activate();
-        GuiEventManager.trigger(GuiEventType.POST_PROCESSING, PostFxUpdater.POST_FX_TEMPLATE.MAZE);
-    }
 
 }

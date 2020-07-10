@@ -42,7 +42,7 @@ public abstract class ManipulatorPuzzleConstructor<T extends ManipulatorPuzzle> 
         if (!StringMaster.isEmpty(puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.COUNTER_TYPE))) {
             //TODO
         }
-        return new PuzzleRules(puzzle, PuzzleRules.PUZZLE_RULE_ACTION.COUNT_DOWN, base);
+        return new PuzzleRules(puzzle, PuzzleEnums.PUZZLE_RULE_ACTION.COUNT_DOWN, base);
     }
 
     protected boolean isCountDown() {

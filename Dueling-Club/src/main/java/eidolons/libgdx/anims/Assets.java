@@ -418,6 +418,13 @@ public class Assets {
         }
     }
 
+    public static void preloadHero(Unit hero) {
+        //gdx review
+        if (hero.getName().contains("Anphis")) {
+            preloadEmitters();
+        }
+    }
+
     public enum ASSET {
         ;
         public boolean loaded;
