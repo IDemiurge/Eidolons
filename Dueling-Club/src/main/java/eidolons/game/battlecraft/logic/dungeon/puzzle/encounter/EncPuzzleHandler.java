@@ -2,31 +2,31 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.encounter;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.elements.generic.AiData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleStats;
-import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
-import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
+import eidolons.game.battlecraft.logic.dungeon.universal.utils.Summoner;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
-import eidolons.game.battlecraft.logic.mission.encounter.EncounterData;
+import main.content.CONTENT_CONSTS;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.DIRECTION;
 import main.game.logic.event.Event;
-import main.system.auxiliary.RandomWizard;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
 spawn per round OR <?>
  */
 public class EncPuzzleHandler extends PuzzleHandler<EncounterPuzzle> {
+    private final Set<BattleFieldObject> blocks = new HashSet<>();
+
     public EncPuzzleHandler(EncounterPuzzle encounterPuzzle) {
         super(encounterPuzzle);
     }
@@ -53,6 +53,16 @@ public class EncPuzzleHandler extends PuzzleHandler<EncounterPuzzle> {
     @Override
     public void started() {
         super.started();
+        blockExit();
+    }
+
+    private void blockExit() {
+        String name = "Indestructible Force Field";
+        for (Coordinates c : puzzle.getData().getBlockData().keySet()) {
+            if ( puzzle.getData().getBlockData().get(c).getValue(CellScriptData.CELL_SCRIPT_VALUE.marks)
+                    .contains(CONTENT_CONSTS.MARK.block.name()))
+                blocks.add(Summoner.bfObj(c, name));
+        }
     }
 
     @Override
@@ -74,71 +84,9 @@ public class EncPuzzleHandler extends PuzzleHandler<EncounterPuzzle> {
         spawn(false);
     }
 
-    private List<Coordinates> getSpawnCoords(List<ObjType> types, boolean first) {
-        List<Coordinates> list = new ArrayList<>(types.size());
-        int w = puzzle.getWidth();
-        int h = puzzle.getHeight();
-
-        boolean centerOrEdges = RandomWizard.random(); //check if hero is there
-        int x = 0, y = 0;
-        if (centerOrEdges) {
-            x = w / 2 - 1;
-            y = h / 2 - 1;
-        }
-        int i = 0;
-        for (ObjType type : types) {
-            if (centerOrEdges) {
-                if (x > y) x++;
-                else y++;
-            } else {
-                x = RandomWizard.getRandomIntBetween(1, w - 1);
-                y = RandomWizard.getRandomIntBetween(1, h - 1);
-                switch (DIRECTION.ORTHOGONAL[i++ % 4]) {
-                    case UP:
-                        y = 0;
-                        break;
-                    case DOWN:
-                        y = h;
-                        break;
-                    case RIGHT:
-                        x = w;
-                        break;
-                    case LEFT:
-                        x = 0;
-                        break;
-                }
-            }
-            list.add(getCoordinates().getOffset(x, y));
-        }
-        return list;
-    }
-
-    private List<ObjType> getSpawnTypes(boolean first) {
-        return puzzle.getEncounter().getTypes();
-    }
-
     private void spawn(boolean first) {
-        List<ObjType> types = getSpawnTypes(first);
-        List<Coordinates> coords = getSpawnCoords(types, first);
-        UnitsData data = new UnitsData(coords, types);
-        /*
-        positioning around some 'nests'?
-         */
-        List<Unit> units = null;
-        if (first) {
-            puzzle.getEncounter().setTypes(types);
-            puzzle.getEncounter().setAdjustmentProhibited(true);
-            EncounterData eData = new EncounterData("");
-            AiData aiData = new AiData("type:idlers");
-            units = getGame().getMissionMaster().getEncounterSpawner().spawnEncounter(eData, aiData, puzzle.getEncounter(),
-                    coords.toArray(new Coordinates[0]));
-        } else {
-            units = getGame().getDungeonMaster().getSpawner().spawn(data, getGame().getPlayer(false),
-                    Spawner.SPAWN_MODE.WAVE);
-        }
-        puzzle.getEncounter().addMembers(units);
+        PuzzleSpawner.spawn(puzzle, first);
     }
-
 
     @Override
     protected void playerActionDone(DC_ActiveObj action) {
@@ -156,6 +104,10 @@ public class EncPuzzleHandler extends PuzzleHandler<EncounterPuzzle> {
             unit.kill();
         }
         puzzle.getEncounter().getUnits().clear(); //not really needed
+        for (BattleFieldObject block : blocks) {
+            block.kill();
+        }
+        blocks.clear();
     }
 
 

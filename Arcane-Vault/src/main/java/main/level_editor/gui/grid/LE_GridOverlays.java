@@ -24,22 +24,18 @@ import main.system.math.PositionMaster;
 import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.*;
 
 public class LE_GridOverlays extends GridOverlaysManager {
+    private LE_DisplayMode mode;
+
     public LE_GridOverlays(GridPanel gridPanel) {
         super(gridPanel);
     }
 
     @Override
-    public void drawOverlay(Actor parent, OVERLAY overlay, Batch batch, DC_Obj obj, int x, int y) {
-        super.drawOverlay(parent, overlay, batch, obj, x, y);
-    }
-
-    @Override
     protected void addTooltip(DC_Obj obj, Actor parent, OVERLAY overlay, Vector2 v, int x, int y) {
-
-
     }
 
     protected void drawOverlays(Batch batch) {
+         mode = LevelEditor.getModel().getDisplayMode();
         for (int x = 0; x < cells.length; x++) {
             for (int y = cells[x].length - 1; y >= 0; y--) {
                 GridCellContainer cell = cells[x][y];
@@ -62,7 +58,6 @@ public class LE_GridOverlays extends GridOverlaysManager {
     @Override
     protected void drawOverlaysForCell(GridCellContainer container, int x, int y, Batch batch) {
         DC_Cell cell = container.getUserObject();
-        LE_DisplayMode mode = LevelEditor.getModel().getDisplayMode();
         if (getOverlayActor(container, INFO_TEXT) instanceof Label) {
             StringBuilder builder = new StringBuilder();
             if (mode.isShowCoordinates()) {

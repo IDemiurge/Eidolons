@@ -392,6 +392,13 @@ public class UnitView extends BaseView implements HpBarView {
         this.mainHero = mainHero;
     }
 
+    @Override
+    public void setX(float x) {
+        if (x>0 && x<1) {
+            return;
+        }
+        super.setX(x);
+    }
 
     @Override
     public void act(float delta) {

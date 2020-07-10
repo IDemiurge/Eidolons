@@ -51,7 +51,7 @@ public class AvManager {
         // handlers.add(modelHandler = new AvModelHandler(this));
         // handlers.add(selectionHandler = new AvSelectionHandler(this));
         // handlers.add(genHandler = new AvGenHandler(this));
-        // handlers.add(keyHandler = new AvKeyHandler(this));
+        handlers.add(keyHandler = new AvKeyHandler(this));
         // handlers.add(saveHandler = new AvSaveHandler(this));
         // handlers.add(versionHandler = new AvVersionHandler(this));
         // handlers.add(infoHandler = new AvInfoHandler(this));
@@ -159,4 +159,9 @@ public class AvManager {
         return mainBuilder;
     }
 
+    public void loaded() {
+        for (AvHandler handler : handlers) {
+            handler.loaded();
+        }
+    }
 }

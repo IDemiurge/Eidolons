@@ -75,7 +75,13 @@ public class VoidAnimator {
         cell.getCellImage().setVisible(true);
 
         if (!raiseOrCollapse) {
-            SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.DUST,
+            SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(
+                    RandomWizard.random()?
+                            HitAnim.getSpritePath(
+                                    HitAnim.SPRITE_TYPE.STONE,
+                                    HitAnim.HIT.SMASH) :
+                    HitAnim.getSpritePath(
+                    HitAnim.SPRITE_TYPE.DUST,
                     HitAnim.HIT.SPLASH));
             sprite.setFps(40);
             CustomSpriteAnim anim = new CustomSpriteAnim(null,

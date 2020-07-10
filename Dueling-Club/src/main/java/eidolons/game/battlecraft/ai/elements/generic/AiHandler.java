@@ -37,7 +37,7 @@ public abstract class AiHandler {
 
     protected boolean isDebug() {
         // if (OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.AI_DEBUG)) {
-            return true;
+            return false;
         // }
         // return false;
     }

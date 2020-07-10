@@ -3,13 +3,13 @@ package main.elements.conditions;
 import main.data.ability.OmittedConstructor;
 import main.entity.Entity;
 import main.entity.Ref;
+import main.system.datatypes.DequeImpl;
 import main.system.entity.ConditionMaster;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Vector;
 
-public class Conditions extends Vector<Condition> implements Condition {
+public class Conditions extends DequeImpl<Condition> implements Condition {
 
     protected boolean negative = false;
     boolean isTrue;
@@ -184,6 +184,13 @@ public class Conditions extends Vector<Condition> implements Condition {
         return isTrue;
     }
 
+    @Override
+    public boolean addAll(Collection<? extends Condition> c) {
+        for (Condition condition : c) {
+            add(condition);
+        }
+        return true;
+    }
 
     @Override
     public boolean add(Condition c) {

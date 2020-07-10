@@ -7,7 +7,10 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleRules;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
+import main.elements.conditions.Condition;
+import main.elements.conditions.standard.CustomCondition;
 import main.elements.conditions.standard.EmptyCondition;
+import main.entity.Ref;
 import main.game.logic.event.Event;
 
 public class EncPuzzleConstructor extends PuzzleConstructor<EncounterPuzzle> {
@@ -27,13 +30,45 @@ public class EncPuzzleConstructor extends PuzzleConstructor<EncounterPuzzle> {
 
     @Override
     protected PuzzleRules createRules(PuzzleData puzzleData) {
-        return new PuzzleRules(puzzle, PuzzleEnums.PUZZLE_RULE_ACTION.CUSTOM, PuzzleEnums.PUZZLE_ACTION_BASE.ROUND);
+        return new PuzzleRules(puzzle, PuzzleEnums.PUZZLE_RULE_ACTION.CUSTOM,
+                PuzzleEnums.PUZZLE_ACTION_BASE.ROUND){
+            @Override
+            protected Condition getActionChecks() {
+                 return new CustomCondition() {
+                    @Override
+                    public boolean check(Ref ref) {
+                        return ref.getGame().getState().getRound()>0;
+                    }
+                };
+            }
+        };
     }
 
     @Override
     protected void initExitTrigger() {
         if (puzzle.isEscapeAllowed())
             super.initExitTrigger();
+    }
+
+    @Override
+    protected PuzzleResolution createResolution() {
+        return new PuzzleResolution(puzzle){
+
+            @Override
+            protected Condition getSolveConditions() {
+                return new EmptyCondition();
+            }
+
+            @Override
+            public PuzzleEnums.PUZZLE_SOLUTION getSolution() {
+                return PuzzleEnums.PUZZLE_SOLUTION.END_COMBAT;
+            }
+
+            @Override
+            protected Event.EVENT_TYPE getSolveEvent() {
+                return Event.STANDARD_EVENT_TYPE.COMBAT_ENDS;
+            }
+        };
     }
 
     @Override

@@ -140,8 +140,6 @@ public class Executor extends ActiveHandler {
             return interrupted();
         }
         Obj target = getAction().getTargetObj();
-        AnimContext animContext = new AnimContext(getAction());
-        animContext.setTarget(target);
 
         boolean gameLog = getAction().getLogger().isActivationLogged();
         String targets = " ";
@@ -170,10 +168,10 @@ public class Executor extends ActiveHandler {
         if (isInterrupted()) {
             return interrupted();
         }
+        AnimContext animContext = new AnimContext(getAction());
+        animContext.setTarget(target);
         ActionInput input = new ActionInput(getAction(), animContext);
-        if (!input.getAction().isAttackAny())
-            ActionAnimMaster.animate(input);
-        resolve();
+        resolve(input);
         if (!Bools.isTrue(cancelled)) {
             if (getChecker().isCancellable()) {
                 setResult(checkExtraAttacksDoNotInterrupt(getLogger().getEntryType()));
@@ -274,13 +272,16 @@ public class Executor extends ActiveHandler {
 
     }
 
-    protected void resolve() {
+    protected void resolve(ActionInput input) {
         log(getAction() + " resolves", false);
         addStdPassives();
         ForceRule.addForceEffects(getAction());
         getAction().activatePassives();
 
         GuiEventManager.trigger(GuiEventType.ACTION_BEING_RESOLVED, getAction());
+        getAction().initAnimRefs(getRef());
+        if (!input.getAction().isAttackAny())
+            ActionAnimMaster.animate(input);
 
         if (getAction().getAbilities() != null) {
             try {

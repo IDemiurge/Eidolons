@@ -18,7 +18,7 @@ import static eidolons.libgdx.anims.main.AnimMaster.isAnimationOffFor;
  */
 public class ActionAnimMaster {
 
-
+    private static final boolean LOGGED = false;
     private static ActionAnimMaster instance;
     AnimMaster master;
     private static CompositeAnim current;
@@ -29,27 +29,27 @@ public class ActionAnimMaster {
     }
 
     public static int getMaxAnimTime(DC_ActiveObj action) {
-        return 4000;
+        if (action.isAttackOfOpportunityMode() || action.isInstantMode()) {
+            return (int) (2000* AnimMaster.speedMod());
+        }
+        return (int) (3000* AnimMaster.speedMod());
     }
 
     public static boolean isWait(DC_ActiveObj action) {
+        if (action.getOwnerUnit().isAiControlled()) {
+            return false;
+        }
         if (action.isMove()) {
             return false;
         }
         if (action.isMode()) {
             return false;
         }
-        if (action.isTurn()) {
-            return false;
-        }
-        if (action.isAttackOfOpportunityMode()) {
-            return false;
-        }
-        return !action.isInstantMode();
+        return !action.isTurn();
     }
 
     public static void animate(ActionInput actionInput) {
-        DC_Game.game.getLogManager().log( TimeMaster.getFormattedTime(true, true)+ "Animating: "+actionInput.getAction().getName());
+        log("Animating: ", actionInput.getAction());
         Eidolons.onGdxThread(()->
         instance.initActionAnimation(actionInput.getAction(), (AnimContext) actionInput.getContext()));
         if (!isWait(actionInput.getAction())) {
@@ -59,13 +59,18 @@ public class ActionAnimMaster {
             WaitMaster.WAIT(100);
             if (isAnimatingAction()) {
                 // await();
-                DC_Game.game.getLogManager().log( TimeMaster.getFormattedTime(true, true)+ "Waiting: "+actionInput.getAction().getName());
+                log("Waiting: ", actionInput.getAction());
                 WaitMaster.waitForCondition(p -> !isAnimatingAction(),
                         getMaxAnimTime(actionInput.getAction()));
-                DC_Game.game.getLogManager().log( TimeMaster.getFormattedTime(true, true)+ "Done waiting: "+actionInput.getAction().getName());
+                log("Done waiting: ", actionInput.getAction());
                 break;
             }
         }
+    }
+
+    protected static void log(String s, DC_ActiveObj action) {
+        if (LOGGED)
+            DC_Game.game.getLogManager().log(TimeMaster.getFormattedTime(true, true) + s + action.getName());
     }
 
     protected void initActionAnimation(DC_ActiveObj activeObj, AnimContext context) {
@@ -74,7 +79,7 @@ public class ActionAnimMaster {
             current = result;
             DC_Game.game.getLogManager().log( TimeMaster.getFormattedTime(true, true) + "Current anim time: " + current.getTime());
         } else {
-            DC_Game.game.getLogManager().log( TimeMaster.getFormattedTime(true, true)+ "Null anim: "+activeObj.getName());
+            log("Null anim: ", activeObj);
         }
     }
 

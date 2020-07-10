@@ -303,12 +303,12 @@ public class Assets {
         return result;
     }
 
-    private static void preloadEmitters() {
+    private static void preloadEmitters(EmitterMaster.VFX_ATLAS... atlases) {
 
         EmitterPools.init(get().getManager());
         if (EmitterPools.isPreloaded()) {
             Chronos.mark("preload EmitterPools");
-            for (EmitterMaster.VFX_ATLAS value : EmitterMaster.VFX_ATLAS.values()) {
+            for (EmitterMaster.VFX_ATLAS value : atlases) {
                 switch (value) {
                     case SPELL:
                     case AMBIENCE:
@@ -421,7 +421,7 @@ public class Assets {
     public static void preloadHero(Unit hero) {
         //gdx review
         if (hero.getName().contains("Anphis")) {
-            preloadEmitters();
+            preloadEmitters(EmitterMaster.VFX_ATLAS.SPELL);
         }
     }
 

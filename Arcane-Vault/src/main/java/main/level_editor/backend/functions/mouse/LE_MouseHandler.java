@@ -127,6 +127,8 @@ public class LE_MouseHandler extends LE_Handler {
         set.add(c);
         //        CoordinatesMaster.getCoordinatesBetween()
         switch (shape) {
+            case square_3:
+
             case square_2:
                 set.add(c.getAdjacentCoordinate(DIRECTION.DOWN));
                 set.add(c.getAdjacentCoordinate(DIRECTION.RIGHT));
@@ -144,6 +146,7 @@ public class LE_MouseHandler extends LE_Handler {
                 set.add(c.getAdjacentCoordinate(DIRECTION.DOWN_RIGHT, 1));
                 set.add(c.getAdjacentCoordinate(DIRECTION.DOWN_RIGHT, 2));
                 break;
+
         }
 
         return set;

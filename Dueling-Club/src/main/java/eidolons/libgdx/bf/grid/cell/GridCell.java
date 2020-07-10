@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.RemoveActorAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.active.DefaultActionHandler;
@@ -18,6 +20,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
@@ -38,8 +41,8 @@ import static main.system.GuiEventType.*;
 
 public abstract class GridCell extends BlockableGroup implements Borderable, Colored {
     protected ImageContainer cellImgContainer;
-    protected FadeImageContainer overlay;
     protected TextureRegion backTexture;
+    protected FadeImageContainer overlay;
     protected float overlayRotation;
     protected Image border = null;
     protected int gridX;
@@ -156,9 +159,13 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 DC_Obj dc_cell = Eidolons.gameMaster.getCellByCoordinate(Coordinates.get(getGridX(), getGridY()));
+
                 if (button == Input.Buttons.RIGHT && !event.isHandled()) {
                     event.handle();
-                    GuiEventManager.trigger(CREATE_RADIAL_MENU, dc_cell);
+                    if (getUserObject().getCoordinates().dst(Eidolons.getPlayerCoordinates()) > 1) {
+                        DefaultActionHandler.moveToMotion(getUserObject().getCoordinates());
+                    } else
+                        GuiEventManager.trigger(CREATE_RADIAL_MENU, dc_cell);
                 }
 
                 super.touchUp(event, x, y, pointer, button);
@@ -290,6 +297,8 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
     }
 
     public void setOverlayRotation(float overlayRotation) {
+        if (this.overlayRotation == overlayRotation)
+            return ;
         this.overlayRotation = overlayRotation;
         overlay.setOrigin(64, 64);
         ActionMaster.addRotateByAction(overlay, overlay.getRotation(), overlayRotation);
@@ -297,10 +306,10 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
 
     public void setOverlayTexture(TextureRegion region) {
         if (region == null) {
-            ActionMaster.addFadeOutAction(overlay, 2);
+            ActionMaster.addFadeOutAction(getOverlay(), 2);
             return;
         }
-        ActionMaster.addFadeInAction(overlay, 2);
+        ActionMaster.addFadeInAction(getOverlay(), 2);
         this.overlay.setImage(region);
         GdxMaster.center(this.overlay);
     }
@@ -319,8 +328,28 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
     }
 
     public FadeImageContainer addPillar(String path) {
-        if (pillar == null ) {
-            pillar = new FadeImageContainer(path);
+        if (pillar == null) {
+            pillar = new FadeImageContainer(path) {
+                @Override
+                public void draw(Batch batch, float parentAlpha) {
+                    super.draw(batch, parentAlpha);
+                }
+
+                @Override
+                public boolean remove() {
+                    return super.remove();
+                }
+
+                @Override
+                public void setColor(Color color) {
+                    super.setColor(color);
+                }
+
+                @Override
+                public void setVisible(boolean visible) {
+                    super.setVisible(visible);
+                }
+            };
         } else {
             if (pillar.getImagePath().equalsIgnoreCase(path)) {
                 return null;
@@ -328,17 +357,35 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
             pillar.setImage(path);
         }
         if (pillar.getParent() == null) {
-        addActor(this.pillar );
+            addActor(this.pillar);
         }
         pillar.setZIndex(0);
         return pillar;
     }
 
     public void removePillar() {
-        if (pillar != null) {
-            pillar.fadeOut();
-            ActionMaster.addRemoveAfter(pillar);
+        if (pillar != null)
+            ActionMaster.addAfter(pillar, new SequenceAction(
+                    ActionMaster.getFadeOut(pillar, 1f),
+                    new RemoveActorAction()));
+    }
+
+    public FadeImageContainer getOverlay() {
+        if (overlay == null) {
+            addActor(overlay = new FadeImageContainer() {
+                public float getFadeDuration() {
+                    float mod = 1 / (AnimMaster.speedMod());
+                    return 1.0f * mod;
+                }
+
+                @Override
+                protected boolean isHideWhenFade() {
+                    return false;
+                }
+            });
+            overlay.setTouchable(Touchable.disabled);
         }
+        return overlay;
     }
 
     public FadeImageContainer getPillar() {

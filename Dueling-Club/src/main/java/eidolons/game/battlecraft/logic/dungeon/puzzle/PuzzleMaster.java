@@ -21,6 +21,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums.puzzle_type;
@@ -89,13 +90,13 @@ public class PuzzleMaster {
 
     public void activated(Puzzle puzzle) {
         activePuzzles.add(puzzle);
-        GuiEventManager.trigger(GuiEventType.PUZZLE_STARTED, puzzle);
 
     }
 
     public void deactivated(Puzzle puzzle) {
         activePuzzles.remove(puzzle);
-        GuiEventManager.trigger(GuiEventType.PUZZLE_FINISHED, puzzle);
+        if (puzzle.isMinimizeUI())
+            GuiEventManager.trigger(GuiEventType.PUZZLE_FINISHED, puzzle);
         GuiEventManager.trigger(GuiEventType.POST_PROCESSING_RESET);
     }
 
@@ -113,14 +114,12 @@ public class PuzzleMaster {
             args = dataString;
         }
 
-        String setupData = "";
+        Map<Coordinates, CellScriptData> setupData =new HashMap<>();
         if (block != null)
         for (Coordinates c : block.getCoordinatesSet()) {
             CellScriptData data = customDataMap.get(c);
             if (data != null) {
-                setupData += VariableManager.getStringWithVariable(c.toString(),
-                        data.getValue(CellScriptData.CELL_SCRIPT_VALUE.script)) + ";";
-                //TODO
+                setupData.put(c, data);
             }
 
         }

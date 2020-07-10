@@ -33,6 +33,8 @@ import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
+import main.system.EventCallback;
+import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
@@ -116,7 +118,7 @@ public class AnimMaster extends Group {
         return false;
     }
 
-    public static float getAnimationSpeedFactor() {
+    public static float speedMod() {
         if (Cinematics.ON) {
             return Cinematics.ANIM_SPEED;
         }
@@ -504,9 +506,15 @@ public class AnimMaster extends Group {
     }
 
     public CustomSpriteAnim spriteAnim(String path, Coordinates coordinates) {
+        return spriteAnim(path, coordinates, null , null);
+    }
+    public CustomSpriteAnim spriteAnim(String path, Coordinates coordinates,
+                                       EventCallback callback, EventCallbackParam param) {
         CustomSpriteAnim anim = new CustomSpriteAnim(null, path);
         anim.setOrigin(coordinates);
-        customAnimation(anim);
+        anim.onDone(callback, param);
+        Eidolons.onThisOrGdxThread(()->
+            customAnimation(anim));
         return anim;
     }
 }

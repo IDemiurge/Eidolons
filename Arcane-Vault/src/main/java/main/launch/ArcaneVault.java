@@ -158,6 +158,7 @@ public class ArcaneVault {
         setArcaneVaultIcon();
 
         manager.setMainBuilder(mainBuilder);
+        manager.loaded();
     }
 
     public static MainBuilder getMainBuilder() {

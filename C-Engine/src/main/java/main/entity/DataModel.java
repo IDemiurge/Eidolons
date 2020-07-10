@@ -42,7 +42,9 @@ import main.system.math.MathMaster;
 import main.system.text.TextParser;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by JustMe on 1/28/2017.
@@ -1359,10 +1361,10 @@ public abstract class DataModel {
 
     }
 
-    protected ParamMap cloneParamMap(ObjectMap<PARAMETER, String> map) {
+    protected ParamMap cloneParamMap( Map<PARAMETER, String> map) {
         ParamMap clone = new ParamMap();
-        ObjectMap<PARAMETER, String> innerMap = new ObjectMap<>();
-        for (PARAMETER key : map.keys()) {
+         Map<PARAMETER, String> innerMap = new LinkedHashMap<>();
+        for (PARAMETER key : map.keySet()) {
             String value = map.get(key);
             if (value != null) {
                 innerMap.put(key, value);
@@ -1372,10 +1374,10 @@ public abstract class DataModel {
         return clone;
     }
 
-    protected PropMap clonePropMap(ObjectMap<PROPERTY, String> map) {
+    protected PropMap clonePropMap(Map<PROPERTY, String> map) {
         PropMap clone = new PropMap();
-        ObjectMap<PROPERTY, String> innerMap = new ObjectMap<>();
-        for (PROPERTY key : map.keys()) {
+        Map<PROPERTY, String> innerMap = new LinkedHashMap<>();
+        for (PROPERTY key : map.keySet()) {
             String value = map.get(key);
             if (value != null) {
                 innerMap.put(key, value);

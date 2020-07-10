@@ -5,8 +5,6 @@ import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import eidolons.libgdx.texture.Images;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 public class TopLeftPanel extends GroupX {
 
@@ -51,12 +49,6 @@ public class TopLeftPanel extends GroupX {
 
     protected void bindEvents() {
 
-        GuiEventManager.bind(GuiEventType.PUZZLE_STARTED, p -> {
-//        rollComponent(speedControlPanel, false);
-    });
-        GuiEventManager.bind(GuiEventType.PUZZLE_FINISHED, p -> {
-//        rollComponent(speedControlPanel, true);
-    });
     }
 
     public AtbPanel getAtbPanel() {

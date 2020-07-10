@@ -5,9 +5,12 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.sub.MazeMarkCondition;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.elements.conditions.Condition;
 import main.game.bf.Coordinates;
+
+import java.util.Map;
 
 public class MazePuzzleConstructor extends PuzzleConstructor<MazePuzzle> {
 
@@ -15,7 +18,7 @@ public class MazePuzzleConstructor extends PuzzleConstructor<MazePuzzle> {
         super(args);
     }
 
-    public MazePuzzle create(String data, String blockData, Coordinates coordinates, LevelBlock block) {
+    public MazePuzzle create(String data, Map<Coordinates, CellScriptData> blockData, Coordinates coordinates, LevelBlock block) {
         puzzle = super.create(data, blockData, coordinates, block);
         return puzzle;
     }

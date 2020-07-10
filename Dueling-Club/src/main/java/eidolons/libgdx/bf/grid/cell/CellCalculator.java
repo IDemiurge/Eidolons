@@ -61,7 +61,7 @@ public class CellCalculator {
         if (actor instanceof UnitViewSprite) {
             return 128 - getUnitViewOffset() * (cell.getUnitViewCount() - 1);
         }
-        return actor.getPortrait().getWidth() - getUnitViewOffset() * (cell.getUnitViewCount() - 1);
+        return actor.getPortrait().getWidth() - getUnitViewOffset() * Math.max(0, cell.getUnitViewCount() - 1);
     }
 
     public float getObjScale(BaseView actor) {

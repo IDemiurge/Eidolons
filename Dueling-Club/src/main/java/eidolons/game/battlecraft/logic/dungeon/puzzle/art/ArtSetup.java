@@ -4,23 +4,24 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleActions;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger.PUZZLE_TRIGGER;
 import eidolons.game.core.Eidolons;
 import eidolons.system.ConditionsUtils;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
-import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.entity.ConditionMaster;
+import main.system.entity.ConditionMaster.CONDITION_TEMPLATES;
 
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
+import static eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData.PUZZLE_VALUE;
+import static eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums.PUZZLE_ACTION;
 
 public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
 
@@ -70,21 +71,20 @@ public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
 
     @Override
     public void started() {
-        puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION, Event.STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE,
-                ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
-                PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_CLOCKWISE));
-        puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION, Event.STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE,
-                ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
-                PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_ANTICLOCKWISE));
+        puzzle.createTrigger(PUZZLE_TRIGGER.ACTION, STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE,
+                ConditionsUtils.fromTemplate(CONDITION_TEMPLATES.MAIN_HERO),
+                PuzzleActions.action(PUZZLE_ACTION.ROTATE_MOSAIC_CELL_CLOCKWISE));
+        puzzle.createTrigger(PUZZLE_TRIGGER.ACTION, STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE,
+                ConditionsUtils.fromTemplate(CONDITION_TEMPLATES.MAIN_HERO),
+                PuzzleActions.action(PUZZLE_ACTION.ROTATE_MOSAIC_CELL_ANTICLOCKWISE));
 
-        List<String> mutators = Arrays.asList(mutatorArgs);
-
+        List<String> mutators =data.getMutators();
         if (mutators.contains("on_move"))
-            puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION, Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING,
-                    ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
-                    PuzzleActions.action(PuzzleEnums.PUZZLE_ACTION.ROTATE_MOSAIC_CELL_CLOCKWISE));
+            puzzle.createTrigger(PUZZLE_TRIGGER.ACTION, STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING,
+                    ConditionsUtils.fromTemplate(CONDITION_TEMPLATES.MAIN_HERO),
+                    PuzzleActions.action(PUZZLE_ACTION.ROTATE_MOSAIC_CELL_CLOCKWISE));
 
-        arg = getArtPiecePath(data.getValue(PuzzleData.PUZZLE_VALUE.ARG));
+        arg = getArtPiecePath(data.getValue(PUZZLE_VALUE.ARG));
         Coordinates c = puzzle.getCoordinates();
 
         for (int i = 0; i < puzzle.getWidth(); i++) {

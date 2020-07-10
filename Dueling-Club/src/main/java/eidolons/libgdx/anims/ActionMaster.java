@@ -61,6 +61,11 @@ public class ActionMaster {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+        if (actor.getActions().size==0)
+        {
+            addAction(actor, action);
+            return;
+        }
         AfterAction aa = (AfterAction) getAction(AfterAction.class);
         aa.setAction(action);
         action.setTarget(actor);
@@ -192,16 +197,22 @@ public class ActionMaster {
 
     public static AlphaAction getAlphaAction(Actor actor, float dur, float alpha, boolean add) {
 
-        AlphaAction action = (AlphaAction) getAction(
-                alpha < actor.getColor().a ? FadeOutAction.class : FadeInAction.class);
-        action.setAlpha(alpha);
+        AlphaAction action = (AlphaAction) getAction(alpha < actor.getColor().a ? FadeOutAction.class : FadeInAction.class);
+
+        // if (alpha == 0) {
+        //     action = (AlphaAction) getAction(FadeOutAction.class);
+        // }else if (alpha == 1) {
+        //     action = (AlphaAction) getAction(FadeInAction.class);
+        // } else {
+        //     action = (AlphaAction) getAction(AlphaAction.class);
+            action.setAlpha(alpha);
+        // }
+        // alpha < actor.getColor().a ? FadeOutAction.class : FadeInAction.class);
         action.setDuration(dur);
         action.setTarget(actor);
         action.setInterpolation(Interpolation.fade);
         if (add) {
             if (alpha == actor.getColor().a) {
-                //                if (isAlphaAdjustmentAllowed())
-                //                return null;
                 if (alpha >= 1f)
                     actor.getColor().a = 0;
                 else
@@ -244,7 +255,7 @@ public class ActionMaster {
         if ((action.getAmount()) <= -270)
             action.setAmount(to - from + 360);
 
-        float speed = 260 * AnimMaster.getAnimationSpeedFactor(); //* options
+        float speed = 260 * AnimMaster.speedMod(); //* options
         float duration = Math.abs(from - to) / speed;
         action.setDuration(duration);
         actor.addAction(action);
@@ -499,6 +510,13 @@ public class ActionMaster {
 
     public static void screenOff(BaseView object) {
 
+    }
+
+    public static FadeOutAction getFadeOut(Actor actor, float dur) {
+        FadeOutAction action = (FadeOutAction) getAction(FadeOutAction.class);
+        action.setTarget(actor);
+        action.setDuration(dur);
+        return action;
     }
 
 

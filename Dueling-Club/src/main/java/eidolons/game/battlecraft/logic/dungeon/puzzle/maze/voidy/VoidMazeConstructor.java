@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleRules;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.texture.Sprites;
@@ -15,6 +16,8 @@ import main.elements.conditions.NotCondition;
 import main.elements.conditions.OrConditions;
 import main.elements.conditions.standard.PositionCondition;
 import main.game.bf.Coordinates;
+
+import java.util.Map;
 
 public class VoidMazeConstructor extends MazePuzzleConstructor {
 
@@ -34,7 +37,7 @@ public class VoidMazeConstructor extends MazePuzzleConstructor {
         //TODO sounds too
     }
     @Override
-    public MazePuzzle create(String data, String blockData,
+    public MazePuzzle create(String data, Map<Coordinates, CellScriptData> blockData,
                              Coordinates coordinates, LevelBlock block) {
         MazePuzzle mazePuzzle = super.create(data, blockData, coordinates, block);
         return mazePuzzle;

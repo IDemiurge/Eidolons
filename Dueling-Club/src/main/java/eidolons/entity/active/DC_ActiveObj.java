@@ -17,6 +17,7 @@ import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.math.ModMaster;
 import main.ability.Abilities;
 import main.ability.Interruptable;
+import main.ability.effects.Effect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.enums.entity.ActionEnums.ACTION_TAGS;
@@ -946,6 +947,14 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         this.disabled = disabled;
         if (disabled) {
             getCosts().setReason("Disabled");
+        }
+    }
+
+    public void initAnimRefs(Ref ref) {
+        if (abilities != null) {
+            for (Effect effect : abilities.getEffects()) {
+                effect.initAnimRef(ref);
+            }
         }
     }
 }

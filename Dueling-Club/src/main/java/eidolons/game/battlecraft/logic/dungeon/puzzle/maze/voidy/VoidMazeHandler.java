@@ -72,13 +72,8 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
         updateQuest();
     }
 
-    protected void cinematicStart() {
-    }
-    protected void cinematicFirstCollapse() {
-        Cinematics.doShake(Screenshake.ScreenShakeTemplate.MEDIUM, 2.3f, null);
-    }
-
     protected void beforeTip() {
+        getVoidHandler();
         setup.reset(); //show EXITS
         if (isFirstAttempt()) {
             //for now, we can just assume it's somewhere ABOVE...
@@ -102,15 +97,19 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
         super.afterEndTip();
         cinematicAfter();
     }
-
-    private void cinematicAfter() {
-        CinematicLib.run(CinematicLib.StdCinematic.VOID_MAZE_AFTER);
+    protected void cinematicStart() {
+    }
+    protected void cinematicFirstCollapse() {
+        Cinematics.doShake(Screenshake.ScreenShakeTemplate.MEDIUM, 2.3f, null);
     }
 
+
+    protected void cinematicAfter() {
+        CinematicLib.run(CinematicLib.StdCinematic.VOID_MAZE_AFTER);
+    }
     protected void cinematicFirstMove() {
         CinematicLib.run(CinematicLib.StdCinematic.VOID_MAZE_FIRST_MOVE);
     }
-
     protected void cinematicWin() {
         CinematicLib.run(CinematicLib.StdCinematic.VOID_MAZE_WIN);
     }
@@ -123,7 +122,11 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
         VoidHandler.TEST_MODE = false;
         actions = 0;
         super.started();
+        initVisuals();
         getVoidHandler().toggleAutoOn(Eidolons.getMainHero());
+    }
+
+    private void initVisuals() {
         for (Coordinates c : getPuzzle().falseExits) {
             /*
             false exits are revealed as black holes upon approach!
@@ -189,7 +192,6 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
             firstMoveDone();
         }
         //time period reduced with each MOVE; Making it more turn-based/brainy than fast
-        // if (CoreEngine.TEST_LAUNCH)
         {
             if (!CoordinatesMaster.getCoordinatesBetween(getCoordinates(),
                     getCoordinates().getOffset(getWidth(), getHeight())).contains(action.getOwnerUnit().getCoordinates())) {
@@ -198,16 +200,9 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
             }
         }
         if (action.isMove()) {
-            //use interpolation?.. reduce slowly at first, more later
             actions++;
-
-            // if (!collapsing) {
-            //     firstMoveDone();
-            // } else
-            {
                 collapsePeriod -= getTimePenalty(action);
                 voidHandler.setCollapsePeriod(collapsePeriod);
-            }
             updateQuest();
         }
     }

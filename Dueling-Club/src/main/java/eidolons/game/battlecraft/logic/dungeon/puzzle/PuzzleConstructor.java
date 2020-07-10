@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums.PUZZLE_PUNISHMENT;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums.PUZZLE_RESOLUTION;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -24,6 +25,8 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.entity.ConditionMaster;
 
+import java.util.Map;
+
 import static main.system.auxiliary.StringMaster.ALT_XML_SEPARATOR;
 
 public abstract class PuzzleConstructor<T extends Puzzle> {
@@ -37,12 +40,13 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
     }
 
 
-    public T create(String data, String blockData, Coordinates coordinates, LevelBlock block) {
+    public T create(String data, Map<Coordinates, CellScriptData> blockData, Coordinates coordinates, LevelBlock block) {
         puzzle = createPuzzle();
         puzzle.setCoordinates(coordinates);
         puzzle.setBlock(block);
 
         puzzleData = createData(data);
+        puzzleData.setBlockData ( blockData);
         puzzle.setData(puzzleData);
         PuzzleResolution resolution = createResolutions(puzzleData);
         //        resolution.addPunishment();

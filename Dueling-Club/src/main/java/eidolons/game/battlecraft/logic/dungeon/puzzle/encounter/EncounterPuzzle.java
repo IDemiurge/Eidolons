@@ -48,4 +48,9 @@ public class EncounterPuzzle extends Puzzle {
     public boolean isEscapeAllowed() {
         return true;
     }
+
+    @Override
+    public boolean isMinimizeUI() {
+        return false;
+    }
 }

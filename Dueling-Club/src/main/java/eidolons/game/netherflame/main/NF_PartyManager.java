@@ -71,6 +71,8 @@ public class NF_PartyManager extends ScenarioPartyManager {
 
         if (party == null) {
             party = createParty(type, selectedHero);
+            //gdx review
+            Eidolons.onGdxThread(() -> Assets.preloadHero(party.getLeader()));
             Eidolons.setParty(party);
             party.toBase();
         }
@@ -148,7 +150,6 @@ public class NF_PartyManager extends ScenarioPartyManager {
         GuiEventManager.trigger(GuiEventType.UNIT_CREATED, hero);
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, hero);
 
-        Assets.preloadHero(hero);
     }
 
     protected Coordinates getRespawnCoordinates(ObjType type) {

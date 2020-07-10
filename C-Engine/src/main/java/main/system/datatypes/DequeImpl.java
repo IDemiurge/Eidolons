@@ -1,7 +1,5 @@
 package main.system.datatypes;
 
-import main.system.auxiliary.data.ListMaster;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -59,27 +57,15 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        if (!ListMaster.isNotEmpty(c)) {
+        if (c == null) {
             return false;
         }
-        boolean result = false;
-        try {
-            result = super.addAll(c);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-
-//        size = size();
-        return result;
+       return  super.addAll(c);
     }
 
     public DequeImpl<E> addAllCast(Collection<?> list) {
         for (Object item : list) {
-            try {
                 add((E) item);
-            } catch (Exception e) {
-
-            }
         }
         return this;
     }

@@ -7,6 +7,7 @@ import main.data.ability.OmittedConstructor;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.standard.ZLevelCondition;
 import main.elements.targeting.AutoTargeting;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.bf.Coordinates;
 import main.system.math.Formula;
@@ -66,6 +67,28 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
         if (reductionFormula != null) {
             ref.setValue(KEYS.FORMULA, reductionFormula.toString());
         }
+        if (coordinates == null)
+            initAnimRef(ref);
+        boolean result = effects.apply(ref);
+        if (isLoggingWrapped()) {
+            getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.ZONE_EFFECT, ref.getActive());
+        }
+        return result;
+    }
+
+    public Set<Coordinates> getAndNullCoordinates() {
+        Set<Coordinates> c = coordinates;
+        coordinates = null;
+        return c;
+    }
+
+    public Set<Coordinates> getCoordinates() {
+        return coordinates;
+    }
+
+    @Override
+    public void initAnimRef(Ref ref) {
+        setRef(ref);
         initTargeting();
         if (isZLevelDependent()) {
             getFilteringConditions().add(new ZLevelCondition(true));
@@ -75,7 +98,7 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
         }
         this.targeting.select(ref);
         getActiveObj().getRef().setGroup(ref.getGroup());
-//        if (         (coordinates == null || getActiveObj().checkBool(STD_BOOLS.APPLY_THRU))) {
+        //        if (         (coordinates == null || getActiveObj().checkBool(STD_BOOLS.APPLY_THRU))) {
         if (ref.getGroup() != null) {
             if (!ref.getGroup().getObjects().isEmpty()) {
                 if (coordinates == null)
@@ -83,17 +106,6 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
                 ref.getGroup().getObjects().forEach(o -> coordinates.add(o.getCoordinates()));
             }
         }
-        boolean result;
-
-        result = effects.apply(ref);
-        if (isLoggingWrapped()) {
-            getGame().getLogManager().doneLogEntryNode(ENTRY_TYPE.ZONE_EFFECT, ref.getActive());
-        }
-        return result;
-    }
-
-    public Set<Coordinates> getCoordinates() {
-        return coordinates;
     }
 
     protected boolean isLoggingWrapped() {
@@ -101,7 +113,7 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
     }
 
     protected boolean isZLevelDependent() {
-//        return getGame().isMultiLevel();
+        //        return getGame().isMultiLevel();
         return false;
     }
 

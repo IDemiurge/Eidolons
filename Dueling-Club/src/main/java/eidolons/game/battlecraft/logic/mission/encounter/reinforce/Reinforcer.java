@@ -5,6 +5,9 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
+import main.content.DC_TYPE;
+import main.content.enums.EncounterEnums;
+import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
@@ -13,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static eidolons.content.PROPS.PRESET_GROUP;
 import static main.content.enums.EncounterEnums.REINFORCEMENT_CHANCE;
 
 public class Reinforcer {
@@ -35,6 +39,19 @@ public class Reinforcer {
         // per encounter?
     }
 
+    public List<ObjType> getReinforceTypes(EncounterEnums.REINFORCEMENT_STRENGTH strength) {
+        PROPS prop=PRESET_GROUP;
+        switch (strength) {
+            case low:
+                prop = PROPS.SHRUNK_PRESET_GROUP;
+                break;
+            case high:
+                prop = PROPS.EXTENDED_PRESET_GROUP;
+                break;
+        }
+        String property = encounter.getProperty(prop);
+        return DataManager.toTypeList(property, DC_TYPE.UNITS);
+    }
     private void preCombat(Reinforcement reinforcement ) {
         switch (reinforcement.type) {
             case call_help:
@@ -98,4 +115,5 @@ public class Reinforcer {
                 break;
         }
     }
+
 }

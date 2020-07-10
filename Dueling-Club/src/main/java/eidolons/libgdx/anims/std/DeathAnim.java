@@ -158,13 +158,11 @@ public class DeathAnim extends ActionAnim {
             return;
         }
         super.start();
-        main.system.auxiliary.log.LogMaster.log(1,"Death Anim started with \n" +getRef());
         add();
     }
 
     @Override
     public void finished() {
-        main.system.auxiliary.log.LogMaster.log(1,"Death Anim finished with \n" +getRef());
         super.finished();
         getActor().setVisible(false);
         dispose();

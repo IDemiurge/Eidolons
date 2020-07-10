@@ -377,7 +377,7 @@ public class SpellAnim extends ActionAnim {
         for (SpellVfx e : getEmitterList()) {
             for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
                 if (e.getSpeed() == 1f)
-                    e.setSpeed(MathUtils.lerp(getDefaultVfxSpeed(part), AnimMaster.getAnimationSpeedFactor(),
+                    e.setSpeed(MathUtils.lerp(getDefaultVfxSpeed(part), AnimMaster.speedMod(),
                             0.3f));
                 if (max < emitter.duration / e.getSpeed())
                     max = emitter.duration / e.getSpeed();

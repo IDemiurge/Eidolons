@@ -197,12 +197,12 @@ public class ActionPanel extends GroupX {
             ActionMaster.addMoveToAction(this, defaultX, getY(), 1.4f);
         });
 
-        GuiEventManager.bind(GuiEventType.PUZZLE_STARTED, p -> {
+        GuiEventManager.bind(GuiEventType.MINIMIZE_UI_ON, p -> {
             ActionMaster.addMoveToAction(this, getX(), PUZZLE_OFFSET_Y, 1.4f);
             soulParamsBar.fadeOut();
             bodyParamsBar.fadeOut();
         });
-        GuiEventManager.bind(GuiEventType.PUZZLE_FINISHED, p -> {
+        GuiEventManager.bind(GuiEventType.MINIMIZE_UI_OFF, p -> {
             ActionMaster.addMoveToAction(this, getX(), 0, 1.4f);
             soulParamsBar.fadeIn();
             bodyParamsBar.fadeIn();

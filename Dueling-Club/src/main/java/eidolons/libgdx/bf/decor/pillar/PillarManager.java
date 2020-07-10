@@ -175,6 +175,10 @@ public class PillarManager extends GridHandler {
             Set<DIRECTION> voidAdjacent = voidAdjacency.get(c);
             if (voidAdjacent != null) { //TODO might need to create it!
                 GridCellContainer container = grid.getCells()[c.x][c.y];
+                if (container.getUserObject().isVOID()) {
+                    container.removePillar();
+                    continue;
+                }
                 PILLAR p = getPillarForCell(voidAdjacent, wall);
                 if (p == null) {
                     container.removePillar();

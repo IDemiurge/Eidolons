@@ -12,7 +12,7 @@ import main.game.bf.directions.UNIT_DIRECTION;
 public class CONTENT_CONSTS {
 
     public enum    MARK {
-        boss, entrance, resp, togglable, undecorated, _void,
+        boss, entrance, resp, togglable, undecorated, _void,block
     }
     public enum COLOR_THEME {
         BLUE, GREEN, RED, DARK, LIGHT, YELLOW, PURPLE {

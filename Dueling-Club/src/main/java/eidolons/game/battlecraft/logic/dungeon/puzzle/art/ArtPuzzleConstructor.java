@@ -3,9 +3,12 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.art;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.ManipulatorPuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.elements.conditions.Condition;
 import main.game.bf.Coordinates;
+
+import java.util.Map;
 
 public class ArtPuzzleConstructor extends ManipulatorPuzzleConstructor<ArtPuzzle> {
 
@@ -19,7 +22,7 @@ public class ArtPuzzleConstructor extends ManipulatorPuzzleConstructor<ArtPuzzle
     }
 
     @Override
-    public ArtPuzzle create(String data, String blockData, Coordinates coordinates, LevelBlock block) {
+    public ArtPuzzle create(String data, Map<Coordinates, CellScriptData> blockData, Coordinates coordinates, LevelBlock block) {
         ArtPuzzle puzzle = super.create(data, blockData, coordinates, block);
         return puzzle;
     }

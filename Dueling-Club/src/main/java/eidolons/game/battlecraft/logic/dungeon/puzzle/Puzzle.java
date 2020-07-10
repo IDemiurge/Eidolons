@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Veil;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.*;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.flight.FlightData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.generator.model.AbstractCoordinates;
@@ -244,7 +245,11 @@ public abstract class Puzzle {
     }
 
     public float getDifficultyCoef() {
-        return data.getFloatValue(PuzzleData.PUZZLE_VALUE.DIFFICULTY_COEF) / 100;
+        float value = data.getFloatValue(PuzzleData.PUZZLE_VALUE.DIFFICULTY_COEF);
+        if (value==0) {
+            return 1f;
+        }
+        return value / 100;
     }
 
     public void decrementCounter() {
@@ -291,7 +296,7 @@ public abstract class Puzzle {
     }
 
     public boolean isMinimizeUI() {
-        return false;
+        return true;
     }
 
     public void finished() {
@@ -324,5 +329,9 @@ public abstract class Puzzle {
 
     public String getEnterCinematicScriptKey() {
         return null;
+    }
+
+    public DC_Game getGame() {
+        return DC_Game.game;
     }
 }

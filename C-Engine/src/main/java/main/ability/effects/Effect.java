@@ -97,6 +97,10 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
 
     void setOriginalFormula(Formula formula);
 
+    default void initAnimRef(Ref ref) {
+
+    }
+
 
     enum ABILITY_MANIPULATION {
         ADD, REMOVE, REMOVE_ALL, MODIFY_FORMULA, STEAL

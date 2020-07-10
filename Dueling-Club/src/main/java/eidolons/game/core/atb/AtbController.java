@@ -5,6 +5,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
+import eidolons.system.text.Logging;
 import main.entity.Ref;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -146,6 +147,7 @@ public class AtbController implements Comparator<Unit> {
         GuiEventManager.trigger(GuiEventType.NEW_ATB_TIME, this.time);
         }
         if (!isPrecalc()) {
+            if (Logging.isLogged(Logging.LOG_CASE.atb))
             if (time > 0)
                 manager.getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, getTimeString(time) + " passed, " +
                         getTimeString(SECONDS_IN_ROUND - this.time) +

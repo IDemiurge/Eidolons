@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -17,14 +16,11 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.libgdx.GDX;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FadeOutAction;
-import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.Hoverable;
 import eidolons.libgdx.bf.datasource.GridCellDataSource;
-import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.overlays.map.WallMap;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -123,12 +119,6 @@ public class GridCellContainer extends GridCell implements Hoverable {
             imgContainer.setColor(c.r, c.g, c.b, a1);
 
         }
-        // if (pillar != null) {
-        //     if (pillar.getParent() != null)
-        //         if (pillar.getActions().size == 0) {
-        //             pillar.setColor(c.r, c.g, c.g, a1);
-        //         }
-        // }
         for (GenericGridView unitView : getUnitViews(true)) {
             float a = unitView.getPortrait().getContent().getColor().a;
             unitView.getPortrait().getContent().getColor().lerp(c, LightConsts.UNIT_VIEW_COLOR_LERP);
@@ -288,9 +278,9 @@ public class GridCellContainer extends GridCell implements Hoverable {
             } else {
                 actor.setScale(scaleX, scaleY);
             }
-            actor.sizeChanged();
             actor.setScaledHeight(scaleY);
             actor.setScaledWidth(scaleX);
+            actor.sizeChanged();
 
             recalcImagesPos(actor, offset, offset, index++);
             if (actor.getUserObject().isWall()) {
@@ -696,22 +686,8 @@ public class GridCellContainer extends GridCell implements Hoverable {
         if (getUnitViewsVisible().size() >= 1) {
             return;
         }
-        if (overlay == null) {
-            addActor(overlay = new FadeImageContainer(new Image(texture)) {
-                public float getFadeDuration() {
-                    float mod = 1 / (AnimMaster.getAnimationSpeedFactor());
-                    return 1.0f * mod;
-                }
-
-                @Override
-                protected boolean isHideWhenFade() {
-                    return false;
-                }
-            });
-            overlay.setTouchable(Touchable.disabled);
-            GdxMaster.center(overlay);
-        } else {
-            if (overlay.getParent() == null) {
+        {
+            if (getOverlay().getParent() == null) {
                 addActor(overlay);
             }
             overlay.setContentsImmediately(new Image(texture));

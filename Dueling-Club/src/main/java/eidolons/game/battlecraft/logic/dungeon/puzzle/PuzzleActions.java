@@ -16,7 +16,6 @@ import eidolons.game.module.generator.model.AbstractCoordinates;
 import eidolons.game.netherflame.main.event.TipMessageMaster;
 import eidolons.game.netherflame.main.pale.PaleAspect;
 import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.anims.std.sprite.CustomSpriteAnim;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.EncounterEnums;
@@ -48,7 +47,7 @@ public class PuzzleActions extends PuzzleElement {
                     DC_Cell cell = DC_Game.game.getCellByCoordinate(Eidolons.getPlayerCoordinates());
                     cell.setOverlayRotation(cell.getOverlayRotation() + 90 * (int) (arg));
 
-                    if (cell.getOverlayRotation()%360==0) {
+                    if (cell.getOverlayRotation() % 360 == 0) {
                         DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.CLICK_ACTIVATE);
                     }
                     GuiEventManager.trigger(GuiEventType.CELL_RESET, cell);
@@ -63,6 +62,19 @@ public class PuzzleActions extends PuzzleElement {
 
     public static void punishment(Puzzle puzzle, PuzzleEnums.PUZZLE_PUNISHMENT punishment, String data) {
         WaitMaster.WAIT(puzzle.getWaitTimeBeforeEndMsg(true));
+        try {
+           applyPunishment(puzzle, punishment, data);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        // if (!isPaleReturn(puzzle,punishment))
+        puzzle.failed();
+        if (puzzle.isPale()) {
+            PaleAspect.exitPale();
+        }
+    }
+
+    private static void applyPunishment(Puzzle puzzle, PuzzleEnums.PUZZLE_PUNISHMENT punishment, String data) {
         switch (punishment) {
             case battle:
             case death:
@@ -77,11 +89,6 @@ public class PuzzleActions extends PuzzleElement {
             case awaken:
                 awaken(puzzle, data);
                 break;
-        }
-        // if (!isPaleReturn(puzzle,punishment))
-        puzzle.failed();
-        if (puzzle.isPale()) {
-            PaleAspect.exitPale();
         }
     }
 
@@ -147,11 +154,11 @@ public class PuzzleActions extends PuzzleElement {
             data = puzzle.getEntranceCoordinates().toString();
         }
         Coordinates c = puzzle.getAbsoluteCoordinate((new AbstractCoordinates(true, data)));
-        CustomSpriteAnim anim = AnimMaster.getInstance().spriteAnim(Sprites.PORTAL_CLOSE,
-                Eidolons.getMainHero().getCoordinates());
-        anim.onDone(p ->
-                AnimMaster.getInstance().spriteAnim(Sprites.PORTAL_OPEN,
-                        c), null);
+
+        AnimMaster.getInstance().spriteAnim(Sprites.PORTAL_CLOSE,
+                Eidolons.getMainHero().getCoordinates(), p ->
+                        AnimMaster.getInstance().spriteAnim(Sprites.PORTAL_OPEN,
+                                c), null);
         Eidolons.getGame().getMissionMaster().getScriptManager().execute(
                 CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.REPOSITION,
                 Ref.getSelfTargetingRefCopy(Eidolons.getMainHero()), c.toString());

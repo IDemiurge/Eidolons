@@ -24,6 +24,10 @@ public class AvKeyHandler extends AvHandler implements KeyListener {
         game = DC_Game.game;
     }
 
+    @Override
+    public void loaded() {
+        ArcaneVault.getMainBuilder().setKeyListener (this);
+    }
 
     private void copyValues() {
         ArcaneVault.getMainBuilder().getEditViewPanel().copySelectedValues();

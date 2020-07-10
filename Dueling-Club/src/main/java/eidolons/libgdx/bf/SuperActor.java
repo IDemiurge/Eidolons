@@ -64,12 +64,13 @@ public abstract class SuperActor extends Fluctuating implements
     @Override
     protected void sizeChanged() {
         super.sizeChanged();
-        if (getScaleY()!=1) {
+        if (getScaledHeight()!=1) {
             setTransform(true);
-        }
-        if (getScaleX()!=1) {
+        } else
+        if (getScaledWidth()!=1) {
             setTransform(true);
-        }
+        } else
+            setTransform(getRotation()%360!=0);
     }
 
     public float getScreenOverlay() {

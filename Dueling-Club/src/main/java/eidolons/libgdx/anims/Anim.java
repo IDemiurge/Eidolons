@@ -810,7 +810,7 @@ public class Anim extends Group implements Animation {
     }
 
     public void setDuration(float duration) {
-        float mod = 1 / (AnimMaster.getAnimationSpeedFactor());
+        float mod = 1 / (AnimMaster.speedMod());
         if (mod > 0)
             this.duration = duration * mod;
         else {
@@ -823,7 +823,7 @@ public class Anim extends Group implements Animation {
             pixelsPerSecond = data.getIntValue(ANIM_VALUES.MISSILE_SPEED);
         } else
             pixelsPerSecond = getDefaultSpeed();
-        float mod = new Float(AnimMaster.getAnimationSpeedFactor());
+        float mod = new Float(AnimMaster.speedMod());
         if (mod > 0)
             return pixelsPerSecond * mod;
         return pixelsPerSecond;

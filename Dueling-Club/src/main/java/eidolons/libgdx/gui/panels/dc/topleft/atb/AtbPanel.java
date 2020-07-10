@@ -245,6 +245,7 @@ public class AtbPanel extends GroupX {
         List<QueueView> views = new ArrayList<>();
         DequeImpl<Unit> displayedUnitQueue = DC_Game.game.getTurnManager().getDisplayedUnitQueue();
         viewsShown = DC_Game.game.getTurnManager().getDisplayedUnitQueue().size();
+        if (!isRealTime())
         displayedUnitQueue.stream().forEach(unit -> {
             Object o = ScreenMaster.getGrid().getViewMap().get(unit);
             if (o instanceof UnitGridView) {
@@ -318,7 +319,7 @@ public class AtbPanel extends GroupX {
 
     public void toggleQueue(boolean visible) {
         cleanUp();
-        // rollComponent(container, visible);
+        rollComponent(container, visible);
 
         float x = !visible ? getInactiveX() : getActiveX();
         float y = background.getY();
@@ -358,16 +359,7 @@ public class AtbPanel extends GroupX {
         container.setX(184);
         horizontal.setY(8);
         super.act(delta);
-        if (isRealTime()) {
-            // if (container.isVisible())
-            //     if (ActionMaster.getActionsOfClass(container, MoveToAction.class).size() == 0) {
-            //         toggleQueue(false);
-            //     }
-        } else {
-            // if (!container.isVisible())
-            //     if (ActionMaster.getActionsOfClass(container, MoveToAction.class).size() == 0)
-            //         toggleQueue(true);
-
+        if (!isRealTime()) {
             timePassedSincePosCheck += delta;
             if (DC_Game.game.isDebugMode() ||
                     timePassedSincePosCheck > POS_CHECK_PERIOD ||

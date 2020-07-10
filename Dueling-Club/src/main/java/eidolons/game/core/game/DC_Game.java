@@ -44,7 +44,6 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.netherflame.main.pale.PaleAspect;
-import eidolons.libgdx.bf.grid.handlers.GridManager;
 import eidolons.macro.entity.town.Town;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.DC_RequirementsManager;
@@ -513,7 +512,7 @@ public class DC_Game extends GenericGame {
         super.remove(obj);
         if (obj instanceof BattleFieldObject) {
             if (((BattleFieldObject) obj).isWall()) {
-                GridManager.reset();
+                manager.setWallResetRequired(true);
             }
             softRemove((BattleFieldObject) obj);
         }

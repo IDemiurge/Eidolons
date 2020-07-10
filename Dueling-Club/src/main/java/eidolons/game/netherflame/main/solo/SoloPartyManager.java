@@ -1,5 +1,6 @@
 package eidolons.game.netherflame.main.solo;
 
+import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
@@ -35,6 +36,9 @@ public class SoloPartyManager extends NF_PartyManager {
     @Override
     public boolean heroUnconscious(Unit unit) {
         //instead of all unconscious mechanics
+        getGame().getLogManager().log(unit.getName()+" falls..." );
+        getGame().getLogManager().log("... and rises again.");
+        getGame().getLogManager().log("Endurance remaining: "+ findMainHero().getIntParam(PARAMS.C_ENDURANCE));
         CinematicLib.run(CinematicLib.StdCinematic.UNCONSCIOUS_BEFORE);
 
         Coordinates respawnCoordinates = getRespawnCoordinates(null);

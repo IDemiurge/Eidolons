@@ -122,4 +122,7 @@ public class AvHandler {
     public AvTableHandler getTableHandler() {
         return manager.getTableHandler();
     }
+
+    public void loaded() {
+    }
 }

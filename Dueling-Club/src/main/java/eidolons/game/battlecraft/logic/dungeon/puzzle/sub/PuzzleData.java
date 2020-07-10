@@ -2,14 +2,20 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.sub;
 
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.EDIT_VALUE_TYPE;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
+import main.game.bf.Coordinates;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.data.DataUnit;
 
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class PuzzleData extends DataUnit<PuzzleData.PUZZLE_VALUE> {
 
     private boolean alt;
+    private Map<Coordinates, CellScriptData> blockData;
 
     public PuzzleEnums.PUZZLE_ACTION_BASE getCounterActionBase() {
         PuzzleEnums.PUZZLE_ACTION_BASE base = new EnumMaster<PuzzleEnums.PUZZLE_ACTION_BASE>().
@@ -44,6 +50,20 @@ public class PuzzleData extends DataUnit<PuzzleData.PUZZLE_VALUE> {
     public PuzzleData(String text) {
         super(text);
     }
+
+    public List<String> getMutators() {
+      return   ContainerUtils.openContainer(
+                getValue(PUZZLE_VALUE.MUTATORS), "$");
+    }
+
+    public void setBlockData(Map<Coordinates, CellScriptData> blockData) {
+        this.blockData = blockData;
+    }
+
+    public Map<Coordinates, CellScriptData> getBlockData() {
+        return blockData;
+    }
+
 
     public enum PUZZLE_VALUE implements LevelStructure.EditableValue {
         TYPE(EDIT_VALUE_TYPE.enum_const){
@@ -90,7 +110,7 @@ public class PuzzleData extends DataUnit<PuzzleData.PUZZLE_VALUE> {
         COUNTER_TYPE, COUNTERS_MAX,
         AMBIENCE,
         SOULFORCE_REWARD,
-        ;
+        MUTATORS(),  ;
 
 
         private final EDIT_VALUE_TYPE type;

@@ -21,6 +21,7 @@ import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.TargetRunnable;
+import eidolons.libgdx.bf.grid.handlers.GridManager;
 import eidolons.libgdx.bf.overlays.bar.HpBar;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
@@ -75,6 +76,7 @@ public class DC_GameManager extends GameManager {
     private DeathMaster deathMaster;
     private ObjCreator objCreator;
     private BattleFieldObject highlightedObj;
+    private boolean wallResetRequired;
 
     public DC_GameManager(DC_GameState state, DC_Game game) {
         super(state, game);
@@ -182,6 +184,8 @@ public class DC_GameManager extends GameManager {
         if (!game.isStarted()) {
             updateGraphics();
             resetWallMap();
+            if (wallResetRequired)
+                GridManager.reset();
             return;
         }
         GameState.setResetDone(false);
@@ -192,6 +196,8 @@ public class DC_GameManager extends GameManager {
         checkForChanges(true);
 
         resetWallMap();
+        if (wallResetRequired)
+            GridManager.reset();
 
         VisionHelper.refresh();
 
@@ -451,7 +457,7 @@ public class DC_GameManager extends GameManager {
             getActiveObj().getActionMap().get(group).get(index).invokeClicked();
             DungeonScreen.getInstance().getController().inputPass();
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
             FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
                     "Disabled!", getMainHero());
         }
@@ -675,5 +681,13 @@ public class DC_GameManager extends GameManager {
 
     public Coordinates getMainHeroCoordinates() {
         return getMainHero().getCoordinates();
+    }
+
+    public void setWallResetRequired(boolean wallResetRequired) {
+        this.wallResetRequired = wallResetRequired;
+    }
+
+    public boolean getWallResetRequired() {
+        return wallResetRequired;
     }
 }

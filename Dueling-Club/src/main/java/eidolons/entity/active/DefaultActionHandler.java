@@ -210,7 +210,7 @@ public class DefaultActionHandler {
             if (source.getGame().isDebugMode()) {
                 return doDebugStuffCell(source, c);
             }
-            return moveToMotion(source, c);
+            return moveToMotion( c);
         }
 
         if (EidolonsGame.MOVES_DISABLED) {
@@ -354,7 +354,8 @@ public class DefaultActionHandler {
         return false;
     }
 
-    private static boolean moveToMotion(Unit source, Coordinates coordinates) {
+    public static boolean moveToMotion(Coordinates coordinates) {
+        Unit source=Eidolons.getMainHero();
         if (!isMoveToOn())
             return false;
         source.getGame().getMovementManager().cancelAutomove(source);

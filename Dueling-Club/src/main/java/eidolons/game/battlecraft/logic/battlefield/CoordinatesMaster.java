@@ -540,7 +540,7 @@ public class CoordinatesMaster {
         Set<Coordinates> coordinates = null;
         if (effect != null) {
             SpecialTargetingEffect targetEffect = (SpecialTargetingEffect) effect;
-            coordinates = targetEffect.getCoordinates();
+            coordinates = targetEffect.getAndNullCoordinates();
         }
         return coordinates;
     }

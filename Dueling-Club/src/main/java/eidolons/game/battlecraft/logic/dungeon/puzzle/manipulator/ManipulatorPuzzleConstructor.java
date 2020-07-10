@@ -5,13 +5,14 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleRules;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+
+import java.util.Map;
 
 public abstract class ManipulatorPuzzleConstructor<T extends ManipulatorPuzzle> extends PuzzleConstructor<T> {
 
@@ -20,13 +21,9 @@ public abstract class ManipulatorPuzzleConstructor<T extends ManipulatorPuzzle> 
     }
 
     @Override
-    public T create(String data, String blockData, Coordinates coordinates, LevelBlock block) {
+    public T create(String data, Map<Coordinates, CellScriptData> blockData, Coordinates coordinates, LevelBlock block) {
         T puzzle = super.create(data, blockData, coordinates, block);
         setupPuzzle(puzzle, blockData);
-
-
-
-
         return puzzle;
     }
 
@@ -59,14 +56,11 @@ public abstract class ManipulatorPuzzleConstructor<T extends ManipulatorPuzzle> 
                 c, data));
     }
 
-    protected Puzzle setupPuzzle(Puzzle puzzle, String setupData) {
-
-        for (String data : ContainerUtils.openContainer(setupData)) {
-            if (data.contains("manip(")) {
-                initManipulator(puzzle, Coordinates.get(VariableManager.removeVarPart(data)),
-                        VariableManager.getVarPart(data));
-            }
-        }
+    protected Puzzle setupPuzzle(Puzzle puzzle, Map<Coordinates, CellScriptData> setupData) {
+            // if (data.contains("manip(")) {
+            //     initManipulator(puzzle, Coordinates.get(VariableManager.removeVarPart(data)),
+            //             VariableManager.getVarPart(data));
+            // }
         /**
          * we could skip this for now and do direct init!
          *

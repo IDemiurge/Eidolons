@@ -28,7 +28,7 @@ import java.util.List;
 import static main.system.GuiEventType.SCREEN_LOADED;
 
 
-public class Spawner  extends DungeonHandler  {
+public class Spawner extends DungeonHandler {
 
     public Spawner(DungeonMaster master) {
         super(master);
@@ -66,7 +66,7 @@ public class Spawner  extends DungeonHandler  {
                 moduleWidth,
                 moduleHeight
         );
-        GuiEventManager.trigger(GuiEventType. INITIAL_LOAD_DONE, param);
+        GuiEventManager.trigger(GuiEventType.INITIAL_LOAD_DONE, param);
 
         GuiEventManager.trigger(SCREEN_LOADED,
                 param);
@@ -151,6 +151,16 @@ public class Spawner  extends DungeonHandler  {
                 type = new UnitLevelManager().getLeveledType(type, levelUps);
             }
         }
+        FACING_DIRECTION facing_direction = FACING_DIRECTION.NORTH;
+        try {
+            facing_direction =
+                    facing == null
+                            ? getFacingAdjuster().getFacingForUnit(c, type.getName())
+                            : FacingMaster.getFacing(facing);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        c = Positioner.adjustCoordinate(type, c, facing_direction);
 
         Unit unit = (Unit) game.getManager().getObjCreator().createUnit(type, c.x, c.y, owner, new Ref(game));
 
@@ -159,16 +169,8 @@ public class Spawner  extends DungeonHandler  {
         if (unit.isMine())
             TestMasterContent.addTestItems(unit.getType(), false);
 
-        try {
-            FACING_DIRECTION facing_direction = facing == null
-                    ? getFacingAdjuster().getFacingForUnit(c, type.getName())
-                    : FacingMaster.getFacing(facing);
-            unit.setFacing(facing_direction);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-            unit.setFacing(FACING_DIRECTION.NORTH);
-        }
 
+        unit.setFacing(facing_direction);
         return unit;
     }
 
@@ -207,14 +209,13 @@ public class Spawner  extends DungeonHandler  {
                 .getEnemySpawningCoordinates();
         offset_coordinate = spawnCoordinates.getOffsetByX(offsetX).getOffsetByY(offsetY);
         List<MicroObj> units = null;
-//      TODO   DC_ObjInitializer.createUnits(game.getPlayer(me), data, offset_coordinate);
+        //      TODO   DC_ObjInitializer.createUnits(game.getPlayer(me), data, offset_coordinate);
 
 
         List<Unit> list = new ArrayList<>();
         units.stream().forEach(unit -> list.add((Unit) unit));
         return list;
     }
-
 
 
     //after-spawn actions -

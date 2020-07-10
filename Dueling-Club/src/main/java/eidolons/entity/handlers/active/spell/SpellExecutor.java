@@ -8,6 +8,7 @@ import eidolons.entity.handlers.active.Executor;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
+import eidolons.game.core.ActionInput;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.HeroAnalyzer;
 import eidolons.game.module.herocreator.logic.spells.DivinationMaster;
@@ -137,7 +138,7 @@ public class SpellExecutor extends Executor {
     }
 
     @Override
-    public void resolve() {
+    public void resolve(ActionInput input) {
         DC_SoundMaster.playEffectSound(SOUNDS.DARK, getAction().getOwnerObj());
         DC_SoundMaster.playEffectSound(SOUNDS.EVIL, getAction().getOwnerObj());
         if (!getRef().isQuiet()) {
@@ -153,7 +154,7 @@ public class SpellExecutor extends Executor {
 
         applySpellpowerMod();
         DC_SoundMaster.playEffectSound(SOUNDS.RESOLVE, getSpell());
-        super.resolve();
+        super.resolve(input);
         if (result) {
             applyImpactSpecialEffect();
         }
