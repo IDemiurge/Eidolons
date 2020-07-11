@@ -10,7 +10,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
@@ -18,6 +17,7 @@ import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import eidolons.game.battlecraft.rules.combat.misc.KnockdownRule;
 import eidolons.game.battlecraft.rules.mechanics.InterruptRule;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.system.math.roll.RollMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
@@ -198,7 +198,7 @@ public class ForceRule {
                     SPECIAL_EFFECTS_CASE.ON_ATTACK;
             Effect onCase = action.getSpecialEffects().get(CASE);
             if (onCase != null) {
-                List<Effect> force = EffectFinder.getEffectsOfClass(onCase, ForceEffect.class);
+                List<Effect> force = EffectMaster.getEffectsOfClass(onCase, ForceEffect.class);
                 if (onCase instanceof Effects) {
                     for (Effect effect : force) {
                         ((Effects) onCase).remove(effect);

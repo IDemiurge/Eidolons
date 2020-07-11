@@ -3,8 +3,8 @@ package eidolons.ability.effects.oneshot.rule;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.common.AddStatusEffect;
@@ -21,7 +21,7 @@ public class UnconsciousBuffEffect extends AddBuffEffect {
     }
 
     private static Effect getEffects() {
-        Effects effects = EffectFinder.initParamModEffects(PARAM_MOD_EFFECTS_STRING, new Ref());
+        Effects effects = EffectMaster.initParamModEffects(PARAM_MOD_EFFECTS_STRING, new Ref());
         effects.add(new ModifyValueEffect(PARAMS.INITIATIVE, MOD.MODIFY_BY_PERCENT,
                 "-"+UnconsciousRule.DEFAULT_INITIATIVE_PENALTY));
         effects.add(new AddStatusEffect(UnitEnums.STATUS.PRONE));

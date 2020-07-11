@@ -265,7 +265,7 @@ public class PathChoiceMaster {
         if (sneakCells.contains(c)) {
             return true;
         }
-        unit.setCoordinates(c); // change facing
+        unit.setTempCoordinates(c); // change facing
         // preCheck range
         if (PositionMaster.getDistance(targetAction.getTarget().getCoordinates(), c) > targetAction
          .getActive().getIntParam(PARAMS.RANGE)) {

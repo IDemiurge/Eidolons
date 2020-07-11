@@ -6,8 +6,8 @@ import eidolons.entity.handlers.active.action.ActionActiveMaster;
 import eidolons.entity.handlers.active.action.ActionExecutor;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.DC_RuleMaster;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
 import main.content.enums.entity.ActionEnums;
@@ -100,7 +100,7 @@ public class DC_UnitAction extends DC_ActiveObj {
         if (modeEffect != null) {
             return modeEffect;
         }
-        List<Effect> e = EffectFinder.getEffectsOfClass(this, ModeEffect.class);
+        List<Effect> e = EffectMaster.getEffectsOfClass(this, ModeEffect.class);
         if (!e.isEmpty()) {
             modeEffect = (ModeEffect) e.get(0);
         }

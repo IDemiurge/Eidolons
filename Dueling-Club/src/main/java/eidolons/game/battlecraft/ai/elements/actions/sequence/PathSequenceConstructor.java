@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.AiLogger;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
+import eidolons.game.battlecraft.ai.tools.path.alphastar.StarBuilder;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.battlecraft.ai.tools.time.TimeLimitMaster;
 import main.content.enums.entity.ActionEnums;
@@ -82,8 +83,8 @@ public class PathSequenceConstructor extends AiHandler {
         //
         // else
 
-        if (isStar()){
-            paths = getStarBuilder().build(targetCells);
+        if (isStar(action, targetCells)){
+            paths = getStarBuilder().build(getUnit(), targetCells);
         } else
         paths = getPathBuilder().init(moveActions, action).build(targetCells);
         if (action != null) {
@@ -92,6 +93,14 @@ public class PathSequenceConstructor extends AiHandler {
         pathCache.put(targetCells, paths);
 
         return paths;
+    }
+
+    private boolean isStar(Action action, List<Coordinates> targetCells) {
+        for (Coordinates targetCell : targetCells) {
+            if (targetCell.dst(action.getActive().getOwnerObj().getCoordinates()) >StarBuilder.PREF_MIN_RANGE)
+                return true;
+        }
+        return false;
     }
 
     private boolean isStar() {
@@ -174,7 +183,7 @@ public class PathSequenceConstructor extends AiHandler {
                     if (!TargetingMaster.isValidTargetingCell(targetAction, c, getUnit())) {
                         continue;
                     }
-                    getUnit().setCoordinates(c); // TODO causes visuals!
+                    getUnit().setTempCoordinates(c);
 
                     if (TargetingMaster.canBeTargeted(targetAction, true, true)) {
                         list.add(c);
@@ -184,7 +193,7 @@ public class PathSequenceConstructor extends AiHandler {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
-            getUnit().setCoordinates(originalCoordinate);
+            getUnit().setTempCoordinates(originalCoordinate);
         }
         if (list.size() > 1) {
             list = getPruneMaster().pruneTargetCells(targetAction, list);

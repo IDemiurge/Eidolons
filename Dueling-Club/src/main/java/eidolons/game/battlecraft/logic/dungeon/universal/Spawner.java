@@ -160,7 +160,13 @@ public class Spawner extends DungeonHandler {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        c = Positioner.adjustCoordinate(type, c, facing_direction);
+        if (game.isStarted()) {
+            try {
+                c = Positioner.adjustCoordinate(type, c, facing_direction);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
 
         Unit unit = (Unit) game.getManager().getObjCreator().createUnit(type, c.x, c.y, owner, new Ref(game));
 

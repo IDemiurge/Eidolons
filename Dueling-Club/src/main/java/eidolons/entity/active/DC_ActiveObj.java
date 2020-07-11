@@ -10,8 +10,8 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.math.ModMaster;
@@ -164,7 +164,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isDamageSpell() {
-        return EffectFinder.getFirstEffectOfClass(this,
+        return EffectMaster.getFirstEffectOfClass(this,
          DealDamageEffect.class) != null;
     }
 
@@ -188,7 +188,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isDebuffSpell() {
-        return EffectFinder.getFirstEffectOfClass(this,
+        return EffectMaster.getFirstEffectOfClass(this,
          AddBuffEffect.class) != null;
     }
 

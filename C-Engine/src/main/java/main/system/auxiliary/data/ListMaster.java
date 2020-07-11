@@ -34,6 +34,13 @@ public class ListMaster<E> {
         }
         return list;
     }
+
+    public static void fill(Collection list, Object coordinates, int size) {
+        for (int i = 0; i < size; i++) {
+            list.add(coordinates);
+        }
+    }
+
     public <E> List<List<E>> generatePerm(List<E> original) {
         if (original.isEmpty()) {
             List<List<E>> result = new ArrayList<>();
@@ -44,7 +51,7 @@ public class ListMaster<E> {
         List<List<E>> returnValue = new ArrayList<>();
         List<List<E>> permutations = generatePerm(original);
         for (List<E> smallerPermutated : permutations) {
-            for (int index=0; index <= smallerPermutated.size(); index++) {
+            for (int index = 0; index <= smallerPermutated.size(); index++) {
                 List<E> temp = new ArrayList<>(smallerPermutated);
                 temp.add(index, firstElement);
                 returnValue.add(temp);
@@ -53,7 +60,7 @@ public class ListMaster<E> {
         return returnValue;
     }
 
-    public   List<E> asList(E... values) {
+    public List<E> asList(E... values) {
         List<E> list = new ArrayList<>();
         for (E v : values) {
             if (v != null) {
@@ -62,6 +69,7 @@ public class ListMaster<E> {
         }
         return list;
     }
+
     public static List<Object> toList(Object... values) {
         List<Object> list = new ArrayList<>();
         for (Object v : values) {
@@ -96,7 +104,7 @@ public class ListMaster<E> {
                 if (v instanceof Entity && preferEntityNameOrIfNameKnown != null) {
                     Entity entity = (Entity) v;
                     string = preferEntityNameOrIfNameKnown ? entity.getName() : entity
-                     .getNameIfKnown();
+                            .getNameIfKnown();
                 } else {
                     if (v instanceof Object[]) {
                         Object[] objects = (Object[]) v;
@@ -120,6 +128,7 @@ public class ListMaster<E> {
         }
         return a.size != 0;
     }
+
     public static boolean isNotEmpty(Collection list) {
         if (list == null) {
             return false;
@@ -181,6 +190,7 @@ public class ListMaster<E> {
         }
         return list;
     }
+
     public static Collection<?> fillWithNullElements(Collection<?> list, int size) {
         if (list.size() < size) {
             for (int i = list.size(); i < size; i++) {
@@ -300,6 +310,7 @@ public class ListMaster<E> {
         }
         return set;
     }
+
     public List<E> toList_(E... values) {
         List<E> list = new ArrayList<>();
         for (E v : values) {
@@ -617,7 +628,7 @@ public class ListMaster<E> {
             filtered.addAll(tasks);
             break;
         }
-//		}
+        //		}
         return filtered;
     }
 

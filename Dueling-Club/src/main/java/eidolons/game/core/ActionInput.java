@@ -8,8 +8,9 @@ import main.game.logic.action.context.Context;
  * Created by JustMe on 4/3/2017.
  */
 public class ActionInput {
-    private DC_ActiveObj action;
-    private Context context;
+    private final DC_ActiveObj action;
+    private final Context context;
+    private boolean auto;
 
     public ActionInput(DC_ActiveObj action, Context context) {
         this.action = action;
@@ -33,6 +34,14 @@ public class ActionInput {
     @Override
     public String toString() {
         return action + " with context: " + context;
+    }
+
+    public boolean isAuto() {
+        return auto;
+    }
+
+    public void setAuto(boolean auto) {
+        this.auto = auto;
     }
 }
 

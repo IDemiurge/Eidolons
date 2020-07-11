@@ -141,18 +141,16 @@ public class DirectionMaster {
         //        if (d != null) {
         //            return d.flip();
         //        }
-        source = new Coordinates(source.x, source.y);
-        target = new Coordinates(target.x, target.y);
-        if (diffX < 0) {
-            int x = target.getX();
-            target.setX(source.getX());
-            source.setX(x);
-        }
-        if (diffY < 0) {
-            int y = target.getY();
-            target.setY(source.getY());
-            source.setY(y);
-        }
+        source = new Coordinates(
+                diffX < 0 ? target.x
+                        : source.x,
+                diffX < 0 ? target.y
+                        : source.y);
+        target = new Coordinates(
+                diffX >= 0 ? target.x
+                        : source.x,
+                diffX >= 0 ? target.y
+                        : source.y);
         d = getRelativeDirectionNoCache(source, target);
         relative_directions[absX][absY] = d;
         return d;

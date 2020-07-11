@@ -1,9 +1,11 @@
 package eidolons.libgdx.anims.main;
 
+import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.libgdx.anims.AnimContext;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.construct.AnimConstructor;
@@ -41,6 +43,11 @@ public class ActionAnimMaster {
         }
         if (action.isMove()) {
             return false;
+        }
+        if (action.isSpell()) {
+            if (!EffectMaster.getEffectsOfClass(action, MoveEffect.class).isEmpty()) {
+            return false;
+            }
         }
         if (action.isMode()) {
             return false;

@@ -53,4 +53,8 @@ public class EncounterPuzzle extends Puzzle {
     public boolean isMinimizeUI() {
         return false;
     }
+
+    public boolean isContinuousSpawning() {
+        return true;
+    }
 }

@@ -13,11 +13,11 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -89,6 +89,9 @@ public class Analyzer extends AiHandler {
     }
 
     public static List<Unit> getVisibleEnemies(UnitAI ai) {
+        if (ai.getGroup().getBehavior() == UnitAI.AI_BEHAVIOR_MODE.AGGRO) {
+            return (List<Unit>) getEnemies(ai.getUnit(), false, false, false);
+        }
         Boolean unconscious = isTargetingUnconscious(ai);
         Boolean visionRequired = !EidolonsGame.BOSS_FIGHT;
         List<Unit> enemies = getUnits(ai, false, true, visionRequired, false, false, unconscious);
@@ -98,11 +101,11 @@ public class Analyzer extends AiHandler {
                     enemies = getUnits(ai, false, true, true, false, false, true);
             }
         if (enemies.isEmpty())
-        if (ai.getUnit().isMine()) {
-            if (!ai.getUnit().isPlayerCharacter()) { //TODO IGG HACK
-                enemies = getVisibleEnemies(Eidolons.getMainHero().getAI());
+            if (ai.getUnit().isMine()) {
+                if (!ai.getUnit().isPlayerCharacter()) { //TODO IGG HACK
+                    enemies = getVisibleEnemies(Eidolons.getMainHero().getAI());
+                }
             }
-        }
 
         return enemies;
     }
@@ -258,13 +261,13 @@ public class Analyzer extends AiHandler {
                     if (sub.getCoordinates().equals(coordinates))
                         list.add(sub);
         }
-//        for (Coordinates coordinates : coordinatesToCheck)
-//            for (Unit obj : unit.getGame().getUnitsForCoordinates(coordinates)) {
-//                if (obj == null) {
-//                    continue;
-//                }
-//                list.add(obj);
-//            }
+        //        for (Coordinates coordinates : coordinatesToCheck)
+        //            for (Unit obj : unit.getGame().getUnitsForCoordinates(coordinates)) {
+        //                if (obj == null) {
+        //                    continue;
+        //                }
+        //                list.add(obj);
+        //            }
         if (enemy_or_ally_only != null) {
             if (enemy_or_ally_only) {
                 list.removeIf(e -> e.getOwner().equals(unit.getOwner()));
@@ -286,7 +289,7 @@ public class Analyzer extends AiHandler {
     public static List<Unit> getUnits(UnitAI ai, Boolean ally,
                                       Boolean enemy, Boolean vision_no_vision, Boolean dead,
                                       Boolean neutral, Boolean unconscious) {
-//getCache()
+        //getCache()
         List<Unit> list = new XList<>();
         for (Unit unit : Eidolons.game.getUnits()) {
             if (unit.getZ() != ai.getUnit().getZ())// TODO
@@ -404,7 +407,7 @@ public class Analyzer extends AiHandler {
 
     public static List<DC_Cell> getSummonCells(UnitAI ai, DC_ActiveObj action) {
 
-        if (EffectFinder.check(action, RaiseEffect.class)) {
+        if (EffectMaster.check(action, RaiseEffect.class)) {
             return new ArrayList<>(getCorpseCells(ai.getUnit()));
         }
         List<DC_Cell> cells = getCells(ai, true, true, true);
@@ -422,7 +425,7 @@ public class Analyzer extends AiHandler {
             if (ai.getUnit().getGame().getObjectByCoordinate(cell.getCoordinates()) instanceof
                     BattleFieldObject) {
                 if (((BattleFieldObject)
-                                ai.getUnit().getGame().getObjectByCoordinate(cell.getCoordinates())).isWall())
+                        ai.getUnit().getGame().getObjectByCoordinate(cell.getCoordinates())).isWall())
                     result = true;
             }
             return result;

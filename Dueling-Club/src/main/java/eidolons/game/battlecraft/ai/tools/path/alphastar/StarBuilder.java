@@ -1,37 +1,82 @@
 package eidolons.game.battlecraft.ai.tools.path.alphastar;
 
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.ai.tools.path.Choice;
+import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.FACING_DIRECTION;
+import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class StarBuilder extends AiHandler implements IPathHandler {
 
+    public static final int PREF_MIN_RANGE = 5;
     private final PathingManager pathingManager;
 
     public StarBuilder(AiMaster master) {
         super(master);
-        pathingManager= new PathingManager( this);
+        pathingManager = new PathingManager(this);
     }
 
-    public ActionPath getPath(Coordinates c, Coordinates c2){
+    public ActionPath getPath(Unit unit, Coordinates c, Coordinates c2) {
         Path path = pathingManager.getPath(false, true, c, c2);
-        Choice[] choices =  path.nodes.stream().
-                map(node -> node.coordinates).collect(Collectors.toList()).toArray(new Choice[0]);
-      return   new ActionPath(c2, choices);
+        Coordinates prev = c;
+        List<Choice> choices = new ArrayList<>(path.nodes.size());
+        try {
+            for (int i = path.nodes.size() - 1; i >= 0; i--) {
+                prev = c;
+                c = path.nodes.get(i).getCoordinates();
+                choices.add(createChoice(unit, prev, c));
+            }
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        } finally {
+            unit.removeTempFacing();
+            unit.removeTempCoordinates();
+        }
+        return new ActionPath(c2, choices);
     }
 
-    public List<ActionPath> build(List<Coordinates> targetCells) {
-        List<ActionPath> paths=    new ArrayList<>() ;
+    private Choice createChoice(Unit unit, Coordinates prev, Coordinates c) {
+        Action[] actions = getActions(unit, prev, c);
+        return new Choice(c, actions);
+    }
+
+    private Action[] getActions(Unit unit, Coordinates prev, Coordinates c) {
+        FACING_DIRECTION facing = unit.getFacing();
+        List<Action> sequence =     new ArrayList<>() ;
+        List<Action> turnSequence = getTurnSequenceConstructor().getTurnSequence(unit, c);
+        if (turnSequence.size() > 1 || PositionMaster.inLineDiagonally(prev, c)) {
+            //otherwise go with side-moves!
+            for (Action action : turnSequence) {
+                boolean clockwise = true;
+                if (action.getActive().getName().contains("Anticlockwise")) {
+                    clockwise = false;
+                }
+                facing = facing.rotate(clockwise);
+            }
+            unit.setTempFacing(facing);
+            sequence.addAll(turnSequence);
+        }
+        Action move = DC_MovementManager.getMoveAction(unit, prev, c);
+        sequence.add(move);
+        unit.setTempCoordinates(c);
+        return sequence.toArray(new Action[0]);
+    }
+
+
+    public List<ActionPath> build(Unit unit, List<Coordinates> targetCells) {
+        List<ActionPath> paths = new ArrayList<>();
         for (Coordinates c : targetCells) {
-            paths.add(getPath(getUnit().getCoordinates(), c));
+            paths.add(getPath(unit, unit.getCoordinates(), c));
         }
         return paths;
     }
@@ -43,7 +88,7 @@ public class StarBuilder extends AiHandler implements IPathHandler {
 
     @Override
     public int getWidth() {
-        return   getGame().getModule().getWidth();
+        return getGame().getModule().getEffectiveWidth();
     }
 
     @Override
@@ -53,6 +98,6 @@ public class StarBuilder extends AiHandler implements IPathHandler {
 
     @Override
     public int getHeight() {
-        return getGame().getModule().getHeight();
+        return getGame().getModule().getEffectiveHeight();
     }
 }

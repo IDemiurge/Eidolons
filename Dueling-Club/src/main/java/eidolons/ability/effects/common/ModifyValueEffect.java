@@ -5,7 +5,7 @@ import eidolons.ability.effects.oneshot.mechanic.ModifyCounterEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.PassiveAbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.ReducedEffect;
@@ -229,7 +229,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     @Override
     public boolean applyThis() {
         if (modString != null) {
-            return EffectFinder.initParamModEffects(modString, ref).apply(ref);
+            return EffectMaster.initParamModEffects(modString, ref).apply(ref);
         }
         if (param == null) {
             if (sparam.contains(StringMaster.VERTICAL_BAR)) {

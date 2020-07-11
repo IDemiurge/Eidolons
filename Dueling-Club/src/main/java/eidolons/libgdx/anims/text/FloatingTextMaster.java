@@ -11,10 +11,10 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.FacingEntity;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.MultiDamage;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
@@ -612,14 +612,14 @@ public class FloatingTextMaster {
         STATUS(
                 false, (e) -> {
             ModifyStatusEffect ef = (ModifyStatusEffect)
-                    EffectFinder.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
+                    EffectMaster.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
 //                if (ef==null )
             return ef.getValue().split(";");
         }),
         MODE(
                 false, (e) -> {
             ModeEffect ef = (ModeEffect)
-                    EffectFinder.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
+                    EffectMaster.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
             return new Object[]{
                     ef.getMode()
             };

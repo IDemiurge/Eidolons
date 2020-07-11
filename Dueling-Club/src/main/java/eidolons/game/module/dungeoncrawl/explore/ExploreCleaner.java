@@ -4,9 +4,9 @@ import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.StealthRule;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.master.EffectMaster;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.SpellEnums;
 import main.content.values.properties.G_PROPS;
@@ -30,7 +30,7 @@ public class ExploreCleaner extends ExplorationHandler {
             return;
         }
         if (activeObj.getActionGroup() == ACTION_TYPE_GROUPS.MODE) {
-            ModeEffect e = (ModeEffect) EffectFinder.getFirstEffectOfClass(activeObj, ModeEffect.class);
+            ModeEffect e = (ModeEffect) EffectMaster.getFirstEffectOfClass(activeObj, ModeEffect.class);
             if (e != null)
                 if (e.getMode() == unit.getMode())
                     return;

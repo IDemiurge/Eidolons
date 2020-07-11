@@ -8,9 +8,9 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.core.game.DC_GameManager;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.overlays.bar.HpBar;
@@ -174,7 +174,7 @@ public class DamageDealer {
     }
 
     private static boolean isLogged(BattleFieldObject attacker, BattleFieldObject targetObj, ActiveObj active) {
-        if (EffectFinder.getFirstEffectOfClass((DC_ActiveObj) active, SpecialTargetingEffect.class) != null) {
+        if (EffectMaster.getFirstEffectOfClass((DC_ActiveObj) active, SpecialTargetingEffect.class) != null) {
             return !(targetObj instanceof Structure);
         }
         return true;

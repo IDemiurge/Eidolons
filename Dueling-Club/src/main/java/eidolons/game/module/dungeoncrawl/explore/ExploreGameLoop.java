@@ -155,11 +155,18 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         master.getAiMaster().reset();
         master.getResetter().setResetNeeded(true);
         //recheck?!
-        ActionInput playerAction = playerActionQueue.removeLast();
-
+        ActionInput playerAction = playerActionQueue.removeFirst();
         if (checkActionInputValid(playerAction)) {
-            playerAction(playerAction);
-
+            if (playerAction.getAction().isTurn()) {
+                playerAction(playerAction);
+            } else
+                playerAction(playerAction);
+            if (playerAction.isAuto()) {
+                blockTimer = ExplorationActionHandler.calcBlockingTime(playerAction.getAction());
+                lock();
+            }
+        } else {
+            return exited;
         }
         waitForPause();
         return exited;
@@ -272,6 +279,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         //
         //            }, "Player ActionInput Thread").start();
         //        } else
+
+        blockTimer = ExplorationActionHandler.calcBlockingTime(actionInput.getAction());
         tryAddPlayerActions(actionInput);
     }
 
@@ -282,9 +291,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     @Override
-    public void actionInput(ActionInput actionInput ) {
+    public void actionInput(ActionInput actionInput) {
         actionInput(actionInput, false);
     }
+
     public void actionInput(ActionInput actionInput, boolean waitForTimer) {
         if (blockTimer > 0) { //override?
             if (waitForTimer)
@@ -327,9 +337,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     }
 
-    protected void tryAddPlayerActions(ActionInput actionInput) {
+    public void tryAddPlayerActions(ActionInput actionInput) {
         playerActionQueue.add(actionInput);
-        blockTimer = ExplorationActionHandler.calcBlockingTime(actionInput.getAction());
     }
 
 
@@ -392,6 +401,9 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             return;
         if (blockTimer > 0) {
             blockTimer -= delta;
+            if (blockTimer <= 0) {
+                signal();
+            }
         }
 
         master.getTimeMaster().act(delta);
@@ -403,4 +415,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return master.getTimeMaster().getTime();
     }
 
+    public void clearPlayerActions() {
+        playerActionQueue.clear();
+    }
 }

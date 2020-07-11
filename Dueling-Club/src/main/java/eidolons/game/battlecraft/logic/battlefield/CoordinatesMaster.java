@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.battlefield;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
 import main.game.bf.Coordinates;
@@ -535,7 +535,7 @@ public class CoordinatesMaster {
     }
 
     public static Set<Coordinates> getZoneCoordinates(DC_ActiveObj entity) {
-        Effect effect = EffectFinder.getFirstEffectOfClass(entity,
+        Effect effect = EffectMaster.getFirstEffectOfClass(entity,
                 SpecialTargetingEffect.class);
         Set<Coordinates> coordinates = null;
         if (effect != null) {

@@ -6,9 +6,9 @@ import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.atb.AtbMaster;
+import eidolons.game.core.master.EffectMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
@@ -52,7 +52,7 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
         if (!getEntity().getActives().isEmpty()) {
             return;
         }
-        if (EffectFinder.getEffectsFromAbilities(getEntity().getAbilities()).size() == 0) {
+        if (EffectMaster.getEffectsFromAbilities(getEntity().getAbilities()).size() == 0) {
             if (getEntity() instanceof DC_UnitAction) {
                 if (((DC_UnitAction) getEntity()).isDummy()) {
                     return;

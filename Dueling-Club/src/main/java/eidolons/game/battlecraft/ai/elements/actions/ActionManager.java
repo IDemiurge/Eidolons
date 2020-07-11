@@ -27,7 +27,6 @@ import main.elements.costs.Cost;
 import main.elements.costs.Costs;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -134,25 +133,20 @@ public class ActionManager extends AiHandler {
         //       TODO      return behaviorMaster.getBehaviorAction(ai);
         //        }
 
-        FACING_DIRECTION originalFacing = unit.getFacing();
-        Coordinates originalCoordinates = unit.getCoordinates();
+        unit.initTempFacing();
+        unit.initTempCoordinates();
         Action action = null;
         ActionSequence chosenSequence = null;
-        boolean atomic = false;
         if (isAtomicAiOn())
             try {
-                atomic = getAtomicAi().checkAtomicActionRequired(ai);
+                AiEnums.AI_LOGIC_CASE atomic = getAtomicAi().checkAtomicActionRequired(ai);
+                if (atomic != null)
+                    action = getAtomicAi().getAtomicAction(ai, atomic);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        if (atomic)
-            if (isAtomicAiOn())
-                try {
-                    action = getAtomicAi().getAtomicAction(ai);
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                    action = getAtomicAi().getAtomicWait(ai.getUnit());
-                }
+
+
         if (action == null) {
             List<ActionSequence> actions = new ArrayList<>();
             try {
@@ -169,8 +163,8 @@ public class ActionManager extends AiHandler {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             } finally {
-                unit.setCoordinates(originalCoordinates);
-                unit.setFacing(originalFacing);
+                unit.removeTempCoordinates();
+                unit.removeTempFacing();
             }
 
         }
@@ -215,7 +209,7 @@ public class ActionManager extends AiHandler {
         Action action = null;
         if (behaviorMode != null) {
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.PANIC) {
-                action = new Action(ai.getUnit().getAction(MISC_ACTIONS.Cower.toString() ));
+                action = new Action(ai.getUnit().getAction(MISC_ACTIONS.Cower.toString()));
             }
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
                 action = new Action(ai.getUnit().getAction(MISC_ACTIONS.stumble.toString()));

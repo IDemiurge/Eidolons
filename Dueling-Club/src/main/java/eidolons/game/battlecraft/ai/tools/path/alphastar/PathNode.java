@@ -5,6 +5,7 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PathNode {
     Coordinates coordinates;
@@ -22,6 +23,19 @@ public class PathNode {
 
         this.coordinates = c;
         this.parent = parent;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PathNode pathNode = (PathNode) o;
+        return coordinates.equals(pathNode.coordinates);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(coordinates);
     }
 
     public PathNode(Coordinates c) {

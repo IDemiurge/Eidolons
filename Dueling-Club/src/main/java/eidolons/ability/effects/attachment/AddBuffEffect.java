@@ -4,7 +4,7 @@ import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.system.DC_ConditionMaster;
 import main.ability.effects.*;
 import main.ability.effects.continuous.ContinuousEffect;
@@ -152,7 +152,7 @@ public class AddBuffEffect extends MultiEffect implements OneshotEffect, Resisti
          effect, duration, getRetainConditions());
 
         getBuffCache().put(target, buff);
-            if (EffectFinder.check(effect, ImmobilizeEffect.class)){
+            if (EffectMaster.check(effect, ImmobilizeEffect.class)){
                 buff.setImmobilizing(true);
         }
         return buff != null;

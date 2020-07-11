@@ -23,9 +23,12 @@ public class ActionPath {
         setTargetCoordinates(path.getTargetCoordinates());
     }
 
-    public ActionPath(Coordinates targetCoordinates, Choice... choices) {
-        this.choices = new ArrayList<>(Arrays.asList(choices));
+    public ActionPath(Coordinates targetCoordinates, List<Choice> choices) {
+        this.choices = (choices);
         this.targetCoordinates = targetCoordinates;
+    }
+    public ActionPath(Coordinates targetCoordinates, Choice... choices) {
+        this(targetCoordinates, new ArrayList<>(Arrays.asList(choices)));
     }
 
     @Override

@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.system.math.roll.RollMaster;
 import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.content.enums.entity.UnitEnums.STATUS;
@@ -50,7 +50,7 @@ public class GuardRule {
                         return guard;
                     continue;
                 }
-                Attack attack = EffectFinder.getAttackFromAction(action);
+                Attack attack = EffectMaster.getAttackFromAction(action);
                 if (checkDefenderTakesAttack(attack, guard))
                     return guard;
             } else {

@@ -3,7 +3,7 @@ package eidolons.ability.ignored.oneshot.rule;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effects;
 import main.ability.effects.OneshotEffect;
 import main.content.CONTENT_CONSTS2.INJURY;
@@ -56,7 +56,7 @@ public class InjuryEffect extends DC_Effect implements OneshotEffect {
         // preCheck applicable
         getTarget().addProperty(PROPS.INJURIES,
          StringMaster.format(injury.toString()));
-        Effects effects = EffectFinder.initParamModEffects(injury.getModString(), ref);
+        Effects effects = EffectMaster.initParamModEffects(injury.getModString(), ref);
         // TODO ++ PROPS
         if (mod != 100) {
             effects.appendFormulaByMod(mod);

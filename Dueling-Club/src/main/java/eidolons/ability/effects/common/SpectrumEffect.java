@@ -4,7 +4,7 @@ import eidolons.ability.effects.DC_Effect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.elements.conditions.Condition;
@@ -198,7 +198,7 @@ public class SpectrumEffect extends DC_Effect {
     // }
     protected void initEffects() {
         ref.setID(KEYS.INFO, ref.getId(KEYS.ACTIVE));
-        effects = EffectFinder.initParamModEffects(paramString, ref);
+        effects = EffectMaster.initParamModEffects(paramString, ref);
     }
 
     public String getRangeFormula() {

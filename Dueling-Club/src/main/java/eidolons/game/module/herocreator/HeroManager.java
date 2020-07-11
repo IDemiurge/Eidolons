@@ -9,11 +9,11 @@ import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
 import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -404,9 +404,9 @@ public class HeroManager {
             for (Effect e : secondLayerEffects) {
                 e.apply(Ref.getSelfTargetingRefCopy(hero));
             }
-            EffectFinder.applyAttachmentEffects(hero.getMainWeapon(), null);
-            EffectFinder.applyAttachmentEffects(hero.getOffhandWeapon(), null);
-            EffectFinder.applyAttachmentEffects(hero.getArmor(), null);
+            EffectMaster.applyAttachmentEffects(hero.getMainWeapon(), null);
+            EffectMaster.applyAttachmentEffects(hero.getOffhandWeapon(), null);
+            EffectMaster.applyAttachmentEffects(hero.getArmor(), null);
 
         }
         hero.afterEffects();

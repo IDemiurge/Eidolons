@@ -1,15 +1,21 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.encounter;
 
+import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiData;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.mission.encounter.EncounterData;
+import main.content.DC_TYPE;
 import main.content.enums.EncounterEnums;
+import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,21 +26,17 @@ public class PuzzleSpawner {
 
     public static List<Coordinates> getSpawnCoords(EncounterPuzzle puzzle, List<ObjType> types, boolean first) {
         List<Coordinates> list = new ArrayList<>(types.size());
-
+        //puzzle is marked at the center...
         int w = puzzle.getWidth();
         int h = puzzle.getHeight();
         boolean centerOrEdges = first; //check if hero is there
-        int x = 0, y = 0;
         if (centerOrEdges) {
-            x = w / 2 - 1;
-            y = h / 2 - 1;
+            ListMaster.fill(list, puzzle.getCoordinates(), types.size());
+            return list;
         }
+        int x = 0, y = 0;
         int i = 0;
         for (ObjType type : types) {
-            if (centerOrEdges) {
-                if (x > y) y++;
-                else x++;
-            } else {
                 x = RandomWizard.getRandomIntBetween(-w / 2, w / 2);
                 y = RandomWizard.getRandomIntBetween(-h / 2, h / 2);
                 switch (DIRECTION.ORTHOGONAL[i++ % 4]) {
@@ -51,8 +53,6 @@ public class PuzzleSpawner {
                         x = -w / 2;
                         break;
                 }
-            }
-
             list.add(puzzle.getCoordinates().getOffset(x > 0 ? x+1 : x-1, y > 0 ? y+1 : y-1));
         }
         return list;
@@ -60,6 +60,17 @@ public class PuzzleSpawner {
     public static List<ObjType> getSpawnTypes(EncounterPuzzle puzzle, boolean first) {
         if (first) {
             return puzzle.getEncounter().getTypes();
+        }
+        if (puzzle.isContinuousSpawning()){
+            List<String> types = ContainerUtils.openContainer(puzzle.getEncounter().getProperty(PROPS.FILLER_TYPES));
+             int n=1; ////TODO
+            List<ObjType> list= new ArrayList<>(n) ;
+            for (int i = 0; i < n; i++) {
+                list.add(DataManager.getType(RandomWizard.getRandomListObject(types).toString(),
+                        DC_TYPE.UNITS));
+
+            }
+            return list;
         }
         return puzzle.getEncounter().getReinforcer().getReinforceTypes(RandomWizard.random()
                 ? EncounterEnums.REINFORCEMENT_STRENGTH.normal
@@ -90,6 +101,7 @@ public class PuzzleSpawner {
         for (Unit unit : puzzle.getEncounter().getUnits()) {
             unit.getAI().setEngaged(true);
         }
+        puzzle.getEncounter().getGroupAI().setBehavior(UnitAI.AI_BEHAVIOR_MODE.AGGRO);
         // getGame().getDungeonMaster().getExplorationMaster().getEngagementHandler().addEvent(
         //         EngageEvent.ENGAGE_EVENT.combat_start);
     }

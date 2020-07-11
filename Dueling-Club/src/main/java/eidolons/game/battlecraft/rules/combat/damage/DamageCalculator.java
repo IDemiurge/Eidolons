@@ -7,11 +7,11 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator;
 import eidolons.game.battlecraft.rules.combat.attack.SneakRule;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.GenericEnums;
@@ -265,7 +265,7 @@ public class DamageCalculator {
         }
         for (Effect e : effects) {
             // TODO ++ PARAM MOD
-            for (Effect dmgEffect : EffectFinder.getEffectsOfClass(e, DealDamageEffect.class)) {
+            for (Effect dmgEffect : EffectMaster.getEffectsOfClass(e, DealDamageEffect.class)) {
                 int amount = dmgEffect.getFormula().getInt(attack.getRef());
                 list.add(DamageFactory.getDamageFromEffect((DealDamageEffect) dmgEffect, amount));
             }

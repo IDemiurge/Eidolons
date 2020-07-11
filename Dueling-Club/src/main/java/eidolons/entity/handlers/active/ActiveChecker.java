@@ -5,7 +5,7 @@ import eidolons.ability.effects.containers.customtarget.ZoneEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.STD_BOOLS;
@@ -136,11 +136,11 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
         if (zone != null) {
             return zone;
         }
-        if (EffectFinder.check(getEntity().getAbilities(), ZoneEffect.class)) {
+        if (EffectMaster.check(getEntity().getAbilities(), ZoneEffect.class)) {
             zone = true;
             return true;
         }
-        if (EffectFinder.check(getEntity().getAbilities(), ShapeEffect.class)) {
+        if (EffectMaster.check(getEntity().getAbilities(), ShapeEffect.class)) {
             zone = true;
             return true;
         }

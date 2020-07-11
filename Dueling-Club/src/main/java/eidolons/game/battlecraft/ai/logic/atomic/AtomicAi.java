@@ -11,7 +11,6 @@ import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
-import eidolons.game.battlecraft.ai.elements.task.Task.TASK_DESCRIPTION;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
@@ -24,11 +23,11 @@ import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_ACTION;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
-import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.rules.VisionEnums;
+import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
 import main.entity.Ref;
@@ -54,30 +53,48 @@ public class AtomicAi extends AiHandler {
         super(master);
     }
 
-    public Action getAtomicAction(UnitAI ai) {
+    public Action getAtomicAction(UnitAI ai, AiEnums.AI_LOGIC_CASE atomic) {
         Action action = null;
-        if (checkAtomicActionTurn(ai)) {
-            action = getAtomicActionTurn(ai);
-            if (action != null) {
-                action.setTaskDescription("Facing Adjustment");
-                return action;
-            }
+        switch (atomic) {
+            case FAR_UNSEEN:
+                if (ai.getType() == AI_TYPE.BRUTE ||
+                        ai.getGroup().getBehavior()
+                        == UnitAI.AI_BEHAVIOR_MODE.AGGRO) {
+                    action = getAtomicActionApproach(ai);
+                    break;
+                }
+            case RELOAD:
+            case RESTORE:
+                action = getAtomicActionPrepare(ai);
+                break;
+            case TURN_AROUND:
+                action = getAtomicActionTurn(ai);
+                break;
+            case APPROACH:
+                action = getAtomicActionApproach(ai);
+                break;
         }
-        action = getAtomicActionPrepare(ai);
+        // if (checkAtomicActionTurn(ai)) {
+        //     action = getAtomicActionTurn(ai);
+        //     if (action != null) {
+        //         action.setTaskDescription("Facing Adjustment");
+        //         return action;
+        //     }
+        // }
+        // action = getAtomicActionPrepare(ai);
+        // if (action != null) {
+        //     action.setTaskDescription(TASK_DESCRIPTION.RESTORATION.toString());
+        //     return action;
+        // }
+        // if (checkAtomicActionApproach(ai))
+        //     action = getAtomicActionApproach(ai);
         if (action != null) {
-            action.setTaskDescription(TASK_DESCRIPTION.RESTORATION.toString());
-            return action;
-        }
-        if (checkAtomicActionApproach(ai))
-            action = getAtomicActionApproach(ai);
-        if (action != null)
-            action.setTaskDescription("Approach");
-        else {
+            String message = getUnit() + " chooses atomic action: " + action;
+            SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, message);
+        } else{
             SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, getUnit() + " finds no atomic action!");
             return null;
         }
-        String message = getUnit() + " chooses atomic action: " + action;
-        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, message);
         return action;
     }
 
@@ -126,9 +143,9 @@ public class AtomicAi extends AiHandler {
     public Action getAtomicActionPrepare(UnitAI ai) {
         //ammo
         //meditate
-        if (!checkAtomicActionCase(ATOMIC_LOGIC_CASE.PREPARE, ai)) {
-            return null;
-        }
+        // if (!checkAtomicActionCase(ATOMIC_LOGIC_CASE.PREPARE, ai)) {
+        //     return null;
+        // }
         if (ParamAnalyzer.isFatigued(getUnit())) {
             return AiActionFactory.newAction(ActionEnums.STD_MODE_ACTIONS.Rest.name(),
                     getUnit().getAI());
@@ -288,7 +305,7 @@ public class AtomicAi extends AiHandler {
         }
         if (action == null) {
             try {
-                action = DC_MovementManager.getFirstAction(unit, pick);
+                action = DC_MovementManager.getMoveAction(unit, pick);
                 //                main.system.auxiliary.log.LogMaster.log(1, " ATOMIC ACTION " + action +
                 //                 "  CHOSEN TO GET TO " + pick);
             } catch (Exception e) {
@@ -342,30 +359,31 @@ public class AtomicAi extends AiHandler {
         return ATOMIC_LOGIC.GEN_AGGRO;
     }
 
-    public boolean checkAtomicActionRequired(UnitAI ai) {
+    public AiEnums.AI_LOGIC_CASE checkAtomicActionRequired(UnitAI ai) {
 
         return checkAtomicActionCaseAny(ai); //also check power, danger, distance
     }
 
-    public boolean checkAtomicActionCaseAny(UnitAI ai) {
+    public AiEnums.AI_LOGIC_CASE checkAtomicActionCaseAny(UnitAI ai) {
         boolean canAttack = getSituationAnalyzer().canAttackNow(ai);
+        AiEnums.AI_LOGIC_CASE _case;
         for (ATOMIC_LOGIC_CASE C : ATOMIC_LOGIC_CASE.values()) {
             if (canAttack)
                 if (C != ATOMIC_LOGIC_CASE.PREPARE)
                     //if can attack immediately, ATOMIC can only be used to force REST/..
                     continue;
             try {
-                if (checkAtomicActionCase(C, ai)) {
-                    return true;
+                if ((_case = checkAtomicActionCase(C, ai)) != null) {
+                    return _case;
                 }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        return false;
+        return null;
     }
 
-    public boolean checkAtomicActionCase(ATOMIC_LOGIC_CASE CASE, UnitAI ai) {
+    public AiEnums.AI_LOGIC_CASE checkAtomicActionCase(ATOMIC_LOGIC_CASE CASE, UnitAI ai) {
 
         switch (CASE) {
             case TURN:
@@ -381,10 +399,10 @@ public class AtomicAi extends AiHandler {
             case PREPARE:
                 return checkAtomicActionPrepare(ai);
         }
-        return false;
+        return null;
     }
 
-    private boolean checkAtomicActionTurn(UnitAI ai) {
+    private AiEnums.AI_LOGIC_CASE checkAtomicActionTurn(UnitAI ai) {
         //check that only enemy actions are needed
         boolean result = false;
         if (!ai.getType().isCaster()
@@ -395,7 +413,7 @@ public class AtomicAi extends AiHandler {
             FACING_DIRECTION facing = ai.getUnit().getFacing();
             FACING_SINGLE relative = FacingMaster.getSingleFacing(facing, ai.getUnit(), enemy);
             if (relative == FACING_SINGLE.BEHIND) {
-                return true;
+                return AiEnums.AI_LOGIC_CASE.TURN_AROUND;
             } else if (relative == FACING_SINGLE.TO_THE_SIDE) {
                 if (!ai.getUnit().checkPassive(STANDARD_PASSIVES.BROAD_REACH))
                     result = true;
@@ -403,43 +421,44 @@ public class AtomicAi extends AiHandler {
                 result = false;
             //if we need to getVar to a cell that is not 'facing' the target?!
             if (!result)
-                return false;
+                return null;
             if (!game.getVisionMaster().getSightMaster().getClearShotCondition().check(getUnit(), enemy))
-                return false;
+                return null;
         }
-        return result;
+
+        return result ? AiEnums.AI_LOGIC_CASE.TURN_AROUND : null;
     }
 
-    //TODO
-    private boolean checkAtomicActionAttack(UnitAI ai) {
-        return false;
+    //TODO ai Review
+    private AiEnums.AI_LOGIC_CASE checkAtomicActionAttack(UnitAI ai) {
+        return null;
     }
 
 
-    private boolean checkAtomicActionRetreat(UnitAI ai) {
-        if (ai.getType().isRanged()) {
-            int threat = getSituationAnalyzer().getMeleeDangerFactor(ai.getUnit(), true, true);
-            if (ai.checkMod(AI_MODIFIERS.COWARD)) {
-                threat *= 2;
-            }
-            return threat > ai.getUnit().calculatePower();
-
-        }
-        return false;
+    private AiEnums.AI_LOGIC_CASE checkAtomicActionRetreat(UnitAI ai) {
+        // if (ai.getType().isRanged()) {
+        //     int threat = getSituationAnalyzer().getMeleeDangerFactor(ai.getUnit(), true, true);
+        //     if (ai.checkMod(AI_MODIFIERS.COWARD)) {
+        //         threat *= 2;
+        //     }
+        //     return threat > ai.getUnit().calculatePower();
+        //
+        // }
+        return null;
     }
 
-    private boolean checkAtomicActionPrepare(UnitAI ai) {
+    private AiEnums.AI_LOGIC_CASE checkAtomicActionPrepare(UnitAI ai) {
         if (ai.getType() == AI_TYPE.ARCHER) {
             if (ai.getUnit().getRangedWeapon() != null) {
                 if (ai.getUnit().getRangedWeapon().getAmmo() == null)
-                    return true;
+                    return AiEnums.AI_LOGIC_CASE.RELOAD;
             }
         }
         //        if (ai.isMinion())
         //            return false;
 
         if (!Analyzer.getAdjacentEnemies(getUnit(), false).isEmpty())
-            return false;
+            return null;
         VisionEnums.UNIT_VISION v = ai.getUnit().getUnitVisionStatus(Eidolons.getMainHero());
         float dst = v == VisionEnums.UNIT_VISION.BLOCKED ? 3.5f : 6 +
                 ai.getUnit().getSightRangeTowards(Eidolons.getMainHero());
@@ -448,28 +467,22 @@ public class AtomicAi extends AiHandler {
         if (ai.getType().isRanged())
             dst *= 1.25f;
         if (v != VisionEnums.UNIT_VISION.IN_PLAIN_SIGHT) if (v != VisionEnums.UNIT_VISION.IN_SIGHT) {
-            if (PositionMaster.getExactDistance(ai.getUnit(), Eidolons.getMainHero()) > dst) {
-                //           TODO      game.getVisionMaster().getVisionController().getPlayerVisionMapper().getVar(ai.getUnit().getOwner(),
-                //                        Eidolons.getMainHero());
-                //                game.getVisionMaster().getVisionController().getDetectionMapper().getVar(ai.getUnit().getOwner(),
-                //                        Eidolons.getMainHero());
-                return true;
-            }
+            if (PositionMaster.getExactDistance(ai.getUnit(), Eidolons.getMainHero()) > dst)
+                return AiEnums.AI_LOGIC_CASE.FAR_UNSEEN;
         }
 
         boolean criticalOnly = ai.getType() == AI_TYPE.BRUTE;
 
         List<PARAMS> params = getParamAnalyzer().getRelevantParams(ai.getUnit());
         for (PARAMS p : params) { //only if critical
-
             if (getParamAnalyzer().checkStatus(
                     criticalOnly
                     , ai.getUnit(), p)) {
                 if (getSituationAnalyzer().getDangerFactor(ai.getUnit()) < 50)
-                    return true;
+                    return AiEnums.AI_LOGIC_CASE.RESTORE;
             }
         }
-        return false;
+        return null;
     }
 
     private int getDistanceForAtomicApproach(UnitAI ai) {
@@ -488,13 +501,13 @@ public class AtomicAi extends AiHandler {
     }
 
     //Check if the unit is close enough to JUST GO IN
-    public boolean checkAtomicActionApproach(UnitAI ai) {
-        if (ai.getType()== AI_TYPE.SNEAK )
-                return false; //AI Review
+    public AiEnums.AI_LOGIC_CASE checkAtomicActionApproach(UnitAI ai) {
+        if (ai.getType() == AI_TYPE.SNEAK)
+            return null; //AI Review
         if (ai.getCurrentOrder() != null)
             if (ai.getCurrentOrder().getStrictPriority() != ORDER_PRIORITY_MODS.ATTACK
                     && ai.getCurrentOrder().getStrictPriority() != ORDER_PRIORITY_MODS.APPROACH)
-                return false;
+                return null;
         double maxDistance = getDistanceForAtomicApproach(ai);
         double minDistance = -1;
         for (Unit sub : Analyzer.getVisibleEnemies(ai)) {
@@ -505,7 +518,7 @@ public class AtomicAi extends AiHandler {
             }
         }
         if (minDistance < 0) {
-            return false;
+            return null;
         }
         // minDistance -= new Float(Analyzer.getVisibleEnemies(ai).size()) / 2;
         // minDistance += new Float(ai.getGroup().getMembers().size()) / 2;
@@ -515,7 +528,7 @@ public class AtomicAi extends AiHandler {
         // minDistance -= p / average;
         // minDistance += average / p;
 
-        return minDistance > maxDistance;
+        return minDistance > maxDistance ? AiEnums.AI_LOGIC_CASE.APPROACH : null;
     }
 
 

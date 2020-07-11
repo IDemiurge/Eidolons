@@ -18,13 +18,11 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.bf.Rotatable;
 import eidolons.system.text.ToolTipMaster;
 import main.content.DC_TYPE;
-import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.UnitEnums.IMMUNITIES;
-import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.enums.rules.VisionEnums.VISION_MODE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
@@ -40,9 +38,11 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;
@@ -68,6 +68,8 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     protected DC_ActiveObj preferredAttackOfOpportunity;
     protected DC_ActiveObj preferredAttackAction;
     protected Boolean unconscious;
+    private FACING_DIRECTION tempFacing;
+    private Coordinates tempCoordinates;
 
     public DC_UnitModel(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -122,7 +124,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
                     actionTargetingTooltip = ToolTipMaster.getActionTargetingTooltip(this, action);
                 } catch (Exception e) {
                     if (!action.isBroken()) {
-                        main.system.ExceptionMaster.printStackTrace(e);
+                        ExceptionMaster.printStackTrace(e);
                     } else {
                         action.setBroken(true);
                     }
@@ -148,7 +150,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         if (vision_mode == null) {
             String name = getProperty(PROPS.VISION_MODE);
             if (StringMaster.isEmpty(name)) {
-                vision_mode = VisionEnums.VISION_MODE.NORMAL_VISION;
+                vision_mode = VISION_MODE.NORMAL_VISION;
             } else {
                 vision_mode = new EnumMaster<VISION_MODE>().retrieveEnumConst(VISION_MODE.class,
                         name);
@@ -224,7 +226,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
                 return subAction;
             }
         }
-        main.system.auxiliary.log.LogMaster.log(1, "No action of type " +
+        LogMaster.log(1, "No action of type " +
                 type +
                 " found for " + getName());
         return getAttack().getSubActions().get(0);
@@ -440,7 +442,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         if (dmg_type == null) {
             String name = getProperty(PROPS.DAMAGE_TYPE);
             if (StringMaster.isEmpty(name)) {
-                dmg_type = GenericEnums.DAMAGE_TYPE.PHYSICAL;
+                dmg_type = DAMAGE_TYPE.PHYSICAL;
             } else {
                 dmg_type = new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(DAMAGE_TYPE.class, name);
             }
@@ -595,5 +597,47 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public MODE getModeFinal() {
         return mode;
+    }
+
+    public void setTempFacing(FACING_DIRECTION tempFacing) {
+        this.tempFacing = tempFacing;
+    }
+    public void initTempFacing() {
+        setTempFacing(getFacing());
+    }
+    public void removeTempFacing() {
+        this.tempFacing = null;
+    }
+
+
+    public void setTempCoordinates(Coordinates tempCoordinates) {
+        this.tempCoordinates = tempCoordinates;
+    }
+    public void initTempCoordinates() {
+        setTempCoordinates(getCoordinates());
+    }
+    public void removeTempCoordinates() {
+        this.tempCoordinates = null;
+    }
+
+    @Override
+    public void setCoordinates(Coordinates coordinates) {
+        super.setCoordinates(coordinates);
+    }
+
+    @Override
+    public Coordinates getCoordinates() {
+        if (tempCoordinates!=null) {
+            return tempCoordinates;
+        }
+        return super.getCoordinates();
+    }
+
+    @Override
+    public FACING_DIRECTION getFacing() {
+        if (tempFacing != null) {
+            return tempFacing;
+        }
+        return super.getFacing();
     }
 }

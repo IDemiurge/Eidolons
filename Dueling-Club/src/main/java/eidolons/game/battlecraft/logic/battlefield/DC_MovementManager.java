@@ -17,12 +17,15 @@ import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
+import eidolons.game.battlecraft.ai.tools.path.Choice;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.battlecraft.ai.tools.path.alphastar.StarBuilder;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
+import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
@@ -71,7 +74,7 @@ public class DC_MovementManager implements MovementManager {
 
     public static Coordinates getMovementDestinationCoordinate(DC_ActiveObj active) {
         try {
-            MoveEffect effect = (MoveEffect) EffectFinder.getEffectsOfClass(active.getAbilities(),
+            MoveEffect effect = (MoveEffect) EffectMaster.getEffectsOfClass(active.getAbilities(),
                     MoveEffect.class).get(0);
             effect.setRef(active.getRef());
             if (effect instanceof SelfMoveEffect) {
@@ -85,17 +88,26 @@ public class DC_MovementManager implements MovementManager {
         return active.getOwnerUnit().getCoordinates();
     }
 
-    public static Action getFirstAction(Unit unit, Coordinates coordinates) {
+    public static Action getMoveAction(Unit unit, Coordinates coordinates) {
+        return getMoveAction(unit, unit.getCoordinates(), coordinates);
+    }
+    public static Action getMoveAction(Unit unit, Coordinates from, Coordinates c) {
+
+        // if (diagAllowed){
+            if (from.x!=c.x && from.y!=c.y) {
+                return AiActionFactory.newAction("Clumsy Leap", unit.getAI());
+            }
+        // }
         FACING_SINGLE relative = FacingMaster.getSingleFacing(unit.getFacing(),
-                unit.getCoordinates(), coordinates);
+                from, c);
         if (relative == FACING_SINGLE.IN_FRONT) {
             if (!new CellCondition(UNIT_DIRECTION.AHEAD).check(unit))
                 return null;
             return AiActionFactory.newAction("Move", unit.getAI());
         }
         boolean wantToMoveLeft = (unit.getFacing().isVertical()) ?
-                PositionMaster.isToTheLeft(unit.getCoordinates(), coordinates)
-                : PositionMaster.isAbove(unit.getCoordinates(), coordinates);
+                PositionMaster.isToTheLeft(from, c)
+                : PositionMaster.isAbove(from, c);
         if (!unit.getFacing().isCloserToZero()) {
             wantToMoveLeft = !wantToMoveLeft;
         }
@@ -160,7 +172,8 @@ public class DC_MovementManager implements MovementManager {
         return pathCache.get(activeUnit);
     }
 
-    public void cancelAutomove(Obj activeUnit) {
+    public void cancelAutomove(Unit activeUnit) {
+        ((ExploreGameLoop) activeUnit.getGame().getGameLoop()).clearPlayerActions();
         pathCache.remove(activeUnit);
         playerDestination = null;
         playerPath = null;
@@ -169,7 +182,7 @@ public class DC_MovementManager implements MovementManager {
     public List<ActionPath> buildPath(Unit unit, Coordinates coordinates) {
         List<DC_ActiveObj> moves = getMoves(unit);
         if (isStarPath(unit , coordinates)) {
-            ActionPath path = game.getAiManager().getStarBuilder().getPath(unit.getCoordinates(), coordinates);
+            ActionPath path = game.getAiManager().getStarBuilder().getPath(unit, unit.getCoordinates(), coordinates);
             return ImmutableList.of(path);
         }
         PathBuilder builder = PathBuilder.getInstance().init
@@ -184,7 +197,7 @@ public class DC_MovementManager implements MovementManager {
     }
 
     private boolean isStarPath(Unit unit, Coordinates coordinates) {
-        return coordinates.dst(unit.getCoordinates()) > 5;
+        return coordinates.dst(unit.getCoordinates()) >= StarBuilder.PREF_MIN_RANGE;
     }
 
     @Override
@@ -244,23 +257,41 @@ public class DC_MovementManager implements MovementManager {
                 if (!checkPathStillValid(path, playerDestination)) {
                     continue;
                 }
-                actions = path.choices.remove(0).getActions();
+                // actions = path.choices.remove(0).getActions();
                 playerPath = path.choices.stream().map(c -> c.getCoordinates()).collect(Collectors.toList());
+
+                for (Choice choice : path.choices) {
+                    for (Action action : choice.getActions()) {
+                        log(action.getActive().getName()+" added to queue "+playerDestination);
+                        Context context = new Context(unit  ,
+                                game.getCellByCoordinate(choice.getCoordinates()) );
+                        ActionInput actionInput = new ActionInput(action.getActive(), context);
+                        actionInput.setAuto(true);
+                        ((ExploreGameLoop) unit.getGame().getGameLoop()).tryAddPlayerActions(actionInput);
+                        unit.getGame().getGameLoop().signal();
+                        //could support instant mode or just set speed to 10x
+                        playerDestination=null ;
+                    }
+                }
                 break;
             }
-            if (actions == null) {
-                pathCache.remove(unit);
-                return false;
-            }
-            for (Action action : actions) {
-                Context context = new Context(unit.getRef());
-                if (action.getTarget() != null) {
-                    context.setTarget(action.getTarget().getId());
-                }
-                log(unit.getName()+" continues to move to "+playerDestination);
-                unit.getGame().getGameLoop().
-                        actionInput(new ActionInput(action.getActive(), context), true);
-            }
+            // if (actions == null) {
+            //     pathCache.remove(unit);
+            //     return false;
+            // }
+            //
+            // for (Action action : actions) {
+            //     Context context = new Context(unit.getRef());
+            //     if (action.getTarget() != null) {
+            //         context.setTarget(action.getTarget().getId());
+            //     }
+            //     log(unit.getName()+" continues to move to "+playerDestination);
+            //     ActionInput actionInput = new ActionInput(action.getActive(), context);
+            //     actionInput.setAuto(true);
+            //     ((ExploreGameLoop) unit.getGame().getGameLoop()).tryAddPlayerActions(actionInput);
+            //     // unit.getGame().getGameLoop().
+            //     //         actionInput(actionInput, true);
+            // }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             return false;

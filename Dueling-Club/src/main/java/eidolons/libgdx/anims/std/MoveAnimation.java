@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzle;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.actions.MoveByActionLimited;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
@@ -44,7 +44,7 @@ public class MoveAnimation extends ActionAnim {
 
     public MoveAnimation(Entity active, AnimData params) {
         super(active, params);
-        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
+        if (!ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
          MoveEffect.class))) // for teleports, telekinesis etc
         {
             unit = (Unit) getRef().getTargetObj();
@@ -121,7 +121,7 @@ public class MoveAnimation extends ActionAnim {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         Unit unit = (Unit) getRef().getSourceObj();
-        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
+        if (!ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
          MoveEffect.class)))
             unit = (Unit) getRef().getTargetObj();
         UnitGridView actor = (UnitGridView) ScreenMaster.getGrid().getViewMap()
@@ -172,7 +172,7 @@ if (isGhostMoveOn()){
         //         MoveEffect.class))) // for teleports, telekinesis etc
         //            return getRef().getTargetObj().getCoordinates();
         //        return super.getOriginCoordinates();
-        MoveEffect e = (MoveEffect) EffectFinder.getFirstEffectOfClass(getActive(),
+        MoveEffect e = (MoveEffect) EffectMaster.getFirstEffectOfClass(getActive(),
          MoveEffect.class);
         return e.getOrigin();
 
@@ -197,7 +197,7 @@ if (isGhostMoveOn()){
     public Coordinates getDestinationCoordinates() {
 
 
-        MoveEffect e = (MoveEffect) EffectFinder.getFirstEffectOfClass(getActive(),
+        MoveEffect e = (MoveEffect) EffectMaster.getFirstEffectOfClass(getActive(),
          MoveEffect.class); //TODO could be 2+?
         return e.getDestination();
         //            if (e.getDirection() != null) {

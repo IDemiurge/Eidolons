@@ -37,7 +37,6 @@ import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.ai.tools.target.SpellAnalyzer;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
@@ -45,6 +44,7 @@ import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.master.BuffMaster;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_CounterMaster;
 import eidolons.system.math.roll.RollMaster;
@@ -136,9 +136,9 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         if (!action.getActive().getProperty(PROPS.AI_PRIORITY_FORMULA).isEmpty()) {
             setBasePriority(evaluatePriorityFormula(action, action.getActive().getProperty(
                     PROPS.AI_PRIORITY_FORMULA)));
-            if (EffectFinder.check(action.getActive(), RollEffect.class)) {
+            if (EffectMaster.check(action.getActive(), RollEffect.class)) {
                 try {
-                    applyRollPriorityMod((RollEffect) EffectFinder.getEffectsOfClass(
+                    applyRollPriorityMod((RollEffect) EffectMaster.getEffectsOfClass(
                             action.getActive(), RollEffect.class).get(0));
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
@@ -445,10 +445,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     public int getSelfSpellPriority(Action action) {
         Effects effects = null;
         if (action instanceof AiQuickItemAction)
-            effects = EffectFinder.getEffectsFromSpell(
+            effects = EffectMaster.getEffectsFromSpell(
                     ((DC_QuickItemAction) action.getActive()).getItem().getActives().get(0));
         else effects =
-                EffectFinder.getEffectsFromSpell(action.getActive());
+                EffectMaster.getEffectsFromSpell(action.getActive());
         if (effects.getEffects().isEmpty())
             return 0;
 
@@ -474,7 +474,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public int getSpellCustomHostilePriority(Action action) {
-        Effects effects = EffectFinder.getEffectsFromSpell(action.getActive());
+        Effects effects = EffectMaster.getEffectsFromSpell(action.getActive());
         // TODO targets???
         for (Effect e : effects) {
             addConstant(getSpellCustomHostileEffectPriority(action.getTarget(), action.getActive(),
@@ -581,7 +581,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             return 0;
         }
         try {
-            SummonEffect summonEffect = (SummonEffect) EffectFinder.getEffectsOfClass(
+            SummonEffect summonEffect = (SummonEffect) EffectMaster.getEffectsOfClass(
                     action.getActive().getAbilities(), SummonEffect.class).get(0);
             unitXp = summonEffect.getSummonedUnitXp().getInt(action.getRef());
 
@@ -685,7 +685,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             return priority;
         }
         Coordinates c = getUnit().getCoordinates();
-        getUnit().setCoordinates(as.getLastAction().getTarget().getCoordinates());
+        getUnit().setTempCoordinates(as.getLastAction().getTarget().getCoordinates());
         int meleeDangerFactor = 0;
         try {
             meleeDangerFactor = getSituationAnalyzer().getMeleeDangerFactor(getUnit(), false, false);
@@ -694,7 +694,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
-            getUnit().setCoordinates(c);
+            getUnit().setTempCoordinates(c);
         }
         priority = currentMeleeDangerFactor - meleeDangerFactor;
         if (priority <= 0) {
@@ -805,7 +805,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         DC_Obj target = action.getTarget();
 
         if (buff == null) {
-            buff = EffectFinder.check(spell.getAbilities(), AddBuffEffect.class);
+            buff = EffectMaster.check(spell.getAbilities(), AddBuffEffect.class);
         }
         if (buff) {
             if (!spell.checkBool(GenericEnums.STD_BOOLS.STACKING)) {
@@ -833,12 +833,12 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         boolean ally = target.getOwner().equals(getUnit().getOwner());
         // boolean mod = EffectMaster.preCheck(spell.getAbilities(),
         // ModifyValueEffect.class);
-        List<Effect> effects = EffectFinder.getEffectsOfClass(spell.getAbilities(),
+        List<Effect> effects = EffectMaster.getEffectsOfClass(spell.getAbilities(),
                 (buff) ? AddBuffEffect.class : ModifyValueEffect.class);
         if (buff) {
             List<Effect> list = new ArrayList<>();
             for (Effect e : effects) {
-                list.addAll(EffectFinder.getBuffEffects(e, ModifyValueEffect.class));
+                list.addAll(EffectMaster.getBuffEffects(e, ModifyValueEffect.class));
             }
             effects = list; // TODO count the duration from buffEffect
         }
@@ -964,7 +964,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     private void initRollMap(DC_ActiveObj spell, List<Effect> effects) {
         rollMap = new ConcurrentMap<>();
 
-        List<RollEffect> rollEffects = EffectFinder.getRollEffects(spell);
+        List<RollEffect> rollEffects = EffectMaster.getRollEffects(spell);
         for (RollEffect roll : rollEffects) {
             for (Effect e : effects) {
                 Effect effect = roll.getEffect();
@@ -988,7 +988,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     public int getCounterModSpellPriority(Action action) {
         // preCheck immunity? find counter rule by name and preCheck....
 
-        List<Effect> effects = EffectFinder.getEffectsOfClass(action.getActive().getAbilities(),
+        List<Effect> effects = EffectMaster.getEffectsOfClass(action.getActive().getAbilities(),
                 ModifyCounterEffect.class);
         initRollMap(action.getActive(), effects);
         for (Effect e : effects) {
@@ -1025,7 +1025,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public int getCoatingPriority(DC_ActiveObj active, DC_Obj targetObj) {
-        List<Effect> effects = EffectFinder.getEffectsOfClass(active, ModifyCounterEffect.class);
+        List<Effect> effects = EffectMaster.getEffectsOfClass(active, ModifyCounterEffect.class);
         if (effects.isEmpty()) {
             return priority;
         }
@@ -1254,7 +1254,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     @Override
     public int getDamagePriority(DC_ActiveObj action, Obj targetObj, boolean attack) {
         int damage = 0;
-        List<Effect> effects = EffectFinder.getEffectsOfClass(action, (attack) ? AttackEffect.class
+        List<Effect> effects = EffectMaster.getEffectsOfClass(action, (attack) ? AttackEffect.class
                 : DealDamageEffect.class);
         initRollMap(action, effects);
         for (Effect e : effects) {

@@ -106,8 +106,8 @@ public class PathBuilder extends AiHandler {
     }
 
     private void resetUnit() {
-        unit.setCoordinates(originalCoordinate);
-        unit.setFacing(originalFacing);
+        unit.removeTempCoordinates();
+        unit.removeTempFacing();
 
     }
 
@@ -119,8 +119,8 @@ public class PathBuilder extends AiHandler {
     }
 
     protected void adjustUnit() {
-        unit.setCoordinates(c_coordinate);
-        unit.setFacing(c_facing);
+        unit.setTempCoordinates(c_coordinate);
+        unit.setTempFacing(c_facing);
         unit.getGame().getRules().getStackingRule().clearCache();
     }
 
@@ -294,16 +294,16 @@ public class PathBuilder extends AiHandler {
     }
 
     private void checkAddFaceTurn() {
-        unit.setFacing(c_facing);
-        unit.setCoordinates(c_coordinate);
+        unit.setTempFacing(c_facing);
+        unit.setTempCoordinates(c_coordinate);
         if (ReasonMaster.checkReasonCannotTarget(FILTER_REASON.FACING, targetAction)) {
             List<Action> sequence = getTurnSequenceConstructor().getTurnSequence(targetAction);
             for (Action a : sequence) {
                 path.add(new Choice(c_coordinate, a));
             }
         }
-        unit.setFacing(originalFacing);
-        unit.setCoordinates(originalCoordinate);
+        unit.setTempFacing(originalFacing);
+        unit.setTempCoordinates(originalCoordinate);
     }
 
     private void clonePath() {

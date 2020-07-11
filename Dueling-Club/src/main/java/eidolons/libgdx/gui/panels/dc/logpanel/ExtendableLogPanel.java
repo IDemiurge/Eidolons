@@ -1,6 +1,5 @@
 package eidolons.libgdx.gui.panels.dc.logpanel;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import eidolons.libgdx.GdxMaster;
@@ -13,11 +12,12 @@ import main.system.GuiEventType;
 public class ExtendableLogPanel extends LogPanel {
     private final boolean top;
     private float prevHeight;
-    private final Actor extendButton;
+    private final SymbolButton extendButton;
 
     public ExtendableLogPanel(boolean top) {
         this.top = top;
         extendButton = new SymbolButton(STD_BUTTON.PULL);
+        extendButton.setNoClickCheck(true);
         addActor(extendButton);
         extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2 - 1,
                 top ? -11 : getHeight() + 5);

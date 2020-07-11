@@ -168,7 +168,7 @@ public class TurnSequenceConstructor extends AiHandler {
 //        // this will only work if there are no obstacles to the sides
 //        // in reality, we need to preCheck from which *empty* *adjacent* cell the
 //        // enemy is closer
-//        FACING_DIRECTION facing = unit.getFacing();
+//        FACING_DIRECTION facing = unit.getTempFacing();
 //        boolean clockwise = RandomWizard.random();
 //        list.add(getTurnAction(clockwise, unit));
 //        facing = FacingMaster.rotate(facing, clockwise);
@@ -179,7 +179,7 @@ public class TurnSequenceConstructor extends AiHandler {
 //        }
 //
 //        clockwise = !clockwise;
-//        facing = unit.getFacing();
+//        facing = unit.getTempFacing();
 //        list.clear();
 //
 //        list.add(getTurnAction(clockwise, unit));

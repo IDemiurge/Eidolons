@@ -1,13 +1,13 @@
 package eidolons.ability.conditions.special;
 
 import eidolons.ability.effects.oneshot.attack.AttackEffect;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
 
 public class AttackCondition extends MicroCondition {
 
-    private Boolean counter;
+    private final Boolean counter;
 
     public AttackCondition(Boolean counter) {
         this.counter = counter;
@@ -20,7 +20,7 @@ public class AttackCondition extends MicroCondition {
             attackEffect = (AttackEffect) ref.getEffect();
         } else {
             try {
-                attackEffect = (AttackEffect) EffectFinder.getEffectsOfClass(
+                attackEffect = (AttackEffect) EffectMaster.getEffectsOfClass(
                  ref.getActive().getAbilities(), AttackEffect.class)
                  .get(0);
             } catch (Exception e) {

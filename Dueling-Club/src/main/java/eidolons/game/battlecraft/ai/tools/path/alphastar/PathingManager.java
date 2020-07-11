@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.ai.tools.path.alphastar;
 
+import eidolons.game.core.Eidolons;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldGrid;
@@ -39,7 +40,7 @@ public class PathingManager {
     }
 
     private void initNodeGrid() {
-        nodeGrid = new PathNode[handler.getWidth()][handler.getHeight()];
+        nodeGrid = new PathNode[handler.getWidth()+4][handler.getHeight()+4];
         for (Coordinates c : getGrid().getCoordinatesList()) {
             PathNode node = new PathNode(c);
             nodeGrid[c.x][c.y] = node;
@@ -78,8 +79,7 @@ public class PathingManager {
     }
 
     public boolean isGroundBlocked(PathNode node) {
-        return true;
-        // return !isGroundPassable(node.getCoordinates());
+        return !isGroundPassable(Eidolons.getMainHero(), node.getCoordinates());
     }
 
     public boolean isDiagonallyBlocked(PathNode node, PathNode node2) {

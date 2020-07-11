@@ -1,6 +1,6 @@
 package eidolons.ability.effects.containers;
 
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
@@ -29,7 +29,7 @@ public class AbilityEffect extends MicroEffect {
         if (effects != null) {
             return effects;
         }
-        effects = EffectFinder.getEffectsFromAbilityString(abilName, ref);
+        effects = EffectMaster.getEffectsFromAbilityString(abilName, ref);
 
 
         return effects;

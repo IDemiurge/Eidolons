@@ -4,9 +4,9 @@ import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.ability.effects.oneshot.attack.AttackEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -19,9 +19,9 @@ import java.util.Map;
 public class FutureBuilder {
 
     public static final int LETHAL_DAMAGE = -666;
-    private static Map<String, Integer> cache = new HashMap<>();
-    private static Map<String, Integer> minCache = new HashMap<>();
-    private static Map<String, Integer> maxCache = new HashMap<>();
+    private static final Map<String, Integer> cache = new HashMap<>();
+    private static final Map<String, Integer> minCache = new HashMap<>();
+    private static final Map<String, Integer> maxCache = new HashMap<>();
 
     public static int precalculateDamage(DC_ActiveObj active, Obj targetObj, boolean attack) {
         return precalculateDamage(active, targetObj, attack, null);
@@ -43,7 +43,7 @@ public class FutureBuilder {
         }
 
         List<Effect> effects;
-        effects = EffectFinder.getEffectsOfClass(EffectFinder.getEffectsFromSpell(active),
+        effects = EffectMaster.getEffectsOfClass(EffectMaster.getEffectsFromSpell(active),
          attack ? AttackEffect.class : DealDamageEffect.class);
         // TODO special effects?!
         for (Effect e : effects) {

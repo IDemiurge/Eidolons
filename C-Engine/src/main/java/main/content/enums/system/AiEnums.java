@@ -7,6 +7,10 @@ import main.system.auxiliary.StringMaster;
  * Created by JustMe on 2/14/2017.
  */
 public class AiEnums {
+    public enum AI_LOGIC_CASE {
+        RELOAD, RESTORE, TURN_AROUND, APPROACH, FAR_UNSEEN
+    }
+
     public enum AI_LOGIC { // targeting prioritizing? should be of various
         // types...
         DAMAGE,

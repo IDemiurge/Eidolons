@@ -7,7 +7,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.attach.DC_BuffObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.round.UpkeepRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
@@ -77,7 +76,7 @@ public class BuffMaster extends Master {
 
     public static List<ObjType> getBuffsFromSpell(DC_ActiveObj spell) {
         List<ObjType> buffTypes = new ArrayList<>();
-        for (Effect e : EffectFinder.getEffectsOfClass(spell.getAbilities(),
+        for (Effect e : EffectMaster.getEffectsOfClass(spell.getAbilities(),
                 AddBuffEffect.class)) {
             ObjType buffType = ((AddBuffEffect) e).getBuffTypeLazily();
 

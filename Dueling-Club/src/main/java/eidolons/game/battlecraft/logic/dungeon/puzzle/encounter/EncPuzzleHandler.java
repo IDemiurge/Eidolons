@@ -26,6 +26,7 @@ spawn per round OR <?>
  */
 public class EncPuzzleHandler extends PuzzleHandler<EncounterPuzzle> {
     private final Set<BattleFieldObject> blocks = new HashSet<>();
+    private int lastSpawnPeriod;
 
     public EncPuzzleHandler(EncounterPuzzle encounterPuzzle) {
         super(encounterPuzzle);
@@ -77,6 +78,21 @@ public class EncPuzzleHandler extends PuzzleHandler<EncounterPuzzle> {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
+
+        if (event.getType() == Event.STANDARD_EVENT_TYPE.NEW_ROUND) {
+            lastSpawnPeriod=1;
+        }
+
+        if (event.getType() == Event.STANDARD_EVENT_TYPE.TIME_ELAPSED) {
+            if (getGame().getAtbController().getTime()/getSpawnPeriod()>lastSpawnPeriod) {
+                spawn(false);
+                lastSpawnPeriod++;
+            }
+        }
+    }
+
+    private float getSpawnPeriod() {
+        return 10;
     }
 
     @Override

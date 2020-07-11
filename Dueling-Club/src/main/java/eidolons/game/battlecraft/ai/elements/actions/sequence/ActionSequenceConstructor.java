@@ -21,7 +21,6 @@ import eidolons.game.battlecraft.ai.tools.target.ReasonMaster.FILTER_REASON;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.battlecraft.ai.tools.time.TimeLimitMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
-import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
@@ -230,17 +229,9 @@ public class ActionSequenceConstructor extends AiHandler {
             return null; // TODO until pathing/cell-pr. is fixed
         }
         if (!task.isForced()) {
-            if (task.getAI().checkMod(AI_MODIFIERS.TRUE_BRUTE)) {
-                return null;
-            }
-
             if (task.getAI().getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
                 return null;
-            } //if (getAnalyzer().isRanged(task.getAI())) return null ;
-//          TODO   if ((!action.getActive().isRanged() && task.getAI().getType() == AiEnums.AI_TYPE.ARCHER)
-//             || (task.getAI().getType() == AiEnums.AI_TYPE.CASTER && !unit.getSpells().isEmpty())) {
-//                return null;
-//            }
+            }
         }
 
         Unit unit = (Unit) action.getRef().getSourceObj();

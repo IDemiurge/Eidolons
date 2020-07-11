@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.target.ReasonMaster.FILTER_REASON;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
@@ -35,7 +36,7 @@ public class TargetingMaster extends AiHandler {
     }
 
     public static Targeting getZoneEffect(DC_ActiveObj active) {
-        List<Effect> zoneEffects = EffectFinder.getEffectsOfClass(active,
+        List<Effect> zoneEffects = EffectMaster.getEffectsOfClass(active,
          SpecialTargetingEffect.class);
         if (!zoneEffects.isEmpty()) {
             SpecialTargetingEffect zoneEffect = (SpecialTargetingEffect) zoneEffects
@@ -135,12 +136,10 @@ public class TargetingMaster extends AiHandler {
 //        if (action.getActive().isMelee()) {
         if (reasons.size() == 1) // what about DISTANCE?
         {
-            if (reasons.get(0) == (FILTER_REASON.FACING)) {
-                // if (!visionRemoved)
-                // main.system.auxiliary.LogMaster.log(1, "!!!");
-                // else
-                return true;
-            }
+            // if (!visionRemoved)
+            // main.system.auxiliary.LogMaster.log(1, "!!!");
+            // else
+            return reasons.get(0) == (FILTER_REASON.FACING);
         }
 //        }
 
