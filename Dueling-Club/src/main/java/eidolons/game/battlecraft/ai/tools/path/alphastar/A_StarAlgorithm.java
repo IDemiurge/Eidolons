@@ -12,7 +12,7 @@ public class A_StarAlgorithm {
 
     private PathNode dest;
     private PathNode orig;
-    private PathNode C;
+    private PathNode cur;
     private Path PATH;
 
     private List<PathNode> openList;
@@ -37,7 +37,7 @@ public class A_StarAlgorithm {
         N = 0;
         dest = getPathNode(c2);
         orig = getPathNode(c1);
-        C = orig;
+        cur = orig;
         this.flying = flying;
         this.agile = agile;
 
@@ -72,7 +72,7 @@ public class A_StarAlgorithm {
 
     private void constructPath() {
         PATH = new Path(orig, dest);
-        PathNode node = C; // .getParent()
+        PathNode node = cur; // .getParent()
         if (node == null) {
             PATH.setAgile(agile);
             PATH.setFlying(flying);
@@ -104,14 +104,14 @@ public class A_StarAlgorithm {
     }
 
     public boolean checkBetterPath(PathNode node) {
-        return node.getG() < C.getG();
+        return node.getG() < cur.getG();
 
     }
 
     public void step() {
 
         openList.clear();
-        for (PathNode node : mngr.getAdjacentNodes(C.getCoordinates())) {
+        for (PathNode node : mngr.getAdjacentNodes(cur.getCoordinates())) {
             if (!isPassable(flying, agile, node)) {
                 continue;
             }
@@ -121,7 +121,7 @@ public class A_StarAlgorithm {
 
             if (openList.contains(node)) {
                 if (checkBetterPath(node)) {
-                    C.setParent(node);
+                    cur.setParent(node);
                 }
             } else {
                 openList.add(node);
@@ -134,13 +134,13 @@ public class A_StarAlgorithm {
 
         PathNode nextNode = getNodeWithLowestF();
 
-        nextNode.setParent(C);
-        C = nextNode;
-        closedList.add(C);
-        C.setCost(getCost(agile, flying, C));
+        nextNode.setParent(cur);
+        cur = nextNode;
+        closedList.add(cur);
+        cur.setCost(getCost(agile, flying, cur));
 
         LogMaster.log(LogMaster.PATHING_DEBUG, "Step #"
-                + N + " to " + C + " with closed list " + closedList
+                + N + " to " + cur + " with closed list " + closedList
 
         );
         N++;
@@ -192,17 +192,18 @@ public class A_StarAlgorithm {
     public double heuristic(boolean flying, boolean agile, Coordinates c1, Coordinates c2) {
         // euclidian distance for flying;
         // manhattan for non-aglie
-        // for agile...?? admissible!!!
+        // for agile...?? never overestimate
+        // TODO We could cache REAL distances as we do moving around obstacles...
         return PositionMaster.getExactDistance(c1, c2);
     }
 
     // UTILITY METHODS
     public List<PathNode> getAdjacentNodes() {
-        return mngr.getAdjacentNodes(C.getCoordinates());
+        return mngr.getAdjacentNodes(cur.getCoordinates());
     }
 
     public List<Obj> getAdjacentCells() {
-        return mngr.getAdjacentObjs(C.getCoordinates(), true);
+        return mngr.getAdjacentObjs(cur.getCoordinates(), true);
     }
 
     public boolean isPassable(boolean flying, boolean agile, PathNode node) {
@@ -212,10 +213,7 @@ public class A_StarAlgorithm {
         if (!flying && isGroundBlocked(node)) {
             return false;
         }
-        if (!agile) {
-            return !isDiagonallyBlocked(C, node);
-        }
-        return true;
+        return !isDiagonallyBlocked(cur, node);
     }
 
     private boolean isFullyBlocked(PathNode node) {
@@ -316,11 +314,10 @@ public class A_StarAlgorithm {
 // }
 //
 /**
- * foreach adjacent cell plotPath(agile, c1, c2) depth first: keep building to
- * c2 or blocked if (blocked(agile)) return -1;
+ * foreach adjacent cell plotPath(agile, c1, c2) depth first: keep building to c2 or blocked if (blocked(agile)) return
+ * -1;
  * <p>
- * <?> how to know when to break from plotting - when all paths are tried or
- * blocked? use foreach instead
+ * <?> how to know when to break from plotting - when all paths are tried or blocked? use foreach instead
  * <p>
  * <p>
  * newPath = plotPath(agile, c3, c2); path = min (path, newPath);
@@ -329,6 +326,5 @@ public class A_StarAlgorithm {
  * <p>
  * recursion: foreach getCells(): plotpath
  * <p>
- * use a field to keep track of the Path; reset it when the path is finished and
- * stored in Paths[]
+ * use a field to keep track of the Path; reset it when the path is finished and stored in Paths[]
  */

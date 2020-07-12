@@ -144,13 +144,14 @@ public class DirectionMaster {
         source = new Coordinates(
                 diffX < 0 ? target.x
                         : source.x,
-                diffX < 0 ? target.y
+                diffY < 0 ? target.y
                         : source.y);
         target = new Coordinates(
                 diffX >= 0 ? target.x
                         : source.x,
-                diffX >= 0 ? target.y
+                diffY >= 0 ? target.y
                         : source.y);
+
         d = getRelativeDirectionNoCache(source, target);
         relative_directions[absX][absY] = d;
         return d;

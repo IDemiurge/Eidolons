@@ -40,7 +40,7 @@ public class WallMaster {
         // from pattern, or custom-set via script map!
 
 
-        return getImage(c, CELLS, set, 1);
+        return getImage(c, CELLS, set, 1, false);
     }
 
     public static String getWallImage(Coordinates c, int variant) {
@@ -48,24 +48,26 @@ public class WallMaster {
         if (set == null) {
             set = CELL_SET.beige;
         }
-        return getImage(c, WALL, set, variant);
+        return getImage(c, WALL, set, variant, false);
     }
 
-    public static String getPillarImage(Coordinates c, Pillars.PILLAR variant) {
+    public static String getPillarImage(Coordinates c, Pillars.PILLAR variant, boolean wall) {
         CELL_SET set = getSet(c);
         if (set == null) {
             set = CELL_SET.beige;
         }
-        return getImage(c, PILLARS, set, variant.toString());
+        return getImage(c, PILLARS, set, variant.toString(), wall);
     }
 
-    public static String getImage(Coordinates c, String type, CELL_SET set, Object fileName) {
-        int variant = getVariant(c);
+    public static String getImage(Coordinates c, String type, CELL_SET set, Object fileName, boolean alt) {
+        int variant = getVariant(c, alt);
         return new StringBuilder().append(ROOT).append(set).append("/").append(type).append("/").
                 append(variant).append("/").append(fileName).append(".png").toString();
     }
 
-    private static int getVariant(Coordinates c) {
+    private static int getVariant(Coordinates c, boolean alt) {
+        if (alt)
+            return DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(c).getCellSetVariantAlt();
         return DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(c).getCellSetVariant();
     }
 
@@ -98,4 +100,7 @@ public class WallMaster {
     }
 
 
+    public static boolean isRotation(Coordinates coordinates) {
+        return getSet(coordinates) == CELL_SET.woods;
+    }
 }

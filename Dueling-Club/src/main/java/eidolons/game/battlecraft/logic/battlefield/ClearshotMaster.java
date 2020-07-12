@@ -106,16 +106,26 @@ diagonal adjacent walls will remove whole directions..
 
     /**
      * Checks if there is a diagonal wall block that obstructs clearshot between source and target
-     *
      * @param source
      * @param target
      * @param coordinates
      * @return
      */
     public static boolean checkWallObstruction(DC_Obj source, DC_Obj target, Coordinates coordinates) {
-        Boolean result = source.getGame().getVisionMaster().getVisionController().
-                getWallObstructionMapper().get(source.getCoordinates(),
-                source.getGame().getCellByCoordinate(target.getCoordinates()));
+        return checkWallObstruction(source.getCoordinates(), target.getCoordinates(), coordinates);
+    }
+
+        /**
+         * Checks if there is a diagonal wall block that obstructs clearshot between source and target
+         * @param source
+         * @param target
+         * @param coordinates
+         * @return
+         */
+        public static boolean checkWallObstruction(Coordinates source, Coordinates target, Coordinates coordinates) {
+        Boolean result = DC_Game.game.getVisionMaster().getVisionController().
+                getWallObstructionMapper().get(source,
+                        DC_Game.game.getCellByCoordinate(target));
         if (result != null) {
             return result;
         }
@@ -126,7 +136,7 @@ diagonal adjacent walls will remove whole directions..
         for (Coordinates c : coordinates.getAdjacent()) {
             //            isCoordinateWallObstructing(c, source, target, coordinates, direction, angle);
 
-            DIRECTION relativeDirection = c.isAdjacent(source.getCoordinates()) ? DirectionMaster
+            DIRECTION relativeDirection = c.isAdjacent(source) ? DirectionMaster
                     .getRelativeDirection(c, coordinates) : DirectionMaster.getRelativeDirection(
                     coordinates, c);
             if (Bools.areOpposite(relativeDirection.growX, direction.growX)) {
@@ -141,18 +151,18 @@ diagonal adjacent walls will remove whole directions..
             if (distance > 1) {
                 continue;
             }
-            if (coordinates.equals(target.getCoordinates())
-                    || !target.getCoordinates().isAdjacent(source.getCoordinates(), false)
+            if (coordinates.equals(target)
+                    || !target.isAdjacent(source, false)
             ) {
                 double d = PositionMaster
-                        .getExactDistance(source.getCoordinates(), target.getCoordinates())
-                        - PositionMaster.getExactDistance(c, source.getCoordinates());
+                        .getExactDistance(source, target)
+                        - PositionMaster.getExactDistance(c, source);
                 if ((d) <= 0.0) {
                     continue; //must not be beyond target
                 }
                 d = PositionMaster
-                        .getExactDistance(source.getCoordinates(), target.getCoordinates())
-                        - PositionMaster.getExactDistance(coordinates, target.getCoordinates());
+                        .getExactDistance(source, target)
+                        - PositionMaster.getExactDistance(coordinates, target);
                 if ((d) <= 0.0) {
                     continue; //must not be behind source
                 }
@@ -162,11 +172,11 @@ diagonal adjacent walls will remove whole directions..
             if (source.getY() != c.y) {
                 //                PositionMaster.isToTheLeft(Coordinates.getVar())
                 left = (float) Math.abs(source.getX() - c.x) / Math.abs(source.getY() - c.y) <
-                        getAngle(source.getCoordinates(), target.getCoordinates());
+                        getAngle(source, target);
 
             }
 
-            List<DIRECTION> list = source.getGame().getBattleFieldManager().getWallMap().get(c);
+            List<DIRECTION> list = DC_Game.game.getBattleFieldManager().getWallMap().get(c);
             if (list == null) {
                 continue;
             }

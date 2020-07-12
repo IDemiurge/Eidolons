@@ -27,6 +27,7 @@ import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.stage.BattleGuiStage;
 import eidolons.libgdx.stage.GridStage;
 import eidolons.libgdx.stage.GuiStage;
+import eidolons.libgdx.texture.TextureCache;
 import eidolons.macro.MacroGame;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
@@ -65,6 +66,7 @@ public class DungeonScreen extends GameScreenWithTown {
     @Override
     protected void preLoad() {
         instance = this;
+        TextureCache.getInstance().loadAtlases(false);
         WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GUI_READY);
         super.preLoad();
         gridStage = new GridStage(viewPort, getBatch());

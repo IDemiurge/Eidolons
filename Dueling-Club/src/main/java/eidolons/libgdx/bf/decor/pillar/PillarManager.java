@@ -184,7 +184,7 @@ public class PillarManager extends GridHandler {
                     container.removePillar();
                     continue;
                 }
-                String path = WallMaster.getPillarImage(c, p);
+                String path = WallMaster.getPillarImage(c, p, wall);
                 Vector2 pillarV = getOffset(p);
                 FadeImageContainer pillar = container.addPillar(path);
                 if (pillar == null) {

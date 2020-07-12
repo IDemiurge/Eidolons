@@ -629,7 +629,7 @@ it sort of broke at some point - need to investigate!
     }
 
     protected void createUnitsViews(DequeImpl<BattleFieldObject> units) {
-
+        TextureCache.getInstance().loadAtlases(false);
         Map<Coordinates, List<BattleFieldObject>> map = new HashMap<>();
         LogMaster.log(1, " " + units);
         for (BattleFieldObject object : units) {

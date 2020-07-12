@@ -208,6 +208,14 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
         }
         return cell_variant;
     }
+    @Override
+    public int getCellSetVariantAlt() {
+        Integer cell_variant = NumberUtils.getInt(getPropagatedValue("cell_variant_alt"));
+        if (cell_variant==0) {
+            return 1;
+        }
+        return cell_variant;
+    }
 
     @Override
     public void setValue(String value, String string) {

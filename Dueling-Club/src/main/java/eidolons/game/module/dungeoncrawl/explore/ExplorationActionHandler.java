@@ -37,7 +37,7 @@ public class ExplorationActionHandler extends ExplorationHandler {
         if (action.isAttackAny()) {
             coef = 2f;
         }
-
+        coef /= action.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().getSpeed();
         return new Float(AtbMaster.getReadinessCost(action)) / 10000 * coef;
 
     }

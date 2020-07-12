@@ -22,6 +22,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
+import main.system.text.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -248,15 +249,13 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     }
 
     public void timeElapsed(double time) {
-
-
         if (permanent) {
             applyTimeEffect(time);
             return;
         }
-        LogMaster.log(1, this + " Buff duration reduced by " + time);
+        if (Log.check(Log.LOG_CASE.buff))
+            LogMaster.log(1, this + " Buff duration reduced by " + time + "\n Duration = " + duration);
         duration -= time;
-        LogMaster.log(1, this + " Buff duration = " + duration);
         if (duration < 0) {
             time += duration;
         }

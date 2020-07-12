@@ -97,15 +97,12 @@ public class PathSequenceConstructor extends AiHandler {
 
     private boolean isStar(Action action, List<Coordinates> targetCells) {
         for (Coordinates targetCell : targetCells) {
-            if (targetCell.dst(action.getActive().getOwnerObj().getCoordinates()) >StarBuilder.PREF_MIN_RANGE)
+            if (targetCell.dst(action.getActive().getOwnerObj().getCoordinates()) >= StarBuilder.PREF_MIN_RANGE)
                 return true;
         }
         return false;
     }
 
-    private boolean isStar() {
-        return false;
-    }
 
     private boolean isPathCacheOn() {
         return true;

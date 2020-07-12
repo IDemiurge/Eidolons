@@ -21,6 +21,7 @@ import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.bf.Hoverable;
 import eidolons.libgdx.bf.datasource.GridCellDataSource;
+import eidolons.libgdx.bf.decor.wall.WallMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.overlays.map.WallMap;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -137,7 +138,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
             return;
         }
         for (GenericGridView view : visibleViews) {
-            view.setVisible(false);
+            view.setVisible(false); //TODO gdx review - will cause recalcBounds!!!
         }
         draw(batch, 1f);
         for (GenericGridView view : visibleViews) {
@@ -502,6 +503,18 @@ public class GridCellContainer extends GridCell implements Hoverable {
             }
             recalcUnitViewBounds();
         }
+    }
+
+    @Override
+    public boolean isRotation() {
+        return WallMaster.isRotation(getCoordinates());
+    }
+
+    public Coordinates getCoordinates() {
+        if (getUserObject() != null) {
+            return getUserObject().getCoordinates();
+        }
+        return Coordinates.get(gridX, gridY);
     }
 
     @Override

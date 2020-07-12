@@ -97,6 +97,11 @@ public class SelfMoveEffect extends MoveEffect {
         return destination;
     }
 
+    @Override
+    public Coordinates getDestination() {
+        return super.getDestination();
+    }
+
     protected BattleFieldObject getObjToMove() {
         return (BattleFieldObject) ref.getSourceObj();
     }

@@ -94,6 +94,7 @@ public interface IStruct {
     void setColorTheme(CONTENT_CONSTS.COLOR_THEME c);
 
     int getCellSetVariant();
+    int getCellSetVariantAlt();
 
     int getId();
 

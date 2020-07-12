@@ -116,6 +116,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     }
 
+    public static float getSpeed() {
+        return speed;
+    }
     public Boolean playerRests(float timeInSeconds) {
         return playerWaits(timeInSeconds, true);
     }

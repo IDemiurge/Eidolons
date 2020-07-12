@@ -121,8 +121,6 @@ public class LE_GridCell extends GridCellContainer {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        super.draw(batch, parentAlpha);
-
     }
 
     @Override

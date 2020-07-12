@@ -5,10 +5,12 @@ import eidolons.entity.obj.unit.Unit;
 import main.system.GuiEventManager;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
+import main.system.text.Log;
 import main.system.text.LogManager;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import static main.system.GuiEventType.INITIATIVE_CHANGED;
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 3/26/2018.
@@ -54,7 +56,9 @@ public class AtbUnitImpl implements AtbUnit {
     public void setAtbReadiness(float i) {
 
         if (i >  AtbController.ATB_TO_READY) {  //1.01f *
-            main.system.auxiliary.log.LogMaster.log(1, " Bad ATB status:" +
+
+            if (Log.check(Log.LOG_CASE.atb))
+                log(1, " Bad ATB status:" +
              getUnit().getName() + " has " +
              i + " readiness value");
             i = AtbController.ATB_TO_READY;
@@ -97,7 +101,9 @@ public class AtbUnitImpl implements AtbUnit {
             timeTillTurn = i;
 
             if (i > AtbController.ATB_TO_READY || i < 0) {
-                main.system.auxiliary.log.LogMaster.log(1, " Bad setTimeTillTurn:" +
+
+                if (Log.check(Log.LOG_CASE.atb))
+                    log(1, " Bad setTimeTillTurn:" +
                  getUnit().getName() + " to " + i);
             } else {
                 // main.system.auxiliary.log.LogMaster.log(1,

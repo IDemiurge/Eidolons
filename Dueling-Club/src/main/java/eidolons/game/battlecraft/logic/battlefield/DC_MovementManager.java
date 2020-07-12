@@ -19,7 +19,6 @@ import eidolons.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.ai.tools.path.Choice;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
-import eidolons.game.battlecraft.ai.tools.path.alphastar.StarBuilder;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_Game;
@@ -95,7 +94,9 @@ public class DC_MovementManager implements MovementManager {
 
         // if (diagAllowed){
             if (from.x!=c.x && from.y!=c.y) {
-                return AiActionFactory.newAction("Clumsy Leap", unit.getAI());
+                Action leap = AiActionFactory.newAction("Clumsy Leap", unit.getAI());
+                leap.getRef().setTarget(unit.getGame().getCellByCoordinate(c).getId());
+                return leap;
             }
         // }
         FACING_SINGLE relative = FacingMaster.getSingleFacing(unit.getFacing(),
@@ -108,9 +109,9 @@ public class DC_MovementManager implements MovementManager {
         boolean wantToMoveLeft = (unit.getFacing().isVertical()) ?
                 PositionMaster.isToTheLeft(from, c)
                 : PositionMaster.isAbove(from, c);
-        if (!unit.getFacing().isCloserToZero()) {
-            wantToMoveLeft = !wantToMoveLeft;
-        }
+        // if (!unit.getFacing().isCloserToZero()) {
+        //     wantToMoveLeft = !wantToMoveLeft;
+        // }
 
         if (!new CellCondition(wantToMoveLeft ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
             return null;
@@ -197,7 +198,8 @@ public class DC_MovementManager implements MovementManager {
     }
 
     private boolean isStarPath(Unit unit, Coordinates coordinates) {
-        return coordinates.dst(unit.getCoordinates()) >= StarBuilder.PREF_MIN_RANGE;
+        return true;
+        // return coordinates.dst(unit.getCoordinates()) >= StarBuilder.PREF_MIN_RANGE;
     }
 
     @Override

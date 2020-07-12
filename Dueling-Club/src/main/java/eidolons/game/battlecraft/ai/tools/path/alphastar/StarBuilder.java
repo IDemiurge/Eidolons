@@ -18,7 +18,7 @@ import java.util.List;
 
 public class StarBuilder extends AiHandler implements IPathHandler {
 
-    public static final int PREF_MIN_RANGE = 5;
+    public static final int PREF_MIN_RANGE = 3;
     private final PathingManager pathingManager;
 
     public StarBuilder(AiMaster master) {

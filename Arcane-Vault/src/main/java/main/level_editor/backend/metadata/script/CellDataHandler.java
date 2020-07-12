@@ -53,7 +53,7 @@ public abstract class CellDataHandler<T extends DataUnit> extends LE_Handler {
             Coordinates coordinates = offset == null ? origin : origin.getOffset(offset);
             T prev = getData(coordinates);
             T result = createData(data);
-            if (isAppend()){
+            if (prev !=null && isAppend()){
                 result = append(prev, result);
             }
             operation(getOperation(), coordinates, result,

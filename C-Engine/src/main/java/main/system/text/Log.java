@@ -1,8 +1,8 @@
-package eidolons.system.text;
+package main.system.text;
 
-public class Logging {
+public class Log {
 
-    public static boolean isLogged(LOG_CASE atb) {
+    public static boolean check(LOG_CASE atb) {
         switch (atb) {
             case atb:
                 break;
@@ -12,7 +12,7 @@ public class Logging {
 
     public enum LOG_CASE {
         atb,
-        movement,
+        movement, buff, pathing,
     }
 
 

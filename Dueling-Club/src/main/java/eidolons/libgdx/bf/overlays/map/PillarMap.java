@@ -89,7 +89,7 @@ public class PillarMap extends OverlayMap<PILLAR> {
 
 
     private TextureRegion getRegion(Coordinates c, PILLAR pillar) {
-        String pillarPath = WallMaster.getPillarImage(c, pillar);
+        String pillarPath = WallMaster.getPillarImage(c, pillar, wall);
         TextureRegion region = TextureCache.getOrCreateR(pillarPath);
         invertCache.put(region, pillar);
         return region;

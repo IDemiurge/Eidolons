@@ -234,6 +234,14 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
                     }
                 }
                 data.setValue(next, data.getValue(level));
+            } else {
+                String value = data.getValue(level);
+                if (value.isEmpty()) {
+                    value = previous.getValue(level);
+                    if (!value.isEmpty()) {
+                        data.setValue(level, value);
+                    }
+                }
             }
         }
         return data;

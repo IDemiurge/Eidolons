@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.ai.tools.path.alphastar;
 
+import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.game.core.Eidolons;
 import main.entity.Entity;
 import main.entity.obj.Obj;
@@ -40,6 +41,7 @@ public class PathingManager {
     }
 
     private void initNodeGrid() {
+        //TODO gdx Review - re-init smaller grid?
         nodeGrid = new PathNode[handler.getWidth()+4][handler.getHeight()+4];
         for (Coordinates c : getGrid().getCoordinatesList()) {
             PathNode node = new PathNode(c);
@@ -56,18 +58,12 @@ public class PathingManager {
         return (PositionMaster.inLine(c1, c2) || agile);
     }
 
-    @Deprecated
     public boolean isDiagonallyBlocked(Coordinates c, Coordinates c2) {
+        //TODO wall block must be considered anyway
         if (!(c.x != c2.x && c.y != c2.y)) {
             return false;
         }
-        boolean left = PositionMaster.isToTheLeft(c, c2);
-        boolean top = PositionMaster.isAbove(c, c2);
-        int x = (left) ? 1 : -1;
-        int y = (top) ? 1 : -1;
-        Coordinates C1 = new Coordinates(c.x + x, c.y);
-        Coordinates C2 = new Coordinates(c.x, c.y + y);
-        return !(isGroundPassable(null, C1) || isGroundPassable(null, C2));
+        return !new ClearShotCondition().check(c, c2);
     }
 
     // public boolean isOccupied(Coordinates c) {

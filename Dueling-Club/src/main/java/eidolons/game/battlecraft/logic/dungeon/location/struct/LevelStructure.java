@@ -41,6 +41,7 @@ public class LevelStructure {
         height(EDIT_VALUE_TYPE.number),
         illumination(EDIT_VALUE_TYPE.number),
         cell_variant(EDIT_VALUE_TYPE.number),
+        cell_variant_alt(EDIT_VALUE_TYPE.number),
         cell_set(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
@@ -135,6 +136,7 @@ public class LevelStructure {
         height(EDIT_VALUE_TYPE.number),
         illumination(EDIT_VALUE_TYPE.number),
         cell_variant(EDIT_VALUE_TYPE.number),
+        cell_variant_alt(EDIT_VALUE_TYPE.number),
         cell_set(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
@@ -248,6 +250,7 @@ public class LevelStructure {
         illumination(EDIT_VALUE_TYPE.number),
 
         cell_variant(EDIT_VALUE_TYPE.number),
+        cell_variant_alt(EDIT_VALUE_TYPE.number),
         cell_set(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
@@ -372,6 +375,7 @@ public class LevelStructure {
         illumination(EDIT_VALUE_TYPE.number),
 
         cell_variant(EDIT_VALUE_TYPE.number),
+        cell_variant_alt(EDIT_VALUE_TYPE.number),
         cell_set(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {

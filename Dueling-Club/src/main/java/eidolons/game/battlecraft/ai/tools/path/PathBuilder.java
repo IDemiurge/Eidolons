@@ -27,6 +27,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
+import main.system.text.Log;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
@@ -187,16 +188,16 @@ public class PathBuilder extends AiHandler {
                     Chronos.logTimeElapsedForMark(getChronosPrefix() + choice); // TODO
                 }
                 if (!simplified)
-                if (!failed)
-                if (isDebug()){
-                EUtils.showInfoText(true, "Ai built " + path);
-                DC_MovementManager.playerPath=path.choices.stream()
-                        .map(ch->ch.getCoordinates()).collect(Collectors.toList());
+                    if (!failed)
+                        if (isDebug()) {
+                            EUtils.showInfoText(true, "Ai built " + path);
+                            DC_MovementManager.playerPath = path.choices.stream()
+                                    .map(ch -> ch.getCoordinates()).collect(Collectors.toList());
 
-                DC_MovementManager.playerDestination=path.getTargetCoordinates();
-                GdxMaster.onInputGdx(()-> WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.INPUT, true));
-                WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.INPUT);
-                }
+                            DC_MovementManager.playerDestination = path.getTargetCoordinates();
+                            GdxMaster.onInputGdx(() -> WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.INPUT, true));
+                            WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.INPUT);
+                        }
                 // mark removed???
             }
             if (unit.getUnitAI().getLogLevel() > AiLogger.LOG_LEVEL_BASIC) {
@@ -208,7 +209,6 @@ public class PathBuilder extends AiHandler {
         }
         return paths;
     }
-
 
 
     private void applyChoice(Choice choice) {
@@ -281,7 +281,7 @@ public class PathBuilder extends AiHandler {
             }
             if (simplified)
                 if (!paths.isEmpty())
-                return false;
+                    return false;
             // if (!failed)
             clonePath();
             back();
@@ -414,20 +414,24 @@ public class PathBuilder extends AiHandler {
 
     private void filterPaths() {
         filteredPaths = new ArrayList<>();
-        main.system.auxiliary.log.LogMaster.log(1, " Filtering against "
-                + bestResult);
+
+        if (Log.check(Log.LOG_CASE.pathing))
+            main.system.auxiliary.log.LogMaster.log(1, " Filtering against "
+                    + bestResult);
         for (ActionPath p : paths) {
             int priority = p.getPriority();
-            main.system.auxiliary.log.LogMaster.log(1, p + " paths priority = "
-                    + priority);
+            if (Log.check(Log.LOG_CASE.pathing))
+                main.system.auxiliary.log.LogMaster.log(1, p + " paths priority = "
+                        + priority);
 
             if (bestResult - priority >= FILTER_THRESHOLD) {
                 continue;
             }
             filteredPaths.add(p);
         }
-        main.system.auxiliary.log.LogMaster.log(1, targetAction + "'s Filtered Paths: " +
-                ContainerUtils.joinList(filteredPaths, StringMaster.NEW_LINE));
+        if (Log.check(Log.LOG_CASE.pathing))
+            main.system.auxiliary.log.LogMaster.log(1, targetAction + "'s Filtered Paths: " +
+                    ContainerUtils.joinList(filteredPaths, StringMaster.NEW_LINE));
 
     }
 

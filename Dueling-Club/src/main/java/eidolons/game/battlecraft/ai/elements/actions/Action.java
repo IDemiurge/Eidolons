@@ -158,11 +158,7 @@ public class Action {
     }
 
     public Unit getSource() {
-        try {
-            return (Unit) ref.getSourceObj();
-        } catch (Exception e) {
-            return null;
-        }
+            return active.getOwnerUnit();
     }
 
     public boolean isDummy() {

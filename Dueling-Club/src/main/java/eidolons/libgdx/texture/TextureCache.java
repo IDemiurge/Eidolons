@@ -25,7 +25,6 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 
 import java.nio.file.Path;
@@ -37,12 +36,11 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.regex.Pattern;
 
 import static main.system.auxiliary.log.LogMaster.important;
 
 public class TextureCache {
-    public static final boolean atlasesOn =  !CoreEngine.TEST_LAUNCH;
+    public static final boolean atlasesOn = false;// v !CoreEngine.TEST_LAUNCH;
     private static final Boolean uiAtlasesOn = false;
     private static TextureCache instance;
     private static final Lock creationLock = new ReentrantLock();
@@ -60,8 +58,6 @@ public class TextureCache {
     private final String imagePath;
     private SmartTextureAtlas uiAtlas;
     private SmartTextureAtlas mainAtlas;
-    private SmartTextureAtlas genAtlas;
-    private final Pattern atlasPattern;
     private boolean silent;
     private static final boolean stats = Flags.isIDE();
     private static final Map<String, Integer> statMap = new LinkedHashMap<>();
@@ -113,21 +109,26 @@ public class TextureCache {
         return regions;
     }
 
-    public void loadAtlases() {
-        uiAtlas = new SmartTextureAtlas(imagePath + "/gen/atlas/ui.txt");
-        mainAtlas = new SmartTextureAtlas(imagePath + "/gen/atlas/grid/main.txt");
+    public void loadAtlases(boolean menu) {
+        if (atlasesOn)
+        if (menu) {
+            if (uiAtlas == null) {
+                uiAtlas = new SmartTextureAtlas(imagePath + "/gen/atlas/ui.txt");
+            }
+        } else {
+            if (mainAtlas == null) {
+                mainAtlas = new SmartTextureAtlas(imagePath + "/gen/atlas/grid/main.txt");
+            }
+        }
         //            genAtlas = new SmartTextureAtlas(imagePath + "/gen//gen.txt");
     }
 
     private TextureCache() {
         this.imagePath = PathFinder.getImagePath();
-        // this.atlasPattern = Pattern.compile("[///]([a-z _/-0-9]*)/..*$");
-        this.atlasPattern = Pattern.compile("^.*[///]([a-z _/-0-9]*)/..*$");
-
         this.cache = new ObjectMap<>(1300);
         this.greyscaleCache = new ObjectMap<>(100);
         if (atlasesOn) {
-            loadAtlases();
+            loadAtlases(true);
         } else {
             if (uiAtlasesOn) {
                 uiAtlas = new SmartTextureAtlas(imagePath + "/ui/ui.txt");
@@ -276,7 +277,8 @@ public class TextureCache {
             //TODO optimization
             String name = GdxImageMaster.cropImagePath(StringMaster.cropFormat(path));
 
-            if (!overrideNoAtlas) {
+            if (!overrideNoAtlas)
+                if (!atlasMissingTextures.contains(path))  {
                 //TODO gdx revamp
                 // support last-atlas for custom UNIT_VIEW with same bits (emblem/ border/..) packed there,
                 // and yield the right one for univView ui!
@@ -293,7 +295,7 @@ public class TextureCache {
                         region = getInstance().mainAtlas.findRegion(name);
                     }
                 }
-                if (atlasesOn&& region == null) {
+                if (atlasesOn && region == null) {
                     // System.out.println("No img in atlases: "+name);
                     atlasMissingTextures.add(path);
                 } else {
