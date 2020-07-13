@@ -153,7 +153,7 @@ public class PuzzleActions extends PuzzleElement {
         if (data.isEmpty()) {
             data = puzzle.getEntranceCoordinates().toString();
         }
-        Coordinates c = puzzle.getAbsoluteCoordinate((new AbstractCoordinates(true, data)));
+        Coordinates c = (new AbstractCoordinates(true, data));
 
         AnimMaster.getInstance().spriteAnim(Sprites.PORTAL_CLOSE,
                 Eidolons.getMainHero().getCoordinates(), p ->

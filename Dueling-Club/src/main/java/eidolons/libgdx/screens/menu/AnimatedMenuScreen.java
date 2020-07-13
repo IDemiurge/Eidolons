@@ -186,4 +186,9 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     }
 
 
+    @Override
+    protected String getLoadScreenPath() {
+        return (loaded) ? "main/art/MAIN_MENU.jpg"
+                : "ui/main/logo fullscreen.png";
+    }
 }

@@ -96,13 +96,13 @@ public class PuzzleData extends DataUnit<PuzzleData.PUZZLE_VALUE> {
         TIP(EDIT_VALUE_TYPE.enum_const){
             @Override
             public Object getArg() {
-                return eidolons.game.netherflame.main.event.TIP.class;
+                return eidolons.game.netherflame.main.event.text.TIP.class;
             }
         },
         TIP_FAIL(EDIT_VALUE_TYPE.enum_const){
             @Override
             public Object getArg() {
-                return eidolons.game.netherflame.main.event.TIP.class;
+                return eidolons.game.netherflame.main.event.text.TIP.class;
             }
         },
         ARG,

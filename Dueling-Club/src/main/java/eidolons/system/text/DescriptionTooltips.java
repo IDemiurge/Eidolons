@@ -6,7 +6,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.module.herocreator.logic.AttributeMaster;
-import eidolons.game.netherflame.main.event.TIP;
+import eidolons.game.netherflame.main.event.text.TIP;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
@@ -162,7 +162,7 @@ public class DescriptionTooltips {
                     continue;
                 } else
                     tipMap.put(tip.toString().toLowerCase(), value);
-                tip.message = value;
+                tip.setMessage(value);
             }
 
         }

@@ -490,9 +490,13 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     public void initLoadingStage(ScreenData meta) {
-        this.loadingStage = new LoadingStage(meta);
+        this.loadingStage = new LoadingStage(meta, getLoadScreenPath());
         loadingStage.setViewport(new ScreenViewport(new OrthographicCamera()));
 
+    }
+
+    protected String getLoadScreenPath() {
+        return null;
     }
 
     public void reset() {

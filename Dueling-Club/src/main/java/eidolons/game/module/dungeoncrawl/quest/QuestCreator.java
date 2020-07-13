@@ -18,7 +18,6 @@ import main.content.enums.entity.UnitEnums.UNIT_GROUP;
 import main.content.enums.meta.QuestEnums.QUEST_TIME_LIMIT;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.G_PROPS;
-import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.SortMaster;
@@ -130,7 +129,7 @@ public class QuestCreator extends QuestHandler {
 
     public static ObjType getBossType(int powerLevel, DungeonQuest quest,
                                       DUNGEON_STYLE style) {
-        ObjType custom = DataManager.getType(quest.getObjType().getProperty(MACRO_PROPS.QUEST_ARG),
+        ObjType custom = DataManager.getType(quest.getObjType().getProperty(G_PROPS.QUEST_ARG),
                 DC_TYPE.UNITS);
         if (custom != null) {
             return custom;
@@ -140,7 +139,7 @@ public class QuestCreator extends QuestHandler {
 
     public static ObjType getPreyType(int powerLevel, DungeonQuest quest,
                                       DUNGEON_STYLE style) {
-        ObjType custom = DataManager.getType(quest.getObjType().getProperty(MACRO_PROPS.QUEST_ARG),
+        ObjType custom = DataManager.getType(quest.getObjType().getProperty(G_PROPS.QUEST_ARG),
                C_OBJ_TYPE.BF_OBJ);
         if (custom != null) {
             return custom;
@@ -157,7 +156,7 @@ public class QuestCreator extends QuestHandler {
     }
 
     public static ObjType getItemTypeSpecial(ObjType questObjType, int powerLevel, DungeonQuest quest, DUNGEON_STYLE style) {
-        String arg = questObjType.getProperty(MACRO_PROPS.QUEST_ARG);
+        String arg = questObjType.getProperty(G_PROPS.QUEST_ARG);
         DC_TYPE TYPE = DC_TYPE.getType(arg);
         if (TYPE == null) {
             TYPE = DC_TYPE.WEAPONS;
@@ -197,7 +196,7 @@ public class QuestCreator extends QuestHandler {
     public static ObjType getItemTypeCommon(int powerLevel, DungeonQuest quest, DUNGEON_STYLE style) {
         //        quest.getArg().toString()
         //        DataManager.getTypesGroup()
-        ObjType custom = DataManager.getType(quest.getObjType().getProperty(MACRO_PROPS.QUEST_ARG),
+        ObjType custom = DataManager.getType(quest.getObjType().getProperty(G_PROPS.QUEST_ARG),
                 C_OBJ_TYPE.ITEMS);
         if (custom != null) {
             return custom;
@@ -206,10 +205,10 @@ public class QuestCreator extends QuestHandler {
     }
 
     public static Object getOverlayObjType(DungeonQuest quest) {
-        if (quest.getObjType().getProperty(MACRO_PROPS.QUEST_ARG).contains(";")) {
-            return quest.getObjType().getProperty(MACRO_PROPS.QUEST_ARG);
+        if (quest.getObjType().getProperty(G_PROPS.QUEST_ARG).contains(";")) {
+            return quest.getObjType().getProperty(G_PROPS.QUEST_ARG);
         }
-        ObjType custom = DataManager.getType(quest.getObjType().getProperty(MACRO_PROPS.QUEST_ARG),
+        ObjType custom = DataManager.getType(quest.getObjType().getProperty(G_PROPS.QUEST_ARG),
                 DC_TYPE.BF_OBJ);
         if (custom != null) {
             return custom;

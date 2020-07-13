@@ -34,7 +34,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster;
 import main.system.threading.WaitMaster;
 
-import static eidolons.game.netherflame.main.event.TIP.*;
+import static eidolons.game.netherflame.main.event.text.TIP.*;
 
 public class ShadowMaster extends MetaGameHandler<NF_Meta> {
 
@@ -132,7 +132,7 @@ public class ShadowMaster extends MetaGameHandler<NF_Meta> {
         }
         timesThisHeroFell++;
         GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, new TipMessageSource(
-                UNCONSCIOUS.message,
+                UNCONSCIOUS.getMessage(),
                 NF_Images.SHADOW, "I Am Become Death", false, () ->
                 summonShade(event)));
     }
@@ -188,7 +188,7 @@ public class ShadowMaster extends MetaGameHandler<NF_Meta> {
     }
 
     private void afterVictory(Event event) {
-        String msg = SHADE_RESTORE.message;
+        String msg = SHADE_RESTORE.getMessage();
         //              btn="Into Evernight";
         String btn = "Return";
         GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, new TipMessageSource(
@@ -203,12 +203,12 @@ public class ShadowMaster extends MetaGameHandler<NF_Meta> {
         shade.getGame().getLoop().setPaused(true);
 
         AnimMaster.waitForAnimations(null);
-        String msg = outOfTime ? DEATH_SHADE_TIME.message : DEATH_SHADE
-                .message;
+        String msg = outOfTime ? DEATH_SHADE_TIME.getMessage() : DEATH_SHADE
+                .getMessage();
         String btn = "Onward!";
         if (getMaster().getDefeatHandler().isNoLivesLeft()) {
             DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__DEFEAT);
-            msg = DEATH_SHADE_FINAL.message;
+            msg = DEATH_SHADE_FINAL.getMessage();
             //              btn="Into Evernight";
             btn = "Enter the Void";
         }

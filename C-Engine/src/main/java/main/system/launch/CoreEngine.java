@@ -30,8 +30,8 @@ public class CoreEngine {
             "eidolons.elements", "eidolons.ability"};
 
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Backer;
-    public static final String VERSION = "1.0.0";
-    public static final String VERSION_NAME = "Backer Demo (Basic Version)"; //StringMaster.getWellFormattedString(uploadPackage.toString());
+    public static final String VERSION = "0.5.1b";
+    public static final String VERSION_NAME = "Tester Version"; //StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean RAM_OPTIMIZATION = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     private static String selectivelyReadTypes;
@@ -48,7 +48,7 @@ public class CoreEngine {
 
     //core Review - good idea, but how to use it?
     public enum UPLOAD_PACKAGE {
-        Aphotic, igg, Backer,
+        Backer, Tester,
     }
 
     public static boolean isMyLiteLaunch() {

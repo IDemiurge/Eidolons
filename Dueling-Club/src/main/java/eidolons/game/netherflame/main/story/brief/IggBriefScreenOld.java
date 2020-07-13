@@ -20,7 +20,7 @@ public class IggBriefScreenOld extends ScreenWithLoader {
     BriefBackground background;
     BriefText text;
     BriefWindow window;
-    private  FadeImageContainer plainBg;
+    private final FadeImageContainer plainBg;
 
     public IggBriefScreenOld() {
         overlay = new UiStage();
@@ -29,6 +29,10 @@ public class IggBriefScreenOld extends ScreenWithLoader {
         backgroundStage.addActor(plainBg = new FadeImageContainer());
 
         backgroundStage.addActor(background);
+    }
+    @Override
+    protected String getLoadScreenPath() {
+        return null;
     }
 
     @Override

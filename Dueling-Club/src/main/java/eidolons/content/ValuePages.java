@@ -490,9 +490,7 @@ public class ValuePages {
     public static final VALUE[] ACTION_PARAMS = {RADIUS, RANGE, COOLDOWN,
             DURATION};
     public static final VALUE[] SPELL_VALUES = {
-            G_PROPS.ACTIVES,
             G_PROPS.VARIABLES,
-            FORMULA,
             CIRCLE, SPELL_DIFFICULTY,
             DURATION, RADIUS, RANGE, COOLDOWN,
             SPELLPOWER_MOD, FORCE, FORCE_SPELLPOWER_MOD,

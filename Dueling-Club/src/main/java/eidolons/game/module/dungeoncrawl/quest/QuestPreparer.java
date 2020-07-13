@@ -56,6 +56,7 @@ public class QuestPreparer {
         DungeonEnums.DUNGEON_STYLE style = DungeonEnums.DUNGEON_STYLE.Somber; //quest.getMaster().getStyle();
 //        Eidolons.getGame().getDungeonMaster().getDungeonLevel().getMainStyle()
 // TODO is it useful?
+        if (type != null)
         switch (type) {
             case BOSS:
                quest. setArg(QuestCreator.getBossType(powerLevel, quest,

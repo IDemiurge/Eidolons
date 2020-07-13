@@ -16,7 +16,7 @@ public class QuickSlotPanel extends BaseSlotPanel {
     }
 
     protected int getPageSize() {
-        return 5;
+        return 6;
     }
 
     @Override

@@ -33,11 +33,10 @@ public class IntroLauncher {
     }
 
     private static boolean isIntroSkipped() {
-        if (        EidolonsGame.FOOTAGE
-        ) {
+        if (EidolonsGame.FOOTAGE) {
             return true;
         }
-        if (CoreEngine.uploadPackage== CoreEngine.UPLOAD_PACKAGE.Aphotic){
+        if (CoreEngine.uploadPackage == CoreEngine.UPLOAD_PACKAGE.Tester) {
             return true;
         }
         if (Flags.isJar()) {
@@ -47,12 +46,13 @@ public class IntroLauncher {
     }
 
     public static boolean epilogueBriefing() {
-//show glory etc after!
+        //show glory etc after!
 
         return true;
     }
+
     public static boolean introBriefing() {
-         DescriptionTooltips.init();
+        DescriptionTooltips.init();
         String txtData = DescriptionTooltips.getTipMap().get("intro slides");
 
         String imgData =
@@ -78,8 +78,8 @@ public class IntroLauncher {
         return result;
 
 
-//        String videoData = null;
-//        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(SCREEN_TYPE.CINEMATIC, name), videoData);
+        //        String videoData = null;
+        //        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(SCREEN_TYPE.CINEMATIC, name), videoData);
 
     }
 

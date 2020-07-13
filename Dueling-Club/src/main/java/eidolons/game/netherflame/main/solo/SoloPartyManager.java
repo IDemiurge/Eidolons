@@ -5,6 +5,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.CinematicLib;
+import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.netherflame.main.NF_PartyManager;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -31,6 +32,14 @@ public class SoloPartyManager extends NF_PartyManager {
     @Override
     protected Coordinates getRespawnCoordinates(ObjType type) {
         return super.getRespawnCoordinates(type);
+    }
+
+    @Override
+    public void gameStarted() {
+        super.gameStarted();
+        ObjType type=DataManager.getType("Soul Journey", DC_TYPE.QUEST);
+        DungeonQuest quest = new DungeonQuest(type);
+        getMaster().getQuestMaster().questTaken(quest, type);
     }
 
     @Override

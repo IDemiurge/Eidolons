@@ -130,7 +130,17 @@ public enum G_PROPS implements PROPERTY {
     FACTION_GROUP("factions"),
     UNIQUE_ID("all"), FULLSIZE_IMAGE("scenarios"),
     PERK_PARAMS("Perk Params", true, "perks"), PERK_GROUP("perks"),
-    PERK_CLASS_REQUIREMENTS("perks");
+    PERK_CLASS_REQUIREMENTS("perks"),
+
+    QUEST_GROUP(null, false, "quest"),
+    QUEST_TYPE(null, false, "quest"),
+    QUEST_TIME_LIMIT(null, false, "quest"),
+    QUEST_LEVEL(null, false, "quest"),
+    QUEST_REWARD_TYPE(null, false, "quest"),
+    QUEST_ARG(null, false, "quest"),
+
+    QUEST_REWARD_ITEMS(null, false, "quest"),
+    ;
 
 
     boolean writeToType;

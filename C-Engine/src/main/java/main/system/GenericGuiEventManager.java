@@ -10,4 +10,6 @@ public interface GenericGuiEventManager {
     void trigger(EventType type, Object obj);
 
     void processEvents();
+
+    void triggerWithMinDelayBetween(GuiEventType eventType, Object obj);
 }

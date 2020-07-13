@@ -81,10 +81,10 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
                     case BF_OBJ:
                         treeCellRendererComponent = defRendererLarge.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
                         break;
-                    default:
-                        treeCellRendererComponent = defRenderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-
                 }
+            }
+            if (treeCellRendererComponent == null) {
+                treeCellRendererComponent = defRenderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
             }
             if (colorsInverted) {
                 Color c = ColorManager.ALLY_COLOR;

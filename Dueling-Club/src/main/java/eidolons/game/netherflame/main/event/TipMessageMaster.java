@@ -1,5 +1,6 @@
 package eidolons.game.netherflame.main.event;
 
+import eidolons.game.netherflame.main.event.text.TIP;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
 import eidolons.system.text.DescriptionTooltips;
@@ -17,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static eidolons.game.netherflame.main.event.TIP.*;
+import static eidolons.game.netherflame.main.event.text.TIP.*;
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE_DEATH;
 
 public class TipMessageMaster {
@@ -49,7 +50,7 @@ public class TipMessageMaster {
                  return;
              }
              if (after != null) {
-                 tip(new TipMessageSource(tip.message, tip.img, "Continue", false, after));
+                 tip(new TipMessageSource(tip.getMessage(), tip.getImg(), "Continue", false, after));
              } else
                 tip(tip);
          }
@@ -81,7 +82,7 @@ public class TipMessageMaster {
     public static void tip(boolean manual, TIP... tips) {
         for (TIP tip : tips) {
         }
-        if (tips[0].done) {
+        if (tips[0].isDone()) {
             return;
         }
         Runnable chain = createChain(tips);
@@ -110,8 +111,8 @@ public class TipMessageMaster {
         if (tips.length <= 1)
             return () -> {
                 if (!Flags.isIDE())
-                if (tips[0].once){
-                    tips[0].done = true;
+                if (tips[0].isOnce()){
+                    tips[0].setDone(true);
                 }
             tips[0].run();
             };
@@ -121,11 +122,11 @@ public class TipMessageMaster {
     }
 
     private static TipMessageSource getSource(TIP tip) {
-        String message = tip.message;
-        if (tip.message.isEmpty()) {
+        String message = tip.getMessage();
+        if (tip.getMessage().isEmpty()) {
             message =DescriptionTooltips.getTipMap().get(tip.name().toLowerCase());
         }
-        return new TipMessageSource( message, tip.img, "Continue", tip.optional, null, tip.messageChannel);
+        return new TipMessageSource( message, tip.getImg(), "Continue", tip.isOptional(), null, tip.getMessageChannel());
     }
 
     public static void onEvent(Event.EVENT_TYPE type) {

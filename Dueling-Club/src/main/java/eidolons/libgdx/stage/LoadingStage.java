@@ -2,20 +2,19 @@
 package eidolons.libgdx.stage;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.game.EidolonsGame;
 import eidolons.game.netherflame.main.IntroLauncher;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.particles.ambi.Ambience;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.VFX_TEMPLATE;
 import eidolons.libgdx.particles.ambi.ParticleManager;
@@ -34,33 +33,23 @@ import main.system.launch.Flags;
 import java.util.ArrayList;
 import java.util.List;
 
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
-
 public class LoadingStage extends Stage {
     protected ScreenData data;
     private final boolean fogOn = false;//!CoreEngine.isLiteLaunch();
-    private boolean engineInit = true;
-    private Image fullscreenImage;
+    private FadeImageContainer fullscreenImage;
     private final List<Ambience> fogList = new ArrayList<>();
 
     private Label underText;
 
-    public LoadingStage(ScreenData data) {
+    public LoadingStage(ScreenData data, String loadScreenPath) {
         this.data = data;
-        if (data.equals("Loading...")) {
-            engineInit = true;
-        }
-
         if (isBgImageOn()) {
-
             underText = new Label(getBottomText(), StyleHolder.getHqLabelStyle(17));
 
             underText.addListener(TipMaster.getListener(underText));
             //TODO click to show next tip
-            underText.setPosition(GdxMaster.centerWidth(underText), 0);
-            final TextureRegion fullscreenTexture =
-                    getOrCreateR(getBackgroundImagePath());
-            fullscreenImage = new Image(fullscreenTexture);
+            underText.setPosition(GdxMaster.centerWidth(underText), 32);
+            fullscreenImage = new FadeImageContainer(loadScreenPath);
 
             float x = new Float(GdxMaster.getWidth()) / 1920;
             float y = new Float(GdxMaster.getHeight()) / 1080;
@@ -77,9 +66,8 @@ public class LoadingStage extends Stage {
         return Flags.isCombatGame();
     }
 
-    protected String getBackgroundImagePath() {
-        return (engineInit) ? "main/art/MAIN_MENU.jpg"
-                : "ui/main/moe loading screen.png";
+    public FadeImageContainer getFullscreenImage() {
+        return fullscreenImage;
     }
 
     public static String getBottomText() {
@@ -87,7 +75,7 @@ public class LoadingStage extends Stage {
             return "Eidolons: Netherflame v" + CoreEngine.VERSION + " [" +
                     CoreEngine.VERSION_NAME +
                     "] by Alexander Kamen" +
-                    "    ***  Found bugs? Contact me at @EiDemiurge & EidolonsGame@gmail.com";
+                    "    ***  Got feedback? Just ping me on Discord :)";
         }
         return "Eidolons: Netherflame - " +
                 CoreEngine.VERSION_NAME + "[" +

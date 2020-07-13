@@ -2,7 +2,6 @@ package eidolons.libgdx;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.ObjectMap;
-import eidolons.game.core.Eidolons;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.system.*;
@@ -11,31 +10,26 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static main.system.GuiEventType.*;
 
-public class GuiEventManagerImpl implements GenericGuiEventManager {
+public class GdxEvents implements GenericGuiEventManager {
     private static final GuiEventType[] savedBindings = new GuiEventType[]{
             SWITCH_SCREEN,
             SCREEN_LOADED,
             DISPOSE_TEXTURES,
     };
-    private static GuiEventManagerImpl instance;
-    private static boolean isInitialized;
-    private static final Lock initLock = new ReentrantLock();
     private final ObjectMap<EventType, EventCallback> eventMap = new ObjectMap<>(100);
     private List<Runnable> eventQueue = new LinkedList<>();
     private final Lock lock = new ReentrantLock();
-    private final Condition condition = lock.newCondition();
 
     private final ObjectMap<EventType, EventCallbackParam> onDemand = new ObjectMap<>();
     private final ObjectMap<EventType, List<EventCallbackParam>> onDemandMap = new ObjectMap<>();
 
     public void cleanUp() {
-        getInstance()._cleanUp();
+        _cleanUp();
     }
 
     public void bind(EventType type, final EventCallback event) {
@@ -56,14 +50,29 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
                     return screen;
                 }
             };
-            getInstance().bind_(type, checked);
+            bind_(type, checked);
         } else
-            getInstance().bind_(type, event);
+            bind_(type, event);
 
     }
 
     public void removeBind(EventType type) {
-        getInstance().removeBind_(type);
+        removeBind_(type);
+    }
+
+    @Override
+    public void triggerWithMinDelayBetween(GuiEventType eventType, Object obj) {
+        EventCallback event = eventMap.get(eventType);
+        if (event != null) {
+            //TODO
+        }
+        EventCallbackParam eventCallback;
+        if (obj instanceof EventCallbackParam) {
+            eventCallback = (EventCallbackParam) obj;
+        } else {
+            eventCallback = new EventCallbackParam(obj);
+        }
+        trigger_(eventType, eventCallback);
     }
 
     public void trigger(final EventType type, Object obj) {
@@ -73,36 +82,11 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
         } else {
             eventCallback = new EventCallbackParam(obj);
         }
-
-        if (type == GuiEventType.DESTROY_UNIT_MODEL && eventCallback.get() == Eidolons.MAIN_HERO) {
-            return;
-        }
-        getInstance().trigger_(type, eventCallback);
+        trigger_(type, eventCallback);
     }
 
     public void processEvents() {
-        getInstance().processEvents_();
-    }
-
-    public GuiEventManagerImpl getInstance() {
-        if (instance == null) {
-            if (!isInitialized) {
-                try {
-                    initLock.lock();
-                    if (!isInitialized) {
-                        init();
-                        isInitialized = true;
-                    }
-                } finally {
-                    initLock.unlock();
-                }
-            }
-        }
-        return instance;
-    }
-
-    private static void init() {
-        instance = new GuiEventManagerImpl();
+        processEvents_();
     }
 
     private void removeBind_(EventType type) {
@@ -146,7 +130,7 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
             if (callbacks != null) {
                 onDemandMap.remove(type);
                 for (EventCallbackParam callback : callbacks) {
-                    eventQueue.add(()-> wrap(type, event).call(callback));
+                    eventQueue.add(() -> wrap(type, event).call(callback));
                 }
             }
         } else {
@@ -185,13 +169,12 @@ public class GuiEventManagerImpl implements GenericGuiEventManager {
         } else {
             //            if (obj instanceof OnDemandCallback) {
             //            onDemand.put(type, obj);
-            if (isOnDemandCallback(type))
-            {
+            if (isOnDemandCallback(type)) {
                 List<EventCallbackParam> eventCallbackParams = onDemandMap.get(type);
                 if (eventCallbackParams == null) {
                     onDemandMap.put(type, eventCallbackParams = new LinkedList<>());
                 }
-                eventCallbackParams.add( obj);
+                eventCallbackParams.add(obj);
             }
             //            }
         }

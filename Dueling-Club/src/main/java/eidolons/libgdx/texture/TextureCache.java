@@ -41,27 +41,27 @@ import java.util.concurrent.locks.ReentrantLock;
 import static main.system.auxiliary.log.LogMaster.important;
 
 public class TextureCache {
-    public static final boolean atlasesOn = CoreEngine.isLevelEditor();// v !CoreEngine.TEST_LAUNCH;
+    public static final boolean atlasesOn = !CoreEngine.TEST_LAUNCH;// v !CoreEngine.TEST_LAUNCH;
     private static final Boolean uiAtlasesOn = false;
-    private static TextureCache instance;
     private static final Lock creationLock = new ReentrantLock();
     private static final AtomicInteger counter = new AtomicInteger(0);
-    private static Texture missingTexture;
-
     private static final ObjectMap<String, TextureRegion> regionCache = new ObjectMap<>(1300);
     private static final ObjectMap<TextureRegion, TextureRegionDrawable> drawableMap = new ObjectMap<>(1300);
-    private static boolean returnEmptyOnFail = true;
     private static final List<String> missingTextures = new LinkedList<>();
     private static final List<String> atlasMissingTextures = new LinkedList<>();
+
+    private SmartTextureAtlas uiAtlas;
+    private SmartTextureAtlas mainAtlas;
+    private static Texture missingTexture;
+    private static boolean returnEmptyOnFail = true;
 
     private final ObjectMap<String, Texture> cache;
     private final ObjectMap<Texture, Texture> greyscaleCache;
     private final String imagePath;
-    private SmartTextureAtlas uiAtlas;
-    private SmartTextureAtlas mainAtlas;
-    private boolean silent;
     private static final boolean stats = Flags.isIDE();
     private static final Map<String, Integer> statMap = new LinkedHashMap<>();
+    private boolean silent;
+    private static TextureCache instance;
 
     public static TextureRegion fromAtlas(String atlasPath, String light) {
         if (Assets.get().getManager().isLoaded(atlasPath)) {
@@ -258,11 +258,11 @@ public class TextureCache {
 
 
         if (region != null) {
-            if (atlasesOn && Flags.isIDE()) {
+            if (atlasesOn  ) {
                 if (!missingTextures.contains(path))
                     if (!(region instanceof TextureAtlas.AtlasRegion)) {
                         missingTextures.add(path);
-                        getInstance();
+                        main.system.auxiliary.log.LogMaster.log(1,missingTextures.size()+" - Atlas missing texture: " +path);
                     }
             }
             return region;

@@ -49,7 +49,7 @@ public class ArcaneVault {
     public static boolean selectiveLaunch = true;
     public final static String presetTypes =
             "units;bf obj;chars;party;missions;scenarios;" +
-                    "abils;spells;skills;weapons;armor;items;buffs;classes;perks;lord;actions;" ;
+                    "abils;spells;skills;weapons;armor;items;buffs;classes;perks;lord;actions;";
     private static String types;
     private static ObjType previousSelectedType;
     private static ObjType selectedType;
@@ -82,10 +82,10 @@ public class ArcaneVault {
         }
 
         if (selectiveLaunch) {
-         types=AV_Utils.selectiveLaunch();
-        }
-
-        CoreEngine.setReflectionMapDisabled(!types.contains("abils"));
+            types = AV_Utils.selectiveLaunch();
+            CoreEngine.setReflectionMapDisabled(!types.contains("abils"));
+        } else
+            types = "";
 
         ItemGenerator.setGenerationOn(!ENABLE_ITEM_GENERATION);
         LogMaster.PERFORMANCE_DEBUG_ON = AvFlags.showTime;

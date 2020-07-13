@@ -74,6 +74,8 @@ public enum DC_TYPE implements OBJ_TYPE {
         }
     },
     ACTORS("actors", G_PROPS.GROUP, 25), LORD("lord", G_PROPS.GROUP, 26 ),
+
+    QUEST("quest", G_PROPS.QUEST_GROUP, 27),
 //    this is macro!!! SHOPS("shops", G_PROPS.GROUP, 26),
 
     //    CHARACTER("character", G_PROPS.GROUP, 32),

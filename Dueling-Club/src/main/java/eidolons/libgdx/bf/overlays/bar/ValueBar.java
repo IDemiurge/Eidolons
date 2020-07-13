@@ -16,11 +16,11 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.graphics.FontMaster;
 
 public abstract class ValueBar extends SuperActor {
-    protected  int innerWidth;
-    protected  Image barBg;
-    protected  Image barBg2;
-    protected  Label label2;
-    protected  Label label1;
+    protected int innerWidth;
+    protected Image barBg;
+    protected Image barBg2;
+    protected Label label2;
+    protected Label label1;
     protected float fullLengthPerc = 1f;
     protected TextureRegion barBgRegion; //TODO can it be static?
     protected float height;
@@ -29,11 +29,11 @@ public abstract class ValueBar extends SuperActor {
     protected TextureRegion underBarRegion;
     protected Color secondaryColor;
     protected Color primaryColor;
-    protected  float displayedPrimaryPerc = 1f;
-    protected  float displayedSecondaryPerc = 1f;
-    protected  FloatActionLimited primaryAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
-    protected  FloatActionLimited secondaryAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
-    protected  boolean labelsDisplayed = true;
+    protected float displayedPrimaryPerc = 1f;
+    protected float displayedSecondaryPerc = 1f;
+    protected FloatActionLimited primaryAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
+    protected FloatActionLimited secondaryAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
+    protected boolean labelsDisplayed = true;
     protected Float primaryPerc = 1f;
     protected Float secondaryPerc = 1f;
     protected Float previousPrimaryPerc = 1f;
@@ -66,6 +66,7 @@ public abstract class ValueBar extends SuperActor {
         addActor(barBg2);
         barBg2.setY(-barBg.getHeight() - 1);
     }
+
     protected void initSizes() {
         height = barBgRegion.getRegionHeight();
         innerWidth = underBarRegion.getRegionWidth();
@@ -96,8 +97,8 @@ public abstract class ValueBar extends SuperActor {
     //make sure this isn't called all the time!
     public void reset() {
         //TODO queue animation?
-//        main.system.auxiliary.log.LogMaster.log(1, this + ">>>  tries to reset " +
-//         dataSource + " previousPrimaryPerc=" + previousPrimaryPerc + " previousSecondaryPerc=" + previousSecondaryPerc + " primaryPerc=" + primaryPerc + " secondaryPerc=" + secondaryPerc);
+        //        main.system.auxiliary.log.LogMaster.log(1, this + ">>>  tries to reset " +
+        //         dataSource + " previousPrimaryPerc=" + previousPrimaryPerc + " previousSecondaryPerc=" + previousSecondaryPerc + " primaryPerc=" + primaryPerc + " secondaryPerc=" + secondaryPerc);
 
         setValues();
 
@@ -107,12 +108,12 @@ public abstract class ValueBar extends SuperActor {
             return;
 
         dirty = true;
-//        main.system.auxiliary.log.LogMaster.log(1, this + ">>>   reset " +
-//         dataSource + " previousPrimaryPerc=" + previousPrimaryPerc + " previousSecondaryPerc=" + previousSecondaryPerc + " primaryPerc=" + primaryPerc + " secondaryPerc=" + secondaryPerc);
+        //        main.system.auxiliary.log.LogMaster.log(1, this + ">>>   reset " +
+        //         dataSource + " previousPrimaryPerc=" + previousPrimaryPerc + " previousSecondaryPerc=" + previousSecondaryPerc + " primaryPerc=" + primaryPerc + " secondaryPerc=" + secondaryPerc);
 
-//        if (!getPrimaryPerc().equals(lastOfferedPrimary))
+        //        if (!getPrimaryPerc().equals(lastOfferedPrimary))
         setPreviousPrimaryPerc(lastOfferedPrimary);
-//        if (!getSecondaryPerc().equals(lastOfferedSecondary))
+        //        if (!getSecondaryPerc().equals(lastOfferedSecondary))
         setPreviousSecondaryPerc(lastOfferedSecondary);
 
         lastOfferedPrimary = getPrimaryPerc();
@@ -120,7 +121,7 @@ public abstract class ValueBar extends SuperActor {
 
 
         //TODO quick fix
-//        if (ExplorationMaster.isExplorationOn())
+        //        if (ExplorationMaster.isExplorationOn())
         animateChange(isAnimated());
         resetLabel();
     }
@@ -155,10 +156,10 @@ public abstract class ValueBar extends SuperActor {
     }
 
     public void initChangeActions(FloatAction floatAction, Float previousPerc, float perc) {
-//        main.system.auxiliary.log.LogMaster.log(0, ">>> hp bar animated " +
-//         dataSource +
-//         " previousPerc=" + previousPerc +
-//         " perc=" + perc);
+        //        main.system.auxiliary.log.LogMaster.log(0, ">>> hp bar animated " +
+        //         dataSource +
+        //         " previousPerc=" + previousPerc +
+        //         " perc=" + perc);
         floatAction.reset();
         floatAction.setStart(previousPerc);
         floatAction.setEnd(perc);
@@ -170,7 +171,7 @@ public abstract class ValueBar extends SuperActor {
     protected abstract void resetLabel();
 
     protected void drawBar(TextureRegion region, Batch batch, Color color,
-                           float y ) {
+                           float y) {
         if (color == null) {
             return;
         }
@@ -182,12 +183,10 @@ public abstract class ValueBar extends SuperActor {
     }
 
     protected void initColors() {
-        secondaryColor =
-                getColor(false);
-        primaryColor =
-                getColor(true);
-        label2.setColor(secondaryColor);
-        label1.setColor(primaryColor);
+        primaryColor = getColor(true);
+        secondaryColor = getColor(false);
+        label1.setColor(secondaryColor);
+        label2.setColor(primaryColor);
     }
 
     protected abstract Color getColor(boolean over);
@@ -200,7 +199,7 @@ public abstract class ValueBar extends SuperActor {
             return true;
         if (fullLengthPerc == 0) {
             if (isAnimated()) {
-//                return true; TODO why?
+                //                return true; TODO why?
             }
         }
         return false;
@@ -262,8 +261,8 @@ public abstract class ValueBar extends SuperActor {
 
     public void setPreviousPrimaryPerc(Float previousPrimaryPerc) {
 
-//        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>>>>>>>>> TOUGHNESS " +
-//         " " + this.previousSecondaryPerc + " t0 " + previousSecondaryPerc);
+        //        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>>>>>>>>> TOUGHNESS " +
+        //         " " + this.previousSecondaryPerc + " t0 " + previousSecondaryPerc);
         this.previousPrimaryPerc = previousPrimaryPerc;
     }
 
@@ -272,10 +271,10 @@ public abstract class ValueBar extends SuperActor {
     }
 
     public void setPreviousSecondaryPerc(Float previousSecondaryPerc) {
-//        if (previousSecondaryPerc!=0 )
-//            if (previousSecondaryPerc!=1 )
-//        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>>>>>>>>> ENDURANCE " +
-//         " " + this.previousSecondaryPerc + " t0 " + previousSecondaryPerc);
+        //        if (previousSecondaryPerc!=0 )
+        //            if (previousSecondaryPerc!=1 )
+        //        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>>>>>>>>> ENDURANCE " +
+        //         " " + this.previousSecondaryPerc + " t0 " + previousSecondaryPerc);
         this.previousSecondaryPerc = previousSecondaryPerc;
     }
 }

@@ -57,6 +57,11 @@ public class MapScreen extends GameScreenWithTown {
         return instance;
     }
 
+    @Override
+    protected String getLoadScreenPath() {
+        return null;
+    }
+
     public void centerCamera() {
 //        Coordinates coordinatesActiveObj =
 //         objectStage.getMainParty().getCoordinates();

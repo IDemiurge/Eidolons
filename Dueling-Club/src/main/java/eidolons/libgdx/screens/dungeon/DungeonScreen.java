@@ -31,6 +31,7 @@ import eidolons.libgdx.texture.TextureCache;
 import eidolons.macro.MacroGame;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
+import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
@@ -395,6 +396,17 @@ public class DungeonScreen extends GameScreenWithTown {
     @Override
     protected boolean isTownInLoaderOnly() {
         return true;
+    }
+
+    protected String getLoadScreenPath() {
+        return (loaded || waitingForInput) ? "main/art/MAIN_MENU.jpg"
+                : "ui/main/logo fullscreen.png";
+    }
+
+    @Override
+    public void loadingAssetsDone(EventCallbackParam param) {
+        super.loadingAssetsDone(param);
+        loadingStage.getFullscreenImage().setImage(getLoadScreenPath());
     }
 
 }

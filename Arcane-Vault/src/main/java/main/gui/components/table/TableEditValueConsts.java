@@ -49,10 +49,10 @@ public class TableEditValueConsts {
             PROPS.LOOT_TYPE.name(),
             PROPS.AFTER_BATTLE_EVENT.name(),
             PROPS.PRE_BATTLE_EVENT.name(),
-            MACRO_PROPS.QUEST_GROUP.name(), MACRO_PROPS.QUEST_TYPE.name(),
-            MACRO_PROPS.QUEST_REWARD_TYPE.name(),
-            MACRO_PROPS.QUEST_TIME_LIMIT.name(),
-            MACRO_PROPS.QUEST_LEVEL.name(),
+            G_PROPS.QUEST_GROUP.name(), G_PROPS.QUEST_TYPE.name(),
+            G_PROPS.QUEST_REWARD_TYPE.name(),
+            G_PROPS.QUEST_TIME_LIMIT.name(),
+            G_PROPS.QUEST_LEVEL.name(),
 
 
             PROPS.CLASS_PERK_GROUP.name(),

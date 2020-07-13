@@ -9,10 +9,10 @@ import eidolons.game.netherflame.main.event.TipMessageMaster;
 import eidolons.game.netherflame.main.event.TipMessageSource;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.content.enums.meta.QuestEnums;
 import main.content.enums.meta.QuestEnums.QUEST_TYPE;
-import main.content.values.properties.MACRO_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
@@ -114,7 +114,7 @@ public class QuestMaster extends MetaGameHandler {
     }
 
     public void questTaken(String name, boolean notify) {
-        ObjType type = DataManager.getType(name, MACRO_OBJ_TYPES.QUEST);
+        ObjType type = DataManager.getType(name, DC_TYPE.QUEST);
         Quest quest = null;
         if (isPrecreatedQuests())
             for (Quest q : getQuestsPool()) {
@@ -180,8 +180,8 @@ public class QuestMaster extends MetaGameHandler {
 
     public Set<ObjType> getQuestTypePool() {
         String filter = getQuestGroupFilter();
-        Set<ObjType> pool = new LinkedHashSet<>(DataManager.getFilteredTypes(MACRO_OBJ_TYPES.QUEST,
-                filter, MACRO_PROPS.QUEST_GROUP));
+        Set<ObjType> pool = new LinkedHashSet<>(DataManager.getFilteredTypes(DC_TYPE.QUEST,
+                filter, G_PROPS.QUEST_GROUP));
 
         pool.removeIf(q -> !checkQuestForLocation(q));
 
@@ -197,7 +197,7 @@ public class QuestMaster extends MetaGameHandler {
 //            ((ScenarioMeta) master.getMetaDataManager().getMetaGame()).getScenario()
 //        }
         QUEST_TYPE type = new EnumMaster<QUEST_TYPE>().retrieveEnumConst(
-                QUEST_TYPE.class, q.getProperty(MACRO_PROPS.QUEST_TYPE));
+                QUEST_TYPE.class, q.getProperty(G_PROPS.QUEST_TYPE));
         switch (type) {
 
             case BOSS:

@@ -76,6 +76,11 @@ public class GuiEventManager {
         trigger(type, obj);
     }
 
+    public static void triggerWithMinDelayBetween(GuiEventType eventType,
+                                                  Object obj  , int millis) {
+
+        manager.triggerWithMinDelayBetween(eventType, obj);
+    }
     public static void trigger(final EventType type, Object obj) {
         if (CoreEngine.isGraphicsOff())
             return;

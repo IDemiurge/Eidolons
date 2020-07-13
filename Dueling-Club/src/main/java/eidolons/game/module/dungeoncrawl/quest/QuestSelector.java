@@ -2,7 +2,7 @@ package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.libgdx.gui.menu.selection.town.quest.QuestSelectionPanel;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
@@ -43,12 +43,12 @@ public class QuestSelector extends QuestHandler {
             selectQuests();
 
             String result =
-             (Flags.isFastMode()) ? DataManager.getRandomType(MACRO_OBJ_TYPES.QUEST).getName()
+             (Flags.isFastMode()) ? DataManager.getRandomType(DC_TYPE.QUEST).getName()
               : (String) WaitMaster.waitForInput(QuestSelectionPanel.WAIT_OPERATION);
             if (result == null) {
                 return list;
             }
-            ObjType type = DataManager.getType(result, MACRO_OBJ_TYPES.QUEST);
+            ObjType type = DataManager.getType(result, DC_TYPE.QUEST);
             Quest quest = master.getCreator().create(type);
             list.add(quest);
         }

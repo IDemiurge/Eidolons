@@ -8,7 +8,6 @@ import main.content.enums.meta.QuestEnums.QUEST_GROUP;
 import main.content.enums.meta.QuestEnums.QUEST_TIME_LIMIT;
 import main.content.enums.meta.QuestEnums.QUEST_TYPE;
 import main.content.values.properties.G_PROPS;
-import main.content.values.properties.MACRO_PROPS;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -80,19 +79,19 @@ public class DungeonQuest implements Quest {
         this.title = type.getName();
         this.image = type.getImagePath();
         this.group = new EnumMaster<QUEST_GROUP>().retrieveEnumConst(QUEST_GROUP.class,
-         type.getProperty(MACRO_PROPS.QUEST_GROUP));
+         type.getProperty(G_PROPS.QUEST_GROUP));
         this.type = new EnumMaster<QUEST_TYPE>().retrieveEnumConst(QUEST_TYPE.class,
-         type.getProperty(MACRO_PROPS.QUEST_TYPE));
+         type.getProperty(G_PROPS.QUEST_TYPE));
 
         reward = new QuestReward(type);
 
         this.description = type.getDescription();
 
         this.progressTextTemplate = type.getProperty(G_PROPS.TOOLTIP);
-        if (type.checkProperty(MACRO_PROPS.QUEST_TIME_LIMIT)) {
+        if (type.checkProperty(G_PROPS.QUEST_TIME_LIMIT)) {
             QUEST_TIME_LIMIT timing = new EnumMaster<QUEST_TIME_LIMIT>().
              retrieveEnumConst(QUEST_TIME_LIMIT.class,
-              type.getProperty(MACRO_PROPS.QUEST_TIME_LIMIT));
+              type.getProperty(G_PROPS.QUEST_TIME_LIMIT));
             this.timeLeft = QuestCreator.getTimeInSeconds(this, timing);
         }
     }

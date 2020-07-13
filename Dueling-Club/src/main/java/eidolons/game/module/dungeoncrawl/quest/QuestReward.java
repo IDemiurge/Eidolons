@@ -9,7 +9,7 @@ import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import main.content.C_OBJ_TYPE;
 import main.content.enums.meta.QuestEnums.QUEST_LEVEL;
 import main.content.enums.meta.QuestEnums.QUEST_REWARD_TYPE;
-import main.content.values.properties.MACRO_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
@@ -49,9 +49,9 @@ public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
 
     public QuestReward(ObjType objType) {
           type = new EnumMaster<QUEST_REWARD_TYPE>().retrieveEnumConst(QUEST_REWARD_TYPE.class,
-                objType.getProperty(MACRO_PROPS.QUEST_REWARD_TYPE));
+                objType.getProperty(G_PROPS.QUEST_REWARD_TYPE));
           level = new EnumMaster<QUEST_LEVEL>().retrieveEnumConst(QUEST_LEVEL.class,
-                objType.getProperty(MACRO_PROPS.QUEST_LEVEL));
+                objType.getProperty(G_PROPS.QUEST_LEVEL));
 
 
         int gold = 20 * Eidolons.getMainHero().getLevel();
@@ -101,7 +101,7 @@ public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
         goldFormula = "" + gold;
         xpFormula = "" + xp;
         reputationFormula = "" + reputation;
-        rewardItems = objType.getProperty(MACRO_PROPS.QUEST_REWARD_ITEMS);
+        rewardItems = objType.getProperty(G_PROPS.QUEST_REWARD_ITEMS);
     }
 
     @Override
