@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
+import main.system.text.Log;
 
 public class CameraMotion {
 
@@ -32,8 +33,9 @@ public class CameraMotion {
         action.setEnd(x ? dest.x : dest.y);
         action.setDuration(duration);
         action.setInterpolation(interpolation);
-        LogMaster.devLog(LOG_CHANNEL.CAMERA, "Camera motion to " + dest.x + " "
-                + dest.y + " in " + duration + " seconds");
+        if (Log.check(Log.LOG_CASE.camera))
+            LogMaster.devLog(LOG_CHANNEL.CAMERA, "Camera motion to " + dest.x + " "
+                    + dest.y + " in " + duration + " seconds");
         return action;
     }
 

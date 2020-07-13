@@ -26,6 +26,7 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
+import eidolons.libgdx.bf.overlays.GridOverlaysManager;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.BlockableGroup;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -241,7 +242,7 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
     }
 
     protected boolean isCoordinatesShown() {
-        return DC_Game.game.isDebugMode();
+        return GridOverlaysManager.debug;// DC_Game.game.isDebugMode();
     }
 
     @Override

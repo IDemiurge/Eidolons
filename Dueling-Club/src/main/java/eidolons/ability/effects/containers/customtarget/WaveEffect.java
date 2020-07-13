@@ -6,10 +6,10 @@ import main.content.OBJ_TYPE;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.math.Formula;
-import main.system.math.PositionMaster.SHAPES;
+import main.system.math.PositionMaster.SHAPE;
 
 public class WaveEffect extends ShapeEffect {
-    private Boolean expanding; // wave
+    private final Boolean expanding; // wave
 
     public WaveEffect(Effect effects, Formula radius, Formula distance,
                       Boolean allyOrEnemyOnly, Boolean notSelf, Boolean expanding,
@@ -31,8 +31,8 @@ public class WaveEffect extends ShapeEffect {
     }
 
     @Override
-    protected SHAPES getShape() {
-        return (expanding) ? SHAPES.CONE : SHAPES.RECTANGLE;
+    public SHAPE getShape() {
+        return (expanding) ? SHAPE.CONE : SHAPE.RECTANGLE;
     }
 
 }

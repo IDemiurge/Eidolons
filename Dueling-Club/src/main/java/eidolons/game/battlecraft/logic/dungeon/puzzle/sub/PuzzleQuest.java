@@ -44,7 +44,7 @@ public class PuzzleQuest extends ChainQuest {
 
     @Override
     public String getProgressText() {
-        if (counter==0) {
+        if (counter==0 && originalCounter==0) {
             return puzzle.getQuestText();
         }
         return  getFriendlyTooltip(puzzle.getData().getCounterActionBase()) + " left: " +

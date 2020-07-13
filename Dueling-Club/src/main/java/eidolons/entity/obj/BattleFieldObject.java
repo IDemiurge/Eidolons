@@ -91,8 +91,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     @Override
     public void setPassives(List<AbilityObj> passives) {
         super.setPassives(passives);
-        passivesReady=true;
-//        activatePassives();
+        passivesReady = true;
+        //        activatePassives();
     }
 
     public boolean isWall() {
@@ -109,12 +109,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public String getToolTip() {
         if (!isMine())
             if (OutlineMaster.isOutlinesOn()) {
-            if (getOutlineTypeForPlayer() != null)
-                return getOutlineTypeForPlayer().getName();
-            if (!getGame().getVisionMaster().getDetectionMaster().checkKnownForPlayer(this)) {
-                return "Unknown";
+                if (getOutlineTypeForPlayer() != null)
+                    return getOutlineTypeForPlayer().getName();
+                if (!getGame().getVisionMaster().getDetectionMaster().checkKnownForPlayer(this)) {
+                    return "Unknown";
+                }
             }
-        }
         String prefix = "";
 
         if (isMine()) {
@@ -134,7 +134,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             return super.toString();
         return getNameAndCoordinate();
     }
-
 
     @Override
     public boolean kill(Entity killer, boolean leaveCorpse, Boolean quietly) {
@@ -307,7 +306,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             if (NumberUtils.getIntParse(value) >
                     getIntParam(PARAMS.TOUGHNESS)) {
                 LogMaster.log(1, "BUG: toughness >100%! " + this + value);
-            //TODO debug
+                //TODO debug
                 value = getParam(PARAMS.TOUGHNESS);
             }
         }
@@ -540,7 +539,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public boolean isIndestructible() {
         if (getGame().isDebugMode())
             return false;
-        if (checkStatus( STATUS.UNDYING ))
+        if (checkStatus(STATUS.UNDYING))
             return true;
         return checkProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INDESTRUCTIBLE.name());
     }
@@ -638,9 +637,11 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         }
         return checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.IMMATERIAL.getName());
     }
+
     public void setHidden(boolean b) {
         hidden = b;
     }
+
     public boolean isHidden() {
         return hidden;
     }
@@ -667,12 +668,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
 
     public String getVisionInfo() {
-            return "[" +
-                    "gamma=" + gamma +
-                    "; " + getVisibilityLevel() +
-                    "/" + getUnitVisionStatus() +
-                    "/" + getPlayerVisionStatus() +
-                    ']';
+        return "[" +
+                "gamma=" + gamma +
+                "; " + getVisibilityLevel() +
+                "/" + getUnitVisionStatus() +
+                "/" + getPlayerVisionStatus() +
+                ']';
     }
 
     public SeenMapper getSeenMapper() {

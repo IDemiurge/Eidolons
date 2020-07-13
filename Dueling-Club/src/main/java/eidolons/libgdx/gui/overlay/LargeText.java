@@ -40,6 +40,8 @@ public class LargeText extends NoHitGroup {
         ActionMaster.addFadeInAndOutAction(this, dur, false);
         mainText.setText(main);
         subText.setText(sub);
+        mainText.pack();
+        subText.pack();
         GdxMaster.center(mainText);
         GdxMaster.center(subText);
         subText.setY(subText.getY()-mainText.getHeight()-10);

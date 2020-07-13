@@ -261,10 +261,10 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
                 }
             }
         }
-        boolean             result = applyThis();
-            applied = true;
-            if (checkEventsFired())
-                fireAppliedEvent();
+        boolean result = applyThis();
+        applied = true;
+        if (checkEventsFired())
+            fireAppliedEvent();
 
         return result;
 

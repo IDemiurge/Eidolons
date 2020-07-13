@@ -48,7 +48,7 @@ public class MainLauncher extends GenericLauncher {
             if (args[0].contains("town")) {
                 EidolonsGame.TOWN = true;
             }
-            CoreEngine.TEST_LAUNCH = args[0].contains(";test");
+            CoreEngine.TEST_LAUNCH = args[0].contains("test;");
             Flags.setFastMode(CoreEngine.TEST_LAUNCH);
 
             if (args[0].contains("selecthero")) {

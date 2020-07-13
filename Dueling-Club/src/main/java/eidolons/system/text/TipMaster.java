@@ -37,7 +37,7 @@ public class TipMaster {
     };
     static boolean no_repeat;
     static Boolean basicOrAdvanced = EidolonsGame.TESTER_VERSION;
-    private static List displayedTips = new ArrayList<>();
+    private static final List displayedTips = new ArrayList<>();
 
     public static String getTip() {
         return getTip(0);
@@ -221,7 +221,7 @@ public class TipMaster {
                 return
                  "You can adjust options by clicking on gears icon in top-right corner";
             case MODES:
-                return "Use Restoration Mode on the bottom panel to regain lost Stamina, Focus or Essence. Camp when outside combat and with enough food.";
+                return "Use Restoration Mode on the bottom panel to regain lost Toughness, Focus or Essence. Camp when outside combat and with enough food.";
 
             case DEFAULT_ACTIONS:
                 return

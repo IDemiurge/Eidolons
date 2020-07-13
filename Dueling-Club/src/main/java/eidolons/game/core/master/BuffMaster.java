@@ -1,5 +1,6 @@
 package eidolons.game.core.master;
 
+import eidolons.ability.effects.EmptyEffect;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.common.ModifyPropertyEffect;
 import eidolons.content.PARAMS;
@@ -134,7 +135,6 @@ public class BuffMaster extends Master {
         for (Attachment attachment : game.getState().getAttachments()) {
             attachment.checkRetainCondition();
         }
-
     }
 
     public void addAttachment(Attachment attachment, Obj basis) {
@@ -153,11 +153,13 @@ public class BuffMaster extends Master {
             return;
         }
         for (Effect e : attachment.getEffects()) {
-            // e.apply(basis.getRef()); // how to add retain conditions?
-            // else
-            // if (!(e instanceof AttachmentEffect))
             getState().addEffect(e);
         }
+    }
+    //TODO core refactor - fix these params..
+    public BuffObj createBuff(BuffType type, Ref ref, double dur) {
+        return createBuff(type, (Obj) ref.getActive(), ref.getSourceObj().getOwner(), ref,
+                null, dur, null);
     }
 
     public BuffObj createBuff(BuffType type, Obj active, Player player, Ref ref, Effect effect,
@@ -193,7 +195,9 @@ public class BuffMaster extends Master {
         } else {
             // preCheck cache
         }
-
+        if (effect == null) {
+            effect = new EmptyEffect(); //TODO core Review
+        }
         buff = new DC_BuffObj(type, player, getGame(), ref, effect, duration, retainCondition);
         buff.setActive(active);
 

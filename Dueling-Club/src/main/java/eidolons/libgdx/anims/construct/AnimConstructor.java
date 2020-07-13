@@ -3,7 +3,9 @@ package eidolons.libgdx.anims.construct;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.ability.effects.common.ModifyValueEffect;
+import eidolons.ability.effects.containers.customtarget.ShapeEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
+import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.Spell;
@@ -11,6 +13,7 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimData;
@@ -54,6 +57,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.Flags;
+import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -123,7 +127,7 @@ public class AnimConstructor {
     }
 
     public static boolean isPreconstructAllOnGameInit() {
-        return !Flags.isIDE()  ;
+        return !Flags.isIDE();
     }
 
     public static boolean isPreconstructEnemiesOnCombatStart() {
@@ -229,9 +233,9 @@ public class AnimConstructor {
             if (!isPartIgnored(part)) {
                 Anim animPart = getPartAnim(active, part, anim);
                 if (animPart != null) {
-                    if (part== ANIM_PART.IMPACT) {
+                    if (part == ANIM_PART.IMPACT) {
                         if (SpellMultiplicator.isMultiAnimRequired(anim.getActive_())) {
-//                            anim.getMap().getVar(ANIM_PART.MISSILE).getVar
+                            //                            anim.getMap().getVar(ANIM_PART.MISSILE).getVar
                             animPart.setDelay(2.2f);
                             anim.attach(animPart, part);
                             return;
@@ -251,15 +255,15 @@ public class AnimConstructor {
         AnimData data = new AnimData();
         for (VALUE val : anim_vals) {
             if (val instanceof PARAMETER || //TODO add filtering
-                    StringMaster.contains(val.name(), part.toString())) {
+                    StringMaster.contains(val.name(), part.toString())
+            || (val== PROPS.ANIM_VFX_MAIN && part == ANIM_PART.MISSILE)) {
                 String name = active.getValue(val);
                 if (!name.isEmpty())
-                    data.add(val,   name);
+                    data.add(val, name);
             }
         }
         return getPartAnim(data, active, part, anim);
     }
-
 
 
     private static Anim getPartAnim(AnimData data, DC_ActiveObj active,
@@ -315,10 +319,9 @@ public class AnimConstructor {
                     if (part == ANIM_PART.MISSILE)
                         return new Missile3dAnim(active);
                 }
-                if (part == ANIM_PART.MISSILE)
-                {
-//                    if (EidolonsGame.DUEL && active.getOwnerUnit())
-//                        return new ForceAnim(active, ANIM_PART.MISSILE);
+                if (part == ANIM_PART.MISSILE) {
+                    //                    if (EidolonsGame.DUEL && active.getOwnerUnit())
+                    //                        return new ForceAnim(active, ANIM_PART.MISSILE);
                     return new Weapon3dAnim(active);
                 }
 
@@ -344,15 +347,28 @@ public class AnimConstructor {
                 if (active.getChecker().isTopDown())
                     return null;
             }
-            SPELL_ANIMS template = getTemplateFromTargetMode(active.getTargetingMode());
+            SPELL_ANIMS template = getTemplateFromTargetMode(active);
             return new SpellAnim(active, data, template, part);
         }
         return new ActionAnim(active, data);
     }
-    public static SPELL_ANIMS getTemplateForSpell(DC_ActiveObj active ) {
-        return getTemplateFromTargetMode(active.getTargetingMode());
+
+    public static SPELL_ANIMS getTemplateForSpell(DC_ActiveObj active) {
+        return getTemplateFromTargetMode(active);
     }
-    public static SPELL_ANIMS getTemplateFromTargetMode(TARGETING_MODE targetingMode) {
+
+    public static SPELL_ANIMS getTemplateFromTargetMode(DC_ActiveObj activeObj) {
+        Effect effect = EffectMaster.getFirstEffectOfClass(activeObj,
+                ShapeEffect.class);
+        if (effect != null) {
+            PositionMaster.SHAPE shape = ((ShapeEffect) effect).getShape();
+            if (shape != null) {
+                return new EnumMaster<SPELL_ANIMS>().
+                        retrieveEnumConst(SPELL_ANIMS.class, shape.name());
+            }
+        }
+
+        TARGETING_MODE targetingMode = activeObj.getTargetingMode();
         switch (targetingMode) {
             case NOVA:
             case RAY:
@@ -367,18 +383,18 @@ public class AnimConstructor {
         return null;
 
     }
+
     private static boolean isForceAnim(DC_ActiveObj active, ANIM_PART part) {
-        if (active.getActiveWeapon().getWeaponGroup()== ItemEnums.WEAPON_GROUP.FORCE) {
+        if (active.getActiveWeapon().getWeaponGroup() == ItemEnums.WEAPON_GROUP.FORCE) {
             return true;
         }
         switch (part) {
             case MISSILE:
-//           TODO wanna test it? do it right...     if (CoreEngine.isFastMode())
-//                    return true;
+                //           TODO wanna test it? do it right...     if (CoreEngine.isFastMode())
+                //                    return true;
         }
         return false;
     }
-
 
 
     private static boolean initAnim(AnimData data,
@@ -492,7 +508,7 @@ public class AnimConstructor {
     private static boolean isAnimated(Effect e) {
         if (e.getActiveObj() == null) {
             if (e instanceof DealDamageEffect) {
-//                TODO
+                //                TODO
             } else
                 return false;
         }

@@ -381,11 +381,12 @@ public class PathBuilder extends AiHandler {
         //        }
 
         int stackFactor = 0;
-        for (Choice choice : path.getChoices()) {
-            if (choice.maxUnitsInStack > 1) {
-                stackFactor += choice.maxUnitsInStack;
-            }
-        }
+        //TODO ai Review - are we done with stacking?
+        // for (Choice choice : path.getChoices()) {
+        //     if (choice.maxUnitsInStack > 1) {
+        //         stackFactor += choice.maxUnitsInStack;
+        //     }
+        // }
 
         int size = path.getActions().size() + stackFactor;
         result = result

@@ -196,7 +196,10 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
     }
 
     public Coordinates getBottomLeft() {
-       return  CoordinatesMaster.getBottomLeft(getCoordinatesAll());
+        if (getCoordinates().isEmpty()) {
+            return null;
+        }
+       return  CoordinatesMaster.getBottomLeft(getCoordinates());
     }
 
     public enum SELECTION_MODE {

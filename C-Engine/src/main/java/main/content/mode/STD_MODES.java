@@ -13,7 +13,7 @@ public enum STD_MODES implements MODE {
     CONCENTRATION(true, false, true, "C_FOCUS", "max(100, {SOURCE_CONCENTRATION_MOD})/100*("
      + Formulas.CONCENTRATION_BASE + "+{SOURCE_CONCENTRATION_BONUS})"),
 
-    RESTING(false, true, true, "C_STAMINA", "max(100, {SOURCE_RESTING_MOD})/100*("
+    RESTING(false, true, true, "C_TOUGHNESS", "max(100, {SOURCE_RESTING_MOD})/100*("
      + Formulas.REST_CONST + "+{SOURCE_REST_BONUS})"),
     MEDITATION(true, true, true, "C_ESSENCE", "max(100, {SOURCE_MEDITATION_MOD})/100*("
      + Formulas.MEDITATION_BASE + "+{SOURCE_MEDITATION_BONUS})"), // {ACTIVE_something}

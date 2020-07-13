@@ -603,7 +603,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         this.tempFacing = tempFacing;
     }
     public void initTempFacing() {
-        setTempFacing(getFacing());
+        setTempFacing(super.getFacing());
     }
     public void removeTempFacing() {
         this.tempFacing = null;
@@ -614,7 +614,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         this.tempCoordinates = tempCoordinates;
     }
     public void initTempCoordinates() {
-        setTempCoordinates(getCoordinates());
+        setTempCoordinates(super.getCoordinates());
     }
     public void removeTempCoordinates() {
         this.tempCoordinates = null;

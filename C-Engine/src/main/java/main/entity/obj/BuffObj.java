@@ -50,6 +50,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     private List<PeriodicEffect> timeEffects;
     private boolean immobilizing;
     private boolean dynamic;
+    private Runnable onDispel;
 
     public BuffObj(ObjType type, Player owner, GenericGame game, Ref ref, Effect effect,
                    double duration, Condition retainCondition) {
@@ -174,6 +175,9 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
             dispelEffects.apply(ref
                     // Ref.getSelfTargetingRefCopy(ref.getSourceObj())
             );
+        }
+        if (onDispel != null) {
+            onDispel.run();
         }
         // game.fireEvent(new Event(STANDARD_EVENT_TYPE.BUFF_REMOVED, REF));
         return true;
@@ -448,5 +452,13 @@ return ;
 
     public boolean isPhysical() {
         return true;
+    }
+
+    public void setOnDispel(Runnable onDispel) {
+        this.onDispel = onDispel;
+    }
+
+    public Runnable getOnDispel() {
+        return onDispel;
     }
 }

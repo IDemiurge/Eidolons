@@ -68,6 +68,24 @@ public abstract class SpriteParamBar extends DualParamBar {
         ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
         super.draw(batch, parentAlpha);
         ((CustomSpriteBatch) batch).resetBlending();
+
+    }
+
+    protected int getLabelY() {
+        return 130;
+    }
+    protected void resetLabelPos() {
+        int y = getLabelY();
+        label1.setPosition(245, y);
+        label2.setPosition(23, y);
+    }
+
+    protected boolean isLabelsDisplayed() {
+        return true;
+    }
+    @Override
+    protected void resetLabel() {
+        super.resetLabel();
     }
 
     @Override

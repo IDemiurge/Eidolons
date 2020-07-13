@@ -29,6 +29,9 @@ public class GpuTester {
             CoreEngine.setWeakGpu(true);
         }
 
+        if ( Runtime.getRuntime().availableProcessors()<4 ){
+            CoreEngine.setWeakCpu(true);
+        }
     }
     public static void test() {
         if (!Flags.isWindows()){

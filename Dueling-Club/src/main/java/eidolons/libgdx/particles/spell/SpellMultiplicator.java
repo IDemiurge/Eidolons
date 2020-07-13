@@ -62,9 +62,9 @@ public class SpellMultiplicator implements Runnable {
     }
 
     private static boolean isMultiplied(Anim anim) {
-//        if (anim.getPart() == AnimConstructor.ANIM_PART.IMPACT) {
-//            return true;
-//        }
+        //        if (anim.getPart() == AnimConstructor.ANIM_PART.IMPACT) {
+        //            return true;
+        //        }
         if (anim.getPart() != AnimEnums.ANIM_PART.MISSILE) {
             return false;
         }
@@ -93,7 +93,11 @@ public class SpellMultiplicator implements Runnable {
     private void multiply(Anim anim) {
         AnimConstructor.removeCache(anim);
         applyTemplate(getMethod(anim));
-        adjustAngle();
+        try {
+            adjustAngle();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     public static boolean isMultiAnimRequired(DC_ActiveObj active_) {
@@ -244,7 +248,7 @@ public class SpellMultiplicator implements Runnable {
         actor.setPosition(getX(), getY());
         actor.setAttached(false);
         actor.setGenerated(true);
-//        anim.getMaster().addActor(actor);
+        //        anim.getMaster().addActor(actor);
 
         if (angle != null) {
             createAndAddEmitterActions(actor, angle, template);
@@ -314,9 +318,9 @@ public class SpellMultiplicator implements Runnable {
     }
 
     private Action createAndAddEmitterActions(SpellVfx actor, Integer angle, SPELL_ANIMS template) {
-//        Action action = new SequenceAction();
-//        actor.addAction(action);
-//        action.setTarget(actor);
+        //        Action action = new SequenceAction();
+        //        actor.addAction(action);
+        //        action.setTarget(actor);
         int range = getActive().getRange();
         //        if ()
         range = getActive().getIntParam(G_PARAMS.RADIUS);
@@ -338,14 +342,14 @@ public class SpellMultiplicator implements Runnable {
 
     private Action addRangeAndAngle(int angle, int range, SpellVfx actor) {
         MoveByAction action = new MoveByAction();
-//        MoveToAction action = new MoveToAction();
+        //        MoveToAction action = new MoveToAction();
 
-//        MoveByAction action = ActionMaster.getMoveByAction(getOrigin(), v, actor, (int) speed);
+        //        MoveByAction action = ActionMaster.getMoveByAction(getOrigin(), v, actor, (int) speed);
         float x = (float) (132 * Math.sin(angle) * range);
         float y = (float) (132 * Math.cos(angle) * range);
         action.setAmount(x, y);
-//        action.setPosition(actor.getX()+ x, actor.getY()+y);
-//        main.system.auxiliary.log.LogMaster.dev(angle+" angle gives destination: " +(int)action.getX() + "-"+(int)action.getY());
+        //        action.setPosition(actor.getX()+ x, actor.getY()+y);
+        //        main.system.auxiliary.log.LogMaster.dev(angle+" angle gives destination: " +(int)action.getX() + "-"+(int)action.getY());
         actor.setRotation(-angle);
         actor.addAction(action);
         action.setTarget(actor);
@@ -357,7 +361,7 @@ public class SpellMultiplicator implements Runnable {
         }
         action.setInterpolation(Interpolation.swing);
 
-//        ActionMaster.addRemoveAfter(actor);
+        //        ActionMaster.addRemoveAfter(actor);
 
         //TRY ALPHA/ROTATE ACTION
         return action;

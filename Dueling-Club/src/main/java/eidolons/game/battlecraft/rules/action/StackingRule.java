@@ -1,3 +1,4 @@
+
 package eidolons.game.battlecraft.rules.action;
 
 import eidolons.content.PARAMS;
@@ -6,9 +7,11 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMaze;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.round.WaterRule;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -72,7 +75,7 @@ public class StackingRule implements ActionRule {
         if (unit instanceof Entrance)
             return true;
 
-        return instance.canBeMovedOnto(maxSpaceTakenPercentage, unit, c, otherUnits);
+        return instance.canBeMovedOnto(maxSpaceTakenPercentage, unit, c, otherUnits, true);
     }
 
     //apply on each reset?
@@ -136,11 +139,11 @@ public class StackingRule implements ActionRule {
 
     public boolean canBeMovedOnto(Entity unit, Coordinates c,
                                   List<? extends Entity> otherUnits) {
-        return canBeMovedOnto(100, unit, c, otherUnits);
+        return canBeMovedOnto(100, unit, c, otherUnits, false);
     }
 
     private boolean canBeMovedOnto(Integer maxSpaceTakenPercentage, Entity unit, Coordinates c,
-                                   List<? extends Entity> otherUnits) {
+                                   List<? extends Entity> otherUnits, boolean prohibitStacking) {
         Boolean result = checkPlatform(unit, c);
         if (result != null) {
             return result;
@@ -167,7 +170,7 @@ public class StackingRule implements ActionRule {
                 }
                 if (u.isDead())
                     continue;
-                if (!isStackingSupported()) {
+                if (!isStackingSupported() || prohibitStacking) {
                     if (isStackUnit(u)) {
                         return false;
                     }
@@ -217,7 +220,7 @@ public class StackingRule implements ActionRule {
             return false;
         }
         if (cell.isVOID()) {
-            if (!CoreEngine.TEST_LAUNCH)// || !VoidHandler.TEST_MODE)
+            if (unit != Eidolons.getMainHero() || !CoreEngine.TEST_LAUNCH || game.getDungeonMaster().getPuzzleMaster().getCurrent() instanceof VoidMaze)// || !VoidHandler.TEST_MODE)
                 if (!unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.VOIDWALKER.getName())) {
                     return false;
                 }

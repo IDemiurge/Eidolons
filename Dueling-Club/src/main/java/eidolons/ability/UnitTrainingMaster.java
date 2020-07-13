@@ -8,7 +8,6 @@ import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
-import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import main.system.math.MathMaster;
 
@@ -28,8 +27,8 @@ public class UnitTrainingMaster {
     }
 
     public static void train(Unit unit) {
-        if (CoreEngine.TEST_LAUNCH)
-            return;
+        // if (CoreEngine.TEST_LAUNCH)
+        //     return;
         if (Flags.isFullFastMode())
             return;
         if (Flags.isFastMode()) {

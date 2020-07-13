@@ -246,7 +246,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
 
 
     public void recalcUnitViewBounds() {
-        if (!wall && getUnitViewCount() == 0) {
+        if (!wall && nonBgUnitViewCount == 0) {
             return;
         }
         hasBackground = false;
@@ -720,6 +720,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         ActionMaster.addRemoveAfter(overlay);
         log(1, "fadeOut overlay" + overlay.getActions());
     }
+
 
     public boolean isWall() {
         return wall;

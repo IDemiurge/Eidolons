@@ -14,7 +14,7 @@ import java.util.Map;
 public class PositionMaster   {
 
     private static Double[][] distances = new Double[50][50];
-    private static Map<Integer, Double[][]> cache = new HashMap<>();
+    private static final Map<Integer, Double[][]> cache = new HashMap<>();
 
     public static Coordinates getMiddleCoordinate(FACING_DIRECTION side) {
         switch (side) {
@@ -311,7 +311,7 @@ public class PositionMaster   {
         return getY() - y - 1;
     }
 
-    public enum SHAPES {
+    public enum SHAPE {
         CONE, RECTANGLE {
             public boolean isRemoveBase() {
                 return true;

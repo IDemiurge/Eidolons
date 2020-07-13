@@ -28,10 +28,10 @@ public abstract class DC_Effect extends MicroEffect {
     }
 
     public Unit getSource() {
-        return getUnit();
+        return getSourceUnitOrNull();
     }
 
-    public Unit getUnit() {
+    public Unit getSourceUnitOrNull() {
         if (getRef().getSourceObj() instanceof Unit) {
             return (Unit) getRef().getSourceObj();
         }

@@ -80,9 +80,11 @@ public class LE_UnitViewFactory extends UnitViewFactory {
     public static String getTooltipText(Obj bfObj) {
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
             Coordinates c = LevelEditor.getManager().getSelectionHandler().getBottomLeft();
-            int x=c.x+bfObj.getX();
-            int y= c.y+bfObj.getY();
+            if (c != null) {
+            int x = Math.abs(1 + c.x - bfObj.getX());
+            int y = Math.abs(1 + c.y - bfObj.getY());
             return StringMaster.wrapInBrackets(x + ":" + y);
+            }
         }
         return bfObj. getNameAndCoordinate();
     }

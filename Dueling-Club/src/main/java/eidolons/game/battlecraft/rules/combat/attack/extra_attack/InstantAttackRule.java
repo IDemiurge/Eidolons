@@ -109,7 +109,7 @@ public class InstantAttackRule {
                     if (unit.isNeutral()) {
                         continue;
                     }
-                    if (!unit.canCounter()) {
+                    if (!unit.canInstantAttack()) {
                         continue;
                     }
                     set.add(unit);

@@ -163,12 +163,12 @@ public class DamageDealer {
 
         if (!ref.isQuiet()) {
             try {
-                active.getRef().setValue(KEYS.DAMAGE_DEALT, damageDealt + "");
+                active.getRef().addValue(KEYS.DAMAGE_DEALT, damageDealt  );
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        addDamageDealt(active, damage_type, damageDealt, !bonus);
+        addDamageDealt(active, damage_type, damageDealt, !bonus, ref);
         return damageDealt;
 
     }
@@ -262,12 +262,12 @@ public class DamageDealer {
 
     // for floatingText anims
     protected static void addDamageDealt(DC_ActiveObj active, DAMAGE_TYPE damage_type,
-                                         int amount, boolean main) {
+                                         int amount, boolean main, Ref ref) {
         if (active == null)
             return;
 
         if (main) {
-            active.setDamageDealt(DamageFactory.getGenericDamage(damage_type, amount, active.getRef()));
+            active.setDamageDealt(DamageFactory.getGenericDamage(damage_type, amount, ref));
             return;
         }
 
@@ -279,7 +279,7 @@ public class DamageDealer {
         }
 
         multiDamage.getAdditionalDamage().add(DamageFactory.
-                getGenericDamage(damage_type, amount, active.getRef()));
+                getGenericDamage(damage_type, amount, ref));
 
         active.setDamageDealt(multiDamage);
     }

@@ -21,6 +21,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
+import main.system.text.Log;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -206,7 +207,9 @@ public class VisionMaster implements GenericVisionManager {
     }
 
     public void refresh() {
-        LogMaster.log(LogMaster.VISIBILITY_DEBUG, "Refreshing visibility...");
+
+        if (Log.check(Log.LOG_CASE.visibility))
+            LogMaster.log(LogMaster.VISIBILITY_DEBUG, "Refreshing visibility...");
         sightMaster.clearCaches();
         resetVisibilityStatuses();
     }

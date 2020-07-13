@@ -2,6 +2,7 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
 import eidolons.content.ContentConsts;
+import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
@@ -16,6 +17,7 @@ import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.StealthRule;
+import eidolons.game.core.atb.AtbMaster;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.AiEnums;
@@ -58,7 +60,6 @@ public class ActionManager extends AiHandler {
             map.put(p, new Formula(""));
         }
         for (Action a : actions) {
-
             for (Cost c : a.getActive().getCosts().getCosts()) {
                 Formula formula = map.get(c.getPayment().getParamToPay());
                 if (formula != null) {
@@ -66,7 +67,10 @@ public class ActionManager extends AiHandler {
                 }
 
             }
+            map.put(PARAMS.C_ATB, new Formula("" + AtbMaster.getReadinessCost(a.getActive())));
         }
+        map.keySet().removeIf(p-> map.get(p).toString().isEmpty());
+
         return new Costs(map);
     }
 
@@ -118,8 +122,8 @@ public class ActionManager extends AiHandler {
 
         if (unit != ai.getUnit()) {
             getCellPrioritizer().reset();
-        } else {
         }
+
 
         checkDeactivate();
 
@@ -128,10 +132,6 @@ public class ActionManager extends AiHandler {
             ai.getForcedActions().remove(0);
             return action;
         }
-
-        //        if (!ai.isEngaged()) {
-        //       TODO      return behaviorMaster.getBehaviorAction(ai);
-        //        }
 
         unit.initTempFacing();
         unit.initTempCoordinates();

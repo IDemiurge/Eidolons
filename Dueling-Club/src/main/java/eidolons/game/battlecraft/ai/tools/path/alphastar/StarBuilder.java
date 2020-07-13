@@ -26,8 +26,11 @@ public class StarBuilder extends AiHandler implements IPathHandler {
         pathingManager = new PathingManager(this);
     }
 
-    public ActionPath getPath(Unit unit, Coordinates c, Coordinates c2) {
-        Path path = pathingManager.getPath(false, true, c, c2);
+    public ActionPath getPath(Unit unit, Coordinates c, Coordinates... target) {
+        Path path = pathingManager.getPath(false, true, c, target);
+        if (path == null) {
+            return null;
+        }
         Coordinates prev = c;
         List<Choice> choices = new ArrayList<>(path.nodes.size());
         try {
@@ -35,6 +38,7 @@ public class StarBuilder extends AiHandler implements IPathHandler {
                 prev = c;
                 c = path.nodes.get(i).getCoordinates();
                 choices.add(createChoice(unit, prev, c));
+                game.getCellByCoordinate(c).setObjectsModified(true); //TODO core Review
             }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -42,7 +46,7 @@ public class StarBuilder extends AiHandler implements IPathHandler {
             unit.removeTempFacing();
             unit.removeTempCoordinates();
         }
-        return new ActionPath(c2, choices);
+        return new ActionPath(path.endPoint, choices);
     }
 
     private Choice createChoice(Unit unit, Coordinates prev, Coordinates c) {
@@ -52,7 +56,7 @@ public class StarBuilder extends AiHandler implements IPathHandler {
 
     private Action[] getActions(Unit unit, Coordinates prev, Coordinates c) {
         FACING_DIRECTION facing = unit.getFacing();
-        List<Action> sequence =     new ArrayList<>() ;
+        List<Action> sequence = new ArrayList<>();
         List<Action> turnSequence = getTurnSequenceConstructor().getTurnSequence(unit, c);
         if (turnSequence.size() > 1 || PositionMaster.inLineDiagonally(prev, c)) {
             //otherwise go with side-moves!
@@ -67,6 +71,9 @@ public class StarBuilder extends AiHandler implements IPathHandler {
             sequence.addAll(turnSequence);
         }
         Action move = DC_MovementManager.getMoveAction(unit, prev, c);
+        if (move == null) {
+            return null ;
+        }
         sequence.add(move);
         unit.setTempCoordinates(c);
         return sequence.toArray(new Action[0]);
@@ -75,9 +82,10 @@ public class StarBuilder extends AiHandler implements IPathHandler {
 
     public List<ActionPath> build(Unit unit, List<Coordinates> targetCells) {
         List<ActionPath> paths = new ArrayList<>();
-        for (Coordinates c : targetCells) {
-            paths.add(getPath(unit, unit.getCoordinates(), c));
-        }
+            ActionPath path = getPath(unit, unit.getCoordinates(), targetCells.toArray(new Coordinates[0]));
+            if (path != null) {
+                paths.add(path);
+            }
         return paths;
     }
 

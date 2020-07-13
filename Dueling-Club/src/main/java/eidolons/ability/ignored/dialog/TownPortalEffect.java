@@ -25,7 +25,7 @@ public class TownPortalEffect extends DC_Effect { //TODO make this a subclass!
 //                "spell/town portal.txt";
                     DC_ActiveObj action;
                     if (ref.getActive() == null) {
-                        action  =getUnit().getLastAction();
+                        action  = getSourceUnitOrNull().getLastAction();
                     } else {
                         action  = (DC_ActiveObj) ref.getActive();
                     }
@@ -45,13 +45,9 @@ public class TownPortalEffect extends DC_Effect { //TODO make this a subclass!
 
         boolean result = (boolean) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.CONFIRM);
 
-        if (!result)
-            return false;
+        return result;
 //        GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, new TipMessageSource(
 //                msg, img, btn, false, getRunnable(), getChannel(), true));
-
-
-        return true;
     }
 
     private Runnable getRunnable() {

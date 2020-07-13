@@ -1,11 +1,16 @@
 package eidolons.ability.effects.containers.customtarget;
 
+import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.math.DC_PositionMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
+import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
+import main.content.values.parameters.G_PARAMS;
+import main.data.ability.OmittedConstructor;
 import main.elements.Filter;
 import main.elements.Filter.FILTERS;
 import main.elements.conditions.Conditions;
@@ -14,17 +19,30 @@ import main.entity.group.GroupImpl;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.auxiliary.EnumMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.FilterMaster;
 import main.system.math.Formula;
-import main.system.math.PositionMaster.SHAPES;
+import main.system.math.PositionMaster.SHAPE;
 
-public abstract class ShapeEffect extends SpecialTargetingEffect {
+public class ShapeEffect extends SpecialTargetingEffect {
 
+    private SHAPE shape;
     private Formula radius;
     private Formula distance;
-    private OBJ_TYPE targetType;
+    private final OBJ_TYPE targetType;
 
+    public ShapeEffect(Effect effects, String shape) {
+        this(effects, new EnumMaster<SHAPE>().retrieveEnumConst(SHAPE.class, shape));
+    }
+    public ShapeEffect(Effect effects, SHAPE shape) {
+        this.effects = effects;
+        this.shape = shape;
+        targetType= C_OBJ_TYPE.BF_OBJ;
+        notSelf=true;
+    }
+
+    @OmittedConstructor
     public ShapeEffect(Effect effects, Formula width, Formula height, Boolean allyOrEnemyOnly,
                        Boolean notSelf, OBJ_TYPE targetType) {
         this.radius = width;
@@ -49,17 +67,18 @@ public abstract class ShapeEffect extends SpecialTargetingEffect {
     @Override
     public void initTargeting() {
         // init unit group
-
         Coordinates baseCoordinate = getBaseCoordinate();
-        int base_width = radius.getInt(ref);
-        int distance = this.distance.getInt(ref);
+        int base_width = radius == null ? ref.getActive().getIntParam(G_PARAMS.RADIUS) : radius.getInt(ref);
+        int distance = this.distance == null ? ref.getActive().getIntParam(PARAMS.RANGE) :
+                this.distance.getInt(ref);
+
         coordinates = DC_PositionMaster.getShapedCoordinates(baseCoordinate,
-         getFacing(), base_width, distance, getShape());
+                getFacing(), base_width, distance, getShape());
 
         DequeImpl<Obj> objects = new DequeImpl<>();
         objects.addAllCast(
-         getGame().getObjMaster()
-          .getBfObjectsForCoordinates(coordinates));
+                getGame().getObjMaster()
+                        .getBfObjectsForCoordinates(coordinates));
 
         Filter.filter(objects, targetType);
         if (allyOrEnemyOnly != null) {
@@ -81,9 +100,15 @@ public abstract class ShapeEffect extends SpecialTargetingEffect {
     }
 
 
-    protected abstract SHAPES getShape();
+    public SHAPE getShape() {
+        return shape;
+    }
 
-    protected abstract Coordinates getBaseCoordinate();
+    protected Coordinates getBaseCoordinate() {
+        return ref.getSourceObj().getCoordinates();
+    }
 
-    protected abstract FACING_DIRECTION getFacing();
+    protected FACING_DIRECTION getFacing() {
+        return ((Unit) ref.getSourceObj()).getFacing();
+    }
 }

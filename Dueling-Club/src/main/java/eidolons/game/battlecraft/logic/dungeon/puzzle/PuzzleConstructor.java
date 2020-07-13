@@ -24,6 +24,7 @@ import main.game.logic.event.Event;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.entity.ConditionMaster;
+import main.system.launch.Flags;
 
 import java.util.Map;
 
@@ -203,7 +204,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
     }
 
     protected boolean isReplayable() {
-        return false;
+        return Flags.isIDE();
     }
 
     protected Condition getPuzzleExitConditions() {

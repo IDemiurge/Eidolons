@@ -11,7 +11,7 @@ import main.game.logic.event.Event;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +53,7 @@ public abstract class StateManager {
     }
 
     protected void applyModifications() {
-        if (!CoreEngine.TEST_LAUNCH)
+        if (!Flags.FAST_TEST)
             checkCounterRules();
         applyEffects(Effect.ZERO_LAYER);
         resetUnitObjects();
@@ -64,7 +64,7 @@ public abstract class StateManager {
         applyEffects(Effect.SECOND_LAYER);
         applyEffects(Effect.BUFF_RULE);
         checkContinuousRules();
-        if (!CoreEngine.TEST_LAUNCH)
+        if (!Flags.FAST_TEST)
             afterBuffRuleEffects();
         resetCurrentValues();
         makeSnapshotsOfUnitStates();

@@ -21,7 +21,7 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
     public boolean applyThis() {
         DC_ActiveObj attack = pickAttack();
         if (attack == null) {
-            if (getUnit() == ShadowMaster.getShadowUnit()) {
+            if (getSourceUnitOrNull() == ShadowMaster.getShadowUnit()) {
                 attack = getActiveObj().getSubActions().get(0);
             } else {
                 ref.getActive().setCancelled(true);
@@ -76,7 +76,7 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
         if (subActions.size() == 1) {
             return subActions.get(0);
         }
-        if (getUnit().isAiControlled() || isPickAutomaticallyOn()) {
+        if (getSourceUnitOrNull().isAiControlled() || isPickAutomaticallyOn()) {
             return pickAutomatically(subActions);
         }
         DC_ActiveObj pick = pickAutomatically(subActions);

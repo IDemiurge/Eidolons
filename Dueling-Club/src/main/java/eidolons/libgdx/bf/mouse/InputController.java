@@ -18,7 +18,6 @@ import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster;
@@ -333,7 +332,7 @@ public abstract class InputController implements InputProcessor {
     }
 
     protected boolean isFreeDrag() {
-        return CoreEngine.TEST_LAUNCH;
+        return true;
     }
 
     protected void tryPullCameraX(int screenX) {

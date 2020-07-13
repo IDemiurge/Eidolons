@@ -21,6 +21,7 @@ import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.AdjustingVerticalGroup;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -220,7 +221,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
 
         TablePanelX filters = new TablePanelX<>();
         for (ITEM_FILTERS filter : ITEM_FILTERS.values()) {
-            filters.add(new SmartTextButton(getButtonStyle(filter),
+            filters.add(new SymbolButton(getButtonStyle(filter),
              () -> {
                  EUtils.showInfoText("Filters are under construction...");
                  //                 try {

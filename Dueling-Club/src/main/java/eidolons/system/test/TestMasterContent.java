@@ -28,60 +28,56 @@ import java.util.List;
 
 public class TestMasterContent {
     public static final String TEST_WEAPONS = "inferior iron long sword;"
-     + "inferior iron long sword;"
-     + "inferior iron short sword;"
-     + "inferior iron dirk;"
-     + "inferior iron dagger;"
-     + "inferior iron knife;"
-     + "inferior iron war axe;"
-     + "inferior iron great axe;"
-     + "inferior iron hand axe;"
-     + "inferior iron mace;"
-     + "inferior iron battle hammer;"
-     + "inferior redwood battlestaff;"
-     + "inferior redwood longbow;"
-     + "inferior redwood staff;"
-     + "inferior iron spear;"
-     + "inferior iron lance;"
-     + "inferior iron trident;"
-     + "inferior iron halbert;"
-     + "inferior iron halbert;"
-     + "inferior redwood staff;"
-     + "inferior redwood staff;"
-     + "inferior redwood staff;";
+            + "inferior iron long sword;"
+            + "inferior iron short sword;"
+            + "inferior iron dirk;"
+            + "inferior iron dagger;"
+            + "inferior iron knife;"
+            + "inferior iron war axe;"
+            + "inferior iron great axe;"
+            + "inferior iron hand axe;"
+            + "inferior iron mace;"
+            + "inferior iron battle hammer;"
+            + "inferior redwood battlestaff;"
+            + "inferior redwood longbow;"
+            + "inferior redwood staff;"
+            + "inferior iron spear;"
+            + "inferior iron lance;"
+            + "inferior iron trident;"
+            + "inferior iron halbert;"
+            + "inferior iron halbert;"
+            + "inferior redwood staff;"
+            + "inferior redwood staff;"
+            + "inferior redwood staff;";
     public static final boolean ALL_WEAPONS_TEST = false;
     private static final String DEFAULT_SKILLS = "Turn About;Leap;Side Step;Quick Turn;";
     private static final String testGroups = "Fire;Water;Air;Earth;";
-    private static final String TEST_SKILLS = "Warcry: To Arms!;Druidic Visions;Roots of Wisdom;Coating Expert;Coating Mastery III;Toss Item;Feint Throw;Cleave (Axe);"
-     + "Slam;Knockdown (Polearm);Power Strike;"
-     + ""
-     + "Nimble Fingers;"
-     + ""
-     + "Aura of Resilience;"
-     + ""
-     + ""
-     + "Quick Swap;"
-     + "Practiced Channeler;"
-     + "Shortcut Schematics;Fast Reload;"
-     + ""
-     + "Spellcasting Algorithms;"
-     + "Maneuver: Swap Positions;"
-     + "Maneuver: Displace;"
-     + "Hide;"
-     + "Stealth Mode;"
-
-     + "Offensive Formation;"
-
-     + "Dirty Tactics;"
-     + "Noble Tactics;"
-     + "Command: Retreat!;"
-     + "Command: Forward!;"
-     + "Command: Hold Position!;" + "" + "" + "";
+    private static final String TEST_SKILLS =
+            ""
+            // +   "Warcry: To Arms!;Druidic Visions;Roots of Wisdom;Coating Expert;Coating Mastery III;Toss Item;Feint Throw;Cleave (Axe);"
+            // + "Slam;Knockdown (Polearm);Power Strike;"
+            // + "Nimble Fingers;"
+            // + "Aura of Resilience;"
+            // + "Quick Swap;"
+            // + "Practiced Channeler;"
+            // + "Shortcut Schematics;Fast Reload;"
+            // + "Spellcasting Algorithms;"
+            // + "Maneuver: Swap Positions;"
+            // + "Maneuver: Displace;"
+            // + "Hide;"
+            // + "Stealth Mode;"
+            // + "Offensive Formation;"
+            // + "Dirty Tactics;"
+            // + "Noble Tactics;"
+            // + "Command: Retreat!;"
+            // + "Command: Forward!;"
+            // + "Command: Hold Position!;"
+            ;
     private static final String TEST_ITEMS = "" + "Potent Liquid Shadow;" + "Potent Fire Bomb;"
-     + "Potent Paralyzing Poison;" + "Potent Poison Coating;" + "Normal Poison Coating;"
-     + "Cheap Poison Coating;" + "Potent Weakening Poison;" + "Inferior Dark Steel Dagger;"
-     + "Masterpiece Dark Steel Dagger;" + "Ancient Dark Steel Bolts;"
-     + "Ancient Dark Steel Bolts;";
+            + "Potent Paralyzing Poison;" + "Potent Poison Coating;" + "Normal Poison Coating;"
+            + "Cheap Poison Coating;" + "Potent Weakening Poison;" + "Inferior Dark Steel Dagger;"
+            + "Masterpiece Dark Steel Dagger;" + "Ancient Dark Steel Bolts;"
+            + "Ancient Dark Steel Bolts;";
     public static boolean addSpells = true;
     public static boolean addAllSpells = false;
     public static boolean test_on = CoreEngine.TEST_LAUNCH;
@@ -99,32 +95,32 @@ public class TestMasterContent {
     private static String FIX_LIST = "";
     private static String POLISH_LIST = "";
     private static String ANIM_TEST_LIST = //Gust of Wind
-     "Searing Light;Summon Vampire Bat;"
-     //      +"Sorcerous Flame;Ray of Arcanum;Chaos Shockwave;" +
-     //      "Fire Bolt;Chaos Bolt;" +
-     //      "Light;Haze;" +
-     //      "Scare;Freeze;" +
-     //      "Scorching Light"
-     ;
+            "Searing Light;Summon Vampire Bat;"
+            //      +"Sorcerous Flame;Ray of Arcanum;Chaos Shockwave;" +
+            //      "Fire Bolt;Chaos Bolt;" +
+            //      "Light;Haze;" +
+            //      "Scare;Freeze;" +
+            //      "Scorching Light"
+            ;
 
     private static String GRAPHICS_TEST_LIST = "Raise Skeleton;Fire Bolt;Chaos Bolt;Force Field;" +
-     "Summon Vampire Bat;Blink";
-    private static String TEST_ACTIONS ="Lounge";
+            "Summon Vampire Bat;Blink";
+    private static String TEST_ACTIONS = "Lounge";
     private static String TEST_SPELLS =
-     //     "Raise Skeleton;" +
-     //     "Light;Haze;" +
-     //      "Leap into Darkness;Blink;Summon Vampire Bat;"+
-     // + "Enchant Weapon;"
-     // + "Enchant Armor;"
-     //      + "Arcane Bolt;Ray of Arcanum;Time Warp;"
-     // + "Sorcerous Flames;"
-     "Force Field;"
-     // "Arms of Faith;Armor of Faith;Resurrection;"+
-     //      "Mass Terror;Mass Confusion;Mass Madness;" + "Conjure Weapon;Conjure Armor;" + ""
-     // + "Awaken Treant;"
-     // + "Sacrifice;"
-     // + "Soul Web;Rapid Growth;"
-     ;
+            //     "Raise Skeleton;" +
+            //     "Light;Haze;" +
+            //      "Leap into Darkness;Blink;Summon Vampire Bat;"+
+            // + "Enchant Weapon;"
+            // + "Enchant Armor;"
+            //      + "Arcane Bolt;Ray of Arcanum;Time Warp;"
+            // + "Sorcerous Flames;"
+            "Force Field;"
+            // "Arms of Faith;Armor of Faith;Resurrection;"+
+            //      "Mass Terror;Mass Confusion;Mass Madness;" + "Conjure Weapon;Conjure Armor;" + ""
+            // + "Awaken Treant;"
+            // + "Sacrifice;"
+            // + "Soul Web;Rapid Growth;"
+            ;
     private static String AI_SPELL_TEST_LIST = "Summon Lesser Demon;";
     private static List<ObjType> addedSpells = new ArrayList<>();
     private static String FOCUS_SKILL_LIST = "";
@@ -134,7 +130,7 @@ public class TestMasterContent {
 
     // WORKSPACE_GROUP[] ws_groups_included = {WORKSPACE_GROUP.TEST,
     // WORKSPACE_GROUP.FIX, WORKSPACE_GROUP.POLISH};
-    private static boolean addSkills= Flags.isSkillTestMode();
+    private static boolean addSkills = Flags.isSkillTestMode();
     private static boolean addItems;
     private static boolean addActives;
     private static boolean first;
@@ -179,12 +175,12 @@ public class TestMasterContent {
         }
         /*
          * I want to make sure that all actives are given to somebody... I can
-		 * keep a list of added actives and give all non-given to the last
-		 * hero...
-		 *
-		 * checkMastery() or at least aspect preCheck class/masteries for actions
-		 */
-       ObjType spellType =   DataManager.getType(typeName, DC_TYPE.SPELLS);
+         * keep a list of added actives and give all non-given to the last
+         * hero...
+         *
+         * checkMastery() or at least aspect preCheck class/masteries for actions
+         */
+        ObjType spellType = DataManager.getType(typeName, DC_TYPE.SPELLS);
         if (spellType == null) {
             return false;
         }
@@ -197,7 +193,7 @@ public class TestMasterContent {
         }
         try {
             if (DataManager.getType(type.getProperty(G_PROPS.DEITY), DC_TYPE.DEITIES).getAspect() == spellType
-             .getAspect()) {
+                    .getAspect()) {
                 result = true;
             }
         } catch (Exception e) {
@@ -315,21 +311,22 @@ public class TestMasterContent {
     public static void addSpells(Entity type, String list) {
         for (String s : ContainerUtils.open(list)) {
             type.addProperty(PROPS.VERBATIM_SPELLS, s
-             , true);
+                    , true);
         }
 
     }
 
     public static void addVFX_TEST_Spells(Entity type, String filter) {
-//        List<ObjType> types = DataManager.getTypes(DC_TYPE.SPELLS).stream().
-//                filter(t -> t.getName().contains(ContentGenerator.SPELL_TESTED)
-//                        && t.getName().contains(filter)
-//                ).collect(Collectors.toList());
-//        String list= ContainerUtils.constructEntityNameContainer(types);
-//        addSpells(type, list);
+        //        List<ObjType> types = DataManager.getTypes(DC_TYPE.SPELLS).stream().
+        //                filter(t -> t.getName().contains(ContentGenerator.SPELL_TESTED)
+        //                        && t.getName().contains(filter)
+        //                ).collect(Collectors.toList());
+        //        String list= ContainerUtils.constructEntityNameContainer(types);
+        //        addSpells(type, list);
 
         addSpells(type, "Shadow Fury;");
     }
+
     public static void addANIM_TEST_Spells(Entity type) {
 
 
@@ -339,7 +336,7 @@ public class TestMasterContent {
     public static void addGRAPHICS_TEST_Spells(Entity type) {
         for (String s : ContainerUtils.open(GRAPHICS_TEST_LIST)) {
             type.addProperty(PROPS.VERBATIM_SPELLS, s
-             , true);
+                    , true);
         }
     }
 
@@ -350,9 +347,9 @@ public class TestMasterContent {
                 String spells = "";
                 try {
                     spells =
-                     ContainerUtils.constructEntityNameContainer(
-                      (List<? extends Entity>) FilterMaster.filterByPropJ8(DataManager.getTypes(DC_TYPE.SPELLS),
-                       prop, substring));
+                            ContainerUtils.constructEntityNameContainer(
+                                    (List<? extends Entity>) FilterMaster.filterByPropJ8(DataManager.getTypes(DC_TYPE.SPELLS),
+                                            prop, substring));
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
@@ -364,8 +361,8 @@ public class TestMasterContent {
 
     private static void addTestSpells(ObjType type, boolean last) {
         type.addProperty(PROPS.VERBATIM_SPELLS, "Psychic Projection;Blink"
-        // type.addProperty(PROPS.VERBATIM_SPELLS, "Blink;"
-         + getTEST_LIST(), true);
+                // type.addProperty(PROPS.VERBATIM_SPELLS, "Blink;"
+                + getTEST_LIST(), true);
         if (!addSpells) {
             return;
         }
@@ -374,22 +371,22 @@ public class TestMasterContent {
             return;
         }
         if (isAddPartySpells())
-        if (Eidolons.getGame().getMetaMaster().getPartyManager().getParty() != null) {
-            for (String substring : ContainerUtils.openContainer(Eidolons.getGame().getMetaMaster().
-             getPartyManager().getParty().getType().getProperty(PROPS.MEMBERS))) {
-                ObjType t = DataManager.getType(substring, DC_TYPE.CHARS);
-                if (t.equals(type)) {
-                    continue;
-                }
-                String spells = t.getProperty(PROPS.VERBATIM_SPELLS)+ ";";
-                 spells += t.getProperty(PROPS.MEMORIZED_SPELLS);
+            if (Eidolons.getGame().getMetaMaster().getPartyManager().getParty() != null) {
+                for (String substring : ContainerUtils.openContainer(Eidolons.getGame().getMetaMaster().
+                        getPartyManager().getParty().getType().getProperty(PROPS.MEMBERS))) {
+                    ObjType t = DataManager.getType(substring, DC_TYPE.CHARS);
+                    if (t.equals(type)) {
+                        continue;
+                    }
+                    String spells = t.getProperty(PROPS.VERBATIM_SPELLS) + ";";
+                    spells += t.getProperty(PROPS.MEMORIZED_SPELLS);
 
-                for (String s :  ContainerUtils.openContainer(spells)) {
+                    for (String s : ContainerUtils.openContainer(spells)) {
                         type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
                     }
+                }
+                return;
             }
-            return;
-        }
 
         for (String s : ContainerUtils.open(getFOCUS_LIST())) {
             if (checkHeroForTestSpell(type, s, last)) {
@@ -419,14 +416,14 @@ public class TestMasterContent {
 
     private static void addAllSpells(ObjType type) {
         StringBuilder builder = new StringBuilder(DataManager.getTypes(DC_TYPE.SPELLS).size() * 10);
-        if (SpellVfxMaster.TEST_MODE){
-            for (String s :  ContainerUtils.openContainer(SpellVfxMaster.VFX_TEST_SPELLS)) {
+        if (SpellVfxMaster.TEST_MODE) {
+            for (String s : ContainerUtils.openContainer(SpellVfxMaster.VFX_TEST_SPELLS)) {
                 builder.append(s).append(";");
             }
         } else
-        for (ObjType s : DataManager.getTypes(DC_TYPE.SPELLS)) {
-            builder.append(s.getName()).append(";");
-        }
+            for (ObjType s : DataManager.getTypes(DC_TYPE.SPELLS)) {
+                builder.append(s.getName()).append(";");
+            }
         type.addProperty(PROPS.VERBATIM_SPELLS, builder.toString(), true);
     }
 
@@ -464,7 +461,7 @@ public class TestMasterContent {
                 if (ALL_WEAPONS_TEST) {
                     for (ObjType s : DataManager.getTypes(DC_TYPE.WEAPONS)) {
                         type.addProperty(PROPS.INVENTORY,
-                         s.getName(), true);
+                                s.getName(), true);
                     }
                 } else
                     for (String substring : ContainerUtils.openContainer(TEST_WEAPONS)) {

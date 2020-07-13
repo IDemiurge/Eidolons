@@ -37,6 +37,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
+import main.system.math.PositionMaster;
 
 import java.util.Arrays;
 
@@ -143,6 +144,7 @@ public enum ARGS implements Argument {
 
     DATA_TYPE(SPEECH_VALUE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     DATA_STRING(DataString.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
+    SHAPE(PositionMaster.SHAPE.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
 //    SPEECH(SpeechInterface.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
 //    SPEECHDATA(SpeechData.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
 

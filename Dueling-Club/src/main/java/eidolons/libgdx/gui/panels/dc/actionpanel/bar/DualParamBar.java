@@ -22,6 +22,7 @@ public abstract class DualParamBar extends ValueBar {
     public DualParamBar(BattleFieldObject dataSource) {
         this.dataSource = dataSource;
     }
+
     public DualParamBar(Supplier<BattleFieldObject> supplier) {
         this.supplier = supplier;
     }
@@ -75,20 +76,20 @@ public abstract class DualParamBar extends ValueBar {
         super.draw(batch, parentAlpha);
         float p = MathMaster.minMax(displayedSecondaryPerc, 0, 1);
         float y = getY();
-        if (isGradientMask()){
-            if (p<1) {
-            float x = getX() - (innerWidth * (1 - p));
-            ScissorMaster.drawWithAlphaMask(this, batch, x, y, innerWidth, height,
-                    ()->   drawBar(underBarRegion, batch, secondaryColor, y),
-                    Textures.HOR_GRADIENT_72);
+        if (isGradientMask()) {
+            if (p < 1) {
+                float x = getX() - (innerWidth * (1 - p));
+                ScissorMaster.drawWithAlphaMask(this, batch, x, y, innerWidth, height,
+                        () -> drawBar(underBarRegion, batch, secondaryColor, y),
+                        Textures.HOR_GRADIENT_72);
             } else {
                 drawBar(underBarRegion, batch, secondaryColor, y);
             }
             p = Math.min(p, displayedPrimaryPerc);
-            if (p<1) {
+            if (p < 1) {
                 float x = getX() - (innerWidth * (1 - p));
                 ScissorMaster.drawWithAlphaMask(this, batch, x, y, innerWidth, height,
-                        ()->   drawBar(overBarRegion, batch, primaryColor, y),
+                        () -> drawBar(overBarRegion, batch, primaryColor, y),
                         Textures.HOR_GRADIENT_72);
             } else {
                 drawBar(overBarRegion, batch, primaryColor, y);
@@ -177,19 +178,15 @@ public abstract class DualParamBar extends ValueBar {
         else {
             fullLengthPerc = displayedPrimaryPerc;
         }
-        //        float offset = innerWidth * displayedPrimaryPerc / 2;
-        label2.setPosition(0,
-                //         offset - label2.getWidth() / 2,
-                height * 3 / 2);
+        resetLabelPos();
+    }
+    protected void resetLabelPos() {
+        label2.setPosition(0, height * 3 / 2);
         float offset = innerWidth * displayedSecondaryPerc / 2;
+        label1.setPosition(offset, -height / 2);
 
-        label1.setPosition(offset,
-                //         offset - label1.getWidth() / 2,
-                -height / 2);
         label1.setWidth(innerWidth);
         label2.setWidth(innerWidth);
-
-
         label1.setHeight(18);
         label2.setHeight(18);
     }

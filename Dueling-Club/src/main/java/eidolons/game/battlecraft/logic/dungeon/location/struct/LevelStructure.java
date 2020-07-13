@@ -35,7 +35,12 @@ public class LevelStructure {
         id(EDIT_VALUE_TYPE.number),
 
         name(EDIT_VALUE_TYPE.text),
-        background(EDIT_VALUE_TYPE.text),
+        background(LevelStructure.EDIT_VALUE_TYPE.file) {
+            @Override
+            public Object getArg() {
+                return "resources/img/main/background";
+            }
+        },
         origin(EDIT_VALUE_TYPE.none),
         width(EDIT_VALUE_TYPE.number),
         height(EDIT_VALUE_TYPE.number),
@@ -346,7 +351,12 @@ public class LevelStructure {
 //        default_pillar_type,
 //        default_shard_type,
 
-        background,
+        background(LevelStructure.EDIT_VALUE_TYPE.file) {
+            @Override
+            public Object getArg() {
+                return "resources/img/main/background";
+            }
+        },
         tile_map, layer_data,
 
         type(EDIT_VALUE_TYPE.enum_const) {

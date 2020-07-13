@@ -13,7 +13,8 @@ public class DungeonEnums {
 
     }
     public enum CELL_SET {
-        beige, woods,
+        beige, woods, brick , cave,
+        castle,
     }
 
     public enum WALL_SET {

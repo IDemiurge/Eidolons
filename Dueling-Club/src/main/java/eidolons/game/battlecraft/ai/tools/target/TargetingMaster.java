@@ -37,10 +37,10 @@ public class TargetingMaster extends AiHandler {
 
     public static Targeting getZoneEffect(DC_ActiveObj active) {
         List<Effect> zoneEffects = EffectMaster.getEffectsOfClass(active,
-         SpecialTargetingEffect.class);
+                SpecialTargetingEffect.class);
         if (!zoneEffects.isEmpty()) {
             SpecialTargetingEffect zoneEffect = (SpecialTargetingEffect) zoneEffects
-             .get(0);
+                    .get(0);
             zoneEffect.setRef(active.getRef());
             zoneEffect.initTargeting();
             return zoneEffect.getTargeting();
@@ -104,9 +104,10 @@ public class TargetingMaster extends AiHandler {
     }
 
     public static boolean isValidTargetingCell(Action targetAction, Coordinates c, Unit unit) {
-
+        // TODO this could be better done
+        //AI FIX!
         return unit.getGame().getBattleFieldManager()
-         .canMoveOnto(targetAction.getSource(), c);
+                .canMoveOnto(targetAction.getSource(), c);
     }
 
 
@@ -133,7 +134,7 @@ public class TargetingMaster extends AiHandler {
         // visionRemoved = true;
         // }
         // }
-//        if (action.getActive().isMelee()) {
+        //        if (action.getActive().isMelee()) {
         if (reasons.size() == 1) // what about DISTANCE?
         {
             // if (!visionRemoved)
@@ -141,7 +142,7 @@ public class TargetingMaster extends AiHandler {
             // else
             return reasons.get(0) == (FILTER_REASON.FACING);
         }
-//        }
+        //        }
 
         return false;
     }
@@ -149,7 +150,7 @@ public class TargetingMaster extends AiHandler {
     public static Integer selectTargetForAction(DC_ActiveObj a) {
         /*
          * getOrCreate possible targets init goal type prioritize
-		 */
+         */
         GOAL_TYPE type = GoalManager.getGoalFromAction(a);
 
         Obj target = null;
@@ -164,16 +165,16 @@ public class TargetingMaster extends AiHandler {
         if (a.getOwnerUnit().getAI().getStandingOrders() != null) {
             return Eidolons.getMainHero().getId();
         } else
-        for (Obj obj : objects) {
-            ActionSequence sequence = new ActionSequence(type, new Action(a, obj));
-            sequence.setAi(a.getOwnerUnit().getUnitAI());
-            sequence.setType(type);
-            int priority = DC_PriorityManager.getPriority(sequence);
-            if (priority > max_priority) {
-                target = obj;
-                max_priority = priority;
+            for (Obj obj : objects) {
+                ActionSequence sequence = new ActionSequence(type, new Action(a, obj));
+                sequence.setAi(a.getOwnerUnit().getUnitAI());
+                sequence.setType(type);
+                int priority = DC_PriorityManager.getPriority(sequence);
+                if (priority > max_priority) {
+                    target = obj;
+                    max_priority = priority;
+                }
             }
-        }
         if (target == null) {
             return null;
         }

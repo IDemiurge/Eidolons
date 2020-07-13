@@ -645,6 +645,10 @@ public class Ref implements Cloneable, Serializable {
         this.area = area;
     }
 
+    public void addValue(KEYS keys, int s) {
+        setValue(keys, (NumberUtils.getInt(getValue(keys.name()))+s)+"");
+    }
+
     public enum KEYS {
         THIS,
 

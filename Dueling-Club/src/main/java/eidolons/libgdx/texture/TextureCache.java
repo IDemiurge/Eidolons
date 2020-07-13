@@ -25,6 +25,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 
 import java.nio.file.Path;
@@ -40,7 +41,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import static main.system.auxiliary.log.LogMaster.important;
 
 public class TextureCache {
-    public static final boolean atlasesOn = false;// v !CoreEngine.TEST_LAUNCH;
+    public static final boolean atlasesOn = CoreEngine.isLevelEditor();// v !CoreEngine.TEST_LAUNCH;
     private static final Boolean uiAtlasesOn = false;
     private static TextureCache instance;
     private static final Lock creationLock = new ReentrantLock();
@@ -300,10 +301,6 @@ public class TextureCache {
                     atlasMissingTextures.add(path);
                 } else {
                     // System.out.println("Img in atlas: "+name);
-                }
-            } else {
-                if (getInstance().uiAtlas != null) {
-                    region = getInstance().uiAtlas.findRegion(name);
                 }
             }
             if (region != null) {

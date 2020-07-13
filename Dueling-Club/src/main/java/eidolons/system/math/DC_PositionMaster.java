@@ -9,7 +9,7 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.math.PositionMaster;
-import main.system.math.PositionMaster.SHAPES;
+import main.system.math.PositionMaster.SHAPE;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,15 +19,29 @@ import java.util.Set;
 public class DC_PositionMaster {
     public static Set<Coordinates> getShapedCoordinates(
      Coordinates baseCoordinate, FACING_DIRECTION facing, int width,
-     int height, SHAPES shape) {
+     int height, SHAPE shape) {
         Set<Coordinates> list = new HashSet<>();
         List<Coordinates> line;
+        DIRECTION direction = facing
+                .getDirection();
         switch (shape) {
             case CROSS:
-                //
+                list.addAll(getLine(direction, baseCoordinate, height));
+                list.addAll(getLine(FacingMaster.rotate180(facing)
+                        .getDirection(), baseCoordinate, height));
+                list.addAll(getLine(FacingMaster.rotate(facing, false)
+                        .getDirection(), baseCoordinate, width));
+                list.addAll(getLine(FacingMaster.rotate(facing, true)
+                        .getDirection(), baseCoordinate, width));
                 break;
             case STAR:
                 // four diagonals
+                list.addAll(getLine(direction.rotate45(true), baseCoordinate, height));
+                list.addAll(getLine(direction.rotate45(false), baseCoordinate, width));
+                list.addAll(getLine(direction.rotate90(true).rotate45(true),
+                        baseCoordinate, width));
+                list.addAll(getLine(direction.rotate90(false).rotate45(false),
+                        baseCoordinate, height));
                 break;
             case CONE:
                 // define a filter function based on facing and apply base
@@ -41,7 +55,7 @@ public class DC_PositionMaster {
                     list.addAll(getLine(FacingMaster.rotate(facing, true)
                      .getDirection(), baseCoordinate, width));
                     baseCoordinate = baseCoordinate
-                     .getAdjacentCoordinate(facing.getDirection());
+                     .getAdjacentCoordinate(direction);
                     if (baseCoordinate == null) {
                         break;
                     }
@@ -50,9 +64,9 @@ public class DC_PositionMaster {
 
                 break;
             case RECTANGLE:
-                list.addAll(getLine(facing.getDirection(), baseCoordinate,
+                list.addAll(getLine(direction, baseCoordinate,
                  height));
-                line = getLine(facing.getDirection(), baseCoordinate, height);
+                line = getLine(direction, baseCoordinate, height);
                 for (Coordinates c : line) {
                     list.addAll(getLine(FacingMaster.rotate(facing, false)
                      .getDirection(), c, width));

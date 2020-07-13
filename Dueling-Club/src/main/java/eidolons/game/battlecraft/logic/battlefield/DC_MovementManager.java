@@ -90,14 +90,16 @@ public class DC_MovementManager implements MovementManager {
     public static Action getMoveAction(Unit unit, Coordinates coordinates) {
         return getMoveAction(unit, unit.getCoordinates(), coordinates);
     }
+
     public static Action getMoveAction(Unit unit, Coordinates from, Coordinates c) {
 
         // if (diagAllowed){
-            if (from.x!=c.x && from.y!=c.y) {
-                Action leap = AiActionFactory.newAction("Clumsy Leap", unit.getAI());
-                leap.getRef().setTarget(unit.getGame().getCellByCoordinate(c).getId());
-                return leap;
-            }
+        if (from.x != c.x && from.y != c.y) {
+            Action leap = AiActionFactory.newAction("Clumsy Leap", unit.getAI());
+            leap.setRef(Ref.getCopy(leap.getRef()));
+            leap.getRef().setTarget(unit.getGame().getCellByCoordinate(c).getId());
+            return leap;
+        }
         // }
         FACING_SINGLE relative = FacingMaster.getSingleFacing(unit.getFacing(),
                 from, c);
@@ -106,16 +108,18 @@ public class DC_MovementManager implements MovementManager {
                 return null;
             return AiActionFactory.newAction("Move", unit.getAI());
         }
-        boolean wantToMoveLeft = (unit.getFacing().isVertical()) ?
-                PositionMaster.isToTheLeft(from, c)
-                : PositionMaster.isAbove(from, c);
+        boolean left = (unit.getFacing().isVertical())
+
+                ? unit.getFacing().isCloserToZero() == PositionMaster.isToTheLeft(c, from)
+
+                : unit.getFacing().isCloserToZero() != PositionMaster.isAbove(c, from);
         // if (!unit.getFacing().isCloserToZero()) {
-        //     wantToMoveLeft = !wantToMoveLeft;
+        //     left = !left;
         // }
 
-        if (!new CellCondition(wantToMoveLeft ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
+            if (!new CellCondition(left ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
             return null;
-        return AiActionFactory.newAction("Move " + (wantToMoveLeft ? "Left" : "Right"), unit.getAI());
+        return AiActionFactory.newAction("Move " + (left ? "Left" : "Right"), unit.getAI());
     }
 
     public static List<DC_ActiveObj> getMoves(Unit unit) {
@@ -174,6 +178,9 @@ public class DC_MovementManager implements MovementManager {
     }
 
     public void cancelAutomove(Unit activeUnit) {
+        if (!(activeUnit.getGame().getGameLoop() instanceof ExploreGameLoop)) {
+            return;
+        }
         ((ExploreGameLoop) activeUnit.getGame().getGameLoop()).clearPlayerActions();
         pathCache.remove(activeUnit);
         playerDestination = null;
@@ -182,7 +189,7 @@ public class DC_MovementManager implements MovementManager {
 
     public List<ActionPath> buildPath(Unit unit, Coordinates coordinates) {
         List<DC_ActiveObj> moves = getMoves(unit);
-        if (isStarPath(unit , coordinates)) {
+        if (isStarPath(unit, coordinates)) {
             ActionPath path = game.getAiManager().getStarBuilder().getPath(unit, unit.getCoordinates(), coordinates);
             return ImmutableList.of(path);
         }
@@ -264,15 +271,15 @@ public class DC_MovementManager implements MovementManager {
 
                 for (Choice choice : path.choices) {
                     for (Action action : choice.getActions()) {
-                        log(action.getActive().getName()+" added to queue "+playerDestination);
-                        Context context = new Context(unit  ,
-                                game.getCellByCoordinate(choice.getCoordinates()) );
+                        log(action.getActive().getName() + " added to queue " + playerDestination);
+                        Context context = new Context(unit,
+                                game.getCellByCoordinate(choice.getCoordinates()));
                         ActionInput actionInput = new ActionInput(action.getActive(), context);
                         actionInput.setAuto(true);
                         ((ExploreGameLoop) unit.getGame().getGameLoop()).tryAddPlayerActions(actionInput);
                         unit.getGame().getGameLoop().signal();
                         //could support instant mode or just set speed to 10x
-                        playerDestination=null ;
+                        playerDestination = null;
                     }
                 }
                 break;

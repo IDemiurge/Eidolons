@@ -18,6 +18,8 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static eidolons.game.core.Eidolons.getGame;
@@ -36,10 +38,12 @@ public class PuzzleSpawner {
         }
         int x = 0, y = 0;
         int i = 0;
+        ArrayList<DIRECTION> d = new ArrayList<>(Arrays.asList(DIRECTION.ORTHOGONAL));
+        Collections.shuffle(d);
         for (ObjType type : types) {
                 x = RandomWizard.getRandomIntBetween(-w / 2, w / 2);
                 y = RandomWizard.getRandomIntBetween(-h / 2, h / 2);
-                switch (DIRECTION.ORTHOGONAL[i++ % 4]) {
+                switch (d.get(i++ % 4)) {
                     case UP:
                         y = -h / 2;
                         break;

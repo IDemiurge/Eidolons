@@ -41,7 +41,8 @@ public class ParticleEffectX extends ParticleEffect {
 
     public ParticleEffectX(String path) {
         this.path = path;
-
+        // if (CoreEngine.isWeakGpu())
+        //     return;
         if (broken.contains(path))
             return;
         if (isEmitterAtlasesOn()) {
@@ -71,6 +72,7 @@ public class ParticleEffectX extends ParticleEffect {
 
 
     }
+
     public static void setGlobalAlpha(float globalAlpha) {
         ParticleEffectX.globalAlpha = globalAlpha;
     }
@@ -80,8 +82,8 @@ public class ParticleEffectX extends ParticleEffect {
         this.alpha = a;
         if (a != 1f) {
             for (ParticleEmitter e : getEmitters()) {
-//                e.getTransparency().set
-//                float a = e.getTransparency().getScale(e.getPercentComplete());
+                //                e.getTransparency().set
+                //                float a = e.getTransparency().getScale(e.getPercentComplete());
 
                 float min = e.getTransparency().getHighMin();
                 float max = e.getTransparency().getHighMax();
@@ -148,8 +150,11 @@ public class ParticleEffectX extends ParticleEffect {
 
     public void offsetAngle(float offset) {
         for (ParticleEmitter e : getEmitters()) {
-            Emitter emitter = (Emitter) e;
-            emitter.offsetAngle(offset);
+            if (e instanceof Emitter) {
+                Emitter emitter = (Emitter) e;
+                emitter.offsetAngle(offset);
+            }
+
         }
     }
 
@@ -162,14 +167,14 @@ public class ParticleEffectX extends ParticleEffect {
     }
 
     private boolean checkSprite(FileHandle effectFile) {
-//        if (EmitterActor.spriteEmitterTest) {
-//            return true;
-//        }
+        //        if (EmitterActor.spriteEmitterTest) {
+        //            return true;
+        //        }
         String imgPath = EmitterPresetMaster.getInstance().getImagePath(effectFile.path());
-//        if (imgPath.contains("sprites")){
-//            main.system.auxiliary.log.LogMaster.log(1,effectFile.path()+" is a SPRITES!.. " );
-//            return true;
-//        }
+        //        if (imgPath.contains("sprites")){
+        //            main.system.auxiliary.log.LogMaster.log(1,effectFile.path()+" is a SPRITES!.. " );
+        //            return true;
+        //        }
         if (TEST_MODE)
             LogMaster.log(1, effectFile.path() + " created with imgPath " + imgPath);
         return false;
@@ -186,7 +191,7 @@ public class ParticleEffectX extends ParticleEffect {
     }
 
     public void loadEmitters_(FileHandle effectFile) throws IOException {
-//        if (CoreEngine.isMacro())
+        //        if (CoreEngine.isMacro())
         if (!effectFile.exists()) {
             broken.add(effectFile.path());
             LogMaster.log(0, "no such emitter preset: " + effectFile.path());
@@ -255,11 +260,12 @@ public class ParticleEffectX extends ParticleEffect {
             emitter.setSprites(sprites);
         }
     }
+
     public void setPool(VfxPool pool) {
         this.pool = pool;
     }
 
-    public void free(){
+    public void free() {
         if (pool == null) {
             // main.system.auxiliary.log.LogMaster.log(1,"No pool for vfx: " +this.path);
         } else

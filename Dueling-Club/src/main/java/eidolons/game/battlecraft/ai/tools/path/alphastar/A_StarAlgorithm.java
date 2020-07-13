@@ -4,7 +4,9 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
+import main.system.text.Log;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,18 +26,20 @@ public class A_StarAlgorithm {
     private final List<PathNode> nodeList;
     private int N;
     private boolean success;
+    private LinkedList<Coordinates> targets;
 
     public A_StarAlgorithm(PathingManager mngr) {
         this.mngr = mngr;
         nodeList = mngr.getNodeList();
     }
 
-    public Path getPath(boolean flying, boolean agile, Coordinates c1, Coordinates c2) {
+    public Path getPath(boolean flying, boolean agile, Coordinates c1, Coordinates... targets) {
+        this.targets = new LinkedList<>(Arrays.asList(targets));
         LogMaster
-                .log(LogMaster.PATHING_DEBUG, "building path from" + c1
-                        + " to " + c2);
+                .log(LogMaster.PATHING_DEBUG, "building path from " + c1
+                        + " to " +  this.targets);
         N = 0;
-        dest = getPathNode(c2);
+        dest = getPathNode(this.targets.get(0));
         orig = getPathNode(c1);
         cur = orig;
         this.flying = flying;
@@ -45,8 +49,7 @@ public class A_StarAlgorithm {
         closedList.add(orig);
 
         while (true) {
-            step();
-            if (closedList.contains(dest)) {
+            if (step()) {
                 success = true;
                 break;
             }
@@ -108,7 +111,7 @@ public class A_StarAlgorithm {
 
     }
 
-    public void step() {
+    public boolean step() {
 
         openList.clear();
         for (PathNode node : mngr.getAdjacentNodes(cur.getCoordinates())) {
@@ -129,7 +132,7 @@ public class A_StarAlgorithm {
             setFGH(node);
         }
         if (openList.isEmpty()) {
-            return;
+            return false;
         }
 
         PathNode nextNode = getNodeWithLowestF();
@@ -139,11 +142,20 @@ public class A_StarAlgorithm {
         closedList.add(cur);
         cur.setCost(getCost(agile, flying, cur));
 
-        LogMaster.log(LogMaster.PATHING_DEBUG, "Step #"
-                + N + " to " + cur + " with closed list " + closedList
+        if (targets.contains(cur.getCoordinates())){
+            return true;
+        }
+/*
+must proceed until a goal node has lowest F among openList?
+ */
 
-        );
+        if (Log.check(Log.LOG_CASE.astar_pathing))
+            LogMaster.log(LogMaster.PATHING_DEBUG, "Step #"
+                    + N + " to " + cur + " with closed list " + closedList
+
+            );
         N++;
+        return false;
     }
 
     private double getCost(boolean agile, boolean flying, PathNode node) {
@@ -165,10 +177,10 @@ public class A_StarAlgorithm {
         node.setG(g);
         node.setH(h);
         node.setF(f);
-        LogMaster.log(LogMaster.PATHING_DEBUG, node
-                + " has: g = " + g + " h = " +
-
-                h + " f = " + f);
+        if (Log.check(Log.LOG_CASE.astar_pathing))
+            LogMaster.log(LogMaster.PATHING_DEBUG, node
+                    + " has: g = " + g + " h = " +
+                    h + " f = " + f);
     }
 
     private PathNode getNodeWithLowestF() {
@@ -207,7 +219,7 @@ public class A_StarAlgorithm {
     }
 
     public boolean isPassable(boolean flying, boolean agile, PathNode node) {
-        if (isFullyBlocked(node)) {
+        if (isFullyBlocked(node)) { //TODO what's that, some faster pre-check?
             return false;
         }
         if (!flying && isGroundBlocked(node)) {

@@ -1,6 +1,9 @@
 package main.system.launch;
 
 public class Flags {
+    public static final boolean DEV_MODE = true;
+    public static final boolean FAST_TEST = false;
+    public static final boolean ONE_FRAME_SPRITES = false;
     public static boolean animationTestMode;
     static boolean concurrentLaunch;
     static boolean writingLogFilesOn;

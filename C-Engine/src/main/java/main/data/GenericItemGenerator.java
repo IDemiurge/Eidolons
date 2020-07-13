@@ -10,6 +10,8 @@ import main.entity.type.ObjType;
  */
 public interface GenericItemGenerator {
 
+    boolean OFF = false;
+
     ObjType generateItemType(String typeName, OBJ_TYPE type);
 
     ObjType generateItem(boolean weapon, QUALITY_LEVEL quality,

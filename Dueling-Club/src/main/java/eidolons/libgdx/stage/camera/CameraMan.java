@@ -24,6 +24,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.secondary.Bools;
+import main.system.text.Log;
 import main.system.threading.WaitMaster;
 
 import java.util.*;
@@ -54,7 +55,9 @@ public class CameraMan {
 
 
     public void unitActive(BattleFieldObject hero) {
-        devLog(LOG_CHANNEL.CAMERA, "Request pan camera to active unit" + hero);
+
+        if (Log.check(Log.LOG_CASE.camera))
+            devLog(LOG_CHANNEL.CAMERA, "Request pan camera to active unit" + hero);
         if (pendingPanTarget == hero) {
             return;
         }
@@ -73,7 +76,9 @@ public class CameraMan {
                     centerCameraOn(hero);
                     pendingPanTarget = null;
                     //                mustFinish=true;
-                    devLog(LOG_CHANNEL.CAMERA, "Panning camera to active unit" + hero);
+
+                    if (Log.check(Log.LOG_CASE.camera))
+                        devLog(LOG_CHANNEL.CAMERA, "Panning camera to active unit" + hero);
                 }
             });
     }

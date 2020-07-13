@@ -453,6 +453,8 @@ public class SpellAnim extends ActionAnim {
     }
 
     public enum SPELL_ANIMS {
+        STAR(activeObj -> 4),
+        CROSS(activeObj -> 4),
         RAY(activeObj -> 1),
         RAY_AUTO(activeObj -> 1),
         BLAST(active -> (active.getIntParam(G_PARAMS.RADIUS) == 0) ? 1 :

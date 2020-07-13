@@ -17,12 +17,10 @@ public class CreateObjectEffect extends SummonEffect {
      + "Armor(0.1);Magic Resistances(0.15);Physical Resistances(0.15);";
     public static final String DEFAULT_BUFF_NAME = "Creation Mastery";
     private String param_mods;
-    private String buff_name;
     private boolean neutral = false;
 
-    public CreateObjectEffect(String typeName, String param_mods) {
-
-        super(typeName);
+    public CreateObjectEffect(String typeName, String param_mods, String duration) {
+        super(typeName, duration);
         this.param_mods = param_mods;
     }
 
@@ -37,6 +35,8 @@ public class CreateObjectEffect extends SummonEffect {
     }
 
     private void applyParamBuff() {
+        if (StringMaster.isEmpty(param_mods))
+            return;
         Effects param_effects = new Effects();
         for (String s : ContainerUtils.open(param_mods)) {
             String varPart = VariableManager.getVarPart(s);
@@ -60,9 +60,6 @@ public class CreateObjectEffect extends SummonEffect {
     }
 
     private String getBuffName() {
-        if (buff_name != null) {
-            return buff_name;
-        }
         return DEFAULT_BUFF_NAME;
     }
 

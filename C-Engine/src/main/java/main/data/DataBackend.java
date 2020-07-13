@@ -908,7 +908,7 @@ public class DataBackend {
     }
 
     public   ObjType getItem(QUALITY_LEVEL quality, MATERIAL material, ObjType type) {
-        if (CoreEngine.TEST_LAUNCH) {
+        if (GenericItemGenerator.OFF) {
             return type;
         }
         ObjType itemType = DataManager.getItemMaps().get(quality).get(material).get(type);

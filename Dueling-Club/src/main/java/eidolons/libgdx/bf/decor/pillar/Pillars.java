@@ -93,18 +93,18 @@ public class Pillars {
         SKEWED_CORNER {
             @Override
             public String toString() {
-                return "skewed corner";
+                return "skewed_corner";
             }
         },
         SKEWED_CORNER_UP {
             @Override
             public String toString() {
-                return "skewed corner up";
+                return "skewed_corner_up";
             }
         }, SKEWED_CORNER_LEFT {
             @Override
             public String toString() {
-                return "skewed corner left";
+                return "skewed_corner_left";
             }
         };
 

@@ -633,11 +633,11 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
         }
         String str = String.valueOf(character).toUpperCase();
         if (Character.isAlphabetic(character)) {
-            if (character == lastTyped) {
-                if (!charsUp.contains(str)) {
-                    return false;
-                }
-            }
+            // if (character == lastTyped) {
+            //     if (!charsUp.contains(str)) {
+            //         return false;
+            //     }
+            // }
             charsUp.remove(str);
         }
 
@@ -649,6 +649,7 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+        main.system.auxiliary.log.LogMaster.log(1,character+ "keyTyped " +result);
         if (result)
             return true;
         return super.keyTyped(character);

@@ -175,7 +175,6 @@ public enum PARAMS implements PARAMETER {
     DEFAULT_WISDOM(null, Descriptions.Agility, false, 0, "chars"),
     DEFAULT_CHARISMA(null, Descriptions.Agility, false, 0, "chars"),
 
-    STAMINA_REGEN("Sta. Regen", "STAMINA_REGEN", true, 0, "units", "chars", "perks"),
     ESSENCE_REGEN("Ess. Regen", "ESSENCE_REGEN", false, 0, "units", "chars", "perks"),
     FOCUS_REGEN(null, "FOCUS_REGEN", false, 0, "units", "chars", "perks"),
     STARTING_FOCUS("Start foc", "FOCUS", false, 0, "units", "chars", "perks"),

@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
@@ -56,15 +55,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
         dialogueActorMaster = new DialogueActorMaster(master);
         speechExecutor = new SpeechExecutor(master, this);
 
-
         GuiEventManager.bind(INIT_DIALOG, obj -> {
-            if (Flags.isIDE())
-                if (!EidolonsGame.BRIDGE)
-                    if (Flags.isLiteLaunch()) {
-                        if (!Flags.isDialogueTest()) {
-                            return;
-                        }
-                    }
             Object key = obj.get();
             startDialogue(key.toString());
         });
@@ -93,13 +84,11 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     }
 
     public void introDialogue() {
-        if ( EidolonsGame.PUZZLES|| SKIP_INTRO  ){
-            return ;
+        String dialogue =null ;// EidolonsGame.DUEL_TEST ? DUEL : INTRO;
+        //TODO core Review
+        if (dialogue == null) {
+            return;
         }
-
-//        GuiEventManager.trigger(GuiEventType.BLACKOUT_OUT, 8);
-
-        String dialogue = EidolonsGame.DUEL_TEST ? DUEL : INTRO;
         GuiEventManager.trigger(GuiEventType.BLACKOUT_OUT, 1);
         GuiEventManager.trigger(GuiEventType.BLACKOUT_IN, 1);
         GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 8);

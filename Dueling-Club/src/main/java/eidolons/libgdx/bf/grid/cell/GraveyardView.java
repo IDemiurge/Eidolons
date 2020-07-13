@@ -1,5 +1,8 @@
 package eidolons.libgdx.bf.grid.cell;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
@@ -22,7 +25,7 @@ public class GraveyardView extends TablePanel {
 
     private final TablePanel<UnitView> graveTables;
 
-    private final Button graveyardButton;
+    final Button graveyardButton;
     private int graveCount = 0;
 
     //Gdx Review
@@ -64,6 +67,16 @@ public class GraveyardView extends TablePanel {
         graveyardButton.setChecked(false);
     }
 
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        Actor hit = super.hit(x, y, touchable);
+        if (hit==graveyardButton) {
+            if (!Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+                return null;
+            }
+        }
+        return hit;
+    }
     public void addCorpse(BaseView unitView) {
         addAt(unitView, 0);
     }

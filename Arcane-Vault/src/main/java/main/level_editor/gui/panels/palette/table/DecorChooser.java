@@ -33,7 +33,7 @@ public class DecorChooser extends SelectionImageTable {
             TablePanel parent = ((TablePanel) getParent());
             remove();
             parent.add(this);
-            parent.setSize(getPrefWidth(), getPrefHeight());
+            parent.setSize(getPrefWidth()+90, getPrefHeight()+290);
         }
     }
 

@@ -237,7 +237,7 @@ public class DC_MathManager extends MathMaster {
     public Integer evaluateRest(Obj obj) {
 
         // DC_PARAMS.STAMINA_BONUS
-        return DC_Formulas.getStaminaConstForRest();
+        return DC_Formulas.getToughnessConstForRest();
     }
 
     @Override

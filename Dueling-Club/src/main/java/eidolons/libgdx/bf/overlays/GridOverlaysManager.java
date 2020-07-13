@@ -24,6 +24,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid.VoidHandler;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.Cinematics;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
@@ -64,7 +65,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
     protected final GridCellContainer[][] cells;
     protected GridPanel gridPanel;
     protected boolean sightInfoDisplayed;
-    protected boolean debug;
+    public static boolean debug;
     protected ObjectMap<OVERLAY, ObjectMap<Actor, ClickListener>> listenerCaches = new ObjectMap<>();
     protected ObjectMap<Entity, ObjectMap<Rectangle, Tooltip>> tooltipMap = new ObjectMap<>();
     protected ObjectMap<Entity, ObjectMap<OVERLAY, Rectangle>> overlayMap = new ObjectMap<>();
@@ -72,7 +73,6 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
 
     protected int cols;
     protected int rows;
-    private int x1, x2, y1, y2;
 
     public GridOverlaysManager(GridPanel gridPanel) {
         this.gridPanel = gridPanel;
@@ -242,12 +242,8 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
 
     @Override
     public void setModule(Module module) {
-        x1 = module.getOrigin().x;
-        y1 = module.getOrigin().y;
         cols = module.getEffectiveWidth();
         rows = module.getEffectiveHeight();
-        x2 = cols + module.getOrigin().x;
-        y2 = rows + module.getOrigin().y;
     }
 
     protected void drawOverlays(Batch batch) {
@@ -295,6 +291,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
 
         boolean path = false;
         Coordinates c = Coordinates.get(x, y);
+        if (ExplorationMaster.isExplorationOn())
         if (c.equals(DC_MovementManager.playerDestination) ||
                 (DC_MovementManager.playerPath != null && DC_MovementManager.playerPath.contains(c))) {
             path = true;
@@ -302,7 +299,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
         if (debug || sightInfoDisplayed || path) {
             DC_Cell cell = Eidolons.getGame().getObjMaster().
                     getCellByCoordinate(c);
-            if (debug) {
+            if (debug || (sightInfoDisplayed&&Flags.isIDE())) {
                 drawOverlay(container, INFO_TEXT, batch, cell, x, y);
                 return;
             } else if (path) {
@@ -310,6 +307,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
                     drawOverlay(container, DESTINATION, batch, cell, x, y);
                 } else
                     drawOverlay(container, PATH, batch, cell, x, y);
+                return;
             }
             UNIT_VISION vision = cell.getUnitVisionStatus(observer);
             if (vision == null) {
@@ -354,6 +352,11 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
             yPos = v.y;
         } else
             switch (overlay) {
+                case DESTINATION:
+                case PATH:
+                    xPos=32;
+                    yPos=32;
+                    break;
                 case HP_BAR: {
                     if (obj instanceof Unit)
                         yPos = -12;

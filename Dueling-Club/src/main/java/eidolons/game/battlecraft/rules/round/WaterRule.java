@@ -16,6 +16,7 @@ import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
+import main.entity.EntityCheckMaster;
 import main.entity.obj.ActiveObj;
 import main.system.math.Formula;
 
@@ -85,6 +86,9 @@ public class WaterRule extends RoundRule implements ActionRule {
     }
 
     private static boolean isSwimming(Entity obj) {
+        if (EntityCheckMaster.isImmaterial(obj)) {
+            return true;
+        }
         return obj.checkBool(GenericEnums.STD_BOOLS.SWIMMING);
     }
 

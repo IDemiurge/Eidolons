@@ -13,6 +13,8 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster;
@@ -367,6 +369,6 @@ public class DefaultActionHandler {
     }
 
     private static boolean isMoveToOn() {
-        return true;
+        return DC_Game.game.getGameLoop() instanceof ExploreGameLoop;
     }
 }

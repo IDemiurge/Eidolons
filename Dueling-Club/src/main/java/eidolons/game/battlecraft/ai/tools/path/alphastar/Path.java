@@ -1,10 +1,12 @@
 package eidolons.game.battlecraft.ai.tools.path.alphastar;
 
 import main.entity.obj.MicroObj;
+import main.game.bf.Coordinates;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
 public class Path {
+    public Coordinates endPoint; //the one we actually arrived at
     DequeImpl<PathNode> nodes;
     boolean agile;
     double cost;

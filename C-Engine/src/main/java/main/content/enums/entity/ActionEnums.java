@@ -222,8 +222,12 @@ public class ActionEnums {
         Pierce,
 
         Implode,
-        Force_Push,
         Hoof_Slam,
+
+        Force_Push,
+        force_touch,
+        force_blast,
+        force_ray
         ;
 
         public String toString() {

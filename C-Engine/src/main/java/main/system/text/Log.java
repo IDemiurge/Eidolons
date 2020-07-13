@@ -12,7 +12,8 @@ public class Log {
 
     public enum LOG_CASE {
         atb,
-        movement, buff, pathing,
+        camera,
+        movement, buff, pathing, visibility, astar_pathing,
     }
 
 

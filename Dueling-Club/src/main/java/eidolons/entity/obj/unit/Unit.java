@@ -1643,6 +1643,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
     @Override
     public void toBase() {
+        removeTempFacing();
+        removeTempCoordinates();
         if (!CoreEngine.isLevelEditor())
             if (getAI().isOutsideCombat()) {
                 return;
@@ -1831,5 +1833,9 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         for (BuffObj buff : new LinkedList<>(getBuffs())) {
             buff.remove();
         }
+    }
+
+    public boolean canInstantAttack() {
+        return getChecker().canInstantAttack();
     }
 }

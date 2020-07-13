@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.ai.tools.path.alphastar;
 
 import eidolons.ability.conditions.special.ClearShotCondition;
-import eidolons.game.core.Eidolons;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldGrid;
@@ -29,14 +28,14 @@ public class PathingManager {
         this.handler = handler;
     }
 
-    public Path getPath(boolean flying, boolean agile, Coordinates c1, Coordinates c2) {
+    public Path getPath(boolean flying, boolean agile, Coordinates c1, Coordinates... targets) {
         if (nodeGrid == null) {
             initNodeGrid();
         }
         if (alg == null) {
             alg = new A_StarAlgorithm(this);
         }
-        return alg.getPath(flying, agile, c1, c2);
+        return alg.getPath(flying, agile, c1, targets);
 
     }
 
@@ -75,7 +74,7 @@ public class PathingManager {
     }
 
     public boolean isGroundBlocked(PathNode node) {
-        return !isGroundPassable(Eidolons.getMainHero(), node.getCoordinates());
+        return !isGroundPassable(handler.getUnit(), node.getCoordinates());
     }
 
     public boolean isDiagonallyBlocked(PathNode node, PathNode node2) {

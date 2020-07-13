@@ -38,6 +38,9 @@ public class SoulParamsBar extends SpriteParamBar {
         return over ? Sprites.SOULFORCE_BAR_WHITE : Sprites.SOULFORCE_BAR_BG_WHITE;
     }
 
+    protected int getLabelY() {
+        return 110;
+    }
 
     @Override
     protected PARAMETER getOverParam(boolean current) {

@@ -12,7 +12,6 @@ import eidolons.game.battlecraft.ai.tools.AiLogger;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.ai.tools.path.alphastar.StarBuilder;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
-import eidolons.game.battlecraft.ai.tools.time.TimeLimitMaster;
 import main.content.enums.entity.ActionEnums;
 import main.elements.targeting.Targeting;
 import main.game.bf.Coordinates;
@@ -44,22 +43,22 @@ public class PathSequenceConstructor extends AiHandler {
 
     public List<ActionPath> getRetreatPaths(Object arg) {
         return getPathSequences(AiUnitActionMaster.getMoveActions(getUnit()), new Action(getUnit()
-          .getAction("Move"), getUnit().getRef().getCopy())
-         // *flee* action?
-         , new ListMaster<Coordinates>().getList(game.getObjectById((Integer) arg)
-          .getCoordinates()));
+                        .getAction("Move"), getUnit().getRef().getCopy())
+                // *flee* action?
+                , new ListMaster<Coordinates>().getList(game.getObjectById((Integer) arg)
+                        .getCoordinates()));
     }
 
     public ActionPath getOptimalPathSequence(UnitAI ai, Coordinates targetCell) {
         List<DC_ActiveObj> moves =
-         AiUnitActionMaster.getMoveActions(ai.getUnit());
+                AiUnitActionMaster.getMoveActions(ai.getUnit());
         Action action = AiActionFactory.newAction("Move", ai);
         List<Coordinates> coordinates = new ArrayList<>();
         coordinates.add(targetCell);
         List<ActionPath> paths = getPathSequences(moves, action, coordinates);
-//      paths.forEach(path->{
-//          path.getPriority()
-//      });
+        //      paths.forEach(path->{
+        //          path.getPriority()
+        //      });
         return paths.get(0);
     }
 
@@ -68,25 +67,15 @@ public class PathSequenceConstructor extends AiHandler {
         List<ActionPath> paths = pathCache.get(targetCells);
         if (isPathCacheOn() && ListMaster.isNotEmpty(paths)) {
             LogMaster.log(LOG_CHANNEL.PATHING_DEBUG, "path cache success: "
-             + paths);
+                    + paths);
             return paths;
         }
-        // Set<Path> set = new HashSet<>();
-        // for (Coordinates c : targetCells) {
-        // paths = CellPrioritizer.getPathMap().getOrCreate(c);
-        // if (paths != null)
-        // set.addAll(paths);
-        // }
-        // if (!set.isEmpty())
-        //
-        // paths = new ArrayList<>(set);
-        //
-        // else
-
-        if (isStar(action, targetCells)){
+        // if (isStar(action, targetCells)) {
             paths = getStarBuilder().build(getUnit(), targetCells);
-        } else
-        paths = getPathBuilder().init(moveActions, action).build(targetCells);
+        // }
+        if (!ListMaster.isNotEmpty(paths)) {
+            paths = getPathBuilder().init(moveActions, action).build(targetCells);
+        }
         if (action != null) {
             paths = filterPaths(action, paths);
         }
@@ -110,36 +99,31 @@ public class PathSequenceConstructor extends AiHandler {
 
     public List<ActionPath> getPathSequences(List<DC_ActiveObj> moveActions, Action action) {
         Chronos.mark("getTargetCells");
-
-        List<Coordinates> targetCells = null;
-        try {
-            targetCells = getTargetCells(action); // TODO replace with
-            // PRIORITY_CELLS
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-            LogMaster.log(1, "***Action failed to getOrCreate target cells: "
-             + action);
+        // TODO need multiple, by level of priority
+        List<Coordinates> targetCells = getTargetCells(action, true);
+        List<ActionPath> pathSequences = getPathSequences(moveActions, action, targetCells);
+        if (pathSequences.isEmpty()) {
+            targetCells = getTargetCells(action, false);
+            pathSequences = getPathSequences(moveActions, action, targetCells);
         }
-        LogMaster.log(0, Chronos.getTimeElapsedForMark("getTargetCells")
-         + " time to getOrCreate valid cells for  " + action + targetCells);
-        return getPathSequences(moveActions, action, targetCells);
+        return pathSequences;
     }
 
-    private List<Coordinates> getTargetCells(Action targetAction) {
+    private List<Coordinates> getTargetCells(Action targetAction, boolean allowFastPick) {
         if (targetAction.isDummy()) {
             return new ListMaster<Coordinates>().getList(targetAction.getTarget().getCoordinates());
         }
         if (targetAction.getActive().getName().equalsIgnoreCase(
-         StringMaster.format(ActionEnums.STD_SPEC_ACTIONS.Guard_Mode.toString()))) {
+                StringMaster.format(ActionEnums.STD_SPEC_ACTIONS.Guard_Mode.toString()))) {
             return new ListMaster<Coordinates>().toList_(targetAction.getTask().getObjArg().getCoordinates());
         }
         Boolean fastPickClosestToTargetOrSelf = null;
-        if (TimeLimitMaster.isFastPickCell()) {
+        if (allowFastPick) {
             if (targetAction.getActive().isRanged()) {
                 fastPickClosestToTargetOrSelf = false;
             }
             if (targetAction.getActive().isMelee()) {
-//                 if (targetAction.getSource().getAiType()!= AI_TYPE.SNEAK) TODO just behind!
+                //                 if (targetAction.getSource().getAiType()!= AI_TYPE.SNEAK) TODO just behind!
                 fastPickClosestToTargetOrSelf = true;
             }
         }
@@ -154,10 +138,10 @@ public class PathSequenceConstructor extends AiHandler {
             if (fastPickClosestToTargetOrSelf != null) {
                 double min = Integer.MAX_VALUE;
                 DC_Obj center = fastPickClosestToTargetOrSelf ? targetAction.getTarget() :
-                 targetAction.getSource();
+                        targetAction.getSource();
                 for (Coordinates c : center.getCoordinates()
-                 .getAdjacentCoordinates()) {
-                    if (!TargetingMaster.isValidTargetingCell(targetAction, c, getUnit())) // TODO
+                        .getAdjacentCoordinates()) {
+                    if (!TargetingMaster.isValidTargetingCell(targetAction, c, getUnit()))
                     {
                         continue;
                     }
@@ -172,7 +156,7 @@ public class PathSequenceConstructor extends AiHandler {
                 Set<Coordinates> coordinatesList = null;// TODO prioritizedCells;
                 if (!ListMaster.isNotEmpty(coordinatesList)) {
                     coordinatesList = getUnit().getGame().getGrid()
-                     .getCoordinatesList();
+                            .getCoordinatesList();
                 }
                 // TODO FILTER THESE!!!
                 // prune by distance/direction from target?
@@ -189,7 +173,7 @@ public class PathSequenceConstructor extends AiHandler {
             }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-        } finally {
+        } finally {            // watch it
             getUnit().setTempCoordinates(originalCoordinate);
         }
         if (list.size() > 1) {
@@ -197,7 +181,7 @@ public class PathSequenceConstructor extends AiHandler {
         }
         if (getUnit().getUnitAI().getLogLevel() > AiLogger.LOG_LEVEL_BASIC) {
             LogMaster.log(LOG_CHANNEL.AI_DEBUG, "***" + targetAction
-             + " has target cells for PB: " + list);
+                    + " has target cells for PB: " + list);
         }
         cellsCache.put(targetAction.getTargeting(), list);
         return list;

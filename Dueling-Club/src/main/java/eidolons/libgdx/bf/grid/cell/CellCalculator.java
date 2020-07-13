@@ -90,7 +90,7 @@ public class CellCalculator {
 
     public int getUnitViewOffset() {
         return Math.round(cell.getWidth() /
-                (getSizeFactorPerView() * cell.getUnitViewCountEffective()));
+                Math.max(1,  (getSizeFactorPerView() * cell.getUnitViewCountEffective())));
     }
 
     public float getSizeFactorPerView() {

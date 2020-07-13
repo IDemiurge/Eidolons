@@ -4,6 +4,7 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
 public class DirectionMaster {
@@ -228,7 +229,8 @@ public class DirectionMaster {
 
     public static void initCache(Integer cellsX, Integer cellsY) {
         //save over TODO
-        relative_directions = new DIRECTION[cellsX][cellsY];
+        if (!CoreEngine.RAM_OPTIMIZATION)
+            relative_directions = new DIRECTION[cellsX][cellsY];
     }
 
     public static String getNSWE(DIRECTION direction) {

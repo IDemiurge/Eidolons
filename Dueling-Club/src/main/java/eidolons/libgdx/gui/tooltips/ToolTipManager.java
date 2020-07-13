@@ -89,8 +89,9 @@ public class ToolTipManager extends TablePanel {
         });
 
         GuiEventManager.bind(GRID_OBJ_HOVER_ON, (event) -> {
-            if (DungeonScreen.getInstance().isBlocked())
-                return;
+            if (ScreenMaster.getScreen() instanceof DungeonScreen)
+                if (DungeonScreen.getInstance().isBlocked())
+                    return;
             if (Cinematics.ON) {
                 return;
             }
@@ -197,7 +198,7 @@ public class ToolTipManager extends TablePanel {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (hidden)
-            return ;
+            return;
         if (parentAlpha == ShaderDrawer.SUPER_DRAW ||
                 ConfirmationPanel.getInstance().isVisible())
             super.draw(batch, 1);
@@ -240,9 +241,9 @@ public class ToolTipManager extends TablePanel {
             return true;
         }
         if (DC_Game.game.getDungeonMaster().getPuzzleMaster() != null) {
-        if (DC_Game.game.getDungeonMaster().getPuzzleMaster().isUiMinimized()) {
-            return true;
-        }
+            if (DC_Game.game.getDungeonMaster().getPuzzleMaster().isUiMinimized()) {
+                return true;
+            }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) != CoreEngine.isLevelEditor()) {
             if (tooltip instanceof UnitViewTooltip)
@@ -253,10 +254,11 @@ public class ToolTipManager extends TablePanel {
                 return DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().size() > 0;
         return false;
     }
+
     @Override
     public void act(float delta) {
         if (hidden = isHidden())
-            return ;
+            return;
         // if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
         //  //TODO    retained = tooltip;
         // }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Interpolation;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.ScriptLib;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.fullscreen.Screenshake;
-import eidolons.libgdx.screens.ScreenMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
@@ -77,7 +76,7 @@ public class CinematicLib {
             case VOID_MAZE_FAIL:
                 doShake(Screenshake.ScreenShakeTemplate.HARD, 2, null);
                 doZoom(0.21f, 2.25f, Interpolation.pow2In);
-                ScreenMaster.getGrid().getGridManager().getAnimHandler().doFall(Eidolons.getMainHero());
+                // ScreenMaster.getGrid().getGridManager().getAnimHandler().doFall(Eidolons.getMainHero());
                 break;
         }
     }

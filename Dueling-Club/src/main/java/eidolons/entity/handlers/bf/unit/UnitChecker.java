@@ -10,6 +10,7 @@ import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.enums.entity.UnitEnums.IMMUNITIES;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.entity.UnitEnums.STATUS;
+import main.content.mode.STD_MODES;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -429,5 +430,15 @@ public class UnitChecker extends EntityChecker<Unit> {
 
         return false;
 
+    }
+
+    public boolean canInstantAttack() {
+        if (!getEntity().canCounter()) {
+            return false;
+        }
+        if (getEntity().checkPassive(STANDARD_PASSIVES.VIGILANCE)) {
+            return true;
+        }
+        return getEntity().getMode() == STD_MODES.ALERT;
     }
 }

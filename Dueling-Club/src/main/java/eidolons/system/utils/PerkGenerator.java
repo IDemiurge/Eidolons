@@ -233,7 +233,7 @@ public class PerkGenerator {
 
                 case ESSENCE_REGEN:
                 case CARRYING_CAPACITY:
-                case STAMINA_REGEN:
+                case TOUGHNESS_REGEN:
                 case DEFENSE:
                 case SIGHT_RANGE:
                 case QUICK_SLOTS:

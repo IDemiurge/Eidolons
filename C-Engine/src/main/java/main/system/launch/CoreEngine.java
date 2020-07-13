@@ -11,6 +11,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
@@ -31,9 +32,9 @@ public class CoreEngine {
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Backer;
     public static final String VERSION = "1.0.0";
     public static final String VERSION_NAME = "Backer Demo (Basic Version)"; //StringMaster.getWellFormattedString(uploadPackage.toString());
+    public static final boolean RAM_OPTIMIZATION = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     private static String selectivelyReadTypes;
-    public static final boolean DEV_MODE = true;
     public static boolean TEST_LAUNCH;
 
     public static boolean swingOn = true;
@@ -42,6 +43,8 @@ public class CoreEngine {
     private static boolean levelEditor;
     private static boolean graphicsOff;
     static boolean reflectionMapDisabled;
+    private static boolean weakGpu;
+    private static boolean weakCpu;
 
     //core Review - good idea, but how to use it?
     public enum UPLOAD_PACKAGE {
@@ -231,10 +234,21 @@ public class CoreEngine {
     public static void setEngineObject(CoreEngine engineObject) {
     }
 
+    public static void setWeakCpu(boolean weakCpu) {
+        CoreEngine.weakCpu = weakCpu;
+    }
+
+    public static boolean isWeakCpu() {
+        return weakCpu;
+    }
+
+    public static boolean isWeakGpu() {
+        return weakGpu;
+    }
 
     public static void setWeakGpu(boolean weakGpu) {
-        // CoreEngine.weakGpu = weakGpu;
+        CoreEngine.weakGpu = weakGpu;
         ////TODO use it in assets?
-        // LogMaster.important("Setting Weak GPU to " + weakGpu);
+        LogMaster.important("Setting Weak GPU to " + weakGpu);
     }
 }

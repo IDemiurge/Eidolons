@@ -79,9 +79,9 @@ public class ContentValsManager {
     private static List<VALUE> values;
     private static Set<VALUE> excludedValueSet;
     private static ContentValsManager instance;
-    private static final ObjectMap<PARAMETER, PARAMETER> currentCache = new ObjectMap<>();
-    private static final ObjectMap<PARAMETER, PARAMETER> regenCache = new ObjectMap<>();
-    private static final ObjectMap<PARAMETER, PARAMETER> percCache = new ObjectMap<>();
+    private static final  Map<PARAMETER, PARAMETER> currentCache = new HashMap<>();
+    private static final  Map<PARAMETER, PARAMETER> regenCache = new HashMap<>();
+    private static final  Map<PARAMETER, PARAMETER> percCache = new HashMap<>();
 
     public ContentValsManager() {
         instance = this;

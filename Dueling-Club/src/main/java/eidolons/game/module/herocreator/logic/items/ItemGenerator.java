@@ -28,7 +28,6 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import main.system.math.MathMaster;
 
@@ -712,7 +711,7 @@ public class ItemGenerator implements GenericItemGenerator {
 
     public void init() {
         //        if (!basicMode)
-        if (CoreEngine.TEST_LAUNCH)
+        if (GenericItemGenerator.OFF)
             return;
         ContentGenerator.initMaterials();
         if (!isGenerationOn()) {
@@ -799,7 +798,7 @@ public class ItemGenerator implements GenericItemGenerator {
         ObjType baseType = DataManager.getType(typeName, type, true);
         if (baseType == null)
             return null;
-        if (CoreEngine.TEST_LAUNCH) {
+        if (GenericItemGenerator.OFF) {
             return baseType;
         }
         return generateItem(weapon, quality, material, baseType);

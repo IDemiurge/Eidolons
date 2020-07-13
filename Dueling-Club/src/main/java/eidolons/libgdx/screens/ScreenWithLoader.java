@@ -444,6 +444,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         }
         this.waitingForInput = waitingForInput;
 
+        updateInputController();
     }
 
     public float getTimeWaited() {

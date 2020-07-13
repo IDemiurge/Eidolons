@@ -77,16 +77,12 @@ public class DC_Formulas {
     private static final float ENDURANCE_VIT_MODIFIER = 40;
     private static final float ENDURANCE_VIT_SQUARE_MODIFIER = 0.15f;
     private static final float ENDURANCE_VIT_SQUARE_BARRIER = 400;
-    private static final float STAMINA_VIT_MODIFIER = 2;
-    private static final int STAMINA_VIT_LIMIT = 20;
     private static final float REST_BONUS_VIT_MODIFIER = 0.1f;
     private static final float ENDURANCE_REGEN_VIT_MODIFIER = 0.25f;
     private static final float ATTACK_AGI_MODIFIER = 2;
     private static final float COUNTERS_AGI_MODIFIER = 0.2f;
     private static final float INIT_MOD_AGI_MODIFIER = 0.5f;
-    private static final float ACTS_DEX_MODIFIER = 0.2f;
     private static final float DEF_DEX_MODIFIER = 2;
-//    private static final int TOUGHNESS_WIL_MODIFIER = 5;
     private static final float RES_WIL_MODIFIER = 0.5f;
     private static final int RES_FOC_MODIFIER = 1;
     private static final float SPIRIT_WIL_MODIFIER = 0.25f;
@@ -100,7 +96,7 @@ public class DC_Formulas {
     private static final float DEF_MASTERY_MODIFIER = 1;
     private static final Integer FOCUS_CONST_FOR_CONCENTRATION = 10;
     private static final Integer ESSENCE_CONST_FOR_MEDITATION = 20;
-    private static final Integer STAMINA_CONST_FOR_REST = 3;
+    private static final Integer TOUGHNESS_CONST_FOR_REST = 15;
     private static final String GATEWAY_THRESHOLD = "30";
     private static final String CRYSTAL_THRESHOLD = "15";
     // ++ MAX POOL FORMULA
@@ -165,11 +161,6 @@ public class DC_Formulas {
 
     public static int getCarryingCapacityFromStrength(int amount) {
         return Math.round(amount * CARRYING_CAPACITY_STR_MODIFIER);
-    }
-
-    public static int getStaminaFromVitality(int amount) {
-        amount = Math.min(amount, STAMINA_VIT_LIMIT);
-        return Math.round(amount * STAMINA_VIT_MODIFIER);
     }
 
     public static int getRestBonusFromVitality(int amount) {
@@ -265,8 +256,8 @@ public class DC_Formulas {
         return ESSENCE_CONST_FOR_MEDITATION;
     }
 
-    public static Integer getStaminaConstForRest() {
-        return STAMINA_CONST_FOR_REST;
+    public static Integer getToughnessConstForRest() {
+        return TOUGHNESS_CONST_FOR_REST;
     }
 
     public static String getCrystalThreshold() {

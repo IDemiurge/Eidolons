@@ -6,6 +6,7 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
@@ -70,6 +71,8 @@ public class ThreatAnalyzer extends AiHandler {
         double distance = PositionMaster.getExactDistance(ai.getUnit().getCoordinates(), enemy.getCoordinates());
         threat =
                 (int) Math.round(enemy.getIntParam(PARAMS.POWER) / distance);
+
+        if (!AI_Manager.isSimplifiedLogic())
         if (enemy.getAI().getType().isRanged()) {
             threat += getRangedThreat(ai.getUnit(), enemy);
         }

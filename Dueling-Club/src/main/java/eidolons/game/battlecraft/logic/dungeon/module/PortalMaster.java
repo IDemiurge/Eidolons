@@ -19,7 +19,7 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class PortalMaster extends DungeonHandler {
      */
     public PortalMaster(DungeonMaster master) {
         super(master);
-        if (!CoreEngine.TEST_LAUNCH) {
+        if (!Flags.ONE_FRAME_SPRITES) {
             Assets.get().getManager().load(Sprites.PORTAL_OPEN, TextureAtlas.class);
             Assets.get().getManager().load(Sprites.PORTAL_CLOSE, TextureAtlas.class);
         }

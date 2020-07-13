@@ -34,15 +34,18 @@ public class SoloPartyManager extends NF_PartyManager {
     }
 
     @Override
-    public boolean heroUnconscious(Unit unit) {
+    public boolean heroUnconscious(Unit hero) {
         //instead of all unconscious mechanics
-        getGame().getLogManager().log(unit.getName()+" falls..." );
+        if (hero!= Eidolons.getMainHero()) {
+            return false;
+        }
+
+        getGame().getLogManager().log(hero.getName()+" falls..." );
         getGame().getLogManager().log("... and rises again.");
         getGame().getLogManager().log("Endurance remaining: "+ findMainHero().getIntParam(PARAMS.C_ENDURANCE));
         CinematicLib.run(CinematicLib.StdCinematic.UNCONSCIOUS_BEFORE);
 
         Coordinates respawnCoordinates = getRespawnCoordinates(null);
-        Unit hero = Eidolons.getMainHero();
         hero.setCoordinates(respawnCoordinates);
         hero.cleanReset();
         getGame().getMovementManager().moved(hero, true);

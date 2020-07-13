@@ -149,7 +149,7 @@ public class TexturePackerLaunch {
     }
 
     public static final String[] atlases = {
-            // "ui",
+            "ui",
             "grid/main",
     };
 

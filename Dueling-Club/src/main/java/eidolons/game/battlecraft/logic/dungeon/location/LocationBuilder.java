@@ -33,12 +33,6 @@ public class LocationBuilder extends DungeonBuilder {
     @Override
     public Location buildDungeon(String path) {
         location = super.buildDungeon(path);
-        try {
-            location.initMainEntrance();
-        } catch (Exception e) {
-
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
         return location;
     }
 

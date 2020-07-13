@@ -21,13 +21,16 @@ import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums.RESIST_GRADE;
 import main.content.enums.GenericEnums.STD_BOOLS;
-import main.content.enums.entity.*;
+import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_TYPE;
+import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.HeroEnums.RACE;
+import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.*;
+import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.PLACE_SUBTYPE;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.PLACE_TYPE;
@@ -56,6 +59,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static main.content.enums.entity.ActionEnums.WEAPON_ATTACKS.*;
 
 public class ContentGenerator {
 
@@ -880,91 +885,96 @@ public class ContentGenerator {
         switch (group) {
             case AXES:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                        ActionEnums.WEAPON_ATTACKS.Axe_Swing, ActionEnums.WEAPON_ATTACKS.Chop, ActionEnums.WEAPON_ATTACKS.Hack,
-                        ActionEnums.WEAPON_ATTACKS.Hook));
+                        Axe_Swing, Chop, Hack,
+                        Hook));
             case POLLAXES:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                        ActionEnums.WEAPON_ATTACKS.Spike_Stab, ActionEnums.WEAPON_ATTACKS.Axe_Swing, ActionEnums.WEAPON_ATTACKS.Chop,
-                        ActionEnums.WEAPON_ATTACKS.Hack, ActionEnums.WEAPON_ATTACKS.Hook));
+                        Spike_Stab, Axe_Swing, Chop,
+                        Hack, Hook));
 
             case FLAILS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                        ActionEnums.WEAPON_ATTACKS.Heavy_Swing, ActionEnums.WEAPON_ATTACKS.Chain_Thrust,
-                        ActionEnums.WEAPON_ATTACKS.Head_Smash));
+                        Heavy_Swing, Chain_Thrust,
+                        Head_Smash));
             case HAMMERS:
             case CLUBS:
                 return ContainerUtils
-                        .constructStringContainer(ListMaster.toList(ActionEnums.WEAPON_ATTACKS.Heavy_Swing,
-                                ActionEnums.WEAPON_ATTACKS.Head_Smash, ActionEnums.WEAPON_ATTACKS.Slam));
+                        .constructStringContainer(ListMaster.toList(Heavy_Swing,
+                                Head_Smash, Slam));
             case MACES:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                        ActionEnums.WEAPON_ATTACKS.Head_Smash, ActionEnums.WEAPON_ATTACKS.Heavy_Swing));
+                        Head_Smash, Heavy_Swing));
 
             case GREAT_SWORDS:
             case LONG_SWORDS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                        ActionEnums.WEAPON_ATTACKS.Sword_Swing, ActionEnums.WEAPON_ATTACKS.Slash,
-                        ActionEnums.WEAPON_ATTACKS.Blade_Thrust, ActionEnums.WEAPON_ATTACKS.Hilt_Smash));
+                        Sword_Swing, Slash,
+                        Blade_Thrust, Hilt_Smash));
             case SHORT_SWORDS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                        ActionEnums.WEAPON_ATTACKS.Blade_Thrust, ActionEnums.WEAPON_ATTACKS.Slash,
-                        ActionEnums.WEAPON_ATTACKS.Hilt_Smash, ActionEnums.WEAPON_ATTACKS.Stab));
+                        Blade_Thrust, Slash,
+                        Hilt_Smash, Stab));
             case DAGGERS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                        ActionEnums.WEAPON_ATTACKS.Blade_Thrust, ActionEnums.WEAPON_ATTACKS.Slash, ActionEnums.WEAPON_ATTACKS.Stab));
+                        Blade_Thrust, Slash, Stab));
 
             case SCYTHES:
-                return ContainerUtils.constructStringContainer(ListMaster.toList(ActionEnums.WEAPON_ATTACKS.Hook,
-                        ActionEnums.WEAPON_ATTACKS.Axe_Swing, ActionEnums.WEAPON_ATTACKS.Hack, ActionEnums.WEAPON_ATTACKS.Pole_Push,
-                        ActionEnums.WEAPON_ATTACKS.Pole_Smash));
+                return ContainerUtils.constructStringContainer(ListMaster.toList(Hook,
+                        Axe_Swing, Hack, Pole_Push,
+                        Pole_Smash));
             case SPEARS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                        ActionEnums.WEAPON_ATTACKS.Spear_Poke, ActionEnums.WEAPON_ATTACKS.Impale,
-                        ActionEnums.WEAPON_ATTACKS.Pole_Smash, ActionEnums.WEAPON_ATTACKS.Pole_Push));
+                        Spear_Poke, Impale,
+                        Pole_Smash, Pole_Push));
             case STAVES:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                        ActionEnums.WEAPON_ATTACKS.Pole_Smash, ActionEnums.WEAPON_ATTACKS.Pole_Thrust,
-                        ActionEnums.WEAPON_ATTACKS.Pole_Push));
+                        Pole_Smash, Pole_Thrust,
+                        Pole_Push));
             case SHIELDS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                        ActionEnums.WEAPON_ATTACKS.Shield_Push, ActionEnums.WEAPON_ATTACKS.Shield_Bash));
+                        Shield_Push, Shield_Bash));
             case CLAWS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                        ActionEnums.WEAPON_ATTACKS.Slice, ActionEnums.WEAPON_ATTACKS.Rip));
+                        Slice, Rip));
             case FISTS:
                 return ContainerUtils.constructStringContainer(ListMaster
-                        .toList(ActionEnums.WEAPON_ATTACKS.Punch, ActionEnums.WEAPON_ATTACKS.Fist_Swing,
-                                ActionEnums.WEAPON_ATTACKS.Elbow_Smash));
+                        .toList(Punch, Fist_Swing,
+                                Elbow_Smash));
             case FEET:
                 return ContainerUtils
-                        .constructStringContainer(ListMaster.toList(ActionEnums.WEAPON_ATTACKS.Hook));
+                        .constructStringContainer(ListMaster.toList(Hook));
             case MAWS:
-                return ContainerUtils.constructStringContainer(ListMaster.toList(ActionEnums.WEAPON_ATTACKS.Bite,
-                        ActionEnums.WEAPON_ATTACKS.Dig_Into, ActionEnums.WEAPON_ATTACKS.Tear));
+                return ContainerUtils.constructStringContainer(ListMaster.toList(Bite,
+                        Dig_Into, Tear));
             case FANGS:
-                return ContainerUtils.constructStringContainer(ListMaster.toList(ActionEnums.WEAPON_ATTACKS.Bite,
-                        ActionEnums.WEAPON_ATTACKS.Dig_Into));
+                return ContainerUtils.constructStringContainer(ListMaster.toList(Bite,
+                        Dig_Into));
             case TAILS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                        ActionEnums.WEAPON_ATTACKS.Tail_Smash, ActionEnums.WEAPON_ATTACKS.Tail_Sting));
+                        Tail_Smash, Tail_Sting));
             case HORNS:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                        ActionEnums.WEAPON_ATTACKS.Pierce, ActionEnums.WEAPON_ATTACKS.Tear));
+                        Pierce, Tear));
             case INSECTOID:
                 return ContainerUtils.constructStringContainer(ListMaster.toList(
-                        ActionEnums.WEAPON_ATTACKS.Pierce, ActionEnums.WEAPON_ATTACKS.Slice, ActionEnums.WEAPON_ATTACKS.Stab));
+                        Pierce, Slice, Stab));
             case HOOVES:
                 return ContainerUtils.constructStringContainer(ListMaster
-                        .toList(ActionEnums.WEAPON_ATTACKS.Hoof_Slam));
+                        .toList(Hoof_Slam));
             case BEAKS:
-                return ContainerUtils.constructStringContainer(ListMaster.toList(ActionEnums.WEAPON_ATTACKS.Bite,
-                        ActionEnums.WEAPON_ATTACKS.Tear, ActionEnums.WEAPON_ATTACKS.Dig_Into));
+                return ContainerUtils.constructStringContainer(ListMaster.toList(Bite,
+                        Tear, Dig_Into));
             case EYES:
                 return ContainerUtils
-                        .constructStringContainer(ListMaster.toList(ActionEnums.WEAPON_ATTACKS.Hook));
+                        .constructStringContainer(ListMaster.toList(Hook));
             case FORCE:
                 return ContainerUtils
-                        .constructStringContainer(ListMaster.toList(ActionEnums.WEAPON_ATTACKS.Hook));
+                        .constructStringContainer(ListMaster.toList(
+                                Force_Push,
+                                force_touch,
+                                force_blast,
+                                force_ray
+                                ));
 
         }
         return null;

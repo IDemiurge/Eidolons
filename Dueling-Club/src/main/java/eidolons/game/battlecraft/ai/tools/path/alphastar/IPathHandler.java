@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.ai.tools.path.alphastar;
 
+import eidolons.entity.obj.unit.Unit;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
@@ -13,4 +14,6 @@ public interface IPathHandler {
     boolean canMoveOnto(Entity obj, Coordinates c);
 
     int getHeight();
+
+    Unit getUnit();
 }

@@ -1,5 +1,6 @@
 package eidolons.content;
 
+import eidolons.libgdx.anims.AnimEnums;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -26,6 +27,8 @@ public class ValuePages {
             G_PROPS.RACE, G_PROPS.MODE, G_PROPS.STATUS, G_PROPS.STANDARD_PASSIVES,};
     public static final VALUE[] DC_SPELLS_HEADER = {G_PROPS.ASPECT, G_PROPS.SPELL_TYPE,
             G_PROPS.SPELL_GROUP, G_PROPS.TARGETING_MODE, G_PROPS.SPELL_TAGS,};
+    public static final VALUE[] ANIM_VALUES = AnimEnums.anim_vals;
+
     public static final VALUE[] SPELLS_UPGRADES = {PROPS.SPELL_UPGRADES,};
     public static final VALUE[] UNITS_HEADER = {G_PROPS.ASPECT, G_PROPS.DEITY,
             // G_PROPS.GROUP,
@@ -93,7 +96,7 @@ public class ValuePages {
             OFF_HAND_MAX_DAMAGE,
 
             WEIGHT, CARRYING_CAPACITY, C_CARRYING_WEIGHT, SIGHT_RANGE,
-            SIDE_SIGHT_PENALTY, BEHIND_SIGHT_BONUS, STAMINA_REGEN,
+            SIDE_SIGHT_PENALTY, BEHIND_SIGHT_BONUS,
             ENDURANCE_REGEN, ESSENCE_REGEN, FOCUS_REGEN,
             ARMOR_PENETRATION, ARMOR_MOD, CONCEALMENT, DETECTION,
             STEALTH,
@@ -663,7 +666,10 @@ public class ValuePages {
             // MA
             UNIT_PARAMETERS,};
     public static final VALUE[][] SPELL_PAGES = {SPELL_VALUES, COSTS, SPELL_PROPERTIES,
-            UPKEEP_PARAMS, SPELLS_UPGRADES};
+            UPKEEP_PARAMS,
+            SPELLS_UPGRADES,
+            ANIM_VALUES,
+    };
     // VALUE
     // ICONS?
     public static final PARAMETER[] BACKGROUND_PARAMS = {

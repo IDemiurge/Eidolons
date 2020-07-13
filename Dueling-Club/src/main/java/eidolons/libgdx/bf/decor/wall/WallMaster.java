@@ -56,7 +56,14 @@ public class WallMaster {
         if (set == null) {
             set = CELL_SET.beige;
         }
-        return getImage(c, PILLARS, set, variant.toString(), wall);
+        String fileName = variant.toString();
+        switch (set) {
+            case beige:
+            case woods:
+                fileName= fileName.replace("_", " "); //remove eventually
+                break;
+        }
+        return getImage(c, PILLARS, set, fileName, wall);
     }
 
     public static String getImage(Coordinates c, String type, CELL_SET set, Object fileName, boolean alt) {

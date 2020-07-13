@@ -16,8 +16,11 @@ public class ExtendableLogPanel extends LogPanel {
 
     public ExtendableLogPanel(boolean top) {
         this.top = top;
-        extendButton = new SymbolButton(STD_BUTTON.PULL);
+        extendButton = new SymbolButton(STD_BUTTON.UP);
+        extendButton.setFlipY(true);
         extendButton.setNoClickCheck(true);
+        // extendButton.setSize(100, 40);
+        // extendButton.setScale(1f);
         addActor(extendButton);
         extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2 - 1,
                 top ? -11 : getHeight() + 5);
@@ -72,6 +75,9 @@ public class ExtendableLogPanel extends LogPanel {
         if (heightAction.getTime() >= heightAction.getDuration()) {
             heightAction.setReverse(false  );
         }
+        extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2 - 1,
+                top ? -extendButton.getHeight()/2 : getHeight() + 5);
+        extendButton.setZIndex(0);
     }
 
     private void adjustHeight(float val) {
@@ -101,8 +107,5 @@ public class ExtendableLogPanel extends LogPanel {
     @Override
     protected void updateAct() {
         super.updateAct();
-        extendButton.setSize(55, 11);
-        extendButton.setZIndex(Integer.MAX_VALUE);
-        //        extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2, getHeight() - movableHeader.getHeight() + 4);
     }
 }
