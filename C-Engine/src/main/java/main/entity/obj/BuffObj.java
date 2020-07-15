@@ -20,6 +20,7 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.event.MessageManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 import main.system.text.Log;
@@ -79,7 +80,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
             }
         } catch (Exception ignored) {
         }
-        if (getName().contains(StringMaster.INVISIBLE_BUFF)) {
+        if (getName().contains(Strings.INVISIBLE_BUFF)) {
             visible = false;
         }
     }

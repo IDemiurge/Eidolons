@@ -85,14 +85,15 @@ public class EncPuzzleHandler extends PuzzleHandler<EncounterPuzzle> {
 
         if (event.getType() == Event.STANDARD_EVENT_TYPE.TIME_ELAPSED) {
             if (getGame().getAtbController().getTime()/getSpawnPeriod()>lastSpawnPeriod) {
-                spawn(false);
+                if (puzzle.getEncounter().getUnits().size() < puzzle.getMaxUnits())
+                    spawn(false);
                 lastSpawnPeriod++;
             }
         }
     }
 
     private float getSpawnPeriod() {
-        return 10;
+        return 20;
     }
 
     @Override
@@ -108,6 +109,7 @@ public class EncPuzzleHandler extends PuzzleHandler<EncounterPuzzle> {
     protected void playerActionDone(DC_ActiveObj action) {
         super.playerActionDone(action);
         //check if need dynamic reinforcements
+        if (puzzle.isEndless())
         if (puzzle.getEncounter().getUnits().size() < puzzle.getMinUnits()) {
             spawn(false);
         }

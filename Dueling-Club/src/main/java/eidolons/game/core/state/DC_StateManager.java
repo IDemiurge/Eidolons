@@ -539,12 +539,6 @@ public class DC_StateManager extends StateManager {
             for (Attachment attachment : state.getAttachments()) {
                 attachment.tick();
             }
-        for (Obj obj : state.getObjMaps().get(DC_TYPE.ACTIONS).values()) {
-            ((DC_ActiveObj) obj).tick();
-        }
-        for (Obj obj : state.getObjMaps().get(DC_TYPE.SPELLS).values()) {
-            ((Spell) obj).tick();
-        }
     }
 
 

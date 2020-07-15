@@ -1,6 +1,7 @@
 package main.content.enums.entity;
 
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.images.ImageManager;
 
 import java.util.Map;
@@ -135,7 +136,7 @@ public final class UnitEnums {
         private COUNTER up;
         private final String imagePath;
         private final String name =
-         StringMaster.format(name()) + StringMaster.COUNTER;
+         StringMaster.format(name()) + Strings.COUNTER;
 
         COUNTER() {
             imagePath = ImageManager.getValueIconsPath() + "counters/" + toString() + ".png";
@@ -358,7 +359,7 @@ public final class UnitEnums {
 
         CONCEALED,
         BLOCKED,
-        PREPARED, // COOLDOWN
+        PREPARED,
 
         // OBJ
         CLAIMED,

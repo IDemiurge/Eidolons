@@ -16,10 +16,7 @@ import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.RequirementsManager;
 import main.entity.type.ObjType;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.Loop;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
@@ -38,7 +35,7 @@ public class UnitLibrary {
         // a better approach: iterate thru new/memo/verb until <...>
         // at each iteration, learn 1 new spell if possible, memorize max and
         // getOrCreate the rest max en verbatim
-        if (!unit.checkProperty(PROPS.SPELL_PLAN) || getPlan().contains(StringMaster.BASE_CHAR)) {
+        if (!unit.checkProperty(PROPS.SPELL_PLAN) || getPlan().contains(Strings.BASE_CHAR)) {
             if (UnitAnalyzer.checkIsCaster(unit)) {
                 generateSpellPlan();
             } else {
@@ -68,7 +65,7 @@ public class UnitLibrary {
 
     private static void generateSpellPlan() {
         String property = getPlan();
-        String plan = property.replace(StringMaster.BASE_CHAR, "");
+        String plan = property.replace(Strings.BASE_CHAR, "");
         if (!plan.isEmpty()) {
             if (!plan.endsWith(";")) {
                 plan += ";"; // ++ syntax for cancelling [group] spells...
@@ -86,7 +83,7 @@ public class UnitLibrary {
                     continue;
                 }
                 int weight = Math.max(1, score - t.getIntParam(PARAMS.SPELL_DIFFICULTY));
-                planBuilder.append(t.getName()).append(StringMaster.wrapInParenthesis("" + weight)).append(StringMaster.CONTAINER_SEPARATOR);
+                planBuilder.append(t.getName()).append(StringMaster.wrapInParenthesis("" + weight)).append(Strings.CONTAINER_SEPARATOR);
             }
         }
         plan = planBuilder.toString();

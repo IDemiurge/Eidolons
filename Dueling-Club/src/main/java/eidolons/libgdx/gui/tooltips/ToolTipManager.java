@@ -89,10 +89,14 @@ public class ToolTipManager extends TablePanel {
         });
 
         GuiEventManager.bind(GRID_OBJ_HOVER_ON, (event) -> {
-            if (ScreenMaster.getScreen() instanceof DungeonScreen)
+            if (ScreenMaster.getScreen() instanceof DungeonScreen){
                 if (DungeonScreen.getInstance().isBlocked())
                     return;
+            }
             if (Cinematics.ON) {
+                return;
+            }
+            if (ScreenMaster.getScreen().getController().isLeftPressed()) {
                 return;
             }
             BaseView object = (BaseView) event.get();

@@ -12,7 +12,7 @@ public enum PuzzleTip implements TextEvent {
     void_maze_win("Void Maze Completed"),
     void_maze_defeat_first(""),
     void_maze_defeat(""),
-;
+    ;
 
     PuzzleTip(String message) {
         this.message = message;
@@ -24,10 +24,10 @@ public enum PuzzleTip implements TextEvent {
     }
 
     private final boolean optional = true;
-    private final boolean once=true ;
-    private boolean done ;
+    private final boolean once = true;
+    private boolean done;
     private String img;
-    private final String message;
+    private String message;
     private final WaitMaster.WAIT_OPERATIONS messageChannel = MESSAGE_RESPONSE;
 
     @Override
@@ -63,5 +63,15 @@ public enum PuzzleTip implements TextEvent {
     @Override
     public WaitMaster.WAIT_OPERATIONS getMessageChannel() {
         return messageChannel;
+    }
+
+    @Override
+    public void run() {
+
+    }
+
+    @Override
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

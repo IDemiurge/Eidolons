@@ -35,6 +35,7 @@ import main.launch.ArcaneVault;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
@@ -200,7 +201,7 @@ public class AvModelHandler {
             for (ObjType type : DataManager.getTypes(obj_type))
             // if (type.getIntParam(PARAMS.XP_COST) == 0)
             {
-                if (!type.getGroup().equals(StringMaster.STANDARD)) {
+                if (!type.getGroup().equals(Strings.STANDARD)) {
                     type.setParam(PARAMS.XP_COST, type.getIntParam(PARAMS.SPELL_DIFFICULTY)
                             * DC_Formulas.XP_COST_PER_SPELL_DIFFICULTY);
                 } else {
@@ -265,7 +266,7 @@ public class AvModelHandler {
                                     break;
                             }
                         }
-                        if (type.getGroup().equals(StringMaster.BACKGROUND)) {
+                        if (type.getGroup().equals(Strings.BACKGROUND)) {
                             LogMaster.setOff(true);
                             try {
 

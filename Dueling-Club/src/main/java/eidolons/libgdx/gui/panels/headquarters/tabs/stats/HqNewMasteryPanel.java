@@ -22,7 +22,7 @@ import eidolons.system.text.DescriptionTooltips;
 import main.content.values.parameters.PARAMETER;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.images.ImageManager;
 import main.system.launch.Flags;
 
@@ -105,7 +105,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
         GroupX group = new GroupX();
         group.addActor(container);
 //        group.addActor(overlay);
-        group.addListener(new ValueTooltip("Learn " + datum.getDisplayedName() + StringMaster.NEW_LINE +
+        group.addListener(new ValueTooltip("Learn " + datum.getDisplayedName() + Strings.NEW_LINE +
                 DescriptionTooltips.tooltip(datum)).getController());
         group.addListener(getListener(datum, container));
 

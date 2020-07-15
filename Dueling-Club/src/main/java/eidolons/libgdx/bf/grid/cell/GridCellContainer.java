@@ -138,11 +138,11 @@ public class GridCellContainer extends GridCell implements Hoverable {
             return;
         }
         for (GenericGridView view : visibleViews) {
-            view.setVisible(false); //TODO gdx review - will cause recalcBounds!!!
+            view.setVisible(false, true); //TODO gdx review - will cause recalcBounds!!!
         }
         draw(batch, 1f);
         for (GenericGridView view : visibleViews) {
-            view.setVisible(true);
+            view.setVisible(true, true);
         }
     }
 

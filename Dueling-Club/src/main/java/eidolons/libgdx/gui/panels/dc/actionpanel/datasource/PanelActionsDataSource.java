@@ -32,6 +32,9 @@ public class PanelActionsDataSource implements
         unitDataSource = new UnitDataSource(unit);
     }
 
+    public Unit getUnit() {
+        return unit;
+    }
 
     @Override
     public String getParam(PARAMS param) {

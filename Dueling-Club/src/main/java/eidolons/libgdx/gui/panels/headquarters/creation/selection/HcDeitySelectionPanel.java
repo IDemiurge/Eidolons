@@ -19,6 +19,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,7 +56,7 @@ public class HcDeitySelectionPanel extends SelectionTable<HcDeityElement> {
         } else {
             Unit hero = (Unit) getUserObject();
             String deities = hero.getProperty(G_PROPS.DEITY);
-            deities= StringMaster.replace(true, deities, ";", StringMaster.OR);
+            deities= StringMaster.replace(true, deities, ";", Strings.OR);
             List<ObjType> types = DataManager.getFilteredTypes(DC_TYPE.DEITIES, getUserObject().toString(), G_PROPS.ASPECT);
             return types.stream().map(type -> new SelectableItemData(type.getName(), type))
                     .collect(Collectors.toList()).toArray(new SelectableItemData[types.size()]);

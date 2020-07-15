@@ -31,10 +31,6 @@ public class RuleKeeper implements Controller {
         instance = this;
     }
 
-    public static boolean isCooldownOn() {
-        return false;
-    }
-
     public static void init() {
         try {
             setScope(new EnumMaster<RuleEnums.RULE_SCOPE>().retrieveEnumConst(RuleEnums.RULE_SCOPE.class,

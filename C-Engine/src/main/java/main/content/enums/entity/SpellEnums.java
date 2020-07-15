@@ -3,6 +3,7 @@ package main.content.enums.entity;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.MapMaster;
 import main.system.images.ImageManager;
 
@@ -197,7 +198,7 @@ public class SpellEnums {
         MUTAGENIC,
         ACIDIC,
         DIRE(" Increases Spellpower by " + SPELL_DIFFICULTY + " and an additional {Mastery}/10%.", 35, 25, " de", "passives;", "AddParam(Spellpower Bonus 10+{Mastery}/2)", "", "", "", "", "Spellpower Bonus;Spellpower Mod", ""
-         + SPELL_DIFFICULTY + StringMaster.UPGRADE_SEPARATOR + "{Mastery}/10"),
+         + SPELL_DIFFICULTY + Strings.UPGRADE_SEPARATOR + "{Mastery}/10"),
         RAGE,
 
         LIFEBLOOD, // append {endurance}*(min(10+{Mastery},{1})/100 to formula
@@ -276,7 +277,7 @@ public class SpellEnums {
              .openContainer(modParams), ContainerUtils.openContainer(modParamValues));
             this.paramBonusMap = new MapMaster<String, String>().constructMap(ContainerUtils
              .openContainer(bonusParams), ContainerUtils.openContainer(bonusParamVals,
-             StringMaster.UPGRADE_SEPARATOR));
+             Strings.UPGRADE_SEPARATOR));
         }
 
         private static String getAddCounterSpecialEffect(String... amount_comma_dmg_type) {
@@ -310,7 +311,7 @@ public class SpellEnums {
             StringBuilder string = new StringBuilder("SpecEffect(" + effectCase + ",");
             for (String s : args) {
                 string.append(abilName).append(StringMaster.wrapInParenthesis(s));
-                string.append(StringMaster.VERTICAL_BAR);
+                string.append(Strings.VERTICAL_BAR);
             }
             string = new StringBuilder(StringMaster.cropLast(string.toString(), 1));
             string.append(")");

@@ -12,7 +12,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class ManualPanel extends SelectionPanel {
         String text = FileManager.readFile(path);
         String[] articles = text.split("---");
         for (String sub : articles) {
-            String name = sub.split(StringMaster.NEW_LINE)[1];
+            String name = sub.split(Strings.NEW_LINE)[1];
             MANUAL_ARTICLE article =
              new EnumMaster<MANUAL_ARTICLE>().retrieveEnumConst(MANUAL_ARTICLE.class, name);
             if (article == null) {

@@ -36,6 +36,7 @@ import main.game.bf.directions.UNIT_DIRECTION;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
 
@@ -190,7 +191,7 @@ public enum ARGS implements Argument {
 
     @Override
     public String getEmptyName() {
-        return StringMaster.VAR_STRING;
+        return Strings.VAR_STRING;
 //        return "<<< " + name + " >>>"; // TODO empty node HANDLED!
     }
 

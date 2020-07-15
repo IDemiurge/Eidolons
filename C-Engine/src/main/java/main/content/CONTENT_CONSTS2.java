@@ -10,6 +10,7 @@ import main.content.values.properties.PROPERTY;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.images.ImageManager;
@@ -475,7 +476,7 @@ public class CONTENT_CONSTS2 {
              .openContainer(modParams), ContainerUtils.openContainer(modParamValues));
             this.paramBonusMap = new MapMaster<String, String>().constructMap(ContainerUtils
              .openContainer(bonusParams), ContainerUtils.openContainer(bonusParamVals,
-             StringMaster.UPGRADE_SEPARATOR));
+             Strings.UPGRADE_SEPARATOR));
         }
 
         public String getPrefix() {

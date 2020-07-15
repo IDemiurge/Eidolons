@@ -36,9 +36,9 @@ public class Garment extends DC_HeroSlotItem {
 
         switch (garment_type) {
             case BOOTS:
-                modifyParameter(PARAMS.MOVE_AP_PENALTY, penalty_reduction, 0,
+                modifyParameter(PARAMS.MOVE_ATB_COST_MOD, penalty_reduction, 0,
                  true);
-                modifyParameter(PARAMS.MOVE_TOU_PENALTY, penalty_reduction, 0,
+                modifyParameter(PARAMS.MOVE_TOU_COST_MOD, penalty_reduction, 0,
                  true);
         }
 

@@ -69,7 +69,8 @@ public class ButtonStyled extends ImageContainer {
          "button.png")),
         HELP(StrPathBuilder.build(PathFinder.getUiPath(),
          "components", "generic",
-         "buttons" , "question.png")),
+         "buttons" , "question.png"))
+        ,
 
         UNARMED(StrPathBuilder.build(PathFinder.getUiPath(),
          "components","dc" ,          "quick weapon" ,"unarmed.png")),
@@ -105,6 +106,12 @@ public class ButtonStyled extends ImageContainer {
                 "highlight.png")),
         TAB_HIGHLIGHT(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic", "tabs", "highlight.png")),
         TAB_HIGHLIGHT_COLUMN(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic", "tabs/opaque", "highlight.png")),
+
+        EXTRA_ATK(StrPathBuilder.build(PathFinder.getComponentsPath(), "dc",
+                "bottom panel", "atks.png")),
+        EXTRA_MOVES(StrPathBuilder.build(PathFinder.getComponentsPath(), "dc",
+                "bottom panel", "moves.png")),
+
         SPELLBOOK(StrPathBuilder.build(PathFinder.getComponentsPath(), "dc",
          "bottom panel", "spellbook btn.png")),
         INV(StrPathBuilder.build(PathFinder.getComponentsPath(), "dc",

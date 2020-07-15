@@ -5,7 +5,7 @@ import main.game.logic.battle.player.Player;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.ListMaster;
 import main.system.data.DataUnitFactory;
 import main.system.data.PlayerData;
@@ -134,7 +134,7 @@ public class PlayerManager<E extends DungeonSequence> extends MissionHandler<E> 
         };
         factory.setValueNames(default_values);
         factory.setValues("You", "Blue", " ", " ", "Player");
-        data += factory.constructDataString() + StringMaster.SEPARATOR;
+        data += factory.constructDataString() + Strings.SEPARATOR;
 
         factory.setValueNames(default_values);
         factory.setValues("Enemy", "Red", " ", " ", "Enemy");

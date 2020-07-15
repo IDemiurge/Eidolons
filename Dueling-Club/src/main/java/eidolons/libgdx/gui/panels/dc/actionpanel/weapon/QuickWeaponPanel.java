@@ -23,7 +23,6 @@ import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import main.data.filesys.PathFinder;
 import main.game.logic.action.context.Context;
 import main.system.EventType;
-import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import org.apache.commons.lang3.tuple.Pair;
@@ -47,6 +46,7 @@ public class QuickWeaponPanel extends TablePanelX {
     protected boolean offhand;
 
     public QuickWeaponPanel(boolean offhand) {
+        super(100, 100);
         this.offhand = offhand;
         addActor(
                 background = new ImageContainer(
@@ -209,10 +209,11 @@ public class QuickWeaponPanel extends TablePanelX {
                     return false;
                 }
                 if (button == 1) {
-                    GuiEventManager.trigger(GuiEventType.RADIAL_MENU_CLOSE);
-                    GuiEventManager.trigger(
-                            getOpenEvent(),
-                            dataSource.getWeapon());
+                    // GuiEventManager.trigger(GuiEventType.RADIAL_MENU_CLOSE);
+                    radial.openMenu();
+                    // GuiEventManager.trigger(
+                    //         getOpenEvent(),
+                    //         dataSource.getWeapon());
 
                 } else {
                     if (radial.isVisible())

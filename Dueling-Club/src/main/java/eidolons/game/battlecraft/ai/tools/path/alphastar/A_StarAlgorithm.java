@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.ai.tools.path.alphastar;
 
-import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
@@ -9,6 +8,8 @@ import main.system.text.Log;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 public class A_StarAlgorithm {
 
@@ -35,9 +36,8 @@ public class A_StarAlgorithm {
 
     public Path getPath(boolean flying, boolean agile, Coordinates c1, Coordinates... targets) {
         this.targets = new LinkedList<>(Arrays.asList(targets));
-        LogMaster
-                .log(LogMaster.PATHING_DEBUG, "building path from " + c1
-                        + " to " +  this.targets);
+        log(LogMaster.PATHING_DEBUG, "A* - Building path from " + c1
+                + " to " + this.targets);
         N = 0;
         dest = getPathNode(this.targets.get(0));
         orig = getPathNode(c1);
@@ -58,10 +58,16 @@ public class A_StarAlgorithm {
                 break;
             }
         }
+
         if (!success) {
+            log(LogMaster.PATHING_DEBUG, "A* - Failed to Build path from " + c1
+                    + " to " + this.targets + "\n" + closedList);
             return null;
         }
         constructPath();
+
+        log(LogMaster.PATHING_DEBUG, "A* - Done with path from " + c1
+                + " to " + this.targets + "\n" + PATH);
         return PATH;
     }
 
@@ -142,7 +148,7 @@ public class A_StarAlgorithm {
         closedList.add(cur);
         cur.setCost(getCost(agile, flying, cur));
 
-        if (targets.contains(cur.getCoordinates())){
+        if (targets.contains(cur.getCoordinates())) {
             return true;
         }
 /*
@@ -150,7 +156,7 @@ must proceed until a goal node has lowest F among openList?
  */
 
         if (Log.check(Log.LOG_CASE.astar_pathing))
-            LogMaster.log(LogMaster.PATHING_DEBUG, "Step #"
+            log(LogMaster.PATHING_DEBUG, "A* Step #"
                     + N + " to " + cur + " with closed list " + closedList
 
             );
@@ -171,14 +177,14 @@ must proceed until a goal node has lowest F among openList?
     }
 
     private void setFGH(PathNode node) {
-        double g = heuristic(flying, agile, orig.getCoordinates(), node.getCoordinates());
-        double h = heuristic(flying, agile, dest.getCoordinates(), node.getCoordinates());
+        double g = heuristic(flying, false, orig.getCoordinates(), node.getCoordinates());
+        double h = heuristic(flying, true, dest.getCoordinates(), node.getCoordinates());
         double f = g + h;
         node.setG(g);
         node.setH(h);
         node.setF(f);
         if (Log.check(Log.LOG_CASE.astar_pathing))
-            LogMaster.log(LogMaster.PATHING_DEBUG, node
+            log(LogMaster.PATHING_DEBUG, node
                     + " has: g = " + g + " h = " +
                     h + " f = " + f);
     }
@@ -201,21 +207,14 @@ must proceed until a goal node has lowest F among openList?
         return openList.isEmpty() || closedList.contains(dest);
     }
 
-    public double heuristic(boolean flying, boolean agile, Coordinates c1, Coordinates c2) {
+    public double heuristic(boolean flying, boolean toDestination, Coordinates c1, Coordinates c2) {
         // euclidian distance for flying;
         // manhattan for non-aglie
         // for agile...?? never overestimate
         // TODO We could cache REAL distances as we do moving around obstacles...
+        if (!toDestination)
+            return  Math.sqrt(PositionMaster.getExactDistance(c1, c2));
         return PositionMaster.getExactDistance(c1, c2);
-    }
-
-    // UTILITY METHODS
-    public List<PathNode> getAdjacentNodes() {
-        return mngr.getAdjacentNodes(cur.getCoordinates());
-    }
-
-    public List<Obj> getAdjacentCells() {
-        return mngr.getAdjacentObjs(cur.getCoordinates(), true);
     }
 
     public boolean isPassable(boolean flying, boolean agile, PathNode node) {

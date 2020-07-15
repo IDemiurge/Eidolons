@@ -234,8 +234,11 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                             container.row();
                             endContainer();
                             startContainer();
-                            if (object.getIntParam(PARAMS.N_OF_COUNTERS) > 0) {
-                                add(getValueContainer(object, PARAMS.C_N_OF_COUNTERS, PARAMS.N_OF_COUNTERS));
+                            if (object.getIntParam(PARAMS.EXTRA_ATTACKS) > 0) {
+                                add(getValueContainer(object, PARAMS.C_EXTRA_ATTACKS, PARAMS.EXTRA_ATTACKS));
+                            }
+                            if (object.getIntParam(PARAMS.EXTRA_MOVES) > 0) {
+                                add(getValueContainer(object, PARAMS.C_EXTRA_MOVES, PARAMS.EXTRA_MOVES));
                             }
                             endContainer();
                     }

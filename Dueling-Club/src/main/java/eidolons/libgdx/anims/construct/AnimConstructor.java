@@ -251,12 +251,11 @@ public class AnimConstructor {
     }
 
     public static Anim getPartAnim(DC_ActiveObj active, ANIM_PART part, CompositeAnim anim) {
-        //        active.getProperty(sfx);
         AnimData data = new AnimData();
         for (VALUE val : anim_vals) {
-            if (val instanceof PARAMETER || //TODO add filtering
+            if (val instanceof PARAMETER ||
                     StringMaster.contains(val.name(), part.toString())
-            || (val== PROPS.ANIM_VFX_MAIN && part == ANIM_PART.MISSILE)) {
+                    || (val == PROPS.ANIM_VFX_MAIN && part == ANIM_PART.MISSILE)) {
                 String name = active.getValue(val);
                 if (!name.isEmpty())
                     data.add(val, name);
@@ -358,15 +357,6 @@ public class AnimConstructor {
     }
 
     public static SPELL_ANIMS getTemplateFromTargetMode(DC_ActiveObj activeObj) {
-        Effect effect = EffectMaster.getFirstEffectOfClass(activeObj,
-                ShapeEffect.class);
-        if (effect != null) {
-            PositionMaster.SHAPE shape = ((ShapeEffect) effect).getShape();
-            if (shape != null) {
-                return new EnumMaster<SPELL_ANIMS>().
-                        retrieveEnumConst(SPELL_ANIMS.class, shape.name());
-            }
-        }
 
         TARGETING_MODE targetingMode = activeObj.getTargetingMode();
         switch (targetingMode) {
@@ -380,6 +370,16 @@ public class AnimConstructor {
             case SPRAY:
                 return new EnumMaster<SPELL_ANIMS>().retrieveEnumConst(SPELL_ANIMS.class, targetingMode.name());
         }
+        Effect effect = EffectMaster.getFirstEffectOfClass(activeObj,
+                ShapeEffect.class);
+        if (effect != null) {
+            PositionMaster.SHAPE shape = ((ShapeEffect) effect).getShape();
+            if (shape != null) {
+                return new EnumMaster<SPELL_ANIMS>().
+                        retrieveEnumConst(SPELL_ANIMS.class, shape.name());
+            }
+        }
+
         return null;
 
     }
@@ -420,9 +420,13 @@ public class AnimConstructor {
         //       Eidolons.gdxApplication.postRunnable(()->{
         //        list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
         //        });
-
+        int n = 1;
+        if (part== ANIM_PART.MISSILE)
+        if (anim instanceof SpellAnim) {
+            n = SpellMultiplicator.getPrePoolVfxCount((SpellAnim) anim);
+        }
         try {
-            list = SpellVfxPool.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
+            list = SpellVfxPool.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS), n);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             if (Flags.isJar())
@@ -430,7 +434,7 @@ public class AnimConstructor {
 
             list = SpellVfxPool.getEmitters(
                     getPath(ANIM_VALUES.PARTICLE_EFFECTS) +
-                            data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
+                            data.getValue(ANIM_VALUES.PARTICLE_EFFECTS), 1);
         }
         if (!list.isEmpty()) {
             exists = true;
@@ -480,7 +484,6 @@ public class AnimConstructor {
     }
 
     public static Animation getEffectAnim(Effect e) {
-        //        map
         if (!isAnimated(e)) {
             return null;
         }
@@ -498,14 +501,9 @@ public class AnimConstructor {
         }
         effectAnim.setRef(e.getRef());
         return effectAnim;
-        //        CompositeAnim a = new CompositeAnim();
-        //        a.add(
-        //                effectAnim.getPart()
-        //                , effectAnim);
-        //        return a;
     }
 
-    private static boolean isAnimated(Effect e) {
+    public static boolean isAnimated(Effect e) {
         if (e.getActiveObj() == null) {
             if (e instanceof DealDamageEffect) {
                 //                TODO

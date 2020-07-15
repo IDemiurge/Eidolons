@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -26,6 +27,7 @@ import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.data.filesys.PathFinder;
+import main.game.bf.directions.DIRECTION;
 import main.system.launch.Flags;
 
 import java.util.ArrayList;
@@ -615,6 +617,29 @@ public class GdxMaster {
         if (keyInputBlocked)
             return false;
         return Gdx.input.isKeyPressed(keyPressed);
+    }
+
+
+    public static int getAlignForDirection(DIRECTION direction) {
+        switch (direction) {
+            case UP:
+                return Align.top;
+            case DOWN:
+                return Align.bottom;
+            case LEFT:
+                return Align.left;
+            case RIGHT:
+                return Align.right;
+            case UP_LEFT:
+                return Align.topLeft;
+            case UP_RIGHT:
+                return Align.topRight;
+            case DOWN_RIGHT:
+                return Align.bottomRight;
+            case DOWN_LEFT:
+                return Align.bottomLeft;
+        }
+        return 0;
     }
 
     public enum CURSOR {

@@ -23,6 +23,7 @@ import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
@@ -114,7 +115,7 @@ public class CharacterCreator {
             addHero(newType);
         }
         if (preset && !newVersion) {
-            newType.setGroup(StringMaster.PRESET, false);
+            newType.setGroup(Strings.PRESET, false);
             String value = ListChooser.chooseEnum(CUSTOM_HERO_GROUP.class);
             if (value != null) {
                 newType.setProperty(G_PROPS.CUSTOM_HERO_GROUP, value);
@@ -142,7 +143,7 @@ public class CharacterCreator {
     }
 
     public static String getFilterGroup() {
-        return StringMaster.BATTLE_READY;
+        return Strings.BATTLE_READY;
     }
 
     public static WORKSPACE_GROUP getDoneWorkspaceGroup() {
@@ -162,7 +163,7 @@ public class CharacterCreator {
             return false;
         }
         ObjType type = DataManager.getType(name, DC_TYPE.CHARS);
-        return !type.getGroup().equals(StringMaster.CUSTOM);
+        return !type.getGroup().equals(Strings.CUSTOM);
     }
 
     public static void save(ObjType type) {
@@ -424,7 +425,7 @@ public class CharacterCreator {
 
         hero.setName(name);
         // if (CharacterCreator.isArcadeMode()) {
-        hero.setGroup(StringMaster.CUSTOM, true);
+        hero.setGroup(Strings.CUSTOM, true);
 
         hero.getDeity().applyHeroBonuses(hero);
 

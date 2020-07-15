@@ -49,7 +49,7 @@ public class Operation {
         MODIFY_ENTITY, SAVE_ENTITY_DATA,
         MODIFY_DATA, SAVE_DATA,
 
-        VOID_SET;
+        VOID_SET, CELL_DATA_CHANGE;
 
         LE_OPERATION() {
         }

@@ -4,6 +4,7 @@ import main.data.ability.AE_ConstrArgs;
 import main.entity.Ref;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.math.Property;
 
 public class StringComparison extends ConditionImpl {
@@ -41,18 +42,18 @@ public class StringComparison extends ConditionImpl {
         val1 = arg1.getStr(ref);
         val2 = arg2.getStr(ref);
         boolean result;
-        if (val2.contains(StringMaster.VERTICAL_BAR)) {
+        if (val2.contains(Strings.VERTICAL_BAR)) {
             for (String s : ContainerUtils.open(val2,
-             StringMaster.VERTICAL_BAR)) {
+             Strings.VERTICAL_BAR)) {
                 if (compare(val1, s, strict)) {
                     return true;
                 }
             }
         }
-        if (val1.contains(StringMaster.VERTICAL_BAR))// shouldn't happen
+        if (val1.contains(Strings.VERTICAL_BAR))// shouldn't happen
         {
             for (String s : ContainerUtils.open(val1,
-             StringMaster.VERTICAL_BAR)) {
+             Strings.VERTICAL_BAR)) {
                 if (compare(s, val2, strict)) {
                     return true;
                 }

@@ -7,7 +7,6 @@ import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
-import main.system.auxiliary.data.ListMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.List;
@@ -37,7 +36,6 @@ public class CastSpellEffect extends MicroEffect implements OneshotEffect {
         }
         List<String> reasons = ReasonMaster.getReasonsCannotActivate(active,
          ref);
-        if (!ListMaster.contains(reasons, "cooldown", false)) {
             if (!active.canBeActivated(ref, true)) {
                 game.getLogManager().log(
                  active.getOwnerUnit().getName()
@@ -46,7 +44,6 @@ public class CastSpellEffect extends MicroEffect implements OneshotEffect {
                 DC_SoundMaster.playStandardSound(STD_SOUNDS.FAIL);
                 return false;
             }
-        }
 
         if (isForceTargeting()) {
             ref.setTarget(null);

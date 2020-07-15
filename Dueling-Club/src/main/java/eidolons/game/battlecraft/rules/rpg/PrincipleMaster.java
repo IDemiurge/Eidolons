@@ -121,8 +121,8 @@ public class PrincipleMaster {
         Ref ref = new Ref(type.getGame());
         ref.setID(KEYS.INFO, type.getId());
         for (PARAMS param : map.keySet()) {
-            if (!(param.getName().contains(StringMaster.ALIGNMENT) || param.getName().contains(
-             StringMaster.IDENTITY))) {
+            if (!(param.getName().contains(Strings.ALIGNMENT) || param.getName().contains(
+             Strings.IDENTITY))) {
                 continue;
             }
             String string = map.get(param);

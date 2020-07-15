@@ -264,23 +264,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             main.system.auxiliary.log.LogMaster.log(1, actionInput + " won't be done; playerActionQueue=  " + playerActionQueue);
             return;
         }
-        //        if (actionQueue.contains(actionInput))
-        //            return;
-        //        if (actionQueue.size() > 0) {
-        //            new Thread(() -> {
-        //                Loop loop = new Loop(20);
-        //                while (loop.continues()) {
-        //                    WaitMaster.WAIT(100);
-        //                    if (actionQueue.isEmpty()) {
-        //                        //check validity
-        //                        tryAddPlayerActions(actionInput);
-        //                        break;
-        //                    }
-        //                }
-        //
-        //            }, "Player ActionInput Thread").start();
-        //        } else
-
         blockTimer = ExplorationActionHandler.calcBlockingTime(actionInput.getAction());
         tryAddPlayerActions(actionInput);
     }

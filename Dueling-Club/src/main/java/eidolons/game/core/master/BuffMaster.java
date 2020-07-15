@@ -27,7 +27,6 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.entity.type.impl.BuffType;
 import main.game.logic.battle.player.Player;
-import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.ArrayList;
@@ -35,7 +34,6 @@ import java.util.Collection;
 import java.util.List;
 
 import static main.entity.obj.BuffObj.DUMMY_BUFF_TYPE;
-import static main.system.GuiEventType.UPDATE_BUFFS;
 
 public class BuffMaster extends Master {
     public BuffMaster(DC_Game game) {
@@ -231,7 +229,6 @@ public class BuffMaster extends Master {
         game.getState().addObject(buff);
         addAttachment(buff, basis);
         UpkeepRule.addUpkeep(buff);
-        GuiEventManager.trigger(UPDATE_BUFFS, buff);
     }
 
     public BuffObj createCustomBuff(String s, BattleFieldObject unit) {

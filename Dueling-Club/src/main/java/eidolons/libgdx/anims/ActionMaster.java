@@ -314,7 +314,9 @@ public class ActionMaster {
         action.setScale(scaleX, scaleY);
         action.setDuration(v);
         addAction(actor, action);
-
+        // if (actor instanceof BaseView) {
+        //     ((BaseView) actor).resetTransform();
+        // }
         if (centered) {
             float x = actor.getX() - (scaleX - actor.getScaleX()) * actor.getWidth() / 2;
             float y = actor.getY() - (scaleY - actor.getScaleY()) * actor.getHeight() / 2;

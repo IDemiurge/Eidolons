@@ -32,6 +32,7 @@ import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
 import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.text.TextWrapper;
@@ -258,7 +259,7 @@ public class AttackTooltipFactory {
         ValueTooltip tooltip = new ValueTooltip();
         String descr = getDescriptionForBuff(obj);
 
-        tooltip.setUserObject(Collections.singletonList(new ValueContainer(obj.getName() + StringMaster.NEW_LINE + descr)));
+        tooltip.setUserObject(Collections.singletonList(new ValueContainer(obj.getName() + Strings.NEW_LINE + descr)));
         tooltip.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
         return tooltip;
     }

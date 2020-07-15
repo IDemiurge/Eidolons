@@ -1,6 +1,7 @@
 package eidolons.game.netherflame.main.event;
 
 import eidolons.game.netherflame.main.event.text.TIP;
+import eidolons.game.netherflame.main.event.text.TextEvent;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
 import eidolons.system.text.DescriptionTooltips;
@@ -23,7 +24,7 @@ import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE_
 
 public class TipMessageMaster {
     private static final List<Event.EVENT_TYPE> eventsMessaged=    new ArrayList<>() ;
-    public static final TIP[] tutorialTips = {
+    public static final TextEvent[] tutorialTips = {
 //            ALERT,
 
 
@@ -41,7 +42,8 @@ public class TipMessageMaster {
 
     public static void tip(String s, Runnable after) {
          for(String substring: ContainerUtils.openContainer( s)){
-             TIP tip  =new EnumMaster<TIP>().retrieveEnumConst(TIP.class, substring);
+             TextEvent tip  = Tips.getTipConst(substring);
+
              if (tip == null) {
                  String text = DescriptionTooltips.getTipMap().get(s.toLowerCase());
                  if (text != null) {
@@ -57,9 +59,9 @@ public class TipMessageMaster {
     }
 
     public static void tip(String[] args) {
-        List<TIP> list = new ArrayList<>();
+        List<TextEvent> list = new ArrayList<>();
         for (String arg : args) {
-            TIP tip = new EnumMaster<TIP>().
+            TextEvent tip = new EnumMaster<TextEvent>().
                     retrieveEnumConst(TIP.class, arg);
             if (tip == null) {
                 String text = DescriptionTooltips.getTipMap().get(arg.trim());
@@ -72,16 +74,14 @@ public class TipMessageMaster {
             list.add(tip);
         }
         if (!list.isEmpty()) {
-            tip(list.toArray(new TIP[0]));
+            tip(list.toArray(new TextEvent[0]));
         }
     }
 
-    public static void tip(  TIP... tips) {
+    public static void tip(  TextEvent... tips) {
         tip(false, tips);
     }
-    public static void tip(boolean manual, TIP... tips) {
-        for (TIP tip : tips) {
-        }
+    public static void tip(boolean manual, TextEvent... tips) {
         if (tips[0].isDone()) {
             return;
         }
@@ -107,7 +107,7 @@ public class TipMessageMaster {
         GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, source);
     }
 
-    private static Runnable createChain(TIP[] tips) {
+    private static Runnable createChain(TextEvent[] tips) {
         if (tips.length <= 1)
             return () -> {
                 if (!Flags.isIDE())
@@ -116,15 +116,15 @@ public class TipMessageMaster {
                 }
             tips[0].run();
             };
-        TIP[] tipsChopped =
-                Arrays.stream(tips).skip(1).collect(Collectors.toList()).toArray(new TIP[tips.length - 1]);
+        TextEvent[] tipsChopped =
+                Arrays.stream(tips).skip(1).collect(Collectors.toList()).toArray(new TextEvent[tips.length - 1]);
         return () -> tip(tipsChopped);
     }
 
-    private static TipMessageSource getSource(TIP tip) {
+    private static TipMessageSource getSource(TextEvent tip) {
         String message = tip.getMessage();
         if (tip.getMessage().isEmpty()) {
-            message =DescriptionTooltips.getTipMap().get(tip.name().toLowerCase());
+            message =DescriptionTooltips.getTipMap().get(tip.toString().toLowerCase());
         }
         return new TipMessageSource( message, tip.getImg(), "Continue", tip.isOptional(), null, tip.getMessageChannel());
     }
@@ -134,7 +134,7 @@ public class TipMessageMaster {
             return;
         checkEventMessaged(type);
 
-        TIP tip = getTip(type);
+        TextEvent tip = getTip(type);
         tip(tip);
     }
 
@@ -142,7 +142,7 @@ public class TipMessageMaster {
         eventsMessaged.add(type);
     }
 
-    private static TIP getTip(Event.EVENT_TYPE type) {
+    private static TextEvent getTip(Event.EVENT_TYPE type) {
 //         new EnumMaster<ENUM>().retrieveEnumConst(ENUM.class, string )
         if (type instanceof Event.STANDARD_EVENT_TYPE) {
             switch (((Event.STANDARD_EVENT_TYPE) type)) {

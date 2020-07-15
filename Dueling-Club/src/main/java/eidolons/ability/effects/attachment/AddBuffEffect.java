@@ -27,6 +27,7 @@ import main.entity.type.impl.BuffType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
@@ -183,7 +184,7 @@ public class AddBuffEffect extends MultiEffect implements OneshotEffect, Resisti
             if (getBuffTypeName() == null) {
                 return new BuffType();
             }
-            boolean invisible = getBuffTypeName().contains(StringMaster.INVISIBLE_BUFF_CODE);
+            boolean invisible = getBuffTypeName().contains(Strings.INVISIBLE_BUFF_CODE);
             if (TextParser.checkHasRefs(getBuffTypeName())) {
                 ref.setID(KEYS.INFO, ref.getId(KEYS.ABILITY));
                 String parsedName = TextParser.parse(getBuffTypeName(), ref,

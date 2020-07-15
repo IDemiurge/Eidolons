@@ -84,10 +84,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
@@ -247,8 +244,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 factor += danger;
             }
         }
-        float mod = unit.getIntParam(PARAMS.N_OF_COUNTERS) * 5;
-        mod += unit.getIntParam(PARAMS.C_N_OF_COUNTERS) * 2;
+        float mod = unit.getIntParam(PARAMS.EXTRA_ATTACKS) * 5;
+        mod += unit.getIntParam(PARAMS.C_EXTRA_ATTACKS) * 2;
         mod += unit.getIntParam(PARAMS.COUNTER_MOD) / 3 +
                 unit.getIntParam(PARAMS.COUNTER_ATTACK_MOD) / 3;
 
@@ -861,7 +858,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                     if (valueEffect.getMod_type() == MOD.MODIFY_BY_PERCENT) {
                         amount = MathMaster.getFractionValueCentimal(target.getIntParam(param,
                                 valueEffect.getFormula().toString()
-                                        .contains(StringMaster.BASE_CHAR)), amount);
+                                        .contains(Strings.BASE_CHAR)), amount);
 
                     }
                     boolean drain = (e instanceof DrainEffect);
@@ -1401,9 +1398,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 break;
             case On_Alert:
                 priority = getAlertPriority(getUnit());
-                break;
-            case Meditate:
-                priority = getModePriority(getUnit(), STD_MODES.MEDITATION);
                 break;
             case Rest:
                 priority = getModePriority(getUnit(), STD_MODES.RESTING);

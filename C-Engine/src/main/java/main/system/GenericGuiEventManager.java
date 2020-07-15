@@ -11,5 +11,5 @@ public interface GenericGuiEventManager {
 
     void processEvents();
 
-    void triggerWithMinDelayBetween(GuiEventType eventType, Object obj);
+    void triggerWithMinDelayBetween(GuiEventType eventType, Object obj, int millis);
 }

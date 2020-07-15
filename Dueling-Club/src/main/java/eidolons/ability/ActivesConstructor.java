@@ -46,6 +46,7 @@ import main.game.bf.directions.UNIT_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
@@ -62,7 +63,7 @@ public class ActivesConstructor {
         // TODO
         ArrayList<ROLL_TYPES> rolls = new ArrayList<>();
         ArrayList<String> vars = new ArrayList<>();
-        for (String roll : ContainerUtils.open(saveRoll, StringMaster.VERTICAL_BAR)) {
+        for (String roll : ContainerUtils.open(saveRoll, Strings.VERTICAL_BAR)) {
             String varArgs = VariableManager.getVarPart(roll);
             roll = roll.replace(varArgs, "");
             rolls.add(new EnumMaster<ROLL_TYPES>().retrieveEnumConst(ROLL_TYPES.class, roll));

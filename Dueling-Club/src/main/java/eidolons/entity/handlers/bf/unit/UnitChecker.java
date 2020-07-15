@@ -1,5 +1,6 @@
 package eidolons.entity.handlers.bf.unit;
 
+import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
@@ -399,6 +400,9 @@ public class UnitChecker extends EntityChecker<Unit> {
         return checkProperty(G_PROPS.IMMUNITIES, type.toString());
     }
 
+    public boolean checkCanDoFreeMove(DC_ActiveObj activeObj) {
+        return (getEntity().getFreeMovesDone())<1+getEntity().getIntParam(PARAMS.FREE_MOVE_BONUS);
+    }
 
     /**
      * mastery group (spell/skill),
@@ -441,4 +445,5 @@ public class UnitChecker extends EntityChecker<Unit> {
         }
         return getEntity().getMode() == STD_MODES.ALERT;
     }
+
 }

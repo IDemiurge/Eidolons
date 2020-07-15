@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.encounter;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
+import main.system.auxiliary.RandomWizard;
 
 public class EncounterPuzzle extends Puzzle {
     private Encounter encounter;
@@ -15,22 +16,23 @@ public class EncounterPuzzle extends Puzzle {
     @Override
     protected String getCompletionText() {
         //where would we pull these texts from? By default..
-        return "Hurray!";
+        return "My past victims can rest in peace now. Me, I will have to wait and suffer some more.";
     }
 
     @Override
     protected String getFailText() {
-        return "Ya rigid";
+        return RandomWizard.random()? "By Dust, were they really that many? Will these wretches be my undoing?"
+                : "My powers vane. Retribution was inevitable, but defeat, perhaps not...";
     }
 
     @Override
     protected String getDefaultTitle() {
-        return "Slash and Burn";
+        return "Souls of the Slain";
     }
 
     @Override
     public String getQuestText() {
-        return  "Kill the satona!";
+        return  "Slay the risen";
     }
 
     public void setEncounter(Encounter encounter) {
@@ -46,7 +48,7 @@ public class EncounterPuzzle extends Puzzle {
     }
 
     public boolean isEscapeAllowed() {
-        return true;
+        return false;
     }
 
     @Override
@@ -56,5 +58,13 @@ public class EncounterPuzzle extends Puzzle {
 
     public boolean isContinuousSpawning() {
         return true;
+    }
+
+    public boolean isEndless() {
+        return false;
+    }
+
+    public int getMaxUnits() {
+        return 8;
     }
 }

@@ -15,6 +15,11 @@ import java.util.Map;
 
 /**
  * Created by JustMe on 11/19/2017.
+ *
+ * what we need to log?
+ * > puzzle actions - important!
+ * >
+ *
  */
 public class SpecialLogger implements FileLogger {
     private static final int WRITE_ALL_PERIOD = 5000;

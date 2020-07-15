@@ -78,11 +78,6 @@ public class PathChoiceMaster {
 
             for (DC_ActiveObj a : moveActions) {
 
-                if (path.hasAction(a)) {
-                    if (a.getIntParam(PARAMS.COOLDOWN) >= 0) {
-                        continue;
-                    }
-                }
                 Targeting targeting = a.getTargeting();
                 Collection<Obj> objects = null;
                 if (targeting != null)

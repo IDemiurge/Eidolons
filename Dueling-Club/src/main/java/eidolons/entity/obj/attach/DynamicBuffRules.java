@@ -15,6 +15,7 @@ import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.obj.BuffObj;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.images.ImageManager;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class DynamicBuffRules {
                     effect.setRef(new Ref()); //TODO
                 }
                 try {
-                    descr += effect.getTooltip() + StringMaster.NEW_LINE;
+                    descr += effect.getTooltip() + Strings.NEW_LINE;
                 } catch (Exception e) {
 //                    main.system.ExceptionMaster.printStackTrace(e);
                 }
@@ -109,7 +110,7 @@ public class DynamicBuffRules {
                 return ImageManager.getMasteryGroupPath(SkillEnums.SKILL_GROUP.DEFENSE.toString());
             case ON_PARRY:
             case ON_PARRY_SELF:
-                return ImageManager.getValueIconPath(PARAMS.N_OF_COUNTERS);
+                return ImageManager.getValueIconPath(PARAMS.EXTRA_ATTACKS);
             case ON_SNEAK_ATTACK:
             case ON_SNEAK_ATTACK_SELF:
             case ON_SNEAK_HIT_SELF:

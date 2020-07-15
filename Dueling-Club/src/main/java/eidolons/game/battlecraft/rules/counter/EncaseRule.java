@@ -46,7 +46,7 @@ public class EncaseRule extends DC_CounterRule {
         return new Effects(new ModifyValueEffect(PARAMS.WEIGHT,
          MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
          + WEIGHT_PER_COUNTER),
-         new ModifyValueEffect(PARAMS.AP_PENALTY
+         new ModifyValueEffect(PARAMS.ATB_COST_MOD
           , MOD.MODIFY_BY_CONST,
           getCounterRef() + "*" + PENALTY_PER_COUNTER),
          new ModifyValueEffect(PARAMS.ARMOR

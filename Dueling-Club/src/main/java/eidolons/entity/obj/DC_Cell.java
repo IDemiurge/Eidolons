@@ -37,9 +37,10 @@ public class DC_Cell extends DC_Obj implements Cell {
     private boolean playerHasSeen;
     private boolean VOID;
 
-    private DungeonEnums.CELL_SET cellType;
-    private int cellVariant;
-    private  COLOR_THEME colorTheme;
+    private DungeonEnums.CELL_SET cellSet;
+    private int cellVariant=1; //pack
+    private int cellVersion=1; //particular cell file
+    private COLOR_THEME colorTheme;
 
     private float overlayRotation;
     private String overlayData;
@@ -81,23 +82,26 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
     public String getDefaultImgPath() {
-        return WallMaster.getCellImage(getCoordinates(), getCellVariant());
+        return WallMaster.getCellImage(getCoordinates(), getCellVersion());
     }
 
     public void resetCell() {
         resetCell(true);
     }
+
     public void resetCell(boolean gdx) {
-        cellVariant = (floor.getCellVariant(x, y));
-        cellType = (floor.getCellType(x, y));
+        if (cellSet == null) {
+            cellSet = (floor.getCellType(x, y));
+        }
         setImage(getDefaultImgPath());
-        if (gdx){
+        if (gdx) {
             GuiEventManager.trigger(GuiEventType.CELL_RESET, this);
         }
 
     }
-    public void setCellType(DungeonEnums.CELL_SET cellType) {
-        this.cellType = cellType;
+
+    public void setCellSet(DungeonEnums.CELL_SET cellSet) {
+        this.cellSet = cellSet;
     }
 
     public DC_Cell(int i, int j, DC_Game game, Ref ref, Floor floor) {
@@ -125,8 +129,8 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
 
-    public DungeonEnums.CELL_SET getCellType() {
-        return cellType;
+    public DungeonEnums.CELL_SET getCellSet() {
+        return cellSet;
     }
 
     public int getCellVariant() {
@@ -206,6 +210,7 @@ public class DC_Cell extends DC_Obj implements Cell {
         }
         return null;
     }
+
     public Set<MARK> getMarks() {
         if (marks == null) {
             marks = new HashSet<>();
@@ -222,7 +227,7 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
     public void toBase() {
-//        super.toBase();
+        //        super.toBase();
         name = getProp("Name")
                 + StringMaster.wrapInParenthesis(StringMaster
                 .format(getProperty(PROPS.VISIBILITY_STATUS)));
@@ -330,16 +335,16 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
     public void setObjects(BattleFieldObject[] objects,
-                                          Boolean overlayingIncluded_not_only) {
+                           Boolean overlayingIncluded_not_only) {
         if (overlayingIncluded_not_only == null) {
-           setOverlayingObjects(objects);
-        } else
-        if (overlayingIncluded_not_only) {
+            setOverlayingObjects(objects);
+        } else if (overlayingIncluded_not_only) {
             setObjects(objects);
         } else {
             setNonOverlaying(objects);
         }
     }
+
     public void setOverlayingObjects(BattleFieldObject[] overlayingObjects) {
         this.overlayingObjects = overlayingObjects;
     }
@@ -379,5 +384,13 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     public boolean isArtPuzzleCell() {
         return artPuzzleCell;
+    }
+
+    public void setCellVersion(int cellVersion) {
+        this.cellVersion = cellVersion;
+    }
+
+    public int getCellVersion() {
+        return cellVersion;
     }
 }

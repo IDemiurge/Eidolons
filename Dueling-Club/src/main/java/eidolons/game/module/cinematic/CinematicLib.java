@@ -1,6 +1,7 @@
 package eidolons.game.module.cinematic;
 
 import com.badlogic.gdx.math.Interpolation;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.ScriptLib;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.fullscreen.Screenshake;
@@ -38,17 +39,38 @@ public class CinematicLib {
         VOID_MAZE_FIRST_MOVE, VOID_MAZE_FAIL, VOID_MAZE_AFTER, VOID_MAZE_WIN,
         UNCONSCIOUS_BEFORE, UNCONSCIOUS_AFTER,
 
-        SUMMONING,
+        SUMMONING, // PORTAL?
+COMBAT_STARTS, //ZOOM, PAN TO LEADER
+COMBAT_ENDS,
+
+        ENTER_MODULE,
 
         //what are the limits and possibilities here?
         //use of Runnables
         // parameter signatures? sometimes it's just better to have a method!
-        ;
+        EXIT_PORTAL, ENTER_PORTAL
 
     }
 
     public static void run(StdCinematic cinematic, Object... args) {
         switch (cinematic) {
+            case EXIT_PORTAL:
+                GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, args[0]);
+                break;
+            case ENTER_PORTAL:
+                GuiEventManager.trigger(GuiEventType.UNIT_FADE_OUT_AND_BACK, args[0]);
+                break;
+            case COMBAT_ENDS:
+            case COMBAT_STARTS:
+                Unit leader = (Unit) args[0];
+                break;
+            case ENTER_MODULE:
+                doBlackout(true, 0.04f);
+                WaitMaster.WAIT(500);
+                doZoom(1.25f, 0.05f, Interpolation.fade);
+                doBlackout(false, 4f);
+                doZoom(1f, 3.25f, Interpolation.pow2In);
+                break;
             case UNCONSCIOUS_AFTER:
                 GuiEventManager.trigger(GuiEventType.UNIT_MOVED, args[0]);
                 GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, args[0]);

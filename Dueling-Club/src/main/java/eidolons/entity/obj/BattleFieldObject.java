@@ -291,7 +291,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
         setParam(PARAMS.C_ENDURANCE, getIntParam(PARAMS.ENDURANCE), true);
         setParam(PARAMS.C_TOUGHNESS, getIntParam(PARAMS.TOUGHNESS), true);
-        setParam(PARAMS.C_N_OF_COUNTERS, getIntParam(PARAMS.N_OF_COUNTERS), true);
+        setParam(PARAMS.C_EXTRA_ATTACKS, getIntParam(PARAMS.EXTRA_ATTACKS), true);
+        setParam(PARAMS.C_EXTRA_MOVES, getIntParam(PARAMS.EXTRA_MOVES), true);
         setParam(PARAMS.C_ENERGY, "0", true);
 
         setParam(PARAMS.C_FOCUS, DC_MathManager.getStartingFocus(this), true);
@@ -690,5 +691,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     public LevelStruct getStruct() {
         return getGame().getDungeonMaster().getStructMaster().getLowestStruct(getCoordinates());
+    }
+
+    public boolean checkCanDoFreeMove(DC_ActiveObj entity) {
+        return false;
     }
 }

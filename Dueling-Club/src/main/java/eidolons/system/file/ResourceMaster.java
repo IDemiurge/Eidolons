@@ -9,7 +9,7 @@ import main.data.XLinkedMap;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.PathUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
@@ -133,7 +133,7 @@ public class ResourceMaster {
 
 
         String oldPath = type.getProperty(imgProp);
-        if (oldPath.contains(StringMaster.FORMULA_REF_OPEN_CHAR))
+        if (oldPath.contains(Strings.FORMULA_REF_OPEN_CHAR))
             return; // variable value!
 
         String path = getNewImagePath(imgProp, type);

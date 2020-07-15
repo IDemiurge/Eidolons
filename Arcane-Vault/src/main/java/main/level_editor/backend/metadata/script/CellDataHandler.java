@@ -6,7 +6,7 @@ import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.operation.Operation;
 import main.system.SortMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.data.DataUnit;
 import main.system.threading.WaitMaster;
 
@@ -99,7 +99,7 @@ public abstract class CellDataHandler<T extends DataUnit> extends LE_Handler {
             }
             T scriptData = getMap().get(coordinates);
             builder.append(coordinates.toString()).append("=").append(scriptData.getData())
-                    .append(StringMaster.VERTICAL_BAR);
+                    .append(Strings.VERTICAL_BAR);
         }
         return builder.wrap(getXmlNodeName()).toString();
     }

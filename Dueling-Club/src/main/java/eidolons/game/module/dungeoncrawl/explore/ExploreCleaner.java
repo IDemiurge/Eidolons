@@ -1,7 +1,6 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
-import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.StealthRule;
@@ -11,7 +10,6 @@ import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.SpellEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
 import main.entity.obj.BuffObj;
 
 import java.util.ArrayList;
@@ -55,16 +53,10 @@ public class ExploreCleaner extends ExplorationHandler {
                 BuffObj buff = unit.getBuff(StealthRule.SPOTTED);
                 if (buff != null)
                     buff.remove();
-                cleanUpActions(unit);
             }
         }
     }
 
-    private void cleanUpActions(Unit unit) {
-        for (ActiveObj activeObj : unit.getActives()) {
-            activeObj.setParam(PARAMS.C_COOLDOWN, activeObj.getIntParam(PARAMS.COOLDOWN, false));
-        }
-    }
 
     private void removeMode(Unit unit) {
         if (unit.getMode() != null)

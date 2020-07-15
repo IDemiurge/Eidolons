@@ -12,10 +12,7 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.Loop;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 
 import java.util.List;
 
@@ -90,7 +87,7 @@ public class UnitLevelManager {
         for (PARAMETER p : ContentValsManager.getPerLevelParams()) {
             if (newType.getIntParam(p) > 0) {
                 PARAMETER param = ContentValsManager.getPARAM(p.toString().replace(
-                 StringMaster.PER_LEVEL, ""));
+                 Strings.PER_LEVEL, ""));
                 newType.modifyParameter(param, newType.getIntParam(p));
             }
         }

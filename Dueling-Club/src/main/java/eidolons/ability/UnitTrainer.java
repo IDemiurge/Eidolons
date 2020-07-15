@@ -12,6 +12,7 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 import main.system.datatypes.WeightMap;
@@ -66,7 +67,7 @@ public class UnitTrainer {
         /*
          * weights per mastery level and skill difficulty TODO
 		 */
-        String plan = getPlan(trainee).replace(StringMaster.BASE_CHAR, "");
+        String plan = getPlan(trainee).replace(Strings.BASE_CHAR, "");
         if (!plan.isEmpty()) {
             if (!plan.endsWith(";")) {
                 plan += ";"; // ++ syntax for cancelling [mastery] skills...
@@ -88,7 +89,7 @@ public class UnitTrainer {
                     continue;
                 }
                 int weight = Math.max(1, score - t.getIntParam(PARAMS.SKILL_DIFFICULTY));
-                planBuilder.append(t.getName()).append(StringMaster.wrapInParenthesis("" + weight)).append(StringMaster.CONTAINER_SEPARATOR);
+                planBuilder.append(t.getName()).append(StringMaster.wrapInParenthesis("" + weight)).append(Strings.CONTAINER_SEPARATOR);
             }
         }
         plan = planBuilder.toString();
@@ -114,7 +115,7 @@ public class UnitTrainer {
     }
 
     private static WeightMap<ObjType> initXpItemPool(Unit trainee) {
-        if (StringMaster.isEmpty(getPlan(trainee)) || getPlan(trainee).contains(StringMaster.BASE_CHAR)) {
+        if (StringMaster.isEmpty(getPlan(trainee)) || getPlan(trainee).contains(Strings.BASE_CHAR)) {
             generateSkillPlan(trainee);
         }
         WeightMap<ObjType> pool = new WeightMap<>();

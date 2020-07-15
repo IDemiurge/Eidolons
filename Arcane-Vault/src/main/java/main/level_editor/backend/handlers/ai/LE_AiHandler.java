@@ -12,7 +12,7 @@ import main.level_editor.backend.LE_Manager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.MapBuilder;
 
 import java.util.HashMap;
@@ -189,7 +189,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
         StringBuilder builder = new StringBuilder();
         for (Integer id : encounterAiMap.keySet()) {
             builder.append(id).append("=");
-            builder.append(encounterAiMap.get(id).toString()).append(StringMaster.VERTICAL_BAR);
+            builder.append(encounterAiMap.get(id).toString()).append(Strings.VERTICAL_BAR);
         }
         String xml = XML_Converter.wrap(FloorLoader.ENCOUNTER_AI_GROUPS, builder.toString());
 
@@ -201,7 +201,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
                 }
             }
             builder.append(":");
-            builder.append(data.toString()).append(StringMaster.VERTICAL_BAR);
+            builder.append(data.toString()).append(Strings.VERTICAL_BAR);
         }
         xml += XML_Converter.wrap(FloorLoader.CUSTOM_AI_GROUPS, builder.toString());
 
@@ -210,7 +210,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
     public void initEncounterGroups(String textContent) {
         encounterAiMap =
-                new MapBuilder<>(":", StringMaster.VERTICAL_BAR,
+                new MapBuilder<>(":", Strings.VERTICAL_BAR,
                         s -> NumberUtils.getIntParse(s),
                         s -> new AiData(s))
                         .build(textContent);

@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.battlefield.vision.IlluminationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.bf.decor.CellData;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_TAGS;
@@ -69,14 +70,10 @@ public class Floor extends LightweightEntity {
         this.levelFilePath = levelFilePath;
     }
 
-    public int getCellVariant(int i, int j) {
-        return getGame().getDungeonMaster().getStructMaster().getCellVariant(i, j);
-    }
-
     public DungeonEnums.CELL_SET getCellType(int i, int j) {
-        CellScriptData cellScriptData = location.getTextDataMap().get(Coordinates.get(i, j));
+        CellData cellScriptData = location.getCellMap().get(Coordinates.get(i, j));
         if (cellScriptData != null) {
-            String value = cellScriptData.getValue(CellScriptData.CELL_SCRIPT_VALUE.cell_set);
+            String value = cellScriptData.getValue(CellData.CELL_VALUE.cell_set);
             if (!value.isEmpty()) {
                 return DungeonEnums.CELL_SET.valueOf(value.toLowerCase());
             }

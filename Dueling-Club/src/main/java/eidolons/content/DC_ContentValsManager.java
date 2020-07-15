@@ -29,6 +29,7 @@ import main.swing.generic.components.editors.EDITOR;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.log.LogMaster;
 
@@ -85,7 +86,7 @@ public class DC_ContentValsManager extends ContentValsManager {
 
     public static void initTypeDynamicValues() {
         for (ObjType t : DataManager.getTypes(DC_TYPE.CHARS)) {
-            if (!t.getGroup().equals(StringMaster.BACKGROUND)) {
+            if (!t.getGroup().equals(Strings.BACKGROUND)) {
             }
 
         }
@@ -126,7 +127,7 @@ public class DC_ContentValsManager extends ContentValsManager {
         for (PARAMS p : PARAMS.values()) {
             if (p.isMastery()) {
                 Param scoreParam = new Param(p);
-                scoreParam.setName(p.getName() + StringMaster.SCORE);
+                scoreParam.setName(p.getName() + Strings.SCORE);
                 list.add(scoreParam);
             }
         }
@@ -211,7 +212,7 @@ public class DC_ContentValsManager extends ContentValsManager {
         if (param != null) {
             return param;
         }
-        param = ContentValsManager.getPARAM(principle.toString() + StringMaster.ALIGNMENT);
+        param = ContentValsManager.getPARAM(principle.toString() + Strings.ALIGNMENT);
         ContentConsts.alignmentMap.put(principle, param);
         return param;
     }
@@ -223,7 +224,7 @@ public class DC_ContentValsManager extends ContentValsManager {
         if (param != null) {
             return param;
         }
-        param = ContentValsManager.getPARAM(principle.toString() + StringMaster.IDENTITY);
+        param = ContentValsManager.getPARAM(principle.toString() + Strings.IDENTITY);
         ContentConsts.identityMap.put(principle, param);
         return param;
     }
@@ -296,11 +297,11 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static PARAMETER getDefaultAttr(PARAMETER param) {
-        return ContentValsManager.getPARAM(StringMaster.DEFAULT + param.toString());
+        return ContentValsManager.getPARAM(Strings.DEFAULT + param.toString());
     }
 
     public static PARAMETER getBaseAttr(PARAMETER param) {
-        PARAMETER base = ContentValsManager.getPARAM(StringMaster.BASE + param.toString());
+        PARAMETER base = ContentValsManager.getPARAM(Strings.BASE + param.toString());
         if (base!=null )
             return base;
         return param;
@@ -322,19 +323,19 @@ public class DC_ContentValsManager extends ContentValsManager {
     public static PARAMETER getSpecialCostReductionParam(PARAMETER costParam, PROPERTY p) {
         String valueName = null;
         if (p == PROPS.VERBATIM_SPELLS) {
-            valueName = costParam.getName() + StringMaster.REDUCTION + "_" + p.getName();
+            valueName = costParam.getName() + Strings.REDUCTION + "_" + p.getName();
         }
         if (p == PROPS.SKILLS) {
-            valueName = costParam.getName() + StringMaster.REDUCTION + "_" + p.getName();
+            valueName = costParam.getName() + Strings.REDUCTION + "_" + p.getName();
         }
         if (p == PROPS.LEARNED_SPELLS) {
-            valueName = costParam.getName() + StringMaster.REDUCTION + "_" + p.getName();
+            valueName = costParam.getName() + Strings.REDUCTION + "_" + p.getName();
         }
         return ContentValsManager.getPARAM(valueName);
     }
 
     public static PARAMETER getCostReductionParam(PARAMETER costParam, PROPERTY p) {
-        String valueName = costParam.getName() + StringMaster.REDUCTION;
+        String valueName = costParam.getName() + Strings.REDUCTION;
         return ContentValsManager.getPARAM(valueName);
     }
 
@@ -370,15 +371,15 @@ public class DC_ContentValsManager extends ContentValsManager {
     public static PARAMETER[] getWeaponWeightPenaltyParams() {
         return new PARAMETER[]{
          // PARAMS.ATTACK_MOD,
-         PARAMS.ATTACK_STA_PENALTY, PARAMS.ATTACK_AP_PENALTY, PARAMS.SPELL_FOC_PENALTY,
-         PARAMS.SPELL_AP_PENALTY,};
+         PARAMS.ATTACK_TOUGHNESS_COST_MOD, PARAMS.ATTACK_ATB_COST_MOD, PARAMS.SPELL_FOC_COST_MOD,
+         PARAMS.SPELL_ATB_COST_MOD,};
     }
 
     public static PARAMETER[] getArmorWeightPenaltyParams() {
         return new PARAMETER[]{
          // PARAMS.DEFENSE_MOD,
-         PARAMS.MOVE_TOU_PENALTY, PARAMS.MOVE_AP_PENALTY,
-         PARAMS.SPELL_ESS_PENALTY,};
+         PARAMS.MOVE_TOU_COST_MOD, PARAMS.MOVE_ATB_COST_MOD,
+         PARAMS.SPELL_ESS_COST_MOD,};
     }
 
     public static void addDefaultValues(Entity entity, boolean dynamic) {
@@ -428,9 +429,9 @@ public class DC_ContentValsManager extends ContentValsManager {
     private static List<VALUE> getDefaultValuesToReset() {
         return new ArrayList<>(Arrays
          .asList(
-          PARAMS.COUNTER_TOUGH_PENALTY,
-          PARAMS.AOO_TOUGH_PENALTY,
-          PARAMS.INSTANT_TOUGH_PENALTY,
+          PARAMS.COUNTER_TOUGHNESS_COST_MOD,
+          PARAMS.AOO_TOUGHNESS_COST_MOD,
+          PARAMS.INSTANT_TOUGHNESS_COST_MOD,
           PARAMS.COUNTER_MOD));
     }
 
@@ -538,7 +539,7 @@ public class DC_ContentValsManager extends ContentValsManager {
         if (param != null) {
             return new PARAMETER[]{param};
         }
-        if (ContainerUtils.openContainer(sparam, StringMaster.VERTICAL_BAR).size() > 1) {
+        if (ContainerUtils.openContainer(sparam, Strings.VERTICAL_BAR).size() > 1) {
             return DC_Game.game.getValueManager().getParamsFromContainer(sparam);
         } else {
             return DC_Game.game.getValueManager().getValueGroupParams(sparam);
@@ -843,8 +844,10 @@ public class DC_ContentValsManager extends ContentValsManager {
                 return PARAMS.C_FOCUS;
             case ENDURANCE_COST:
                 return PARAMS.C_ENDURANCE;
-            case CP_COST:
-                return PARAMS.C_N_OF_COUNTERS;
+            case ATK_PTS_COST:
+                return PARAMS.C_EXTRA_ATTACKS;
+            case MOVE_PTS_COST:
+                return PARAMS.C_EXTRA_MOVES;
         }
         return costParam;
     }

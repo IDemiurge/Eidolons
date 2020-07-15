@@ -164,9 +164,6 @@ public class AtomicAi extends AiHandler {
                         return action;
                     }
                 }
-        if (ai.getType() == AI_TYPE.CASTER) {
-            return AiActionFactory.newAction(ActionEnums.STD_MODE_ACTIONS.Meditate.toString(), ai);
-        }
 
         return AiActionFactory.newAction(
                 RandomWizard.random() ? RandomWizard.random() ?
@@ -234,15 +231,18 @@ public class AtomicAi extends AiHandler {
                 );
         if (facing == null)
             return null;
-        //TODO new stacking rule ai
+        //TODO AI Review -
         Coordinates c = getUnit().getCoordinates().getAdjacentCoordinate(facing.getDirection());
-        for (BattleFieldObject object : getGame().getObjectsOnCoordinateNoOverlaying(c)) {
-            if (object.getOwner() == (getUnit().getOwner())) {
-                return Positioner.adjustCoordinate(ai.getUnit(), c, ai.getUnit().getFacing());
-            }
-        }
         if (new StackingRule(game).canBeMovedOnto(getUnit(), c)) {
             return c;
+        }
+        Coordinates target = units.iterator().next().getCoordinates();
+        double dst =  target. dst_(getUnit().getCoordinates());
+        for (BattleFieldObject object : getGame().getObjectsOnCoordinateNoOverlaying(c)) {
+            if (object.getOwner() == (getUnit().getOwner())) {
+                return Positioner.adjustCoordinate(ai.getUnit(), c, facing,
+                        c1-> c1.dst_(target)<=dst);
+            }
         }
         return Positioner.adjustCoordinate(ai.getUnit(), c, ai.getUnit().getFacing());
 

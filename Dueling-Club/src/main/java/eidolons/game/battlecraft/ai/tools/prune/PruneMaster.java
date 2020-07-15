@@ -23,6 +23,7 @@ import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -36,7 +37,7 @@ public class PruneMaster extends AiHandler {
         super(master);
     }
 
-    public List<Coordinates> pruneTargetCells(Action targetAction, List<Coordinates> list) {
+    public List<Coordinates> pruneTargetCells(Action targetAction, Collection<Coordinates> list) {
         TreeMap<Integer, Coordinates> map = new TreeMap<>(SortMaster
          .getNaturalIntegerComparator(false));
 

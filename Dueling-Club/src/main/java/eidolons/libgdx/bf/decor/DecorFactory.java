@@ -3,6 +3,7 @@ package eidolons.libgdx.bf.decor;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.datasource.SpriteData;
@@ -13,6 +14,7 @@ import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.texture.Images;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.StringMaster;
 
 public class DecorFactory {
@@ -28,10 +30,9 @@ public class DecorFactory {
         String path = data.getTexturePath();
         if (path == null) {
             path = data.getSpritePath();
-            if (StringMaster.isEmpty(path )) {
+            if (StringMaster.isEmpty(path)) {
                 actor = new NoHitImageX(Images.COLOR_EMBLEM);
-            } else
-            {
+            } else {
                 actor = new SpriteX(path);
             }
         } else {
@@ -64,7 +65,11 @@ public class DecorFactory {
                 //TODO
             }
         }
-        actor.setOrigin(Align.center);//TODO
+        String val = data.getValue(GraphicData.GRAPHIC_VALUE.origin);
+        if (!val .isEmpty()) {
+            actor.setOrigin(GdxMaster.getAlignForDirection(DIRECTION.get(val)));
+        } else
+            actor.setOrigin(Align.center);
         float rotation = data.getFloatValue(GraphicData.GRAPHIC_VALUE.rotation);
         if (rotation != 0) {
             actor.setRotation(rotation);

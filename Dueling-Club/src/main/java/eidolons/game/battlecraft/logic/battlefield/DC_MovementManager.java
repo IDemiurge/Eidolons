@@ -117,7 +117,7 @@ public class DC_MovementManager implements MovementManager {
         //     left = !left;
         // }
 
-            if (!new CellCondition(left ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
+        if (!new CellCondition(left ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
             return null;
         return AiActionFactory.newAction("Move " + (left ? "Left" : "Right"), unit.getAI());
     }
@@ -191,7 +191,9 @@ public class DC_MovementManager implements MovementManager {
         List<DC_ActiveObj> moves = getMoves(unit);
         if (isStarPath(unit, coordinates)) {
             ActionPath path = game.getAiManager().getStarBuilder().getPath(unit, unit.getCoordinates(), coordinates);
-            return ImmutableList.of(path);
+            if (path != null) {
+                return ImmutableList.of(path);
+            }
         }
         PathBuilder builder = PathBuilder.getInstance().init
                 (moves, new Action(unit.getAction("Move")));
@@ -261,12 +263,10 @@ public class DC_MovementManager implements MovementManager {
                 game.getLogManager().log("Cannot find path to " + playerDestination);
                 return false;
             }
-            List<Action> actions = null;
             for (ActionPath path : paths) {
                 if (!checkPathStillValid(path, playerDestination)) {
                     continue;
                 }
-                // actions = path.choices.remove(0).getActions();
                 playerPath = path.choices.stream().map(c -> c.getCoordinates()).collect(Collectors.toList());
 
                 for (Choice choice : path.choices) {
@@ -279,28 +279,11 @@ public class DC_MovementManager implements MovementManager {
                         ((ExploreGameLoop) unit.getGame().getGameLoop()).tryAddPlayerActions(actionInput);
                         unit.getGame().getGameLoop().signal();
                         //could support instant mode or just set speed to 10x
-                        playerDestination = null;
+                        playerDestination = null; //?
                     }
                 }
                 break;
             }
-            // if (actions == null) {
-            //     pathCache.remove(unit);
-            //     return false;
-            // }
-            //
-            // for (Action action : actions) {
-            //     Context context = new Context(unit.getRef());
-            //     if (action.getTarget() != null) {
-            //         context.setTarget(action.getTarget().getId());
-            //     }
-            //     log(unit.getName()+" continues to move to "+playerDestination);
-            //     ActionInput actionInput = new ActionInput(action.getActive(), context);
-            //     actionInput.setAuto(true);
-            //     ((ExploreGameLoop) unit.getGame().getGameLoop()).tryAddPlayerActions(actionInput);
-            //     // unit.getGame().getGameLoop().
-            //     //         actionInput(actionInput, true);
-            // }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             return false;

@@ -80,7 +80,6 @@ public class DC_Formulas {
     private static final float REST_BONUS_VIT_MODIFIER = 0.1f;
     private static final float ENDURANCE_REGEN_VIT_MODIFIER = 0.25f;
     private static final float ATTACK_AGI_MODIFIER = 2;
-    private static final float COUNTERS_AGI_MODIFIER = 0.2f;
     private static final float INIT_MOD_AGI_MODIFIER = 0.5f;
     private static final float DEF_DEX_MODIFIER = 2;
     private static final float RES_WIL_MODIFIER = 0.5f;
@@ -100,8 +99,6 @@ public class DC_Formulas {
     private static final String GATEWAY_THRESHOLD = "30";
     private static final String CRYSTAL_THRESHOLD = "15";
     // ++ MAX POOL FORMULA
-    private static final String CLAIM_OUTPUT = "2*({SOURCE_LEVEL})*{SOURCE_MAGIC_AFFINITY}/100";
-    private static final int FOCUS_PER_CRYSTAL = 5;
     private static final float INT_MSTR_MODIFIER = 0.2f;
     private static final String LEVEL_XP_FORMULA =
             "100+(max(1, {AMOUNT})-1)" +
@@ -112,8 +109,10 @@ public class DC_Formulas {
     private static final int MAIN_HAND_DUAL_ATTACK_MOD = -25;
     private static final String DEFENSE_FROM_MASTERY_FORMULA = "{AMOUNT}+{AMOUNT}*{AMOUNT}/25";
 //    private static final String DEFENSE_MOD_FROM_MASTERY_FORMULA = "{AMOUNT}+{AMOUNT}*{AMOUNT}/25";
+
     private static final String ATTACK_FROM_MASTERY_FORMULA = "{AMOUNT}+{AMOUNT}*{AMOUNT}/50";
     private static final String DAMAGE_FROM_TWOHANDED_MASTERY_FORMULA = "{AMOUNT}/2+{AMOUNT}*{AMOUNT}/70";
+
     private static final String TOUGHNESS_FROM_STRENGTH_FORMULA = "{AMOUNT}*"
      + TOUGHNESS_STR_MODIFIER + "+max(0, ({AMOUNT}*{AMOUNT} -"
      + TOUGHNESS_STR_SQUARE_BARRIER + "))*" + TOUGHNESS_STR_SQUARE_MODIFIER;
@@ -128,7 +127,11 @@ public class DC_Formulas {
     private static final Integer ATTR_POINTS_PER_LEVEL_DEFAULT = 5;
     private static final Integer SELLING_PRICE_REDUCTION = 50;
     private static final int MAX_UNIT_LEVEL = 100;
-    private static final String ACTS_DEX_MODIFIER_FORMULA = "{AMOUNT}*max(0.1, (0.2-{AMOUNT}*0.02))";
+    private static final String ACTS_DEX_MODIFIER_FORMULA = "{AMOUNT}*max(0.1, (0.2-{AMOUNT}*0.04))";
+
+    private static final String EXTRA_MOVES_DEX_FORMULA = "{AMOUNT}*max(0.2, (1-{AMOUNT}*0.04))";
+    private static final String EXTRA_ATKS_AGI_FORMULA = "{AMOUNT}*max(0.15, (0.75-{AMOUNT}*0.03))";
+
     public static Formula DIVINATION_MAX_SD_FORMULA = new Formula("2+"
      + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_CAP) + " /5+" // WISDOM?
      + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_MASTERY) + " /2")
@@ -172,8 +175,7 @@ public class DC_Formulas {
     }
 
     public static int getCountersFromAgi(int amount) {
-
-        return Math.round(amount * COUNTERS_AGI_MODIFIER);
+        return calculateFormula(EXTRA_ATKS_AGI_FORMULA, amount) ;
     }
 
     public static int getAttackFromAgi(int amount) {
@@ -186,11 +188,13 @@ public class DC_Formulas {
         return Math.round(amount * INIT_MOD_AGI_MODIFIER);
     }
 
-    public static int getActsFromDexAndHalfAgility(int amount) {
-        return calculateFormula(ACTS_DEX_MODIFIER_FORMULA, amount) ;
-//        return Math.round(amount * ACTS_DEX_MODIFIER);
+    public static int getActsFromDexAndAgility(int sum) {
+        return calculateFormula(ACTS_DEX_MODIFIER_FORMULA, sum) ;
     }
 
+    public static int getExtraMovesFromDex(int amount) {
+        return calculateFormula(EXTRA_MOVES_DEX_FORMULA, amount) ;
+    }
     public static int getDefFromDex(int amount) {
 
         return Math.round(amount * DEF_DEX_MODIFIER);
@@ -248,10 +252,6 @@ public class DC_Formulas {
         return StringMaster.getPercentageAppend(amount);
     }
 
-    public static Integer getFocusConstForConcentration(int i) {
-        return FOCUS_CONST_FOR_CONCENTRATION + i * FOCUS_PER_CRYSTAL;
-    }
-
     public static Integer getEssenceConstForMeditation() {
         return ESSENCE_CONST_FOR_MEDITATION;
     }
@@ -268,9 +268,6 @@ public class DC_Formulas {
         return GATEWAY_THRESHOLD;
     }
 
-    public static String getClaimOutput() {
-        return CLAIM_OUTPUT;
-    }
 
     public static int getTotalXpForLevel(int level) {
         int xp = 0;

@@ -5,6 +5,7 @@ import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.std.MoveAnimation;
@@ -15,6 +16,7 @@ import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.bf.overlays.bar.HpBar;
 import eidolons.libgdx.bf.overlays.bar.HpBarManager;
 import eidolons.system.audio.DC_SoundMaster;
+import main.ability.effects.Effect;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
@@ -34,7 +36,7 @@ public class GridEventHandler extends GridHandler {
 
     @Override
     protected void bindEvents() {
-        GuiEventManager.bind(INGAME_EVENT_TRIGGERED, onIngameEvent());
+        GuiEventManager.bind(INGAME_EVENT, onIngameEvent());
 
     }
 
@@ -48,7 +50,10 @@ public class GridEventHandler extends GridHandler {
 
             Event.EVENT_TYPE type = event.getType();
             if (type == EFFECT_HAS_BEEN_APPLIED) {
-                GuiEventManager.trigger(EFFECT_APPLIED, event.getRef().getEffect());
+                Effect effect = event.getRef().getEffect();
+                if (AnimConstructor.isAnimated(effect)) {
+                    GuiEventManager.trigger(EFFECT_APPLIED, effect);
+                }
                 caught = true;
             } else if (type == UNIT_HAS_CHANGED_FACING
                     || type == UNIT_HAS_TURNED_CLOCKWISE
@@ -144,15 +149,14 @@ public class GridEventHandler extends GridHandler {
     }
 
 
-
     public void unitMovedForced(BattleFieldObject sourceObj, Spell active) {
         Coordinates c = sourceObj.getCoordinates();
         if (active.getName().contains("1Projection")) {
             sourceObj.setCoordinates(sourceObj.getLastCoordinates());
         }
-        int n=1765;
+        int n = 1765;
         if (active.getName().contains("Projection")) {
-            n=2765;
+            n = 2765;
         }
         WaitMaster.doAfterWait(n, () -> {
             Gdx.app.postRunnable(() -> {
@@ -165,6 +169,7 @@ public class GridEventHandler extends GridHandler {
             });
         });
     }
+
     public void unitBeingMoved(BattleFieldObject sourceObj) {
         //              c = sourceObj.getCoordinates();
         //            sourceObj.setCoordinates(sourceObj.getLastCoordinates());

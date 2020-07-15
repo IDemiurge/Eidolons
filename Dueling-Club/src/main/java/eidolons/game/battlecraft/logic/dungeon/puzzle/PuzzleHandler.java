@@ -16,11 +16,15 @@ import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.system.audio.MusicMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums;
+import main.elements.triggers.Trigger;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.threading.WaitMaster;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static main.system.GuiEventType.*;
 import static main.system.auxiliary.log.LogMaster.log;
@@ -29,6 +33,8 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
 
 
     protected PuzzleSetup<T, ?> setup;
+    protected List<Trigger> customTriggers = new LinkedList<>();
+
 
     public PuzzleHandler(T puzzle) {
         super(puzzle);
@@ -167,7 +173,7 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         if (puzzle.getFlightData() != null) {
             GuiEventManager.trigger(FLIGHT_END);
         }
-
+        customTriggers.clear();
         setup.ended();
     }
 
@@ -209,5 +215,9 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
 
     protected void beforeTip() {
 
+    }
+
+    public List<Trigger> getCustomTriggers() {
+        return customTriggers;
     }
 }

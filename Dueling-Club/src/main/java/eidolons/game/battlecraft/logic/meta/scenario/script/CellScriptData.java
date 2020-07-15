@@ -22,8 +22,8 @@ public class CellScriptData extends DataUnit<CellScriptData.CELL_SCRIPT_VALUE> {
         dialogue,
         keys,
         portals,
+        omni_portals,
 
-        cell_set,
         puzzles,
         facing,
         named_point,

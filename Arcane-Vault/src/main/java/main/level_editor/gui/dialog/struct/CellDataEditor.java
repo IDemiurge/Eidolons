@@ -45,6 +45,8 @@ public class CellDataEditor extends DataEditDialog<CellScriptData.CELL_SCRIPT_VA
             case flip:
             case facing:
                 return enum_const;
+            case omni_portals:
+                break;
             case portals:
                 return coordinates;
             case script:

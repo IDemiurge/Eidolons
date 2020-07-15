@@ -61,8 +61,8 @@ public class DifficultySelectionPanel extends SelectionPanel {
 
     private SelectableItemData getItemFromDiff(DIFFICULTY dif) {
 //        TextParser.parse()
-        String text = TextMaster.readResource
-         ("info", "difficulty", dif.name() + ".txt");
+        String text = TextMaster.getDescription
+         ("difficulty", dif.name());
         text = VariableManager.substitute(text,
          dif.getAttributePercentage(),
          dif.getMasteryPercentage()

@@ -10,7 +10,7 @@ import main.level_editor.backend.LE_Manager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.threading.WaitMaster;
 
 import java.util.LinkedHashMap;
@@ -30,7 +30,7 @@ public class IPlatformHandlerImpl extends LE_Handler implements IPlatformHandler
 
     @Override
     public void afterLoaded() {
-        for (String substring : ContainerUtils.openContainer(platformData, StringMaster.VERTICAL_BAR)) {
+        for (String substring : ContainerUtils.openContainer(platformData, Strings.VERTICAL_BAR)) {
             if (substring.isEmpty()) {
                 continue;
             }
@@ -52,14 +52,14 @@ public class IPlatformHandlerImpl extends LE_Handler implements IPlatformHandler
         String data = "";
         for (LevelBlock block : platforms.keySet()) {
             if (block.getModule() == module) {
-                data += platforms.get(block).getData() + StringMaster.VERTICAL_BAR;
+                data += platforms.get(block).getData() + Strings.VERTICAL_BAR;
             }
         }
         return data;
     }
     public void initPlatforms(String textContent) {
         if (!textContent.isEmpty()) {
-            platformData += textContent + StringMaster.VERTICAL_BAR;
+            platformData += textContent + Strings.VERTICAL_BAR;
         }
 
     }

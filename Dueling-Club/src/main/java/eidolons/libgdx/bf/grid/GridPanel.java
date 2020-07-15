@@ -916,7 +916,7 @@ it sort of broke at some point - need to investigate!
         screenCells.clear();
         for (GridCellContainer cell : topCells) {
             cell.draw(batch, 1f);
-            if (isScreenCell(cell))
+            if (isScreenCell(cell) && cell.getUnitViewsVisible().size()<=1)
                 screenCells.add(cell);
         }
         ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);

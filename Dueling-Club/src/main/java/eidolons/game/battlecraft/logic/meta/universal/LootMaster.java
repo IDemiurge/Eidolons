@@ -8,7 +8,7 @@ import main.content.C_OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.math.MathMaster;
 
 import java.util.HashMap;
@@ -169,7 +169,7 @@ public class LootMaster<E extends MetaGame> extends MetaGameHandler<E> {
         final StringBuilder builder = new StringBuilder();
         getMaster().getMissionMaster().getStatManager().
          getStats().getSlainEnemyUnits().forEach(enemy -> {
-            builder.append(getLootFromEnemy(enemy)).append(StringMaster.SEPARATOR);
+            builder.append(getLootFromEnemy(enemy)).append(Strings.SEPARATOR);
             lootValue += evaluateLootValue(enemy);
         });
         return null;

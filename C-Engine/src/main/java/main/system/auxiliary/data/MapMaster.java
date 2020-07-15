@@ -6,6 +6,7 @@ import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -79,7 +80,7 @@ public class MapMaster<E, T> {
         StringBuilder s = new StringBuilder();
 
         for (Object e : map.keySet()) {
-            s.append(e.toString()).append(StringMaster.wrapInParenthesis(map.get(e).toString())).append(StringMaster.SEPARATOR);
+            s.append(e.toString()).append(StringMaster.wrapInParenthesis(map.get(e).toString())).append(Strings.SEPARATOR);
         }
         return s.toString();
     }

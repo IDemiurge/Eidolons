@@ -572,7 +572,7 @@ public class DataBackend {
 
         List<ObjType> list = new ArrayList<>();
         boolean or = false;
-        if (filter.contains(StringMaster.OR)) {
+        if (filter.contains(Strings.OR)) {
             or = true;
         }
         for (ObjType objName : map.values()) {

@@ -22,6 +22,7 @@ import main.game.logic.battle.player.Player;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.entity.ConditionMaster;
 import main.system.images.ImageManager.BORDER;
 import main.system.math.Formula;
@@ -192,8 +193,8 @@ import java.util.Map;
 
             if (getOBJ_TYPE_ENUM() == DC_TYPE.CLASSES) {
                 paramName = DC_ContentValsManager.getMainAttributeForClass(this);
-                if (paramName.contains(StringMaster.AND)) {
-                    quotientSum = quotientSum / paramName.split(StringMaster.AND).length;
+                if (paramName.contains(Strings.AND)) {
+                    quotientSum = quotientSum / paramName.split(Strings.AND).length;
                 }
             } else {
                 paramName = ContainerUtils.openContainer(

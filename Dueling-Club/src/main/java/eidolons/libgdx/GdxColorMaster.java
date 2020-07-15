@@ -19,18 +19,22 @@ import java.util.Set;
  */
 public class GdxColorMaster {
     private static final Color temp= new Color();
+    public static final Color WHITE = new Color(1, 1, 1, 1f);
+    public static final Color PALE_GOLD = getColor(252, 238, 210, 1f);
+
     public static final Color OBSIDIAN = getColor(21, 11, 42, 1f);
     public static final Color NEUTRAL = getColor(100, 100, 120, 1f);
     public static final Color ALLY_COLOR = getColor(50, 150, 100, 1f);
     public static final Color ENEMY_COLOR = getColor(150, 100, 50, 1f);
-    // new Color(55, 215, 65)
+
     public static final Color HEALTH = getColor(210, 100, 110, 1f);
     public static final Color ENDURANCE = getColor(240, 60, 115, 1f);
-    public static final Color TOUGHNESS = getColor(100, 245, 5, 1f);
+    public static final Color TOUGHNESS = getColor(120, 245, 5, 1f);
     public static final Color STAMINA = getColor(180, 150, 45, 1f);
-    public static final Color ESSENCE = getColor(80, 30, 225, 1f);
+    public static final Color ESSENCE = getColor(99, 50, 255, 1f);
     public static final Color FOCUS = getColor(10, 175, 200, 1f);
     public static final Color MORALE = getColor(150, 60, 180, 1f);
+
     public static final Color BEIGE = getColor(210, 180, 130, 1f);
     public static final Color DEEP_GRAY = getColor(120, 120, 120, 1f);
     public static final Color MILD_WHITE = getColor(240, 240, 240, 1f);
@@ -46,8 +50,6 @@ public class GdxColorMaster {
     public static final Color DARK_ORANGE = getColor(195, 105, 25, 1f);
     public static final Color ORANGE = Color.ORANGE;
     public static final Color FIRE = getColor(255, 115, 75, 1f);
-    public static final Color WHITE = new Color(1, 1, 1, 1f);
-    public static final Color PALE_GOLD = getColor(252, 238, 210, 1f);
     public static final Color PALE_GREEN = getColor(202, 258, 220, 1f);
     public static final Color GOLDEN_GRAY = getColor(233, 218, 192, 1f);
 

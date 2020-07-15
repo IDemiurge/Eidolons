@@ -69,7 +69,7 @@ public class SimpleAnim implements Animation {
         } else
             pos =                    new Vector2(origin.x + data.getFloatValue(GraphicData.GRAPHIC_VALUE.x),
                             origin.y + data.getFloatValue(GraphicData.GRAPHIC_VALUE.y));
-        vfx = SpellVfxPool.getEmitters(vfxPaths);
+        vfx = SpellVfxPool.getEmitters(vfxPaths, 1);
         for (SpellVfx spellVfx : vfx) {
             spellVfx.start();
             spellVfx.allowFinish();

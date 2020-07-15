@@ -58,8 +58,10 @@ public class AtbTurnManager extends GenericTurnManager {
             }
             if (unit == null)
                 continue;
+            boolean sameUnit = getActiveUnit() == unit.getUnit();
             setActiveUnit(unit.getUnit());
-            return game.getManager().activeSelect(getActiveUnit());
+            return game.getManager().activeSelect(getActiveUnit(),
+                    sameUnit);
         }
     }
 

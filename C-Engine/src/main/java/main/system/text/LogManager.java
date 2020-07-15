@@ -17,6 +17,7 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -348,9 +349,9 @@ public abstract class LogManager {
             entry = obj.getNameIfKnown() + " has fallen";
         }
         if (obj.getOwner().isMe()) {
-            entry = StringMaster.MESSAGE_PREFIX_FAIL + entry;
+            entry = Strings.MESSAGE_PREFIX_FAIL + entry;
         } else {
-            entry = StringMaster.MESSAGE_PREFIX_SUCCESS + entry;
+            entry = Strings.MESSAGE_PREFIX_SUCCESS + entry;
         }
         log(LOG.GAME_INFO, entry);
     }
@@ -373,7 +374,7 @@ public abstract class LogManager {
                     + attacked.getNameIfKnown();
         }
 
-        entry = StringMaster.MESSAGE_PREFIX_MISC + entry;
+        entry = Strings.MESSAGE_PREFIX_MISC + entry;
 
         log(LOG.GAME_INFO, entry);
 
@@ -392,7 +393,7 @@ public abstract class LogManager {
         // } else {
         // entry = StringMaster.MESSAGE_PREFIX_SUCCESS + entry;
         // }
-        entry = StringMaster.MESSAGE_PREFIX_INFO + entry;
+        entry = Strings.MESSAGE_PREFIX_INFO + entry;
         log(LOG.GAME_INFO, entry);
     }
 
@@ -414,8 +415,8 @@ public abstract class LogManager {
         if (!obj.getOwner().isMe()) {
             positive = !positive;
         }
-        String prefix = (positive) ? StringMaster.MESSAGE_PREFIX_SUCCESS
-                : StringMaster.MESSAGE_PREFIX_FAIL;
+        String prefix = (positive) ? Strings.MESSAGE_PREFIX_SUCCESS
+                : Strings.MESSAGE_PREFIX_FAIL;
         String s = (obj.getNameIfKnown()) + string + " " + amount.toString().replace("-", "") + " "
                 + baseParameter.getShortName();
         log(prefix + s);
@@ -498,9 +499,9 @@ public abstract class LogManager {
             fail = !fail;
         }
         if (fail) {
-            string = StringMaster.MESSAGE_PREFIX_FAIL + string;
+            string = Strings.MESSAGE_PREFIX_FAIL + string;
         } else {
-            string = StringMaster.MESSAGE_PREFIX_SUCCESS + string;
+            string = Strings.MESSAGE_PREFIX_SUCCESS + string;
         }
 
         log(string);
@@ -519,7 +520,7 @@ public abstract class LogManager {
         String string = payee.getNameIfKnown() + text + active.getName()
                 + " rapidly, saving 1 Action point";
         // logAlert(string);
-        log(LOG.GAME_INFO, StringMaster.MESSAGE_PREFIX_ALERT + string, ENTRY_TYPE.ACTION);
+        log(LOG.GAME_INFO, Strings.MESSAGE_PREFIX_ALERT + string, ENTRY_TYPE.ACTION);
 
     }
 
@@ -538,23 +539,23 @@ public abstract class LogManager {
     }
 
     public void logAlert(String string) {
-        log(StringMaster.MESSAGE_PREFIX_ALERT + string);
+        log(Strings.MESSAGE_PREFIX_ALERT + string);
     }
 
     public void logGood(String string) {
-        log(StringMaster.MESSAGE_PREFIX_SUCCESS + string);
+        log(Strings.MESSAGE_PREFIX_SUCCESS + string);
     }
 
     public void logBad(String string) {
-        log(StringMaster.MESSAGE_PREFIX_FAIL + string);
+        log(Strings.MESSAGE_PREFIX_FAIL + string);
     }
 
     public void logInfo(String string) {
-        log(LOGGING_DETAIL_LEVEL.FULL, StringMaster.MESSAGE_PREFIX_INFO + string);
+        log(LOGGING_DETAIL_LEVEL.FULL, Strings.MESSAGE_PREFIX_INFO + string);
     }
 
     public void logProceeds(String string) {
-        log(StringMaster.MESSAGE_PREFIX_PROCEEDING + string);
+        log(Strings.MESSAGE_PREFIX_PROCEEDING + string);
     }
 
     public void logCoating(Obj target, Obj item, Obj source, COUNTER c) {

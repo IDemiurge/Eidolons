@@ -83,7 +83,7 @@ public class StackingRule implements ActionRule {
         int stackFactor = getStackFactor(unit.getCoordinates(), unit, false);
         //depends on girth?
         int amount = stackFactor * 25;
-        unit.modifyParameter(PARAMS.AP_PENALTY, amount, null, true);
+        unit.modifyParameter(PARAMS.ATB_COST_MOD, amount, null, true);
         String descr = "Packed too close to other objects, this unit spends " +
                 amount + "% more ATB on non-move actions.";
         game.getRules().getDynamicBuffRules().addDynamicBuff("Packed", unit, "" + stackFactor, descr);
@@ -92,7 +92,7 @@ public class StackingRule implements ActionRule {
 
         stackFactor = getStackFactor(unit.getCoordinates(), unit, true);
         amount = stackFactor * 50;
-        unit.modifyParameter(PARAMS.MOVE_AP_PENALTY, amount, null, true);
+        unit.modifyParameter(PARAMS.MOVE_ATB_COST_MOD, amount, null, true);
         descr = "Engaged in close quarters, this unit spends " +
                 amount + "% more ATB on move actions.";
         game.getRules().getDynamicBuffRules().addDynamicBuff("Close Quarters", unit, "" + stackFactor, descr);

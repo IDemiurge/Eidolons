@@ -53,7 +53,7 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
@@ -83,6 +83,11 @@ public class OptionsMaster {
     protected String OPTIONS_MODE;
 
     public static void init() {
+        /*
+        save locally - how ?
+        presets vs custom
+        auto-adjust 
+         */
         //    TODO    Gdx.app.getPreferences()
         getInstance().initialize();
     }
@@ -578,15 +583,15 @@ public class OptionsMaster {
 
     public void save() {
         StringBuilder content = new StringBuilder();
-        content.append(XML_Converter.openXml("Options" + StringMaster.NEW_LINE));
+        content.append(XML_Converter.openXml("Options" + Strings.NEW_LINE));
         for (OPTIONS_GROUP sub : optionsMap.keySet()) {
-            content.append(XML_Converter.openXml(sub.toString())).append(StringMaster.NEW_LINE);
+            content.append(XML_Converter.openXml(sub.toString())).append(Strings.NEW_LINE);
             //OR PUT UNID-DATA-STRING there
             for (Object option : optionsMap.get(sub).getValues().keySet()) {
                 content.append(XML_Converter.wrap(option.toString(),
-                        optionsMap.get(sub).getValues().get(option).toString())).append(StringMaster.NEW_LINE);
+                        optionsMap.get(sub).getValues().get(option).toString())).append(Strings.NEW_LINE);
             }
-            content.append(XML_Converter.closeXml(sub.toString())).append(StringMaster.NEW_LINE);
+            content.append(XML_Converter.closeXml(sub.toString())).append(Strings.NEW_LINE);
         }
         content.append(XML_Converter.closeXml("Options"));
         String path = getSaveOptionsPath();

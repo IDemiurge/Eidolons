@@ -26,7 +26,7 @@ import main.entity.obj.Obj;
 import main.system.auxiliary.ClassMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.ListMaster;
 import main.system.text.TextParser;
 
@@ -286,14 +286,14 @@ public class EffectMaster extends Master {
         for (PARAMETER param : map.keySet()) {
             String amount = map.get(param);
             Effect.MOD code = Effect.MOD.MODIFY_BY_CONST;
-            if (!amount.contains(StringMaster.BASE_CHAR)) {
-                if (amount.contains(StringMaster.MOD)) {
+            if (!amount.contains(Strings.BASE_CHAR)) {
+                if (amount.contains(Strings.MOD)) {
                     code = Effect.MOD.MODIFY_BY_PERCENT;
-                    amount = amount.replace(StringMaster.MOD, "");
+                    amount = amount.replace(Strings.MOD, "");
                 }
-                if (amount.contains(StringMaster.SET)) {
+                if (amount.contains(Strings.SET)) {
                     code = Effect.MOD.SET;
-                    amount = amount.replace(StringMaster.SET, "");
+                    amount = amount.replace(Strings.SET, "");
                 }
             }
             if (ref.getId(Ref.KEYS.INFO) == null) {
@@ -308,13 +308,13 @@ public class EffectMaster extends Master {
         for (PROPERTY prop : propMap.keySet()) {
             String amount = propMap.get(prop);
             Effect.MOD_PROP_TYPE code1 = Effect.MOD_PROP_TYPE.ADD;
-            if (amount.contains(StringMaster.REMOVE)) {
+            if (amount.contains(Strings.REMOVE)) {
                 code1 = Effect.MOD_PROP_TYPE.REMOVE;
-                amount.replace(StringMaster.REMOVE, "");
+                amount.replace(Strings.REMOVE, "");
             }
-            if (amount.contains(StringMaster.SET)) {
+            if (amount.contains(Strings.SET)) {
                 code1 = Effect.MOD_PROP_TYPE.SET;
-                amount.replace(StringMaster.SET, "");
+                amount.replace(Strings.SET, "");
             }
 
             ModifyPropertyEffect e = new ModifyPropertyEffect(prop, code1, amount);
@@ -325,9 +325,9 @@ public class EffectMaster extends Master {
 
     public static Effects getEffectsFromAbilityString(String abilName, Ref ref) {
         Effects effects = (new Effects());
-        String separator = StringMaster.AND_PROPERTY_SEPARATOR;
+        String separator = Strings.AND_PROPERTY_SEPARATOR;
         if (!abilName.contains(separator)) {
-            separator = StringMaster.VERTICAL_BAR;
+            separator = Strings.VERTICAL_BAR;
         }
         for (String s : ContainerUtils.open(abilName, separator)) {
             effects.addAll(getEffectsFromAbilityType(s, ref));

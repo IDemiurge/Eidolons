@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.libgdx.bf.decor.CellData;
 import eidolons.libgdx.bf.decor.DecorData;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.screens.ScreenMaster;
@@ -24,7 +25,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.data.DataUnit;
@@ -317,7 +318,9 @@ public class FloorLoader extends DungeonHandler {
     public void loadingDone() {
         initMarks(master.getFloorWrapper().getTextDataMap());
         initDecor(master.getFloorWrapper().getDecorMap());
+        initCells(master.getFloorWrapper().getCellMap());
     }
+
 
     protected void initDecor(Map<Coordinates, DecorData> decorMap) {
         GridPanel dungeonGrid = ScreenMaster.getGrid();
@@ -331,7 +334,7 @@ public class FloorLoader extends DungeonHandler {
 
     protected Map<Coordinates, CellScriptData> buildCellMap(String textContent) {
         Map<Coordinates, CellScriptData> map = new HashMap<>();
-        for (String substring : ContainerUtils.openContainer(textContent, StringMaster.VERTICAL_BAR)) {
+        for (String substring : ContainerUtils.openContainer(textContent, Strings.VERTICAL_BAR)) {
             String[] split = substring.split("=");
             if (split.length < 2)
                 continue;
@@ -344,7 +347,7 @@ public class FloorLoader extends DungeonHandler {
 
     protected Map<Coordinates, DecorData> buildDecorMap(String textContent) {
         Map<Coordinates, DecorData> map = new LinkedHashMap<>();
-        for (String substring : ContainerUtils.openContainer(textContent, StringMaster.VERTICAL_BAR)) {
+        for (String substring : ContainerUtils.openContainer(textContent, Strings.VERTICAL_BAR)) {
             int index = substring.indexOf("=");
             if (index < 0)
                 continue;
@@ -358,6 +361,14 @@ public class FloorLoader extends DungeonHandler {
         getMaster().getGame().getFlipMap().putAll(createFlipMap(map));
     }
 
+    private void initCells(Map<Coordinates, CellData> cellDataMap) {
+        for (Coordinates coordinates : cellDataMap.keySet()) {
+            CellData data = cellDataMap.get(coordinates);
+            DC_Cell cell = getGame().getCellByCoordinate(coordinates);
+            data.apply(cell);
+        }
+    }
+
     protected void initMarks(Map<Coordinates, CellScriptData> textDataMap) {
         for (Coordinates coordinates : textDataMap.keySet()) {
             String string = textDataMap.get(coordinates).getValue(CellScriptData.CELL_SCRIPT_VALUE.marks);
@@ -365,7 +376,7 @@ public class FloorLoader extends DungeonHandler {
                 MARK mark = new EnumMaster<MARK>().retrieveEnumConst(MARK.class, substring);
                 DC_Cell cell = getGame().getCellByCoordinate(coordinates);
                 cell.getMarks().add(mark);
-                if (mark== MARK._void) {
+                if (mark == MARK._void) {
                     cell.setVOID(true);
                 }
             }

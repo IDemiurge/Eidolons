@@ -3,7 +3,7 @@ package eidolons.system.text;
 /**
  * Created by JustMe on 8/30/2017.
  */
-public class Tips {
+public class Tooltips {
 
     public enum ADVANCED_COMBAT_TIPS implements TIP {
         SMART_ACTION_SEQUENCES, USING_TIME_RULE, USE_INVENTORY, ALERT_MODE, WAIT_ACTION,;

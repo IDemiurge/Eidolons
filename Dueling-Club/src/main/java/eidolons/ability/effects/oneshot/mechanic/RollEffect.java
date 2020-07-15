@@ -9,6 +9,7 @@ import main.data.ability.construct.VariableManager;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 // auto-wrap in this? 
 /*
@@ -155,7 +156,7 @@ public class RollEffect extends MicroEffect implements OneshotEffect, ContainerE
             elseEffect = new Effects();
         }
         for (String s : ContainerUtils.open(elseAbilityName,
-         StringMaster.VERTICAL_BAR)) {
+         Strings.VERTICAL_BAR)) {
             ((Effects) effect).addAll(EffectMaster
              .getEffectsFromAbilityType(VariableManager.getVarType(s,
               false, ref)));
@@ -170,7 +171,7 @@ public class RollEffect extends MicroEffect implements OneshotEffect, ContainerE
         if (effect == null) {
             effect = new Effects();
             for (String s : ContainerUtils.open(abilityName,
-             StringMaster.VERTICAL_BAR)) {
+             Strings.VERTICAL_BAR)) {
                 ((Effects) effect).addAll(EffectMaster
                  .getEffectsFromAbilityType(VariableManager.getVarType(
                   s, false, ref)));

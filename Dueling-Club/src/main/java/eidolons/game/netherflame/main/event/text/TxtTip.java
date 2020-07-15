@@ -7,6 +7,9 @@ import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
 
 public enum TxtTip implements TextEvent {
     tester_welcome,
+    //test localization?
+
+    //per feature, especially hidden meta
 
     ;
     private final boolean optional = true;
@@ -52,6 +55,16 @@ public enum TxtTip implements TextEvent {
     @Override
     public WaitMaster.WAIT_OPERATIONS getMessageChannel() {
         return messageChannel;
+    }
+
+    @Override
+    public void run() {
+
+    }
+
+    @Override
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
 

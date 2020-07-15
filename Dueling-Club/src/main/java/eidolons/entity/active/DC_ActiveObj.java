@@ -84,6 +84,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     private GroupImpl targetGroup;
     private boolean targetingCachingOff;
     private boolean disabled;
+    private boolean pointCostActivation;
 
     public DC_ActiveObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -237,17 +238,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public String getSpecialRequirements() {
         return getProperty(G_PROPS.SPECIAL_REQUIREMENTS);
-    }
-
-    public void tick() {
-        Integer cooldown = getIntParam(PARAMS.COOLDOWN);
-        if (cooldown <= 0) {
-            setParam(PARAMS.C_COOLDOWN, cooldown); // modify by [cooldown]?
-        } else {
-            if (getIntParam(PARAMS.C_COOLDOWN) > 0) {
-                modifyParameter(PARAMS.C_COOLDOWN, -1, 0);
-            }
-        }
     }
 
 
@@ -693,6 +683,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         getHandler().actionComplete();
     }
 
+    public boolean isInstantAction() {
+        return getChecker().isInstantAction();
+    }
+
     public boolean isInstantMode() {
         return getHandler().isInstantMode();
     }
@@ -713,12 +707,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public boolean isExtraAttackMode() {
         return getHandler().isExtraAttackMode();
     }
-
-    //LOG
-
-    //CALC
-
-    //Targeter
 
     public boolean selectTarget(Ref ref) {
         return getTargeter().selectTarget(ref);
@@ -817,7 +805,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     @Override
-    public ActiveInitializer getInitializer() {
+    public ActiveObjInitializer getInitializer() {
         return getMaster().getInitializer();
     }
 
@@ -957,5 +945,14 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             }
         }
     }
+
+    public boolean isPointCostActivation() {
+        return pointCostActivation;
+    }
+
+    public void setPointCostActivation(boolean pointCostActivation) {
+        this.pointCostActivation = pointCostActivation;
+    }
+
 }
 

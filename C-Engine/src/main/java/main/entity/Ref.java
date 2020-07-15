@@ -16,6 +16,7 @@ import main.system.ExceptionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
 
 import java.io.Serializable;
@@ -316,7 +317,7 @@ public class Ref implements Cloneable, Serializable {
         for (KEYS key : REPLACING_KEYS) {
 //            String prefix = key.name() + StringMaster.FORMULA_REF_SEPARATOR;
             if (prefix_.equals(key.name())) {
-                setStr(getStr().replace(key.name() + StringMaster.FORMULA_REF_SEPARATOR, ""));
+                setStr(getStr().replace(key.name() + Strings.FORMULA_REF_SEPARATOR, ""));
                 return game.getObjectById(Integer.valueOf(getValue(key.name()))).getRef();
             }
         }

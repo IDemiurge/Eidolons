@@ -433,14 +433,6 @@ public class DC_GridPanel extends GridPanel {
                     welcomeInfoShown = true;
                 }
         });
-        GuiEventManager.bind(UPDATE_UNIT_ACT_STATE, obj -> {
-            final Pair<Unit, Boolean> pair = (Pair<Unit, Boolean>) obj.get();
-            final BaseView baseView = viewMap.get(pair.getLeft());
-            if (baseView instanceof UnitGridView) {
-                final boolean mobilityState = pair.getRight();
-                ((UnitGridView) baseView).getInitiativeQueueUnitView().setQueueMoving(mobilityState);
-            }
-        });
 
         GuiEventManager.bind(GuiEventType.HP_BAR_UPDATE, p -> {
             updateHpBar((BattleFieldObject) p.get());

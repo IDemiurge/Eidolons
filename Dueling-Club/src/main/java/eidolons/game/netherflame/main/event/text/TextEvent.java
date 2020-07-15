@@ -16,4 +16,8 @@ public interface TextEvent {
     String getMessage();
 
     WaitMaster.WAIT_OPERATIONS getMessageChannel();
+
+    void run();
+
+    void setMessage(String value);
 }

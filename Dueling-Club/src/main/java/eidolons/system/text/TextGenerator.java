@@ -6,7 +6,7 @@ import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.math.Formula;
 import main.system.text.TextParser;
 
@@ -41,7 +41,7 @@ public class TextGenerator {
                 }
             }
             if (!prop && !list.equals(pages.get(pages.size() - 1))) {
-                stringBuilder.append(StringMaster.NEW_LINE);
+                stringBuilder.append(Strings.NEW_LINE);
             }
         }
         String string = stringBuilder.toString();

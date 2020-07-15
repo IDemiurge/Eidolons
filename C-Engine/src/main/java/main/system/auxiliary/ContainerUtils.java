@@ -91,7 +91,7 @@ public class ContainerUtils {
     }
 
     public static List<String> openContainer(String containerString) {
-        return openContainer(containerString, StringMaster.CONTAINER_SEPARATOR);
+        return openContainer(containerString, Strings.CONTAINER_SEPARATOR);
     }
 
     public static String getContainerSeparator() {
@@ -145,7 +145,7 @@ public class ContainerUtils {
     }
 
     public static String joinList(List list) {
-        return joinList(list, StringMaster.SEPARATOR);
+        return joinList(list, Strings.SEPARATOR);
     }
 
     public static String joinList(List list, String divider) {

@@ -6,16 +6,16 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.module.herocreator.logic.AttributeMaster;
-import eidolons.game.netherflame.main.event.text.TIP;
+import eidolons.game.netherflame.main.event.Tips;
+import eidolons.game.netherflame.main.event.text.TextEvent;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 
 import java.util.List;
@@ -71,18 +71,19 @@ public class DescriptionTooltips {
         }
         parseSource(source, true);
 
+        //TIPS
         path = PathFinder.getRootPath() + PathFinder.getTextPathLocale() + "descriptions/messages.txt";
         source = FileManager.readFile(path);
         parseSource(source, false);
 
 
         path = StrPathBuilder.build(PathFinder.getTextPath(),
-                TextMaster.getLocale(), "info", "heroes", "igg");
+                TextMaster.getLocale(), "descriptions", "heroes", "igg");
         source = FileManager.readFile(path + "/heroes info.txt");
         parseSource(source, descrMap, false);
 
         path = StrPathBuilder.build(PathFinder.getTextPath(),
-                TextMaster.getLocale(), "info", "heroes", "igg");
+                TextMaster.getLocale(), "descriptions", "heroes", "igg");
         source = FileManager.readFile(path + "/heroes.txt");
         parseSource(source, loreMap, false);
 
@@ -101,9 +102,9 @@ public class DescriptionTooltips {
     private static String compileAndReadSource(String path, List<PARAMETER> vals) {
         List<String> list = vals.stream().map(p ->
                 VALUE_SEPARATOR + p.getDisplayedName() + NAME_SEPARATOR +
-                        StringMaster.NEW_LINE + extractDescription(p)).collect(Collectors.toList());
+                        Strings.NEW_LINE + extractDescription(p)).collect(Collectors.toList());
 
-        String contents = ContainerUtils.constructStringContainer(list, StringMaster.NEW_LINE);
+        String contents = ContainerUtils.constructStringContainer(list, Strings.NEW_LINE);
 
         FileManager.write(contents, path);
         return contents;
@@ -152,7 +153,7 @@ public class DescriptionTooltips {
                 paramMap.put(val, value);
             } else {
 
-                TIP tip = new EnumMaster<TIP>().retrieveEnumConst(TIP.class, name);
+                TextEvent tip = Tips.getTipConst(name);
                 if (map != null) {
                     map.put(name.toLowerCase(), value);
                     continue;
@@ -193,7 +194,7 @@ public class DescriptionTooltips {
         if (paramMap == null) {
             init();
         }
-        return value.getDisplayedName() + StringMaster.NEW_LINE + paramMap.get(ContentValsManager.getBaseParameterFromCurrent(value))
+        return value.getDisplayedName() + Strings.NEW_LINE + paramMap.get(ContentValsManager.getBaseParameterFromCurrent(value))
                 + getSpecialForHero(value, hero);
     }
 
@@ -202,10 +203,10 @@ public class DescriptionTooltips {
             List<String> s = AttributeMaster.getAttributeBonusInfoStrings(
                     DC_ContentValsManager.ATTRIBUTE.getForParameter(value), hero);
             if (s.isEmpty()) {
-                return StringMaster.NEW_LINE + "[cannot display values provided!]";
+                return Strings.NEW_LINE + "[cannot display values provided!]";
             }
-            return "Provides: " + StringMaster.NEW_LINE +
-                    ContainerUtils.constructStringContainer(s, StringMaster.NEW_LINE);
+            return "Provides: " + Strings.NEW_LINE +
+                    ContainerUtils.constructStringContainer(s, Strings.NEW_LINE);
         }
         if (value == PARAMS.C_FOCUS) {
             return "Base value: " + hero.getIntParam(PARAMS.STARTING_FOCUS);
@@ -225,8 +226,8 @@ public class DescriptionTooltips {
             case C_ATB:
                 if (DC_Engine.isAtbMode()) return "Readiness";
                 break;
-            case C_N_OF_COUNTERS:
-            case N_OF_COUNTERS:
+            case C_EXTRA_ATTACKS:
+            case EXTRA_ATTACKS:
                 return "Extra Attacks";
         }
         return params.getName();

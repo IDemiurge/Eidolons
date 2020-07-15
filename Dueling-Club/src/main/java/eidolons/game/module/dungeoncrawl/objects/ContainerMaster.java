@@ -46,7 +46,7 @@ import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.entity.FilterMaster;
 import main.system.launch.Flags;
 import main.system.math.MathMaster;
@@ -639,7 +639,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                         + "; total : " + cost);
                 if (item == null)
                     continue;
-                contentsBuilder.append(item.getName()).append(StringMaster.SEPARATOR);
+                contentsBuilder.append(item.getName()).append(Strings.SEPARATOR);
                 cost += item.getIntParam(PARAMS.GOLD_COST);
                 items++;
             }

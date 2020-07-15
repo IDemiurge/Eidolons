@@ -45,9 +45,9 @@ public abstract class ValueBar extends SuperActor {
     public ValueBar() {
         initRegions();
         label2 = new Label("", StyleHolder.
-                getSizedLabelStyle(FontMaster.FONT.AVQ, getFontSize(false)));
+                getSizedLabelStyle(FontMaster.FONT.METAMORPH, getFontSize(false)));
         label1 = new Label("", StyleHolder.
-                getSizedLabelStyle(FontMaster.FONT.AVQ, getFontSize(false)));
+                getSizedLabelStyle(FontMaster.FONT.METAMORPH, getFontSize(false)));
         addActor(label1);
         addActor(label2);
 

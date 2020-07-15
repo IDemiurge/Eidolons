@@ -38,7 +38,7 @@ import main.level_editor.backend.handlers.operation.Operation;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapBuilder;
 import main.system.threading.WaitMaster;
@@ -81,12 +81,12 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     public void afterLoaded() {
         String content = FileManager.readFile(getTemplatesPath() + "blocks.xml");
         blockTemplates =
-                new MapBuilder<>(":", StringMaster.VERTICAL_BAR, s -> s, s -> new BlockData(s)).build(content);
+                new MapBuilder<>(":", Strings.VERTICAL_BAR, s -> s, s -> new BlockData(s)).build(content);
 
         content = FileManager.readFile(getTemplatesPath() + "zones.xml");
 
         zoneTemplates =
-                new MapBuilder<>(":", StringMaster.VERTICAL_BAR, s -> s, s -> new ZoneData(s)).build(content);
+                new MapBuilder<>(":", Strings.VERTICAL_BAR, s -> s, s -> new ZoneData(s)).build(content);
     }
 
     @Override
@@ -94,14 +94,14 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         StringBuilder builder = new StringBuilder();
         for (String s : blockTemplates.keySet()) {
             BlockData data = blockTemplates.get(s);
-            builder.append(s).append(":").append(data.toString()).append(StringMaster.VERTICAL_BAR);
+            builder.append(s).append(":").append(data.toString()).append(Strings.VERTICAL_BAR);
         }
         FileManager.write(builder.toString(), getTemplatesPath() + "blocks.xml");
         builder = new StringBuilder();
 
         for (String s : zoneTemplates.keySet()) {
             ZoneData data = zoneTemplates.get(s);
-            builder.append(s).append(":").append(data.toString()).append(StringMaster.VERTICAL_BAR);
+            builder.append(s).append(":").append(data.toString()).append(Strings.VERTICAL_BAR);
         }
         FileManager.write(builder.toString(), getTemplatesPath() + "zones.xml");
     }
@@ -555,9 +555,8 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
                 if (cell != null) //TODO without buffer!
                 // if (cell.getCellType() != type || layer.getCellVersion()!= cell.getCellVariant())
                 {
-                    cell.setCellVariant(layer.getCellSetVariant());
                     set.add(cell);
-                    cell.setCellType(type);
+                    cell.setCellSet(type);
                     cell.resetCell(false);
                     cell.setColorTheme(theme);
                 }

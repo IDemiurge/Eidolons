@@ -208,6 +208,7 @@ public class CoordinatesMaster {
         }
         return Coordinates.get(x, y);
     }
+
     public static int[] getMinMaxCoordinates(Collection<Coordinates> list) {
         int x = getMinX(list);
         int x1 = getMaxX(list);
@@ -599,14 +600,43 @@ fix selection
         // int x =Math.max(0,  getWidth(coordinatesSet)*3/5 - 3);
         // int y =  Math.max(0, getHeight(coordinatesSet) * 3 / 5 - 3);
         int m = Math.max(getHeight(coordinatesSet), getWidth(coordinatesSet));
-        int max =( m -3 )/2+1;
+        int max = (m - 3) / 2 + 1;
         coordinatesSet.removeIf(c -> {
             int diffX = c.x - middleX;
             int diffY = c.y - middleY;
 
-            return   Math.abs(diffX) + Math.abs(diffY) > max;
+            return Math.abs(diffX) + Math.abs(diffY) > max;
         });
         return coordinatesSet;
+    }
+
+    public static Comparator<Coordinates> getSorter(Coordinates coordinates, boolean closestFirst) {
+        return (o1, o2) -> {
+            double v1 = o1.dst_(coordinates);
+            double v2 = o2.dst_(coordinates);
+            if (v1 > v2)
+                return closestFirst ? 1 : -1;
+            if (v1 < v2)
+                return closestFirst ? -1 : 1;
+            return 1;
+        };
+    }
+
+    public static Coordinates[] getInRange(Coordinates c,
+                                           int range) {
+        Set<Coordinates> set = getInRange_(c, range);
+        return set.toArray(new Coordinates[0]);
+    }
+
+    public static Set<Coordinates> getInRange_(Coordinates c, int range) {
+        Set<Coordinates> set = new HashSet<>();
+        set.add(c);
+        for (int i = 0; i < range; i++) {
+            for (Coordinates adj : c.getAdjacentCoordinates()) {
+                set.addAll(getInRange_(adj, i-1));
+            }
+        }
+        return set;
     }
 
     public boolean isOnEdge(Coordinates c, int border) {
@@ -628,14 +658,15 @@ fix selection
     public static Coordinates getUpperLeftCornerCoordinates(Set<Coordinates> list) {
         int x = getMinX(list);
         int y = getMinY(list);
-        return Coordinates.get(x,y);
+        return Coordinates.get(x, y);
     }
 
     public static Coordinates getBottomLeft(Collection<Coordinates> list) {
         int x = getMinX(list);
         int y = getMaxY(list);
-        return Coordinates.get(x,y);
+        return Coordinates.get(x, y);
     }
+
     public static float getMinDistanceBetweenGroups(Collection<Coordinates> list, Collection<Coordinates> list2,
                                                     float requiredMin) {
         float min = Integer.MAX_VALUE;

@@ -30,10 +30,11 @@ public class ParamPriorityAnalyzer extends AiHandler {
             case FORTITUDE:
             case SPIRIT:
                 return 100;
-            case C_N_OF_COUNTERS:
+            case C_EXTRA_MOVES:
+            case C_EXTRA_ATTACKS:
                 return 120;
             case INITIATIVE:
-            case N_OF_COUNTERS:
+            case EXTRA_ATTACKS:
                 return 150;
 
             case DETECTION:
@@ -144,7 +145,7 @@ public class ParamPriorityAnalyzer extends AiHandler {
                     }
                     return false;
 
-                case C_N_OF_COUNTERS:
+                case C_EXTRA_ATTACKS:
                     if (target instanceof Unit) {
                         Unit heroObj = (Unit) target;
                         return !heroObj.canCounter();

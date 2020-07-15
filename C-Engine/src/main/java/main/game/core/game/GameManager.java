@@ -26,8 +26,6 @@ import main.system.auxiliary.log.LogMaster;
 
 import java.util.Set;
 
-import static main.system.GuiEventType.UPDATE_BUFFS;
-
 /**
  * With gamestate being mostly a data holder, this class is a method container
  * Selection Top level actions - kill(), ... (no direct data manipulations)
@@ -113,7 +111,6 @@ public abstract class GameManager implements GenericGameManager {
         attachmentRemoved(buff, buff.getBasis());
         getState().getAttachmentsMap().get(buff.getBasis()).remove(buff);
         getState().getAttachments().remove(buff);
-        GuiEventManager.trigger(UPDATE_BUFFS, buff);
     }
 
     public abstract void refreshAll();

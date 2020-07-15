@@ -23,7 +23,7 @@ import main.elements.costs.Costs;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
@@ -145,7 +145,7 @@ public class PathBuilder extends AiHandler {
         }
         main.system.auxiliary.log.LogMaster.log(1,
                 targetAction.getActive().getOwnerUnit().getNameAndCoordinate()
-                        + "'s Paths: " + ContainerUtils.joinList(paths, StringMaster.NEW_LINE));
+                        + "'s Paths: " + ContainerUtils.joinList(paths, Strings.NEW_LINE));
 
         try {
             filterPaths();
@@ -372,28 +372,17 @@ public class PathBuilder extends AiHandler {
     }
 
     private Integer getPathPriority() {
-        Costs cost = getPathCosts(path);
-        int result = getPriorityManager().getCostFactor(cost, unit);
-        //        try {
-        // result += getAoOPenalty(); TODO instant atks preCheck !
-        //        } catch (Exception e) {
-        //            main.system.ExceptionMaster.printStackTrace(e);
-        //        }
+        //TODO ai Review - why is this doing so badly?
 
-        int stackFactor = 0;
-        //TODO ai Review - are we done with stacking?
-        // for (Choice choice : path.getChoices()) {
-        //     if (choice.maxUnitsInStack > 1) {
-        //         stackFactor += choice.maxUnitsInStack;
-        //     }
-        // }
+        // Costs cost = getPathCosts(path);
+        // int result = getPriorityManager().getCostFactor(cost, unit);
+        // main.system.auxiliary.log.LogMaster.log(1,result+" COST FACTOR: " +cost);
+        // int stackFactor = 0;
+        // result = result
+        //         * getParamAnalyzer().getActionNumberFactor(size) / 100;
 
-        int size = path.getActions().size() + stackFactor;
-        result = result
-                * getParamAnalyzer().getActionNumberFactor(size) / 100;
-
-
-        path.setPriority(result);
+        int result;
+        path.setPriority(result =100/path.getActions().size());
         return result;
     }
 
@@ -432,7 +421,7 @@ public class PathBuilder extends AiHandler {
         }
         if (Log.check(Log.LOG_CASE.pathing))
             main.system.auxiliary.log.LogMaster.log(1, targetAction + "'s Filtered Paths: " +
-                    ContainerUtils.joinList(filteredPaths, StringMaster.NEW_LINE));
+                    ContainerUtils.joinList(filteredPaths, Strings.NEW_LINE));
 
     }
 

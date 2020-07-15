@@ -113,11 +113,15 @@ public class GenericGridView extends UnitView {
 
     @Override
     public void setVisible(boolean visible) {
+        setVisible(visible, false);
+    }
+    public void setVisible(boolean visible, boolean quiet) {
         if (invisible) {
             visible = false;
         }
         if (this.isVisible() != visible) {
             super.setVisible(visible);
+            if (!quiet)
             if (getParent() instanceof GridCellContainer) {
                 ((GridCellContainer) getParent()).recalcUnitViewBounds();
 

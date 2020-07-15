@@ -15,6 +15,7 @@ import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
@@ -138,7 +139,7 @@ public class ActionInitializer extends DC_ActionManager {
 
     private void addCustomActions(Unit unit, DequeImpl<ActiveObj> actives) {
 
-        String activesProp = unit.getProperty(ActionEnums.ACTIVES);
+        String activesProp = unit.getProperty(G_PROPS.ACTIVES);
         for (String typeName : ContainerUtils.open(activesProp)) {
             ObjType type = DataManager.getType(typeName, DC_TYPE.ACTIONS);
             DC_UnitAction action;
@@ -184,7 +185,7 @@ public class ActionInitializer extends DC_ActionManager {
             }
         }
         activesProp = activesPropBuilder.toString();
-        unit.setProperty(ActionEnums.ACTIVES, activesProp);
+        unit.setProperty(G_PROPS.ACTIVES, activesProp);
     }
 
     private void addSpecialActions(Unit unit, DequeImpl<ActiveObj> actives) {

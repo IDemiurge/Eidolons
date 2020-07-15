@@ -35,7 +35,7 @@ public class OrbsPanel extends TablePanel {
 
     }
 
-    public static void addTooltip(OrbElement el, String name, String val) {
+    public static void addTooltipForValue(OrbElement el, String name, String val) {
         ValueTooltip tooltip = new ValueTooltip();
         String description = DescriptionTooltips.tooltip(el.getParameter());
         ValueContainer container = new VerticalValueContainer(el.getIconRegion(), name + ": " + val, description);
@@ -121,7 +121,7 @@ public class OrbsPanel extends TablePanel {
                 continue;
             }
             if (!disabled)
-                addTooltip(orb, param.getName(), source.getParam(param));
+                addTooltipForValue(orb, param.getName(), source.getParam(param));
         }
     }
 

@@ -19,6 +19,7 @@ import main.elements.conditions.NotCondition;
 import main.entity.Ref.KEYS;
 import main.game.core.game.GenericGame;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 public class EssenceBuffRule extends DC_BuffRule {
     public static final String[] buffNames = {
@@ -31,7 +32,7 @@ public class EssenceBuffRule extends DC_BuffRule {
     private final String maxFormula="100";
 
     public static final String parameterString = PARAMS.SPIRIT.getName()
-    + StringMaster.VERTICAL_BAR     + PARAMS.RESISTANCE.getName();
+    + Strings.VERTICAL_BAR     + PARAMS.RESISTANCE.getName();
 
 
     public EssenceBuffRule(GenericGame game) {

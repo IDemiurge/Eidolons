@@ -220,16 +220,16 @@ public class UnitDataSource implements
 
     @Override
     public ValueContainer getCounterPoints() {
-        int c = unit.getIntParam(PARAMS.C_N_OF_COUNTERS);
-        int m = unit.getIntParam(PARAMS.N_OF_COUNTERS);
+        int c = unit.getIntParam(PARAMS.C_EXTRA_ATTACKS);
+        int m = unit.getIntParam(PARAMS.EXTRA_ATTACKS);
         final String value = c + "/" + m;
 
         VerticalValueContainer container = new VerticalValueContainer(
-         getOrCreateR(ImageManager.getValueIconPath(PARAMS.N_OF_COUNTERS)), value);
+         getOrCreateR(ImageManager.getValueIconPath(PARAMS.EXTRA_ATTACKS)), value);
 
         ValueTooltip toolTip = new ValueTooltip();
         toolTip.setUserObject(Collections.singletonList(
-                new ValueContainer(PARAMS.N_OF_COUNTERS.getName(), value)));
+                new ValueContainer(PARAMS.EXTRA_ATTACKS.getName(), value)));
         container.addListener(toolTip.getController());
 
         return container;

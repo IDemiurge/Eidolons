@@ -27,6 +27,7 @@ public class ActionPath {
         this.choices = (choices);
         this.targetCoordinates = targetCoordinates;
     }
+
     public ActionPath(Coordinates targetCoordinates, Choice... choices) {
         this(targetCoordinates, new ArrayList<>(Arrays.asList(choices)));
     }
@@ -79,9 +80,7 @@ public class ActionPath {
     }
 
     public List<Action> getActions() {
-        if (actions == null) {
-            initActions();
-        }
+        initActions();
         return actions;
     }
 

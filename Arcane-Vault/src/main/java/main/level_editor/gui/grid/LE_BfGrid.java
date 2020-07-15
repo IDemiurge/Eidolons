@@ -27,7 +27,7 @@ import main.level_editor.backend.handlers.selection.LE_Selection;
 import main.level_editor.backend.metadata.options.LE_Options;
 import main.level_editor.backend.metadata.options.LE_OptionsMaster;
 import main.system.GuiEventManager;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.datatypes.DequeImpl;
 import main.system.math.MathMaster;
 
@@ -249,7 +249,7 @@ public class LE_BfGrid extends GridPanel {
     private void updateCellLabel(Coordinates c, String data, Boolean aiOrScriptsOrDecor) {
         GridCellContainer container = cells[c.x][(c.y)];
         if (aiOrScriptsOrDecor == null) {
-            data = data.replace(";", StringMaster.NEW_LINE);
+            data = data.replace(";", Strings.NEW_LINE);
             ((LE_GridCell) container).getDecorLabel().setText(data);
         } else if (aiOrScriptsOrDecor) {
             ((LE_GridCell) container).getAiLabel().setText(data);

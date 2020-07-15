@@ -110,7 +110,6 @@ public class AtbViewManager {
                 }
             }
         }
-//        applyImageMove();
     }
 
     protected void previewAtbPos(int i) {

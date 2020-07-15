@@ -23,6 +23,7 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
@@ -67,11 +68,11 @@ public class XML_Transformer {
 
     private static void routine() {
         renameValue("STA_COST", PARAMS.TOU_COST.getName());
-        renameValue("STAMINA_PENALTY", PARAMS.TOUGHNESS_PENALTY.getName());
-        renameValue("AOO_STAMINA_PENALTY", PARAMS.AOO_TOUGH_PENALTY.getName());
-        renameValue("COUNTER_STAMINA_PENALTY", PARAMS.COUNTER_TOUGH_PENALTY.getName());
-        renameValue("INSTANT_STAMINA_PENALTY", PARAMS.INSTANT_TOUGH_PENALTY.getName());
-        renameValue("MOVE_STA_PENALTY", PARAMS.MOVE_TOU_PENALTY.getName());
+        renameValue("STAMINA_PENALTY", PARAMS.TOUGHNESS_COST_MOD.getName());
+        renameValue("AOO_STAMINA_PENALTY", PARAMS.AOO_TOUGHNESS_COST_MOD.getName());
+        renameValue("COUNTER_STAMINA_PENALTY", PARAMS.COUNTER_TOUGHNESS_COST_MOD.getName());
+        renameValue("INSTANT_STAMINA_PENALTY", PARAMS.INSTANT_TOUGHNESS_COST_MOD.getName());
+        renameValue("MOVE_STA_PENALTY", PARAMS.MOVE_TOU_COST_MOD.getName());
 
 
         renameValue("MORALE_RESTORATION", PARAMS.ESSENCE_RESTORATION.getName());
@@ -264,7 +265,7 @@ run comparison based on current valueTypePairs
 
         for (String s : map.keySet()) {
             finalString += s + StringMaster.wrapInParenthesis("" + map.get(s))
-                    + StringMaster.CONTAINER_SEPARATOR;
+                    + Strings.CONTAINER_SEPARATOR;
         }
         if (attr) {
             type.setProperty(PROPS.ATTRIBUTE_PROGRESSION, finalString);

@@ -1,6 +1,5 @@
 package main.content.enums.entity;
 
-import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 
@@ -10,11 +9,7 @@ import main.system.auxiliary.StringMaster;
 public class ActionEnums {
     public static final String OFFHAND_ATTACK = StringMaster
             .format(STD_SPEC_ACTIONS.OFFHAND_ATTACK.name());
-    public static final String DUAL_ATTACK = StringMaster
-            .format(STD_SPEC_ACTIONS.DUAL_ATTACK.name());
-    public static final G_PROPS ACTIVES = G_PROPS.ACTIVES;
-    public static final String ATTACK = (STD_ACTIONS.Attack
-            .name());
+    public static final String ATTACK = (STD_ACTIONS.Attack.name());
     public static final String OFFHAND = "Off Hand ";
     public static final String RELOAD = "Reload";
     public static final String THROW = "Throw";
@@ -23,7 +18,6 @@ public class ActionEnums {
     public static final String MOVE_LEFT = "Move Left";
     public static final String MOVE_BACK = "Move Back";
     public static final String FLEE = "Flee";
-    public static final String SEARCH_MODE = "Search Mode";
     public static final String TOGGLE_WEAPON_SET = "Toggle Weapon Set";
     public static final String THROW_MAIN = "Throw Main Hand Weapon";
     public static final String THROW_OFFHAND = "Throw Off Hand Weapon";
@@ -98,13 +92,13 @@ public class ActionEnums {
         AGILE, DEXTEROUS,
     }
 
-    public enum ATTACK_TYPE{
+    public enum ATTACK_TYPE {
         STANDARD_ATTACK,
         QUICK_ATTACK,
         POWER_ATTACK,
-         SPECIAL_ATTACK,
+        SPECIAL_ATTACK,
 
-}
+    }
 
     public enum ADDITIONAL_MOVE_ACTIONS {
         MOVE_LEFT, MOVE_RIGHT, MOVE_BACK, CLUMSY_LEAP;
@@ -134,7 +128,7 @@ public class ActionEnums {
     }
 
     public enum STD_MODE_ACTIONS {
-        Defend, Camp, Concentrate, Rest, Meditate, On_Alert;
+        Defend, Camp, Concentrate, Rest, On_Alert;
 
         public String toString() {
             return StringMaster.format(name());
@@ -164,12 +158,11 @@ public class ActionEnums {
     }
 
     public enum STD_SPEC_ACTIONS {
-        On_Alert,  Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Guard_Mode, Watch, Wait, Toggle_Weapon_Set
-, Push, Pull,
-//        @Override
-//        public String toString() {
-//            return StringMaster.getWellFormattedString(name());
-//        }
+        On_Alert, Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Guard_Mode, Watch, Wait, Toggle_Weapon_Set, Push, Pull,
+        //        @Override
+        //        public String toString() {
+        //            return StringMaster.getWellFormattedString(name());
+        //        }
     }
 
     public enum WEAPON_ATTACKS {
@@ -227,8 +220,7 @@ public class ActionEnums {
         Force_Push,
         force_touch,
         force_blast,
-        force_ray
-        ;
+        force_ray;
 
         public String toString() {
             return StringMaster.format(name());

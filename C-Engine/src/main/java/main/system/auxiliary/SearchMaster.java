@@ -13,7 +13,7 @@ public class SearchMaster<T> {
     }
 
     public static String getPropPart(String s, PROPERTY property, Entity entity) {
-        return getPropPart(s, property, entity, StringMaster.SEPARATOR);
+        return getPropPart(s, property, entity, Strings.SEPARATOR);
     }
 
     public static String getPropPart(String s, PROPERTY property,

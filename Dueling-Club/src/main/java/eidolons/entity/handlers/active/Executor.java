@@ -1,6 +1,5 @@
 package eidolons.entity.handlers.active;
 
-import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
@@ -8,7 +7,6 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
@@ -351,15 +349,19 @@ public class Executor extends ActiveHandler {
             getGame().getDungeonMaster().getExplorationMaster().getCleaner().cleanUpAfterAction(
                     getEntity(), getOwnerObj());
         } else {
-            if (DC_Engine.isAtbMode())
-                reduceAtbReadiness();
-            addCooldown();
+            reduceAtbReadiness();
         }
 
         try {
             getAction().getCosts().pay(getRef());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
+        } finally {
+            if (getAction().isPointCostActivation()) {
+                getAction().setPointCostActivation(false);
+                if (!getAction().isAttackAny())
+                    getOwnerObj().freeMoveDone();
+            }
         }
     }
 
@@ -372,15 +374,6 @@ public class Executor extends ActiveHandler {
                 "%, now at " + AtbMaster.getDisplayedAtb(getOwnerObj()) +
                 "%");
 
-    }
-
-    protected void addCooldown() {
-        Integer cooldown = getAction().getIntParam(PARAMS.COOLDOWN);
-        if (cooldown <= 0) {
-            getAction().modifyParameter(PARAMS.C_COOLDOWN, 1);
-        } else {
-            getAction().setParam(PARAMS.C_COOLDOWN, cooldown);
-        }
     }
 
     private void fireEvent(STANDARD_EVENT_TYPE type, boolean interrupting) {

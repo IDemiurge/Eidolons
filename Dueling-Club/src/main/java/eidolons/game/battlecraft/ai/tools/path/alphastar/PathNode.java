@@ -44,7 +44,7 @@ public class PathNode {
 
     @Override
     public String toString() {
-        return "node " + coordinates.toString()
+        return "A* Node " + coordinates.toString()
                 // + ((parent != null) ? " parent: " + parent.getCoordinates()
                 // : "" )
                 ;

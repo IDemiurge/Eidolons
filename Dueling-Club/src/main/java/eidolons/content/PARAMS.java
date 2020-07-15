@@ -108,8 +108,11 @@ public enum PARAMS implements PARAMETER {
     C_FOCUS(null, "FOCUS", true, 0, "units", "chars", "perks"),
     ESSENCE(null, "ESSENCE", false, 0, "units", "chars", "perks"),
     C_ESSENCE(null, "ESSENCE", true, 0, "units", "chars", "perks"),
-    N_OF_COUNTERS("Extra Attacks", "", false, 0, "units", "chars", "perks"),
-    C_N_OF_COUNTERS("Extra Attacks", "", true, 2, "units", "chars", "perks"),
+    EXTRA_ATTACKS("Extra Attacks", "", false, 0, "units", "chars", "perks"),
+    C_EXTRA_ATTACKS("Current Extra Attacks", "", true, 2, "units", "chars", "perks"),
+
+    EXTRA_MOVES("Extra Moves", "", false, 0, "units", "chars", "perks"),
+    C_EXTRA_MOVES("Current Extra Moves", "", true, 2, "units", "chars", "perks"),
 
     TOUGHNESS_RECOVERY(null, "", false, 25, "bf obj", "units", "chars", "perks"),
     TOUGHNESS_RETAINMENT(null, "", false, 25, "bf obj", "units", "chars", "perks"),
@@ -477,7 +480,8 @@ public enum PARAMS implements PARAMETER {
     TOU_COST("STA Cost", " Cost in Stamina", false, 0, "actions", "items"),
     ENDURANCE_COST("END Cost", " Cost in Endurance", false, 0, "actions", "items"),
     SF_COST("Soulforce Cost", " Cost in Soulforce", false, 0, "actions", "items"),
-    CP_COST("CP Cost", "Cost in Counter Points", false, 0, "actions"),
+    ATK_PTS_COST("CP Cost", "Cost in Counter Points", false, 0, "actions"),
+    MOVE_PTS_COST("CP Cost", "Cost in Counter Points", false, 0, "actions"),
 
     END_UPKEEP(null, " UPKEEP in Endurance", false, 0, "units", "items"),
     AP_UPKEEP(null, " UPKEEP in AP", false, 0, "units", "items"),
@@ -485,12 +489,6 @@ public enum PARAMS implements PARAMETER {
     FOC_UPKEEP(null, " UPKEEP in Focus", false, 0, "units", "items"),
 
     FOC_REQ("Focus Req.", " Focus Requirement", false, 0, "actions", "items"),
-    COOLDOWN_MOD(true, "Cooldown modifier", " Cooldown modifier", false, 0, "units", "chars", "perks"),
-    // TODO into custom values with _MOVES, _SPELLS, _{SPELL_GROUP} or even
-    // _{ACTION_NAME}
-
-    COOLDOWN("Cooldown", "Cooldown", false, 1, "actions", "items"),
-    C_COOLDOWN("C Cooldown", "Cooldown", true, 0, "actions", "items"),
     RESISTANCE_MOD(true, null, " RESISTANCE_MOD", false, 100, "actions"),
 
     DAMAGE_MOD(true, null, " DAMAGE_MOD", false, 100, "actions", "units", "chars", "perks"),
@@ -623,33 +621,33 @@ public enum PARAMS implements PARAMETER {
     N_OF_ACTIONS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
     N_OF_COUNTERS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
 
-    TOUGHNESS_PENALTY(null, "", false, 0, "units", "chars", "perks"),
-    ESSENCE_PENALTY(null, "", false, 0, "units", "chars", "perks"),
-    FOCUS_PENALTY(null, "", false, 0, "units", "chars", "perks"),
-    AP_PENALTY(null, "", false, 0, "units", "chars", "perks"),
-    CP_PENALTY(null, "", false, 0, "units", "chars", "perks"),
+    TOUGHNESS_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
+    ESSENCE_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
+    FOCUS_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
+    ATB_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
+    ATK_PTS_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
 
     EXTRA_ATTACKS_POINT_COST_MOD(true, "Extra Attacks Cost Mod", "", false, 50, "units", "chars", "perks"),
-    INSTANT_TOUGH_PENALTY(null, "", false, -50, "units", "chars", "perks"),
-    INSTANT_CP_PENALTY(null, "", false, 0, "units", "chars", "perks"),
-    AOO_TOUGH_PENALTY(null, "", false, -50, "units", "chars", "perks"),
-    AOO_CP_PENALTY(null, "", false, 0, "units", "chars", "perks"),
-    COUNTER_TOUGH_PENALTY(null, "", false, -50, "units", "chars", "perks"),
-    COUNTER_CP_PENALTY(null, "", false, 0, "units", "chars", "perks"),
+    INSTANT_TOUGHNESS_COST_MOD(null, "", false, -50, "units", "chars", "perks"),
+    INSTANT_PTS_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
+    AOO_TOUGHNESS_COST_MOD(null, "", false, -50, "units", "chars", "perks"),
+    AOO_PTS_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
+    COUNTER_TOUGHNESS_COST_MOD(null, "", false, -50, "units", "chars", "perks"),
+    COUNTER_PTS_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
 
-    SPELL_STA_PENALTY("Spell STA pen.", "", false, 0, "units", "chars", "perks"),
-    SPELL_ESS_PENALTY("Spell ESS pen.", "", false, 0, "units", "chars", "perks"),
-    SPELL_FOC_PENALTY("Spell FOC pen.", "", false, 0, "units", "chars", "perks"),
-    SPELL_AP_PENALTY("Spell AP pen.", "", false, 0, "units", "chars", "perks"),
+    SPELL_TOU_COST_MOD("Spell STA pen.", "", false, 0, "units", "chars", "perks"),
+    SPELL_ESS_COST_MOD("Spell ESS pen.", "", false, 0, "units", "chars", "perks"),
+    SPELL_FOC_COST_MOD("Spell FOC pen.", "", false, 0, "units", "chars", "perks"),
+    SPELL_ATB_COST_MOD("Spell AP pen.", "", false, 0, "units", "chars", "perks"),
 
-    ATTACK_STA_PENALTY("Attack STA pen.", "", false, 0, "units", "chars", "perks"),
-    ATTACK_AP_PENALTY("Attack AP pen.", "", false, 0, "units", "chars", "perks"),
+    ATTACK_TOUGHNESS_COST_MOD("Attack STA pen.", "", false, 0, "units", "chars", "perks"),
+    ATTACK_ATB_COST_MOD("Attack AP pen.", "", false, 0, "units", "chars", "perks"),
 
-    OFFHAND_ATTACK_STA_PENALTY(null, "", false, 0, "units", "chars", "perks"),
-    OFFHAND_ATTACK_AP_PENALTY(null, "", false, 0, "units", "chars", "perks"),
+    OFFHAND_ATTACK_TOUGHNESS_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
+    OFFHAND_ATTACK_ATB_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
 
-    MOVE_TOU_PENALTY("Move STA pen.", "", false, 0, "units", "chars", "perks"),
-    MOVE_AP_PENALTY("Move AP pen.", "", false, 0, "units", "chars", "perks"),
+    MOVE_TOU_COST_MOD("Move STA pen.", "", false, 0, "units", "chars", "perks"),
+    MOVE_ATB_COST_MOD("Move AP pen.", "", false, 0, "units", "chars", "perks"),
 
     EVASION(null, "", false, 0, "units", "chars", "perks"),
     ACCURACY(null, "", false, 0, "actions", "units", "chars", "perks"),
@@ -791,11 +789,8 @@ could have other params - sf discounts,
     DEBT_MOD(null, "", false, 0, "chars", "units"),
     INTEREST_MOD(null, "", false, 0, "chars", "units"),
 
-    SUMMON_ATB(null, "", false, 0)
-    , GRID_WIDTH(null, "", false, 1, "boss")
-    , GRID_HEIGHT(null, "", false, 1, "boss")
-    ;
-
+    SUMMON_ATB(null, "", false, 0), GRID_WIDTH(null, "", false, 1, "boss"), GRID_HEIGHT(null, "", false, 1, "boss"),
+    FREE_MOVE_BONUS(null, "", false, 0, "units", "chars");
 
 
     boolean writeToType;
@@ -845,15 +840,17 @@ could have other params - sf discounts,
         this.mod = mod;
     }
 
-    PARAMS(boolean mod, String shortName, String descr, boolean dynamic, int defaultValue ) {
-        this(shortName, descr, dynamic, defaultValue );
+    PARAMS(boolean mod, String shortName, String descr, boolean dynamic, int defaultValue) {
+        this(shortName, descr, dynamic, defaultValue);
         this.mod = mod;
     }
-    PARAMS(String shortName, String descr, boolean dynamic, int defaultValue ) {
-        this(null , shortName, descr, dynamic, defaultValue);
+
+    PARAMS(String shortName, String descr, boolean dynamic, int defaultValue) {
+        this(null, shortName, descr, dynamic, defaultValue);
     }
-        PARAMS(String shortName, String descr, boolean dynamic, int defaultValue, String... entityTypes) {
-        this( entityTypes[0], shortName, descr, dynamic, defaultValue, Integer.MAX_VALUE);
+
+    PARAMS(String shortName, String descr, boolean dynamic, int defaultValue, String... entityTypes) {
+        this(entityTypes[0], shortName, descr, dynamic, defaultValue, Integer.MAX_VALUE);
         this.entityTypes = entityTypes;
     }
 
@@ -1043,7 +1040,7 @@ could have other params - sf discounts,
 
     @Override
     public void setDevOnly(boolean devOnly) {
-        this.devOnly= devOnly;
+        this.devOnly = devOnly;
     }
 
     @Override

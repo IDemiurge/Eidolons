@@ -23,6 +23,7 @@ import main.entity.type.ObjType;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -42,7 +43,7 @@ public class PartyHelper {
     private static final int MAX_PARTY_MEMBERS_DEFAULT = 4;
     static Party party;
     private static Party enemyParty;
-    private static List<Party> parties = new ArrayList<>();
+    private static final List<Party> parties = new ArrayList<>();
 
     private static File getPartyFile(String typeName) {
         return FileManager.getFile(getPartyFolderPath() + "/" + typeName + ".xml");
@@ -108,7 +109,7 @@ public class PartyHelper {
         party.setImage(hero.getImagePath());
         hero.getGame().initType(party.getType());
         party.toBase();
-        party.setProperty(G_PROPS.GROUP, StringMaster.CUSTOM, true);
+        party.setProperty(G_PROPS.GROUP, Strings.CUSTOM, true);
         return party;
     }
 
@@ -120,7 +121,7 @@ public class PartyHelper {
 
         if (party.getName().equals(DEFAULT_TYPE_NAME)) {
             party.setProperty(G_PROPS.NAME, party.getLeader().getProperty(G_PROPS.NAME)
-             + StringMaster.PARTY_SUFFIX, true);
+             + Strings.PARTY_SUFFIX, true);
         }
         String xml = XML_Writer.openXML(XML_ROOT);
         xml += XML_Writer.getTypeXML(party.getType(), new StringBuilder(XML_Writer.STR_CAPACITY));
@@ -134,7 +135,7 @@ public class PartyHelper {
             eidolons.macro.global.persist.Saver.prepareType(type);
 
             xmlBuilder.append(XML_Writer.getTypeXML(type, new StringBuilder(XML_Writer.STR_CAPACITY)));
-            names += hero.getName() + StringMaster.CONTAINER_SEPARATOR;
+            names += hero.getName() + Strings.CONTAINER_SEPARATOR;
         }
         xml = xmlBuilder.toString();
 
@@ -182,15 +183,15 @@ public class PartyHelper {
         }
 
         if (auto) {
-            if (!newName.contains(StringMaster.ARCADE)) {
-                newName = newName + " " + StringMaster.ARCADE;
+            if (!newName.contains(Strings.ARCADE)) {
+                newName = newName + " " + Strings.ARCADE;
             }
         }
 
         if (!auto) {
             if (DataManager.isTypeName(newName) && !party.getName().equals(newName)) {
-                if (!newName.contains(StringMaster.ARCADE)) {
-                    newName = newName + " " + StringMaster.ARCADE;
+                if (!newName.contains(Strings.ARCADE)) {
+                    newName = newName + " " + Strings.ARCADE;
                 }
                 Loop.startLoop(97);
                 int i = 2;
@@ -214,12 +215,12 @@ public class PartyHelper {
 
         if (arcade) {
             party.setType(newType);
-            party.setProperty(G_PROPS.GROUP, StringMaster.ARCADE, true);
+            party.setProperty(G_PROPS.GROUP, Strings.ARCADE, true);
             getParty().setName(newName);
             saveParty();
         } else {
             Party exportedParty = newParty(newType);
-            exportedParty.setProperty(G_PROPS.GROUP, StringMaster.PRESET, true);
+            exportedParty.setProperty(G_PROPS.GROUP, Strings.PRESET, true);
             exportedParty.setName(newName);
             saveParty(exportedParty, true);
         }

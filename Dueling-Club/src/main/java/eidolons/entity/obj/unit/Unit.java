@@ -137,6 +137,9 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     private DC_ActiveObj lastAction;
     private boolean shadow;
     private boolean actorLinked; //for dialogue
+    private boolean movePointsOn=true;
+    private boolean extraAtkPointsOn;
+    private int freeMovesDone;
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
@@ -157,7 +160,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             try {
                 setFacing(FacingMaster.getRandomFacing());
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
         }
         //TODO make it more apparent why and how this is done
@@ -224,10 +227,10 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     protected void putParameter(PARAMETER param, String value) {
         if (getName().contains("Leviathan")) {
             if (param == PARAMS.C_TOUGHNESS) {
-                main.system.auxiliary.log.LogMaster.devLog("Leviathan set C_TOUGHNESS" + value);
+                LogMaster.devLog("Leviathan set C_TOUGHNESS" + value);
             }
             if (param == PARAMS.C_ENDURANCE) {
-                main.system.auxiliary.log.LogMaster.devLog("Leviathan set C_ENDURANCE" + value);
+                LogMaster.devLog("Leviathan set C_ENDURANCE" + value);
             }
         }
 
@@ -308,8 +311,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         getEntity().setBeingReset(false);
 
         if (getName().contains("Leviathan")) {
-            main.system.auxiliary.log.LogMaster.devLog("Leviathan C_TOUGHNESS " + getIntParam(PARAMS.C_TOUGHNESS));
-            main.system.auxiliary.log.LogMaster.devLog("Leviathan C_ENDURANCE " + getIntParam(PARAMS.C_ENDURANCE));
+            LogMaster.devLog("Leviathan C_TOUGHNESS " + getIntParam(PARAMS.C_TOUGHNESS));
+            LogMaster.devLog("Leviathan C_ENDURANCE " + getIntParam(PARAMS.C_ENDURANCE));
         }
     }
 
@@ -1838,4 +1841,32 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     public boolean canInstantAttack() {
         return getChecker().canInstantAttack();
     }
+
+    public boolean isMovePointsOn() {
+        return movePointsOn;
+    }
+
+    public void setMovePointsOn(boolean movePointsOn) {
+        this.movePointsOn = movePointsOn;
+    }
+
+    public void setExtraAtkPointsOn(boolean extraAtkPointsOn) {
+        this.extraAtkPointsOn = extraAtkPointsOn;
+    }
+
+    public boolean getExtraAtkPointsOn() {
+        return extraAtkPointsOn;
+    }
+
+    public int getFreeMovesDone() {
+        return freeMovesDone;
+    }
+
+    public void freeMoveDone(   ) {
+        this.freeMovesDone++;
+    }
+    public void setFreeMovesDone(int freeMovesDone) {
+        this.freeMovesDone = freeMovesDone;
+    }
+
 }

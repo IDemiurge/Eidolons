@@ -15,6 +15,9 @@ public class ModeActionsPanel extends BaseSlotPanel {
         super(imageSize);
     }
 
+    protected int getPageSize() {
+        return 5;
+    }
     @Override
     public void updateAct(float delta) {
 

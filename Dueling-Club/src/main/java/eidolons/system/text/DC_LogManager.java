@@ -20,6 +20,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
@@ -78,7 +79,7 @@ public class DC_LogManager extends LogManager {
 
     public void logOrderFailed(Order order, Unit unit) {
         String entry = unit.getName() + " has failed to obey " + order.toString();
-        entry = StringMaster.MESSAGE_PREFIX_PROCEEDING + entry;
+        entry = Strings.MESSAGE_PREFIX_PROCEEDING + entry;
         LogMaster.log(1, entry);
     }
 
@@ -88,7 +89,7 @@ public class DC_LogManager extends LogManager {
         // UNIT_TO_PLAYER_VISION.UNKNOWN)
         // name = "A unit";
         String entry = name + " has moved to a new position at " + c.toString();
-        entry = StringMaster.MESSAGE_PREFIX_PROCEEDING + entry;
+        entry = Strings.MESSAGE_PREFIX_PROCEEDING + entry;
         LogMaster.log(1, entry);
         if (!obj.isMine())
             if (obj.getActivePlayerVisionStatus() == PLAYER_VISION.INVISIBLE) {

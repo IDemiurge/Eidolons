@@ -1,7 +1,6 @@
 package main.system.math;
 
 import main.content.values.parameters.PARAMETER;
-import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.core.game.Game;
@@ -280,48 +279,17 @@ public abstract class MathMaster {
 
     }
 
-    public Integer evaluateMeditation(Obj obj) {
-
-        return null;
-    }
-
-    public Integer evaluateClaimThreshold(Obj obj, String s) {
-
-        return null;
-    }
-
-    public Integer evaluateClaimOutput(Obj obj, String s) {
-
-        return null;
-    }
-
-    public Integer evaluateRest(Obj obj) {
-
-        return null;
-    }
-
-    public Integer evaluateConcentration(Obj obj) {
-
-        return null;
-    }
-
-    public abstract Integer getStartingEssence(Obj obj);
-
-    public abstract int calculateClaimedObjects(Obj Obj, String BF_OBJECT_TYPE);
-
-    public abstract Integer calculateEssenceRegenBonus(Obj dc_HeroObj);
-
-    public abstract Integer evaluateSummonEnergyCost(Entity obj, String s);
-
     public static float getBalanceCoef(WeightMap map) {
         //average difference, min/max difference TODO
         for (Object o : map.keySet()) {
             Integer val = (Integer) map.get(o);
-
         }
-
         return 0;
     }
+
+    public abstract Integer getStartingEssence(Obj obj);
+
+
 
 
 }

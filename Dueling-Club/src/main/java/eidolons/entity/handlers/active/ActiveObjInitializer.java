@@ -6,9 +6,9 @@ import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.core.master.EffectMaster;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
@@ -28,10 +28,10 @@ import java.util.ArrayList;
 /**
  * Created by JustMe on 2/23/2017.
  */
-public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
+public class ActiveObjInitializer extends EntityInitializer<DC_ActiveObj> {
 
 
-    public ActiveInitializer(DC_ActiveObj entity, EntityMaster<DC_ActiveObj> entityMaster) {
+    public ActiveObjInitializer(DC_ActiveObj entity, EntityMaster<DC_ActiveObj> entityMaster) {
         super(entity, entityMaster);
     }
 
@@ -62,10 +62,9 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
                 main.system.auxiliary.log.LogMaster.important(">>> ATTACK CONSTRUCT FAILeD: " + getEntity());
             } else if (!getEntity().getName().equalsIgnoreCase("wait"))
                 if (!getEntity().getName().equalsIgnoreCase("idle"))
-                if (!getEntity().getName().equalsIgnoreCase("Dummy Action"))
-                {
-                    main.system.auxiliary.log.LogMaster.important(">>> NO EFFECTS AFTER CONSTRUCT: " + getEntity());
-                }
+                    if (!getEntity().getName().equalsIgnoreCase("Dummy Action")) {
+                        main.system.auxiliary.log.LogMaster.important(">>> NO EFFECTS AFTER CONSTRUCT: " + getEntity());
+                    }
         }
     }
 
@@ -85,51 +84,43 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
-            Cost cp_cost = costs.getCost(PARAMS.C_N_OF_COUNTERS);
-            Formula ap_cost =   new Formula(getParam(PARAMS.AP_COST)) ;
-            boolean noCounterCost = cp_cost == null;
-            if (!noCounterCost) {
-                noCounterCost = cp_cost.getPayment().getAmountFormula().toString().isEmpty()
-                        || cp_cost.getPayment().getAmountFormula().toString().equals("0");
-            }
-            if (noCounterCost) { // if not specifically set...
-                if (getHandler().isExtraAttackMode()) {
-                    cp_cost = new CostImpl(new Payment(PARAMS.C_N_OF_COUNTERS,
-                            (ap_cost)));
-                    cp_cost.getPayment().getAmountFormula().applyModifier(
-                            getEntity().getOwnerUnit().getIntParam(PARAMS.EXTRA_ATTACKS_POINT_COST_MOD));
-                    cp_cost.setCostParam(PARAMS.CP_COST);
+            Formula ap_cost = new Formula(getParam(PARAMS.AP_COST));
 
+            if (!ExplorationMaster.isExplorationOn() && !getEntity().getOwnerObj().isAiControlled()&&
+                    (getEntity().isInstantAction() || getHandler().isExtraAttackMode())) {
+                PARAMS parameter = getEntity().isAttackAny()
+                        ? PARAMS.C_EXTRA_ATTACKS
+                        : PARAMS.C_EXTRA_MOVES;
+                Cost cost = costs.getCost(parameter);
+                if (cost == null) {
+                    PARAMS costParam = getEntity().isAttackAny()
+                            ? PARAMS.ATK_PTS_COST
+                            : PARAMS.MOVE_PTS_COST;
+                    CostImpl ptsCost = new CostImpl(new Payment(parameter, ap_cost),
+                            costParam);
+                    if (!getEntity().isAttackAny()) {
+                        if (ptsCost.canBePaid(getRef())) {
+                            costs.addCost(ptsCost);
+                            getEntity().setPointCostActivation(true);
+                        }
+                    } else
+                        costs.addCost(ptsCost);
                 }
             } else {
-                if (!(getHandler().isExtraAttackMode())) {
-                    costs.getCosts().remove(cp_cost);
-                }
+                costs.addCost(new CostImpl(new Payment(null, (int) AtbMaster.getReadinessCost(getEntity()))
+                        , PARAMS.ATB));
             }
-
-            costs.addCost(
-                    new CostImpl(new Payment(null, (int) AtbMaster.getReadinessCost(getEntity()))
-                            , PARAMS.ATB
-                    ));
-            if (!getHandler().isExtraAttackMode())
-                costs.removeCost(PARAMS.C_N_OF_COUNTERS);
-            //TODO EA check
         }
-        if (anim) {
-//          getAnimator().  addCostAnim();
 
-        }
         costs.setActive(getEntity());
-//   TODO what for?
-//     if (!getHandler().isInstantMode() || getHandler().isCounterMode()) {
-//            getHandler().getActivator().setCanActivate(costs.canBePaid(getRef()));
-//        }
-
         costs.setActiveId(getId());
 
+        //TODO Review
         if (getEntity().isAttackAny())
             if (getEntity().isExtraAttackMode())
                 applyDynamicCostMods(costs);
+
+
         getEntity().setCosts(costs);
     }
 
@@ -139,19 +130,19 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
         Integer sta = 0;
         Integer ap = 0;
         if (getHandler().isCounterMode()) {
-            ap = ownerObj.getIntParam(PARAMS.COUNTER_CP_PENALTY);
+            ap = ownerObj.getIntParam(PARAMS.COUNTER_PTS_COST_MOD);
             sta = ownerObj
-                    .getIntParam(PARAMS.COUNTER_TOUGH_PENALTY);
+                    .getIntParam(PARAMS.COUNTER_TOUGHNESS_COST_MOD);
         }
         if (getHandler().isInstantMode()) {
-            ap = ownerObj.getIntParam(PARAMS.INSTANT_CP_PENALTY);
+            ap = ownerObj.getIntParam(PARAMS.INSTANT_PTS_COST_MOD);
             sta = ownerObj
-                    .getIntParam(PARAMS.INSTANT_TOUGH_PENALTY);
+                    .getIntParam(PARAMS.INSTANT_TOUGHNESS_COST_MOD);
         }
         if (getHandler().isAttackOfOpportunityMode()) {
-            ap = ownerObj.getIntParam(PARAMS.AOO_CP_PENALTY);
+            ap = ownerObj.getIntParam(PARAMS.AOO_PTS_COST_MOD);
             sta = ownerObj
-                    .getIntParam(PARAMS.AOO_TOUGH_PENALTY);
+                    .getIntParam(PARAMS.AOO_TOUGHNESS_COST_MOD);
         }
         if (ap != 0)
             if (costs.getCost(PARAMS.AP_COST) != null)
@@ -176,8 +167,8 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
         }
         ACTION_TYPE type =
                 getEntity().getActionType();
-//         new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
-//         getProperty(G_PROPS.ACTION_TYPE));
+        //         new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
+        //         getProperty(G_PROPS.ACTION_TYPE));
         if (type == null) {
             return ActionEnums.ACTION_TYPE_GROUPS.SPELL;
         }
@@ -212,16 +203,6 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
     }
 
     public void addDynamicValues() {
-        if (RuleKeeper.isCooldownOn())
-            return;
-        Integer cooldown = getIntParam(PARAMS.COOLDOWN);
-        if (cooldown < 0) {
-            getEntity().setParam(PARAMS.C_COOLDOWN, cooldown);
-        } else {
-            getEntity().setParam(PARAMS.C_COOLDOWN, 0);
-        }
-        // TODO adjust costs based on hero's skills
-
     }
 
     @Override

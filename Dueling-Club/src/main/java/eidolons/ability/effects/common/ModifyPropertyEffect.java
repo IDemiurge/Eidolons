@@ -8,7 +8,7 @@ import main.content.values.properties.PROPERTY;
 import main.data.XLinkedMap;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 import java.util.List;
 import java.util.Map;
@@ -25,8 +25,8 @@ public class ModifyPropertyEffect extends DC_Effect implements ResistibleEffect 
 
     public ModifyPropertyEffect(PROPERTY prop, MOD_PROP_TYPE modtype, String value) {
         this.prop = prop;
-        this.value = value.replace(StringMaster.AND_PROPERTY_SEPARATOR,
-         StringMaster.CONTAINER_SEPARATOR);
+        this.value = value.replace(Strings.AND_PROPERTY_SEPARATOR,
+         Strings.CONTAINER_SEPARATOR);
         this.modtype = modtype;
     }
 

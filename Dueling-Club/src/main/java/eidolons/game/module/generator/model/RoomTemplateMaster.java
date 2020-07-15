@@ -12,10 +12,7 @@ import main.data.filesys.PathFinder;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.PathUtils;
 import main.system.SortMaster;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.Loop;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
@@ -43,8 +40,8 @@ public class RoomTemplateMaster {
     public static final boolean SINGLE_FILE_DATA = false;
     public static final FACING_DIRECTION DEFAULT_ENTRANCE_SIDE = FACING_DIRECTION.WEST;
     public static final String MODEL_SPLITTER = "=";
-    public static final String EXIT_TEMPLATE_SEPARATOR = "><" + StringMaster.NEW_LINE;
-    public static final String ROOM_TYPE_SEPARATOR = "<>" + StringMaster.NEW_LINE;
+    public static final String EXIT_TEMPLATE_SEPARATOR = "><" + Strings.NEW_LINE;
+    public static final String ROOM_TYPE_SEPARATOR = "<>" + Strings.NEW_LINE;
     private static final boolean APPLY_FAIL_SAFE_EXITS = true;
     private final LevelData data;
     Stack<List<RoomModel>> roomPoolStack = new Stack<>();
@@ -121,7 +118,7 @@ public class RoomTemplateMaster {
              StringMaster.splitLines(roomData)[0].trim());
             if (roomType == null)
                 continue;
-            roomData = StringMaster.cropFirstSegment(roomData, StringMaster.NEW_LINE);
+            roomData = StringMaster.cropFirstSegment(roomData, Strings.NEW_LINE);
 
             String[] byExit = StringMaster.splitLines(roomData, false, EXIT_TEMPLATE_SEPARATOR);
             Map<EXIT_TEMPLATE, String> exitMap = new HashMap<>();
@@ -134,7 +131,7 @@ public class RoomTemplateMaster {
             for (String part : byExit) {
                 EXIT_TEMPLATE exit = new EnumMaster<EXIT_TEMPLATE>().retrieveEnumConst(EXIT_TEMPLATE.class,
                  StringMaster.splitLines(part)[0].trim());
-                String text = StringMaster.cropFirstSegment(part, StringMaster.NEW_LINE);
+                String text = StringMaster.cropFirstSegment(part, Strings.NEW_LINE);
                 if (!StringMaster.contains(text, ROOM_CELL.FLOOR.getSymbol())) {
                     text = getRoomData(exit, group, roomType);
                 }
@@ -434,7 +431,7 @@ public class RoomTemplateMaster {
                 result += GeneratorEnums.ROOM_CELL.WALL.getSymbol();
                 col++;
             }
-            result += StringMaster.NEW_LINE;
+            result += Strings.NEW_LINE;
             row++;
         }
 

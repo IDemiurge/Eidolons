@@ -33,7 +33,7 @@ import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.Flags;
 import main.system.sound.SoundMaster.SOUNDS;
@@ -213,10 +213,10 @@ public class DC_AttackMaster {
         if (attack.isSneak()) {
             if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.SNEAK_IMMUNE)) {
                 attack.setSneak(false);
-                log(StringMaster.MESSAGE_PREFIX_INFO + attacked.getName()
+                log(Strings.MESSAGE_PREFIX_INFO + attacked.getName()
                         + " is immune to Sneak Attacks!");
             } else {
-                log(StringMaster.MESSAGE_PREFIX_ALERT + attacker.getNameIfKnown()
+                log(Strings.MESSAGE_PREFIX_ALERT + attacker.getNameIfKnown()
                         + " makes a Sneak Attack against " + attacked.getName());
             }
         }
@@ -328,10 +328,10 @@ public class DC_AttackMaster {
                     return true;
                 } else {
                     if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.CRITICAL_IMMUNE)) {
-                        log(StringMaster.MESSAGE_PREFIX_INFO + attacked.getName()
+                        log(Strings.MESSAGE_PREFIX_INFO + attacked.getName()
                                 + " is immune to Critical Hits!");
                     } else {
-                        log(StringMaster.MESSAGE_PREFIX_ALERT + attacker.getNameIfKnown()
+                        log(Strings.MESSAGE_PREFIX_ALERT + attacker.getNameIfKnown()
                                 + " scores a critical hit on " + attacked.getName());
                         attack.setCritical(true);
 

@@ -587,7 +587,7 @@ public class UnitShop {
         if (property.isEmpty()) {
             property = DEFAULT_QUALITY_RANGE;
         }
-        if (!property.contains(StringMaster.CONTAINER_SEPARATOR)) {
+        if (!property.contains(Strings.CONTAINER_SEPARATOR)) {
             return property.equalsIgnoreCase(itemProperty);
         }
         QUALITY_LEVEL quality = ItemEnums.QUALITY_LEVEL.valueOf(StringMaster.getEnumFormat(itemProperty));

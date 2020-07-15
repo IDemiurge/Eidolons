@@ -40,14 +40,14 @@ public class WaterRule extends RoundRule implements ActionRule {
         boolean bridged = false;
         Integer girth = 0;
         for (BattleFieldObject object : waterObj.getGame().getObjectsOnCoordinateNoOverlaying(waterObj.getCoordinates())) {
-            if (object==waterObj) {
+            if (object == waterObj) {
                 continue;
             }
             if (object.isDead()) {
                 continue;
             }
             girth += object.getIntParam(PARAMS.GIRTH);
-            if (waterObj.getIntParam(PARAMS.SPACE)<=girth){
+            if (waterObj.getIntParam(PARAMS.SPACE) <= girth) {
                 bridged = true;
             }
         }
@@ -56,40 +56,74 @@ public class WaterRule extends RoundRule implements ActionRule {
 
     public static boolean checkPassable(boolean manualCheck, BattleFieldObject waterObj, Entity obj) {
         if (obj != null)
-        if (isSwimming(obj)) {
-            return true;
-        }
+            if (canSwim(obj)) {
+                return true;
+            }
         boolean bridged = isBridged(waterObj);
-        if (obj instanceof Structure){
+        if (obj instanceof Structure) {
             if (bridged) {
-//                if (girth >= 1000-obj.getIntParam(PARAMS.GIRTH))
-                    return false;
+                //                if (girth >= 1000-obj.getIntParam(PARAMS.GIRTH))
+                return false;
             } else
-            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
-                    obj.getName()+ " falls into " + waterObj.getName(), obj);
+                FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+                        obj.getName() + " falls into " + waterObj.getName(), obj);
             return true;
         }
         return bridged;
-//        if (canSwim(unit)) {
-//            if (isOnSwimmingDepth(unit)) {
-//                return true;
-//            }
-//        }
-//        obj.getGame().getManager().isSelecting()
-//        if (manualCheck) {
-//            if (EidolonsGame.BRIDGE_CROSSED)
-//        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
-//                "Won't touch that"
-//                "Too deep to cross!"
-//                , obj);
-//        }
+        //        if (canSwim(unit)) {
+        //            if (isOnSwimmingDepth(unit)) {
+        //                return true;
+        //            }
+        //        }
+        //        obj.getGame().getManager().isSelecting()
+        //        if (manualCheck) {
+        //            if (EidolonsGame.BRIDGE_CROSSED)
+        //        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+        //                "Won't touch that"
+        //                "Too deep to cross!"
+        //                , obj);
+        //        }
     }
 
-    private static boolean isSwimming(Entity obj) {
+    private static boolean canSwim(Entity obj) {
         if (EntityCheckMaster.isImmaterial(obj)) {
             return true;
         }
+        if (obj instanceof Unit) {
+            Unit unit = (Unit) obj;
+            if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.AVIAN)) {
+                return true;
+            }
+        }
         return obj.checkBool(GenericEnums.STD_BOOLS.SWIMMING);
+    }
+
+
+    public static int getWaterMoveApMod(Unit unit) {
+        return Math.round(waterObj.getIntParam(PARAMS.MOVE_ATB_COST_MOD) * getSubmergedFactor(unit));
+
+    }
+
+    public static int getWaterMoveStaMod(Unit unit) {
+        return Math.round(waterObj.getIntParam(PARAMS.MOVE_TOU_COST_MOD) * getSubmergedFactor(unit));
+
+    }
+
+    private static boolean isWater(Unit u) {
+        return (u.checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.WATER));
+    }
+
+    public static Unit getWaterObj() {
+        return waterObj;
+    }
+
+    public static void setWaterObj(Unit waterObj) {
+        WaterRule.waterObj = waterObj;
+    }
+
+    public boolean checkSwimming(Unit unit) {
+        return false;
+        // apply status?
     }
 
     private static boolean isForceSwimmingDepth(Unit unit) {
@@ -113,46 +147,6 @@ public class WaterRule extends RoundRule implements ActionRule {
             return true;
         }
         return unit.isFlying();
-    }
-
-    public static boolean canSwim(Unit unit) {
-        if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
-            return false;
-        }
-        return !unit.checkClassification(UnitEnums.CLASSIFICATIONS.MECHANICAL);
-    }
-
-    public static int getWaterMoveApMod(Unit unit) {
-        return Math.round(waterObj.getIntParam(PARAMS.MOVE_AP_PENALTY) * getSubmergedFactor(unit));
-
-    }
-
-    public static int getWaterMoveStaMod(Unit unit) {
-        return Math.round(waterObj.getIntParam(PARAMS.MOVE_TOU_PENALTY) * getSubmergedFactor(unit));
-
-    }
-
-    private static boolean isWater(Unit u) {
-        return (u.checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.WATER));
-    }
-
-    public static Unit getWaterObj() {
-        return waterObj;
-    }
-
-    public static void setWaterObj(Unit waterObj) {
-        WaterRule.waterObj = waterObj;
-    }
-
-    public boolean checkSwimming(Unit unit) {
-        return false;
-        // apply status?
-    }
-
-    public void checkDrowning(Unit unit) {
-        if (!isOnSwimmingDepth(unit)) {
-        }
-        // reduce endurance by percentage
     }
 
     @Override
@@ -197,10 +191,10 @@ public class WaterRule extends RoundRule implements ActionRule {
         Set<BattleFieldObject> units = game.getObjectsOnCoordinateNoOverlaying(unit.getCoordinates());
 
         for (BattleFieldObject u : units) {
-//            if (isWater(u)) {
-//                waterObj = u;
-//                return true;
-//            }
+            //            if (isWater(u)) {
+            //                waterObj = u;
+            //                return true;
+            //            }
         }
 
         return false;

@@ -3,16 +3,12 @@ package eidolons.ability;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.system.DC_ConditionMaster;
-import main.elements.conditions.NumericCondition;
 import main.elements.conditions.Requirement;
 import main.elements.costs.*;
 import main.entity.Entity;
-import main.entity.Ref.KEYS;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.secondary.InfoMaster;
-import main.system.launch.Flags;
 import main.system.math.Formula;
 
 import java.util.ArrayList;
@@ -37,14 +33,14 @@ public class DC_CostsFactory {
         // if (cost != null)
         // costs.add(cost);
 
-        cost = getCost(spell, PARAMS.CP_COST, PARAMS.C_N_OF_COUNTERS);
+        cost = getCost(spell, PARAMS.ATK_PTS_COST, PARAMS.C_EXTRA_ATTACKS);
         if (cost != null) {
             costs.add(cost);
         }
-
-        // cost = getCost(spell, PARAMS.MP_COST, PARAMS.C_N_OF_MOVES);
-        // if (cost != null)
-        // costs.add(cost);
+        cost = getCost(spell, PARAMS.MOVE_PTS_COST, PARAMS.C_EXTRA_MOVES);
+        if (cost != null) {
+            costs.add(cost);
+        }
 
         cost = getCost(spell, PARAMS.SF_COST, PARAMS.C_SOULFORCE);
         if (cost != null) {
@@ -77,13 +73,6 @@ public class DC_CostsFactory {
         if (!StringMaster.isEmptyOrZero(s))
             requirements = new CostRequirements(new Payment(
                     PARAMS.C_FOCUS, new Formula(s)));
-
-//        if (!DC_Engine.isAtbMode())
-        if (!Flags.isSafeMode()) // TODO igg hack
-            requirements.add(new Requirement(
-                    new NumericCondition("1", StringMaster.getValueRef(KEYS.ACTIVE,
-                            PARAMS.C_COOLDOWN)),
-                    InfoMaster.COOLDOWN_REASON));
 
         addSpecialRequirements(requirements, spell);
 

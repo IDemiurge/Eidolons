@@ -15,10 +15,7 @@ import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.TimeMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.launch.CoreEngine;
@@ -30,17 +27,18 @@ import java.util.Map;
 import java.util.Set;
 
 public class TextMaster {
+
     public enum LOCALE{
         english, russian,
     }
     private static final String descrHeaderSeparator = "<>";
     public static String[] props = {"Lore", "Description",};
     private static String locale = LOCALE.english.name();
-    private static Map<OBJ_TYPE, List<String>> extractedTypesMap = new XLinkedMap<>();
-    private static PROPERTY[] extract_props = {G_PROPS.DESCRIPTION, G_PROPS.LORE, G_PROPS.TOOLTIP,};
-    private static OBJ_TYPE[] extractedTypes = {DC_TYPE.CHARS, DC_TYPE.UNITS,
+    private static final Map<OBJ_TYPE, List<String>> extractedTypesMap = new XLinkedMap<>();
+    private static final PROPERTY[] extract_props = {G_PROPS.DESCRIPTION, G_PROPS.LORE, G_PROPS.TOOLTIP,};
+    private static final OBJ_TYPE[] extractedTypes = {DC_TYPE.CHARS, DC_TYPE.UNITS,
      DC_TYPE.CLASSES, DC_TYPE.SKILLS, DC_TYPE.SPELLS, DC_TYPE.DEITIES,};
-    private static String[] extractedTypeGroups = {"Background"};
+    private static final String[] extractedTypeGroups = {"Background"};
 
     public static void generateMissingDescrTemplate() {
         CoreEngine.systemInit();
@@ -103,13 +101,13 @@ public class TextMaster {
         String text = "";
         for (ObjType sub : list) {
             text += descrHeaderSeparator + sub.getName() + descrHeaderSeparator
-             + StringMaster.NEW_LINE;
+             + Strings.NEW_LINE;
             if (incomplete) {
-                text += sub.getProperty(G_PROPS.DESCRIPTION) + StringMaster.NEW_LINE;
+                text += sub.getProperty(G_PROPS.DESCRIPTION) + Strings.NEW_LINE;
             }
 
             if (appendLogic) {
-                text += sub.getProperty(G_PROPS.PASSIVES) + StringMaster.NEW_LINE;
+                text += sub.getProperty(G_PROPS.PASSIVES) + Strings.NEW_LINE;
             }
         }
         if (appendLogic) {
@@ -426,4 +424,12 @@ public class TextMaster {
 
     }
 
+    public static String getDescription(String suffix, String name) {
+        List<String> list = new ArrayList<>() ;
+        list.add(0, locale);
+        list.add(0, PathFinder.getTextPath());
+        list.add(0, suffix);
+        list.add(0, name + ".txt");
+        return FileManager.readFile(StrPathBuilder.build(list));
+    }
 }

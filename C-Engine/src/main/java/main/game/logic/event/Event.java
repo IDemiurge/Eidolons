@@ -6,7 +6,7 @@ import main.game.core.game.Game;
 import main.game.core.game.GenericGame;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 /**
  * @author JustMe
@@ -285,7 +285,7 @@ public class Event implements Referred {
         // }
 
         public String getFullName() {
-            return name() + StringMaster.FORMULA_REF_SEPARATOR + getArg();
+            return name() + Strings.FORMULA_REF_SEPARATOR + getArg();
         }
 
         public boolean equals(EVENT_TYPE type) {

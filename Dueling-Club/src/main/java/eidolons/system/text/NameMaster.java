@@ -142,7 +142,7 @@ public class NameMaster {
     static String kingNameGroups = "king Common Eagle Griff Ulduin Wolf Pirate";
     private static final String DEFAULT_NAME_GROUP = kingNameGroups;
     static String genericNameGroups = "Common Griff Pirate king Eagle Wolf";
-    private static List<String> usedNames = new ArrayList<>();
+    private static final List<String> usedNames = new ArrayList<>();
     private static String pirateNamesSecond;
     private static String demonNamesSecond;
     String orcNames = "Ormog;Nuglog;Usbrol;Buvlud;Xlirg;Xlard;Xumn;Yach-Yach;Guchruk;Durbul;Mubruk;Zurdun;Drufsin;";
@@ -446,7 +446,7 @@ public class NameMaster {
 
             for (String t : names) {
                 if (t.equalsIgnoreCase(newName)) {
-                    newName = name + StringMaster.VERSION_SEPARATOR + i;
+                    newName = name + Strings.VERSION_SEPARATOR + i;
                     continue loop;
                 }
             }

@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.script;
 
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.launch.Flags;
 
 /**
@@ -19,7 +19,7 @@ public class ScriptMaster {
         String vars = VariableManager.getVars(name);
         if (vars.isEmpty())
             return getScriptByName(name, false);
-        return getScriptByName(name, true, vars.split(StringMaster.SEPARATOR));
+        return getScriptByName(name, true, vars.split(Strings.SEPARATOR));
     }
 
     public static String getScriptByName(String name, boolean variables, String... vars) {

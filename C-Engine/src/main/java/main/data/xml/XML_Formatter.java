@@ -7,6 +7,7 @@ import main.entity.DataModel;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
@@ -166,7 +167,7 @@ public class XML_Formatter {
 
     public static String restoreXmlNodeNameOld(String s) {
         return s.replace(COMMA_CODE, ",").replace(COLON_CODE, ":").replace(SEMICOLON_CODE, ";")
-                .replace(StringMaster.CODE_SLASH, "/").replace(StringMaster.CODE_BACK_SLASH, "/");
+                .replace(Strings.CODE_SLASH, "/").replace(Strings.CODE_BACK_SLASH, "/");
     }
 
     public static String formatStringForXmlNodeName(String s) {

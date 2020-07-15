@@ -32,7 +32,7 @@ public class WallMaster {
     private static final String CELLS = "cells";
     private static final String ROOT = "ui/cells/set/";
 
-    public static String getCellImage(Coordinates c, int variant) {
+    public static String getCellImage(Coordinates c, int version) {
         CELL_SET set = getSet(c);
         if (set == null) {
             set = CELL_SET.beige;
@@ -40,7 +40,7 @@ public class WallMaster {
         // from pattern, or custom-set via script map!
 
 
-        return getImage(c, CELLS, set, 1, false);
+        return getImage(c, CELLS, set, version+"" , false);
     }
 
     public static String getWallImage(Coordinates c, int variant) {

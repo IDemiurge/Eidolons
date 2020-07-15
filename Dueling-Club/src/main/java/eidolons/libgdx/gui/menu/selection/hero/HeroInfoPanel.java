@@ -17,7 +17,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.graphics.FontMaster.FONT;
 
 /**
@@ -62,7 +62,7 @@ public class HeroInfoPanel extends ItemInfoPanel {
 
     @Override
     protected String getTitle() {
-        return super.getTitle() + StringMaster.NEW_LINE + item.
+        return super.getTitle() + Strings.NEW_LINE + item.
          getEntity().getProperty(G_PROPS.DESCRIPTION);
     }
 

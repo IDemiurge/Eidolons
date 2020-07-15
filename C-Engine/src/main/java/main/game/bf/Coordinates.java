@@ -4,6 +4,7 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
@@ -103,16 +104,16 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
 
     public static String[] splitCoordinateString(String s) {
         String cropped = StringMaster.cropParenthesises(s);
-        if (s.contains(StringMaster.COORDINATES_SEPARATOR_ALT)) {
+        if (s.contains(Strings.COORDINATES_SEPARATOR_ALT)) {
             return cropped.split(
-                    StringMaster.COORDINATES_SEPARATOR_ALT);
+                    Strings.COORDINATES_SEPARATOR_ALT);
         }
         if (cropped.startsWith("-")) {
             cropped=cropped.substring(1 ).replaceFirst("-", "temp");
             return ("-"+cropped).split("temp");
         }
         return cropped.split(
-                StringMaster.COORDINATES_SEPARATOR);
+                Strings.COORDINATES_SEPARATOR);
     }
 
     public static Coordinates[] getCoordinates(String string) {
@@ -291,8 +292,8 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
     @Override
     public String toString() {
         if (x<0 || y<0)
-            return x + StringMaster.COORDINATES_SEPARATOR_ALT + y;
-        return x + StringMaster.COORDINATES_SEPARATOR + y
+            return x + Strings.COORDINATES_SEPARATOR_ALT + y;
+        return x + Strings.COORDINATES_SEPARATOR + y
                 // + (z != 0 ? "; sublevel (Z): " + z : "")
                 ;
     }

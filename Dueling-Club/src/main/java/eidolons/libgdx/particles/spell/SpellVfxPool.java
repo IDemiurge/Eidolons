@@ -2,11 +2,9 @@ package eidolons.libgdx.particles.spell;
 
 import com.badlogic.gdx.utils.Pool;
 import eidolons.libgdx.particles.EmitterPools;
-import main.content.enums.GenericEnums;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.Chronos;
 import main.system.launch.Flags;
@@ -19,7 +17,7 @@ import java.util.Map;
 /**
  * Created by JustMe on 11/14/2018.
  */
-public class SpellVfxPool extends EmitterPools{
+public class SpellVfxPool extends EmitterPools {
 
     private static final Map<String, Pool<SpellVfx>> actorPoolMap = new HashMap<>();
 
@@ -29,7 +27,7 @@ public class SpellVfxPool extends EmitterPools{
 
         if (SpellVfxMaster.isRandomVfx()) {
             path = SpellVfxMaster.getRandomVfx(path);
-    }
+        }
 
         final String finalPath = path.toLowerCase();
 
@@ -51,10 +49,11 @@ public class SpellVfxPool extends EmitterPools{
         }
         return pool.obtain();
     }
-    public static List<SpellVfx> getEmitters(String data) {
+
+    public static List<SpellVfx> getEmitters(String data, int prePool) {
         List<SpellVfx> list = new ArrayList<>();
         for (String path :
-         ContainerUtils.openContainer(data)) {
+                ContainerUtils.openContainer(data)) {
             if (!path.contains("vfx")) {
                 if (!path.contains("atlas")) {
                     path = PathFinder.getVfxAtlasPath() + path;
@@ -63,18 +62,18 @@ public class SpellVfxPool extends EmitterPools{
             }
             Chronos.mark("emitter " + path);
             SpellVfx emitter = null;
-            GenericEnums.VFX sfx = new EnumMaster<GenericEnums.VFX>().
-             retrieveEnumConst(GenericEnums.VFX.class, path);
 
             String speed = VariableManager.getVar(path);
             path = VariableManager.removeVarPart(path);
-            emitter =  getEmitterActor(path);
-            if (NumberUtils.isNumber(speed, false)){
-                emitter.setSpeed(Float.valueOf(speed)/100);
+
+            for (int i = 0; i < prePool; i++) {
+                emitter =   getEmitterActor(path);
+            }
+            if (NumberUtils.isNumber(speed, false)) {
+                emitter.setSpeed(Float.valueOf(speed) / 100);
             }
             if (emitter != null) {
-                list.add(emitter
-                );
+                list.add(emitter);
             }
             Chronos.logTimeElapsedForMark("emitter " + path);
         }

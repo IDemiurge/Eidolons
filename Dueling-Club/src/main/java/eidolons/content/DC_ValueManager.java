@@ -5,10 +5,7 @@ import main.content.ContentValsManager;
 import main.content.ValueManager;
 import main.content.enums.system.MetaEnums;
 import main.content.values.parameters.PARAMETER;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +56,7 @@ public class DC_ValueManager implements ValueManager {
     }
 
     public boolean checkValueGroup(String string) {
-        if (!string.contains(StringMaster.VALUE_GROUP_OPEN_CHAR)) {
+        if (!string.contains(Strings.VALUE_GROUP_OPEN_CHAR)) {
             return false;
         }
 
@@ -77,7 +74,7 @@ public class DC_ValueManager implements ValueManager {
 
     @Override
     public PARAMETER[] getParamsFromContainer(String sparam) {
-        List<String> container = ContainerUtils.openContainer(sparam, StringMaster.VERTICAL_BAR);
+        List<String> container = ContainerUtils.openContainer(sparam, Strings.VERTICAL_BAR);
         ArrayList<PARAMETER> params = new ArrayList<>();
         for (String s : container) {
             PARAMETER param = ContentValsManager.getPARAM(s);

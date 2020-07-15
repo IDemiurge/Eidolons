@@ -96,6 +96,10 @@ public class Woods extends GridHandler {
 
     }
 
+    /*
+    add to the side farthest from exposed
+
+     */
     public CellDecor initBranches(Coordinates c, List<DIRECTION> wallJoints) {
         //cases - just rotation?
         int size = wallJoints.size();
@@ -107,26 +111,35 @@ public class Woods extends GridHandler {
         float rotation = 0;
         int version = 0;
 
+        DIRECTION alignDirection = null;
         if (size == 2) {
             DIRECTION d1 = wallJoints.get(0);
             DIRECTION d2 = wallJoints.get(1);
 
             if (d1.isDiagonal() && d2.isDiagonal()) {
                 //diag line
+                rotation = d1.getDegrees() + d2.getDegrees();
+                alignDirection = d1; //TODO
             } else if (d1.isVertical() != d2.isVertical()) {
                 //corner
             } else {
-                //line
+                //line; need perpendicular
+
             }
-            rotation = d1.getDegrees() + d2.getDegrees();
             version = RandomWizard.getRandomInt(2);
 
         } else {
             //this should be easy, it's an end-line, so whichever direction it goes, we add to the root of it
-
+            DIRECTION d = wallJoints.get(0);
+            alignDirection=d;
+            d = d.flip();
+            //default rotation is RIGHT
+            rotation = d.getDegrees();
 
         }
         GraphicData data = new GraphicData("");
+        //coordinates or maybe anchor?
+        data.setValue(GraphicData.GRAPHIC_VALUE.origin,  alignDirection);
         data.setValue(GraphicData.GRAPHIC_VALUE.rotation, rotation + "");
         data.setValue(GraphicData.GRAPHIC_VALUE.texture,
                 PathFinder.getTexturesPath() + BRANCHES

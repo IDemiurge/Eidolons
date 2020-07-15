@@ -51,7 +51,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
             }
         }
         return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.THROW.toString())
-         || checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.THROW.toString());
+                || checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.THROW.toString());
     }
 
     public boolean isBlocked() {
@@ -71,6 +71,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
     public boolean isTurn() {
         return getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.TURN;
     }
+
     public boolean isMode() {
         return getActionGroup() == ACTION_TYPE_GROUPS.MODE;
     }
@@ -91,7 +92,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
     public boolean isAttackGeneric() {
         return getName().equals(ActionEnums.ATTACK)
-         || getName().equals(ActionEnums.OFFHAND_ATTACK);
+                || getName().equals(ActionEnums.OFFHAND_ATTACK);
     }
 
     public boolean isOffhand() {
@@ -111,7 +112,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
             return false;
         }
         return (checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.RANGED.toString()) || checkProperty(
-         G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED.toString()));
+                G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED.toString()));
         // return false;
         // return getIntParam(PARAMS.RANGE) > 1;
     }
@@ -159,7 +160,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
     public boolean isCancellable() {
         return checkProperty(G_PROPS.STD_BOOLS, STD_BOOLS.CANCELLABLE
-         .toString());
+                .toString());
     }
 
     public boolean isRangedTouch() {
@@ -218,5 +219,21 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
     public boolean checkAttackType(ActionEnums.ATTACK_TYPE type) {
         return checkProperty(G_PROPS.ACTION_TAGS, type.toString());
+    }
+
+    public boolean isInstantAction() {
+        if (getEntity().getIntParam(PARAMS.MOVE_PTS_COST)>0) {
+            //TODO some actions will ALWAYS cost MP
+            return true;
+        }
+        if (getEntity().getOwnerUnit().isMovePointsOn()) {
+            if (isTurn() || isMove()) {
+                return getEntity().getOwnerObj().checkCanDoFreeMove(getEntity());
+            }
+
+        } else {
+            return false;
+        }
+        return false;
     }
 }

@@ -72,7 +72,6 @@ public class SpellExecutor extends Executor {
         // TODO
         if (channeling) {
             // Channeling rules!
-            addCooldown();
             getSpell().getChannelingResolveCosts().pay(getRef());
             return;
         }

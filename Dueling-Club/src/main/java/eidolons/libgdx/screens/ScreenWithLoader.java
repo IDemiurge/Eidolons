@@ -384,12 +384,12 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
 
-    private float getWaitY() {
-        return GdxMaster.getHeight() / 20 + 35;
+    protected float getWaitY() {
+        return getTipY() + 15;
     }
 
-    private float getTipY() {
-        return GdxMaster.getHeight() / 20;
+    protected float getTipY() {
+        return 100;
     }
 
     public CustomSpriteBatch getBatch() {

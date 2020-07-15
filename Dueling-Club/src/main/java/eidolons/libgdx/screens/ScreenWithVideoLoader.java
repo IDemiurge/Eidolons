@@ -50,7 +50,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
             initVideo();
         underText = new Label(LoadingStage.getBottomText(), StyleHolder.getHqLabelStyle(20));
         getOverlayStage().addActor(underText);
-        underText.setPosition(GdxMaster.centerWidth(underText), 0);
+        underText.setPosition(GdxMaster.centerWidth(underText), 50);
 
         GuiEventManager.bind(BRIEFING_START, p -> underText.setVisible(false));
         GuiEventManager.bind(BRIEFING_FINISHED, p -> underText.setVisible(true));
@@ -61,9 +61,6 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     }
 
     public static Boolean isVideoEnabled() {
-        //        if (CoreEngine.isIggDemo()){
-        //            return false;
-        //        }
         if (GdxMaster.getWidth() != 1920) {
             return false;
         }

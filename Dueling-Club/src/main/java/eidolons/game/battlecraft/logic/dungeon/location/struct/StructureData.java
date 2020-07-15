@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.data.tree.LayeredData;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.data.DataUnit;
 
 public abstract class StructureData<T extends Enum<T>, S extends LayeredData> extends DataUnit<T> {
@@ -47,7 +47,7 @@ public abstract class StructureData<T extends Enum<T>, S extends LayeredData> ex
 
     @Override
     protected String getPairSeparator() {
-        return StringMaster.ALT_PAIR_SEPARATOR;
+        return Strings.ALT_PAIR_SEPARATOR;
     }
 
     public LevelStruct<LevelStruct, LevelStruct> getLevelStruct() {

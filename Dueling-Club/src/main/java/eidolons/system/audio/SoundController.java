@@ -16,7 +16,7 @@ public class SoundController {
 
     public SoundController(DC_SoundMaster soundMaster) {
         this.soundMaster = soundMaster;
-        GuiEventManager.bind(GuiEventType.INGAME_EVENT_TRIGGERED, p -> {
+        GuiEventManager.bind(GuiEventType.INGAME_EVENT, p -> {
             try {
                 String sound = getEventSound((Event) p.get());
                 if (sound != null)

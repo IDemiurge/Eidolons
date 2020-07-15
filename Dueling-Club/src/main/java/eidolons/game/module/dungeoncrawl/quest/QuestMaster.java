@@ -18,7 +18,7 @@ import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.ArrayList;
@@ -134,8 +134,8 @@ public class QuestMaster extends MetaGameHandler {
         quests.add(quest);
         startQuests();
         if (type != null) {
-            String txt = type.getName() + StringMaster.NEW_LINE +
-                    StringMaster.NEW_LINE + quest.getProgressText() + StringMaster.NEW_LINE +
+            String txt = type.getName() + Strings.NEW_LINE +
+                    Strings.NEW_LINE + quest.getProgressText() + Strings.NEW_LINE +
                     quest.getDescription();
             if (ExplorationMaster.isExplorationOn())
                 MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.TOWN);
@@ -189,7 +189,7 @@ public class QuestMaster extends MetaGameHandler {
     }
 
     protected String getQuestGroupFilter() {
-        return QuestEnums.QUEST_GROUP.SCENARIO + StringMaster.OR + QuestEnums.QUEST_GROUP.RNG;
+        return QuestEnums.QUEST_GROUP.SCENARIO + Strings.OR + QuestEnums.QUEST_GROUP.RNG;
     }
 
     protected boolean checkQuestForLocation(ObjType q) {

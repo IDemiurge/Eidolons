@@ -75,7 +75,9 @@ public class ValuePages {
     public static final PARAMETER[] BOSS_PARAMETERS = {
             GRID_WIDTH, GRID_HEIGHT,
             TOUGHNESS, ENDURANCE,
-            ARMOR, ATTACK, DEFENSE, INITIATIVE, N_OF_COUNTERS,
+            ARMOR, ATTACK, DEFENSE, INITIATIVE,
+            EXTRA_ATTACKS,
+            EXTRA_MOVES,
             ATB_START_MOD, ATB_START_PRESET,
             BASE_DAMAGE,
             CONCEALMENT, DETECTION, SIGHT_RANGE,
@@ -86,7 +88,8 @@ public class ValuePages {
             TOUGHNESS, ENDURANCE,   ESSENCE, FOCUS,
             DAMAGE, OFF_HAND_DAMAGE,
 
-            ARMOR, ATTACK, DEFENSE, INITIATIVE, N_OF_COUNTERS,
+            ARMOR, ATTACK, DEFENSE, INITIATIVE, EXTRA_ATTACKS,
+            EXTRA_MOVES,
             STARTING_FOCUS, SPIRIT, RESISTANCE, SPELL_ARMOR,
             ATB_START_MOD, ATB_START_PRESET,
 
@@ -102,10 +105,11 @@ public class ValuePages {
             STEALTH,
             UNIT_LEVEL, //
             QUICK_SLOTS,
-            TOUGHNESS_PENALTY, ESSENCE_PENALTY, AP_PENALTY,
-            FOCUS_PENALTY,};
+            TOUGHNESS_COST_MOD, ESSENCE_COST_MOD, ATB_COST_MOD,
+            FOCUS_COST_MOD,};
     public static final PARAMETER[] UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT = {
-            C_N_OF_COUNTERS,
+            C_EXTRA_ATTACKS,
+            C_EXTRA_MOVES,
             C_ATB,
             C_ENDURANCE,
             C_TOUGHNESS,
@@ -121,7 +125,6 @@ public class ValuePages {
             TOUGHNESS,
             FOCUS,
             ESSENCE,
-            N_OF_COUNTERS,
     };
     public static final PARAMETER[] UNIT_DYNAMIC_PARAMETERS = {
             C_ATB, C_ENDURANCE, C_TOUGHNESS,
@@ -460,7 +463,7 @@ public class ValuePages {
     public static final VALUE[] ACTION_PARAMS_DC = {ATTACK_MOD, DEFENSE_MOD,
             DAMAGE_MOD, DAMAGE_BONUS, ARMOR_PENETRATION, ARMOR_MOD,
             BLEEDING_MOD, COUNTER_MOD, FORCE_MOD, FORCE_DAMAGE_MOD,
-            RANGE, COOLDOWN,
+            RANGE, 
 
     };
     public static final VALUE[] ACTION_PARAMS_DC2 = {STR_DMG_MODIFIER,
@@ -487,17 +490,17 @@ public class ValuePages {
             LONG_REACH_ATTACK_MOD, LONG_REACH_DAMAGE_MOD,
 
     };
-    public static final VALUE[] ACTION_PARAMS = {RADIUS, RANGE, COOLDOWN,
+    public static final VALUE[] ACTION_PARAMS = {RADIUS, RANGE,
             DURATION};
     public static final VALUE[] SPELL_VALUES = {
             G_PROPS.VARIABLES,
             CIRCLE, SPELL_DIFFICULTY,
-            DURATION, RADIUS, RANGE, COOLDOWN,
+            DURATION, RADIUS, RANGE,
             SPELLPOWER_MOD, FORCE, FORCE_SPELLPOWER_MOD,
             FORCE_DAMAGE_MOD, FORCE_KNOCK_MOD, FORCE_PUSH_MOD, XP_COST,
 
     };
-    public static final VALUE[] QUICK_ITEM_PARAMETERS = {CHARGES, COOLDOWN,
+    public static final VALUE[] QUICK_ITEM_PARAMETERS = {CHARGES,
             AP_COST, TOU_COST, ESS_COST, FOC_COST, FOC_REQ,
             ENDURANCE_COST, DURATION, RANGE, RADIUS,
             // SPELLPOWER_BONUS,
@@ -522,7 +525,9 @@ public class ValuePages {
 
             G_PROPS.SOUNDSET, G_PROPS.CUSTOM_SOUNDSET, G_PROPS.IMPACT_SPRITE};
     public static final PARAMETER[] COSTS = {AP_COST, TOU_COST, ESS_COST,
-            FOC_COST, FOC_REQ, ENDURANCE_COST, CP_COST,
+            FOC_COST, FOC_REQ, ENDURANCE_COST,
+            ATK_PTS_COST,
+            MOVE_PTS_COST,
 
     };
     public static final VALUE[] UPKEEP_PARAMS = {AP_UPKEEP,
@@ -569,26 +574,26 @@ public class ValuePages {
 
     };
     public static final PARAMETER[] PENALTIES_MAIN = {
-            TOUGHNESS_PENALTY, AP_PENALTY,
-            FOCUS_PENALTY, ESSENCE_PENALTY,
+            TOUGHNESS_COST_MOD, ATB_COST_MOD,
+            FOCUS_COST_MOD, ESSENCE_COST_MOD,
     };
     public static final PARAMETER[] PENALTIES_MOVE = {
-            MOVE_TOU_PENALTY,
-            MOVE_AP_PENALTY,
+            MOVE_TOU_COST_MOD,
+            MOVE_ATB_COST_MOD,
     };
     public static final PARAMETER[] PENALTIES_ATK = {
-            ATTACK_STA_PENALTY,
-            ATTACK_AP_PENALTY,
+            ATTACK_TOUGHNESS_COST_MOD,
+            ATTACK_ATB_COST_MOD,
     };
     public static final PARAMETER[] PENALTIES_SPELL = {
-             SPELL_ESS_PENALTY,
-            SPELL_FOC_PENALTY, SPELL_AP_PENALTY,
+            SPELL_ESS_COST_MOD,
+            SPELL_FOC_COST_MOD, SPELL_ATB_COST_MOD,
     };
-    public static final PARAMETER[] PENALTIES = {TOUGHNESS_PENALTY, AP_PENALTY,
-            FOCUS_PENALTY, ESSENCE_PENALTY, ATTACK_STA_PENALTY,
-            ATTACK_AP_PENALTY,  SPELL_ESS_PENALTY,
-            SPELL_FOC_PENALTY, SPELL_AP_PENALTY, MOVE_TOU_PENALTY,
-            MOVE_AP_PENALTY,
+    public static final PARAMETER[] PENALTIES = {TOUGHNESS_COST_MOD, ATB_COST_MOD,
+            FOCUS_COST_MOD, ESSENCE_COST_MOD, ATTACK_TOUGHNESS_COST_MOD,
+            ATTACK_ATB_COST_MOD, SPELL_ESS_COST_MOD,
+            SPELL_FOC_COST_MOD, SPELL_ATB_COST_MOD, MOVE_TOU_COST_MOD,
+            MOVE_ATB_COST_MOD,
 
     };
     public static final VALUE[] ARMOR_PARAMETERS = {MATERIAL_QUANTITY, ARMOR_LAYERS,
@@ -762,7 +767,7 @@ public class ValuePages {
 
             AP_COST, TOU_COST, ESS_COST, ENDURANCE_COST, FOC_COST,
             FOC_REQ, RANGE, RADIUS, SPELLPOWER_MOD,
-            DURATION, COOLDOWN, C_COOLDOWN,
+            DURATION,
 
     };
     public static final VALUE[][] ALT_SPELL_PAGES = {DESCRIPTION, DC_SPELL_PARAMETERS,

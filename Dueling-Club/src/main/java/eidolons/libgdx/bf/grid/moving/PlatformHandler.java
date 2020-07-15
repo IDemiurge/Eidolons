@@ -8,7 +8,7 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.ArrayList;
@@ -104,7 +104,7 @@ in the most crazy variant, we could have a pendulum/circular rotation
     }
 
     public void init(String platformData) {
-        for (String substring : ContainerUtils.openContainer(platformData, StringMaster.VERTICAL_BAR)) {
+        for (String substring : ContainerUtils.openContainer(platformData, Strings.VERTICAL_BAR)) {
             createPlatform(new PlatformData(substring));
         }
     }

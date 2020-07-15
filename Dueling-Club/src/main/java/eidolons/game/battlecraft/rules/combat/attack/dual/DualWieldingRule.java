@@ -123,7 +123,7 @@ public class DualWieldingRule {
             cadence = DC_Formulas.DEFAULT_CADENCE_AP_MOD + "";
         }
         ModifyValueEffect valueEffect = new ModifyValueEffect(
-         PARAMS.ATTACK_AP_PENALTY,
+         PARAMS.ATTACK_ATB_COST_MOD,
          MOD.MODIFY_BY_CONST, cadence);
 
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
@@ -133,7 +133,7 @@ public class DualWieldingRule {
             cadence = DC_Formulas.DEFAULT_CADENCE_STA_MOD + "";
         }
         valueEffect = new ModifyValueEffect(
-         PARAMS.ATTACK_STA_PENALTY,
+         PARAMS.ATTACK_TOUGHNESS_COST_MOD,
          MOD.MODIFY_BY_CONST, cadence);
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
 

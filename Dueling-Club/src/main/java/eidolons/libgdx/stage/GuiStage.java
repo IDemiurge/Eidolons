@@ -24,6 +24,7 @@ import eidolons.game.netherflame.main.soul.EidolonLord;
 import eidolons.game.netherflame.main.soul.panel.LordPanel;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
@@ -54,6 +55,7 @@ import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
 import main.system.launch.CoreEngine;
@@ -101,6 +103,8 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
     protected PlaceNavigationPanel navigationPanel;
     protected HideButton hideQuests;
     protected ExtendableLogPanel logPanel;
+    private GroupX customPanel;
+    private long timeLastTyped;
 
 
     public GuiStage(Viewport viewport, Batch batch) {
@@ -461,6 +465,16 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
 
     protected void bindEvents() {
 
+        GuiEventManager.bind(GuiEventType.SHOW_CUSTOM_PANEL, p -> {
+            addActor(customPanel = (GroupX) p.get());
+            GdxMaster.center(customPanel);
+
+        });
+        GuiEventManager.bind(GuiEventType.HIDE_CUSTOM_PANEL, p -> {
+            customPanel.fadeOut();
+            ActionMaster.addRemoveAfter(customPanel);
+            customPanel = null;
+        });
         GuiEventManager.bind(GuiEventType.TOGGLE_LORD_PANEL, p -> {
             if (lordPanel.isVisible()) {
                 GuiEventManager.trigger(GuiEventType.SHOW_LORD_PANEL, null);
@@ -640,7 +654,14 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
             // }
             charsUp.remove(str);
         }
-
+        if (lastTyped == character) {
+            float delta = 250; //TODO gdx quick fix
+            if (TimeMaster.getTime()-timeLastTyped  < delta) {
+                main.system.auxiliary.log.LogMaster.log(1, character + " - DOUBLE keyTyped!");
+                return true;
+            }
+        }
+        timeLastTyped = TimeMaster.getTime();
         lastTyped = character;
 
         boolean result = false;
@@ -649,7 +670,7 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        main.system.auxiliary.log.LogMaster.log(1,character+ "keyTyped " +result);
+        main.system.auxiliary.log.LogMaster.log(1, character + " - keyTyped " + result);
         if (result)
             return true;
         return super.keyTyped(character);

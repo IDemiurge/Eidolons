@@ -30,7 +30,7 @@ public class CellChangeEffect extends DC_Effect {
         if (getRef().getTargetObj() instanceof DC_Cell) {
             DC_Cell cell = (DC_Cell) getRef().getTargetObj();
             if (type != null)
-                cell.setCellType(type);
+                cell.setCellSet(type);
             if (variant != null)
                 cell.setCellVariant(variant);
             if (color != null)

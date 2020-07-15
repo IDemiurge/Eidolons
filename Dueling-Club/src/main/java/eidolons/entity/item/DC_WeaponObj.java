@@ -78,16 +78,16 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
         if (isMainHand()) {
             getHero().multiplyParamByPercent(PARAMS.ATTACK_MOD, mod, false);
-            getHero().modifyParameter(PARAMS.ATTACK_AP_PENALTY,
-                    getIntParam(PARAMS.ATTACK_AP_PENALTY), false);
-            getHero().modifyParameter(PARAMS.ATTACK_STA_PENALTY,
-                    getIntParam(PARAMS.ATTACK_STA_PENALTY), false);
+            getHero().modifyParameter(PARAMS.ATTACK_ATB_COST_MOD,
+                    getIntParam(PARAMS.ATTACK_ATB_COST_MOD), false);
+            getHero().modifyParameter(PARAMS.ATTACK_TOUGHNESS_COST_MOD,
+                    getIntParam(PARAMS.ATTACK_TOUGHNESS_COST_MOD), false);
         } else {
             getHero().multiplyParamByPercent(PARAMS.OFFHAND_ATTACK_MOD, mod, false);
-            getHero().modifyParameter(PARAMS.OFFHAND_ATTACK_AP_PENALTY,
-                    getIntParam(PARAMS.ATTACK_AP_PENALTY), false);
-            getHero().modifyParameter(PARAMS.OFFHAND_ATTACK_STA_PENALTY,
-                    getIntParam(PARAMS.ATTACK_STA_PENALTY), false);
+            getHero().modifyParameter(PARAMS.OFFHAND_ATTACK_ATB_COST_MOD,
+                    getIntParam(PARAMS.ATTACK_ATB_COST_MOD), false);
+            getHero().modifyParameter(PARAMS.OFFHAND_ATTACK_TOUGHNESS_COST_MOD,
+                    getIntParam(PARAMS.ATTACK_TOUGHNESS_COST_MOD), false);
         }
     }
 
@@ -382,12 +382,12 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         modifyParameter(PARAMS.ATTACK_MOD, -penalty_reduction, 100, true);
         modifyParameter(PARAMS.DEFENSE_MOD, -penalty_reduction, 100, true);
 
-        modifyParameter(PARAMS.ATTACK_AP_PENALTY, penalty_reduction, 0, true);
-        modifyParameter(PARAMS.ATTACK_STA_PENALTY, penalty_reduction, 0, true);
+        modifyParameter(PARAMS.ATTACK_ATB_COST_MOD, penalty_reduction, 0, true);
+        modifyParameter(PARAMS.ATTACK_TOUGHNESS_COST_MOD, penalty_reduction, 0, true);
 
         penalty_reduction = -getHero().getIntParam(PARAMS.WILLPOWER);
-        modifyParameter(PARAMS.SPELL_FOC_PENALTY, penalty_reduction, 0, true);
-        modifyParameter(PARAMS.SPELL_AP_PENALTY, penalty_reduction, 0, true);
+        modifyParameter(PARAMS.SPELL_FOC_COST_MOD, penalty_reduction, 0, true);
+        modifyParameter(PARAMS.SPELL_ATB_COST_MOD, penalty_reduction, 0, true);
 
     }
 

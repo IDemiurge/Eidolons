@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules.magic;
 
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.Obj;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 public class ImmunityRule {
 
@@ -26,7 +26,7 @@ public class ImmunityRule {
     }
 
     private static String formatKey(String key) {
-        return key.replace(StringMaster.COUNTER, "");
+        return key.replace(Strings.COUNTER, "");
     }
 
 }

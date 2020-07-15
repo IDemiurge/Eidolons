@@ -402,7 +402,7 @@ public class EnumMaster<T> {
     }
 
     public List<T> getEnumList(Class<T> CLASS, String property) {
-        return getEnumList(CLASS, property, StringMaster.CONTAINER_SEPARATOR);
+        return getEnumList(CLASS, property, Strings.CONTAINER_SEPARATOR);
     }
 
     public List<T> getEnumList(Class<T> CLASS, String property, String separator) {

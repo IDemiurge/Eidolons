@@ -16,10 +16,7 @@ import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.launch.Flags;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
@@ -409,13 +406,13 @@ public class RollMaster {
 
     public static Rolls generateRollsFromString(String rollString) {
         boolean or = false;
-        if (rollString.contains(StringMaster.VERTICAL_BAR)) {
+        if (rollString.contains(Strings.VERTICAL_BAR)) {
             or = true;
         }
         Rolls rolls = new Rolls(or);
-        String separator = StringMaster.VERTICAL_BAR;
+        String separator = Strings.VERTICAL_BAR;
         if (!or) {
-            separator = StringMaster.AND;
+            separator = Strings.AND;
         }
         for (String s : ContainerUtils.open(rollString, separator)) {
             String varPart = VariableManager.getVarPart(s);
@@ -426,8 +423,8 @@ public class RollMaster {
             }
             s = s.replace(varPart, "");
             varPart = StringMaster.cropParenthesises(varPart);
-            String success = ContainerUtils.openContainer(varPart, StringMaster.VAR_SEPARATOR).get(0);
-            String fail = ContainerUtils.openContainer(varPart, StringMaster.VAR_SEPARATOR).get(1);
+            String success = ContainerUtils.openContainer(varPart, Strings.VAR_SEPARATOR).get(0);
+            String fail = ContainerUtils.openContainer(varPart, Strings.VAR_SEPARATOR).get(1);
             ROLL_TYPES type = new EnumMaster<ROLL_TYPES>().retrieveEnumConst(ROLL_TYPES.class, s);
             rolls.add(new Roll(type, success, fail));
         }
@@ -465,7 +462,7 @@ public class RollMaster {
          + getDexterousModifier(unit, action);
 
         String success = StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE) + "/"
-         + (1 + attack.getIntParam(PARAMS.CP_COST)) + "*"
+         + (1 + attack.getIntParam(PARAMS.ATK_PTS_COST)) + "*"
          + getVigilanceModifier(unit, action);
         String successTooltip = "to avoid Attack of Opportunity";
 

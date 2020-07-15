@@ -6,6 +6,7 @@ import main.content.text.Descriptions;
 import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 import static main.content.enums.entity.HeroEnums.PERK_PARAM.*;
 
@@ -99,7 +100,7 @@ public class HeroEnums {
             if (getRace() != RACE.HUMAN) {
                 return false;
             }
-            return name().substring(0, 5).equalsIgnoreCase(StringMaster.WOMAN);
+            return name().substring(0, 5).equalsIgnoreCase(Strings.WOMAN);
         }
 
         public SOUNDSET[] getSoundsets() {

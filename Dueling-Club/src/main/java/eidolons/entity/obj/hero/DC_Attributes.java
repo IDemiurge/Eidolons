@@ -69,52 +69,30 @@ public class DC_Attributes {
                 hero.modifyParameter(PARAMS.TOUGHNESS_RETAINMENT, amount/5, false);
                 break;
             case AGILITY:
-                hero.modifyParameter(PARAMS.NOISE, -amount / 2, modifierKey);
-                hero.modifyParameter(PARAMS.N_OF_COUNTERS, DC_Formulas.getCountersFromAgi(amount),
-                 modifierKey); // with
-                // strength?
-                // TODO
                 hero.modifyParameter(PARAMS.ATTACK, DC_Formulas.getAttackFromAgi(amount),
+                        modifierKey);
+
+                hero.modifyParameter(PARAMS.EXTRA_ATTACKS, DC_Formulas.getCountersFromAgi(amount),
                  modifierKey);
-                // hero.modifyParameter(PARAMS.INITIATIVE_MODIFIER, DC_Formulas
-                // .getInitModFromAgi(amount * 2 / 3),
-                // StringMaster.getWellFormattedString(attr.toString())); //in
-                // DEXTERITY
-                hero.modifyParameter(PARAMS.ATTACK_AP_PENALTY, -amount / 2, modifierKey);
-                hero.modifyParameter(PARAMS.OFFHAND_ATTACK_AP_PENALTY, -amount / 2, modifierKey);
-                // hero.modifyParameter(PARAMS.N_OF_ACTIONS, DC_Formulas
-                // .getActsFromAgi(amount),
-                // StringMaster.getWellFormattedString(attr.toString())); TODO
-                // ARMOR_MOD ? //
-                // ATTACK_AP_PENALTY
+                hero.modifyParameter(PARAMS.ATTACK_ATB_COST_MOD, -amount / 2, modifierKey);
+                hero.modifyParameter(PARAMS.OFFHAND_ATTACK_ATB_COST_MOD, -amount / 2, modifierKey);
 
                 break;
 
             case DEXTERITY:
-                hero.modifyParameter(PARAMS.NOISE, -amount / 2, modifierKey);
 
-                Integer agi = hero.getIntParam(PARAMS.AGILITY);
+                hero.modifyParameter(PARAMS.DEFENSE, DC_Formulas.getDefFromDex(amount), modifierKey);
 
-                // hero.modifyParameter(PARAMS.INITIATIVE_MODIFIER, DC_Formulas
-                //   .getInitModFromAgi(MathMaster.round(new Float((amount + 2 * agi) / 3))),
-                //  modifierKey);
-
-                Float apBoost = new Float(amount + new Float(agi / 2));
-                int bonus = DC_Formulas.getActsFromDexAndHalfAgility(MathMaster
+                Float apBoost = new Float(amount +hero.getParamDouble(PARAMS.AGILITY));
+                int bonus = DC_Formulas.getActsFromDexAndAgility(MathMaster
                         .round(apBoost));
                 hero.modifyParameter(PARAMS.INITIATIVE, bonus, modifierKey);
 
-
-                // hero.modifyParameter(PARAMS.N_OF_ACTIONS, DC_Formulas
-                // .getActsFromDex(amount),
-                // StringMaster.getWellFormattedString(attr.toString()));
-                hero.modifyParameter(PARAMS.DEFENSE, DC_Formulas.getDefFromDex(amount), modifierKey);
                 hero.modifyParameter(PARAMS.STEALTH, amount / 2, modifierKey);
-                hero.modifyParameter(PARAMS.MOVE_AP_PENALTY, -amount / 2, modifierKey);
-                // hero.modifyParameter(PARAMS.INITIATIVE_MODIFIER, DC_Formulas
-                // .getInitModFromDex(amount),
-                // StringMaster.getWellFormattedString(attr.toString())); //
-                // MOVE_AP_PENALTY
+                hero.modifyParameter(PARAMS.NOISE, -amount / 2, modifierKey);
+
+                hero.modifyParameter(PARAMS.MOVE_ATB_COST_MOD, -amount / 2, modifierKey);
+                hero.modifyParameter(PARAMS.EXTRA_MOVES, DC_Formulas.getExtraMovesFromDex(amount));
                 break;
 
             case WILLPOWER:

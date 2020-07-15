@@ -127,8 +127,12 @@ public class DC_GameManager extends GameManager {
         return (DC_Game) game;
     }
 
-    public boolean activeSelect(final Obj obj) {
+    public boolean activeSelect(final Obj obj, boolean sameUnit) {
         Unit unit = (Unit) obj;
+        if (!sameUnit) {
+            unit.setFreeMovesDone(0);
+        }
+
         boolean result = true;
         for (ActionRule ar : getGame().getRules().getActionRules()) {
             try {
@@ -291,9 +295,7 @@ public class DC_GameManager extends GameManager {
         } finally {
             WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, obj.getId());
         }
-
     }
-
 
     // a single-method spell, Warp Time: take another turn...
     public void resetValues(Player owner) {
@@ -611,12 +613,12 @@ public class DC_GameManager extends GameManager {
     @Override
     protected void checkEventIsGuiHandled(Event event) {
         if (GuiEventManager.checkEventIsGuiHandled(event))
-            GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
+            GuiEventManager.trigger(INGAME_EVENT, event);
         else {
             if (FloatingTextMaster.getInstance().isEventDisplayable(event)) {
-                GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
+                GuiEventManager.trigger(INGAME_EVENT, event);
             } else if (EventAnimCreator.isEventAnimated(event))
-                GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
+                GuiEventManager.trigger(INGAME_EVENT, event);
         }
     }
 

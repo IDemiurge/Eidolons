@@ -517,14 +517,14 @@ public class Player {
         String string = SoundMaster.getPath()
                 + getBasePath(obj.getProperty(G_PROPS.CUSTOM_SOUNDSET), false);
         if (add_name) {
-            string += StringMaster.FORMULA_REF_SEPARATOR + sound_type.toString();
+            string += Strings.FORMULA_REF_SEPARATOR + sound_type.toString();
         }
         return string;
     }
 
     private String getBasePath(String property, boolean b) {
-        return StringMaster.clipEnding(property, (b) ? StringMaster.FORMULA_REF_SEPARATOR
-                : StringMaster.FORMAT_CHAR);
+        return StringMaster.clipEnding(property, (b) ? Strings.FORMULA_REF_SEPARATOR
+                : Strings.FORMAT_CHAR);
     }
 
     public void playHitSound(Obj obj) {

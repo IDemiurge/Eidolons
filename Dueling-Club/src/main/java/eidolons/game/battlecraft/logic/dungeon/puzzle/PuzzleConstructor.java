@@ -28,7 +28,7 @@ import main.system.launch.Flags;
 
 import java.util.Map;
 
-import static main.system.auxiliary.StringMaster.ALT_XML_SEPARATOR;
+import static main.system.auxiliary.Strings.ALT_XML_SEPARATOR;
 
 public abstract class PuzzleConstructor<T extends Puzzle> {
 
@@ -171,18 +171,18 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
 
 
     protected void initExitTrigger() {
-        createTriggerGlobal(PuzzleTrigger.PUZZLE_TRIGGER.EXIT,
+        Eidolons.getGame().getManager().addTrigger(createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.EXIT,
                 ConditionsUtils.join(new LambdaCondition(ref -> puzzle.active),
                         ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
                         getPuzzleExitConditions()),
                 () -> exited(),
                 Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING
-        );
+        ));
     }
 
-    public void createTriggerGlobal(PuzzleTrigger.PUZZLE_TRIGGER type, Condition checks, Runnable action, Event.EVENT_TYPE event) {
+    public Trigger createTrigger(PuzzleTrigger.PUZZLE_TRIGGER type, Condition checks, Runnable action, Event.EVENT_TYPE event) {
         Trigger trigger = new PuzzleTrigger(puzzle, type, event, checks, action);
-        Eidolons.getGame().getManager().addTrigger(trigger);
+        return trigger;
     }
     private void exited() {
         //TODO isApplyPunishment()
@@ -194,12 +194,12 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
     }
 
     protected void initEnterTrigger() {
-         createTriggerGlobal(PuzzleTrigger.PUZZLE_TRIGGER.ENTER,
+        Eidolons.getGame().getManager().addTrigger(createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ENTER,
                 ConditionsUtils.join(new LambdaCondition(ref -> !puzzle.active && (!puzzle.solved || isReplayable())),
                         ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
                         getPuzzleEnterConditions()),
                 () -> puzzle.getHandler().entered(), Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING
-        );
+        ));
 
     }
 

@@ -1,8 +1,6 @@
 package eidolons.game.core.state;
 
 import eidolons.game.core.game.DC_Game;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.log.Chronos;
 
 import java.util.Stack;
@@ -16,7 +14,7 @@ public class StatesKeeper {
     Stack<DC_GameState> states = new Stack<>();
     int head = 0;
     int index = 0;
-    private StateCloner cloner;
+    private final StateCloner cloner;
 
     public StatesKeeper(DC_Game game) {
         this.game = game;
@@ -37,7 +35,6 @@ public class StatesKeeper {
     private void loadLastState() {
         DC_GameState state = states.pop();
         game.setState(state);
-        GuiEventManager.trigger(GuiEventType.REFRESH_GRID, null);
     }
 
     public void save() {

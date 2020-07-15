@@ -112,6 +112,14 @@ public class UnitGridView extends GenericGridView {
     @Override
     public void act(float delta) {
         super.act(delta);
+
+        boolean transform = getScaleX() != 1 || getScaleY() != 1;
+        if (transform)
+            setTransform(transform);
+        else
+            setTransform(false);
+        //TODO gdx quick fix
+
         if (hovered) {
             if (ToolTipManager.isHoverOff())
                 setHovered(false);

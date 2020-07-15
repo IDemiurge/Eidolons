@@ -10,6 +10,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.generator.model.AbstractCoordinates;
 import eidolons.system.text.DescriptionTooltips;
 import main.elements.conditions.Condition;
+import main.elements.triggers.Trigger;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 import main.system.auxiliary.StringMaster;
@@ -333,5 +334,10 @@ public abstract class Puzzle {
 
     public DC_Game getGame() {
         return DC_Game.game;
+    }
+
+
+    public List<Trigger> getCustomTriggers() {
+        return handler.customTriggers;
     }
 }

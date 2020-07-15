@@ -19,8 +19,6 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.core.game.GenericGame;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
 
@@ -87,7 +85,7 @@ potions
                 } else {
                     unit.addItemToInventory(item);
                 }
-                GuiEventManager.trigger(GuiEventType.ITEM_TAKEN, hungObj);
+                // GuiEventManager.trigger(GuiEventType.ITEM_TAKEN, hungObj);
                 //take animation
                 obj.kill(obj, false, true);
                 break;

@@ -149,6 +149,6 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
     public enum GRAPHIC_VALUE {
         x, y, dur, scale, rotation, flipX, flipY, color, alpha,
         texture, alpha_template,editor,
-        blending, sprite, fps, vfx, interpolation
+        blending, sprite, fps, vfx, origin, interpolation
     }
 }

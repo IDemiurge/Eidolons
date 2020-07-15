@@ -3,6 +3,7 @@ package eidolons.libgdx.bf;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
@@ -170,7 +171,8 @@ public class GridMaster {
             }
             if (view.getArrow() != null)
                 if (view.getArrow().getActions().size == 0)
-                    view.validateArrowRotation();
+                    if (!AI_Manager.isRunning())
+                     view.validateArrowRotation();
 
         }
     }

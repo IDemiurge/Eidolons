@@ -7,11 +7,11 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.netherflame.main.event.TipMessageMaster;
 import eidolons.game.netherflame.main.event.TipMessageSource;
-import eidolons.game.netherflame.main.event.text.TIP;
+import eidolons.game.netherflame.main.event.Tips;
+import eidolons.game.netherflame.main.event.text.TextEvent;
 import eidolons.system.audio.MusicMaster;
 import main.entity.Entity;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.EnumMaster;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,8 +35,7 @@ public class TrapMaster extends DungeonHandler {
                 if (!victim.isPlayerCharacter())
                     return;
 
-                TIP tip = new EnumMaster<TIP>().
-                        retrieveEnumConst(TIP.class, name);
+                TextEvent tip = Tips.getTipConst(name);
                 TipMessageSource data = new TipMessageSource(tip.getMessage(), tip.getImg(), "Onward!", false,
                         () -> {
                             tip.run();

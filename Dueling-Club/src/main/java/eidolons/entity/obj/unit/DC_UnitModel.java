@@ -191,6 +191,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         }
         // if (game.getState().getRound() > -1) // ???
         //     getResetter().regenerateToughness();
+        resetDynamicParam(PARAMS.C_EXTRA_MOVES);
+        resetDynamicParam(PARAMS.C_EXTRA_ATTACKS);
+        resetDynamicParam(PARAMS.C_TOUGHNESS);
         regen();
 
         new Event(STANDARD_EVENT_TYPE.UNIT_NEW_ROUND_STARTED, ref).fire();
@@ -639,5 +642,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
             return tempFacing;
         }
         return super.getFacing();
+    }
+
+    public boolean checkCanDoFreeMove(DC_ActiveObj activeObj) {
+        return getChecker().checkCanDoFreeMove(activeObj);
     }
 }

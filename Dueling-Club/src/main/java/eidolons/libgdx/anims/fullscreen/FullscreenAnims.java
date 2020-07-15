@@ -52,7 +52,7 @@ public class FullscreenAnims extends GroupX {
     public FullscreenAnims() {
         if (!SPRITE_MODE)
             init();
-        GuiEventManager.bind(GuiEventType.INGAME_EVENT_TRIGGERED, p -> {
+        GuiEventManager.bind(GuiEventType.INGAME_EVENT, p -> {
             Event e = (Event) p.get();
             FULLSCREEN_ANIM type = getType(e);
             if (type == null) {

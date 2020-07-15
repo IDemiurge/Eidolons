@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.EidolonsGame;
 import eidolons.system.text.TextMaster.LOCALE;
-import eidolons.system.text.Tips.*;
+import eidolons.system.text.Tooltips.*;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
@@ -141,7 +141,7 @@ public class TipMaster {
 
     public static String getPath() {
         return StrPathBuilder.build(PathFinder.getTextPath(),
-         LOCALE.english.name(), "tips");
+         LOCALE.english.name(), "tooltips");
     }
 
     public static void initTooltips(String tooltipType, String locale) {

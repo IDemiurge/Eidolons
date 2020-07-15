@@ -6,8 +6,8 @@ import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.Simulation;
 import eidolons.game.core.game.DC_Game;
-import eidolons.macro.entity.party.MacroParty;
 import eidolons.game.module.herocreator.logic.HeroCreator;
+import eidolons.macro.entity.party.MacroParty;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums;
@@ -28,10 +28,14 @@ import main.game.logic.battle.player.Player;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.MathMaster;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class    Party extends Obj {
@@ -210,7 +214,7 @@ public class    Party extends Obj {
     }
 
     public boolean isArcade() {
-        return type.checkProperty(G_PROPS.GROUP, StringMaster.ARCADE);
+        return type.checkProperty(G_PROPS.GROUP, Strings.ARCADE);
     }
 
     public int getGlory() {

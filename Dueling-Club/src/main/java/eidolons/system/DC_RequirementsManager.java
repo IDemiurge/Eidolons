@@ -29,8 +29,9 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -216,9 +217,9 @@ public class DC_RequirementsManager implements RequirementsManager {
             }
             String t;
             Conditions c;
-            if (StringMaster.contains(subString, StringMaster.OR)) {
+            if (StringMaster.contains(subString, Strings.OR)) {
                 // REFACTOR
-                List<String> parts = ContainerUtils.split(subString, StringMaster.OR, false);
+                List<String> parts = ContainerUtils.split(subString, Strings.OR, false);
                 c = new OrConditions();
                 StringBuilder tBuilder = new StringBuilder();
                 for (String part : parts) {
@@ -241,14 +242,14 @@ public class DC_RequirementsManager implements RequirementsManager {
                     valRef = subString.split(NOT)[0];
                     value = subString.split(NOT)[1];
                     not = true;
-                } else if (!subString.contains(StringMaster.REQ_VALUE_SEPARATOR)) {
+                } else if (!subString.contains(Strings.REQ_VALUE_SEPARATOR)) {
                     // TODO
                     valRef = subString.substring(0, subString.lastIndexOf(" "));
                     value = subString.substring(subString.lastIndexOf(" "))
                      .trim();
                 } else {
-                    valRef = subString.split(StringMaster.REQ_VALUE_SEPARATOR)[0];
-                    value = subString.split(StringMaster.REQ_VALUE_SEPARATOR)[1];
+                    valRef = subString.split(Strings.REQ_VALUE_SEPARATOR)[0];
+                    value = subString.split(Strings.REQ_VALUE_SEPARATOR)[1];
                 }
                 c = new Conditions(getCustomCondition(valRef, value));
                 if (not) {
@@ -303,7 +304,7 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     private String getSeparator(String s) {
-        String separator = StringMaster.REQ_VALUE_SEPARATOR;
+        String separator = Strings.REQ_VALUE_SEPARATOR;
         if (s.contains(separator)) {
             return separator;
         }
@@ -345,7 +346,7 @@ public class DC_RequirementsManager implements RequirementsManager {
     private Condition getTotalCondition(String req, PARAMETER... params) {
         String valRef = "";
         for (PARAMETER param : params) {
-            valRef += param.getName() + StringMaster.VAR_SEPARATOR;
+            valRef += param.getName() + Strings.VAR_SEPARATOR;
         }
         return getTotalCondition(valRef, req);
 
@@ -354,9 +355,9 @@ public class DC_RequirementsManager implements RequirementsManager {
     private Condition getTotalCondition(String valRef, String value) {
         List<PARAMETER> params;
         String str1;
-        if (valRef.contains(StringMaster.VAR_SEPARATOR)) {
+        if (valRef.contains(Strings.VAR_SEPARATOR)) {
             params = new ArrayList<>();
-            for (String s : ContainerUtils.open(valRef, StringMaster.VAR_SEPARATOR)) {
+            for (String s : ContainerUtils.open(valRef, Strings.VAR_SEPARATOR)) {
 
                 PARAMETER p = ContentValsManager.getPARAM(s);
                 if (p == null) {

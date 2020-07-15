@@ -61,11 +61,12 @@ public class GdxEvents implements GenericGuiEventManager {
     }
 
     @Override
-    public void triggerWithMinDelayBetween(GuiEventType eventType, Object obj) {
-        EventCallback event = eventMap.get(eventType);
-        if (event != null) {
-            //TODO
-        }
+    public void triggerWithMinDelayBetween(GuiEventType eventType, Object obj, int millis) {
+        // Map<EventCallback, Float> event = delayedMap.get(eventType);
+        // if (event != null) {
+        //     //TODO
+        //
+        // }
         EventCallbackParam eventCallback;
         if (obj instanceof EventCallbackParam) {
             eventCallback = (EventCallbackParam) obj;

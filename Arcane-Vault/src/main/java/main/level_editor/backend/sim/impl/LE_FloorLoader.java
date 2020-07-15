@@ -11,7 +11,7 @@ import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -121,7 +121,7 @@ public class LE_FloorLoader extends FloorLoader {
     private Map<Point, Module> modifyGridCells(Map<Point, Module> grid, String s) {
         Iterator<Point> iterator = grid.keySet().iterator();
         Map newGrid = new LinkedHashMap<>(grid);
-        for (String substring : ContainerUtils.openContainer(s, StringMaster.VERTICAL_BAR)) {
+        for (String substring : ContainerUtils.openContainer(s, Strings.VERTICAL_BAR)) {
             Point p = iterator.next();
             Module module = grid.get(p);
             String[] split = substring.split("-");
@@ -141,7 +141,7 @@ public class LE_FloorLoader extends FloorLoader {
     private LinkedHashMap<Point, Module> gridFromString(String s, Set<Module> modules) {
         LinkedHashMap<Point, Module> map = new LinkedHashMap<>();
         Iterator<Module> iterator = modules.iterator();
-        for (String substring : ContainerUtils.openContainer(s, StringMaster.VERTICAL_BAR)) {
+        for (String substring : ContainerUtils.openContainer(s, Strings.VERTICAL_BAR)) {
             Coordinates c = new Coordinates(substring);
             map.put(new Point(c.x, c.y), iterator.next());
         }

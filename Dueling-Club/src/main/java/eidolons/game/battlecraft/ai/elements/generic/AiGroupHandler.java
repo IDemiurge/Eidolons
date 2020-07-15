@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.content.enums.EncounterEnums;
 import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.MapBuilder;
 import main.system.datatypes.DequeImpl;
 
@@ -74,7 +74,7 @@ public class AiGroupHandler extends AiHandler {
             //TODO it's reverse - it's dataUnit=[ids]!
         }
         encounterAiMap =
-                new MapBuilder<>("=", StringMaster.VERTICAL_BAR,
+                new MapBuilder<>("=", Strings.VERTICAL_BAR,
                         s -> NumberUtils.getIntParse(s),
                         s -> new AiData(s)
                 )

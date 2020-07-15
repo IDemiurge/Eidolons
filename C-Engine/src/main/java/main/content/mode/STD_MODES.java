@@ -5,6 +5,7 @@ import main.data.filesys.PathFinder;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.math.FormulaMaster;
 import main.system.math.Formulas;
 
@@ -68,7 +69,7 @@ public enum STD_MODES implements MODE {
 
         String paramModString = StringMaster.getParamModString("PARRY_CHANCE",
          Formulas.DEFEND_PARRY_CHANCE_MOD)
-         + StringMaster.SEPARATOR
+         + Strings.SEPARATOR
          + StringMaster.getParamModString("BLOCK_CHANCE", Formulas.DEFEND_BLOCK_CHANCE_MOD);
         DEFENDING.setParameterMods(paramModString);
 

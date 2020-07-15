@@ -74,6 +74,13 @@ public class SpellMultiplicator implements Runnable {
         return false;
     }
 
+    public static int getPrePoolVfxCount(SpellAnim active) {
+        if (active.getTemplate() == null) {
+            return 1;
+        }
+        return active.getTemplate().getNumberOfEmitters(active.getActive());
+    }
+
     @Override
     public void run() {
         main.system.auxiliary.log.LogMaster.log(1, getClass().getSimpleName() + " works on " + anim);

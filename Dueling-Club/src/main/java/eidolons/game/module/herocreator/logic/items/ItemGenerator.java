@@ -26,6 +26,7 @@ import main.game.core.game.GenericGame;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.Chronos;
 import main.system.images.ImageManager;
 import main.system.launch.Flags;
@@ -498,7 +499,7 @@ public class ItemGenerator implements GenericItemGenerator {
                  + StringMaster.wrapInParenthesis(perc + ","
                  + material.getDmg_type().getName()));
 
-                newType.appendProperty(G_PROPS.DESCRIPTION, StringMaster.NEW_LINE
+                newType.appendProperty(G_PROPS.DESCRIPTION, Strings.NEW_LINE
                  + material.getName() + ": " + appendix);
 
                 magicApplied = true;

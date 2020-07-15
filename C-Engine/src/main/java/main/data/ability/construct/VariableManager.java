@@ -11,14 +11,10 @@ import main.data.xml.XML_Converter;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.math.Formula;
 import main.system.math.Property;
 import main.system.text.TextParser;
@@ -39,7 +35,7 @@ public class VariableManager {
     public static final String BOOLEAN_VAR_CLASS = VARIABLE_TYPES.BOOLEAN.toString();
     public static final String PROP_VALUE_VAR_CLASS = VARIABLE_TYPES.PROP.toString();
 
-    public static final String VARIABLE = StringMaster.VAR_STRING;
+    public static final String VARIABLE = Strings.VAR_STRING;
     private static boolean variableInputRequesting = false;
     private static final List<ObjType> varCache = new ArrayList<>();
     private static String prevValue;
@@ -81,11 +77,11 @@ public class VariableManager {
         StringBuilder varProp = new StringBuilder();
         String lastVar = null;
         for (String var : varList) {
-            var = var.replace(StringMaster.COMMA_CODE, StringMaster.getVarSeparator());
+            var = var.replace(Strings.COMMA_CODE, StringMaster.getVarSeparator());
 
             lastVar = var;
-            varProp.append(var).append(StringMaster.CONTAINER_SEPARATOR);
-            if (!xml.contains(StringMaster.VAR_STRING)) {
+            varProp.append(var).append(Strings.CONTAINER_SEPARATOR);
+            if (!xml.contains(Strings.VAR_STRING)) {
                 // parsedVars +=var + StringMaster.CONTAINER_SEPARATOR; TODO
                 /*
                  * if I want {1} to serve in multiple places for an Ability, I
@@ -96,11 +92,11 @@ public class VariableManager {
                  * replaceCycle on XML here - one that will *parse* references!
                  */
             } else { //we can do better than 'replace'... use indices or something!
-                xml = StringMaster.replaceFirst(xml, StringMaster.VAR_STRING, var);
+                xml = StringMaster.replaceFirst(xml, Strings.VAR_STRING, var);
             }
         }
         if (lastVar != null) {
-            xml = StringMaster.replace(true, xml, StringMaster.VAR_STRING, lastVar);
+            xml = StringMaster.replace(true, xml, Strings.VAR_STRING, lastVar);
         }
         newType.setProperty(G_PROPS.VARIABLES, varProp.toString());
         if (TextParser.checkHasVarRefs(xml)) {
@@ -192,7 +188,7 @@ public class VariableManager {
         // if (!variableInputRequesting)
         // return null;
         StringBuilder result = new StringBuilder();
-        int index = xml.indexOf(StringMaster.VAR_STRING);
+        int index = xml.indexOf(Strings.VAR_STRING);
         int i = 1;
         boolean manualVars = variableInputRequesting;
         if (!manualVars) {
@@ -201,15 +197,15 @@ public class VariableManager {
             }
         }
         while (index != -1) {
-            xml = xml.substring(0, index) + xml.substring(index + StringMaster.VAR_STRING.length());
+            xml = xml.substring(0, index) + xml.substring(index + Strings.VAR_STRING.length());
             String input = null;
             if (manualVars) {
                 input =
 
                         JOptionPane.showInputDialog(type.getName()
                                 + " "
-                                + xml.substring(index + StringMaster.VAR_STRING.length() - 1, xml.indexOf(
-                                ">", index + StringMaster.VAR_STRING.length())) + " variable at #"
+                                + xml.substring(index + Strings.VAR_STRING.length() - 1, xml.indexOf(
+                                ">", index + Strings.VAR_STRING.length())) + " variable at #"
 
                                 +
 
@@ -222,7 +218,7 @@ public class VariableManager {
 
             }
             i++;
-            index = xml.indexOf(StringMaster.VAR_STRING);
+            index = xml.indexOf(Strings.VAR_STRING);
             result.append(input).append(StringMaster.getSeparator());
 
         }
@@ -406,7 +402,7 @@ public class VariableManager {
             result = result.replace(getVarIndex(i), var.toString());
             i++;
         }
-        while (i < 10 && result.contains(StringMaster.FORMULA_REF_OPEN_CHAR)) {
+        while (i < 10 && result.contains(Strings.FORMULA_REF_OPEN_CHAR)) {
             result = result.replace(getVarIndex(i), "").trim();
             i++;
         }
@@ -439,44 +435,9 @@ public class VariableManager {
 
     }
 
-
+//TODO DC Review
     public enum AUTOVAR {
-        // at construction time or runtime?
-        // ++ random attribute
-        // ++ corresponding mastery
-        //
 
-        SUMMON_ENERGY_COST {
-            public Object evaluate(Entity obj, String s) {
-                return obj.getGame().getMathManager().evaluateSummonEnergyCost(obj, s);
-            }
-        },
-
-        CLAIM_COUNTERS_OUTPUT {
-            public Object evaluate(Entity obj, String s) {
-                return obj.getGame().getMathManager().evaluateClaimOutput((Obj) obj, s);
-            }
-        },
-        CLAIM_COUNTERS_THRESHOLD {
-            public Object evaluate(Entity obj, String s) {
-                return obj.getGame().getMathManager().evaluateClaimThreshold((Obj) obj, s);
-            }
-        },
-        MEDITATION {
-            public Object evaluate(Entity obj, String s) {
-                return obj.getGame().getMathManager().evaluateMeditation((Obj) obj);
-            }
-        },
-        CONCENTRATION {
-            public Object evaluate(Entity obj, String s) {
-                return obj.getGame().getMathManager().evaluateConcentration((Obj) obj);
-            }
-        },
-        REST {
-            public Object evaluate(Entity obj, String s) {
-                return obj.getGame().getMathManager().evaluateRest((Obj) obj);
-            }
-        },
         MASTERY {
             public Object evaluate(Entity obj, String s) {
                 Entity entity = obj.getRef().getInfoEntity();

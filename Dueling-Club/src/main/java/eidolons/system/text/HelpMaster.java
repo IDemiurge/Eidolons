@@ -35,7 +35,7 @@ public class HelpMaster {
                 name = name.split(" ")[0];
         }
         String path=StrPathBuilder.build(PathFinder.getTextPath(),
-         TextMaster.getLocale(), "info", "heroes");
+         TextMaster.getLocale(), "descriptions", "heroes");
         if (prefix!=null ){
             path=StrPathBuilder.build(path, prefix);
         }
@@ -62,7 +62,7 @@ public class HelpMaster {
     public static String getScenarioInfoText(String name, String suffix) {
         String text = FileManager.readFile(
          StrPathBuilder.build(PathFinder.getTextPath(),
-          TextMaster.getLocale(), "info", "scenarios",
+          TextMaster.getLocale(), "descriptions", "scenarios",
           name + (suffix != null ? suffix : "") + ".txt"));
         if (text.isEmpty()) {
             text = "Sorry, no info on this scenario!..";

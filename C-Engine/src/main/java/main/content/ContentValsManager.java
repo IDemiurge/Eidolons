@@ -14,6 +14,7 @@ import main.entity.Entity;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -138,7 +139,7 @@ public class ContentValsManager {
     }
 
     private static boolean checkParamPerLevel(PARAMETER p) {
-        return p.toString().contains(StringMaster.PER_LEVEL);
+        return p.toString().contains(Strings.PER_LEVEL);
     }
 
     public static PARAMETER getCurrentParam(PARAMETER param) {
@@ -146,9 +147,9 @@ public class ContentValsManager {
         if (cParam != null) {
             return cParam;
         }
-        if (param.name().startsWith(StringMaster.CURRENT))
+        if (param.name().startsWith(Strings.CURRENT))
             return param;
-        cParam = getPARAM(StringMaster.CURRENT + param.getName(), true);
+        cParam = getPARAM(Strings.CURRENT + param.getName(), true);
         currentCache.put(param, cParam);
         return cParam;
     }
@@ -160,10 +161,10 @@ public class ContentValsManager {
         if (baseParam != null) {
             return baseParam;
         }
-        if (!param.name().startsWith(StringMaster.CURRENT)) {
+        if (!param.name().startsWith(Strings.CURRENT)) {
             return param;
         }
-        baseParam = getPARAM(param.getFullName().replace(StringMaster.CURRENT, ""), true);
+        baseParam = getPARAM(param.getFullName().replace(Strings.CURRENT, ""), true);
         if (baseParam != null) {
             currentCache.put(baseParam, param);
         }
@@ -175,36 +176,36 @@ public class ContentValsManager {
     //    }
 
     public static PARAMETER getPercentageParam(PARAMETER param) {
-        if (param.isDynamic() && param.name().startsWith(StringMaster.CURRENT)) {
+        if (param.isDynamic() && param.name().startsWith(Strings.CURRENT)) {
             param = getBaseParameterFromCurrent(param);
         }
         PARAMETER percParam = percCache.get(param);
         if (percParam != null) {
             return percParam;
         }
-        if (param.name().startsWith(StringMaster.CURRENT))
+        if (param.name().startsWith(Strings.CURRENT))
             return param;
-        percParam = getPARAM(param.getName() + StringMaster.PERCENTAGE);
+        percParam = getPARAM(param.getName() + Strings.PERCENTAGE);
         percCache.put(param, percParam);
         return percParam;
     }
 
     public static PARAMETER getReqParam(PARAMETER p) {
-        return getPARAM(p.getName() + StringMaster.REQUIREMENT, true);
+        return getPARAM(p.getName() + Strings.REQUIREMENT, true);
     }
 
     public static PARAMETER getFinalAttrFromBase(PARAMETER param) {
-        return ContentValsManager.getPARAM(param.name().replace(StringMaster.BASE, ""));
+        return ContentValsManager.getPARAM(param.name().replace(Strings.BASE, ""));
     }
 
     public static PARAMETER getMasteryScore(PARAMETER mastery) {
-        PARAMETER param = getPARAM(mastery.getName() + (StringMaster.SCORE));
+        PARAMETER param = getPARAM(mastery.getName() + (Strings.SCORE));
         return param;
     }
 
     public static PARAMETER getMasteryFromScore(PARAMETER mastery) {
         PARAMETER param = getPARAM(mastery.getName()
-                .replace(StringMaster.SCORE, ""));
+                .replace(Strings.SCORE, ""));
         return param;
     }
 
@@ -214,7 +215,7 @@ public class ContentValsManager {
         if (regenParam != null) {
             return regenParam;
         }
-        regenParam = getPARAM(param.getName() + StringMaster.REGEN, true);
+        regenParam = getPARAM(param.getName() + Strings.REGEN, true);
         regenCache.put(param, regenParam);
         return regenParam;
     }
@@ -717,7 +718,7 @@ public class ContentValsManager {
     }
 
     public static PARAMETER getMasteryScore(String property) {
-        String mastery = property + StringMaster.SCORE;
+        String mastery = property + Strings.SCORE;
         return getPARAM(mastery);
     }
 
@@ -765,7 +766,7 @@ public class ContentValsManager {
     }
 
     public static PARAMETER getPerLevelValue(String string) {
-        return getPARAM(string + StringMaster.PER_LEVEL);
+        return getPARAM(string + Strings.PER_LEVEL);
     }
 
     public static boolean isValueForOBJ_TYPE(String type, VALUE p) {
@@ -866,12 +867,12 @@ public class ContentValsManager {
     }
 
     public static PARAMETER getBaseAttribute(PARAMETER param) {
-        return getPARAM(StringMaster.BASE + param.getName());
+        return getPARAM(Strings.BASE + param.getName());
     }
 
     public static PARAMETER getCostParam(PARAMETER param) {
 
-        return getPARAM(param.getName() + StringMaster.COST);
+        return getPARAM(param.getName() + Strings.COST);
     }
 
     public static Class<?>[] getPropEnumClasses() {
@@ -975,7 +976,7 @@ public class ContentValsManager {
     }
 
     public static PARAMETER getDefaultAttribute(PARAMETER sub) {
-        return getPARAM(StringMaster.DEFAULT + sub.getName());
+        return getPARAM(Strings.DEFAULT + sub.getName());
     }
 
     public static VALUE getValueByDisplayedName(String name) {

@@ -41,6 +41,12 @@ public class GroupX extends Group {
     }
 
     @Override
+    protected void sizeChanged() {
+        super.sizeChanged();
+        setTransform(getScaleX() != 1 || getScaleY() != 1);
+    }
+
+    @Override
     public void rotateBy(float amountInDegrees) {
         super.rotateBy(amountInDegrees);
     }

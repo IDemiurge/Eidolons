@@ -21,10 +21,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.ClassMaster;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
@@ -111,7 +108,7 @@ public class ConditionMaster {
 
     public static Condition getPropCondition(String obj_ref, PROPERTY prop, String v, boolean base) {
         if (base) {
-            v = StringMaster.FORMULA_BASE_CHAR + v;
+            v = Strings.FORMULA_BASE_CHAR + v;
         }
         return new StringComparison("{" + obj_ref + "_" + prop.getName() + "}", v, false);
     }
@@ -323,7 +320,7 @@ public class ConditionMaster {
     }
 
     public static Condition getParamCondition(String paramName, String amount, boolean base) {
-        return new NumericCondition(false, "{" + ((base) ? StringMaster.BASE_CHAR : "") + SOURCE
+        return new NumericCondition(false, "{" + ((base) ? Strings.BASE_CHAR : "") + SOURCE
                 + "_" + paramName + "}", amount);
     }
 
@@ -362,10 +359,10 @@ public class ConditionMaster {
     public static Conditions toConditions(String string) {
         Conditions conditions = new Conditions();
         for (String conditionString :
-                ContainerUtils.openContainer(string, StringMaster.AND)) {
+                ContainerUtils.openContainer(string, Strings.AND)) {
             Condition c;
-            if (conditionString.contains(StringMaster.OR)) {
-                String[] parts = conditionString.split(StringMaster.OR);
+            if (conditionString.contains(Strings.OR)) {
+                String[] parts = conditionString.split(Strings.OR);
                 c = new OrConditions();
                 for (String part : parts) {
                     Condition condition = parseCondition(part);
@@ -420,8 +417,8 @@ public class ConditionMaster {
 
     private static String parseArg(String arg) {
         if (TextParser.isRef(arg)) { // TODO sometimes it's SOURCE!!!
-            if (!arg.contains(StringMaster.FORMULA_REF_SEPARATOR)) {
-                arg = KEYS.MATCH.toString() + StringMaster.FORMULA_REF_SEPARATOR
+            if (!arg.contains(Strings.FORMULA_REF_SEPARATOR)) {
+                arg = KEYS.MATCH.toString() + Strings.FORMULA_REF_SEPARATOR
                         + StringMaster.cropRef(arg);
                 arg = StringMaster.wrapInCurlyBraces(arg);
             }
@@ -440,7 +437,7 @@ public class ConditionMaster {
             }
         }
         if (result) {
-            prop = KEYS.MATCH.toString() + StringMaster.FORMULA_REF_SEPARATOR + prop;
+            prop = KEYS.MATCH.toString() + Strings.FORMULA_REF_SEPARATOR + prop;
         }
         return prop;
     }

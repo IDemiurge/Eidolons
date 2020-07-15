@@ -32,7 +32,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
     AE_Item selectedItem;
     private JTree tree;
     private boolean autoSelect = true;
-    private boolean ability;
+    private final boolean ability;
     private DefaultMutableTreeNode copyBuffer;
 
     public NodeMaster(JTree tree, boolean ability) {
@@ -117,7 +117,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
         boolean primitive = rootItem.isPrimitive();
         if (rootItem.isENUM()) {
             AE_Item childItem = null;
-            if (StringMaster.isEmpty(e.getTextContent()) || e.getTextContent().equals(StringMaster.VAR_STRING)) {
+            if (StringMaster.isEmpty(e.getTextContent()) || e.getTextContent().equals(Strings.VAR_STRING)) {
                 primitive = true;
             } else {
                 childItem = getEnumItem(rootItem.getArg(), EnumMaster.getEnumConstIndex(

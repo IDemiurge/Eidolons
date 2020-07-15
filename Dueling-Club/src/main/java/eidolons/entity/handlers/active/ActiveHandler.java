@@ -41,7 +41,7 @@ public abstract class ActiveHandler extends EntityHandler<DC_ActiveObj> {
     }
 
     @Override
-    public ActiveInitializer getInitializer() {
+    public ActiveObjInitializer getInitializer() {
         return getMaster().getInitializer();
     }
 

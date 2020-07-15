@@ -19,7 +19,6 @@ import main.elements.costs.CostRequirements;
 import main.elements.costs.Costs;
 import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.secondary.InfoMaster;
 import main.system.sound.SoundMaster;
 
 import java.util.ArrayList;
@@ -58,19 +57,10 @@ public class ChannelingRule {
         for (PARAMS costParam : activateOrResolve ? costParamsActivate : costParamsResolve) {
             PARAMS payParam = DC_ContentValsManager.getPayParameterForCost(costParam);
             Cost cost = DC_CostsFactory.getCost(action, costParam, payParam);
-//            int mod = 100;
-//            cost.getPayment().getAmountFormula().applyModifier(mod);
             list.add(cost);
         }
-//        Costs costs = getEntity().getCosts();
-//        Costs channelingResolveCosts = new Costs(costs.getRequirements(), costs.getCosts());
-//        Costs channelingActivateCosts = new Costs(costs.getRequirements(), costs
-//         .getCost(PARAMS.C_N_OF_ACTIONS));
-//        channelingResolveCosts.removeCost(PARAMS.C_N_OF_ACTIONS);
         CostRequirements reqs = action.getCosts().getRequirements();
         Costs costs = new Costs(reqs, list);
-        if (!activateOrResolve)
-            costs.removeRequirement(InfoMaster.COOLDOWN_REASON);
         return costs;
     }
 

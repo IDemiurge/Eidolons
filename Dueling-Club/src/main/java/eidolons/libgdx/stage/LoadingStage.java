@@ -48,7 +48,7 @@ public class LoadingStage extends Stage {
 
             underText.addListener(TipMaster.getListener(underText));
             //TODO click to show next tip
-            underText.setPosition(GdxMaster.centerWidth(underText), 32);
+            underText.setPosition(GdxMaster.centerWidth(underText), 52);
             fullscreenImage = new FadeImageContainer(loadScreenPath);
 
             float x = new Float(GdxMaster.getWidth()) / 1920;

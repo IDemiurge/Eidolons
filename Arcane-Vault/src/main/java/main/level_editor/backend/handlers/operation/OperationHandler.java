@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
+import eidolons.libgdx.bf.decor.CellData;
 import eidolons.libgdx.bf.decor.DecorData;
 import eidolons.libgdx.bf.grid.handlers.GridManager;
 import main.entity.type.ObjType;
@@ -42,6 +43,22 @@ public class OperationHandler extends LE_Handler {
 
         EventType event = null;
         switch (operation) {
+            case CELL_DATA_CHANGE:
+                event = GuiEventType.CELL_RESET;
+                c = (Coordinates) args[0];
+                CellData cdata = (CellData) args[1];
+                if (cdata == null) {
+                    cdata = new CellData("");
+                }
+                if (cdata.getData().isEmpty()) {
+                    getFloorWrapper().getCellMap().remove(c);
+                } else {
+                    getFloorWrapper().getCellMap().put(c, cdata);
+                }
+                DC_Cell cell = getGame().getCellByCoordinate(c);
+                cdata.apply(cell);
+                GuiEventManager.trigger(event, cell);
+                break;
             case CELL_DECOR_CHANGE:
                 event = GuiEventType.CELL_DECOR_RESET;
                 c = (Coordinates) args[0];
@@ -85,7 +102,7 @@ public class OperationHandler extends LE_Handler {
                 set = true;
             case VOID_TOGGLE:
                 c = (Coordinates) args[0];
-                DC_Cell cell = manager.getGame().getCellByCoordinate(c);
+                cell = manager.getGame().getCellByCoordinate(c);
                 boolean isVoid = cell.isVOID();
                 if (!isVoid)
                     for (BattleFieldObject bfObj : manager.getGame().getObjectsOnCoordinateAll(c)) {
@@ -255,10 +272,10 @@ public class OperationHandler extends LE_Handler {
         }
         switch (op.operation) {
             case MASS_SET_VOID:
-                execute(Operation.LE_OPERATION.MASS_RESET_VOID, op.args[0] );
+                execute(Operation.LE_OPERATION.MASS_RESET_VOID, op.args[0]);
                 break;
             case MASS_RESET_VOID:
-                execute(Operation.LE_OPERATION.MASS_SET_VOID, op.args[0] );
+                execute(Operation.LE_OPERATION.MASS_SET_VOID, op.args[0]);
                 break;
             case CELL_DECOR_CHANGE:
                 execute(Operation.LE_OPERATION.CELL_DECOR_CHANGE, op.args[0],

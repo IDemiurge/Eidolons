@@ -13,7 +13,7 @@ import static eidolons.libgdx.StyleHolder.getDefaultLabelStyle;
 
 public class MultiValueContainer extends ValueContainer {
 
-    private List<Container<LabelX>> values = new ArrayList<>();
+    private final List<Container<LabelX>> values = new ArrayList<>();
 
     public MultiValueContainer(TextureRegion texture, String name, String... value) {
         init(texture, name, value);
@@ -37,7 +37,7 @@ public class MultiValueContainer extends ValueContainer {
         if (values != null) {
             Table table = new Table();
             //super.init() initialize value field as empty Container
-            this.valueContainer.setActor(table);
+            getValueContainer().setActor(table);
             for (String value : values) {
                 Container<LabelX> labelContainer = new Container<>(new LabelX(value, getDefaultLabelStyle()));
                 this.values.add(labelContainer);

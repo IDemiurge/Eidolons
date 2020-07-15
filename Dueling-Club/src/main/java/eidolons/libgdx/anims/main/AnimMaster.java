@@ -367,7 +367,7 @@ public class AnimMaster extends Group {
             }
 
         });
-        GuiEventManager.bind(GuiEventType.INGAME_EVENT_TRIGGERED, p -> {
+        GuiEventManager.bind(GuiEventType.INGAME_EVENT, p -> {
             if (!isOn()) {
                 return;
             }

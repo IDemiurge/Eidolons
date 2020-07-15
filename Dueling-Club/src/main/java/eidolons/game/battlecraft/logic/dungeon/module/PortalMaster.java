@@ -3,17 +3,11 @@ package eidolons.game.battlecraft.logic.dungeon.module;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
-import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.Assets;
-import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.texture.Sprites;
-import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
@@ -65,58 +59,13 @@ public class PortalMaster extends DungeonHandler {
         });
     }
 
-    public void entered(Portal portal) {
-        Unit unit = Eidolons.getMainHero();
-        entered(unit, portal);
-    }
-
-    public void entered(Unit unit, Portal portal) {
-
-        Portal to = portalMap.get(portal);
-        if (to == null) {
-            return;
-        }
-        portal.used = true;
-        if (portal.oneWay)
-            portal.open = false;
-        GuiEventManager.trigger(GuiEventType.UNIT_FADE_OUT_AND_BACK, unit);
-
-        GraphicData data = new GraphicData("x:" + portal.getOffsetX() + ";y:" + portal.getOffsetY());
-        AnimMaster.onCustomAnim(data,
-                "",
-                getCloseAnim(portal, to), () -> {
-                    if (to.exitFacing != null) {
-                        unit.setFacing(to.exitFacing);
-                    }
-                    unit.setCoordinates(to.coordinates);
-                    unit.getGame().getMovementManager().moved(unit, true);
-                    to.open = true;
-                    GuiEventManager.trigger(GuiEventType.UNIT_MOVED, unit);
-                    AnimMaster.onCustomAnim(getOpenAnim(portal, to), () -> {
-                        //                GuiEventManager.trigger(GuiEventType.BLACKOUT_OUT, 2.0f);
-                        //                GuiEventManager.trigger(GuiEventType.BLACKOUT_IN, 1.4f);
-                        //                GuiEventManager.trigger(GuiEventType.CAMERA_LAPSE_TO,  unit.getCoordinates());
-
-                        if (unit.isPlayerCharacter())
-                            GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, unit);
-
-                        if (portal.oneWay)
-                            to.open = false;
-                    });
-                });
-    }
-
     public void unitMoved(Unit unit) {
-
         if (unit.isMine()) {
             for (Portal portal : portalMap.keySet()) {
                 if (portal.open)
                     if (unit.getCoordinates().equals(portal.coordinates)) {
-                        if (!isConfirm()) {
-                            entered(portal);
-                        } else {
-                            EUtils.onConfirm("Enter the portal?", true, () -> entered(portal));
-                        }
+                        //TODO area?
+                       portal.entering(unit);
                     }
 
             }
@@ -157,7 +106,12 @@ public class PortalMaster extends DungeonHandler {
             return true;
         }
 
-        private void addPortal (Coordinates from, Coordinates to, FACING_DIRECTION facing, FACING_DIRECTION facing2
+    private boolean addOmniPortal(Coordinates from, String data) {
+        new OmniPortal(from, data).addToGrid();
+        return true;
+    }
+
+    private void addPortal (Coordinates from, Coordinates to, FACING_DIRECTION facing, FACING_DIRECTION facing2
         , Boolean oneWay){
             Portal enter = createPortal(from,oneWay);
             Portal exit;
@@ -175,23 +129,15 @@ public class PortalMaster extends DungeonHandler {
         }
 
 
-        private boolean isConfirm () {
-            return false;
-        }
-
-        private String getCloseAnim (Portal portal, Portal to){
-            return Sprites.PORTAL_CLOSE;
-        }
-
-        private String getOpenAnim (Portal portal, Portal to){
-            return Sprites.PORTAL_OPEN;
-        }
-
         public void init (Map < Coordinates, CellScriptData > textDataMap){
             for (Coordinates c : textDataMap.keySet()) {
                 String data = textDataMap.get(c).getValue(CellScriptData.CELL_SCRIPT_VALUE.portals);
                 if (!data.isEmpty()) {
                     addPortal(c, data);
+                }
+                  data = textDataMap.get(c).getValue(CellScriptData.CELL_SCRIPT_VALUE.omni_portals);
+                if (!data.isEmpty()) {
+                    addOmniPortal(c, data);
                 }
             }
         }
@@ -200,70 +146,4 @@ public class PortalMaster extends DungeonHandler {
             OBLIVION, LIGHT, DARK
         }
 
-        private static class Portal extends GridObject {
-            public boolean oneWay = false; //TODO
-            FACING_DIRECTION exitFacing;
-            Coordinates coordinates;
-            PORTAL_TYPE type;
-
-            boolean open = false;
-            boolean used;
-            boolean facingDependent;
-
-            public Portal(FACING_DIRECTION exitFacing, Coordinates coordinates, PORTAL_TYPE type, boolean oneWay) {
-                super(coordinates, Sprites.PORTAL);
-                this.exitFacing = exitFacing;
-                this.coordinates = coordinates;
-                this.type = type;
-                this.oneWay =  oneWay;
-            }
-
-            @Override
-            public float getOffsetY() {
-                return 0;//-sprite.getHeight() / 2;
-            }
-
-            @Override
-            public void init() {
-                super.init();
-                sprite.setBlending(GenericEnums.BLENDING.SCREEN);
-            }
-
-            public FACING_DIRECTION getExitFacing() {
-                return exitFacing;
-            }
-
-            @Override
-            public boolean checkVisible() {
-                if (!open) {
-                    return false;
-                }
-                return super.checkVisible();
-            }
-
-            @Override
-            protected boolean isClearshotRequired() {
-                return false;
-            }
-
-            @Override
-            protected float getFadeInDuration() {
-                return 1.1f;
-            }
-
-            @Override
-            protected float getFadeOutDuration() {
-                return 2.3f;
-            }
-
-            @Override
-            protected double getDefaultVisionRange() {
-                return 8;
-            }
-
-            @Override
-            protected int getFps() {
-                return 14;
-            }
-        }
-    }
+}

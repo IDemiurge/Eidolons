@@ -21,6 +21,7 @@ import main.entity.obj.Obj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
@@ -89,8 +90,8 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     }
 
     public ModifyValueEffect(String sparam, MOD code, Formula formula) {
-        if (sparam.contains(StringMaster.BASE_CHAR)) {
-            sparam = sparam.replace(StringMaster.BASE_CHAR, "");
+        if (sparam.contains(Strings.BASE_CHAR)) {
+            sparam = sparam.replace(Strings.BASE_CHAR, "");
             base = true;
         }
         this.sparam = sparam;
@@ -232,7 +233,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             return EffectMaster.initParamModEffects(modString, ref).apply(ref);
         }
         if (param == null) {
-            if (sparam.contains(StringMaster.VERTICAL_BAR)) {
+            if (sparam.contains(Strings.VERTICAL_BAR)) {
                 params = game.getValueManager().getParamsFromContainer(sparam);
             } else {
                 this.param = ContentValsManager.getPARAM(sparam);

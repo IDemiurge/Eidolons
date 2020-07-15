@@ -7,10 +7,7 @@ import eidolons.libgdx.particles.EmitterPools;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.system.PathUtils;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -202,8 +199,8 @@ public class EmitterPresetMaster {
         if (StringMaster.isEmpty(imgPath)) {
             imgPath = getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Paths, null);
         }
-        if (imgPath.contains(StringMaster.NEW_LINE)) {
-            imgPath = imgPath.split(StringMaster.NEW_LINE)[0];
+        if (imgPath.contains(Strings.NEW_LINE)) {
+            imgPath = imgPath.split(Strings.NEW_LINE)[0];
         }
         //        if (imgPath.contains("\n")) {
         //            imgPath = imgPath.split("\n")[0];

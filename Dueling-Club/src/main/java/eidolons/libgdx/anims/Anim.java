@@ -366,7 +366,7 @@ public class Anim extends Group implements Animation {
     protected void initEmitters() {
         if (emitterList == null || emitterList .isEmpty()) {
             if (data.getValue(ANIM_VALUES.PARTICLE_EFFECTS) != null) {
-                setEmitterList(SpellVfxPool.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS)));
+                setEmitterList(SpellVfxPool.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS), 1));
             }
         }
     }

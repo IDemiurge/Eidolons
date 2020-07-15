@@ -62,6 +62,9 @@ public class ActionPanel extends GroupX {
     private boolean altBg;
     private Float defaultX;
 
+    ExtraPtsComp movePts = new ExtraPtsComp(false);
+    ExtraPtsComp atkPts = new ExtraPtsComp(true);
+
     public ActionPanel() {
         addActor(background = new FadeImageContainer((UiImages.BOTTOM_PANEL_BG)));
         //        background.pack();
@@ -80,6 +83,10 @@ public class ActionPanel extends GroupX {
         addActor(bodyParamsBar);
         addActor(soulParamsBar);
         addActor(facingPanel = new FacingPanel());
+
+        addActor(movePts);
+        addActor(atkPts);
+
         addActor(mainHand = new QuickWeaponPanel(false));
         addActor(offhand = new QuickWeaponPanel(true));
 
@@ -103,10 +110,10 @@ public class ActionPanel extends GroupX {
     }
 
     public void resetPositions() {
-        quickSlotPanel.setPosition(30 + OFFSET_X + QUICK_SLOTS_OFFSET_X, SPELL_OFFSET_Y);
+        quickSlotPanel.setPosition(-32 + OFFSET_X + QUICK_SLOTS_OFFSET_X, SPELL_OFFSET_Y);
         final float actionOffset =17+ OFFSET_X + (IMAGE_SIZE * 6) + 5;
-        modeActionsPanel.setPosition(11+actionOffset, 0);
-        final float spellOffset = SPELL_OFFSET_X + actionOffset + (IMAGE_SIZE * 6)- 15;
+        modeActionsPanel.setPosition(-28+26+actionOffset, 0);
+        final float spellOffset = SPELL_OFFSET_X-60 + actionOffset + (IMAGE_SIZE * 6)- 35;
         spellPanel.setPosition(spellOffset, SPELL_OFFSET_Y);
         spellsPos.x = spellOffset;
         spellsPos.y = SPELL_OFFSET_Y;
@@ -114,13 +121,13 @@ public class ActionPanel extends GroupX {
 
         float x = quickSlotPanel.getX();
 
-        bodyParamsBar.setPosition(x - 34, 33);
-        buffPanelBody.setPosition(bodyParamsBar.getX() + 20, IMAGE_SIZE + 12);
+        bodyParamsBar.setPosition(x - 37, 47);
+        buffPanelBody.setPosition(bodyParamsBar.getX() + 20, IMAGE_SIZE + 40);
 
-        x = modeActionsPanel.getX();
-        mainHand.setPosition(x - 23,
+        x = modeActionsPanel.getX()-34;
+        mainHand.setPosition(x - 14,
                 bodyParamsBar.getY() + 22);
-        offhand.setPosition(mainHand.getX() + 272 + 146- 112,
+        offhand.setPosition(mainHand.getX() + 235 + 146- 112,
                 mainHand.getY()  );
 
         facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2  ,
@@ -128,15 +135,17 @@ public class ActionPanel extends GroupX {
 
 
         x = spellPanel.getX();
-        soulParamsBar.setPosition(x - 32
+        soulParamsBar.setPosition(x +11
                 , bodyParamsBar.getY());
-        buffPanelSoul.setPosition(soulParamsBar.getX() + 35, IMAGE_SIZE + 25);
+        buffPanelSoul.setPosition(soulParamsBar.getX() + 65, IMAGE_SIZE + 40);
 
-        invBtn.setPosition(bodyParamsBar.getX() + bodyParamsBar.getWidth() / 2 + 74,
+        invBtn.setPosition(bodyParamsBar.getX() + bodyParamsBar.getWidth() / 2 + 79,
                 getHeight() - 90);
-        spellbookBtn.setPosition(soulParamsBar.getX() + soulParamsBar.getWidth() / 2 + 74,
+        spellbookBtn.setPosition(soulParamsBar.getX() + soulParamsBar.getWidth() / 2 + 85,
                 invBtn.getY());
 
+        atkPts.setPosition(spellPanel.getX()-12, 50);
+        movePts.setPosition(bodyParamsBar.getX() + 337, 54);
     }
 
     public ActionPanel(int x, int y) {
@@ -253,6 +262,8 @@ public class ActionPanel extends GroupX {
             }
 
             //Gdx revamp - action containers re-creation!
+            atkPts.setUserObject(source);
+            movePts.setUserObject(source);
             quickSlotPanel.setUserObject(source);
             modeActionsPanel.setUserObject(source);
             spellPanel.setUserObject(source);

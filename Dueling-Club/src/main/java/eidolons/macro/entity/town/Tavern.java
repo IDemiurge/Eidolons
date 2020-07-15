@@ -3,12 +3,12 @@ package eidolons.macro.entity.town;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
-import eidolons.macro.MacroGame;
-import eidolons.macro.AdventureInitializer;
-import eidolons.macro.entity.party.MacroParty;
-import eidolons.macro.global.time.TimeMaster;
-import eidolons.macro.generation.HeroGenerator;
 import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.macro.AdventureInitializer;
+import eidolons.macro.MacroGame;
+import eidolons.macro.entity.party.MacroParty;
+import eidolons.macro.generation.HeroGenerator;
+import eidolons.macro.global.time.TimeMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.values.parameters.MACRO_PARAMS;
@@ -20,9 +20,9 @@ import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 import main.system.entity.FilterMaster;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.List;
 
 public class Tavern extends TownPlace {
     private TOWN_PLACE_TYPE TYPE;
-    private List<Unit> heroes = new ArrayList<>();
+    private final List<Unit> heroes = new ArrayList<>();
     // buy drinks...
     private List<Unit> mercs;
     private List<Party> stayingParties;
@@ -172,7 +172,7 @@ public class Tavern extends TownPlace {
 
     private ObjType getRandomHeroBackground() {
         List<ObjType> list = DataManager.getTypesGroup(DC_TYPE.CHARS,
-         StringMaster.BACKGROUND);
+         Strings.BACKGROUND);
         String prop = new RandomWizard<BACKGROUND>().getObjectByWeight(
          getHeroBackgrounds(), BACKGROUND.class).toString();
 
@@ -194,7 +194,7 @@ public class Tavern extends TownPlace {
         int minXp = xp / 3 * 2;
         int maxXp = xp * 3 / 2;
         List<ObjType> list = DataManager.toTypeList(DataManager
-          .getTypesSubGroupNames(DC_TYPE.CHARS, StringMaster.PRESET),
+          .getTypesSubGroupNames(DC_TYPE.CHARS, Strings.PRESET),
          DC_TYPE.CHARS);
         // DataManager.getTypesSubGroup(OBJ_TYPES.CHARS,
         // StringMaster.PRESET);

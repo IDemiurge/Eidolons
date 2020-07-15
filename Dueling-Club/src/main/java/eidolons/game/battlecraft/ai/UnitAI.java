@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.ai.advanced.companion.Order;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
+import eidolons.game.battlecraft.ai.tools.AiLogger;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.CONTENT_CONSTS2.ORDER_TYPE;
 import main.content.enums.rules.VisionEnums.ENGAGEMENT_LEVEL;
@@ -70,7 +71,7 @@ public class UnitAI {
 
     public int getLogLevel() {
         // TODO group leader? by level? By selection?
-        return 0;
+        return AiLogger.LOG_LEVEL_FULL;
 
     }
 

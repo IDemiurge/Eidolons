@@ -1,6 +1,7 @@
 package main.level_editor.backend.handlers;
 
 import eidolons.game.netherflame.main.event.text.TIP;
+import eidolons.game.netherflame.main.event.text.TextEvent;
 import eidolons.libgdx.gui.overlay.choice.VC_DataSource;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
@@ -14,7 +15,7 @@ public class LE_TestHandler extends LE_Handler implements ITestHandler {
 
     @Override
     public void tip() {
-        TIP tip = getDialogHandler().chooseEnum(TIP.class);
+        TextEvent tip = getDialogHandler().chooseEnum(TIP.class);
         GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, tip);
     }
 

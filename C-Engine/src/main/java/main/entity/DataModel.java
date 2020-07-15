@@ -27,10 +27,7 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.GuiEventManager;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -157,8 +154,8 @@ public abstract class DataModel {
         String realName = new MapMaster<String, String>().getKeyForValue(getCustomParamMap(),
                 getCustomParamMap().get(name));
         if (realName == null) {
-            if (!name.contains(StringMaster.COUNTER)) {
-                return setCounter(name + StringMaster.COUNTER, newValue);
+            if (!name.contains(Strings.COUNTER)) {
+                return setCounter(name + Strings.COUNTER, newValue);
             }
             // if (!strict)
             realName = CounterMaster.findCounter(name, strict);
@@ -1090,8 +1087,8 @@ public abstract class DataModel {
         LogMaster.log(LogMaster.VALUE_DEBUG, "adding  " + value + " to "
                 + getName() + "'s " + prop.getName());
 
-        if (value.contains(StringMaster.AND_PROPERTY_SEPARATOR)) {
-            for (String s : ContainerUtils.open(value, StringMaster.AND_PROPERTY_SEPARATOR)) {
+        if (value.contains(Strings.AND_PROPERTY_SEPARATOR)) {
+            for (String s : ContainerUtils.open(value, Strings.AND_PROPERTY_SEPARATOR)) {
                 addProperty(prop, s, noDuplicates);
             }
             return true;
