@@ -96,7 +96,7 @@ public class LordPanel extends GroupX implements Blocking {
     public void init() {
         clearChildren();
         if (Flags.isLiteLaunch()) {
-            addActor(background = new Image(TextureCache.getOrCreate(Images.BG_EIDOLONS)));
+            addActor(background = new Image(TextureCache.getOrCreateR(Images.BG_EIDOLONS)));
         } else {
             backgroundSprite = SpriteAnimationFactory.getSpriteAnimation(BACKGROUND);
             backgroundSprite.setOffsetX(-960);

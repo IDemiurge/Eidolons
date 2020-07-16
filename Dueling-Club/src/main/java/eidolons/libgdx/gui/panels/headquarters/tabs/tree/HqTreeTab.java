@@ -22,7 +22,7 @@ public abstract class HqTreeTab extends HqElement{
 
     public HqTreeTab(boolean altBackground) {
         this.altBackground = altBackground;
-        addActor(tabsBg = new Image(TextureCache.getOrCreate(Images.COLUMNS)));
+        addActor(tabsBg = new Image(TextureCache.getOrCreateR(Images.COLUMNS)));
         addActor(tree = createTree());
         setSize(530, 890);
 //        tree.setPosition( 40-tree.getWidth()/2, -tree.getHeight()/2);

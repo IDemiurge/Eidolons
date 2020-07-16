@@ -8,7 +8,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.EidolonsGame;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;

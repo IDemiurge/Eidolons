@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
-import eidolons.libgdx.anims.Assets;
+import eidolons.libgdx.assets.Assets;
 import eidolons.libgdx.texture.Sprites;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;

@@ -101,7 +101,8 @@ public class ImageContainer extends SuperContainer  implements Flippable{
     @Override
     public void act(float delta) {
         super.act(delta);
-        setTransform(getRotation()!=0);
+        // gdx cleanup
+        // setTransform(getRotation()!=0);
     }
 
     protected boolean isResetImageAlways() {

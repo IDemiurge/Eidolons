@@ -3,6 +3,7 @@ package eidolons.libgdx.texture;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
+import eidolons.libgdx.assets.Atlases;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -16,62 +17,28 @@ import main.system.launch.Flags;
 
 import java.io.File;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by PC on 03.11.2016.
  */
 public class TexturePackerLaunch {
     public static final String ATLAS_EXTENSION = ".txt";
-    public static final String WORKSPACE_PATH_POTIONS = PathFinder.getImagePath() +
-            PathFinder.getPotionsAnimPath() + "processing//";
 
     public static String WORKSPACE_PATH = PathFinder.getImagePath() + PathFinder.getWeaponAnimPath() + "workspace//";
 
-
+    public static final String WORKSPACE_PATH_POTIONS = PathFinder.getImagePath() +
+            PathFinder.getPotionsAnimPath() + "processing//";
     public static final boolean POTIONS = false;
+
     private static final String OUTPUT_DIR = PathFinder.getImagePath() +
             PathFinder.getWeaponAnimPath() + "atlas//";
     private static final String OUTPUT_DIR_POTION = PathFinder.getImagePath() +
             PathFinder.getPotionsAnimPath() + "atlas//";
 
-    public static final String TEST_WEAPONS_WORKSPACE =
-            "Y:\\[Eidolons demos]\\weapons3d workspace//";
-    public static final String TEST_WEAPONS_OUTPUT =
-            "Y:\\[Eidolons demos]\\weapons3d lite//";
-
     static String[] packs = {
-            //     "long swords",
-            "hammers",
-            "great_swords",
-            "daggers",
-            "maces",
-            "axe",
-            //     "fists",
-            //     "short swords",
-            //     "test",
-            //     "crossbows",
-            //     "bows",
-            //     "bolts",
-            //     "arrows",
-            //     "pollaxe",
+            "hammers", "great_swords", "daggers", "maces", "axe",
     };
 
-    static String[] mainFolders = {
-            //            "", //root
-            //     "gen",
-            "ui",
-            //                 "main",
-    };
-
-    static String[] mainFoldersExceptions = {
-            "main/sprites",
-    };
-
-    static String[] cullFolders = {
-            "Y:/[Eidolons demos]/weapons3d workspace/",
-    };
-    private static final float cullPercentage = 0.33f;
     private static Settings settings;
     private static boolean atlasGen;
 
@@ -82,14 +49,6 @@ public class TexturePackerLaunch {
         }
         if (DialogMaster.confirm("Custom pack?")) {
             customPack();
-            return;
-        }
-        if (DialogMaster.confirm("Pack all?")) {
-            packImages(mainFolders);
-            return;
-        }
-        if (DialogMaster.confirm("Cull?")) {
-            cullImages(cullPercentage, true, cullFolders);
             return;
         }
         String[] chosen = packs;
@@ -109,55 +68,22 @@ public class TexturePackerLaunch {
     }
 
 
-    private static void cullImages(float percentage, boolean subdirs, String... folders) {
-        int denominator = Math.round(1 / percentage);
-        for (String folder : folders) {
-            int i = 0;
-            for (File imageFile : FileManager.getFilesFromDirectory(folder, false, subdirs)) {
-                if (!ImageManager.isImageFile(imageFile.getName()))
-                    continue;
-                if (i % denominator == 0)
-                    imageFile.delete();
 
-                //                java.nio.file.Files.isSymbolicLink()
-                //                java.nio.file.Files.readSymbolicLink()
-                i++;
-            }
-        }
-
-    }
-
-    private static void packImages(String[] folders) {
-        Settings settings = getSettings();
-        for (String sub : folders) {
-            //            List<File> files = FileManager.getFilesFromDirectory(PathFinder.getImagePath() + sub, false, true);
-            //            for (File folder : files) {
-            String inputDir = null;
-            //            Math.sqrt(files.size())
-            if (sub.contains(":")) {
-                inputDir = sub;
-            } else {
-                inputDir = PathFinder.getImagePath() + sub;
-            }
-
-            String outputDir = inputDir;
-            String packFileName = PathUtils.getLastPathSegment(sub);
-
-            TexturePacker.process(settings, inputDir, outputDir, packFileName);
-            //            }
-        }
-    }
-
-    public static final String[] atlases = {
-            "ui",
-            "grid/main",
+    public static final Atlases.ATLAS[] atlases = {
+            Atlases.ATLAS.UI_BASE,
+            Atlases.ATLAS.UI_DC,
+            Atlases.ATLAS.UNIT_VIEW,
+            Atlases.ATLAS.TEXTURES,
+            Atlases.ATLAS.SPRITES_GRID,
+            Atlases.ATLAS.SPRITES_UI,
     };
 
     private static void generateAtlases() {
         atlasGen = true;
-        for (String name : atlases) {
-            String input = PathFinder.getAtlasImgPath() + name;
-            String output = PathFinder.getAtlasGenPath();
+        for (Atlases.ATLAS atlas : atlases) {
+            String name = atlas.toString().toLowerCase();
+            String input = PathFinder.getAtlasGenPath() + name;
+            String output = input;
             pack(input, output, name);
         }
     }
@@ -193,10 +119,10 @@ public class TexturePackerLaunch {
 
     public static Settings getAtlasSettings() {
         Settings settings = getSettings();
-        settings.format = Format.RGBA8888;
+        settings.format = Format.RGBA8888; //can we do w/o alpha some? or low quality?
         settings.jpegQuality = 0.8f;
 
-        settings.maxHeight = (int) Math.pow(2, 13);
+        settings.maxHeight = (int) Math.pow(2, 14);
         settings.maxWidth = (int) Math.pow(2, 14);
         return settings;
     }
@@ -220,6 +146,9 @@ public class TexturePackerLaunch {
         boolean TRIM = false;
         if (!atlasGen)
             TRIM = DialogMaster.confirm("Trip empty space?");
+        else {
+            // TRIM = Atlases.isTrim(f)
+        }
         settings.stripWhitespaceY = TRIM;
         settings.stripWhitespaceX = TRIM;
         settings.square = false;
@@ -237,12 +166,7 @@ public class TexturePackerLaunch {
 
     public static void packWeaponSprites(String[] args) {
         String outputDir = POTIONS ? OUTPUT_DIR_POTION : OUTPUT_DIR;
-        if (args == null) {
-            args = FileManager.getFilesFromDirectory(TEST_WEAPONS_WORKSPACE, true).stream().map(
-                    file -> file.getName()).collect(Collectors.toList()).toArray(new String[124]);
-            WORKSPACE_PATH = TEST_WEAPONS_WORKSPACE;
-            outputDir = TEST_WEAPONS_OUTPUT;
-        }
+
         for (String sub : args) {
             String dir = POTIONS ? WORKSPACE_PATH_POTIONS : WORKSPACE_PATH;
             dir = FileManager.formatPath(dir, true);
@@ -283,7 +207,9 @@ public class TexturePackerLaunch {
     public static void pack(String inputDir, String outputDir, String packFileName) {
         Settings settings = getSettings();
         if (atlasGen)
-            settings = getBestSettings();
+        {
+            settings = getAtlasSettings();
+        }
         else if (DialogMaster.confirm("Customize Settings?")) {
             customizeSettings(settings);
         } else {
@@ -317,6 +243,25 @@ public class TexturePackerLaunch {
 
     public static void pack(String inputDir, String outputDir, String packFileName, Settings settings) {
         TexturePacker.process(settings, inputDir, outputDir, packFileName);
+    }
+
+
+    private static void cullImages(float percentage, boolean subdirs, String... folders) {
+        int denominator = Math.round(1 / percentage);
+        for (String folder : folders) {
+            int i = 0;
+            for (File imageFile : FileManager.getFilesFromDirectory(folder, false, subdirs)) {
+                if (!ImageManager.isImageFile(imageFile.getName()))
+                    continue;
+                if (i % denominator == 0)
+                    imageFile.delete();
+
+                //                java.nio.file.Files.isSymbolicLink()
+                //                java.nio.file.Files.readSymbolicLink()
+                i++;
+            }
+        }
+
     }
 }
 

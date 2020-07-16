@@ -151,7 +151,7 @@ public class PostProcessController {
             case MAP:
             case WEAVE:
             case MAIN_MENU:
-            case BATTLE:
+            case DUNGEON:
                 break;
             case PRE_BATTLE: //hero creation? shops?
                 break;

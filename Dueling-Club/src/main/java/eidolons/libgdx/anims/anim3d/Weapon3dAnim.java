@@ -1,7 +1,6 @@
 package eidolons.libgdx.anims.anim3d;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -11,13 +10,15 @@ import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.utils.Array;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.GdxImageMaster;
-import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d.PROJECTION;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d.WEAPON_ANIM_CASE;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.ActionAnim;
+import eidolons.libgdx.assets.AnimMaster3d;
+import eidolons.libgdx.assets.AnimMaster3d.PROJECTION;
+import eidolons.libgdx.assets.AnimMaster3d.WEAPON_ANIM_CASE;
+import eidolons.libgdx.assets.Atlases;
 import main.content.enums.GenericEnums;
 import main.entity.Ref;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -66,13 +67,6 @@ public class Weapon3dAnim extends ActionAnim {
 
     }
 
-    @Override
-    protected Texture getTexture() {
-        if (isValid())
-            return null;
-        return super.getTexture();
-    }
-
     private boolean isValid() {
         if (sprite != null)
             return sprite.getRegions().size > 0;
@@ -118,7 +112,7 @@ public class Weapon3dAnim extends ActionAnim {
     }
 
     private boolean isScreen() {
-        return AnimMaster3d.JPG_WEAPONS;
+        return false;
     }
 
     protected String getDefaultTexturePath() {
@@ -140,7 +134,7 @@ public class Weapon3dAnim extends ActionAnim {
         subactions.removeIf(a ->
          a.isThrow() ||
           a.getActiveWeapon() != getActive().getActiveWeapon());
-        Array<AtlasRegion> newRegions = AnimMaster3d.getRegions(
+        Array<AtlasRegion> newRegions = Atlases.getRegions(
          WEAPON_ANIM_CASE.NORMAL, subactions.get(RandomWizard.getRandomIndex(subactions))
          , getProjection(ref,getActive()).bool);
 
@@ -194,7 +188,7 @@ public class Weapon3dAnim extends ActionAnim {
     }
 
     protected SpriteAnimation createSprite(PROJECTION projection) {
-        return AnimMaster3d.getSpriteForAction(getDuration(),
+        return Atlases.getSpriteForAction(getDuration(),
                 getActive(), getCase(), projection);
     }
 

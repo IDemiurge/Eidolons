@@ -94,7 +94,7 @@ public class DC_GameObjMaster extends GameObjMaster {
 
     public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c,
                                                          Boolean overlayingIncluded_Not_Only) {
-
+        //TODO optimize critical - this is main bottleneck!
         Set<BattleFieldObject> set = getCache(overlayingIncluded_Not_Only).get(c);
 
         if (set != null) {

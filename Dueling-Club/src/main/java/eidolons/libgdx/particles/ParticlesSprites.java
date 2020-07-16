@@ -1,6 +1,6 @@
 package eidolons.libgdx.particles;
 
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.data.XLinkedMap;
 import main.system.GuiEventManager;

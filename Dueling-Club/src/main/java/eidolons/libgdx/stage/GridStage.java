@@ -15,7 +15,7 @@ public class GridStage extends StageX {
     public void draw() {
         if (GdxMaster.WRITE_ATLAS_IMAGES) {
             if (getBatch() instanceof AtlasGenSpriteBatch) {
-                ((AtlasGenSpriteBatch) getBatch()).setAtlas(AtlasGenSpriteBatch.ATLAS.grid);
+                ((AtlasGenSpriteBatch) getBatch()).setAtlas(AtlasGenSpriteBatch.ATLAS_GROUP.grid);
             }
         }
         super.draw();

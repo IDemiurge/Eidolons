@@ -14,7 +14,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.actions.WaitAction;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.anims.text.FloatingText;

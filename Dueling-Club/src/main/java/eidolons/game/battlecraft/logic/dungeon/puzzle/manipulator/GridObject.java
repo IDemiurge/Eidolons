@@ -82,6 +82,8 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
     }
 
     protected EmitterActor createEmitter(String path, int offsetX, int offsetY) {
+        if (CoreEngine.isWeakGpu())
+            return null;
         path = PathFinder.getVfxAtlasPath() + path;
         EmitterActor emitter = EmitterPools.getEmitterActor(path);
         initEmitter(emitter, offsetX, offsetY);

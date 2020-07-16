@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.SuperGroup;

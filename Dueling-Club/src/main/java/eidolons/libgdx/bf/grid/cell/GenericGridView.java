@@ -11,7 +11,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.bar.HpBar;

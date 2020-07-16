@@ -18,7 +18,6 @@ import eidolons.libgdx.anims.*;
 import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.std.sprite.CustomSpriteAnim;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.grid.cell.BaseView;

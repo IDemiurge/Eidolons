@@ -19,7 +19,6 @@ public class GdxEvents implements GenericGuiEventManager {
     private static final GuiEventType[] savedBindings = new GuiEventType[]{
             SWITCH_SCREEN,
             SCREEN_LOADED,
-            DISPOSE_TEXTURES,
     };
     private final ObjectMap<EventType, EventCallback> eventMap = new ObjectMap<>(100);
     private List<Runnable> eventQueue = new LinkedList<>();

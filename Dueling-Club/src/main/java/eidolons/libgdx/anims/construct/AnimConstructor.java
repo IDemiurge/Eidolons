@@ -22,11 +22,14 @@ import eidolons.libgdx.anims.Animation;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.anim3d.*;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.libgdx.anims.main.EffectAnimCreator;
+import eidolons.libgdx.anims.main.EventAnimCreator;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.*;
 import eidolons.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
 import eidolons.libgdx.anims.std.custom.ForceAnim;
+import eidolons.libgdx.assets.AnimMaster3d;
 import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.particles.spell.SpellMultiplicator;
 import eidolons.libgdx.particles.spell.SpellVfx;
@@ -72,83 +75,15 @@ import static eidolons.libgdx.anims.AnimEnums.anim_vals;
 public class AnimConstructor {
     static ObjectMap<DC_ActiveObj, CompositeAnim> map = new ObjectMap<>(200);
     private static final boolean autoconstruct = false;
-    private static final boolean reconstruct = false;
 
     private AnimConstructor() {
 
-    }
-
-    private static boolean isPreconstructOn() {
-        return Flags.isJar() || !Flags.isFastMode(); //TODO;
-    }
-
-    public static void preconstructAllForAV() {
-        for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
-            Spell active = new Spell(type, Player.NEUTRAL, DC_Game.game, new Ref());
-            AnimData data = null;
-            try {
-                int i = 0;
-                for (ANIM_PART part : ANIM_PART.values()) {
-                    data = getStandardData(active, part, i);
-                    for (ANIM_VALUES val : ANIM_VALUES.values()) {
-                        String identifier;
-
-                        String value = data.getValue(val);
-                        if (StringMaster.isEmpty(value))
-                            continue;
-                        value = value.replace(PathFinder.getImagePath().toLowerCase(), "");
-                        i++;
-                        switch (val) {
-                            case PARTICLE_EFFECTS:
-                                identifier = "VFX";
-                                main.system.auxiliary.log.LogMaster.log(1, "PARTICLE_EFFECTS =" +
-                                        value +
-                                        " for " + type);
-                                break;
-                            case SPRITES:
-                                identifier = "SPRITES";
-                                break;
-                            default:
-                                continue;
-                        }
-
-                        PROPERTY prop = ContentValsManager.findPROP("anim" +
-                                "_" + identifier + "_" + part);
-                        if (prop == null)
-                            continue;
-                        type.setProperty(prop, value);
-
-                    }
-                }
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        }
-    }
-
-    public static boolean isPreconstructAllOnGameInit() {
-        return !Flags.isIDE();
-    }
-
-    public static boolean isPreconstructEnemiesOnCombatStart() {
-        return isPreconstructOn();
     }
 
     public static void preconstruct(Unit unit) {
         unit.getActives().forEach(spell ->
                 getOrCreate(spell));
         AnimMaster3d.preloadAtlases(unit);
-
-    }
-
-    public static void tryPreconstruct(Unit unit) {
-        if (isPreconstructOn())
-            if (isPreconstructOn(unit))
-                preconstructSpells(unit);
-    }
-
-    private static boolean isPreconstructOn(Unit unit) {
-        return unit.getSpells().size() <= 3;
     }
 
     public static CompositeAnim getCached(ActiveObj active) {
@@ -195,18 +130,6 @@ public class AnimConstructor {
             } else
                 Gdx.app.postRunnable((() -> {
                     unit.getSpells().forEach(spell -> getOrCreate(spell));
-                }));
-    }
-
-    public static void preconstructAll(Unit unit) {
-        if (isPreconstructAllOnGameInit())
-            if (GdxMaster.isLwjglThread()) {
-                unit.getActives().forEach(spell -> getOrCreate(spell));
-                AnimMaster3d.preloadAtlases(unit);
-            } else
-                Gdx.app.postRunnable((() -> {
-                    unit.getActives().forEach(spell -> getOrCreate(spell));
-                    AnimMaster3d.preloadAtlases(unit);
                 }));
     }
 
@@ -311,29 +234,19 @@ public class AnimConstructor {
             if (isForceAnim(active, part)) {
                 return new ForceAnim(active, part);
             }
-            if (AnimMaster3d.is3dAnim(active)) {
-                if (active.isRanged()) {
-                    if (part == ANIM_PART.CAST)
-                        return new Ranged3dAnim(active);
-                    if (part == ANIM_PART.MISSILE)
-                        return new Missile3dAnim(active);
-                }
-                if (part == ANIM_PART.MISSILE) {
-                    //                    if (EidolonsGame.DUEL && active.getOwnerUnit())
-                    //                        return new ForceAnim(active, ANIM_PART.MISSILE);
-                    return new Weapon3dAnim(active);
-                }
 
-            } else if (part == ANIM_PART.MISSILE) {
-
-                if (active.isThrow()) {
-                    return new ThrowAnim(active);
-                }
-                if (active.isRanged()) {
-                    return new RangedAttackAnim(active);
-                }
-                return new AttackAnim(active);
+            if (active.isRanged()) {
+                if (part == ANIM_PART.CAST)
+                    return new Ranged3dAnim(active);
+                if (part == ANIM_PART.MISSILE)
+                    return new Missile3dAnim(active);
             }
+            if (part == ANIM_PART.MISSILE) {
+                //                    if (EidolonsGame.DUEL && active.getOwnerUnit())
+                //                        return new ForceAnim(active, ANIM_PART.MISSILE);
+                return new Weapon3dAnim(active);
+            }
+
         }
 
         if (active.isSpell()) {
@@ -421,10 +334,10 @@ public class AnimConstructor {
         //        list = EmitterPools.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
         //        });
         int n = 1;
-        if (part== ANIM_PART.MISSILE)
-        if (anim instanceof SpellAnim) {
-            n = SpellMultiplicator.getPrePoolVfxCount((SpellAnim) anim);
-        }
+        if (part == ANIM_PART.MISSILE)
+            if (anim instanceof SpellAnim) {
+                n = SpellMultiplicator.getPrePoolVfxCount((SpellAnim) anim);
+            }
         try {
             list = SpellVfxPool.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS), n);
         } catch (Exception e) {
@@ -651,7 +564,7 @@ public class AnimConstructor {
     public static boolean isReconstruct() {
         if (Flags.isJar())
             return false;
-        return reconstruct;
+        return false;
     }
 
     public static BuffAnim getBuffAnim(BuffObj buff) {
@@ -696,5 +609,48 @@ public class AnimConstructor {
         return new CompositeAnim(parryAnim);
     }
 
+    //is this still useful?
+    public static void preconstructAllForAV() {
+        for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
+            Spell active = new Spell(type, Player.NEUTRAL, DC_Game.game, new Ref());
+            AnimData data = null;
+            try {
+                int i = 0;
+                for (ANIM_PART part : ANIM_PART.values()) {
+                    data = getStandardData(active, part, i);
+                    for (ANIM_VALUES val : ANIM_VALUES.values()) {
+                        String identifier;
 
+                        String value = data.getValue(val);
+                        if (StringMaster.isEmpty(value))
+                            continue;
+                        value = value.replace(PathFinder.getImagePath().toLowerCase(), "");
+                        i++;
+                        switch (val) {
+                            case PARTICLE_EFFECTS:
+                                identifier = "VFX";
+                                main.system.auxiliary.log.LogMaster.log(1, "PARTICLE_EFFECTS =" +
+                                        value +
+                                        " for " + type);
+                                break;
+                            case SPRITES:
+                                identifier = "SPRITES";
+                                break;
+                            default:
+                                continue;
+                        }
+
+                        PROPERTY prop = ContentValsManager.findPROP("anim" +
+                                "_" + identifier + "_" + part);
+                        if (prop == null)
+                            continue;
+                        type.setProperty(prop, value);
+
+                    }
+                }
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
+    }
 }

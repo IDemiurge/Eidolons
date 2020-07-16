@@ -2,30 +2,24 @@ package eidolons.libgdx.texture;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.assets.Assets;
+import eidolons.libgdx.assets.Atlases;
 import eidolons.libgdx.screens.AtlasGenSpriteBatch;
-import eidolons.system.graphics.GreyscaleUtils;
+import eidolons.libgdx.utils.textures.AtlasGen;
 import main.data.filesys.PathFinder;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
-import main.system.PathUtils;
-import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 
 import java.nio.file.Path;
@@ -34,24 +28,19 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static main.system.auxiliary.log.LogMaster.important;
 
 public class TextureCache {
-    public static final boolean atlasesOn = !CoreEngine.TEST_LAUNCH;// v !CoreEngine.TEST_LAUNCH;
-    private static final Boolean uiAtlasesOn = false;
+    public static final boolean atlasesOn = true;// v !CoreEngine.TEST_LAUNCH;
     private static final Lock creationLock = new ReentrantLock();
-    private static final AtomicInteger counter = new AtomicInteger(0);
     private static final ObjectMap<String, TextureRegion> regionCache = new ObjectMap<>(1300);
     private static final ObjectMap<TextureRegion, TextureRegionDrawable> drawableMap = new ObjectMap<>(1300);
     private static final List<String> missingTextures = new LinkedList<>();
     private static final List<String> atlasMissingTextures = new LinkedList<>();
 
-    private SmartTextureAtlas uiAtlas;
-    private SmartTextureAtlas mainAtlas;
     private static Texture missingTexture;
     private static boolean returnEmptyOnFail = true;
 
@@ -63,6 +52,7 @@ public class TextureCache {
     private boolean silent;
     private static TextureCache instance;
 
+    @Deprecated
     public static TextureRegion fromAtlas(String atlasPath, String light) {
         if (Assets.get().getManager().isLoaded(atlasPath)) {
             SmartTextureAtlas atlas = Assets.get().getManager().get(atlasPath);
@@ -71,107 +61,24 @@ public class TextureCache {
         return new TextureRegion(getMissingTexture());
     }
 
-    public static boolean isCached(String s) {
-        if (missingTextures.contains(s)) {
-            return false;
-        }
-        Texture texture = getInstance().cache.get(s);
-        if (texture != null) {
-            return true;
-        }
-        TextureRegion textureRegion = getOrCreateR(s);
-        if (isEmptyTexture(textureRegion)) {
-            missingTextures.add(s);
-            return false;
-        }
-        return true;
-    }
-
-    public static TextureRegion getFlippedRegion(boolean x, boolean y, String path) {
-        Texture texture = GdxImageMaster.flip(path, x, y, Flags.isIDE());
-        return getRegion(GdxImageMaster.getFlippedPath(path, x, y), texture);
-    }
-
-    public static String getTexturePath(String s) {
-        return GdxImageMaster.appendImagePath(s);
-    }
-
-    public static Array<TextureAtlas.AtlasRegion> getAtlasRegions(String texturePath) {
-        texturePath =
-                GdxImageMaster.cropImagePath(StringMaster.cropFormat(texturePath));
-        Array<TextureAtlas.AtlasRegion> regions = getInstance().mainAtlas.findRegions(texturePath);
-        if (regions.size == 0) {
-            regions = getInstance().uiAtlas.findRegions(texturePath);
-        }
-        if (regions.size > 0)
-            System.out.println(regions.size + " Atlas regions found: " + texturePath);
-        else
-            System.out.println("No atlas regions found: " + texturePath);
-        return regions;
-    }
-
-    public void loadAtlases(boolean menu) {
-        if (atlasesOn)
-        if (menu) {
-            if (uiAtlas == null) {
-                uiAtlas = new SmartTextureAtlas(imagePath + "/gen/atlas/ui.txt");
-            }
-        } else {
-            if (mainAtlas == null) {
-                mainAtlas = new SmartTextureAtlas(imagePath + "/gen/atlas/grid/main.txt");
-            }
-        }
-        //            genAtlas = new SmartTextureAtlas(imagePath + "/gen//gen.txt");
-    }
-
     private TextureCache() {
         this.imagePath = PathFinder.getImagePath();
         this.cache = new ObjectMap<>(1300);
         this.greyscaleCache = new ObjectMap<>(100);
-        if (atlasesOn) {
-            loadAtlases(true);
-        } else {
-            if (uiAtlasesOn) {
-                uiAtlas = new SmartTextureAtlas(imagePath + "/ui/ui.txt");
+    }
+
+    @Deprecated
+    public void loadAtlases(boolean menu) {
+        if (atlasesOn)
+            if (menu) {
+                Assets.preloadMenu();
+            } else {
+                Assets.preloadDC();
             }
-        }
-        GuiEventManager.bind(GuiEventType.DISPOSE_TEXTURES, p -> {
-            dispose();
-        });
-
     }
 
-    public void logDiagnostics() {
-        if (stats) {
-            MapMaster.sort(statMap);
-            important(statMap.toString());
-        }
-        important(
-                "atlasMissingTextures.size " + atlasMissingTextures.size() +
-                        "\nmissingTextures.size " + missingTextures.size() +
-                        "\ncache.size " + cache.size +
-                        "\nregionCache.size " + regionCache.size +
-                        "\ndrawableMap.size " + drawableMap.size +
-                        "\ngreyscaleCache.size " + greyscaleCache.size
-        );
-        important("atlasMissingTextures:" + atlasMissingTextures);
-
-        if (GdxMaster.getMainBatch() instanceof AtlasGenSpriteBatch) {
-            // ((AtlasGenSpriteBatch) GdxMaster.getMainBatch()).writeAtlases();
-        }
-    }
-
-    private static boolean checkRetainTexture(String s) {
-        String prefix = PathUtils.getPathSegments(s).get(0).toLowerCase();
-        switch (prefix) {
-            case "ui":
-            case "vfx":
-            case "sprites":
-            case "demo":
-                return true;
-        }
-        //        prefix = PathUtils.getPathSegments(s).getVar(1).toLowerCase();
-        return false;
+    public static String getTexturePath(String s) {
+        return GdxImageMaster.appendImagePath(s);
     }
 
     private static void init() {
@@ -179,7 +86,6 @@ public class TextureCache {
             creationLock.lock();
             if (instance == null) {
                 instance = new TextureCache();
-                Textures.init();
                 SpriteAnimationFactory.init();
             }
         } catch (Exception e) {
@@ -189,15 +95,66 @@ public class TextureCache {
         }
     }
 
-    public static Texture getOrCreateGrayscale(String path) {
-        return getInstance()._getOrCreateGrayScale(path);
+    ///////////// MAIN METHOD //////////////
+    public static TextureRegion getOrCreateR(String path, Atlases.ATLAS atlas) {
+        return getOrCreateR(path, false, atlas);
     }
 
-    public static Texture getOrCreateNonEmpty(String path) {
-        Texture texture = getOrCreate(path);
-        if (texture == missingTexture)
-            return null;
-        return texture;
+    public static TextureRegion getOrCreateR(String path, boolean overrideNoAtlas,
+                                             Atlases.ATLAS atlas) {
+        if (stats) {
+            MapMaster.addToIntegerMap(statMap, path, 1);
+        }
+        if (path == null) {
+            main.system.auxiliary.log.LogMaster.log(1, "EMPTY TEXTURE REGION REQUEST!");
+            return new TextureRegion(missingTexture);
+        }
+        TextureRegion region = regionCache.get(path);
+
+
+        if (region != null) {
+            if (atlasesOn) if (!missingTextures.contains(path))
+                if (!(region instanceof TextureAtlas.AtlasRegion)) {
+                    missingTextures.add(path);
+                    main.system.auxiliary.log.LogMaster.log(1, missingTextures.size() + " - Atlas missing texture: " + path);
+                }
+            return region;
+        }
+
+        if (atlasesOn && !overrideNoAtlas) {
+            String name = GdxImageMaster.cropImagePath(StringMaster.cropFormat(path));
+            if (!atlasMissingTextures.contains(path)) {
+                if (atlas != null) {
+                    if (atlas.file != null) {
+                        region = atlas.file.findRegion(name);
+                    }
+                }
+                if (region == null) {
+                    for (Atlases.ATLAS a : Atlases.all) {
+                        if (a == atlas) continue;
+                        region = a.file.findRegion(name);
+                        if (region != null) break;
+                    }
+                }
+
+                if (atlasesOn && region == null) {
+                    System.out.println("No img in atlases: " + name);
+                    atlasMissingTextures.add(path);
+                } else {
+                    System.out.println("Img in atlas: " + name);
+                }
+            }
+        }
+        if (region != null) {
+            regionCache.put(path, region);
+            if (!overrideNoAtlas)
+                return region;
+        }
+
+        region = new TextureRegion(getInstance()._getOrCreate(path));
+        if (region.getTexture() != missingTexture)
+            regionCache.put(path, region);
+        return region;
     }
 
     public static Texture getOrCreate(String path, boolean silent) {
@@ -238,110 +195,10 @@ public class TextureCache {
     }
 
     public static TextureRegion getOrCreateR(String path, boolean overrideNoAtlas) {
-        if (stats) {
-            MapMaster.addToIntegerMap(statMap, path, 1);
+        if (overrideNoAtlas) {
+            return getOrCreateR(path, true, null);
         }
-        // if (path.contains(":")) { full path will be handled later by exists() check
-        //     try {
-        //         return getOrCreateR(path.split("img")[1]);
-        //     } catch (Exception e) {
-        //         main.system.auxiliary.log.LogMaster.log(1, "invalid  TEXTURE  path ! " + path);
-        //         main.system.ExceptionMaster.printStackTrace(e);
-        //     }
-        // }
-        if (path == null) {
-            main.system.auxiliary.log.LogMaster.log(1, "EMPTY TEXTURE REGION REQUEST!");
-            return new TextureRegion(missingTexture);
-        }
-
-        TextureRegion region = regionCache.get(path);
-
-
-        if (region != null) {
-            if (atlasesOn  ) {
-                if (!missingTextures.contains(path))
-                    if (!(region instanceof TextureAtlas.AtlasRegion)) {
-                        missingTextures.add(path);
-                        main.system.auxiliary.log.LogMaster.log(1,missingTextures.size()+" - Atlas missing texture: " +path);
-                    }
-            }
-            return region;
-        }
-        //was this doing anything good?
-        // final Matcher matcher = getInstance().atlasPattern.matcher(path);
-        // if (!matcher.matches())
-        // {
-        //     main.system.auxiliary.log.LogMaster.log(1,"Does not match atlasPattern: " +path);
-        // }
-        // else
-        {
-            //TODO optimization
-            String name = GdxImageMaster.cropImagePath(StringMaster.cropFormat(path));
-
-            if (!overrideNoAtlas)
-                if (!atlasMissingTextures.contains(path))  {
-                //TODO gdx revamp
-                // support last-atlas for custom UNIT_VIEW with same bits (emblem/ border/..) packed there,
-                // and yield the right one for univView ui!
-                if (getInstance().uiAtlas != null) {
-                    region = getInstance().uiAtlas.findRegion(name);
-                    // regionUI = getInstance().uiAtlas.findRegion(name);
-                }
-                /*
-                set static flag from somewhere?
-                we might be initializing an image for UI or Grid...
-                 */
-                if (region == null) {
-                    if (getInstance().mainAtlas != null) {
-                        region = getInstance().mainAtlas.findRegion(name);
-                    }
-                }
-                if (atlasesOn && region == null) {
-                    // System.out.println("No img in atlases: "+name);
-                    atlasMissingTextures.add(path);
-                } else {
-                    // System.out.println("Img in atlas: "+name);
-                }
-            }
-            if (region != null) {
-
-                regionCache.put(path, region);
-                counter.incrementAndGet();
-                overrideNoAtlas = checkOverrideNoAtlas(region, path);
-                if (!overrideNoAtlas)
-                    return region;
-            }
-        }
-
-        region = new TextureRegion(getInstance()._getOrCreate(path));
-        if (region.getTexture() != missingTexture)
-            regionCache.put(path, region);
-
-
-        return region;
-    }
-
-    private static boolean checkOverrideNoAtlas(TextureRegion region, String path) {
-        if (region.getRegionWidth() > 2000) {
-            return true;
-        }
-        if (region.getRegionHeight() > 2000) {
-            return true;
-        }
-        String name = PathUtils.getLastPathSegment(path).toLowerCase();
-        switch (name) {
-            //                imgPath = outcome ? "ui/big/victory.png" : "ui/big/defeat.jpg";
-            case "logo fullscreen.png":
-            case "MAIN_MENU.png":
-            case "defeat.png":
-            case "defeat.jpg":
-            case "defeat2.jpg":
-            case "victory.jpg":
-            case "victory.png":
-            case "weapon background.png":
-                return true;
-        }
-        return false;
+        return getOrCreateR(path, false, AtlasGen.getAtlasForPath(path));
     }
 
     public static Texture getMissingTexture() {
@@ -352,15 +209,13 @@ public class TextureCache {
     }
 
     public static String getMissingPath() {
-        return
-                ImageManager.getImageFolderPath() +
-                        Images.MISSING_TEXTURE;
+        return ImageManager.getImageFolderPath() +
+                Images.MISSING_TEXTURE;
     }
 
     public static String getEmptyPath() {
-        return
-                ImageManager.getImageFolderPath() +
-                        Images.REALLY_EMPTY_32;
+        return ImageManager.getImageFolderPath() +
+                Images.REALLY_EMPTY_32;
     }
 
     public static TextureRegionDrawable getOrCreateTextureRegionDrawable(TextureRegion originalTexture) {
@@ -380,11 +235,6 @@ public class TextureCache {
 
     public static String formatTexturePath(String path) {
         return FileManager.formatPath(path, true, true);
-        //        path = path.toLowerCase()
-        //                .replace("\\", "/").replace("//", "/");
-        //        if (path.endsWith("/"))
-        //            return path.substring(0, path.length() - 1);
-        //        return path;
     }
 
     public static TextureRegion getOrCreateSizedRegion(int iconSize, String path) {
@@ -419,12 +269,11 @@ public class TextureCache {
     }
 
     public static TextureCache getInstance() {
-        if (instance == null) {
-            init();
-        }
+        if (instance == null) init();
         return instance;
     }
 
+    //TODO gdx refinement
     public static boolean isImage(String property) {
         if (!GdxMaster.isLwjglThread())
             return ImageManager.isImage(property);
@@ -453,47 +302,6 @@ public class TextureCache {
     }
 
 
-    public void dispose() {
-        for (String s : cache.keys()) {
-            if (checkRetainTexture(s))
-                continue;
-
-            cache.get(s).dispose();
-            cache.remove(s);
-
-        }
-    }
-
-    private String getAltTexturePath(String filePath) {
-        return filePath.replace(StrPathBuilder.build("gen", "entity"), StrPathBuilder.build("main"));
-    }
-
-    private Texture _getOrCreateGrayScale(String path) {
-        Texture normal = _getOrCreate(path);
-        if (!greyscaleCache.containsKey(normal)) {
-            if (!normal.getTextureData().isPrepared()) {
-                normal.getTextureData().prepare();
-            }
-            //            Gdx2DPixmap. GDX2D_FORMAT_RGBA8888
-            Pixmap pixmap2 = new Pixmap(normal.getWidth(), normal.getHeight(), Format.RGBA8888);
-            Pixmap pixmap = normal.getTextureData().consumePixmap();
-
-            for (int i = 0; i < normal.getWidth(); i++) {
-                for (int j = 0; j < normal.getHeight(); j++) {
-                    int rgba = pixmap.getPixel(i, j);
-
-                    if (rgba == 0)
-                        continue;
-                    pixmap2.drawPixel(i, j, GreyscaleUtils.luminosity(rgba));
-                }
-            }
-
-            greyscaleCache.put(normal, new Texture(pixmap2));
-        }
-
-        return greyscaleCache.get(normal);
-    }
-
     private Texture _getOrCreate(String path) {
         if (stats) {
             MapMaster.addToIntegerMap(statMap, path, 1);
@@ -505,7 +313,7 @@ public class TextureCache {
         path = getPathForCache(path);
 
         if (!this.cache.containsKey(path)) {
-            Texture x = _createTexture(path);
+            Texture x = _createTexture(path, true, false);
             if (x != null)
                 return x;
         }
@@ -523,14 +331,6 @@ public class TextureCache {
             path = "/" + path;
         }
         return path;
-    }
-
-    public Texture _createTexture(String path) {
-        return _createTexture(path, true);
-    }
-
-    public Texture _createTexture(String path, boolean putIntoCache) {
-        return _createTexture(path, putIntoCache, false);
     }
 
     public Texture _createTexture(String path, boolean putIntoCache, boolean recursion) {
@@ -592,9 +392,27 @@ public class TextureCache {
         return r;
     }
 
-    public boolean isSilent() {
-        return silent;
+    public static boolean isCached(String s) {
+        if (missingTextures.contains(s)) {
+            return false;
+        }
+        Texture texture = getInstance().cache.get(s);
+        if (texture != null) {
+            return true;
+        }
+        TextureRegion textureRegion = getOrCreateR(s);
+        if (isEmptyTexture(textureRegion)) {
+            missingTextures.add(s);
+            return false;
+        }
+        return true;
     }
+
+    public static TextureRegion getFlippedRegion(boolean x, boolean y, String path) {
+        Texture texture = GdxImageMaster.flip(path, x, y, Flags.isIDE());
+        return getRegion(GdxImageMaster.getFlippedPath(path, x, y), texture);
+    }
+
 
     public void setSilent(boolean silent) {
         this.silent = silent;
@@ -602,6 +420,26 @@ public class TextureCache {
 
     public void clearCache() {
         cache.clear();
+    }
+
+    public void logDiagnostics() {
+        if (stats) {
+            MapMaster.sort(statMap);
+            important(statMap.toString());
+        }
+        important(
+                "atlasMissingTextures.size " + atlasMissingTextures.size() +
+                        "\nmissingTextures.size " + missingTextures.size() +
+                        "\ncache.size " + cache.size +
+                        "\nregionCache.size " + regionCache.size +
+                        "\ndrawableMap.size " + drawableMap.size +
+                        "\ngreyscaleCache.size " + greyscaleCache.size
+        );
+        important("atlasMissingTextures:" + atlasMissingTextures);
+
+        if (GdxMaster.getMainBatch() instanceof AtlasGenSpriteBatch) {
+            // ((AtlasGenSpriteBatch) GdxMaster.getMainBatch()).writeAtlases();
+        }
     }
 }
 

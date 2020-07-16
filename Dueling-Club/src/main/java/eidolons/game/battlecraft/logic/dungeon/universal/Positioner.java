@@ -53,13 +53,17 @@ public class Positioner  extends DungeonHandler  {
 
     public static Coordinates adjustCoordinate(Entity entity,
                                                Coordinates c, FACING_DIRECTION facing
-            , Predicate<Coordinates> filterPredicate
-    ) {
-        if (c == null) {
-            return null;
+            , Predicate<Coordinates> filterPredicate    ) {
+        if (canBeMovedOnto(entity, c )) {
+            return c;
         }
+        Coordinates coordinate = c.getAdjacentCoordinate(facing.getDirection());
+        if (canBeMovedOnto(entity, coordinate )) {
+            return coordinate;
+        }
+
         Loop loop = new Loop(50);
-        Coordinates coordinate = Coordinates.get(c.x, c.y);
+        coordinate = Coordinates.get(c.x, c.y);
         while (loop.continues()) { // TODO remove from adj. list to limit
             // iterations to 8!
             DIRECTION direction = getRandomSpawnAdjustDirection();
@@ -69,21 +73,14 @@ public class Positioner  extends DungeonHandler  {
                     if (!filterPredicate.test(coordinate))
                         continue;
 
-                if (!DC_Game.game.isSimulation()) {
-                    if (DC_Game.game.getBattleFieldManager().canMoveOnto(entity, coordinate)) {
-                        break;
-                    }
-                }
-                if (new StackingRule(DC_Game.game).canBeMovedOnto(entity, coordinate)) {
+                if ( canBeMovedOnto(entity, coordinate )) {
                     break;
                 }
             }
         }
-        loop = new Loop(50); // second layer in case first one is fully
-        // blocked
+        loop = new Loop(50); // second layer in case first one is fully blocked
         while (!loop.continues() &&
-
-                !DC_Game.game.getBattleFieldManager().canMoveOnto(entity, c)
+                !canBeMovedOnto(entity, c)
 
                 // (DC_Game.game.getBattleField().getGrid().isCoordinateObstructed(coordinate)
                 || coordinate == null) {
@@ -96,6 +93,10 @@ public class Positioner  extends DungeonHandler  {
             return null;
         }
         return coordinate;
+    }
+
+    private static boolean canBeMovedOnto(Entity entity, Coordinates coordinate) {
+      return DC_Game.game.getRules().getStackingRule().canBeMovedOnto(entity, coordinate, true, false);
     }
 
     public boolean isAutoOptimalFacing() {

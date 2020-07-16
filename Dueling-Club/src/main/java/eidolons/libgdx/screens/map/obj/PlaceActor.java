@@ -3,10 +3,10 @@ package eidolons.libgdx.screens.map.obj;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.macro.map.Place;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.screens.map.obj.PlaceActorFactory.PlaceActorParameters;
+import eidolons.macro.map.Place;
 import main.content.enums.GenericEnums;
 
 /**
@@ -14,7 +14,7 @@ import main.content.enums.GenericEnums;
  */
 public class PlaceActor extends MapActor {
     private Place place;
-    private float scaleMod;
+    private final float scaleMod;
 
 //    Image preview;
 

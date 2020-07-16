@@ -23,11 +23,9 @@ import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.spell.SpellMultiplicator;
 import eidolons.libgdx.particles.spell.SpellVfx;
 import eidolons.libgdx.particles.spell.SpellVfxPool;
-import eidolons.libgdx.texture.TextureCache;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
-import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -35,14 +33,12 @@ import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.images.ImageManager;
 import main.system.launch.Flags;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Supplier;
 
 import static main.system.auxiliary.log.LogMaster.ANIM_DEBUG;
 import static main.system.auxiliary.log.LogMaster.log;
@@ -62,7 +58,6 @@ public class Anim extends Group implements Animation {
     protected List<SpriteAnimation> sprites;
     protected int lightEmission; // its own lightmap?
     protected Color color;
-    protected Supplier<Texture> textureSupplier;
     protected float time = 0;
     protected float duration = 0;
     protected float offsetX = 0;
@@ -114,7 +109,6 @@ public class Anim extends Group implements Animation {
             ref = new Ref();
         } else
             this.ref = active.getRef().getCopy();
-        textureSupplier = () -> getTexture();
         reset();
         if (data.getIntValue(ANIM_VALUES.FRAME_DURATION) > 0) {
             frameDuration = data.getIntValue(ANIM_VALUES.FRAME_DURATION) / 100f;
@@ -306,39 +300,11 @@ public class Anim extends Group implements Animation {
             getX();
         }
         super.draw(batch, parentAlpha);
-
-        if (!isDrawTexture()) {
-            return;
-        }
-//        Texture currentFrame = textureSupplier.getVar();
-//        if (currentFrame != null) {
-//            setWidth(currentFrame.getWidth());
-//            setHeight(currentFrame.getHeight());
-//        }
-        Texture texture = getTexture();
-
-        if (texture == null) {
-            return;
-        }
-        if (isDone() || !isRunning()) {
-            return;
-        }
-        Color color = batch.getColor();
-        batch.setColor(new Color(1, 1, 1, 1));
-        float w = Math.min(64, this.getWidth());
-        float h = Math.min(64, this.getHeight());
-        batch.draw((texture), this.getX(), getY(), this.getOriginX(),
-                this.getOriginY(), w, h, this.getScaleX(), this.getScaleY(),
-                this.getRotation(), 0, 0,
-                texture.getWidth(), texture.getHeight(), flipX, flipY);
-
-        batch.setColor(color);
     }
 
     @Override
     public void reset() {
         time = 0;
-        //        time = -delay; TODO
         setOffsetX(0);
         setOffsetY(0);
         alpha = 1f;
@@ -349,7 +315,6 @@ public class Anim extends Group implements Animation {
     }
 
     protected void resetSprites() {
-        //TODO
         if (sprites == null) {
             sprites = new ArrayList<>();
         } else {
@@ -474,29 +439,6 @@ public class Anim extends Group implements Animation {
 
     protected boolean isSpeedSupported() {
         return part == AnimEnums.ANIM_PART.MISSILE;
-    }
-
-    public String getTexturePath() {
-        if (active == null || Cinematics.ON)
-            return "";
-        return active.getImagePath();
-    }
-
-    protected Texture getTexture() {
-        if (texture == null) {
-            if (ImageManager.isImage(getTexturePath())) {
-                texture = TextureCache.getOrCreateNonEmpty(getTexturePath());
-            } else {
-                texture = TextureCache.getOrCreateNonEmpty(getDefaultTexturePath());
-            }
-        }
-        return texture;
-
-    }
-
-    protected String getDefaultTexturePath() {
-        return
-                VISUALS.QUESTION.getImgPath();
     }
 
     @Override
@@ -790,14 +732,6 @@ public class Anim extends Group implements Animation {
 
     public void setSprites(List<SpriteAnimation> sprites) {
         this.sprites = sprites;
-    }
-
-    public Supplier<Texture> getTextureSupplier() {
-        return textureSupplier;
-    }
-
-    public void setTextureSupplier(Supplier<Texture> textureSupplier) {
-        this.textureSupplier = textureSupplier;
     }
 
     @Override

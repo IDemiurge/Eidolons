@@ -12,6 +12,7 @@ border_type=irregular;width_buffer=3;height_buffer=2;
 <zones>
 <zone><DATA>name=Leaden Lake;</DATA></zone>
 <zone><DATA>name=Hollow Ruins;</DATA></zone>
+<zone><DATA>name=Black Valley;</DATA></zone>
 </zones>
 </Nether_plains>
 

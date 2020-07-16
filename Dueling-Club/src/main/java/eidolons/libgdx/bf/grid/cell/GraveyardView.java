@@ -32,7 +32,7 @@ public class GraveyardView extends TablePanel {
     //Gdx Review
     public GraveyardView() {
         graveyardButton = new Button(new Image(
-                TextureCache.getOrCreate(
+                TextureCache.getOrCreateR(
                         "ui/components/small/skulls_32x32.png")),
                 //                StyleHolder.getCustomButtonStyle("ui/components/small/skulls_32x32.png")
                 StyleHolder.getDefaultTextButtonStyle()

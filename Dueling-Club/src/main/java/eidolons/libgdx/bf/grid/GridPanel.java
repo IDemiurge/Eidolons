@@ -30,7 +30,7 @@ import eidolons.game.module.cinematic.flight.FlightHandler;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.netherflame.boss.anims.generic.BossVisual;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.decor.CellDecor;
@@ -629,7 +629,6 @@ it sort of broke at some point - need to investigate!
     }
 
     protected void createUnitsViews(DequeImpl<BattleFieldObject> units) {
-        TextureCache.getInstance().loadAtlases(false);
         Map<Coordinates, List<BattleFieldObject>> map = new HashMap<>();
         LogMaster.log(1, " " + units);
         for (BattleFieldObject object : units) {
@@ -836,6 +835,8 @@ it sort of broke at some point - need to investigate!
     }
 
     protected void customDraw(Batch batch) {
+
+        // ************* Step 1
         flightHandler.getObjsUnder().draw(batch, 1f);
         ((CustomSpriteBatch) batch).resetBlending();
         pillars.draw(batch, 1f);
@@ -843,35 +844,34 @@ it sort of broke at some point - need to investigate!
             platform.draw(batch, 1);
         }
         decorMap.get(DECOR_LEVEL.BOTTOM).draw(batch, 1);
+
+
+        // ************* Step 2
         topCells.clear();
         overCells.clear();
         screenCells.clear();
-        for (int x = drawX1; x < drawX2; x++) {
+        for (int x = drawX1; x < drawX2; x++)
             for (int y = drawY1; y < drawY2; y++) {
                 GridCellContainer container = cells[x][y];
                 if (isTopCell(container)) {
                     topCells.add(container);
                 } else if (isOverCell(container)) {
-                    {
-                        container.drawCell(batch);
-                        overCells.add(container);
-                    }
+                    container.drawCell(batch);
+                    overCells.add(container);
                 } else {
                     container.draw(batch, 1);
                     if (isScreenCell(container))
                         screenCells.add(container);
                 }
             }
-        }
         //wtf will happen with stacking?..
-
         ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
-        for (GridCellContainer cell : screenCells) {
+        for (GridCellContainer cell : screenCells)
             cell.drawScreen(batch);
-        }
         ((CustomSpriteBatch) batch).resetBlending();
 
 
+        // ************* Step 3
         draw(customOverlayingObjectsUnder, batch);
         decorMap.get(DECOR_LEVEL.OVER_CELLS).draw(batch, 1f);
         if (particleManager != null) {
@@ -879,10 +879,10 @@ it sort of broke at some point - need to investigate!
                 particleManager.draw(batch, 1f);
         }
         wallPillars.draw(batch, 1f);
-
-
         wallPillars.drawScreen(batch);
 
+
+        // ************* Step 4
         screenCells.clear();
         for (GridCellContainer cell : overCells) {
             cell.drawWithoutCell(batch);
@@ -890,13 +890,12 @@ it sort of broke at some point - need to investigate!
                 screenCells.add(cell);
         }
         ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
-        for (GridCellContainer cell : screenCells) {
+        for (GridCellContainer cell : screenCells)
             cell.drawScreen(batch);
-        }
         ((CustomSpriteBatch) batch).resetBlending();
 
-        borderMap.draw(batch, 1f);
-        // wallMap.draw(batch, 1f);
+
+        // ************* Step 5
         if (shards != null) {
             shards.draw(batch, 1f);
         }
@@ -913,6 +912,7 @@ it sort of broke at some point - need to investigate!
 
         decorMap.get(DECOR_LEVEL.OVER_MAPS).draw(batch, 1f);
 
+        // ************* Step 6
         screenCells.clear();
         for (GridCellContainer cell : topCells) {
             cell.draw(batch, 1f);
@@ -929,6 +929,8 @@ it sort of broke at some point - need to investigate!
             unitGridView.draw(batch, 1);
             unitGridView.drawScreen(batch);
         }
+
+        // ************* Step 7
         if (gridManager.getPlatformHandler().isActive()) {
             UnitView baseView = (UnitView) viewMap.get(Eidolons.getMainHero());
             float x = baseView.getX();
@@ -945,6 +947,8 @@ it sort of broke at some point - need to investigate!
         draw(customOverlayingObjectsTop, batch);
         draw(manipulators, batch);
 
+
+        // ************* Step 8
         overlays.forEach(overlayView -> {
             if (isDrawn(overlayView.getUserObject().getCoordinates()))
                 if (!overlayView.isScreen()) overlayView.draw(batch, 1f);
@@ -960,11 +964,15 @@ it sort of broke at some point - need to investigate!
         });
         ((CustomSpriteBatch) batch).resetBlending();
 
+
+        // ************* Step 9
         overlayManager.draw(batch, 1f);
         flightHandler.getObjsOver().draw(batch, 1f);
         flightHandler.getObjsVfx().draw(batch, 1f);
-
         decorMap.get(DECOR_LEVEL.TOP).draw(batch, 1f);
+
+
+        // ************* Step 10
         for (BossVisual visual : bossVisuals)
             visual.draw(batch, 1f);
 

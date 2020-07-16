@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.sprite.Blended;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import main.system.auxiliary.ClassMaster;
@@ -33,11 +33,14 @@ public class GroupX extends Group {
 
     @Override
     public void setRotation(float degrees) {
+        if (getRotation()==degrees) {
+            return;
+        }
         super.setRotation(degrees);
         setTransform(degrees != 0);
-        for (Group ancestor : GdxMaster.getAncestors(this)) {
-            ancestor.setTransform(degrees != 0);
-        }
+        // for (Group ancestor : GdxMaster.getAncestors(this)) {
+        //     ancestor.setTransform(degrees != 0);
+        // }
     }
 
     @Override
@@ -55,9 +58,9 @@ public class GroupX extends Group {
     protected void rotationChanged() {
         super.rotationChanged();
         setTransform(getRotation() != 0);
-        for (Group ancestor : GdxMaster.getAncestors(this)) {
-            ancestor.setTransform(getRotation() != 0);
-        }
+        // for (Group ancestor : GdxMaster.getAncestors(this)) {
+        //     ancestor.setTransform(getRotation() != 0);
+        // }
     }
 
     public void addActor(Actor actor, int align) {

@@ -2,8 +2,8 @@ package eidolons.libgdx.particles.spell;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.AnimEnums;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.actions.MoveByActionLimited;
 import eidolons.libgdx.particles.PhaseVfx;
 import eidolons.libgdx.particles.VfxContainer;

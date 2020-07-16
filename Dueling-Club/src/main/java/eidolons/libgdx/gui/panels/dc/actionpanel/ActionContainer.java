@@ -11,7 +11,7 @@ import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.active.Activator;
 import eidolons.game.EidolonsGame;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.bf.mouse.BattleClickListener;

@@ -1,7 +1,6 @@
 package eidolons.libgdx.launch;
 
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.netherflame.additional.CustomLaunch;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
@@ -25,7 +24,6 @@ import java.util.Stack;
  */
 public class MainLauncher extends GenericLauncher {
     public static final Stack<Integer> presetNumbers = new Stack<>();
-    public static String BG;
     private static final String LAST_CHOICE_FILE = "xml/last dc.xml";
     public static Integer HERO_INDEX = -1;
     public static String levelPath;
@@ -174,7 +172,6 @@ public class MainLauncher extends GenericLauncher {
     public static void setCustomLaunch(CustomLaunch customLaunch) {
         main.system.auxiliary.log.LogMaster.important("customLaunch set: " + customLaunch);
         MainLauncher.customLaunch = customLaunch;
-        BG = getBgForLvl(customLaunch.getValue(CustomLaunch.CustomLaunchValue.xml_path));
     }
 
     private static String getBgForLvl(String value) {
@@ -208,9 +205,4 @@ public class MainLauncher extends GenericLauncher {
         return null;
     }
 
-    @Override
-    protected void engineInit() {
-        super.engineInit();
-        DC_Engine.dataInit();
-    }
 }

@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.CinematicGridObject;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.GridObject;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;

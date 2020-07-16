@@ -33,7 +33,7 @@ public class WeaveActorBuilder {
     static float currentAngle;
     private static int maxAngle;
     private static Map<WeaveDataNode, WeaveNodeActor> nodeMap;
-    private static int segmentWidth= TextureCache.getOrCreate(Images.WEAVE_LINK).getWidth()
+    private static final int segmentWidth= TextureCache.getOrCreateR(Images.WEAVE_LINK).getRegionWidth()
      + 64;
     private static int totalWidth;
 

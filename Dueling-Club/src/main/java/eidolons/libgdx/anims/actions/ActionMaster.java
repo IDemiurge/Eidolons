@@ -1,4 +1,4 @@
-package eidolons.libgdx.anims;
+package eidolons.libgdx.anims.actions;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Predicate;
-import eidolons.libgdx.anims.actions.*;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.gui.generic.BlockableGroup;

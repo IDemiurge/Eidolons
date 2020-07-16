@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import eidolons.game.netherflame.boss.anims.BossAnims;
 import eidolons.game.netherflame.boss.anims.view.SmartSprite;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.anims.sprite.SpriteX;
+import eidolons.libgdx.assets.Atlases;
 import main.content.enums.GenericEnums;
 
 public abstract class BossSpriteVisual extends BossVisual {
@@ -14,7 +14,7 @@ public abstract class BossSpriteVisual extends BossVisual {
 
     public BossSpriteVisual(BossUnit unit) {
         super(unit);
-        sprite = new SmartSprite(getPlayMode(), getFrameDuration(), AnimMaster3d.getOrCreateAtlas(
+        sprite = new SmartSprite(getPlayMode(), getFrameDuration(), Atlases.getOrCreateAtlas(
                 getSpriteKey()), getBegin(),
                 getEnd());
         addActor(new SpriteX(getTemplate(), getAlphaTemplate(), sprite));

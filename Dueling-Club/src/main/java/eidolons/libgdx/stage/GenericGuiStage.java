@@ -13,7 +13,7 @@ import eidolons.game.netherflame.main.event.TipMessageWindow;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.LabelX;
@@ -60,7 +60,7 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
                         GdxMaster.getHeight(), new OrthographicCamera())
                         : viewport,
                 batch == null
-                        ?  GdxMaster.createBatchInstance(AtlasGenSpriteBatch.ATLAS.ui)
+                        ?  GdxMaster.createBatchInstance(AtlasGenSpriteBatch.ATLAS_GROUP.ui)
                         : batch);
 
         initTooltipsAndMisc();

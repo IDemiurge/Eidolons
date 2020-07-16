@@ -41,8 +41,6 @@ public class ParticleEffectX extends ParticleEffect {
 
     public ParticleEffectX(String path) {
         this.path = path;
-        // if (CoreEngine.isWeakGpu())
-        //     return;
         if (broken.contains(path))
             return;
         if (isEmitterAtlasesOn()) {

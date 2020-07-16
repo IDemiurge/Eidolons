@@ -5,7 +5,6 @@ import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.std.DeathAnim;
-import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.data.XLinkedMap;
 import main.game.logic.event.Event;

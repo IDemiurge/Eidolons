@@ -2,7 +2,7 @@ package eidolons.libgdx.utils.textures;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.tools.ktx.KTXProcessor;
-import eidolons.libgdx.anims.Assets;
+import eidolons.libgdx.assets.Assets;
 import eidolons.system.utils.GdxUtil;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.data.FileManager;

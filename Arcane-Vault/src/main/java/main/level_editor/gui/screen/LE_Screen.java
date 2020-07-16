@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL30;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.GridCreateData;
 import eidolons.libgdx.bf.grid.GridPanel;
@@ -152,7 +153,10 @@ public class LE_Screen extends GenericDungeonScreen {
 
     @Override
     public void render(float delta) {
-//        super.render(delta);
+        if (floor.getGame()!= DC_Game.game) {
+            return; //new floor being loaded
+        }
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         if (cameraMan == null) {

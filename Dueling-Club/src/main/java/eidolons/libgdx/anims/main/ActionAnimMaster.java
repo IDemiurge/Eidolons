@@ -11,7 +11,6 @@ import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import static eidolons.libgdx.anims.main.AnimMaster.isAnimationOffFor;
@@ -39,11 +38,10 @@ public class ActionAnimMaster {
     }
 
     public static boolean isWait(DC_ActiveObj action) {
-        if (CoreEngine.TEST_LAUNCH){
-            return false;
-        }
         if (action.getOwnerUnit().isAiControlled()) {
-            return false;
+            if (action.isAttackAny()) {
+                return false;
+            }
         }
         if (action.isMove()) {
             return false;

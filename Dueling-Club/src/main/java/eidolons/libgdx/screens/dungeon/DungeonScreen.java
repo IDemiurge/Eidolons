@@ -11,6 +11,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.assets.Assets;
 import eidolons.libgdx.bf.GridCreateData;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
 import eidolons.libgdx.bf.grid.GridPanel;
@@ -27,13 +28,13 @@ import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.stage.BattleGuiStage;
 import eidolons.libgdx.stage.GridStage;
 import eidolons.libgdx.stage.GuiStage;
-import eidolons.libgdx.texture.TextureCache;
 import eidolons.macro.MacroGame;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
@@ -67,7 +68,6 @@ public class DungeonScreen extends GameScreenWithTown {
     @Override
     protected void preLoad() {
         instance = this;
-        TextureCache.getInstance().loadAtlases(false);
         WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GUI_READY);
         super.preLoad();
         gridStage = new GridStage(viewPort, getBatch());
@@ -364,7 +364,7 @@ public class DungeonScreen extends GameScreenWithTown {
             if (TownPanel.getActiveInstance() != null || Flags.isIggDemoRunning() || selectionPanel instanceof HeroSelectionPanel) {
                 return GdxMaster.getMultiplexer(guiStage, super.createInputController());
             } else {
-                return super.createInputController()                        ;
+                return super.createInputController();
             }
         }
     }
@@ -401,6 +401,30 @@ public class DungeonScreen extends GameScreenWithTown {
     protected String getLoadScreenPath() {
         return (loaded || waitingForInput) ? "main/art/MAIN_MENU.jpg"
                 : "ui/main/logo fullscreen.png";
+    }
+
+    @Override
+    public void loadDone(EventCallbackParam param) {
+        this.param = param;
+        //THIS MEANS THE LOGIC HAS DONE LOADING LEVEL!
+        try {
+            loadingStage.getFullscreenImage().setImage(
+                    DC_Game.game.getDungeon().getMapBackground());
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        loadingStage.getFullscreenImage().setImage(getLoadScreenPath());
+        if (param.get() instanceof GridCreateData)
+            if (Assets.isOn()) {
+                Chronos.mark("ASSET_LOADING");
+                if (Assets.preloadObjects(((GridCreateData) param.get()).getObjects())) {
+                    setLoadingAtlases(true);
+                    GdxMaster.setEmptyCursor();
+                    return;
+                }
+
+            }
+        super.loadDone(param);
     }
 
     @Override

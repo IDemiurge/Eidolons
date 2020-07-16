@@ -3,7 +3,6 @@ package main.level_editor.backend.display;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.GenericDungeonScreen;
 import eidolons.system.options.GraphicsOptions;
@@ -23,15 +22,6 @@ public class LE_DisplayHandler extends LE_Handler implements IDisplayHandler {
 
     public LE_DisplayHandler(LE_Manager manager) {
         super(manager);
-    }
-
-    public void preloadScope() {
-        Assets.GAME_SCOPE game_scope = getEditHandler().chooseEnum(Assets.GAME_SCOPE.class);
-        if (game_scope == null) {
-            //conf
-            game_scope = Assets.GAME_SCOPE.COMMON; //all
-        }
-        GuiEventManager.trigger(GuiEventType.LOAD_SCOPE, game_scope);
     }
 
     @Override

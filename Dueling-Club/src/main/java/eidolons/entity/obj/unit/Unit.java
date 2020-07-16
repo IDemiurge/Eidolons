@@ -30,12 +30,12 @@ import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.netherflame.main.hero.ChainParty;
 import eidolons.game.netherflame.main.soul.EidolonLord;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d;
+import eidolons.libgdx.assets.Atlases;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.dc.topleft.atb.INTENT_ICON;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
-import eidolons.libgdx.launch.GenericLauncher;
+import eidolons.libgdx.screens.load.ScreenLoader;
 import eidolons.macro.entity.action.MacroActionManager.MACRO_MODES;
 import eidolons.system.DC_Constants;
 import eidolons.system.DC_Formulas;
@@ -145,7 +145,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         super(type, x, y, owner, game, ref);
         if (isHero() && !(this instanceof HeroDataModel)) {
             String message = this + " hero created " + getId();
-            if (GenericLauncher.instance.initRunning) {
+            if (ScreenLoader.isInitRunning()) {
                 if (Eidolons.MAIN_HERO != null) {
                     message += " SECOND TIME!...";
                     Eidolons.MAIN_HERO.removeFromGame();
@@ -740,7 +740,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             if (!CoreEngine.isGraphicsOff())
                 if (!ExplorationMaster.isExplorationOn()) //only in combat!
                     if (item instanceof DC_WeaponObj)
-                        AnimMaster3d.preloadAtlas((DC_WeaponObj) item);
+                        Atlases.preloadAtlas((DC_WeaponObj) item);
         // preCheck weight and prompt drop if too heavy?
         item.setContainer(CONTAINER.EQUIPPED);
         return true;

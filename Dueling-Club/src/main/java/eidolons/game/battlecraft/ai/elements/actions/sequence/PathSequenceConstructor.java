@@ -115,7 +115,7 @@ public class PathSequenceConstructor extends AiHandler {
         Coordinates enemyC = targetAction.getTarget().getCoordinates();
         List<Coordinates> list = Arrays.stream(
                 CoordinatesMaster.getInRange(enemyC, range)).filter(
-                c -> canTarget(c, targetAction)).
+                c -> canTarget(c, targetAction) && c!=enemyC). //close quarters?
                 sorted(CoordinatesMaster.getSorter(getUnit().getCoordinates(), true)).
                 limit(limit).
                 collect(Collectors.toList());

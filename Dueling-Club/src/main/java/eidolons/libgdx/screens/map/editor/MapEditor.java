@@ -1,7 +1,6 @@
 package eidolons.libgdx.screens.map.editor;
 
 import com.badlogic.gdx.Gdx;
-import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
@@ -57,10 +56,5 @@ public class MapEditor extends GenericLauncher {
 //        ScreenData data = new ScreenData(ScreenType.MAP, "Editor");
 //        screenSwitcher(new EventCallbackParam(data));
 //    }
-    @Override
-    protected void engineInit() {
-        super.engineInit();
-        DC_Engine.dataInit(true);
-    }
 
 }

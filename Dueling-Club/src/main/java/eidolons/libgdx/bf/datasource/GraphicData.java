@@ -3,7 +3,7 @@ package eidolons.libgdx.bf.datasource;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxImageMaster;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d;
+import eidolons.libgdx.assets.Atlases;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.Sprites;
@@ -99,7 +99,7 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
         if (path == null) {
             path = getSpritePath();
             if (!StringMaster.isEmpty(path)) {
-            return GdxImageMaster.cropImagePath(AnimMaster3d.getOneFrameImagePath(path));
+            return GdxImageMaster.cropImagePath(Atlases.getOneFrameImagePath(path));
             }
         }
         if (!getVfxPath().isEmpty()) {

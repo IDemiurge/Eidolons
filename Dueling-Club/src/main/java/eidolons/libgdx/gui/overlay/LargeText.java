@@ -2,7 +2,7 @@ package eidolons.libgdx.gui.overlay;
 
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.generic.NoHitGroup;

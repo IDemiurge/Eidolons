@@ -168,7 +168,7 @@ must proceed until a goal node has lowest F among openList?
         PathNode parent = node.getParent();
         if (node.getX() != parent.getX() && node.getY() != parent.getY()) {
             if (agile) {
-                return Math.sqrt(2);
+                return 1.5d;
             } else {
                 return 2;
             }

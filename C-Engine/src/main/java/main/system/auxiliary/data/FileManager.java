@@ -681,6 +681,9 @@ public class FileManager {
         return file.getName();
     }
 
+    public static Path getPath(String s) {
+        return getPath(getFile(s));
+    }
     public static Path getPath(File file) {
         return Paths.get(file.toURI());
     }
@@ -702,9 +705,20 @@ public class FileManager {
         }
     }
 
+    public static void delete(String s) {
+        try {
+            Files.delete(getPath(s));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public static void copy(String from, String to) {
         Path src = Paths.get(getFile(from).toURI());
-        Path target = Paths.get(getFile(to).toURI());
+        File file = getFile(to);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        Path target = Paths.get(file.toURI());
         try {
             Files.copy(src, target, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
@@ -727,4 +741,5 @@ public class FileManager {
         files.removeIf(file-> !StringMaster.getFormat(file.getName()).toLowerCase().contains("txt"));
         return files;
     }
+
 }

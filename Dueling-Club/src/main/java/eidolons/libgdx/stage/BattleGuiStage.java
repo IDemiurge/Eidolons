@@ -17,7 +17,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.main.soul.SoulforcePanel;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.libgdx.gui.HideButton;
 import eidolons.libgdx.gui.overlay.choice.VisualChoice;
@@ -75,7 +75,7 @@ public class BattleGuiStage extends GuiStage {
                                 GdxMaster.getHeight(), new OrthographicCamera())
                         //        new ScreenViewport( new OrthographicCamera())
                         : viewport,
-                batch == null ? GdxMaster.createBatchInstance(AtlasGenSpriteBatch.ATLAS.ui) :
+                batch == null ? GdxMaster.createBatchInstance(AtlasGenSpriteBatch.ATLAS_GROUP.ui) :
                         batch);
         addActor(guiVisualEffects = new GuiVisualEffects());
         addActor(particlesSprites = new ParticlesSprites());

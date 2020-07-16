@@ -20,6 +20,7 @@ import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.load.ScreenLoader;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.macro.MacroGame;
 import eidolons.macro.entity.town.Town;
@@ -122,7 +123,7 @@ public class Eidolons {
 
     public static void gameExited() {
         //        DC_Game toFinilize = game;
-        GenericLauncher.setFirstInitDone(false);
+        ScreenLoader.setFirstInitDone(false);
         game.getMetaMaster().gameExited();
 
         SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN,
@@ -182,7 +183,6 @@ public class Eidolons {
 
     public static void exitFromGame() {
         exitToMenu();
-        GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES);
     }
 
     public static void exitToMenu() {

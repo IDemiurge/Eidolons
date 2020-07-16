@@ -68,14 +68,12 @@ public class StackingRule implements ActionRule {
                 LogMaster.log(1, c
                         + "******* Cell already has max number of overlaying Objects!");
             }
-
             return result;
-            // TODO limit number of overlays?
         }
         if (unit instanceof Entrance)
             return true;
 
-        return instance.canBeMovedOnto(maxSpaceTakenPercentage, unit, c, otherUnits, true);
+        return instance.canBeMovedOnto(maxSpaceTakenPercentage, unit, c, otherUnits, true, true);
     }
 
     //apply on each reset?
@@ -134,23 +132,24 @@ public class StackingRule implements ActionRule {
     }
 
     public boolean canBeMovedOnto(Entity unit, Coordinates c) {
-        return canBeMovedOnto(unit, c, null);
+        return canBeMovedOnto(100, unit, c, null, false, false);
     }
-
-    public boolean canBeMovedOnto(Entity unit, Coordinates c,
-                                  List<? extends Entity> otherUnits) {
-        return canBeMovedOnto(100, unit, c, otherUnits, false);
+    public boolean canBeMovedOnto(Entity unit, Coordinates c, boolean cache) {
+        return canBeMovedOnto(100, unit, c, null, false, cache);
+    }
+    public boolean canBeMovedOnto(Entity unit, Coordinates c, boolean prohibitStacking,boolean cache) {
+        return canBeMovedOnto(100, unit, c, null, prohibitStacking, cache);
     }
 
     private boolean canBeMovedOnto(Integer maxSpaceTakenPercentage, Entity unit, Coordinates c,
-                                   List<? extends Entity> otherUnits, boolean prohibitStacking) {
+                                   List<? extends Entity> otherUnits, boolean prohibitStacking, boolean useCache) {
         Boolean result = checkPlatform(unit, c);
         if (result != null) {
             return result;
         }
         result = false;
         HashMap<Coordinates, Boolean> bools = cache.get(unit);
-        if (maxSpaceTakenPercentage == 100) {
+        if (useCache && maxSpaceTakenPercentage == 100) {
             if (bools != null) {
                 if (bools.containsKey(c)) {
                     return bools.get(c);
@@ -161,7 +160,6 @@ public class StackingRule implements ActionRule {
             }
         }
 
-        //getVar all units on the cell
         DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits); //already placed ones?
         for (BattleFieldObject u : game.getObjMaster().getObjects(c.x, c.y, false)) {
             if (!units.contains(u)) {
@@ -291,7 +289,7 @@ public class StackingRule implements ActionRule {
                 }
             }
         }
-        if (maxSpaceTakenPercentage == 100) //only cache for default cases!
+        if (useCache&&maxSpaceTakenPercentage == 100) //only cache for default cases!
         {
             bools.put(c, result);
         }

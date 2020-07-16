@@ -6,7 +6,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.NoHitGroup;
@@ -14,7 +14,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 public class CursorDecorator extends NoHitGroup {
-    private FadeImageContainer cursor = new FadeImageContainer();
+    private final FadeImageContainer cursor = new FadeImageContainer();
     private static CursorDecorator instance;
     GearCluster gears;
     GearCluster smallGears;

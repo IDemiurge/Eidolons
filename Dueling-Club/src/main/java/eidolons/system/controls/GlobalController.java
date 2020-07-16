@@ -17,7 +17,7 @@ import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.netherflame.main.soul.EidolonLord;
 import eidolons.game.netherflame.main.soul.panel.LordPanel;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.grid.cell.GenericGridView;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.bf.grid.cell.UnitGridView;

@@ -211,7 +211,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
 
         String name = type.getName();
-        ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE, name);
+        ScreenData data = new ScreenData(SCREEN_TYPE.DUNGEON, name);
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         //when loaded, will init DC_Game properly
     }

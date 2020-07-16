@@ -9,7 +9,7 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d;
+import eidolons.libgdx.assets.Atlases;
 import eidolons.system.DC_Formulas;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.ContentValsManager;
@@ -418,7 +418,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
             ref.removeValue(KEYS.AMMO);
         } else {
             ref.setID(KEYS.AMMO, ammo.getId());
-            AnimMaster3d.preloadAtlas(ammo.getWrappedWeapon());
+            Atlases.preloadAtlas(ammo.getWrappedWeapon());
         }
         if (ammo != null)
             lastAmmo = ammo;

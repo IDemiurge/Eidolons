@@ -1,4 +1,4 @@
-package eidolons.libgdx.anims.std;
+package eidolons.libgdx.anims.main;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
@@ -6,6 +6,9 @@ import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.anims.anim3d.Potion3dAnim;
+import eidolons.libgdx.anims.std.DeathAnim;
+import eidolons.libgdx.anims.std.DoorAnimation;
+import eidolons.libgdx.anims.std.QuickItemAnim;
 import eidolons.libgdx.anims.std.sprite.LockKeyAnimation;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;

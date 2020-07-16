@@ -62,7 +62,7 @@ public class ScenarioSelectionPanel extends SelectionPanel {
 
     protected void scenarioChosen(ObjType type) {
         main.system.auxiliary.log.LogMaster.log(1,"*** Scenario chosen: " +type);
-        ScreenData screenData = new ScreenData(SCREEN_TYPE.BATTLE, type.getName());
+        ScreenData screenData = new ScreenData(SCREEN_TYPE.DUNGEON, type.getName());
         if (IntroLauncher.isDemo(type))
             screenData.setParam(new EventCallbackParam(type));
 

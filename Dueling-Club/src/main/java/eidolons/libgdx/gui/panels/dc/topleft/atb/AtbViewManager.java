@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.topleft.atb;
 
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.grid.cell.QueueView;
 import main.content.enums.GenericEnums;

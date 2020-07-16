@@ -1,6 +1,5 @@
 package eidolons.libgdx.anims.std;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.entity.obj.unit.Unit;
@@ -226,13 +225,4 @@ if (isGhostMoveOn()){
 
     }
 
-    @Override
-    protected Texture getTexture() {
-        //        if (ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
-        //         MoveEffect.class))) {
-        //            return TextureCache.getOrCreate(getRef().getSourceObj().getImagePath());
-        //        }
-        //        return TextureCache.getOrCreate(getRef().getTargetObj().getImagePath());
-        return null;
-    }
 }

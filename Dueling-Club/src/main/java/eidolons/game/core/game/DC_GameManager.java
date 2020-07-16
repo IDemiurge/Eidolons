@@ -18,7 +18,7 @@ import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.anims.std.EventAnimCreator;
+import eidolons.libgdx.anims.main.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.bf.grid.handlers.GridManager;

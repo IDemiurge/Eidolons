@@ -1,4 +1,4 @@
-package eidolons.libgdx.anims;
+package eidolons.libgdx.anims.actions;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.utils.Pool;

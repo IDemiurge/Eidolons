@@ -10,7 +10,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
-import eidolons.libgdx.anims.Assets;
+import eidolons.libgdx.assets.Assets;
 import eidolons.libgdx.particles.Emitter.EMITTER_VALS_SCALED;
 import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.particles.util.EmitterPresetMaster.EMITTER_VALUE_GROUP;

@@ -2,7 +2,7 @@ package eidolons.system.file;
 
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d;
+import eidolons.libgdx.assets.AnimMaster3d;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;

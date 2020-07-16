@@ -76,7 +76,9 @@ public class ObjCreator extends Master {
         }
         game.getState().addObject(obj);
         if (game.isStarted()) {
-            game.getCellByCoordinate(Coordinates.get(x, y)).setObjectsModified(true);
+            Coordinates coordinates = Coordinates.get(x, y);
+            game.getObjMaster().clearCache(coordinates);
+            game.getCellByCoordinate(coordinates).resetObjectArrays();
         }
         initObject(obj, type);
 

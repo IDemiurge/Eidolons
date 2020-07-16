@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Pool;
-import eidolons.libgdx.anims.Assets;
+import eidolons.libgdx.assets.Assets;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.launch.Flags;

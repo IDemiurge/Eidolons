@@ -6,7 +6,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.Animation;
 import eidolons.libgdx.anims.CompositeAnim;
-import eidolons.libgdx.anims.controls.AnimController;
 import eidolons.libgdx.anims.sprite.FadeSprite;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import main.game.logic.event.Event;
@@ -31,10 +30,8 @@ public class AnimDrawMaster extends Group {
     private boolean drawing;
     private boolean drawingPlayer;
     private Boolean parallelDrawing;
-    private final AnimController controller;
 
     public AnimDrawMaster(AnimMaster animMaster) {
-        controller = new AnimController();
     }
 
 

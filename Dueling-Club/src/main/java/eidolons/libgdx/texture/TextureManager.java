@@ -47,7 +47,7 @@ public class TextureManager {
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
                 getSpriteCache().beginCache();
-                getSpriteCache().add(TextureCache.getInstance()._createTexture(emptyCellPath, false),
+                getSpriteCache().add(TextureCache.getInstance()._createTexture(emptyCellPath, false, false),
                  x * GridMaster.CELL_W,
                  y * GridMaster.CELL_H);
                 cacheId++;

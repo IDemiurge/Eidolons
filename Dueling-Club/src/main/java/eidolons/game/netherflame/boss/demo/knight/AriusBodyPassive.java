@@ -3,8 +3,8 @@ package eidolons.game.netherflame.boss.demo.knight;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import eidolons.game.netherflame.boss.anims.generic.BossSpriteVisual;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
-import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.assets.Assets;
 import eidolons.libgdx.texture.Sprites;
 import main.system.launch.CoreEngine;
 

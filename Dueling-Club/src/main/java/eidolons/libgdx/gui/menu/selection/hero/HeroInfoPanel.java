@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.menu.selection.hero;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -103,9 +103,9 @@ public class HeroInfoPanel extends ItemInfoPanel {
         return true;
     }
 
-    private Texture getDefaultEmblem() {
+    private TextureRegion getDefaultEmblem() {
         return
-         TextureCache.getOrCreate(
+         TextureCache.getOrCreateR(
           StrPathBuilder.build(PathFinder.getEmblemAutoFindPath()
            ,"unknown.png")
          );

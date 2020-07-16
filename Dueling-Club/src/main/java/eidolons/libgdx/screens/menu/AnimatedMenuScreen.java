@@ -3,7 +3,6 @@ package eidolons.libgdx.screens.menu;
 
 import eidolons.game.netherflame.main.story.IggActChoicePanel;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.rng.RngSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.saves.SaveSelectionPanel;
@@ -145,12 +144,9 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
 
     @Override
     protected void preLoad() {
-
         super.preLoad();
-//        if (isvo)
-
         try {
-            Assets.preloadMenu();
+            //TODO remove?
             setLoadingAtlases(true);
             GdxMaster.setLoadingCursor();
         } catch (Exception e) {

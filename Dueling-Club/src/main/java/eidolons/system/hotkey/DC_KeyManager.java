@@ -6,7 +6,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_GameManager;
-import eidolons.libgdx.anims.controls.AnimController;
 import eidolons.system.controls.Controller;
 import eidolons.system.controls.Controller.CONTROLLER;
 import eidolons.system.controls.GlobalController;
@@ -206,9 +205,6 @@ public class DC_KeyManager
         switch (c) {
             case ACTION:
                 return null;
-
-            case ANIM:
-                return AnimController.getInstance();
 
             case RULES:
                 return RuleKeeper.getInstance();

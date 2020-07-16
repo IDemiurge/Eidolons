@@ -15,7 +15,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.overlays.bar.HpBar;
@@ -34,7 +34,7 @@ import main.system.launch.Flags;
 
 import java.util.function.Supplier;
 
-import static eidolons.libgdx.anims.ActionMaster.*;
+import static eidolons.libgdx.anims.actions.ActionMaster.*;
 import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
 
 /**

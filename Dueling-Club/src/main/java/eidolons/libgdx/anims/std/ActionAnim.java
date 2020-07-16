@@ -11,7 +11,6 @@ import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.texture.TextureCache;
 import main.ability.Ability;
 import main.entity.Entity;
 import main.system.GuiEventManager;
@@ -35,7 +34,8 @@ public class ActionAnim extends Anim {
                       ANIM_MOD[] anim_mods) {
         super(active, animData);
         mods = anim_mods;
-        this.textureSupplier = () -> TextureCache.getOrCreate(imagePath.get());
+        //TODO Anim Review
+        // this.textureSupplier = () -> TextureCache.getOrCreate(imagePath.get());
     }
 
     public ActionAnim(Entity active, AnimData params, AnimEnums.ANIM_PART part) {

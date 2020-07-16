@@ -8,16 +8,18 @@ import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.game.EidolonsGame;
+import eidolons.game.core.EUtils;
 import eidolons.libgdx.GdxImageMaster;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d;
+import eidolons.libgdx.assets.Atlases;
+import eidolons.libgdx.utils.textures.AtlasGen;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /*
 depending on our draw order!
@@ -51,7 +53,7 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
     private final boolean overwrite = false;
 
     // Gdx revamp - use this to put ALL textures in 3-4 atlases
-    public enum ATLAS {
+    public enum ATLAS_GROUP {
         ui,
         grid,
         anims,
@@ -59,16 +61,16 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
         hq, //vs ui?
     }
 
-    ATLAS atlas;
-    ObjectMap<ATLAS, Set<Texture>> map = new ObjectMap<>();
+    ATLAS_GROUP atlas;
+    ObjectMap<ATLAS_GROUP, Set<Texture>> map = new ObjectMap<>();
 
     public AtlasGenSpriteBatch() {
-        for (ATLAS value : ATLAS.values()) {
+        for (ATLAS_GROUP value : ATLAS_GROUP.values()) {
             map.put(value, new LinkedHashSet<>());
         }
     }
 
-    public void setAtlas(ATLAS atlas) {
+    public void setAtlas(ATLAS_GROUP atlas) {
         this.atlas = atlas;
     }
 
@@ -77,8 +79,8 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
         // but we will need ATLAS PER LEVEL in many cases! which is loaded on DUNGEON SCREEN INIT when we've selected
         //
         //in some cases we might wanna add more textures?
-        for (ATLAS atlas : map.keys()) {
-            if (atlas == ATLAS.ui) {
+        for (ATLAS_GROUP atlas : map.keys()) {
+            if (atlas == ATLAS_GROUP.ui) {
                 if (CoreEngine.isLevelEditor()) {
                     continue;
                 }
@@ -90,9 +92,9 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
                         continue;
                     }
 
-                    path = getOutputPath(path, atlas == ATLAS.grid ? "main/" : "", atlas);
+                    path = getOutputPath(path, atlas == ATLAS_GROUP.grid ? "main/" : "", atlas);
                     write(path, texture, atlas);
-                    if (atlas == ATLAS.grid) {
+                    if (atlas == ATLAS_GROUP.grid) {
                         path = getOutputPath(path, EidolonsGame.lvlPath + "/", atlas);
                         write(path, texture, atlas);
                     }
@@ -102,17 +104,21 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
             // if (pack)
             //     TexturePackerLaunch.pack(input, output, atlas.name() , settings);
 
-            if (AnimMaster3d.getAtlasMap() instanceof ConcurrentHashMap)
-                for (String s : AnimMaster3d.getAtlasMap().keySet()) {
-                    ATLAS type = checkAtlas(s);
-                    if (type != null) {
-                        writeSubAtlasImages(s, type);
-                    }
-                }
+            // if (AnimAtlas.getAtlasMap() instanceof ConcurrentHashMap)
+            //     for (String s : AnimMaster3d.getAtlasMap().keySet()) {
+            //         ATLAS type = checkAtlas(s);
+            //         if (type != null) {
+            //             writeSubAtlasImages(s, type);
+            //         }
+            //     }
         }
+        EUtils.onConfirm("Form atlas folders?",true, ()-> {
+            AtlasGen.moveFiles(true);
+            AtlasGen.moveFiles(false);
+        });
     }
 
-    private ATLAS checkAtlas(String path) {
+    private ATLAS_GROUP checkAtlas(String path) {
         if (path.contains("weapons3d"))
             return null;
         if (path.contains("background"))
@@ -122,18 +128,18 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
         if (path.contains("potions"))
             return null;
         if (path.contains("ui"))
-            return ATLAS.ui;
-        return ATLAS.grid;
+            return ATLAS_GROUP.ui;
+        return ATLAS_GROUP.grid;
     }
 
-    private String getOutputPath(String path, String suffix, ATLAS atlas) {
+    private String getOutputPath(String path, String suffix, ATLAS_GROUP atlas) {
         return PathFinder.getImagePath() + "atlas img/" + atlas +
                 "/" + suffix + GdxImageMaster.cropImagePath(path);
 
     }
 
-    private void writeSubAtlasImages(String path, ATLAS type) {
-        TextureAtlas atlas = AnimMaster3d.getOrCreateAtlas(path);
+    private void writeSubAtlasImages(String path, ATLAS_GROUP type) {
+        TextureAtlas atlas = Atlases.getOrCreateAtlas(path);
         path = StringMaster.cropFormat(path);
         int i = 0;
         for (TextureAtlas.AtlasRegion region : atlas.getRegions()) {
@@ -153,13 +159,18 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
 
     }
 
-    private void write(String path, Texture texture, ATLAS atlas) {
+    private void write(String path, Texture texture, ATLAS_GROUP atlas) {
         FileHandle handle = new FileHandle(path);
         if (handle.exists()) {
             if (!overwrite) {
                 return;
             }
         }
+        if (texture.getTextureData() instanceof FileTextureData) {
+            String src = ((FileTextureData) texture.getTextureData()).getFileHandle().toString();
+            FileManager.copy(src, path);
+        }
+        else
         try {
             GdxImageMaster.writeImage(handle, texture);
         } catch (Exception e) {

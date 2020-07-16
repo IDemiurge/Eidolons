@@ -1,7 +1,7 @@
 package eidolons.libgdx.anims.anim3d;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d.WEAPON_ANIM_CASE;
+import eidolons.libgdx.assets.AnimMaster3d.WEAPON_ANIM_CASE;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 

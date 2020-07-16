@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.Assets;
+import eidolons.libgdx.assets.Assets;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.utils.FileChooserX;
 import main.content.DC_TYPE;

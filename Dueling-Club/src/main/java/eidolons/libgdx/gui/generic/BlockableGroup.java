@@ -2,7 +2,7 @@ package eidolons.libgdx.gui.generic;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.utils.Array;
-import eidolons.libgdx.anims.BlockingAction;
+import eidolons.libgdx.anims.actions.BlockingAction;
 
 public class BlockableGroup extends GroupX {
 

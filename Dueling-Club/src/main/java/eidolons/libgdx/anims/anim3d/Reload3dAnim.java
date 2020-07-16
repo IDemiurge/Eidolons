@@ -1,8 +1,8 @@
 package eidolons.libgdx.anims.anim3d;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d.PROJECTION;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d.WEAPON_ANIM_CASE;
+import eidolons.libgdx.assets.AnimMaster3d.PROJECTION;
+import eidolons.libgdx.assets.AnimMaster3d.WEAPON_ANIM_CASE;
 
 /**
  * Created by JustMe on 9/20/2017.

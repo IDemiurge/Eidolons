@@ -80,7 +80,7 @@ public class SoulbreakMetaMaster extends  MetaGameMaster<LinearMeta> {
 //
 //        }
         boolean restart = false;
-        ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE, mission);
+        ScreenData data = new ScreenData(SCREEN_TYPE.DUNGEON, mission);
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
 //        GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES);
 

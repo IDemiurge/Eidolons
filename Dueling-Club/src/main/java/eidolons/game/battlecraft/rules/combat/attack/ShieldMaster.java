@@ -5,9 +5,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.assets.AnimMaster3d;
+import eidolons.libgdx.assets.Atlases;
 import main.system.auxiliary.RandomWizard;
 
 public class ShieldMaster {
@@ -30,13 +31,13 @@ public class ShieldMaster {
                                                                    Integer blockValue) {
 
 //        String path =
-        TextureAtlas atlas = AnimMaster3d.getOrCreateAtlas(shield);
+        TextureAtlas atlas = Atlases.getOrCreateAtlas(shield);
 
 //        shield.getAttackActions()
         //bash
         Boolean proj = AnimMaster3d.getProjection(shield.getOwnerObj().getRef(), atk).bool;
         int i = RandomWizard.getRandomIndex(shield.getAttackActions());
-        String name = AnimMaster3d.getAtlasFileKeyForAction(proj,
+        String name = Atlases.getAtlasFileKeyForAction(proj,
                 shield.getAttackActions().get(i),
                 AnimMaster3d.WEAPON_ANIM_CASE.NORMAL);
 

@@ -11,7 +11,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.anims.sprite.FadeSprite;
 import eidolons.libgdx.bf.SuperActor;

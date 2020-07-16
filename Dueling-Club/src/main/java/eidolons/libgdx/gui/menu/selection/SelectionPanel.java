@@ -53,7 +53,7 @@ public abstract class SelectionPanel extends TablePanelX {
     public SelectionPanel(Object data) {
         this.data = data;
         setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
-        backgroundSprite= initBackgroundSprite();
+        backgroundSprite = initBackgroundSprite();
         listPanel = createListPanel();
         infoPanel = createInfoPanel();
         title = new Label(getTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 20));
@@ -76,7 +76,7 @@ public abstract class SelectionPanel extends TablePanelX {
         listPanel.addActor(title); //trick for pos
         title.pack();
         title.setPosition(GdxMaster.centerWidth(title),
-         getTitlePosY());
+                getTitlePosY());
         addActor(title);
 
         row();
@@ -105,8 +105,8 @@ public abstract class SelectionPanel extends TablePanelX {
         }
         SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(getBackgroundSpritePath());
         sprite.setFps(20);
-        sprite.setOffsetY(GdxMaster.getHeight()/2);
-        sprite.setOffsetX(GdxMaster.getWidth()/2);
+        sprite.setOffsetY(GdxMaster.getHeight() / 2);
+        sprite.setOffsetX(GdxMaster.getWidth() / 2);
         sprite.setAlpha(getBgAlpha());
         return sprite;
     }
@@ -116,7 +116,7 @@ public abstract class SelectionPanel extends TablePanelX {
     }
 
     protected String getBackgroundSpritePath() {
-        return null ;
+        return null;
     }
 
     protected boolean isListOnTheRight() {
@@ -143,13 +143,13 @@ public abstract class SelectionPanel extends TablePanelX {
     public void act(float delta) {
         super.act(delta);
         infoPanel.setDoneDisabled(isDoneDisabled());
-        if (backgroundSprite!=null )
+        if (backgroundSprite != null)
             backgroundSprite.act(delta);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (backgroundSprite!=null )
+        if (backgroundSprite != null)
             backgroundSprite.draw(batch);
 
         if (isShadersEnabled()) {
@@ -185,14 +185,18 @@ public abstract class SelectionPanel extends TablePanelX {
         listPanel.setItems(list);
         listener = new SelectionInputListener(this);
 
-
-        if (isAutoDoneEnabled())
-            if (Flags.isMacro()
-             || ListMaster.isNotEmpty(MainLauncher.presetNumbers)) {
-                listPanel.updateAct(0);
-                Eidolons.onNonGdxThread( () ->
-                tryDone());
-            }
+        if (list.size() == 0) {
+            Eidolons.onNonGdxThread(() ->
+            {
+                listPanel.select(0);
+                done();
+            });
+        } else if (isAutoDoneEnabled() && (Flags.isMacro()
+                || ListMaster.isNotEmpty(MainLauncher.presetNumbers))) {
+            listPanel.updateAct(0);
+            Eidolons.onNonGdxThread(() ->
+                    tryDone());
+        }
     }
 
     protected Comparator<? super SelectableItemData> getDataSorter() {
@@ -214,7 +218,7 @@ public abstract class SelectionPanel extends TablePanelX {
     @Override
     public boolean remove() {
         if (getStage() != null) {
-        getStage().removeListener(listener);
+            getStage().removeListener(listener);
         }
         return super.remove();
     }
@@ -257,16 +261,16 @@ public abstract class SelectionPanel extends TablePanelX {
 
     public void tryDone() {
         if (MainLauncher.presetNumbers.isEmpty())
-        if (  EidolonsGame.SELECT_SCENARIO) {
-            return;
-        }
+            if (EidolonsGame.SELECT_SCENARIO) {
+                return;
+            }
         if (isAutoDoneEnabled())
             if (listPanel.getCurrentItem() == null) {
-                 if (isRandom()) {
+                if (isRandom()) {
                     listPanel.selectRandomItem();
                 } else if (!MainLauncher.presetNumbers.isEmpty()) {
-                     listPanel.select(MainLauncher.presetNumbers.pop());
-                 } else
+                    listPanel.select(MainLauncher.presetNumbers.pop());
+                } else
                     return;
             }
         done();
@@ -289,7 +293,7 @@ public abstract class SelectionPanel extends TablePanelX {
 
     public void close() {
         GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL,
-         null);
+                null);
         if (listPanel.getCurrentItem() != null)
             closed(listPanel.getCurrentItem().name);
         //        else

@@ -2,8 +2,8 @@ package eidolons.game.netherflame.main.soul;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.SimpleAnim;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.Fluctuating;

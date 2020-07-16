@@ -3,7 +3,6 @@ package main.system.auxiliary.log;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
-import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import org.apache.log4j.Priority;
 
@@ -198,7 +197,7 @@ public class LogMaster {
     }
 
     private static boolean isConsoleLogging() {
-        return CoreEngine.TEST_LAUNCH && !Flags.isExe();
+        return  !Flags.isExe();
     }
 
     //TODO do these categories!

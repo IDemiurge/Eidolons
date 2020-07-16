@@ -22,7 +22,7 @@ import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
 import eidolons.game.netherflame.boss.anims.generic.BossVisual;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;

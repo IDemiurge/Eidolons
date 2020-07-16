@@ -143,8 +143,6 @@ public class Spawner extends DungeonHandler {
 
     public Unit spawnUnit(ObjType type, Coordinates c, DC_Player owner,
                           String facing, String level) {
-
-        //TODO chars or units?!
         if (level != null) {
             int levelUps = NumberUtils.getIntParse(level);
             if (levelUps > 0) {

@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -19,10 +18,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.libgdx.bf.mouse.GlobalInputController;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.screens.AtlasGenSpriteBatch;
-import eidolons.libgdx.screens.ColorBatch;
-import eidolons.libgdx.screens.CustomSpriteBatchImpl;
-import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
@@ -63,7 +59,7 @@ public class GdxMaster {
     private static boolean stackRunnables;
     private static Runnable stackRunnable;
     private static CURSOR cursor;
-    private static Batch batch;
+    private static CustomSpriteBatch batch;
     private static boolean keyInputBlocked;
 
     public static List<Group> getAncestors(Actor actor) {
@@ -596,7 +592,7 @@ public class GdxMaster {
                 Gdx.graphics.setTitle(s));
     }
 
-    public static Batch createBatchInstance(AtlasGenSpriteBatch.ATLAS ui) {
+    public static CustomSpriteBatch createBatchInstance(AtlasGenSpriteBatch.ATLAS_GROUP ui) {
         if (COLORFUL){
             return new ColorBatch();
         }
@@ -606,9 +602,9 @@ public class GdxMaster {
         return new CustomSpriteBatchImpl();
     }
 
-    public static Batch getMainBatch() {
+    public static CustomSpriteBatch getMainBatch() {
         if (batch == null) {
-            batch =  createBatchInstance(AtlasGenSpriteBatch.ATLAS.grid);
+            batch =  createBatchInstance(AtlasGenSpriteBatch.ATLAS_GROUP.grid);
         }
         return batch;
     }

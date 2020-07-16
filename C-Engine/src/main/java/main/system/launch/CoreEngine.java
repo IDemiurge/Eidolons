@@ -34,6 +34,7 @@ public class CoreEngine {
     public static final String VERSION_NAME = "Tester Version"; //StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean RAM_OPTIMIZATION = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
+    public static boolean FULL_LAUNCH; ////TODO with audio and all - real xp!
     private static String selectivelyReadTypes;
     public static boolean TEST_LAUNCH;
 

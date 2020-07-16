@@ -1,4 +1,4 @@
-package eidolons.libgdx.anims.std;
+package eidolons.libgdx.anims.main;
 
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.ability.effects.common.ModifyValueEffect;
@@ -10,7 +10,8 @@ import eidolons.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
 import eidolons.libgdx.anims.*;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
-import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.libgdx.anims.std.ActionAnim;
+import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.libgdx.bf.GridMaster;
 import main.ability.effects.Effect;
 import main.content.enums.GenericEnums;

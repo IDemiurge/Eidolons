@@ -24,7 +24,7 @@ import eidolons.game.netherflame.main.soul.EidolonLord;
 import eidolons.game.netherflame.main.soul.panel.LordPanel;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
@@ -259,7 +259,7 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
     public void draw() {
         if (GdxMaster.WRITE_ATLAS_IMAGES) {
             if (getBatch() instanceof AtlasGenSpriteBatch) {
-                ((AtlasGenSpriteBatch) getBatch()).setAtlas(AtlasGenSpriteBatch.ATLAS.ui);
+                ((AtlasGenSpriteBatch) getBatch()).setAtlas(AtlasGenSpriteBatch.ATLAS_GROUP.ui);
             }
         }
         //can we just pass if in 'cinematic mode'?

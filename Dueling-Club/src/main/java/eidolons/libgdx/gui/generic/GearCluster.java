@@ -2,7 +2,7 @@ package eidolons.libgdx.gui.generic;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.actions.AutoFloatAction;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.EnumMaster;

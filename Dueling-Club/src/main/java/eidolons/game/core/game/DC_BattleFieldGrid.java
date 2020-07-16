@@ -3,6 +3,7 @@ package eidolons.game.core.game;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.CONTENT_CONSTS;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldGrid;
@@ -105,7 +106,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         for (int i = module.getX(); i-module.getX()  < this.module.getEffectiveWidth(true); i++) {
             for (int j = module.getY(); j-module.getY()  < this.module.getEffectiveHeight(true); j++) {
                     DC_Cell cell = cells[i][j];
-                // if (cell.isObjectsModified() || (!CoreEngine.isWeakCpu()&&!CoreEngine.isWeakGpu()))
+                if (cell.isObjectsModified() || (!CoreEngine.isWeakCpu()&&!CoreEngine.isWeakGpu())
+                || !ExplorationMaster.isExplorationOn())
                     //TODO CORE Review
                 {
                     cell.resetObjectArrays();

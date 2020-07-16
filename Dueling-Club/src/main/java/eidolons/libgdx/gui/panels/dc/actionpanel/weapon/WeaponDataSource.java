@@ -124,7 +124,7 @@ public class WeaponDataSource extends EntityDataSource<DC_WeaponObj> {
              getSpriteImagePath(),
              true, false, true));
         }
-        return new Image(TextureCache.getOrCreate(getSpriteImagePath()));
+        return new Image(TextureCache.getOrCreateR(getSpriteImagePath()));
 //                GdxImageMaster.size(getSpriteImagePath(),
 //         128, true));
     }
