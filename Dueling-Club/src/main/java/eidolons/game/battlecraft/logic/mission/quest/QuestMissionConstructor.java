@@ -33,12 +33,14 @@ public class QuestMissionConstructor extends MissionConstructor<QuestMission> {
         String levelPath = type.getProperty(PROPS.FLOOR_FILE_PATH);
         if (MainLauncher.levelPath != null) {
             levelPath = MainLauncher.levelPath;
-        } else if (!CoreEngine.TEST_LAUNCH) {
+        } else if (CoreEngine.SELECT_LEVEL) {
             levelPath = FileChooserX.chooseFile(PathFinder.getDungeonLevelFolder(), "xml",
                     DungeonScreen.getInstance().getOverlayStage());
 
         }
         // levelPath = "crawl\\evarinath catacombs.xml";
+
+        main.system.auxiliary.log.LogMaster.log(1,"INIT: Level Path set to " +levelPath);
 
         EidolonsGame.lvlPath = levelPath;
         getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH,

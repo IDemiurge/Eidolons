@@ -161,7 +161,7 @@ public class ImageContainer extends SuperContainer  implements Flippable{
 
     @Override
     public String toString() {
-        return path + " container";
+        return (path==null ? getContent() : path )+ " container";
     }
 
     @Override

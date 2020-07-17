@@ -52,6 +52,7 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     private Set<MARK> marks;
     private boolean artPuzzleCell;
+    private boolean unitsHaveMovedHere;
 
 
     @Override
@@ -392,5 +393,13 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     public int getCellVersion() {
         return cellVersion;
+    }
+
+    public boolean isUnitsHaveMovedHere() {
+        return unitsHaveMovedHere;
+    }
+
+    public void setUnitsHaveMovedHere(boolean unitsHaveMovedHere) {
+        this.unitsHaveMovedHere = unitsHaveMovedHere;
     }
 }

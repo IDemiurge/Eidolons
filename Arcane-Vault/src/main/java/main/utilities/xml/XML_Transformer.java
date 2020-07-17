@@ -3,6 +3,7 @@ package main.utilities.xml;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.game.battlecraft.DC_Engine;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -63,6 +64,7 @@ public class XML_Transformer {
         if (DialogMaster.confirm("Overwrite backup?")) {
             backUp();
         }
+        DC_Engine.dataInit();
         showTransformDialog();
     }
 
@@ -166,38 +168,40 @@ public class XML_Transformer {
         }
     }
 
-    private static void repair(OBJ_TYPE TYPE  ) {
+    private static void repair(OBJ_TYPE TYPE) {
 /*
 restore values from backup file
 run comparison based on current valueTypePairs
 - list values that are not present...
  */
         Map<String, ObjType> map = new LinkedHashMap<>();
-         DataManager.getTypes(TYPE).stream().forEach(type-> map.put(type.getName(), type));
+        DataManager.getTypes(TYPE).stream().forEach(type -> map.put(type.getName(), type));
+        XML_Reader.getFiles().clear();
         // XML_Reader.setCustomTypesPath(PathFinder.getBACKUP_TYPES_PATH());
-        XML_Reader.readTypeFile(PathFinder.getBACKUP_TYPES_PATH()+TYPE.getName()
-                +".xml", TYPE);
-        Set<VALUE> missing=new LinkedHashSet<>();
+        XML_Reader.readTypeFile(PathFinder.getBACKUP_TYPES_PATH() + TYPE.getName()
+                + ".xml", TYPE);
+        Set<VALUE> missing = new LinkedHashSet<>();
         Set<ObjType> repaired = new LinkedHashSet<>();
         Document doc = XML_Converter.getDoc(XML_Reader.getFile((DC_TYPE) TYPE).getContents());
-        for (Node group : XmlNodeMaster.getNodeListFromFirstChild(doc,true))
-        for (Node typeNode : XmlNodeMaster.getNodeList(group))
-        {
-            ObjType type = map.get(XML_Formatter.restoreXmlNodeName(typeNode.getNodeName()));
-            for (Node node : XmlNodeMaster.getNodeList(typeNode))
-        {
-            if (node.getNodeName().equalsIgnoreCase("params")) {
-                repair(true,type, missing ,repaired, node, TYPE);
+        for (Node group : XmlNodeMaster.getNodeListFromFirstChild(doc, true))
+            for (Node typeNode : XmlNodeMaster.getNodeList(group)) {
+                ObjType type = map.get(XML_Formatter.restoreXmlNodeName(typeNode.getNodeName()));
+                if (type == null) {
+                    continue;
+                }
+                for (Node node : XmlNodeMaster.getNodeList(typeNode)) {
+                    if (node.getNodeName().equalsIgnoreCase("params")) {
+                        repair(true, type, missing, repaired, node, TYPE);
+                    }
+                    if (node.getNodeName().equalsIgnoreCase("props")) {
+                        repair(false, type, missing, repaired, node, TYPE);
+                    }
+                }
             }
-            if (node.getNodeName().equalsIgnoreCase("props")) {
-                repair(false,type, missing ,repaired, node, TYPE);
-            }
-        }
-        }
         // XML_Converter.getTypeListFromXML(backupXml , false).for
 
-        log(missing.size()+ " Missing vals: " + ContainerUtils.constructStringContainer(missing, "\n"));
-        log(repaired.size()+ " Repaired types: " + ContainerUtils.constructStringContainer(repaired, "\n"));
+        log(missing.size() + " Missing vals: " + ContainerUtils.constructStringContainer(missing, "\n"));
+        log(repaired.size() + " Repaired types: " + ContainerUtils.constructStringContainer(repaired, "\n"));
 
         if (DialogMaster.confirm("Save?")) {
             XML_Writer.writeXML_ForTypeGroup(TYPE);
@@ -209,15 +213,26 @@ run comparison based on current valueTypePairs
                                Set<ObjType> repaired, Node node, OBJ_TYPE TYPE) {
         for (Node valNode : XmlNodeMaster.getNodeList(node)) {
             VALUE val = ContentValsManager.getValue(valNode.getNodeName());
+            if (val == null) {
+                continue; //old value
+            }
+            // if (val!= PARAMS.FORMULA) {
+            //     continue;
+            // }
             String value = valNode.getTextContent();
-            if (DC_ContentValsManager.isValueForOBJ_TYPE(TYPE, val ))
-                if (!type.getValueMap(parameter).containsKey(val)) {
-                    type.setValue(val, value);
-                    repaired.add(type);
-                    missing.add(val);
-                }
+            try {
+                if (DC_ContentValsManager.isValueForOBJ_TYPE(TYPE, val))
+                    if (!type.getValueMap(parameter).get(val).equalsIgnoreCase(value)) {
+                        type.setValue(val, value);
+                        repaired.add(type);
+                        missing.add(val);
+                    }
+            } catch (Exception e) {
+                ExceptionMaster.printStackTrace(e);
+            }
         }
     }
+
     public static void filterHeroes() {
         Conditions c = new Conditions();
         c.add(new NotCondition(new NumericCondition(StringMaster.getValueRef(KEYS.SOURCE,
@@ -316,7 +331,7 @@ run comparison based on current valueTypePairs
             return;
         }
         if (file.getType().isTreeEditType()) {
-            return ; //TODO different cleanup here
+            return; //TODO different cleanup here
         }
         log(1, "Removing empty nodes from " + file);
         log(1, file + " current length: " + file.getContents().length());

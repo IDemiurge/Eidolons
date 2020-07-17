@@ -8,14 +8,15 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzleConstructor
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.texture.Sprites;
+import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
+import eidolons.libgdx.assets.Assets;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NotCondition;
 import main.elements.conditions.OrConditions;
 import main.elements.conditions.standard.PositionCondition;
 import main.game.bf.Coordinates;
+import main.system.launch.Flags;
 
 import java.util.Map;
 
@@ -32,10 +33,14 @@ public class VoidMazeConstructor extends MazePuzzleConstructor {
 
     protected void preloadAssets() {
         super.preloadAssets();
-        SpriteAnimationFactory.preload(Sprites.THUNDER);
-        SpriteAnimationFactory.preload(Sprites.THUNDER3);
+        if (!Flags.isLiteLaunch()) {
+            Assets.loadSprite(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath());
+        }
+        // SpriteAnimationFactory.preload(Sprites.THUNDER);
+        // SpriteAnimationFactory.preload(Sprites.THUNDER3);
         //TODO sounds too
     }
+
     @Override
     public MazePuzzle create(String data, Map<Coordinates, CellScriptData> blockData,
                              Coordinates coordinates, LevelBlock block) {
@@ -84,7 +89,7 @@ public class VoidMazeConstructor extends MazePuzzleConstructor {
 
     @Override
     protected MazePuzzle createPuzzle() {
-            return new VoidMaze();
+        return new VoidMaze();
     }
 
 }

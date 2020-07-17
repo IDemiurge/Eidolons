@@ -24,8 +24,6 @@ import main.ability.AbilityObj;
 import main.ability.effects.Effect;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
-import main.content.enums.entity.UnitEnums;
-import main.content.values.properties.G_PROPS;
 import main.elements.conditions.Condition;
 import main.elements.conditions.standard.PositionCondition;
 import main.entity.Ref;
@@ -109,7 +107,7 @@ public class DC_StateManager extends StateManager {
                 } else {
                     objectsToReset = new LinkedHashSet<>();
                     unitsToReset = new LinkedHashSet<>();
-                    for (BattleFieldObject obj : getGame().getBfObjects()) {
+                    for (BattleFieldObject obj : isResetUnitsOnly()? getGame().getUnits(): getGame().getBfObjects()) {
 
                         if ((ExplorationMaster.isExplorationOn() && obj.isOutsideCombat()) ||
                                 getGame().getVisionMaster().getVisionRule().
@@ -137,6 +135,11 @@ public class DC_StateManager extends StateManager {
             }
             resetLock.unlock();
         }
+    }
+
+    //TODO Core Review - too extreme? we do need to reset structs somehow
+    private boolean isResetUnitsOnly() {
+        return true;
     }
 
     private boolean isAlwaysReset(BattleFieldObject obj) {
@@ -415,8 +418,8 @@ public class DC_StateManager extends StateManager {
         for (Unit unit : unitsToReset) {
             if (!checkUnitIgnoresReset(unit))
                 unit.afterBuffRuleEffects();
-            unit.removeProperty(G_PROPS.STD_BOOLS,
-                    UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE.getName());
+            // unit.removeProperty(G_PROPS.STD_BOOLS,
+            //         UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE.getName());
         }
     }
 

@@ -11,10 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.google.inject.internal.util.ImmutableSet;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
+import eidolons.libgdx.assets.AssetEnums;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.stage.GuiStage;
@@ -31,19 +33,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class StyleHolder {
     public static final FONT DEFAULT_FONT = FONT.MAIN;
     public static final FONT ALT_FONT = FONT.NYALA;
     public static final FONT DEFAULT_FONT_FLOAT_TEXT = FONT.MAIN;
     public static final int DEFAULT_FONT_SIZE_FLOAT_TEXT = 18;
-    //    private static String FONT_CHARS = "";
-    //
-    //    static {
-    //
-    //        for (int i = 0x20; i < 0x7B; i++) FONT_CHARS += (char) i;
-    //        for (int i = 0x401; i < 0x452; i++) FONT_CHARS += (char) i;
-    //    }
     final static String FONT_CHARS = "абвгдежзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|//?-+=()*&.;:,{}\"´`'<>";
     private static final String DISABLED = "_disabled";
     private static final String OVER = "_over";
@@ -85,6 +81,23 @@ public class StyleHolder {
             }
 
         }
+    }
+    public static final Set<ImmutablePair<FONT, Integer>> hieroFonts = ImmutableSet.of(
+        new ImmutablePair<>(FONT.MAIN, 17),
+        new ImmutablePair<>(FONT.METAMORPH, 18),
+        new ImmutablePair<>(FONT.MAGIC, 20),
+        new ImmutablePair<>(FONT.AVQ, 17)
+            );
+
+    public static final Set<ImmutablePair<FONT, Integer>> stdFonts = ImmutableSet.of(
+            new ImmutablePair<>(FONT.AVQ, 20),
+            new ImmutablePair<>(FONT.MAIN, 16)
+    );
+
+    public static void preload(){
+
+
+
     }
 
     public static Boolean isHieroOn() {
@@ -168,7 +181,7 @@ public class StyleHolder {
     }
 
     public static LabelStyle getLabelStyle(FONT font, Color color) {
-        ObjectMap<Color, LabelStyle> map = getLabelStyleMap(font, color);
+        ObjectMap<Color, LabelStyle> map = getLabelStyleMap(font );
         if (!map.containsKey(color)) {
             LabelStyle style = new LabelStyle
                     (getFont(font, DEFAULT_COLOR, getDefaultSize()), color);
@@ -178,7 +191,7 @@ public class StyleHolder {
         return map.get(color);
     }
 
-    private static ObjectMap<Color, LabelStyle> getLabelStyleMap(FONT font, Color color) {
+    private static ObjectMap<Color, LabelStyle> getLabelStyleMap(FONT font ) {
         if (!colorLabelStyleMap.containsKey(font)) {
             ObjectMap<Color, LabelStyle> map = new ObjectMap<>();
             colorLabelStyleMap.put(font, map);
@@ -195,6 +208,9 @@ public class StyleHolder {
         if (font == null) {
             return null;
         }
+        if (font== FONT.MAIN && size==getDefaultSize()) {
+            return getHieroFontMain();
+        }
         //        Integer i = getHieroClosestSize(font, size);
         //        boolean hiero = i != null && font.isHieroSupported() && HIERO_ON;
         //        if (hiero) {
@@ -207,8 +223,10 @@ public class StyleHolder {
         return PathFinder.getFontsHieroPath() + "/" + font.name().toLowerCase();
     }
 
-    private static String getHieroPath(FONT font, int size) {
-        return PathFinder.getFontsHieroPath() + "/" + font.name().toLowerCase() + "/" + font.name().toLowerCase() + " " + size;
+    private static String getHieroPath(FONT font, int size, boolean image) {
+        return (image
+                ? PathFinder.getHieroImagePath()
+                : PathFinder.getFontsHieroPath()) + "/" + font.name().toLowerCase() + "/" + font.name().toLowerCase() + " " + size;
     }
 
     private static Integer getHieroClosestSize(FONT font, int size) {
@@ -245,7 +263,7 @@ public class StyleHolder {
         parameter.size = size;
         parameter.characters = FONT_CHARS;
         if (hiero) {
-            TextureRegion tex = new TextureRegion(new Texture(PathFinder.getFontPath() + "hiero/high.png"));
+            TextureRegion tex = new TextureRegion(new Texture(PathFinder.getHieroImagePath() + "/high.png"));
             FreeTypeBitmapFontData data = new FreeTypeBitmapFontData();
             data.fontFile = GDX.file(path);
             data.imagePaths = new String[]{
@@ -261,13 +279,21 @@ public class StyleHolder {
         }
     }
 
+    public static BitmapFont getHieroFontMain() {
+        return getHieroFont(FONT.MAIN, 17);
+        // TextureRegion tex = TextureCache.getOrCreateR(PathFinder.getHieroImagePath() + "/main/main 16.png");
+        // return new BitmapFont(GDX.file(PathFinder.getFontPath() + "hiero/main/main 16.fnt"), tex);
+    }
+
     public static BitmapFont getHieroFontMagic() {
-        TextureRegion tex = TextureCache.getOrCreateR(PathFinder.getFontPath() + "hiero/magic/magic 20.png");
-        return new BitmapFont(GDX.file(PathFinder.getFontPath() + "hiero/magic/magic 20.fnt"), tex);
+        return getHieroFont(FONT.MAGIC, 20);
+        // TextureRegion tex = TextureCache.getOrCreateR(PathFinder.getHieroImagePath() + "/magic/magic 20.png");
+        // return new BitmapFont(GDX.file(PathFinder.getFontPath() + "hiero/magic/magic 20.fnt"), tex);
     }
 
     public static BitmapFont getHieroFontHigh() {
-        TextureRegion tex = new TextureRegion(new Texture(PathFinder.getFontPath() + "hiero/high/high 22.png"));
+        TextureRegion tex = TextureCache.getOrCreateR(PathFinder.getHieroImagePath() + "high/high 22.png", false,
+                AssetEnums.ATLAS.UI_BASE);
         return new BitmapFont(GDX.file(PathFinder.getFontPath() + "hiero/high/high 22.fnt"), tex);
     }
 
@@ -280,9 +306,9 @@ public class StyleHolder {
         if (size == null) {
             return getFont(font, GdxColorMaster.getDefaultTextColor(), fontSize);
         }
-        TextureRegion tex = new TextureRegion(new Texture(getHieroPath(font, size) +
-                ".png"));
-        return new BitmapFont(GDX.file(getHieroPath(font, size) +
+        TextureRegion tex = TextureCache.getOrCreateR(getHieroPath(font, size,true) +
+                ".png", false, AssetEnums.ATLAS.UI_BASE);
+        return new BitmapFont(GDX.file(getHieroPath(font, size,false) +
                 ".fnt"), tex);
 
     }

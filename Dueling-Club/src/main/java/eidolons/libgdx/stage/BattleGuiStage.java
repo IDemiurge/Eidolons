@@ -31,7 +31,6 @@ import eidolons.libgdx.gui.panels.dc.topleft.TopLeftPanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.particles.ParticlesSprites;
-import eidolons.libgdx.screens.AtlasGenSpriteBatch;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -75,7 +74,7 @@ public class BattleGuiStage extends GuiStage {
                                 GdxMaster.getHeight(), new OrthographicCamera())
                         //        new ScreenViewport( new OrthographicCamera())
                         : viewport,
-                batch == null ? GdxMaster.createBatchInstance(AtlasGenSpriteBatch.ATLAS_GROUP.ui) :
+                batch == null ? GdxMaster.createBatchInstance() :
                         batch);
         addActor(guiVisualEffects = new GuiVisualEffects());
         addActor(particlesSprites = new ParticlesSprites());
@@ -204,8 +203,7 @@ public class BattleGuiStage extends GuiStage {
         if (Flags.isIDE()) {
             GuiEventManager.trigger(GuiEventType.KEY_TYPED, (int) character);
         }
-        Eidolons.onNonGdxThread(() -> super.keyTyped(character));
-        return true;
+        return super.keyTyped(character);
     }
 
     protected void bindEvents() {

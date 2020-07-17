@@ -47,23 +47,31 @@ import static main.system.auxiliary.log.LogMaster.log;
 
 public class Atlases {
 
-    public static final List<ATLAS> all = new LinkedList<>();
+    public static final List<AssetEnums.ATLAS> all = new LinkedList<>();
     private static final Map<String, Array<TextureAtlas.AtlasRegion>> atlasRegionsCache = new HashMap<>();
+    // private static final Map<String, TextureAtlas> atlasMap = new HashMap<>();
+    private static final List<DC_WeaponObj> broken = new ArrayList<>();
+    static final Map<String, TextureAtlas> atlasMap = new ConcurrentHashMap<>();
+    static ObjectMap<String, String> substituteMap;
 
-    public static void preloadAtlas(ATLAS atlas) {
+    static {
+        init();
+    }
+
+    public static void preloadAtlas(AssetEnums.ATLAS atlas) {
         preloadAtlas(atlas.path);
     }
 
     public static void loaded(String fileName, SmartTextureAtlas atlas) {
-        ATLAS e = getAtlasByName(fileName);
+        AssetEnums.ATLAS e = getAtlasByName(fileName);
         if (e != null) {
             e.file = atlas;            // we want this field because we will do lookup in these atlases!
             all.add(e);
         }
     }
 
-    private static ATLAS getAtlasByName(String fileName) {
-        for (ATLAS value : ATLAS.values()) {
+    private static AssetEnums.ATLAS getAtlasByName(String fileName) {
+        for (AssetEnums.ATLAS value : AssetEnums.ATLAS.values()) {
             if (value.path.equalsIgnoreCase(fileName)) {
                 return value;
             }
@@ -79,7 +87,7 @@ public class Atlases {
         if (regions != null) {
             return regions;
         }
-        for (ATLAS a : all) {
+        for (AssetEnums.ATLAS a : all) {
             regions = a.file.findRegions(texturePath);
             if (regions != null && regions.size > 0) {
                 break;
@@ -94,75 +102,14 @@ public class Atlases {
         return regions;
     }
 
-    public enum ATLAS {
-        UI_BASE,
-        UI_MACRO,
-        UI_DC,
-
-        TEXTURES,
-        UNIT_VIEW,
-
-        SPRITES_GRID,
-        SPRITES_UI,
-
-        BOSS_ARIUS,
-
-        VFX_AMBI,
-        VFX_SPELL,
-
-        ;
-        public final String path;
-        public SmartTextureAtlas file;
-        public String prefix;
-
-        ATLAS() {
-            prefix = PathFinder.getAtlasGenPath() +name().toLowerCase();
-            path = prefix+"/"+ name().toLowerCase() + ".txt";
-            //temp
-
-        }
-        //filter? Or manual gen?
-
-    }
-
-    private static final String SEPARATOR = "_";
-    private static final String ANIM = "anim";
-    static final String[][] substitutesWeapons = {
-            {"golem fist", "armored fist"},
-            {"tail", "insect claws"},
-            {"paws", "claws"},
-            {"tentacle", "insect claws"},
-            {"lance", "spear"},
-            {"glaive", "battle spear"},
-            {"sickle", "hand axe"},
-            {"orcish arrows", "arrows"},
-            {"elven arrows", "arrows"},
-            {"heavy bolts", "bolts"},
-            {"heavy crossbow", "crossbow"},
-            {"hand crossbow", "crossbow"},
-            {"longbow", "short bow"},
-    };
-    // private static final Map<String, TextureAtlas> atlasMap = new HashMap<>();
-    private static final List<DC_WeaponObj> broken = new ArrayList<>();
-    static final Map<String, TextureAtlas> atlasMap = new ConcurrentHashMap<>();
-    static ObjectMap<String, String> substituteMap;
-
-    private static final String[][] substitutesActions = {
-            {"fist swing", "punch"},
-            {"aimed shot", "quick shot"}
-    };
-
-    static {
-        init();
-    }
 
 
     public static void init() {
         substituteMap = new ObjectMap<>();
-        for (String[] sub : substitutesWeapons) {
+        for (String[] sub : AssetEnums.substitutesWeapons) {
             substituteMap.put(sub[0], sub[1]);
         }
-        for (String[] sub : substitutesActions) {
+        for (String[] sub : AssetEnums.substitutesActions) {
             substituteMap.put(sub[0], sub[1]);
         }
     }
@@ -172,24 +119,24 @@ public class Atlases {
                                                   Boolean offhand) {
         StringBuilder s = new StringBuilder();
         s.append(
-                ContainerUtils.join(SEPARATOR,
+                ContainerUtils.join(AssetEnums.SEPARATOR,
                         weaponName,
-                        actionName, ANIM, projection
+                        actionName, AssetEnums.ANIM, projection
                 ));
 
         //       TODO  if (BooleanMaster.isTrue(offhand))
         //            s.append(SEPARATOR + "l");
         //        if (BooleanMaster.isFalse(offhand))
         if (offhand != null)
-            s.append(SEPARATOR + "r");
+            s.append(AssetEnums.SEPARATOR + "r");
         String string = s.toString();
-        string = string.toLowerCase().replace("offhand ", "").replace("off hand ", "").replace(" ", SEPARATOR);
+        string = string.toLowerCase().replace("offhand ", "").replace("off hand ", "").replace(" ", AssetEnums.SEPARATOR);
         return string;
     }
 
     public static String getAtlasFileKeyForAction(Boolean projection,
-                                                  DC_ActiveObj activeObj, AnimMaster3d.WEAPON_ANIM_CASE aCase) {
-        if (aCase == AnimMaster3d.WEAPON_ANIM_CASE.POTION)
+                                                  DC_ActiveObj activeObj, AssetEnums.WEAPON_ANIM_CASE aCase) {
+        if (aCase == AssetEnums.WEAPON_ANIM_CASE.POTION)
             return getPotionKey(activeObj);
         DC_WeaponObj weapon = activeObj.getActiveWeapon();
         String actionName = null;
@@ -283,7 +230,7 @@ public class Atlases {
 
     public static SpriteAnimation getSpriteForAction(float duration,
                                                      DC_ActiveObj activeObj,
-                                                     AnimMaster3d.WEAPON_ANIM_CASE aCase, AnimMaster3d.PROJECTION projection) {
+                                                     AssetEnums.WEAPON_ANIM_CASE aCase, AssetEnums.PROJECTION projection) {
         return getSpriteForAction(duration, activeObj,
                 aCase, projection.bool);
     }
@@ -307,7 +254,7 @@ public class Atlases {
 
     public static SpriteAnimation getSpriteForAction(float duration,
                                                      DC_ActiveObj activeObj,
-                                                     AnimMaster3d.WEAPON_ANIM_CASE aCase,
+                                                     AssetEnums.WEAPON_ANIM_CASE aCase,
                                                      Boolean projection) {
         // loops,
 
@@ -334,7 +281,7 @@ public class Atlases {
         return sprite;
     }
 
-    public static Array<TextureAtlas.AtlasRegion> getRegions(AnimMaster3d.WEAPON_ANIM_CASE aCase, DC_ActiveObj activeObj, Boolean projection) {
+    public static Array<TextureAtlas.AtlasRegion> getRegions(AssetEnums.WEAPON_ANIM_CASE aCase, DC_ActiveObj activeObj, Boolean projection) {
         String name = getAtlasFileKeyForAction(projection, activeObj, aCase);
 
         TextureAtlas atlas = getAtlas(activeObj, aCase);
@@ -351,7 +298,7 @@ public class Atlases {
         }
         if (regions.size == 0) {
             regions = atlas.findRegions(name.toLowerCase()
-                    .replace(ANIM + SEPARATOR, ""));
+                    .replace(AssetEnums.ANIM + AssetEnums.SEPARATOR, ""));
         }
         if (regions.size == 0) {
             if (isSearchAtlasRegions(activeObj))
@@ -376,7 +323,7 @@ public class Atlases {
                                                                     Boolean projection,
                                                                     DC_ActiveObj activeObj,
                                                                     boolean searchOtherWeaponOrAction) {
-        String name = getAtlasFileKeyForAction(projection, activeObj, AnimMaster3d.WEAPON_ANIM_CASE.NORMAL);
+        String name = getAtlasFileKeyForAction(projection, activeObj, AssetEnums.WEAPON_ANIM_CASE.NORMAL);
         List<Entity> types = null;
         if (searchOtherWeaponOrAction) {
             types = Arrays.stream(DataManager.getBaseWeaponTypes()).
@@ -388,7 +335,7 @@ public class Atlases {
         }
         Array<TextureAtlas.AtlasRegion> regions = null;
         for (Entity sub : types) {
-            name = sub.getName() + name.substring(name.indexOf(SEPARATOR));
+            name = sub.getName() + name.substring(name.indexOf(AssetEnums.SEPARATOR));
             regions = atlas.findRegions(name.toLowerCase());
 
             log(
@@ -400,9 +347,9 @@ public class Atlases {
 
     }
 
-    private static TextureAtlas getAtlas(DC_ActiveObj activeObj, AnimMaster3d.WEAPON_ANIM_CASE aCase
+    private static TextureAtlas getAtlas(DC_ActiveObj activeObj, AssetEnums.WEAPON_ANIM_CASE aCase
     ) {
-        if (aCase == AnimMaster3d.WEAPON_ANIM_CASE.POTION) {
+        if (aCase == AssetEnums.WEAPON_ANIM_CASE.POTION) {
             return getOrCreateAtlas(getPotionAtlasPath(activeObj));
         }
         DC_WeaponObj weapon = activeObj.getActiveWeapon();
@@ -637,6 +584,10 @@ public class Atlases {
         return atlas;
 
 
+    }
+
+    public static Map<String, TextureAtlas> getAtlasMap() {
+        return atlasMap;
     }
 
     public static String getFullAtlasPath(DC_WeaponObj weapon) {

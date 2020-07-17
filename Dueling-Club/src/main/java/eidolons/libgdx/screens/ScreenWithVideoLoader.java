@@ -166,6 +166,10 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     }
 
     private void addSelectionPanel(SelectionPanel selectionPanel) {
+        if (selectionPanel.isDone()) {
+            return;
+        }
+
         boolean displayOnLoader = !(selectionPanel instanceof HeroSelectionPanel); // loading == isLoadingWithVideo();
         Stage stage = displayOnLoader ? getOverlayStage() : getMainStage();
         if (stage != null) {
@@ -256,16 +260,16 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
 
     @Override
     public void render(float delta) {
-        if (Flags.isJar() && !Flags.isCrashSafeMode()) {
+        // if (Flags.isJar() && !Flags.isCrashSafeMode()) {
             super.render(delta);
-        } else
-            try {
-                super.render(delta);
-            } catch (ArrayIndexOutOfBoundsException e1) {
-                e1.printStackTrace();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+        // } else
+        //     try {
+        //         super.render(delta);
+        //     } catch (ArrayIndexOutOfBoundsException e1) {
+        //         e1.printStackTrace();
+        //     } catch (Exception e) {
+        //         main.system.ExceptionMaster.printStackTrace(e);
+        //     }
 
 
     }

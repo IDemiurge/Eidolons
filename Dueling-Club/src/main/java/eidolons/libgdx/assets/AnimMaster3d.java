@@ -142,54 +142,24 @@ public class AnimMaster3d {
         AnimMaster3d.fps = fps;
     }
 
-    public static PROJECTION getProjectionByFacing(FACING_DIRECTION facing) {
+    public static AssetEnums.PROJECTION getProjectionByFacing(FACING_DIRECTION facing) {
         if (!facing.isVertical())
-            return PROJECTION.HOR;
-        return facing == main.game.bf.directions.FACING_DIRECTION.NORTH ? PROJECTION.TO : PROJECTION.FROM;
+            return AssetEnums.PROJECTION.HOR;
+        return facing == main.game.bf.directions.FACING_DIRECTION.NORTH ? AssetEnums.PROJECTION.TO : AssetEnums.PROJECTION.FROM;
     }
 
-    public static PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
+    public static AssetEnums.PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
         if (ref.getTargetObj() == null || ref == null)
             return getProjectionByFacing(active.getOwnerUnit().getFacing());
         Boolean b =
                 PositionMaster.isAboveOr(ref.getSourceObj(), ref.getTargetObj());
         if (active.getOwnerUnit().getCoordinates().equals(ref.getTargetObj().getCoordinates()))
             b = active.getOwnerUnit().isMine();
-        PROJECTION projection = PROJECTION.HOR;
+        AssetEnums.PROJECTION projection = AssetEnums.PROJECTION.HOR;
         if (b != null)
-            projection = b ? PROJECTION.FROM : PROJECTION.TO;
+            projection = b ? AssetEnums.PROJECTION.FROM : AssetEnums.PROJECTION.TO;
         return projection;
     }
 
 
-    public enum PROJECTION {
-        FROM(true), TO(false), HOR(null),
-        ;
-        public Boolean bool;
-
-        PROJECTION(Boolean bool) {
-            this.bool = bool;
-        }
-    }
-
-    public enum WEAPON_ANIM_CASE {
-        NORMAL,
-        MISSILE_MISS,
-        MISSILE,
-        MISS,
-        READY,
-        PARRY,
-        BLOCKED,
-        RELOAD,
-        POTION,
-        ;
-
-        public boolean isMissile() {
-            return this == WEAPON_ANIM_CASE.MISSILE || this == WEAPON_ANIM_CASE.MISSILE_MISS;
-        }
-
-        public boolean isMiss() {
-            return this == WEAPON_ANIM_CASE.MISS || this == WEAPON_ANIM_CASE.MISSILE_MISS;
-        }
-    }
 }

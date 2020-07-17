@@ -17,6 +17,7 @@ import eidolons.libgdx.launch.report.CrashManager;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.ScreenWithAssets;
+import eidolons.libgdx.screens.ScreenWithLoader;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.screens.load.ScreenLoader;
 import eidolons.libgdx.texture.Images;
@@ -261,8 +262,10 @@ public abstract class GenericLauncher extends Game {
         GuiEventManager.processEvents();
         super.render();
         if (!Assets.get().getManager().update()) {
-            main.system.auxiliary.log.LogMaster.devLog("Assets being loaded..."
-                    + Assets.get().getManager().getDiagnostics());
+            main.system.auxiliary.log.LogMaster.devLog("Assets being loaded...");
+            if (getScreen() instanceof ScreenWithLoader) {
+                ((ScreenWithLoader) getScreen()).loadTick();
+            }
         } else {
             getScreen().assetsLoaded();
         }

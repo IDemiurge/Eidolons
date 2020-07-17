@@ -23,7 +23,7 @@ public class ActionContainerFactory {
 
     public static ActionContainer getValueContainer(DC_ActiveObj el, int size) {
         ActionContainer container = cache.get(el);
-        boolean valid = el.canBeManuallyActivated();
+        boolean valid = el.canBeActivated();
         boolean b=false;
         if (container != null) {
 //            container.reset(getImage(el));

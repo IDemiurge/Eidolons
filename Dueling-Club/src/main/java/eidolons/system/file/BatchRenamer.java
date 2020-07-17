@@ -2,7 +2,7 @@ package eidolons.system.file;
 
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.libgdx.assets.AnimMaster3d;
+import eidolons.libgdx.assets.AssetEnums;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -124,7 +124,7 @@ public class BatchRenamer {
     //could use same AE rename!
     private static void generateAnimFolders(String root, ObjType weaponType) {
         for (String s : ContainerUtils.openContainer(weaponType.getProperty(PROPS.WEAPON_ATTACKS))) {
-            for (AnimMaster3d.PROJECTION projection : AnimMaster3d.PROJECTION.values()) {
+            for (AssetEnums.PROJECTION projection : AssetEnums.PROJECTION.values()) {
                 FileManager.getFile(root + "/" + s + "/" + projection).mkdirs();
             }
         }

@@ -187,7 +187,13 @@ public class GlobalController implements Controller {
                 break;
             case Keys.HOME:
                 if (GdxMaster.getMainBatch() instanceof AtlasGenSpriteBatch) {
-                    Eidolons.onGdxThread(() -> ((AtlasGenSpriteBatch) GdxMaster.getMainBatch()).writeAtlases());
+                    Eidolons.onGdxThread(() -> {
+                        try {
+                            ((AtlasGenSpriteBatch) GdxMaster.getMainBatch()).writeAtlases();
+                        } catch (Exception e) {
+                            main.system.ExceptionMaster.printStackTrace(e);
+                        }
+                    });
                 }
                 break;
             case Keys.ENTER:
@@ -206,19 +212,19 @@ public class GlobalController implements Controller {
                 });
                 return true;
             case Keys.F1:
-                if (CinematicLib.TEST_ON){
+                if (CinematicLib.TEST_ON) {
                     CinematicLib.doTest(1);
                     return true;
                 }
                 break;
             case Keys.F2:
-                if (CinematicLib.TEST_ON){
+                if (CinematicLib.TEST_ON) {
                     CinematicLib.doTest(2);
                     return true;
                 }
                 break;
             case Keys.F3:
-                if (CinematicLib.TEST_ON){
+                if (CinematicLib.TEST_ON) {
                     CinematicLib.doTest(3);
                     return true;
                 }
@@ -228,7 +234,7 @@ public class GlobalController implements Controller {
 
                 return true;
             case Keys.F4:
-                if (CinematicLib.TEST_ON){
+                if (CinematicLib.TEST_ON) {
                     CinematicLib.doTest(4);
                     return true;
                 }

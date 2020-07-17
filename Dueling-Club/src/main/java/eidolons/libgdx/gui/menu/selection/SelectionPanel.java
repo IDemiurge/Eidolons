@@ -44,6 +44,7 @@ public abstract class SelectionPanel extends TablePanelX {
     protected Object data;
 
     SpriteAnimation backgroundSprite;
+    private boolean done;
 
 
     public SelectionPanel() {
@@ -185,12 +186,12 @@ public abstract class SelectionPanel extends TablePanelX {
         listPanel.setItems(list);
         listener = new SelectionInputListener(this);
 
-        if (list.size() == 0) {
-            Eidolons.onNonGdxThread(() ->
-            {
+        if (list.size() == 1) {
+            // Eidolons.onNonGdxThread(() ->
+            // {
                 listPanel.select(0);
                 done();
-            });
+            // });
         } else if (isAutoDoneEnabled() && (Flags.isMacro()
                 || ListMaster.isNotEmpty(MainLauncher.presetNumbers))) {
             listPanel.updateAct(0);
@@ -284,6 +285,7 @@ public abstract class SelectionPanel extends TablePanelX {
         if (listPanel.getCurrentItem() == null || listPanel.isBlocked(listPanel.getCurrentItem())) {
             return;
         }
+        setDone(true);
         close();
     }
 
@@ -292,11 +294,10 @@ public abstract class SelectionPanel extends TablePanelX {
     }
 
     public void close() {
-        GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL,
-                null);
         if (listPanel.getCurrentItem() != null)
             closed(listPanel.getCurrentItem().name);
-        //        else
+        else
+            GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL,                    null);
         //            closed(listPanel.getItems().getVar(0).name);
 
     }
@@ -333,5 +334,13 @@ public abstract class SelectionPanel extends TablePanelX {
 
     public ItemListPanel getListPanel() {
         return listPanel;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
+    public boolean isDone() {
+        return done;
     }
 }

@@ -5,6 +5,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -82,6 +83,9 @@ public class FileLogManager {
     }
 
         public static void stream(LOG_OUTPUT value, String text) {
+            if (Flags.isIDE()) {
+                return;
+            }
         if (isAppendTime(value)) {
             text = TimeMaster.getFormattedTime(true, true) + " - " + text;
         }

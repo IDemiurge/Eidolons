@@ -91,7 +91,7 @@ public class ClassFinder {
                 className = className.substring(0, je.getName().length() - 6);
 
                 Class c = cl.loadClass(className);
-                System.out.println(packageName+ "- Class found: " +c.getName());
+                // System.out.println(packageName+ "- Class found: " +c.getName());
                 classes.add(c);
             }
         } catch (IOException e) {
@@ -100,7 +100,7 @@ public class ClassFinder {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
-        System.out.println(classes.size()+ " classes found: " +classes);
+        // System.out.println(classes.size()+ " classes found: " +classes);
         return classes.toArray(new Class[0]);
     }
 

@@ -32,6 +32,7 @@ public abstract class ScreenWithLoaderAndUI extends ScreenWithLoader {
         loadingStage.draw();
         overlayStage.act(delta);
         overlayStage.draw();
+        loadWaited(delta);
     }
 
     @Override

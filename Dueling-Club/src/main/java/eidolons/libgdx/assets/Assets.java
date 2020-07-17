@@ -72,29 +72,28 @@ public class Assets {
     public static void preloadMenu() {
         //step #0 - just when we start gdx app!
         MusicMaster.preload(MusicMaster.MUSIC_SCOPE.MENU);
-        Atlases.preloadAtlas(Atlases.ATLAS.UI_BASE);
+        Atlases.preloadAtlas(AssetEnums.ATLAS.UI_BASE);
     }
 
     public static void loadAtlasesForScreen(ScreenWithLoader screen, SCREEN_TYPE type) {
-        if (!TextureCache.atlasesOn) {
-            return;
-        }
+
         switch (type) {
             case DUNGEON:
-                Atlases.preloadAtlas(Atlases.ATLAS.UI_DC);
-                Atlases.preloadAtlas(Atlases.ATLAS.SPRITES_GRID);
-                Atlases.preloadAtlas(Atlases.ATLAS.UNIT_VIEW);
-                Atlases.preloadAtlas(Atlases.ATLAS.SPRITES_UI);
-                Atlases.preloadAtlas(Atlases.ATLAS.TEXTURES);
-                screen.                        setLoadingAtlases(true);
+                if (TextureCache.atlasesOn) {
+                    Atlases.preloadAtlas(AssetEnums.ATLAS.UI_DC);
+                    Atlases.preloadAtlas(AssetEnums.ATLAS.SPRITES_GRID);
+                    Atlases.preloadAtlas(AssetEnums.ATLAS.UNIT_VIEW);
+                    Atlases.preloadAtlas(AssetEnums.ATLAS.SPRITES_UI);
+                    Atlases.preloadAtlas(AssetEnums.ATLAS.TEXTURES);
+                }
+                Assets.preloadDC();
+                screen.setLoadingAtlases(true);
                 break;
         }
     }
+
     public static void preloadDC() {
-        // if (!TextureCache.atlasesOn) {
-        loadSprite(Sprites.GHOST_FIST);
-        // }
-        Atlases.preloadAtlas(Atlases.ATLAS.UNIT_VIEW);
+        loadSprite(Sprites.REAPER_SCYTHE);
         preloadScope(ASSET_GROUP.DC_COMMONS);
 
         // Chronos.mark("preload her0es");
@@ -159,8 +158,8 @@ public class Assets {
                     case AMBIENCE:
                     case INVERT:
                         get().getManager().load(EmitterMaster.getVfxAtlasPathFull(value), TextureAtlas.class);
-                        get().getManager().finishLoadingAsset(EmitterMaster.getVfxAtlasPathFull(value));
-                        EmitterMaster.getAtlas(value);
+                        // get().getManager().finishLoadingAsset(EmitterMaster.getVfxAtlasPathFull(value));
+                        // EmitterMaster.getAtlas(value);
                         break;
                 }
             }
@@ -197,6 +196,10 @@ public class Assets {
         for (String substring : ContainerUtils.openContainer(scope.assets)) {
             loadSprite(substring);
         }
+    }
+
+    public static boolean isLoaded(String path) {
+        return get().getManager().isLoaded(path);
     }
 
 
@@ -289,7 +292,14 @@ public class Assets {
 
 
     private static boolean checkPreloadUnit(BattleFieldObject sub) {
-        return true;
+        if (CoreEngine.isFullLaunch()) {
+            return true;
+        }
+        if (sub.getActiveWeapon(false) != null) {
+            return sub.getActiveWeapon(false).getName().contains("Claw"); //quick hack
+        }
+        //what about those that are not yet spawned?
+        return false;
     }
 
 

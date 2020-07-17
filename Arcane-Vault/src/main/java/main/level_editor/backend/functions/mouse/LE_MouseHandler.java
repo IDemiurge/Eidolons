@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
@@ -128,7 +129,7 @@ public class LE_MouseHandler extends LE_Handler {
         //        CoordinatesMaster.getCoordinatesBetween()
         switch (shape) {
             case square_3:
-
+               return  CoordinatesMaster.getInRange_(c, 2);
             case square_2:
                 set.add(c.getAdjacentCoordinate(DIRECTION.DOWN));
                 set.add(c.getAdjacentCoordinate(DIRECTION.RIGHT));

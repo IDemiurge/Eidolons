@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.assets.AssetEnums;
 import eidolons.libgdx.assets.Atlases;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.SCREEN_TYPE;
@@ -29,12 +30,12 @@ public class LoadingScreen extends ScreenWithAssets {
     private final SCREEN_TYPE toLoad;
 
     public LoadingScreen() {
-        this("ui/main/logo fullscreen.png", SCREEN_TYPE.MAIN_MENU, Atlases.ATLAS.UI_BASE);
+        this("ui/main/logo fullscreen.png", SCREEN_TYPE.MAIN_MENU, AssetEnums.ATLAS.UI_BASE);
     }
 
-    public LoadingScreen(String backgroundPath, SCREEN_TYPE toLoad, Atlases.ATLAS... atlasesToLoad) {
+    public LoadingScreen(String backgroundPath, SCREEN_TYPE toLoad, AssetEnums.ATLAS... atlasesToLoad) {
         if (TextureCache.atlasesOn) //will it even get here without  ??
-        for (Atlases.ATLAS atlas : atlasesToLoad) {
+        for (AssetEnums.ATLAS atlas : atlasesToLoad) {
             Atlases.preloadAtlas(atlas);
         }
         this.toLoad = toLoad;
@@ -63,6 +64,8 @@ public class LoadingScreen extends ScreenWithAssets {
 
     @Override
     public void assetsLoaded() {
+
+        main.system.auxiliary.log.LogMaster.log(1, toString() + " assetsLoaded!");
         ScreenData data = new ScreenData(toLoad, ""); //TODO data
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new EventCallbackParam(data));
         Textures.init();

@@ -16,8 +16,9 @@ import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.ActionAnim;
 import eidolons.libgdx.assets.AnimMaster3d;
-import eidolons.libgdx.assets.AnimMaster3d.PROJECTION;
-import eidolons.libgdx.assets.AnimMaster3d.WEAPON_ANIM_CASE;
+import eidolons.libgdx.assets.AssetEnums;
+import eidolons.libgdx.assets.AssetEnums.PROJECTION;
+import eidolons.libgdx.assets.AssetEnums.WEAPON_ANIM_CASE;
 import eidolons.libgdx.assets.Atlases;
 import main.content.enums.GenericEnums;
 import main.entity.Ref;
@@ -135,7 +136,7 @@ public class Weapon3dAnim extends ActionAnim {
          a.isThrow() ||
           a.getActiveWeapon() != getActive().getActiveWeapon());
         Array<AtlasRegion> newRegions = Atlases.getRegions(
-         WEAPON_ANIM_CASE.NORMAL, subactions.get(RandomWizard.getRandomIndex(subactions))
+         AssetEnums.WEAPON_ANIM_CASE.NORMAL, subactions.get(RandomWizard.getRandomIndex(subactions))
          , getProjection(ref,getActive()).bool);
 
         newRegions.removeRange(0, newRegions.size / 2);
@@ -160,11 +161,11 @@ public class Weapon3dAnim extends ActionAnim {
     protected boolean checkFlipHorizontally() {
         boolean offhand = getActive().isOffhand();
         boolean flipHor = false;
-        if (getProjection(ref,getActive()) == PROJECTION.HOR) {
+        if (getProjection(ref,getActive()) == AssetEnums.PROJECTION.HOR) {
             flipHor = getActive().getOwnerUnit().getFacing() == FACING_DIRECTION.WEST;
             // PositionMaster.isToTheLeft(activeObj.getOwnerUnit(), targetObj);
         } else {
-            flipHor = (getProjection(ref,getActive()) == PROJECTION.TO) != offhand;
+            flipHor = (getProjection(ref,getActive()) == AssetEnums.PROJECTION.TO) != offhand;
 //            if (RandomWizard.chance(33))
 //                flipHor = !flipHor; TODO anim Review - is it viable?
         }
@@ -209,11 +210,11 @@ public class Weapon3dAnim extends ActionAnim {
         //        return WEAPON_ANIM_CASE. BLOCKED;
 
         if (getActive().isFailedLast())
-            return WEAPON_ANIM_CASE.MISS;
+            return AssetEnums.WEAPON_ANIM_CASE.MISS;
         //        return WEAPON_ANIM_CASE.PARRY; counter?
 
 
-        return WEAPON_ANIM_CASE.NORMAL;
+        return AssetEnums.WEAPON_ANIM_CASE.NORMAL;
     }
 
     public   PROJECTION getProjection( ) {

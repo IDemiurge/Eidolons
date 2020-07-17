@@ -351,7 +351,7 @@ public class DialogueView extends TablePanelX implements Scene {
     private void disableReplies() {
         replyBox.fadeOut();
         replyBox.setTouchable(Touchable.disabled);
-        GdxMaster.setEmptyCursor();
+        // GdxMaster.setEmptyCursor(); //TODO
     }
 
     public boolean isDone() {

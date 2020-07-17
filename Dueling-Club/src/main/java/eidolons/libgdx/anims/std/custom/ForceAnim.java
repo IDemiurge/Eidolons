@@ -8,7 +8,7 @@ import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.anims.anim3d.Weapon3dAnim;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.assets.AnimMaster3d;
+import eidolons.libgdx.assets.AssetEnums;
 import eidolons.libgdx.particles.PhaseVfx;
 import eidolons.libgdx.particles.VfxContainer;
 import eidolons.libgdx.particles.spell.SpellVfx;
@@ -35,7 +35,7 @@ public class ForceAnim extends Weapon3dAnim {
     public static final List vfxList_death = Arrays.asList(GenericEnums.VFX.dark_blood,
             GenericEnums.VFX.missile_death,
             GenericEnums.VFX.weave_death
-//            GenericEnums.VFX.invert_breath,
+            //            GenericEnums.VFX.invert_breath,
     );
     public static final List vfxList_electric = Arrays.asList(GenericEnums.VFX.missile_arcane_intense,
             GenericEnums.VFX.missile_electric_intense,
@@ -43,15 +43,15 @@ public class ForceAnim extends Weapon3dAnim {
     public static final List vfxList_shadow = Arrays.asList(GenericEnums.VFX.dark_impact,
             GenericEnums.VFX.invert_missile,
             GenericEnums.VFX.weave_pale
-//            GenericEnums.VFX.invert_breath,
+            //            GenericEnums.VFX.invert_breath,
     );
     public static final List vfxList_chaos = Arrays.asList(//            GenericEnums.VFX.missile_chaos,
-//            GenericEnums.VFX.weave_chaos,
+            //            GenericEnums.VFX.weave_chaos,
             GenericEnums.VFX.weave_nether
-//            GenericEnums.VFX.weave_chaos,
-//            GenericEnums.VFX.missile_arcane_pink,
-//            GenericEnums.VFX.spell_chaos_flames,
-//            GenericEnums.VFX.spell_demonfire,
+            //            GenericEnums.VFX.weave_chaos,
+            //            GenericEnums.VFX.missile_arcane_pink,
+            //            GenericEnums.VFX.spell_chaos_flames,
+            //            GenericEnums.VFX.spell_demonfire,
     );
 
 
@@ -62,6 +62,9 @@ public class ForceAnim extends Weapon3dAnim {
     }
 
     private String getSpritePath() {
+//TODO tester hack
+        if (true)
+            return Sprites.REAPER_SCYTHE;
 
         if (type == GenericEnums.DAMAGE_TYPE.SHADOW || type == GenericEnums.DAMAGE_TYPE.DEATH) {
             if (!Flags.isSuperLite())
@@ -77,15 +80,15 @@ public class ForceAnim extends Weapon3dAnim {
             return Sprites.GATE_LIGHTNING;
         }
         return Sprites.BIG_CLAW_ATTACK;
-//        switch (getActive().getOwnerUnit().getName()) {
-//            case "Mistborn Leviathan":
-//                return Sprites.BIG_CLAW_ATTACK;
-//        }
-//        return "sprites/weapons3d/atlas/screen/ghost/ghost fist.txt";
+        //        switch (getActive().getOwnerUnit().getName()) {
+        //            case "Mistborn Leviathan":
+        //                return Sprites.BIG_CLAW_ATTACK;
+        //        }
+        //        return "sprites/weapons3d/atlas/screen/ghost/ghost fist.txt";
     }
 
     @Override
-    protected SpriteAnimation createSprite(AnimMaster3d.PROJECTION projection) {
+    protected SpriteAnimation createSprite(AssetEnums.PROJECTION projection) {
         SpriteAnimation atlas = SpriteAnimationFactory.getSpriteAnimation(getSpritePath());
 
         Array<TextureAtlas.AtlasRegion> regions = null;
@@ -114,10 +117,9 @@ public class ForceAnim extends Weapon3dAnim {
                 sprite.setFlipX(PositionMaster.isAbove(getRef().getTargetObj(), getRef().getSourceObj()));
                 break;
             case HOR:
-                if (getSpritePath().equalsIgnoreCase(Sprites.GHOST_FIST)){
+                if (getSpritePath().equalsIgnoreCase(Sprites.GHOST_FIST)) {
                     sprite.setFlipX(PositionMaster.isToTheLeft(getRef().getTargetObj(), getRef().getSourceObj()));
-                } else
-                if (getSpritePath().equalsIgnoreCase(Sprites.REAPER_SCYTHE)){
+                } else if (getSpritePath().equalsIgnoreCase(Sprites.REAPER_SCYTHE)) {
                     sprite.setFlipX(PositionMaster.isToTheLeft(getRef().getTargetObj(), getRef().getSourceObj()));
                 } else
                     sprite.setFlipX(!PositionMaster.isToTheLeft(getRef().getTargetObj(), getRef().getSourceObj()));
@@ -126,8 +128,9 @@ public class ForceAnim extends Weapon3dAnim {
         return sprite;
 
     }
+
     protected boolean isInvertScreen() {
-//        getActive().getActiveWeapon().checkSingleProp()
+        //        getActive().getActiveWeapon().checkSingleProp()
         if (type != null) {
             switch (type) {
                 case LIGHTNING:
@@ -143,11 +146,11 @@ public class ForceAnim extends Weapon3dAnim {
             sprite.setBlending(GenericEnums.BLENDING.SCREEN);
         }
         if (isVfxOn())
-        for (SpellVfx spellVfx : emitterList) {
-//            spellVfx.getEffect().getEmitters().forEach(e -> e.setAdditive(false));
-            spellVfx.getEffect().setAlpha(0.1f);
+            for (SpellVfx spellVfx : emitterList) {
+                //            spellVfx.getEffect().getEmitters().forEach(e -> e.setAdditive(false));
+                spellVfx.getEffect().setAlpha(0.1f);
 
-        }
+            }
         super.draw(batch, parentAlpha);
     }
 
@@ -180,25 +183,25 @@ public class ForceAnim extends Weapon3dAnim {
         }
 
         if (isVfxOn())
-        try {
-            String path = PathFinder.getVfxPath() + getVfxPath();
+            try {
+                String path = PathFinder.getVfxPath() + getVfxPath();
 
-            main.system.auxiliary.log.LogMaster.devLog("force anim destination: " + destination);
-            shaped = VfxShaper.shape(path, VFX_SHAPE.LINE, origin, destination);
-            emitterList.clear();
-            emitterList.add(shaped);
-            resetEmitters();
-            startEmitters();
-            if (shaped == null) {
-                return;
+                main.system.auxiliary.log.LogMaster.devLog("force anim destination: " + destination);
+                shaped = VfxShaper.shape(path, VFX_SHAPE.LINE, origin, destination);
+                emitterList.clear();
+                emitterList.add(shaped);
+                resetEmitters();
+                startEmitters();
+                if (shaped == null) {
+                    return;
+                }
+                for (PhaseVfx vfx : shaped.getNested()) {
+                    vfx.setTimeToNext(duration / 3 * 2);
+                    vfx.act(1.5f);
+                }
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
             }
-            for (PhaseVfx vfx : shaped.getNested()) {
-                vfx.setTimeToNext(duration / 3 * 2);
-                vfx.act(1.5f);
-            }
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
 
 
     }
@@ -237,8 +240,8 @@ public class ForceAnim extends Weapon3dAnim {
 
     @Override
     protected void initSpeed() {
-//        super.initSpeed();
-//        duration *= 1.75f;
+        //        super.initSpeed();
+        //        duration *= 1.75f;
         duration = 1;
         if (destination != null && origin != null)
             super.initSpeedForDuration(duration);

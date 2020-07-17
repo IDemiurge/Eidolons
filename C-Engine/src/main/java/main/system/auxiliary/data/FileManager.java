@@ -243,12 +243,6 @@ public class FileManager {
             if (file.isFile() || file.isDirectory()) {
                 return file;
             }
-            //            if (!allowInvalid)
-            //            file = getFile(PathFinder.getRootPath() + path, false);
-            //            if (file.isFile() || file.isDirectory()) {
-            //                return file;
-            //            }
-            //            file = new File(path);
             if (!Flags.isActiveTestMode())
                 if (!Flags.isFullFastMode()) {
                     if (!missing.contains(file.getPath())) {
@@ -706,24 +700,32 @@ public class FileManager {
     }
 
     public static void delete(String s) {
+        delete(getFile(s));
+    }
+    public static void delete(File s) {
         try {
-            Files.delete(getPath(s));
+            FileUtils.deleteDirectory(s);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public static void copy(String from, String to) {
+    public static Boolean copy(String from, String to) {
         Path src = Paths.get(getFile(from).toURI());
         File file = getFile(to);
+        Boolean result=true;
         if (!file.exists()) {
             file.mkdirs();
+        } else {
+            result = null;
         }
         Path target = Paths.get(file.toURI());
         try {
             Files.copy(src, target, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
+            return false;
         }
+        return result;
     }
 
     public static String getFileNameAndFormat(String template) {
@@ -742,4 +744,11 @@ public class FileManager {
         return files;
     }
 
+    public static void cleanDir(String s) {
+        try {
+            FileUtils.cleanDirectory(getFile(s));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

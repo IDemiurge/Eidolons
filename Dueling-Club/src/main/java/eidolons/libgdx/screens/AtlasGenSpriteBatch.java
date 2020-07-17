@@ -6,20 +6,23 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.math.Affine2;
-import com.badlogic.gdx.utils.ObjectMap;
-import eidolons.game.EidolonsGame;
+import com.kotcrab.vis.ui.VisUI;
 import eidolons.game.core.EUtils;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.assets.Atlases;
-import eidolons.libgdx.utils.textures.AtlasGen;
+import eidolons.libgdx.assets.utils.AtlasGen;
+import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
-import main.system.launch.CoreEngine;
+import main.system.auxiliary.secondary.Bools;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /*
 depending on our draw order!
@@ -52,73 +55,64 @@ it's trivial - use some other pc if you got to
 public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
     private final boolean overwrite = false;
 
-    // Gdx revamp - use this to put ALL textures in 3-4 atlases
-    public enum ATLAS_GROUP {
-        ui,
-        grid,
-        anims,
-        macro,
-        hq, //vs ui?
-    }
-
-    ATLAS_GROUP atlas;
-    ObjectMap<ATLAS_GROUP, Set<Texture>> map = new ObjectMap<>();
+    Set<Texture> map = new HashSet<>();
 
     public AtlasGenSpriteBatch() {
-        for (ATLAS_GROUP value : ATLAS_GROUP.values()) {
-            map.put(value, new LinkedHashSet<>());
-        }
-    }
-
-    public void setAtlas(ATLAS_GROUP atlas) {
-        this.atlas = atlas;
     }
 
     public void writeAtlases() {
         //TODO only two - MAIN and UI!
         // but we will need ATLAS PER LEVEL in many cases! which is loaded on DUNGEON SCREEN INIT when we've selected
         //
-        //in some cases we might wanna add more textures?
-        for (ATLAS_GROUP atlas : map.keys()) {
-            if (atlas == ATLAS_GROUP.ui) {
-                if (CoreEngine.isLevelEditor()) {
+        //in some cases we might wanna add more textures
+        List<String> list = new LinkedList<>();
+        for (String atlasMissingTexture : TextureCache.atlasMissingTextures) {
+            // atlasMissingTexture.contains""
+            atlasMissingTexture = PathFinder.getImagePath() +
+                    GdxImageMaster.cropImagePath(atlasMissingTexture);
+            String path = getOutputPath(atlasMissingTexture);
+            if (Bools.isTrue(FileManager.copy(atlasMissingTexture, path)))
+                list.add(atlasMissingTexture);
+        }
+        main.system.auxiliary.log.LogMaster.log(1, list.size() + " missing textures written: " + list);
+        list.clear();
+        for (Texture texture : map) {
+            if (texture.getTextureData() instanceof FileTextureData) {
+                String path = ((FileTextureData) texture.getTextureData()).getFileHandle().file().getPath();
+                if (checkIgnoreTexture(path, texture)) {
                     continue;
                 }
+                path = getOutputPath(path);
+                if (write(path, texture))
+                    list.add(path);
+
             }
-            for (Texture texture : map.get(atlas)) {
-                if (texture.getTextureData() instanceof FileTextureData) {
-                    String path = ((FileTextureData) texture.getTextureData()).getFileHandle().file().getPath();
-                    if (checkIgnoreTexture(path, texture)) {
-                        continue;
-                    }
+            main.system.auxiliary.log.LogMaster.log(1, list.size() + " textures written: " + list);
+        }
+        // if (pack)
+        //     TexturePackerLaunch.pack(input, output, atlas.name() , settings);
 
-                    path = getOutputPath(path, atlas == ATLAS_GROUP.grid ? "main/" : "", atlas);
-                    write(path, texture, atlas);
-                    if (atlas == ATLAS_GROUP.grid) {
-                        path = getOutputPath(path, EidolonsGame.lvlPath + "/", atlas);
-                        write(path, texture, atlas);
-                    }
+        EUtils.onConfirm("Decompose skin?", true, () -> {
+            writeSubAtlasImages(VisUI.getSkin().getAtlas(), PathFinder.getSkinPath() + "regions/");
+        });
 
+        if (Atlases.getAtlasMap() instanceof ConcurrentHashMap)
+            for (String s : Atlases.getAtlasMap().keySet()) {
+                Boolean type = checkAtlas(s);
+                if (type != null) {
+                    writeSubAtlasImages(s);
                 }
             }
-            // if (pack)
-            //     TexturePackerLaunch.pack(input, output, atlas.name() , settings);
-
-            // if (AnimAtlas.getAtlasMap() instanceof ConcurrentHashMap)
-            //     for (String s : AnimMaster3d.getAtlasMap().keySet()) {
-            //         ATLAS type = checkAtlas(s);
-            //         if (type != null) {
-            //             writeSubAtlasImages(s, type);
-            //         }
-            //     }
-        }
-        EUtils.onConfirm("Form atlas folders?",true, ()-> {
-            AtlasGen.moveFiles(true);
-            AtlasGen.moveFiles(false);
+        EUtils.onConfirm("Form atlas folders?", true, () -> {
+            try {
+                AtlasGen.moveFiles();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         });
     }
 
-    private ATLAS_GROUP checkAtlas(String path) {
+    private Boolean checkAtlas(String path) {
         if (path.contains("weapons3d"))
             return null;
         if (path.contains("background"))
@@ -127,24 +121,25 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
             return null;
         if (path.contains("potions"))
             return null;
-        if (path.contains("ui"))
-            return ATLAS_GROUP.ui;
-        return ATLAS_GROUP.grid;
+        return path.contains("ui");
     }
 
-    private String getOutputPath(String path, String suffix, ATLAS_GROUP atlas) {
-        return PathFinder.getImagePath() + "atlas img/" + atlas +
-                "/" + suffix + GdxImageMaster.cropImagePath(path);
+    private String getOutputPath(String path) {
+        return PathFinder.getImagePath() + "atlas img/" +
+                GdxImageMaster.cropImagePath(path);
 
     }
 
-    private void writeSubAtlasImages(String path, ATLAS_GROUP type) {
-        TextureAtlas atlas = Atlases.getOrCreateAtlas(path);
+    private void writeSubAtlasImages(String path) {
+        writeSubAtlasImages(Atlases.getOrCreateAtlas(path), path);
+    }
+
+    private void writeSubAtlasImages(TextureAtlas atlas, String path) {
         path = StringMaster.cropFormat(path);
         int i = 0;
         for (TextureAtlas.AtlasRegion region : atlas.getRegions()) {
             String frame = "_" + NumberUtils.getFormattedTimeString(i++, 5);
-            String outputPath = getOutputPath(path + frame + ".png", "", type);
+            String outputPath = getOutputPath(path + frame + ".png");
             FileHandle handle = new FileHandle(outputPath);
             if (!handle.exists()) {
                 try {
@@ -159,24 +154,25 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
 
     }
 
-    private void write(String path, Texture texture, ATLAS_GROUP atlas) {
+    private boolean write(String path, Texture texture) {
         FileHandle handle = new FileHandle(path);
         if (handle.exists()) {
             if (!overwrite) {
-                return;
+                return false;
             }
         }
         if (texture.getTextureData() instanceof FileTextureData) {
             String src = ((FileTextureData) texture.getTextureData()).getFileHandle().toString();
-            FileManager.copy(src, path);
-        }
-        else
-        try {
-            GdxImageMaster.writeImage(handle, texture);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        main.system.auxiliary.log.LogMaster.log(1, atlas + " texture output to: " + path);
+            return FileManager.copy(src, path);
+        } else
+            try {
+                GdxImageMaster.writeImage(handle, texture);
+                return true;
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        main.system.auxiliary.log.LogMaster.log(1, "Atlas Gen Texture output to: " + path);
+        return false;
     }
 
     private boolean checkIgnoreTexture(String path, Texture texture) {
@@ -230,9 +226,7 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
     }
 
     private void checkAdd(Texture texture) {
-        if (atlas != null) {
-            map.get(atlas).add(texture);
-        }
+        map.add(texture);
     }
 
     @Override

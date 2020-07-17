@@ -108,6 +108,6 @@ public class WallMaster {
 
 
     public static boolean isRotation(Coordinates coordinates) {
-        return getSet(coordinates) == CELL_SET.woods;
+        return false;// getSet(coordinates) == CELL_SET.woods;
     }
 }

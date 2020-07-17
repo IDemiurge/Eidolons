@@ -9,6 +9,7 @@ import main.system.PathUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.Flags;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -103,9 +104,14 @@ public class SmartTextureAtlas extends TextureAtlas {
     public AtlasRegion findRegion(String name, boolean recursion) {
         name = FileManager.formatPath(name, true, true);
         Array<AtlasRegion> regions = getRegions();
-        for (int i = 0, n = regions.size; i < n; i++)
-            if (FileManager.formatPath(regions.get(i).name, true, true)
-                    .equals(name)) return regions.get(i);
+        for (int i = 0, n = regions.size; i < n; i++) {
+            String s = regions.get(i).name;
+            if (Flags.isJar()) {
+                s = FileManager.formatPath(s, true, true);
+            }
+            if (s
+                    .equalsIgnoreCase(name)) return regions.get(i);
+        }
 
         if (!recursion) {
             name = formatFileName(name);

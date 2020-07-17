@@ -17,9 +17,9 @@ public class PathFinder {
 
     public static final String HOME = System.getProperty("user.home");
     public static final String OPTIONS_PATH = HOME + "/Eidolons/";
-    private static final String RES_FOLDER_NAME = "resources";
+    public static final String RES_FOLDER_NAME = "resources";
     public static String MICRO_MODULE_NAME = "duel-club";
-    private static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + "/" +
+    public static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + "/" +
             "templates";
     public static final String SKIN_NAME = "neutralizer-ui" ;
     private static String XML_PATH;
@@ -570,5 +570,9 @@ public class PathFinder {
 
     public static String getWallSetsFolder() {
         return "main/bf/walls/sets/";
+    }
+
+    public static String getHieroImagePath() {
+        return getImagePath()+ "ui/main/hiero/";
     }
 }

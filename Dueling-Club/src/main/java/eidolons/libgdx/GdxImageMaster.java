@@ -158,7 +158,7 @@ public class GdxImageMaster extends LwjglApplication {
     public static Texture size(String path, int size, boolean write) {
         return size(path, size, size, write);
     }
-
+//TODO gdx revamp - INTO REGION FOR ATLASES!!!
     public static Texture size(String path, int width, int height, boolean write) {
         int size = (width + height) / 2;
         Texture texture = null;
@@ -234,8 +234,8 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static TextureRegion round(String path, boolean write) {
-        if (!GdxMaster.isLwjglThread())
-            return null;
+
+        path = cropImagePath(path);
         TextureRegion textureRegion = TextureCache.getOrCreateR(path);
         if (textureRegion.getTexture() == TextureCache.getMissingTexture())
             return textureRegion;
@@ -248,6 +248,8 @@ public class GdxImageMaster extends LwjglApplication {
             if (roundedRegion.getTexture() != TextureCache.getMissingTexture())
                 return roundedRegion;
 
+        if (!GdxMaster.isLwjglThread())
+            return null;
         Pixmap rounded = roundTexture(textureRegion);
         FileHandle handle = GDX.file(
                 PathFinder.getImagePath() + newPath);
@@ -316,12 +318,12 @@ public class GdxImageMaster extends LwjglApplication {
         return round;
     }
 
-    public static String getRoundedPathNew(String path) {
+    public static String getRoundedPathRadial(String path) {
         return "gen/radial icons/" + PathUtils.getLastPathSegment(path);
     }
 
     public static String getRoundedPath(String path) {
-        path = FileManager.formatPath(path);
+        path = cropImagePath(path);
         return StringMaster.cropFormat(path) + " rounded.png";
     }
 

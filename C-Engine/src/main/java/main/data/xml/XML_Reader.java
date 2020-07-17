@@ -526,6 +526,9 @@ public class XML_Reader {
 
     public static XML_File getFile(DC_TYPE TYPE) {
         for (XML_File file : files) {
+            if (file.getType() == null) {
+                continue;
+            }
             if (file.getType().equals(TYPE)) {
                 return file;
             }

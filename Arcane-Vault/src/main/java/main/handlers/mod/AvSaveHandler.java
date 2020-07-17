@@ -10,6 +10,7 @@ import main.data.xml.XML_Reader;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.sound.SoundMaster;
 import main.system.threading.TimerTaskMaster;
@@ -26,6 +27,11 @@ public class AvSaveHandler {
     private static boolean saving;
     static boolean autoSaveOff;
     private static boolean backupOnLaunch;
+
+    public AvSaveHandler() {
+        backupOnLaunch= StringMaster.countChar(ArcaneVault.getTypes(), ";")>3;
+        //TODO this is a hack..
+    }
 
     public static void save(ObjType type, String valName) {
         AvModelHandler.getAV_Manager().save(type);

@@ -86,6 +86,11 @@ public class ShadeLightCell extends SuperContainer {
 
     }
 
+    @Override
+    public void setTransform(boolean transform) {
+        super.setTransform(transform);
+    }
+
     private static TextureRegion getTexture(SHADE_CELL type) {
         if (!isUseAtlas()) {
             return TextureCache.getOrCreateR(GdxImageMaster.cropImagePath(getTexturePath(type)));

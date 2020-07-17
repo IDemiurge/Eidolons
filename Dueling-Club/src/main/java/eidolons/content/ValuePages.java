@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import static eidolons.content.PARAMS.*;
 import static main.content.values.parameters.G_PARAMS.DURATION;
 import static main.content.values.parameters.G_PARAMS.RADIUS;
+import static main.content.values.properties.G_PROPS.ACTIVES;
 
 public class ValuePages {
     public static final VALUE[] DESCRIPTION = {G_PROPS.DESCRIPTION};
@@ -18,7 +19,7 @@ public class ValuePages {
     public static final VALUE[] GENERIC_AV_HEADER = {G_PROPS.NAME, G_PROPS.IMAGE, G_PROPS.GROUP,
 
             G_PROPS.WORKSPACE_GROUP, G_PROPS.DEV_NOTES, G_PROPS.UNIT_GROUP, G_PROPS.ASPECT, G_PROPS.DEITY,
-            G_PROPS.PRINCIPLES, G_PROPS.ACTIVES, G_PROPS.PASSIVES, G_PROPS.STANDARD_PASSIVES,
+            G_PROPS.PRINCIPLES, ACTIVES, G_PROPS.PASSIVES, G_PROPS.STANDARD_PASSIVES,
             LEVEL, POWER, FORMULA, G_PROPS.DESCRIPTION, G_PROPS.LORE,
             G_PROPS.FLAVOR,
 
@@ -145,7 +146,7 @@ public class ValuePages {
     public static final VALUE[] BOSS_VALUES = {
             G_PROPS.BOSS_TYPE,
             G_PROPS.BOSS_GROUP,
-            G_PROPS.ACTIVES,
+            ACTIVES,
             G_PROPS.STANDARD_PASSIVES,
             PROPS.VERBATIM_SPELLS,
             G_PROPS.ARMOR_ITEM,
@@ -449,7 +450,7 @@ public class ValuePages {
     public static final VALUE[] ACTION_PROPS = {
             FORMULA,
             PROPS.DAMAGE_TYPE,
-            G_PROPS.ACTIVES,
+            ACTIVES,
             G_PROPS.ACTION_TYPE,
             G_PROPS.ACTION_TYPE_GROUP,
             G_PROPS.ACTION_TAGS, PROPS.HOTKEY, PROPS.ALT_HOTKEY, PROPS.ACTION_MODES,
@@ -494,6 +495,8 @@ public class ValuePages {
             DURATION};
     public static final VALUE[] SPELL_VALUES = {
             G_PROPS.VARIABLES,
+            FORMULA,
+            ACTIVES,
             CIRCLE, SPELL_DIFFICULTY,
             DURATION, RADIUS, RANGE,
             SPELLPOWER_MOD, FORCE, FORCE_SPELLPOWER_MOD,
@@ -556,7 +559,7 @@ public class ValuePages {
             G_PROPS.PERK_CLASS_REQUIREMENTS,
             PROPS.PERK_FOR_CLASSES,
     };
-    public static final VALUE[] CLASS_HEADER = {G_PROPS.ACTIVES, PROPS.SKILL_OR_REQUIREMENTS,
+    public static final VALUE[] CLASS_HEADER = {ACTIVES, PROPS.SKILL_OR_REQUIREMENTS,
             PROPS.SKILL_REQUIREMENTS, PROPS.REQUIREMENTS,
 
             G_PROPS.CLASS_TYPE, G_PROPS.CLASS_GROUP, PROPS.CLASS_PERK_GROUP,

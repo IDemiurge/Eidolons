@@ -422,6 +422,7 @@ public class DC_MovementManager implements MovementManager {
                 game.getDungeonMaster().getPortalMaster().unitMoved((Unit) obj);
             }
         cell.setObjectsModified(true);
+        cell.setUnitsHaveMovedHere(true);
         if (obj.isPlayerCharacter()) {
             LevelStruct struct = game.getDungeonMaster().getStructMaster().getLowestStruct(obj.getCoordinates());
             String background = struct.getPropagatedValue("background");

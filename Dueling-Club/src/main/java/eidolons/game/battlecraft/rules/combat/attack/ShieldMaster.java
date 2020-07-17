@@ -8,6 +8,7 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.assets.AnimMaster3d;
+import eidolons.libgdx.assets.AssetEnums;
 import eidolons.libgdx.assets.Atlases;
 import main.system.auxiliary.RandomWizard;
 
@@ -39,7 +40,7 @@ public class ShieldMaster {
         int i = RandomWizard.getRandomIndex(shield.getAttackActions());
         String name = Atlases.getAtlasFileKeyForAction(proj,
                 shield.getAttackActions().get(i),
-                AnimMaster3d.WEAPON_ANIM_CASE.NORMAL);
+                AssetEnums.WEAPON_ANIM_CASE.NORMAL);
 
         return atlas.findRegions(name);
     }

@@ -42,7 +42,6 @@ import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.quest.QuestJournal;
 import eidolons.libgdx.gui.panels.quest.QuestProgressPanel;
-import eidolons.libgdx.screens.AtlasGenSpriteBatch;
 import eidolons.libgdx.screens.Blackout;
 import eidolons.libgdx.screens.map.town.navigation.PlaceNavigationPanel;
 import eidolons.libgdx.texture.TextureCache;
@@ -257,27 +256,6 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
 
     @Override
     public void draw() {
-        if (GdxMaster.WRITE_ATLAS_IMAGES) {
-            if (getBatch() instanceof AtlasGenSpriteBatch) {
-                ((AtlasGenSpriteBatch) getBatch()).setAtlas(AtlasGenSpriteBatch.ATLAS_GROUP.ui);
-            }
-        }
-        //can we just pass if in 'cinematic mode'?
-
-        //        if (Cinematics.ON) TODO could it be useful?
-        //            if (dialogueContainer.getCurrent().getColor().a == 0) {
-        //                getBatch().begin();
-        //                drawCinematicMode(getBatch());
-        //                blackout.draw(getCustomSpriteBatch());
-        //                getBatch().end();
-        //                return;
-        //            }
-        //        if (hqPanel.isVisible()) {
-        //            getBatch().begin();
-        //            hqPanel.draw(getBatch(), 1f);
-        //            getBatch().end();
-        //            return;
-        //        }
         if (Flags.isFootageMode()) { //|| !EidolonsGame.isHqEnabled()
             getBatch().begin();
             if (gameMenu.isVisible())
@@ -655,7 +633,7 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
             charsUp.remove(str);
         }
         if (lastTyped == character) {
-            float delta = 250; //TODO gdx quick fix
+            float delta = 450; //TODO gdx quick fix
             if (TimeMaster.getTime()-timeLastTyped  < delta) {
                 main.system.auxiliary.log.LogMaster.log(1, character + " - DOUBLE keyTyped!");
                 return true;
@@ -664,15 +642,8 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
         timeLastTyped = TimeMaster.getTime();
         lastTyped = character;
 
-        boolean result = false;
-        try {
-            result = handleKeyTyped(character);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        main.system.auxiliary.log.LogMaster.log(1, character + " - keyTyped " + result);
-        if (result)
-            return true;
+        Eidolons.onNonGdxThread(() ->  handleKeyTyped(character));
+
         return super.keyTyped(character);
     }
 

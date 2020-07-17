@@ -107,7 +107,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
             for (int j = module.getY(); j-module.getY()  < this.module.getEffectiveHeight(true); j++) {
                     DC_Cell cell = cells[i][j];
                 if (cell.isObjectsModified() || (!CoreEngine.isWeakCpu()&&!CoreEngine.isWeakGpu())
-                || !ExplorationMaster.isExplorationOn())
+                || (!ExplorationMaster.isExplorationOn() && cell.isUnitsHaveMovedHere()))
                     //TODO CORE Review
                 {
                     cell.resetObjectArrays();

@@ -509,12 +509,6 @@ public class GdxMaster {
         setCursorType(CURSOR.LOADING);
     }
 
-    public static void setEmptyCursor() {
-        if (Flags.isIDE()) {
-            return;
-        }
-        setCursorType(CURSOR.EMPTY);
-    }
 
     public static void setTargetingCursor() {
         setCursorType(CURSOR.TARGETING);
@@ -592,7 +586,7 @@ public class GdxMaster {
                 Gdx.graphics.setTitle(s));
     }
 
-    public static CustomSpriteBatch createBatchInstance(AtlasGenSpriteBatch.ATLAS_GROUP ui) {
+    public static CustomSpriteBatch createBatchInstance( ) {
         if (COLORFUL){
             return new ColorBatch();
         }
@@ -604,7 +598,7 @@ public class GdxMaster {
 
     public static CustomSpriteBatch getMainBatch() {
         if (batch == null) {
-            batch =  createBatchInstance(AtlasGenSpriteBatch.ATLAS_GROUP.grid);
+            batch =  createBatchInstance( );
         }
         return batch;
     }

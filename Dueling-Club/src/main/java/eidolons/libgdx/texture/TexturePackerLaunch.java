@@ -3,7 +3,7 @@ package eidolons.libgdx.texture;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
-import eidolons.libgdx.assets.Atlases;
+import eidolons.libgdx.assets.AssetEnums;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -69,18 +69,18 @@ public class TexturePackerLaunch {
 
 
 
-    public static final Atlases.ATLAS[] atlases = {
-            Atlases.ATLAS.UI_BASE,
-            Atlases.ATLAS.UI_DC,
-            Atlases.ATLAS.UNIT_VIEW,
-            Atlases.ATLAS.TEXTURES,
-            Atlases.ATLAS.SPRITES_GRID,
-            Atlases.ATLAS.SPRITES_UI,
+    public static final AssetEnums.ATLAS[] atlases = {
+            // AssetEnums.ATLAS.UI_BASE,
+            // AssetEnums.ATLAS.UI_DC,
+            // AssetEnums.ATLAS.UNIT_VIEW,
+            // AssetEnums.ATLAS.TEXTURES,
+            AssetEnums.ATLAS.SPRITES_GRID,
+            // AssetEnums.ATLAS.SPRITES_UI,
     };
 
-    private static void generateAtlases() {
+    public static void generateAtlases() {
         atlasGen = true;
-        for (Atlases.ATLAS atlas : atlases) {
+        for (AssetEnums.ATLAS atlas : atlases) {
             String name = atlas.toString().toLowerCase();
             String input = PathFinder.getAtlasGenPath() + name;
             String output = input;
@@ -122,8 +122,8 @@ public class TexturePackerLaunch {
         settings.format = Format.RGBA8888; //can we do w/o alpha some? or low quality?
         settings.jpegQuality = 0.8f;
 
-        settings.maxHeight = (int) Math.pow(2, 14);
-        settings.maxWidth = (int) Math.pow(2, 14);
+        settings.maxHeight = (int) Math.pow(2, 13);
+        settings.maxWidth = (int) Math.pow(2, 13);
         return settings;
     }
 

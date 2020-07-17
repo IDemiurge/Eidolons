@@ -14,6 +14,7 @@ import main.data.filesys.PathFinder;
 import main.level_editor.backend.struct.level.LE_Floor;
 import main.level_editor.gui.screen.LE_Screen;
 import main.level_editor.gui.screen.LE_WaitingScreen;
+import main.system.EventCallbackParam;
 
 import java.util.function.Supplier;
 
@@ -29,8 +30,9 @@ public class EditorApp extends GenericLauncher {
     protected ScreenLoader createScreenLoader() {
         return new ScreenLoader(this){
             @Override
-            public void screenSwitch(ScreenData newMeta) {
-                switch (newMeta.getType()) {
+            public void loadScreen(EventCallbackParam param) {
+                ScreenData newMeta = ((ScreenData) param.get());
+                switch (newMeta.getType() ) {
                     case EDITOR_WELCOME:
                         switchScreen(LE_WaitingScreen::getInstance, newMeta);
                         break;

@@ -1,7 +1,8 @@
 package eidolons.libgdx.anims.anim3d;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.libgdx.assets.AnimMaster3d.WEAPON_ANIM_CASE;
+import eidolons.libgdx.assets.AssetEnums;
+import eidolons.libgdx.assets.AssetEnums.WEAPON_ANIM_CASE;
 
 /**
  * Created by JustMe on 9/9/2017.
@@ -24,8 +25,8 @@ public class Missile3dAnim extends Weapon3dAnim {
 
     protected WEAPON_ANIM_CASE getCase() {
         if (getActive().isFailedLast())
-            return WEAPON_ANIM_CASE.MISSILE_MISS;
-        return WEAPON_ANIM_CASE.MISSILE;
+            return AssetEnums.WEAPON_ANIM_CASE.MISSILE_MISS;
+        return AssetEnums.WEAPON_ANIM_CASE.MISSILE;
     }
 
     @Override

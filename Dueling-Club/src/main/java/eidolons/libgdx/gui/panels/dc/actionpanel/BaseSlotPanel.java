@@ -21,7 +21,7 @@ public class BaseSlotPanel extends TablePanel {
 
     protected PagesMod activePage = PagesMod.NONE;
     private float beforeReset;
-    private final float resetPeriod = 5f;
+    private final float resetPeriod = 11f;
     private boolean hovered;
     public static boolean hoveredAny;
     private boolean firstUpdateDone;
@@ -29,6 +29,7 @@ public class BaseSlotPanel extends TablePanel {
     public BaseSlotPanel(int imageSize) {
         this.imageSize = imageSize;
         left().bottom();
+        setUpdateRequired(true);
     }
 
     @Override

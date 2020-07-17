@@ -11,13 +11,9 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.netherflame.main.event.TipMessageMaster;
 import eidolons.game.netherflame.main.event.TipMessageSource;
 import eidolons.game.netherflame.main.pale.PaleAspect;
-import eidolons.libgdx.anims.fullscreen.FullscreenAnimDataSource;
-import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.system.audio.MusicMaster;
-import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums;
 import main.elements.triggers.Trigger;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LOG_CHANNEL;
@@ -48,9 +44,6 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
     }
 
     public void glimpse() {
-        GuiEventManager.trigger(SHOW_FULLSCREEN_ANIM,
-                new FullscreenAnimDataSource(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH,
-                        1, FACING_DIRECTION.NONE, GenericEnums.BLENDING.SCREEN));
     }
 
     protected void updateQuest() {

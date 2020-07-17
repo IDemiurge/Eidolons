@@ -6,8 +6,9 @@ import com.badlogic.gdx.math.Vector3;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import eidolons.libgdx.assets.AnimMaster3d.PROJECTION;
-import eidolons.libgdx.assets.AnimMaster3d.WEAPON_ANIM_CASE;
+import eidolons.libgdx.assets.AssetEnums;
+import eidolons.libgdx.assets.AssetEnums.PROJECTION;
+import eidolons.libgdx.assets.AssetEnums.WEAPON_ANIM_CASE;
 import eidolons.libgdx.assets.Atlases;
 import main.game.bf.Coordinates;
 
@@ -37,7 +38,7 @@ public class Ready3dAnim extends Weapon3dAnim {
         sprite = projectionsMap.get(projection);
         if (sprite == null)
             sprite = Atlases.getSpriteForAction(getDuration(),
-             getActive(),  WEAPON_ANIM_CASE.READY, projection);
+             getActive(),  AssetEnums.WEAPON_ANIM_CASE.READY, projection);
 
         if (sprite == null)
             main.system.auxiliary.log.LogMaster.log(1, this + " null sprite  ");
@@ -107,6 +108,6 @@ public class Ready3dAnim extends Weapon3dAnim {
 
     @Override
     protected WEAPON_ANIM_CASE getCase() {
-        return WEAPON_ANIM_CASE.READY;
+        return AssetEnums.WEAPON_ANIM_CASE.READY;
     }
 }

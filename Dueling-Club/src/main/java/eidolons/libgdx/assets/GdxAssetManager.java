@@ -17,6 +17,7 @@ import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.secondary.ReflectionMaster;
 
 class GdxAssetManager extends AssetManager {
@@ -71,6 +72,7 @@ class GdxAssetManager extends AssetManager {
                         .setValue("data", null, this);
                 atlas.setPath(fileName);
                 main.system.auxiliary.log.LogMaster.log(1, fileName + " loaded!");
+                FileLogManager.stream(FileLogManager.LOG_OUTPUT.MAIN,  fileName + " loaded!");
 
                 Atlases.loaded(fileName, atlas);
                 return atlas;

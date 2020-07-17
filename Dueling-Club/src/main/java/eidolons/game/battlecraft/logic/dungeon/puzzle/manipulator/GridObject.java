@@ -25,6 +25,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.io.File;
 import java.util.*;
@@ -82,7 +83,9 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
     }
 
     protected EmitterActor createEmitter(String path, int offsetX, int offsetY) {
-        if (CoreEngine.isWeakGpu())
+        if (Flags.isMe() && CoreEngine.TEST_LAUNCH)
+            return null;
+        else if (CoreEngine.isWeakGpu())
             return null;
         path = PathFinder.getVfxAtlasPath() + path;
         EmitterActor emitter = EmitterPools.getEmitterActor(path);
@@ -124,7 +127,7 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         createEmittersOver();
 
         if (!(getParent() instanceof GridObject)) { //not for secondary
-                      initPosition();
+            initPosition();
         }
         initialized = true;
 
@@ -134,12 +137,13 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
 
     protected void initPosition() {
         Vector2 pos = GridMaster.getCenteredPos((c));
-        setPosition(pos.x+getOffsetX(), pos.y+getOffsetY());
+        setPosition(pos.x + getOffsetX(), pos.y + getOffsetY());
     }
 
     public float getOffsetX() {
         return 0;
     }
+
     public float getOffsetY() {
         return 0;
     }
@@ -260,11 +264,12 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
             });
         }
     }
+
     public boolean isScreen() {
         if (sprite == null) {
             return !emitters.isEmpty();
         }
-        return sprite.getSprite().getBlending()== GenericEnums.BLENDING.SCREEN;
+        return sprite.getSprite().getBlending() == GenericEnums.BLENDING.SCREEN;
     }
 
     protected boolean isHideWhenFade() {

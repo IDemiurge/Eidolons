@@ -419,7 +419,6 @@ public class DungeonScreen extends GameScreenWithTown {
                 Chronos.mark("ASSET_LOADING");
                 if (Assets.preloadObjects(((GridCreateData) param.get()).getObjects())) {
                     setLoadingAtlases(true);
-                    GdxMaster.setEmptyCursor();
                     return;
                 }
 

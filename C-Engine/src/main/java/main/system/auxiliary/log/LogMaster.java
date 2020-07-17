@@ -197,7 +197,7 @@ public class LogMaster {
     }
 
     private static boolean isConsoleLogging() {
-        return  !Flags.isExe();
+        return  true; // !Flags.isExe();
     }
 
     //TODO do these categories!

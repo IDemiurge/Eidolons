@@ -3,7 +3,6 @@ package eidolons.libgdx.gui.panels.dc.actionpanel;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
@@ -291,14 +290,15 @@ public class ActionPanel extends GroupX {
         super.act(delta);
         resetPositions();
 
-        altBg = EidolonsGame.isAltControlPanel();
-        background.setImage(altBg ? UiImages.BOTTOM_PANEL_BG_ALT : UiImages.BOTTOM_PANEL_BG);
-        if (altBg) {
-            if (quickSlotPanel.getColor().a == 1)
-                quickSlotPanel.fadeOut();
-            spellbookBtn.setVisible(false);
-            invBtn.setVisible(false);
-        } else {
+        // altBg = EidolonsGame.isAltControlPanel();
+        // background.setImage(altBg ? UiImages.BOTTOM_PANEL_BG_ALT : UiImages.BOTTOM_PANEL_BG);
+        // if (altBg) {
+        //     if (quickSlotPanel.getColor().a == 1)
+        //         quickSlotPanel.fadeOut();
+        //     spellbookBtn.setVisible(false);
+        //     invBtn.setVisible(false);
+        // } else
+            {
             spellPanel.setPosition(spellsPos.x, spellsPos.y);
             if (spellPanel.getColor().a == 0)
                 spellPanel.fadeIn();

@@ -7,7 +7,6 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -181,17 +180,7 @@ SCENARIOS.omitted=true;
         if (s == null) {
             return null;
         }
-        DC_TYPE type = null;
-       /* try {
-            type = valueOf(s.toUpperCase().replace(" ", "_"));
-        } catch (Exception e) {
-        }*/
-        type = getFromName(s);
-        if (type == null) {
-            LogMaster.log(0, "OBJ_TYPE not found: " + s);
-            // throw new RuntimeException();
-        }
-        return type;
+        return  getFromName(s);
     }
 
     public static int getCode(String objType) {

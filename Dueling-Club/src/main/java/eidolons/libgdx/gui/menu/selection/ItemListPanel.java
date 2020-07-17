@@ -167,8 +167,12 @@ public abstract class ItemListPanel extends TablePanel {
         selectWithOffset(-1);
     }
 
-    public void select(int i) {
-        clicked(i);
+    public void select(int index) {
+        try {
+            clicked(buttons.get(index), getItems().get(index));
+        } catch (Exception e) {
+            selected(items.get(index));
+        }
     }
 
     public int getIndex() {
@@ -182,7 +186,7 @@ public abstract class ItemListPanel extends TablePanel {
             index = 0;
         else if (index < 0)
             index = buttons.size() - 1;
-        clicked(index);
+        select(index);
     }
 
     public void selectRandomItem() {
@@ -192,20 +196,11 @@ public abstract class ItemListPanel extends TablePanel {
                 getRandomListItem(available);
         currentItem = item;
         if (ListMaster.isNotEmpty(buttons))
-            clicked(items.indexOf(item));
+            select(items.indexOf(item));
     }
 
     public void next() {
         selectWithOffset(1);
-    }
-
-    protected void clicked(int index) {
-        index = Math.min(buttons.size() - 1, index);
-        try {
-            clicked(buttons.get(index), getItems().get(index));
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
     }
 
     protected boolean clicked(TextButton textButton, SelectableItemData sub) {

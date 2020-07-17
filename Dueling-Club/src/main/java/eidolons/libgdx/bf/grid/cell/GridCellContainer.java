@@ -104,7 +104,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
                 imgContainer = overlay;
             }
         }
-        float a1 =  imgContainer. getColor().a;
+        float a1 = imgContainer.getColor().a;
         // if (getActions().size > 0) {
         //     a1 = getColor().a;
         // }
@@ -742,4 +742,10 @@ public class GridCellContainer extends GridCell implements Hoverable {
         return screen;
     }
 
+    @Override
+    public void setTransform(boolean transform) {
+        super.setTransform(transform);
+        if (transform)
+            main.system.auxiliary.log.LogMaster.log(1, this + " transform set: " + transform);
+    }
 }

@@ -12,16 +12,23 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid.VoidHandle
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.CinematicLib;
 import eidolons.game.module.cinematic.Cinematics;
+import eidolons.libgdx.anims.fullscreen.FullscreenAnimDataSource;
+import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.libgdx.anims.fullscreen.Screenshake;
+import eidolons.libgdx.assets.Assets;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
 import eidolons.libgdx.screens.ScreenMaster;
+import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import static main.system.GuiEventType.SHOW_FULLSCREEN_ANIM;
 
 public class VoidMazeHandler extends MazeHandler<VoidMaze> {
 
@@ -223,4 +230,12 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
         voidHandler.toggleAutoOff(Eidolons.getMainHero());
     }
 
+    @Override
+    public void glimpse() {
+        if (Assets.isLoaded(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath())) {
+            GuiEventManager.trigger(SHOW_FULLSCREEN_ANIM,
+                    new FullscreenAnimDataSource(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH,
+                            1, FACING_DIRECTION.NONE, GenericEnums.BLENDING.SCREEN));
+        }
+    }
 }

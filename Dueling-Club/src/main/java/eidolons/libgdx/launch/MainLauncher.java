@@ -32,8 +32,8 @@ public class MainLauncher extends GenericLauncher {
     private static CustomLaunch customLaunch;
 
     public static void main(String[] args) {
-        EidolonsGame.setVar("non_test", true);
-        EidolonsGame.setVar("tutorial", true);
+        // EidolonsGame.setVar("non_test", true);
+        // EidolonsGame.setVar("tutorial", true);
         GpuTester.test();
         CoreEngine.setSwingOn(false);
 //        if (!CoreEngine.isIDE())
@@ -47,6 +47,7 @@ public class MainLauncher extends GenericLauncher {
                 EidolonsGame.TOWN = true;
             }
             CoreEngine.TEST_LAUNCH = args[0].contains("test;");
+            System.out.println("TEST LAUNCH =" + CoreEngine.TEST_LAUNCH);
             Flags.setFastMode(CoreEngine.TEST_LAUNCH);
 
             if (args[0].contains("selecthero")) {

@@ -31,6 +31,7 @@ public class GroupX extends Group {
         setTransform(false);
     }
 
+
     @Override
     public void setRotation(float degrees) {
         if (getRotation()==degrees) {
@@ -38,9 +39,6 @@ public class GroupX extends Group {
         }
         super.setRotation(degrees);
         setTransform(degrees != 0);
-        // for (Group ancestor : GdxMaster.getAncestors(this)) {
-        //     ancestor.setTransform(degrees != 0);
-        // }
     }
 
     @Override
@@ -58,9 +56,6 @@ public class GroupX extends Group {
     protected void rotationChanged() {
         super.rotationChanged();
         setTransform(getRotation() != 0);
-        // for (Group ancestor : GdxMaster.getAncestors(this)) {
-        //     ancestor.setTransform(getRotation() != 0);
-        // }
     }
 
     public void addActor(Actor actor, int align) {

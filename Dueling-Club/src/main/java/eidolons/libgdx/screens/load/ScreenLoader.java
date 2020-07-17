@@ -1,6 +1,7 @@
 package eidolons.libgdx.screens.load;
 
 import com.badlogic.gdx.Screen;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
@@ -34,6 +35,7 @@ import java.util.function.Supplier;
 
 import static main.system.GuiEventType.SCREEN_LOADED;
 import static main.system.GuiEventType.SWITCH_SCREEN;
+import static main.system.auxiliary.log.LogMaster.important;
 
 public class ScreenLoader {
     private static boolean initRunning;
@@ -49,6 +51,7 @@ public class ScreenLoader {
     public void screenInit() {
         ScreenData data = new ScreenData(SCREEN_TYPE.MAIN_MENU, "Loading...");
         if (isFirstLoadingScreenShown()) {
+            Assets.preloadMenu();
             genericLauncher.setScreen(new LoadingScreen());
             genericLauncher.render();
         } else {
@@ -67,7 +70,7 @@ public class ScreenLoader {
 
     public void switchScreen(Supplier<ScreenWithLoader> factory, ScreenData meta) {
         GdxMaster.setLoadingCursor();
-        LogMaster.log(1, "switchScreen " + meta.getType());
+        important("switchScreen " + meta.getType());
         ScreenMaster.screenSet(meta.getType());
         final Screen oldScreen = genericLauncher.getScreen();
 
@@ -90,7 +93,7 @@ public class ScreenLoader {
     }
 
     public void triggerLoaded(ScreenData data) {
-        LogMaster.log(1, "triggerLoaded " + data.getName());
+        important( "triggerLoaded " + data.getName());
         if (BlackoutOld.isOnNewScreen())
             GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
 
@@ -112,7 +115,10 @@ public class ScreenLoader {
                         LogMaster.log(1, "*************** Second init attempted!");
                         return;
                     }
+
+                    GuiEventManager.trigger(GuiEventType.UPDATE_LOAD_STATUS, "Loading dungeon..." );
                     initScenario(data, data.getName());
+                    GuiEventManager.trigger(GuiEventType.UPDATE_LOAD_STATUS, "Dungeon loaded - " + EidolonsGame.lvlPath);
                     firstInitDone = true;
                     setInitRunning(false);
                 });
@@ -130,6 +136,7 @@ public class ScreenLoader {
 
     public void loadScreen(EventCallbackParam param) {
         ScreenData newMeta= (ScreenData) param.get();
+        important( newMeta.getType()+ " loadScreen()" );
         if (BlackoutOld.isOnNewScreen())
             GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
         if (newMeta != null) {
@@ -139,6 +146,7 @@ public class ScreenLoader {
                     break;
                 case DUNGEON:
                     //TODO PITCH FIX - GET INSTANCE!
+                    GuiEventManager.trigger(GuiEventType.UPDATE_LOAD_STATUS, "Loading game screen..." );
                     switchScreen(DungeonScreen::new, newMeta);
                     Eidolons.setScope(Eidolons.SCOPE.BATTLE);
                     break;
@@ -205,7 +213,7 @@ public class ScreenLoader {
     }
 
     protected boolean isFirstLoadingScreenShown() {
-        return CoreEngine.TEST_LAUNCH;
+        return !CoreEngine.TEST_LAUNCH  || (!Flags.isIDE());
     }
 
 }

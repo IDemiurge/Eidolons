@@ -8,7 +8,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.assets.Atlases;
+import eidolons.libgdx.assets.AssetEnums;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS;
 import main.content.values.properties.G_PROPS;
@@ -41,7 +41,7 @@ public class UnitViewOptions {
 
     public void setPortraitPath(String portraitPath) {
         this.portraitPath = portraitPath;
-        portraitTexture = TextureCache.getOrCreateR(portraitPath, Atlases.ATLAS.UNIT_VIEW);
+        portraitTexture = TextureCache.getOrCreateR(portraitPath, AssetEnums.ATLAS.UNIT_VIEW);
     }
 
     public UnitViewOptions() {
@@ -103,7 +103,7 @@ public class UnitViewOptions {
         if (portraitTexture == null) {
 
         }
-        this.portraitTexture = getOrCreateR(obj.getImagePath(), Atlases.ATLAS.UNIT_VIEW);
+        this.portraitTexture = getOrCreateR(obj.getImagePath(), AssetEnums.ATLAS.UNIT_VIEW);
         this.portraitPath = (obj.getImagePath());
         this.name = obj.getName();
         this.obj = obj;
@@ -130,7 +130,7 @@ public class UnitViewOptions {
         } else if (obj instanceof Unit) {
             this.directionValue = obj.getFacing().getDirection().getDegrees();
             this.directionPointerTexture = getOrCreateR(
-                    PathFinder.getUiPath() + "DIRECTION POINTER.png", Atlases.ATLAS.UNIT_VIEW);
+                    PathFinder.getUiPath() + "DIRECTION POINTER.png", AssetEnums.ATLAS.UNIT_VIEW);
 
 
             String emblem = PathFinder.getEmblemAutoFindPath() + obj.getProperty(G_PROPS.EMBLEM, true);
@@ -138,7 +138,7 @@ public class UnitViewOptions {
                 emblem = PathFinder.getEmblemAutoFindPath() + "undead.png";
             }
             if (ImageManager.isImage(emblem)) {
-                this.emblem = getOrCreateR(emblem, Atlases.ATLAS.UNIT_VIEW);
+                this.emblem = getOrCreateR(emblem, AssetEnums.ATLAS.UNIT_VIEW);
             } else {
                 emblem = PathFinder.getEmblemAutoFindPath() +
                         FileManager.findFirstFile(PathFinder.getImagePath() + PathFinder.getEmblemAutoFindPath(),
@@ -150,10 +150,10 @@ public class UnitViewOptions {
                 if (UNIT_VIEW_ATLAS) {
                     this.emblem = fromAtlas(UnitView.getAtlasPath(), PathUtils.getLastPathSegment(emblem));
                 } else if (ImageManager.isImage(emblem))
-                    this.emblem = getOrCreateR(emblem, Atlases.ATLAS.UNIT_VIEW);
+                    this.emblem = getOrCreateR(emblem, AssetEnums.ATLAS.UNIT_VIEW);
             }
             if (this.emblem == null)
-                this.emblem = getOrCreateR(ImageManager.getEmptyEmblemPath(), Atlases.ATLAS.UNIT_VIEW);
+                this.emblem = getOrCreateR(ImageManager.getEmptyEmblemPath(), AssetEnums.ATLAS.UNIT_VIEW);
 
             this.clockValue = AtbMaster.getDisplayedAtb(obj);
         }

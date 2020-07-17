@@ -183,7 +183,6 @@ public class EmitterMap extends GroupX {
                 });
         if (!getChildren().contains(ambience, true)) {
             addActor(ambience);
-            main.system.auxiliary.log.LogMaster.log(1, "Added VFX: " + ambience + " at " + c);
         }
         // ambience.setVisible(false);
     }

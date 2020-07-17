@@ -93,7 +93,7 @@ public class DecorInputHelper extends TextInputPanel {
 
     public void insert(String insert) {
         int cursorPosition = //tf.getCursorPosition();
-        tf.getText().length()-1;
+        tf.getText().length() ;
         tf.setText(tf.getText().substring(0, cursorPosition) + insert +
                 tf.getText().substring(cursorPosition));
     }

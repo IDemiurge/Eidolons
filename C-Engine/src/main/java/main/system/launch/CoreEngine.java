@@ -30,13 +30,14 @@ public class CoreEngine {
             "eidolons.elements", "eidolons.ability"};
 
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Backer;
-    public static final String VERSION = "0.5.1b";
+    public static final String VERSION = "0.5.2b";
     public static final String VERSION_NAME = "Tester Version"; //StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean RAM_OPTIMIZATION = true;
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean FULL_LAUNCH; ////TODO with audio and all - real xp!
     private static String selectivelyReadTypes;
     public static boolean TEST_LAUNCH;
+    public static boolean SELECT_LEVEL = false;
 
     public static boolean swingOn = true;
     private static boolean arcaneVault;
@@ -46,6 +47,10 @@ public class CoreEngine {
     static boolean reflectionMapDisabled;
     private static boolean weakGpu;
     private static boolean weakCpu;
+
+    public static boolean isFullLaunch() {
+        return FULL_LAUNCH || Flags.isJar();
+    }
 
     //core Review - good idea, but how to use it?
     public enum UPLOAD_PACKAGE {
@@ -61,13 +66,13 @@ public class CoreEngine {
         System.out.println("Eidolons " + VERSION);
         System.out.println("Core Engine Init... ");
 
-        if (isDiagOn()){
-        System.out.println("Heap size:  " +
-                ( Runtime.getRuntime().maxMemory()));
-        System.out.println("CPU's available:  " +
-                ( Runtime.getRuntime().availableProcessors()));
-               System.out.println("Total Memory:  " +
-                (         Runtime.getRuntime().totalMemory()));
+        if (isDiagOn()) {
+            System.out.println("Heap size:  " +
+                    (Runtime.getRuntime().maxMemory()));
+            System.out.println("CPU's available:  " +
+                    (Runtime.getRuntime().availableProcessors()));
+            System.out.println("Total Memory:  " +
+                    (Runtime.getRuntime().totalMemory()));
         }
 
         if (System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\Alexa")) {
@@ -101,7 +106,7 @@ public class CoreEngine {
         CoreEngine.dataInit(macro);
     }
 
-    public static   boolean isArcaneVault() {
+    public static boolean isArcaneVault() {
         return arcaneVault;
     }
 
@@ -120,6 +125,7 @@ public class CoreEngine {
     private static boolean isDiagOn() {
         return false;
     }
+
     public static boolean checkReadNecessary(String name) {
 
         if (selectivelyReadTypes != null) {
@@ -166,6 +172,7 @@ public class CoreEngine {
     public static boolean isMenuScope() {
         return menuScope;
     }
+
     public static void setSelectivelyReadTypes(String types) {
         selectivelyReadTypes = types;
     }
@@ -193,6 +200,7 @@ public class CoreEngine {
             WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
         }
     }
+
     public static void dataInit(boolean macro) {
         Chronos.mark("TYPES INIT");
 
@@ -227,7 +235,7 @@ public class CoreEngine {
     }
 
     private static boolean isCompileReflectionMap() {
-        if ( reflectionMapDisabled)
+        if (reflectionMapDisabled)
             return false;
         return !isLevelEditor();
     }

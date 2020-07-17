@@ -4,6 +4,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
@@ -45,6 +46,9 @@ public class AmbientMaster {
         //        if (!ExplorationMaster.isExplorationOn()){
         //            return null;
         //        }
+        if (!ExplorationMaster.isExplorationOn()) {
+            return null;
+        }
         if (EidolonsGame.BRIDGE) {
             if (!EidolonsGame.INTRO_STARTED) {
                 return null;

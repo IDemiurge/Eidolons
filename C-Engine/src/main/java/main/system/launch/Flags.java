@@ -295,6 +295,9 @@ public class Flags {
     }
 
     public static boolean isLiteLaunch() {
+        if (CoreEngine.TEST_LAUNCH) {
+            return true;
+        }
         if (isSuperLite())
             return true;
         return liteLaunch;

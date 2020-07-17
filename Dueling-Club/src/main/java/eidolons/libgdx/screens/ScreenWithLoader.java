@@ -19,6 +19,8 @@ import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.PostProcessingOptions;
 import eidolons.system.text.TipMaster;
 import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
@@ -43,6 +45,9 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
     protected Label tooltipLabel;
     protected Label waitingLabel;
 
+    protected Label statusLabel;
+    protected Label loadingLabel;
+
 
     protected SpriteAnimation backgroundSprite;
 
@@ -55,16 +60,17 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
 
         initBlackout();
         initPostProcessing();
-
+        GuiEventManager.bind(GuiEventType.UPDATE_LOAD_STATUS,
+                p -> statusLabel.setText(p.get().toString()));
     }
 
     protected void initPostProcessing() {
         if (Flags.isIggDemo()) {
             return;
         }
-            if (!OptionsMaster.getPostProcessingOptions().getBooleanValue(
-                    PostProcessingOptions.POST_PROCESSING_OPTIONS.ENABLED))
-                return;
+        if (!OptionsMaster.getPostProcessingOptions().getBooleanValue(
+                PostProcessingOptions.POST_PROCESSING_OPTIONS.ENABLED))
+            return;
         try {
             postProcessing = getPostProcessController();
         } catch (Exception e) {
@@ -94,8 +100,18 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
                 getWaitY());
         tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
 
+        statusLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 20));
+        statusLabel.setPosition(125,                90);
+
+        loadingLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 20));
+        loadingLabel.setPosition(0,                GdxMaster.getHeight()-100);
+
     }
 
+    public void loadTick() {
+        loadingLabel.setText( loadingLabel.getText()+".");
+
+    }
     public void loadDone(EventCallbackParam param) {
         this.param = param;
         loadingAssetsDone(param);
@@ -104,6 +120,7 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
     }
 
     public void loadingAssetsDone(EventCallbackParam param) {
+        loadingLabel.setText("");
         Chronos.logTimeElapsedForMark("ASSET_LOADING");
         if (isWaitForInput()) {
             setWaitingForInput(true);
@@ -112,9 +129,9 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
         } else
             done(this.param);
 
-//        if (param.get() instanceof BFDataCreatedEvent) {
-//       TODO      Assets.preloadAdditional(((BFDataCreatedEvent) param.get()).getObjects());
-//        }
+        //        if (param.get() instanceof BFDataCreatedEvent) {
+        //       TODO      Assets.preloadAdditional(((BFDataCreatedEvent) param.get()).getObjects());
+        //        }
     }
 
     protected void renderMain(float delta) {
@@ -122,7 +139,7 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
     }
 
     protected void renderLoader(float delta) {
-       if (loading) {
+        if (loading) {
             renderLoaderAndOverlays(delta);
         } else
             renderMain(delta);
@@ -130,7 +147,7 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
     }
 
     protected boolean isWaitForInput() {
-//        return !(CoreEngine.isIDE() || CoreEngine.isMacro());
+        //        return !(CoreEngine.isIDE() || CoreEngine.isMacro());
         return true;
     }
 
@@ -153,7 +170,7 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
     }
 
     protected void done(EventCallbackParam param) {
-            updateInputController();
+        updateInputController();
         if (isLoaded()) {
             main.system.auxiliary.log.LogMaster.devLog(" FIX DOUBLE LOAD!!!! " + toString() + param);
             return;
@@ -163,7 +180,7 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
         afterLoad();
         GdxMaster.setDefaultCursor();
         triggerInitialEvents();
-        main.system.auxiliary.log.LogMaster.devLog(toString() +" LOADed with " +  param);
+        main.system.auxiliary.log.LogMaster.devLog(toString() + " LOADed with " + param);
     }
 
     protected void triggerInitialEvents() {
@@ -215,10 +232,10 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
                 getBatch().resetBlending();
                 postProcessing.end();
             }
-        waited(delta);
+        loadWaited(delta);
         checkShaderReset();
         if (isLoadingAtlases()) {
-            if (  Assets.get().getManager().update()) {
+            if (Assets.get().getManager().update()) {
                 setLoadingAtlases(false);
                 loadingAssetsDone(param);
             } else if (isAssetLoadTimerOn())
@@ -263,7 +280,7 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
     protected void doBlackout() {
         if (blackoutAction.getTime() >= blackoutAction.getDuration()) {
             if (blackoutBack) {
-//                main.system.auxiliary.log.LogMaster.dev("BlackoutOld BACK;" + " blackout==" + blackout);
+                //                main.system.auxiliary.log.LogMaster.dev("BlackoutOld BACK;" + " blackout==" + blackout);
                 blackoutAction.setStart((blackout));
                 blackoutAction.setEnd(0);
                 blackoutAction.restart();
@@ -290,11 +307,9 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
 
     }
 
-    protected void waited(float delta) {
-        timeWaited += delta;
-
+    protected void loadWaited(float delta) {
         if (isWaitingForInputNow()) {
-
+            timeWaited += delta;
             float alpha = (timeWaited / 3) % 1;
             alpha = (alpha >= 0.5f) ? 1.5f - (alpha)
                     : alpha * 2 + 0.15f;
@@ -314,6 +329,8 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
                     tooltipTimer = 0;
                 }
                 tooltipLabel.draw(batch, 1);
+                statusLabel.draw(batch, 1);
+                loadingLabel.draw(batch, 1);
                 batch.end();
             } else tooltipLabel.setVisible(false);
         }
@@ -369,11 +386,14 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
     protected void renderLoaderAndOverlays(float delta) {
         loadingStage.act(delta);
         loadingStage.draw();
+        loadWaited(delta);
     }
 
 
     public void backToLoader() {
         loading = true;
+
+        loadingLabel.setText("");
     }
 
     public boolean isWaitingForInputNow() {
@@ -397,7 +417,7 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
     }
 
     protected boolean canShowScreen() {
-        return !loading  ;
+        return !loading;
     }
 
     public void setData(ScreenData data) {
@@ -419,7 +439,7 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
     protected InputProcessor createInputController() {
         if (isWaitingForInputNow())
             return getWaitForInputController(param);
-        return                 GdxMaster.getMultiplexer(loadingStage);
+        return GdxMaster.getMultiplexer(loadingStage);
     }
 
     public void updateInputController() {

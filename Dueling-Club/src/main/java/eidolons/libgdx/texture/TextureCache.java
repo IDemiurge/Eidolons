@@ -11,15 +11,17 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.assets.AssetEnums;
 import eidolons.libgdx.assets.Assets;
 import eidolons.libgdx.assets.Atlases;
+import eidolons.libgdx.assets.utils.AtlasGen;
 import eidolons.libgdx.screens.AtlasGenSpriteBatch;
-import eidolons.libgdx.utils.textures.AtlasGen;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 
 import java.nio.file.Path;
@@ -34,12 +36,12 @@ import java.util.concurrent.locks.ReentrantLock;
 import static main.system.auxiliary.log.LogMaster.important;
 
 public class TextureCache {
-    public static final boolean atlasesOn = true;// v !CoreEngine.TEST_LAUNCH;
+    public static final boolean atlasesOn =  !CoreEngine.TEST_LAUNCH || Flags.isJar();
     private static final Lock creationLock = new ReentrantLock();
     private static final ObjectMap<String, TextureRegion> regionCache = new ObjectMap<>(1300);
     private static final ObjectMap<TextureRegion, TextureRegionDrawable> drawableMap = new ObjectMap<>(1300);
-    private static final List<String> missingTextures = new LinkedList<>();
-    private static final List<String> atlasMissingTextures = new LinkedList<>();
+    public static final List<String> missingTextures = new LinkedList<>();
+    public static final List<String> atlasMissingTextures = new LinkedList<>();
 
     private static Texture missingTexture;
     private static boolean returnEmptyOnFail = true;
@@ -96,12 +98,12 @@ public class TextureCache {
     }
 
     ///////////// MAIN METHOD //////////////
-    public static TextureRegion getOrCreateR(String path, Atlases.ATLAS atlas) {
+    public static TextureRegion getOrCreateR(String path, AssetEnums.ATLAS atlas) {
         return getOrCreateR(path, false, atlas);
     }
 
     public static TextureRegion getOrCreateR(String path, boolean overrideNoAtlas,
-                                             Atlases.ATLAS atlas) {
+                                             AssetEnums.ATLAS atlas) {
         if (stats) {
             MapMaster.addToIntegerMap(statMap, path, 1);
         }
@@ -130,7 +132,7 @@ public class TextureCache {
                     }
                 }
                 if (region == null) {
-                    for (Atlases.ATLAS a : Atlases.all) {
+                    for (AssetEnums.ATLAS a : Atlases.all) {
                         if (a == atlas) continue;
                         region = a.file.findRegion(name);
                         if (region != null) break;
@@ -140,8 +142,6 @@ public class TextureCache {
                 if (atlasesOn && region == null) {
                     System.out.println("No img in atlases: " + name);
                     atlasMissingTextures.add(path);
-                } else {
-                    System.out.println("Img in atlas: " + name);
                 }
             }
         }
@@ -179,7 +179,7 @@ public class TextureCache {
     }
 
     public static TextureRegion getOrCreateRoundedRegion(String path, boolean write) {
-        TextureRegion region = getOrCreateR(GdxImageMaster.getRoundedPathNew(path));
+        TextureRegion region = getOrCreateR(GdxImageMaster.getRoundedPathRadial(path));
         if (!region.getTexture().equals(missingTexture)) {
             return region;
         }
