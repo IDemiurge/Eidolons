@@ -220,7 +220,7 @@ public class ShadowMap extends GroupX implements GridElement {
     }
 
     private boolean isLightEmittersOn() {
-        return false;
+        return true;
     }
 
     private void addShadowMapElement(Group element, int x, int y, float defaultAlpha) {

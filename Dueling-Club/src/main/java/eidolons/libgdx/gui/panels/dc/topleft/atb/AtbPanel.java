@@ -92,7 +92,7 @@ public class AtbPanel extends GroupX {
 
         queue = new QueueViewContainer[maxSize];
         queueGroup = new WidgetGroup();
-        addActor(background = new Image(new TextureRegionDrawable(TextureCache.getOrCreateR(StrPathBuilder.build("ui",
+        addActor(background = new Image(new TextureRegionDrawable(TextureCache.getRegionUI_DC(StrPathBuilder.build("ui",
                 "components", "dc", "atb", "atb background black.png")))));
         background.setPosition(getInactiveX(), 24);
         addActor(horizontal = new ImageContainer(Images.SEPARATOR_METAL));

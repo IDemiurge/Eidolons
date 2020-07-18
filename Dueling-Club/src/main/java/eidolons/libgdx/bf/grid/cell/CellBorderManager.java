@@ -26,8 +26,8 @@ public class CellBorderManager extends Group {
 
     public CellBorderManager() {
 
-        teamcolorTexture = TextureCache.getOrCreateR(teamcolorPath);
-        targetTexture = TextureCache.getOrCreateR(targetPath);
+        teamcolorTexture = TextureCache.getRegionUV(teamcolorPath);
+        targetTexture = TextureCache.getRegionUV(targetPath);
         bindEvents();
     }
 

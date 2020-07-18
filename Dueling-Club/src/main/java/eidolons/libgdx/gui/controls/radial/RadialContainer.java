@@ -346,7 +346,7 @@ public class RadialContainer extends ActionContainer {
 
         public TextureRegion getTextureRegion() {
             if (textureRegion == null)
-                textureRegion = TextureCache.getOrCreateR(texturePath);
+                textureRegion = TextureCache.getRegionUI_DC(texturePath);
             return textureRegion;
         }
 

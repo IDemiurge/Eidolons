@@ -111,6 +111,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         if (isFadeImageBackground()) {
             if (background == null) {
                 background = new FadeImageContainer(backgroundPath);
+                background.setNoAtlas(true);
                 background.setFadeDuration(3f);
             } else
                 background.setImage(backgroundPath);

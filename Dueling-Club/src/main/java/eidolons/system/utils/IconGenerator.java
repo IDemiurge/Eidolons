@@ -39,10 +39,10 @@ public class IconGenerator extends GdxUtil {
     private static IconGenerator generator;
     private static boolean rounded;
     private static boolean folderPerUnderlay = true;
-    private static boolean folderPerImage = true;
-    private static boolean applyOverlays = true;
-    private static boolean applyBackgroundOverlays = true;
-    private static boolean flipXisOn = true;
+    private static final boolean folderPerImage = true;
+    private static final boolean applyOverlays = true;
+    private static final boolean applyBackgroundOverlays = true;
+    private static final boolean flipXisOn = true;
     private static boolean flipYisOn = true;
     private static boolean resizeImage;
     private static boolean roundedUnderlay;
@@ -52,11 +52,11 @@ public class IconGenerator extends GdxUtil {
     String root;
     String underlay;
     String output;
-    private String overlays;
-    private String backgroundOverlays;
-    private boolean subdirs;
+    private final String overlays;
+    private final String backgroundOverlays;
+    private final boolean subdirs;
     private int i = 0;
-    private boolean flipUnderlayisOn = true;
+    private final boolean flipUnderlayisOn = true;
     private static boolean realNaming;
 
     public IconGenerator(String root, String underlay, String output, boolean subdirs) {
@@ -121,7 +121,7 @@ public class IconGenerator extends GdxUtil {
             if (ImageManager.isImageFile(sub.getName())) {
                 Gdx.app.postRunnable(() ->
                  GdxImageMaster.round(GdxImageMaster.cropImagePath(sub.getAbsolutePath()),
-                  true));
+                  true, ""));
             }
         }
     }
@@ -227,7 +227,7 @@ public class IconGenerator extends GdxUtil {
 
         Pixmap pixMap = GdxImageMaster.getPixmap(underlayTexture);
         Texture texture = rounded ?
-         GdxImageMaster.round(path, false).getTexture()
+         GdxImageMaster.round(path, false, "").getTexture()
          : TextureCache.getOrCreate(path);
         if (resizeImage)
             if (size != null)
@@ -311,7 +311,7 @@ public class IconGenerator extends GdxUtil {
                         if (FileManager.isDirectory(backgroundOverlays)) {
                             List<String> bgOverlays = FileManager.getFilesFromDirectory(backgroundOverlays, false, subdirs).
                              stream().map(file ->
-                             GdxImageMaster.cropImagePath(StrPathBuilder.build(backgroundOverlays, file.getName()))).collect(Collectors.toList());;
+                             GdxImageMaster.cropImagePath(StrPathBuilder.build(backgroundOverlays, file.getName()))).collect(Collectors.toList());
                             bgOverlays.add(""); // none
                             for (String bgOverlayPath : bgOverlays) {
 

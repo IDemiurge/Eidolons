@@ -144,7 +144,7 @@ public class UnitView extends BaseView implements HpBarView {
                     //                if (getUserObject().isResetOutlineOnHide())
                     if (getUserObject() instanceof Unit) {
                         if (!isMainHero())
-                            setPortraitTextureImmediately(TextureCache.getOrCreateR(
+                            setPortraitTextureImmediately(TextureCache.getRegionUV(
                                     OUTLINE_TYPE.UNKNOWN.getImagePath()));
                     }
             }
@@ -199,7 +199,7 @@ public class UnitView extends BaseView implements HpBarView {
         if (getUserObject().isWater()) {
             return;
         }
-        setPortraitTexture(TextureCache.getOrCreateR(
+        setPortraitTexture(TextureCache.getRegionUV(
                 OUTLINE_TYPE.UNKNOWN.getImagePath()));
     }
 
@@ -213,7 +213,7 @@ public class UnitView extends BaseView implements HpBarView {
 
     public TextureRegion getDefaultTexture() {
         if (defaultTexture == null) {
-            defaultTexture = TextureCache.getOrCreateR(
+            defaultTexture = TextureCache.getRegionUV(
                     OUTLINE_TYPE.UNKNOWN.getImagePath());
         }
         return defaultTexture;
@@ -228,9 +228,7 @@ public class UnitView extends BaseView implements HpBarView {
             TextureRegion emblem) {
         if (emblem != null) {
             emblemLighting = new Image(
-                    UnitViewOptions.UNIT_VIEW_ATLAS
-                            ? TextureCache.fromAtlas(UnitView.getAtlasPath(), "light")
-                            : TextureCache.getOrCreateR(ImageManager.STD_IMAGES.LIGHT.getPath()));
+                              TextureCache.getRegionUV(ImageManager.STD_IMAGES.LIGHT.getPath()));
             emblemLighting.setSize(getEmblemSize() * 10 / 9, getEmblemSize() * 10 / 9);
             emblemLighting.setPosition(getWidth() - emblemLighting.getWidth(), getHeight() - emblemLighting.getHeight());
             if (getTeamColor() != null)
@@ -267,7 +265,7 @@ public class UnitView extends BaseView implements HpBarView {
         if (flip == CONTENT_CONSTS.FLIP.VERT) {
             return TextureCache.getFlippedRegion(false, true, path);
         }
-        return TextureCache.getOrCreateR(path);
+        return TextureCache.getRegionUV(path);
     }
 
     public void setOutlineSupplier(Supplier<TextureRegion> outlineSupplier) {
@@ -282,7 +280,7 @@ public class UnitView extends BaseView implements HpBarView {
             if (!TextureCache.isCached(pathSupplier.get())) {
                 return;
             }
-        this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());
+        this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getRegionUV(pathSupplier.get());
     }
 
     public void setFlickering(boolean flickering) {

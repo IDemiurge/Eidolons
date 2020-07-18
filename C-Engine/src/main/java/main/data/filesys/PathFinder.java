@@ -561,8 +561,17 @@ public class PathFinder {
         return getImagePath()+"atlas img/";
     }
     public static String getAtlasGenPath() {
-        return getImagePath()+"gen/atlas/";
+        return   getImagePath()+"atlas/";
     }
+
+    // private static String cacheAndReturn(String key, String path) {
+    //     //const per key!
+    //    s= paths.get(key);
+    //     if (s==null){
+    //         paths.put(key, path);
+    //         return path;
+    //     }
+    // }
 
     public static String getPillarsPath() {
         return  "ui/cells/pillars/";
@@ -575,4 +584,6 @@ public class PathFinder {
     public static String getHieroImagePath() {
         return getImagePath()+ "ui/main/hiero/";
     }
+
+
 }

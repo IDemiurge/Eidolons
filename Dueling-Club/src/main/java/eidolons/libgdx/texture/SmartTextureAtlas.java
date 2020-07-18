@@ -5,21 +5,25 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import eidolons.libgdx.assets.AssetEnums;
 import main.system.PathUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
-import main.system.launch.Flags;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static main.system.auxiliary.log.LogMaster.important;
 
 /**
  * Created by JustMe on 11/15/2017.
  */
 public class SmartTextureAtlas extends TextureAtlas {
-    private static final Map<String, SmartTextureAtlas> cache = new HashMap<>();
+    private final Map<String, AtlasRegion> cache = new HashMap<>();
     private String path;
+    private AssetEnums.ATLAS type;
 
     @Override
     public Sprite createSprite(String name, int index) {
@@ -29,29 +33,15 @@ public class SmartTextureAtlas extends TextureAtlas {
     public SmartTextureAtlas(String path) {
         super(path);
         this.path = path;
-        main.system.auxiliary.log.LogMaster.devLog("SmartTextureAtlas created: " + path);
+        LogMaster.devLog("SmartTextureAtlas created: " + path);
     }
 
     public SmartTextureAtlas(TextureAtlasData data) {
         super(data);
     }
 
-    public static SmartTextureAtlas getAtlas(String path) {
-        SmartTextureAtlas atlas =
-                cache.get(path.toLowerCase());
-        if (atlas != null)
-            return atlas;
-        atlas = new SmartTextureAtlas(path);
-        cache.put(path.toLowerCase(), atlas);
-        return atlas;
-    }
-
     public String getPath() {
         return path;
-    }
-
-    public static void clearCache() {
-        cache.clear();
     }
 
     @Override
@@ -101,27 +91,39 @@ public class SmartTextureAtlas extends TextureAtlas {
         return findRegion(name, false);
     }
 
-    public AtlasRegion findRegion(String name, boolean recursion) {
-        name = FileManager.formatPath(name, true, true);
+    public AtlasRegion findRegion(String orig, boolean recursion) {
+        AtlasRegion region = cache.get(orig);
+        if (region != null) {
+            return region;
+        }
+        String name = FileManager.formatPath(orig, true, true);
         Array<AtlasRegion> regions = getRegions();
         for (int i = 0, n = regions.size; i < n; i++) {
             String s = regions.get(i).name;
-            if (Flags.isJar()) {
-                s = FileManager.formatPath(s, true, true);
+            // if (Flags.isJar()) {
+            //     s = FileManager.formatPath(s, true, true);
+            // }
+            if (s.equalsIgnoreCase(name)) {
+                region = regions.get(i);
+                cache.put(orig, region);
+                return region;
             }
-            if (s
-                    .equalsIgnoreCase(name)) return regions.get(i);
         }
 
-        if (!recursion) {
-            name = formatFileName(name);
-            return findRegion(name, true);
-        }
+        // if (!recursion) {
+        //     name = formatFileName(name);
+        //     important(type + " - Recursion for region: " + name);
+        //     return findRegion(name, true);
+        // } else
+            important(type + " - Atlas region not found: " + name);
         return null;
     }
 
     private String formatFileName(String name) {
         String numericSuffix = NumberUtils.getNumericSuffix(StringMaster.cropFormat(name));
+        if (numericSuffix.isEmpty()) {
+            return name;
+        }
         String croppedName = name.replace("_" + numericSuffix, "");
         if (croppedName.equals(name)) {
             croppedName = name.replace(" " + numericSuffix, "");
@@ -130,8 +132,10 @@ public class SmartTextureAtlas extends TextureAtlas {
             croppedName = name.replace(numericSuffix, "");
         }
         if (croppedName.equals(name)) {
-           return name;
+            return name;
         }
+
+        important(type + " - " + name + "[***] PATH CHANGED Atlas region =>  " + croppedName);
         return croppedName;
     }
 
@@ -146,5 +150,13 @@ public class SmartTextureAtlas extends TextureAtlas {
 
     public void setPath(String fileName) {
         this.path = fileName;
+    }
+
+    public void setType(AssetEnums.ATLAS type) {
+        this.type = type;
+    }
+
+    public AssetEnums.ATLAS getType() {
+        return type;
     }
 }

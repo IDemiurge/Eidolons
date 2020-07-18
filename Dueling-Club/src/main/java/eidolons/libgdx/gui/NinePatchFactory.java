@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
+import static eidolons.libgdx.texture.TextureCache.getRegionUI;
 
 public class NinePatchFactory {
 
@@ -52,45 +52,45 @@ public class NinePatchFactory {
 
     public static NinePatch getTooltip() {
         return getLightPanelFilled();
-//        return new NinePatch(getOrCreateR("ui/components/tooltip_background.png"), 16, 16, 14, 14);
+//        return new NinePatch(getRegionUI("ui/components/tooltip_background.png"), 16, 16, 14, 14);
     }
 
     public static NinePatch get3pxBorder() {
-        return new NinePatch(getOrCreateR(
+        return new NinePatch(getRegionUI(
                 StrPathBuilder.build(PathFinder.getComponentsPath(),
                         "ninepatch", "std", "background_3px_border.png")), 3, 3, 3, 3);
     }
 
     public static NinePatch getMainMenuFrame() {
-        return new NinePatch(getOrCreateR("ui/components/MainMenu ninepatch.png"), 120, 120, 146, 128);
+        return new NinePatch(getRegionUI("ui/components/MainMenu ninepatch.png"), 120, 120, 146, 128);
     }
 
     public static NinePatch getHqEmpty() {
-        return new NinePatch(getOrCreateR(
+        return new NinePatch(getRegionUI(
                 LIGHT_PANEL_HQ_EMPTY_PATH), 10, 10, 10, 10);
     }
 
     public static NinePatchDrawable getHqEmptyDrawable() {
-        return new NinePatchDrawable(new NinePatch(getOrCreateR(
+        return new NinePatchDrawable(new NinePatch(getRegionUI(
                 LIGHT_PANEL_HQ_EMPTY_PATH), 10, 10, 10, 10));
     }
 
     public static NinePatch getHq() {
-        return new NinePatch(getOrCreateR(
+        return new NinePatch(getRegionUI(
                 LIGHT_PANEL_HQ_PATH), 10, 10, 10, 10);
     }
 
     public static NinePatchDrawable getHqDrawable() {
-        return new NinePatchDrawable(new NinePatch(getOrCreateR(
+        return new NinePatchDrawable(new NinePatch(getRegionUI(
                 LIGHT_PANEL_HQ_PATH), 10, 10, 10, 10));
     }
 
     public static NinePatch getInfoPanel() {
-        return new NinePatch(getOrCreateR("ui/components/panel ninepatch.png"), 50, 50, 50, 50);
+        return new NinePatch(getRegionUI("ui/components/panel ninepatch.png"), 50, 50, 50, 50);
     }
 
     public static NinePatch getLightPanelFilledSmall() {
-        return new NinePatch(getOrCreateR(
+        return new NinePatch(getRegionUI(
                 LIGHT_PANEL_FILLED_SMALL_PATH), 5, 5, 5, 5);
     }
 
@@ -99,12 +99,12 @@ public class NinePatchFactory {
     }
 
     public static NinePatch getLightPanelFilled() {
-        return new NinePatch(getOrCreateR(
+        return new NinePatch(getRegionUI(
                 LIGHT_PANEL_FILLED_PATH), 10, 10, 10, 10);
     }
 
     public static NinePatch getLightPanel() {
-        return new NinePatch(getOrCreateR(
+        return new NinePatch(getRegionUI(
                 LIGHT_PANEL_PATH), 10, 10, 10, 10);
     }
 
@@ -144,21 +144,21 @@ public class NinePatchFactory {
     }
 
     private static NinePatch getZarkFrame() {
-        return new NinePatch(getOrCreateR(
+        return new NinePatch(getRegionUI(
                 ZARK_FRAME_PATH), 104, 104, 92, 92);
     }
 
     private static NinePatch getZarkLarge() {
-        return new NinePatch(getOrCreateR(
+        return new NinePatch(getRegionUI(
                 ZARK_LARGE_PATH), 70, 70, 70, 70);
     }
     private static NinePatch getHighlight() {
-        return new NinePatch(getOrCreateR(
+        return new NinePatch(getRegionUI(
                 HIGHLIGHT_PATH), 10, 10, 10, 10);
     }
 
     private static NinePatch getHighlightSmall() {
-        return new NinePatch(getOrCreateR(
+        return new NinePatch(getRegionUI(
                 HIGHLIGHT_SMALL_PATH), 5, 5, 5, 5);
     }
 
@@ -171,12 +171,12 @@ public class NinePatchFactory {
     }
 
     private static NinePatch getLightDecorPanel() {
-        return new NinePatch(getOrCreateR(
+        return new NinePatch(getRegionUI(
                 LIGHT_DECOR_PANEL_PATH), 10, 10, 10, 10);
     }
 
     private static NinePatch getLightDecorPanelFilled() {
-        return new NinePatch(getOrCreateR(
+        return new NinePatch(getRegionUI(
                 LIGHT_DECOR_FILLED_PANEL_PATH), 10, 10, 10, 10);
     }
 
@@ -185,22 +185,22 @@ public class NinePatchFactory {
     }
 
     public static NinePatchDrawable getScrollH() {
-        return new NinePatchDrawable(new NinePatch(getOrCreateR(
+        return new NinePatchDrawable(new NinePatch(getRegionUI(
                 SCROLL_H), 0, 0, 30, 30));
     }
 
     public static NinePatchDrawable getScrollKnobH() {
-        return new NinePatchDrawable(new NinePatch(getOrCreateR(
+        return new NinePatchDrawable(new NinePatch(getRegionUI(
                 SCROLL_KNOB_H), 0, 0, 0, 0));
     }
 
     public static NinePatchDrawable getScrollV() {
-        return new NinePatchDrawable(new NinePatch(getOrCreateR(
+        return new NinePatchDrawable(new NinePatch(getRegionUI(
                 SCROLL), 0, 0, 30, 30));
     }
 
     public static NinePatchDrawable getScrollKnobV() {
-        return new NinePatchDrawable(new NinePatch(getOrCreateR(
+        return new NinePatchDrawable(new NinePatch(getRegionUI(
                 SCROLL_KNOB), 0, 0, 0, 0));
     }
 

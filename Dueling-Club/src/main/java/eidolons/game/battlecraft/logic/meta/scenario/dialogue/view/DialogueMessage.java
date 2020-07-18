@@ -32,10 +32,10 @@ public class DialogueMessage extends TablePanelX {
         }
         message = message.trim();
         this.append = append;
-        this.actorImage = new Image(TextureCache.getOrCreateR(img));
+        this.actorImage = new Image(TextureCache.getRegionUV(img));
 
         if (actorName.isEmpty() && message.isEmpty()) {
-            add(this.actorImage = new Image(TextureCache.getOrCreateR(img))).
+            add(this.actorImage = new Image(TextureCache.getRegionUV(img))).
                     size(actorImage.getPrefWidth(), actorImage.getPrefHeight()).center().padLeft(24);
             return;
         }

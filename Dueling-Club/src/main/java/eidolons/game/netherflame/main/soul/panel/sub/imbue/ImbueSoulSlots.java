@@ -13,7 +13,7 @@ import eidolons.libgdx.texture.Images;
 public class ImbueSoulSlots extends TablePanelX {
     ImbuePanel imbuePanel;
     private Soul[] souls = new Soul[4];
-    private SoulSlot[] slots = new SoulSlot[4];
+    private final SoulSlot[] slots = new SoulSlot[4];
 
     public ImbueSoulSlots(ImbuePanel imbuePanel) {
         this.imbuePanel = imbuePanel;
@@ -82,7 +82,7 @@ public class ImbueSoulSlots extends TablePanelX {
                 container.setImage("");
             } else
             {
-                container.setImage(new Image(GdxImageMaster.round(soul.getUnitType().getImagePath(),false)));
+                container.setImage(new Image(GdxImageMaster.round(soul.getUnitType().getImagePath(),false, "")));
                 container.setScale(0.76f);
 //                container.setImage(soul.getUnitType().getImagePath());
             }

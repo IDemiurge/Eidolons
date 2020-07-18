@@ -56,9 +56,9 @@ public abstract class ValueBar extends SuperActor {
     }
 
     protected void initRegions() {
-        overBarRegion = TextureCache.getOrCreateR(getBarImagePath(true));
-        underBarRegion = TextureCache.getOrCreateR(getBarImagePath(false));
-        barBgRegion = TextureCache.getOrCreateR(getBarBgPath());
+        overBarRegion = TextureCache.getRegionUI_DC(getBarImagePath(true));
+        underBarRegion = TextureCache.getRegionUI_DC(getBarImagePath(false));
+        barBgRegion = TextureCache.getRegionUI_DC(getBarBgPath());
         barBg = new Image(barBgRegion);
         addActor(barBg);
 

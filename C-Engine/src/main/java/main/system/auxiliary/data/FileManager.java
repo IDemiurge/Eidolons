@@ -261,8 +261,11 @@ public class FileManager {
 
     public static String formatPath(String path, boolean force, boolean removeLastSlash) {
         String v = formatPath(path, force);
-        if (removeLastSlash)
-            return v.substring(0, v.length() - 1);
+        if (removeLastSlash) {
+            if (v.endsWith("/")) {
+                return v.substring(0, v.length() - 1);
+            }
+        }
         return v;
     }
 
@@ -313,16 +316,17 @@ public class FileManager {
         return getRandomFilePathVariant("", corePath, format, underslash, recursion);
     }
 
-    public static String getRandomFilePathVariantSmart(String filename, String dir, String format ) {
-      return   getRandomFilePathVariantSmart(filename, dir, format,false);
+    public static String getRandomFilePathVariantSmart(String filename, String dir, String format) {
+        return getRandomFilePathVariantSmart(filename, dir, format, false);
     }
+
     public static String getRandomFilePathVariantSmart(String filename, String dir, String format, boolean remove) {
         String key = (dir + filename).toLowerCase();
 
         List<File> filtered = variantCache.get(key);
         if (!ListMaster.isNotEmpty(filtered)) {
             String finalFilename = filename.toLowerCase();
-            List<File> files = getFilesFromDirectory(dir, false, false,false);
+            List<File> files = getFilesFromDirectory(dir, false, false, false);
             filtered = files.stream().filter(file
                     -> (file.getName().toLowerCase().startsWith(finalFilename))
                     && file.getName().toLowerCase().endsWith(format))
@@ -331,7 +335,7 @@ public class FileManager {
         }
         int index = RandomWizard.getRandomIndex(filtered);
         if (index < 0) {
-            return dir + "/" + filename+format;
+            return dir + "/" + filename + format;
         }
         if (remove)
             return filtered.remove(index).getPath();
@@ -678,6 +682,7 @@ public class FileManager {
     public static Path getPath(String s) {
         return getPath(getFile(s));
     }
+
     public static Path getPath(File file) {
         return Paths.get(file.toURI());
     }
@@ -702,6 +707,7 @@ public class FileManager {
     public static void delete(String s) {
         delete(getFile(s));
     }
+
     public static void delete(File s) {
         try {
             FileUtils.deleteDirectory(s);
@@ -709,10 +715,11 @@ public class FileManager {
             e.printStackTrace();
         }
     }
+
     public static Boolean copy(String from, String to) {
         Path src = Paths.get(getFile(from).toURI());
         File file = getFile(to);
-        Boolean result=true;
+        Boolean result = true;
         if (!file.exists()) {
             file.mkdirs();
         } else {
@@ -740,7 +747,7 @@ public class FileManager {
         List<File> files = getFilesFromDirectory(
                 PathFinder.getImagePath() +
                         PathFinder.getSpritesPath() + suffix, false, true, false);
-        files.removeIf(file-> !StringMaster.getFormat(file.getName()).toLowerCase().contains("txt"));
+        files.removeIf(file -> !StringMaster.getFormat(file.getName()).toLowerCase().contains("txt"));
         return files;
     }
 

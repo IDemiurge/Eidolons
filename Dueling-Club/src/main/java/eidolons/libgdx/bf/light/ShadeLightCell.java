@@ -2,7 +2,6 @@ package eidolons.libgdx.bf.light;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -21,7 +20,6 @@ import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
@@ -46,21 +44,6 @@ public class ShadeLightCell extends SuperContainer {
     private final SHADE_CELL type;
     private Float originalX;
     private Float originalY;
-    private boolean voidCell;
-    static SmartTextureAtlas shadowMapAtlas;
-
-    public static SmartTextureAtlas getShadowMapAtlas() {
-        if (shadowMapAtlas == null) {
-            shadowMapAtlas = new SmartTextureAtlas(
-                    PathFinder.getImagePath() +
-                            "ui/cells/outlines/shadows/shadows.txt");
-        }
-        return shadowMapAtlas;
-    }
-
-    public ShadeLightCell(SHADE_CELL type) {
-        this(type, null);
-    }
 
     public ShadeLightCell(SHADE_CELL type, Object arg) {
         super(new Image(getTexture(type)));
@@ -92,21 +75,7 @@ public class ShadeLightCell extends SuperContainer {
     }
 
     private static TextureRegion getTexture(SHADE_CELL type) {
-        if (!isUseAtlas()) {
-            return TextureCache.getOrCreateR(GdxImageMaster.cropImagePath(getTexturePath(type)));
-        }
-        TextureAtlas.AtlasRegion texture = getShadowMapAtlas().findRegionFromFullPath(
-                (getTexturePath(type)));
-        if (texture == null) {
-            main.system.auxiliary.log.LogMaster.important(getTexturePath(type)
-                    + " - " + type + " has null texture ( ");
-            return TextureCache.getOrCreateR(getTexturePath(type));
-        }
-        return texture;
-    }
-
-    private static boolean isUseAtlas() {
-        return false;
+            return TextureCache.getRegionUV(GdxImageMaster.cropImagePath(getTexturePath(type)));
     }
 
     private static String getTexturePath(SHADE_CELL type) {
@@ -312,10 +281,6 @@ public class ShadeLightCell extends SuperContainer {
         }
 
         setPosition(originalX + offsetX / 3, originalY + offsetY / 3);
-    }
-
-    public void setVoid(boolean aVoid) {
-        this.voidCell = aVoid;
     }
 
     public float getBaseAlpha() {

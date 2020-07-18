@@ -85,7 +85,7 @@ public class PlatformDecor extends NoHitGroup {
         switch (type) {
             case vessel:
                 Image actor;
-                container.addActor(actor = new Image(TextureCache.getOrCreateR(Images.PLATFORM_VESSEL)));
+                container.addActor(actor = new Image(TextureCache.getRegionUV(Images.PLATFORM_VESSEL)));
                 actor.setY(-40);
                 // addRotating(angle, Images.PLATFORM_HORN);
                 // int n = 1;
@@ -102,7 +102,7 @@ public class PlatformDecor extends NoHitGroup {
                 img=Images.PLATFORM_ISLAND;
             case rock:
                 Image island;
-                container.addActor(island = new Image(TextureCache.getOrCreateR(img)));
+                container.addActor(island = new Image(TextureCache.getRegionUV(img)));
                 island.pack();
                 GdxMaster.center(island);
                 island.setY(h * 80 - island.getImageHeight());
@@ -181,7 +181,7 @@ public class PlatformDecor extends NoHitGroup {
         Image horn2;
 
         rotateMap.put(horn1 = new Image(
-                        TextureCache.getOrCreateR(imagePath)),
+                        TextureCache.getRegionUV(imagePath)),
                 new Vector2(angle, angle - 90));
         container.addActor(horn1);
         rotateMap.put(horn2 = new Image(

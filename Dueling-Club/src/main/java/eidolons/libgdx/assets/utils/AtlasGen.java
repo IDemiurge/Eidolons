@@ -15,17 +15,22 @@ import java.io.File;
 
 public class AtlasGen {
 
+    public static final String[] sprites_oneframe = {
+            "gen/one_frame/*"
+    };
     public static final String[] textures = {
-            "oneframe", //TODO
             "main/textures/*"
     };
     public static final String[] ui_dc = {
             "gen/entity/buffs/*",
             "gen/entity/items/*",
             "gen/entity/spells/*",
-            "img/main/item/*",
+            "main/item/*",
             "ui/components/dc/*",
-            "ui/content/*",
+            "ui/components/hq/*",
+            "ui/components/tiny/*",
+            "ui/components/small/*",
+            "ui/content/value icons/*",
     };
     public static final String[] ui_sprites = {
             "sprites/ui",
@@ -38,11 +43,15 @@ public class AtlasGen {
     };
     public static final String[] unitview = {
             "gen/entity/bf obj/*",
-            "img/main/bf/*",
+            "main/bf/*",
             "main/units/*",
             "main/heroes/*",
-            "ui/content",
-            "ui/cells/*",
+            "ui/cells/outlines/*",
+            "ui/cells/set/*",
+            "ui/cells/advanced/platform/*",
+            "ui/content/dc_icons/*",
+            "ui/content/emblems/*",
+            "ui/content/modes/*",
     };
     public static final String[] ui_base = {
             "ui",
@@ -54,7 +63,7 @@ public class AtlasGen {
     };
     public static final AssetEnums.ATLAS[] cleanUpAtlases = {
             // Atlases.ATLAS.UI_BASE,
-            // AssetEnums.ATLAS.UI_DC,
+            AssetEnums.ATLAS.UI_DC,
             // Atlases.ATLAS.UNIT_VIEW,
             // Atlases.ATLAS.TEXTURES,
             // Atlases.ATLAS.SPRITES_GRID,
@@ -68,7 +77,7 @@ public class AtlasGen {
 
     public static final String[] roundedFolders = {
             // "gen/entity/bf obj/",
-            // "img/main/bf/",
+            // "main/bf/",
             "main/units/",
             "main/heroes/",
     };
@@ -102,7 +111,7 @@ public class AtlasGen {
                         main.system.auxiliary.log.LogMaster.log(1, " rounded generated   " + handle);
                     }
                 } else if (GdxMaster.isGdxThread()) {
-                    TextureRegion round = GdxImageMaster.round(file.getPath(), false);
+                    TextureRegion round = GdxImageMaster.round(file.getPath(), false, "");
                     GdxImageMaster.writeImage(handle, round);
                 }
             }
@@ -149,6 +158,8 @@ public class AtlasGen {
 
     private static String[] getPaths(AssetEnums.ATLAS atlas) {
         switch (atlas) {
+            case SPRITES_ONEFRAME:
+                return sprites_oneframe;
             case UI_BASE:
                 return ui_base;
             // case UI_MACRO:

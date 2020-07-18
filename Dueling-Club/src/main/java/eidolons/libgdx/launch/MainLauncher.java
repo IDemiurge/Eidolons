@@ -48,6 +48,10 @@ public class MainLauncher extends GenericLauncher {
             }
             CoreEngine.TEST_LAUNCH = args[0].contains("test;");
             System.out.println("TEST LAUNCH =" + CoreEngine.TEST_LAUNCH);
+
+            Flags.setJarlike(args[0].contains("jarlike;"));
+            System.out.println("jarlike =" + Flags.isJarlike());
+
             Flags.setFastMode(CoreEngine.TEST_LAUNCH);
 
             if (args[0].contains("selecthero")) {
@@ -88,7 +92,7 @@ public class MainLauncher extends GenericLauncher {
             Flags.setFullFastMode(args.length > 3);
         }
         if (Flags.isIDE()) {
-            Flags.setJarlike(!Flags.isFastMode());
+            // Flags.setJarlike(!Flags.isFastMode());
             if (Flags.isFastMode())//|| CoreEngine.isActiveTestMode())
                 TestMasterContent.setAddSpells(true);
             if (Flags.isFullFastMode()) {

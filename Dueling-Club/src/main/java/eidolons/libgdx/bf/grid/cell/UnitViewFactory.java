@@ -23,6 +23,7 @@ import eidolons.libgdx.gui.tooltips.LastSeenTooltipFactory;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
 import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
@@ -37,7 +38,6 @@ import main.system.launch.Flags;
 import java.util.Map;
 import java.util.function.Function;
 
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
 import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
 
@@ -162,7 +162,7 @@ public class UnitViewFactory {
     }
 
     public static BaseView createGraveyardView(BattleFieldObject bfObj) {
-        BaseView view = new BaseView(getOrCreateR(bfObj.getImagePath()), bfObj.getImagePath());
+        BaseView view = new BaseView(TextureCache.getRegionUV(bfObj.getImagePath()), bfObj.getImagePath());
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
         tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj, view));
         view.addListener(tooltip.getController());

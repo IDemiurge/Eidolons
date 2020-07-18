@@ -8,21 +8,17 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.assets.AssetEnums;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
-import main.system.PathUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 
-import static eidolons.libgdx.texture.TextureCache.fromAtlas;
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
+import static eidolons.libgdx.texture.TextureCache.getRegionUV;
 
 public class UnitViewOptions {
 
-    public static final boolean UNIT_VIEW_ATLAS = false;
     public boolean cellBackground;
     private Runnable runnable;
     private TextureRegion portraitTexture;
@@ -41,7 +37,7 @@ public class UnitViewOptions {
 
     public void setPortraitPath(String portraitPath) {
         this.portraitPath = portraitPath;
-        portraitTexture = TextureCache.getOrCreateR(portraitPath, AssetEnums.ATLAS.UNIT_VIEW);
+        portraitTexture = TextureCache.getRegionUV(portraitPath);
     }
 
     public UnitViewOptions() {
@@ -91,25 +87,11 @@ public class UnitViewOptions {
     }
 
     public final void createFromGameObject(BattleFieldObject obj) {
-        if (UNIT_VIEW_ATLAS) {
-            String imgPath = obj.getImagePath().replace("main", "unitview");
-            if (obj instanceof Structure) {
-                imgPath = "unitview/objects/" + PathUtils.getLastPathSegment(imgPath);
-            }
-            {
-                this.portraitTexture = fromAtlas(UnitView.getAtlasPath(), imgPath);
-            }
-        }
-        if (portraitTexture == null) {
-
-        }
-        this.portraitTexture = getOrCreateR(obj.getImagePath(), AssetEnums.ATLAS.UNIT_VIEW);
+        this.portraitTexture = getRegionUV(obj.getImagePath());
         this.portraitPath = (obj.getImagePath());
         this.name = obj.getName();
         this.obj = obj;
         this.flip = obj.getFlip();
-
-
         this.mainHero = obj.isMine() && obj.isMainHero();
 
         if (obj instanceof Structure) {
@@ -129,8 +111,8 @@ public class UnitViewOptions {
 
         } else if (obj instanceof Unit) {
             this.directionValue = obj.getFacing().getDirection().getDegrees();
-            this.directionPointerTexture = getOrCreateR(
-                    PathFinder.getUiPath() + "DIRECTION POINTER.png", AssetEnums.ATLAS.UNIT_VIEW);
+            this.directionPointerTexture = getRegionUV(
+                    PathFinder.getUiPath() + "DIRECTION POINTER.png");
 
 
             String emblem = PathFinder.getEmblemAutoFindPath() + obj.getProperty(G_PROPS.EMBLEM, true);
@@ -138,22 +120,20 @@ public class UnitViewOptions {
                 emblem = PathFinder.getEmblemAutoFindPath() + "undead.png";
             }
             if (ImageManager.isImage(emblem)) {
-                this.emblem = getOrCreateR(emblem, AssetEnums.ATLAS.UNIT_VIEW);
+                this.emblem = getRegionUV(emblem);
             } else {
                 emblem = PathFinder.getEmblemAutoFindPath() +
                         FileManager.findFirstFile(PathFinder.getImagePath() + PathFinder.getEmblemAutoFindPath(),
                                 obj.getSubGroupingKey(), true);
                 if (ImageManager.isImage(emblem))
-                    this.emblem = getOrCreateR(emblem);
+                    this.emblem = getRegionUV(emblem);
                 else
                     emblem = obj.getOwner().getHeroObj().getProperty(G_PROPS.EMBLEM, true);
-                if (UNIT_VIEW_ATLAS) {
-                    this.emblem = fromAtlas(UnitView.getAtlasPath(), PathUtils.getLastPathSegment(emblem));
-                } else if (ImageManager.isImage(emblem))
-                    this.emblem = getOrCreateR(emblem, AssetEnums.ATLAS.UNIT_VIEW);
+
+                    this.emblem = getRegionUV(emblem);
             }
             if (this.emblem == null)
-                this.emblem = getOrCreateR(ImageManager.getEmptyEmblemPath(), AssetEnums.ATLAS.UNIT_VIEW);
+                this.emblem = getRegionUV(ImageManager.getEmptyEmblemPath());
 
             this.clockValue = AtbMaster.getDisplayedAtb(obj);
         }

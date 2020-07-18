@@ -206,26 +206,17 @@ public class DataBackend {
             return type;
         }
 
-        int log = 0;
         if (!recursion) {
-            LogMaster.log(log, "Type not found: " + TYPE
-                    + ":" + typeName);
             return null;
         }
         if (typeName.endsWith(";")) {
-            LogMaster.log(log, "endsWith(\";\"): " + TYPE
-                    + ":" + typeName);
             typeName = StringMaster.getFormattedTypeName(typeName);
             type = getType(typeName, TYPE, false);
             if (type != null) {
                 return type;
             }
         }
-        //        if (typeName.contains(" ")) {
-        LogMaster.log(log, "Type getWellFormattedString: " + TYPE
-                + ":" + typeName);
         return getType(StringMaster.format(typeName), TYPE, false);
-        //        }
 
     }
 

@@ -569,9 +569,9 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
     protected TextureRegion getRegion(OVERLAY overlay) {
         switch (overlay) {
             case STEALTH:
-                return TextureCache.getOrCreateR(ImageManager.getValueIconPath(PARAMS.STEALTH));
+                return TextureCache.getRegionUI_DC(ImageManager.getValueIconPath(PARAMS.STEALTH));
             case SPOTTED:
-                return TextureCache.getOrCreateR(ImageManager.getValueIconPath(PARAMS.DETECTION));
+                return TextureCache.getRegionUI_DC(ImageManager.getValueIconPath(PARAMS.DETECTION));
 
             case HP_BAR:
             case ITEM:

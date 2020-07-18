@@ -15,12 +15,10 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.sprite.SpriteX;
-import eidolons.libgdx.bf.decor.CellDecorLayer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.bar.SpriteParamBar;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TexturePackerLaunch;
-import eidolons.libgdx.utils.mixer.MaskTest;
 import main.content.enums.entity.ItemEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -66,7 +64,10 @@ public class Atlases {
         AssetEnums.ATLAS e = getAtlasByName(fileName);
         if (e != null) {
             e.file = atlas;            // we want this field because we will do lookup in these atlases!
-            all.add(e);
+            if (e != AssetEnums.ATLAS.SPRITES_ONEFRAME) {
+                all.add(e);
+            }
+            atlas.setType(e);
         }
     }
 
@@ -80,6 +81,17 @@ public class Atlases {
     }
 
     public static Array<TextureAtlas.AtlasRegion> getAtlasRegions(String texturePath) {
+        boolean oneFrame = false;
+        if (isUseOneFrameVersion(texturePath)) {
+            oneFrame = true;
+            texturePath = StringMaster.getAppendedFile(getOneFramePath(texturePath), " img");
+        }
+        return getAtlasRegions(texturePath,
+                oneFrame ? AssetEnums.ATLAS.SPRITES_ONEFRAME :
+                        AssetEnums.ATLAS.SPRITES_GRID);
+    }
+
+    public static Array<TextureAtlas.AtlasRegion> getAtlasRegions(String texturePath, AssetEnums.ATLAS atlas) {
         texturePath =
                 GdxImageMaster.cropImagePath(StringMaster.cropFormat(texturePath));
 
@@ -87,12 +99,16 @@ public class Atlases {
         if (regions != null) {
             return regions;
         }
-        for (AssetEnums.ATLAS a : all) {
-            regions = a.file.findRegions(texturePath);
-            if (regions != null && regions.size > 0) {
-                break;
+        if (atlas.file != null)
+            regions = atlas.file.findRegions(texturePath);
+        if (regions == null)
+            for (AssetEnums.ATLAS a : all) {
+                if (a == atlas) continue;
+                regions = a.file.findRegions(texturePath);
+                if (regions != null && regions.size > 0) {
+                    break;
+                }
             }
-        }
         if (regions.size > 0) {
             atlasRegionsCache.put(texturePath, regions);
             System.out.println(regions.size + " Atlas regions found: " + texturePath);
@@ -101,7 +117,6 @@ public class Atlases {
         }
         return regions;
     }
-
 
 
     public static void init() {
@@ -418,16 +433,16 @@ public class Atlases {
 
     public static TextureAtlas getOrCreateAtlas(String path) {
         try {
-            if (Flags.isIDE())
-                if (isUseOneFrameVersion(path)) {
-                    String p = getOneFramePath(path);
-                    if (new FileHandle(p).exists()) {
-                        // log(1, "One-frame atlas used:\n" + p);
-                        return getOrCreateAtlas(p, true);
-                    }
+            // if (Flags.isIDE() || Flags.isJarlike())
+            if (isUseOneFrameVersion(path)) {
+                String p = getOneFramePath(path);
+                if (new FileHandle(p).exists()) {
+                    // log(1, "One-frame atlas used:\n" + p);
+                    return getOrCreateAtlas(p, true);
                 }
+            }
             TextureAtlas atlas = getOrCreateAtlas(path, true);
-            if (!isUseOneFrameVersion(path)) {
+            if (!isUseOneFrameVersion(path) || !Flags.isIDE()) {
                 return atlas;
             }
             //MEGA-HACK - ONE FRAME GENERATION
@@ -471,7 +486,8 @@ public class Atlases {
         if (path.contains("dust")) {
             return false;
         }
-        return !CellDecorLayer.spriteTest && !MaskTest.spriteMaskTest && CoreEngine.TEST_LAUNCH;
+        return Flags.isLiteLaunch();
+        // return !CellDecorLayer.spriteTest && !MaskTest.spriteMaskTest && CoreEngine.TEST_LAUNCH;
     }
 
     public static String getOneFrameImagePath(String path) {

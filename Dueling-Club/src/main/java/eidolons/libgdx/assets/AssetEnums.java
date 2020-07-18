@@ -35,6 +35,7 @@ public class AssetEnums {
         UNIT_VIEW,
 
         SPRITES_GRID,
+        SPRITES_ONEFRAME,
         SPRITES_UI,
 
         BOSS_ARIUS,

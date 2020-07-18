@@ -22,8 +22,7 @@ public class LogMaster {
     public static final String PREFIX_WARNING = "WARNING: ";
     public static final String PREFIX_ERROR = "ERROR: ";
 
-    private static final int PRIORITY_LEVEL_LOGGED =
-            Flags.isIDE() ? 1 : Flags.isExe() ? 1 : 0;
+    private static final int PRIORITY_LEVEL_LOGGED = 1;
     public static final int CORE_DEBUG = -1;
     public static final String CORE_DEBUG_PREFIX = "CORE: ";
     public static final int CORE_DEBUG_1 = -100;
@@ -212,7 +211,6 @@ public class LogMaster {
     }
 
     public static void log(int priority, String s) {
-
         if (priority < 0) {
             boolean switcher = false;
             String prefix = "";

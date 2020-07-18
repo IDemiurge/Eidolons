@@ -129,7 +129,7 @@ public abstract class GenericLauncher extends Game {
     }
 
     protected boolean isStopOnInactive() {
-        return Flags.isMe();
+        return !Flags.isJar(); //TODO this messes up loading ?
     }
 
     protected String getTitle() {

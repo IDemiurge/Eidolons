@@ -30,16 +30,26 @@ public class SteamPacker {
         //     createDataModel();
         //     return;
         // }
-        if (full || DialogMaster.confirm("Rebuild model?"))
+        // if (full || DialogMaster.confirm("Rebuild model?"))
             dataModel = new SteamDataReader(out).readDataModel();
-        if (full || DialogMaster.confirm("Rebuild atlases?"))
-            AtlasGen.main("", "", "");
+        if (full || DialogMaster.confirm("Rebuild assets?")) {
+            if (DialogMaster.confirm("Pack atlases?")) {
+                AtlasGen.main("", "", "");
+            } else {
+                AtlasGen.main();
+            }
+        }
 
         copyJar(); //what about exe gen? probably cmd compatible !
-        clearLogs();
+
         if (full || DialogMaster.confirm("Copy all?")) {
             copyResources();
             copyXml();
+        }
+        try {
+            clearLogs();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         main.system.auxiliary.log.LogMaster.log(1, newFiles.size() + " new files: \n" + newFiles);
         main.system.auxiliary.log.LogMaster.log(1, updatedFiles.size() + " updated Files: \n" + newFiles);
@@ -56,7 +66,7 @@ public class SteamPacker {
         FileManager.cleanDir(out + PathFinder.getLogPath());
         FileManager.delete(out + GpuTester.FILE_NAME);
         for (File file : FileManager.getFilesFromDirectory(out, false)) {
-            if (file.getPath().contains("hs_err_pid")){
+            if (file.getPath().contains("hs_err_pid")) {
                 FileManager.delete(file);
             }
         }
@@ -88,7 +98,7 @@ public class SteamPacker {
         if (Bools.isTrue(result)) {
             newFiles.add(path);
         }
-        if (result==null ) {
+        if (result == null) {
             updatedFiles.add(path);
         }
     }

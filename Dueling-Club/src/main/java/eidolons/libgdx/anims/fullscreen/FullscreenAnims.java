@@ -293,6 +293,7 @@ public class FullscreenAnims extends GroupX {
                 String path = PathFinder.getImagePath() + getCorePath() + type;
                 path = FileManager.getRandomFilePathVariant(path, ".png");
                 path = GdxImageMaster.cropImagePath(path);
+                //TODO Anim Review
                 Image img = new NoHitImage(TextureCache.getOrCreateR(path));
                 //                group.addActor(img);
                 img.setVisible(false);

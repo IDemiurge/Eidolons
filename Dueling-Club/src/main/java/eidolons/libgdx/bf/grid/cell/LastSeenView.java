@@ -38,7 +38,7 @@ public class LastSeenView extends GenericGridView {
     @Override
     public TextureRegion getDefaultTexture() {
         if (defaultTexture == null) {
-            defaultTexture = TextureCache.getOrCreateR(VisionEnums.OUTLINE_TYPE.UNKNOWN.getImagePath());
+            defaultTexture = TextureCache.getRegionUV(VisionEnums.OUTLINE_TYPE.UNKNOWN.getImagePath());
         }
         return defaultTexture;
     }

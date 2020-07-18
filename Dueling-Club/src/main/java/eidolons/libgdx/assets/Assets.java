@@ -72,7 +72,7 @@ public class Assets {
     public static void preloadMenu() {
         //step #0 - just when we start gdx app!
         MusicMaster.preload(MusicMaster.MUSIC_SCOPE.MENU);
-        Atlases.preloadAtlas(AssetEnums.ATLAS.UI_BASE);
+        // Atlases.preloadAtlas(AssetEnums.ATLAS.UI_BASE);
     }
 
     public static void loadAtlasesForScreen(ScreenWithLoader screen, SCREEN_TYPE type) {
@@ -80,11 +80,12 @@ public class Assets {
         switch (type) {
             case DUNGEON:
                 if (TextureCache.atlasesOn) {
-                    Atlases.preloadAtlas(AssetEnums.ATLAS.UI_DC);
+                    if (!Flags.isJarlike()) {
                     Atlases.preloadAtlas(AssetEnums.ATLAS.SPRITES_GRID);
                     Atlases.preloadAtlas(AssetEnums.ATLAS.UNIT_VIEW);
                     Atlases.preloadAtlas(AssetEnums.ATLAS.SPRITES_UI);
                     Atlases.preloadAtlas(AssetEnums.ATLAS.TEXTURES);
+                    }
                 }
                 Assets.preloadDC();
                 screen.setLoadingAtlases(true);

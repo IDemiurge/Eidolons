@@ -2,13 +2,11 @@ package eidolons.libgdx.anims.std;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.utils.Array;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
@@ -30,7 +28,6 @@ import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -163,13 +160,13 @@ public class HitAnim extends ActionAnim {
         //         + ".png";
         //        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(spritePath);
         //scale?
-        SmartTextureAtlas atlas =
-                SmartTextureAtlas.getAtlas(PathFinder.getImagePath() + spritePath);
-        if (atlas == null)
-            return;
-        Array<AtlasRegion> regions = atlas.getRegions();
-        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(regions,
-                getDuration() / regions.size, 1);
+        // SmartTextureAtlas atlas =
+        //         SmartTextureAtlas.getAtlas(PathFinder.getImagePath() + );
+        // if (atlas == null)
+        //     return;
+        // Array<AtlasRegion> regions = atlas.getRegions();
+        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(spritePath);
+        sprite.setFrameDuration(getDuration() / sprite.getRegions().size);
         float x = RandomWizard.getRandomFloatBetween(-10, 10);
         float y = RandomWizard.getRandomFloatBetween(-10, 10);
         if (spriteType == SPRITE_TYPE.SPARKS) {

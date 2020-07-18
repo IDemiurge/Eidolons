@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -70,7 +69,6 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
-import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -253,7 +251,7 @@ it sort of broke at some point - need to investigate!
                         resetCellForModule(cells[x][y]);
                         continue;
                     }
-                    TextureRegion image = TextureCache.getOrCreateR(cell.getImagePath());
+                    TextureRegion image = TextureCache.getRegionUV(cell.getImagePath());
                     GridCellContainer gridCell = null;
                     cells[x][y] = gridCell = createGridCell(image, x, y);
 
@@ -1224,7 +1222,7 @@ it sort of broke at some point - need to investigate!
                 return;
             }
             String path = VariableManager.removeVarPart(overlayData);
-            TextureRegion r = TextureCache.getOrCreateR(path);
+            TextureRegion r = TextureCache.getRegionUV(path);
             if (!VariableManager.getVars(overlayData).isEmpty()) {
                 Coordinates c = new Coordinates(VariableManager.getVars(overlayData));
                 r = new TextureRegion(r, c.x * 128, c.y * 128, 128, 128);
@@ -1239,7 +1237,7 @@ it sort of broke at some point - need to investigate!
                 GridCellContainer container = cells[cell.getX()][(cell.getY())];
                 //overlays
                 container.getCellImage().setDrawable(
-                        new TextureRegionDrawable(TextureCache.getOrCreateR(cell.getImagePath())));
+                        new TextureRegionDrawable(TextureCache.getRegionUV(cell.getImagePath())));
 
                 container.setOverlayRotation(cell.getOverlayRotation());
                 container.setTeamColor(GdxColorMaster.getColorForTheme(cell.getColorTheme()));
@@ -1370,70 +1368,6 @@ it sort of broke at some point - need to investigate!
         return true;
     }
 
-    //ToDo-Cleanup
-    protected void checkAddBorder(int x, int y) {
-        Boolean hor = null;
-        Boolean vert = null;
-        if (x + 1 == full_cols)
-            hor = true;
-        if (x == 0)
-            hor = false;
-        if (y + 1 == full_rows)
-            vert = true;
-        if (y == 0)
-            vert = false;
-
-        float posX = x * GridMaster.CELL_W;
-        float posY = y * GridMaster.CELL_H;
-        String suffix = null;
-        if (hor != null) {
-            int i = hor ? 1 : -1;
-            suffix = hor ? "right" : "left";
-            Image image = new Image(TextureCache.getOrCreateR(
-                    StrPathBuilder.build(
-                            "ui", "cells", "bf", "gridBorder " +
-                                    suffix + ".png")));
-            addActor(image);
-            image.setPosition(posX + i * GridMaster.CELL_W + (20 - 20 * i)//+40
-                    , posY
-                    //+ i * 35
-            );
-        }
-        if (vert != null) {
-            int i = vert ? 1 : -1;
-            suffix = vert ? "up" : "down";
-            Image image = new Image(TextureCache.getOrCreateR(StrPathBuilder.build(
-                    "ui", "cells", "bf", "gridBorder " +
-                            suffix +
-                            ".png")));
-            addActor(image);
-            image.setPosition(posX //+ i * 35
-                    , posY
-                            + i * GridMaster.CELL_H + (20 - 20 * i));//+40
-        }
-        TextureRegion cornerRegion = TextureCache.getOrCreateR(GridMaster.gridCornerElementPath);
-        if (hor != null)
-            if (vert != null) {
-                int i = vert ? 1 : -1;
-                Image image = new Image(cornerRegion);
-                image.setPosition(posX + i * 40 + i * GridMaster.CELL_W + i * -77, posY
-                        + i * 40 + i * GridMaster.CELL_H + i * -77);
-
-                if (!vert && hor) {
-                    image.setX(image.getX() + 170);
-                    image.setY(image.getY() + 12);
-                }
-                if (vert && !hor) {
-                    image.setX(image.getX() - 180);
-                    image.setY(image.getY() - 25);
-                }
-                if (vert && hor) {
-                    image.setX(image.getX() - 15);
-                    image.setY(image.getY() - 15);
-                }
-                addActor(image);
-            }
-    }
 
     public int getFullCols() {
         return full_cols;
@@ -1502,7 +1436,6 @@ it sort of broke at some point - need to investigate!
         addActor(visuals);
         return visuals;
     }
-
 
     public PlatformHandler getPlatformHandler() {
         return getGridManager().getPlatformHandler();

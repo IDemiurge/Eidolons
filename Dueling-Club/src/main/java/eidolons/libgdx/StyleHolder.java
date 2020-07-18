@@ -9,9 +9,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeBitm
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.google.inject.internal.util.ImmutableSet;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
@@ -33,7 +31,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class StyleHolder {
     public static final FONT DEFAULT_FONT = FONT.MAIN;
@@ -41,11 +38,6 @@ public class StyleHolder {
     public static final FONT DEFAULT_FONT_FLOAT_TEXT = FONT.MAIN;
     public static final int DEFAULT_FONT_SIZE_FLOAT_TEXT = 18;
     final static String FONT_CHARS = "абвгдежзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|//?-+=()*&.;:,{}\"´`'<>";
-    private static final String DISABLED = "_disabled";
-    private static final String OVER = "_over";
-    private static final String DOWN = "_down";
-    private static final String UP = "_up";
-    private static final String CHECKED = "_down";
     private static final int DEFAULT_SIZE = 17;
     private static final Color DEFAULT_COLOR = new Color(ColorManager.GOLDEN_WHITE.getRGB());
     private static final float SMART_FONT_SIZE_COEF = 0.15f;
@@ -53,13 +45,10 @@ public class StyleHolder {
     static ObjectMap<STD_BUTTON, ObjectMap<LabelStyle, TextButtonStyle>> textButtonStyleMap = new ObjectMap<>();
     static ObjectMap<FONT, List<Integer>> hieroMap = new ObjectMap<>();
     static ObjectMap<FONT, ObjectMap<Integer, LabelStyle>> hieroStyleMap = new ObjectMap<>();
-    private static LabelStyle defaultLabelStyle;
-    private static LabelStyle avqLabelStyle;
     private static TextButtonStyle defaultTextButtonStyle;
     private static final ObjectMap<FONT, ObjectMap<Color, LabelStyle>> colorLabelStyleMap = new ObjectMap<>();
     private static final ObjectMap<FONT, ObjectMap<Integer, LabelStyle>> sizeLabelStyleMap = new ObjectMap<>();
     private static final ObjectMap<FONT, ObjectMap<Pair<Integer, Color>, LabelStyle>> sizeColorLabelStyleMap = new ObjectMap<>();
-    private static TextButtonStyle defaultTabStyle;
     private static ScrollPaneStyle scrollStyle;
     private static TextButtonStyle dialogueReplyStyle;
     private static LabelStyle defaultHiero;
@@ -82,17 +71,19 @@ public class StyleHolder {
 
         }
     }
-    public static final Set<ImmutablePair<FONT, Integer>> hieroFonts = ImmutableSet.of(
-        new ImmutablePair<>(FONT.MAIN, 17),
-        new ImmutablePair<>(FONT.METAMORPH, 18),
-        new ImmutablePair<>(FONT.MAGIC, 20),
-        new ImmutablePair<>(FONT.AVQ, 17)
-            );
+    //TODO
 
-    public static final Set<ImmutablePair<FONT, Integer>> stdFonts = ImmutableSet.of(
-            new ImmutablePair<>(FONT.AVQ, 20),
-            new ImmutablePair<>(FONT.MAIN, 16)
-    );
+    // public static final Set<ImmutablePair<FONT, Integer>> hieroFonts = ImmutableSet.of(
+    //     new ImmutablePair<>(FONT.MAIN, 17),
+    //     new ImmutablePair<>(FONT.METAMORPH, 18),
+    //     new ImmutablePair<>(FONT.MAGIC, 20),
+    //     new ImmutablePair<>(FONT.AVQ, 17)
+    //         );
+    //
+    // public static final Set<ImmutablePair<FONT, Integer>> stdFonts = ImmutableSet.of(
+    //         new ImmutablePair<>(FONT.AVQ, 20),
+    //         new ImmutablePair<>(FONT.MAIN, 16)
+    // );
 
     public static void preload(){
 
@@ -442,15 +433,6 @@ public class StyleHolder {
         }
     }
 
-    public static TextButtonStyle getTabStyle(TextButtonStyle style) {
-        TextureRegion buttonTexture = TextureCache.getOrCreateR("/UI/components/generic/tabs/buttons.png");
-        TextureRegion pressed = new TextureRegion(buttonTexture, 0, 0, 59, 28);
-        TextureRegion released = new TextureRegion(buttonTexture, 60, 0, 59, 28);
-        style.checked = style.down = new TextureRegionDrawable(pressed);
-        style.up = new TextureRegionDrawable(released);
-        return style;
-    }
-
     public static TextButtonStyle getHqTabStyle() {
         TextButtonStyle style = getTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
                 FONT.METAMORPH, GdxColorMaster.GOLDEN_GRAY, 20);
@@ -463,11 +445,6 @@ public class StyleHolder {
         return style;
     }
 
-    public static TextButtonStyle getDefaultTabStyle() {
-        if (defaultTabStyle == null)
-            defaultTabStyle = getTabStyle(getDefaultTextButtonStyle());
-        return defaultTabStyle;
-    }
 
     public static LabelStyle getHqLabelStyle(int fontSize) {
         if (true) {

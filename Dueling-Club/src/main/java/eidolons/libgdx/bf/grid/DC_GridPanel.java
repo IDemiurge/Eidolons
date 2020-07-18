@@ -56,7 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
+import static eidolons.libgdx.texture.TextureCache.getRegionUV;
 import static main.system.GuiEventType.*;
 
 public class DC_GridPanel extends GridPanel {
@@ -222,7 +222,7 @@ public class DC_GridPanel extends GridPanel {
                             if (obj instanceof Unit) {
                                 LogMaster.log(1, obj + " has OUTLINE: " + path);
                             }
-                            texture = getOrCreateR(path);
+                            texture = getRegionUV(path);
                             uv.setOutline(texture);
                         } else {
                             if (obj instanceof Unit) {
@@ -258,14 +258,14 @@ public class DC_GridPanel extends GridPanel {
                     c = data.c.getOffset(coordinates);
                     GridCellContainer container = cells[c.getX()][(c.getY())];
                     container.setOverlayTexture(
-                            hide ? null : getOrCreateR(data.mazeTypeAlt.getImagePath()));
+                            hide ? null : getRegionUV(data.mazeTypeAlt.getImagePath()));
                 }
         }
         for (Coordinates coordinates : data.mazeMarks) {
             c = data.c.getOffset(coordinates);
             GridCellContainer container = cells[c.getX()][(c.getY())];
             container.setOverlayTexture(
-                    hide ? null : getOrCreateR(data.mazeType.getImagePath()));
+                    hide ? null : getRegionUV(data.mazeType.getImagePath()));
         }
         // gridViewAnimator.animate(container,
         //         GridViewAnimator.VIEW_ANIM.screen, new GraphicData("alpha:0.6f;dur:1f"));

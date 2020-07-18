@@ -134,7 +134,7 @@ public class PlatformCell extends GridCellContainer {
 
         public TextureRegion getTexture() {
             if (texture == null) {
-                texture = TextureCache.getOrCreateR(PathFinder.getCellImagesPath() + "platform/" + name()
+                texture = TextureCache.getRegionUV(PathFinder.getCellImagesPath() + "platform/" + name()
                         + ".png");
             }
             return texture;

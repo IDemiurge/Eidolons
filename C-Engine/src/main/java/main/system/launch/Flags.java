@@ -108,7 +108,7 @@ public class Flags {
     }
 
     public static boolean isIDE() {
-        return !exe && !jar;
+        return !exe && !jar;// && !isJarlike();
     }
 
     public static boolean isExe() {
@@ -140,7 +140,7 @@ public class Flags {
     }
 
     public static boolean isJarlike() {
-        return jarlike;
+        return  jarlike || isJar();
     }
 
     public static void setJarlike(boolean jarlike) {

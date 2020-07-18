@@ -41,6 +41,7 @@ public class TexturePackerLaunch {
 
     private static Settings settings;
     private static boolean atlasGen;
+    private static AssetEnums.ATLAS a;
 
     public static void main(String[] args) {
         if (DialogMaster.confirm("Gen Atlases?")) {
@@ -71,16 +72,18 @@ public class TexturePackerLaunch {
 
     public static final AssetEnums.ATLAS[] atlases = {
             // AssetEnums.ATLAS.UI_BASE,
-            // AssetEnums.ATLAS.UI_DC,
+            AssetEnums.ATLAS.UI_DC,
             // AssetEnums.ATLAS.UNIT_VIEW,
             // AssetEnums.ATLAS.TEXTURES,
-            AssetEnums.ATLAS.SPRITES_GRID,
+            // AssetEnums.ATLAS.SPRITES_GRID,
             // AssetEnums.ATLAS.SPRITES_UI,
+            AssetEnums.ATLAS.SPRITES_ONEFRAME,
     };
 
     public static void generateAtlases() {
         atlasGen = true;
         for (AssetEnums.ATLAS atlas : atlases) {
+            a=atlas;
             String name = atlas.toString().toLowerCase();
             String input = PathFinder.getAtlasGenPath() + name;
             String output = input;
@@ -124,6 +127,21 @@ public class TexturePackerLaunch {
 
         settings.maxHeight = (int) Math.pow(2, 13);
         settings.maxWidth = (int) Math.pow(2, 13);
+        boolean indices=false;
+        if (a != null) {
+            switch (a) {
+                case UI_DC:
+                    // indices = true;
+                    break;
+                case SPRITES_GRID:
+                    indices = true;
+                    break;
+                case SPRITES_UI:
+                    indices = true;
+                    break;
+            }
+        }
+        settings.useIndexes=indices;
         return settings;
     }
 

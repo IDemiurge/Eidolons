@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import eidolons.libgdx.assets.AssetEnums;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.Entity;
 import main.system.auxiliary.StringMaster;
@@ -15,10 +16,12 @@ import main.system.auxiliary.StringMaster;
  * Created by JustMe on 2/10/2018.
  */
 public class ImageContainer extends SuperContainer  implements Flippable{
+    private  AssetEnums.ATLAS atlas;
     protected boolean flipX, flipY;
     protected Sprite sprite;
     protected String path;
     protected ObjectMap<TextureRegion, Image> imageCache = new ObjectMap<>();
+    private boolean noAtlas;
 
     public ImageContainer(Image content) {
         super(content);
@@ -28,10 +31,19 @@ public class ImageContainer extends SuperContainer  implements Flippable{
         this(new Image(TextureCache.getOrCreateR(entity.getImagePath())));
     }
 
+    public ImageContainer(AssetEnums.ATLAS atlas, String path) {
+        this.atlas = atlas;
+        this.path = path;
+        if (!StringMaster.isEmpty(path)) {
+            content = new Image(sprite = new Sprite(TextureCache.getOrCreateR(path, noAtlas, atlas)));
+            addActor(content);
+        }
+    }
+
     public ImageContainer(String path) {
         super();
         if (!StringMaster.isEmpty(path)) {
-            content = new Image(sprite = new Sprite(TextureCache.getOrCreateR(path)));
+            content = new Image(sprite = new Sprite(TextureCache.getOrCreateR(path, noAtlas, atlas)));
             addActor(content);
         }
         this.path = path;
@@ -84,7 +96,7 @@ public class ImageContainer extends SuperContainer  implements Flippable{
     public void setImage(String path) {
         if (!StringMaster.isEmpty(path)) {
             this.path = path;
-            TextureRegion r = TextureCache.getOrCreateR(path);
+            TextureRegion r = TextureCache.getOrCreateR(path, noAtlas, atlas);
             if (sprite != null)
                 if (sprite.getTexture().equals(r.getTexture())) {
                     if (getContent() == null || isResetImageAlways())
@@ -92,7 +104,7 @@ public class ImageContainer extends SuperContainer  implements Flippable{
                         setImage(new Image(sprite));
                     return;
                 }
-            setImage(new Image(sprite = new Sprite(TextureCache.getOrCreateR(path))));
+            setImage(new Image(sprite = new Sprite(TextureCache.getOrCreateR(path, noAtlas, atlas))));
         } else {
             setEmpty();
         }
@@ -189,4 +201,11 @@ public class ImageContainer extends SuperContainer  implements Flippable{
     }
 
 
+    public void setNoAtlas(boolean noAtlas) {
+        this.noAtlas = noAtlas;
+    }
+
+    public void setAtlas(AssetEnums.ATLAS atlas) {
+        this.atlas = atlas;
+    }
 }

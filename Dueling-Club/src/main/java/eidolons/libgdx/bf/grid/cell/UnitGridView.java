@@ -252,9 +252,10 @@ public class UnitGridView extends GenericGridView {
 
     public void setOutlinePathSupplier(Supplier<String> pathSupplier) {
         super.setOutlinePathSupplier(pathSupplier);
-        this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());
+        this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null
+                : TextureCache.getRegionUV(pathSupplier.get());
 
-        if (initiativeQueueUnitView != null)
+        if (initiativeQueueUnitView != null) //TODO atlas revamp
             initiativeQueueUnitView.
                     setOutlineSupplier(() -> StringMaster.isEmpty(pathSupplier.get()) ? null :
                             TextureCache.getSizedRegion(AtbPanel.imageSize, pathSupplier.get()));

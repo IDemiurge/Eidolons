@@ -13,7 +13,7 @@ import main.system.launch.CoreEngine;
 import java.util.Collections;
 import java.util.List;
 
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
+import static eidolons.libgdx.texture.TextureCache.getRegionUI_DC;
 
 public class BaseSlotPanel extends TablePanel {
     protected final int imageSize;
@@ -165,7 +165,7 @@ public class BaseSlotPanel extends TablePanel {
             ValueContainer valueContainer = null;
             if (sources.size() > i)
                 valueContainer = sources.get(i);
-            addValueContainer(page, valueContainer, getOrCreateR(emptyImagePath));
+            addValueContainer(page, valueContainer, getRegionUI_DC(emptyImagePath));
         }
 
         return page;

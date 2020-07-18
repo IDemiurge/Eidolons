@@ -53,7 +53,7 @@ public class DecorObj extends GroupWithEmitters {
     private void addTextures(String property, boolean over) {
         for (String texture : ContainerUtils.openContainer(property)) {
             Image actor;
-            addActor(actor = new Image(TextureCache.getOrCreateR(texture)));
+            addActor(actor = new Image(TextureCache.getRegionTEX(texture)));
             //position??
             if (d != null) {
                 actor.setRotation(d.getDegrees());

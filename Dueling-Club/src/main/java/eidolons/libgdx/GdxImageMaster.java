@@ -12,6 +12,7 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import eidolons.libgdx.assets.AssetEnums;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
 import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import eidolons.libgdx.texture.TextureCache;
@@ -233,23 +234,29 @@ public class GdxImageMaster extends LwjglApplication {
         return null;
     }
 
-    public static TextureRegion round(String path, boolean write) {
-
+    public static TextureRegion round(String path, boolean write, String suffix) {
         path = cropImagePath(path);
-        TextureRegion textureRegion = TextureCache.getOrCreateR(path);
-        if (textureRegion.getTexture() == TextureCache.getMissingTexture())
-            return textureRegion;
 
         String newPath = getRoundedPath(path);
-        TextureRegion roundedRegion = null;
-        if (FileManager.isFile(PathFinder.getImagePath() + newPath))
-            roundedRegion = TextureCache.getOrCreateR(cropImagePath(newPath));
+        if (!suffix.isEmpty()) {
+            newPath = StringMaster.getAppendedImageFile(newPath, suffix);
+        }
+        TextureRegion roundedRegion = TextureCache.getOrCreateR(newPath, false, AssetEnums.ATLAS.UNIT_VIEW);
         if (roundedRegion != null)
-            if (roundedRegion.getTexture() != TextureCache.getMissingTexture())
-                return roundedRegion;
+        if (roundedRegion.getTexture() != TextureCache.getMissingTexture())
+            return roundedRegion;
+
+        TextureRegion textureRegion = TextureCache.getOrCreateR(path);
+
+        if (!Flags.isIDE() || textureRegion.getTexture() == TextureCache.getMissingTexture())
+            return textureRegion;
 
         if (!GdxMaster.isLwjglThread())
             return null;
+        //CREATING
+        if (TextureCache.atlasesOn) {
+            textureRegion = TextureCache.getOrCreateR(path, true, null );
+        }
         Pixmap rounded = roundTexture(textureRegion);
         FileHandle handle = GDX.file(
                 PathFinder.getImagePath() + newPath);
@@ -266,7 +273,7 @@ public class GdxImageMaster extends LwjglApplication {
         for (String filePath : FileManager.getFileNames(FileManager.
                 getFilesFromDirectory(PathFinder.getImagePath() + directory, false))) {
             //            FileHandle handle=GDX.file(filePath);
-            round(directory + filePath, true);
+            round(directory + filePath, true, "");
 
         }
     }

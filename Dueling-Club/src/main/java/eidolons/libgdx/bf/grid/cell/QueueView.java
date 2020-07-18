@@ -67,7 +67,7 @@ public class QueueView extends UnitView {
         addActor(activeMarker = new Image(ButtonStyled.STD_BUTTON.PULL.getTexture()));
         activeMarker.getColor().a=0;
         init(o.getClockValue());
-        addActor(emblemBg = new Image(TextureCache.getOrCreateR(Images.INTENT_ICON_BG)));
+        addActor(emblemBg = new Image(TextureCache.getRegionUI_DC(Images.INTENT_ICON_BG)));
         emblemBg.setPosition( (AtbPanel.imageSize-30)/2,  80);
 
         initEmblem(o.getEmblem());
@@ -306,10 +306,11 @@ public class QueueView extends UnitView {
     }
 
     public TextureRegion processPortraitTexture(String path) {
-        TextureRegion  region = TextureCache.getOrCreateR(path);
-        if (Flags.isIDE()) {
-            GdxImageMaster.round(path, true);
+        if (!Flags.isIDE()  ) {
+          return  GdxImageMaster.round(path, true, " "+AtbPanel.imageSize);
         }
+        TextureRegion  region = TextureCache.getRegionUV(path);
+            GdxImageMaster.round(path, true, "");
         Texture texture = GdxImageMaster.size(GdxImageMaster.getRoundedPath(path),
                 AtbPanel.imageSize, Flags.isIDE());
 
@@ -363,7 +364,7 @@ public class QueueView extends UnitView {
             //TODO EA check
             String path = OUTLINE_TYPE.UNKNOWN.getImagePath();
             if (Flags.isIDE()) {
-                GdxImageMaster.round(path, true);
+                GdxImageMaster.round(path, true, "");
             }
             return new TextureRegion(GdxImageMaster.size(GdxImageMaster.getRoundedPath(path),
                     AtbPanel.imageSize, Flags.isIDE()));
@@ -379,7 +380,7 @@ public class QueueView extends UnitView {
 
     @Override
     public TextureRegion getDefaultTexture() {
-        return TextureCache.getOrCreateR(OUTLINE_TYPE.UNKNOWN.getImagePath());
+        return TextureCache.getRegionUV(OUTLINE_TYPE.UNKNOWN.getImagePath());
     }
 
     @Override

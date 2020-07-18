@@ -27,21 +27,21 @@ import main.system.launch.Flags;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static main.system.auxiliary.log.LogMaster.important;
 
 public class TextureCache {
-    public static final boolean atlasesOn =  !CoreEngine.TEST_LAUNCH || Flags.isJar();
+    public static final boolean atlasesOn = !CoreEngine.TEST_LAUNCH || Flags.isJar();
     private static final Lock creationLock = new ReentrantLock();
     private static final ObjectMap<String, TextureRegion> regionCache = new ObjectMap<>(1300);
     private static final ObjectMap<TextureRegion, TextureRegionDrawable> drawableMap = new ObjectMap<>(1300);
-    public static final List<String> missingTextures = new LinkedList<>();
-    public static final List<String> atlasMissingTextures = new LinkedList<>();
+    public static final Set<String> missingTextures = new LinkedHashSet<>();
+    public static final Set<String> atlasMissingTextures = new LinkedHashSet<>();
 
     private static Texture missingTexture;
     private static boolean returnEmptyOnFail = true;
@@ -68,6 +68,7 @@ public class TextureCache {
         this.cache = new ObjectMap<>(1300);
         this.greyscaleCache = new ObjectMap<>(100);
     }
+
 
     @Deprecated
     public void loadAtlases(boolean menu) {
@@ -125,28 +126,43 @@ public class TextureCache {
 
         if (atlasesOn && !overrideNoAtlas) {
             String name = GdxImageMaster.cropImagePath(StringMaster.cropFormat(path));
-            if (!atlasMissingTextures.contains(path)) {
+            // if (!atlasMissingTextures.contains(path))
+            {
+                if (atlas != null) {
+                    atlas=AtlasGen.getAtlasForPath(name);
+                }
                 if (atlas != null) {
                     if (atlas.file != null) {
                         region = atlas.file.findRegion(name);
                     }
                 }
                 if (region == null) {
+                    important(name + " - no img in atlas: " + atlas);
                     for (AssetEnums.ATLAS a : Atlases.all) {
                         if (a == atlas) continue;
                         region = a.file.findRegion(name);
-                        if (region != null) break;
+                        if (region != null)
+                        {
+                            important(name + " - FOUND in atlas: " + a);
+                            break;
+                        }
                     }
                 }
 
                 if (atlasesOn && region == null) {
-                    System.out.println("No img in atlases: " + name);
+                    important("[!!!] No img in atlases: " + name);
                     atlasMissingTextures.add(path);
+                    if (Flags.isJarlike())
+                        return new TextureRegion(getMissingTexture());
                 }
             }
         }
         if (region != null) {
-            regionCache.put(path, region);
+            if (atlasesOn) {
+                atlasMissingTextures.remove(path);
+            } else
+                regionCache.put(path, region);
+
             if (!overrideNoAtlas)
                 return region;
         }
@@ -187,7 +203,7 @@ public class TextureCache {
         if (!region.getTexture().equals(missingTexture)) {
             return region;
         }
-        return GdxImageMaster.round(path, write);
+        return GdxImageMaster.round(path, write, "");
     }
 
     public static TextureRegion getOrCreateR(String path) {
@@ -440,6 +456,19 @@ public class TextureCache {
         if (GdxMaster.getMainBatch() instanceof AtlasGenSpriteBatch) {
             // ((AtlasGenSpriteBatch) GdxMaster.getMainBatch()).writeAtlases();
         }
+    }
+
+    public static TextureRegion getRegionUV(String s) {
+        return getOrCreateR(s, false, AssetEnums.ATLAS.UNIT_VIEW);
+    }
+    public static TextureRegion getRegionUI(String s) {
+        return getOrCreateR(s, false, AssetEnums.ATLAS.UI_BASE);
+    }
+    public static TextureRegion getRegionUI_DC(String s) {
+        return getOrCreateR(s, false, AssetEnums.ATLAS.UI_DC);
+    }
+    public static TextureRegion getRegionTEX(String s) {
+        return getOrCreateR(s, false, AssetEnums.ATLAS.TEXTURES);
     }
 }
 

@@ -1,7 +1,6 @@
 package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
-import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
@@ -21,12 +19,8 @@ import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
-import eidolons.system.file.ResourceMaster;
 import main.content.CONTENT_CONSTS;
-import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
-import main.system.PathUtils;
-import main.system.launch.Flags;
 
 import java.util.List;
 
@@ -162,31 +156,6 @@ public class BaseView extends SuperActor  implements Hoverable, Borderable {
                 }
             }
         });
-
-        //write portrait IMG on init
-        // TODO EA Check - group into atlases
-
-        if (!ResourceMaster.isWriteViewImgOnInit()) {
-            return;
-        }
-        String type = "objects";
-        String name = PathUtils.getLastPathSegment(path);
-        if (path.contains("heroes")) {
-            type = "heroes";
-        }
-        if (path.contains("units")) {
-            type = "units";
-        }
-        if (Flags.isIDE()) {
-            FileHandle handle=new FileHandle(PathFinder.getImagePath() + "unitview/" +
-                    type +
-                    "/" +
-                    name);
-            if (!handle.exists())
-            GdxImageMaster.writeImage(handle, TextureCache.getOrCreateR(path));
-        }
-       ResourceMaster.writeImage(path, "unitviews/" +               type +               "/" +               name);
-
     }
 
     @Override
@@ -200,7 +169,7 @@ public class BaseView extends SuperActor  implements Hoverable, Borderable {
     }
 
     protected TextureRegion processPortraitTexture(String path) {
-        TextureRegion  texture = TextureCache.getOrCreateR(path);
+        TextureRegion  texture = TextureCache.getRegionUV(path);
         if (TextureCache.isEmptyTexture(texture)) {
             return getPlaceholderPortrait();
         }
@@ -210,14 +179,14 @@ public class BaseView extends SuperActor  implements Hoverable, Borderable {
     protected TextureRegion getPlaceholderPortrait() {
         if (getUserObject() instanceof Structure) {
             if (((Structure) getUserObject()).isWall()) {
-                return TextureCache.getOrCreateR(Images.PLACEHOLDER_WALL);
+                return TextureCache.getRegionUV(Images.PLACEHOLDER_WALL);
             }
-            return TextureCache.getOrCreateR(Images.PLACEHOLDER_DECOR);
+            return TextureCache.getRegionUV(Images.PLACEHOLDER_DECOR);
         } else {
-            return TextureCache.getOrCreateR(Images.PLACEHOLDER_UNIT);
+            return TextureCache.getRegionUV(Images.PLACEHOLDER_UNIT);
 
         }
-//        return TextureCache.getOrCreateR(Images.PLACEHOLDER);
+//        return TextureCache.getRegionUV(Images.PLACEHOLDER);
     }
 
     public FadeImageContainer getPortrait() {

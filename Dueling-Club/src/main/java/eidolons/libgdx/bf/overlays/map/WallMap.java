@@ -80,16 +80,16 @@ public class WallMap extends OverlayMap<DIRECTION> {
                 name = side.isVertical() ? "vert" : "hor";
             }
         }
-        return TextureCache.getOrCreateR("ui/cells/bf/3d/" + name + ".png");
+        return TextureCache.getRegionUV("ui/cells/bf/3d/" + name + ".png");
     }
 
     protected TextureRegion getRegion(STD_IMAGES images, String suffix) {
         if (!StringMaster.isEmpty(suffix)) {
             String path = StringMaster.cropFormat(images.getPath());
             path += suffix + ".png";
-            return TextureCache.getOrCreateR(path);
+            return TextureCache.getRegionUV(path);
         }
-        return TextureCache.getOrCreateR(images.getPath());
+        return TextureCache.getRegionUV(images.getPath());
     }
 
     //saving space...

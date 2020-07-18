@@ -44,7 +44,7 @@ public class SkillSlot extends HtNode {
                         available =createAvailable();
                 //set image to N or X
             } else {
-                GdxImageMaster.round(data.getLeft().getImagePath(), true);
+                GdxImageMaster.round(data.getLeft().getImagePath(), true, "");
                 setRootPath(SkillMaster.getSkillImgPath(data.getLeft()));
                 //check last?
                 //or compare to prev data?

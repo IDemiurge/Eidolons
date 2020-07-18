@@ -93,7 +93,7 @@ public class PerkSlot extends HtNode {
         }
         else if (data.getLeft() != null) {
             enable();
-            GdxImageMaster.round(data.getLeft().getImagePath(), true);
+            GdxImageMaster.round(data.getLeft().getImagePath(), true, "");
             setRootPath(GdxImageMaster.getRoundedPath(data.getLeft().getImagePath()));
         } else if (data.getRight() != null && data.getMiddle() != null) {
 
