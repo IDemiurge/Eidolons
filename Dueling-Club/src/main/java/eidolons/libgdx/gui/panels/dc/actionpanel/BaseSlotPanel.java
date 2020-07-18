@@ -57,6 +57,7 @@ public class BaseSlotPanel extends TablePanel {
     @Override
     public void act(float delta) {
         beforeReset -= delta;
+        //TODO Gdx Review
         if (hoveredAny) {
             super.setUpdateRequired(false);
         } else

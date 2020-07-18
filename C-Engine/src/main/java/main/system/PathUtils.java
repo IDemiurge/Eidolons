@@ -207,11 +207,14 @@ public class PathUtils {
     }
 
     public static String cropImagePath(String path) {
-        return FileManager.formatPath( path.toLowerCase(), true, true)
-                .replace(PathFinder.getImagePath().toLowerCase(), "");
+        return cropPath(path, PathFinder.getImagePath());
     }
     public static String cropResourcePath(String path) {
-        return FileManager.formatPath( path.toLowerCase(), true, true)
-                .replace(PathFinder.getResPath().toLowerCase(), "");
+        return cropPath(path, PathFinder.getResPath());
+    }
+
+    public static String cropPath(String path, String remove) {
+        return FileManager.formatPath( path , true, true)
+                .replace(remove.toLowerCase(), "");
     }
 }

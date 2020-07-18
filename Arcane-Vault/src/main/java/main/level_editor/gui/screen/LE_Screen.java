@@ -110,7 +110,7 @@ public class LE_Screen extends GenericDungeonScreen {
     }
 
     @Override
-    protected boolean isWaitForInput() {
+    protected boolean isWaitForInputSupported() {
         return false;
     }
 
@@ -174,6 +174,7 @@ public class LE_Screen extends GenericDungeonScreen {
         gridStage.draw();
         guiStage.draw();
         Gdx.input.setInputProcessor(getMultiplexer());
+        renderMeta();
     }
 
     public InputMultiplexer getMultiplexer() {

@@ -28,11 +28,6 @@ public class PortalMaster extends DungeonHandler {
      */
     public PortalMaster(DungeonMaster master) {
         super(master);
-        if (!TextureCache.atlasesOn)
-        if (!Flags.ONE_FRAME_SPRITES) {
-            Assets.get().getManager().load(Sprites.PORTAL_OPEN, TextureAtlas.class);
-            Assets.get().getManager().load(Sprites.PORTAL_CLOSE, TextureAtlas.class);
-        }
         GuiEventManager.bind(GuiEventType.PORTAL_OPEN, p -> {
             Coordinates c = (Coordinates) p.get();
             boolean done = false;
@@ -132,14 +127,25 @@ public class PortalMaster extends DungeonHandler {
 
 
         public void init (Map < Coordinates, CellScriptData > textDataMap){
+            boolean initRequired = false;
             for (Coordinates c : textDataMap.keySet()) {
                 String data = textDataMap.get(c).getValue(CellScriptData.CELL_SCRIPT_VALUE.portals);
                 if (!data.isEmpty()) {
                     addPortal(c, data);
+                    initRequired=true;
                 }
                   data = textDataMap.get(c).getValue(CellScriptData.CELL_SCRIPT_VALUE.omni_portals);
                 if (!data.isEmpty()) {
                     addOmniPortal(c, data);
+                    initRequired=true;
+                }
+            }
+            if (initRequired){
+                if (!TextureCache.atlasesOn && !Flags.ONE_FRAME_SPRITES)
+                {
+                    Assets.get().getManager().load(Sprites.PORTAL, TextureAtlas.class);
+                    Assets.get().getManager().load(Sprites.PORTAL_OPEN, TextureAtlas.class);
+                    Assets.get().getManager().load(Sprites.PORTAL_CLOSE, TextureAtlas.class);
                 }
             }
         }

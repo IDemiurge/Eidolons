@@ -24,6 +24,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
+import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 
 public abstract class ScreenWithLoader extends ScreenWithAssets {
@@ -33,7 +34,7 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
     protected EventCallbackParam param;
     protected PostProcessController postProcessing;
 
-    private boolean loadingAtlases;
+    private boolean loadingFinalAtlases;
     private int assetLoadTimer = getAssetLoadTimeLimit();
 
     protected LoadingStage loadingStage;
@@ -47,6 +48,7 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
 
     protected Label statusLabel;
     protected Label loadingLabel;
+    protected Label buildLabel;
 
 
     protected SpriteAnimation backgroundSprite;
@@ -57,9 +59,9 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
     private boolean whiteout;
 
     public ScreenWithLoader() {
-
         initBlackout();
         initPostProcessing();
+        initLabels();
         GuiEventManager.bind(GuiEventType.UPDATE_LOAD_STATUS,
                 p -> statusLabel.setText(p.get().toString()));
     }
@@ -89,7 +91,6 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
     }
 
     protected void preLoad() {
-        initLabels();
     }
 
     protected void initLabels() {
@@ -105,6 +106,10 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
 
         loadingLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 20));
         loadingLabel.setPosition(0,                GdxMaster.getHeight()-100);
+
+        buildLabel = new Label("Build "+ CoreEngine.VERSION, StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 14));
+        buildLabel.pack();
+        buildLabel.setPosition(GdxMaster.right(buildLabel)-9,                 10);
 
     }
 
@@ -122,16 +127,12 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
     public void loadingAssetsDone(EventCallbackParam param) {
         loadingLabel.setText("");
         Chronos.logTimeElapsedForMark("ASSET_LOADING");
-        if (isWaitForInput()) {
+        if (isWaitForInputSupported()) {
             setWaitingForInput(true);
             this.param = param;
             updateInputController();
         } else
             done(this.param);
-
-        //        if (param.get() instanceof BFDataCreatedEvent) {
-        //       TODO      Assets.preloadAdditional(((BFDataCreatedEvent) param.get()).getObjects());
-        //        }
     }
 
     protected void renderMain(float delta) {
@@ -146,7 +147,7 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
 
     }
 
-    protected boolean isWaitForInput() {
+    protected boolean isWaitForInputSupported() {
         //        return !(CoreEngine.isIDE() || CoreEngine.isMacro());
         return true;
     }
@@ -234,9 +235,9 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
             }
         loadWaited(delta);
         checkShaderReset();
-        if (isLoadingAtlases()) {
+        if (isLoadingFinalAtlases()) {
             if (Assets.get().getManager().update()) {
-                setLoadingAtlases(false);
+                setLoadingFinalAtlases(false);
                 loadingAssetsDone(param);
             } else if (isAssetLoadTimerOn())
                 assetLoadTimer -= delta;
@@ -244,6 +245,14 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
         }
 
         doBlackout();
+        
+        renderMeta();
+    }
+
+    protected void renderMeta() {
+        getBatch().begin();
+        buildLabel.draw(getBatch(), 1f);
+        getBatch().end();
     }
 
     public void removeBlack() {
@@ -461,13 +470,13 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
 
     }
 
-    public boolean isLoadingAtlases() {
-        return loadingAtlases;
+    public boolean isLoadingFinalAtlases() {
+        return loadingFinalAtlases;
     }
 
-    public void setLoadingAtlases(boolean loadingAtlases) {
+    public void setLoadingFinalAtlases(boolean loadingAtlases) {
         assetLoadTimer = getAssetLoadTimeLimit();
-        this.loadingAtlases = loadingAtlases;
+        this.loadingFinalAtlases = loadingAtlases;
     }
 
     private int getAssetLoadTimeLimit() {

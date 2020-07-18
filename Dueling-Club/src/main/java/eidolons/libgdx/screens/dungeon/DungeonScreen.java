@@ -249,6 +249,12 @@ public class DungeonScreen extends GameScreenWithTown {
         }
     }
 
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+        renderMeta();
+    }
+
     public boolean isDrawGrid() {
         if (!gridFirstDraw) {
             gridFirstDraw = true;
@@ -418,7 +424,7 @@ public class DungeonScreen extends GameScreenWithTown {
             if (Assets.isOn()) {
                 Chronos.mark("ASSET_LOADING");
                 if (Assets.preloadObjects(((GridCreateData) param.get()).getObjects())) {
-                    setLoadingAtlases(true);
+                    setLoadingFinalAtlases(true);
                     return;
                 }
 

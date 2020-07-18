@@ -88,13 +88,12 @@ public class Assets {
                     }
                 }
                 Assets.preloadDC();
-                screen.setLoadingAtlases(true);
                 break;
         }
     }
 
     public static void preloadDC() {
-        loadSprite(Sprites.REAPER_SCYTHE);
+        loadSprite(Sprites.GHOST_FIST);
         preloadScope(ASSET_GROUP.DC_COMMONS);
 
         // Chronos.mark("preload her0es");

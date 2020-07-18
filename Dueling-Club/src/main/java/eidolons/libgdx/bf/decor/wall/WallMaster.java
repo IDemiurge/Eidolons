@@ -40,7 +40,7 @@ public class WallMaster {
         // from pattern, or custom-set via script map!
 
 
-        return getImage(c, CELLS, set, version+"" , false);
+        return getImage(c, CELLS, set, version + "", false);
     }
 
     public static String getWallImage(Coordinates c, int variant) {
@@ -60,7 +60,7 @@ public class WallMaster {
         switch (set) {
             case beige:
             case woods:
-                fileName= fileName.replace("_", " "); //remove eventually
+                fileName = fileName.replace("_", " "); //remove eventually
                 break;
         }
         return getImage(c, PILLARS, set, fileName, wall);
@@ -107,7 +107,10 @@ public class WallMaster {
     }
 
 
-    public static boolean isRotation(Coordinates coordinates) {
-        return false;// getSet(coordinates) == CELL_SET.woods;
+    public static boolean isRotation(Coordinates coordinates, boolean wall) {
+        if (wall) {
+            return false;
+        }
+        return getSet(coordinates) == CELL_SET.woods;
     }
 }

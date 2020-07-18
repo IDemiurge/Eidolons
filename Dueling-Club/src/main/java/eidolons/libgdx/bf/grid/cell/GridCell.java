@@ -86,14 +86,14 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
         }
     }
 
-    public   boolean isRotation() {
+    public   boolean isRotation(boolean wall) {
         return false;
     }
 
     public GridCell init() {
         cellImgContainer = new ImageContainer(new Image(backTexture));
         cellImgContainer.getColor().a = getCellImgAlpha();
-        if (isRotation()) {
+        if (isRotation(false)) {
             int n = RandomWizard.getRandomIntBetween(0, 4);
             cellImgContainer.setRotation(90 * n);
             cellImgContainer.setOrigin(64, 64);

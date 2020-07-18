@@ -24,7 +24,7 @@ public class FileLogManager {
 
 
     public static boolean isFullLoggingConsole() {
-        return false;
+        return true;
     }
 
     public enum LOG_OUTPUT {

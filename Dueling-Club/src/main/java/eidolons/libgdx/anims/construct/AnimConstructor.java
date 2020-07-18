@@ -342,9 +342,6 @@ public class AnimConstructor {
             list = SpellVfxPool.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS), n);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-            if (Flags.isJar())
-                System.out.println("getEffect failed" + data.getValue(ANIM_VALUES.PARTICLE_EFFECTS));
-
             list = SpellVfxPool.getEmitters(
                     getPath(ANIM_VALUES.PARTICLE_EFFECTS) +
                             data.getValue(ANIM_VALUES.PARTICLE_EFFECTS), 1);
@@ -556,13 +553,11 @@ public class AnimConstructor {
                 path = PathFinder.getSpritesPathFull();
                 break;
         }
-        if (Flags.isJar())
-            System.out.println(s + " path= " + path);
         return path;
     }
 
     public static boolean isReconstruct() {
-        if (Flags.isJar())
+        if (Flags.isJar()) //not to forget
             return false;
         return false;
     }

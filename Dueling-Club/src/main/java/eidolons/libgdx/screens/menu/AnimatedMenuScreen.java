@@ -52,7 +52,7 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
         getOverlayStage().setActive(true);
     }
 
-    protected boolean isWaitForInput() {
+    protected boolean isWaitForInputSupported() {
         return false;
     }
 
@@ -147,7 +147,7 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
         super.preLoad();
         try {
             //TODO remove?
-            setLoadingAtlases(true);
+            setLoadingFinalAtlases(true);
             GdxMaster.setLoadingCursor();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -159,7 +159,6 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
         super.dispose();
         getOverlayStage().setActive(false);
     }
-
 
     @Override
     protected void renderLoader(float delta) {

@@ -484,7 +484,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
                     calc.offsetY = WallMap.getOffsetY();
                 }
                 wall = true;
-                if (isRotation()) {
+                if (isRotation(true)) {
                     int n = RandomWizard.getRandomIntBetween(0, 4);
                     actor.setRotation(90 * n);
                     actor.setOrigin(64, 64);
@@ -506,8 +506,8 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     @Override
-    public boolean isRotation() {
-        return WallMaster.isRotation(getCoordinates());
+    public boolean isRotation(boolean wall) {
+        return WallMaster.isRotation(getCoordinates(), wall);
     }
 
     public Coordinates getCoordinates() {

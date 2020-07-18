@@ -20,7 +20,8 @@ public class ExceptionMaster {
             boolean PRINT_ALL = false;
             if (!PRINT_ALL) {
                 if (Flags.isJar() || LogMaster.isOff() || !Flags.isLiteLaunch()) {
-                  if (e.getMessage()!=null )  if (printed.contains(e.getMessage()))
+                    //Do not print out the same exception twice
+                    if (e.getMessage() != null) if (printed.contains(e.getMessage()))
                         return;
                     else
                         printed.add(e.getMessage());

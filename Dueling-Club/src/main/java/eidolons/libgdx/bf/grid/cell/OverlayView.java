@@ -2,9 +2,7 @@ package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightConsts;
 import eidolons.game.module.dungeoncrawl.objects.KeyMaster;
@@ -13,7 +11,6 @@ import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.bar.HpBar;
-import eidolons.libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums;
@@ -149,13 +146,15 @@ public class OverlayView extends BaseView implements HpBarView, Colored {
         if (portrait != null)
             portrait.remove();
 
-        TextureRegion portraitTexture = viewOptions.getPortraitTexture();
+        // TextureRegion portraitTexture = viewOptions.getPortraitTexture();
+        //TODO atlas revamp
+        portrait = new FadeImageContainer(viewOptions.getPortraitPath());
         if (flip == CONTENT_CONSTS.FLIP.VERT) {
-            portraitTexture = TextureCache.getFlippedRegion(false, true, viewOptions.getPortraitPath());
+            portrait.setFlipY(true);
+            // portraitTexture = TextureCache.getFlippedRegion(false, true, viewOptions.getPortraitPath());
         } else if (flip == CONTENT_CONSTS.FLIP.HOR) {
-            portraitTexture = TextureCache.getFlippedRegion(true, false, viewOptions.getPortraitPath());
+            portrait.setFlipX(true);
         }
-        portrait = new FadeImageContainer(new Image(portraitTexture));
         addActor(portrait);
         initSprite(viewOptions);
     }

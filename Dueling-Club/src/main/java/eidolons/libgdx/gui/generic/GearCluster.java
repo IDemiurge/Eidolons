@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.actions.AutoFloatAction;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
@@ -59,7 +58,7 @@ public class GearCluster extends GroupX {
         //        }
         Collections.shuffle(gearPool);
         while (gearPool.size() < gearCount) {
-            gearPool.add(new EnumMaster<GEAR>().getRandomEnumConst(GEAR.class));
+            gearPool.add(new RandomWizard<GEAR>().getRandomListItem(gearPool));
         }
         this.scale = scale;
         for (int i = 0; i < gearCount; i++) {

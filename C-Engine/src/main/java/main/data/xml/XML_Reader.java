@@ -18,7 +18,6 @@ import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
-import main.system.launch.Flags;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -131,8 +130,7 @@ public class XML_Reader {
 
     public static void loadXml(String path) {
         File folder = FileManager.getFile(path);
-        if (Flags.isJar())
-            log(1, "ENGINE INIT >> Loading xml files from: \n " + path);
+        important("Loading xml files from: \n " + path);
         final File[] files = folder.listFiles();
 
         if (files != null) {
@@ -145,26 +143,19 @@ public class XML_Reader {
                 if (checkFile(file)) {
                     try {
                         XML_File xmlFile = readFile(file);
-                        if (Flags.isJar())
-                            log(1, "ENGINE INIT >> " + file + " is read!");
                         if (xmlFile == null)
                             continue;
                         loadFile(xmlFile);
-                        if (Flags.isJar())
-                            log(1, "ENGINE INIT >> " + file + " is loaded!");
                     } catch (Exception e) {
                         brokenXml = true;
-                        if (Flags.isJar())
-                            log(1, "ENGINE INIT >> " + file + " is broken!");
+                            important("ENGINE INIT >> " + file + " is broken!");
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
                 } else {
-                    if (Flags.isJar())
-                        log(1, "ENGINE INIT >> not a valid xml file: \n " + file);
+                    important("ENGINE INIT >> not a valid xml file: \n " + file);
                 }
             }
-            if (Flags.isJar())
-                log(1, "ENGINE INIT >> Done loading xml files from: \n " + path);
+            important( "ENGINE INIT >> Done loading xml files from: \n " + path);
 /*            Arrays.stream(files)
                     .filter(XML_Reader::checkFile)
                     .forEach(el -> {

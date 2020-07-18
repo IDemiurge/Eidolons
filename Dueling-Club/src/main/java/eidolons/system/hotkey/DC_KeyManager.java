@@ -220,7 +220,7 @@ public class DC_KeyManager
             }
         }
 
-        if (!Flags.isJar()) { // && !Flags.isJarlike()
+        if (!Flags.isJar()) {  
             if (checkControllerHotkey(keyMod, CHAR)) {
                 return true;
             }

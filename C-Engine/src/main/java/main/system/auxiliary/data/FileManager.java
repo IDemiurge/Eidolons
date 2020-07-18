@@ -78,7 +78,7 @@ public class FileManager {
         //            charset= Charset.defaultCharset();
         try {
             result = new String(Files.readAllBytes(file.toPath()));
-        } catch (IOException e) {
+        } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
@@ -699,7 +699,7 @@ public class FileManager {
     public static void copyDir(String from, String to) {
         try {
             FileUtils.copyDirectory(getFile(from), getFile(to));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -711,7 +711,7 @@ public class FileManager {
     public static void delete(File s) {
         try {
             FileUtils.deleteDirectory(s);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -754,7 +754,7 @@ public class FileManager {
     public static void cleanDir(String s) {
         try {
             FileUtils.cleanDirectory(getFile(s));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -151,7 +151,7 @@ public class MapScreen extends GameScreenWithTown {
     }
 
     @Override
-    protected boolean isWaitForInput() {
+    protected boolean isWaitForInputSupported() {
         return false;
     }
     /*

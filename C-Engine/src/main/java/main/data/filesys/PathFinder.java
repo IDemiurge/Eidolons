@@ -22,6 +22,7 @@ public class PathFinder {
     public static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + "/" +
             "templates";
     public static final String SKIN_NAME = "neutralizer-ui" ;
+    private static final String BUILD_ID = "BUILD_ID";
     private static String XML_PATH;
     private static String ROOT_PATH;
     private static String IMG_PATH;
@@ -586,4 +587,11 @@ public class PathFinder {
     }
 
 
+    public static String getBuildsInfoPath() {
+        return getXML_PATH() + "meta/builds/";
+    }
+
+    public static String getBuildsIdPath() {
+        return getBuildsInfoPath() + BUILD_ID;
+    }
 }

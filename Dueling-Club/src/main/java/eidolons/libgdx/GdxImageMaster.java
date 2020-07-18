@@ -64,6 +64,7 @@ public class GdxImageMaster extends LwjglApplication {
     public static void genAtlas(Collection<TextureRegion> regions) {
 
     }
+
     public static void main(String[] args) {
         new GdxImageMaster();
     }
@@ -159,7 +160,8 @@ public class GdxImageMaster extends LwjglApplication {
     public static Texture size(String path, int size, boolean write) {
         return size(path, size, size, write);
     }
-//TODO gdx revamp - INTO REGION FOR ATLASES!!!
+
+    //TODO gdx revamp - INTO REGION FOR ATLASES!!!
     public static Texture size(String path, int width, int height, boolean write) {
         int size = (width + height) / 2;
         Texture texture = null;
@@ -178,6 +180,10 @@ public class GdxImageMaster extends LwjglApplication {
         if (texture.equals(TextureCache.getMissingTexture())) {
             return null;
         }
+        return createSized(path, texture, size, write);
+    }
+
+    public static Texture createSized(String path, Texture texture, int size, boolean write) {
         String newPath = getSizedImagePath(path, size);
 
         FileHandle handle = GDX.file(
@@ -188,12 +194,12 @@ public class GdxImageMaster extends LwjglApplication {
         if (!texture.getTextureData().isPrepared())
             texture.getTextureData().prepare();
         Pixmap pixmap = texture.getTextureData().consumePixmap();
-        Pixmap pixmap2 = new Pixmap(width, height, pixmap.getFormat());
+        Pixmap pixmap2 = new Pixmap(size, size, pixmap.getFormat());
         pixmap2.drawPixmap(pixmap,
                 0, 0, pixmap.getWidth(), pixmap.getHeight(),
                 0, 0, pixmap2.getWidth(), pixmap2.getHeight()
         );
-        if (height == AtbPanel.imageSize && width == AtbPanel.imageSize) {
+        if (size == AtbPanel.imageSize) {
             sizedViewCache.put(path, texture);
         }
         if (write) {
@@ -211,7 +217,7 @@ public class GdxImageMaster extends LwjglApplication {
 
     public static String getSizedImagePath(String path, int size) {
         path = FileManager.formatPath(path);
-        return StringMaster.cropFormat(path) + " " + size + StringMaster.getFormat(path);
+        return StringMaster.cropFormat(path) + " sized " + size + StringMaster.getFormat(path);
     }
 
     public static void writeImage(FileHandle handle, Pixmap pixmap) {
@@ -220,13 +226,13 @@ public class GdxImageMaster extends LwjglApplication {
 
     public static void writeImage(FileHandle handle, Texture texture) {
         Pixmap pixMap;
-        PixmapIO.writePNG(handle,pixMap= getPixmap(texture));
+        PixmapIO.writePNG(handle, pixMap = getPixmap(texture));
         pixMap.dispose();
     }
 
     public static void writeImage(FileHandle handle, TextureRegion region) {
         Pixmap pixMap;
-        PixmapIO.writePNG(handle,pixMap= getPixMapFromRegion(region));
+        PixmapIO.writePNG(handle, pixMap = getPixMapFromRegion(region));
         pixMap.dispose();
     }
 
@@ -243,8 +249,8 @@ public class GdxImageMaster extends LwjglApplication {
         }
         TextureRegion roundedRegion = TextureCache.getOrCreateR(newPath, false, AssetEnums.ATLAS.UNIT_VIEW);
         if (roundedRegion != null)
-        if (roundedRegion.getTexture() != TextureCache.getMissingTexture())
-            return roundedRegion;
+            if (roundedRegion.getTexture() != TextureCache.getMissingTexture())
+                return roundedRegion;
 
         TextureRegion textureRegion = TextureCache.getOrCreateR(path);
 
@@ -255,8 +261,12 @@ public class GdxImageMaster extends LwjglApplication {
             return null;
         //CREATING
         if (TextureCache.atlasesOn) {
-            textureRegion = TextureCache.getOrCreateR(path, true, null );
+            textureRegion = new TextureRegion(TextureCache.getOrCreate(path));
         }
+        return createRounded(write, textureRegion, newPath, path);
+    }
+
+    public static TextureRegion createRounded(boolean write, TextureRegion textureRegion, String newPath, String path) {
         Pixmap rounded = roundTexture(textureRegion);
         FileHandle handle = GDX.file(
                 PathFinder.getImagePath() + newPath);
@@ -445,4 +455,11 @@ public class GdxImageMaster extends LwjglApplication {
         // writeImage(handle, frame);
     }
 
+    public static boolean isRoundedPath(String name) {
+        return name.contains(" rounded");
+    }
+
+    public static boolean isSizedPath(String name) {
+        return name.contains(" sized ");
+    }
 }

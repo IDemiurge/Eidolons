@@ -74,9 +74,9 @@ public class A_StarAlgorithm {
     private void refresh() {
         openList = new LinkedList<>();
         closedList = new LinkedList<>();
-        for (PathNode node : nodeList) {
-            node.reset();
-        }
+        // for (PathNode node : nodeList) {
+        //     node.reset();
+        // }
     }
 
     private void constructPath() {

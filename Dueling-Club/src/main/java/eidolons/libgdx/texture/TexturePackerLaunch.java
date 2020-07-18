@@ -23,6 +23,7 @@ import java.util.List;
  */
 public class TexturePackerLaunch {
     public static final String ATLAS_EXTENSION = ".txt";
+    public static  boolean FAST = false;
 
     public static String WORKSPACE_PATH = PathFinder.getImagePath() + PathFinder.getWeaponAnimPath() + "workspace//";
 
@@ -69,20 +70,39 @@ public class TexturePackerLaunch {
     }
 
 
-
-    public static final AssetEnums.ATLAS[] atlases = {
-            // AssetEnums.ATLAS.UI_BASE,
+    public static final AssetEnums.ATLAS[] atlasesFull = {
+            AssetEnums.ATLAS.UI_BASE,
             AssetEnums.ATLAS.UI_DC,
-            // AssetEnums.ATLAS.UNIT_VIEW,
-            // AssetEnums.ATLAS.TEXTURES,
-            // AssetEnums.ATLAS.SPRITES_GRID,
-            // AssetEnums.ATLAS.SPRITES_UI,
+            AssetEnums.ATLAS.UNIT_VIEW,
+            AssetEnums.ATLAS.TEXTURES,
+            AssetEnums.ATLAS.SPRITES_GRID,
+            AssetEnums.ATLAS.SPRITES_UI,
+            AssetEnums.ATLAS.SPRITES_ONEFRAME,
+    };
+    public static final AssetEnums.ATLAS[] atlasesFast = {
+            AssetEnums.ATLAS.UI_BASE,
+            AssetEnums.ATLAS.UI_DC,
+            AssetEnums.ATLAS.UNIT_VIEW,
+            AssetEnums.ATLAS.TEXTURES,
             AssetEnums.ATLAS.SPRITES_ONEFRAME,
     };
 
+    public static final AssetEnums.ATLAS[] atlases = {
+            // AssetEnums.ATLAS.UI_BASE,
+            // AssetEnums.ATLAS.UI_DC,
+            AssetEnums.ATLAS.UNIT_VIEW,
+            // AssetEnums.ATLAS.TEXTURES,
+            // AssetEnums.ATLAS.SPRITES_GRID,
+            // AssetEnums.ATLAS.SPRITES_UI,
+            // AssetEnums.ATLAS.SPRITES_ONEFRAME,
+    };
+
     public static void generateAtlases() {
+        generateAtlases(false);
+    }
+    public static void generateAtlases(boolean full) {
         atlasGen = true;
-        for (AssetEnums.ATLAS atlas : atlases) {
+        for (AssetEnums.ATLAS atlas : full? FAST?atlasesFast : atlasesFull :  atlases) {
             a=atlas;
             String name = atlas.toString().toLowerCase();
             String input = PathFinder.getAtlasGenPath() + name;
@@ -281,5 +301,6 @@ public class TexturePackerLaunch {
         }
 
     }
+
 }
 

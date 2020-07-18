@@ -25,6 +25,10 @@ public class SmartTextureAtlas extends TextureAtlas {
     private String path;
     private AssetEnums.ATLAS type;
 
+    public static boolean isCached() {
+        return false;
+    }
+
     @Override
     public Sprite createSprite(String name, int index) {
         return super.createSprite(name, index);
@@ -92,7 +96,7 @@ public class SmartTextureAtlas extends TextureAtlas {
     }
 
     public AtlasRegion findRegion(String orig, boolean recursion) {
-        AtlasRegion region = cache.get(orig);
+        AtlasRegion region = (isCached() ? cache.get(orig) : null);
         if (region != null) {
             return region;
         }
@@ -105,7 +109,9 @@ public class SmartTextureAtlas extends TextureAtlas {
             // }
             if (s.equalsIgnoreCase(name)) {
                 region = regions.get(i);
+                if (isCached()) {
                 cache.put(orig, region);
+                }
                 return region;
             }
         }

@@ -12,6 +12,7 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
 
@@ -24,15 +25,17 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     private List<Encounter> encounters;
     private int id;
     public static Integer ID = 0;
-    private Set<Coordinates> voidCells = new LinkedHashSet<>();
+    private final Set<Coordinates> voidCells = new LinkedHashSet<>();
 
-    private Map<Integer, BattleFieldObject> objIdMap = new LinkedHashMap<>();
-    private Map<Integer, ObjType> idTypeMap = new LinkedHashMap<>();
+    private final Map<Integer, BattleFieldObject> objIdMap = new LinkedHashMap<>();
+    private final Map<Integer, ObjType> idTypeMap = new LinkedHashMap<>();
     private String objectsData;
     private String borderObjectsData;
     private boolean firstInit;
     private boolean startModule;
     private String platformData;
+    private Integer full_height;
+    private Integer full_width;
 
     public Module(Coordinates origin, int width, int height, String name) {
         this.origin = origin;
@@ -153,11 +156,19 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     }
 
     public int getEffectiveHeight() {
-        return getEffectiveHeight(true);
+        if (!CoreEngine.isLevelEditor()) {
+            if (full_height!=null)
+                return full_height;
+        }
+        return full_height=getEffectiveHeight(true);
     }
 
     public int getEffectiveWidth() {
-        return getEffectiveWidth(true);
+        if (!CoreEngine.isLevelEditor()) {
+            if (full_width!=null)
+                return full_width;
+        }
+        return full_width= getEffectiveWidth(true);
     }
 
     public int getEffectiveWidth(boolean buffer) {

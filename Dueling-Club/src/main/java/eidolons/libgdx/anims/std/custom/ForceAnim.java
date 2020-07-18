@@ -64,7 +64,7 @@ public class ForceAnim extends Weapon3dAnim {
     private String getSpritePath() {
 //TODO tester hack
         if (true)
-            return Sprites.REAPER_SCYTHE;
+            return Sprites.GHOST_FIST;
 
         if (type == GenericEnums.DAMAGE_TYPE.SHADOW || type == GenericEnums.DAMAGE_TYPE.DEATH) {
             if (!Flags.isSuperLite())

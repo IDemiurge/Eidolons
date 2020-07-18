@@ -53,7 +53,7 @@ public class LE_WaitingScreen extends ScreenWithLoader {
     }
 
     @Override
-    protected boolean isWaitForInput() {
+    protected boolean isWaitForInputSupported() {
         return false;
     }
 

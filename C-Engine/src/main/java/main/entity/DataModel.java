@@ -578,6 +578,7 @@ public abstract class DataModel {
     }
 
     public String getValue(VALUE val, boolean base) {
+        //TODO optimize - this is core!
         StringBuilder value = new StringBuilder();
         if (val instanceof MultiParameter) {
             MultiParameter multiParameter = (MultiParameter) val;
@@ -923,28 +924,15 @@ public abstract class DataModel {
     }
 
     public boolean setParam(PARAMETER param, String value, boolean quiety) {
-        //        if (param == null) {
-        //            return false;
-        //        }
         if (getGame() == null)
             if (GuiEventManager.isBarParam(param.getName()) || !quiety)
                 if (isFiringValueEvents())
                     if (Game.game != null)
                         return false;
-        //            if (getGame().isStarted()) {
-        //                if (!fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
-        //                    return false;
-        //                }
-        //            }
-        //        }
-        // if (isParamSetLogged())
-        //        LogMaster.log(0, "==========> " + getName() + "'s " + param + "  is set to" + value);
         if (getParamMap().get(param.getName()).equals(value))
             return false;
         putParameter(param, value);
         setDirty(true);
-
-
         return true;
     }
 
@@ -1139,11 +1127,6 @@ public abstract class DataModel {
     }
 
     protected void putParameter(PARAMETER param, String value) {
-        //        if (param.getName().equalsIgnoreCase("Foc Req")) {
-        //            main.system.auxiliary.log.LogMaster.log(1,
-        //             this +
-        //              " Foc Req set to" + value + " from " + getParam(param));
-        //        }
         if (isTypeLinked()) {
             type.getParamMap().put(param, value);
         }

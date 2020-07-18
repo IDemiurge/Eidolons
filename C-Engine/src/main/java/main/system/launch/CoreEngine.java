@@ -4,11 +4,14 @@ import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.ability.ARGS;
 import main.data.ability.Mapper;
+import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.LogMaster;
@@ -30,9 +33,12 @@ public class CoreEngine {
             "eidolons.elements", "eidolons.ability"};
 
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Backer;
-    public static final String VERSION = "0.5.2b";
     public static final String VERSION_NAME = "Tester Version"; //StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean RAM_OPTIMIZATION = true;
+    public static final int buildId = readBuildId();
+    public static final String BUILD = NumberUtils.prependZeroes(buildId, 3);
+    public static final String VERSION = "0.5."+BUILD;
+
     public static String filesVersion = "v" + VERSION.replace(".", "-");
     public static boolean FULL_LAUNCH; ////TODO with audio and all - real xp!
     private static String selectivelyReadTypes;
@@ -57,6 +63,9 @@ public class CoreEngine {
         Backer, Tester,
     }
 
+    private static Integer readBuildId() {
+        return NumberUtils.getInt(FileManager.readFile(PathFinder.getBuildsIdPath()));
+    }
     public static boolean isMyLiteLaunch() {
         return Flags.isIDE() && Flags.isLiteLaunch();
     }

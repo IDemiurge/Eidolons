@@ -129,11 +129,11 @@ public abstract class GenericLauncher extends Game {
     }
 
     protected boolean isStopOnInactive() {
-        return !Flags.isJar(); //TODO this messes up loading ?
+        return Flags.isMe(); //TODO this messes up loading ?
     }
 
     protected String getTitle() {
-        return "Eidolons: Battlecraft v" + CoreEngine.VERSION;
+        return "Eidolons: Netherflame v" + CoreEngine.VERSION;
     }
 
 

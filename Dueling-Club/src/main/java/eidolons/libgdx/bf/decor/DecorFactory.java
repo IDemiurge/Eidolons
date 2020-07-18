@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Align;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
+import eidolons.libgdx.assets.AssetEnums;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.datasource.SpriteData;
 import eidolons.libgdx.bf.generic.Flippable;
@@ -37,6 +38,7 @@ public class DecorFactory {
             }
         } else {
             actor = new NoHitImageX(path);
+            ((NoHitImageX) actor).setAtlas(AssetEnums.ATLAS.TEXTURES);
         }
         boolean x = data.getBooleanValue(GraphicData.GRAPHIC_VALUE.flipX);
         boolean y = data.getBooleanValue(GraphicData.GRAPHIC_VALUE.flipY);

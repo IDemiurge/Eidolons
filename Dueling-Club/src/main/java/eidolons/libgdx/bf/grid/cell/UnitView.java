@@ -21,7 +21,6 @@ import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
-import main.content.CONTENT_CONSTS;
 import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.system.auxiliary.StringMaster;
@@ -168,7 +167,7 @@ public class UnitView extends BaseView implements HpBarView {
         return super.isTransformDisabled();
     }
 
-
+//TODO gdx Review
     protected void checkResetOutline(float delta) {
         if (!isMainHero())
             if (resetTimer <= 0 || OutlineMaster.isAutoOutlinesOff()) {
@@ -204,6 +203,7 @@ public class UnitView extends BaseView implements HpBarView {
     }
 
     protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
+        ////TODO atlas revamp
         originalTexture = processPortraitTexture(path);
         if (isMainHero()) {
             return new FadeImageContainer(new Image(originalTexture));
@@ -259,12 +259,6 @@ public class UnitView extends BaseView implements HpBarView {
     }
 
     public TextureRegion processPortraitTexture(String path) {
-        if (flip == CONTENT_CONSTS.FLIP.HOR) {
-            return TextureCache.getFlippedRegion(true, false, path);
-        }
-        if (flip == CONTENT_CONSTS.FLIP.VERT) {
-            return TextureCache.getFlippedRegion(false, true, path);
-        }
         return TextureCache.getRegionUV(path);
     }
 

@@ -184,8 +184,6 @@ public class SpriteMaster {
                         return Sprites.RUNE_INSCRIPTION;
                     case ("Torch"):
                         return Sprites.TORCH;
-                    case ("Altar"):
-                        return Sprites.ALTAR;
                     case ("Eldritch Sphere"):
                         return Sprites.ORB;
                 }

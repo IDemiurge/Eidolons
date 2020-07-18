@@ -258,22 +258,6 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         }
     }
 
-    @Override
-    public void render(float delta) {
-        // if (Flags.isJar() && !Flags.isCrashSafeMode()) {
-            super.render(delta);
-        // } else
-        //     try {
-        //         super.render(delta);
-        //     } catch (ArrayIndexOutOfBoundsException e1) {
-        //         e1.printStackTrace();
-        //     } catch (Exception e) {
-        //         main.system.ExceptionMaster.printStackTrace(e);
-        //     }
-
-
-    }
-
     protected void renderLoader(float delta) {
         super.renderLoader(delta);
 

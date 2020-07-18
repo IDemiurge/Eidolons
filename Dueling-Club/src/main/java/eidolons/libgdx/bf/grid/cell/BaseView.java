@@ -164,8 +164,14 @@ public class BaseView extends SuperActor  implements Hoverable, Borderable {
     }
 
     protected FadeImageContainer initPortrait(String path) {
-        originalTexture = processPortraitTexture(path);
-        return new FadeImageContainer(new Image(originalTexture));
+        FadeImageContainer container = new FadeImageContainer(path);
+        if (flip == CONTENT_CONSTS.FLIP.HOR) {
+            container.setFlipX(true);
+        }
+        if (flip == CONTENT_CONSTS.FLIP.VERT) {
+            container.setFlipY(true);
+        }
+        return container;
     }
 
     protected TextureRegion processPortraitTexture(String path) {

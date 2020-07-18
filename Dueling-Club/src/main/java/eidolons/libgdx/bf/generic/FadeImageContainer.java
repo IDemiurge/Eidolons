@@ -3,6 +3,7 @@ package eidolons.libgdx.bf.generic;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import eidolons.libgdx.gui.generic.btn.FlipDrawable;
 import eidolons.libgdx.texture.TextureCache;
 
 /**
@@ -167,6 +168,9 @@ public class FadeImageContainer extends ImageContainer {
     }
 
     public void setTexture(Drawable drawable) {
+        if (flipX || flipY){
+            drawable = new FlipDrawable(drawable, () -> flipX, () -> flipY);
+        }
         if (getContent().getDrawable() != drawable) {
             if (previousImage != null && previousImage.getDrawable() == drawable) {
                 setContents(previousImage);

@@ -524,8 +524,25 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
 
     protected boolean isTooltipRequired(OVERLAY overlay) {
         switch (overlay) {
+
+            case SPOTTED:
+                break;
+            case STEALTH:
+                break;
+            case BAG:
+                break;
             case HP_BAR:
                 return isHpTooltipOn();
+            case GRAVE:
+            case CORPSE:
+            case ITEM:
+            case IN_PLAIN_SIGHT:
+            case IN_SIGHT:
+            case BLOCKED:
+            case INFO_TEXT:
+            case PATH:
+            case DESTINATION:
+                return false;
         }
         return true;
     }
