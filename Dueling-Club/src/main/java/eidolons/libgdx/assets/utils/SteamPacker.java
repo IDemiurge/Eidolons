@@ -8,6 +8,7 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
+import main.system.threading.WaitMaster;
 
 import java.io.File;
 import java.util.LinkedHashSet;
@@ -24,6 +25,8 @@ public class SteamPacker {
     static SteamDataModel dataModel;
     private static final Set<String> newFiles = new LinkedHashSet<>();
     private static final Set<String> updatedFiles = new LinkedHashSet<>();
+    private static final Set<String> newXml = new LinkedHashSet<>();
+    private static final Set<String> updatedXml = new LinkedHashSet<>();
     public static BuildReport report;
     private static String buildID;
 
@@ -31,6 +34,12 @@ public class SteamPacker {
         boolean full = args.length > 0;
         boolean fast = args.length < 2;
         PathFinder.init();
+
+        if (Bools.isFalse(copyJar())){
+            log("Build failed!");
+            return;
+            //what about exe gen? probably cmd compatible !
+        }
         if (args.length > 3) {
             full = DialogMaster.confirm("Full build?");
             fast = DialogMaster.confirm("Fast?");
@@ -42,7 +51,7 @@ public class SteamPacker {
         // if (full || DialogMaster.confirm("Rebuild model?"))
         buildID = readID();
         dataModel = new SteamDataReader(out).readDataModel();
-        report = new BuildReport();
+        report = new BuildReport(fast);
         if (full || DialogMaster.confirm("Rebuild assets?")) {
             if (full || DialogMaster.confirm("Pack atlases?")) {
                 AtlasGen.OVERWRITE = !fast;
@@ -51,10 +60,12 @@ public class SteamPacker {
             } else {
                 AtlasGen.main();
             }
+            boolean result= (boolean) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.GDX_READY);
+            if (!result) {
+                log("Build failed!");
+                return;
+            }
         }
-
-        copyJar(); //what about exe gen? probably cmd compatible !
-
         if (full || DialogMaster.confirm("Copy all?")) {
             copyResources();
             copyXml();
@@ -67,18 +78,24 @@ public class SteamPacker {
         if (newFiles.isEmpty() && updatedFiles.isEmpty()) {
         }
 
-        log(newFiles.size() + " new files: \n" + newFiles);
-        log(updatedFiles.size() + " updated Files: \n" + newFiles);
-        if (full || DialogMaster.confirm("Run build?")) {
-            runBuildScript();
+        log(newFiles.size() + " new Resource files: \n" + newFiles);
+        log(updatedFiles.size() + " updated Resource Files: \n" + updatedFiles);
+        log(newXml.size() + " new XML files: \n" + newXml);
+        log(updatedXml.size() + " updated XML Files: \n" + updatedXml);
+        if (full || DialogMaster.confirm("Make build?")) {
+            incrementID();
+            report.setBuildId(buildID);
+            report.write();
+
+            // if (full || DialogMaster.confirm("Run steam upload?")) {
+            //     runBuildScript();
+            // }
         }
-        incrementID();
-        report.setBuildId(buildID);
-        report.write();
+        System.exit(0);
     }
 
     private static String readID() {
-        String s = FileManager.readFile(PathFinder.getBuildsIdPath() );
+        String s = FileManager.readFile(PathFinder.getBuildsIdPath());
         if (s.isEmpty()) {
             return "0";
         }
@@ -87,7 +104,7 @@ public class SteamPacker {
 
     private static void incrementID() {
         buildID = (NumberUtils.getInt(buildID) + 1) + "";
-        FileManager.write(buildID, PathFinder.getBuildsIdPath()  );
+        FileManager.write(buildID, PathFinder.getBuildsIdPath());
     }
 
     private static void log(String s) {
@@ -113,19 +130,19 @@ public class SteamPacker {
         return CoreEngine.VERSION_NAME + " " + CoreEngine.VERSION + buildID;
     }
 
-    private static void copyJar() {
-        FileManager.copy(jar_path, out + jar_name_out);
+    private static Boolean copyJar() {
+       return  FileManager.copy(jar_path, out + jar_name_out);
     }
 
     private static void copyXml() {
         for (File xmlFile : dataModel.filesXml) {
-            copy(cropPath(xmlFile.getPath(), "xml"));
+            copy(cropPath(xmlFile.getPath(), "xml"), false);
         }
     }
 
     private static void copyResources() {
         for (File xmlFile : dataModel.filesRes) {
-            copy(cropPath(xmlFile.getPath(), "resources"));
+            copy(cropPath(xmlFile.getPath(), "resources"), true);
         }
     }
 
@@ -134,13 +151,13 @@ public class SteamPacker {
     }
 
 
-    private static void copy(String path) {
+    private static void copy(String path, boolean resource) {
         Boolean result = FileManager.copy(root + path, out + path);
         if (Bools.isTrue(result)) {
-            newFiles.add(path);
+            (resource ? newXml : newFiles).add(path);
         }
         if (result == null) {
-            updatedFiles.add(path);
+            (resource ? updatedXml : updatedFiles).add(path);
         }
     }
 

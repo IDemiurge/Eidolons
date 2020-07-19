@@ -1,11 +1,15 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel.weapon;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.gui.datasource.EntityDataSource;
+import eidolons.libgdx.gui.generic.btn.FlipDrawable;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.entity.ItemEnums.WEAPON_CLASS;
 import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
@@ -83,7 +87,7 @@ public class WeaponDataSource extends EntityDataSource<DC_WeaponObj> {
 
     public String getSpriteImagePath() {
         if (ImageManager.isImage(entity.getSpriteImagePath()))
-             return entity.getSpriteImagePath();
+            return entity.getSpriteImagePath();
         return getDefaultSpriteImage();
     }
 
@@ -100,32 +104,30 @@ public class WeaponDataSource extends EntityDataSource<DC_WeaponObj> {
     }
 
     public Image getNormalImage() {
-        GdxImageMaster.size(getSpriteImagePath(),getDefaultSize(), true);
-        if (!isMainHand()){
-            return new Image(GdxImageMaster.flip(
-             GdxImageMaster.getSizedImagePath(getSpriteImagePath(), getDefaultSize()),
-             true, false, true));
+        TextureRegion region = TextureCache.getSizedRegion(getDefaultSize(), getSpriteImagePath());
+        if (!isMainHand()) {
+            Drawable drawable = new FlipDrawable(new TextureRegionDrawable(region), () -> true, () -> false);
+            return new Image(drawable);
         }
-        return new Image(GdxImageMaster.size(getSpriteImagePath(),
-         96, true));
+        return new Image(region);
     }
 
     protected int getDefaultSize() {
-//        if (getWeapon().isMagical())
-            if (getWeapon().getName().contains("Force")) {
-                return 120;
-            }
+        //        if (getWeapon().isMagical())
+        if (getWeapon().getName().contains("Force")) {
+            return 128;
+        }
         return 96;
     }
 
     public Image getLargeImage() {
-        if (!isMainHand()){
+        if (!isMainHand()) {
             return new Image(GdxImageMaster.flip(
-             getSpriteImagePath(),
-             true, false, true));
+                    getSpriteImagePath(),
+                    true, false, true));
         }
         return new Image(TextureCache.getOrCreateR(getSpriteImagePath()));
-//                GdxImageMaster.size(getSpriteImagePath(),
-//         128, true));
+        //                GdxImageMaster.size(getSpriteImagePath(),
+        //         128, true));
     }
 }

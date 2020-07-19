@@ -146,12 +146,9 @@ public class OverlayView extends BaseView implements HpBarView, Colored {
         if (portrait != null)
             portrait.remove();
 
-        // TextureRegion portraitTexture = viewOptions.getPortraitTexture();
-        //TODO atlas revamp
         portrait = new FadeImageContainer(viewOptions.getPortraitPath());
         if (flip == CONTENT_CONSTS.FLIP.VERT) {
             portrait.setFlipY(true);
-            // portraitTexture = TextureCache.getFlippedRegion(false, true, viewOptions.getPortraitPath());
         } else if (flip == CONTENT_CONSTS.FLIP.HOR) {
             portrait.setFlipX(true);
         }

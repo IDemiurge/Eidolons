@@ -352,7 +352,6 @@ public class ShadowMap extends GroupX implements GridElement {
     public static final SHADE_CELL[] SHADE_CELL_VALUES = {
             VOID,
             GAMMA_SHADOW,
-            BLACKOUT,
             HIGHLIGHT
     };
 

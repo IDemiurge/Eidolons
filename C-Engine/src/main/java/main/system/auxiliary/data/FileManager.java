@@ -709,10 +709,14 @@ public class FileManager {
     }
 
     public static void delete(File s) {
-        try {
-            FileUtils.deleteDirectory(s);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (s.isDirectory())
+            try {
+                FileUtils.deleteDirectory(s);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        else {
+            s.delete();
         }
     }
 
@@ -754,6 +758,17 @@ public class FileManager {
     public static void cleanDir(String s) {
         try {
             FileUtils.cleanDirectory(getFile(s));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void rename(String path, String newPath) {
+        move(path, newPath);
+    }
+    public static void move(String path, String newPath) {
+        try {
+            Files.move(getPath(path), getPath(newPath));
         } catch (Exception e) {
             e.printStackTrace();
         }

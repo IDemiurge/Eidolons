@@ -3,7 +3,6 @@ package eidolons.libgdx.bf.grid.cell;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -16,7 +15,6 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.bar.HpBar;
 import eidolons.libgdx.gui.generic.NoHitGroup;
-import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.system.auxiliary.StrPathBuilder;
 
@@ -234,15 +232,6 @@ public class GenericGridView extends UnitView {
         }
     }
 
-    public void setPortraitTexture(TextureRegion textureRegion) {
-        if (((FileTextureData) textureRegion.getTexture().getTextureData()).getFileHandle().name().toLowerCase().
-                contains("unknown")) {
-            if (getUserObject().isWater()) {
-                return;
-            }
-        }
-        getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
-    }
 
     @Override
     public float getWidth() {

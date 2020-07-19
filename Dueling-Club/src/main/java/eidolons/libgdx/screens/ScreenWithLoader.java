@@ -62,8 +62,6 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
         initBlackout();
         initPostProcessing();
         initLabels();
-        GuiEventManager.bind(GuiEventType.UPDATE_LOAD_STATUS,
-                p -> statusLabel.setText(p.get().toString()));
     }
 
     protected void initPostProcessing() {
@@ -103,6 +101,8 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
 
         statusLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 20));
         statusLabel.setPosition(125,                90);
+        GuiEventManager.bind(GuiEventType.UPDATE_LOAD_STATUS,
+                p -> statusLabel.setText(p.get().toString()));
 
         loadingLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 20));
         loadingLabel.setPosition(0,                GdxMaster.getHeight()-100);

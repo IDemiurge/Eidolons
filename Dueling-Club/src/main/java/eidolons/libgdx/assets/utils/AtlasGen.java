@@ -11,9 +11,11 @@ import eidolons.libgdx.texture.TexturePackerLaunch;
 import eidolons.system.utils.GdxUtil;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Bools;
+import main.system.threading.WaitMaster;
 
 import java.io.File;
 
@@ -21,17 +23,20 @@ import static eidolons.libgdx.GdxImageMaster.*;
 
 public class AtlasGen extends GdxUtil {
 
-    public static final String[] sprites_oneframe = {
-            "gen/one_frame/*"
-    };
-    public static final String[] textures = {
-            "main/textures/*"
+    public static final String[] ui_base = {
+            "ui",
+            "ui/components/generic/*",
+            "ui/components/ninepatch/*",
+            "ui/main/hiero/*",
+            // "main/art/",
+            "main/previews", //heroes and locations/scenarios!
     };
     public static final String[] ui_dc = {
             "gen/entity/buffs/*",
             "gen/entity/items/*",
             "gen/entity/spells/*",
             "main/item/*",
+            "main/actions/*",
             "ui/components/dc/*",
             "ui/components/hq/*",
             "ui/components/tiny/*",
@@ -47,6 +52,12 @@ public class AtlasGen extends GdxUtil {
             "sprites/hit/*",
             "sprites/fly objs/*",
     };
+    public static final String[] sprites_oneframe = {
+            "gen/one_frame/*"
+    };
+    public static final String[] textures = {
+            "main/textures/*"
+    };
     public static final String[] unitview = {
             "gen/entity/bf obj/*",
             "main/bf/*",
@@ -59,17 +70,9 @@ public class AtlasGen extends GdxUtil {
             "ui/content/emblems/*",
             "ui/content/modes/*",
     };
-    public static final String[] ui_base = {
-            "ui",
-            "ui/components/generic/*",
-            "ui/components/ninepatch/*",
-            "ui/main/hiero/*",
-            // "main/art/",
-            "main/previews", //heroes and locations/scenarios!
-    };
     public static final AssetEnums.ATLAS[] cleanUpAtlases = {
             // Atlases.ATLAS.UI_BASE,
-            AssetEnums.ATLAS.UI_DC,
+            // AssetEnums.ATLAS.UI_DC,
             // Atlases.ATLAS.UNIT_VIEW,
             // Atlases.ATLAS.TEXTURES,
             // Atlases.ATLAS.SPRITES_GRID,
@@ -94,7 +97,7 @@ public class AtlasGen extends GdxUtil {
             "main/item/usable/",
     };
     public static final String[] sizeFolders96 = {
-            "main/item/weapons/sprites/",
+            "main/item/weapon/sprites/",
     };
     private final String[] args;
 
@@ -113,46 +116,58 @@ public class AtlasGen extends GdxUtil {
     @Override
     protected void execute() {
         PathFinder.init();
-
-        if (CLEANUP = args.length > 0)
-            cleanUp();
-        if (UPDATE_GEN_IMAGES = args.length > 1)
-            update();
-        AtlasGen.moveFiles();
-        generateRounded();
-        generateSized();
-        if (UPDATE_GEN_IMAGES = args.length > 2)
-            TexturePackerLaunch.generateAtlases(args.length > 2);
+        boolean result=true;
+        try {
+            if (CLEANUP = args.length > 0)
+                cleanUp();
+            if (UPDATE_GEN_IMAGES = args.length > 1)
+                update();
+            AtlasGen.moveFiles();
+            generateRounded();
+            generateSized();
+            if (UPDATE_GEN_IMAGES = args.length > 2)
+                TexturePackerLaunch.generateAtlases(args.length > 2);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            result = false;
+        } finally{
+            WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.GDX_READY, result);
+        }
     }
 
     private static void generateSized() {
         for (String folder : sizeFolders32) {
-            sizeFiles(AssetEnums.ATLAS.UI_DC, folder, 32);
+            sizeFiles(AssetEnums.ATLAS.UI_DC, folder, 32, null );
         }
         for (String folder : sizeFolders50) {
-            sizeFiles(AssetEnums.ATLAS.UI_DC, folder, 50);
+            sizeFiles(AssetEnums.ATLAS.UI_DC, folder, 50,  " 64");
         }
         for (String folder : sizeFolders96) {
-            sizeFiles(AssetEnums.ATLAS.UI_DC, folder, 96);
+            sizeFiles(AssetEnums.ATLAS.UI_DC, folder, 96, null );
         }
     }
 
-    private static void sizeFiles(AssetEnums.ATLAS atlas, String folder, int size) {
+    private static void sizeFiles(AssetEnums.ATLAS atlas, String folder, int size, String cropSuffix) {
         for (File file : FileManager.getFilesFromDirectory(
                 root + folder, false, true)) {
+            String path = file.getPath();
+            if (cropSuffix!=null ){
+                FileManager.rename(path, path =StringMaster.cropSuffix(path, cropSuffix));
+            }
             FileHandle handle = new FileHandle(
-                    atlas.prefix + "/" + getSizedImagePath(PathUtils.cropPath(file.getPath(),
-                            root), size));
+                    atlas.prefix + "/" + getSizedImagePath(PathUtils.cropPath(path,
+                            root), size,cropSuffix));
             if (!OVERWRITE && handle.exists()) continue;
             String orig = root +
-                    getSizedImagePath(file.getPath(), size);
+                    getSizedImagePath(path, size);
             if (FileManager.isFile(orig)) {
                 if (Bools.isTrue(FileManager.copy(orig, handle.toString())))
-                    LogMaster.log(1, size + " sized generated   " + handle);
+                    LogMaster.log(1, size + " sized copied   " + handle);
             } else if (GdxMaster.isGdxThread()) {
-                Texture tex = TextureCache.getOrCreate(file.getPath());
-                Texture round = createSized(file.getPath(), tex, size, false);
+                Texture tex = TextureCache.getOrCreate(path);
+                Texture round = createSized(path, tex, size, false);
                 writeImage(handle, round);
+                LogMaster.log(1, size + " sized generated   " + handle);
             }
         }
     }
@@ -198,7 +213,11 @@ public class AtlasGen extends GdxUtil {
             if (GdxImageMaster.isSizedPath(file.getName())) {
                 continue;
             }
-            if (!FileManager.isFile(root + PathUtils.cropPath(file.getPath(), out))) {
+            String path =  PathUtils.cropPath(file.getPath(), out);
+            if (PathUtils.splitPath(path).size()<2)
+                continue;
+            path =root +PathUtils.cropFirstPathSegment(path);
+            if (!FileManager.isFile(path)) {
                 FileManager.delete(file);
                 log(true, "Removed " + file);
             }
@@ -313,4 +332,8 @@ public class AtlasGen extends GdxUtil {
         LogMaster.log(1, s);
     }
 
+    @Override
+    protected boolean isExitOnDone() {
+        return false;
+    }
 }

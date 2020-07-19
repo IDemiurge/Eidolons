@@ -216,7 +216,13 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static String getSizedImagePath(String path, int size) {
+        return getSizedImagePath(path, size, null );
+    }
+    public static String getSizedImagePath(String path, int size, String  cropSuffix) {
         path = FileManager.formatPath(path);
+        if (cropSuffix!=null ) {
+        path = StringMaster.cropSuffix(path,cropSuffix);
+        }
         return StringMaster.cropFormat(path) + " sized " + size + StringMaster.getFormat(path);
     }
 

@@ -712,7 +712,7 @@ public class StringMaster {
     public static String cropLast(String name, String string) {
         int lastIndexOf = name.lastIndexOf(string);
         if (lastIndexOf > -1) {
-            return replaceLast(name, name.substring(lastIndexOf), "");
+            return replaceLast(name, name.substring(lastIndexOf, lastIndexOf+string.length()), "");
         }
         return name;
     }
@@ -1137,6 +1137,15 @@ public class StringMaster {
                 i++;
         }
         return i;
+    }
+
+    public static String cropNumericSuffix(String path) {
+        String suffix = NumberUtils.getNumericSuffix(cropFormat(path));
+        return cropLast(path, suffix).trim()+getFormat(path);
+    }
+
+    public static String cropSuffix(String path, String cropSuffix) {
+        return cropLast(path, cropSuffix).trim();
     }
 
 

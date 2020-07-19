@@ -156,6 +156,7 @@ public class XML_Reader {
                 }
             }
             important( "ENGINE INIT >> Done loading xml files from: \n " + path);
+            important( getFiles().size( ) + "Xml files: \n " + getFiles() );
 /*            Arrays.stream(files)
                     .filter(XML_Reader::checkFile)
                     .forEach(el -> {

@@ -63,6 +63,7 @@ public class DungeonScreen extends GameScreenWithTown {
 
     public DungeonScreen() {
         super();
+        initLabels();
     }
 
     @Override

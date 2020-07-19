@@ -21,6 +21,7 @@ import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.CONTENT_CONSTS;
 import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.system.auxiliary.StringMaster;
@@ -169,6 +170,9 @@ public class UnitView extends BaseView implements HpBarView {
 
 //TODO gdx Review
     protected void checkResetOutline(float delta) {
+        if (!OutlineMaster.isOutlinesOn()) {
+            return;
+        }
         if (!isMainHero())
             if (resetTimer <= 0 || OutlineMaster.isAutoOutlinesOff()) {
 
@@ -202,8 +206,22 @@ public class UnitView extends BaseView implements HpBarView {
                 OUTLINE_TYPE.UNKNOWN.getImagePath()));
     }
 
+    protected FadeImageContainer initPortrait(String path) {
+        FadeImageContainer container = new FadeImageContainer(path);
+        if (flip == CONTENT_CONSTS.FLIP.HOR) {
+            container.setFlipX(true);
+        }
+        if (flip == CONTENT_CONSTS.FLIP.VERT) {
+            container.setFlipY(true);
+        }
+        originalTexture = processPortraitTexture(path);
+        if (!isMainHero()) {
+            container.setTexture(TextureCache.getOrCreateTextureRegionDrawable(originalTexture));
+        }
+        return container;
+    }
     protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
-        ////TODO atlas revamp
+        //TODO atlas revamp - remove
         originalTexture = processPortraitTexture(path);
         if (isMainHero()) {
             return new FadeImageContainer(new Image(originalTexture));
@@ -250,7 +268,12 @@ public class UnitView extends BaseView implements HpBarView {
 
 
     public void setPortraitTexture(TextureRegion textureRegion) {
-        getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
+        if (textureRegion == null) {
+
+        }
+        getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion,
+                ()-> flip == CONTENT_CONSTS.FLIP.HOR, ()-> flip == CONTENT_CONSTS.FLIP.VERT
+        ));
     }
 
     public void setPortraitTextureImmediately(TextureRegion textureRegion) {

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.libgdx.GDX;
@@ -15,6 +16,7 @@ import eidolons.libgdx.assets.AssetEnums;
 import eidolons.libgdx.assets.Assets;
 import eidolons.libgdx.assets.Atlases;
 import eidolons.libgdx.assets.utils.AtlasGen;
+import eidolons.libgdx.gui.generic.btn.FlipDrawable;
 import eidolons.libgdx.screens.AtlasGenSpriteBatch;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
@@ -32,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Supplier;
 
 import static main.system.auxiliary.log.LogMaster.important;
 import static main.system.auxiliary.log.LogMaster.log;
@@ -41,7 +44,8 @@ public class TextureCache {
     public static final boolean fullLog = Flags.isJarlike() || Flags.isJar();
     private static final Lock creationLock = new ReentrantLock();
     private static final ObjectMap<String, TextureRegion> regionCache = new ObjectMap<>(1300);
-    private static final ObjectMap<TextureRegion, TextureRegionDrawable> drawableMap = new ObjectMap<>(1300);
+    private static final ObjectMap<TextureRegion, TextureRegionDrawable> drawableMap = new ObjectMap<>(400);
+    private static final ObjectMap<TextureRegion, FlipDrawable> flipDrawableMap = new ObjectMap<>(400);
     public static final Set<String> missingTextures = new LinkedHashSet<>();
     public static final Set<String> atlasMissingTextures = new LinkedHashSet<>();
 
@@ -246,6 +250,18 @@ public class TextureCache {
             drawableMap.put(originalTexture, drawable);
         }
         return drawable;
+    }
+
+    public static Drawable getOrCreateTextureRegionDrawable(TextureRegion textureRegion,
+                                                            Supplier<Boolean> o, Supplier<Boolean> o1) {
+        FlipDrawable flipDrawable = flipDrawableMap.get(textureRegion);
+        if (flipDrawable == null) {
+            flipDrawable = new FlipDrawable(new TextureRegionDrawable(textureRegion),
+                    o, o1);
+            flipDrawableMap.put(textureRegion, flipDrawable);
+        }
+
+        return flipDrawable;
     }
 
     public static TextureRegionDrawable getOrCreateTextureRegionDrawable(String imagePath) {

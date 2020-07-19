@@ -163,6 +163,7 @@ public class BaseView extends SuperActor  implements Hoverable, Borderable {
         return 0;
     }
 
+    //without outline
     protected FadeImageContainer initPortrait(String path) {
         FadeImageContainer container = new FadeImageContainer(path);
         if (flip == CONTENT_CONSTS.FLIP.HOR) {

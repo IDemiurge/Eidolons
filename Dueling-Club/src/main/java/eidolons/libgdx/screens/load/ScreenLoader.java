@@ -52,7 +52,7 @@ public class ScreenLoader {
         ScreenData data = new ScreenData(SCREEN_TYPE.MAIN_MENU, "Loading...");
         if (isFirstLoadingScreenShown()) {
             Assets.preloadMenu();
-            genericLauncher.setScreen(new LoadingScreen());
+            genericLauncher.setScreen(new MenuLoadScreen());
             genericLauncher.render();
         } else {
             loadScreen(new EventCallbackParam(data));

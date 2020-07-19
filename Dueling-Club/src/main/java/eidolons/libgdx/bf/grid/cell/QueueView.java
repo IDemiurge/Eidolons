@@ -25,6 +25,7 @@ import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.CONTENT_CONSTS;
 import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.data.filesys.PathFinder;
@@ -293,7 +294,9 @@ public class QueueView extends UnitView {
             return;
         }
         setOutline(getDefaultTextureSized());
-        setPortraitTexture(getOutline());
+        if (getOutline() != null) {
+            setPortraitTexture(getOutline());
+        }
     }
 
 
@@ -302,7 +305,10 @@ public class QueueView extends UnitView {
     }
 
     public void setPortraitTexture(TextureRegion textureRegion) {
-        getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
+        if (textureRegion != null)
+        getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion,
+                ()-> flip == CONTENT_CONSTS.FLIP.HOR, ()-> flip == CONTENT_CONSTS.FLIP.VERT
+        ));
     }
 
     public TextureRegion processPortraitTexture(String path) {

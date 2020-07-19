@@ -52,7 +52,6 @@ public class LE_WaitingScreen extends ScreenWithLoader {
         stage.draw();
     }
 
-    @Override
     protected boolean isWaitForInputSupported() {
         return false;
     }
