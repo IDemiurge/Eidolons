@@ -124,7 +124,7 @@ public class CellDecor extends ContainerGroup {
             }
         }
         super.draw(batch, parentAlpha);
-        ((CustomSpriteBatch) batch).resetBlending();
+        ((CustomSpriteBatch) batch).resetBlendingLite();
     }
 
 }

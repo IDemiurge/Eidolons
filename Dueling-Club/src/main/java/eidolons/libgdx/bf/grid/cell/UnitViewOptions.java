@@ -12,7 +12,6 @@ import eidolons.libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 
 import static eidolons.libgdx.texture.TextureCache.getRegionUV;
@@ -119,17 +118,17 @@ public class UnitViewOptions {
             if (obj.isMine()) {
                 emblem = PathFinder.getEmblemAutoFindPath() + "undead.png";
             }
-            if (ImageManager.isImage(emblem)) {
-                this.emblem = getRegionUV(emblem);
-            } else {
-                emblem = PathFinder.getEmblemAutoFindPath() +
-                        FileManager.findFirstFile(PathFinder.getImagePath() + PathFinder.getEmblemAutoFindPath(),
-                                obj.getSubGroupingKey(), true);
-                if (ImageManager.isImage(emblem))
-                    this.emblem = getRegionUV(emblem);
-                else
-                    emblem = obj.getOwner().getHeroObj().getProperty(G_PROPS.EMBLEM, true);
+            this.emblem = getRegionUV(emblem);
 
+            if (TextureCache.isEmptyTexture( this.emblem)){
+                emblem =ImageManager.getEmptyEmblemPath();
+                // PathFinder.getEmblemAutoFindPath() +
+                //         FileManager.findFirstFile(PathFinder.getImagePath() + PathFinder.getEmblemAutoFindPath(),
+                //                 obj.getSubGroupingKey(), true);
+                    this.emblem = getRegionUV(emblem);
+
+                if (TextureCache.isEmptyTexture( this.emblem))
+                    emblem = obj.getOwner().getHeroObj().getProperty(G_PROPS.EMBLEM, true);
                     this.emblem = getRegionUV(emblem);
             }
             if (this.emblem == null)

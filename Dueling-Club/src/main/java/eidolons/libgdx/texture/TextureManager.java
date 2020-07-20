@@ -149,7 +149,7 @@ public class TextureManager {
                 return NumberUtils.getIntParse(y);
             }
         }
-        path = StringMaster.cropLast(path, y);
+        path = StringMaster.cropAfter(path, y);
         String x = StringMaster.getLastPart(path, " ");
         if (NumberUtils.isNumber(x, true)) {
             return NumberUtils.getIntParse(x);

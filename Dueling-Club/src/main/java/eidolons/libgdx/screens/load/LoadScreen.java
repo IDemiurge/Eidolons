@@ -18,6 +18,7 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.FontMaster.FONT;
+import main.system.launch.Flags;
 
 /**
  * these are only used for the FIRST TIME when we load a screen!
@@ -122,7 +123,7 @@ public abstract class LoadScreen extends ScreenWithAssets {
     }
 
     private boolean isDebug() {
-        return true;
+        return Flags.isMe();
     }
 
     private boolean isCenteredLabel() {

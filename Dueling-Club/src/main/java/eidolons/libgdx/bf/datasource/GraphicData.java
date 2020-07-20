@@ -15,6 +15,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnit;
+import main.system.images.ImageManager;
 
 import java.util.regex.Pattern;
 
@@ -99,14 +100,12 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
         if (path == null) {
             path = getSpritePath();
             if (!StringMaster.isEmpty(path)) {
+                //atlas Review - what's this?
             return GdxImageMaster.cropImagePath(Atlases.getOneFrameImagePath(path));
             }
         }
         if (!getVfxPath().isEmpty()) {
             String imagePath = EmitterPresetMaster.getInstance().getImagePath(getVfxPath());
-            if (!TextureCache.isImage(imagePath)) {
-                return Images.COLOR_EMBLEM;
-            }
             return imagePath;
 
         }
@@ -115,7 +114,7 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
 
     public String getTexturePath() {
         String path = getValue(GRAPHIC_VALUE.texture);
-        if (!TextureCache.isImage(path)) {
+        if (!ImageManager.isImageFile(path)) {
             if (TextureCache.isImage(PathFinder.getTexturesPath() + path + ".png")) {
                 path = PathFinder.getTexturesPath() + path + ".png";
             } else

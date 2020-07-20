@@ -430,7 +430,8 @@ public class ImageManager {
     }
 
     public static String getEmptyEmblemPath() {
-        return ("ui//emblems//auto//Knights.png");
+        return (PathFinder.getEmblemAutoFindPath() +
+                "Knights.png");
     }
 
     public static JLabel getLabel(String img, int w, int h) {
@@ -603,6 +604,7 @@ public class ImageManager {
             name = name.replaceFirst("c ", "");
         }
         String path = imgPath + name + ".png"; // free format
+        if (CoreEngine.isLevelEditor())
         if (!FileManager.isFile(getImageFolderPath() + path))
             path = imgPath + name + ".jpg";
         value.setIconPath(path);

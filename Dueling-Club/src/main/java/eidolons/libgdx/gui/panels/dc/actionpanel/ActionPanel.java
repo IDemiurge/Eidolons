@@ -140,7 +140,7 @@ public class ActionPanel extends GroupX {
 
         invBtn.setPosition(bodyParamsBar.getX() + bodyParamsBar.getWidth() / 2 + 79,
                 getHeight() - 90);
-        spellbookBtn.setPosition(soulParamsBar.getX() + soulParamsBar.getWidth() / 2 + 85,
+        spellbookBtn.setPosition(soulParamsBar.getX() + soulParamsBar.getWidth() / 2 + 89,
                 invBtn.getY());
 
         atkPts.setPosition(spellPanel.getX()-12, 50);

@@ -170,9 +170,6 @@ public class UnitView extends BaseView implements HpBarView {
 
 //TODO gdx Review
     protected void checkResetOutline(float delta) {
-        if (!OutlineMaster.isOutlinesOn()) {
-            return;
-        }
         if (!isMainHero())
             if (resetTimer <= 0 || OutlineMaster.isAutoOutlinesOff()) {
 
@@ -196,6 +193,9 @@ public class UnitView extends BaseView implements HpBarView {
     }
 
     protected void setDefaultTexture() {
+        if (!OutlineMaster.isOutlinesOn()) {
+            return;
+        }
         if (isMainHero()) {
             return;
         }
@@ -435,8 +435,8 @@ public class UnitView extends BaseView implements HpBarView {
                 alphaFluctuation(this, delta / 4);
             else if (getColor().a == 0)
                 getColor().a = 1;
-
-        checkResetOutline(delta);
+        if ( OutlineMaster.isOutlinesOn())
+             checkResetOutline(delta);
 
     }
 

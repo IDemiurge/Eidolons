@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
@@ -284,6 +285,9 @@ public class QueueView extends UnitView {
     }
 
     protected void setDefaultTexture() {
+        if (!OutlineMaster.isOutlinesOn()) {
+            return;
+        }
         if (getUserObject() == null) {
             return;
         }
@@ -372,7 +376,7 @@ public class QueueView extends UnitView {
             if (Flags.isIDE()) {
                 GdxImageMaster.round(path, true, "");
             }
-            return new TextureRegion(GdxImageMaster.size(GdxImageMaster.getRoundedPath(path),
+            return defaultTexture= new TextureRegion(GdxImageMaster.size(GdxImageMaster.getRoundedPath(path),
                     AtbPanel.imageSize, Flags.isIDE()));
         }
         return defaultTexture;

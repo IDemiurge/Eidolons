@@ -41,7 +41,11 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
         expandAll();
         for (Node node : nodes) {
             if (node.getChildren().size == 0) {
-                node.getParent().collapseAll();
+                try {
+                    node.getParent().collapseAll();
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
             }
 
         }

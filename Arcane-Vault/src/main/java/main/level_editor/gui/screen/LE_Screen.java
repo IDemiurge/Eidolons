@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import static main.system.auxiliary.log.LogMaster.log;
+
 public class LE_Screen extends GenericDungeonScreen {
 
     private static final Map<LE_Floor, Supplier<ScreenWithLoader>> cached = new HashMap();
@@ -40,6 +42,7 @@ public class LE_Screen extends GenericDungeonScreen {
     private LE_InputController processor;
     private InputMultiplexer multiplexer;
     private String floorName;
+    private boolean init;
 
     public static Supplier<ScreenWithLoader> getScreen(LE_Floor parameter) {
         Supplier<ScreenWithLoader> supplier = cached.get(parameter);
@@ -67,15 +70,12 @@ public class LE_Screen extends GenericDungeonScreen {
     @Override
     protected void preLoad() {
         instance = this;
-        if (floor != null) {
-            return;
-        }
+        if (floor != null) return;
         floor = (LE_Floor) data.getParameter();
-
+        initLabels();
         GuiEventManager.bind(GuiEventType.LE_FLOORS_TABS, p -> {
             LE_GridCell.hoveredCell=null; //TODO refactor?
-
-            main.system.auxiliary.log.LogMaster.log(1,"Tabs for " +floorName);
+            log(1,"Tabs for " +floorName);
                 ((LE_GuiStage) guiStage).getFloorTabs().removeAll();
                 List<LE_Floor> floors = (List<LE_Floor>) p.get();
                 for (LE_Floor le_floor : floors) {
@@ -109,6 +109,7 @@ public class LE_Screen extends GenericDungeonScreen {
         return new LE_GuiStage(null, getBatch());
     }
 
+    @Override
     protected boolean isWaitForInputSupported() {
         return false;
     }
@@ -179,6 +180,14 @@ public class LE_Screen extends GenericDungeonScreen {
         if (multiplexer == null)
             multiplexer = new InputMultiplexer(createInputController(), guiStage, gridStage);
         return multiplexer;
+    }
+
+    @Override
+    public void assetsLoaded() {
+        // if (!init){
+        //     afterLoad();
+        //     init=true;
+        // }
     }
 
     @Override

@@ -75,6 +75,7 @@ public class BaseSlotPanel extends TablePanel {
 //            return;
 //        }
         firstUpdateDone=true;
+        if (isModPages()){
         PagesMod mod = PagesMod.NONE;
 
             PagesMod[] pagesMods = PagesMod.getValues();
@@ -90,6 +91,11 @@ public class BaseSlotPanel extends TablePanel {
                 setActivePage(mod);
             }
         }
+        }
+    }
+
+    private boolean isModPages() {
+        return false;
     }
 
     private float getResetPeriod() {

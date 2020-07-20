@@ -14,7 +14,6 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
-import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
@@ -26,6 +25,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static main.system.auxiliary.log.LogMaster.important;
 
 public class CoreEngine {
 
@@ -72,15 +73,15 @@ public class CoreEngine {
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
-        System.out.println("Eidolons " + VERSION);
         System.out.println("Core Engine Init... ");
+        important("---- Eidolons " + VERSION);
 
         if (isDiagOn()) {
-            System.out.println("Heap size:  " +
+             important("Heap size:  " +
                     (Runtime.getRuntime().maxMemory()));
-            System.out.println("CPU's available:  " +
+             important("CPU's available:  " +
                     (Runtime.getRuntime().availableProcessors()));
-            System.out.println("Total Memory:  " +
+             important("Total Memory:  " +
                     (Runtime.getRuntime().totalMemory()));
         }
 
@@ -99,7 +100,7 @@ public class CoreEngine {
         DataManager.init();
 
         Chronos.logTimeElapsedForMark("SYSTEM INIT");
-        System.out.println("...Core Engine Init finished");
+         important("...Core Engine Init finished");
         if (!Flags.me) {
             System.out.println();
             System.getProperties().list(System.out);
@@ -140,7 +141,7 @@ public class CoreEngine {
         if (selectivelyReadTypes != null) {
             return ContainerUtils.checkContainer(
                     selectivelyReadTypes,
-                    StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
+                    StringMaster.cropFormat(StringMaster.cropAfter(name, "-")),
                     false);
         }
 
@@ -267,6 +268,6 @@ public class CoreEngine {
     public static void setWeakGpu(boolean weakGpu) {
         CoreEngine.weakGpu = weakGpu;
         ////TODO use it in assets?
-        LogMaster.important("Setting Weak GPU to " + weakGpu);
+        important("Setting Weak GPU to " + weakGpu);
     }
 }

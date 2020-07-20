@@ -149,6 +149,12 @@ public class CustomSpriteBatchImpl extends ShaderBatch implements CustomSpriteBa
     }
 
     @Override
+    public void resetBlendingLite() {
+        setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        blending = null;
+    }
+
+    @Override
     public Color getColor() {
         return super.getColor();
         //        return new Color(super.getColor()).mul(GdxMaster.getBrightness());

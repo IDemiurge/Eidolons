@@ -132,4 +132,8 @@ class Portal extends GridObject {
                 open = false;
         });
     }
+
+    public void setPair(Portal pair) {
+        this.pair = pair;
+    }
 }

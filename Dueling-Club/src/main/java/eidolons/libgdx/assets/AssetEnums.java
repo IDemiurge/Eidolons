@@ -1,5 +1,6 @@
 package eidolons.libgdx.assets;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import main.data.filesys.PathFinder;
 
@@ -53,6 +54,13 @@ public class AssetEnums {
             path = prefix+"/"+ name().toLowerCase() + ".txt";
             //temp
 
+        }
+
+        public TextureAtlas.AtlasRegion findRegion(String name) {
+            if (file == null) {
+                return null;
+            }
+            return file.findRegion(name);
         }
         //filter? Or manual gen?
 

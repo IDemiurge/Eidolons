@@ -114,6 +114,8 @@ public class PortalMaster extends DungeonHandler {
             Portal exit;
             portalMap.put(enter, exit = createPortal(to,oneWay));
             portalMap.put(exit, enter);
+            exit.setPair(enter);
+        enter.setPair(exit);
             enter.open = true;
             enter.exitFacing = facing;
             exit.exitFacing = facing2;

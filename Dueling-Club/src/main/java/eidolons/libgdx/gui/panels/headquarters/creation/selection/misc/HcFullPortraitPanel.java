@@ -86,7 +86,7 @@ public class HcFullPortraitPanel extends HcElement {
 
     private void selected(String current) {
         portrait.setImage(current);
-        this.current=StringMaster.cropLast(current, " full")+StringMaster.getFormat(current);
+        this.current=StringMaster.cropLast(current, " full") ;
         HeroCreationMaster.modified(G_PROPS.IMAGE, this.current);
     }
     private String getDefaultPortrait() {

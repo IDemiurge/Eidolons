@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums;
 
@@ -48,11 +49,6 @@ public class LastSeenView extends GenericGridView {
     }
     @Override
     protected void setDefaultTexture() {
-    }
-
-    @Override
-    protected void checkResetOutline(float delta) {
-        super.checkResetOutline(delta);
     }
 
     @Override
@@ -99,7 +95,8 @@ public class LastSeenView extends GenericGridView {
         if (getUserObject().isPlayerCharacter())
             return;
 
-        checkResetOutline(Gdx.graphics.getDeltaTime());
+        if ( OutlineMaster.isOutlinesOn())
+            checkResetOutline(Gdx.graphics.getDeltaTime());
         super.draw(batch, parentAlpha);
     }
 

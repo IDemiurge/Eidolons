@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.gui.datasource.EntityDataSource;
 import eidolons.libgdx.gui.generic.btn.FlipDrawable;
 import eidolons.libgdx.texture.TextureCache;
@@ -121,13 +120,11 @@ public class WeaponDataSource extends EntityDataSource<DC_WeaponObj> {
     }
 
     public Image getLargeImage() {
+        TextureRegion region = TextureCache.getRegionUI_DC(getSpriteImagePath());
         if (!isMainHand()) {
-            return new Image(GdxImageMaster.flip(
-                    getSpriteImagePath(),
-                    true, false, true));
+            Drawable drawable = new FlipDrawable(new TextureRegionDrawable(region), () -> true, () -> false);
+            return new Image(drawable);
         }
-        return new Image(TextureCache.getOrCreateR(getSpriteImagePath()));
-        //                GdxImageMaster.size(getSpriteImagePath(),
-        //         128, true));
+        return new Image(region);
     }
 }

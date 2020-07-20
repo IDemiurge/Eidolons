@@ -33,6 +33,7 @@ public class FileLogManager {
         MAIN,
         //        STATS,
         FULL,
+        LAST,
         INPUT;
         String path;
         PrintStream stream;

@@ -81,7 +81,7 @@ public class SmartTextureAtlas extends TextureAtlas {
             name = StringMaster.cropFormat(name);
             String last = StringMaster.getLastPart(name, "_");
             if (NumberUtils.isInteger(last)) {
-                sprite = super.createSprite(StringMaster.cropLast(name, "_") + format);
+                sprite = super.createSprite(StringMaster.cropAfter(name, "_") + format);
             }
             if (sprite == null) {
                 sprite = super.createSprite(StringMaster.getStringBeforeNumerals(name) + format);

@@ -716,6 +716,13 @@ public class StringMaster {
         }
         return name;
     }
+    public static String cropAfter(String name, String string) {
+        int lastIndexOf = name.lastIndexOf(string);
+        if (lastIndexOf > -1) {
+            return replaceLast(name, name.substring(lastIndexOf), "");
+        }
+        return name;
+    }
 
     public static String replaceLast(String string, String regex, String replacement) {
         return replace(string, regex, replacement, true);

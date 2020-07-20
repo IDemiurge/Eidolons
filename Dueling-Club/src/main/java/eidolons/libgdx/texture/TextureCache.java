@@ -298,7 +298,7 @@ public class TextureCache {
             if (orig.getRegionHeight() == imageSize &&
                     orig.getRegionWidth() == imageSize)
                 return orig;
-            path = StringMaster.getAppendedFile(path, " " + imageSize);
+            path = GdxImageMaster.getSizedImagePath(path, imageSize);
             return getOrCreateR(path, false, null);
         }
         String sized = StringMaster.getAppendedImageFile(path, " " + imageSize);
@@ -320,6 +320,10 @@ public class TextureCache {
 
     //TODO gdx refinement
     public static boolean isImage(String property) {
+        if (atlasesOn){
+            if (findTexture(property) != null)
+                return true;
+        }
         if (!GdxMaster.isLwjglThread())
             return ImageManager.isImage(property);
         if (!isReturnEmptyOnFail())
@@ -333,6 +337,19 @@ public class TextureCache {
             return false;
         }
         return t != missingTexture;
+    }
+
+    private static TextureRegion findTexture(String property) {
+        AssetEnums.ATLAS atlas = AtlasGen.getAtlasForPath(property);
+        TextureAtlas.AtlasRegion region = atlas.findRegion(property);
+        if (region == null)
+        for (AssetEnums.ATLAS a : Atlases.all) {
+            region = a.findRegion(property);
+            if (region != null) {
+                break;
+            }
+        }
+        return region;
     }
 
     public static boolean isEmptyTexture(Texture texture) {

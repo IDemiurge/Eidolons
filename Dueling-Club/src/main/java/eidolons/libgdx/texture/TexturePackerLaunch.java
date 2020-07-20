@@ -85,8 +85,6 @@ public class TexturePackerLaunch {
             AssetEnums.ATLAS.UNIT_VIEW,
             AssetEnums.ATLAS.TEXTURES,
             AssetEnums.ATLAS.SPRITES_ONEFRAME,
-            AssetEnums.ATLAS.SPRITES_GRID,
-            AssetEnums.ATLAS.SPRITES_UI,
     };
 
     public static final AssetEnums.ATLAS[] atlases = {

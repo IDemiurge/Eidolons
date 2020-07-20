@@ -53,7 +53,10 @@ public class ColorBatch extends ColorfulBatch implements CustomSpriteBatch{
                 break;
         }
     }
-
+    @Override
+    public void resetBlendingLite() {
+        setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+    }
     @Override
     public void resetBlending() {
         setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);

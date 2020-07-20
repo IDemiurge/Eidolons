@@ -148,7 +148,6 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
     }
 
     protected boolean isWaitForInputSupported() {
-        //        return !(CoreEngine.isIDE() || CoreEngine.isMacro());
         return true;
     }
 

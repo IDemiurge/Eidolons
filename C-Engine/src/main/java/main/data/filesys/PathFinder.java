@@ -330,7 +330,7 @@ public class PathFinder {
         return getRootPath() + jarName;
     }
 
-    public static String getEmblemsPath() {
+    private static String getEmblemsPath() {
         return StrPathBuilder.build("ui", "content", "emblems") + "/";
     }
 

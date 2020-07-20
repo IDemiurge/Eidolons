@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.assets.AssetEnums;
+import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TexturePackerLaunch;
 import eidolons.system.utils.GdxUtil;
@@ -193,7 +194,9 @@ public class AtlasGen extends GdxUtil {
                         LogMaster.log(1, " rounded copied   " + handle);
                     }
                 } else if (GdxMaster.isGdxThread()) {
-                    TextureRegion region = new TextureRegion(TextureCache.getOrCreate(file.getPath()));
+                    TextureRegion region = new TextureRegion( //TextureCache.getOrCreate(file.getPath()));
+                    GdxImageMaster.createSized(file.getPath(),
+                            TextureCache.getOrCreate(file.getPath()), AtbPanel.imageSize, true));
                     TextureRegion round = createRounded(false, region, handle.toString(), "");
                     writeImage(handle, round);
                     LogMaster.log(1, " rounded generated   " + handle);

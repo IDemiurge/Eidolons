@@ -15,6 +15,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.sprite.SpriteX;
+import eidolons.libgdx.assets.utils.AtlasGen;
 import eidolons.libgdx.gui.panels.dc.actionpanel.bar.SpriteParamBar;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TextureCache;
@@ -31,7 +32,6 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
-import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
@@ -41,6 +41,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static main.system.ExceptionMaster.printStackTrace;
+import static main.system.auxiliary.log.LogMaster.important;
 import static main.system.auxiliary.log.LogMaster.log;
 
 public class Atlases {
@@ -86,9 +87,10 @@ public class Atlases {
             oneFrame = true;
             texturePath = StringMaster.getAppendedFile(getOneFramePath(texturePath), " img");
         }
+        AssetEnums.ATLAS atlas = AtlasGen.getAtlasForPath(texturePath);
         return getAtlasRegions(texturePath,
-                oneFrame ? AssetEnums.ATLAS.SPRITES_ONEFRAME :
-                        AssetEnums.ATLAS.SPRITES_GRID);
+                oneFrame ? AssetEnums.ATLAS.SPRITES_ONEFRAME :atlas);
+                        // ui ?   AssetEnums.ATLAS.SPRITES_UI :    AssetEnums.ATLAS.SPRITES_GRID);
     }
 
     public static Array<TextureAtlas.AtlasRegion> getAtlasRegions(String texturePath, AssetEnums.ATLAS atlas) {
@@ -111,9 +113,9 @@ public class Atlases {
             }
         if (regions.size > 0) {
             atlasRegionsCache.put(texturePath, regions);
-            System.out.println(regions.size + " Atlas regions found: " + texturePath);
+            important(regions.size + " Atlas regions found: " + texturePath);
         } else {
-            System.out.println("No atlas regions found: " + texturePath);
+            important("No atlas regions found: " + texturePath);
         }
         return regions;
     }
@@ -526,7 +528,7 @@ public class Atlases {
         if (!new FileHandle(path).exists()) {
             path = GdxImageMaster.appendImagePath(path);
             if (!new FileHandle(path).exists()) {
-                main.system.auxiliary.log.LogMaster.important("CRITICAL: No atlas for path - " + path);
+                important("CRITICAL: No atlas for path - " + path);
                 return null;
             }
         }
@@ -571,7 +573,7 @@ public class Atlases {
                     printStackTrace(e);
                     FileLogManager.streamMain("CRITICAL: asset not loaded - " + path);
 
-                    LogMaster.important("ALL assets: \n"
+                    important("ALL assets: \n"
                             + Assets.get().getManager().getDiagnostics());
                 }
                 if (atlas == null) {

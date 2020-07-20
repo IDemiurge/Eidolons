@@ -14,4 +14,5 @@ public interface CustomSpriteBatch extends Batch {
 
     void shaderReset();
 
+    void resetBlendingLite();
 }

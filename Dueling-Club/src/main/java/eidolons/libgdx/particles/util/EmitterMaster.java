@@ -327,7 +327,7 @@ public class EmitterMaster extends GdxUtil {
         String last = StringMaster.getLastPart(imageName, "_");
         while (NumberUtils.isInteger(last)) {
             int n = NumberUtils.getIntParse(last);
-            imageName = StringMaster.cropLast(imageName, "_")
+            imageName = StringMaster.cropAfter(imageName, "_")
                     + n;
             last = StringMaster.getLastPart(imageName, "_");
         }
