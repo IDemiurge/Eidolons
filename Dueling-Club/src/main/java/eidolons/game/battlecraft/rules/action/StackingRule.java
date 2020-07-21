@@ -33,7 +33,7 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.HashMap;
 import java.util.List;
@@ -218,7 +218,7 @@ public class StackingRule implements ActionRule {
             return false;
         }
         if (cell.isVOID()) {
-            if (unit != Eidolons.getMainHero() || !CoreEngine.TEST_LAUNCH || game.getDungeonMaster().getPuzzleMaster().getCurrent() instanceof VoidMaze)// || !VoidHandler.TEST_MODE)
+            if (unit != Eidolons.getMainHero() || !Flags.isIDE() || game.getDungeonMaster().getPuzzleMaster().getCurrent() instanceof VoidMaze)// || !VoidHandler.TEST_MODE)
                 if (!unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.VOIDWALKER.getName())) {
                     return false;
                 }

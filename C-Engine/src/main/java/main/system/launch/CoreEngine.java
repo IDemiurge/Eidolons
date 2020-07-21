@@ -34,13 +34,14 @@ public class CoreEngine {
             "eidolons.elements", "eidolons.ability"};
 
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Backer;
-    public static final String VERSION_NAME = "Tester Version"; //StringMaster.getWellFormattedString(uploadPackage.toString());
+    public static final String VERSION_NAME = "Demo Version"; //StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean RAM_OPTIMIZATION = true;
     public static final int buildId = readBuildId();
     public static final String BUILD = NumberUtils.prependZeroes(buildId, 3);
-    public static final String VERSION = "0.5."+BUILD;
+    public static final String CORE_VERSION = "0.5" ;
+    public static final String VERSION =CORE_VERSION+ "."+BUILD;
 
-    public static String filesVersion = "v" + VERSION.replace(".", "-");
+    public static String filesVersion = VERSION.replace(".", "-");
     public static boolean FULL_LAUNCH; ////TODO with audio and all - real xp!
     private static String selectivelyReadTypes;
     public static boolean TEST_LAUNCH;

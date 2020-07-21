@@ -163,7 +163,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 playerAction(playerAction);
             if (!CoreEngine.TEST_LAUNCH)
                 if (playerAction.isAuto()) {
-                    blockTimer = ExplorationActionHandler.calcBlockingTime(playerAction.getAction());
+                    float coef=0.2f;
+                    blockTimer =coef* ExplorationActionHandler.calcBlockingTime(playerAction.getAction());
                     lock();
                 }
         } else {

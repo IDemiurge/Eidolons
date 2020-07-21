@@ -5,8 +5,8 @@ import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.core.game.DC_Game;
 import main.content.values.parameters.PARAMETER;
 
+import static eidolons.content.PARAMS.C_ESSENCE;
 import static eidolons.content.PARAMS.ESSENCE;
-import static eidolons.content.PARAMS.STARTING_ESSENCE;
 
 public class EssenceRule extends RetainRestoreRule {
 
@@ -16,12 +16,12 @@ public class EssenceRule extends RetainRestoreRule {
 
     @Override
     protected PARAMETER getBaseParameter() {
-        return  ESSENCE;
+        return  C_ESSENCE;
     }
 
     @Override
     public PARAMETER getMaxParam() {
-        return STARTING_ESSENCE;
+        return  ESSENCE;
     }
 
     @Override

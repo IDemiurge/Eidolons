@@ -471,7 +471,7 @@ public class Atlases {
         return null;
     }
 
-    private static boolean isUseOneFrameVersion(String path) {
+    public static boolean isUseOneFrameVersion(String path) {
         if (CoreEngine.isLevelEditor()) {
             return true;
         }

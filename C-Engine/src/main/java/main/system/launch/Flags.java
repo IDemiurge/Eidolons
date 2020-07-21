@@ -183,10 +183,6 @@ public class Flags {
         Flags.initialized = initialized;
     }
 
-    public static boolean isTestingMode() {
-        return true;
-    }
-
     public static boolean isCrashSafeMode() {
         return crashSafeMode;
     }

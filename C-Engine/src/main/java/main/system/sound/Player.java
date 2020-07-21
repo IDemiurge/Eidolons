@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static main.system.auxiliary.log.LogMaster.log;
+
 public class Player {
     public static final String ALT = "_ALT";
     private static final String SOUNDSETS = "/soundsets/";
@@ -40,7 +42,7 @@ public class Player {
     private int delay = 0;
     //    Stack<SoundFx> process =new Stack();
     private static final Map<String, Sound> cache = new HashMap<>();
-    private static final Set<String> broken=new HashSet<>();
+    private static final Set<String> broken = new HashSet<>();
 
     // mute
     public Player() {
@@ -162,12 +164,12 @@ public class Player {
             if (neverRepeat) {
                 if (lastplayed.peek().equals(sound)
                         && !lastplayed.get(lastplayed.size() - 2).equals(sound)) {
-                    LogMaster.log(0, "NOT playing twice! - " + sound);
+                    log(0, "NOT playing twice! - " + sound);
                     return false;
                 }
             }
         }
-        LogMaster.log(0, "Playing: " + sound);
+        log(0, "Playing: " + sound);
         if (!FileManager.getFile(sound).isFile()) {
             if (!sound.contains(".")) {
                 return play(sound + FORMAT, delay);
@@ -176,7 +178,7 @@ public class Player {
             } else if (sound.contains(" ")) {
                 return play(sound.replace(" ", "_"), delay);
             } else {
-                LogMaster.log(0, "Sound not found: " + sound);
+                log(0, "Sound not found: " + sound);
             }
             return false;
         }
@@ -246,8 +248,9 @@ public class Player {
                 v = v / 100;
             }
             soundFile.setVolume(id, v);
-            //            main.system.auxiliary.log.LogMaster.dev(sound.getSound() + " Playing, sound id: " + id + " volume: "
-            //                    + v);
+            log(" Playing sound" + sound.getSound() +
+                    "; id: " + id + " volume: "
+                    + v);
 
             //            soundFile.setPitch(id, sound.getPitch());
             //            soundFile.setPan(id, sound.getPan(), sound.getVolume());

@@ -29,19 +29,19 @@ import java.util.List;
  */
 @Deprecated
 public class DualAttackMaster {
-// DC Review
     public static List<DC_UnitAction> getDualAttacks(Unit unit) {
         List<DC_UnitAction> list = new ArrayList<>();
-
-        unit.getMainWeapon().getAttackActions().forEach(main -> {
-            unit.getOffhandWeapon().getAttackActions().forEach(offhand -> {
-                if (checkRangeCanMerge(main, offhand))
-                    if (checkCostsCanMerge(main, offhand))
-                        if (checkTypeCanMerge(main, offhand))
-                            list.add(createDual(main, offhand));
-            });
-        });
-
+        if (true)
+            return list;
+        // DC Review
+        // unit.getMainWeapon().getAttackActions().forEach(main -> {
+        //     unit.getOffhandWeapon().getAttackActions().forEach(offhand -> {
+        //         if (checkRangeCanMerge(main, offhand))
+        //             if (checkCostsCanMerge(main, offhand))
+        //                 if (checkTypeCanMerge(main, offhand))
+        //                     list.add(createDual(main, offhand));
+        //     });
+        // });
         return list;
     }
 
@@ -63,13 +63,13 @@ public class DualAttackMaster {
     private static DC_UnitAction createDual(DC_UnitAction main, DC_UnitAction offhand) {
         Costs costs = getDualCosts(main, offhand);
         ActiveAbility activateAttacks = new ActiveAbility(main.getTargeting(), new Effects(new ActivateEffect(main.getName(), true)
-         , new ActivateEffect(offhand.getName(), true)));
+                , new ActivateEffect(offhand.getName(), true)));
 
         Abilities abilities = new Abilities();
         abilities.add(activateAttacks);
         ObjType newType = new ObjType(
-         "Dual " + main.getName() + "&" + offhand.getName().replace("Off hand", ""),
-         DataManager.getType("Dual Attack", DC_TYPE.ACTIONS));
+                "Dual " + main.getName() + "&" + offhand.getName().replace("Off hand", ""),
+                DataManager.getType("Dual Attack", DC_TYPE.ACTIONS));
         for (Cost cost : costs.getCosts()) {
             PARAMETER p = cost.getCostParam();
             if (p == null)
@@ -89,11 +89,11 @@ public class DualAttackMaster {
         List<Cost> list = new ArrayList<>();
 
         Costs costsMain = main.getCosts();
-//        if (costsMain == null)
+        //        if (costsMain == null)
         costsMain = DC_CostsFactory.getCostsForAction(main);
 
         Costs costsOffhand = offhand.getCosts();
-//        if (costsOffhand == null)
+        //        if (costsOffhand == null)
         costsOffhand = DC_CostsFactory.getCostsForAction(offhand);
         for (Cost cost : costsMain.getCosts()) {
             PARAMETER p = cost.getPayment().getParamToPay();
@@ -102,7 +102,7 @@ public class DualAttackMaster {
             Integer value2 = (cost2 == null) ? 0 : cost2.getPayment().getAmountFormula().getInt();
             Boolean mode = getMinMaxOrAverage((PARAMS) p);
             Integer value =
-             MathMaster.getTotalOrMinMax(mode, value1, value2);
+                    MathMaster.getTotalOrMinMax(mode, value1, value2);
             list.add(new CostImpl(new Payment(p, value), cost.getCostParam()));
         }
         Costs costsDual = new Costs(list);
@@ -129,11 +129,11 @@ public class DualAttackMaster {
     }
 
     private static boolean checkCost(Integer value1, Integer value2, Boolean mode) {
-//if (Math.abs(value1-value2)/)
+        //if (Math.abs(value1-value2)/)
         if (mode == null)
             return true;
         return MathMaster.getCentimalPercentage(
-         Math.max(value1, value2), Math.min(value1, value2)) < 135;
+                Math.max(value1, value2), Math.min(value1, value2)) < 135;
     }
 
     private static Boolean getMinMaxOrAverage(PARAMS p) {

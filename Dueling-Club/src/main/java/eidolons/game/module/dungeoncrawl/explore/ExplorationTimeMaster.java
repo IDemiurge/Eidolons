@@ -23,6 +23,7 @@ import main.entity.Ref;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
+import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -38,7 +39,7 @@ import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
  */
 public class ExplorationTimeMaster extends ExplorationHandler {
     public static final float secondsPerAP = 5f;
-    private static final float REGEN_MODIFIER = 0.2f;
+    private static final float REGEN_MODIFIER = 0.1f;
     private float time = 0;
     private float lastTimeChecked;
     private float round_delta = 0;
@@ -387,11 +388,11 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private int getParamRestoration(float delta, PARAMETER param, float modifier) {
-        return Math.round(modifier * delta * getRegenModifier() * getRegenModifier(param) + getRegenBonus(param));
+        return Math.round(modifier * delta * getRegenModifier() * getRegenModifier(param) );
     }
 
     private float getRegenModifier() {
-        if (Flags.isTestingMode())
+        if (CoreEngine.TEST_LAUNCH)
             return REGEN_MODIFIER * 5;
         return REGEN_MODIFIER;
     }
@@ -408,15 +409,6 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         return 1f;
     }
 
-    private float getRegenBonus(PARAMETER param) {
-        if (param instanceof PARAMS) {
-            switch ((PARAMS) param) {
-                case ESSENCE:
-                    return 1f;
-            }
-        }
-        return 0f;
-    }
 
     public float getTime() {
         return time;

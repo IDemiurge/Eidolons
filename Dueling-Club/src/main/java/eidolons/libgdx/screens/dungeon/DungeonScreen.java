@@ -259,6 +259,7 @@ public class DungeonScreen extends GameScreenWithTown {
     public boolean isDrawGrid() {
         if (!gridFirstDraw) {
             gridFirstDraw = true;
+            gridPanel.firstDraw();
             return true;
         }
         return !isOpaque();

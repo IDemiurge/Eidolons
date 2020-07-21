@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.assets.AssetEnums;
+import eidolons.libgdx.bf.grid.cell.QueueView;
 import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TexturePackerLaunch;
@@ -88,6 +89,7 @@ public class AtlasGen extends GdxUtil {
     public static final String[] roundedFolders = {
             "main/units/",
             "main/heroes/",
+            PathFinder.getOutlinesPath(),
     };
     public static final String[] sizeFolders32 = {
     };
@@ -99,6 +101,8 @@ public class AtlasGen extends GdxUtil {
     };
     public static final String[] sizeFolders96 = {
             "main/item/weapon/sprites/",
+            // "main/units/",
+            // "main/heroes/",
     };
     private final String[] args;
 
@@ -152,6 +156,9 @@ public class AtlasGen extends GdxUtil {
         for (File file : FileManager.getFilesFromDirectory(
                 root + folder, false, true)) {
             String path = file.getPath();
+            if (GdxImageMaster.isGeneratedFile(path)) {
+                continue;
+            }
             if (cropSuffix!=null ){
                 FileManager.rename(path, path =StringMaster.cropSuffix(path, cropSuffix));
             }
@@ -178,15 +185,14 @@ public class AtlasGen extends GdxUtil {
             for (File file : FileManager.getFilesFromDirectory(
                     root +
                             roundedFolder, false, true)) {
-                if (isRoundedPath(file.getName())) {
+                if (GdxImageMaster.isGeneratedFile(file.getName())) {
                     continue;
                 }
                 FileHandle handle = new FileHandle(
                         AssetEnums.ATLAS.UNIT_VIEW.prefix + "/" +
-                                getRoundedPath(PathUtils.cropPath(file.getPath(),
-                                        root)));
-                String orig = root +
-                        getRoundedPath(file.getPath());
+                                QueueView.getProperViewPath(PathUtils.cropPath(file.getPath(),
+                                        root) ));
+                String orig = root + QueueView.getProperViewPath(file.getPath());
                 if (!OVERWRITE && handle.exists()) continue;
                 if (FileManager.isFile(
                         orig)) {
@@ -194,9 +200,7 @@ public class AtlasGen extends GdxUtil {
                         LogMaster.log(1, " rounded copied   " + handle);
                     }
                 } else if (GdxMaster.isGdxThread()) {
-                    TextureRegion region = new TextureRegion( //TextureCache.getOrCreate(file.getPath()));
-                    GdxImageMaster.createSized(file.getPath(),
-                            TextureCache.getOrCreate(file.getPath()), AtbPanel.imageSize, true));
+                    TextureRegion region = new TextureRegion(GdxImageMaster.size(file.getPath(),  AtbPanel.imageSize, false));
                     TextureRegion round = createRounded(false, region, handle.toString(), "");
                     writeImage(handle, round);
                     LogMaster.log(1, " rounded generated   " + handle);

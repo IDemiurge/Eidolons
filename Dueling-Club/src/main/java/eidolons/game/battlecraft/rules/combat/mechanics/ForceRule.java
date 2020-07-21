@@ -101,53 +101,40 @@ public class ForceRule {
         return force;
     }
 
-    public static void applyForceEffects(DC_ActiveObj action) {
-        // or spell
-        if (!RuleKeeper.isRuleOn(RuleEnums.RULE.FORCE)) {
-            return;
-        }
-        int force = getForce(action, true);
-        if (force == 0) {
-            return;
-        }
-        applyForceEffects(force, action);
-    }
-
-    public static void applyForceEffects(int force, DC_ActiveObj action) {
-        if (!(action.getRef().getTargetObj() instanceof Unit))
-            return;
+    public static void applyForceEffects(int force, DC_ActiveObj action, BattleFieldObject target) {
         if (action.isCounterMode())
             return;
-        Unit target = (Unit) action.getRef().getTargetObj();
         BattleFieldObject source = (BattleFieldObject) action.getRef().getSourceObj();
         Boolean result = null;
         //TODO DEXTERITY ROLL TO AVOID ALL? ROLL MASS
         if (target instanceof Unit) {
-            if (target.getChecker().checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)
+            if (((Unit) target).                    getChecker().checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)
                     ||
-                    (target.getChecker().checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL))) {
+                    (((Unit) target).getChecker().checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL))) {
                 return;
             }
+        } else {
+            applyPush(force, action, source, target);
+            return;
         }
 
         if (target.getIntParam(PARAMS.TOTAL_WEIGHT) < getMinWeightKnock(action)) {
-            result = RollMaster.rollForceKnockdown(target, action, force);
+            result = RollMaster.rollForceKnockdown((Unit) target, action, force);
             if (Bools.isFalse(result)) {
                 result = null; //ALWAYS INTERRUPT AT LEAST
             }
         } else if (target.getIntParam(PARAMS.TOTAL_WEIGHT) > getMaxWeightKnock(action)) {
             result = false;
         } else {
-            result = RollMaster.rollForceKnockdown(target, action, force);
+            result = RollMaster.rollForceKnockdown((Unit) target, action, force);
         }
         if (isTestMode()) {
             result = true;
         }
-
         if (result == null) {
-            InterruptRule.interrupt(target);
+            InterruptRule.interrupt((Unit) target);
         } else if (result) {
-            KnockdownRule.knockdown(target);
+            KnockdownRule.knockdown((Unit) target);
         }
 
         applyPush(force, action, source, target);
@@ -339,9 +326,11 @@ public class ForceRule {
         Ref ref = attack.getRef().getCopy();
         ref.setTarget(target.getId());
         Coordinates o = target.getCoordinates();
-        new MoveEffect("target", new Formula("" + x_displacement), new Formula("" + y_displacement))
-                .apply(ref);
-        distance = o.dst(target.getCoordinates());
+        if (x_displacement > 0 || y_displacement > 0) {
+            new MoveEffect("target", new Formula("" + x_displacement), new Formula("" + y_displacement))
+                    .apply(ref);
+            distance = o.dst(target.getCoordinates());
+        }
         boolean valid = new ClearShotCondition().check(o, target.getCoordinates());
         if (!valid) {
             target.setCoordinates(o);

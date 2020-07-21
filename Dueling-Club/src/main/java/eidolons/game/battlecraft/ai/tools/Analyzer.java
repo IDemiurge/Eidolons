@@ -10,6 +10,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
@@ -89,7 +90,9 @@ public class Analyzer extends AiHandler {
     }
 
     public static List<Unit> getVisibleEnemies(UnitAI ai) {
-        if (ai.getGroup().getBehavior() == UnitAI.AI_BEHAVIOR_MODE.AGGRO) {
+        if (ai.getGroup().getBehavior() == UnitAI.AI_BEHAVIOR_MODE.AGGRO
+        || AI_Manager.isAiVisionHack()
+        ) {
             return (List<Unit>) getEnemies(ai.getUnit(), false, false, false);
         }
         Boolean unconscious = isTargetingUnconscious(ai);

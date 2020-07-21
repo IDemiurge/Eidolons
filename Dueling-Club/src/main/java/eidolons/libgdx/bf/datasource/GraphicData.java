@@ -1,8 +1,11 @@
 package eidolons.libgdx.bf.datasource;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.assets.AssetEnums;
 import eidolons.libgdx.assets.Atlases;
 import eidolons.libgdx.particles.util.EmitterPresetMaster;
 import eidolons.libgdx.texture.Images;
@@ -101,7 +104,7 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
             path = getSpritePath();
             if (!StringMaster.isEmpty(path)) {
                 //atlas Review - what's this?
-            return GdxImageMaster.cropImagePath(Atlases.getOneFrameImagePath(path));
+                return GdxImageMaster.cropImagePath(Atlases.getOneFrameImagePath(path));
             }
         }
         if (!getVfxPath().isEmpty()) {
@@ -125,7 +128,17 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
 
     public String getSpritePath() {
         String path = getValue(GraphicData.GRAPHIC_VALUE.sprite);
-        if (!FileManager.isFile(PathFinder.getImagePath() + path)) {
+        Array<TextureAtlas.AtlasRegion> atlasRegions = new Array();
+
+        if (TextureCache.atlasesOn)
+            atlasRegions = Atlases.getAtlasRegions(path,
+                    Atlases.isUseOneFrameVersion(path)
+                            ? AssetEnums.ATLAS.SPRITES_ONEFRAME
+                            : AssetEnums.ATLAS.SPRITES_GRID);
+
+        if (atlasRegions.size < 1)
+        if (TextureCache.atlasesOn  || !FileManager.isFile(PathFinder.getImagePath() + path))
+        {
             // if (TextureCache.isImage(PathFinder.getSpritesPathFull() + path + ".png")) {
             //     path = PathFinder.getTexturesPath() + path + ".png";
             // } else
@@ -147,7 +160,7 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
 
     public enum GRAPHIC_VALUE {
         x, y, dur, scale, rotation, flipX, flipY, color, alpha,
-        texture, alpha_template,editor,
+        texture, alpha_template, editor,
         blending, sprite, fps, vfx, origin, interpolation
     }
 }

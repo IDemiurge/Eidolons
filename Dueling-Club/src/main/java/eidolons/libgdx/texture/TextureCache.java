@@ -129,8 +129,8 @@ public class TextureCache {
                 }
             return region;
         }
-
-        if (fullLog) log(1, atlas + " - TextureRegion request: " + path);
+        if (!Flags.isIDE())
+            if (fullLog) log(1, atlas + " - TextureRegion request: " + path);
         if (atlasesOn && !overrideNoAtlas) {
             String name = GdxImageMaster.cropImagePath(StringMaster.cropFormat(path));
             // if (!atlasMissingTextures.contains(path))
@@ -234,12 +234,12 @@ public class TextureCache {
     }
 
     public static String getMissingPath() {
-        return ImageManager.getImageFolderPath() +
+        return PathFinder.getImagePath() +
                 Images.MISSING_TEXTURE;
     }
 
     public static String getEmptyPath() {
-        return ImageManager.getImageFolderPath() +
+        return PathFinder.getImagePath() +
                 Images.REALLY_EMPTY_32;
     }
 
@@ -298,11 +298,15 @@ public class TextureCache {
             if (orig.getRegionHeight() == imageSize &&
                     orig.getRegionWidth() == imageSize)
                 return orig;
-            path = GdxImageMaster.getSizedImagePath(path, imageSize);
-            return getOrCreateR(path, false, null);
+            String path2 = GdxImageMaster.getSizedImagePath(path, imageSize);
+            TextureRegion region = getOrCreateR(path2, false, null);
+            if (isEmptyTexture(region)) {
+                return getOrCreateR(path);
+            }
         }
+        Texture texture = GdxImageMaster.size(path, imageSize, Flags.isIDE());
         String sized = StringMaster.getAppendedImageFile(path, " " + imageSize);
-        return getRegion(sized, GdxImageMaster.size(sized, imageSize, true));
+        return getRegion(sized, texture);
     }
 
     public static boolean isReturnEmptyOnFail() {
@@ -320,7 +324,7 @@ public class TextureCache {
 
     //TODO gdx refinement
     public static boolean isImage(String property) {
-        if (atlasesOn){
+        if (atlasesOn) {
             if (findTexture(property) != null)
                 return true;
         }
@@ -343,12 +347,12 @@ public class TextureCache {
         AssetEnums.ATLAS atlas = AtlasGen.getAtlasForPath(property);
         TextureAtlas.AtlasRegion region = atlas.findRegion(property);
         if (region == null)
-        for (AssetEnums.ATLAS a : Atlases.all) {
-            region = a.findRegion(property);
-            if (region != null) {
-                break;
+            for (AssetEnums.ATLAS a : Atlases.all) {
+                region = a.findRegion(property);
+                if (region != null) {
+                    break;
+                }
             }
-        }
         return region;
     }
 

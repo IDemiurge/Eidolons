@@ -168,7 +168,7 @@ public class UnitView extends BaseView implements HpBarView {
         return super.isTransformDisabled();
     }
 
-//TODO gdx Review
+    //TODO gdx Review
     protected void checkResetOutline(float delta) {
         if (!isMainHero())
             if (resetTimer <= 0 || OutlineMaster.isAutoOutlinesOff()) {
@@ -220,6 +220,7 @@ public class UnitView extends BaseView implements HpBarView {
         }
         return container;
     }
+
     protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
         //TODO atlas revamp - remove
         originalTexture = processPortraitTexture(path);
@@ -231,7 +232,9 @@ public class UnitView extends BaseView implements HpBarView {
 
     public TextureRegion getDefaultTexture() {
         if (defaultTexture == null) {
-            defaultTexture = TextureCache.getRegionUV(
+            if (OutlineMaster.isOutlinesOn())
+                defaultTexture = originalTexture;
+            else defaultTexture = TextureCache.getRegionUV(
                     OUTLINE_TYPE.UNKNOWN.getImagePath());
         }
         return defaultTexture;
@@ -246,7 +249,7 @@ public class UnitView extends BaseView implements HpBarView {
             TextureRegion emblem) {
         if (emblem != null) {
             emblemLighting = new Image(
-                              TextureCache.getRegionUV(ImageManager.STD_IMAGES.LIGHT.getPath()));
+                    TextureCache.getRegionUV(ImageManager.STD_IMAGES.LIGHT.getPath()));
             emblemLighting.setSize(getEmblemSize() * 10 / 9, getEmblemSize() * 10 / 9);
             emblemLighting.setPosition(getWidth() - emblemLighting.getWidth(), getHeight() - emblemLighting.getHeight());
             if (getTeamColor() != null)
@@ -272,7 +275,7 @@ public class UnitView extends BaseView implements HpBarView {
 
         }
         getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion,
-                ()-> flip == CONTENT_CONSTS.FLIP.HOR, ()-> flip == CONTENT_CONSTS.FLIP.VERT
+                () -> flip == CONTENT_CONSTS.FLIP.HOR, () -> flip == CONTENT_CONSTS.FLIP.VERT
         ));
     }
 
@@ -409,7 +412,7 @@ public class UnitView extends BaseView implements HpBarView {
 
     @Override
     public void setX(float x) {
-        if (x>0 && x<1) {
+        if (x > 0 && x < 1) {
             return;
         }
         super.setX(x);
@@ -435,8 +438,8 @@ public class UnitView extends BaseView implements HpBarView {
                 alphaFluctuation(this, delta / 4);
             else if (getColor().a == 0)
                 getColor().a = 1;
-        if ( OutlineMaster.isOutlinesOn())
-             checkResetOutline(delta);
+        if (OutlineMaster.isOutlinesOn())
+            checkResetOutline(delta);
 
     }
 
@@ -469,9 +472,9 @@ public class UnitView extends BaseView implements HpBarView {
         for (SpriteX sprite : overlaySprites) {
             float x = sprite.getX();
             float y = sprite.getY();
-            sprite.setPosition(x+getX(), y+getY());
+            sprite.setPosition(x + getX(), y + getY());
             sprite.draw(batch, 1f);
-            sprite.setPosition(x , y );
+            sprite.setPosition(x, y);
         }
     }
 

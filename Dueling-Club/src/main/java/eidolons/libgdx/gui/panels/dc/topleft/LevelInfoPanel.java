@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.topleft;
 
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.ScenarioGame;
@@ -11,7 +12,6 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.texture.Images;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
 
 public class LevelInfoPanel extends TablePanelX {
     protected ValueContainer locationLabel;
@@ -39,7 +39,7 @@ public class LevelInfoPanel extends TablePanelX {
             CharSequence text = "";
             CharSequence v = "";
             if (Eidolons.getGame() instanceof ScenarioGame) {
-                if (!CoreEngine.TEST_LAUNCH) {
+                if (EidolonsGame.FOOTAGE) {
                     text = "Castle Evarinath";
                     v =
                             //                                StringMaster.getWellFormattedString(PathUtils.getLastPathSegment

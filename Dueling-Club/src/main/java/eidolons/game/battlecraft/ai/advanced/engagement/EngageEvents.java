@@ -218,11 +218,26 @@ public class EngageEvents extends ExplorationHandler {
             processNow(event);
             return;
         }
-        event.delay = RandomWizard.getRandomFloatBetween(0.5f, 1f); //TODO specific
+        if (event.isExclusive()){
+            if (contains(event.type)){
+                log(1, "Duplicate - " + event );
+                return;
+            }
+        }
+        event.delay = RandomWizard.getRandomFloatBetween(event.getMinDelay( ), event.getMaxDelay( )); //TODO specific
         if (isLogged()) {
             log(1, "Event added:" + event);
         }
         eventQueue.add(event);
+    }
+
+    private boolean contains(ENGAGE_EVENT type) {
+        for (EngageEvent event : eventQueue) {
+            if (event.type==type) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void processNow(EngageEvent engageEvent) {

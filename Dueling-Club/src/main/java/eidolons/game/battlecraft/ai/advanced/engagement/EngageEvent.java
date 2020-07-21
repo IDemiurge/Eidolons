@@ -27,6 +27,7 @@ public class EngageEvent {
     // normally we'd only have one of these, DO NOT cluster stuff
 
     protected float delay;
+    private boolean exclusive;
     //++ float text?
 
     public EngageEvent(Unit source, BattleFieldObject target, Object... args) {
@@ -61,20 +62,41 @@ public class EngageEvent {
         id = ID++;
     }
 
+    public boolean isExclusive() {
+        return type.exclusive;
+    }
+
+    public float getMinDelay() {
+        return 0.5f;
+    }
+    public float getMaxDelay() {
+        return 1;
+    }
+
 
     public enum ENGAGE_EVENT {
         status_change,
         ai_status_change,
-        combat_start,
-        combat_end,
         popup,
         log,
         sound,
         view_anim,
         comment,
-        camera, engagement_change, precombat, precombat_end, combat_ended, combat_started,
+        combat_start(true), combat_end(true),
+        camera(true), engagement_change,
+        precombat(true), precombat_end(true),
+        combat_ended(true), combat_started(true),
+        ;
 
         // IDEA: sync up with script events?
+        public boolean exclusive;
+
+        ENGAGE_EVENT() {
+        }
+
+        ENGAGE_EVENT(boolean exclusive) {
+            this.exclusive = exclusive;
+        }
     }
 
     @Override

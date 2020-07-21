@@ -1,5 +1,7 @@
 package main.system.images;
 
+import main.data.filesys.PathFinder;
+
 import javax.swing.*;
 
 /**
@@ -10,7 +12,7 @@ public class CustomImageIcon extends ImageIcon {
 
     public CustomImageIcon(String s) {
         super(s);
-        imgPath = s.toLowerCase().replace(ImageManager.getImageFolderPath().toLowerCase(), "");
+        imgPath = s.toLowerCase().replace(PathFinder.getImagePath().toLowerCase(), "");
 
     }
 }

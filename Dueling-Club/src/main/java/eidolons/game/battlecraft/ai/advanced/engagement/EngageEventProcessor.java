@@ -73,7 +73,7 @@ public class EngageEventProcessor {
                 break;
             case combat_ended:
                 master.switchExplorationMode(true);
-                String descr="Stalemate";
+                String descr="Victory!";//"Stalemate";
                 Boolean result = (Boolean) event.arg;
                 if (result != null) {
                     descr=result?"Defeat!":"Victory!";

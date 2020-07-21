@@ -277,6 +277,9 @@ public class CameraMan {
     }
 
     public void centerCameraOnMainHero() {
+        Vector2 v = GridMaster.getCenteredPos(Eidolons.getPlayerCoordinates());
+        cam.position.x=v.x;
+        cam.position.y=v.y;
         centerCameraOn(Eidolons.getMainHero(), true);
     }
 

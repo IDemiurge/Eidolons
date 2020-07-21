@@ -4,31 +4,52 @@ import main.system.threading.WaitMaster;
 
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
 
-public enum PuzzleTip implements TextEvent {
+public enum PuzzleTip implements TxtTip {
 
-    void_maze_intro("Welcome to the Void Maze. Best use double-click to quickly " +
-            "navigate the cells that appear before you"),
-    void_maze_intro2(""),
-    void_maze_win("Void Maze Completed"),
-    void_maze_defeat_first(""),
-    void_maze_defeat(""),
+    encounter_puzzle_intro,
+    encounter_puzzle_win,
+    encounter_puzzle_defeat,
+
+    void_maze_intro,
+    void_maze_intro2,
+    void_maze_intro3,
+    void_maze_win,
+    void_maze_defeat_first,
+    void_maze_defeat,
+
+
+    art_puzzle_intro,
+    art_puzzle_win,
+    art_puzzle_defeat,
+    art_puzzle_intro_move,
+    art_puzzle_win_portal,
+    art_puzzle_defeat_awaken,
+
+    maze_puzzle_intro,
+    maze_puzzle_win,
+    maze_puzzle_defeat_first,
+    maze_puzzle_defeat,
+    maze_puzzle_defeat_awaken,
     ;
 
-    PuzzleTip(String message) {
-        this.message = message;
+    PuzzleTip() {
+        //from txt!
     }
 
-    PuzzleTip(String img, String message) {
+    PuzzleTip(String img) {
         this.img = img;
-        this.message = message;
     }
 
     private final boolean optional = true;
     private final boolean once = true;
     private boolean done;
-    private String img;
-    private String message;
+    private String img; //TODO what about this one?
     private final WaitMaster.WAIT_OPERATIONS messageChannel = MESSAGE_RESPONSE;
+
+    @Override
+    public String getMapId() {
+        return  "puzzle_tips";
+    }
 
     @Override
     public boolean isOptional() {
@@ -55,10 +76,6 @@ public enum PuzzleTip implements TextEvent {
         return img;
     }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
 
     @Override
     public WaitMaster.WAIT_OPERATIONS getMessageChannel() {
@@ -70,8 +87,4 @@ public enum PuzzleTip implements TextEvent {
 
     }
 
-    @Override
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

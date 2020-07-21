@@ -26,6 +26,7 @@ public class StringMaster {
 
     public static final String standard_symbols = "'-(),";
     public static final String PREFIX_SEPARATOR = "::";
+    private static final String WHITESPACE_CODE = "%20";
     static Pattern pattern_ = Pattern.compile("_");
     static Pattern pattern_space = Pattern.compile(" ");
     public static final String UPGRADE = format("UPGRADE");
@@ -1153,6 +1154,10 @@ public class StringMaster {
 
     public static String cropSuffix(String path, String cropSuffix) {
         return cropLast(path, cropSuffix).trim();
+    }
+
+    public static String fixWhiteSpaces(String s) {
+        return s.replaceAll(WHITESPACE_CODE, " ");
     }
 
 

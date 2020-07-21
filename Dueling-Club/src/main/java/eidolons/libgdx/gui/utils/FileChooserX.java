@@ -103,7 +103,12 @@ public class FileChooserX {
                         e.printStackTrace();
                     }
                 }
-                return super.keyDown(event, keycode);
+
+                if (keycode == Input.Keys.ESCAPE) {
+                    finalFileChooser1.fadeOut();
+                    adapter.canceled();
+                }
+                return true;
             }
         });
     }

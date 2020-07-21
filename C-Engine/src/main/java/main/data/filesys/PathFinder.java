@@ -2,6 +2,7 @@ package main.data.filesys;
 
 import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
@@ -327,7 +328,7 @@ public class PathFinder {
     }
 
     public static String getJarPath() {
-        return getRootPath() + jarName;
+        return StringMaster.fixWhiteSpaces(getRootPath() + jarName);
     }
 
     private static String getEmblemsPath() {

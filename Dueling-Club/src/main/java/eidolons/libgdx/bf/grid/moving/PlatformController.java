@@ -97,7 +97,7 @@ public class PlatformController extends MoveController {
             return false;
 
         time += delta;
-        log(LOG_CHANNEL.PLATFORM, this + " tip at " + tip.getX() + " " + tip.getY() + " ;time= " + time);
+        // log(LOG_CHANNEL.PLATFORM, this + " tip at " + tip.getX() + " " + tip.getY() + " ;time= " + time);
         for (PlatformCell cell : cells) {
             if (isInterpolated()) {
                 int offsetX = cell.getOriginalX() - tip.getOriginalX();

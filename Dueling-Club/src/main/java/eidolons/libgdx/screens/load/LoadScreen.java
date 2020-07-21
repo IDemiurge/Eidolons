@@ -56,10 +56,10 @@ public abstract class LoadScreen extends ScreenWithAssets {
         loadLabel.setPosition(GdxMaster.centerWidth(loadLabel),
                 GdxMaster.getHeight() / 20 + 35);
 
-        infoLabel = new Label(getLabelText(),
+        infoLabel = new Label("",
                 StyleHolder.getSizedLabelStyle(FONT.MAIN, 20));
         infoLabel.setPosition(35,
-                GdxMaster.getHeight() - 35);
+                GdxMaster.getHeight() - 115);
 
         batch = GdxMaster.getMainBatch();
     }
@@ -108,11 +108,14 @@ public abstract class LoadScreen extends ScreenWithAssets {
 
     private void loadTick() {
         main.system.auxiliary.log.LogMaster.devLog("Assets being loaded...");
-        if (ticks++ > getTickPeriod()) {
+        if (ticks++ > getMaxDots()*getTickPeriod()) {
             loadLabel.setText(getLabelText());
             ticks = 0;
         } else
-            loadLabel.setText(loadLabel.getText() + ".");
+        {
+            if (ticks%getTickPeriod()==0)
+                loadLabel.setText(loadLabel.getText() + ".");
+        }
 
         loadLabel.pack();
         if (isCenteredLabel())
@@ -130,8 +133,11 @@ public abstract class LoadScreen extends ScreenWithAssets {
         return false;
     }
 
-    private int getTickPeriod() {
-        return 10;
+    private int getMaxDots() {
+        return 5;
     }
 
+    private int getTickPeriod() {
+        return 5;
+    }
 }

@@ -12,6 +12,7 @@ import main.ability.effects.ReducedEffect;
 import main.ability.effects.ResistibleEffect;
 import main.content.ContentValsManager;
 import main.content.enums.GenericEnums;
+import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref;
@@ -23,6 +24,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
+import main.system.entity.CounterMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -261,8 +263,12 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         Map<PARAMETER, String> map = new HashMap<>();
 
         if (param == null) {
-            if (params == null) { // TODO
-                return new ModifyCounterEffect(sparam, mod_type, formula.toString()).apply(ref);
+            if (params == null) {
+                UnitEnums.COUNTER counter = CounterMaster.getCounter(sparam, false);
+                if (counter == null) {
+                    return false;
+                }
+                return new ModifyCounterEffect(counter, mod_type, formula.toString()).apply(ref);
             }
             for (PARAMETER p : params) {
                 if (p == null) {

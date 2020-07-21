@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.libgdx.bf.overlays.bar.ValueBar;
 import eidolons.libgdx.gui.ScissorMaster;
-import eidolons.libgdx.texture.Textures;
 import main.content.values.parameters.PARAMETER;
 import main.system.math.MathMaster;
 
@@ -76,37 +75,44 @@ public abstract class DualParamBar extends ValueBar {
         super.draw(batch, parentAlpha);
         float p = MathMaster.minMax(displayedSecondaryPerc, 0, 1);
         float y = getY();
-        if (isGradientMask()) {
-            if (p < 1) {
-                float x = getX() - (innerWidth * (1 - p));
-                ScissorMaster.drawWithAlphaMask(this, batch, x, y, innerWidth, height,
-                        () -> drawBar(underBarRegion, batch, secondaryColor, y),
-                        Textures.HOR_GRADIENT_72);
-            } else {
-                drawBar(underBarRegion, batch, secondaryColor, y);
-            }
-            p = Math.min(p, displayedPrimaryPerc);
-            if (p < 1) {
-                float x = getX() - (innerWidth * (1 - p));
-                ScissorMaster.drawWithAlphaMask(this, batch, x, y, innerWidth, height,
-                        () -> drawBar(overBarRegion, batch, primaryColor, y),
-                        Textures.HOR_GRADIENT_72);
-            } else {
-                drawBar(overBarRegion, batch, primaryColor, y);
-            }
-            return;
-        }
+        // if (isGradientMask()) {
+        //     if (p < 1) {
+        //         float x = getX() - (innerWidth * (1 - p));
+        //         ScissorMaster.drawWithAlphaMask(this, batch, x, y, innerWidth, height,
+        //                 () -> drawBar(underBarRegion, batch, secondaryColor, y),
+        //                 Textures.HOR_GRADIENT_72);
+        //     } else {
+        //         drawBar(underBarRegion, batch, secondaryColor, y);
+        //     }
+        //     p = Math.min(p, displayedPrimaryPerc);
+        //     if (p < 1) {
+        //         float x = getX() - (innerWidth * (1 - p));
+        //         ScissorMaster.drawWithAlphaMask(this, batch, x, y, innerWidth, height,
+        //                 () -> drawBar(overBarRegion, batch, primaryColor, y),
+        //                 Textures.HOR_GRADIENT_72);
+        //     } else {
+        //         drawBar(overBarRegion, batch, primaryColor, y);
+        //     }
+        //     return;
+        // }
         //UNDER
-        ScissorMaster.drawInRectangle(this, batch, getX(),
-                y,
-                innerWidth * p,
-                height, () ->
-                        drawBar(underBarRegion, batch, secondaryColor, y));
+        if (p > 0.01f) {
+            ScissorMaster.drawInRectangle(this, batch, getX(),
+                    y,
+                    innerWidth * p,
+                    height, () ->
+                            drawBar(underBarRegion, batch, secondaryColor, y));
+        } else {
+            //draw something dramatic to show it's ALMOST ZERO
+        }
         //OVER
-        ScissorMaster.drawInRectangle(this, batch, getX(),
-                y, innerWidth * Math.min(p, displayedPrimaryPerc),
-                height, () ->
-                        drawBar(overBarRegion, batch, primaryColor, y));
+        float min = Math.min(p, displayedPrimaryPerc);
+
+        if (min > 0.01f)
+            ScissorMaster.drawInRectangle(this, batch, getX(),
+                    y, innerWidth * min,
+                    height, () ->
+                            drawBar(overBarRegion, batch, primaryColor, y));
 
     }
 
@@ -180,6 +186,7 @@ public abstract class DualParamBar extends ValueBar {
         }
         resetLabelPos();
     }
+
     protected void resetLabelPos() {
         label2.setPosition(0, height * 3 / 2);
         float offset = innerWidth * displayedSecondaryPerc / 2;

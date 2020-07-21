@@ -242,7 +242,7 @@ public class GdxColorMaster {
     // Light revamp - into constants! and make sure they are good
     public static Color getColorForTheme(COLOR_THEME color) {
         if (color == null) {
-            return Color.WHITE;
+            return get(PALE_GOLD);
         }
         switch (color) {
             case BLUE:

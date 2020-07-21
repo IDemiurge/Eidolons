@@ -1,6 +1,5 @@
 package eidolons.libgdx.bf.grid.cell;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -36,6 +35,8 @@ import main.system.launch.Flags;
 
 import java.util.function.Supplier;
 
+import static eidolons.libgdx.GdxImageMaster.getRoundedPath;
+import static eidolons.libgdx.GdxImageMaster.getSizedImagePath;
 import static eidolons.libgdx.anims.actions.ActionMaster.*;
 import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
 
@@ -64,19 +65,23 @@ public class QueueView extends UnitView {
         addActor(verticalLine = new ImageContainer(Images.SEPARATOR_NARROW_VERTICAL));
         verticalLine.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.SUN);
         verticalLine.setColor(1, 1, 1, 0);
-//        getTeamColor()
+        //        getTeamColor()
         GdxMaster.center(verticalLine);
         addActor(activeMarker = new Image(ButtonStyled.STD_BUTTON.PULL.getTexture()));
-        activeMarker.getColor().a=0;
+        activeMarker.getColor().a = 0;
         init(o.getClockValue());
         addActor(emblemBg = new Image(TextureCache.getRegionUI_DC(Images.INTENT_ICON_BG)));
-        emblemBg.setPosition( (AtbPanel.imageSize-30)/2,  80);
+        emblemBg.setPosition((AtbPanel.imageSize - 30) / 2, 80);
 
         initEmblem(o.getEmblem());
-        emblemImage.setPosition(emblemBg.getX(),emblemBg.getY());
+        emblemImage.setPosition(emblemBg.getX(), emblemBg.getY());
         verticalLine.setZIndex(0);
 
         emblemImage.setZIndex(9234);
+    }
+
+    public static String getProperViewPath(String path) {
+        return                getRoundedPath(getSizedImagePath(path, AtbPanel.imageSize));
     }
 
     @Override
@@ -90,14 +95,14 @@ public class QueueView extends UnitView {
         emblemLighting.setVisible(false);
         modeImage.setPosition(78, -20);
         modeImage.setZIndex(654);
-        verticalLine.setX(GdxMaster.centerWidth(verticalLine)+5);
-        highlight.setX(portrait.getX()-4);
+        verticalLine.setX(GdxMaster.centerWidth(verticalLine) + 5);
+        highlight.setX(portrait.getX() - 4);
         roundBorder.setY(portrait.getY());
-        highlight.setY(portrait.getY()-3);
-        if (!active){
-            hpBar.setY(portrait.getY()+6);
+        highlight.setY(portrait.getY() - 3);
+        if (!active) {
+            hpBar.setY(portrait.getY() + 6);
         } else {
-            hpBar.setY(portrait.getY()+1);
+            hpBar.setY(portrait.getY() + 1);
         }
         hpBar.setY(-5);
         hpBar.setX(-6);
@@ -105,7 +110,7 @@ public class QueueView extends UnitView {
         atbBg.setY(-24);
         activeMarker.setY(-32);
         activeMarker.setZIndex(6534);
-        activeMarker.setX(GdxMaster.centerWidth(activeMarker)+4);
+        activeMarker.setX(GdxMaster.centerWidth(activeMarker) + 4);
 
         initiativeLabel.setPosition(
                 atbBg.getX() +
@@ -183,7 +188,7 @@ public class QueueView extends UnitView {
         if (ExplorationMaster.isExplorationOn()) {
             return; //quick fix..
         }
-        if (this.active==active) {
+        if (this.active == active) {
             return;
         }
         // ActionMaster.addBlockingAction(this, ()-> queueMoving);
@@ -204,13 +209,13 @@ public class QueueView extends UnitView {
     }
 
     protected void updateVisible() {
-//        if (getOutline() != null || isHovered()) {
-//            initiativeLabel.setVisible(false);
-//            atbBg.setVisible(false);
-//        } else {
-//            initiativeLabel.setVisible(true);
-//            atbBg.setVisible(true);
-//        }
+        //        if (getOutline() != null || isHovered()) {
+        //            initiativeLabel.setVisible(false);
+        //            atbBg.setVisible(false);
+        //        } else {
+        //            initiativeLabel.setVisible(true);
+        //            atbBg.setVisible(true);
+        //        }
 
     }
 
@@ -310,23 +315,27 @@ public class QueueView extends UnitView {
 
     public void setPortraitTexture(TextureRegion textureRegion) {
         if (textureRegion != null)
-        getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion,
-                ()-> flip == CONTENT_CONSTS.FLIP.HOR, ()-> flip == CONTENT_CONSTS.FLIP.VERT
-        ));
+            getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion,
+                    () -> flip == CONTENT_CONSTS.FLIP.HOR, () -> flip == CONTENT_CONSTS.FLIP.VERT
+            ));
     }
 
     public TextureRegion processPortraitTexture(String path) {
-        if (!Flags.isIDE()  ) {
-          return  GdxImageMaster.round(path, true, " "+AtbPanel.imageSize);
-        }
-        TextureRegion  region = TextureCache.getRegionUV(path);
-            GdxImageMaster.round(path, true, "");
-        Texture texture = GdxImageMaster.size(GdxImageMaster.getRoundedPath(path),
-                AtbPanel.imageSize, Flags.isIDE());
-
-        if (texture == null)
-            return region;
-        return new TextureRegion(texture);
+        // if (Flags.isJarlike()) {
+            if (Flags.isIDE()) {
+                GdxImageMaster.size( (path),
+                        AtbPanel.imageSize, true);
+            }
+            return GdxImageMaster.round(path, Flags.isIDE(),  GdxImageMaster.getSizedImagePath(path, AtbPanel.imageSize));
+        // }
+        // TextureRegion region = TextureCache.getRegionUV(path);
+        // GdxImageMaster.round(path, true, "");
+        // Texture texture = GdxImageMaster.size(GdxImageMaster.getRoundedPath(path),
+        //         AtbPanel.imageSize, Flags.isIDE());
+        //
+        // if (texture == null)
+        //     return region;
+        // return new TextureRegion(texture);
     }
 
     public void setOutlineSupplier(Supplier<TextureRegion> outlineSupplier) {
@@ -372,12 +381,16 @@ public class QueueView extends UnitView {
     public TextureRegion getDefaultTextureSized() {
         if (defaultTexture == null) {
             //TODO EA check
-            String path = OUTLINE_TYPE.UNKNOWN.getImagePath();
-            if (Flags.isIDE()) {
-                GdxImageMaster.round(path, true, "");
-            }
-            return defaultTexture= new TextureRegion(GdxImageMaster.size(GdxImageMaster.getRoundedPath(path),
-                    AtbPanel.imageSize, Flags.isIDE()));
+            String path =
+                    getProperViewPath(
+                    OutlineMaster.isOutlinesOn()?  OUTLINE_TYPE.UNKNOWN.getImagePath() : getUserObject().getImagePath());
+            return defaultTexture = TextureCache.getRegionUV( path);
+            // Texture sized = GdxImageMaster.size(GdxImageMaster.getRoundedPath(path),
+            //         AtbPanel.imageSize, Flags.isIDE());
+            // if (sized == null) {
+            //     TextureCache.getSizedRegion()
+            // }
+            // return defaultTexture = new TextureRegion(sized);
         }
         return defaultTexture;
     }

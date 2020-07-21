@@ -216,12 +216,13 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static String getSizedImagePath(String path, int size) {
-        return getSizedImagePath(path, size, null );
+        return getSizedImagePath(path, size, null);
     }
-    public static String getSizedImagePath(String path, int size, String  cropSuffix) {
+
+    public static String getSizedImagePath(String path, int size, String cropSuffix) {
         path = FileManager.formatPath(path);
-        if (cropSuffix!=null ) {
-        path = StringMaster.cropSuffix(path,cropSuffix);
+        if (cropSuffix != null) {
+            path = StringMaster.cropSuffix(path, cropSuffix);
         }
         return StringMaster.cropFormat(path) + " sized " + size + StringMaster.getFormat(path);
     }
@@ -246,13 +247,13 @@ public class GdxImageMaster extends LwjglApplication {
         return null;
     }
 
-    public static TextureRegion round(String path, boolean write, String suffix) {
+    public static TextureRegion round(String path, boolean write, String customPath) {
         path = cropImagePath(path);
+        if (!customPath.isEmpty()) {
+            path = customPath;
+        }
 
         String newPath = getRoundedPath(path);
-        if (!suffix.isEmpty()) {
-            newPath = StringMaster.getAppendedImageFile(newPath, suffix);
-        }
         TextureRegion roundedRegion = TextureCache.getOrCreateR(newPath, false, AssetEnums.ATLAS.UNIT_VIEW);
         if (roundedRegion != null)
             if (roundedRegion.getTexture() != TextureCache.getMissingTexture())
@@ -277,7 +278,11 @@ public class GdxImageMaster extends LwjglApplication {
         FileHandle handle = GDX.file(
                 PathFinder.getImagePath() + newPath);
         if (write) {
-            PixmapIO.writePNG(handle, rounded);
+            try {
+                PixmapIO.writePNG(handle, rounded);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         } else
             return TextureCache.getInstance().createAndCacheRegion(path, rounded);
 
@@ -467,5 +472,15 @@ public class GdxImageMaster extends LwjglApplication {
 
     public static boolean isSizedPath(String name) {
         return name.contains(" sized ");
+    }
+
+    public static boolean isGeneratedFile(String path) {
+        if (path.contains("sized")) {
+            return true;
+        }
+        if (path.contains("rounded")) {
+            return true;
+        }
+        return path.contains(" Copy");
     }
 }

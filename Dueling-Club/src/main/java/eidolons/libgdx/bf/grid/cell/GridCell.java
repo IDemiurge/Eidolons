@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf.grid.cell;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -35,6 +36,7 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
+import main.system.launch.Flags;
 
 import java.util.function.Function;
 
@@ -86,7 +88,7 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
         }
     }
 
-    public   boolean isRotation(boolean wall) {
+    public boolean isRotation(boolean wall) {
         return false;
     }
 
@@ -159,14 +161,21 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                DC_Obj dc_cell = Eidolons.gameMaster.getCellByCoordinate(Coordinates.get(getGridX(), getGridY()));
+                DC_Obj cell = getUserObject();// Eidolons.gameMaster.getCellByCoordinate(Coordinates.get(getGridX(), getGridY()));
 
                 if (button == Input.Buttons.RIGHT && !event.isHandled()) {
+                    if (Flags.isIDE()) {
+                        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                            cell.getGame().getMovementManager().move(Eidolons.getMainHero(), cell.getCoordinates());
+                            GuiEventManager.trigger(UNIT_MOVED, Eidolons.getMainHero());
+                            return;
+                        }
+                    }
                     event.handle();
-                    if (getUserObject().getCoordinates().dst(Eidolons.getPlayerCoordinates()) > 1) {
-                        DefaultActionHandler.moveToMotion(getUserObject().getCoordinates());
+                    if (cell.getCoordinates().dst(Eidolons.getPlayerCoordinates()) > 1) {
+                        DefaultActionHandler.moveToMotion(cell.getCoordinates());
                     } else
-                        GuiEventManager.trigger(CREATE_RADIAL_MENU, dc_cell);
+                        GuiEventManager.trigger(CREATE_RADIAL_MENU, cell);
                 }
 
                 super.touchUp(event, x, y, pointer, button);
@@ -299,7 +308,7 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
 
     public void setOverlayRotation(float overlayRotation) {
         if (this.overlayRotation == overlayRotation)
-            return ;
+            return;
         this.overlayRotation = overlayRotation;
         overlay.setOrigin(64, 64);
         ActionMaster.addRotateByAction(overlay, overlay.getRotation(), overlayRotation);

@@ -130,15 +130,15 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
                 pickup(obj, unit);
                 break;
             case MAGE_CIRCLE:
-                boolean kill = doSpecial(obj, unit);
-                if (kill) {
-                    obj.kill(unit, false, false);
-                }
-                break;
-
+                // boolean kill = doSpecial(obj, unit);
+                // if (kill) {
+                //     obj.kill(unit, false, false);
+                // }
+                // break;
             case RUNE:
                 //random spell?
-                doMagic(obj, unit);
+                // doMagic(obj, unit);
+                doEssence(obj, unit);
                 obj.kill(unit, false, false);
                 break;
             case MECHANISM:
@@ -225,6 +225,12 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         return name + " " + StringMaster.wrapInParenthesis("Consumable");
     }
 
+    private void doEssence(InteractiveObj obj, Unit unit) {
+        int amount = (int) (RandomWizard.getRandomFloatBetween(0.14f, 0.31f) * unit.getIntParam(PARAMS.ESSENCE));
+        unit.addParam(PARAMS.C_ESSENCE, amount);
+
+        EUtils.showInfoText("Ancient magic fills you with Essence...");
+    }
     private void doMagic(InteractiveObj obj, Unit unit) {
         Ref ref = obj.getRef();
         ref.setTarget(obj.getId());

@@ -217,7 +217,7 @@ public class InstantAttackRule {
         if (!canMakeInstantAttackAgainst(action)) {
             return null;
         }
-        return chooseInstantAttack(action, unit);
+        return checkTargetingForInstantAttack(action, unit);
     }
 
     public static Boolean canMakeInstantAttackAgainst(DC_ActiveObj action) {
@@ -228,38 +228,34 @@ public class InstantAttackRule {
         return unit.canCounter(); // checkAlertCounter - is that right?
     }
 
-    public static DC_ActiveObj chooseInstantAttack(DC_ActiveObj action, Unit unit) {
+    public static DC_ActiveObj checkTargetingForInstantAttack(DC_ActiveObj action, Unit unit) {
         int distance = (PositionMaster.getDistance(DC_MovementManager
                 .getMovementDestinationCoordinate(action), unit.getCoordinates()));
         // TODO moving away from same-cell ?
 
         // how to preCheck if jump trajectory intersects with IA range? for (c c :
         // getMovePathCells()){
-        if (unit.getPreferredInstantAttack() != null) {
-            return unit.getPreferredInstantAttack();
-        }
+        DC_ActiveObj attack = unit.getPreferredInstantAttack();
         //TODO when do we even do this? some custom logic!
-        for (DC_ActiveObj attack : getInstantAttacks(unit)) {
-            if (distance > getAutoAttackRange(attack)) {
-                continue;
+        // for (DC_ActiveObj attack : getInstantAttacks(unit)) {
+            if (distance-2 > getAutoAttackRange(attack)) {
+                return null;
             }
             if (!unit.checkPassive(UnitEnums.STANDARD_PASSIVES.HIND_REACH)) {
                 if (!attack.checkPassive(UnitEnums.STANDARD_PASSIVES.BROAD_REACH)) {
                     if (FacingMaster.getSingleFacing(unit, action.getOwnerUnit()) == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
-                        continue;
+                        return null;
                     }
                 }
             }
             if (!attack.checkPassive(UnitEnums.STANDARD_PASSIVES.HIND_REACH)) {
                 if (FacingMaster.getSingleFacing(unit, action.getOwnerUnit()) == UnitEnums.FACING_SINGLE.BEHIND) {
-                    continue;
+                    return null;
                 }
             }
             // TODO PICK OPTIMAL? Consider roll's cost modifier...
             return attack;
-        }
 
-        return null;
     }
 
     public static List<DC_ActiveObj> getInstantAttacks(Unit unit) {

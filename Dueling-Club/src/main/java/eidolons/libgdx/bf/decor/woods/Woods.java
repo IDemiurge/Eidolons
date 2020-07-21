@@ -2,7 +2,6 @@ package eidolons.libgdx.bf.decor.woods;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.decor.CellDecor;
 import eidolons.libgdx.bf.decor.DecorData;
@@ -15,7 +14,6 @@ import eidolons.libgdx.texture.Sprites;
 import main.content.enums.DungeonEnums;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
-import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.RandomWizard;
@@ -50,17 +48,17 @@ public class Woods extends GridHandler {
 
     @Override
     public void afterLoaded() {
-
-        for (Obj key : grid.getViewMap().keys()) {
-            if (key instanceof BattleFieldObject) {
-                BattleFieldObject wall= (BattleFieldObject) key;
-            if (isTreeWall(wall)){
-                List<DIRECTION> list =
-                        DC_Game.game.getBattleFieldManager().getWallMap().get(key.getCoordinates());
-                initWallDecor(wall, list);
-            }
-            }
-        }
+//TODO
+        // for (Obj key : grid.getViewMap().keys()) {
+        //     if (key instanceof BattleFieldObject) {
+        //         BattleFieldObject wall= (BattleFieldObject) key;
+        //     if (isTreeWall(wall)){
+        //         List<DIRECTION> list =
+        //                 DC_Game.game.getBattleFieldManager().getWallMap().get(key.getCoordinates());
+        //         initWallDecor(wall, list);
+        //     }
+        //     }
+        // }
 
     }
 

@@ -19,5 +19,4 @@ public interface TextEvent {
 
     void run();
 
-    void setMessage(String value);
 }

@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
@@ -914,14 +915,16 @@ it sort of broke at some point - need to investigate!
         screenCells.clear();
         for (GridCellContainer cell : topCells) {
             cell.draw(batch, 1f);
-            if (isScreenCell(cell) && cell.getUnitViewsVisible().size()<=1)
-                screenCells.add(cell);
+            // if (isScreenCell(cell) && cell.getUnitViewsVisible().size()<=1)
+            //     screenCells.add(cell);
         }
-        ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
-        for (GridCellContainer cell : screenCells) {
-            cell.drawScreen(batch);
-        }
-        ((CustomSpriteBatch) batch).resetBlending();
+        //TODO gdx Review - hover + screen is ugly now, but must be done
+
+        // ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN);
+        // for (GridCellContainer cell : screenCells) {
+        //     cell.drawScreen(batch);
+        // }
+        // ((CustomSpriteBatch) batch).resetBlending();
 
         for (UnitGridView unitGridView : detached) {
             unitGridView.draw(batch, 1);
@@ -986,11 +989,11 @@ it sort of broke at some point - need to investigate!
     }
 
     protected boolean isOverCell(GridCellContainer container) {
-        return container.isWall();
+        return container.isWall() || container.isMainHero();
     }
 
     protected boolean isTopCell(GridCellContainer gridCellContainer) {
-        return gridCellContainer.isHovered() || gridCellContainer.isMainHero();
+        return gridCellContainer.isHovered();
     }
 
     Array<Actor> screenObjs = new Array<>(50);
@@ -1222,10 +1225,13 @@ it sort of broke at some point - need to investigate!
                 return;
             }
             String path = VariableManager.removeVarPart(overlayData);
-            TextureRegion r = TextureCache.getRegionUV(path);
+            Texture tex = TextureCache.getOrCreate(path);
+            TextureRegion r = null;
             if (!VariableManager.getVars(overlayData).isEmpty()) {
                 Coordinates c = new Coordinates(VariableManager.getVars(overlayData));
-                r = new TextureRegion(r, c.x * 128, c.y * 128, 128, 128);
+                r = new TextureRegion(tex, c.x * 128, c.y * 128, 128, 128);
+            } else {
+                r = new TextureRegion(tex);
             }
             container.setOverlayTexture(r);
             container.setOverlayRotation(cell.getOverlayRotation());
@@ -1529,6 +1535,15 @@ it sort of broke at some point - need to investigate!
 
     public void addDecor(Coordinates c, CellDecor decor, DECOR_LEVEL overMaps) {
         decorMap.get(overMaps).add(c, decor, 0, 0);
+    }
+
+    public void firstDraw() {
+        for (BaseView value : viewMap.values()) {
+            if (value instanceof HpBarView) {
+                ((HpBarView) value).resetHpBar();
+            }
+
+        }
     }
 }
 

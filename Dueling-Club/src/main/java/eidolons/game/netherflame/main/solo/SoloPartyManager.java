@@ -37,9 +37,10 @@ public class SoloPartyManager extends NF_PartyManager {
     @Override
     public void gameStarted() {
         super.gameStarted();
-        ObjType type=DataManager.getType("Soul Journey", DC_TYPE.QUEST);
+        ObjType type=DataManager.getType("Third Passage", DC_TYPE.QUEST);
         DungeonQuest quest = new DungeonQuest(type);
         getMaster().getQuestMaster().questTaken(quest, type);
+        quest.update();
     }
 
     @Override

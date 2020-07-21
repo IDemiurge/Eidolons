@@ -2,6 +2,7 @@ package eidolons.ability.effects.oneshot.attack.force;
 
 import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
@@ -26,7 +27,7 @@ public class ForceEffect extends DC_Effect implements OneshotEffect {
     public boolean applyThis() {
         if (!RuleKeeper.isRuleOn(RuleEnums.RULE.FORCE)) return false;
         int force = getFormula().getInt(ref);
-        ForceRule.applyForceEffects(force, (DC_ActiveObj) ref.getActive());
+        ForceRule.applyForceEffects(force, (DC_ActiveObj) ref.getActive(), (BattleFieldObject) ref.getTargetObj());
         Boolean result = null;
         if (attack) // include stamina into this roll somehow...
 //            result = RollMaster.rollForce(getTarget(), getActiveObj(), force);

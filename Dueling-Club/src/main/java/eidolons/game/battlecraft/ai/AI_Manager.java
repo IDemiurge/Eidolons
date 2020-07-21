@@ -38,6 +38,10 @@ public class AI_Manager extends AiMaster {
         priorityManager = DC_PriorityManager.init(this);
     }
 
+    public static boolean isAiVisionHack() {
+        return true;
+    }
+
     public static boolean isSimplifiedLogic() {
         return true;
     }
@@ -57,6 +61,7 @@ public class AI_Manager extends AiMaster {
     public static List<DC_ActiveObj> getBrokenActions() {
         return brokenActions;
     }
+
 
 
     public GroupAI getAllyGroup() {

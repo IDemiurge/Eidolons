@@ -25,7 +25,6 @@ import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
-import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
@@ -414,14 +413,16 @@ public class AtomicAi extends AiHandler {
             FACING_SINGLE relative = FacingMaster.getSingleFacing(facing, ai.getUnit(), enemy);
             if (relative == FACING_SINGLE.BEHIND) {
                 return AiEnums.AI_LOGIC_CASE.TURN_AROUND;
-            } else if (relative == FACING_SINGLE.TO_THE_SIDE) {
-                if (!ai.getUnit().checkPassive(STANDARD_PASSIVES.BROAD_REACH))
-                    result = true;
-            } else
-                result = false;
+            }
+            // else if (relative == FACING_SINGLE.TO_THE_SIDE) {
+            //     if (!ai.getUnit().checkPassive(STANDARD_PASSIVES.BROAD_REACH))
+            //         result = true;
+            // } else
+            //     result = false;
             //if we need to getVar to a cell that is not 'facing' the target?!
-            if (!result)
-                return null;
+            // if (!result)
+            //     return null;
+            //TODO ai Review - ideally we need to check on the 'target cell', not enemy itself
             if (!game.getVisionMaster().getSightMaster().getClearShotCondition().check(getUnit(), enemy))
                 return null;
         }

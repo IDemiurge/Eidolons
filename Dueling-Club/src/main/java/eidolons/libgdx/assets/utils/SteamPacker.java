@@ -19,8 +19,10 @@ public class SteamPacker {
     public static final String steam_build_path = "C:/steamworks/sdk/tools/ContentBuilder/content/windows/";
     public static final String out = steam_build_path.toLowerCase();
     public static final String root = "C:/code/eidolons/Dueling-Club/target/";
-    public static final String jar_path = root + "eidolons-0.5.jar";
-    public static final String jar_name_out = "Eidolons.jar";
+    public static final String jar_path = root + "eidolons-" +
+            CoreEngine.CORE_VERSION + ".jar";
+    public static final String jar_name_out = "Eidolons" +
+            CoreEngine.CORE_VERSION + ".jar";
 
     static SteamDataModel dataModel;
     private static final Set<String> newFiles = new LinkedHashSet<>();
@@ -35,7 +37,7 @@ public class SteamPacker {
         boolean fast = args.length < 2;
         PathFinder.init();
 
-        if (Bools.isFalse(copyJar())){
+        if (Bools.isFalse(copyJar())) {
             log("Build failed!");
             return;
             //what about exe gen? probably cmd compatible !
@@ -60,9 +62,10 @@ public class SteamPacker {
             } else {
                 AtlasGen.main();
             }
-            boolean result= (boolean) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.GDX_READY);
+            boolean result = (boolean) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.GDX_READY);
             if (!result) {
                 log("Build failed!");
+                System.exit(0);
                 return;
             }
         }
@@ -131,7 +134,7 @@ public class SteamPacker {
     }
 
     private static Boolean copyJar() {
-       return  FileManager.copy(jar_path, out + jar_name_out);
+        return FileManager.copy(jar_path, out + jar_name_out);
     }
 
     private static void copyXml() {

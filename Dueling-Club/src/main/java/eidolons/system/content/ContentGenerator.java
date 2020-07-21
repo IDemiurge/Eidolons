@@ -342,7 +342,7 @@ public class ContentGenerator {
         for (OBJ_TYPE T : TYPES) {
             for (ObjType type : DataManager.getTypes(T)) {
                 String path = type.getImagePath();
-                if (!ImageManager.isImage(ImageManager.getImageFolderPath() + path)) {
+                if (!ImageManager.isImage(PathFinder.getImagePath() + path)) {
                     continue;
                 }
                 if (path.contains("entity")) {
@@ -641,6 +641,13 @@ public class ContentGenerator {
         return 0;
     }
 
+    public static void adjustSpellCosts(ObjType t) {
+        /*
+        focus == essence
+        -50% on both?
+         */
+
+    }
     public static void generateSpellParams(ObjType t) {
         if (t.getName().contains(" Bolt")) {
             t.addProperty(G_PROPS.SPELL_TAGS, "Missile", true);

@@ -174,7 +174,8 @@ public class DamageDealer {
     }
 
     private static boolean isLogged(BattleFieldObject attacker, BattleFieldObject targetObj, ActiveObj active) {
-        if (EffectMaster.getFirstEffectOfClass((DC_ActiveObj) active, SpecialTargetingEffect.class) != null) {
+        if (active == null||EffectMaster.getFirstEffectOfClass((DC_ActiveObj) active, SpecialTargetingEffect.class) != null) {
+            //don't log every crate being damaged...
             return !(targetObj instanceof Structure);
         }
         return true;

@@ -85,7 +85,7 @@ public class DC_Formulas {
     private static final float RES_WIL_MODIFIER = 0.5f;
     private static final int RES_FOC_MODIFIER = 1;
     private static final float SPIRIT_WIL_MODIFIER = 0.25f;
-    private static final int ESS_WIS_MODIFIER = 5;
+    private static final int ESS_WIS_MODIFIER = 10;
     private static final float ESS_WIS_SQUARE_MODIFIER = 0.05f;
     private static final float ESS_WIS_SQUARE_BARRIER = 400;
     private static final float INT_MEM_MODIFIER_SQUARE_BARRIER = 40;
@@ -158,7 +158,7 @@ public class DC_Formulas {
     }
 
     public static int getEssenceFromWisdom(int amount) {
-        return calculateFormula(ESS_WIS_FORMULA, amount) / 5 * 5;
+        return calculateFormula(ESS_WIS_FORMULA, amount) / 10 * 10;
         // return Math.round(amount * ESS_WIS_MODIFIER);
     }
 

@@ -31,8 +31,7 @@ public class ClassFinder {
      */
 
     /**
-     * Scans all classes accessible from the context class loader which belong
-     * to the given package and subpackages.
+     * Scans all classes accessible from the context class loader which belong to the given package and subpackages.
      *
      * @param packageName The base package
      * @return The classes
@@ -40,12 +39,12 @@ public class ClassFinder {
      * @throws IOException
      */
     public static Class[] getClasses(String packageName)
-     throws ClassNotFoundException, IOException {
+            throws ClassNotFoundException, IOException {
         if (Flags.isJar()) {
             return getClassesFromJar(packageName);
         }
         ClassLoader classLoader = Thread.currentThread()
-         .getContextClassLoader();
+                .getContextClassLoader();
         assert classLoader != null;
         String path = packageName.replace('.', '/');
         Enumeration<URL> resources = classLoader.getResources(path);
@@ -61,7 +60,9 @@ public class ClassFinder {
         return classes.toArray(new Class[0]);
     }
 
+    //will fail if path has whitespaces!
     private static Class[] getClassesFromJar(String packageName) {
+
         String pathToJar = PathFinder.getJarPath();
 
         List<Class> classes = new ArrayList<>();
@@ -80,7 +81,7 @@ public class ClassFinder {
                 }
 
                 if (!je.getName().startsWith("main")
-                 && !je.getName().startsWith("eidolons")) {
+                        && !je.getName().startsWith("eidolons")) {
                     continue;
                 }
                 String className = je.getName().replace('/', '.');
@@ -105,8 +106,7 @@ public class ClassFinder {
     }
 
     /**
-     * Recursive method used to find all classes in a given directory and
-     * subdirs.
+     * Recursive method used to find all classes in a given directory and subdirs.
      *
      * @param directory   The base directory
      * @param packageName The package name for classes found inside the base directory
@@ -114,7 +114,7 @@ public class ClassFinder {
      * @throws ClassNotFoundException
      */
     private static List<Class> findClasses(File directory, String packageName)
-     throws ClassNotFoundException {
+            throws ClassNotFoundException {
         List<Class> classes = new ArrayList<>();
         if (!directory.exists()) {
             return classes;
@@ -122,18 +122,18 @@ public class ClassFinder {
         File[] files = directory.listFiles();
         for (File file : files) {
             if (ignoredpaths != null)
-            if (Arrays.asList(ignoredpaths).contains(file.getPath())) {
-                continue;
-            }
+                if (Arrays.asList(ignoredpaths).contains(file.getPath())) {
+                    continue;
+                }
             if (file.isDirectory()) {
                 assert !file.getName().contains(".");
                 classes.addAll(findClasses(file, packageName + "."
-                 + file.getName()));
+                        + file.getName()));
             } else if (file.getName().endsWith(".class")) {
                 classes.add(Class.forName(packageName
-                 + '.'
-                 + file.getName()
-                 .substring(0, file.getName().length() - 6)));
+                        + '.'
+                        + file.getName()
+                        .substring(0, file.getName().length() - 6)));
             }
         }
         return classes;

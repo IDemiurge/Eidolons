@@ -4,11 +4,14 @@ import main.data.ability.AE_Item;
 import main.data.ability.Mapper;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlNodeMaster;
+import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Pair;
 import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static main.system.auxiliary.log.LogMaster.important;
 
 public class ConstructionManager {
     public static Object construct(Node node) {
@@ -31,6 +34,13 @@ public class ConstructionManager {
 
     private static Construct getConstruct(Node node) {
         AE_Item item = Mapper.getItem(node);
+        if (item == null) {
+            important("No AE item! - " + XML_Converter.getStringFromXML(node));
+            if (Mapper.isInitialized()) {
+            important("No AE item! - " + XML_Converter.getStringFromXML(node));
+            }
+            CoreEngine.compileReflectionMap();
+        }
         if (item.isPrimitive()) {
             return new Construct(node.getNodeName(), node.getTextContent());
         }
