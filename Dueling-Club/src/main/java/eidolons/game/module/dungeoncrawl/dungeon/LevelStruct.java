@@ -37,6 +37,7 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
     protected StructureData data;
     private Map<Coordinates, Integer> patternMap;
     private StructAmbiData ambiData;
+    private Coordinates center;
 
     public LevelStruct() {
         ambiData = new StructAmbiData(this);
@@ -357,7 +358,7 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
 
     @Override
     public Coordinates getCenterCoordinate() {
-        return CoordinatesMaster.getCenterCoordinate(getCoordinatesSet());
+        return center==null ? center = CoordinatesMaster.getCenterCoordinate(getCoordinatesSet()) : center;
     }
 
     @Override

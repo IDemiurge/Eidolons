@@ -11,6 +11,7 @@ import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 10/31/2017.
@@ -19,6 +20,9 @@ public class ItemMaster {
     public static final java.lang.String FOOD = "Food";
     public static final java.lang.String TORCH = "Torch";
 
+    public static boolean isItemsDisabled() {
+        return Flags.isJar();
+    }
     public static boolean isBreakable(DC_HeroItemObj item) {
         if (item instanceof DC_QuickItemObj) {
             DC_QuickItemObj q = (DC_QuickItemObj) item;
@@ -28,9 +32,7 @@ public class ItemMaster {
             if (q.isConcoction()) {
                 return true;
             }
-            if (q.isPotion()) {
-                return true;
-            }
+            return q.isPotion();
         }
         // material - glass?
 

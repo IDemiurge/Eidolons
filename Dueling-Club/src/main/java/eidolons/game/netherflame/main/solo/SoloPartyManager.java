@@ -7,6 +7,8 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.CinematicLib;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.netherflame.main.NF_PartyManager;
+import eidolons.system.text.tips.StdTips;
+import eidolons.system.text.tips.TipMessageMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -37,7 +39,7 @@ public class SoloPartyManager extends NF_PartyManager {
     @Override
     public void gameStarted() {
         super.gameStarted();
-        ObjType type=DataManager.getType("Third Passage", DC_TYPE.QUEST);
+        ObjType type = DataManager.getType("Third Passage", DC_TYPE.QUEST);
         DungeonQuest quest = new DungeonQuest(type);
         getMaster().getQuestMaster().questTaken(quest, type);
         quest.update();
@@ -46,21 +48,25 @@ public class SoloPartyManager extends NF_PartyManager {
     @Override
     public boolean heroUnconscious(Unit hero) {
         //instead of all unconscious mechanics
-        if (hero!= Eidolons.getMainHero()) {
+        if (hero != Eidolons.getMainHero()) {
             return false;
         }
 
-        getGame().getLogManager().log(hero.getName()+" falls..." );
-        getGame().getLogManager().log("... and rises again.");
-        getGame().getLogManager().log("Endurance remaining: "+ findMainHero().getIntParam(PARAMS.C_ENDURANCE));
         CinematicLib.run(CinematicLib.StdCinematic.UNCONSCIOUS_BEFORE);
+        getGame().getLogManager().log(hero.getName() + " falls...");
 
-        Coordinates respawnCoordinates = getRespawnCoordinates(null);
-        hero.setCoordinates(respawnCoordinates);
-        hero.cleanReset();
-        getGame().getMovementManager().moved(hero, true);
+        TipMessageMaster.tip(StdTips.FALLEN, () -> {
+            Coordinates respawnCoordinates = getRespawnCoordinates(null);
+            hero.setCoordinates(respawnCoordinates);
+            hero.cleanReset();
+            getGame().getMovementManager().moved(hero, true);
 
-        CinematicLib.run(CinematicLib.StdCinematic.UNCONSCIOUS_AFTER, hero);
+            getGame().getLogManager().log("... and rises again.");
+            getGame().getLogManager().log("Endurance remaining: " + findMainHero().getIntParam(PARAMS.C_ENDURANCE));
+            CinematicLib.run(CinematicLib.StdCinematic.UNCONSCIOUS_AFTER, hero);
+        });
+
+
         return true;
     }
 }

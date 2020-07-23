@@ -198,6 +198,7 @@ public class BattleGuiStage extends GuiStage {
         if (GdxMaster.isVisibleEffectively(textInputPanel)) {
             //TODO exit?!
             textInputPanel.keyTyped(character);
+            textInputPanel.acceptChar(character);
             return true;
         }
         if (Flags.isIDE()) {

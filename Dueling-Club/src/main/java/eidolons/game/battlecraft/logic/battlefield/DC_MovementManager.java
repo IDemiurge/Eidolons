@@ -23,6 +23,7 @@ import eidolons.game.core.ActionInput;
 import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
+import eidolons.game.core.state.DC_GameState;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.libgdx.screens.ScreenMaster;
@@ -59,6 +60,7 @@ import static main.system.auxiliary.log.LogMaster.log;
 
 public class DC_MovementManager implements MovementManager {
 
+    public static boolean anObjectMoved;
     private static DC_MovementManager instance;
     Map<Unit, List<ActionPath>> pathCache = new HashMap<>();
     private final DC_Game game;
@@ -416,6 +418,8 @@ public class DC_MovementManager implements MovementManager {
     }
 
     public boolean moved(BattleFieldObject obj, DC_Cell cell, Ref REF) {
+        anObjectMoved=true;
+        DC_GameState.gridChanged=true;
         if (!REF.isQuiet())
             if (obj instanceof Unit) {
                 game.getDungeonMaster().getTrapMaster().unitMoved((Unit) obj);

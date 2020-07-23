@@ -1,8 +1,8 @@
 package main.level_editor.backend.handlers;
 
-import eidolons.game.netherflame.main.event.text.TIP;
-import eidolons.game.netherflame.main.event.text.TextEvent;
 import eidolons.libgdx.gui.overlay.choice.VC_DataSource;
+import eidolons.system.text.tips.TIP;
+import eidolons.system.text.tips.TextEvent;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.system.GuiEventManager;

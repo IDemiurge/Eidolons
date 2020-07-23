@@ -36,7 +36,6 @@ public class GdxMaster {
     public static final float fontSizeAdjustCoef = 0.15f;
     public static final float sizeAdjustCoef = 0.25f;
     public static final boolean FULLHD_ONLY = false;
-    public static final boolean WRITE_ATLAS_IMAGES = true;
     private static final boolean COLORFUL = false;
     public static boolean CUSTOM_RESOLUTION;
     private static final int DEFAULT_WIDTH = 1824;
@@ -514,7 +513,7 @@ public class GdxMaster {
         setCursorType(CURSOR.TARGETING);
     }
 
-    public static boolean isVisibleEffectively(Group a) {
+    public static boolean isVisibleEffectively(Actor a) {
         if (a == null) {
             return false;
         }
@@ -590,10 +589,14 @@ public class GdxMaster {
         if (COLORFUL){
             return new ColorBatch();
         }
-        if (WRITE_ATLAS_IMAGES){
+        if (isWRITE_ATLAS_IMAGES()){
             return new AtlasGenSpriteBatch();
         }
         return new CustomSpriteBatchImpl();
+    }
+
+    private static boolean isWRITE_ATLAS_IMAGES() {
+        return Flags.isIDE() &&Flags.isMe() ;
     }
 
     public static CustomSpriteBatch getMainBatch() {

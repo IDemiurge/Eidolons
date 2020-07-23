@@ -32,9 +32,9 @@ public class ActionAnimMaster {
 
     public static int getMaxAnimTime(DC_ActiveObj action) {
         if (action.isAttackOfOpportunityMode() || action.isInstantMode()) {
-            return (int) (2000* AnimMaster.speedMod());
+            return (int) (2500/ AnimMaster.speedMod());
         }
-        return (int) (3000* AnimMaster.speedMod());
+        return (int) (3500/ AnimMaster.speedMod());
     }
 
     public static boolean isWait(DC_ActiveObj action) {
@@ -43,18 +43,12 @@ public class ActionAnimMaster {
                 return false;
             }
         }
-        if (action.isMove()) {
-            return false;
-        }
         if (action.isSpell()) {
             if (!EffectMaster.getEffectsOfClass(action, MoveEffect.class).isEmpty()) {
             return false;
             }
         }
-        if (action.isMode()) {
-            return false;
-        }
-        return !action.isTurn();
+        return  action.isAttackAny();
     }
 
     public static void animate(ActionInput actionInput) {

@@ -101,8 +101,7 @@ public class Atlases {
         if (regions != null) {
             return regions;
         }
-        if (atlas.file != null)
-            regions = atlas.file.findRegions(texturePath);
+        if (atlas != null && atlas.file != null) regions = atlas.file.findRegions(texturePath);
         if (regions == null)
             for (AssetEnums.ATLAS a : all) {
                 if (a == atlas) continue;
@@ -447,6 +446,9 @@ public class Atlases {
             if (!isUseOneFrameVersion(path) || !Flags.isIDE()) {
                 return atlas;
             }
+            if (atlas == null) {
+                return null;
+            }
             //MEGA-HACK - ONE FRAME GENERATION
             //TODO we could also do something like halving frames, in the future...
             String p = getOneFramePath(path);
@@ -475,6 +477,7 @@ public class Atlases {
         if (CoreEngine.isLevelEditor()) {
             return true;
         }
+        if (path != null) {
         if (!path.contains("soulforce"))
             if (path.contains("fly"))
                 if (SpriteX.TEST_MODE) {
@@ -487,6 +490,7 @@ public class Atlases {
 
         if (path.contains("dust")) {
             return false;
+        }
         }
         return Flags.isLiteLaunch();
         // return !CellDecorLayer.spriteTest && !MaskTest.spriteMaskTest && CoreEngine.TEST_LAUNCH;

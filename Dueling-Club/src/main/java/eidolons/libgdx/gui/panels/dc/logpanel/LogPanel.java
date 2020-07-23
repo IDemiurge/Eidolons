@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.dc.logpanel;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
@@ -93,10 +94,10 @@ public class LogPanel extends ScrollTextWrapper {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//        if (DungeonScreen.getInstance().getController().isWithinCamera(this)) {
-//            return;
-//        }  if it worked, could boost performance a bit when rolled out...
-        if (HqPanel.getActiveInstance()!=null) {
+        //        if (DungeonScreen.getInstance().getController().isWithinCamera(this)) {
+        //            return;
+        //        }  if it worked, could boost performance a bit when rolled out...
+        if (HqPanel.getActiveInstance() != null) {
             return;
         }
         super.draw(batch, parentAlpha);
@@ -157,17 +158,21 @@ public class LogPanel extends ScrollTextWrapper {
             float imageOffset = 0;
             Image img = null;
             if (image != null) {
-                img = new Image(TextureCache.getOrCreateR(image));
-                img.setSize(Math.min(img.getWidth(), 32),
-                        Math.min(img.getHeight(), 32));
-                imageOffset = img.getWidth();
+                TextureRegion orCreateR = TextureCache.getOrCreateR(image);
+                if (TextureCache.isEmptyTexture(orCreateR)) {
+                    img = new Image(orCreateR);
+                    img.setSize(Math.min(img.getWidth(), 32),
+                            Math.min(img.getHeight(), 32));
+                    img.pack();
+                    imageOffset = img.getWidth();
+                }
             }
             LogMessage message = builder.build(getWidth() - offsetX - imageOffset);
             message.setFillParent(false);
             toAdd = message;
-            if (image != null) {
+            if (img != null) {
                 TablePanelX<Actor> table = new TablePanelX<>(
-//                        getWidth() - offsetX, Math.max(message.getHeight(), img.getHeight())
+                        //                        getWidth() - offsetX, Math.max(message.getHeight(), img.getHeight())
                 );
                 table.defaults().space(2).pad(5).padLeft(7);
                 table.add(img);
@@ -176,7 +181,7 @@ public class LogPanel extends ScrollTextWrapper {
                 toAdd = table;
             }
 
-            if (image != null) {
+            if (img != null) {
                 scrollPanel.addElement(toAdd).padLeft(16).center();
             } else if (align == Align.center) {
                 scrollPanel.addElement(toAdd).center().padLeft(28);
@@ -204,7 +209,7 @@ public class LogPanel extends ScrollTextWrapper {
         for (String word : words) {
 
             Color c = getColor(previous, word);
-            Pair<String, Color> pair = new ImmutablePair<>(word+" ", c);
+            Pair<String, Color> pair = new ImmutablePair<>(word + " ", c);
             list.add(pair);
             previous = word;
         }
@@ -222,15 +227,15 @@ public class LogPanel extends ScrollTextWrapper {
         if (previous == null) {
             previous = word;
         } else
-        previous = previous.replace(".", "");
+            previous = previous.replace(".", "");
         if (Eidolons.MAIN_HERO != null)
-        if (StringMaster.containsWord( Eidolons.MAIN_HERO.getName(), word)
-        ) {
-            if (Flags.isIggDemoRunning()) {
-                return GdxColorMaster.lighter((IGG_Demo.getHeroColor(Eidolons.getMainHero().getName())));
+            if (StringMaster.containsWord(Eidolons.MAIN_HERO.getName(), word)
+            ) {
+                if (Flags.isIggDemoRunning()) {
+                    return GdxColorMaster.lighter((IGG_Demo.getHeroColor(Eidolons.getMainHero().getName())));
+                }
+                return GdxColorMaster.lighter(GdxColorMaster.getColor(Eidolons.getMainHero().getOwner().getFlagColor().getColor()));
             }
-            return GdxColorMaster.lighter(GdxColorMaster.getColor(Eidolons.getMainHero().getOwner().getFlagColor().getColor()));
-        }
         for (Unit unit : AggroMaster.getLastAggroGroup()) {
             if (StringMaster.containsWord(unit.getName(), (word))) {
                 return GdxColorMaster.lighter(GdxColorMaster.getColor(unit.getOwner().getFlagColor().getColor()));
@@ -239,10 +244,10 @@ public class LogPanel extends ScrollTextWrapper {
         }
         for (GenericEnums.DAMAGE_TYPE damage_type : GenericEnums.DAMAGE_TYPE.values()) {
             if (word.startsWith("("))
-            if (word.endsWith(")"))
-            if (StringMaster.cropParenthesises(word).equalsIgnoreCase(damage_type.getName())){
-                return GdxColorMaster.getDamageTypeColor(damage_type);
-            }
+                if (word.endsWith(")"))
+                    if (StringMaster.cropParenthesises(word).equalsIgnoreCase(damage_type.getName())) {
+                        return GdxColorMaster.getDamageTypeColor(damage_type);
+                    }
         }
         return GdxColorMaster.PALE_GOLD;
     }
@@ -265,12 +270,12 @@ public class LogPanel extends ScrollTextWrapper {
     }
 
     protected String getBgPath() {
-//        return new StrPathBuilder().build_("ui",
-//         "components",
-//         "dc",
-//         "dialog",
-//         "log"
-//         , "log background.png");
+        //        return new StrPathBuilder().build_("ui",
+        //         "components",
+        //         "dc",
+        //         "dialog",
+        //         "log"
+        //         , "log background.png");
         return null;
     }
 

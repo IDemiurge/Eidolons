@@ -93,8 +93,10 @@ public class Assets {
     }
 
     public static void preloadDC() {
+        if (!Flags.isLiteLaunch()) {
         loadSprite(Sprites.GHOST_FIST);
         preloadScope(ASSET_GROUP.DC_COMMONS);
+        }
 
         // Chronos.mark("preload her0es");
         // preloadHeroes();

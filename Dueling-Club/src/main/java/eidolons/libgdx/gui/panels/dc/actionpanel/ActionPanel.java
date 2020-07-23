@@ -28,6 +28,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
+import static main.system.auxiliary.log.LogMaster.log;
 
 public class ActionPanel extends GroupX {
     public final static int IMAGE_SIZE = 60;
@@ -63,6 +64,7 @@ public class ActionPanel extends GroupX {
 
     ExtraPtsComp movePts = new ExtraPtsComp(false);
     ExtraPtsComp atkPts = new ExtraPtsComp(true);
+    private boolean hidden;
 
     public ActionPanel() {
         addActor(background = new FadeImageContainer((UiImages.BOTTOM_PANEL_BG)));
@@ -207,11 +209,13 @@ public class ActionPanel extends GroupX {
 
         GuiEventManager.bind(GuiEventType.MINIMIZE_UI_ON, p -> {
             ActionMaster.addMoveToAction(this, getX(), PUZZLE_OFFSET_Y, 1.4f);
+            ActionMaster.addAfter(this, ()-> setHidden(true));
             soulParamsBar.fadeOut();
             bodyParamsBar.fadeOut();
         });
         GuiEventManager.bind(GuiEventType.MINIMIZE_UI_OFF, p -> {
             ActionMaster.addMoveToAction(this, getX(), 0, 1.4f);
+            ActionMaster.addAfter(this, ()-> setHidden(false));
             soulParamsBar.fadeIn();
             bodyParamsBar.fadeIn();
         });
@@ -349,4 +353,14 @@ public class ActionPanel extends GroupX {
     public void setAltBg(boolean altBg) {
         this.altBg = altBg;
     }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+        modeActionsPanel.setVisible(!hidden);
+        spellPanel.setVisible(!hidden);
+        modeActionsPanel.setVisible(!hidden);
+        log(1,"Action panel hidden: " +hidden);
+    }
+
+
 }

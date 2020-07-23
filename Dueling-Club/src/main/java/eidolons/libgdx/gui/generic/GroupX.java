@@ -1,10 +1,8 @@
 package eidolons.libgdx.gui.generic;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.utils.Align;
@@ -15,11 +13,14 @@ import eidolons.libgdx.anims.sprite.Blended;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import main.system.auxiliary.ClassMaster;
 
+import java.util.Collection;
+
 /**
  * Created by JustMe on 3/2/2018.
  */
 public class GroupX extends Group {
 
+    static private final Vector2 tmp_ = new Vector2();
     boolean autoSize;
 
     public GroupX(boolean autoSize) {
@@ -64,6 +65,19 @@ public class GroupX extends Group {
 
     }
 
+    protected Actor hit(float x, float y, boolean touchable, Collection<? extends Actor> children) {
+        if (touchable && getTouchable() == Touchable.disabled) return null;
+        Vector2 point = tmp_;
+        Actor[] childrenArray = children.toArray(new Actor[0]);
+        for (int i = children.size() - 1; i >= 0; i--) {
+            Actor child = childrenArray[i];
+            if (!child.isVisible()) continue;
+            child.parentToLocalCoordinates(point.set(x, y));
+            Actor hit = child.hit(point.x, point.y, touchable);
+            if (hit != null) return hit;
+        }
+        return null;
+    }
     public void initPos(Actor actor, int align) {
         if ((align & Align.right) != 0) {
             GdxMaster.right(actor);

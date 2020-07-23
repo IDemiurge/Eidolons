@@ -8,12 +8,15 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzleConstructor
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.libgdx.assets.Assets;
+import eidolons.libgdx.particles.ParticlesSprite;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NotCondition;
 import main.elements.conditions.OrConditions;
 import main.elements.conditions.standard.PositionCondition;
 import main.game.bf.Coordinates;
+import main.system.launch.Flags;
 
 import java.util.Map;
 
@@ -30,9 +33,10 @@ public class VoidMazeConstructor extends MazePuzzleConstructor {
 
     protected void preloadAssets() {
         super.preloadAssets();
-        // if (!Flags.isLiteLaunch()) {
-        //     Assets.loadSprite(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath());
-        // }
+        if (!Flags.isLiteLaunch()) {
+            Assets.loadSprite(ParticlesSprite.PARTICLES_SPRITE.SNOW.path);
+            // Assets.loadSprite(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH.getSpritePath());
+        }
     }
 
     @Override

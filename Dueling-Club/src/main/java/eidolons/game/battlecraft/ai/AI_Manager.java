@@ -27,6 +27,7 @@ import java.util.List;
 public class AI_Manager extends AiMaster {
     public static final boolean BRUTE_AI_MODE = false;
     public static final boolean DEV_MODE = false;
+    public static final boolean MELEE_HACK = true;
     private static boolean running;
     private static boolean off;
     private static final List<DC_ActiveObj> brokenActions = new ArrayList<>();
@@ -185,7 +186,7 @@ public class AI_Manager extends AiMaster {
         return getGroupHandler().getGroups();
     }
 
-
+@Override
     public boolean isDefaultAiGroupForUnitOn() {
         //        return isRngDungeon()  ;
         return true;

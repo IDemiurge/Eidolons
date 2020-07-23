@@ -67,7 +67,7 @@ diagonal adjacent walls will remove whole directions..
                 // }
                 Coordinates c = coordinates.getAdjacentCoordinate(direction.rotate45(true));
                 Coordinates c2 = coordinates.getAdjacentCoordinate(direction.rotate45(false));
-                if (c2==null || c == null) {
+                if (c2 == null || c == null) {
                     continue;
                 }
                 if (DC_Game.game.isWall(c) && DC_Game.game.isWall(c2)) {
@@ -75,17 +75,17 @@ diagonal adjacent walls will remove whole directions..
                 }
             } else {
                 if (DC_Game.game.isWall(adj))
-                if (direction.isVertical()) {
-                    full.removeIf(coord -> (!direction.growY
-                            ? coord.y + 1 < coordinates.y
-                            : coord.y - 1 > coordinates.y) &&
-                             coord.x== coordinates.x);
-                } else {
-                    full.removeIf(coord -> (!direction.growX
-                            ? coord.x + 1 < coordinates.x
-                            : coord.x - 1 > coordinates.x) &&
-                            coord.y== coordinates.y);
-                }
+                    if (direction.isVertical()) {
+                        full.removeIf(coord -> (!direction.growY
+                                ? coord.y + 1 < coordinates.y
+                                : coord.y - 1 > coordinates.y) &&
+                                coord.x == coordinates.x);
+                    } else {
+                        full.removeIf(coord -> (!direction.growX
+                                ? coord.x + 1 < coordinates.x
+                                : coord.x - 1 > coordinates.x) &&
+                                coord.y == coordinates.y);
+                    }
             }
         }
     }
@@ -106,26 +106,31 @@ diagonal adjacent walls will remove whole directions..
 
     /**
      * Checks if there is a diagonal wall block that obstructs clearshot between source and target
+     *
      * @param source
      * @param target
      * @param coordinates
      * @return
      */
     public static boolean checkWallObstruction(DC_Obj source, DC_Obj target, Coordinates coordinates) {
-        return checkWallObstruction(source.getCoordinates(), target.getCoordinates(), coordinates);
+        boolean result = checkWallObstruction(source.getCoordinates(), target.getCoordinates(), coordinates);
+        DC_Game.game.getVisionMaster().getVisionController().
+                getWallObstructionMapper().set(source.getCoordinates(), target, result);
+        return result;
     }
 
-        /**
-         * Checks if there is a diagonal wall block that obstructs clearshot between source and target
-         * @param source
-         * @param target
-         * @param coordinates
-         * @return
-         */
-        public static boolean checkWallObstruction(Coordinates source, Coordinates target, Coordinates coordinates) {
+    /**
+     * Checks if there is a diagonal wall block that obstructs clearshot between source and target
+     *
+     * @param source
+     * @param target
+     * @param coordinates
+     * @return
+     */
+    public static boolean checkWallObstruction(Coordinates source, Coordinates target, Coordinates coordinates) {
         Boolean result = DC_Game.game.getVisionMaster().getVisionController().
                 getWallObstructionMapper().get(source,
-                        DC_Game.game.getCellByCoordinate(target));
+                DC_Game.game.getCellByCoordinate(target));
         if (result != null) {
             return result;
         }

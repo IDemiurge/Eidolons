@@ -188,7 +188,7 @@ public class UnitViewFactory {
             public void clicked(InputEvent event, float x, float y) {
                 int btn = event.getButton();
                 Eidolons.onNonGdxThread(() ->
-                        tryDefaultAction(btn,event));
+                        tryDefaultAction(btn, event));
                 super.clicked(event, x, y);
             }
 
@@ -224,12 +224,10 @@ public class UnitViewFactory {
                                 }
                     //TODO control options
                     if (button == Buttons.LEFT) {
-                        DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
-                        event.cancel();
-                        {
-                            if (DefaultActionHandler.leftClickActor(bfObj)) {
-                            }
+                        if (!DefaultActionHandler.leftClickInteractiveObj(bfObj)) {
+                            DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
                         }
+                        event.cancel();
                     }
                 } catch (Exception e) {
                     ExceptionMaster.printStackTrace(e);

@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.rules;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.system.controls.Controller;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -190,6 +191,10 @@ public class RuleKeeper implements Controller {
         //
         // if (blockedFeatures.contains(feature))
         // return false;
+        switch (feature) {
+            case USE_INVENTORY:
+                return ItemMaster.isItemsDisabled();
+        }
         switch (getScope()) {
 
             case TEST:

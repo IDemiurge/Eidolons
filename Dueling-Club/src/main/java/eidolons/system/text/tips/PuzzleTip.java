@@ -1,4 +1,4 @@
-package eidolons.game.netherflame.main.event.text;
+package eidolons.system.text.tips;
 
 import main.system.threading.WaitMaster;
 
@@ -11,8 +11,8 @@ public enum PuzzleTip implements TxtTip {
     encounter_puzzle_defeat,
 
     void_maze_intro,
-    void_maze_intro2,
-    void_maze_intro3,
+    void_maze_intro_2,
+    void_maze_intro_3,
     void_maze_win,
     void_maze_defeat_first,
     void_maze_defeat,

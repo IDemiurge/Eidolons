@@ -183,11 +183,12 @@ public class LogMaster {
         if (FileLogManager.isFullLoggingConsole()) {
             FileLogManager.stream(FileLogManager.LOG_OUTPUT.FULL, s);
         }
-        if (isConsoleLogging()) {
+        if (Flags.isIDE()) {
             //            log.debug(s);
             System.out.println(s);
         } else {
-            logToFile(s);
+            if (isConsoleLogging())
+                logToFile(s);
         }
     }
 
@@ -196,7 +197,7 @@ public class LogMaster {
     }
 
     private static boolean isConsoleLogging() {
-        return  true; // !Flags.isExe();
+        return     Flags.isExe() && !Flags.isMe();
     }
 
     //TODO do these categories!

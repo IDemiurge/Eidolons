@@ -34,10 +34,12 @@ import java.util.List;
 /**
  * Created by JustMe on 3/3/2017.
  */
-public class AiMaster {
+public abstract class AiMaster {
     protected DC_Game game;
     protected Unit unit;
     protected StringBuffer messageBuilder;
+    protected List<AiHandler> handlers = new ArrayList<>();
+    
     protected TaskManager taskManager;
     protected GoalManager goalManager;
     protected ActionManager actionManager;
@@ -56,7 +58,6 @@ public class AiMaster {
     protected ThreatAnalyzer threatAnalyzer;
     protected BehaviorMasterOld behaviorMaster;
     protected AtomicAi atomicAi;
-    protected List<AiHandler> handlers = new ArrayList<>();
     protected AiScriptExecutor scriptExecutor;
     protected MetaGoalMaster metaGoalMaster;
     protected AiPriorityConstantMaster priorityConstantMaster;
@@ -68,56 +69,39 @@ public class AiMaster {
 
     public AiMaster(DC_Game game) {
         this.game = game;
-        this.actionSequenceConstructor = new ActionSequenceConstructor(this);
-        this.taskManager = new TaskManager(this);
-        this.goalManager = new GoalManager(this);
-        this.actionManager = new ActionManager(this);
-        this.pruneMaster = new PruneMaster(this);
-        this.pathBuilder = PathBuilder.getInstance(this);
-        this.targetingMaster = new TargetingMaster(this);
-        this.analyzer = new Analyzer(this);
-        this.paramAnalyzer = new ParamAnalyzer(this);
-        this.situationAnalyzer = new SituationAnalyzer(this);
-        this.threatAnalyzer = new ThreatAnalyzer(this);
-        this.cellPrioritizer = new CellPrioritizer(this);
-        this.pathSequenceConstructor = new PathSequenceConstructor(this);
-        this.turnSequenceConstructor = new TurnSequenceConstructor(this);
-        this.behaviorMaster = new BehaviorMasterOld(this);
-        this.atomicAi = new AtomicAi(this);
-        this.scriptExecutor = new AiScriptExecutor(this);
-        this.metaGoalMaster = new MetaGoalMaster(this);
-        this.priorityConstantMaster = new AiPriorityConstantMaster(this);
-        this.priorityModifier = new PriorityModifier(this);
-        this.pathBuilderAtomic = new PathBuilderAtomic(this);
-        this.autoGroupHandler = new AiAutoGroupHandler(this);
-        this.groupHandler = new AiGroupHandler(this);
+        handlers.add(actionSequenceConstructor = new ActionSequenceConstructor(this));
+        handlers.add(taskManager = new TaskManager(this));
+        handlers.add(goalManager = new GoalManager(this));
+        handlers.add(actionManager = new ActionManager(this));
+        handlers.add(pruneMaster = new PruneMaster(this));
+        handlers.add(pathBuilder = PathBuilder.getInstance(this));
+        handlers.add(targetingMaster = new TargetingMaster(this));
+        handlers.add(analyzer = new Analyzer(this));
+        handlers.add(paramAnalyzer = new ParamAnalyzer(this));
+        handlers.add(situationAnalyzer = new SituationAnalyzer(this));
+        handlers.add(threatAnalyzer = new ThreatAnalyzer(this));
+        handlers.add(cellPrioritizer = new CellPrioritizer(this));
+        handlers.add(pathSequenceConstructor = new PathSequenceConstructor(this));
+        handlers.add(turnSequenceConstructor = new TurnSequenceConstructor(this));
+        handlers.add(behaviorMaster = new BehaviorMasterOld(this));
+        handlers.add(atomicAi = new AtomicAi(this));
+        handlers.add(scriptExecutor = new AiScriptExecutor(this));
+        handlers.add(metaGoalMaster = new MetaGoalMaster(this));
+        handlers.add(priorityConstantMaster = new AiPriorityConstantMaster(this));
+        handlers.add(priorityModifier = new PriorityModifier(this));
+        handlers.add(pathBuilderAtomic = new PathBuilderAtomic(this));
+        handlers.add(groupHandler = new AiGroupHandler(this));
+        handlers.add(autoGroupHandler = new AiAutoGroupHandler(this));
+        handlers.add(starBuilder = new StarBuilder(this));
+
         executor = new AiExecutor(game);
-        starBuilder = new StarBuilder(this);
     }
 
 
     public void initialize() {
-        this.actionSequenceConstructor.initialize();
-        this.taskManager.initialize();
-        this.goalManager.initialize();
-        this.actionManager.initialize();
-        this.pruneMaster.initialize();
-        this.pathBuilder.initialize();
-        this.targetingMaster.initialize();
-        this.analyzer.initialize();
-        this.paramAnalyzer.initialize();
-        this.cellPrioritizer.initialize();
-        this.pathSequenceConstructor.initialize();
-        this.turnSequenceConstructor.initialize();
-        this.behaviorMaster.initialize();
-        this.atomicAi.initialize();
-        this.threatAnalyzer.initialize();
-        this.situationAnalyzer.initialize();
-        this.metaGoalMaster.initialize();
-        this.priorityConstantMaster.initialize();
-        this.priorityModifier.initialize();
-        this.pathBuilderAtomic.initialize();
-        this.starBuilder.initialize();
+        for (AiHandler handler : handlers) {
+            handler.initialize();
+        }
 
     }
 
@@ -274,4 +258,7 @@ public class AiMaster {
         return starBuilder;
     }
 
+    public boolean isDefaultAiGroupForUnitOn() {
+        return false;
+    }
 }

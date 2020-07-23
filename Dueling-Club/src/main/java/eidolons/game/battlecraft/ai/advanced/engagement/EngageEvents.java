@@ -94,7 +94,6 @@ public class EngageEvents extends ExplorationHandler {
             }
             spottedEnemies.add(object);
             addEvent(ENGAGE_EVENT.status_change, VisionEnums.PLAYER_STATUS.ALERTED, spottedEnemies.size());
-            addEvent(source, object, ENGAGE_EVENT.sound, SoundMaster.SOUNDS.ALERT);
             logEvent(LogManager.LOGGING_DETAIL_LEVEL.FULL, source.getName() + " is alerted by an outline!");
         } else {
             if (isCombat()) {
@@ -145,7 +144,7 @@ public class EngageEvents extends ExplorationHandler {
         return master.getPlayerStatus();
     }
 
-    public void detected(Unit source, BattleFieldObject object) {
+    public void detected(Unit source, Unit object) {
         if (source.isMine()) {
             processNow(new EngageEvent(source, object, GridAnimHandler.VIEW_ANIM.screen));
         } else {

@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.art;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.ManipulatorPuzzle;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.libgdx.shaders.post.PostFxUpdater;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -33,6 +34,10 @@ public class ArtPuzzle extends ManipulatorPuzzle {
         super.complete();
     }
 
+    @Override
+    public PuzzleEnums.puzzle_type getType() {
+        return PuzzleEnums.puzzle_type.art;
+    }
     @Override
     public void activate() {
         super.activate();

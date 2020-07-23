@@ -13,11 +13,11 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
 import eidolons.game.module.generator.model.AbstractCoordinates;
-import eidolons.game.netherflame.main.event.TipMessageMaster;
 import eidolons.game.netherflame.main.pale.PaleAspect;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.text.tips.TipMessageMaster;
 import main.content.enums.EncounterEnums;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
@@ -63,7 +63,7 @@ public class PuzzleActions extends PuzzleElement {
     public static void punishment(Puzzle puzzle, PuzzleEnums.PUZZLE_PUNISHMENT punishment, String data) {
         WaitMaster.WAIT(puzzle.getWaitTimeBeforeEndMsg(true));
         try {
-           applyPunishment(puzzle, punishment, data);
+            applyPunishment(puzzle, punishment, data);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -138,11 +138,14 @@ public class PuzzleActions extends PuzzleElement {
     }
 
     private static void awaken(Puzzle puzzle, String data) {
+        Awakener.awaken_type default_type = Awakener.awaken_type.animate_stone;
         LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(
                 puzzle.getEntranceCoordinates());
         List<String> strings = ContainerUtils.openContainer(data);
         EncounterEnums.UNIT_GROUP_TYPE ai = EncounterEnums.UNIT_GROUP_TYPE.GUARDS;
-        Awakener.awaken_type type = Awakener.awaken_type.valueOf(strings.get(0).toLowerCase());
+        Awakener.awaken_type type =
+                strings.isEmpty() ? default_type :
+                        Awakener.awaken_type.valueOf(strings.get(0).toLowerCase());
         if (strings.size() > 1) {
             // ai
         }

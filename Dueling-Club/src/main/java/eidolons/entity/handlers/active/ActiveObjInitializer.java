@@ -86,8 +86,9 @@ public class ActiveObjInitializer extends EntityInitializer<DC_ActiveObj> {
 
             Formula ap_cost = new Formula(getParam(PARAMS.AP_COST));
 
-            if (!ExplorationMaster.isExplorationOn() && !getEntity().getOwnerObj().isAiControlled()&&
-                    (getEntity().isInstantAction() || getHandler().isExtraAttackMode())) {
+            if (!ExplorationMaster.isExplorationOn()
+                   // && !getEntity().getOwnerObj().isAiControlled()
+                    &&                    (getEntity().isInstantAction() || getHandler().isExtraAttackMode())) {
                 PARAMS parameter = getEntity().isAttackAny()
                         ? PARAMS.C_EXTRA_ATTACKS
                         : PARAMS.C_EXTRA_MOVES;

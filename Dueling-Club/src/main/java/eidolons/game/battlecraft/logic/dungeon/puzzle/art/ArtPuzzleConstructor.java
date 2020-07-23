@@ -64,7 +64,7 @@ public class ArtPuzzleConstructor extends ManipulatorPuzzleConstructor<ArtPuzzle
                 PuzzleData.PUZZLE_VALUE.EXIT,
                 PuzzleData.PUZZLE_VALUE.COUNTER_TYPE,
                 PuzzleData.PUZZLE_VALUE.RESOLUTION,
-                PuzzleData.PUZZLE_VALUE.TIP,
+                PuzzleData.PUZZLE_VALUE.TIP_INTRO,
                 PuzzleData.PUZZLE_VALUE.ARG,
 
         };

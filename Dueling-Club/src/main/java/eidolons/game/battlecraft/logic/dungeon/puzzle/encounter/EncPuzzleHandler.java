@@ -128,29 +128,4 @@ public class EncPuzzleHandler extends PuzzleHandler<EncounterPuzzle> {
         blocks.clear();
     }
 
-
-    @Override
-    public void afterTipAction() {
-        super.afterTipAction();
-    }
-
-    @Override
-    public void glimpse() {
-        super.glimpse();
-    }
-
-    @Override
-    public void afterEndTip() {
-        super.afterEndTip();
-    }
-
-    @Override
-    public void failed() {
-        super.failed();
-    }
-
-    @Override
-    protected void beforeTip() {
-        super.beforeTip();
-    }
 }

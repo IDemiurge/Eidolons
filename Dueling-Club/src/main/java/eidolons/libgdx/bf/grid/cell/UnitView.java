@@ -465,6 +465,8 @@ public class UnitView extends BaseView implements HpBarView {
     }
 
     public void drawScreen(Batch batch) {
+        if (!isVisible())
+            return;
         getPortrait().setScreenEnabled(true);
         drawPortrait(batch);
         getPortrait().setScreenEnabled(false);

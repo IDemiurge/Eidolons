@@ -215,12 +215,14 @@ public class ArcaneVault {
         }
         AvFlags.dirty = dirty;
         if (dirty) {
-            window.setTitle(title + "*");
+            window.setTitle(title+ " v" + CoreEngine.xmlBuildId + "*");
         } else {
-            window.setTitle(title);
+            window.setTitle(title+ " v" + CoreEngine.xmlBuildId);
         }
     }
-
+    public static void resetTitle() {
+        getWindow().setTitle(title + " v" + CoreEngine.xmlBuildId);
+    }
 
     public static boolean isMacroMode() {
         return AvFlags.macroMode;
@@ -308,6 +310,8 @@ public class ArcaneVault {
     public static void setDialogueMode(boolean dialogueMode) {
         AvFlags.dialogueMode = dialogueMode;
     }
+
+
 
     public enum WORKSPACE_TEMPLATE {
         presetTypes(ArcaneVault.presetTypes),

@@ -6,6 +6,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.state.DC_GameState;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
 import eidolons.game.module.dungeoncrawl.objects.Door;
@@ -79,6 +80,8 @@ public class ObjCreator extends Master {
             Coordinates coordinates = Coordinates.get(x, y);
             game.getObjMaster().clearCache(coordinates);
             game.getCellByCoordinate(coordinates).resetObjectArrays();
+            getGame().getVisionMaster().getIllumination().setResetRequired(true);
+            DC_GameState.gridChanged=true;
         }
         initObject(obj, type);
 
@@ -168,6 +171,11 @@ public class ObjCreator extends Master {
 
     private BattleFieldObject newStructure(ObjType type, int x, int y, Player owner,
                                            Ref ref) {
+
+        //TODO no more overlaying obj decor!!!
+        if (EntityCheckMaster.isOverlaying(type)) {
+            return new InteractiveObj(type, x, y);
+        }
         BF_OBJECT_GROUP group = new EnumMaster<BF_OBJECT_GROUP>().retrieveEnumConst(BF_OBJECT_GROUP.class,
                 type.getProperty(G_PROPS.BF_OBJECT_GROUP));
         if (!CoreEngine.isLevelEditor())
@@ -191,6 +199,8 @@ public class ObjCreator extends Master {
                         return new ContainerObj(type, x, y);
                 }
             }
+
+
 
         return new Structure(type, x, y, owner, getGame(), ref);
     }

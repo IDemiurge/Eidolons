@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.game.bf.Coordinates;
+import main.system.launch.CoreEngine;
 
 public abstract class GridLayer<T extends Actor> extends GroupX {
     protected GridPanel grid;
@@ -15,8 +16,9 @@ public abstract class GridLayer<T extends Actor> extends GroupX {
     }
 
     public void draw(Batch batch, float parentAlpha) {
+        //TODO gdx Review - decor e.g. needs smarter offset for visibility..
         //tester fix
-        if (true){
+        if (!CoreEngine.isWeakCpu() && !CoreEngine.isWeakGpu()){
             for (int x = 0; x < grid.getModuleCols(); x++) {
                 for (int y = 0; y < grid.getModuleRows(); y++) {
                     draw(x, y, batch, parentAlpha);

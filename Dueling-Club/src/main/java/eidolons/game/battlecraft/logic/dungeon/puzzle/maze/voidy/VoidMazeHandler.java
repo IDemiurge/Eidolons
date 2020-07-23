@@ -17,6 +17,8 @@ import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
 import eidolons.libgdx.anims.fullscreen.Screenshake;
 import eidolons.libgdx.assets.Assets;
 import eidolons.libgdx.bf.grid.DC_GridPanel;
+import eidolons.libgdx.particles.ParticlesSprite;
+import eidolons.libgdx.particles.ParticlesSprites;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
@@ -95,7 +97,7 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
 
     public void afterTipAction() {
         super.afterTipAction();
-        WaitMaster.WAIT(3500);
+        WaitMaster.WAIT(puzzle.getDelayAfterGlimpse());
         cinematicAfter();
     }
 
@@ -134,6 +136,7 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
     }
 
     private void initVisuals() {
+        ParticlesSprites.doParticles(ParticlesSprite.PARTICLES_SPRITE.ASH, 0.5f);
         for (Coordinates c : getPuzzle().falseExits) {
             /*
             false exits are revealed as black holes upon approach!
@@ -215,6 +218,7 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
     }
 
     public void ended() {
+        ParticlesSprites.doParticles(ParticlesSprite.PARTICLES_SPRITE.ASH, 0);
         super.ended();
         // VoidHandler.TEST_MODE = true;
         //TODO collapse all?

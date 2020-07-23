@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.state.DC_GameState;
 import eidolons.game.module.dungeoncrawl.explore.DungeonCrawler;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.netherflame.main.soul.SoulforceMaster;
@@ -191,6 +192,9 @@ public class DeathMaster extends Master {
                     SoulforceMaster.slain((Unit) killed);
                 }
             }
+
+        DC_GameState.gridChanged=true;
+        getGame().getVisionMaster().getIllumination().setResetRequired(true);
     }
 
 

@@ -16,6 +16,7 @@ import java.util.Stack;
  * @author JustMe
  */
 public class DC_GameState extends MicroGameState {
+    public static boolean gridChanged;
     private Map<Unit, Stack<DC_ActiveObj>> unitActionStack;
 
 

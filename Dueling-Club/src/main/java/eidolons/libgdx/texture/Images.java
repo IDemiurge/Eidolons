@@ -180,8 +180,10 @@ public static final String SEPARATOR_NARROW = StrPathBuilder.build(
     public static final String STATUS_EXPLORE ="ui/components/dc/status/status explore.png";
     public static final String STATUS_EXPLORE_DETECTED ="ui/components/dc/status/status_explore_detected.png";
     public static final String STATUS_COMBAT ="ui/components/dc/status/status_combat.png";
-    public static final String STATUS_ALARM ="ui/components/dc/status/status_alarm.png";
+    public static final String STATUS_ALARM ="ui/components/dc/radial/examine.png";
+    // public static final String STATUS_ALARM ="ui/components/dc/status/status_alarm.png";
     public static final String STATUS_PUZZLE ="ui/components/dc/status/puzzle.png";
+
     public static final String VC_BG = "ui/components/generic/dialogue/grunge bg full.png";
     // public static final String VC_BG = "ui/components/generic/vc/bg.png";
     public static final String VC_DECOR_GATE =  "ui/components/generic/vc/gate.png";

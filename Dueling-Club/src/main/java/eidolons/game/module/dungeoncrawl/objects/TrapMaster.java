@@ -5,11 +5,11 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.main.event.TipMessageMaster;
-import eidolons.game.netherflame.main.event.TipMessageSource;
-import eidolons.game.netherflame.main.event.Tips;
-import eidolons.game.netherflame.main.event.text.TextEvent;
 import eidolons.system.audio.MusicMaster;
+import eidolons.system.text.tips.TextEvent;
+import eidolons.system.text.tips.TipMessageMaster;
+import eidolons.system.text.tips.TipMessageSource;
+import eidolons.system.text.tips.Tips;
 import main.entity.Entity;
 import main.game.bf.Coordinates;
 

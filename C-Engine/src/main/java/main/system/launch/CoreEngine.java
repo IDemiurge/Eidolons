@@ -36,12 +36,23 @@ public class CoreEngine {
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Backer;
     public static final String VERSION_NAME = "Demo Version"; //StringMaster.getWellFormattedString(uploadPackage.toString());
     public static final boolean RAM_OPTIMIZATION = true;
-    public static final int buildId = readBuildId();
-    public static final String BUILD = NumberUtils.prependZeroes(buildId, 3);
-    public static final String CORE_VERSION = "0.5" ;
-    public static final String VERSION =CORE_VERSION+ "."+BUILD;
-
+    public static int resBuildId = readBuildId();
+    public static int xmlBuildId = readXmlBuildId();
+    public static String BUILD = NumberUtils.prependZeroes(resBuildId, 2);
+    public static String XML_BUILD = NumberUtils.prependZeroes(xmlBuildId, 2);
+    public static String CORE_VERSION = "0.5";
+    public static String VERSION = CORE_VERSION + "." + BUILD + "."+XML_BUILD;
     public static String filesVersion = VERSION.replace(".", "-");
+
+    private static void version() {
+        resBuildId = readBuildId();
+        xmlBuildId = readXmlBuildId();
+        BUILD = NumberUtils.prependZeroes(resBuildId, 3);
+        CORE_VERSION = "0.5";
+        VERSION = CORE_VERSION + "." + BUILD;
+        filesVersion = VERSION.replace(".", "-");
+    }
+
     public static boolean FULL_LAUNCH; ////TODO with audio and all - real xp!
     private static String selectivelyReadTypes;
     public static boolean TEST_LAUNCH;
@@ -60,6 +71,17 @@ public class CoreEngine {
         return FULL_LAUNCH || Flags.isJar();
     }
 
+    public static void incrementResBuild() {
+        resBuildId++;
+        FileManager.write(resBuildId + "", PathFinder.getBuildsIdPath());
+        version();
+    }
+    public static void incrementXmlBuild() {
+        xmlBuildId++;
+        FileManager.write(xmlBuildId + "", PathFinder.getXmlBuildsIdPath());
+        version();
+    }
+
     //core Review - good idea, but how to use it?
     public enum UPLOAD_PACKAGE {
         Backer, Tester,
@@ -68,6 +90,11 @@ public class CoreEngine {
     private static Integer readBuildId() {
         return NumberUtils.getInt(FileManager.readFile(PathFinder.getBuildsIdPath()));
     }
+
+    private static Integer readXmlBuildId() {
+        return NumberUtils.getInt(FileManager.readFile(PathFinder.getXmlBuildsIdPath()));
+    }
+
     public static boolean isMyLiteLaunch() {
         return Flags.isIDE() && Flags.isLiteLaunch();
     }
@@ -78,11 +105,11 @@ public class CoreEngine {
         important("---- Eidolons " + VERSION);
 
         if (isDiagOn()) {
-             important("Heap size:  " +
+            important("Heap size:  " +
                     (Runtime.getRuntime().maxMemory()));
-             important("CPU's available:  " +
+            important("CPU's available:  " +
                     (Runtime.getRuntime().availableProcessors()));
-             important("Total Memory:  " +
+            important("Total Memory:  " +
                     (Runtime.getRuntime().totalMemory()));
         }
 
@@ -101,7 +128,7 @@ public class CoreEngine {
         DataManager.init();
 
         Chronos.logTimeElapsedForMark("SYSTEM INIT");
-         important("...Core Engine Init finished");
+        important("...Core Engine Init finished");
         if (!Flags.me) {
             System.out.println();
             System.getProperties().list(System.out);

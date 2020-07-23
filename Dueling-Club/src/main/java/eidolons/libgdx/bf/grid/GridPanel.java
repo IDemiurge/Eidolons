@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -84,7 +83,7 @@ import java.util.function.Function;
 
 import static main.system.GuiEventType.*;
 
-public abstract class GridPanel extends Group {
+public abstract class GridPanel extends GroupX {
     protected final int square;
     protected final int full_rows;
     protected final int full_cols;
@@ -172,13 +171,17 @@ it sort of broke at some point - need to investigate!
         if (gridX < 0 || gridY < 0) {
             return null;
         }
-        GridCellContainer child = getGridCell(gridX, gridY);
-        if (child == null) {
+        Actor view = hit(x, y, touchable, overlays);
+        if (view == null) {
+            view = getGridCell(gridX, gridY);
+        }
+        if (view == null) {
             return super.hit(x, y, touchable);
         }
-        Vector2 v = child.parentToLocalCoordinates(new Vector2(x, y));
-        return child.hit(v.x, v.y, touchable);
+        Vector2 v = view.parentToLocalCoordinates(new Vector2(x, y));
+        return view.hit(v.x, v.y, touchable);
     }
+
 
     protected boolean isCustomHit() {
         return true;
@@ -838,6 +841,7 @@ it sort of broke at some point - need to investigate!
         // ************* Step 1
         flightHandler.getObjsUnder().draw(batch, 1f);
         ((CustomSpriteBatch) batch).resetBlending();
+        decorMap.get(DECOR_LEVEL.LOWEST).draw(batch, 1);
         pillars.draw(batch, 1f);
         for (PlatformDecor platform : platformDecor) {
             platform.draw(batch, 1);

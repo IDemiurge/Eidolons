@@ -3,12 +3,16 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.maze;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.module.generator.GeneratorEnums;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 
 import java.util.List;
 
+/**
+ *
+ */
 public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
 
     protected MazeData mazeData;
@@ -31,14 +35,28 @@ public class MazePuzzle extends Puzzle { //implements PuzzleTemplate {
     }
 
     @Override
+    public PuzzleEnums.puzzle_type getType() {
+        return PuzzleEnums.puzzle_type.maze;
+    }
+
+    @Override
     protected PuzzleHandler createHandler() {
         return new MazeHandler(this );
     }
 
     protected String getDefaultTitle() {
-        return "Twilit Maze";
+        return "Memory Maze";
     }
 
+    @Override
+    protected int getDefaultHeight() {
+        return 9;
+    }
+
+    @Override
+    protected int getDefaultWidth() {
+        return 9;
+    }
 
     protected int getGlimpseTime() {
         return (int) (2550 / getDifficultyCoef());

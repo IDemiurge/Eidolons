@@ -110,6 +110,8 @@ public class AvSaveHandler {
 
             SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.CHECK);
             ArcaneVault.setDirty(false);
+
+            AvVersionHandler.xmlSaved();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {

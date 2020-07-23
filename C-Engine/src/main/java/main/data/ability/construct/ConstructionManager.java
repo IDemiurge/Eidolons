@@ -4,7 +4,6 @@ import main.data.ability.AE_Item;
 import main.data.ability.Mapper;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlNodeMaster;
-import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.Pair;
 import org.w3c.dom.Node;
 
@@ -36,10 +35,11 @@ public class ConstructionManager {
         AE_Item item = Mapper.getItem(node);
         if (item == null) {
             important("No AE item! - " + XML_Converter.getStringFromXML(node));
-            if (Mapper.isInitialized()) {
-            important("No AE item! - " + XML_Converter.getStringFromXML(node));
-            }
-            CoreEngine.compileReflectionMap();
+            // if (Mapper.isInitialized()) {
+            // important("No AE item! - " + XML_Converter.getStringFromXML(node));
+            // }
+            // CoreEngine.compileReflectionMap();
+            return new Construct("Broken", true);
         }
         if (item.isPrimitive()) {
             return new Construct(node.getNodeName(), node.getTextContent());

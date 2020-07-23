@@ -24,6 +24,7 @@ public class PathFinder {
             "templates";
     public static final String SKIN_NAME = "neutralizer-ui" ;
     private static final String BUILD_ID = "BUILD_ID";
+    private static final String XML_BUILD_ID = "XML_BUILD_ID";
     private static String XML_PATH;
     private static String ROOT_PATH;
     private static String IMG_PATH;
@@ -590,6 +591,9 @@ public class PathFinder {
 
     public static String getBuildsInfoPath() {
         return getXML_PATH() + "meta/builds/";
+    }
+    public static String getXmlBuildsIdPath() {
+        return getBuildsInfoPath() + XML_BUILD_ID;
     }
 
     public static String getBuildsIdPath() {

@@ -1,7 +1,5 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.spell;
 
-import eidolons.game.netherflame.main.event.TipMessageMaster;
-import eidolons.game.netherflame.main.event.text.TIP;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
@@ -11,6 +9,8 @@ import eidolons.libgdx.gui.panels.ScrollPaneX;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.texture.Images;
+import eidolons.system.text.tips.TIP;
+import eidolons.system.text.tips.TipMessageMaster;
 
 /**
  * Created by JustMe on 3/14/2018.

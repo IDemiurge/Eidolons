@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.rules.counter.UndyingCounterRule;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.system.text.tips.TipMessageMaster;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

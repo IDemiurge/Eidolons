@@ -63,6 +63,9 @@ public class EngageEvent {
     }
 
     public boolean isExclusive() {
+        if (type == null) {
+            return false;
+        }
         return type.exclusive;
     }
 

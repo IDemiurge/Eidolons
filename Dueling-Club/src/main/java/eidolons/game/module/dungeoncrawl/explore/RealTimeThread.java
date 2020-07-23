@@ -4,7 +4,10 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.macro.global.time.MacroTimeMaster;
+import main.system.auxiliary.log.FileLogManager;
 import main.system.threading.WaitMaster;
+
+import static main.system.auxiliary.log.LogMaster.important;
 
 /**
  * Created by JustMe on 5/3/2018.
@@ -40,10 +43,15 @@ public class RealTimeThread extends Thread {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         float period = REAL_TIME_LOGIC_PERIOD;
-        float checkPeriod=0.5f;
+        float checkPeriod = 0.5f;
         float timer = 0;
         while (true) {
-            WaitMaster.WAIT((int) (period*1000));
+            WaitMaster.WAIT((int) (period * 1000));
+
+
+            if (FileLogManager.isOn()) {
+                FileLogManager.act(period);
+            }
 
             if (Eidolons.getGame() == null)
                 return;
@@ -63,14 +71,19 @@ public class RealTimeThread extends Thread {
             if (ExplorationMaster.isRealTimePaused()) continue;
             loop.setVisualLock(true);
             //linked to gdx thread this way
-            loop.act(period);
-            if (timer>=checkPeriod) {
+            try {
+                loop.act(period);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                important("Realtime loop failed!");
+            }
+            if (timer >= checkPeriod) {
                 timer = 0;
             }
-            timer+=period;
+            timer += period;
             try {
                 Eidolons.getGame().getDungeonMaster().getExplorationMaster().
-                 getTimeMaster().checkTimedEvents();
+                        getTimeMaster().checkTimedEvents();
 
                 //           do we really want time to pass while we're down in a dungeon?
             } catch (Exception e) {

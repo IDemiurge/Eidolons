@@ -99,7 +99,7 @@ public class DC_StateManager extends StateManager {
                 return;
             }
         if (!resetting) {
-            resetLock.lock();
+            // resetLock.lock(); //TODO core review - this is dangerous, why do we need this?
             if (!resetting) {
                 if (!isSelectiveResetOn() || (ExplorationMaster.isExplorationOn() && !isSelectiveResetInExplore())) {
                     objectsToReset = new LinkedHashSet<>(getGame().getBfObjects());
@@ -133,7 +133,7 @@ public class DC_StateManager extends StateManager {
                 resetAll();
                 resetting = false;
             }
-            resetLock.unlock();
+            // resetLock.unlock();
         }
     }
 
@@ -512,8 +512,7 @@ public class DC_StateManager extends StateManager {
             resetAllSynchronized();
             game.setStarted(true);
             if (!VisionMaster.isNewVision()) {
-                getGame().getVisionMaster().getIllumination().resetIllumination();
-                getGame().getVisionMaster().getIllumination().applyLightEmission();
+                getGame().getVisionMaster().getIllumination().resetIllumination(true);
             }
             game.getTurnManager().newRound();
             //            getGameManager().refreshAll();

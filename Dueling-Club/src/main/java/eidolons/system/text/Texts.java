@@ -16,7 +16,6 @@ public class Texts {
     static {
         init();
     }
-
     //    public static final String TEXT_HEADER_SEPARATOR = "***";
     static Map<String, Map<String, String>> maps;
 

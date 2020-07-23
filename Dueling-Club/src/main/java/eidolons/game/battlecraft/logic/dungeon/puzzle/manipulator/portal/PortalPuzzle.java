@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.PortalSlotsCondition;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.Condition;
@@ -73,8 +74,13 @@ public   class PortalPuzzle extends Puzzle {
         return new PortalSlotsCondition(this);
     }
 
+    @Override
+    public PuzzleEnums.puzzle_type getType() {
+        return null;
+    }
+
     public void init() {
-        String data = getData().getValue(PuzzleData.PUZZLE_VALUE.TIP);
+        String data = getData().getValue(PuzzleData.PUZZLE_VALUE.TIP_INTRO);
         for (String substring : ContainerUtils.openContainer(data)) {
             POWER_SLOT slot = new EnumMaster<POWER_SLOT>().retrieveEnumConst(POWER_SLOT.class, VariableManager.removeVarPart(substring));
             Coordinates c = Coordinates.get(VariableManager.getVars(substring));

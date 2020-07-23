@@ -1,4 +1,4 @@
-package eidolons.game.netherflame.main.event;
+package eidolons.system.text.tips;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -22,6 +22,7 @@ import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster;
+import main.system.text.TextParser;
 import main.system.threading.WaitMaster;
 
 public class TipMessageWindow extends TablePanelX implements OverlayingUI {
@@ -59,11 +60,13 @@ public class TipMessageWindow extends TablePanelX implements OverlayingUI {
             if (isVertical())
                 row();
         }
+        String message = source.message;
+        message = TextParser.parse(message, Eidolons.getMainHero().getRef());
         if (large) {
-            label = new LabelX(source.message, StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 21));
+            label = new LabelX(message, StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 21));
         } else {
 //            label = new LabelX(source.message, StyleHolder.getDefaultHiero());
-            label = new LabelX(source.message, StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
+            label = new LabelX(message, StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
         }
         if (over) {
             addActor(label);
@@ -168,7 +171,7 @@ public class TipMessageWindow extends TablePanelX implements OverlayingUI {
 
         }
 
-        main.system.auxiliary.log.LogMaster.log(1, "Tip msg created with text: " + source.getMessage());
+        main.system.auxiliary.log.LogMaster.log(1, "Tip msg created with text: " + message);
     }
 
     private boolean isVertical() {

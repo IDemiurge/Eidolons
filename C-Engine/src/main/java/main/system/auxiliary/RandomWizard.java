@@ -240,6 +240,10 @@ public class RandomWizard<E> {
         //         (int) (alphaMax * 100))) / 100;
     }
 
+    public static float randomize(float amount, float randomness) {
+        return  amount * (1 - randomness + getRandomFloatBetween(0, randomness*2));
+    }
+
     public E getObjectByWeight(String string, Class<? extends E> CLASS) {
         return getObjectByWeight(constructWeightMap(string, CLASS));
     }

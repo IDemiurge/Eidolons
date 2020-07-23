@@ -260,7 +260,7 @@ public enum PARAMS implements PARAMETER {
     DETECTION(null, "DETECTION", false, 10, "bf obj", "units", "chars", "perks"),
     STEALTH(null, "STEALTH", false, 0, "bf obj", "units", "chars", "perks"),
     CONCEALMENT(null, null, false, 0, "terrain", "bf obj", "units", "chars", "perks"),
-    ILLUMINATION(null, null, false, 0, "terrain", "bf obj", "units", "chars", "perks", "classes"),
+    ILLUMINATION(null, null, true, 0, "terrain", "bf obj", "units", "chars", "perks", "classes"),
     LIGHT_EMISSION(null, null, false, 0, "terrain", "bf obj", "units", "chars", "perks", "classes"),
 
     GLOBAL_CONCEALMENT(null, null, false, 0, "dungeons"),

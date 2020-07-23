@@ -265,14 +265,23 @@ public class VisionRule {
             case CONCEALED: //'for of war?'
                 return PLAYER_VISION.KNOWN;
             case BLOCKED:
+                if (object instanceof Structure)
+                    if (object.isDetected()) {
+                        return PLAYER_VISION.KNOWN;
+                    }
+
                 if (source.isMine())
-                            if (PositionMaster.getExactDistance(object, source) <= 3) {
-                                object.setDetectedByPlayer(true);
-                                return PLAYER_VISION.UNKNOWN;
-                            }
-                        break;
+                    if (PositionMaster.getExactDistance(object, source) <= 3) {
+                        object.setDetectedByPlayer(true);
+                        return PLAYER_VISION.UNKNOWN;
+                    }
+                return PLAYER_VISION.INVISIBLE;
             case UNSEEN:
                 hide(source, object);
+                if (object instanceof Structure)
+                if (object.isDetected()) {
+                    return PLAYER_VISION.KNOWN;
+                }
                 return PLAYER_VISION.INVISIBLE;
             //                case VAGUE_OUTLINE:
             //                    break;

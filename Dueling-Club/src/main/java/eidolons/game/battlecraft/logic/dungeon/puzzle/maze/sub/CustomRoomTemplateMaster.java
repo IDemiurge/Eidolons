@@ -15,6 +15,7 @@ import java.util.Set;
 
 import static eidolons.game.module.generator.GeneratorEnums.EXIT_TEMPLATE;
 import static eidolons.game.module.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
+import static main.system.auxiliary.log.LogMaster.log;
 
 public class CustomRoomTemplateMaster {
     private final Map<ROOM_TEMPLATE_GROUP, Set<RoomModel>> roomMap = new LinkedHashMap<>();
@@ -36,6 +37,7 @@ public class CustomRoomTemplateMaster {
                     models.add(new RoomModel(cells, type, EXIT_TEMPLATE.CROSSROAD));
                 }
             }
+            log(1, group + " room groups has models: \n " + models);
             roomMap.put(group, models);
         }
     }

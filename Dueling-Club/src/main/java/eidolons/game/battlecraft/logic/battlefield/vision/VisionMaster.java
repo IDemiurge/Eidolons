@@ -92,15 +92,14 @@ public class VisionMaster implements GenericVisionManager {
         }
         //        resetForActiveUnit();
 
-        if (ExplorationMaster.isExplorationOn() &&
-                getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
-            LogMaster.verbose("Vision reset skipped by period; time left: " +
-                    getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().getVisibilityResetTimer());
-            illumination.applyLightEmission();
-        } else {
-            illumination.resetIllumination();
-            illumination.applyLightEmission();
-        }
+        // if (ExplorationMaster.isExplorationOn() &&
+        //         getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
+        //     LogMaster.verbose("Vision reset skipped by period; time left: " +
+        //             getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().getVisibilityResetTimer());
+        //     illumination.resetIllumination(false);
+        // } else {
+        // }
+            illumination.resetIllumination(true);
 
         visionRule.fullReset(getGame().getObjMaster().getUnitsArray());
         getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().resetVisibilityResetTimer();
@@ -341,8 +340,7 @@ public class VisionMaster implements GenericVisionManager {
     }
 
     public void applyLight() {
-        illumination.resetIllumination();
-        illumination.applyLightEmission();
+        illumination.resetIllumination(true);
     }
 
     public Illumination getIllumination() {

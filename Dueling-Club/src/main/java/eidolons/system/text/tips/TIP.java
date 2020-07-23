@@ -1,4 +1,4 @@
-package eidolons.game.netherflame.main.event.text;
+package eidolons.system.text.tips;
 
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;

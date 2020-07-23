@@ -12,6 +12,7 @@ import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.Strings;
 
 import java.io.File;
@@ -43,7 +44,7 @@ public class DescriptionTooltips {
     public static void initTutorialMap() {
         String path = getRootPath() + getTextPathLocale() + "tutorial/tutorial.txt";
         String source = readFile(path);
-        parseSource(source, getOrCreateMap(TUTORIAL), false);
+        parseSource(source, getMap(TUTORIAL), false);
     }
 
     private static boolean isParam(String name) {
@@ -63,27 +64,27 @@ public class DescriptionTooltips {
         for (File file : getFilesFromDirectory(getRootPath() + getTextPathLocale() + "/descriptions",
                 false, true)) {
             source = readFile(file);
-            String name = file.getName();
-            parseSource(source, getOrCreateMap(name), isParam(name));
+            String name = StringMaster.cropFormat(file.getName());
+            parseSource(source, getMap(name), isParam(name));
         }
         //TIPS
         for (File file : getFilesFromDirectory(getRootPath() + getTextPathLocale() + TIPS,
                 false, true)) {
             source = readFile(file);
-            String name = file.getName();
-            parseSource(source, getOrCreateMap(name), false);
+            String name = StringMaster.cropFormat(file.getName());
+            parseSource(source, getMap(name), false);
         }
 
 
         String path = StrPathBuilder.build(getTextPath(),
                 TextMaster.getLocale(), DESCR, "types");
         source = readFile(path + "/heroes info.txt");
-        parseSource(source, getOrCreateMap(DESCR), false);
+        parseSource(source, getMap(DESCR), false);
 
         path = StrPathBuilder.build(getTextPath(),
                 TextMaster.getLocale(), DESCR, "types");
         source = readFile(path + "/heroes.txt");
-        parseSource(source, getOrCreateMap(LORE), false);
+        parseSource(source, getMap(LORE), false);
 
         initTutorialMap();
 
@@ -95,7 +96,7 @@ public class DescriptionTooltips {
          */
     }
 
-    private static Map<String, String> getOrCreateMap(String name) {
+    public static Map<String, String> getMap(String name) {
         Map<String, String> map = maps.get(name);
         if (map == null) {
             map = new XLinkedMap<>();
@@ -126,19 +127,19 @@ public class DescriptionTooltips {
     }
 
     public static Map<String, String> getTipMap() {
-        return getOrCreateMap(TIPS);
+        return getMap(TIPS);
     }
 
     public static Map<String, String> getLoreMap() {
-        return getOrCreateMap(LORE);
+        return getMap(LORE);
     }
 
     public static Map<String, String> getTutorialMap() {
-        return getOrCreateMap(TUTORIAL);
+        return getMap(TUTORIAL);
     }
 
     public static Map<String, String> getDescrMap() {
-        return getOrCreateMap(DESCR);
+        return getMap(DESCR);
     }
 
     private static void parseSource(String source, boolean paramOrTip) {

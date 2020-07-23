@@ -7,6 +7,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
+import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.Eidolons;
@@ -206,6 +207,8 @@ public class DC_GameManager extends GameManager {
         VisionHelper.refresh();
 
         updateGraphics();
+        DC_MovementManager.anObjectMoved = false;
+        DC_GameState.gridChanged = false;
         GameState.setResetDone(true);
     }
 

@@ -192,7 +192,7 @@ public class UnitAI {
     }
 
     public GroupAI getGroupAI() {
-        if (getUnit().getGame().getAiManager().isDefaultAiGroupForUnitOn())
+        if (!getUnit().getGame().getAiManager().isDefaultAiGroupForUnitOn())
             if (groupAI == null) {
                 groupAI = (unit.getGame().getAiManager().getCustomUnitGroup(getUnit()));
                 main.system.auxiliary.log.LogMaster.log(1,"Custom AI UnitGroup created for "+unit.getNameAndCoordinate() );

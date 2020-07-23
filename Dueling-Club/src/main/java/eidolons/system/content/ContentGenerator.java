@@ -66,6 +66,9 @@ public class ContentGenerator {
 
     public static final String SPELL_TESTED = "Shadow Fury";
     private static final boolean OVERWRITE_DESCR = false;
+    private static final float ESS_COST_COEF = 0.5f;
+    private static final float ESS_COST_SD_COEF = 0.7f;
+
     static PARAMS[] params = {PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.ARMOR,};
     static PROPERTY[] heroProps = {
             PROPS.SKILLS,
@@ -647,6 +650,14 @@ public class ContentGenerator {
         -50% on both?
          */
 
+        Integer cost = t.getIntParam(PARAMS.ESS_COST);
+        cost = Math.round(cost * ESS_COST_COEF);
+
+        t.setParam(PARAMS.FOC_COST, cost);
+        t.setParam(PARAMS.ESS_COST, cost);
+
+        t.setParam(PARAMS.FOC_REQ, cost);
+
     }
     public static void generateSpellParams(ObjType t) {
         if (t.getName().contains(" Bolt")) {
@@ -656,6 +667,8 @@ public class ContentGenerator {
         if (t.checkProperty(G_PROPS.SPELL_TAGS, "missile")) {
             t.setParam(PARAMS.IMPACT_AREA, 15);
         }
+        adjustSpellCosts(t);
+
     }
 
     public static void generateArmorParams(ObjType t) {

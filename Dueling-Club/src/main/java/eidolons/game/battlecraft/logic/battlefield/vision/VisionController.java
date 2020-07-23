@@ -46,6 +46,7 @@ public class VisionController {
     DetectionMapper detectionMapper;
     VisibilityLevelMapper visibilityLevelMapper;
     ClearshotMapper clearshotMapper;
+    ClearshotMapper clearshotMapperLight;
     WallObstructionMapper wallObstructionMapper;
     GammaMapper gammaMapper;
     LastSeenMapper lastSeenMapper;
@@ -66,7 +67,8 @@ public class VisionController {
         mappers.add(stealthMapper = new StealthMapper());
         mappers.add(lastSeenMapper = new LastSeenMapper());
         mappers.add(gammaMapper = new GammaMapper());
-        mappers.add(clearshotMapper = new ClearshotMapper());
+        mappers.add(clearshotMapper = new ClearshotMapper(false));
+        mappers.add(clearshotMapperLight = new ClearshotMapper(true));
         mappers.add(unitVisionMapper = new UnitVisionMapper());
         mappers.add(visibilityLevelMapper = new VisibilityLevelMapper());
         mappers.add(outlineMapper = new OutlineMapper());
@@ -122,6 +124,10 @@ public class VisionController {
 
     public ClearshotMapper getClearshotMapper() {
         return clearshotMapper;
+    }
+
+    public ClearshotMapper getClearshotMapperLight() {
+        return clearshotMapperLight;
     }
 
     public void reset() {

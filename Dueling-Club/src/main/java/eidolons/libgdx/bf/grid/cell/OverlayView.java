@@ -2,6 +2,7 @@ package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightConsts;
@@ -41,6 +42,15 @@ public class OverlayView extends BaseView implements HpBarView, Colored {
         return bar;
     }
 
+    @Override
+    public void setColor(Color color) {
+        super.setColor(color);
+    }
+
+    @Override
+    public void addAction(Action action) {
+        super.addAction(action);
+    }
 
     public HpBar getHpBar() {
         return hpBar;
@@ -112,7 +122,7 @@ public class OverlayView extends BaseView implements HpBarView, Colored {
         getPortrait().setColor(c.r, c.g, c.b, getPortrait().getColor().a);
     }
 
-    public void drawScreen(Batch batch) {
+    public void drawScreen(Batch batch) { if (!isVisible()) return;
         getPortrait().setScreenEnabled(true);
         getPortrait().setPosition(getX(), getY());
         getPortrait().draw(batch,1f);
@@ -132,7 +142,13 @@ public class OverlayView extends BaseView implements HpBarView, Colored {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        float x= portrait.getX();
+        float y= portrait.getY();
+        portrait.setX(0);
+        portrait.setY(0);
         super.draw(batch, parentAlpha);
+        portrait.setX(x);
+        portrait.setY(y);
     }
 
     @Override

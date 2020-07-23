@@ -71,15 +71,15 @@ COMBAT_ENDS,
                 doBlackout(false, 4f);
                 doZoom(1f, 3.25f, Interpolation.pow2In);
                 break;
+            case UNCONSCIOUS_BEFORE:
+                doZoom(0.21f, 2.15f, Interpolation.pow2In);
+                doBlackout(true, 2f);
+                break;
             case UNCONSCIOUS_AFTER:
                 GuiEventManager.trigger(GuiEventType.UNIT_MOVED, args[0]);
                 GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, args[0]);
                 doBlackout(false, 4f);
                 doZoom(1f, 3.25f, Interpolation.pow2In);
-                break;
-            case UNCONSCIOUS_BEFORE:
-                doZoom(0.21f, 2.15f, Interpolation.pow2In);
-                doBlackout(true, 2f);
                 break;
             case VOID_MAZE_AFTER:
 

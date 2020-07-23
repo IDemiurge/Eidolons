@@ -133,7 +133,8 @@ public abstract class GenericLauncher extends Game {
     }
 
     protected String getTitle() {
-        return "Eidolons: Netherflame v" + CoreEngine.VERSION;
+        return "Eidolons: Netherflame v" + CoreEngine.VERSION +
+                (Flags.isIDE() ? "IDE" : "");
     }
 
 

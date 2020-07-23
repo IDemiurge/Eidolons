@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static main.system.auxiliary.log.LogMaster.important;
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 11/15/2017.
@@ -110,7 +111,7 @@ public class SmartTextureAtlas extends TextureAtlas {
             if (s.equalsIgnoreCase(name)) {
                 region = regions.get(i);
                 if (isCached()) {
-                cache.put(orig, region);
+                    cache.put(orig, region);
                 }
                 return region;
             }
@@ -121,7 +122,8 @@ public class SmartTextureAtlas extends TextureAtlas {
         //     important(type + " - Recursion for region: " + name);
         //     return findRegion(name, true);
         // } else
-            important(type + " - Atlas region not found: " + name);
+
+        log(type + " - Atlas region not found: " + name);
         return null;
     }
 

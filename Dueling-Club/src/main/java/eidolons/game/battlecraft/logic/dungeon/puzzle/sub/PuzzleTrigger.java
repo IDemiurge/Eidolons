@@ -36,6 +36,12 @@ public class PuzzleTrigger extends Trigger {
 
     @Override
     public boolean check(Event event) {
+        if (!puzzle.isActive()) {
+            if (type != PUZZLE_TRIGGER.ENTER) {
+                return false;
+            }
+        }
+
         if (puzzle.isPale()) {
             if (PaleAspect.ON) {
                 if (type == PUZZLE_TRIGGER.ENTER) {

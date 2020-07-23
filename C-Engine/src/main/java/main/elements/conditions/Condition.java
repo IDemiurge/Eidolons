@@ -24,4 +24,8 @@ public interface Condition extends Serializable {
     void setXml(String xml);
 
     String toXml();
+
+    default void setTrue(Boolean isTrue) {
+        // throw new OperationNotSupportedException();
+    }
 }

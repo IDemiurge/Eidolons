@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.ai.advanced.engagement;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -70,10 +69,10 @@ public class EngagementHandler extends ExplorationHandler {
     }
 
     public void detected(Unit source, BattleFieldObject object) {
-        if (object instanceof Structure)
-            return;
-        events.detected(source, object);
-        //precombat event
+        if (object instanceof Unit) {
+            events.detected(source, (Unit) object);
+            //precombat event
+        }
     }
 
     public void lostSight(Unit source, BattleFieldObject object) {

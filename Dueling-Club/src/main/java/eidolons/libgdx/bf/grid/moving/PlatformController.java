@@ -1,7 +1,5 @@
 package eidolons.libgdx.bf.grid.moving;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.BattleFieldObject;
@@ -84,15 +82,6 @@ public class PlatformController extends MoveController {
 
 
     public boolean act(float delta) {
-        if (TEST) {
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
-                powered = !powered;
-                pendulum = !pendulum;
-                waiting = false;
-            }
-        }
-        //if we know distance we can calc point of slowdown
-        // but then BLOCK... ah, it will just set dest.
         if (!super.act(delta))
             return false;
 

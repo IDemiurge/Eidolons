@@ -16,6 +16,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.libgdx.GDX;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.actions.FadeOutAction;
@@ -37,8 +38,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-
-import static main.system.auxiliary.log.LogMaster.log;
 
 public class GridCellContainer extends GridCell implements Hoverable {
     CellCalculator calc = new CellCalculator(this);
@@ -153,18 +152,28 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     public void drawScreen(Batch batch) {
+        if (!isVisible())
+            return;
+        ImageContainer container = this.cellImgContainer;
+            if (overlay != null) {
+                if (overlay.getColor().a==1) {
+                    if (GdxMaster.isVisibleEffectively(overlay.getContent())) {
+                        container = overlay;
+                    }
+                }
+            }
         if (!ListMaster.isNotEmpty(visibleViews)) {
-            cellImgContainer.setScreenEnabled(true);
+            container.setScreenEnabled(true);
             // SnapshotArray<Actor> children = getChildren();
             // clearChildren();
             // draw(batch, 1f);
-            cellImgContainer.setPosition(getX(), getY());
-            cellImgContainer.draw(batch, 1f);
-            cellImgContainer.setPosition(0, 0);
-            cellImgContainer.setScreenEnabled(false);
+            container.setPosition(getX(), getY());
+            container.draw(batch, 1f);
+            container.setPosition(0, 0);
+            container.setScreenEnabled(false);
             return;
         }
-        cellImgContainer.setScreenEnabled(false);
+        container.setScreenEnabled(false);
         for (GenericGridView visibleView : visibleViews) {
             float x = visibleView.getX();
             float y = visibleView.getY();
@@ -695,6 +704,9 @@ public class GridCellContainer extends GridCell implements Hoverable {
     public void fadeInOverlay(TextureRegion texture) {
         if (getVoidAnimHappened())
             return;
+        if (getUserObject().isArtPuzzleCell()) {
+            return;
+        }
         //        setOverlayTexture(texture);
         if (getUnitViewsVisible().size() >= 1) {
             return;
@@ -716,9 +728,11 @@ public class GridCellContainer extends GridCell implements Hoverable {
         if (overlay == null) {
             return;
         }
+        if (getUserObject().isArtPuzzleCell()) {
+            return;
+        }
         overlay.fadeOut();
         ActionMaster.addRemoveAfter(overlay);
-        log(1, "fadeOut overlay" + overlay.getActions());
     }
 
 

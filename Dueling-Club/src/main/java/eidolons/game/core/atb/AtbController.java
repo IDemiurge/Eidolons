@@ -25,14 +25,15 @@ public class AtbController implements Comparator<Unit> {
     public static final float SECONDS_IN_ROUND = 60; //seconds; to sync with clock
     public static final float ATB_TO_READY = 10;
     public static final Float TIME_LOGIC_MODIFIER = 1000f;
-    protected static final Float ATB_PER_INITIATIVE_PER_SEC =0.1f ;
+    protected static final Float ATB_PER_INITIATIVE_PER_SEC = 0.1f;
     protected AtbTurnManager manager;
     protected Array<AtbUnit> unitsInAtb;
     protected float time = 0f; //passed in this round
     protected float totalTime = 0f;
     protected int step;   //during this round
     protected boolean nextTurn;
-    protected float unloggedTimePassed=0;
+    protected float unloggedTimePassed = 0;
+    private int clockTicks=0;
 
     public AtbController(AtbTurnManager manager) {
         this.manager = manager;
@@ -49,9 +50,9 @@ public class AtbController implements Comparator<Unit> {
 
     protected static int compareForSort(AtbUnit first, AtbUnit second) {
         if (first.getTimeTillTurn() == second.getTimeTillTurn())
-            return first.getUnit()== Eidolons.getMainHero()
+            return first.getUnit() == Eidolons.getMainHero()
                     ? -1 :
-                    second.getUnit()== Eidolons.getMainHero()? 1 : 0; //EA check
+                    second.getUnit() == Eidolons.getMainHero() ? 1 : 0; //EA check
         if (first.getTimeTillTurn() < second.getTimeTillTurn())
             return -1;
         else
@@ -86,10 +87,11 @@ public class AtbController implements Comparator<Unit> {
             addTime(-SECONDS_IN_ROUND);
             setNextTurn(true);
             return null;
-//            manager.getGame().getManager().endRound();
-//            newRound();
+            //            manager.getGame().getManager().endRound();
+            //            newRound();
         }
-        if (this.unitsInAtb.get(0).getAtbReadiness() >= ATB_TO_READY *0.99f) {
+        if (this.unitsInAtb.get(0).getAtbReadiness() >= ATB_TO_READY * 0.99f) {
+            clockTicks=0;
             return this.unitsInAtb.get(0);
         } else {
             return null; //this.step();
@@ -135,23 +137,31 @@ public class AtbController implements Comparator<Unit> {
         addTime(time);
 
         if (!isPrecalc()) {
-        int toLog = Math.round(time * TIME_LOGIC_MODIFIER + unloggedTimePassed);
-        if (toLog>0){
-            unloggedTimePassed-=toLog;
-            getManager().getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.TIME_ELAPSED,
-                    new Ref(toLog)));
-        } else {
-            unloggedTimePassed+=time * TIME_LOGIC_MODIFIER;
-        }
-        GuiEventManager.trigger(GuiEventType.TIME_PASSED, time);
-        GuiEventManager.trigger(GuiEventType.NEW_ATB_TIME, this.time);
+            int toLog = Math.round(time * TIME_LOGIC_MODIFIER + unloggedTimePassed);
+            if (toLog > 0) {
+                unloggedTimePassed -= toLog;
+                getManager().getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.TIME_ELAPSED,
+                        new Ref(toLog)));
+            } else {
+                unloggedTimePassed += time * TIME_LOGIC_MODIFIER;
+            }
+            clockTicks++;
+            float finalTime = this.time;
+            Eidolons.onNewThread(() ->
+                    {
+                        int delay=  clockTicks*200;
+                        WaitMaster.WAIT(delay);
+                        GuiEventManager.trigger(GuiEventType.NEW_ATB_TIME, finalTime);
+                    }
+            );
+            GuiEventManager.trigger(GuiEventType.TIME_PASSED, time);
         }
         if (!isPrecalc()) {
             if (Log.check(Log.LOG_CASE.atb))
-            if (time > 0)
-                manager.getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, getTimeString(time) + " passed, " +
-                        getTimeString(SECONDS_IN_ROUND - this.time) +
-                        " until end of round");
+                if (time > 0)
+                    manager.getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, getTimeString(time) + " passed, " +
+                            getTimeString(SECONDS_IN_ROUND - this.time) +
+                            " until end of round");
         }
 
         for (AtbUnit unit : this.unitsInAtb) {
@@ -185,28 +195,28 @@ public class AtbController implements Comparator<Unit> {
 
     protected void updateTimeTillTurn() {
         for (AtbUnit unit : this.unitsInAtb) {
-//            if (unit.getInitiative() <= 0) {
-//                unit.setTimeTillTurn(Float.MAX_VALUE);
-//            } else {
+            //            if (unit.getInitiative() <= 0) {
+            //                unit.setTimeTillTurn(Float.MAX_VALUE);
+            //            } else {
             unit.setTimeTillTurn(
                     calculateTimeTillTurn(unit));
-//            }
+            //            }
 
         }
     }
 
     protected float calculateTimeTillTurn(AtbUnit unit) {
-        float time = getAtbGainForUnit((ATB_TO_READY - unit.getAtbReadiness()) , unit);
+        float time = getAtbGainForUnit((ATB_TO_READY - unit.getAtbReadiness()), unit);
         if (unit.isImmobilized()) {
             float duration = AtbMaster.getImmobilizingBuffsMaxDuration(unit.getUnit());
-            if (duration == 0){
-            if (unit.getUnit().getBuff("channeling") != null) {
-                if (unit.getAtbReadiness()>=9.99f) {
-                    return 0;
+            if (duration == 0) {
+                if (unit.getUnit().getBuff("channeling") != null) {
+                    if (unit.getAtbReadiness() >= 9.99f) {
+                        return 0;
+                    }
                 }
-            }
                 return Float.MAX_VALUE;
-        }
+            }
             return (time + duration);
         }
         return time;
@@ -222,8 +232,8 @@ public class AtbController implements Comparator<Unit> {
 
     protected void addUnit(AtbUnit unit) {
         // if (unit.getInitiative() > 0) { wtf???
-            unit.setAtbReadiness(unit.getInitialInitiative());
-            this.unitsInAtb.add(unit);
+        unit.setAtbReadiness(unit.getInitialInitiative());
+        this.unitsInAtb.add(unit);
         // }
     }
 

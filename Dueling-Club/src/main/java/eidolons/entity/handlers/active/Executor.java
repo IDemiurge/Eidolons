@@ -6,7 +6,6 @@ import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
@@ -458,8 +457,9 @@ public class Executor extends ActiveHandler {
     }
 
     protected boolean checkExtraAttacksDoNotInterrupt(ENTRY_TYPE entryType) {
-        if (EidolonsGame.FOOTAGE)
+        if (ExplorationMaster.isExplorationOn()) {
             return true;
+        }
         if (RuleKeeper.checkRuleGroupIsOn(RuleEnums.RULE_GROUP.EXTRA_ATTACKS)) {
             try {
                 return !ExtraAttacksRule.checkInterrupted(getAction(), entryType);

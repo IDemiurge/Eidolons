@@ -15,7 +15,7 @@ public class ForceEffect extends DC_Effect implements OneshotEffect {
     private final Boolean attack;
 
     @AE_ConstrArgs(argNames = {
-     "formula", "attack"
+            "formula", "attack"
     })
     public ForceEffect(String forceFormula, Boolean attack) {
 
@@ -27,10 +27,12 @@ public class ForceEffect extends DC_Effect implements OneshotEffect {
     public boolean applyThis() {
         if (!RuleKeeper.isRuleOn(RuleEnums.RULE.FORCE)) return false;
         int force = getFormula().getInt(ref);
-        ForceRule.applyForceEffects(force, (DC_ActiveObj) ref.getActive(), (BattleFieldObject) ref.getTargetObj());
+        if (ref.getTargetObj() instanceof BattleFieldObject) {
+            ForceRule.applyForceEffects(force, (DC_ActiveObj) ref.getActive(), (BattleFieldObject) ref.getTargetObj());
+        }
         Boolean result = null;
         if (attack) // include stamina into this roll somehow...
-//            result = RollMaster.rollForce(getTarget(), getActiveObj(), force);
+        //            result = RollMaster.rollForce(getTarget(), getActiveObj(), force);
         {
             if (result == null) {
 
@@ -40,20 +42,20 @@ public class ForceEffect extends DC_Effect implements OneshotEffect {
         }
         /*
          * TODO
-		 * 
-		 * Reduce Stamina if push/knock 'resisted'!  
-		 * 
-		 * 
-		 * deal force damage, calculate 'remaining force' (force damage mod, 'resistance'?)
-		 * tryPush - proceed if 'critical' (flies)
-		 * >> Reduce Stamina 
-		 * tryKnock 
-		 * >> Delay - Reduce Initiative
-		 * deal fall damage 
-		 * >> Stun - Reduce Focus/AP
-		 * 
-		 */
-//        new TossUnitEffect(force, true).apply(ref);
+         *
+         * Reduce Stamina if push/knock 'resisted'!
+         *
+         *
+         * deal force damage, calculate 'remaining force' (force damage mod, 'resistance'?)
+         * tryPush - proceed if 'critical' (flies)
+         * >> Reduce Stamina
+         * tryKnock
+         * >> Delay - Reduce Initiative
+         * deal fall damage
+         * >> Stun - Reduce Focus/AP
+         *
+         */
+        //        new TossUnitEffect(force, true).apply(ref);
 
         return true;
     }

@@ -7,11 +7,11 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleQuest;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleStats;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.main.event.TipMessageMaster;
-import eidolons.game.netherflame.main.event.TipMessageSource;
 import eidolons.game.netherflame.main.pale.PaleAspect;
 import eidolons.system.audio.MusicMaster;
+import eidolons.system.text.tips.TextEvent;
+import eidolons.system.text.tips.TipMessageMaster;
+import eidolons.system.text.tips.Tips;
 import main.content.enums.rules.VisionEnums;
 import main.elements.triggers.Trigger;
 import main.game.logic.event.Event;
@@ -106,13 +106,13 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
             puzzle.quest.complete();
             puzzle.stats.complete();
             puzzle.solved = true;
-            String text = puzzle.getCompletionText();
-            TipMessageSource src = new TipMessageSource(
-                    text, "", "Onward!", false, () -> {
-                Eidolons.onThisOrNonGdxThread(() -> afterEndTip());
-            }
-            );
-            TipMessageMaster.tip(src);
+
+            TextEvent tip = getWinTip();
+            if (tip == null) {
+                TipMessageMaster.tip(puzzle.getWinText(), () -> afterEndTip());
+            } else
+                TipMessageMaster.tip(tip, () -> afterEndTip());
+
         } else {
             failed();
         }
@@ -124,29 +124,71 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
     }
 
     public void failed() {
-        if (puzzle.isFailed())
-            return;
+        // if (puzzle.isFailed())
+        //     return;
         log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle failed: " + this);
         MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.FALL);
 
         EUtils.showInfoText(true, "Mystery fades: " + puzzle.getTitle());
-        puzzle.stats.failed();
-        puzzle.quest.failed();
-
+        try {
+            puzzle.stats.failed();
+            puzzle.quest.failed();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         puzzle.failed = true;
 
-        String text = puzzle.getFailText();
-
         cinematicFail();
+
         WaitMaster.WAIT(puzzle.getWaitTimeBeforeEndMsg(true));
-        TipMessageSource src = new TipMessageSource(
-                text, "", "Continue", false, () -> {
-            Eidolons.onThisOrNonGdxThread(() -> afterEndTip());
-        }
-        );
-        TipMessageMaster.tip(src);
+
+        //TODO
+        // String text = puzzle.getFailText();
+        // TipMessageSource src = new TipMessageSource(
+        //         text, "", "Continue", false, () -> {
+        //     Eidolons.onThisOrNonGdxThread(() -> afterEndTip());
+        // }
+        // );
+
+        TextEvent failTip = getFailTip();
+        if (failTip == null) {
+            TipMessageMaster.tip(puzzle.getFailText(), () -> afterEndTip());
+        } else
+            TipMessageMaster.tip(failTip, () -> afterEndTip());
         ended();
     }
+
+    protected TextEvent getFailTip() {
+        String value = getData().getValue(PuzzleData.PUZZLE_VALUE.TIP_FAIL);
+        TextEvent tip = Tips.getTipConst(value);
+        if (tip != null) {
+            return tip;
+        }
+        return Tips.getPuzzleTipConst(false, puzzle.getType(), getTipSuffix());
+    }
+
+    protected TextEvent getWinTip() {
+        String value = getData().getValue(PuzzleData.PUZZLE_VALUE.TIP_WIN);
+        TextEvent tip = Tips.getTipConst(value);
+        if (tip != null) {
+            return tip;
+        }
+        return Tips.getPuzzleTipConst(true, puzzle.getType(), getTipSuffix());
+    }
+
+    protected TextEvent getIntroTip() {
+        String value = getData().getValue(PuzzleData.PUZZLE_VALUE.TIP_INTRO);
+        TextEvent tip = Tips.getTipConst(value);
+        if (tip != null) {
+            return tip;
+        }
+        return Tips.getPuzzleTipConst(null, puzzle.getType(), getTipSuffix());
+    }
+
+    protected String getTipSuffix() {
+        return "";
+    }
+
 
     public void handleEvent(Event event) {
 
@@ -177,24 +219,32 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
 
     protected void cinematicFail() {
     }
+
     protected void cinematicWin() {
     }
+
     protected void cinematicStart() {
     }
+
     protected void entered() {
         if (puzzle.isPale()) {
             PaleAspect.enterPale();
         }
         // Eidolons.onNonGdxThread(() -> {
-           cinematicStart();
-            //just zoom out? need to center cam on exits..
+        cinematicStart();
+        //just zoom out? need to center cam on exits..
         beforeTip(); //TODO pause/disable things ! enter cinematic mode or something
         if (puzzle.getTipDelay() > 0) {
             WaitMaster.WAIT(puzzle.getTipDelay());
         }
-        if (isFirstAttempt() && !puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP).isEmpty()) {
-            TipMessageMaster.tip(puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP),
-                    () -> afterTipAction());
+        // isFirstAttempt() && !puzzle.getData().getValue(PuzzleData.PUZZLE_VALUE.TIP_INTRO).isEmpty()
+        if (true) {
+            TextEvent tip = getIntroTip();
+            if (tip == null) {
+                TipMessageMaster.tip(puzzle.getIntroText(), () -> afterTipAction());
+            } else
+                TipMessageMaster.tip(tip, () -> afterTipAction());
+
         } else {
             afterTipAction();
         }

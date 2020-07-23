@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.ai.tools.target;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
@@ -125,6 +126,9 @@ public class TargetingMaster extends AiHandler {
             return false;
         }
         List<FILTER_REASON> reasons = ReasonMaster.getReasonsCannotTarget(action);
+        if (AI_Manager.MELEE_HACK)
+        if (!reasons.contains(FILTER_REASON.DISTANCE))
+            return true;
         // boolean visionRemoved = false;
         // if (reasons.contains(FILTER_REASON.FACING)
         // && !reasons.contains(FILTER_REASON.DISTANCE))

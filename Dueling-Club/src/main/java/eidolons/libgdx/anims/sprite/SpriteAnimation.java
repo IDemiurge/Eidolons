@@ -14,6 +14,7 @@ import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.TextureManager;
 import main.content.enums.GenericEnums.BLENDING;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.launch.Flags;
 
@@ -57,6 +58,7 @@ public class SpriteAnimation extends Animation<TextureRegion> implements Blended
     private int lastCycle;
     private SpriteData data;
     private float pauseBetweenCycles;
+    private float pauseBetweenCyclesRandomness=0.5f;
     private float pauseTimer;
 
     public void setBackAndForth(boolean backAndForth) {
@@ -172,7 +174,7 @@ public class SpriteAnimation extends Animation<TextureRegion> implements Blended
             //                if ((((CustomSpriteBatch) batch).getBlending() != blending))
             {
                 ((CustomSpriteBatch) batch).setBlending(blending);
-                // resetBlending = blending==BLENDING.INVERT_SCREEN;
+                resetBlending = blending==BLENDING.INVERT_SCREEN;
             }
         }
         boolean result = drawThis(batch);
@@ -196,7 +198,8 @@ public class SpriteAnimation extends Animation<TextureRegion> implements Blended
                     onCycle.run();
                 }
                 if (pauseBetweenCycles>0){
-                    pauseTimer = pauseBetweenCycles;
+                    pauseTimer =
+                    RandomWizard.randomize(pauseBetweenCycles, pauseBetweenCyclesRandomness);
                     return false;
                 }
             }
@@ -680,6 +683,10 @@ public class SpriteAnimation extends Animation<TextureRegion> implements Blended
 
     public TextureAtlas getAtlas() {
         return atlas;
+    }
+
+    public void setPauseBetweenCyclesRandomness(float pauseBetweenCyclesRandomness) {
+        this.pauseBetweenCyclesRandomness = pauseBetweenCyclesRandomness;
     }
 
     public void setPauseBetweenCycles(float pauseBetweenCycles) {

@@ -18,6 +18,7 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster;
 import main.system.threading.WaitMaster;
 
@@ -46,7 +47,7 @@ public class Awakener {
 
      */
     DC_Game game;
-    private Map<BattleFieldObject, BattleFieldObject> map = new HashMap<>();
+    private final Map<BattleFieldObject, BattleFieldObject> map = new HashMap<>();
 
     public Awakener(DC_Game game) {
         this.game = game;
@@ -96,11 +97,11 @@ public class Awakener {
         if (type.sound != null) {
             DC_SoundMaster.playStandardSound(type.sound);
         }
-        if (type.engage) {
+        if (Flags.TESTER_VERSION || type.engage) {
             //how to make it fair? 
             //how to make it effective? insta move forward? 
             game.getDungeonMaster().getExplorationMaster().event(
-                    new EngageEvent(EngageEvent.ENGAGE_EVENT.combat_start));
+                    new EngageEvent(EngageEvent.ENGAGE_EVENT.combat_start, group.getMembers().size()));
         }
     }
 

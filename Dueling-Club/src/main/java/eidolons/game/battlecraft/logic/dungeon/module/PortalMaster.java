@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.libgdx.assets.Assets;
+import eidolons.libgdx.assets.Atlases;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import main.game.bf.Coordinates;
@@ -14,7 +15,6 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
-import main.system.launch.Flags;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -143,7 +143,7 @@ public class PortalMaster extends DungeonHandler {
                 }
             }
             if (initRequired){
-                if (!TextureCache.atlasesOn && !Flags.ONE_FRAME_SPRITES)
+                if (!TextureCache.atlasesOn && !Atlases.isUseOneFrameVersion(null))
                 {
                     Assets.get().getManager().load(Sprites.PORTAL, TextureAtlas.class);
                     Assets.get().getManager().load(Sprites.PORTAL_OPEN, TextureAtlas.class);

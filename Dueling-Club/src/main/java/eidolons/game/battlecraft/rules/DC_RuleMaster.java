@@ -6,7 +6,6 @@ import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
 import eidolons.game.battlecraft.rules.counter.timed.TimedRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.netherflame.main.pale.PaleAspect;
-import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 4/9/2018.
@@ -125,9 +124,6 @@ public class DC_RuleMaster {
     }
 
     public void timePassed(Float time) {
-        if (CoreEngine.TEST_LAUNCH) {
-            return;
-        }
         for (BattleFieldObject object : game.getBfObjects()) {
 
             if (object.isPale() != PaleAspect.ON)

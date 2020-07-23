@@ -4,7 +4,6 @@ import eidolons.libgdx.launch.GpuTester;
 import eidolons.libgdx.texture.TexturePackerLaunch;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
@@ -21,7 +20,7 @@ public class SteamPacker {
     public static final String root = "C:/code/eidolons/Dueling-Club/target/";
     public static final String jar_path = root + "eidolons-" +
             CoreEngine.CORE_VERSION + ".jar";
-    public static final String jar_name_out = "Eidolons" +
+    public static final String jar_name_out = "Eidolons-" +
             CoreEngine.CORE_VERSION + ".jar";
 
     static SteamDataModel dataModel;
@@ -30,7 +29,7 @@ public class SteamPacker {
     private static final Set<String> newXml = new LinkedHashSet<>();
     private static final Set<String> updatedXml = new LinkedHashSet<>();
     public static BuildReport report;
-    private static String buildID;
+    private static int buildID;
 
     public static void main(String[] args) {
         boolean full = args.length > 0;
@@ -51,7 +50,7 @@ public class SteamPacker {
         //     return;
         // }
         // if (full || DialogMaster.confirm("Rebuild model?"))
-        buildID = readID();
+        buildID = CoreEngine.resBuildId;
         dataModel = new SteamDataReader(out).readDataModel();
         report = new BuildReport(fast);
         if (full || DialogMaster.confirm("Rebuild assets?")) {
@@ -83,11 +82,11 @@ public class SteamPacker {
 
         log(newFiles.size() + " new Resource files: \n" + newFiles);
         log(updatedFiles.size() + " updated Resource Files: \n" + updatedFiles);
-        log(newXml.size() + " new XML files: \n" + newXml);
-        log(updatedXml.size() + " updated XML Files: \n" + updatedXml);
+        log(newXml.size() + " new Data files: \n" + newXml);
+        log(updatedXml.size() + " updated Data Files: \n" + updatedXml);
         if (full || DialogMaster.confirm("Make build?")) {
             incrementID();
-            report.setBuildId(buildID);
+            report.setBuildId(buildID+"");
             report.write();
 
             // if (full || DialogMaster.confirm("Run steam upload?")) {
@@ -97,17 +96,12 @@ public class SteamPacker {
         System.exit(0);
     }
 
-    private static String readID() {
-        String s = FileManager.readFile(PathFinder.getBuildsIdPath());
-        if (s.isEmpty()) {
-            return "0";
-        }
-        return s;
-    }
 
     private static void incrementID() {
-        buildID = (NumberUtils.getInt(buildID) + 1) + "";
-        FileManager.write(buildID, PathFinder.getBuildsIdPath());
+        CoreEngine.incrementResBuild();
+        buildID = CoreEngine.resBuildId;
+        // buildID = (NumberUtils.getInt(buildID) + 1) + "";
+        // FileManager.write(buildID, PathFinder.getBuildsIdPath());
     }
 
     private static void log(String s) {

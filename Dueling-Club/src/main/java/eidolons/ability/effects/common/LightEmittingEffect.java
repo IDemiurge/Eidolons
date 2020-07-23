@@ -2,11 +2,13 @@ package eidolons.ability.effects.common;
 
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
+import eidolons.game.battlecraft.logic.battlefield.vision.Illumination;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMap;
 import main.ability.effects.Effect;
 import main.ability.effects.EffectImpl;
 import main.ability.effects.Effects;
 import main.content.enums.GenericEnums;
+import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
@@ -22,14 +24,16 @@ public class LightEmittingEffect extends SpectrumEffect {
     private Map<Coordinates, Float> map;
     private final GenericEnums.ALPHA_TEMPLATE flicker;
     private final Color color;
+    private final Illumination illumination;
     private ColorMap.Light light;
 
     public LightEmittingEffect(String formula, Boolean circular, Color color,
-                               GenericEnums.ALPHA_TEMPLATE flicker
-    ) {
+                               GenericEnums.ALPHA_TEMPLATE flicker,
+                               Illumination illumination) {
         super(null);
         this.flicker = flicker;
         this.color = color;
+        this.illumination = illumination;
         this.formula = new Formula(formula);
         this.circular = circular;
         rangeFormula = "5";
@@ -62,6 +66,7 @@ public class LightEmittingEffect extends SpectrumEffect {
         return new EffectImpl() {
             @Override
             public boolean applyThis() {
+                Obj targetObj = ref.getTargetObj();
                 if (getAmount() == 0 ||
                         PositionMaster.getDistance(lastCoordinates, ref.getSourceObj().getCoordinates()
                         ) != (PositionMaster.getDistance(ref.getTargetObj().getCoordinates(),
@@ -74,12 +79,13 @@ public class LightEmittingEffect extends SpectrumEffect {
                 if (light > 0) {
                     plus = plus / 3 * 2; //if there is already illumination...
                 }
-                ref.getTargetObj().modifyParameter(PARAMS.ILLUMINATION, plus, true);
+                targetObj.modifyParameter(PARAMS.ILLUMINATION, plus, true);
                 lastCoordinates = ref.getTargetObj().getCoordinates();
 
                 float lerp=plus*plus / 2500f;
                 map.put(ref.getTargetObj().getCoordinates(), lerp);
 
+                illumination.lightAdded(targetObj);
                 return true;
             }
 

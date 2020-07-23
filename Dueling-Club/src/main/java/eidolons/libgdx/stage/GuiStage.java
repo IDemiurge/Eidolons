@@ -18,8 +18,6 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.main.event.TipMessageSource;
-import eidolons.game.netherflame.main.event.TipMessageWindow;
 import eidolons.game.netherflame.main.soul.EidolonLord;
 import eidolons.game.netherflame.main.soul.panel.LordPanel;
 import eidolons.libgdx.GdxColorMaster;
@@ -47,6 +45,8 @@ import eidolons.libgdx.screens.map.town.navigation.PlaceNavigationPanel;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
+import eidolons.system.text.tips.TipMessageSource;
+import eidolons.system.text.tips.TipMessageWindow;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.elements.targeting.SelectiveTargeting;
@@ -643,7 +643,6 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
         lastTyped = character;
 
         Eidolons.onNonGdxThread(() ->  handleKeyTyped(character));
-
         return super.keyTyped(character);
     }
 

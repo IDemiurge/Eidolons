@@ -226,8 +226,14 @@ public class Weapon3dAnim extends ActionAnim {
 
     @Override
     public void start(Ref ref) {
+        if (isOn())
+            return;
         initDuration();
         super.start(ref);
+    }
+
+    private boolean isOn() {
+        return !Flags.isLiteLaunch();
     }
 
     @Override

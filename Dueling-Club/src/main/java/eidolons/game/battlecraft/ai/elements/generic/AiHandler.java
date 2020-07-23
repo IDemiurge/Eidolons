@@ -66,7 +66,6 @@ public abstract class AiHandler {
     }
 
     public void initialize() {
-        master.getHandlers().add(this);
     }
 
     public SituationAnalyzer getSituationAnalyzer() {

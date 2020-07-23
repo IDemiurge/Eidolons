@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.encounter;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
 import main.system.auxiliary.RandomWizard;
 
@@ -14,7 +15,7 @@ public class EncounterPuzzle extends Puzzle {
     }
 
     @Override
-    protected String getCompletionText() {
+    protected String getWinText() {
         //where would we pull these texts from? By default..
         return "My past victims can rest in peace now. Me, I will have to wait and suffer some more.";
     }
@@ -25,6 +26,10 @@ public class EncounterPuzzle extends Puzzle {
                 : "My powers vane. Retribution was inevitable, but defeat, perhaps not...";
     }
 
+    @Override
+    public PuzzleEnums.puzzle_type getType() {
+        return PuzzleEnums.puzzle_type.encounter;
+    }
     @Override
     protected String getDefaultTitle() {
         return "Souls of the Slain";

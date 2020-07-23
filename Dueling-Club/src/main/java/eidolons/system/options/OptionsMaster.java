@@ -57,7 +57,6 @@ import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
-import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
@@ -356,7 +355,8 @@ public class OptionsMaster {
             case RESET_COSTS:
                 break;
             case LOG_TO_FILE:
-                FileLogManager.on = bool;
+                //TODO options Review
+                // FileLogManager.on = bool;
                 break;
             case TESTER_VERSION:
                 Flags.setTesterVersion(bool);

@@ -226,7 +226,7 @@ public abstract class Puzzle {
                 key.toLowerCase());
     }
 
-    protected String getCompletionText() {
+    protected String getWinText() {
         return getTitle() + " has been completed! \n" +
                 quest.getVictoryText() + "\n" +
                 stats.getVictoryText();
@@ -339,5 +339,11 @@ public abstract class Puzzle {
 
     public List<Trigger> getCustomTriggers() {
         return handler.customTriggers;
+    }
+
+    public abstract PuzzleEnums.puzzle_type getType() ;
+
+    public String getIntroText() {
+        return  getData().getValue(PuzzleData.PUZZLE_VALUE.TIP_INTRO);
     }
 }

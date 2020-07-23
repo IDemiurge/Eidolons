@@ -59,7 +59,7 @@ public class MazePuzzleConstructor extends PuzzleConstructor<MazePuzzle> {
                 PuzzleData.PUZZLE_VALUE.EXIT,
                 PuzzleData.PUZZLE_VALUE.PUNISHMENT,
                 PuzzleData.PUZZLE_VALUE.RESOLUTION,
-                PuzzleData.PUZZLE_VALUE.TIP,
+                PuzzleData.PUZZLE_VALUE.TIP_INTRO,
 
         };
     }

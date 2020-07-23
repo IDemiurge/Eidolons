@@ -16,13 +16,13 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.main.NF_Images;
 import eidolons.game.netherflame.main.NF_Meta;
 import eidolons.game.netherflame.main.NF_MetaMaster;
-import eidolons.game.netherflame.main.event.TipMessageSource;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.sprite.ShadowAnimation;
 import eidolons.libgdx.shaders.post.PostFxUpdater;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.GameplayOptions;
 import eidolons.system.options.OptionsMaster;
+import eidolons.system.text.tips.TipMessageSource;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
@@ -34,7 +34,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster;
 import main.system.threading.WaitMaster;
 
-import static eidolons.game.netherflame.main.event.text.TIP.*;
+import static eidolons.system.text.tips.TIP.*;
 
 public class ShadowMaster extends MetaGameHandler<NF_Meta> {
 

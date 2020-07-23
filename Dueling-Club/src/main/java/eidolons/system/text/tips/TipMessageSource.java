@@ -1,4 +1,4 @@
-package eidolons.game.netherflame.main.event;
+package eidolons.system.text.tips;
 
 import eidolons.libgdx.GdxMaster;
 import main.system.threading.WaitMaster;

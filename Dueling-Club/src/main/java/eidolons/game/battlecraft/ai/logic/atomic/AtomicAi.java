@@ -45,6 +45,8 @@ import java.util.List;
 
 public class AtomicAi extends AiHandler {
 
+    private static final double MAX_DST_TURN = 1;
+    private static final double MAX_DST_TURN_BEHIND = 1;
     private boolean hotzoneMode;
     private boolean on = true;
 
@@ -58,7 +60,7 @@ public class AtomicAi extends AiHandler {
             case FAR_UNSEEN:
                 if (ai.getType() == AI_TYPE.BRUTE ||
                         ai.getGroup().getBehavior()
-                        == UnitAI.AI_BEHAVIOR_MODE.AGGRO) {
+                                == UnitAI.AI_BEHAVIOR_MODE.AGGRO) {
                     action = getAtomicActionApproach(ai);
                     break;
                 }
@@ -90,7 +92,7 @@ public class AtomicAi extends AiHandler {
         if (action != null) {
             String message = getUnit() + " chooses atomic action: " + action;
             SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, message);
-        } else{
+        } else {
             SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, getUnit() + " finds no atomic action!");
             return null;
         }
@@ -236,11 +238,11 @@ public class AtomicAi extends AiHandler {
             return c;
         }
         Coordinates target = units.iterator().next().getCoordinates();
-        double dst =  target. dst_(getUnit().getCoordinates());
+        double dst = target.dst_(getUnit().getCoordinates());
         for (BattleFieldObject object : getGame().getObjectsOnCoordinateNoOverlaying(c)) {
             if (object.getOwner() == (getUnit().getOwner())) {
                 return Positioner.adjustCoordinate(ai.getUnit(), c, facing,
-                        c1-> c1.dst_(target)<=dst);
+                        c1 -> c1.dst_(target) <= dst);
             }
         }
         return Positioner.adjustCoordinate(ai.getUnit(), c, ai.getUnit().getFacing());
@@ -411,7 +413,16 @@ public class AtomicAi extends AiHandler {
             //            for (BattleFieldObject enemy : Analyzer.getVisibleEnemies(ai))
             FACING_DIRECTION facing = ai.getUnit().getFacing();
             FACING_SINGLE relative = FacingMaster.getSingleFacing(facing, ai.getUnit(), enemy);
-            if (relative == FACING_SINGLE.BEHIND) {
+
+            if (relative != FACING_SINGLE.IN_FRONT) {
+                if (!game.getVisionMaster().getSightMaster().getClearShotCondition().check(getUnit(), enemy))
+                    return null;
+                if (enemy.getCoordinates().dst_(ai.getUnit().getCoordinates()) >=
+                        (relative == FACING_SINGLE.BEHIND
+                        ? MAX_DST_TURN_BEHIND
+                        : MAX_DST_TURN)) {
+                    return null;
+                }
                 return AiEnums.AI_LOGIC_CASE.TURN_AROUND;
             }
             // else if (relative == FACING_SINGLE.TO_THE_SIDE) {
@@ -423,8 +434,7 @@ public class AtomicAi extends AiHandler {
             // if (!result)
             //     return null;
             //TODO ai Review - ideally we need to check on the 'target cell', not enemy itself
-            if (!game.getVisionMaster().getSightMaster().getClearShotCondition().check(getUnit(), enemy))
-                return null;
+
         }
 
         return result ? AiEnums.AI_LOGIC_CASE.TURN_AROUND : null;

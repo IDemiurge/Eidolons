@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.module.cinematic.flight.FlightData;
 import eidolons.game.module.cinematic.flight.FlightHandler;
 import eidolons.game.module.generator.GeneratorEnums;
@@ -17,8 +18,7 @@ import main.system.launch.CoreEngine;
 import java.util.List;
 
 /**
- * failed when hero's cell becomes void
- * 'wall' cells are MARKED
+ * failed when hero's cell becomes void 'wall' cells are MARKED
  * <p>
  * FALSE EXITS! E.g., there are 3 in the template, and only one random is TRUE. Veil vs <?>
  */
@@ -35,6 +35,11 @@ public class VoidMaze extends MazePuzzle {
         }
     }
 
+    @Override
+    public PuzzleEnums.puzzle_type getType() {
+        return PuzzleEnums.puzzle_type.voidmaze;
+    }
+
     public boolean isTransform() {
         return true;
     }
@@ -46,7 +51,7 @@ public class VoidMaze extends MazePuzzle {
 
     @Override
     protected PuzzleHandler createHandler() {
-        return new VoidMazeHandler(this );
+        return new VoidMazeHandler(this);
     }
 
 
@@ -56,14 +61,11 @@ public class VoidMaze extends MazePuzzle {
     }
 
 
-
     protected String getFirstMoveScriptKey() {
         // return "void maze start";
         return null;
     }
 
-
-  
 
     @Override
     public String getQuestText() {
@@ -116,7 +118,15 @@ public class VoidMaze extends MazePuzzle {
     @Override
     public int getTipDelay() {
         //only first time //TODO
-        return 1000;
+        return 500;
+    }
+
+    protected int getWaitTimeBeforeEndMsg(boolean failed) {
+        return 1100;
+    }
+
+    public int getDelayAfterGlimpse() {
+        return 1250;
     }
 
     @Override
@@ -149,11 +159,7 @@ public class VoidMaze extends MazePuzzle {
 
     @Override
     public String getOverrideBackground() {
-        return null ;//Sprites.BG_DEFAULT;
-    }
-
-    protected int getWaitTimeBeforeEndMsg(boolean failed) {
-        return 2500;
+        return null;//Sprites.BG_DEFAULT;
     }
 
     @Override
@@ -177,13 +183,15 @@ public class VoidMaze extends MazePuzzle {
     }
 
     public boolean isMarkAroundEntrance() {
-        return true;
+        return false;
     }
 
     protected int getDefaultHeight() {
         return 11;
     }
+
     protected int getDefaultWidth() {
         return 11;
     }
+
 }

@@ -32,7 +32,7 @@ public abstract class ConditionImpl implements Condition {
 
     @Override
     public String toXml() {
-//        probably same as effects then?
+        //        probably same as effects then?
         return xml;
     }
 
@@ -47,7 +47,7 @@ public abstract class ConditionImpl implements Condition {
     @Override
     public String getTooltip() {
         return StringMaster.cropByLength(MAX_TOOLTIP_LENGTH, StringMaster
-         .format(toString()));
+                .format(toString()));
     }
 
     public void setGame(Game game) {
@@ -57,12 +57,12 @@ public abstract class ConditionImpl implements Condition {
     @Override
     public boolean preCheck(Ref ref) {
         //TODO EA check
-//        ref = ref.getCopy();
+        //        ref = ref.getCopy();
         setGame(ref.getGame());
         try {
             setTrue(check(ref));
         } catch (Exception e) {
-           LogMaster.log(1, "*" + toString() + " failed on " + ref);
+            LogMaster.log(1, "*" + toString() + " failed on " + ref);
             main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
@@ -93,7 +93,8 @@ public abstract class ConditionImpl implements Condition {
         return isTrue;
     }
 
-    public void setTrue(boolean isTrue) {
+    @Override
+    public void setTrue(Boolean isTrue) {
         this.isTrue = isTrue;
     }
 

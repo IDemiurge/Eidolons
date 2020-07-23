@@ -110,4 +110,8 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
     public boolean acceptChar(TextField textField, char c) {
         return true;
     }
+
+    public void acceptChar(char character) {
+        acceptChar(tf, character);
+    }
 }

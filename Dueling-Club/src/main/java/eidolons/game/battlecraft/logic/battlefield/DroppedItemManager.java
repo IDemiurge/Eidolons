@@ -5,6 +5,7 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.system.ObjUtilities;
 import main.content.enums.entity.ItemEnums;
@@ -45,7 +46,10 @@ public class DroppedItemManager {
 
     public void dropDead(Unit unit) {
         if (unit.isSummoned())
-            return ;
+            return;
+        if (ItemMaster.isItemsDisabled()) {
+            return;
+        }
         if (!unit.isRevenant()) {
             unit.unequip(ItemEnums.ITEM_SLOT.ARMOR);
             unit.unequip(ItemEnums.ITEM_SLOT.MAIN_HAND);

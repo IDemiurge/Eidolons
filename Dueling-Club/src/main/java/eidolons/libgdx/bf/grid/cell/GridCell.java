@@ -164,7 +164,7 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
                 DC_Obj cell = getUserObject();// Eidolons.gameMaster.getCellByCoordinate(Coordinates.get(getGridX(), getGridY()));
 
                 if (button == Input.Buttons.RIGHT && !event.isHandled()) {
-                    if (Flags.isIDE()) {
+                    if (Flags.isMe()) {
                         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                             cell.getGame().getMovementManager().move(Eidolons.getMainHero(), cell.getCoordinates());
                             GuiEventManager.trigger(UNIT_MOVED, Eidolons.getMainHero());

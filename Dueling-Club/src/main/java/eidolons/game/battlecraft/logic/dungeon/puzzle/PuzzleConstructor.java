@@ -159,7 +159,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
                 PuzzleData.PUZZLE_VALUE.HEIGHT,
                 PuzzleData.PUZZLE_VALUE.PUNISHMENT,
                 PuzzleData.PUZZLE_VALUE.RESOLUTION,
-                PuzzleData.PUZZLE_VALUE.TIP,
+                PuzzleData.PUZZLE_VALUE.TIP_INTRO,
         };
     }
 

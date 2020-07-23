@@ -21,6 +21,7 @@ public class SpriteX extends SuperActor implements Flippable, Blended {
 
     float acceleration;
     float pauseAfterCycle;
+    float pauseAfterCycleRandomness;
     float speedRandomness;
 
     float offsetRangeX;
@@ -91,6 +92,7 @@ public class SpriteX extends SuperActor implements Flippable, Blended {
         setOrigin(Align.center);
 
         sprite.setPauseBetweenCycles(pauseAfterCycle);
+        sprite.setPauseBetweenCyclesRandomness(pauseAfterCycleRandomness);
     }
 
     @Override
@@ -181,6 +183,10 @@ public class SpriteX extends SuperActor implements Flippable, Blended {
             return 0;
         }
         return sprite.getWidth();
+    }
+
+    public void setPauseAfterCycleRandomness(float pauseAfterCycleRandomness) {
+        this.pauseAfterCycleRandomness = pauseAfterCycleRandomness;
     }
 
     @Override
@@ -294,4 +300,5 @@ public class SpriteX extends SuperActor implements Flippable, Blended {
         float offsetRangeY;
         float scaleRange;
     }
+
 }

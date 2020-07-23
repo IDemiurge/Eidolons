@@ -277,6 +277,8 @@ public class Eidolons {
     }
 
     public static void onNewThread(Runnable o) {
+        //TODO
+        // ThreadPool
         new Thread(o, "single task thread " + customThreadsUsed++).start();
     }
 
