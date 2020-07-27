@@ -5,6 +5,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.ScriptLib;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.fullscreen.Screenshake;
+import eidolons.system.audio.MusicMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
@@ -72,13 +73,15 @@ COMBAT_ENDS,
                 doZoom(1f, 3.25f, Interpolation.pow2In);
                 break;
             case UNCONSCIOUS_BEFORE:
-                doZoom(0.21f, 2.15f, Interpolation.pow2In);
-                doBlackout(true, 2f);
+                MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.FALL);
+                doZoom(1.21f, 3.15f, Interpolation.pow2In);
+                doBlackout(true, 1f);
+                WaitMaster.WAIT(1500);
+                doBlackout(false, 4f);
                 break;
             case UNCONSCIOUS_AFTER:
                 GuiEventManager.trigger(GuiEventType.UNIT_MOVED, args[0]);
                 GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, args[0]);
-                doBlackout(false, 4f);
                 doZoom(1f, 3.25f, Interpolation.pow2In);
                 break;
             case VOID_MAZE_AFTER:

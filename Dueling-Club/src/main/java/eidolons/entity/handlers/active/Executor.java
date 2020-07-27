@@ -360,6 +360,9 @@ public class Executor extends ActiveHandler {
                 getAction().setPointCostActivation(false);
                 if (!getAction().isAttackAny())
                     getOwnerObj().freeMoveDone();
+                else {
+                    return;
+                }
             }
         }
     }

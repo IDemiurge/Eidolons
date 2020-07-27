@@ -297,6 +297,9 @@ public class StackingRule implements ActionRule {
     }
 
     private boolean isStackUnit(BattleFieldObject u) {
+        if (u instanceof Entrance) {
+            return true;
+        }
         if (u instanceof Unit) {
             return !((Unit) u).isUnconscious();
         }

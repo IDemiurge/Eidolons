@@ -1,12 +1,8 @@
 package main.gui.components.menu;
 
 import main.handlers.AvHandler;
-import main.system.auxiliary.StringMaster;
-import sun.swing.UIAction;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class HandlerMenu<T>  {
@@ -39,19 +35,21 @@ public class HandlerMenu<T>  {
     }
 
     private void add(Method method) {
-        String s = StringMaster.format(method.getName());
-        Action action= new UIAction(s) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    method.invoke(handler);
-                } catch (IllegalAccessException illegalAccessException) {
-                    illegalAccessException.printStackTrace();
-                } catch (InvocationTargetException invocationTargetException) {
-                    invocationTargetException.printStackTrace();
-                }
-            }
-        };
-        menu.add(new JMenuItem(action));
+        //TODO
+
+        // String s = StringMaster.format(method.getName());
+        // Action action= new UIAction(s) {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         try {
+        //             method.invoke(handler);
+        //         } catch (IllegalAccessException illegalAccessException) {
+        //             illegalAccessException.printStackTrace();
+        //         } catch (InvocationTargetException invocationTargetException) {
+        //             invocationTargetException.printStackTrace();
+        //         }
+        //     }
+        // };
+        // menu.add(new JMenuItem(action));
     }
 }

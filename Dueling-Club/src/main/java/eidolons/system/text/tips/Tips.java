@@ -20,7 +20,7 @@ public class Tips {
     public static TextEvent getPuzzleTipConst(Boolean win_fail_intro, PuzzleEnums.puzzle_type type, String suffix) {
         String arg = "intro";
         if (win_fail_intro != null) {
-            arg = win_fail_intro ? "win" : "fail";
+            arg = win_fail_intro ? "win" : "defeat";
         }
         String substring = type +"_puzzle_" + arg;
         if (suffix.isEmpty()) {

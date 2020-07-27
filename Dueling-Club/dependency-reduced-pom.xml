@@ -136,6 +136,32 @@
       </properties>
     </profile>
     <profile>
+      <id>exe</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>jpackage exe</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>${basedir}/jpackage.cmd</executable>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <prj.build.type>dev</prj.build.type>
+      </properties>
+    </profile>
+    <profile>
       <id>linux</id>
       <build>
         <plugins>

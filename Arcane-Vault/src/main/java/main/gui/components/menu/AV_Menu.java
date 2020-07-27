@@ -1,10 +1,8 @@
 package main.gui.components.menu;
 
 import main.system.auxiliary.StringMaster;
-import sun.swing.UIAction;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 
 public class AV_Menu {
     AV_MenuHandler handler = new AV_MenuHandler();
@@ -42,17 +40,17 @@ public class AV_Menu {
                 menuItem.addActionListener(handler);
                 menu.addMenuListener(handler);
             } else {
-                JMenuItem menuItem = new JMenuItem(new UIAction(sub.getName()) {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        handler.actionPerformed(e);
-                    }
-                });
-                menuItem.setActionCommand(i.getName());
-                menuItem.addActionListener(handler);
+                // JMenuItem menuItem = new JMenuItem(new UIAction(sub.getName()) {
+                //     @Override
+                //     public void actionPerformed(ActionEvent e) {
+                //         handler.actionPerformed(e);
+                //     }
+                // });
+                // menuItem.setActionCommand(i.getName());
+                // menuItem.addActionListener(handler);
 
                 // menu.addMenuListener(new AV_MenuHandler(i.getName(), true));
-                menu.add(menuItem);
+                // menu.add(menuItem);
             }
         }
         return menu;

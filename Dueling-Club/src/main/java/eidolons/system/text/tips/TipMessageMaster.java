@@ -126,8 +126,11 @@ public class TipMessageMaster {
 
     private static TipMessageSource getSource(TextEvent tip) {
         String message = tip.getMessage();
-        if (tip.getMessage().isEmpty()) {
+        if (StringMaster.isEmpty(tip.getMessage())) {
             message = DescriptionTooltips.getTipMap().get(tip.toString().toLowerCase());
+        }
+        if (StringMaster.isEmpty(tip.getMessage())) {
+            message = "Error: no text for " + tip;
         }
         return new TipMessageSource(message, tip.getImg(), tip.getConfirmText(), tip.isOptional(), null, tip.getMessageChannel());
     }

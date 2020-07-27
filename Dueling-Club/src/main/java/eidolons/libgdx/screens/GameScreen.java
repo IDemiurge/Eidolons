@@ -113,8 +113,10 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
                 background = new FadeImageContainer(backgroundPath);
                 background.setNoAtlas(true);
                 background.setFadeDuration(3f);
+
             } else
                 background.setImage(backgroundPath);
+            background.getColor().a = getBackgroundAlpha();
             backgroundSprite = null;
             return;
         }
@@ -131,6 +133,10 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
             TextureManager.initBackgroundCache(backTexture);
         }
 
+    }
+
+    private float getBackgroundAlpha() {
+        return 0.65f;
     }
 
     public boolean isOpaque() {
