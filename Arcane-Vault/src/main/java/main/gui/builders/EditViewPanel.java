@@ -262,7 +262,7 @@ public class EditViewPanel implements TableModelListener {
         if (!quietly) {
             if (secondModel != null) {
                 secondTableMode = true;
-                secondModel.setDataVector(oldData, names);
+                secondModel.setDataVector((Vector<? extends Vector>) oldData, names);
             }
         }
         secondTableMode = false;

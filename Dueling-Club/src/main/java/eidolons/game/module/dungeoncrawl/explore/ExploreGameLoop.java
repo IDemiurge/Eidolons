@@ -130,7 +130,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         if (playerActionQueue.isEmpty()) {
             if (!master.getAiMaster().isAiActs()) {
                 lock();
-
             }
         }
         if (resetRequired) {
@@ -147,15 +146,15 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         //             activateAction(data);
         //        }
         if (playerActionQueue.isEmpty()) {
-            game.getMovementManager().checkContinueMove();
+            game.getMovementManager().checkContinueMove(); //why here?
             return null;
         }
+        ActionInput playerAction = playerActionQueue.removeFirst();
 
         GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, getActiveUnit());
         master.getAiMaster().reset();
         master.getResetter().setResetNeeded(true);
         //recheck?!
-        ActionInput playerAction = playerActionQueue.removeFirst();
         if (checkActionInputValid(playerAction)) {
             if (playerAction.getAction().isTurn()) {
                 playerAction(playerAction);

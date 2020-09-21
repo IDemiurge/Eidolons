@@ -32,7 +32,7 @@ import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 /**
@@ -62,7 +62,7 @@ public class DamageDealer {
             if (!isBonusDamage)
              FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
                      "Ineffective!",  damage.getTarget());
-            DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.LAUGH, damage.getTarget());
+            DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.LAUGH, damage.getTarget());
             return 0;
         }
         //       damage.getRef().getGame().

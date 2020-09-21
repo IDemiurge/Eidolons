@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.battlefield.vision.colormap;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.Fluctuating;
+import eidolons.libgdx.bf.grid.handlers.ColorHandler;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
@@ -83,6 +84,10 @@ public class ColorMap {
         // for (Coordinates c : base.keySet()) {
         //     output.get(c).a= base.get(c).a;
         // }
+
+        if (ColorHandler.isStaticColors()){
+            return;
+        }
         update();
         List<Light> broken = new ArrayList<>();
         if (emitters != null){
@@ -100,7 +105,8 @@ public class ColorMap {
     }
 
     public Map<Coordinates, Color> getOutput() {
-        return output;
+        //TODO optimization Review
+        return ColorHandler.isStaticColors()? base : output;
     }
 
     private void fluctuate(Light key, float delta) {

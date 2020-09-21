@@ -19,7 +19,7 @@ import main.entity.obj.Obj;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
-import main.system.sound.SoundMaster.SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class EngagedRule implements ActionRule {
      * make AoO against E-target for auto-breaking engagement (special Disengage can be used)
     choose an enemy to engage...
          * auto-engagement too 	 */
-    private DC_Game game;
+    private final DC_Game game;
 
     public EngagedRule(DC_Game game) {
         this.game = game;
@@ -252,9 +252,9 @@ public class EngagedRule implements ActionRule {
         // when moved, instead of Collision perhaps... though in some cases
         // getting pushed out is OK
         engager.setEngagementTarget(engaged);
-        DC_SoundMaster.playEffectSound(SOUNDS.THREAT, engager);
+        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.THREAT, engager);
         if (RandomWizard.random()) {
-            DC_SoundMaster.playEffectSound(SOUNDS.THREAT, engaged);
+            DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.THREAT, engaged);
         }
         if (!isAutoEngageOff(engaged)) {
             if (engaged.getEngagementTarget() == null) // TODO preCheck dead!

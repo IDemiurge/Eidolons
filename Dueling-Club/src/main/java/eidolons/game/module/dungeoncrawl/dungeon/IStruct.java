@@ -3,7 +3,7 @@ package eidolons.game.module.dungeoncrawl.dungeon;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
 import eidolons.libgdx.bf.decor.CellDecorLayer;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
-import eidolons.system.audio.MusicMaster;
+import eidolons.system.audio.MusicEnums;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.DungeonEnums;
 import main.game.bf.Coordinates;
@@ -63,7 +63,7 @@ public interface IStruct {
 
     AmbienceDataSource.VFX_TEMPLATE getVfx();
 
-    MusicMaster.AMBIENCE getAmbience();
+    MusicEnums.AMBIENCE getAmbience();
 
     CONTENT_CONSTS.COLOR_THEME getColorTheme();
 

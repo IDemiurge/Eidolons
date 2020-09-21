@@ -1,10 +1,10 @@
 package eidolons.libgdx.particles.ambi;
 
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
-import eidolons.system.audio.MusicMaster;
-import eidolons.system.audio.Soundscape;
+import eidolons.system.audio.MusicEnums;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.DungeonEnums;
+import main.system.sound.AudioEnums;
 
 public class StructAmbiData {
     //for each block?
@@ -21,11 +21,11 @@ public class StructAmbiData {
 
     LevelStruct struct;
 
-    MusicMaster.MUSIC_THEME theme;
-    MusicMaster.AMBIENCE ambience;
+    MusicEnums.MUSIC_THEME theme;
+    MusicEnums.AMBIENCE ambience;
     AmbienceDataSource.VFX_TEMPLATE template;
     CONTENT_CONSTS.COLOR_THEME colorTheme;
-    Soundscape.SOUNDSCAPE soundscape;
+    AudioEnums.SOUNDSCAPE soundscape;
     DungeonEnums.DUNGEON_STYLE style;
     int illumination;
 
@@ -33,14 +33,14 @@ public class StructAmbiData {
         return struct;
     }
 
-    public MusicMaster.MUSIC_THEME getTheme() {
+    public MusicEnums.MUSIC_THEME getTheme() {
         if (theme == null) {
             theme = struct.getMusicTheme();
         }
         return theme;
     }
 
-    public MusicMaster.AMBIENCE getAmbience() {
+    public MusicEnums.AMBIENCE getAmbience() {
         if (ambience == null) {
             ambience = struct.getAmbience();
         }
@@ -72,7 +72,7 @@ public class StructAmbiData {
         return colorTheme;
     }
 
-    public Soundscape.SOUNDSCAPE getSoundscape() {
+    public AudioEnums.SOUNDSCAPE getSoundscape() {
         if (soundscape == null) {
             soundscape = struct.getSoundscape();
         }

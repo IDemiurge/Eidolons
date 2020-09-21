@@ -15,7 +15,7 @@ import main.content.enums.entity.BfObjEnums;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.RandomWizard;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -189,8 +189,8 @@ public class VoidAnimator {
 
     protected void playAnimSound(boolean raiseOrCollapse) {
         DC_SoundMaster.playStandardSound(raiseOrCollapse ?
-                SoundMaster.STD_SOUNDS.NEW__TAB
-                : SoundMaster.STD_SOUNDS.CHAIN);
+                AudioEnums.STD_SOUNDS.NEW__TAB
+                : AudioEnums.STD_SOUNDS.CHAIN);
     }
 
     protected boolean isDisableGhostsAfterAnim() {

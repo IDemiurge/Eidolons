@@ -35,7 +35,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.Flags;
-import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.BUTTON_SOUND_MAP;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -73,7 +74,7 @@ public class TownPanel extends TabbedPanel {
         addActor(new NoHitImage(frame));
         addActor(okBtn = new SmartTextButton("Done", STD_BUTTON.MENU, () -> done()) {
             public BUTTON_SOUND_MAP getSoundMap() {
-                return BUTTON_SOUND_MAP.ENTER;
+                return AudioEnums.BUTTON_SOUND_MAP.ENTER;
             }
         });
         okBtn.setDisabledRunnable(() -> {

@@ -69,8 +69,10 @@ public class ContainerUtils {
     }
 
     public static String[] open(String containerString, String separator) {
-        if (containerString == null)
-            return new String[]{""};
+        if (StringMaster.isEmpty(containerString))
+            return new String[]{};
+        if (!containerString.contains(separator))
+            return new String[]{};
 
         String[] array = containerString.split(Pattern.quote(separator));
         int n = 0;

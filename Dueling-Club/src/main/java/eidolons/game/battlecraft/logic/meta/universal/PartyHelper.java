@@ -26,7 +26,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class PartyHelper {
             while (!Loop.loopEnded()
              && hero.getIntParam(PARAMS.LEVEL) < getParty().getIntParam(PARAMS.LEVEL)) {
                 if (hero.getGame().isSimulation()) {
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.LEVEL_UP);
+                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.LEVEL_UP);
                 }
                 HeroLevelManager.levelUp(hero);
             }

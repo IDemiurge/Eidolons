@@ -2,7 +2,8 @@ package eidolons.libgdx.gui.menu.selection.town.quest;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import eidolons.libgdx.gui.menu.selection.town.TownPlaceListPanel;
-import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.BUTTON_SOUND_MAP;
 
 /**
  * Created by JustMe on 10/5/2018.
@@ -35,6 +36,6 @@ public class QuestListPanel extends TownPlaceListPanel {
     }
 
     protected BUTTON_SOUND_MAP getButtonSoundMap() {
-        return    BUTTON_SOUND_MAP.SELECTION;
+        return    AudioEnums.BUTTON_SOUND_MAP.SELECTION;
     }
 }

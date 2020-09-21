@@ -47,8 +47,8 @@ import eidolons.game.netherflame.main.pale.PaleAspect;
 import eidolons.macro.entity.town.Town;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.DC_RequirementsManager;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.hotkey.DC_KeyManager;
 import eidolons.system.math.DC_MathManager;
 import eidolons.system.test.TestMasterContent;
@@ -388,7 +388,7 @@ public class DC_Game extends GenericGame {
         else
             exploreLoop.startInNewThread();
         if (isStarted())
-            musicMaster.scopeChanged(MUSIC_SCOPE.ATMO);
+            musicMaster.scopeChanged(MusicEnums.MUSIC_SCOPE.ATMO);
         getStateManager().newRound();
 
 
@@ -406,7 +406,7 @@ public class DC_Game extends GenericGame {
         else
             combatLoop.resume();
 
-        musicMaster.scopeChanged(MUSIC_SCOPE.BATTLE);
+        musicMaster.scopeChanged(MusicEnums.MUSIC_SCOPE.BATTLE);
 
         metaMaster.combatStarts();
     }
@@ -941,6 +941,11 @@ public class DC_Game extends GenericGame {
             return null;
         }
         return dungeonMaster.getColorMap();
+    }
+
+    public void engageEvent(Object... args) {
+        getDungeonMaster().getExplorationMaster().getEngagementHandler().
+                getEvents().addEvent(args);
     }
 
     public enum GAME_MODES {

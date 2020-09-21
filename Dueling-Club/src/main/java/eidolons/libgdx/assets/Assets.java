@@ -18,6 +18,7 @@ import eidolons.libgdx.screens.ScreenWithLoader;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
@@ -71,7 +72,7 @@ public class Assets {
 
     public static void preloadMenu() {
         //step #0 - just when we start gdx app!
-        MusicMaster.preload(MusicMaster.MUSIC_SCOPE.MENU);
+        MusicMaster.preload(MusicEnums.MUSIC_SCOPE.MENU);
         // Atlases.preloadAtlas(AssetEnums.ATLAS.UI_BASE);
     }
 

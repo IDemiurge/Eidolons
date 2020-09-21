@@ -14,6 +14,7 @@ import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster.INTERACTIO
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.text.tips.TipMessageSource;
 import main.content.DC_TYPE;
@@ -172,7 +173,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
             text = src.split("|")[1];
         }
 
-        MusicMaster.playMoment(RandomWizard.random() ? MusicMaster.MUSIC_MOMENT.TOWN : MusicMaster.MUSIC_MOMENT.SAD);
+        MusicMaster.playMoment(RandomWizard.random() ? MusicEnums.MUSIC_MOMENT.TOWN : MusicEnums.MUSIC_MOMENT.SAD);
         GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, new TipMessageSource(
                 text, image, "Continue", false, () ->
         {

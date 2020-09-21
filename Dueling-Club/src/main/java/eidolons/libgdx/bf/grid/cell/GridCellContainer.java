@@ -175,8 +175,8 @@ public class GridCellContainer extends GridCell implements Hoverable {
         }
         container.setScreenEnabled(false);
         for (GenericGridView visibleView : visibleViews) {
-            float x = visibleView.getX();
-            float y = visibleView.getY();
+            float x = visibleView.getX() ;
+            float y = visibleView.getY() ;
             visibleView.setPosition(x + getX(), y + getY());
             visibleView.drawScreen(batch);
             visibleView.setPosition(x, y);
@@ -359,7 +359,8 @@ public class GridCellContainer extends GridCell implements Hoverable {
     public void resetZIndices() {
         List<GenericGridView> views = getUnitViewsVisible();
         n = 0;
-        GenericGridView hovered = resetZIndices(views, false);
+        if (views.size()>0) {
+        GenericGridView hovered =  resetZIndices(views, false);
         if (hovered != null) {
             GenericGridView unitHovered = resetZIndices(views, true);
             if (unitHovered != null)
@@ -371,6 +372,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         }
         if (hovered != null)
             hovered.setZIndex(Integer.MAX_VALUE);
+        }
         if (getTopUnitView() != null)
             getTopUnitView().setZIndex(Integer.MAX_VALUE);
         if (graveyard != null) {

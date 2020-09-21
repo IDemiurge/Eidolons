@@ -6,10 +6,10 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
-import eidolons.system.audio.MusicMaster.AMBIENCE;
+import eidolons.system.audio.MusicEnums.AMBIENCE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 
-import static eidolons.system.audio.MusicMaster.AMBIENCE.*;
+import static eidolons.system.audio.MusicEnums.AMBIENCE.*;
 
 /**
  * Created by JustMe on 9/6/2018.

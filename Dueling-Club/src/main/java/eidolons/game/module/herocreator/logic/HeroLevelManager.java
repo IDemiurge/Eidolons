@@ -13,14 +13,14 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.game.logic.event.Event;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class HeroLevelManager {
     public static final VALUE[] LEVEL_RELEVANT_VALUES = {PARAMS.XP_LEVEL_MOD,};
-    private static Map<VALUE, String> buffer = new HashMap<>();
+    private static final Map<VALUE, String> buffer = new HashMap<>();
 
     public static void levelUp(Unit hero) {
         levelUp(hero, false);
@@ -33,7 +33,7 @@ public class HeroLevelManager {
         FloatingTextMaster.getInstance().createFloatingText(
                 TEXT_CASES.LEVEL_UP, "Level Up!", hero);
         EUtils.showInfoText(hero.getName() + "is now Level " + hero.getLevel());
-        EUtils.playSound(STD_SOUNDS.LEVEL_UP);
+        EUtils.playSound(AudioEnums.STD_SOUNDS.LEVEL_UP);
 
         hero.getGame().fireEvent(new Event(Event.STANDARD_EVENT_TYPE.HERO_LEVEL_UP, hero.getRef().getCopy()));
     }

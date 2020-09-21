@@ -384,7 +384,7 @@ it sort of broke at some point - need to investigate!
             for (int y = drawY1; y < drawY2; y++) {
                 cells[x][y].act(delta);
             }
-        }
+        } //TODO filter these to optimize!
         for (Actor actor : actList) {
             actor.act(delta);
         }

@@ -25,7 +25,7 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.Bools;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 import main.system.text.TextParser;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -311,7 +311,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     public void clicked() {
         // TODO // threading?
         if (getGame().getLoop().getActivatingAction() != null) {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK_BLOCKED);
             return;
         }
         if (game.getManager().isSelecting()) {

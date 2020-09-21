@@ -24,7 +24,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.entity.FilterMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -147,7 +147,7 @@ public class UnitGroupMaster {
             }
         }
 
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.OK);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.OK);
         return ListMaster.toObjAtCoordinate(units);
     }
 

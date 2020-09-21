@@ -118,7 +118,6 @@ public class A_StarAlgorithm {
     }
 
     public boolean step() {
-
         openList.clear();
         for (PathNode node : mngr.getAdjacentNodes(cur.getCoordinates())) {
             if (!isPassable(flying, agile, node)) {
@@ -151,15 +150,13 @@ public class A_StarAlgorithm {
         if (targets.contains(cur.getCoordinates())) {
             return true;
         }
-/*
-must proceed until a goal node has lowest F among openList?
- */
+        /*
+        must proceed until a goal node has lowest F from among the openList
+         */
 
         if (Log.check(Log.LOG_CASE.astar_pathing))
             log(LogMaster.PATHING_DEBUG, "A* Step #"
-                    + N + " to " + cur + " with closed list " + closedList
-
-            );
+                    + N + " to " + cur + " with closed list " + closedList);
         N++;
         return false;
     }
@@ -213,7 +210,7 @@ must proceed until a goal node has lowest F among openList?
         // for agile...?? never overestimate
         // TODO We could cache REAL distances as we do moving around obstacles...
         if (!toDestination)
-            return  Math.sqrt(PositionMaster.getExactDistance(c1, c2));
+            return Math.sqrt(PositionMaster.getExactDistance(c1, c2));
         return PositionMaster.getExactDistance(c1, c2);
     }
 

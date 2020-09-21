@@ -4,11 +4,11 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.netherflame.dungeons.QD_Enums;
 import eidolons.libgdx.bf.decor.shard.ShardEnums;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
-import eidolons.system.audio.MusicMaster;
-import eidolons.system.audio.Soundscape;
+import eidolons.system.audio.MusicEnums;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.DungeonEnums;
 import main.content.enums.system.MetaEnums;
+import main.system.sound.AudioEnums;
 
 public class LevelStructure {
     public enum EDIT_VALUE_TYPE {
@@ -74,7 +74,7 @@ public class LevelStructure {
         ambience(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return MusicMaster.AMBIENCE.class;
+                return MusicEnums.AMBIENCE.class;
             }
         },
         vfx_template(EDIT_VALUE_TYPE.enum_const) {
@@ -87,13 +87,13 @@ public class LevelStructure {
         music_theme(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return MusicMaster.MUSIC_THEME.class;
+                return MusicEnums.MUSIC_THEME.class;
             }
         },
         soundscape(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return Soundscape.SOUNDSCAPE.class;
+                return AudioEnums.SOUNDSCAPE.class;
             }
         },
         shard_type(EDIT_VALUE_TYPE.enum_const) {
@@ -169,7 +169,7 @@ public class LevelStructure {
         ambience(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return MusicMaster.AMBIENCE.class;
+                return MusicEnums.AMBIENCE.class;
             }
         },
         vfx_template(EDIT_VALUE_TYPE.enum_const) {
@@ -182,13 +182,13 @@ public class LevelStructure {
         music_theme(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return MusicMaster.MUSIC_THEME.class;
+                return MusicEnums.MUSIC_THEME.class;
             }
         },
         soundscape(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return Soundscape.SOUNDSCAPE.class;
+                return AudioEnums.SOUNDSCAPE.class;
             }
         },
         shard_type(EDIT_VALUE_TYPE.enum_const) {
@@ -283,7 +283,7 @@ public class LevelStructure {
         ambience(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return MusicMaster.AMBIENCE.class;
+                return MusicEnums.AMBIENCE.class;
             }
         },
         vfx_template(EDIT_VALUE_TYPE.enum_const) {
@@ -295,13 +295,13 @@ public class LevelStructure {
         music_theme(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return MusicMaster.MUSIC_THEME.class;
+                return MusicEnums.MUSIC_THEME.class;
             }
         },
         soundscape(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return Soundscape.SOUNDSCAPE.class;
+                return AudioEnums.SOUNDSCAPE.class;
             }
         },
         shard_type(EDIT_VALUE_TYPE.enum_const) {
@@ -414,7 +414,7 @@ public class LevelStructure {
         ambience(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return MusicMaster.AMBIENCE.class;
+                return MusicEnums.AMBIENCE.class;
             }
         },
         vfx_template(EDIT_VALUE_TYPE.enum_const) {
@@ -427,13 +427,13 @@ public class LevelStructure {
         music_theme(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return MusicMaster.MUSIC_THEME.class;
+                return MusicEnums.MUSIC_THEME.class;
             }
         },
         soundscape(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return Soundscape.SOUNDSCAPE.class;
+                return AudioEnums.SOUNDSCAPE.class;
             }
         },
         shard_type(EDIT_VALUE_TYPE.enum_const) {

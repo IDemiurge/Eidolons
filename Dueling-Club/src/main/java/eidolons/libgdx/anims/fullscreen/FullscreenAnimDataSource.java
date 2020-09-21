@@ -13,7 +13,7 @@ public class FullscreenAnimDataSource {
     FULLSCREEN_ANIM type;
     float intensity;
     FACING_DIRECTION from;
-    private GenericEnums.BLENDING blending;
+    private GenericEnums.BLENDING blending = GenericEnums.BLENDING.SCREEN;
     public boolean flipX;
     public boolean flipY;
     private int loops;

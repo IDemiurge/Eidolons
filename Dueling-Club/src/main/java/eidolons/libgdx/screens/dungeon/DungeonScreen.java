@@ -41,7 +41,7 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import static com.badlogic.gdx.graphics.GL20.GL_NICEST;
-import static eidolons.system.audio.MusicMaster.MUSIC_SCOPE.ATMO;
+import static eidolons.system.audio.MusicEnums.MUSIC_SCOPE.ATMO;
 import static main.system.GuiEventType.BATTLE_FINISHED;
 import static main.system.GuiEventType.UPDATE_SHADOW_MAP;
 import static org.lwjgl.opengl.GL11.*;

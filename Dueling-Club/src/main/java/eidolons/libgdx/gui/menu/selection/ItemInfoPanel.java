@@ -21,7 +21,8 @@ import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.BUTTON_SOUND_MAP;
 
 /**
  * Created by JustMe on 11/29/2017.
@@ -247,7 +248,7 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
         addActor(startButton = new SmartTextButton(text, STD_BUTTON.MENU, () -> runnable.run()) {
             @Override
             public BUTTON_SOUND_MAP getSoundMap() {
-                return BUTTON_SOUND_MAP.ENTER;
+                return AudioEnums.BUTTON_SOUND_MAP.ENTER;
             }
         });
 

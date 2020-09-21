@@ -14,6 +14,7 @@ import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.texture.Images;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.sound.AudioEnums;
 import main.system.sound.SoundMaster;
 
 public class VC_Item extends SuperActor {
@@ -47,7 +48,7 @@ public class VC_Item extends SuperActor {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 if (option.checkDisabled()) {
-                    SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__CLICK_DISABLED);
+                    SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__CLICK_DISABLED);
                     return;
                 }
                 container.setSelected(option);

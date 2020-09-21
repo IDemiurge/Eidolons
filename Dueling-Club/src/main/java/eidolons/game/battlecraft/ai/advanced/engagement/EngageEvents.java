@@ -10,7 +10,7 @@ import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.ENGAGEMENT_LEVEL;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.DequeImpl;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 import main.system.text.LogManager;
 
 import java.util.LinkedHashSet;
@@ -156,7 +156,7 @@ public class EngageEvents extends ExplorationHandler {
             logReveal(source, object);
         }
         if (isDetectionSoundOn(source, object)) {
-            addEvent(new EngageEvent(source, object, SoundMaster.SOUNDS.ALERT));
+            addEvent(new EngageEvent(source, object, AudioEnums.SOUNDS.ALERT));
         }
     }
 

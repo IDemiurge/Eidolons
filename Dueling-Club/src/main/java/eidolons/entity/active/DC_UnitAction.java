@@ -21,7 +21,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.List;
 
@@ -149,12 +149,12 @@ public class DC_UnitAction extends DC_ActiveObj {
     }
 
     public void playActivateSound() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ACTIVATE);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK_ACTIVATE);
     }
 
     @Override
     public void playCancelSound() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.ACTION_CANCELLED);
     }
 
     @Override

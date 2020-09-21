@@ -20,6 +20,7 @@ import main.game.bf.directions.DIRECTION;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.Flags;
 import main.system.math.MathMaster;
+import main.system.sound.AudioEnums;
 import main.system.sound.SoundMaster;
 
 import java.util.ArrayList;
@@ -200,7 +201,7 @@ public abstract class InputController implements InputProcessor {
                 return false;
         }
         if (onPassInput != null) {
-            SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.CLICK);
+            SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK);
 
             main.system.auxiliary.log.LogMaster.devLog("onPassInput.run() ");
             onPassInput.run();

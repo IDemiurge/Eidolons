@@ -6,8 +6,8 @@ import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.system.sound.SoundMaster.SOUNDS;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums.SOUNDS;
+import main.system.sound.AudioEnums.STD_SOUNDS;
 
 public class SoundEffect extends DC_Effect {
     private STD_SOUNDS std_sound;

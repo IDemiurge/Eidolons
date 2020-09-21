@@ -12,6 +12,7 @@ import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.sound.AudioEnums;
 import main.system.sound.SoundMaster;
 import main.system.threading.TimerTaskMaster;
 import main.system.threading.WaitMaster;
@@ -71,7 +72,7 @@ public class AvSaveHandler {
 
     public static void saveAll() {
         ArcaneVault.setDirty(true);
-        SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.DONE);
+        SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.DONE);
         Weaver.inNewThread(new Runnable() {
             public void run() {
                 saveAllTypes();
@@ -108,7 +109,7 @@ public class AvSaveHandler {
                 }
             }
 
-            SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.CHECK);
+            SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CHECK);
             ArcaneVault.setDirty(false);
 
             AvVersionHandler.xmlSaved();
@@ -168,7 +169,7 @@ public class AvSaveHandler {
             XML_Writer.writeXML_ForTypeGroup(obj_type);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-            SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.FAIL);
+            SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.FAIL);
             return;
         }
 

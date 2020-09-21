@@ -17,8 +17,8 @@ import main.system.PathUtils;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
-import main.system.sound.SoundMaster.SOUNDS;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums.SOUNDS;
+import main.system.sound.AudioEnums.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 
 import javax.sound.sampled.*;
@@ -515,7 +515,7 @@ public class Player {
     }
 
     private String getCustomSoundsetPath(SOUNDS sound_type, Obj obj) {
-        boolean add_name = sound_type != SOUNDS.READY;
+        boolean add_name = sound_type != AudioEnums.SOUNDS.READY;
 
         String string = SoundMaster.getPath()
                 + getBasePath(obj.getProperty(G_PROPS.CUSTOM_SOUNDSET), false);
@@ -531,7 +531,7 @@ public class Player {
     }
 
     public void playHitSound(Obj obj) {
-        playEffectSound(SOUNDS.HIT, obj);
+        playEffectSound(AudioEnums.SOUNDS.HIT, obj);
     }
 
     public void playSkillAddSound(ObjType type, PARAMETER mastery, String masteryGroup, String rank) {

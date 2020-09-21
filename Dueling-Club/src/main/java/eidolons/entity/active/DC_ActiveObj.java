@@ -52,7 +52,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 import main.system.text.TextParser;
 
 import java.util.ArrayList;
@@ -348,7 +348,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public void playActivateSound() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK);
     }
 
     public Targeting getTargeting() {

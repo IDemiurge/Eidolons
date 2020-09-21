@@ -5,8 +5,8 @@ import eidolons.game.battlecraft.ai.advanced.engagement.EngagementHandler;
 import eidolons.game.battlecraft.ai.advanced.engagement.PlayerStatus;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.core.game.DC_Game;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import main.entity.Ref;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
@@ -110,7 +110,7 @@ public class ExplorationMaster {
             game.getLogManager().logBattleEnds();
             game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.COMBAT_ENDS, new Ref(game)));
             getResetter().setResetNotRequired(false);
-            MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.ATMO);
+            MusicMaster.getInstance().scopeChanged(MusicEnums.MUSIC_SCOPE.ATMO);
         } else {
             GuiEventManager.trigger(GuiEventType.COMBAT_STARTED );
             game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.COMBAT_STARTS, new Ref(game)));

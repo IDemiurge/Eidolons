@@ -39,8 +39,8 @@ import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
+import main.system.sound.AudioEnums;
 import main.system.sound.SoundMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.TimerTaskMaster;
 import main.utilities.search.TypeFinder;
 
@@ -100,7 +100,7 @@ public class AvModelHandler {
         ArcaneVault.getMainBuilder().getTreeBuilder().newType(newName, node, selected,
                 upgrade);
 
-        SoundMaster.playStandardSound(STD_SOUNDS.CLOSE);
+        SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLOSE);
         ArcaneVault.setDirty(true);
     }
 
@@ -589,7 +589,7 @@ public class AvModelHandler {
         ArcaneVault.getMainBuilder().getTreeBuilder().remove();
         ArcaneVault.setDirty(true);
 
-        SoundMaster.playStandardSound(STD_SOUNDS.ERASE);
+        SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.ERASE);
 
     }
 

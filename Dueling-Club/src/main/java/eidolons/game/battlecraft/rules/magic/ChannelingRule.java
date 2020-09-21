@@ -19,7 +19,7 @@ import main.elements.costs.CostRequirements;
 import main.elements.costs.Costs;
 import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,8 +75,8 @@ public class ChannelingRule {
 
     public static boolean activateChanneing(Spell spell) {
 
-        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.DARK, spell.getOwnerObj());
-        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.EVIL, spell.getOwnerObj());
+        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.DARK, spell.getOwnerObj());
+        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.EVIL, spell.getOwnerObj());
         // ActiveAbility spell_ability = ActivesConstructor
         // .mergeActiveList(spell, TARGETING_MODE.SINGLE);
         spell.getOwnerUnit().getHandler().initChannelingSpellData(spell);

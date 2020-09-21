@@ -52,7 +52,7 @@ import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.Manager;
 import main.system.auxiliary.log.LogMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -290,7 +290,7 @@ public class DC_GameManager extends GameManager {
 
         }
 
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_TARGET_SELECTED);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK_TARGET_SELECTED);
         try {
             selectingStopped(false);
         } catch (Exception e) {
@@ -356,7 +356,7 @@ public class DC_GameManager extends GameManager {
         if (selectingSet.isEmpty()) {
             //            getGame().getToolTipMaster().addTooltip(SCREEN_POSITION.ACTIVE_UNIT_BOTTOM,
             //             "No targets available!");
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.ACTION_CANCELLED);
             return null;
         }
         setSelecting(true);

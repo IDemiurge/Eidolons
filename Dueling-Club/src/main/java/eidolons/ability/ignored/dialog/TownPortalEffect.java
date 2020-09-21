@@ -10,7 +10,7 @@ import eidolons.system.audio.DC_SoundMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 
 public class TownPortalEffect extends DC_Effect { //TODO make this a subclass!
@@ -32,9 +32,9 @@ public class TownPortalEffect extends DC_Effect { //TODO make this a subclass!
                     CustomSpriteAnim anim = new CustomSpriteAnim(action, path) {
                     };
                     anim.setRef(ref);
-                    DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__TOWN_PORTAL_START);
+                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__TOWN_PORTAL_START);
                     anim.setOnDone(p -> {
-                        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__TOWN_PORTAL_DONE);
+                        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__TOWN_PORTAL_DONE);
                         Eidolons.onNonGdxThread(() ->
                                 getGame().getMetaMaster().getTownMaster().tryReenterTown());
                     });

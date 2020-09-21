@@ -12,8 +12,8 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.CounterMaster;
 import main.system.launch.CoreEngine;
+import main.system.sound.AudioEnums;
 import main.system.sound.SoundMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,7 +62,7 @@ public class ValueHelper {
     }
 
     public void promptSetValue() {
-        SoundMaster.playStandardSound(RandomWizard.random() ? STD_SOUNDS.OPEN : STD_SOUNDS.CLOCK);
+        SoundMaster.playStandardSound(RandomWizard.random() ? AudioEnums.STD_SOUNDS.OPEN : AudioEnums.STD_SOUNDS.CLOCK);
         if (getEntity() == null) {
             JOptionPane.showMessageDialog(parent, "ValueHelper:setValue: No Entity found!");
             return;
@@ -78,8 +78,8 @@ public class ValueHelper {
         }
         searches.push(value);
         setValue(value);
-        SoundMaster.playStandardSound(RandomWizard.random() ? STD_SOUNDS.CLOSE
-         : STD_SOUNDS.DONE2);
+        SoundMaster.playStandardSound(RandomWizard.random() ? AudioEnums.STD_SOUNDS.CLOSE
+         : AudioEnums.STD_SOUNDS.DONE2);
     }
 
     public void setValue(String valueName) {

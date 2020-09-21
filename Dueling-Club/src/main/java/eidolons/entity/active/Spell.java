@@ -22,7 +22,7 @@ import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 public class Spell extends DC_ActiveObj {
 
@@ -56,7 +56,7 @@ public class Spell extends DC_ActiveObj {
 
     @Override
     public void playCancelSound() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_CANCELLED);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.SPELL_CANCELLED);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class Spell extends DC_ActiveObj {
     }
 
     public void playActivateSound() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_ACTIVATE);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.SPELL_ACTIVATE);
     }
 
 

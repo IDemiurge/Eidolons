@@ -40,7 +40,7 @@ public class DialogueFactory {
             (String path) {
         String data = FileManager.readFile(path);
 
-        for (String contents : ContainerUtils.open(
+        for (String contents : ContainerUtils.openContainer(
                 data, DIALOGUE_SEPARATOR)) {
             String[] array = contents.split(ID_SEPARATOR);
             String name = array[0];

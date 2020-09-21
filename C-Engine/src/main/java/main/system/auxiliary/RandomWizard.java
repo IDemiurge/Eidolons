@@ -11,10 +11,10 @@ import main.system.datatypes.WeightMap;
 import main.system.math.MathMaster;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomWizard<E> {
-    public static final long seed = System.nanoTime();
-    static Random randomGenerator = new Random(seed);
+    static Random randomGenerator =  ThreadLocalRandom.current();
     private static boolean averaged;
     private static final Map<String, WeightMap> weighMapCache = new HashMap<>();
     private LinkedHashMap<Integer, E> invertedMap;

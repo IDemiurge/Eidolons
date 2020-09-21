@@ -4,6 +4,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -61,7 +62,7 @@ public class MazeHandler<T extends MazePuzzle> extends PuzzleHandler<T> {
     public void resetAndGlimpseMaze() {
         setup.reset();
         showMaze();
-        MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.SECRET);
+        MusicMaster.playMoment(MusicEnums.MUSIC_MOMENT.SECRET);
         WaitMaster.WAIT(puzzle.getGlimpseTime());
         hideMaze();
     }

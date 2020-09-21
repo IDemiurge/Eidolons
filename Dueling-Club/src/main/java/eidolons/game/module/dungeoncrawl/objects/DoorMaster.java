@@ -19,7 +19,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.Flags;
 import main.system.math.PositionMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +89,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
          new Event(STANDARD_EVENT_TYPE.DOOR_CLOSES,
          targetingRef));
         door.setState(DOOR_STATE.CLOSED);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CLICK_DISABLED);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__CLICK_DISABLED);
     }
 
     protected boolean checkAction(Unit unit, Door door, DOOR_ACTION sub) {
@@ -185,13 +185,13 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
             obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.DOOR_IS_UNLOCKED  , ref));
 //            GuiEventManager.trigger(GuiEventType.SINGLE_ANIM, LockKeyAnimation.class, ref);
             door.setState(DOOR_STATE.OPEN);
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__UNLOCK);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__UNLOCK);
             return;
         }
 //        door.setState(DOOR_STATE.OPEN);
         obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.DOOR_OPENS, ref));
         door.setState(DOOR_STATE.OPEN);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__GATE);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__GATE);
     }
 
 

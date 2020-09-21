@@ -21,8 +21,7 @@ import main.entity.obj.Obj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.math.MathMaster;
-import main.system.sound.SoundMaster.SOUNDS;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 /**
@@ -124,7 +123,7 @@ public class SpellExecutor extends Executor {
     @Override
     public boolean activate() {
         getAction().getOwnerObj().getRef().setID(Ref.KEYS.SPELL, getId());
-        DC_SoundMaster.playEffectSound(SOUNDS.PRECAST, getSpell());
+        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.PRECAST, getSpell());
         if (!ExplorationMaster.isExplorationOn())
             if (!channeling)
                 if (getAction().isChanneling()) {
@@ -138,8 +137,8 @@ public class SpellExecutor extends Executor {
 
     @Override
     public void resolve(ActionInput input) {
-        DC_SoundMaster.playEffectSound(SOUNDS.DARK, getAction().getOwnerObj());
-        DC_SoundMaster.playEffectSound(SOUNDS.EVIL, getAction().getOwnerObj());
+        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.DARK, getAction().getOwnerObj());
+        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.EVIL, getAction().getOwnerObj());
         if (!getRef().isQuiet()) {
             result = new Event(STANDARD_EVENT_TYPE.SPELL_BEING_RESOLVED, getRef()).fire();
             if (!result) {
@@ -152,7 +151,7 @@ public class SpellExecutor extends Executor {
         }
 
         applySpellpowerMod();
-        DC_SoundMaster.playEffectSound(SOUNDS.RESOLVE, getSpell());
+        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.RESOLVE, getSpell());
         super.resolve(input);
         if (result) {
             applyImpactSpecialEffect();
@@ -163,7 +162,7 @@ public class SpellExecutor extends Executor {
         }
         if (!result) {
             if (channeling) {
-                DC_SoundMaster.playEffectSound(SOUNDS.FAIL, getSpell());
+                DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.FAIL, getSpell());
                 if (!getRef().isQuiet()) {
                     new Event(STANDARD_EVENT_TYPE.CHANNELING_FAIL, getRef()).fire();
                 }
@@ -173,7 +172,7 @@ public class SpellExecutor extends Executor {
                 if (!getRef().isQuiet()) {
                     new Event(STANDARD_EVENT_TYPE.SPELL_RESISTED, getRef()).fire();
                 }
-                DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_RESISTED);
+                DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.SPELL_RESISTED);
             }
         } else {
 

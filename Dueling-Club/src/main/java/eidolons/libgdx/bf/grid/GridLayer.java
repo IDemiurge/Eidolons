@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.bf.grid.handlers.ColorHandler;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.game.bf.Coordinates;
 import main.system.launch.CoreEngine;
@@ -49,6 +51,10 @@ public abstract class GridLayer<T extends Actor> extends GroupX {
         // Color c = DC_Game.game.getColorMap().getOutput()[x][y];
         if (actor == null) {
             return;
+        }
+        if (ColorHandler.isStaticColors()){
+            if (actor.getColor().equals(GdxColorMaster.WHITE))
+                return;
         }
         Color c = DC_Game.game.getColorMap().getOutput().get(Coordinates.get(x, y));
         if (c == null) {

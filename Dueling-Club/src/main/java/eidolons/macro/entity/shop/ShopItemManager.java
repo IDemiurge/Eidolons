@@ -32,7 +32,7 @@ import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.launch.Flags;
 import main.system.math.MathMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.*;
 
@@ -422,7 +422,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
             gives = true;
         }
         if (transferred>0){
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__GOLD);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__GOLD);
         } else {
             return;
         }

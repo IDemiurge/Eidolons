@@ -3,8 +3,8 @@ package eidolons.game.battlecraft.logic.mission.universal;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.audio.MusicMaster.MUSIC_MOMENT;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.logic.battle.player.Player;
@@ -89,7 +89,7 @@ public class MissionOutcomeManager<E extends DungeonSequence> extends MissionHan
 
     public void victory() {
         outcome = true;
-        MusicMaster.playMoment(MUSIC_MOMENT.VICTORY);
+        MusicMaster.playMoment(MusicEnums.MUSIC_MOMENT.VICTORY);
         String message = "Victory!";
         SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
         end();

@@ -24,7 +24,7 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 
 import java.util.LinkedHashSet;
@@ -48,7 +48,7 @@ public class PuzzleActions extends PuzzleElement {
                     cell.setOverlayRotation(cell.getOverlayRotation() + 90 * (int) (arg));
 
                     if (cell.getOverlayRotation() % 360 == 0) {
-                        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.CLICK_ACTIVATE);
+                        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK_ACTIVATE);
                     }
                     GuiEventManager.trigger(GuiEventType.CELL_RESET, cell);
                     break;

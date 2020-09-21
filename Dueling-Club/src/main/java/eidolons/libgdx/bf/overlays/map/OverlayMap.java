@@ -10,6 +10,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.grid.handlers.ColorHandler;
 import eidolons.libgdx.bf.grid.handlers.GridManager;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.ScreenMaster;
@@ -26,6 +27,7 @@ public abstract class OverlayMap<T> extends SuperActor {
 
     protected Map<Coordinates, Object> map;
     protected Function<Coordinates, Color> colorFunc;
+    protected Map<Coordinates, Color> colorCache = new HashMap<>();
     protected List<Pair<Vector2, TextureRegion>> drawMap;
     protected Map<Vector2, TextureRegion> drawMapOver;
 
@@ -46,6 +48,8 @@ public abstract class OverlayMap<T> extends SuperActor {
 
     public void update(Map<Coordinates, Object> m) {
         map = m;
+        // colorCache.replaceAll(c-> map.containsKey(c) ? null : colorCache.get(c));
+        colorCache.keySet().removeAll(m.keySet());
         resetRequired = true;
     }
 
@@ -140,12 +144,11 @@ public abstract class OverlayMap<T> extends SuperActor {
         drawMap = new LinkedList<>();
         for (Coordinates coordinates : map.keySet()) {
             List<T> list = null;
-            if (map.get(coordinates) !=null) //TODO was supposed to check more..
+            if (map.get(coordinates) != null) //TODO was supposed to check more..
             {
                 T d = (T) map.get(coordinates);
                 list = ImmutableList.of(d);
-            }
-            else {
+            } else {
                 list = (List<T>) map.get(coordinates);
             }
             Vector2 v = getV(coordinates, map.get(coordinates));
@@ -168,7 +171,16 @@ public abstract class OverlayMap<T> extends SuperActor {
         if (colorFunc == null) {
             return true;
         }
-        Color color = colorFunc.apply(c);
+        Color color = null;
+        if (ColorHandler.isStaticColors()) {
+            color = colorCache.get(c);
+        }
+        if (colorCache == null) {
+            color = colorFunc.apply(c);
+            if (ColorHandler.isStaticColors()) {
+                colorCache.put(c, color);
+            }
+        }
 
         //can we store a function of color from time?
         if (color == null) {

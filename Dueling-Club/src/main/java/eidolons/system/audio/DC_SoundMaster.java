@@ -45,6 +45,7 @@ import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.launch.Flags;
+import main.system.sound.AudioEnums;
 import main.system.sound.Player;
 import main.system.sound.SoundMaster;
 
@@ -96,7 +97,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     public static void playTurnSound(BattleFieldObject unit) {
 //         setPositionFor(unit.getCoordinates());
-        getSoundPlayer().play(STD_SOUNDS.LAMP.getPath());
+        getSoundPlayer().play(AudioEnums.STD_SOUNDS.LAMP.getPath());
 
         playMoveSound(unit);
     }
@@ -115,7 +116,7 @@ public class DC_SoundMaster extends SoundMaster {
 //        unit.getGame().getDungeon().isSurface()
         if (unit.isPale() || unit.isImmaterial()) {
             if (!unit.isMine()) {
-                getPlayer().playEffectSound(SOUNDS.ALERT, unit);
+                getPlayer().playEffectSound(AudioEnums.SOUNDS.ALERT, unit);
             } else
                 getPlayer().playRandomSoundFromFolder(
                         "std/move pale/");
@@ -200,7 +201,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     }
 
-    public static String getEffectSoundName(SOUNDS sound_type) {
+    public static String getEffectSoundName(AudioEnums.SOUNDS sound_type) {
         switch (sound_type) {
             case TAUNT:
             case THREAT:
@@ -214,7 +215,7 @@ public class DC_SoundMaster extends SoundMaster {
         return sound_type.name();
     }
 
-    public static void playEffectSound(SOUNDS sound_type, Obj obj) {
+    public static void playEffectSound(AudioEnums.SOUNDS sound_type, Obj obj) {
         setPositionFor(obj.getCoordinates());
         getPlayer().playEffectSound(sound_type, obj);
     }
@@ -297,10 +298,10 @@ public class DC_SoundMaster extends SoundMaster {
     public static void playSoundForModeToggle(boolean on_off, DC_ActiveObj action, String mode) {
         // STD_ACTION_MODES
         if (on_off) {
-            getPlayer().playStandardSound(STD_SOUNDS.ON_OFF);
+            getPlayer().playStandardSound(AudioEnums.STD_SOUNDS.ON_OFF);
         }// soundPlayer.playStandardSound(STD_SOUNDS.CHAIN);
         else {
-            getPlayer().playStandardSound(STD_SOUNDS.ButtonDown);
+            getPlayer().playStandardSound(AudioEnums.STD_SOUNDS.ButtonDown);
         }
 
     }
@@ -405,16 +406,16 @@ public class DC_SoundMaster extends SoundMaster {
         switch (part) {
             case PRECAST:
                 ChannelingRule.playChannelingSound(activeObj, activeObj.getOwnerUnit().getGender() == GENDER.FEMALE);
-                getPlayer().playEffectSound(SOUNDS.PRECAST, activeObj);
+                getPlayer().playEffectSound(AudioEnums.SOUNDS.PRECAST, activeObj);
                 break;
             case CAST:
-                getPlayer().playEffectSound(SOUNDS.CAST, activeObj);
+                getPlayer().playEffectSound(AudioEnums.SOUNDS.CAST, activeObj);
                 break;
             case RESOLVE:
-                getPlayer().playEffectSound(SOUNDS.RESOLVE, activeObj);
+                getPlayer().playEffectSound(AudioEnums.SOUNDS.RESOLVE, activeObj);
                 break;
             case MISSILE:
-                getPlayer().playEffectSound(SOUNDS.EFFECT, activeObj);
+                getPlayer().playEffectSound(AudioEnums.SOUNDS.EFFECT, activeObj);
                 break;
             case IMPACT:
                 playImpact(activeObj);
@@ -609,7 +610,7 @@ public class DC_SoundMaster extends SoundMaster {
                     activeObj.getIntParam(PARAMS.DAMAGE_LAST_AMOUNT) - activeObj.getIntParam(PARAMS.DAMAGE_LAST_DEALT)
             );
         } else {
-            getPlayer().playEffectSound(SOUNDS.IMPACT, activeObj);
+            getPlayer().playEffectSound(AudioEnums.SOUNDS.IMPACT, activeObj);
         }
 //        AudioMaster.getInstance().playRandomSound();
     }
@@ -636,7 +637,7 @@ public class DC_SoundMaster extends SoundMaster {
         if (value.contains(".")) {
             String[] parts = value.split(Pattern.quote("."));
             SOUNDSET set = new EnumMaster<SOUNDSET>().retrieveEnumConst(SOUNDSET.class, parts[0]);
-            SOUNDS type = new EnumMaster<SOUNDS>().retrieveEnumConst(SOUNDS.class, parts[1]);
+            AudioEnums.SOUNDS type = new EnumMaster<AudioEnums.SOUNDS>().retrieveEnumConst(AudioEnums.SOUNDS.class, parts[1]);
             playEffectSound(type, set, (int) (volume * 100), 0);
         } else {
             if (value.contains("/")) {

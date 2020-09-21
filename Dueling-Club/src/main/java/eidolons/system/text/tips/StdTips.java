@@ -5,7 +5,7 @@ import main.system.threading.WaitMaster;
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
 
 public enum  StdTips implements TxtTip{
-    FALLEN,
+    fallen,
 
     ;
     @Override

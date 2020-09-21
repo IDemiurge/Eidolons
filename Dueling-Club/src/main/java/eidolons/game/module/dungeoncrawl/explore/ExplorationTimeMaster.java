@@ -26,7 +26,7 @@ import main.system.auxiliary.NumberUtils;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import main.system.math.MathMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -129,7 +129,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     public Boolean playerWaits(float timeInSeconds, boolean rest) {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__ENTER);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__ENTER);
         if (wait(timeInSeconds, rest))
             return false;
         Boolean result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.WAIT_COMPLETE);

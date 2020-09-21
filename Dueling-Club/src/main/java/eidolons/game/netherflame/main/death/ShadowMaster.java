@@ -31,7 +31,7 @@ import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 
 import static eidolons.system.text.tips.TIP.*;
@@ -95,7 +95,7 @@ public class ShadowMaster extends MetaGameHandler<NF_Meta> {
         summonActive = true;
         getGame().getLoop().setPaused(true);
         AnimMaster.waitForAnimations(null);
-        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__SHADOW_FALL);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__SHADOW_FALL);
         ShadowAnimation anim = new ShadowAnimation(true, (Entity) event.getRef().getActive(),
                 () -> afterFall(event));
         GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, anim);
@@ -103,7 +103,7 @@ public class ShadowMaster extends MetaGameHandler<NF_Meta> {
     }
 
     private void afterFall(Event event) {
-        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__SHADOW_PRE_SUMMON);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__SHADOW_PRE_SUMMON);
         GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 1);
         WaitMaster.WAIT(600);
         if (Eidolons.getMainHero().isDead()) {
@@ -207,7 +207,7 @@ public class ShadowMaster extends MetaGameHandler<NF_Meta> {
                 .getMessage();
         String btn = "Onward!";
         if (getMaster().getDefeatHandler().isNoLivesLeft()) {
-            DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__DEFEAT);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__DEFEAT);
             msg = DEATH_SHADE_FINAL.getMessage();
             //              btn="Into Evernight";
             btn = "Enter the Void";
@@ -247,12 +247,12 @@ public class ShadowMaster extends MetaGameHandler<NF_Meta> {
         shade.setDetectedByPlayer(true);
         getGame().getLoop().setPaused(false);
         //horrid sound!
-        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__SHADOW_SUMMON);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__SHADOW_SUMMON);
 
         ShadowAnimation anim = new ShadowAnimation(false, (Entity) event.getRef().getActive(),
                 () -> {
                     GuiEventManager.trigger(GuiEventType.POST_PROCESSING, PostFxUpdater.POST_FX_TEMPLATE.UNCONSCIOUS);
-                    DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__DREAD);
+                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__DREAD);
                 });
         GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, anim);
         shadowAlive = true;

@@ -1,12 +1,11 @@
 package main.system.auxiliary;
 
-import main.system.auxiliary.data.ListMaster;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-public class ClassMaster {
+public class ClassMaster<T> {
 
     public static boolean isInstanceOf(Object object, Class<?> CLASS) {
         if (object == null || CLASS == null) {
@@ -23,16 +22,21 @@ public class ClassMaster {
         return false;
     }
 
-    public static List<Object> getInstances(Object object, Class<?> CLASS) {
-        List<Object> list = new ArrayList<>();
+    public static  <T> List<T> getInstances(Object object, Class<?> CLASS) {
+        return new ClassMaster<T>().getInstances_(object, CLASS);
+    }
+    public   List<T> getInstances_(Object object, Class<?> CLASS) {
+        List<T> list = new ArrayList<>();
 
         if (isInstanceOf(object, CLASS)) {
-            return ListMaster.toList(object);
+            return
+                    (List<T>) Collections.singletonList(object);
+            // return new ListMaster<T>().asList((T) object);
         }
-        if (object instanceof Collection) {
-            Collection collection = (Collection) object;
+        if (object instanceof Iterable) {
+            Iterable collection = (Iterable) object;
             for (Object o : collection) {
-                list.addAll(getInstances(o, CLASS));
+                list.addAll(getInstances_(o, CLASS));
             }
         }
 

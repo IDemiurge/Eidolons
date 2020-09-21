@@ -19,7 +19,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.launch.Flags;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 
 import java.util.HashMap;
@@ -162,7 +162,7 @@ public class Awakener {
         ;
 
         public int waitTime;
-        SoundMaster.STD_SOUNDS sound;
+        AudioEnums.STD_SOUNDS sound;
         boolean engage;
         boolean shake;
         int timelimit; //after X seconds in real/combat, they'll freeze again

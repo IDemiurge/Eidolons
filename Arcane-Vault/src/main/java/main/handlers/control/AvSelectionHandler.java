@@ -36,6 +36,7 @@ public class AvSelectionHandler {
         }
         TabBuilder tb = ArcaneVault.getMainBuilder().getTabBuilder().getSubTabs(code);
         tb.getTabbedPane().setSelectedIndex(index);
+
         // getOrCreate path for node? I could keep some map from type to path...
         if (!select) {
             if (tb.getTree().getTreeSelectionListeners().length != 1) {
@@ -61,6 +62,8 @@ public class AvSelectionHandler {
 
         TreeMaster.collapseTree(tb.getTree());
         DefaultMutableTreeNode node = TreeMaster.findNode(tb.getTree(), type.getName());
-        tb.getTree().setSelectionPath(new TreePath(node.getPath()));
+        TreePath path = new TreePath(node.getPath());
+        tb.getTree().setSelectionPath(path);
+        tb.getTree().scrollPathToVisible(path);
     }
 }

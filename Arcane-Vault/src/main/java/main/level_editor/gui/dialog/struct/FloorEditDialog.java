@@ -3,7 +3,7 @@ package main.level_editor.gui.dialog.struct;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.libgdx.GdxImageMaster;
-import eidolons.system.audio.MusicMaster;
+import eidolons.system.audio.MusicEnums;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.system.MetaEnums;
@@ -79,7 +79,7 @@ public class FloorEditDialog extends DataEditDialog<LevelStructure.FLOOR_VALUES,
             case vfx_template:
                 return GenericEnums.VFX.class;
             case ambience:
-                return MusicMaster.AMBIENCE.class;
+                return MusicEnums.AMBIENCE.class;
 
         }
         return null;

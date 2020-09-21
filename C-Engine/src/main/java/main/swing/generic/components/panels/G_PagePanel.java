@@ -10,8 +10,8 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
+import main.system.sound.AudioEnums;
 import main.system.sound.SoundMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -53,7 +53,7 @@ public abstract class G_PagePanel<E> extends G_Panel {
     protected int createPageIndex;
     private boolean dirty = true;
     private MouseListener pageMouseListener;
-    private PageWheelListener pageWheelListener;
+    private final PageWheelListener pageWheelListener;
 
     public G_PagePanel(int pageSize, boolean vertical, int version) {
         this.pageSize = pageSize;
@@ -197,7 +197,7 @@ public abstract class G_PagePanel<E> extends G_Panel {
 
     public void flipPage(boolean forward) {
         if (pages.size() < 2) {
-            SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+            SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK_BLOCKED);
             return;
             // TODO replace controls with other visuals?
         }
@@ -208,7 +208,7 @@ public abstract class G_PagePanel<E> extends G_Panel {
             currentIndex++;
             if (currentIndex > pages.size() - 1) {
                 if (!isFlipOver()) {
-                    SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+                    SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK_BLOCKED);
                     currentIndex = pages.size() - 1;
                     return;
                 }
@@ -218,14 +218,14 @@ public abstract class G_PagePanel<E> extends G_Panel {
             currentIndex--;
             if (currentIndex < 0) {
                 if (!isFlipOver()) {
-                    SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+                    SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK_BLOCKED);
                     currentIndex = 0;
                     return;
                 }
                 currentIndex = pages.size() - 1;
             }
         }
-        SoundMaster.playStandardSound(STD_SOUNDS.PAGE_TURNED);
+        SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.PAGE_TURNED);
         refresh();
 
     }

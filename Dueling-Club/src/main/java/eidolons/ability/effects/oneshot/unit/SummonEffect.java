@@ -37,7 +37,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
-import main.system.sound.SoundMaster.SOUNDS;
+import main.system.sound.AudioEnums;
 
 public class SummonEffect extends DC_Effect implements OneshotEffect {
 
@@ -178,7 +178,7 @@ public class SummonEffect extends DC_Effect implements OneshotEffect {
         }
 
 
-        DC_SoundMaster.playEffectSound(SOUNDS.READY, unit);
+        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.READY, unit);
         EUtils.showInfoText(true, unit.getName() + " is summoned");
         return true;
     }

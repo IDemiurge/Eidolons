@@ -155,9 +155,9 @@ public class Deity extends Entity {
     public void init() {
 
         initEmblem();
-        initFriendDeities();
-        initAlliedDeities();
-        initEnemyDeities();
+        // initFriendDeities();
+        // initAlliedDeities();
+        // initEnemyDeities();
         toBase();
         // initUnitPool();
 

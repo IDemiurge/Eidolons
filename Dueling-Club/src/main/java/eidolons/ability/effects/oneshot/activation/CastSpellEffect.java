@@ -7,7 +7,7 @@ import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class CastSpellEffect extends MicroEffect implements OneshotEffect {
                  active.getOwnerUnit().getName()
                   + "'s channeling has failed ("
                   + active.getName() + ")");
-                DC_SoundMaster.playStandardSound(STD_SOUNDS.FAIL);
+                DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.FAIL);
                 return false;
             }
 
@@ -52,7 +52,7 @@ public class CastSpellEffect extends MicroEffect implements OneshotEffect {
                  active.getOwnerUnit().getName()
                   + "'s channeling has been cancelled ("
                   + active.getName() + ")");
-                DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_CANCELLED);
+                DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.SPELL_CANCELLED);
                 return false;
             }
         }

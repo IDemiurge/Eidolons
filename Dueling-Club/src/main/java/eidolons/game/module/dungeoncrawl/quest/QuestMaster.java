@@ -6,6 +6,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.text.tips.TipMessageMaster;
 import eidolons.system.text.tips.TipMessageSource;
@@ -19,7 +20,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Strings;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -61,7 +62,7 @@ public class QuestMaster extends MetaGameHandler {
                     } else {
                         questTaken(p.get().toString());
                     }
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_TAKEN);
+                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__QUEST_TAKEN);
                 });
         GuiEventManager.bind(GuiEventType.QUEST_CANCELLED,
                 p -> {
@@ -70,7 +71,7 @@ public class QuestMaster extends MetaGameHandler {
                     } else
                         questCancelled(p.get().toString());
 
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_CANCELLED);
+                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__QUEST_CANCELLED);
                 });
         GuiEventManager.bind(GuiEventType.QUESTS_UPDATE_REQUIRED,
                 p -> {
@@ -138,7 +139,7 @@ public class QuestMaster extends MetaGameHandler {
                     Strings.NEW_LINE + quest.getProgressText() + Strings.NEW_LINE +
                     quest.getDescription();
             if (ExplorationMaster.isExplorationOn())
-                MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.TOWN);
+                MusicMaster.playMoment(MusicEnums.MUSIC_MOMENT.TOWN);
 
             TipMessageMaster.tip(new TipMessageSource(txt, type.getImagePath(), "Onward!", false, () -> {
             }));
@@ -254,7 +255,7 @@ public class QuestMaster extends MetaGameHandler {
         updateQuests();
         quest.getReward().award(Eidolons.getMainHero(), true);
         quest.setRewardTaken(true);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_COMPLETED);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__QUEST_COMPLETED);
     }
 
     public Quest getQuest(String string) {

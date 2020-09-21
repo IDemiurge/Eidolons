@@ -9,7 +9,7 @@ import main.ability.effects.OneshotEffect;
 import main.entity.obj.Obj;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.LogMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,31 +36,21 @@ public class WatchActionEffect extends DC_Effect implements OneshotEffect {
             if (list.contains(ref.getTargetObj())) {
                 list.remove(ref.getTargetObj());
                 if (RandomWizard.random()) {
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.BACK);
+                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.BACK);
                 } else {
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.CLOSE);
+                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLOSE);
                 }
                 LogMaster.log(1, sourceObj.getName() + " no longer watching "
-                 + ref.getTargetObj().getNameIfKnown());
+                        + ref.getTargetObj().getNameIfKnown());
                 return true;
             } else if (!list.isEmpty()) {
-                if (RandomWizard.random()) {
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__BLOCKED);
-                } else {
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ERROR);
-                }
-                // if (maxUnitsWatched<=1)
+                DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK_ERROR);
                 return false;
             }
         }
         list.add((DC_Obj) ref.getTargetObj());
         if (!alert) {
-            if (RandomWizard.random()) // (sourceObj.isMine())
-            {
-                DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__KNIFE);
-            } else {
-                DC_SoundMaster.playStandardSound(STD_SOUNDS.NOTE);
-            }
+                DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NOTE);
         }
         return true;
 

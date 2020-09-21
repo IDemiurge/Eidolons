@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 
 /**
  * Created by JustMe on 4/19/2018.
@@ -36,7 +36,7 @@ public class SymbolButton extends Button implements SmartButton{
     }
 
     @Override
-    public SoundMaster.BUTTON_SOUND_MAP getSoundMap() {
+    public AudioEnums.BUTTON_SOUND_MAP getSoundMap() {
         return null;
     }
 

@@ -61,18 +61,16 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         }
         Set<Coordinates> inner = module.initCoordinateSet(false);
         if (!modules.contains(module)) {
-            for (int i = module.getX(); i-module.getX()  < this.module.getEffectiveWidth(true); i++) {
-                for (int j = module.getY(); j-module.getY()  < this.module.getEffectiveHeight(true); j++) {
+            for (int i = module.getX(); i - module.getX() < this.module.getEffectiveWidth(true); i++) {
+                for (int j = module.getY(); j - module.getY() < this.module.getEffectiveHeight(true); j++) {
                     Coordinates o = Coordinates.get(i, j);
                     DC_Cell cell = cells[i][j];
                     cell.setModule(module);
-                    if (!inner.contains(o)  ) {
+                    if (!inner.contains(o)) {
                         cell.setVOID(true);
-                    } else
-                    if ( cell.getMarks().contains(CONTENT_CONSTS.MARK._void)  ) {
+                    } else if (cell.getMarks().contains(CONTENT_CONSTS.MARK._void)) {
                         cell.setVOID(true);
-                    } else
-                    if (this.module.getVoidCells().contains(o)) {
+                    } else if (this.module.getVoidCells().contains(o)) {
                         cell.setVOID(true);
                     }
                 }
@@ -103,12 +101,14 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
 
     public void resetObjCells() {
-        for (int i = module.getX(); i-module.getX()  < this.module.getEffectiveWidth(true); i++) {
-            for (int j = module.getY(); j-module.getY()  < this.module.getEffectiveHeight(true); j++) {
-                    DC_Cell cell = cells[i][j];
-                if (cell.isObjectsModified() || (!CoreEngine.isWeakCpu()&&!CoreEngine.isWeakGpu())
-                || (!ExplorationMaster.isExplorationOn() && cell.isUnitsHaveMovedHere()))
-                    //TODO CORE Review
+        boolean weak = CoreEngine.isWeakCpu() || CoreEngine.isWeakGpu();
+        for (int i = module.getX(); i - module.getX() < this.module.getEffectiveWidth(true); i++) {
+            for (int j = module.getY(); j - module.getY() < this.module.getEffectiveHeight(true); j++) {
+                DC_Cell cell = cells[i][j];
+
+                if (cell.isObjectsModified()
+                        || (!weak && cell.isPlayerHasSeen() && !ExplorationMaster.isExplorationOn() && cell.isUnitsHaveMovedHere()))
+                //TODO CORE Review
                 {
                     cell.resetObjectArrays();
                     cell.setObjectsModified(false);
@@ -190,7 +190,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         }
         for (int i = min + 1; i < max; i++) {
             Coordinates c = (x_y) ? Coordinates.get(xy, i) : Coordinates.get(i, xy);
-            Set<BattleFieldObject> objects = game.getObjMaster().getObjectsOnCoordinate(c, false );
+            Set<BattleFieldObject> objects = game.getObjMaster().getObjectsOnCoordinate(c, false);
             for (BattleFieldObject obj : objects) {
                 if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
                     return false;
@@ -242,7 +242,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     }
 
     public DC_Cell getCell(Coordinates coordinates) {
-//        coordinates = coordinates.getOffset(game.getModule().getOrigin().negative());
+        //        coordinates = coordinates.getOffset(game.getModule().getOrigin().negative());
         try {
             return cells[coordinates.x][coordinates.y];
         } catch (Exception e) {
@@ -264,6 +264,6 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     }
 
     public Coordinates getModuleCoordinates(int x, int y) {
-        return Coordinates.get(x+this.x1, y+this.y1);
+        return Coordinates.get(x + this.x1, y + this.y1);
     }
 }

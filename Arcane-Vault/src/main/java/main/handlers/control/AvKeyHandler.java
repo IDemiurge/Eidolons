@@ -17,11 +17,9 @@ public class AvKeyHandler extends AvHandler implements KeyListener {
 
     private static final char DELETE_HOTKEY_CHAR = 'w';
     private static final char COPY_VALUES_HOTKEY_CHAR = 'c';
-    private final DC_Game game;
 
     public AvKeyHandler(AvManager manager) {
         super(manager);
-        game = DC_Game.game;
     }
 
     @Override
@@ -106,8 +104,8 @@ public class AvKeyHandler extends AvHandler implements KeyListener {
     }
 
     private void runValueHelper() {
-        game.getValueHelper().setEntity(ArcaneVault.getSelectedType());
-        game.getValueHelper().promptSetValue();
+        DC_Game. game.getValueHelper().setEntity(ArcaneVault.getSelectedType());
+        DC_Game. game.getValueHelper().promptSetValue();
         ArcaneVault.getMainBuilder().refresh();
         ArcaneVault.getMainBuilder().getEditViewPanel().refresh();
     }

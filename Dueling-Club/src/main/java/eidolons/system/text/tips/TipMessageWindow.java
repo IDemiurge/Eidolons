@@ -41,7 +41,7 @@ public class TipMessageWindow extends TablePanelX implements OverlayingUI {
             setVisible(false);
             return; //TODO ....
         }
-//        setSize(source.getWidth(), source.getHeight());
+        //        setSize(source.getWidth(), source.getHeight());
         if (!StringMaster.isEmpty(source.title)) {
 
         }
@@ -61,11 +61,14 @@ public class TipMessageWindow extends TablePanelX implements OverlayingUI {
                 row();
         }
         String message = source.message;
-        message = TextParser.parse(message, Eidolons.getMainHero().getRef());
+        if (message == null) {
+            message = "";
+        } else
+            message = TextParser.parse(message, Eidolons.getMainHero().getRef());
         if (large) {
             label = new LabelX(message, StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 21));
         } else {
-//            label = new LabelX(source.message, StyleHolder.getDefaultHiero());
+            //            label = new LabelX(source.message, StyleHolder.getDefaultHiero());
             label = new LabelX(message, StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
         }
         if (over) {
@@ -96,12 +99,10 @@ public class TipMessageWindow extends TablePanelX implements OverlayingUI {
             Runnable runnable = source.btnRun[i++];
             Cell cell = btnsTable.add(new SmartTextButton(button, ButtonStyled.STD_BUTTON.MENU,
                     () -> {
-                        if (!source.isNonGdxThread())
-                        {
+                        if (!source.isNonGdxThread()) {
                             runnable.run();
                             WaitMaster.receiveInput(source.msgChannel, button);
-                        }
-                        else
+                        } else
                             Eidolons.onThisOrNonGdxThread(() -> {
                                 runnable.run();
                                 WaitMaster.receiveInput(source.msgChannel, button);
@@ -143,31 +144,31 @@ public class TipMessageWindow extends TablePanelX implements OverlayingUI {
             imageContainer.remove();
             addActor(imageContainer);
             GdxMaster.center(imageContainer);
-            imageContainer.setY(imageContainer.getY() + getHeight()/2);
+            imageContainer.setY(imageContainer.getY() + getHeight() / 2);
 
-            ImageContainer c=null ;
+            ImageContainer c = null;
             addActor(c = new ImageContainer("ui/INK BLOTCH.png"));
-//            c.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_SPEAKER);
-            c.setColor(1,1,1,0.6f);
-            c.setOrigin(c.getWidth()/2, c.getHeight()/2);
+            //            c.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_SPEAKER);
+            c.setColor(1, 1, 1, 0.6f);
+            c.setOrigin(c.getWidth() / 2, c.getHeight() / 2);
             c.setRotation(90);
             GdxMaster.center(c);
             label.remove();
             addActor(label);
-            label.setWidth(label.getPrefWidth()+200);
-            label.setHeight(getHeight()-100);
+            label.setWidth(label.getPrefWidth() + 200);
+            label.setHeight(getHeight() - 100);
             label.setZigZagLines(true);
             label.setWrap(true);
 
 
             GdxMaster.center(label);
-            label.setX(label.getX() + label.getWidth()/10);
+            label.setX(label.getX() + label.getWidth() / 10);
 
             btnsTable.remove();
             addActor(btnsTable);
             GdxMaster.center(btnsTable);
-            btnsTable.setY(  btnsTable.getHeight()/2);
-//            btnsTable.setY(0);
+            btnsTable.setY(btnsTable.getHeight() / 2);
+            //            btnsTable.setY(0);
 
         }
 

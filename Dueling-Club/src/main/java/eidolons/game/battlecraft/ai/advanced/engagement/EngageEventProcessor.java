@@ -13,8 +13,8 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
+import main.system.sound.AudioEnums;
 import main.system.sound.SoundFx;
-import main.system.sound.SoundMaster;
 import main.system.text.LogManager;
 
 import static main.system.auxiliary.log.LogMaster.log;
@@ -64,8 +64,8 @@ public class EngageEventProcessor {
 
                     //depend on difficulty
                     DC_SoundMaster.playStandardSound(RandomWizard.random()
-                            ? SoundMaster.STD_SOUNDS.NEW__BATTLE_START
-                            : SoundMaster.STD_SOUNDS.NEW__BATTLE_START2);
+                            ? AudioEnums.STD_SOUNDS.NEW__BATTLE_START
+                            : AudioEnums.STD_SOUNDS.NEW__BATTLE_START2);
                     break;
                 case combat_started:
                     master.switchExplorationMode(false);
@@ -86,8 +86,8 @@ public class EngageEventProcessor {
                 case combat_end:
                     //sound here?
                     DC_SoundMaster.playStandardSound(RandomWizard.random()
-                            ? SoundMaster.STD_SOUNDS.NEW__BATTLE_END
-                            : SoundMaster.STD_SOUNDS.NEW__BATTLE_END2);
+                            ? AudioEnums.STD_SOUNDS.NEW__BATTLE_END
+                            : AudioEnums.STD_SOUNDS.NEW__BATTLE_END2);
                     master.getEngagementHandler().addEvent(EngageEvent.ENGAGE_EVENT.combat_ended,
                             2f);
                     break;
@@ -95,7 +95,7 @@ public class EngageEventProcessor {
                     GuiEventManager.triggerWithParams(GuiEventType.GRID_OBJ_ANIM, event.arg, event.source, event.graphicData);
                     break;
                 case sound:
-                    DC_SoundMaster.playEffectSound((SoundMaster.SOUNDS) event.arg, event.source);
+                    DC_SoundMaster.playEffectSound((AudioEnums.SOUNDS) event.arg, event.source);
                     break;
                 case popup:
                     popup(event.arg.toString());

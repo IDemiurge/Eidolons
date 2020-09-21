@@ -27,6 +27,7 @@ import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.sound.AudioEnums;
 import main.system.sound.SoundMaster;
 
 import java.util.ArrayList;
@@ -114,7 +115,7 @@ public class FloorManager {
         EidolonsGame.lvlPath = FileManager.formatPath(
                 DC_Game. game.getMetaMaster().getMetaDataManager().getSoloDungeonPath(),true,true).
                 replace(PathFinder.getDungeonLevelFolder().toLowerCase(), "");
-        SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.CLICK_ACTIVATE);
+        SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK_ACTIVATE);
         main.system.auxiliary.log.LogMaster.log(1, "floorSelected: " + floor.getName());
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(SCREEN_TYPE.EDITOR, floor));
         GuiEventManager.trigger(GuiEventType.LE_FLOORS_TABS, floors);

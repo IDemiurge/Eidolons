@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleQuest;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleStats;
 import eidolons.game.core.EUtils;
 import eidolons.game.netherflame.main.pale.PaleAspect;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.text.tips.TextEvent;
 import eidolons.system.text.tips.TipMessageMaster;
@@ -127,7 +128,7 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         // if (puzzle.isFailed())
         //     return;
         log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle failed: " + this);
-        MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.FALL);
+        MusicMaster.playMoment(MusicEnums.MUSIC_MOMENT.FALL);
 
         EUtils.showInfoText(true, "Mystery fades: " + puzzle.getTitle());
         try {

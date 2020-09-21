@@ -53,15 +53,10 @@ public class ActionMaster {
     }
 
     public static void addAfter(Actor actor, Action action) {
-        try {
-            if (getActionsOfClass(actor, AfterAction.class).size() > 0) {
-                return;
-            }
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+        if (getActionsOfClass(actor, AfterAction.class).size() > 0) {
+            return;
         }
-        if (actor.getActions().size==0)
-        {
+        if (actor.getActions().size == 0) {
             addAction(actor, action);
             return;
         }
@@ -204,7 +199,7 @@ public class ActionMaster {
         //     action = (AlphaAction) getAction(FadeInAction.class);
         // } else {
         //     action = (AlphaAction) getAction(AlphaAction.class);
-            action.setAlpha(alpha);
+        action.setAlpha(alpha);
         // }
         // alpha < actor.getColor().a ? FadeOutAction.class : FadeInAction.class);
         action.setDuration(dur);
@@ -242,7 +237,7 @@ public class ActionMaster {
         if (!getActionsOfClass(actor, RotateByActionLimited.class).isEmpty()) {
             getActionsOfClass(actor, RotateByActionLimited.class).forEach(action -> {
                 if (action instanceof Action)
-                    actor.removeAction((Action) action);
+                    actor.removeAction(action);
             });
             actor.setRotation(from);
         }
@@ -348,11 +343,9 @@ public class ActionMaster {
         return addFadeInOrOut(actor, duration);
     }
 
-    public static List<Object> getActionsOfClass(Actor actor, Class<? extends Action> c) {
+    public static List<Action> getActionsOfClass(Actor actor, Class<? extends Action> c) {
         try {
-            return ClassMaster.getInstances(
-                    new ArrayList<>(Arrays.asList(actor.getActions().toArray())),
-                    c);
+            return new ClassMaster<Action>().getInstances_(actor.getActions(), c);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

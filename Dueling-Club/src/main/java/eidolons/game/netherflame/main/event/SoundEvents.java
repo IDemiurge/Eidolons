@@ -2,7 +2,7 @@ package eidolons.game.netherflame.main.event;
 
 import eidolons.game.core.Eidolons;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.system.audio.MusicMaster;
+import eidolons.system.audio.MusicEnums;
 import main.data.filesys.PathFinder;
 import main.entity.EntityCheckMaster;
 import main.game.logic.event.Event;
@@ -35,13 +35,13 @@ public class SoundEvents {
             switch (((Event.STANDARD_EVENT_TYPE) event.getType())) {
 
                 case VICTORY:
-                    return MusicMaster.MUSIC_MOMENT.VICTORY.getCorePath();
+                    return MusicEnums.MUSIC_MOMENT.VICTORY.getCorePath();
                 case DEFEAT:
-                    return MusicMaster.MUSIC_MOMENT.GAMEOVER.getCorePath();
+                    return MusicEnums.MUSIC_MOMENT.GAMEOVER.getCorePath();
                 case TOWN_ENTERED:
-                    return MusicMaster.MUSIC_MOMENT.TOWN.getCorePath();
+                    return MusicEnums.MUSIC_MOMENT.TOWN.getCorePath();
                 case SECRET_FOUND:
-                    return MusicMaster.MUSIC_MOMENT.SECRET.getCorePath();
+                    return MusicEnums.MUSIC_MOMENT.SECRET.getCorePath();
 
                 case ATTACK_MISSED:
 
@@ -59,13 +59,13 @@ public class SoundEvents {
                     }
 
 
-                    return MusicMaster.MUSIC_MOMENT.DEATH.getCorePath();
+                    return MusicEnums.MUSIC_MOMENT.DEATH.getCorePath();
 
                 case UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS:
                     if (event.getRef().getSourceObj() != Eidolons.MAIN_HERO) {
                         break;
                     }
-                    return MusicMaster.MUSIC_MOMENT.RISE.getCorePath();
+                    return MusicEnums.MUSIC_MOMENT.RISE.getCorePath();
 
                 case UNIT_HAS_FALLEN_UNCONSCIOUS:
                     if (event.getRef().getSourceObj().isDead()) {
@@ -76,7 +76,7 @@ public class SoundEvents {
                                 + "combat/fall/", true);
                         break;
                     }
-                    return MusicMaster.MUSIC_MOMENT.FALL.getCorePath();
+                    return MusicEnums.MUSIC_MOMENT.FALL.getCorePath();
 
             }
         }

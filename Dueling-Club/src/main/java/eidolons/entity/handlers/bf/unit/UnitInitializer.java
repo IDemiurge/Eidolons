@@ -11,6 +11,8 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.hero.DC_Attributes;
 import eidolons.entity.obj.hero.DC_Masteries;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleEnums;
+import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.game.SimulationGame;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
@@ -435,6 +437,9 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
 
     public void initIntegrityAlignments() {
+        if (!RuleKeeper.isRuleOn(RuleEnums.RULE.INTEGRITY)) {
+            return ;
+        }
         Map<PRINCIPLES, Integer> map = new RandomWizard<PRINCIPLES>().constructWeightMap(
                 getProperty(G_PROPS.PRINCIPLES), PRINCIPLES.class);
         for (PRINCIPLES principle : map.keySet()) {

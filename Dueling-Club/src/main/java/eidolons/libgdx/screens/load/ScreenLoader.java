@@ -21,6 +21,7 @@ import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.BlackoutOld;
 import eidolons.libgdx.screens.menu.AnimatedMenuScreen;
 import eidolons.macro.AdventureInitializer;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.options.OptionsMaster;
 import main.system.EventCallbackParam;
@@ -189,7 +190,7 @@ public class ScreenLoader {
             setInitRunning(false);
             return; // INIT FAILED or EXITED
         }
-        MusicMaster.preload(MusicMaster.MUSIC_SCOPE.ATMO);
+        MusicMaster.preload(MusicEnums.MUSIC_SCOPE.ATMO);
         Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
     }
 

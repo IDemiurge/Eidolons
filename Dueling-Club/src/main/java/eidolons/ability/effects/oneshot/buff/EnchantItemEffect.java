@@ -20,7 +20,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.impl.BuffType;
 import main.system.auxiliary.StringMaster;
-import main.system.sound.SoundMaster.SOUNDS;
+import main.system.sound.AudioEnums;
 
 public class EnchantItemEffect extends MicroEffect implements OneshotEffect {
 
@@ -73,7 +73,7 @@ public class EnchantItemEffect extends MicroEffect implements OneshotEffect {
         spell = (Spell) ref.getTargetObj();
 
         Effects effects = EffectMaster.getEffectsFromSpell(spell);
-        effects.add(new SoundEffect(SOUNDS.IMPACT, ref.getTargetObj()));
+        effects.add(new SoundEffect(AudioEnums.SOUNDS.IMPACT, ref.getTargetObj()));
         // TODO fail sound on energy lapse?
         // ++ energy bar for items!
         // String passive = "";

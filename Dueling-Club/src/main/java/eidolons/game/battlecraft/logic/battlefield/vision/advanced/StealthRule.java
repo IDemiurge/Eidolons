@@ -31,7 +31,7 @@ import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 
 import java.util.List;
 
@@ -63,7 +63,7 @@ public class StealthRule implements ActionRule {
         // hidden?
         target.setPlayerVisionStatus(PLAYER_VISION.DETECTED);
 
-        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.SPOT, target);
+        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.SPOT, target);
         target.setSneaking(false);
         // to be dispelled by renewed use of Invisiblity or special Hide
         // actions
@@ -282,7 +282,7 @@ public class StealthRule implements ActionRule {
             applySpotted(target);
         } else {
             if (RandomWizard.chance(10)) //TODO depends on n of units?
-                DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.ALERT, target);
+                DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.ALERT, target);
         }
 
         return result;

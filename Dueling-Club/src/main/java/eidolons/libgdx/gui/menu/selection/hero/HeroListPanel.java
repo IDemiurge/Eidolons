@@ -3,7 +3,8 @@ package eidolons.libgdx.gui.menu.selection.hero;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.system.text.HelpMaster;
 import main.entity.Entity;
-import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.BUTTON_SOUND_MAP;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -22,7 +23,7 @@ public class HeroListPanel extends ItemListPanel {
         //   .COMPLETE.toString());
     }
     protected BUTTON_SOUND_MAP getButtonSoundMap() {
-        return    BUTTON_SOUND_MAP.SELECTION_SHARP;
+        return    AudioEnums.BUTTON_SOUND_MAP.SELECTION_SHARP;
     }
     @Override
     public List<SelectableItemData> toDataList(Collection<? extends Entity> objTypes) {

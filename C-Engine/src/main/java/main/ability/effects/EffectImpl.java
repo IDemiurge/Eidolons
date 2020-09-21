@@ -19,8 +19,8 @@ import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
+import main.system.sound.AudioEnums;
 import main.system.sound.SoundMaster;
-import main.system.sound.SoundMaster.SOUNDS;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -256,7 +256,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         if (ref.getObj(KEYS.ABILITY) instanceof ActiveAbilityObj) {
             if (ref.getActive() != null) {
                 if (!ref.getActive().isEffectSoundPlayed()) {
-                    SoundMaster.playEffectSound(SOUNDS.EFFECT, (Obj) ref.getActive());
+                    SoundMaster.playEffectSound(AudioEnums.SOUNDS.EFFECT, (Obj) ref.getActive());
                     ref.getActive().setEffectSoundPlayed(true);
                 }
             }

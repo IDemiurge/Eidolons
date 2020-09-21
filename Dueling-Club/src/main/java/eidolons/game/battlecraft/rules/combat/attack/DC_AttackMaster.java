@@ -36,7 +36,7 @@ import main.game.logic.event.EventMaster;
 import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.Flags;
-import main.system.sound.SoundMaster.SOUNDS;
+import main.system.sound.AudioEnums;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 public class DC_AttackMaster {
@@ -245,7 +245,7 @@ public class DC_AttackMaster {
             //TODO interrupted!
             return false;
         }
-        DC_SoundMaster.playEffectSound(SOUNDS.ATTACK, attacker); // TODO revamp
+        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.ATTACK, attacker); // TODO revamp
 
         if (action.isRanged()) {
             DC_SoundMaster.playRangedAttack(getAttackWeapon(ref, offhand));

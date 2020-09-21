@@ -11,8 +11,9 @@ import eidolons.system.controls.GlobalController;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.BUTTON_SOUND_MAP;
+import main.system.sound.AudioEnums.STD_SOUNDS;
 
 /**
  * Created by JustMe on 12/1/2017.
@@ -105,11 +106,11 @@ public class SmartTextButton extends TextButton implements SmartButton {
             }
             switch (style) {
                 case STAT:
-                    return BUTTON_SOUND_MAP.STAT;
+                    return AudioEnums.BUTTON_SOUND_MAP.STAT;
                 case TAB_HIGHLIGHT:
-                    return BUTTON_SOUND_MAP.TAB;
+                    return AudioEnums.BUTTON_SOUND_MAP.TAB;
                 case MENU:
-                    return BUTTON_SOUND_MAP.MENU;
+                    return AudioEnums.BUTTON_SOUND_MAP.MENU;
             }
         }
         return null;

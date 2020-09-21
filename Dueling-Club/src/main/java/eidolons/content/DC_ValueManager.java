@@ -15,7 +15,7 @@ public class DC_ValueManager implements ValueManager {
     public static final String CUSTOM_VALUE = "CUSTOM_VALUE";
     private static final String VARIABLES = "VARIABLES";
 
-    private ValueHelper valueHelper;
+    private final ValueHelper valueHelper;
 
     public DC_ValueManager(DC_Game game) {
         valueHelper = new ValueHelper(game);
@@ -93,10 +93,6 @@ public class DC_ValueManager implements ValueManager {
 
     public ValueHelper getValueHelper() {
         return valueHelper;
-    }
-
-    public void setValueHelper(ValueHelper valueHelper) {
-        this.valueHelper = valueHelper;
     }
 
     public enum VALUE_GROUP {

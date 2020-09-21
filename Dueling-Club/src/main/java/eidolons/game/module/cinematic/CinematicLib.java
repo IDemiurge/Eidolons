@@ -5,6 +5,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.ScriptLib;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.fullscreen.Screenshake;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -73,7 +74,7 @@ COMBAT_ENDS,
                 doZoom(1f, 3.25f, Interpolation.pow2In);
                 break;
             case UNCONSCIOUS_BEFORE:
-                MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.FALL);
+                MusicMaster.playMoment(MusicEnums.MUSIC_MOMENT.FALL);
                 doZoom(1.21f, 3.15f, Interpolation.pow2In);
                 doBlackout(true, 1f);
                 WaitMaster.WAIT(1500);

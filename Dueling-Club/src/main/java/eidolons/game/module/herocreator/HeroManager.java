@@ -48,7 +48,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -928,7 +928,7 @@ public class HeroManager {
         Spell spell = hero.getSpell(entity.getName());
         boolean verbatim = spell.getSpellPool() == SpellEnums.SPELL_POOL.VERBATIM;
         if (!SpellUpgradeMaster.checkUpgrade(verbatim, hero, spell, selected)) {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.FAIL);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.FAIL);
             return;
         }
         // result = SpellUpgradeMaster.isUpgraded(spell);
@@ -940,9 +940,9 @@ public class HeroManager {
                 hero.modifyParameter(PARAMS.XP, -SpellUpgradeMaster.getXpCost(entity, hero,
                         selected));
             }
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_UPGRADE_LEARNED);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.SPELL_UPGRADE_LEARNED);
         } else {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_UPGRADE_UNLEARNED);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.SPELL_UPGRADE_UNLEARNED);
         }
         if (!verbatim) {
             update(hero);

@@ -12,7 +12,8 @@ import eidolons.libgdx.gui.panels.TablePanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.images.ImageManager;
-import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.BUTTON_SOUND_MAP;
 
 /**
  * Created by JustMe on 10/5/2018.
@@ -42,14 +43,14 @@ public class QuestInfoPanel extends ItemInfoPanel {
          STD_BUTTON.MENU, () -> accept()) {
             @Override
             public BUTTON_SOUND_MAP getSoundMap() {
-                return BUTTON_SOUND_MAP.OK;
+                return AudioEnums.BUTTON_SOUND_MAP.OK;
             }
         });
         addActor(cancel = new SmartTextButton("Cancel Quest",
          STD_BUTTON.MENU, () -> cancel()) {
             @Override
             public BUTTON_SOUND_MAP getSoundMap() {
-                return BUTTON_SOUND_MAP.CANCEL;
+                return AudioEnums.BUTTON_SOUND_MAP.CANCEL;
             }
         });
 

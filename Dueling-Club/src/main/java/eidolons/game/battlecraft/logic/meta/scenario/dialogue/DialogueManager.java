@@ -10,13 +10,14 @@ import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import main.content.CONTENT_CONSTS;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 
 import java.util.List;
@@ -69,13 +70,13 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
 
         switch (key.toLowerCase()) {
             case "awakening":
-                MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.SELENE);
+                MusicMaster.playMoment(MusicEnums.MUSIC_MOMENT.SELENE);
                 break;
             case "sentries":
-                DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.ALERT, CONTENT_CONSTS.SOUNDSET.ironman);
+                DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.ALERT, CONTENT_CONSTS.SOUNDSET.ironman);
                 break;
             case "meet_harvester":
-                MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.HARVEST);
+                MusicMaster.playMoment(MusicEnums.MUSIC_MOMENT.HARVEST);
                 break;
         }
 

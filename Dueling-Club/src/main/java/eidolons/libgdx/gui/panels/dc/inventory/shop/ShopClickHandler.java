@@ -16,7 +16,7 @@ import main.entity.Entity;
 import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 /**
  * Created by JustMe on 10/13/2018.
@@ -87,10 +87,7 @@ public class ShopClickHandler extends ContainerClickHandler {
                 operation = OPERATIONS.UNSTASH;
             }
         }
-        if (handleOperation(operation, cell_type, cellContents)) {
-            return true;
-        }
-        return false;
+        return handleOperation(operation, cell_type, cellContents);
     }
 
     @Override
@@ -269,8 +266,8 @@ public class ShopClickHandler extends ContainerClickHandler {
         for (DC_HeroSlotItem item : hero.getSlotItems()) {
             item.setParam(PARAMS.C_DURABILITY, item.getIntParam(PARAMS.DURABILITY));
         }
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.CHAIN);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.BUY);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CHAIN);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.BUY);
         update();
     }
 

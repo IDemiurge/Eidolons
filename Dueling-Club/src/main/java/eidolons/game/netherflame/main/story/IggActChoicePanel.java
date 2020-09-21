@@ -15,7 +15,7 @@ import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.menu.MainMenu;
 import main.entity.Entity;
 import main.system.launch.Flags;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -95,8 +95,8 @@ public class IggActChoicePanel extends ScenarioSelectionPanel {
             public void initStartButton(String text, Runnable runnable) {
                 addActor(startButton = new SmartTextButton(text, ButtonStyled.STD_BUTTON.MENU, () -> runnable.run()) {
                     @Override
-                    public SoundMaster.BUTTON_SOUND_MAP getSoundMap() {
-                        return SoundMaster.BUTTON_SOUND_MAP.ENTER;
+                    public AudioEnums.BUTTON_SOUND_MAP getSoundMap() {
+                        return AudioEnums.BUTTON_SOUND_MAP.ENTER;
                     }
                 });
                 startButton.setPosition(getBtnX(),

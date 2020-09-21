@@ -37,7 +37,7 @@ import main.system.auxiliary.secondary.Bools;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -397,9 +397,9 @@ public abstract class GameLoop {
         Fluctuating.setAlphaFluctuationOn(!paused);
         int vol = manual ? 100 : 50;
         if (paused) {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__PAUSE, vol, 0);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__PAUSE, vol, 0);
         } else {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__RESUME, vol, 0);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__RESUME, vol, 0);
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_RESUMED, true);
         }
     }

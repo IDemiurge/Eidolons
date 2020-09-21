@@ -2,6 +2,7 @@ package eidolons.game.netherflame.main.solo;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.CinematicLib;
@@ -55,10 +56,12 @@ public class SoloPartyManager extends NF_PartyManager {
         CinematicLib.run(CinematicLib.StdCinematic.UNCONSCIOUS_BEFORE);
         getGame().getLogManager().log(hero.getName() + " falls...");
 
-        TipMessageMaster.tip(StdTips.FALLEN, () -> {
+        TipMessageMaster.tip(StdTips.fallen, () -> {
             Coordinates respawnCoordinates = getRespawnCoordinates(null);
             hero.setCoordinates(respawnCoordinates);
             hero.cleanReset();
+            getGame().engageEvent(EngageEvent.ENGAGE_EVENT.combat_end);
+            //TODO big text?
             getGame().getMovementManager().moved(hero, true);
 
             getGame().getLogManager().log("... and rises again.");

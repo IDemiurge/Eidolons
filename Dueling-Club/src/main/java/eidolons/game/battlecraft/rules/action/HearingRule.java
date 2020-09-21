@@ -18,7 +18,7 @@ import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 import main.system.text.LogManager;
 
 import java.util.HashMap;
@@ -92,7 +92,7 @@ public class HearingRule implements ActionRule {
             if (unit.isMine()) {
                 repeat = playerWasHeard;
                 logged = "You have been heard!" + StringMaster.wrapInParenthesis(unit.getIntParam("noise") + " Noise level");
-                DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.ALERT, listener);
+                DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.ALERT, listener);
                 playerWasHeard = true;
             } else {
                 repeat = map.get(unit) == direction; //TODO encapsulate all data
@@ -107,8 +107,8 @@ public class HearingRule implements ActionRule {
                 if (unit.isMine()) {
                     EUtils.showInfoText(logged);
                     if (RandomWizard.chance(89)) {
-                        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.WHAT, unit, 100, 0);
-                        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.IDLE, unit);
+                        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.WHAT, unit, 100, 0);
+                        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.IDLE, unit);
                     } else
                         DC_SoundMaster.playMoveSound(unit);
                     //TODO

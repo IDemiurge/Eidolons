@@ -6,7 +6,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.system.audio.DC_SoundMaster;
 import main.game.logic.battle.turn.TurnManager;
 import main.system.datatypes.DequeImpl;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,9 +130,9 @@ public abstract class GenericTurnManager implements TurnManager {
                     sub.getAI().setEngagementDuration(sub.getAI().getEngagementDuration() - 1);
 
             if (game.isStarted()) {
-                DC_SoundMaster.playStandardSound(STD_SOUNDS.DEATH);
+                DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.DEATH);
             } else {
-                DC_SoundMaster.playStandardSound(STD_SOUNDS.FIGHT);
+                DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.FIGHT);
             }
         }
     }

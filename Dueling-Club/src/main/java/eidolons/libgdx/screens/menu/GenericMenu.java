@@ -23,7 +23,7 @@ import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -298,7 +298,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
 
     public void close() {
         getStageWithClosable().closeClosable(this);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__HOVER);
     }
 
     @Override

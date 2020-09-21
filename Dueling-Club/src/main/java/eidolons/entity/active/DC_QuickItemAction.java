@@ -12,7 +12,7 @@ import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 public class DC_QuickItemAction extends DC_ActiveObj {
 
@@ -49,7 +49,7 @@ public class DC_QuickItemAction extends DC_ActiveObj {
 
     @Override
     public void playCancelSound() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.ACTION_CANCELLED);
     }
 
     @Override

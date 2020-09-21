@@ -15,8 +15,8 @@ import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.macro.FauxMacroGame;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.town.Town;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -136,7 +136,7 @@ public class TownMaster extends MetaGameHandler {
                 TownPanel.getActiveInstance().done();
             }, " thread").start();
         } else {
-            MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MAP);
+            MusicMaster.getInstance().scopeChanged(MusicEnums.MUSIC_SCOPE.MAP);
             MusicMaster.getInstance().stopAmbience();
         }
         if (TownPanel.getActiveInstance() == null || !GdxMaster.hasController(Gdx.input.getInputProcessor(), TownPanel.getActiveInstance().getStage())) {
@@ -159,7 +159,7 @@ public class TownMaster extends MetaGameHandler {
         master.getQuestMaster().startQuests();
 
 
-        MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.ATMO);
+        MusicMaster.getInstance().scopeChanged(MusicEnums.MUSIC_SCOPE.ATMO);
         inTown = false;
         town.exited();
         return result;

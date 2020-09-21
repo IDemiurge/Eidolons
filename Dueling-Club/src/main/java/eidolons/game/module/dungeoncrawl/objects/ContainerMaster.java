@@ -50,7 +50,8 @@ import main.system.auxiliary.Strings;
 import main.system.entity.FilterMaster;
 import main.system.launch.Flags;
 import main.system.math.MathMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -109,9 +110,9 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (getSpecialSound(obj) != null) {
             DC_SoundMaster.playStandardSound(getSpecialSound(obj));
         } else if (RandomWizard.random()) {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__TAB);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__TAB);
         } else
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CONTAINER);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__CONTAINER);
         boolean result = (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
         unit.getGame().getManager().reset();
         return result;
@@ -121,9 +122,9 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (obj instanceof Structure) {
             switch (((Structure) obj).getBfObjGroup()) {
                 case REMAINS:
-                    return STD_SOUNDS.NEW__BONES;
+                    return AudioEnums.STD_SOUNDS.NEW__BONES;
                 case TREASURE:
-                    return STD_SOUNDS.NEW__CHEST;
+                    return AudioEnums.STD_SOUNDS.NEW__CHEST;
             }
 
         }

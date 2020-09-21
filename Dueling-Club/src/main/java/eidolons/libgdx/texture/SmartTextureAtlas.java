@@ -103,6 +103,7 @@ public class SmartTextureAtlas extends TextureAtlas {
         }
         String name = FileManager.formatPath(orig, true, true);
         Array<AtlasRegion> regions = getRegions();
+
         for (int i = 0, n = regions.size; i < n; i++) {
             String s = regions.get(i).name;
             // if (Flags.isJar()) {

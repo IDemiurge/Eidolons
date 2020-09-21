@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.system.audio.DC_SoundMaster;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 
 public interface SmartButton extends EventListener {
     default boolean handle(Event e) {
@@ -19,7 +19,7 @@ public interface SmartButton extends EventListener {
 
         if (!(e instanceof InputEvent)) return false;
         InputEvent event = (InputEvent) e;
-        SoundMaster.STD_SOUNDS sound = null;
+        AudioEnums.STD_SOUNDS sound = null;
         if (event.getType() == InputEvent.Type.touchUp) {
             if (!isCheckClickArea() || event.getPointer() == -1 //programmatic
                     || GdxMaster.isWithin(event.getTarget(), new Vector2(event.getStageX(), event.getStageY()), true)) {
@@ -68,9 +68,9 @@ public interface SmartButton extends EventListener {
 
     Runnable getRunnable();
 
-    SoundMaster.BUTTON_SOUND_MAP getSoundMap();
+    AudioEnums.BUTTON_SOUND_MAP getSoundMap();
 
-    default SoundMaster.STD_SOUNDS getSound() {
+    default AudioEnums.STD_SOUNDS getSound() {
         return null;
     }
 

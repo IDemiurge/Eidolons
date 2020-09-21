@@ -34,7 +34,7 @@ public class MainLauncher extends GenericLauncher {
     public static void main(String[] args) {
         // EidolonsGame.setVar("non_test", true);
         // EidolonsGame.setVar("tutorial", true);
-        GpuTester.test();
+        // GpuTester.test();
         CoreEngine.setSwingOn(false);
 //        if (!CoreEngine.isIDE())
         Flags.setSafeMode(true);

@@ -40,7 +40,7 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -345,7 +345,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
     public void close() {
         getStageWithClosable().closeClosable(this);
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__TAB);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__TAB);
 
     }
 

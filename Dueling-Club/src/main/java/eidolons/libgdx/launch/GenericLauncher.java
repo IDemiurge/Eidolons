@@ -24,8 +24,8 @@ import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.utils.GdxTimeMaster;
 import eidolons.libgdx.video.VideoMaster;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;
 import eidolons.system.graphics.RESOLUTION;
@@ -64,8 +64,8 @@ public abstract class GenericLauncher extends Game {
         TextureCache.getInstance();
         GdxMaster.setLoadingCursor();
         //move
-        MusicMaster.preload(MUSIC_SCOPE.MENU);
-        MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MENU);
+        MusicMaster.preload(MusicEnums.MUSIC_SCOPE.MENU);
+        MusicMaster.getInstance().scopeChanged(MusicEnums.MUSIC_SCOPE.MENU);
         OrthographicCamera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
         ScreenMaster.setMainViewport(viewport);

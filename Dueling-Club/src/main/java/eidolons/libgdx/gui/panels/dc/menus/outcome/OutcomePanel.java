@@ -38,7 +38,8 @@ import main.system.datatypes.WeightMap;
 import main.system.graphics.FontMaster.FONT;
 import main.system.graphics.MigMaster;
 import main.system.launch.Flags;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -118,11 +119,11 @@ public class OutcomePanel extends TablePanelX implements EventListener {
          MigMaster.center(getHeight(), picture.getHeight() * picture.getScaleY()
          ));
 
-        STD_SOUNDS sound = STD_SOUNDS.DEATH;
+        STD_SOUNDS sound = AudioEnums.STD_SOUNDS.DEATH;
 
         String messageText = VICTORY_MESSAGE;
         if (outcome != null)
-            sound = outcome ? STD_SOUNDS.VICTORY : STD_SOUNDS.DEATH;
+            sound = outcome ? AudioEnums.STD_SOUNDS.VICTORY : AudioEnums.STD_SOUNDS.DEATH;
         if (outcome != null)
             messageText = outcome ? VICTORY_MESSAGE : DEFEAT_MESSAGE;
         message = new Label(messageText, StyleHolder.getSizedColoredLabelStyle(0.25f, FONT.AVQ, 22));

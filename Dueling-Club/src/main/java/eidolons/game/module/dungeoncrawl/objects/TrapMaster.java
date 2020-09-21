@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.game.DC_Game;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.text.tips.TextEvent;
 import eidolons.system.text.tips.TipMessageMaster;
@@ -49,7 +50,7 @@ public class TrapMaster extends DungeonHandler {
                             DC_Game.game.getMetaMaster().getDefeatHandler().isEnded(true, true);
                         });
 
-                MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.FALL);
+                MusicMaster.playMoment(MusicEnums.MUSIC_MOMENT.FALL);
                 TipMessageMaster.tip(data);
             }
         };

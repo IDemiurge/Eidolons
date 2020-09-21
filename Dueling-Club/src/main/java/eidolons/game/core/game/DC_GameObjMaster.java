@@ -105,11 +105,10 @@ public class DC_GameObjMaster extends GameObjMaster {
 
         if (!isCacheForStructures() || set == null) {
             set = new HashSet<>();
-
-            for (BattleFieldObject object : getGame().getStructures()) {
-                //                if (object.isPale() != paleAspect) {
-                //                    continue;
-                //                }
+            int size = getGame().getUnits().size();
+            Iterator<Structure> iterator = getGame().getStructures().iterator();
+            for (int i = 0; i < size; i++) {
+                Structure object = iterator.next();
                 if (overlayingIncluded_Not_Only != null) {
                     if (!overlayingIncluded_Not_Only)
                         if (object.isOverlaying())
@@ -118,7 +117,6 @@ public class DC_GameObjMaster extends GameObjMaster {
                     if (!object.isOverlaying())
                         continue;
                 }
-
                 if (object.getCoordinates().equals(c))
                     set.add(object);
             }
@@ -128,12 +126,16 @@ public class DC_GameObjMaster extends GameObjMaster {
         if (set == null) {
             set = new HashSet<>();
         }
-        if (overlayingIncluded_Not_Only != null)
-            for (BattleFieldObject object : getGame().getUnits()) {
+        if (overlayingIncluded_Not_Only != null) {
+            int size = getGame().getUnits().size();
+                Iterator<Unit> iterator = getGame().getUnits().iterator();
+            for (int i = 0; i < size; i++) {
+                Unit object = iterator.next();
                 if (object.getCoordinates().equals(c)) {
                     set.add(object);
                 }
             }
+        }
         //        if (overlayingIncluded == null)
         //        if (z == 0)
         if (!isCacheForStructures())

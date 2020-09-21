@@ -43,8 +43,8 @@ import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.shaders.post.PostFxUpdater.POST_FX_TEMPLATE;
 import eidolons.libgdx.stage.camera.MotionData;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.audio.Soundscape.SOUNDSCAPE;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.Texts;
 import main.content.C_OBJ_TYPE;
@@ -71,6 +71,7 @@ import main.system.auxiliary.secondary.Bools;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
+import main.system.sound.AudioEnums.SOUNDSCAPE;
 import main.system.threading.TimerTaskMaster;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.Pair;
@@ -731,7 +732,7 @@ public class SpeechExecutor {
                     case "ambi":
                         //                    case "atmo":
                     case "music":
-                        MusicMaster.MUSIC_TRACK track = MusicMaster.getTrackByName(vars.get(0));
+                        MusicEnums.MUSIC_TRACK track = MusicMaster.getTrackByName(vars.get(0));
                         if (vars.size() > 1) {
                             volume = Float.valueOf(vars.get(1));
                         }
@@ -758,7 +759,7 @@ public class SpeechExecutor {
                 MusicMaster.getInstance().overrideWithTrack(value);
                 break;
             case PRELOAD_MUSIC:
-                MusicMaster.getInstance().getMusic(MusicMaster.MUSIC_TRACK.valueOf(value.toUpperCase()
+                MusicMaster.getInstance().getMusic(MusicEnums.MUSIC_TRACK.valueOf(value.toUpperCase()
                         .replace(" ", "_")).getPath(), true);
                 break;
             case RANDOM_SOUND:

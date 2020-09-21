@@ -25,8 +25,8 @@ import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.macro.MacroGame;
 import eidolons.macro.entity.town.Town;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.test.Debugger;
 import main.game.bf.Coordinates;
 import main.game.core.game.Game;
@@ -37,7 +37,7 @@ import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -187,7 +187,7 @@ public class Eidolons {
 
     public static void exitToMenu() {
         Flags.setIggDemoRunning(false);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__ENTER);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__ENTER);
         try {
             DC_Game.game.getMetaMaster().gameExited();
             if (MacroGame.game != null) {
@@ -204,7 +204,7 @@ public class Eidolons {
             TownPanel.setActiveInstance(null);
             GdxMaster.setInputProcessor(new InputAdapter());
             showMainMenu();
-            MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MENU);
+            MusicMaster.getInstance().scopeChanged(MusicEnums.MUSIC_SCOPE.MENU);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             //            DialogMaster.confirm("Game exit failed!");
@@ -229,7 +229,7 @@ public class Eidolons {
     }
 
     public static void exitGame() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__ENTER);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__ENTER);
         SpecialLogger.getInstance().writeLogs();
         Debugger.writeLog();
         try {
@@ -238,7 +238,7 @@ public class Eidolons {
             e.printStackTrace();
         }
         Gdx.app.exit();
-        System.exit(0);
+        // System.exit(0);
     }
 
     public static void onGdxThread(Runnable p) {

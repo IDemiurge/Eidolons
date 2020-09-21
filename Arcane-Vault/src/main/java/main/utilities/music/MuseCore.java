@@ -11,6 +11,10 @@ public class MuseCore implements NativeKeyListener {
     private static final int SHIFT = 17;
     private static final int ALT = 136;
 
+    public static void main(String[] args) {
+        new MuseCore().init();
+    }
+
     public void init() {
         try {
             GlobalScreen.registerNativeHook();

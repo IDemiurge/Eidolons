@@ -6,7 +6,7 @@ import eidolons.libgdx.anims.AnimData;
 import eidolons.system.audio.DC_SoundMaster;
 import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 /**
  * Created by JustMe on 8/30/2017.
@@ -27,13 +27,13 @@ public class QuickItemAnim extends Anim {
     @Override
     public void playSound() {
         if (item.isPotion()) {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.POTION);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.POTION);
         }
         if (item.isConcoction()) {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.POTION);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.POTION);
         }
         if (item.isCoating()) {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.POTION);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.POTION);
         }
         if (item.isAmmo()) {
 

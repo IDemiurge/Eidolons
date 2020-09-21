@@ -32,7 +32,8 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
-import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.BUTTON_SOUND_MAP;
 
 import java.util.*;
 
@@ -144,7 +145,7 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     protected BUTTON_SOUND_MAP getButtonSoundMap() {
-        return BUTTON_SOUND_MAP.SELECTION;
+        return AudioEnums.BUTTON_SOUND_MAP.SELECTION;
     }
 
     protected Color getFontColor() {

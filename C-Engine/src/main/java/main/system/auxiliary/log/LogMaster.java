@@ -120,7 +120,7 @@ public class LogMaster {
 
     public static final String PLATFORM_PREFIX = "PLATFORM: ";
     public static final int PLATFORM = -42;
-    public static final boolean PLATFORM_ON = true;
+    public static final boolean PLATFORM_ON = false;
 
     public static final LOG_CHANNEL[] specialLogChannels = {
 

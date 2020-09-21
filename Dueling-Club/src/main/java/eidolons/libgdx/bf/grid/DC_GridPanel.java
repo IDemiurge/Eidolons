@@ -48,7 +48,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -361,10 +361,10 @@ public class DC_GridPanel extends GridPanel {
                         "No targets available!",
                         Eidolons.getGame().getManager().getControlledObj());
                 GdxMaster.setDefaultCursor();
-                EUtils.playSound(STD_SOUNDS.NEW__CLICK_DISABLED);
+                EUtils.playSound(AudioEnums.STD_SOUNDS.NEW__CLICK_DISABLED);
                 return;
             }
-            EUtils.playSound(STD_SOUNDS.NEW__TAB);
+            EUtils.playSound(AudioEnums.STD_SOUNDS.NEW__TAB);
             ObjectMap<Borderable, Runnable> map = new ObjectMap<>();
 
             for (DC_Obj obj1 : p.getLeft()) {

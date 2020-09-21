@@ -31,7 +31,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.launch.Flags;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.Map;
 
@@ -131,7 +131,7 @@ public class OptionsWindow extends VisWindow {
             public void switchedTab(Tab tab) {
                 content.clearChildren();
                 content.add(tab.getContentTable()).expand().top().left();
-                DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__TAB);
+                DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__TAB);
             }
         });
 
@@ -196,7 +196,7 @@ public class OptionsWindow extends VisWindow {
     }
 
     private void ok() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__OK);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__OK);
         Gdx.app.log("Options", "ok");
         apply();
         close();
@@ -209,7 +209,7 @@ public class OptionsWindow extends VisWindow {
     }
 
     private void apply() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CLICK);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__CLICK);
         Gdx.app.log("Options", "apply");
         OptionsMaster.getInstance().cacheOptions();
         for (OptionsTab tab : tabs) {
@@ -223,7 +223,7 @@ public class OptionsWindow extends VisWindow {
     }
 
     private void cancel() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CLICK_DISABLED);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__CLICK_DISABLED);
         Gdx.app.log("Options", "cancel");
         OptionsMaster.getInstance().resetToCached();
         close();

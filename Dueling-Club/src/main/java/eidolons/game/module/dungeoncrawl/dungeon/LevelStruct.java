@@ -7,9 +7,8 @@ import eidolons.libgdx.bf.decor.CellDecorLayer.CELL_PATTERN;
 import eidolons.libgdx.bf.decor.shard.ShardEnums.SHARD_TYPE;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource.VFX_TEMPLATE;
 import eidolons.libgdx.particles.ambi.StructAmbiData;
-import eidolons.system.audio.MusicMaster.AMBIENCE;
-import eidolons.system.audio.MusicMaster.MUSIC_THEME;
-import eidolons.system.audio.Soundscape;
+import eidolons.system.audio.MusicEnums.AMBIENCE;
+import eidolons.system.audio.MusicEnums.MUSIC_THEME;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.DungeonEnums;
 import main.data.tree.LayeredData;
@@ -19,6 +18,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.sound.AudioEnums;
 
 import java.util.*;
 
@@ -274,8 +274,8 @@ public abstract class LevelStruct<T, S> implements LayeredData<S>, IStruct {
         return new EnumMaster<MUSIC_THEME>().retrieveEnumConst(MUSIC_THEME.class,
                 getPropagatedValue("MUSIC_THEME"));
     }
-    public Soundscape.SOUNDSCAPE getSoundscape() {
-        return new EnumMaster<Soundscape.SOUNDSCAPE>().retrieveEnumConst(Soundscape.SOUNDSCAPE.class,
+    public AudioEnums.SOUNDSCAPE getSoundscape() {
+        return new EnumMaster<AudioEnums.SOUNDSCAPE>().retrieveEnumConst(AudioEnums.SOUNDSCAPE.class,
                 getPropagatedValue("SOUNDSCAPE"));
     }
 

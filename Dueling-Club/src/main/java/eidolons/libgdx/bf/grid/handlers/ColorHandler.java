@@ -7,13 +7,23 @@ import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.light.ShadeLightCell;
 import eidolons.libgdx.bf.light.ShadowMap;
 import main.game.bf.Coordinates;
+import main.system.launch.Flags;
 
 public class ColorHandler extends GridHandler{
+    private static boolean staticColors= Flags.isLiteLaunch();
     private final GridManager gridManager;
 
     public ColorHandler(GridPanel grid) {
         super(grid);
         gridManager = grid.getGridManager();
+    }
+
+    public static boolean isStaticColors() {
+        return staticColors;
+    }
+
+    public static void setStaticColors(boolean staticColors) {
+        ColorHandler.staticColors = staticColors;
     }
 
 
