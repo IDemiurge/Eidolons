@@ -2,7 +2,6 @@ package main.handlers.control;
 
 import eidolons.content.PARAMS;
 import eidolons.game.core.Eidolons;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.AV_DataManager;
 import main.content.DC_TYPE;
 import main.content.VALUE;
@@ -17,6 +16,7 @@ import main.handlers.types.SimulationHandler;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.ContainerUtils;
+import main.system.util.DialogMaster;
 import main.utilities.xml.XML_Transformer;
 
 import javax.swing.*;

@@ -27,8 +27,6 @@ import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.system.config.ConfigKeys;
-import eidolons.system.config.ConfigMaster;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.values.parameters.PARAMETER;
 import main.elements.costs.Cost;
@@ -449,7 +447,7 @@ public class FloatingTextMaster {
                 return 8;
             //            case DURABILITY_LOSS:
         }
-        return DEFAULT_DURATION * ConfigMaster.getInstance().getInt(ConfigKeys.FLOATING_TEXT_DURATION);
+        return DEFAULT_DURATION  ;
     }
 
     public void initFloatTextForDamage(Damage damage, Anim anim) {

@@ -33,7 +33,6 @@ import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.libgdx.stage.GuiVisualEffects;
 import eidolons.libgdx.stage.camera.CameraOptions;
 import eidolons.macro.global.time.MacroTimeMaster;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;
@@ -62,6 +61,7 @@ import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import main.system.sound.SoundMaster;
+import main.system.util.DialogMaster;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

@@ -13,9 +13,9 @@ import main.entity.Ref;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.Refactor;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster.CONDITION_TEMPLATES;
-import main.system.util.Refactor;
 
 import java.util.List;
 
@@ -27,9 +27,7 @@ public class ScriptParser {
 
     public static Conditions parseConditions(String conditionPart) {
         Conditions c = DC_ConditionMaster.toConditions(conditionPart);
-        if (c != null)
-            return c;
-        return null;
+        return c;
     }
 
     public static STANDARD_EVENT_TYPE getEventByShortcut(String text) {

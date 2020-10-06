@@ -18,7 +18,6 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.texture.Images;
-import eidolons.system.config.ConfigMaster;
 import eidolons.system.text.DC_LogManager;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect;
@@ -58,8 +57,7 @@ public class DC_StateManager extends StateManager {
 
     private final StatesKeeper keeper;
     private final OBJ_TYPE[] toBaseIgnoredTypes = {DC_TYPE.SPELLS, DC_TYPE.ACTIONS};
-    private final boolean savingOn = ConfigMaster.getInstance()
-            .getBoolean("SAVING_ON_DEFAULT");
+    private boolean savingOn;
 
     private final Lock resetLock = new ReentrantLock();
     private volatile boolean resetting = false;

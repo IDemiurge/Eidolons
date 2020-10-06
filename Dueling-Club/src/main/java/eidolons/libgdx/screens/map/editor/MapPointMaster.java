@@ -10,7 +10,6 @@ import eidolons.libgdx.screens.map.layers.MapMoveLayers.MAP_POINTS;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.macro.MacroGame;
 import eidolons.macro.map.Place;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
@@ -22,6 +21,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager.STD_IMAGES;
 import main.system.launch.Flags;
+import main.system.util.DialogMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 

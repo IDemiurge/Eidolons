@@ -13,7 +13,6 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxEvents;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.assets.Assets;
-import eidolons.libgdx.launch.report.CrashManager;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.ScreenWithAssets;
@@ -250,7 +249,7 @@ public abstract class GenericLauncher extends Game {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 if (!Flags.isIDE()) {
-                    CrashManager.crashed();
+                    main.system.auxiliary.log.LogMaster.important("Game Crashed! " );
                     System.exit(-1);
                 }
             }

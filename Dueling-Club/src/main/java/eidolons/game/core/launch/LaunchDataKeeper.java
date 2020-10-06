@@ -10,10 +10,10 @@ import eidolons.game.core.game.DC_Game;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.Refactor;
 import main.system.auxiliary.Strings;
 import main.system.data.DataUnitFactory;
 import main.system.data.PlayerData;
-import main.system.util.Refactor;
 
 /**
  * Created by JustMe on 5/10/2017.

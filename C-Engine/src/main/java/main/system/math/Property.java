@@ -1,19 +1,14 @@
 package main.system.math;
 
 import main.content.ContentValsManager;
-import main.content.values.properties.PROPERTY;
 import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.Strings;
 import main.system.math.FunctionManager.FUNCTIONS;
 
 public class Property extends DynamicValue {
-    PROPERTY property;
-
     private String string;
-
     private boolean autovar;
-
     private boolean strict;
 
     public Property(String obj_ref, String value_ref) {

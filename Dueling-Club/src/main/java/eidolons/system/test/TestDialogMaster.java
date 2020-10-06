@@ -3,12 +3,12 @@ package eidolons.system.test;
 import eidolons.content.PROPS;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.DC_TYPE;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
+import main.system.util.DialogMaster;
 
 import java.util.ArrayList;
 import java.util.List;

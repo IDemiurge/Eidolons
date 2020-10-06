@@ -19,8 +19,8 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.Refactor;
 import main.system.math.MathMaster;
-import main.system.util.Refactor;
 
 import java.util.ArrayList;
 import java.util.List;

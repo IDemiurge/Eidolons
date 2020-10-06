@@ -29,23 +29,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Root class of every CoreEngine object
- * Contains property and parameter maps and an array of methods for retrieving and modifying them
- * Has ID by which it can be found from GameState
+ * Root class of every CoreEngine object Contains property and parameter maps and an array of methods for retrieving and
+ * modifying them Has ID by which it can be found from GameState
  * <portrait>
  * <portrait>
  * has OBJ_TYPE that defines how it is treated by things like Targeting (Filter)
  * <portrait>
  * has ObjType that defines its [base] values  (property and parameter)
  * <portrait>
- * toBase() is called whenever we need to update them - first they are set to their base,
- * then modified by various effects
+ * toBase() is called whenever we need to update them - first they are set to their base, then modified by various
+ * effects
  * <portrait>
- * resetObjects, afterEffects (apply masteries/attributes), preCheck parameter buff rules (focus, stamina, …)
- * :: Dynamic values are not reset to base on toBase()
- * :: Properties – container (; separated), variable(value),
- * :: Parameters – formula syntax: {ref_value}, e.g. {source_base strength}, event_ prefix checked first, replaced ref with event’s ref if necessary
- * :: Buffs – created with a duration or a retainCondition, add ContinuousEffect’s while in game
+ * resetObjects, afterEffects (apply masteries/attributes), preCheck parameter buff rules (focus, stamina, …) :: Dynamic
+ * values are not reset to base on toBase() :: Properties – container (; separated), variable(value), :: Parameters –
+ * formula syntax: {ref_value}, e.g. {source_base strength}, event_ prefix checked first, replaced ref with event’s ref
+ * if necessary :: Buffs – created with a duration or a retainCondition, add ContinuousEffect’s while in game
  */
 public abstract class Entity extends DataModel implements OBJ {
 
@@ -146,80 +144,80 @@ public abstract class Entity extends DataModel implements OBJ {
                     return;
                 }
             }
-//To-Cleanup
-//         getPropCache().clear();
-//         getIntegerMap(false).clear(); // TODO [OPTIMIZED] no need to clear
-//         // type's map?
-//         if (modifierMaps != null) {
-//             modifierMaps.clear(); // remember? For interesting spells or log
-//         }
-//         // info...
-//         if (!type.checkProperty(G_PROPS.DISPLAYED_NAME)) {
-//             setProperty(G_PROPS.DISPLAYED_NAME, getName(), true);
-//         }
-//
-//         if (this.owner != getOriginalOwner()) {
-//             LogMaster.log(LogMaster.CORE_DEBUG, getName()
-//              + ": original owner restored!");
-//             this.owner = getOriginalOwner();
-//         }
-//
-//         for (PARAMETER p : getParamMap().keySet()) {
-//             if (p == null) {
-//                 continue;
-//             }
-//             if (p.isDynamic()) {
-//                 if (p.isWriteToType()) {
-//                     getType().setParam(p, getParam(p), true);
-//                 }
-//                 continue;
-//             }
-//
-//             String baseValue = getType().getParam(p);
-//             String value = getParam(p);
-//
-//             getValueCache().put(p, value);
-//
-//             if (!value.equals(baseValue)) {
-//                 if (isValidMapStored(p)){
-//                     getValidParams().put(p, NumberUtils.getIntParse(value));
-//                 }
-//                 String amount = getType().getParam(p);
-//                 putParameter(p, amount);
-//                 if (game.isStarted() && !game.isSimulation()) {
-//                     if (p.isDynamic()) {
-//                         fireParamEvent(p, amount, CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED);
-//                     }
-//                 }
-//             }
-//         }
-//         for (PROPERTY p : getPropMap().keySet()) {
-//
-//             if (p.isDynamic()) {
-//                 if (p.isWriteToType()) {
-//                     getType().setProperty(p, getProperty(p));
-//                 }
-//                 continue;
-//             }
-//             String baseValue = getType().getProperty(p);
-//             if (TextParser.isRef(baseValue)) {
-//                 baseValue = new Property(baseValue).getStr(ref);
-//                 if ((baseValue) == null) {
-//                     baseValue = getType().getProperty(p);
-//                 }
-//             }
-//             String value = getProperty(p);
-//             getValueCache().put(p, value);
-//             if (!value.equals(baseValue)) {
-//                 putProperty(p, baseValue);
-//             } else {
-//                 putProperty(p, baseValue);
-//             }
-//
-//         }
-// //        resetStatus();
-//         setDirty(false);
-//         setBeingReset(false);
+        //To-Cleanup
+        //         getPropCache().clear();
+        //         getIntegerMap(false).clear(); // TODO [OPTIMIZED] no need to clear
+        //         // type's map?
+        //         if (modifierMaps != null) {
+        //             modifierMaps.clear(); // remember? For interesting spells or log
+        //         }
+        //         // info...
+        //         if (!type.checkProperty(G_PROPS.DISPLAYED_NAME)) {
+        //             setProperty(G_PROPS.DISPLAYED_NAME, getName(), true);
+        //         }
+        //
+        //         if (this.owner != getOriginalOwner()) {
+        //             LogMaster.log(LogMaster.CORE_DEBUG, getName()
+        //              + ": original owner restored!");
+        //             this.owner = getOriginalOwner();
+        //         }
+        //
+        //         for (PARAMETER p : getParamMap().keySet()) {
+        //             if (p == null) {
+        //                 continue;
+        //             }
+        //             if (p.isDynamic()) {
+        //                 if (p.isWriteToType()) {
+        //                     getType().setParam(p, getParam(p), true);
+        //                 }
+        //                 continue;
+        //             }
+        //
+        //             String baseValue = getType().getParam(p);
+        //             String value = getParam(p);
+        //
+        //             getValueCache().put(p, value);
+        //
+        //             if (!value.equals(baseValue)) {
+        //                 if (isValidMapStored(p)){
+        //                     getValidParams().put(p, NumberUtils.getIntParse(value));
+        //                 }
+        //                 String amount = getType().getParam(p);
+        //                 putParameter(p, amount);
+        //                 if (game.isStarted() && !game.isSimulation()) {
+        //                     if (p.isDynamic()) {
+        //                         fireParamEvent(p, amount, CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED);
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //         for (PROPERTY p : getPropMap().keySet()) {
+        //
+        //             if (p.isDynamic()) {
+        //                 if (p.isWriteToType()) {
+        //                     getType().setProperty(p, getProperty(p));
+        //                 }
+        //                 continue;
+        //             }
+        //             String baseValue = getType().getProperty(p);
+        //             if (TextParser.isRef(baseValue)) {
+        //                 baseValue = new Property(baseValue).getStr(ref);
+        //                 if ((baseValue) == null) {
+        //                     baseValue = getType().getProperty(p);
+        //                 }
+        //             }
+        //             String value = getProperty(p);
+        //             getValueCache().put(p, value);
+        //             if (!value.equals(baseValue)) {
+        //                 putProperty(p, baseValue);
+        //             } else {
+        //                 putProperty(p, baseValue);
+        //             }
+        //
+        //         }
+        // //        resetStatus();
+        //         setDirty(false);
+        //         setBeingReset(false);
 
     }
 
@@ -258,11 +256,7 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public void construct() {
-//TODO temp
-        if (getInitializer() != null) {
-            getInitializer().construct();
-        }
-
+        getInitializer().construct();
     }
 
     public boolean isConstructAlways() {
@@ -403,7 +397,7 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public boolean isOwnedBy(Player player) {
-        if (getOwner()==player) {
+        if (getOwner() == player) {
             return true;
         }
         return getChecker().isOwnedBy(player);
@@ -411,7 +405,7 @@ public abstract class Entity extends DataModel implements OBJ {
 
     public ASPECT getAspect() {
         return new EnumMaster<ASPECT>()
-         .retrieveEnumConst(ASPECT.class, getProperty(G_PROPS.ASPECT));
+                .retrieveEnumConst(ASPECT.class, getProperty(G_PROPS.ASPECT));
     }
 
     public ImageIcon getDefaultIcon() {
@@ -461,13 +455,15 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public String getLargeImagePath() {
-            return ImageManager.getLargeImage(this);
+        return ImageManager.getLargeImage(this);
     }
+
     public String getFullSizeImagePath() {
         if (!checkProperty(G_PROPS.FULLSIZE_IMAGE))
             return ImageManager.getFullSizeImage(this);
         return getProperty(G_PROPS.FULLSIZE_IMAGE);
     }
+
     public String getEmblemPath() {
         return getProperty(G_PROPS.EMBLEM);
     }
@@ -527,7 +523,7 @@ public abstract class Entity extends DataModel implements OBJ {
                 if (getGame().isSimulation()) {
                     if (ref != null) {
                         Map<String, ImageIcon> cache = ImageManager.getCustomIconCache().get(
-                         ref.getSourceObj());
+                                ref.getSourceObj());
                         if (cache == null) {
                             return null;
                         }
@@ -543,7 +539,7 @@ public abstract class Entity extends DataModel implements OBJ {
     public void setCustomIcon(ImageIcon customIcon) {
         if (getGame().isSimulation()) {
             Map<String, ImageIcon> cache = ImageManager.getCustomIconCache()
-             .get(ref.getSourceObj());
+                    .get(ref.getSourceObj());
             if (cache == null) {
                 cache = new HashMap<>();
                 ImageManager.getCustomIconCache().put(ref.getSourceObj(), cache);

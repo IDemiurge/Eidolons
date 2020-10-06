@@ -6,7 +6,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_Game.GAME_TYPE;
 import eidolons.game.module.herocreator.logic.HeroCreator;
 import eidolons.game.module.herocreator.logic.party.Party;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
@@ -29,6 +28,7 @@ import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.system.threading.Weaver;
+import main.system.util.DialogMaster;
 
 import javax.swing.*;
 import java.awt.*;

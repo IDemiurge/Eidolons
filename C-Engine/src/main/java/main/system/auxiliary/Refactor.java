@@ -1,4 +1,4 @@
-package main.system.util;
+package main.system.auxiliary;
 
 /**
  * Created by JustMe on 5/10/2017.

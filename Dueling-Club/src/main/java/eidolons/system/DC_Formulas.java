@@ -10,12 +10,8 @@ import main.system.math.MathMaster;
 
 public class DC_Formulas {
 
-    public static final float ARMORER_ARMOR_MOD = 1.5f;
-    public static final String WAIT_COEFFICIENT = "33";
-    public static final String WAIT_MAX_COEFFICIENT = "150";
     public static final Integer STARTING_FOCUS = 25;
     public static final Integer STARTING_ESSENCE_PERCENTAGE = 50;
-    public static final int ESS_REGEN_PER_CRYSTAL = 5;
     public static final float DEFENSE_DMG_DECREASE = 1.5f;
     public static final float ATTACK_DMG_INCREASE = 1;
     public static final float DEFENSE_DODGE_CHANCE = 1.5f;
@@ -26,9 +22,6 @@ public class DC_Formulas {
     public static final float DEFENSE_PROPORTION_CRIT_MAX = 50;
     public static final float ATTACK_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER = 50;
     public static final float ATTACK_PROPORTION_CRIT_MAX = 25;
-    public static final Integer MORALE_PER_SPIRIT = 10;
-    public static final int WEIGHT_FACTOR = 25;
-    public static final Integer DEF_COUNTER_MOD = 75;
     public static final int POWER_XP_FACTOR = 10;
     public static final int ATTR_POINTS_PER_LEVEL_BONUS = 1;
     public static final int MASTERY_POINTS_PER_LEVEL_BONUS = 2;
@@ -55,10 +48,6 @@ public class DC_Formulas {
     public static final int DEFAULT_CRITICAL_FACTOR = 75;
     public static final int DEFAULT_PARRY_DURABILITY_DAMAGE_MOD = 50;
     public static final float KNOWLEDGE_ANY_SPELL_FACTOR = 2.0f;
-    public static final int DEFAULT_RANGED_MELEE_DMG_PENALTY = 50;
-    public static final int DEFAULT_RANGED_MELEE_ATK_PENALTY = 0;
-    public static final int DEFAULT_RANGED_ADJACENT_DMG_PENALTY = 0;
-    public static final int DEFAULT_RANGED_ADJACENT_ATK_PENALTY = 50;
     public static final int DEFAULT_CADENCE_STA_MOD = -35;
     public static final int DEFAULT_CADENCE_AP_MOD = -25;
     public static final int SINGLE_HAND_ATTACK_BONUS = 10;
@@ -67,6 +56,7 @@ public class DC_Formulas {
     public static final Integer INTELLIGENCE_ORGANIZATION_CAP_MOD = 10;
     public static final String DRUIDIC_VISIONS_ESSENCE = "5+{wisdom}*{spell_spell_difficulty}/10";
     public static final String HOLY_PRAYER_MORALE = "5+{Willpower}*{spell_spell_difficulty}/10";
+    public static final int MAX_BASE_CLASSES = 3;
     private static final int TOUGHNESS_STR_MODIFIER = 15;
     private static final int TOUGHNESS_STR_MODIFIER_HERO = 10;
     private static final float TOUGHNESS_STR_SQUARE_MODIFIER = 0.05f;
@@ -91,14 +81,7 @@ public class DC_Formulas {
     private static final float INT_MEM_MODIFIER_SQUARE_BARRIER = 40;
     private static final String INT_MEM_MODIFIER = "{amount}*2+ max(0, {amount}*{amount}/10-"
      + INT_MEM_MODIFIER_SQUARE_BARRIER + ")";
-    private static final int CHA_DIV_MODIFIER = 3;
     private static final float DEF_MASTERY_MODIFIER = 1;
-    private static final Integer FOCUS_CONST_FOR_CONCENTRATION = 10;
-    private static final Integer ESSENCE_CONST_FOR_MEDITATION = 20;
-    private static final Integer TOUGHNESS_CONST_FOR_REST = 15;
-    private static final String GATEWAY_THRESHOLD = "30";
-    private static final String CRYSTAL_THRESHOLD = "15";
-    // ++ MAX POOL FORMULA
     private static final float INT_MSTR_MODIFIER = 0.2f;
     private static final String LEVEL_XP_FORMULA =
             "100+(max(1, {AMOUNT})-1)" +
@@ -183,11 +166,6 @@ public class DC_Formulas {
         return Math.round(amount * ATTACK_AGI_MODIFIER);
     }
 
-    public static int getInitModFromAgi(int amount) {
-
-        return Math.round(amount * INIT_MOD_AGI_MODIFIER);
-    }
-
     public static int getActsFromDexAndAgility(int sum) {
         return calculateFormula(ACTS_DEX_MODIFIER_FORMULA, sum) ;
     }
@@ -227,46 +205,6 @@ public class DC_Formulas {
         return Math.round(amount * INT_MSTR_MODIFIER);
     }
 
-    public static int getDivinationFromCha(int amount) {
-
-        return Math.round(amount * CHA_DIV_MODIFIER);
-    }
-
-    public static String getEssCostReductionFromSpellcraft(int amount) {
-        amount = -amount;
-        return StringMaster.getPercentageAppend(amount);
-    }
-
-    public static String getFocReqReductionFromSorcery(int amount) {
-        amount = -amount;
-        return StringMaster.getPercentageAppend(amount);
-    }
-
-    public static String getFocReqReductionFromEnchantment(int amount) {
-        amount = -amount;
-        return StringMaster.getPercentageAppend(amount);
-    }
-
-    public static String getFocReqReductionFromSummoning(int amount) {
-        amount = -amount;
-        return StringMaster.getPercentageAppend(amount);
-    }
-
-    public static Integer getEssenceConstForMeditation() {
-        return ESSENCE_CONST_FOR_MEDITATION;
-    }
-
-    public static Integer getToughnessConstForRest() {
-        return TOUGHNESS_CONST_FOR_REST;
-    }
-
-    public static String getCrystalThreshold() {
-        return CRYSTAL_THRESHOLD;
-    }
-
-    public static String getGatewayThreshold() {
-        return GATEWAY_THRESHOLD;
-    }
 
 
     public static int getTotalXpForLevel(int level) {

@@ -11,10 +11,10 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import main.data.xml.XmlNodeMaster;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.Refactor;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.launch.CoreEngine;
-import main.system.util.Refactor;
 import org.w3c.dom.Node;
 
 import java.util.*;

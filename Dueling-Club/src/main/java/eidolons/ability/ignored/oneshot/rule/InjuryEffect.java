@@ -10,9 +10,8 @@ import main.content.CONTENT_CONSTS2.INJURY;
 import main.content.CONTENT_CONSTS2.INJURY_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.util.Untested;
 
-@Untested
+//Untested
 public class InjuryEffect extends DC_Effect implements OneshotEffect {
 
     private INJURY template;

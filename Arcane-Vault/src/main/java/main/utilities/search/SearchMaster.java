@@ -1,11 +1,11 @@
 package main.utilities.search;
 
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.DC_TYPE;
 import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.util.DialogMaster;
 import main.utilities.workspace.Workspace;
 import main.utilities.workspace.WorkspaceManager;
 

@@ -9,7 +9,6 @@ import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.HeroCreator;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.party.Party;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.data.MetaManager;
 import main.content.DC_TYPE;
@@ -27,6 +26,7 @@ import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.sound.AudioEnums;
+import main.system.util.DialogMaster;
 
 import java.io.File;
 import java.util.ArrayList;

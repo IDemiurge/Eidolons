@@ -8,7 +8,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.rpg.PrincipleMaster;
 import eidolons.game.module.herocreator.logic.HeroCreator;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.DC_Formulas;
 import eidolons.system.content.ContentGenerator;
 import eidolons.system.math.DC_MathManager;
@@ -42,6 +41,7 @@ import main.system.math.Formula;
 import main.system.sound.AudioEnums;
 import main.system.sound.SoundMaster;
 import main.system.threading.TimerTaskMaster;
+import main.system.util.DialogMaster;
 import main.utilities.search.TypeFinder;
 
 import javax.swing.*;

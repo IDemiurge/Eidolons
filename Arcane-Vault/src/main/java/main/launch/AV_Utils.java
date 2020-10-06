@@ -1,9 +1,8 @@
 package main.launch;
 
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.content.ContentGenerator;
 import eidolons.system.file.ResourceMaster;
-import eidolons.system.utils.JsonToType;
+import eidolons.system.utils.TypeStringProcessor;
 import main.content.DC_TYPE;
 import main.data.filesys.PathFinder;
 import main.gui.components.tree.AV_Tree;
@@ -14,6 +13,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
+import main.system.util.DialogMaster;
 import main.utilities.workspace.WorkspaceManager;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class AV_Utils {
             String base = DialogMaster.inputText("base Type name");
             //            JsonToType.convert(input, DC_TYPE.ENCOUNTERS);
             if (!StringMaster.isEmpty(base)) {
-                JsonToType.convertAlt(base, FileManager.readFile
+                TypeStringProcessor.convertAlt(base, FileManager.readFile
                         (PathFinder.getTYPES_PATH() + "sources/encounters.txt"), DC_TYPE.ENCOUNTERS);
             }
         }

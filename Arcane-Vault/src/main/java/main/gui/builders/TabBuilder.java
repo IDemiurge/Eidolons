@@ -1,6 +1,5 @@
 package main.gui.builders;
 
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -31,6 +30,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 import main.system.launch.CoreEngine;
+import main.system.util.DialogMaster;
 import main.utilities.workspace.Workspace;
 import main.utilities.workspace.WorkspaceManager;
 

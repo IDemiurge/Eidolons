@@ -37,7 +37,6 @@ import eidolons.libgdx.gui.panels.dc.topleft.atb.INTENT_ICON;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.screens.load.ScreenLoader;
 import eidolons.macro.entity.action.MacroActionManager.MACRO_MODES;
-import eidolons.system.DC_Constants;
 import eidolons.system.DC_Formulas;
 import eidolons.system.content.ContentGenerator;
 import eidolons.system.test.Debugger;
@@ -687,7 +686,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
     public boolean isMaxClassNumber() {
-        return getBaseClassNumber() >= DC_Constants.MAX_BASE_CLASSES;
+        return getBaseClassNumber() >= DC_Formulas.MAX_BASE_CLASSES;
     }
 
     protected int getBaseClassNumber() {

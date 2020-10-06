@@ -2,12 +2,12 @@ package eidolons.libgdx.assets.utils;
 
 import eidolons.libgdx.launch.GpuTester;
 import eidolons.libgdx.texture.TexturePackerLaunch;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
+import main.system.util.DialogMaster;
 
 import java.io.File;
 import java.util.LinkedHashSet;

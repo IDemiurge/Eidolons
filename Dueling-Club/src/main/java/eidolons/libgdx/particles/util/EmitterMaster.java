@@ -16,8 +16,6 @@ import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.particles.util.EmitterPresetMaster.EMITTER_VALUE_GROUP;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TexturePackerLaunch;
-import eidolons.swing.generic.services.dialog.DialogMaster;
-import eidolons.swing.generic.services.dialog.EnumChooser;
 import eidolons.system.utils.GdxUtil;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -33,6 +31,8 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
+import main.system.util.DialogMaster;
+import main.system.util.EnumChooser;
 
 import java.io.File;
 import java.nio.file.Files;

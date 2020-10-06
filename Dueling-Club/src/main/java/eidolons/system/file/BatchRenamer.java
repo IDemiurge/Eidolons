@@ -3,7 +3,6 @@ package eidolons.system.file;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.assets.AssetEnums;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -14,6 +13,7 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
+import main.system.util.DialogMaster;
 
 import java.io.File;
 import java.io.IOException;

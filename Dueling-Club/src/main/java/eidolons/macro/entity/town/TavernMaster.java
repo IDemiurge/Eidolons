@@ -4,12 +4,12 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.entity.party.MacroPartyUtils;
 import eidolons.macro.global.time.TimeMaster;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.enums.entity.HeroEnums;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
+import main.system.util.DialogMaster;
 
 import java.util.ArrayList;
 import java.util.List;

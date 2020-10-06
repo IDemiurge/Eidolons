@@ -9,7 +9,6 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
-import eidolons.libgdx.gui.UiImages;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SymbolButton;
@@ -21,6 +20,7 @@ import eidolons.libgdx.gui.panels.dc.actionpanel.facing.FacingPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.WeaponDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
+import eidolons.libgdx.texture.Textures;
 import main.content.enums.entity.ActionEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -67,7 +67,7 @@ public class ActionPanel extends GroupX {
     private boolean hidden;
 
     public ActionPanel() {
-        addActor(background = new FadeImageContainer((UiImages.BOTTOM_PANEL_BG)));
+        addActor(background = new FadeImageContainer((Textures.BOTTOM_PANEL_BG)));
         //        background.pack();
         setSize(background.getWidth(), background.getHeight());
         addActor(quickSlotPanel = new QuickSlotPanel(IMAGE_SIZE));
@@ -91,7 +91,7 @@ public class ActionPanel extends GroupX {
         addActor(mainHand = new QuickWeaponPanel(false));
         addActor(offhand = new QuickWeaponPanel(true));
 
-        addActor(bottomOverlay = new ImageContainer(UiImages.BOTTOM_OVERLAY));
+        addActor(bottomOverlay = new ImageContainer(Textures.BOTTOM_OVERLAY));
 
         buffPanelBody = new BuffPanelSimple(false);
         buffPanelSoul = new BuffPanelSimple(true);

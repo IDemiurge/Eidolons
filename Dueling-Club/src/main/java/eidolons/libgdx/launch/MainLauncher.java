@@ -4,7 +4,6 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.netherflame.additional.CustomLaunch;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.test.TestMasterContent;
 import main.data.filesys.PathFinder;
@@ -16,6 +15,7 @@ import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import main.system.util.DialogMaster;
 
 import java.util.Stack;
 

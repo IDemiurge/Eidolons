@@ -4,7 +4,6 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -29,6 +28,7 @@ import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.GuiManager;
+import main.system.util.DialogMaster;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

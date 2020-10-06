@@ -1,4 +1,4 @@
-package eidolons.libgdx.utils;
+package eidolons.libgdx.gui.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

@@ -1,4 +1,4 @@
-package main.utilities.music;
+package music;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;

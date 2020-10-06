@@ -1,4 +1,4 @@
-package eidolons.swing.generic.services.dialog;
+package main.system.util;
 
 public class EnumChooser  {
 

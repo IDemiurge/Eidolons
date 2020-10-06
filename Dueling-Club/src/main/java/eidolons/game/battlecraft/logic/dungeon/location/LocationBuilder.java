@@ -3,8 +3,8 @@ package eidolons.game.battlecraft.logic.dungeon.location;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.generator.init.RngXmlMaster;
+import main.system.auxiliary.Refactor;
 import main.system.auxiliary.StringMaster;
-import main.system.util.Refactor;
 import org.w3c.dom.Node;
 
 import java.util.ArrayList;

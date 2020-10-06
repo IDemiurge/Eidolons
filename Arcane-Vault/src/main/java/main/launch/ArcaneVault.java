@@ -26,8 +26,8 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
-import main.utilities.music.MuseCore;
 import main.utilities.workspace.WorkspaceManager;
+import music.MuseCore;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;

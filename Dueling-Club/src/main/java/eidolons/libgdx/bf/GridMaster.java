@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import eidolons.entity.obj.unit.Unit;
@@ -10,7 +11,6 @@ import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.bf.grid.cell.UnitGridView;
-import eidolons.libgdx.gui.CursorPosVector2;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import main.game.bf.Coordinates;
@@ -100,7 +100,8 @@ public class GridMaster {
     }
 
     public static Vector2 getMouseCoordinates() {
-        return DungeonScreen.getInstance().getGridStage().screenToStageCoordinates(new CursorPosVector2());
+        return DungeonScreen.getInstance().getGridStage().screenToStageCoordinates(
+                new Vector2(Gdx.input.getX(), Gdx.input.getY()));
     }
 
     public static void offset(Vector2 orig, Vector2 dest, int additionalDistance) {

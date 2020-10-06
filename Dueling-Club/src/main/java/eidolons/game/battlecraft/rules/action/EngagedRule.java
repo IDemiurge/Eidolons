@@ -7,7 +7,6 @@ import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import eidolons.game.core.game.DC_Game;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.SpellEnums;
@@ -20,6 +19,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
 import main.system.sound.AudioEnums;
+import main.system.util.DialogMaster;
 
 import java.util.ArrayList;
 import java.util.List;

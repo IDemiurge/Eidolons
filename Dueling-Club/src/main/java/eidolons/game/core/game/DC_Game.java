@@ -74,13 +74,13 @@ import main.game.logic.event.Event;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.Refactor;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
-import main.system.util.Refactor;
 
 import java.util.*;
 
@@ -189,7 +189,7 @@ public class DC_Game extends GenericGame {
 
         combatMaster = createCombatMaster();
 
-        requirementsManager = new DC_RequirementsManager(this);
+        requirementsManager = new DC_RequirementsManager();
         valueManager = new DC_ValueManager(this);
         if (!isSimulation())
             visionMaster = createVisionMaster();

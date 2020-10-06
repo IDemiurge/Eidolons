@@ -6,9 +6,9 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.EidolonsGame;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.gui.UiImages;
 import eidolons.libgdx.gui.panels.dc.actionpanel.bar.DualParamBar;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
+import eidolons.libgdx.texture.Textures;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.values.parameters.PARAMETER;
@@ -27,7 +27,7 @@ public class HpBar extends DualParamBar {
 
     @Override
     protected String getBarBgPath() {
-        return UiImages.HP_BAR_BG;
+        return Textures.HP_BAR_BG;
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import eidolons.libgdx.assets.AssetEnums;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
@@ -14,6 +13,7 @@ import main.system.auxiliary.data.FileManager;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.Flags;
+import main.system.util.DialogMaster;
 
 import java.io.File;
 import java.util.List;

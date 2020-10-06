@@ -7,15 +7,11 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.system.text.TextMaster;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnit;
 import main.system.launch.Flags;
 import main.system.math.MathMaster;
-import main.system.util.Refactor;
 
 import java.util.HashMap;
 import java.util.List;

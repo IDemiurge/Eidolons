@@ -10,7 +10,6 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.core.Eidolons;
-import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
@@ -58,10 +57,6 @@ public class DC_RequirementsManager implements RequirementsManager {
     private Entity hero;
     private Map<Entity, Requirements> rankReqMap;
 
-    public DC_RequirementsManager(DC_Game game) {
-
-    }
-
     private static MASTERY_RANK getRank(Integer score) {
         MASTERY_RANK rank = SkillEnums.MASTERY_RANK.NONE;
         for (MASTERY_RANK r : SkillEnums.MASTERY_RANK.values()) {
@@ -73,26 +68,6 @@ public class DC_RequirementsManager implements RequirementsManager {
         return rank;
     }
 
-    // private String specialCheck(Entity type, Entity heroObj) {
-    // switch ((OBJ_TYPES) type.getOBJ_TYPE_ENUM()) {
-    // case SKILLS:
-    // PARAMETER masteryParam =
-    // ContentManager.getPARAM(type.getProperty(G_PROPS.MASTERY));
-    // if (masteryParam == null)
-    // masteryParam =
-    // ContentManager.getMastery(type.getProperty(G_PROPS.MASTERY));
-    // if (masteryParam != null) {
-    // DC_HeroObj hero = (DC_HeroObj) heroObj;
-    // int result = DC_MathManager.getFreeMasteryPoints(hero, masteryParam)
-    // - type.getIntParam(PARAMS.SKILL_DIFFICULTY);
-    // if (result < 0)
-    // return type.getProperty(G_PROPS.MASTERY)
-    // + InfoMaster.NOT_ENOUGH_MASTERY_SLOTS + (-result);
-    // }
-    // }
-    // return null;
-    // }
-
     @Override
     public String check(Entity hero, Entity type) {
         return check(hero, type, NORMAL_MODE);
@@ -103,21 +78,13 @@ public class DC_RequirementsManager implements RequirementsManager {
         if (CoreEngine.isArcaneVault()) {
             return null;
         }
-        // Chronos.mark(type.getName() + " req preCheck");
         this.setHero(hero);
         String reason;
-        // specialCheck(type, hero);
-        // if (reason != null)
-        // return reason;
-
-        // Chronos.mark(type.getName() + " req build");
         Requirements requirements = getRequirements(type, mode);
-        // Chronos.logTimeElapsedForMark(type.getName() + " req build");
         if (requirements == null) {
             return null;
         }
         reason = requirements.checkReason(hero.getRef(), type);
-        // Chronos.logTimeElapsedForMark(type.getName() + " req preCheck");
         return reason;
     }
 

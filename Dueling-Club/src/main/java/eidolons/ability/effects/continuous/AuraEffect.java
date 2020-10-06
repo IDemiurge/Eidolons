@@ -20,19 +20,18 @@ import main.entity.Ref.KEYS;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
-import main.system.util.Untested;
 
-@Untested
+//Untested
 public class AuraEffect extends MicroEffect implements AttachmentEffect {
     STANDARD_EVENT_TYPE event_type; // ++ UNIT MOVES!!!!
-    private Effect effect;
-    private boolean initialized = false;
+    private final Effect effect;
+    private final boolean initialized = false;
     private AddTriggerEffect trigger;
-    private boolean notSelf;
-    private Boolean onlyEnemiesOrAllies;
-    private Formula radius;
-    private Boolean continuous;
-    private Condition additionalConditions;
+    private final boolean notSelf;
+    private final Boolean onlyEnemiesOrAllies;
+    private final Formula radius;
+    private final Boolean continuous;
+    private final Condition additionalConditions;
     private AddBuffEffect auraEffect;
     private boolean on;
 

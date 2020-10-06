@@ -9,7 +9,7 @@ import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import eidolons.libgdx.utils.TextInputPanel;
+import eidolons.libgdx.gui.utils.TextInputPanel;
 import main.content.enums.GenericEnums;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Manager;

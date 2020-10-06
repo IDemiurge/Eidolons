@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class JsonToType {
+public class TypeStringProcessor {
 
     public static void convert(String json, DC_TYPE TYPE) {
         //base type

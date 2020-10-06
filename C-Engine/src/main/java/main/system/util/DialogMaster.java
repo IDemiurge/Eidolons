@@ -1,8 +1,7 @@
-package eidolons.swing.generic.services.dialog;
+package main.system.util;
 
 import main.entity.Entity;
 import main.entity.obj.Obj;
-import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -92,11 +91,6 @@ public class DialogMaster {
         JOptionPane.showConfirmDialog(null, string+" !!!??? - IMPLEMENT LIBGDX!");
     }
 
-    public static Integer askOptionsAndWait(String string, boolean vertical, Object... options) {
-        new OptionDialog(string, vertical, true, VISUALS.INFO_PANEL_WIDE, 3, options).show();
-
-        return (Integer) WaitMaster.waitForInput(ASK_WAIT);
-    }
 
     public static Boolean askAndWait(String string, String TRUE, String FALSE, String NULL) {
         return askAndWait(string, true, TRUE, FALSE, NULL);

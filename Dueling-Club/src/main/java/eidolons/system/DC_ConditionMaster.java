@@ -370,32 +370,6 @@ public class DC_ConditionMaster extends ConditionMaster {
         return c;
     }
 
-    // c.add(new OrConditions(new FacingCondition(FACING_SINGLE.IN_FRONT),
-    //
-    // new OrConditions(new Conditions(new OrConditions(new FacingCondition(
-    // FACING_SINGLE.IN_FRONT), new FacingCondition(FACING_SINGLE.TO_THE_SIDE)),
-    // new FacingCondition(FACING_SINGLE.BEHIND)),
-    //
-    // new OrConditions(new
-    // StringComparison(StringMaster.getValueRef(KEYS.SOURCE,
-    // G_PROPS.STANDARD_PASSIVES), STANDARD_PASSIVES.HIND_REACH + "", false),
-    // new StringComparison(StringMaster.getValueRef(KEYS.ACTIVE,
-    // G_PROPS.STANDARD_PASSIVES), STANDARD_PASSIVES.HIND_REACH + "",
-    // false))
-    //
-    // ),
-    //
-    // new OrConditions(new Conditions(new OrConditions(new FacingCondition(
-    // FACING_SINGLE.IN_FRONT), new FacingCondition(FACING_SINGLE.TO_THE_SIDE)),
-    //
-    // new OrConditions(new
-    // StringComparison(StringMaster.getValueRef(KEYS.SOURCE,
-    // G_PROPS.STANDARD_PASSIVES), STANDARD_PASSIVES.BROAD_REACH + "", false),
-    // new StringComparison(StringMaster.getValueRef(KEYS.ACTIVE,
-    // G_PROPS.STANDARD_PASSIVES), STANDARD_PASSIVES.BROAD_REACH + "",
-    // false))
-    //
-    // ))));
     public static Condition getRetainConditionsFromTemplate(RETAIN_CONDITIONS template, Ref ref) {
         switch (template) {
             case CASTER_ALIVE:

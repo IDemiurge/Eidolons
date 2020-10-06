@@ -1,4 +1,4 @@
-package main.utilities.music;
+package music;
 
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.FileManager;
