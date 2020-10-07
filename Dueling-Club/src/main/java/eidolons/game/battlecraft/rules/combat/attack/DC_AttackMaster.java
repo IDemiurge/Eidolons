@@ -12,7 +12,6 @@ import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageDealer;
 import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import eidolons.game.battlecraft.rules.combat.misc.CleaveRule;
-import eidolons.game.battlecraft.rules.combat.misc.InjuryRule;
 import eidolons.game.battlecraft.rules.mechanics.CoatingRule;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.core.ActionInput;
@@ -480,7 +479,6 @@ public class DC_AttackMaster {
         }
 
         if (attackedUnit != null) {
-            InjuryRule.applyInjuryRule(action);
             if (attack.isCritical()) {
                 checkEffectsInterrupt(attacker, attacker, SPECIAL_EFFECTS_CASE.ON_CRIT_SELF, ref,
                         offhand);

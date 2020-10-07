@@ -8,9 +8,10 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleStats;
-import eidolons.game.battlecraft.logic.dungeon.universal.utils.Summoner;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
+import eidolons.game.core.game.DC_Game;
 import main.content.CONTENT_CONSTS;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -61,8 +62,11 @@ public class EncPuzzleHandler extends PuzzleHandler<EncounterPuzzle> {
         String name = "Indestructible Force Field";
         for (Coordinates c : puzzle.getData().getBlockData().keySet()) {
             if ( puzzle.getData().getBlockData().get(c).getValue(CellScriptData.CELL_SCRIPT_VALUE.marks)
-                    .contains(CONTENT_CONSTS.MARK.block.name()))
-                blocks.add(Summoner.bfObj(c, name));
+                    .contains(CONTENT_CONSTS.MARK.block.name())){
+                ObjType type = DataManager.getType(name, DC_TYPE.BF_OBJ);
+                BattleFieldObject obj = DC_Game.game.createObject(type, c, DC_Player.NEUTRAL);
+                blocks.add(obj);
+            }
         }
     }
 

@@ -17,7 +17,6 @@ import eidolons.game.battlecraft.logic.dungeon.module.ModuleLoader;
 import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Awakener;
-import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.battlecraft.logic.mission.universal.*;
 import eidolons.game.battlecraft.logic.mission.universal.stats.MissionStatManager;
@@ -27,6 +26,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import eidolons.libgdx.GdxColorMaster;
+import main.content.enums.DungeonEnums;
 import main.game.bf.Coordinates;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
@@ -63,7 +63,7 @@ public abstract class DungeonMaster {
     private final FloorLoader floorLoader;
     private Awakener awakener;
 
-    private Map<DataMap, Map<Integer, String>> dataMaps;
+    private Map<DungeonEnums.DataMap, Map<Integer, String>> dataMaps;
     private final DC_ObjInitializer objInitializer;
     private final StructureBuilder structureBuilder;
     private final ModuleLoader moduleLoader;
@@ -315,14 +315,14 @@ public abstract class DungeonMaster {
         return layerManager;
     }
 
-    public Map<Integer, String> getDataMap(DataMap type) {
+    public Map<Integer, String> getDataMap(DungeonEnums.DataMap type) {
         if (dataMaps == null) {
             return null;
         }
         return dataMaps.get(type);
     }
 
-    public void setDataMaps(Map<DataMap, Map<Integer, String>> dataMaps) {
+    public void setDataMaps(Map<DungeonEnums.DataMap, Map<Integer, String>> dataMaps) {
         this.dataMaps = dataMaps;
     }
 

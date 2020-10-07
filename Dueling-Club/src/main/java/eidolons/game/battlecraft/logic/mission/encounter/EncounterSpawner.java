@@ -6,11 +6,11 @@ import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiData;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
-import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
 import eidolons.game.battlecraft.logic.mission.quest.QuestMission;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.logic.mission.universal.MissionHandler;
 import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
+import main.content.enums.DungeonEnums;
 import main.content.enums.EncounterEnums;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -44,7 +44,7 @@ public class EncounterSpawner extends MissionHandler<QuestMission> {
             return;
         }
         Map<Integer, String> dataMap = getGame().getMetaMaster().getDungeonMaster().
-                getDataMap(DataMap.encounters);
+                getDataMap(DungeonEnums.DataMap.encounters);
         for (Encounter encounter : encounters) {
             try {
                 EncounterData data = dataMap == null ? new EncounterData(encounter) :

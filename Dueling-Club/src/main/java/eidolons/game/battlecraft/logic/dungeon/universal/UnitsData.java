@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UnitsData extends DataUnit<PARTY_VALUE> {
-
-
     public static final Boolean FORMAT = false;
 
     public UnitsData(Party party) {
@@ -45,38 +43,6 @@ public class UnitsData extends DataUnit<PARTY_VALUE> {
         return FORMAT;
     }
 
-
-    /*
-            coordinates?
-            spawn type?
-            player owner
-            leader?
-            facing?
-
-            use always to spawn?
-             would be great! First form consistent data fully, then process it!
-
-            can come from a Mission file... a preset
-
-            facing in () ?
-
-            spawner processing:
-            1) check spawn at (then ignore coords? or use offset) or init coords
-            2) create for player at coords
-            3) init party/group and leader
-            4) init facing
-
-             pipelines:
-             Preset/Hardcore from LAUNCH
-             Creeps for a Mission
-             Party from Arcade
-             Custom spawn()
-
-             'spawn()' for an HQ party is in fact more like 'place()' ...
-            > don't respawn if exists?
-
-
-     */
     public enum PARTY_VALUE {
         LEADER, UNITS,
         PLAYER_NAME,

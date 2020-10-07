@@ -10,38 +10,31 @@ import main.system.auxiliary.log.Chronos;
 import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
 
+/*
+supposed to give access to Audio, Data, utilities, ...
+ */
 public class DC_Engine extends CoreEngine {
     private static boolean atbMode = true;
+    private static boolean trainingOff;
 
-    /*
-    supposed to give access to Audio, Data, utilities, ...
-     */
     static {
         jarInit();
     }
 
-    public static void analyzeUserSystem() {
-
+    public static void jarInit() {
+        CoreEngine.setEngineObject(new DC_Engine());
     }
-
-    private static boolean trainingOff;
-
     public static void fullInit() {
         Chronos.mark("DC INIT");
         systemInit();
         dataInit();
         gameInit();
-
         Chronos.logTimeElapsedForMark("DC INIT");
     }
 
     public static void mainMenuInit() {
         systemInit();
         dataInit();
-    }
-
-    public static void jarInit() {
-        CoreEngine.setEngineObject(new DC_Engine());
     }
 
     public static void gameStartInit() {

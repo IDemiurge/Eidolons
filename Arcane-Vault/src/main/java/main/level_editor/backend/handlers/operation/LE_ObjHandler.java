@@ -5,11 +5,11 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
-import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
 import eidolons.game.battlecraft.logic.mission.encounter.EncounterData;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlStringBuilder;
@@ -140,7 +140,7 @@ public class LE_ObjHandler extends LE_Handler {
         BattleFieldObject bfObj = getGame().createObject(type, c.x, c.y, DC_Player.NEUTRAL);
 
         Map<Integer, String> dataMap = getGame().getMetaMaster().getDungeonMaster().
-                getDataMap(DataMap.encounters);
+                getDataMap(DungeonEnums.DataMap.encounters);
         if (dataMap != null) {
             String s = dataMap.get(id);
             if (dataMap == null) {

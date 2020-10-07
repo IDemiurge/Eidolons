@@ -6,7 +6,6 @@ import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
@@ -15,6 +14,7 @@ import eidolons.libgdx.bf.decor.DecorData;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums;
 import main.data.DataManager;
 import main.data.xml.XmlNodeMaster;
 import main.entity.type.ObjType;
@@ -197,13 +197,13 @@ public class FloorLoader extends DungeonHandler {
                 checkModuleRemap(false, location);
                 break;
             case DATA_MAPS:
-                Map<DataMap, Map<Integer, String>> map = new LinkedHashMap<>();
+                Map<DungeonEnums.DataMap, Map<Integer, String>> map = new LinkedHashMap<>();
                 for (Node sub : XmlNodeMaster.getNodeList(node)) {
                     Map<Integer, String> submap = new LinkedHashMap<>();
                     for (Node idNode : XmlNodeMaster.getNodeList(node)) {
                         submap.put(Integer.valueOf(idNode.getNodeName()), sub.getTextContent());
                     }
-                    map.put(DataMap.valueOf(sub.getNodeName()), submap);
+                    map.put(DungeonEnums.DataMap.valueOf(sub.getNodeName()), submap);
 
                 }
                 master.setDataMaps(map);

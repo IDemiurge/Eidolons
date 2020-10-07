@@ -192,4 +192,11 @@ public class DungeonEnums {
     public enum SUBLEVEL_TYPE {
         COMMON, PRE_BOSS, BOSS, SECRET, TRANSIT, FALSE_LEVEL
     }
+
+    public enum  DataMap {
+        //type of dataUnit strings stored in level xml
+        encounters,
+        ai, custom_types,
+    facing,
+    }
 }
